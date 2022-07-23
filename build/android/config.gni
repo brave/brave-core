@@ -41,6 +41,7 @@ brave_chrome_java_deps = [
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
+  "//brave/browser/partnerbookmarks:delegate_public_impl_java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
 ]
 

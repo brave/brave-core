@@ -23,11 +23,13 @@
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -41,6 +43,12 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/features.h"
+#include "chrome/common/channel_info.h"
+#include "components/version_info/version_info.h"
 #endif
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
@@ -220,6 +228,11 @@ constexpr char kBraveRewardsGeminiDescription[] =
     "Enables support for Gemini as an external wallet provider for Brave";
 #endif
 
+constexpr char kBraveRewardsWebUIPanelName[] = "Use WebUI Rewards Panel";
+constexpr char kBraveRewardsWebUIPanelDescription[] =
+    "When enabled, the Brave Rewards panel will be displayed using WebUI "
+    "instead of the built-in Rewards extension.";
+
 constexpr char kBraveRewardsVerboseLoggingName[] =
     "Enable Brave Rewards verbose logging";
 constexpr char kBraveRewardsVerboseLoggingDescription[] =
@@ -286,9 +299,14 @@ constexpr char kUseDevUpdaterUrlDescription[] =
 constexpr char kBraveTranslateGoName[] =
     "Enable internal translate engine (brave-translate-go)";
 constexpr char kBraveTranslateGoDescription[] =
-    "Enable internal translate engine, which are build on top of client engine "
+    "For Android also enable `translate` flag. Enable internal translate "
+    "engine, which are build on top of client engine "
     "and brave translation backed. Also disables suggestions to install google "
     "translate extension.";
+
+constexpr char kTranslateName[] = "Enable Chromium Translate feature";
+constexpr char kTranslateDescription[] =
+    "Should be used with brave-translate-go, see the description here.";
 
 constexpr char kBraveFederatedName[] =
     "Enables local data collection for notification ad timing "
@@ -315,6 +333,9 @@ constexpr char kNavigatorConnectionAttributeDescription[] =
 constexpr char kRestrictWebSocketsPoolName[] = "Restrict WebSockets pool";
 constexpr char kRestrictWebSocketsPoolDescription[] =
     "Limits simultaneous active WebSockets connections per eTLD+1";
+
+constexpr char kPlaylistName[] = "Playlist";
+constexpr char kPlaylistDescription[] = "Enables Playlist";
 
 }  // namespace
 
@@ -439,10 +460,37 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveTranslateGoName,                       \
      flag_descriptions::kBraveTranslateGoDescription,                \
      kOsDesktop | kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)},
+     FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)}, \
+    {"translate",                                                    \
+     flag_descriptions::kTranslateName,                              \
+     flag_descriptions::kTranslateDescription,                       \
+     kOsAndroid,                                                     \
+     FEATURE_VALUE_TYPE(translate::kTranslate)},
 #else
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+uint16_t AllowForDevVersion(uint16_t os) {
+  if (auto channel = chrome::GetChannel();
+      channel == version_info::Channel::STABLE ||
+      channel == version_info::Channel::BETA) {
+    return 0;
+  }
+
+  return os;
+}
+
+#define PLAYLIST_FEATURE_ENTRIES                                           \
+     {"playlist",                                                          \
+     flag_descriptions::kPlaylistName,                                     \
+     flag_descriptions::kPlaylistDescription,                              \
+     AllowForDevVersion(                                                   \
+        flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsLinux),         \
+     FEATURE_VALUE_TYPE(playlist::features::kPlaylist)},
+#else
+#define PLAYLIST_FEATURE_ENTRIES
+#endif
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
@@ -536,6 +584,11 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-rewards-webui-panel",                                           \
+     flag_descriptions::kBraveRewardsWebUIPanelName,                        \
+     flag_descriptions::kBraveRewardsWebUIPanelDescription,                 \
+     kOsDesktop,                                                            \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kWebUIPanelFeature)},      \
     {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
@@ -572,4 +625,5 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
     SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
-    BRAVE_FEDERATED_FEATURE_ENTRIES
+    BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
+    PLAYLIST_FEATURE_ENTRIES

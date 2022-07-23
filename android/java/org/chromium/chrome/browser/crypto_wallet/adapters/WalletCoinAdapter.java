@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -65,8 +66,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     @Override
-    public @NonNull WalletCoinAdapter.ViewHolder onCreateViewHolder(
-            ViewGroup parent, int viewType) {
+    public @NonNull ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View walletCoinView = inflater.inflate(R.layout.wallet_coin_list_item, parent, false);
@@ -74,7 +74,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WalletCoinAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WalletListItemModel walletListItemModel = walletListItemModelList.get(position);
         // When ViewHolder is re-used, it has the obeservers which are fired when
         // we modifying checkbox. This may cause unwanted modifying of the model
@@ -93,24 +93,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         if (walletListItemModel.getText2() != null) {
             holder.text2Text.setVisibility(View.VISIBLE);
             holder.text2Text.setText(walletListItemModel.getText2());
-        }
-
-        if (walletListItemType == Utils.TRANSACTION_ITEM) {
-            holder.txStatus.setVisibility(View.VISIBLE);
-            holder.txStatus.setText(walletListItemModel.getTxStatus());
-            holder.txStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    new BitmapDrawable(
-                            context.getResources(), walletListItemModel.getTxStatusBitmap()),
-                    null, null, null);
-            holder.feeText.setVisibility(View.VISIBLE);
-            holder.feeText.setText(String.format(
-                    context.getResources().getString(R.string.wallet_tx_fee),
-                    String.format(Locale.getDefault(), "%.6f", walletListItemModel.getTotalGas()),
-                    walletListItemModel.getChainSymbol(),
-                    String.format(
-                            Locale.getDefault(), "%.2f", walletListItemModel.getTotalGasFiat())));
-            Utils.overlayBitmaps(mExecutor, mHandler, walletListItemModel.getAddressesForBitmap(),
-                    holder.iconImg);
         }
 
         holder.itemView.setOnClickListener(v -> {
@@ -140,6 +122,29 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             }
         });
 
+        if (walletListItemType == Utils.TRANSACTION_ITEM) {
+            holder.txStatus.setVisibility(View.VISIBLE);
+            holder.txStatus.setText(walletListItemModel.getTxStatus());
+            holder.txStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    new BitmapDrawable(
+                            context.getResources(), walletListItemModel.getTxStatusBitmap()),
+                    null, null, null);
+            holder.feeText.setVisibility(View.VISIBLE);
+            holder.feeText.setText(String.format(
+                    context.getResources().getString(R.string.wallet_tx_fee),
+                    String.format(Locale.getDefault(), "%.6f", walletListItemModel.getTotalGas()),
+                    walletListItemModel.getChainSymbol(),
+                    String.format(
+                            Locale.getDefault(), "%.2f", walletListItemModel.getTotalGasFiat())));
+            Utils.overlayBitmaps(mExecutor, mHandler, walletListItemModel.getAddressesForBitmap(),
+                    holder.iconImg);
+            if (walletListItemModel.getTransactionInfo().txStatus == TransactionStatus.REJECTED) {
+                holder.disableClick();
+            } else {
+                holder.itemView.setClickable(true);
+            }
+        }
+
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
                 || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
                 || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
@@ -147,6 +152,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 holder.assetCheck.setVisibility(View.VISIBLE);
+                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
                 holder.assetCheck.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
@@ -171,7 +177,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                                         walletListItemModel, holder.assetCheck, isChecked);
                             }
                         });
-                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
             }
         }
 
@@ -324,6 +329,11 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         public void resetObservers() {
             itemView.setOnClickListener(null);
             assetCheck.setOnCheckedChangeListener(null);
+        }
+
+        public void disableClick() {
+            resetObservers();
+            itemView.setClickable(false);
         }
     }
 

@@ -97,7 +97,7 @@ class RewardsDOMHandler
   void GetContributionList(const base::Value::List& args);
   void GetAdsData(const base::Value::List& args);
   void GetAdsHistory(const base::Value::List& args);
-  void OnGetAdsHistory(const base::ListValue& history);
+  void OnGetAdsHistory(base::Value::List history);
   void ToggleAdThumbUp(const base::Value::List& args);
   void OnToggleAdThumbUp(const std::string& json);
   void ToggleAdThumbDown(const base::Value::List& args);
@@ -286,8 +286,8 @@ class RewardsDOMHandler
           notifications_list) override;
 
   // AdsServiceObserver implementation
-  void OnAdRewardsChanged() override;
-  void OnNeedsBrowserUpdateToSeeAds() override;
+  void OnAdRewardsDidChange() override;
+  void OnNeedsBrowserUpgradeToServeAds() override;
 
   void InitPrefChangeRegistrar();
   void OnPrefChanged(const std::string& key);
@@ -314,9 +314,9 @@ const int kDaysOfAdsHistory = 30;
 const char kShouldAllowAdsSubdivisionTargeting[] =
     "shouldAllowAdsSubdivisionTargeting";
 const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutoDetectedAdsSubdivisionTargeting[] =
+const char kAutoDetectedSubdivisionTargeting[] =
     "automaticallyDetectedAdsSubdivisionTargeting";
-const char kNeedsBrowserUpdateToSeeAds[] = "needsBrowserUpdateToSeeAds";
+const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
 
 }  // namespace
 
@@ -566,7 +566,7 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      ads::prefs::kAdsSubdivisionTargetingCode,
+      ads::prefs::kSubdivisionTargetingCode,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
@@ -665,18 +665,25 @@ void RewardsDOMHandler::OnGetRewardsParameters(
     return;
   }
 
-  base::DictionaryValue data;
+  base::Value::Dict data;
   if (parameters) {
-    auto choices = std::make_unique<base::ListValue>();
-    for (double const& choice : parameters->auto_contribute_choices) {
-      choices->Append(choice);
+    base::Value::List auto_contribute_choices;
+    for (double const& item : parameters->auto_contribute_choices) {
+      auto_contribute_choices.Append(item);
     }
 
-    data.SetDouble("rate", parameters->rate);
-    data.SetDouble("autoContributeChoice", parameters->auto_contribute_choice);
-    data.SetList("autoContributeChoices", std::move(choices));
+    base::Value::Dict payout_status;
+    for (const auto& [key, value] : parameters->payout_status) {
+      payout_status.Set(key, value);
+    }
+
+    data.Set("rate", parameters->rate);
+    data.Set("autoContributeChoice", parameters->auto_contribute_choice);
+    data.Set("autoContributeChoices", std::move(auto_contribute_choices));
+    data.Set("payoutStatus", std::move(payout_status));
   }
-  CallJavascriptFunction("brave_rewards.rewardsParameters", data);
+  CallJavascriptFunction("brave_rewards.rewardsParameters",
+                         base::Value(std::move(data)));
 }
 
 void RewardsDOMHandler::OnRewardsInitialized(
@@ -727,16 +734,16 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
   if (!IsJavascriptAllowed() || !properties)
     return;
 
-  base::DictionaryValue values;
-  values.SetBoolean("enabledContribute", properties->enabled_contribute);
-  values.SetInteger("contributionMinTime", properties->contribution_min_time);
-  values.SetInteger("contributionMinVisits",
-                    properties->contribution_min_visits);
-  values.SetBoolean("contributionNonVerified",
-                    properties->contribution_non_verified);
-  values.SetBoolean("contributionVideos", properties->contribution_videos);
+  base::Value::Dict values;
+  values.Set("enabledContribute", properties->enabled_contribute);
+  values.Set("contributionMinTime",
+             static_cast<int>(properties->contribution_min_time));
+  values.Set("contributionMinVisits", properties->contribution_min_visits);
+  values.Set("contributionNonVerified", properties->contribution_non_verified);
+  values.Set("contributionVideos", properties->contribution_videos);
 
-  CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
+  CallJavascriptFunction("brave_rewards.autoContributeProperties",
+                         base::Value(std::move(values)));
 }
 
 void RewardsDOMHandler::OnFetchPromotions(
@@ -747,24 +754,25 @@ void RewardsDOMHandler::OnFetchPromotions(
     return;
   }
 
-  base::ListValue promotions;
+  base::Value::List promotions;
   for (const auto& item : list) {
-    auto dict = std::make_unique<base::DictionaryValue>();
-    dict->SetString("promotionId", item->id);
-    dict->SetInteger("type", static_cast<int>(item->type));
-    dict->SetInteger("status", static_cast<int>(item->status));
-    dict->SetInteger("createdAt", item->created_at);
-    dict->SetInteger("claimableUntil", item->claimable_until);
-    dict->SetInteger("expiresAt", item->expires_at);
-    dict->SetDouble("amount", item->approximate_value);
+    base::Value::Dict dict;
+    dict.Set("promotionId", item->id);
+    dict.Set("type", static_cast<int>(item->type));
+    dict.Set("status", static_cast<int>(item->status));
+    dict.Set("createdAt", static_cast<int>(item->created_at));
+    dict.Set("claimableUntil", static_cast<int>(item->claimable_until));
+    dict.Set("expiresAt", static_cast<int>(item->expires_at));
+    dict.Set("amount", item->approximate_value);
     promotions.Append(std::move(dict));
   }
 
-  base::DictionaryValue dict;
-  dict.SetInteger("result", static_cast<int>(result));
-  dict.SetKey("promotions", std::move(promotions));
+  base::Value::Dict dict;
+  dict.Set("result", static_cast<int>(result));
+  dict.Set("promotions", std::move(promotions));
 
-  CallJavascriptFunction("brave_rewards.promotions", dict);
+  CallJavascriptFunction("brave_rewards.promotions",
+                         base::Value(std::move(dict)));
 }
 
 void RewardsDOMHandler::FetchPromotions(const base::Value::List& args) {
@@ -783,14 +791,15 @@ void RewardsDOMHandler::OnClaimPromotion(const std::string& promotion_id,
     return;
   }
 
-  base::DictionaryValue response;
-  response.SetInteger("result", static_cast<int>(result));
-  response.SetString("promotionId", promotion_id);
-  response.SetString("captchaImage", captcha_image);
-  response.SetString("captchaId", captcha_id);
-  response.SetString("hint", hint);
+  base::Value::Dict response;
+  response.Set("result", static_cast<int>(result));
+  response.Set("promotionId", promotion_id);
+  response.Set("captchaImage", captcha_image);
+  response.Set("captchaId", captcha_id);
+  response.Set("hint", hint);
 
-  CallJavascriptFunction("brave_rewards.claimPromotion", response);
+  CallJavascriptFunction("brave_rewards.claimPromotion",
+                         base::Value(std::move(response)));
 }
 
 void RewardsDOMHandler::ClaimPromotion(const base::Value::List& args) {
@@ -819,9 +828,10 @@ void RewardsDOMHandler::AttestPromotion(const base::Value::List& args) {
   AllowJavascript();
 
   if (!rewards_service_) {
-    base::DictionaryValue finish;
-    finish.SetInteger("status", 1);
-    CallJavascriptFunction("brave_rewards.promotionFinish", finish);
+    base::Value::Dict finish;
+    finish.Set("status", 1);
+    CallJavascriptFunction("brave_rewards.promotionFinish",
+                           base::Value(std::move(finish)));
     return;
   }
 
@@ -841,20 +851,21 @@ void RewardsDOMHandler::OnAttestPromotion(
     return;
   }
 
-  base::DictionaryValue promotion_dict;
-  promotion_dict.SetString("promotionId", promotion_id);
+  base::Value::Dict promotion_dict;
+  promotion_dict.Set("promotionId", promotion_id);
 
   if (promotion) {
-    promotion_dict.SetInteger("expiresAt", promotion->expires_at);
-    promotion_dict.SetDouble("amount", promotion->approximate_value);
-    promotion_dict.SetInteger("type", static_cast<int>(promotion->type));
+    promotion_dict.Set("expiresAt", static_cast<int>(promotion->expires_at));
+    promotion_dict.Set("amount", promotion->approximate_value);
+    promotion_dict.Set("type", static_cast<int>(promotion->type));
   }
 
-  base::DictionaryValue finish;
-  finish.SetInteger("result", static_cast<int>(result));
-  finish.SetKey("promotion", std::move(promotion_dict));
+  base::Value::Dict finish;
+  finish.Set("result", static_cast<int>(result));
+  finish.Set("promotion", std::move(promotion_dict));
 
-  CallJavascriptFunction("brave_rewards.promotionFinish", finish);
+  CallJavascriptFunction("brave_rewards.promotionFinish",
+                         base::Value(std::move(finish)));
 }
 
 void RewardsDOMHandler::OnPromotionFinished(
@@ -952,12 +963,13 @@ void RewardsDOMHandler::OnNotificationDeleted(
   if (notification.type_ == brave_rewards::RewardsNotificationService::
                                 REWARDS_NOTIFICATION_GRANT &&
       IsJavascriptAllowed()) {
-    base::DictionaryValue finish;
-    finish.SetInteger("status", false);
-    finish.SetInteger("expiryTime", 0);
-    finish.SetString("probi", "0");
+    base::Value::Dict finish;
+    finish.Set("status", false);
+    finish.Set("expiryTime", 0);
+    finish.Set("probi", "0");
 
-    CallJavascriptFunction("brave_rewards.grantFinish", finish);
+    CallJavascriptFunction("brave_rewards.grantFinish",
+                           base::Value(std::move(finish)));
   }
 #endif
 }
@@ -1057,22 +1069,23 @@ void RewardsDOMHandler::OnPublisherList(ledger::type::PublisherInfoList list) {
     return;
   }
 
-  auto publishers = std::make_unique<base::ListValue>();
+  base::Value::List publishers;
   for (auto const& item : list) {
-    auto publisher = std::make_unique<base::DictionaryValue>();
-    publisher->SetString("id", item->id);
-    publisher->SetDouble("percentage", item->percent);
-    publisher->SetString("publisherKey", item->id);
-    publisher->SetInteger("status", static_cast<int>(item->status));
-    publisher->SetInteger("excluded", static_cast<int>(item->excluded));
-    publisher->SetString("name", item->name);
-    publisher->SetString("provider", item->provider);
-    publisher->SetString("url", item->url);
-    publisher->SetString("favIcon", item->favicon_url);
-    publishers->Append(std::move(publisher));
+    base::Value::Dict publisher;
+    publisher.Set("id", item->id);
+    publisher.Set("percentage", static_cast<double>(item->percent));
+    publisher.Set("publisherKey", item->id);
+    publisher.Set("status", static_cast<int>(item->status));
+    publisher.Set("excluded", static_cast<int>(item->excluded));
+    publisher.Set("name", item->name);
+    publisher.Set("provider", item->provider);
+    publisher.Set("url", item->url);
+    publisher.Set("favIcon", item->favicon_url);
+    publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.contributeList", *publishers);
+  CallJavascriptFunction("brave_rewards.contributeList",
+                         base::Value(std::move(publishers)));
 }
 
 void RewardsDOMHandler::OnExcludedSiteList(
@@ -1081,19 +1094,20 @@ void RewardsDOMHandler::OnExcludedSiteList(
     return;
   }
 
-  auto publishers = std::make_unique<base::ListValue>();
+  base::Value::List publishers;
   for (auto const& item : list) {
-    auto publisher = std::make_unique<base::DictionaryValue>();
-    publisher->SetString("id", item->id);
-    publisher->SetInteger("status", static_cast<int>(item->status));
-    publisher->SetString("name", item->name);
-    publisher->SetString("provider", item->provider);
-    publisher->SetString("url", item->url);
-    publisher->SetString("favIcon", item->favicon_url);
-    publishers->Append(std::move(publisher));
+    base::Value::Dict publisher;
+    publisher.Set("id", item->id);
+    publisher.Set("status", static_cast<int>(item->status));
+    publisher.Set("name", item->name);
+    publisher.Set("provider", item->provider);
+    publisher.Set("url", item->url);
+    publisher.Set("favIcon", item->favicon_url);
+    publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.excludedList", *publishers);
+  CallJavascriptFunction("brave_rewards.excludedList",
+                         base::Value(std::move(publishers)));
 }
 
 void RewardsDOMHandler::OnGetContributionAmount(double amount) {
@@ -1124,11 +1138,12 @@ void RewardsDOMHandler::OnReconcileComplete(
     return;
   }
 
-  base::DictionaryValue complete;
-  complete.SetKey("result", base::Value(static_cast<int>(result)));
-  complete.SetKey("type", base::Value(static_cast<int>(type)));
+  base::Value::Dict complete;
+  complete.Set("result", static_cast<int>(result));
+  complete.Set("type", static_cast<int>(type));
 
-  CallJavascriptFunction("brave_rewards.reconcileComplete", complete);
+  CallJavascriptFunction("brave_rewards.reconcileComplete",
+                         base::Value(std::move(complete)));
 }
 
 void RewardsDOMHandler::RemoveRecurringTip(const base::Value::List& args) {
@@ -1153,48 +1168,50 @@ void RewardsDOMHandler::OnGetRecurringTips(
   if (!IsJavascriptAllowed()) {
     return;
   }
-  auto publishers = std::make_unique<base::ListValue>();
+  base::Value::List publishers;
 
   for (auto const& item : list) {
-    auto publisher = std::make_unique<base::DictionaryValue>();
-    publisher->SetString("id", item->id);
-    publisher->SetDouble("percentage", item->weight);
-    publisher->SetString("publisherKey", item->id);
-    publisher->SetInteger("status", static_cast<int>(item->status));
-    publisher->SetInteger("excluded", static_cast<int>(item->excluded));
-    publisher->SetString("name", item->name);
-    publisher->SetString("provider", item->provider);
-    publisher->SetString("url", item->url);
-    publisher->SetString("favIcon", item->favicon_url);
-    publisher->SetInteger("tipDate", 0);
-    publishers->Append(std::move(publisher));
+    base::Value::Dict publisher;
+    publisher.Set("id", item->id);
+    publisher.Set("percentage", item->weight);
+    publisher.Set("publisherKey", item->id);
+    publisher.Set("status", static_cast<int>(item->status));
+    publisher.Set("excluded", static_cast<int>(item->excluded));
+    publisher.Set("name", item->name);
+    publisher.Set("provider", item->provider);
+    publisher.Set("url", item->url);
+    publisher.Set("favIcon", item->favicon_url);
+    publisher.Set("tipDate", 0);
+    publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.recurringTips", *publishers);
+  CallJavascriptFunction("brave_rewards.recurringTips",
+                         base::Value(std::move(publishers)));
 }
 
 void RewardsDOMHandler::OnGetOneTimeTips(ledger::type::PublisherInfoList list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
-  auto publishers = std::make_unique<base::ListValue>();
+  base::Value::List publishers;
 
   for (auto const& item : list) {
-    auto publisher = std::make_unique<base::DictionaryValue>();
-    publisher->SetString("id", item->id);
-    publisher->SetDouble("percentage", item->weight);
-    publisher->SetString("publisherKey", item->id);
-    publisher->SetInteger("status", static_cast<int>(item->status));
-    publisher->SetInteger("excluded", static_cast<int>(item->excluded));
-    publisher->SetString("name", item->name);
-    publisher->SetString("provider", item->provider);
-    publisher->SetString("url", item->url);
-    publisher->SetString("favIcon", item->favicon_url);
-    publisher->SetInteger("tipDate", item->reconcile_stamp);
-    publishers->Append(std::move(publisher));
+    base::Value::Dict publisher;
+    publisher.Set("id", item->id);
+    publisher.Set("percentage", item->weight);
+    publisher.Set("publisherKey", item->id);
+    publisher.Set("status", static_cast<int>(item->status));
+    publisher.Set("excluded", static_cast<int>(item->excluded));
+    publisher.Set("name", item->name);
+    publisher.Set("provider", item->provider);
+    publisher.Set("url", item->url);
+    publisher.Set("favIcon", item->favicon_url);
+    publisher.Set("tipDate", static_cast<int>(item->reconcile_stamp));
+    publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.currentTips", *publishers);
+  CallJavascriptFunction("brave_rewards.currentTips",
+                         base::Value(std::move(publishers)));
 }
 
 void RewardsDOMHandler::GetOneTimeTips(const base::Value::List& args) {
@@ -1224,37 +1241,22 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
 
   AllowJavascript();
 
-  base::DictionaryValue ads_data;
-
-  auto is_supported_locale = ads_service_->IsSupportedLocale();
-  ads_data.SetBoolean("adsIsSupported", is_supported_locale);
-
-  auto is_enabled = ads_service_->IsEnabled();
-  ads_data.SetBoolean("adsEnabled", is_enabled);
-
-  auto ads_per_hour = ads_service_->GetAdsPerHour();
-  ads_data.SetInteger("adsPerHour", ads_per_hour);
-
-  const std::string subdivision_targeting_code =
-      ads_service_->GetAdsSubdivisionTargetingCode();
-  ads_data.SetString(kAdsSubdivisionTargeting, subdivision_targeting_code);
-
-  const std::string auto_detected_subdivision_targeting_code =
-      ads_service_->GetAutoDetectedAdsSubdivisionTargetingCode();
-  ads_data.SetString(kAutoDetectedAdsSubdivisionTargeting,
-                     auto_detected_subdivision_targeting_code);
-
-  const bool should_allow_subdivision_ad_targeting =
-      ads_service_->ShouldAllowAdsSubdivisionTargeting();
-  ads_data.SetBoolean(kShouldAllowAdsSubdivisionTargeting,
-                      should_allow_subdivision_ad_targeting);
-
-  ads_data.SetBoolean("adsUIEnabled", true);
-
-  ads_data.SetBoolean(kNeedsBrowserUpdateToSeeAds,
-                      ads_service_->NeedsBrowserUpdateToSeeAds());
-
-  CallJavascriptFunction("brave_rewards.adsData", ads_data);
+  base::Value::Dict ads_data;
+  ads_data.Set("adsIsSupported", ads_service_->IsSupportedLocale());
+  ads_data.Set("adsEnabled", ads_service_->IsEnabled());
+  ads_data.Set("adsPerHour",
+               static_cast<int>(ads_service_->GetNotificationAdsPerHour()));
+  ads_data.Set(kAdsSubdivisionTargeting,
+               ads_service_->GetSubdivisionTargetingCode());
+  ads_data.Set(kAutoDetectedSubdivisionTargeting,
+               ads_service_->GetAutoDetectedSubdivisionTargetingCode());
+  ads_data.Set(kShouldAllowAdsSubdivisionTargeting,
+               ads_service_->ShouldAllowSubdivisionTargeting());
+  ads_data.Set("adsUIEnabled", true);
+  ads_data.Set(kNeedsBrowserUpgradeToServeAds,
+               ads_service_->NeedsBrowserUpgradeToServeAds());
+  CallJavascriptFunction("brave_rewards.adsData",
+                         base::Value(std::move(ads_data)));
 }
 
 void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
@@ -1274,12 +1276,13 @@ void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
                                           weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {
+void RewardsDOMHandler::OnGetAdsHistory(base::Value::List ads_history) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.adsHistory", ads_history);
+  CallJavascriptFunction("brave_rewards.adsHistory",
+                         base::Value(std::move(ads_history)));
 }
 
 void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
@@ -1293,7 +1296,8 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleAdThumbUp(
       ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
@@ -1309,8 +1313,8 @@ void RewardsDOMHandler::OnToggleAdThumbUp(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", value);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
@@ -1324,7 +1328,8 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleAdThumbDown(
       ad_content.ToJson(),
@@ -1341,8 +1346,8 @@ void RewardsDOMHandler::OnToggleAdThumbDown(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", value);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
@@ -1368,10 +1373,11 @@ void RewardsDOMHandler::OnToggleAdOptIn(const std::string& category,
     return;
   }
 
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetKey("category", base::Value(category));
-  value.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdOptIn", value);
+  base::Value::Dict value;
+  value.Set("category", category);
+  value.Set("action", action);
+  CallJavascriptFunction("brave_rewards.onToggleAdOptIn",
+                         base::Value(std::move(value)));
 }
 
 void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
@@ -1397,10 +1403,11 @@ void RewardsDOMHandler::OnToggleAdOptOut(const std::string& category,
     return;
   }
 
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetKey("category", base::Value(category));
-  value.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdOptOut", value);
+  base::Value::Dict value;
+  value.Set("category", category);
+  value.Set("action", action);
+  CallJavascriptFunction("brave_rewards.onToggleAdOptOut",
+                         base::Value(std::move(value)));
 }
 
 void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
@@ -1414,7 +1421,8 @@ void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleSavedAd(
       ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleSavedAd,
@@ -1430,8 +1438,8 @@ void RewardsDOMHandler::OnToggleSavedAd(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleSavedAd", value);
+  CallJavascriptFunction("brave_rewards.onToggleSavedAd",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
@@ -1445,7 +1453,8 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleFlaggedAd(
       ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleFlaggedAd,
@@ -1461,8 +1470,8 @@ void RewardsDOMHandler::OnToggleFlaggedAd(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd", value);
+  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
@@ -1481,11 +1490,11 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
         value == "true" && ads_service_->IsSupportedLocale();
     rewards_service_->SetAdsEnabled(is_enabled);
   } else if (key == "adsPerHour") {
-    ads_service_->SetAdsPerHour(std::stoull(value));
+    ads_service_->SetNotificationAdsPerHour(std::stoull(value));
   } else if (key == kAdsSubdivisionTargeting) {
-    ads_service_->SetAdsSubdivisionTargetingCode(value);
-  } else if (key == kAutoDetectedAdsSubdivisionTargeting) {
-    ads_service_->SetAutoDetectedAdsSubdivisionTargetingCode(value);
+    ads_service_->SetSubdivisionTargetingCode(value);
+  } else if (key == kAutoDetectedSubdivisionTargeting) {
+    ads_service_->SetAutoDetectedSubdivisionTargetingCode(value);
   }
 
   GetAdsData(base::Value::List());
@@ -1550,14 +1559,15 @@ void RewardsDOMHandler::OnGetStatement(const bool success,
     return;
   }
 
-  base::DictionaryValue statement;
+  base::Value::Dict statement;
 
-  statement.SetDouble("adsNextPaymentDate", next_payment_date * 1000);
-  statement.SetInteger("adsReceivedThisMonth", ads_received_this_month);
-  statement.SetDouble("adsEarningsThisMonth", earnings_this_month);
-  statement.SetDouble("adsEarningsLastMonth", earnings_last_month);
+  statement.Set("adsNextPaymentDate", next_payment_date * 1000);
+  statement.Set("adsReceivedThisMonth", ads_received_this_month);
+  statement.Set("adsEarningsThisMonth", earnings_this_month);
+  statement.Set("adsEarningsLastMonth", earnings_last_month);
 
-  CallJavascriptFunction("brave_rewards.statement", statement);
+  CallJavascriptFunction("brave_rewards.statement",
+                         base::Value(std::move(statement)));
 }
 
 void RewardsDOMHandler::OnStatementChanged(
@@ -1567,12 +1577,12 @@ void RewardsDOMHandler::OnStatementChanged(
   }
 }
 
-void RewardsDOMHandler::OnAdRewardsChanged() {
+void RewardsDOMHandler::OnAdRewardsDidChange() {
   ads_service_->GetStatementOfAccounts(base::BindOnce(
       &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnNeedsBrowserUpdateToSeeAds() {
+void RewardsDOMHandler::OnNeedsBrowserUpgradeToServeAds() {
   GetAdsData(base::Value::List());
 }
 
@@ -1603,7 +1613,7 @@ void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
   // TODO(zenparsing): Consider using a PrefChangeRegistrar to monitor changes
   // to these values.
   auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
 
   if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled))
     list.Append("github");
@@ -1615,7 +1625,7 @@ void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
     list.Append("twitter");
 
   CallJavascriptFunction("brave_rewards.enabledInlineTippingPlatforms",
-                         std::move(list));
+                         base::Value(std::move(list)));
 }
 
 void RewardsDOMHandler::SetInlineTippingPlatformEnabled(
@@ -1645,28 +1655,26 @@ void RewardsDOMHandler::OnGetPendingContributions(
     return;
   }
 
-  auto contributions = std::make_unique<base::ListValue>();
+  base::Value::List contributions;
   for (auto const& item : list) {
-    auto contribution =
-        std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-    contribution->SetKey("id", base::Value(static_cast<int>(item->id)));
-    contribution->SetKey("publisherKey", base::Value(item->publisher_key));
-    contribution->SetKey("status", base::Value(static_cast<int>(item->status)));
-    contribution->SetKey("name", base::Value(item->name));
-    contribution->SetKey("provider", base::Value(item->provider));
-    contribution->SetKey("url", base::Value(item->url));
-    contribution->SetKey("favIcon", base::Value(item->favicon_url));
-    contribution->SetKey("amount", base::Value(item->amount));
-    contribution->SetKey("addedDate",
-                         base::Value(std::to_string(item->added_date)));
-    contribution->SetKey("type", base::Value(static_cast<int>(item->type)));
-    contribution->SetKey("viewingId", base::Value(item->viewing_id));
-    contribution->SetKey("expirationDate",
-                         base::Value(std::to_string(item->expiration_date)));
-    contributions->Append(std::move(contribution));
+    base::Value::Dict contribution;
+    contribution.Set("id", static_cast<int>(item->id));
+    contribution.Set("publisherKey", item->publisher_key);
+    contribution.Set("status", static_cast<int>(item->status));
+    contribution.Set("name", item->name);
+    contribution.Set("provider", item->provider);
+    contribution.Set("url", item->url);
+    contribution.Set("favIcon", item->favicon_url);
+    contribution.Set("amount", item->amount);
+    contribution.Set("addedDate", std::to_string(item->added_date));
+    contribution.Set("type", static_cast<int>(item->type));
+    contribution.Set("viewingId", item->viewing_id);
+    contribution.Set("expirationDate", std::to_string(item->expiration_date));
+    contributions.Append(std::move(contribution));
   }
 
-  CallJavascriptFunction("brave_rewards.pendingContributions", *contributions);
+  CallJavascriptFunction("brave_rewards.pendingContributions",
+                         base::Value(std::move(contributions)));
 }
 
 void RewardsDOMHandler::RemovePendingContribution(
@@ -1749,24 +1757,25 @@ void RewardsDOMHandler::OnGetExternalWallet(
     const ledger::type::Result result,
     ledger::type::ExternalWalletPtr wallet) {
   if (IsJavascriptAllowed()) {
-    base::Value data(base::Value::Type::DICTIONARY);
-    data.SetIntKey("result", static_cast<int>(result));
-    base::Value wallet_dict(base::Value::Type::DICTIONARY);
+    base::Value::Dict data;
+    data.Set("result", static_cast<int>(result));
+    base::Value::Dict wallet_dict;
 
     if (wallet) {
-      wallet_dict.SetStringKey("type", wallet->type);
-      wallet_dict.SetStringKey("address", wallet->address);
-      wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
-      wallet_dict.SetStringKey("addUrl", wallet->add_url);
-      wallet_dict.SetStringKey("withdrawUrl", wallet->withdraw_url);
-      wallet_dict.SetStringKey("userName", wallet->user_name);
-      wallet_dict.SetStringKey("accountUrl", wallet->account_url);
-      wallet_dict.SetStringKey("loginUrl", wallet->login_url);
-      wallet_dict.SetStringKey("activityUrl", wallet->activity_url);
+      wallet_dict.Set("type", wallet->type);
+      wallet_dict.Set("address", wallet->address);
+      wallet_dict.Set("status", static_cast<int>(wallet->status));
+      wallet_dict.Set("addUrl", wallet->add_url);
+      wallet_dict.Set("withdrawUrl", wallet->withdraw_url);
+      wallet_dict.Set("userName", wallet->user_name);
+      wallet_dict.Set("accountUrl", wallet->account_url);
+      wallet_dict.Set("loginUrl", wallet->login_url);
+      wallet_dict.Set("activityUrl", wallet->activity_url);
     }
 
-    data.SetKey("wallet", std::move(wallet_dict));
-    CallJavascriptFunction("brave_rewards.externalWallet", data);
+    data.Set("wallet", std::move(wallet_dict));
+    CallJavascriptFunction("brave_rewards.externalWallet",
+                           base::Value(std::move(data)));
   }
 }
 
@@ -1779,18 +1788,19 @@ void RewardsDOMHandler::OnProcessRewardsPageUrl(
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetIntKey("result", static_cast<int>(result));
-  data.SetStringKey("walletType", wallet_type);
-  data.SetStringKey("action", action);
+  base::Value::Dict data;
+  data.Set("result", static_cast<int>(result));
+  data.Set("walletType", wallet_type);
+  data.Set("action", action);
 
-  base::Value new_args(base::Value::Type::DICTIONARY);
+  base::Value::Dict new_args;
   for (auto const& arg : args) {
-    new_args.SetStringKey(arg.first, arg.second);
+    new_args.Set(arg.first, arg.second);
   }
-  data.SetKey("args", std::move(new_args));
+  data.Set("args", std::move(new_args));
 
-  CallJavascriptFunction("brave_rewards.processRewardsPageUrl", data);
+  CallJavascriptFunction("brave_rewards.processRewardsPageUrl",
+                         base::Value(std::move(data)));
 }
 
 void RewardsDOMHandler::ProcessRewardsPageUrl(const base::Value::List& args) {
@@ -1820,11 +1830,12 @@ void RewardsDOMHandler::OnDisconnectWallet(
     brave_rewards::RewardsService* rewards_service,
     const ledger::type::Result result,
     const std::string& wallet_type) {
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetIntKey("result", static_cast<int>(result));
-  data.SetStringKey("walletType", wallet_type);
+  base::Value::Dict data;
+  data.Set("result", static_cast<int>(result));
+  data.Set("walletType", wallet_type);
 
-  CallJavascriptFunction("brave_rewards.disconnectWallet", data);
+  CallJavascriptFunction("brave_rewards.disconnectWallet",
+                         base::Value(std::move(data)));
 }
 
 void RewardsDOMHandler::OnAdsEnabled(
@@ -1865,19 +1876,20 @@ void RewardsDOMHandler::OnGetBalanceReport(
     return;
   }
 
-  base::Value report_base(base::Value::Type::DICTIONARY);
-  report_base.SetDoubleKey("grant", report->grants);
-  report_base.SetDoubleKey("ads", report->earning_from_ads);
-  report_base.SetDoubleKey("contribute", report->auto_contribute);
-  report_base.SetDoubleKey("monthly", report->recurring_donation);
-  report_base.SetDoubleKey("tips", report->one_time_donation);
+  base::Value::Dict report_base;
+  report_base.Set("grant", report->grants);
+  report_base.Set("ads", report->earning_from_ads);
+  report_base.Set("contribute", report->auto_contribute);
+  report_base.Set("monthly", report->recurring_donation);
+  report_base.Set("tips", report->one_time_donation);
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetIntKey("month", month);
-  data.SetIntKey("year", year);
-  data.SetKey("report", std::move(report_base));
+  base::Value::Dict data;
+  data.Set("month", static_cast<int>(month));
+  data.Set("year", static_cast<int>(year));
+  data.Set("report", std::move(report_base));
 
-  CallJavascriptFunction("brave_rewards.balanceReport", data);
+  CallJavascriptFunction("brave_rewards.balanceReport",
+                         base::Value(std::move(data)));
 }
 
 void RewardsDOMHandler::GetBalanceReport(const base::Value::List& args) {
@@ -1904,64 +1916,65 @@ void RewardsDOMHandler::OnGetMonthlyReport(
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetIntKey("month", month);
-  data.SetIntKey("year", year);
+  base::Value::Dict data;
+  data.Set("month", static_cast<int>(month));
+  data.Set("year", static_cast<int>(year));
 
-  base::Value balance_report(base::Value::Type::DICTIONARY);
-  balance_report.SetDoubleKey("grant", report->balance->grants);
-  balance_report.SetDoubleKey("ads", report->balance->earning_from_ads);
-  balance_report.SetDoubleKey("contribute", report->balance->auto_contribute);
-  balance_report.SetDoubleKey("monthly", report->balance->recurring_donation);
-  balance_report.SetDoubleKey("tips", report->balance->one_time_donation);
+  base::Value::Dict balance_report;
+  balance_report.Set("grant", report->balance->grants);
+  balance_report.Set("ads", report->balance->earning_from_ads);
+  balance_report.Set("contribute", report->balance->auto_contribute);
+  balance_report.Set("monthly", report->balance->recurring_donation);
+  balance_report.Set("tips", report->balance->one_time_donation);
 
-  base::Value transactions(base::Value::Type::LIST);
+  base::Value::List transactions;
   for (const auto& item : report->transactions) {
-    base::Value transaction_report(base::Value::Type::DICTIONARY);
-    transaction_report.SetDoubleKey("amount", item->amount);
-    transaction_report.SetIntKey("type", static_cast<int>(item->type));
-    transaction_report.SetIntKey("processor",
-                                 static_cast<int>(item->processor));
-    transaction_report.SetIntKey("created_at", item->created_at);
+    base::Value::Dict transaction_report;
+    transaction_report.Set("amount", item->amount);
+    transaction_report.Set("type", static_cast<int>(item->type));
+    transaction_report.Set("processor", static_cast<int>(item->processor));
+    transaction_report.Set("created_at", static_cast<int>(item->created_at));
 
     transactions.Append(std::move(transaction_report));
   }
 
-  base::Value contributions(base::Value::Type::LIST);
+  base::Value::List contributions;
   for (const auto& contribution : report->contributions) {
-    base::Value publishers(base::Value::Type::LIST);
+    base::Value::List publishers;
     for (const auto& item : contribution->publishers) {
-      base::Value publisher(base::Value::Type::DICTIONARY);
-      publisher.SetStringKey("id", item->id);
-      publisher.SetDoubleKey("percentage", item->percent);
-      publisher.SetDoubleKey("weight", item->weight);
-      publisher.SetStringKey("publisherKey", item->id);
-      publisher.SetIntKey("status", static_cast<int>(item->status));
-      publisher.SetStringKey("name", item->name);
-      publisher.SetStringKey("provider", item->provider);
-      publisher.SetStringKey("url", item->url);
-      publisher.SetStringKey("favIcon", item->favicon_url);
+      base::Value::Dict publisher;
+      publisher.Set("id", item->id);
+      publisher.Set("percentage", static_cast<double>(item->percent));
+      publisher.Set("weight", item->weight);
+      publisher.Set("publisherKey", item->id);
+      publisher.Set("status", static_cast<int>(item->status));
+      publisher.Set("name", item->name);
+      publisher.Set("provider", item->provider);
+      publisher.Set("url", item->url);
+      publisher.Set("favIcon", item->favicon_url);
       publishers.Append(std::move(publisher));
     }
 
-    base::Value contribution_report(base::Value::Type::DICTIONARY);
-    contribution_report.SetDoubleKey("amount", contribution->amount);
-    contribution_report.SetIntKey("type", static_cast<int>(contribution->type));
-    contribution_report.SetIntKey("processor",
-                                  static_cast<int>(contribution->processor));
-    contribution_report.SetIntKey("created_at", contribution->created_at);
-    contribution_report.SetKey("publishers", std::move(publishers));
+    base::Value::Dict contribution_report;
+    contribution_report.Set("amount", contribution->amount);
+    contribution_report.Set("type", static_cast<int>(contribution->type));
+    contribution_report.Set("processor",
+                            static_cast<int>(contribution->processor));
+    contribution_report.Set("created_at",
+                            static_cast<int>(contribution->created_at));
+    contribution_report.Set("publishers", std::move(publishers));
     contributions.Append(std::move(contribution_report));
   }
 
-  base::Value report_base(base::Value::Type::DICTIONARY);
-  report_base.SetKey("balance", std::move(balance_report));
-  report_base.SetKey("transactions", std::move(transactions));
-  report_base.SetKey("contributions", std::move(contributions));
+  base::Value::Dict report_base;
+  report_base.Set("balance", std::move(balance_report));
+  report_base.Set("transactions", std::move(transactions));
+  report_base.Set("contributions", std::move(contributions));
 
-  data.SetKey("report", std::move(report_base));
+  data.Set("report", std::move(report_base));
 
-  CallJavascriptFunction("brave_rewards.monthlyReport", data);
+  CallJavascriptFunction("brave_rewards.monthlyReport",
+                         base::Value(std::move(data)));
 }
 
 void RewardsDOMHandler::GetMonthlyReport(const base::Value::List& args) {

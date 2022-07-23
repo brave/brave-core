@@ -18,7 +18,7 @@ StateMigrationV11::StateMigrationV11(LedgerImpl* ledger) : ledger_(ledger) {
 
 StateMigrationV11::~StateMigrationV11() = default;
 
-void StateMigrationV11::Migrate(ResultCallback callback) {
+void StateMigrationV11::Migrate(LegacyResultCallback callback) {
   // In version 7 encryption was added for |kWalletBrave|. However due to wallet
   // corruption, users copying their profiles to new computers or reinstalling
   // their operating system we are reverting this change

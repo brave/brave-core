@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
 
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
-
 namespace ads {
 
 FilteredCategoryInfo::FilteredCategoryInfo() = default;
@@ -20,35 +17,17 @@ FilteredCategoryInfo& FilteredCategoryInfo::operator=(
 
 FilteredCategoryInfo::~FilteredCategoryInfo() = default;
 
-std::string FilteredCategoryInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
+base::Value::Dict FilteredCategoryInfo::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("name", name);
+  return dict;
 }
 
-bool FilteredCategoryInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
+bool FilteredCategoryInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("name")) {
+    name = *value;
   }
-
-  if (document.HasMember("name")) {
-    name = document["name"].GetString();
-  }
-
   return true;
-}
-
-void SaveToJson(JsonWriter* writer, const FilteredCategoryInfo& info) {
-  writer->StartObject();
-
-  writer->String("name");
-  writer->String(info.name.c_str());
-
-  writer->EndObject();
 }
 
 }  // namespace ads

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <!-- Payout status banner -->
   <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">
     Check status
   </message>
@@ -13,10 +14,10 @@
     Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards are on the way. Keep an eye out!
   </message>
 
+  <!-- Rewards "card-and-summary" -->
   <message name="IDS_REWARDS_LOG_IN_TO_SEE_BALANCE" desc="">
     <ph name="BEGIN_BOLD">$1</ph>Log in to <ph name="PROVIDER">$2<ex>Uphold</ex></ph><ph name="END_BOLD">$3</ph> to see your balance
   </message>
-
   <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
     Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
@@ -51,7 +52,7 @@
     Pending contributions
   </message>
   <message name="IDS_REWARDS_WALLET_PENDING_TEXT" desc="">
-    There is a temporary problem verifying with <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Your Brave Rewards will remain in a Pending state and retry automatically, but you can also try again later.
+    There is a temporary problem verifying with <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Your Brave Rewards will remain in a pending state and retry automatically, but you can also try again later.
   </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
     Rewards from Ads
@@ -72,6 +73,7 @@
     Your Balance
   </message>
 
+  <!-- Rewards new tab page widget -->
   <message name="IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT" desc="">
     <ph name="MONTH">$1<ex>January</ex></ph> Rewards: <ph name="AMOUNT">$2<ex>1.25 BAT</ex></ph>
   </message>
@@ -132,4 +134,376 @@
   <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE" desc="">
     A token grant is available!
   </message>
+
+  <!-- Rewards panel -->
+  <message name="IDS_REWARDS_PANEL_SUMMARY" desc="">
+    Summary
+  </message>
+  <message name="IDS_REWARDS_PANEL_TIP" desc="">
+    Tip
+  </message>
+  <message name="IDS_REWARDS_PANEL_UNVERIFIED_CREATOR" desc="">
+    Unverified Creator
+  </message>
+  <message name="IDS_REWARDS_PANEL_VERIFIED_CREATOR" desc="">
+    Verified Creator
+  </message>
+  <message name="IDS_REWARDS_PANEL_REFRESH_STATUS" desc="">
+    Refresh
+  </message>
+  <message name="IDS_REWARDS_PANEL_PENDING_TIP_TEXT" desc="">
+    Any tip you make will remain pending and retry automatically for 90 days. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_REWARDS_PANEL_PENDING_TIP_TITLE" desc="">
+    This creator is not signed up yet.
+  </message>
+  <message name="IDS_REWARDS_PANEL_PENDING_TIP_TITLE_REGISTERED" desc="">
+    This creator is currently not configured to receive tips from your Rewards custodial wallet service.
+  </message>
+  <message name="IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE" desc="">
+    <ph name="NAME">$1<ex>Brave</ex></ph> on <ph name="PLATFORM">$2<ex>Twitter</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_PANEL_ATTENTION" desc="">
+    Attention
+  </message>
+  <message name="IDS_REWARDS_PANEL_SEND_TIP" desc="">
+    Send Tip
+  </message>
+  <message name="IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE" desc="">
+    Include in Auto-Contribute
+  </message>
+  <message name="IDS_REWARDS_PANEL_MONTHLY_TIP" desc="">
+    Monthly Tip
+  </message>
+  <message name="IDS_REWARDS_PANEL_OK" desc="">
+    OK
+  </message>
+  <message name="IDS_REWARDS_PANEL_SET" desc="">
+    Set
+  </message>
+  <message name="IDS_REWARDS_PANEL_CHANGE_AMOUNT" desc="">
+    Change amount
+  </message>
+  <message name="IDS_REWARDS_PANEL_CANCEL" desc="">
+    Cancel
+  </message>
+
+  <!-- Rewards grant captcha modal -->
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_TITLE" desc="">
+    Confirm you are a human being
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_FAILED_TITLE" desc="">
+    Hmm… Not Quite. Try Again.
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_HINT" desc="">
+    Drag the BAT icon to the <ph name="HINT">$1<ex>triangle</ex></ph> target.
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_UGP" desc="">
+    It’s your lucky day!
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TEXT_UGP" desc="">
+    Your token grant is on its way.
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_UGP" desc="">
+    Free Token Grant
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_ADS" desc="">
+    You've earned an Ads Reward!
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TEXT_ADS" desc="">
+    Your Reward is on its way.
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_ADS" desc="">
+    Your Reward Amount
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_EXPIRATION" desc="">
+    Grant Expiration Date
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_ERROR_TITLE" desc="">
+    Oops, something is wrong. Please try again later.
+  </message>
+  <message name="IDS_REWARDS_GRANT_CAPTCHA_ERROR_TEXT" desc="">
+    Brave Rewards is having an issue. Please try again later.
+  </message>
+
+  <!-- Rewards panel notifications -->
+  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS" desc="">
+    Add Funds
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_RECONNECT" desc="">
+    Reconnect
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_CLAIM_REWARDS" desc="">
+    Claim Rewards
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_CLAIM_TOKENS" desc="">
+    Claim Tokens
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TITLE" desc="">
+    Insufficient Funds
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TEXT" desc="">
+    Your Brave Rewards account is waiting for a deposit.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE" desc="">
+    Auto-Contribute
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TEXT" desc="">
+    You've contributed <ph name="AMOUNT">$1<ex>2 BAT</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_TITLE" desc="">
+    Back up Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_TEXT" desc="">
+    Please back up your Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_ACTION" desc="">
+    Back up now
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TITLE" desc="">
+    You are logged out
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TEXT" desc="">
+    This can happen to keep your account secure. Click below to reconnect now.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
+    Reconnect
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_VERIFIED_TITLE" desc="">
+    Your Brave Rewards is verified!
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_VERIFIED_TEXT" desc="">
+    Your Brave Rewards was successfully verified with <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_TOKEN_GRANT_TITLE" desc="">
+    A token grant is available!
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_AD_GRANT_AMOUNT" desc="">
+    <ph name="MONTH">$1<ex>December</ex></ph> Rewards: <ph name="AMOUNT">$2<ex>1.25 BAT</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_AD_GRANT_TITLE" desc="">
+    Your <ph name="MONTH">$1<ex>December</ex></ph> Ad Rewards are here!
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_GRANT_DAYS_REMAINING" desc="">
+    You have <ph name="DAYS">$1<ex>20 days</ex></ph> left to claim
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS_TEXT" desc="">
+    Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TEXT" desc="">
+    There was a problem processing your contribution.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TITLE" desc="">
+    Monthly tip failed
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TITLE" desc="">
+    Contributions and tips
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT" desc="">
+    Your monthly tips have been processed.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TITLE" desc="">
+    Pending contribution
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TEXT" desc="">
+    Creator <ph name="PUBLISHER_NAME">$1<ex>brave.com</ex></ph> recently verified.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TITLE" desc="">
+    Insufficient funds
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TEXT" desc="">
+    You have pending tips due to insufficient funds
+  </message>
+
+  <!-- Adaptive captcha -->
+  <message name="IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TEXT" desc="">
+    Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TITLE" desc="">
+    Max attempts exceeded
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_SOLVED_TITLE" desc="">
+    Solved!
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_SOLVED_TEXT" desc="">
+    Ads and earnings will now resume. Thanks for helping us protect Brave Rewards and privacy-based ads.
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT" desc="">
+    Contact support
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_DISMISS" desc="">
+    Dismiss
+  </message>
+
+  <!-- Rewards opt-in for Brave Talk -->
+  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_REWARDS_TO_START_CALL" desc="">
+    To start a free call, turn on Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_BRAVE_REWARDS_DESCRIPTION" desc="">
+    With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_REWARDS" desc="">
+    Turn on Rewards
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_OPT_IN_REWARDS_TERMS" desc="">
+    By enabling, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_TO_START_CALL" desc="">
+    To start a free call, enable Brave Private Ads
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_PRIVATE_ADS_DESCRIPTION" desc="">
+    With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS" desc="">
+    Turn on Brave Private Ads
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_CAN_START_FREE_CALL" desc="">
+    You can now start a free call
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_CLICK_ANYWHERE_TO_BRAVE_TALK" desc="">
+    Click or tap anywhere on the screen to continue to Brave Talk.
+  </message>
+  <message name="IDS_REWARDS_BRAVE_TALK_WANT_LEARN_MORE" desc="">
+    Want to learn more about Brave Rewards? <ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph>.
+  </message>
+
+  <!-- Rewards onboarding tour -->
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS" desc="">
+    Brave Rewards
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS" desc="">
+    <ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph> or <ph name="LEARN_LINK_BEGIN">$3</ph>learn more<ph name="LEARN_LINK_END">$4</ph> for details.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">
+    Earn Tokens &amp; Give Back
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
+    Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">
+    Maybe Later
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER" desc="">
+    Need a refresher on Rewards?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT" desc="">
+    Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
+    How often do you want to see ads?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER" desc="">
+    (ads per hour)
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER" desc="">
+    How much monthly support do you want to give to your favorite creators?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER" desc="">
+    (from your ads earnings)
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
+    Start using Brave Rewards
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR" desc="">
+    Take a quick tour
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
+    By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER" desc="">
+    Tip with Brave Rewards
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT" desc="">
+    Earn Rewards by viewing Brave Private Ads and support content creators automatically
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK" desc="">
+    Go Back
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN" desc="">
+    Let’s take a quick tour
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE" desc="">
+    Continue
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE" desc="">
+    Done
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP" desc="">
+    Skip
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW" desc="">
+    Skip for now
+  </message>
+
+  <!-- Rewards onboarding tour panels -->
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER" desc="">
+    Welcome to Brave Rewards!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT" desc="">
+    Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER" desc="">
+    Where do ads show up?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">
+    Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER" desc="">
+    When do you receive rewards?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT" desc="">
+    Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">
+    Giving back made effortless
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT" desc="">
+    Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER" desc="">
+    Say thank you with tips
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">
+    Tipping is a way to personally encourage and support content or creators that you love. Get tippin!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER" desc="">
+    What can you do with tokens?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT" desc="">
+    Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER" desc="">
+    Lastly, let’s get you set up on the basic settings
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT" desc="">
+    You can change this later.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">
+    Woohoo, you’re all set!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">
+    By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER" desc="">
+    Verify
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT" desc="">
+    In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER" desc="">
+    Do it later
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW" desc="">
+    Verify Brave Rewards
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE" desc="">
+    The bitFlyer wallet is a service managed by bitFlyer, Inc.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT" desc="">
+    By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE" desc="">
+    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.
+  </message>
+
 </grit-part>

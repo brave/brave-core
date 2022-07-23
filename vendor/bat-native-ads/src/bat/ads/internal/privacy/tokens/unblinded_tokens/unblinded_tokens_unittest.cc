@@ -78,16 +78,12 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
   SetUnblindedTokens(8);
 
   // Act
-  const base::Value& list = GetUnblindedTokens()->GetTokensAsList();
-
-  // Assert
-  const base::Value::List& list_values = list.GetList();
-
-  const UnblindedTokenList& unblinded_tokens =
+  const base::Value::List list = GetUnblindedTokens()->GetTokensAsList();
+  const UnblindedTokenList unblinded_tokens =
       GetUnblindedTokens()->GetAllTokens();
-  EXPECT_EQ(list_values.size(), unblinded_tokens.size());
+  EXPECT_EQ(list.size(), unblinded_tokens.size());
 
-  for (auto& value : list_values) {
+  for (const auto& value : list) {
     const base::Value::Dict* dictionary = value.GetIfDict();
     ASSERT_TRUE(dictionary);
     const std::string* unblinded_token_value =
@@ -110,12 +106,10 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
 
 TEST_F(BatAdsUnblindedTokensTest, GetTokensAsListWithEmptyList) {
   // Arrange
-
-  // Act
-  const base::Value& list = GetUnblindedTokens()->GetTokensAsList();
+  const base::Value::List list = GetUnblindedTokens()->GetTokensAsList();
 
   // Assert
-  EXPECT_TRUE(list.GetList().empty());
+  EXPECT_TRUE(list.empty());
 }
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokens) {
@@ -148,7 +142,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensFromList) {
   const base::Value& list = GetUnblindedTokensAsList(5);
 
   // Act
-  GetUnblindedTokens()->SetTokensFromList(list);
+  GetUnblindedTokens()->SetTokensFromList(list.GetList());
 
   // Assert
   const UnblindedTokenList& unblinded_tokens =
@@ -185,7 +179,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensFromListWithEmptyList) {
   const base::Value& list = GetUnblindedTokensAsList(0);
 
   // Act
-  GetUnblindedTokens()->SetTokensFromList(list);
+  GetUnblindedTokens()->SetTokensFromList(list.GetList());
 
   // Assert
   EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());

@@ -6,11 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_UNITTEST_UTIL_H_
 
-#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 
 namespace ads {
-
-struct CreativeNewTabPageAdInfo;
 
 void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads);
 

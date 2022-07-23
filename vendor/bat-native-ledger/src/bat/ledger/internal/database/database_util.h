@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_UTIL_H_
-#define BRAVELEDGER_DATABASE_DATABASE_UTIL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_UTIL_H_
 
 #include <map>
 #include <string>
@@ -51,9 +51,8 @@ int32_t GetCurrentVersion();
 
 int32_t GetCompatibleVersion();
 
-void OnResultCallback(
-    type::DBCommandResponsePtr response,
-    ledger::ResultCallback callback);
+void OnResultCallback(type::DBCommandResponsePtr response,
+                      ledger::LegacyResultCallback callback);
 
 int GetIntColumn(type::DBRecord* record, const int index);
 
@@ -70,4 +69,4 @@ std::string GenerateStringInCase(const std::vector<std::string>& items);
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_UTIL_H_

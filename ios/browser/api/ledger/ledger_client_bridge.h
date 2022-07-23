@@ -51,7 +51,7 @@
 - (std::string)getLegacyWallet;
 - (void)showNotification:(const std::string&)type
                     args:(const std::vector<std::string>&)args
-                callback:(ledger::client::ResultCallback)callback;
+                callback:(ledger::client::LegacyResultCallback)callback;
 - (bool)getBooleanOption:(const std::string&)name;
 - (int)getIntegerOption:(const std::string&)name;
 - (double)getDoubleOption:(const std::string&)name;
@@ -67,7 +67,7 @@
 - (void)pendingContributionSaved:(const ledger::type::Result)result;
 - (void)clearAllNotifications;
 - (void)walletDisconnected:(const std::string&)wallet_type;
-- (void)deleteLog:(ledger::client::ResultCallback)callback;
+- (void)deleteLog:(ledger::client::LegacyResultCallback)callback;
 - (absl::optional<std::string>)encryptString:(const std::string&)value;
 - (absl::optional<std::string>)decryptString:(const std::string&)value;
 

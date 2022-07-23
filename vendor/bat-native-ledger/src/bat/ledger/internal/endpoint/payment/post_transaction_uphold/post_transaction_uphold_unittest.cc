@@ -44,15 +44,13 @@ class PostTransactionUpholdTest : public testing::Test {
 
 TEST_F(PostTransactionUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 201;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -66,15 +64,13 @@ TEST_F(PostTransactionUpholdTest, ServerOK) {
 
 TEST_F(PostTransactionUpholdTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -88,15 +84,13 @@ TEST_F(PostTransactionUpholdTest, ServerError400) {
 
 TEST_F(PostTransactionUpholdTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -110,15 +104,13 @@ TEST_F(PostTransactionUpholdTest, ServerError404) {
 
 TEST_F(PostTransactionUpholdTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -132,15 +124,13 @@ TEST_F(PostTransactionUpholdTest, ServerError409) {
 
 TEST_F(PostTransactionUpholdTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -154,15 +144,13 @@ TEST_F(PostTransactionUpholdTest, ServerError500) {
 
 TEST_F(PostTransactionUpholdTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;

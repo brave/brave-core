@@ -723,7 +723,7 @@
 <translation id="4780526507945807546">استخدم عقدة IPFS المحلية من متصفح Brave</translation>
 <translation id="8148464361648742409">استخدم عنوان بوابة عام</translation>
 <translation id="5123478056123923857">IPFS (نظام الملفات بين الكواكب) هي الشبكة العامة لتخزين وتسليم البيانات من نظير إلى نظير. هذا البروتوكول له اعتبارات خصوصية مختلفة عن HTTP(S).</translation>
-<translation id="5410952114182173389">يساهم جهاز الكمبيوتر الخاص بك في الشبكة العامة، ولكن قد يتم كشف عنوان IP وأي محتوى ’ تطلبه أو تقدمه. يتم التحقق من المحتوى الذي تطلبه عبر IPFS قبل تقديمه إليك.</translation>
+<translation id="1216911189668016151">يساهم جهاز الكمبيوتر الخاص بك في الشبكة العامة، ولكن قد يتم كشف عنوان IP وأي محتوى تطلبه أو تقدمه. يتم التحقق من المحتوى الذي تطلبه عبر IPFS قبل تقديمه إليك. قد لا تستخدم طلبات الشبكة وكيل المتصفح وإعدادات DNS.</translation>
 <translation id="8664689531113048642">يحمي عنوان IP الخاص بك والمحتوى ’ الذي تطلبه من مراقبين محتملين تابعين لجهات خارجية، ولكن ليس من مشغل البوابة العام. يعتبر مشغل البوابة مسؤولاً عن ضمان أن المحتوى الذي يتم تقديمه لك عبر البوابة هو المحتوى الذي طلبته. أيضاً، لا يساهم جهاز الكمبيوتر الخاص بك في شبكة IPFS العامة.</translation>
 <translation id="3977809385703587108">يمكنك تغيير تفضيلاتك مرة أخرى في</translation>
 <translation id="3340978935015468852">الإعدادات</translation>
@@ -915,6 +915,7 @@
 <translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Brave؟</translation>
 <translation id="3331452756822160641">كلمة مرور جديدة</translation>
 <translation id="8624315169751085215">نسخ إلى الحافظة</translation>
+<translation id="7885157704277298658">تم النسخ.</translation>
 <translation id="1121335910737476837">حسابات التفشير الأساسية</translation>
 <translation id="6969147029062037757">الحسابات المستوردة</translation>
 <translation id="4057718162494343222">يمكنك إنشاء حسابات أساسية في "محفظة Brave Wallet" والتي يمكن نسخها احتياطيًا أو استعادتها من العبارة الاستردادية. لمعرفة المزيد حول أنواع الحسابات، تفضّل بزيارة مساعدة الحساب.</translation>
@@ -972,6 +973,8 @@
 <translation id="7642841516562576649">URL الأيقونات</translation>
 <translation id="2144247757675997850">إضافة أصول</translation>
 <translation id="2708402071160162126">تحذير: لا تشارك عبارة الاسترداد الخاصة بك. يمكن لأي شخص لديه هذه العبارة أن يأخذ أصولك إلى الأبد.</translation>
+<translation id="2416098547200943834">ملاحظة: يتم توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص.<ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">ملاحظة: يجب توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص. <ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">إظهار المفتاح</translation>
 <translation id="8033497299373164724">إخفاء مفتاح</translation>
 <translation id="2702143907607790516">تعذّر تحديث اسم الحساب، يرجى المحاولة مرة أخرى.</translation>
@@ -1007,7 +1010,7 @@
 <translation id="5488357322146334497">رسالة</translation>
 <translation id="3586752056660754651">توقيع</translation>
 <translation id="3484981968509595506">يطلب DApp مفتاح التشفير العام الخاص بك</translation>
-<translation id="1915212737651531313">يطلب <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> مفتاح التشفير العام الخاص بمحافظك. في حال موافقتك على مشاركته، سيتمكن الموقع من إنشاء رسائل مشفرة لك.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/>تطلب مفتاح التشفير العام لحافظتك. إذا وافقت على تقديم هذا المفتاح، فسيكون الموقع قادرًا على إنشاء رسائل مشفرة لك.</translation>
 <translation id="3340247553212049934">تزويد</translation>
 <translation id="1619778919922494944">يرغب هذا التطبيق اللامركزي في قراءة هذه الرسالة لإكمال طلبك</translation>
 <translation id="714506544401754321">فك تشفير الرسالة</translation>
@@ -1074,8 +1077,9 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> غير متصل</translation>
 <translation id="5317781812114905957">تعليمات</translation>
 <translation id="1178198982208000092">قم بتوصيل <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">تتطلب المحفظة الموجودة على جهاز إجراء تأكيد على الجهاز.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">تتطلب محفظة الجهاز وجود تطبيق Ethereum مفتوحًا على <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">تتطلب حافظة الأجهزة التأكيد على الجهاز
+<ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">تتطلب حافظة الأجهزة أن يكون تطبيق <ph name="NETWORK"/> مفتوحًا على <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">تم الإرسال</translation>
 <translation id="5013754027092416509">تم الاستلام</translation>
 <translation id="5867988533873716616">عنوان URL لمستكشف الحظر غير متاح.</translation>
@@ -1146,7 +1150,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> ليست شبكة حالية</translation>
 <translation id="7340805872138998391">تعذر إلغاء قفل الجهاز، حاول إعادة الاتصال</translation>
 <translation id="1984410139271779110">خطأ داخلي، مخطط غير معروف</translation>
-<translation id="8682200134223578011">تمت الموافقة عليه</translation>
+<translation id="6989562355845156390">الموافقة</translation>
 <translation id="4674380028960132654">Ledger: التوقيع لا يتطابق مع العنوان الصحيح</translation>
 <translation id="3183932890629254743">لم يتم العثور على حساب الجهاز</translation>
 <translation id="4287068151777838754">بيانات JSON غير متوقعة</translation>
@@ -1189,6 +1193,26 @@
 <translation id="2317956709076373213">تم تأكيد المعاملة</translation>
 <translation id="310693998838023022">خطأ في المعاملة</translation>
 <translation id="6395870673621520684">إسقاط المعاملة</translation>
+<translation id="1237782734462409503">علامة التبويب غير نشطة</translation>
+<translation id="756701799684433105">الموافقة على الترجمة</translation>
+<translation id="6450792191436242818">برنامج النظام</translation>
+<translation id="6252742184395380448">برنامج التكوين</translation>
+<translation id="5358970666412490132">برنامج Stake</translation>
+<translation id="346636227344244984">برنامج التصويت</translation>
+<translation id="3538368258493053874">محمل BPF</translation>
+<translation id="2334098351242742927">برنامج Ed25519</translation>
+<translation id="8780753288764281797">برنامج Secp256k1</translation>
+<translation id="5275550100743015683">عنوان المرسل:</translation>
+<translation id="2678433693746214764">عنوان المستقبل:</translation>
+<translation id="4576396475962922672">حساب جديد:</translation>
+<translation id="4719005063558335704">الحسابات:</translation>
+<translation id="4337554812324118382">البيانات:</translation>
+<translation id="569870799832027680">معرف البرنامج:</translation>
+<translation id="7843211152394841558">الحد الأقصى لعدد مرات إعادة المحاولة:</translation>
+<translation id="8496335570810457">الالتزام بالتحقق من الصحة:</translation>
+<translation id="5100124500279922001">تجاوز التحقق من الصحة:</translation>
+<translation id="8060029310790625334">مركز المساعدة</translation>
+<translation id="2095142195578664632">هل تحتاج مساعدة؟ راجع ما يلي</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>

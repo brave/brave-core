@@ -14,7 +14,7 @@ namespace ads {
 
 class ResourceManagerObserver : public base::CheckedObserver {
  public:
-  // Invoked when the resource specified by |id| did update.
+  // Invoked when the resource specified by |id| has updated.
   virtual void OnResourceDidUpdate(const std::string& id) {}
 
  protected:

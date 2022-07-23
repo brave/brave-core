@@ -5,7 +5,7 @@
 
 #include <limits>
 
-#include "bat/ledger/internal/legacy/publisher_settings_state.h"
+#include "bat/ledger/internal/legacy/publisher_settings_properties.h"
 #include "bat/ledger/internal/legacy/report_balance_properties.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -36,15 +36,10 @@ TEST(PublisherSettingsStateTest, ToJsonSerialization) {
   publisher_settings_properties.processed_pending_publishers.push_back(
       "ProcessedPendingPublisher");
 
-  // Act
-  const PublisherSettingsState publisher_settings_state;
-  const std::string json =
-      publisher_settings_state.ToJson(publisher_settings_properties);
-
   // Assert
   PublisherSettingsProperties expected_publisher_settings_properties;
-  publisher_settings_state.FromJson(json,
-      &expected_publisher_settings_properties);
+  expected_publisher_settings_properties.FromJson(
+      publisher_settings_properties.ToJson());
   EXPECT_EQ(expected_publisher_settings_properties,
       publisher_settings_properties);
 }
@@ -76,9 +71,7 @@ TEST(PublisherSettingsStateTest, FromJsonDeserialization) {
 
   // Act
   PublisherSettingsProperties expected_publisher_settings_properties;
-  const PublisherSettingsState publisher_settings_state;
-  publisher_settings_state.FromJson(json,
-      &expected_publisher_settings_properties);
+  expected_publisher_settings_properties.FromJson(json);
 
   // Assert
   EXPECT_EQ(expected_publisher_settings_properties,

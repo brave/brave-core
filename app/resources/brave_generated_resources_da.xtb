@@ -107,6 +107,16 @@ vindue med Tor</translation>
 <translation id="4870911314065352661">Luk alle faner?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> faner åbne i dette vindue.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
+<translation id="2272117088509540883">- Brave-søgning</translation>
+<translation id="2701279958223202597">Støt uafhængig søgning med bedre privatliv. Brave-søgninger registrerer hverken dig, dine søgninger eller dine klik.</translation>
+<translation id="6438467592401259882">Støt uafhængig søgning med bedre privatliv.</translation>
+<translation id="1688359110799098115">Støt uafhængig søgning med bedre privatliv</translation>
+<translation id="8579317236683491484">Brave-søgninger registrerer hverken dig, dine søgninger eller dine klik.</translation>
+<translation id="5240031343741051161">Prøv Brave-søgninger</translation>
+<translation id="5026874946691314267">Vis ikke dette igen</translation>
+<translation id="5234764350956374838">Luk</translation>
+<translation id="214744058941501853">"&gt;
+          Afvis skift til Brave-søgninger, tryk Enter for at fjerne dette forslag</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
 <translation id="6040143037577758943">Luk</translation>
@@ -136,6 +146,7 @@ vindue med Tor</translation>
 <translation id="8490082094734500369">Slå læsetilstand fra</translation>
 <translation id="2036503787657622020">Slå læsetilstand til</translation>
 <translation id="5226458915125328323">Speedreader-indstillinger</translation>
+<translation id="1621606336827646158">Vis oprindelige side</translation>
 <translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
 <translation id="5288333155754958121">Det anonyme, private ping giver Brave mulighed for at estimere antallet af aktive brugere.</translation>
 <translation id="1872784258300710671">Brave bruger fuldstændig private produktanalyser til at anslå det generelle forbrug af visse funktioner</translation>
@@ -186,6 +197,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6817415381278637662">Vælg Brave som din standardbrowser for at få Braves privatlivsbeskyttelse på alle websider, du åbner.</translation>
 <translation id="8722651357687610395">Indstil Brave som standard</translation>
 <translation id="2370739752330685659">Måske senere</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Importeret fra<ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
@@ -202,9 +215,11 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2906510232093002459">Brave standardbilleder</translation>
 <translation id="2396127686705429331">Vis bogmærkeknap</translation>
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
-<translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
-<translation id="597020512043916976">Vis øverste sider i forslag til automatisk udfyldning</translation>
-<translation id="301088458323355543">Vis foreslåede sider i forslag fra automatisk udfyldning</translation>
+<translation id="4109670531935487117">Vis autofuldførelsesforslag i adressefeltet</translation>
+<translation id="2858138569776157458">Topwebsites</translation>
+<translation id="65774893852758517">Foreslåede sider</translation>
+<translation id="7859704718976024901">Browsinghistorik</translation>
+<translation id="8820817407110198400">Bogmærker</translation>
 <translation id="6333347122924254968">Vis ikonet for Brave Belønninger i adresselinjen</translation>
 <translation id="1811404036171336214">Vis altid bogmærker i den nye fane</translation>
 <translation id="5529693968082667490">Vis fane-søgeknap</translation>
@@ -363,6 +378,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
     Er du sikker på, du vil gennemføre?</translation>
 <translation id="6285118765755298263">Indeksér andre søgemaskiner</translation>
 <translation id="919715748352669592">Indekserer automatisk websteder, der følger Open Source-specifikationer.</translation>
+<translation id="842628013524824194">Normalt vindue – søgemaskine brugt i adressebjælken</translation>
+<translation id="5324939009884545145">Privat window – søgemaskine brugt i adressebjælken</translation>
 <translation id="6864914031231797928">Tillad Google-login for udvidelser</translation>
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
 <translation id="7878791177459550035">Medierouter slår cast-funktionen i browseren til.</translation>
@@ -462,6 +479,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="616058968889448209">Opstartsfejl for IPFS-service. Se flere oplysninger på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importering af nøgle mislykkedes</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' eksport af nøgle mislykkedes</translation>
+<translation id="5840868269342837751">Bemærk: Netværksanmodninger må ikke bruge browserens proxy eller DNS-indstillinger</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Opret</translation>
 <translation id="5531501313997312487">Start node</translation>

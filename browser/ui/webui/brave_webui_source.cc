@@ -178,6 +178,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "backgroundImageTitle", IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE },
         { "settingsNavigateBack", IDS_BRAVE_NEW_TAB_SETTINGS_BACK },
 
+        // search promotion
+        { "searchPromotionNTPPopupTitle1", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1},  // NOLINT
+        { "searchPromotionNTPPopupTitle2", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2},  // NOLINT
+        { "searchPromotionNTPPopupDesc", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC},       // NOLINT
+        { "searchPromotionNTPPopupBottom", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM},   // NOLINT
+
         { "braveTodayTitle", IDS_BRAVE_TODAY_TITLE },
         { "braveTodayIntroTitle", IDS_BRAVE_TODAY_INTRO_TITLE },
         { "braveTodayIntroDescription", IDS_BRAVE_TODAY_INTRO_DESCRIPTION },
@@ -941,6 +947,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "thanksForTheSupport", IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT },  // NOLINT
         { "tipDelayNote", IDS_BRAVE_REWARDS_TIP_DELAY_NOTE },
         { "tipHasBeenSent", IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET },
+        { "tipIsPending", IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING },
         { "tipPostSubtitle", IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE },
         { "tokens", IDS_BRAVE_UI_TOKENS },
         { "tweetAboutSupport", IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT },

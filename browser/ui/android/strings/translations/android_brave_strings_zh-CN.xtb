@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave\u2019s 产品稳定性。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
 <translation id="9008534313521214777">预计节省的\n时间</translation>
-<translation id="6572660632052512096">桌面模式</translation>
-<translation id="1340503115760585811">使用桌面模式打开新标签页</translation>
-<translation id="7924540991929826186">将新标签页用于移动版网站上（推荐）</translation>
-<translation id="807636106793708118">优先访问移动版网站</translation>
-<translation id="4479934682648362332">优先访问桌面版网站</translation>
 <translation id="1842747674580016420">在 Brave 总进行视频播放</translation>
 <translation id="5368992950177874750">如果启用，视频会在 Brave 上而不是与其相应的应用上播放</translation>
 <translation id="410351446219883937">自动播放</translation>
@@ -85,15 +80,15 @@
 <translation id="8701563696941209024">立即重新启动</translation>
 <translation id="834487290629916192">后来</translation>
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
-<translation id="4117451092682672487">隐私。变得简单了。</translation>
+<translation id="4117451092682672487">轻松保护个人隐私。</translation>
 <translation id="7909375417585209817">只要将 Brave 作为默认设置，您轻击的每个链接都会在 Brave 的隐私保护下打开。</translation>
 <translation id="5148943178722443958">帮助让 Brave 变得更好。</translation>
 <translation id="6188781052835527980">如果您遇到崩溃或死机，请发送匿名诊断报告。</translation>
 <translation id="1929905278861178845">分享与 Brave 用户正在使用哪些功能有关的完全私密的、匿名的产品见解。</translation>
 <translation id="2877653791257935258">输入网站名称或 URL</translation>
 <translation id="5329830149661250028">看到 Brave 的不同之处：没有广告、没有跟踪器，而且页面加载速度更快。</translation>
-<translation id="3545804467215833536">轻击即可查看 Brave Shields</translation>
-<translation id="1724327820822194498">使用 Shields 可在每一个页面上查看 Brave 阻止的所有不良内容。</translation>
+<translation id="3545804467215833536">轻击以查看 Brave 防护盾</translation>
+<translation id="1724327820822194498">使用防护盾可在每一个页面上查看 Brave 阻止的所有不良内容。</translation>
 <translation id="5386259141409498372">已阻止 <ph name="BIG_TECH"/> 和其他 <ph name="TRACKER"/> 个广告和跟踪器</translation>
 <translation id="3092683655478890840">已阻止 <ph name="TRACKER_COUNT"/> 个广告和跟踪器</translation>
 <translation id="8281886186245836920">跳过</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">选择 Brave 浏览器并轻按 "始终"</translation>
 <translation id="3546439402724649282">Brave 已被设置为您的默认浏览器。</translation>
 <translation id="8389661903259423907">您已经设置了默认浏览器。您可以在应用设置中更改默认浏览器。</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">谢谢</translation>
 <translation id="6665366815203065060">您刚刚已发送打赏至：</translation>
 <translation id="5441565662498481293">您正在自动发送打赏至：</translation>
@@ -625,7 +621,7 @@
 <translation id="8239147115686034860">自动锁定 Brave 钱包</translation>
 <translation id="414639769490080648">自动锁定 Brave 钱包前等待的分钟数</translation>
 <translation id="4993345308607970390">重置 Brave 钱包</translation>
-<translation id="4322846864135539519">确定要重置您的 Brave Rewards 吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括任何相关资金）。键入“<ph name="CONFIRMATION_PHRASE"/>”即可确认此操作。</translation>
+<translation id="4322846864135539519">确定要重置您的 Brave 奖励吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括任何相关资金）。键入“<ph name="CONFIRMATION_PHRASE"/>”即可确认此操作。</translation>
 <translation id="4862812525895306758">清除交易和 Nonce 信息</translation>
 <translation id="5693968582510626466">清除交易可能对开发人员有用，或者在清除本地服务器的状态时有用</translation>
 <translation id="5421107279168565467">确定要重设交易和 Nonce 信息吗？这个选项主要供运行本机测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”即可确认。</translation>
@@ -738,7 +734,7 @@
 <translation id="2199215899212542417">功能类型：<ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">无数据</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> 已转账 <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> 已发送给 <ph name="ASSET"/> #<ph name="ASSET_ID"/>（<ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> 已发送 <ph name="ASSET"/> #<ph name="ASSET_ID"/>（<ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> 已批准 <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">批准无限制 <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> 兑换 - <ph name="DATE"/></translation>
@@ -863,23 +859,34 @@
 <translation id="4804818685124855865">断开连接</translation>
 <translation id="8009571545960303544">正在请求你的签名</translation>
 <translation id="3484981968509595506">DApp 正在请求提供你的公共加密密钥</translation>
-<translation id="2291002548681057345">请求获得您的钱包的公共加密密钥。如果您同意提供此密钥，本网站就能编写加密消息并发送给您。</translation>
 <translation id="3340247553212049934">提供</translation>
 <translation id="1982257600591932657">网络名称</translation>
 <translation id="5052727830821470769">网络 URL</translation>
 <translation id="4822132585477111396">链 ID</translation>
 <translation id="7131971375297699539">货币符号</translation>
 <translation id="7982789257301363584">网络</translation>
-<translation id="7540715999708954128">这让您可以在 Brave 钱包使用此网络。了解更多。</translation>
-<translation id="8759753423332885148">了解详情。</translation>
 <translation id="4717431746210146708">允许此站点添加一个网络？</translation>
+<translation id="4857321293515555666">此 DApp 想阅读此消息以完成您的请求。</translation>
+<translation id="714506544401754321">解密信息</translation>
+<translation id="5039804452771397117">允许</translation>
 <translation id="3378339846292573874">添加建议的代币</translation>
 <translation id="2322227405137827074">要导入此代币吗？</translation>
 <translation id="1324417023773393937">Brave 的浏览器</translation>
 <translation id="6044189892950611565">Brave 浏览器的通知通道</translation>
 <translation id="1173919438868967364">选择帐户</translation>
 <translation id="8922793255489232731">找不到相匹配的时区：<ph name="VALUE"/></translation>
-<translation id="8231907121684689093">显示热门网站</translation>
+<translation id="8643377320501056697">显示热门网站</translation>
 <translation id="6471216025161697462">已连接到 <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">试用</translation>
+<translation id="7733890291091968191">显示 Web3 通知</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave 不会追踪您或了解您如何使用我们的应用程序，因此我们不知道您是如何设置 VPN 的。请分享有关您遇到的问题的信息，我们会尽最大努力尽快解决。####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN 主机名称\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\n订阅类型\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlay 商店令牌\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\n应用程序版本\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\n时区\n</translation>
+<translation id="8107843365677337047">\n\n网络类型\n</translation>
+<translation id="5334952096674914470">\n\n蜂窝网络运营商\n</translation>
+<translation id="5393042357629679588">\n\n其他问题\n</translation>
+<translation id="8095666712177294104">\n\n平台\n</translation>
 </translationbundle>

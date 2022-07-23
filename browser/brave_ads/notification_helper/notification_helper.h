@@ -10,18 +10,16 @@ namespace brave_ads {
 
 class NotificationHelper {
  public:
-  virtual ~NotificationHelper();
-
   NotificationHelper(const NotificationHelper&) = delete;
   NotificationHelper& operator=(const NotificationHelper&) = delete;
+  virtual ~NotificationHelper();
 
   static NotificationHelper* GetInstance();
 
   virtual bool CanShowNativeNotifications();
+  virtual bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
 
-  virtual bool CanShowBackgroundNotifications() const;
-
-  virtual bool ShowMyFirstNotificationAd();
+  virtual bool ShowOnboardingNotification();
 
  protected:
   friend class NotificationHelperHolder;

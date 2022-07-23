@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index e6deebea7f7098e2e2a2233de789e6ec616ff3d6..b9b1b2956260dfc7f427cf60785f1f69e83c766f 100644
+index 53b6e4a5cd512d8b7a56bd77e9f53c044345a47a..7c7b985c5b696f1a91a53656311a84c43c4531b4 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -74,7 +74,7 @@ export class SettingsPersonalizationOptionsElement extends
@@ -11,7 +11,7 @@ index e6deebea7f7098e2e2a2233de789e6ec616ff3d6..b9b1b2956260dfc7f427cf60785f1f69
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -110,7 +110,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -116,7 +116,7 @@ export class SettingsPersonalizationOptionsElement extends
    pageVisibility: PrivacyPageVisibility;
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index e6deebea7f7098e2e2a2233de789e6ec616ff3d6..b9b1b2956260dfc7f427cf60785f1f69
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject;
    private showRestart_: boolean;
    // </if>
-@@ -132,7 +132,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -140,7 +140,7 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index e6deebea7f7098e2e2a2233de789e6ec616ff3d6..b9b1b2956260dfc7f427cf60785f1f69
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -166,7 +166,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -174,7 +174,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  

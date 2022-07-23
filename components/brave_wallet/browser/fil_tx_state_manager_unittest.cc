@@ -9,14 +9,12 @@
 #include <vector>
 
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -35,10 +33,6 @@ class FilTxStateManagerUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        brave_wallet::features::kBraveWalletFilecoinFeature,
-        {{brave_wallet::features::kFilecoinTestnetEnabled.name, "true"}});
-
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, GetPrefs()));
@@ -52,7 +46,6 @@ class FilTxStateManagerUnitTest : public testing::Test {
 
   PrefService* GetPrefs() { return &prefs_; }
 
-  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

@@ -11,6 +11,7 @@ public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveActivityClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
+        chain = new BraveApplicationImplBaseClassAdapter(chain);
         chain = new BraveAutocompleteMediatorClassAdapter(chain);
         chain = new BraveAutofillPopupBridgeClassAdapter(chain);
         chain = new BraveBookmarkUtilsClassAdapter(chain);
@@ -20,7 +21,6 @@ public class BraveClassAdapter {
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveCustomizationProviderDelegateImplClassAdapter(chain);
         chain = new BraveDefaultBrowserPromoUtilsClassAdapter(chain);
-        chain = new BraveDevicePickerBottomSheetContentClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
@@ -31,7 +31,7 @@ public class BraveClassAdapter {
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
-        chain = new BraveApplicationImplBaseClassAdapter(chain);
+        chain = new BraveManageAccountDevicesLinkViewClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);
         chain = new BraveMenuButtonCoordinatorClassAdapter(chain);
         chain = new BraveMimeUtilsClassAdapter(chain);
@@ -39,9 +39,11 @@ public class BraveClassAdapter {
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
+        chain = new BravePartnerBookmarksDelegateImplClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);
+        chain = new BravePureJavaExceptionReporterClassAdapter(chain);
         chain = new BraveQueryTileSectionClassAdapter(chain);
         chain = new BraveReaderModeManagerClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);

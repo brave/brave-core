@@ -47,13 +47,12 @@ Database::Database(LedgerImpl* ledger) :
 
 Database::~Database() = default;
 
-void Database::Initialize(
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
+void Database::Initialize(bool execute_create_script,
+                          ledger::LegacyResultCallback callback) {
   initialize_->Start(execute_create_script, callback);
 }
 
-void Database::Close(ledger::ResultCallback callback) {
+void Database::Close(ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::CLOSE;
@@ -63,23 +62,20 @@ void Database::Close(ledger::ResultCallback callback) {
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 /**
  * ACTIVITY INFO
  */
-void Database::SaveActivityInfo(
-    type::PublisherInfoPtr info,
-    ledger::ResultCallback callback) {
+void Database::SaveActivityInfo(type::PublisherInfoPtr info,
+                                ledger::LegacyResultCallback callback) {
   activity_info_->InsertOrUpdate(std::move(info), callback);
 }
 
 void Database::NormalizeActivityInfoList(
     type::PublisherInfoList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   activity_info_->NormalizeList(std::move(list), callback);
 }
 
@@ -91,24 +87,22 @@ void Database::GetActivityInfoList(
   activity_info_->GetRecordsList(start, limit, std::move(filter), callback);
 }
 
-void Database::DeleteActivityInfo(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void Database::DeleteActivityInfo(const std::string& publisher_key,
+                                  ledger::LegacyResultCallback callback) {
   activity_info_->DeleteRecord(publisher_key, callback);
 }
 
 /**
  * BALANCE REPORT INFO
  */
-void Database::SaveBalanceReportInfo(
-    type::BalanceReportInfoPtr info,
-    ledger::ResultCallback callback) {
+void Database::SaveBalanceReportInfo(type::BalanceReportInfoPtr info,
+                                     ledger::LegacyResultCallback callback) {
   balance_report_->InsertOrUpdate(std::move(info), callback);
 }
 
 void Database::SaveBalanceReportInfoList(
-      type::BalanceReportInfoList list,
-      ledger::ResultCallback callback) {
+    type::BalanceReportInfoList list,
+    ledger::LegacyResultCallback callback) {
   balance_report_->InsertOrUpdateList(std::move(list), callback);
 }
 
@@ -117,7 +111,7 @@ void Database::SaveBalanceReportInfoItem(
     int year,
     type::ReportType type,
     double amount,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   balance_report_->SetAmount(month, year, type, amount, callback);
 }
 
@@ -133,17 +127,15 @@ void Database::GetAllBalanceReports(
   balance_report_->GetAllRecords(callback);
 }
 
-void Database::DeleteAllBalanceReports(
-    ledger::ResultCallback callback) {
+void Database::DeleteAllBalanceReports(ledger::LegacyResultCallback callback) {
   balance_report_->DeleteAllRecords(callback);
 }
 
 /**
  * CONTRIBUTION INFO
  */
-void Database::SaveContributionInfo(
-    type::ContributionInfoPtr info,
-    ledger::ResultCallback callback) {
+void Database::SaveContributionInfo(type::ContributionInfoPtr info,
+                                    ledger::LegacyResultCallback callback) {
   contribution_info_->InsertOrUpdate(std::move(info), callback);
 }
 
@@ -179,8 +171,8 @@ void Database::GetNotCompletedContributions(
 
 void Database::UpdateContributionInfoStep(
     const std::string& contribution_id,
-    const type::ContributionStep step,
-    ledger::ResultCallback callback) {
+    type::ContributionStep step,
+    ledger::LegacyResultCallback callback) {
   contribution_info_->UpdateStep(
       contribution_id,
       step,
@@ -189,9 +181,9 @@ void Database::UpdateContributionInfoStep(
 
 void Database::UpdateContributionInfoStepAndCount(
     const std::string& contribution_id,
-    const type::ContributionStep step,
-    const int32_t retry_count,
-    ledger::ResultCallback callback) {
+    type::ContributionStep step,
+    int32_t retry_count,
+    ledger::LegacyResultCallback callback) {
   contribution_info_->UpdateStepAndCount(
       contribution_id,
       step,
@@ -202,7 +194,7 @@ void Database::UpdateContributionInfoStepAndCount(
 void Database::UpdateContributionInfoContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   contribution_info_->UpdateContributedAmount(
       contribution_id,
       publisher_key,
@@ -210,16 +202,15 @@ void Database::UpdateContributionInfoContributedAmount(
 }
 
 void Database::FinishAllInProgressContributions(
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   contribution_info_->FinishAllInProgressRecords(callback);
 }
 
 /**
  * CONTRIBUTION QUEUE
  */
-void Database::SaveContributionQueue(
-    type::ContributionQueuePtr info,
-    ledger::ResultCallback callback) {
+void Database::SaveContributionQueue(type::ContributionQueuePtr info,
+                                     ledger::LegacyResultCallback callback) {
   return contribution_queue_->InsertOrUpdate(std::move(info), callback);
 }
 
@@ -230,16 +221,15 @@ void Database::GetFirstContributionQueue(
 
 void Database::MarkContributionQueueAsComplete(
     const std::string& id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   return contribution_queue_->MarkRecordAsComplete(id, callback);
 }
 
 /**
  * CREDS BATCH
  */
-void Database::SaveCredsBatch(
-    type::CredsBatchPtr info,
-    ledger::ResultCallback callback) {
+void Database::SaveCredsBatch(type::CredsBatchPtr info,
+                              ledger::LegacyResultCallback callback) {
   creds_batch_->InsertOrUpdate(std::move(info), callback);
 }
 
@@ -250,9 +240,8 @@ void Database::GetCredsBatchByTrigger(
   creds_batch_->GetRecordByTrigger(trigger_id, trigger_type, callback);
 }
 
-void Database::SaveSignedCreds(
-    type::CredsBatchPtr info,
-    ledger::ResultCallback callback) {
+void Database::SaveSignedCreds(type::CredsBatchPtr info,
+                               ledger::LegacyResultCallback callback) {
   creds_batch_->SaveSignedCreds(std::move(info), callback);
 }
 
@@ -260,19 +249,18 @@ void Database::GetAllCredsBatches(GetCredsBatchListCallback callback) {
   creds_batch_->GetAllRecords(callback);
 }
 
-void Database::UpdateCredsBatchStatus(
-    const std::string& trigger_id,
-    const type::CredsBatchType trigger_type,
-    const type::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
+void Database::UpdateCredsBatchStatus(const std::string& trigger_id,
+                                      type::CredsBatchType trigger_type,
+                                      type::CredsBatchStatus status,
+                                      ledger::LegacyResultCallback callback) {
   creds_batch_->UpdateStatus(trigger_id, trigger_type, status, callback);
 }
 
 void Database::UpdateCredsBatchesStatus(
     const std::vector<std::string>& trigger_ids,
-    const type::CredsBatchType trigger_type,
-    const type::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
+    type::CredsBatchType trigger_type,
+    type::CredsBatchStatus status,
+    ledger::LegacyResultCallback callback) {
   creds_batch_->UpdateRecordsStatus(
       trigger_ids,
       trigger_type,
@@ -293,9 +281,8 @@ void Database::SaveEventLog(const std::string& key, const std::string& value) {
   event_log_->Insert(key, value);
 }
 
-void Database::SaveEventLogs(
-    const std::map<std::string, std::string>& records,
-    ledger::ResultCallback callback) {
+void Database::SaveEventLogs(const std::map<std::string, std::string>& records,
+                             ledger::LegacyResultCallback callback) {
   event_log_->InsertRecords(records, callback);
 }
 
@@ -306,10 +293,9 @@ void Database::GetLastEventLogs(ledger::GetEventLogsCallback callback) {
 /**
  * MEDIA PUBLISHER INFO
  */
-void Database::SaveMediaPublisherInfo(
-    const std::string& media_key,
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void Database::SaveMediaPublisherInfo(const std::string& media_key,
+                                      const std::string& publisher_key,
+                                      ledger::LegacyResultCallback callback) {
   media_publisher_info_->InsertOrUpdate(media_key, publisher_key, callback);
 }
 
@@ -333,9 +319,8 @@ void Database::GetTransactionReport(
 /**
  * PENDING CONTRIBUTION
  */
-void Database::SavePendingContribution(
-    type::PendingContributionList list,
-    ledger::ResultCallback callback) {
+void Database::SavePendingContribution(type::PendingContributionList list,
+                                       ledger::LegacyResultCallback callback) {
   pending_contribution_->InsertOrUpdateList(std::move(list), callback);
 }
 
@@ -355,12 +340,13 @@ void Database::GetUnverifiedPublishersForPendingContributions(
 }
 
 void Database::RemovePendingContribution(
-    const uint64_t id,
-    ledger::ResultCallback callback) {
+    uint64_t id,
+    ledger::LegacyResultCallback callback) {
   pending_contribution_->DeleteRecord(id, callback);
 }
 
-void Database::RemoveAllPendingContributions(ledger::ResultCallback callback) {
+void Database::RemoveAllPendingContributions(
+    ledger::LegacyResultCallback callback) {
   pending_contribution_->DeleteAllRecords(callback);
 }
 
@@ -369,22 +355,20 @@ void Database::RemoveAllPendingContributions(ledger::ResultCallback callback) {
  */
 void Database::SaveProcessedPublisherList(
     const std::vector<std::string>& list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   processed_publisher_->InsertOrUpdateList(list, callback);
 }
 
-void Database::WasPublisherProcessed(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void Database::WasPublisherProcessed(const std::string& publisher_key,
+                                     ledger::LegacyResultCallback callback) {
   processed_publisher_->WasProcessed(publisher_key, callback);
 }
 
 /**
  * PROMOTION
  */
-void Database::SavePromotion(
-    type::PromotionPtr info,
-    ledger::ResultCallback callback) {
+void Database::SavePromotion(type::PromotionPtr info,
+                             ledger::LegacyResultCallback callback) {
   promotion_->InsertOrUpdate(std::move(info), callback);
 }
 
@@ -398,30 +382,28 @@ void Database::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
   promotion_->GetAllRecords(callback);
 }
 
-void Database::SavePromotionClaimId(
-    const std::string& promotion_id,
-    const std::string& claim_id,
-    ledger::ResultCallback callback) {
+void Database::SavePromotionClaimId(const std::string& promotion_id,
+                                    const std::string& claim_id,
+                                    ledger::LegacyResultCallback callback) {
   promotion_->SaveClaimId(promotion_id, claim_id, callback);
 }
 
-void Database::UpdatePromotionStatus(
-    const std::string& promotion_id,
-    const type::PromotionStatus status,
-    ledger::ResultCallback callback) {
+void Database::UpdatePromotionStatus(const std::string& promotion_id,
+                                     type::PromotionStatus status,
+                                     ledger::LegacyResultCallback callback) {
   promotion_->UpdateStatus(promotion_id, status, callback);
 }
 
 void Database::UpdatePromotionsStatus(
     const std::vector<std::string>& promotion_ids,
-    const type::PromotionStatus status,
-    ledger::ResultCallback callback) {
+    type::PromotionStatus status,
+    ledger::LegacyResultCallback callback) {
   promotion_->UpdateRecordsStatus(promotion_ids, status, callback);
 }
 
 void Database::PromotionCredentialCompleted(
     const std::string& promotion_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   promotion_->CredentialCompleted(promotion_id, callback);
 }
 
@@ -433,16 +415,15 @@ void Database::GetPromotionList(
 
 void Database::UpdatePromotionsBlankPublicKey(
     const std::vector<std::string>& ids,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   promotion_->UpdateRecordsBlankPublicKey(ids, callback);
 }
 
 /**
  * PUBLISHER INFO
  */
-void Database::SavePublisherInfo(
-    type::PublisherInfoPtr publisher_info,
-    ledger::ResultCallback callback) {
+void Database::SavePublisherInfo(type::PublisherInfoPtr publisher_info,
+                                 ledger::LegacyResultCallback callback) {
   publisher_info_->InsertOrUpdate(std::move(publisher_info), callback);
 }
 
@@ -458,7 +439,7 @@ void Database::GetPanelPublisherInfo(
   publisher_info_->GetPanelRecord(std::move(filter), callback);
 }
 
-void Database::RestorePublishers(ledger::ResultCallback callback) {
+void Database::RestorePublishers(ledger::LegacyResultCallback callback) {
   publisher_info_->RestorePublishers(callback);
 }
 
@@ -469,9 +450,8 @@ void Database::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 /**
  * RECURRING TIPS
  */
-void Database::SaveRecurringTip(
-    type::RecurringTipPtr info,
-    ledger::ResultCallback callback) {
+void Database::SaveRecurringTip(type::RecurringTipPtr info,
+                                ledger::LegacyResultCallback callback) {
   if (info) {
     SaveEventLog(log::kRecurringTipAdded, info->publisher_key);
   }
@@ -482,9 +462,8 @@ void Database::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
   recurring_tip_->GetAllRecords(callback);
 }
 
-void Database::RemoveRecurringTip(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void Database::RemoveRecurringTip(const std::string& publisher_key,
+                                  ledger::LegacyResultCallback callback) {
   SaveEventLog(log::kRecurringTipRemoved, publisher_key);
   recurring_tip_->DeleteRecord(publisher_key, callback);
 }
@@ -500,13 +479,13 @@ void Database::SearchPublisherPrefixList(
 
 void Database::ResetPublisherPrefixList(
     std::unique_ptr<publisher::PrefixListReader> reader,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   publisher_prefix_list_->Reset(std::move(reader), callback);
 }
 
 void Database::InsertServerPublisherInfo(
     const type::ServerPublisherInfo& server_info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   server_publisher_info_->InsertOrUpdate(server_info, callback);
 }
 
@@ -517,24 +496,22 @@ void Database::GetServerPublisherInfo(
 }
 
 void Database::DeleteExpiredServerPublisherInfo(
-    const int64_t max_age_seconds,
-    ledger::ResultCallback callback) {
+    int64_t max_age_seconds,
+    ledger::LegacyResultCallback callback) {
   server_publisher_info_->DeleteExpiredRecords(max_age_seconds, callback);
 }
 
 /**
  * SKU ORDER
  */
-void Database::SaveSKUOrder(
-    type::SKUOrderPtr order,
-    ledger::ResultCallback callback) {
+void Database::SaveSKUOrder(type::SKUOrderPtr order,
+                            ledger::LegacyResultCallback callback) {
   sku_order_->InsertOrUpdate(std::move(order), callback);
 }
 
-void Database::UpdateSKUOrderStatus(
-    const std::string& order_id,
-    const type::SKUOrderStatus status,
-    ledger::ResultCallback callback) {
+void Database::UpdateSKUOrderStatus(const std::string& order_id,
+                                    type::SKUOrderStatus status,
+                                    ledger::LegacyResultCallback callback) {
   sku_order_->UpdateStatus(order_id, status, callback);
 }
 
@@ -553,7 +530,7 @@ void Database::GetSKUOrderByContributionId(
 void Database::SaveContributionIdForSKUOrder(
     const std::string& order_id,
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   sku_order_->SaveContributionIdForSKUOrder(
       order_id,
       contribution_id,
@@ -563,16 +540,15 @@ void Database::SaveContributionIdForSKUOrder(
 /**
  * SKU TRANSACTION
  */
-void Database::SaveSKUTransaction(
-    type::SKUTransactionPtr transaction,
-    ledger::ResultCallback callback) {
+void Database::SaveSKUTransaction(type::SKUTransactionPtr transaction,
+                                  ledger::LegacyResultCallback callback) {
   sku_transaction_->InsertOrUpdate(std::move(transaction), callback);
 }
 
 void Database::SaveSKUExternalTransaction(
     const std::string& transaction_id,
     const std::string& external_transaction_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   sku_transaction_->SaveExternalTransaction(
       transaction_id,
       external_transaction_id,
@@ -588,9 +564,8 @@ void Database::GetSKUTransactionByOrderId(
 /**
  * UNBLINDED TOKEN
  */
-void Database::SaveUnblindedTokenList(
-    type::UnblindedTokenList list,
-    ledger::ResultCallback callback) {
+void Database::SaveUnblindedTokenList(type::UnblindedTokenList list,
+                                      ledger::LegacyResultCallback callback) {
   unblinded_token_->InsertOrUpdateList(std::move(list), callback);
 }
 
@@ -598,7 +573,7 @@ void Database::MarkUnblindedTokensAsSpent(
     const std::vector<std::string>& ids,
     type::RewardsType redeem_type,
     const std::string& redeem_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   unblinded_token_->MarkRecordListAsSpent(
       ids,
       redeem_type,
@@ -609,7 +584,7 @@ void Database::MarkUnblindedTokensAsSpent(
 void Database::MarkUnblindedTokensAsReserved(
     const std::vector<std::string>& ids,
     const std::string& redeem_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   unblinded_token_->MarkRecordListAsReserved(
       ids,
       redeem_id,
@@ -618,7 +593,7 @@ void Database::MarkUnblindedTokensAsReserved(
 
 void Database::MarkUnblindedTokensAsSpendable(
     const std::string& redeem_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   unblinded_token_->MarkRecordListAsSpendable(
       redeem_id,
       callback);

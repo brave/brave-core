@@ -13,7 +13,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
@@ -122,7 +121,7 @@ void NotificationAdManager::PushBack(const NotificationAdInfo& info) {
 void NotificationAdManager::PopFront(const bool should_dismiss) {
   if (!notification_ads_.empty()) {
     if (should_dismiss) {
-      AdsClientHelper::GetInstance()->CloseNotification(
+      AdsClientHelper::GetInstance()->CloseNotificationAd(
           notification_ads_.front().placement_id);
     }
     notification_ads_.pop_front();
@@ -160,7 +159,7 @@ void NotificationAdManager::CloseAndRemoveAll() {
   DCHECK(is_initialized_);
 
   for (const auto& notification_ad : notification_ads_) {
-    AdsClientHelper::GetInstance()->CloseNotification(
+    AdsClientHelper::GetInstance()->CloseNotificationAd(
         notification_ad.placement_id);
   }
 
@@ -231,20 +230,18 @@ void NotificationAdManager::RemoveAllAfterUpdate() {
 ///////////////////////////////////////////////////////////////////////////////
 
 base::circular_deque<NotificationAdInfo>
-NotificationAdManager::GetNotificationsFromList(base::Value* list) const {
-  DCHECK(list);
-  DCHECK(list->is_list());
-
+NotificationAdManager::GetNotificationsFromList(
+    const base::Value::List& list) const {
   base::circular_deque<NotificationAdInfo> notifications;
 
-  for (auto& item : list->GetList()) {
-    base::DictionaryValue* dictionary = nullptr;
-    if (!item.GetAsDictionary(&dictionary)) {
+  for (auto& item : list) {
+    const auto* dict = item.GetIfDict();
+    if (!dict) {
       continue;
     }
 
     NotificationAdInfo notification_info;
-    if (!GetNotificationFromDictionary(dictionary, &notification_info)) {
+    if (!GetNotificationFromDictionary(*dict, &notification_info)) {
       continue;
     }
 
@@ -255,55 +252,53 @@ NotificationAdManager::GetNotificationsFromList(base::Value* list) const {
 }
 
 bool NotificationAdManager::GetNotificationFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     NotificationAdInfo* notification_ad) const {
   NotificationAdInfo new_notification_ad;
 
-  if (!GetPlacementIdFromDictionary(dictionary,
-                                    &new_notification_ad.placement_id)) {
+  if (!GetPlacementIdFromDictionary(dict, &new_notification_ad.placement_id)) {
     return false;
   }
 
   if (!GetCreativeInstanceIdFromDictionary(
-          dictionary, &new_notification_ad.creative_instance_id)) {
+          dict, &new_notification_ad.creative_instance_id)) {
     return false;
   }
 
-  if (!GetCreativeSetIdFromDictionary(dictionary,
+  if (!GetCreativeSetIdFromDictionary(dict,
                                       &new_notification_ad.creative_set_id)) {
     return false;
   }
 
-  if (!GetCampaignIdFromDictionary(dictionary,
-                                   &new_notification_ad.campaign_id)) {
+  if (!GetCampaignIdFromDictionary(dict, &new_notification_ad.campaign_id)) {
     // Migrate for legacy notifications
     new_notification_ad.campaign_id = "";
   }
 
-  if (!GetAdvertiserIdFromDictionary(dictionary,
+  if (!GetAdvertiserIdFromDictionary(dict,
                                      &new_notification_ad.advertiser_id)) {
     // Migrate for legacy notifications
     new_notification_ad.advertiser_id = "";
   }
 
-  if (!GetSegmentFromDictionary(dictionary, &new_notification_ad.segment)) {
+  if (!GetSegmentFromDictionary(dict, &new_notification_ad.segment)) {
     // Migrate for legacy notifications
-    if (!GetStringFromDictionary("category", dictionary,
+    if (!GetStringFromDictionary("category", dict,
                                  &new_notification_ad.segment)) {
       return false;
     }
   }
 
-  if (!GetTitleFromDictionary(dictionary, &new_notification_ad.title)) {
+  if (!GetTitleFromDictionary(dict, &new_notification_ad.title)) {
     return false;
   }
 
-  if (!GetBodyFromDictionary(dictionary, &new_notification_ad.body)) {
+  if (!GetBodyFromDictionary(dict, &new_notification_ad.body)) {
     return false;
   }
 
   std::string target_url;
-  if (!GetTargetUrlFromDictionary(dictionary, &target_url)) {
+  if (!GetTargetUrlFromDictionary(dict, &target_url)) {
     return false;
   }
   new_notification_ad.target_url = GURL(target_url);
@@ -314,71 +309,66 @@ bool NotificationAdManager::GetNotificationFromDictionary(
 }
 
 bool NotificationAdManager::GetPlacementIdFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationPlacementIdKey, dictionary,
-                                 value);
+  return GetStringFromDictionary(kNotificationPlacementIdKey, dict, value);
 }
 
 bool NotificationAdManager::GetCreativeInstanceIdFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationCreativeInstanceIdKey, dictionary,
+  return GetStringFromDictionary(kNotificationCreativeInstanceIdKey, dict,
                                  value);
 }
 
 bool NotificationAdManager::GetCreativeSetIdFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationCreativeSetIdKey, dictionary,
-                                 value);
+  return GetStringFromDictionary(kNotificationCreativeSetIdKey, dict, value);
 }
 
 bool NotificationAdManager::GetCampaignIdFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationCampaignIdKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationCampaignIdKey, dict, value);
 }
 
 bool NotificationAdManager::GetAdvertiserIdFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationAdvertiserIdKey, dictionary,
-                                 value);
+  return GetStringFromDictionary(kNotificationAdvertiserIdKey, dict, value);
 }
 
 bool NotificationAdManager::GetSegmentFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationSegmentKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationSegmentKey, dict, value);
 }
 
 bool NotificationAdManager::GetTitleFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationTitleKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationTitleKey, dict, value);
 }
 
-bool NotificationAdManager::GetBodyFromDictionary(
-    base::DictionaryValue* dictionary,
-    std::string* value) const {
-  return GetStringFromDictionary(kNotificationBodyKey, dictionary, value);
+bool NotificationAdManager::GetBodyFromDictionary(const base::Value::Dict& dict,
+                                                  std::string* value) const {
+  return GetStringFromDictionary(kNotificationBodyKey, dict, value);
 }
 
 bool NotificationAdManager::GetTargetUrlFromDictionary(
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationTargetUrlKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationTargetUrlKey, dict, value);
 }
 
 bool NotificationAdManager::GetStringFromDictionary(
     const std::string& key,
-    base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     std::string* string) const {
-  DCHECK(dictionary);
   DCHECK(string);
 
-  std::string* value = dictionary->FindStringKey(key);
+  const std::string* value = dict.FindString(key);
   if (!value) {
     return false;
   }
@@ -451,12 +441,9 @@ bool NotificationAdManager::FromJson(const std::string& json) {
     return false;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return false;
-  }
+  base::Value::Dict& dict = value->GetDict();
 
-  if (!GetNotificationsFromDictionary(dictionary)) {
+  if (!GetNotificationsFromDictionary(dict)) {
     return false;
   }
 
@@ -466,55 +453,45 @@ bool NotificationAdManager::FromJson(const std::string& json) {
 }
 
 bool NotificationAdManager::GetNotificationsFromDictionary(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  auto* value = dictionary->FindListKey(kNotificationsListKey);
+    const base::Value::Dict& dict) {
+  auto* value = dict.FindList(kNotificationsListKey);
   if (!value) {
     return false;
   }
 
-  notification_ads_ = GetNotificationsFromList(value);
+  notification_ads_ = GetNotificationsFromList(*value);
 
   return true;
 }
 
 std::string NotificationAdManager::ToJson() {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-
-  auto notifications = GetAsList();
-  dictionary.SetKey(kNotificationsListKey, std::move(notifications));
+  base::Value::Dict dict;
+  dict.Set(kNotificationsListKey, GetAsList());
 
   // Write to JSON
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
-
+  base::JSONWriter::Write(dict, &json);
   return json;
 }
 
-base::Value NotificationAdManager::GetAsList() {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List NotificationAdManager::GetAsList() {
+  base::Value::List list;
 
   for (const auto& notification_ad : notification_ads_) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::Value::Dict dict;
 
-    dictionary.SetStringKey(kNotificationPlacementIdKey,
-                            notification_ad.placement_id);
-    dictionary.SetStringKey(kNotificationCreativeInstanceIdKey,
-                            notification_ad.creative_instance_id);
-    dictionary.SetStringKey(kNotificationCreativeSetIdKey,
-                            notification_ad.creative_set_id);
-    dictionary.SetStringKey(kNotificationCampaignIdKey,
-                            notification_ad.campaign_id);
-    dictionary.SetStringKey(kNotificationAdvertiserIdKey,
-                            notification_ad.advertiser_id);
-    dictionary.SetStringKey(kNotificationSegmentKey, notification_ad.segment);
-    dictionary.SetStringKey(kNotificationTitleKey, notification_ad.title);
-    dictionary.SetStringKey(kNotificationBodyKey, notification_ad.body);
-    dictionary.SetStringKey(kNotificationTargetUrlKey,
-                            notification_ad.target_url.spec());
+    dict.Set(kNotificationPlacementIdKey, notification_ad.placement_id);
+    dict.Set(kNotificationCreativeInstanceIdKey,
+             notification_ad.creative_instance_id);
+    dict.Set(kNotificationCreativeSetIdKey, notification_ad.creative_set_id);
+    dict.Set(kNotificationCampaignIdKey, notification_ad.campaign_id);
+    dict.Set(kNotificationAdvertiserIdKey, notification_ad.advertiser_id);
+    dict.Set(kNotificationSegmentKey, notification_ad.segment);
+    dict.Set(kNotificationTitleKey, notification_ad.title);
+    dict.Set(kNotificationBodyKey, notification_ad.body);
+    dict.Set(kNotificationTargetUrlKey, notification_ad.target_url.spec());
 
-    list.Append(std::move(dictionary));
+    list.Append(std::move(dict));
   }
 
   return list;

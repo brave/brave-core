@@ -141,7 +141,7 @@ DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
 void DatabaseActivityInfo::NormalizeList(
     type::PublisherInfoList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     callback(type::Result::LEDGER_OK);
     return;
@@ -168,7 +168,7 @@ void DatabaseActivityInfo::NormalizeList(
   auto shared_list = std::make_shared<type::PublisherInfoList>(
       std::move(list));
 
-  ledger_->ledger_client()->RunDBTransaction(
+  ledger_->RunDBTransaction(
       std::move(transaction),
       [this, shared_list, callback](type::DBCommandResponsePtr response) {
         if (!response || response->status !=
@@ -186,7 +186,7 @@ void DatabaseActivityInfo::NormalizeList(
 
 void DatabaseActivityInfo::InsertOrUpdate(
     type::PublisherInfoPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info) {
     callback(type::Result::LEDGER_ERROR);
     return;
@@ -218,9 +218,7 @@ void DatabaseActivityInfo::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::GetRecordsList(
@@ -280,9 +278,7 @@ void DatabaseActivityInfo::GetRecordsList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::OnGetRecordsList(
@@ -322,9 +318,8 @@ void DatabaseActivityInfo::OnGetRecordsList(
   callback(std::move(list));
 }
 
-void DatabaseActivityInfo::DeleteRecord(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
+                                        ledger::LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     callback(type::Result::LEDGER_ERROR);
     return;
@@ -349,9 +344,7 @@ void DatabaseActivityInfo::DeleteRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

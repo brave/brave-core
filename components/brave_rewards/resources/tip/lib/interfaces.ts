@@ -117,6 +117,7 @@ export interface HostState {
   showOnboarding?: boolean
   tipProcessed?: boolean
   tipAmount?: number
+  tipPending?: boolean
 }
 
 export type HostListener = (state: HostState) => void

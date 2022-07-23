@@ -282,6 +282,10 @@ class RewardsService : public KeyedService {
       const uint64_t duration,
       const bool firstVisit) = 0;
 
+  virtual void IsPublisherRegistered(
+      const std::string& publisher_id,
+      base::OnceCallback<void(bool)> callback) = 0;
+
   virtual void GetPublisherInfo(
       const std::string& publisher_key,
       GetPublisherInfoCallback callback) = 0;

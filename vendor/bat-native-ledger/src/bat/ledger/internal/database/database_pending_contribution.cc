@@ -35,7 +35,7 @@ DatabasePendingContribution::~DatabasePendingContribution() = default;
 
 void DatabasePendingContribution::InsertOrUpdateList(
     type::PendingContributionList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -70,9 +70,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePendingContribution::GetReservedAmount(
@@ -98,9 +96,7 @@ void DatabasePendingContribution::GetReservedAmount(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePendingContribution::OnGetReservedAmount(
@@ -161,9 +157,7 @@ void DatabasePendingContribution::GetAllRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePendingContribution::OnGetAllRecords(
@@ -225,7 +219,7 @@ void DatabasePendingContribution::GetUnverifiedPublishers(
   auto transaction = type::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
+  ledger_->RunDBTransaction(
       std::move(transaction),
       std::bind(&DatabasePendingContribution::OnGetUnverifiedPublishers, this,
                 _1, std::move(callback)));
@@ -251,8 +245,8 @@ void DatabasePendingContribution::OnGetUnverifiedPublishers(
 }
 
 void DatabasePendingContribution::DeleteRecord(
-    const uint64_t id,
-    ledger::ResultCallback callback) {
+    uint64_t id,
+    ledger::LegacyResultCallback callback) {
   if (id == 0) {
     BLOG(1, "Id is 0");
     callback(type::Result::LEDGER_ERROR);
@@ -276,13 +270,11 @@ void DatabasePendingContribution::DeleteRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePendingContribution::DeleteAllRecords(
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
@@ -296,9 +288,7 @@ void DatabasePendingContribution::DeleteAllRecords(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

@@ -34,6 +34,8 @@ class BraveWalletServiceDelegate {
       mojom::BraveWalletService::HasPermissionCallback;
   using ResetPermissionCallback =
       mojom::BraveWalletService::ResetPermissionCallback;
+  using IsPermissionDeniedCallback =
+      mojom::BraveWalletService::IsPermissionDeniedCallback;
   using GetActiveOriginCallback =
       mojom::BraveWalletService::GetActiveOriginCallback;
   using GetWebSitesWithPermissionCallback =
@@ -74,6 +76,9 @@ class BraveWalletServiceDelegate {
                                const url::Origin& origin,
                                const std::string& account,
                                ResetPermissionCallback callback);
+  virtual void IsPermissionDenied(mojom::CoinType coin,
+                                  const url::Origin& origin,
+                                  IsPermissionDeniedCallback callback);
   virtual void GetWebSitesWithPermission(
       mojom::CoinType coin,
       GetWebSitesWithPermissionCallback callback);

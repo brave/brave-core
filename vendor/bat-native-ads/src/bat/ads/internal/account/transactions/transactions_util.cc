@@ -9,7 +9,6 @@
 #include <iterator>
 
 #include "base/time/time.h"
-#include "bat/ads/transaction_info.h"
 
 namespace ads {
 
@@ -26,16 +25,6 @@ TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
                });
 
   return filtered_transactions;
-}
-
-double GetEarningsForTransactions(const TransactionList& transactions) {
-  double earnings = 0.0;
-
-  for (const auto& transaction : transactions) {
-    earnings += transaction.value;
-  }
-
-  return earnings;
 }
 
 }  // namespace ads

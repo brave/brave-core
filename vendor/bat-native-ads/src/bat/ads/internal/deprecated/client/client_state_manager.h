@@ -14,13 +14,13 @@
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/category_content_action_types.h"
-#include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
-#include "bat/ads/internal/creatives/creative_ad_info_aliases.h"
-#include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info_aliases.h"
-#include "bat/ads/internal/deprecated/client/preferences/filtered_category_info_aliases.h"
-#include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info_aliases.h"
-#include "bat/ads/internal/deprecated/client/preferences/saved_ad_info_aliases.h"
+#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
+#include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
+#include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
+#include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"
+#include "bat/ads/internal/deprecated/client/preferences/saved_ad_info.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
 namespace base {
 class Time;

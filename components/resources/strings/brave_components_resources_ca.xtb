@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Utilitzeu un node local IPFS Brave</translation>
 <translation id="8148464361648742409">Utilitzeu una passarel·la pública</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) és la xarxa pública per emmagatzemar i distribuir dades d'igual a igual. Aquest protocol té consideracions de privadesa diferents de les de HTTP(S).</translation>
-<translation id="5410952114182173389">El vostre equip contribueix a la xarxa pública, però la vostra adreça IP i qualsevol contingut que sol·liciteu o proporcioneu podrien quedar exposats. El contingut que sol·liciteu mitjançant IPFS es verifica abans d'entregar-vos-el.</translation>
+<translation id="1216911189668016151">El vostre equip contribueix a la xarxa pública, però la vostra adreça IP i qualsevol contingut que sol·liciteu o proporcioneu podrien quedar exposats. El contingut que sol·liciteu mitjançant IPFS es verifica abans d'entregar-vos-el. Les sol·licituds de xarxa no poden utilitzar el servidor intermediari del navegador i la configuració DNS.</translation>
 <translation id="8664689531113048642">Protegeix la vostra adreça IP i el contingut que sol·liciteu a possibles observadors externs, però no de l'operador de passarel·la pública. L'operador de la passarel·la és el responsable de garantir que el contingut que se us ha proporcionat mitjançant una passarel·la és el mateix que heu sol·licitat. A més, el vostre equip no contribueix a la xarxa IPFS pública.</translation>
 <translation id="3977809385703587108">Podeu canviar de nou les vostres preferències a</translation>
 <translation id="3340978935015468852">configuració</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Voleu importar del llegat de carteres de criptomoneda de Brave?</translation>
 <translation id="3331452756822160641">Contrasenya nova</translation>
 <translation id="8624315169751085215">Copia al porta-retalls</translation>
+<translation id="7885157704277298658">S'ha copiat!</translation>
 <translation id="1121335910737476837">Comptes de criptomoneda principals</translation>
 <translation id="6969147029062037757">Comptes importats</translation>
 <translation id="4057718162494343222">Pots crear comptes primaris a la cartera de Brave que es poden copiar o restaurar a partir de la teva frase de recuperació. Per obtenir més informació sobre els tipus de comptes, visita l'ajuda del compte.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL de la icona</translation>
 <translation id="2144247757675997850">Afegeix actiu</translation>
 <translation id="2708402071160162126">ATENCIÓ: no compartiu mai la vostra frase de recuperació. Qualsevol persona amb accés a aquesta frase podria quedar-se amb els vostres actius per sempre.</translation>
+<translation id="2416098547200943834">NOTA: La clau privada es proporciona com un JSON codificat hexadecimal que conté un clau privada i informació de protocol. <ph name="LINK_START"/>Saber-ne més<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">NOTA: La clau privada s'ha de proporcionar com un JSON codificat hexadecimal que conté un clau privada i informació de protocol.<ph name="LINK_START"/>Saber-ne més<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Mostra la clau</translation>
 <translation id="8033497299373164724">Amagueu la clau</translation>
 <translation id="2702143907607790516">No ha estat possible actualitzar el nom del compte. Torneu-ho a provar.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Missatge</translation>
 <translation id="3586752056660754651">Signar</translation>
 <translation id="3484981968509595506">Una DApp està sol·licitant la vostra clau pública de xifratge</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> està sol·licitant la clau de xifratge pública de les teves carteres. Si dones el consentiment per proporcionar aquesta clau, el lloc podrà compondre missatges xifrats per a tu.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> està sol·licitant la clau de xifratge pública de la teva cartera. Si dones el consentiment per proporcionar aquesta clau, el lloc podrà compondre missatges xifrats per a tu.</translation>
 <translation id="3340247553212049934">Proporcionar</translation>
 <translation id="1619778919922494944">Aquesta DApp voldria llegir aquest missatge per poder completar la teva sol·licitud</translation>
 <translation id="714506544401754321">Desencriptar el missatge</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconnectat</translation>
 <translation id="5317781812114905957">Instruccions</translation>
 <translation id="1178198982208000092">Connecta el teu <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">La moneder de maquinari requereix confirmació al dispositiu.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">La cartera de hardware requereix l'aplicació Ethereum oberta a<ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">La moneder de maquinari requereix confirmació al dispositiu <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">La cartera de hardware requereix l'aplicació <ph name="NETWORK"/>oberta a <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">rebut</translation>
 <translation id="5867988533873716616">L'URL de l'explorador de blocs no està disponible.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> no és la xarxa actual</translation>
 <translation id="7340805872138998391">No s'ha pogut desbloquejar el dispositiu, intenta reconnectar</translation>
 <translation id="1984410139271779110">Error intern, esquema desconegut</translation>
-<translation id="8682200134223578011">aprovat</translation>
+<translation id="6989562355845156390">aprovar</translation>
 <translation id="4674380028960132654">Ledger: La signatura no coincideix amb l'adreça correcta</translation>
 <translation id="3183932890629254743">No s'ha trobat el compte de maquinari</translation>
 <translation id="4287068151777838754">No s'esperen dades JSON</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transacció confirmada</translation>
 <translation id="310693998838023022">Error de transacció</translation>
 <translation id="6395870673621520684">La transacció ha caigut</translation>
+<translation id="1237782734462409503">Aquesta pestanya no està activa</translation>
+<translation id="756701799684433105">Aprova la transacció</translation>
+<translation id="6450792191436242818">Programa del sistema</translation>
+<translation id="6252742184395380448">Programa de configuració</translation>
+<translation id="5358970666412490132">Programa d'inversions</translation>
+<translation id="346636227344244984">Programa de vots</translation>
+<translation id="3538368258493053874">Carregador BPF</translation>
+<translation id="2334098351242742927">Programa Ed25519</translation>
+<translation id="8780753288764281797">Programa Secp256k1</translation>
+<translation id="5275550100743015683">Des de l'adreça:</translation>
+<translation id="2678433693746214764">A l'adreça:</translation>
+<translation id="4576396475962922672">Nou compte:</translation>
+<translation id="4719005063558335704">Comptes:</translation>
+<translation id="4337554812324118382">Dades:</translation>
+<translation id="569870799832027680">ID del programa:</translation>
+<translation id="7843211152394841558">Reintents màxims:</translation>
+<translation id="8496335570810457">Confirmació Preflight:</translation>
+<translation id="5100124500279922001">Saltar Preflight:</translation>
+<translation id="8060029310790625334">Centre d'ajuda</translation>
+<translation id="2095142195578664632">Necessiteu ajuda? Consulteu</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>
@@ -1202,7 +1225,7 @@
 <translation id="7709075156958117386">Si aquest lloc sembla que no funciona, proveu de desactivar els protectors. 
     <ph name="LINK_BEFORE"/>Nota: això pot reduir les proteccions de privadesa del Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Rastrejadors, anuncis i més <ph name="LINK_BEFORE"/>bloquejats. Saber-ne més<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">No està protegit pels protectors de Brave <ph name="LINK_BEFORE"/> Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">No està protegit pels protectors de Brave <ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Controls Avançats</translation>
 <translation id="5799940914270080805">Si canvieu aquests paràmetres, es possible que els llocs no funcionin.</translation>
 <translation id="9204041448536398473">Paràmetres de l'escut global</translation>

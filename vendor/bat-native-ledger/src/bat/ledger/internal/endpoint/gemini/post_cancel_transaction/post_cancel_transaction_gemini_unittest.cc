@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/endpoint/gemini/post_cancel_transaction/post_cancel_transaction_gemini.h"
@@ -49,7 +50,7 @@ TEST_F(GeminiPostCancelTransactionTest, ServerOK) {
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_cancel_transaction_->Request(
@@ -67,7 +68,7 @@ TEST_F(GeminiPostCancelTransactionTest, ServerError401) {
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_cancel_transaction_->Request(
@@ -85,7 +86,7 @@ TEST_F(GeminiPostCancelTransactionTest, ServerError403) {
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_cancel_transaction_->Request(
@@ -103,7 +104,7 @@ TEST_F(GeminiPostCancelTransactionTest, ServerError404) {
             response.status_code = net::HTTP_BAD_REQUEST;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_cancel_transaction_->Request(
@@ -121,7 +122,7 @@ TEST_F(GeminiPostCancelTransactionTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_cancel_transaction_->Request(

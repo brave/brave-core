@@ -12,10 +12,11 @@
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
 #include "bat/ads/internal/deprecated/client/preferences/ad_preferences_info.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
 namespace ads {
 
@@ -24,6 +25,9 @@ struct ClientInfo final {
   ClientInfo(const ClientInfo& info);
   ClientInfo& operator=(const ClientInfo& info);
   ~ClientInfo();
+
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string ToJson();
   bool FromJson(const std::string& json);

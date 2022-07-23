@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PUBLISHER_PUBLISHER_H_
-#define BRAVELEDGER_PUBLISHER_PUBLISHER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_H_
 
 #include <string>
 #include <memory>
@@ -56,10 +56,9 @@ class Publisher {
       uint64_t window_id,
       ledger::PublisherInfoCallback callback);
 
-  void SetPublisherExclude(
-      const std::string& publisher_id,
-      const type::PublisherExclude& exclude,
-      ledger::ResultCallback callback);
+  void SetPublisherExclude(const std::string& publisher_id,
+                           const type::PublisherExclude& exclude,
+                           ledger::LegacyResultCallback callback);
 
   void OnPublisherInfoSaved(const type::Result result);
 
@@ -84,9 +83,8 @@ class Publisher {
       const type::PublisherInfoList* list,
       uint32_t /* next_record */);
 
-  void OnRestorePublishers(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void OnRestorePublishers(type::Result result,
+                           ledger::LegacyResultCallback callback);
 
   bool IsConnectedOrVerified(const type::PublisherStatus status);
 
@@ -98,6 +96,10 @@ class Publisher {
       const std::string& publisher_key,
       client::GetServerPublisherInfoCallback callback);
 
+  void GetServerPublisherInfo(const std::string& publisher_key,
+                              bool use_prefix_list,
+                              client::GetServerPublisherInfoCallback callback);
+
   void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
@@ -108,10 +110,9 @@ class Publisher {
       const std::string& publisher_key,
       ledger::GetPublisherInfoCallback callback);
 
-  void SavePublisherInfo(
-      const uint64_t window_id,
-      type::PublisherInfoPtr publisher_info,
-      ledger::ResultCallback callback);
+  void SavePublisherInfo(uint64_t window_id,
+                         type::PublisherInfoPtr publisher_info,
+                         ledger::LegacyResultCallback callback);
 
   static std::string GetShareURL(
       const base::flat_map<std::string, std::string>& args);
@@ -170,11 +171,10 @@ class Publisher {
                                 const std::string& favicon_url,
                                 uint64_t window_id);
 
-  void OnSetPublisherExclude(
-    type::PublisherExclude exclude,
-    type::Result result,
-    type::PublisherInfoPtr publisher_info,
-    ledger::ResultCallback callback);
+  void OnSetPublisherExclude(type::PublisherExclude exclude,
+                             type::Result result,
+                             type::PublisherInfoPtr publisher_info,
+                             ledger::LegacyResultCallback callback);
 
   double concaveScore(const uint64_t& duration_seconds);
 
@@ -207,16 +207,17 @@ class Publisher {
 
   void OnGetPublisherBannerForSavePublisherInfo(
       type::PublisherBannerPtr banner,
-      const uint64_t window_id,
+      uint64_t window_id,
       const std::string& publisher_key,
       const type::VisitData& visit_data,
-      ledger::ResultCallback callback);
+      ledger::LegacyResultCallback callback);
 
   type::PublisherStatus ParsePublisherStatus(const std::string& status);
 
   void OnServerPublisherInfoLoaded(
       type::ServerPublisherInfoPtr server_info,
       const std::string& publisher_key,
+      bool use_prefix_list,
       client::GetServerPublisherInfoCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
@@ -232,4 +233,4 @@ class Publisher {
 }  // namespace publisher
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_H_

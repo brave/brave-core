@@ -32,6 +32,30 @@ bool IsPromotionEnabledCountry(const std::string& country_code) {
   return base::Contains(kSupportedCountries, country_code);
 }
 
+bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
+  DCHECK(prefs);
+  DCHECK(service);
+
+  if (prefs->GetBoolean(prefs::kDismissed))
+    return false;
+
+  // Don't need to prompt for conversion if user uses brave as a default
+  // provider.
+  auto id = service->GetDefaultSearchProvider()->data().prepopulate_id;
+  if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
+      id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
+    return false;
+  }
+
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
+  if (!IsPromotionEnabledCountry(country_code))
+    return false;
+
+  return base::FeatureList::IsEnabled(features::kNTP);
+}
+
 ConversionType GetConversionType(PrefService* prefs,
                                  TemplateURLService* service) {
   DCHECK(prefs);
@@ -71,9 +95,13 @@ void SetDismissed(PrefService* prefs) {
 }
 
 GURL GetPromoURL(const std::u16string& search_term) {
+  return GetPromoURL(base::UTF16ToUTF8(search_term));
+}
+
+GURL GetPromoURL(const std::string& search_term) {
   std::string promo_url(kBraveSearchConversionPromotionURL);
   base::ReplaceSubstringsAfterOffset(&promo_url, 0, kSearchTermsParameter,
-                                     base::UTF16ToUTF8(search_term));
+                                     search_term);
   return GURL(promo_url);
 }
 

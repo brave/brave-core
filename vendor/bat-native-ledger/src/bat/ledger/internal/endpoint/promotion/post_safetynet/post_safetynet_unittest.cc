@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -44,17 +45,15 @@ class PostSafetynetTest : public testing::Test {
 
 TEST_F(PostSafetynetTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
               "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   safetynet_->Request(
@@ -66,15 +65,13 @@ TEST_F(PostSafetynetTest, ServerOK) {
 
 TEST_F(PostSafetynetTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   safetynet_->Request(
@@ -86,15 +83,13 @@ TEST_F(PostSafetynetTest, ServerError400) {
 
 TEST_F(PostSafetynetTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   safetynet_->Request(

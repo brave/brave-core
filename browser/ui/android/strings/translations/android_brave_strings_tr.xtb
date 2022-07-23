@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Brave Tarayıcı çöktüğünde veya donduğunda tanı raporlarını otomatik olarak göndererek, Brave'in ürün stabilitesini iyileştirmeye yardımcı olun.</translation>
 <translation id="7977176350719484850">Tahmini Veri\nTasarrufu</translation>
 <translation id="9008534313521214777">Tahmini Zaman\nTasarruf edildi</translation>
-<translation id="6572660632052512096">Masaüstü Modu</translation>
-<translation id="1340503115760585811">Yeni sekmeler için Masaüstü Grönümünü etkinleştirin</translation>
-<translation id="7924540991929826186">Yeni sekmeler için sitelerin mobil sürümlerini kullan (önerilir)</translation>
-<translation id="807636106793708118">Sitelerin mobil sürümünü tercih et</translation>
-<translation id="4479934682648362332">Sitelerin masaüstü sürümünü tercih et</translation>
 <translation id="1842747674580016420">Brave'de kayıttan video yürütme</translation>
 <translation id="5368992950177874750">Etkinleştirildiğinde videolar karşılık gelen uygulama yerine Brave'de oynatılır</translation>
 <translation id="410351446219883937">Otomatik oynatma</translation>
@@ -84,7 +79,7 @@
 <translation id="6587448235155023666">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
 <translation id="8701563696941209024">ŞİMDİ YENİDEN BAŞLAT</translation>
 <translation id="834487290629916192">DAHA SONRA</translation>
-<translation id="7207456302801184289">Brave'a Hoş Geldiniz</translation>
+<translation id="7207456302801184289">Brave'e Hoş Geldiniz</translation>
 <translation id="4117451092682672487">Gizlilik Basit Hale Geldi.</translation>
 <translation id="7909375417585209817">Brave'i varsayılan olarak ayarladıktan sonra, dokunduğunuz her bağlantı Brave’in gizlilik korumalarıyla açılır.</translation>
 <translation id="5148943178722443958">Brave'i daha iyi hale getirmeye yardım edin.</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Brave Browser'ı seçin ve 'Her Zaman'a dokunun</translation>
 <translation id="3546439402724649282">Brave zaten varsayılan tarayıcınız olarak ayarlandı.</translation>
 <translation id="8389661903259423907">Zaten varsayılan bir tarayıcı ayarladınız. Varsayılan tarayıcıvıyı uygulama ayarlarınızda değiştirebilirsiniz.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Teşekkürler</translation>
 <translation id="6665366815203065060">Az önce bir ipucu gönderdiniz:</translation>
 <translation id="5441565662498481293">Otomatik olarak bir bahşiş gönderiyorsunuz:</translation>
@@ -863,23 +859,36 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4804818685124855865">Bağlantıyı Kes</translation>
 <translation id="8009571545960303544">İmzanız isteniyor</translation>
 <translation id="3484981968509595506">Bir DApp, açık şifreleme anahtarınızı istiyor</translation>
-<translation id="2291002548681057345">cüzdanlarınızın herkese açık şifreleme anahtarını talep ediyor. Bu anahtarın verilmesini kabul ederseniz site size şifrelenmiş mesajlar gönderebilecektir.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> cüzdanınızın herkese açık şifreleme anahtarını istiyor. Bu anahtarı vermeyi kabul ederseniz, site size şifreli mesajlar yazabilir.</translation>
 <translation id="3340247553212049934">Ver</translation>
 <translation id="1982257600591932657">Ağ adı</translation>
 <translation id="5052727830821470769">Ağ URL'si</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Para birimi sembolü</translation>
 <translation id="7982789257301363584">Ağ</translation>
-<translation id="7540715999708954128">Bu işlem, bu ağın Brave Cüzdan'da kullanılmasına izin verecek. Daha fazlasını öğrenin.</translation>
-<translation id="8759753423332885148">Learn more.</translation>
+<translation id="6936860995365507185">Bu, bu ağın Brave Wallet içinde kullanılmasına izin verecektir. <ph name="CLICK_START"/>Daha fazla bilgi edin<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Bu sitenin bir ağ eklemesine izin verilsin mi?</translation>
+<translation id="4857321293515555666">Bu DApp, talebinizi tamamlamadan önce bu mesajı okumak istiyor.</translation>
+<translation id="714506544401754321">Mesajı çöz</translation>
+<translation id="5039804452771397117">İzin ver</translation>
 <translation id="3378339846292573874">Önerilen token'ı ekle</translation>
 <translation id="2322227405137827074">Bu token'ı içe aktarmak ister misiniz?</translation>
 <translation id="1324417023773393937">Brave Tarayıcı</translation>
 <translation id="6044189892950611565">Brave Tarayıcı için bildirim kanalı</translation>
 <translation id="1173919438868967364">Hesabı Seç</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/> ile eşleşen bir saat dilimi bulunamadı</translation>
-<translation id="8231907121684689093">En Popüler Siteleri Göster</translation>
+<translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> ile bağlı</translation>
 <translation id="1968852757206592413">Deneme</translation>
+<translation id="7733890291091968191">Web3 bildirimlerini göster</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave sizi izlemez veya uygulamamızı nasıl kullandığınızı bilmez, bu nedenle VPN'i nasıl kurduğunuzu bilmiyoruz. Lütfen yaşadığınız sorunla ilgili bilgileri paylaşın, böylece sorunu olabilecek en kısa sürede çözmek için elimizden gelenin en iyisini yapalım. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN Ana Bilgisayar Adı\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nAbonelik Türü\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore Token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nUygulama Sürümü\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nZaman Dilimi\n</translation>
+<translation id="8107843365677337047">\n\nAğ Türü\n</translation>
+<translation id="5334952096674914470">\n\nHücresel Taşıyıcı\n</translation>
+<translation id="5393042357629679588">\n\nDiğer Sorun\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>

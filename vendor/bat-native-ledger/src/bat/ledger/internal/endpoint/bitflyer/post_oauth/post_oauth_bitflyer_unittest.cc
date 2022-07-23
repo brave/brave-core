@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -58,7 +59,7 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
              "linking_info": "mock_linking_info",
              "deposit_id": "339dc5ff-1167-4d69-8dd8-aa77ccb12d74"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(
@@ -81,7 +82,7 @@ TEST_F(BitflyerPostOauthTest, ServerError401) {
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(
@@ -102,7 +103,7 @@ TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(

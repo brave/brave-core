@@ -54,11 +54,10 @@ SKUTransaction::SKUTransaction(LedgerImpl* ledger) :
 
 SKUTransaction::~SKUTransaction() = default;
 
-void SKUTransaction::Create(
-    type::SKUOrderPtr order,
-    const std::string& destination,
-    const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+void SKUTransaction::Create(type::SKUOrderPtr order,
+                            const std::string& destination,
+                            const std::string& wallet_type,
+                            ledger::LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
     callback(type::Result::LEDGER_ERROR);
@@ -83,12 +82,11 @@ void SKUTransaction::Create(
   ledger_->database()->SaveSKUTransaction(transaction->Clone(), save_callback);
 }
 
-void SKUTransaction::OnTransactionSaved(
-    const type::Result result,
-    const type::SKUTransaction& transaction,
-    const std::string& destination,
-    const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+void SKUTransaction::OnTransactionSaved(type::Result result,
+                                        const type::SKUTransaction& transaction,
+                                        const std::string& destination,
+                                        const std::string& wallet_type,
+                                        ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Transaction was not saved");
     callback(result);
@@ -109,11 +107,10 @@ void SKUTransaction::OnTransactionSaved(
       transfer_callback);
 }
 
-void SKUTransaction::OnTransfer(
-    const type::Result result,
-    const std::string& external_transaction_id,
-    const type::SKUTransaction& transaction,
-    ledger::ResultCallback callback) {
+void SKUTransaction::OnTransfer(type::Result result,
+                                const std::string& external_transaction_id,
+                                const type::SKUTransaction& transaction,
+                                ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Transaction for order failed " << transaction.order_id);
     callback(result);
@@ -142,9 +139,9 @@ void SKUTransaction::OnTransfer(
 }
 
 void SKUTransaction::OnSaveSKUExternalTransaction(
-    const type::Result result,
+    type::Result result,
     const type::SKUTransaction& transaction,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "External transaction was not saved");
     callback(result);
@@ -164,9 +161,9 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
 }
 
 void SKUTransaction::SendExternalTransaction(
-    const type::Result result,
+    type::Result result,
     const type::SKUTransaction& transaction,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order status not updated");
     callback(type::Result::RETRY);
@@ -209,8 +206,8 @@ void SKUTransaction::SendExternalTransaction(
 }
 
 void SKUTransaction::OnSendExternalTransaction(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+    type::Result result,
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "External transaction not sent");
     callback(type::Result::RETRY);

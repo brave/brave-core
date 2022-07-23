@@ -42,15 +42,16 @@ import {
 import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 
 // Components
-import { BackButton, Tooltip } from '../../../shared'
+import { BackButton } from '../../../shared'
 import {
   PortfolioAssetItem,
   AccountSettingsModal,
   PortfolioTransactionItem
 } from '../..'
+import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 
 // Hooks
-import { useBalance, useCopy } from '../../../../common/hooks'
+import { useBalance } from '../../../../common/hooks'
 
 // Actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -94,7 +95,6 @@ export const Account = (props: Props) => {
 
   // custom hooks
   const getBalance = useBalance(networkList)
-  const { copied, copyText } = useCopy()
 
   // memos
   const selectedAccount = React.useMemo(() => {
@@ -147,13 +147,6 @@ export const Account = (props: Props) => {
     [accountsTokensList]
   )
 
-  // methods
-  const onCopyToClipboard = React.useCallback(async () => {
-    if (selectedAccount) {
-      await copyText(selectedAccount.address)
-    }
-  }, [selectedAccount])
-
   const onShowEditModal = React.useCallback(() => {
     setShowEditModal(true)
   }, [])
@@ -187,13 +180,9 @@ export const Account = (props: Props) => {
         <WalletInfoLeftSide>
           <AccountCircle orb={orb} />
           <WalletName>{selectedAccount.name}</WalletName>
-          <Tooltip
-            text={getLocale('braveWalletToolTipCopyToClipboard')}
-            actionText={getLocale('braveWalletToolTipCopiedToClipboard')}
-            isActionVisible={copied}
-          >
-            <WalletAddress onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</WalletAddress>
-          </Tooltip>
+          <CopyTooltip text={selectedAccount.address}>
+            <WalletAddress>{reduceAddress(selectedAccount.address)}</WalletAddress>
+          </CopyTooltip>
           <Button onClick={onShowEditModal}>
             <QRCodeIcon />
           </Button>
@@ -269,7 +258,6 @@ export const Account = (props: Props) => {
           account={selectedAccount}
           onClose={onCloseEditModal}
           onUpdateAccountName={onUpdateAccountName}
-          onCopyToClipboard={onCopyToClipboard}
           onChangeTab={setEditTab}
           onToggleNav={toggleNav}
           onRemoveAccount={onRemoveAccount}

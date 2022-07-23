@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
-import { RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
+import { BraveTalkOptInForm, RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
@@ -33,6 +33,8 @@ function NamedOverlay (props: { name: string, children: React.ReactNode }) {
 export function PanelOverlays () {
   const host = React.useContext(HostContext)
 
+  const [requestedView, setRequestedView] =
+    React.useState(host.state.requestedView)
   const [rewardsEnabled, setRewardsEnabled] =
     React.useState(host.state.rewardsEnabled)
   const [settings, setSettings] = React.useState(host.state.settings)
@@ -41,15 +43,17 @@ export function PanelOverlays () {
     React.useState(host.state.externalWalletProviders)
   const [grantCaptchaInfo, setGrantCaptchaInfo] =
     React.useState(host.state.grantCaptchaInfo)
-  const [notifications, setNotifications] =
-    React.useState(host.state.notifications)
   const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
     React.useState(host.state.adaptiveCaptchaInfo)
+  const [notifications, setNotifications] =
+    React.useState(host.state.notifications)
 
   const [showTour, setShowTour] = React.useState(false)
+  const [showTalkOptIn, setShowTalkOptIn] = React.useState(false)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
 
   useHostListener(host, (state) => {
+    setRequestedView(state.requestedView)
     setRewardsEnabled(state.rewardsEnabled)
     setSettings(state.settings)
     setOptions(state.options)
@@ -60,13 +64,15 @@ export function PanelOverlays () {
   })
 
   React.useEffect(() => {
-    // After the component is mounted, check for a "#tour" URL and display the
-    // rewards tour if found.
-    if ((/^#?tour$/i).test(location.hash)) {
-      setShowTour(true)
-      location.hash = ''
+    switch (requestedView) {
+      case 'rewards-tour':
+        setShowTour(true)
+        break
+      case 'brave-talk-opt-in':
+        setShowTalkOptIn(true)
+        break
     }
-  }, [])
+  }, [requestedView])
 
   function toggleTour () {
     setShowTour(!showTour)
@@ -95,6 +101,18 @@ export function PanelOverlays () {
           onVerifyWalletClick={onVerifyWalletClick}
           onDone={toggleTour}
           onClose={toggleTour}
+        />
+      </NamedOverlay>
+    )
+  }
+
+  if (showTalkOptIn) {
+    return (
+      <NamedOverlay name='brave-talk-opt-in'>
+        <BraveTalkOptInForm
+          showRewardsOnboarding={!rewardsEnabled}
+          onEnable={host.enableRewards}
+          onTakeTour={toggleTour}
         />
       </NamedOverlay>
     )

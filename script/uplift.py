@@ -186,7 +186,7 @@ def parse_issues_fixed(body):
         regex = r'((Resolves|Fixes|Fix|Closes|Close|resolves|fixes|fix|closes|close) https:\/\/github\.com\/brave\/brave-browser\/issues\/(\d*))'  # nopep8
         return re.findall(regex, body)
     except Exception as e:
-        print str(e)
+        print(str(e))
         return []
 
 
@@ -258,10 +258,7 @@ def main():
                   '" instead of "' + top_level_base + '"')
             top_level_base = top_level_sha
         else:
-            # don't allow uplift of PRs which are not merged
-            print('[ERROR] Pull request ' + str(pr_number) + ' has not been merged yet. ' +
-                  'Only merged requests can be uplifted.')
-            return 1
+            print('[WARNING] Pull request ' + str(pr_number) + ' has not been merged yet.')
 
         # create local branch which matches the contents of the PR
         with scoped_cwd(BRAVE_CORE_ROOT):

@@ -17,6 +17,8 @@ extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kTipHost[];
 extern const char kBraveNewTabJS[];
+extern const char kBraveRewardsPanelURL[];
+extern const char kBraveRewardsPanelHost[];
 extern const char kBraveUIRewardsURL[];
 extern const char kBraveUIAdblockURL[];
 extern const char kBraveUIWebcompatReporterURL[];
@@ -24,6 +26,7 @@ extern const char kBraveUITipHost[];
 extern const char kBraveUITipURL[];
 extern const char kBraveUIWalletURL[];
 extern const char kBraveUIWalletOnboardingURL[];
+extern const char kBraveUIWalletAccountCreationURL[];
 extern const char kBraveUIWalletPanelURL[];
 extern const char kWalletPanelHost[];
 extern const char kVPNPanelURL[];
@@ -43,5 +46,7 @@ extern const char kSidebarBookmarksHost[];
 extern const char kFederatedInternalsURL[];
 extern const char kFederatedInternalsHost[];
 extern const char kContentFiltersPath[];
+extern const char kPlaylistHost[];
+extern const char kPlaylistURL[];
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

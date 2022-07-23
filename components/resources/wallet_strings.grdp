@@ -86,6 +86,7 @@
   <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button">Swap</message>
   <message name="IDS_BRAVE_WALLET_RESET" desc="Reset button text">Reset</message>
   <message name="IDS_BRAVE_WALLET_BUY_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when buy action is not supported">Buy support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
   <message name="IDS_BRAVE_WALLET_SWAP_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when swap action is not supported">Swap support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING" desc="Warning if slippage tolerance is to high">Transaction may be frontrun</message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE" desc="BuySendSwapo slippage tolerance title">Slippage tolerance</message>
@@ -222,6 +223,7 @@
   <message name="IDS_BRAVE_WALLET_PRESET50" desc="Swap preset 50% button">50%</message>
   <message name="IDS_BRAVE_WALLET_PRESET75" desc="Swap preset 75% button">75%</message>
   <message name="IDS_BRAVE_WALLET_PRESET100" desc="Swap preset All button">100%</message>
+  <message name="IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK" desc="Unsupported network">Unsupported network</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_E_T_H" desc="Network Ethereum title">Ethereum</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_MAIN" desc="Network Main title">Mainnet</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_TEST" desc="Network Test Network title">Test Network</message>
@@ -278,6 +280,8 @@
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CHAIN_I_D" desc="Add network panel chain id label">Chain ID</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">Currency symbol</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER" desc="Add network explorer label">Block explorer URL</message>
+  <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE" desc="Add network, network panel title">Network</message>
+  <message name="IDS_BRAVE_WALLET_ALLOW_ADD_DETAILS_PANEL_TITLE" desc="Add network, details panel title">Details</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">Allow this site to switch the network?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">This will switch the network to a previously added network.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">Switch network</message> 
@@ -301,6 +305,7 @@
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TRUST" desc="Site Permissions panel trust account for connected site">Trust</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE" desc="Site Permissions panel revoke account for connected site">Revoke</message>
   <message name="IDS_BRAVE_WALLET_PANEL_DISCONNECTED" desc="Brave Wallet panel disconnected status">Disconnected</message>
+  <message name="IDS_BRAVE_WALLET_PANEL_BLOCKED" desc="Brave Wallet panel blocked status">Blocked</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT" desc="Site Permissions panel add a new account">New account</message>
   <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
   <message name="IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS" desc="Brave Wallet panel view account assets button">View account assets</message>
@@ -332,7 +337,7 @@
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> disconnected</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT" desc="Connect Hardware panel title">Connect your <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires confirmation on device <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires confirmation on device.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP" desc="Connect Hardware panel open app text">Hardware wallet requires <ph name="NETWORK"><ex>Ethereum</ex>$1</ph> App opened on <ph name="DEVICE_NAME"><ex>Ledger</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SENT" desc="Transaction sent label">sent</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RECEIVED" desc="Transaction received label">received</message>
@@ -495,4 +500,5 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help Center link label">Help Center</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER_TEXT" desc="Help Center text description below buy-send-swap">Need help? See</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR" desc="Error message of unsupported hardware wallet operation">This hardware wallet does not support this operation.</message>
 </grit-part>

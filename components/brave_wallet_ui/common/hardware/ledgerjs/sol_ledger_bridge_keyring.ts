@@ -13,13 +13,12 @@ import { HardwareVendor } from '../../api/hardware_keyrings'
 import {
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareMessageOperationResult,
-  SignHardwareTransactionOperationResult
+  SignHardwareOperationResult
 } from '../types'
 
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 
-export default class SolanaLedgerKeyring implements LedgerSolanaKeyring {
+export default class SolanaLedgerBridgeKeyring implements LedgerSolanaKeyring {
   private app?: Sol
   private transport?: Transport
   private deviceId: string
@@ -50,7 +49,8 @@ export default class SolanaLedgerKeyring implements LedgerSolanaKeyring {
         name: this.type(),
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
-        coin: this.coin()
+        coin: this.coin(),
+        network: undefined
       })
     }
     return { success: true, payload: [...accounts] }
@@ -84,11 +84,7 @@ export default class SolanaLedgerKeyring implements LedgerSolanaKeyring {
     return { success: this.isUnlocked() }
   }
 
-  signPersonalMessage (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> {
-    throw new Error('Method not implemented.')
-  }
-
-  signTransaction = async (path: string, rawTxBytes: Buffer): Promise<SignHardwareTransactionOperationResult> => {
+  signTransaction = async (path: string, rawTxBytes: Buffer): Promise<SignHardwareOperationResult> => {
     try {
       const unlocked = await this.unlock()
       if (!unlocked.success || !this.app) {
@@ -100,6 +96,10 @@ export default class SolanaLedgerKeyring implements LedgerSolanaKeyring {
     } catch (e) {
       return { success: false, error: e.message, code: e.statusCode || e.id || e.name }
     }
+  }
+
+  cancelOperation = async () => {
+    this.transport?.close()
   }
 
   private onDisconnected = (e: any) => {

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_
-#define BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_
 
 #include <memory>
 #include <string>
@@ -23,21 +23,19 @@ class DatabaseContributionQueue: public DatabaseTable {
   explicit DatabaseContributionQueue(LedgerImpl* ledger);
   ~DatabaseContributionQueue() override;
 
-  void InsertOrUpdate(
-      type::ContributionQueuePtr info,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(type::ContributionQueuePtr info,
+                      ledger::LegacyResultCallback callback);
 
   void GetFirstRecord(GetFirstContributionQueueCallback callback);
 
-  void MarkRecordAsComplete(
-      const std::string& id,
-      ledger::ResultCallback callback);
+  void MarkRecordAsComplete(const std::string& id,
+                            ledger::LegacyResultCallback callback);
 
  private:
   void OnInsertOrUpdate(
       type::DBCommandResponsePtr response,
       std::shared_ptr<type::ContributionQueuePtr> shared_queue,
-      ledger::ResultCallback callback);
+      ledger::LegacyResultCallback callback);
 
   void OnGetFirstRecord(
       type::DBCommandResponsePtr response,
@@ -54,4 +52,4 @@ class DatabaseContributionQueue: public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_

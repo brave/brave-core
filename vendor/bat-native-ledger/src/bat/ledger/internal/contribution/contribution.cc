@@ -200,26 +200,22 @@ void Contribution::StartAutoContribute(
   ac_->Process(reconcile_stamp);
 }
 
-void Contribution::OnBalance(
-    const type::Result result,
-    type::BalancePtr info,
-    std::shared_ptr<type::ContributionQueuePtr> shared_queue) {
-  if (result != type::Result::LEDGER_OK || !shared_queue) {
+void Contribution::OnBalance(type::ContributionQueuePtr queue,
+                             const type::Result result,
+                             type::BalancePtr info) {
+  if (result != type::Result::LEDGER_OK) {
     queue_in_progress_ = false;
     BLOG(0, "We couldn't get balance from the server.");
     return;
   }
 
-  Process(std::move(*shared_queue), std::move(info));
+  Process(std::move(queue), std::move(info));
 }
 
 void Contribution::Start(type::ContributionQueuePtr info) {
-  auto fetch_callback = std::bind(&Contribution::OnBalance,
-      this,
-      _1,
-      _2,
-      std::make_shared<type::ContributionQueuePtr>(std::move(info)));
-  ledger_->wallet()->FetchBalance(fetch_callback);
+  auto fetch_callback = base::BindOnce(&Contribution::OnBalance,
+                                       base::Unretained(this), std::move(info));
+  ledger_->wallet()->FetchBalance(std::move(fetch_callback));
 }
 
 void Contribution::SetReconcileTimer() {
@@ -297,10 +293,9 @@ void Contribution::ContributeUnverifiedPublishers() {
   unverified_->Contribute();
 }
 
-void Contribution::OneTimeTip(
-    const std::string& publisher_key,
-    const double amount,
-    ledger::ResultCallback callback) {
+void Contribution::OneTimeTip(const std::string& publisher_key,
+                              double amount,
+                              ledger::LegacyResultCallback callback) {
   tip_->Process(publisher_key, amount, callback);
 }
 
@@ -581,25 +576,23 @@ void Contribution::TransferFunds(
   BLOG(0, "Wallet type not supported: " << wallet_type);
 }
 
-void Contribution::SKUAutoContribution(
-    const std::string& contribution_id,
-    const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+void Contribution::SKUAutoContribution(const std::string& contribution_id,
+                                       const std::string& wallet_type,
+                                       ledger::LegacyResultCallback callback) {
   sku_->AutoContribution(contribution_id, wallet_type, callback);
 }
 
 void Contribution::StartUnblinded(
     const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   unblinded_->Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
     const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
-
+    ledger::LegacyResultCallback callback) {
   auto get_callback = std::bind(&Contribution::RetryUnblindedContribution,
       this,
       _1,
@@ -612,7 +605,7 @@ void Contribution::RetryUnblinded(
 void Contribution::RetryUnblindedContribution(
     type::ContributionInfoPtr contribution,
     const std::vector<type::CredsBatchType>& types,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   unblinded_->Retry(types, std::move(contribution), callback);
 }
 

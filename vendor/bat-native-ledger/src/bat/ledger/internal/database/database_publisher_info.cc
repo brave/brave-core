@@ -33,7 +33,7 @@ DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 
 void DatabasePublisherInfo::InsertOrUpdate(
     type::PublisherInfoPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
     BLOG(1, "Info is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -88,9 +88,7 @@ void DatabasePublisherInfo::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::GetRecord(
@@ -137,9 +135,7 @@ void DatabasePublisherInfo::GetRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetRecord(
@@ -225,9 +221,7 @@ void DatabasePublisherInfo::GetPanelRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetPanelRecord(
@@ -262,7 +256,8 @@ void DatabasePublisherInfo::OnGetPanelRecord(
   callback(type::Result::LEDGER_OK, std::move(info));
 }
 
-void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
+void DatabasePublisherInfo::RestorePublishers(
+    ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "UPDATE %s SET excluded=? WHERE excluded=?",
@@ -283,7 +278,7 @@ void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
+  ledger_->RunDBTransaction(
       std::move(transaction),
       [this, callback](type::DBCommandResponsePtr response) {
         if (!response ||
@@ -332,9 +327,7 @@ void DatabasePublisherInfo::GetExcludedList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetExcludedList(

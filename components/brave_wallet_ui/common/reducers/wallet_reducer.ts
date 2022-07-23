@@ -122,7 +122,8 @@ export const createWalletReducer = (initialState: WalletState) => {
         deviceId: info.hardware ? info.hardware.deviceId : '',
         tokenBalanceRegistry: {},
         nativeBalanceRegistry: {},
-        coin: info.coin
+        coin: info.coin,
+        keyringId: info.keyringId
       } as WalletAccountType
     })
     const selectedAccount = payload.selectedAccount

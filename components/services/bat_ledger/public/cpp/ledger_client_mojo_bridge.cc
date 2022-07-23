@@ -104,31 +104,30 @@ void LedgerClientMojoBridge::URIEncode(const std::string& value,
   std::move(callback).Run(ledger_client_->URIEncode(value));
 }
 
-// static
-void LedgerClientMojoBridge::OnLoadURL(
-    CallbackHolder<LoadURLCallback>* holder,
-    const ledger::type::UrlResponse& response) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(ledger::type::UrlResponse::New(response));
-    delete holder;
-  }
-}
-
-void LedgerClientMojoBridge::LoadURL(
-    ledger::type::UrlRequestPtr request,
-    LoadURLCallback callback) {
-  // deleted in OnLoadURL
-  auto* holder = new CallbackHolder<LoadURLCallback>(
-      AsWeakPtr(), std::move(callback));
+void LedgerClientMojoBridge::LoadURL(ledger::type::UrlRequestPtr request,
+                                     LoadURLCallback callback) {
   ledger_client_->LoadURL(
       std::move(request),
-      std::bind(LedgerClientMojoBridge::OnLoadURL, holder, _1));
+      base::BindOnce(
+          [](LoadURLCallback callback,
+             const ledger::type::UrlResponse& response) {
+            std::move(callback).Run(ledger::type::UrlResponse::New(response));
+          },
+          std::move(callback)));
 }
 
 void LedgerClientMojoBridge::PublisherListNormalized(
     ledger::type::PublisherInfoList list) {
   ledger_client_->PublisherListNormalized(std::move(list));
+}
+
+void LedgerClientMojoBridge::OnPublisherRegistryUpdated() {
+  ledger_client_->OnPublisherRegistryUpdated();
+}
+
+void LedgerClientMojoBridge::OnPublisherUpdated(
+    const std::string& publisher_id) {
+  ledger_client_->OnPublisherUpdated(publisher_id);
 }
 
 void LedgerClientMojoBridge::SetBooleanState(const std::string& name,
@@ -299,28 +298,10 @@ void LedgerClientMojoBridge::ReconcileStampReset() {
   ledger_client_->ReconcileStampReset();
 }
 
-// static
-void LedgerClientMojoBridge::OnRunDBTransaction(
-    CallbackHolder<RunDBTransactionCallback>* holder,
-    ledger::type::DBCommandResponsePtr response) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(response));
-  }
-  delete holder;
-}
-
 void LedgerClientMojoBridge::RunDBTransaction(
     ledger::type::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
-  auto* holder = new CallbackHolder<RunDBTransactionCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->RunDBTransaction(
-      std::move(transaction),
-      std::bind(LedgerClientMojoBridge::OnRunDBTransaction,
-                holder,
-                _1));
+  ledger_client_->RunDBTransaction(std::move(transaction), std::move(callback));
 }
 
 // static

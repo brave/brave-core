@@ -5,9 +5,6 @@
 
 #include "bat/ads/promoted_content_ad_info.h"
 
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
-
 namespace ads {
 
 PromotedContentAdInfo::PromotedContentAdInfo() = default;
@@ -20,6 +17,65 @@ PromotedContentAdInfo& PromotedContentAdInfo::operator=(
 
 PromotedContentAdInfo::~PromotedContentAdInfo() = default;
 
+base::Value::Dict PromotedContentAdInfo::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("type", type.ToString());
+  dict.Set("uuid", placement_id);
+  dict.Set("creative_instance_id", creative_instance_id);
+  dict.Set("creative_set_id", creative_set_id);
+  dict.Set("campaign_id", campaign_id);
+  dict.Set("advertiser_id", advertiser_id);
+  dict.Set("segment", segment);
+  dict.Set("title", title);
+  dict.Set("description", description);
+  dict.Set("target_url", target_url.spec());
+  return dict;
+}
+
+bool PromotedContentAdInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("type")) {
+    type = AdType(*value);
+  }
+
+  if (const auto* value = root.FindString("uuid")) {
+    placement_id = *value;
+  }
+
+  if (const auto* value = root.FindString("creative_instance_id")) {
+    creative_instance_id = *value;
+  }
+
+  if (const auto* value = root.FindString("creative_set_id")) {
+    creative_set_id = *value;
+  }
+
+  if (const auto* value = root.FindString("campaign_id")) {
+    campaign_id = *value;
+  }
+
+  if (const auto* value = root.FindString("advertiser_id")) {
+    advertiser_id = *value;
+  }
+
+  if (const auto* value = root.FindString("segment")) {
+    segment = *value;
+  }
+
+  if (const auto* value = root.FindString("title")) {
+    title = *value;
+  }
+
+  if (const auto* value = root.FindString("description")) {
+    description = *value;
+  }
+
+  if (const auto* value = root.FindString("target_url")) {
+    target_url = GURL(*value);
+  }
+
+  return true;
+}
+
 bool PromotedContentAdInfo::IsValid() const {
   if (!AdInfo::IsValid()) {
     return false;
@@ -30,100 +86,6 @@ bool PromotedContentAdInfo::IsValid() const {
   }
 
   return true;
-}
-
-std::string PromotedContentAdInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
-}
-
-bool PromotedContentAdInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
-  }
-
-  if (document.HasMember("type")) {
-    type = AdType(document["type"].GetString());
-  }
-
-  if (document.HasMember("uuid")) {
-    placement_id = document["uuid"].GetString();
-  }
-
-  if (document.HasMember("creative_instance_id")) {
-    creative_instance_id = document["creative_instance_id"].GetString();
-  }
-
-  if (document.HasMember("creative_set_id")) {
-    creative_set_id = document["creative_set_id"].GetString();
-  }
-
-  if (document.HasMember("campaign_id")) {
-    campaign_id = document["campaign_id"].GetString();
-  }
-
-  if (document.HasMember("advertiser_id")) {
-    advertiser_id = document["advertiser_id"].GetString();
-  }
-
-  if (document.HasMember("segment")) {
-    segment = document["segment"].GetString();
-  }
-
-  if (document.HasMember("title")) {
-    title = document["title"].GetString();
-  }
-
-  if (document.HasMember("description")) {
-    description = document["description"].GetString();
-  }
-
-  if (document.HasMember("target_url")) {
-    target_url = GURL(document["target_url"].GetString());
-  }
-
-  return true;
-}
-
-void SaveToJson(JsonWriter* writer, const PromotedContentAdInfo& info) {
-  writer->StartObject();
-
-  writer->String("type");
-  writer->String(info.type.ToString().c_str());
-
-  writer->String("uuid");
-  writer->String(info.placement_id.c_str());
-
-  writer->String("creative_instance_id");
-  writer->String(info.creative_instance_id.c_str());
-
-  writer->String("creative_set_id");
-  writer->String(info.creative_set_id.c_str());
-
-  writer->String("campaign_id");
-  writer->String(info.campaign_id.c_str());
-
-  writer->String("advertiser_id");
-  writer->String(info.advertiser_id.c_str());
-
-  writer->String("segment");
-  writer->String(info.segment.c_str());
-
-  writer->String("title");
-  writer->String(info.title.c_str());
-
-  writer->String("description");
-  writer->String(info.description.c_str());
-
-  writer->String("target_url");
-  writer->String(info.target_url.spec().c_str());
-
-  writer->EndObject();
 }
 
 }  // namespace ads

@@ -113,8 +113,63 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest,
       Profile::OTRProfileID::CreateUnique("incognito"), true);
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(rc, net::ERR_INCOGNITO_IPFS_NOT_ALLOWED);
   EXPECT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       LoadDisabledWhenIPFS_WhenWrongIPFSUrl) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  // IPFS Subframe
+  {
+    GURL url("ipfs://10.10.10.1");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->resource_type = blink::mojom::ResourceType::kSubFrame;
+    brave_request_info->browser_context = profile();
+    int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(
+        brave::ResponseCallback(), brave_request_info);
+    EXPECT_EQ(rc, net::OK);
+    ASSERT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
+  }
+
+  // IPFS Mainframe
+  {
+    GURL url("ipfs://10.10.10.1");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+    brave_request_info->browser_context = profile();
+    int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(
+        brave::ResponseCallback(), brave_request_info);
+    EXPECT_EQ(rc, net::OK);
+    ASSERT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
+  }
+
+  // IPNS Subframe
+  {
+    GURL url("ipns://10.10.10.1");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->resource_type = blink::mojom::ResourceType::kSubFrame;
+    brave_request_info->browser_context = profile();
+    int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(
+        brave::ResponseCallback(), brave_request_info);
+    EXPECT_EQ(rc, net::OK);
+    ASSERT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
+  }
+
+  // IPFS Mainframe
+  {
+    GURL url("ipns://10.10.10.1");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+    brave_request_info->browser_context = profile();
+    int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(
+        brave::ResponseCallback(), brave_request_info);
+    EXPECT_EQ(rc, net::OK);
+    // It is correct ipns url.
+    ASSERT_EQ(brave_request_info->blocked_by, brave::kNotBlocked);
+  }
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest,
@@ -291,11 +346,12 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, PrivateProfile) {
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
+  brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
   brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
       initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(rc, net::ERR_INCOGNITO_IPFS_NOT_ALLOWED);
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 }
 

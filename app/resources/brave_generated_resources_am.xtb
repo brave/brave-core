@@ -109,9 +109,19 @@
 የተከፈቱ ትሮች አሉዎት።</translation>
 <translation id="2571596981920752023">1 <ph name="NUMBER_OF_TABS"/> 
 ትሮች</translation>
+<translation id="2272117088509540883">- ብሬቭ ፍለጋ</translation>
+<translation id="2701279958223202597">ገለልተኛ ፍለጋን ከተሻለ ግላዊነት ጋር ይደግፋል። ብሬቭ ፍለጋ እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም።</translation>
+<translation id="6438467592401259882">ገለልተኛ ፍለጋን ከተሻለ ግላዊነት ጋር ይደግፋል።</translation>
+<translation id="1688359110799098115">ገለልተኛ ፍለጋን ከተሻለ ግላዊነት ጋር ይደግፋል።</translation>
+<translation id="8579317236683491484">ብሬቭ ፍለጋ እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም።</translation>
+<translation id="5240031343741051161">ብሬቭ ፍለጋን ይሞክሩ</translation>
+<translation id="5026874946691314267">ይህንን እንደገና አታሳይ</translation>
+<translation id="5234764350956374838">አሰናብት</translation>
+<translation id="214744058941501853">"&gt;
+          የብሬቭ የፍለጋ ልወጣን አሰናብት፣ ይህን ጥቆማ ለማስወገድ ኢንተርን ይጫኑ</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
-<translation id="6040143037577758943">Brave ነባሪውን አሳሽ ያድርጉ።</translation>
+<translation id="6040143037577758943">ዝጋ</translation>
 <translation id="6665472986740899785">የBrave ማሳወቂያ ማስታወቂያ</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Searchን ለማሻሻል የተወሰነ የስም አልባ የፍለጋ &amp; የአሰሳ ውሂብ አስተዋጾ ያድርጉ።</translation>
@@ -138,6 +148,7 @@
 <translation id="8490082094734500369">የአንባቢ ሁነታን ያጥፉ</translation>
 <translation id="2036503787657622020">የአንባቢ ሁነታን ያብሩ</translation>
 <translation id="5226458915125328323">የፍጥነት አንባቢን ቅንብሮች</translation>
+<translation id="1621606336827646158">የመጀመሪያውን ገጽ አሳይ</translation>
 <translation id="6284218950354553099">የእለታዊ ፒንጅ ኣጠቃቀም በራስ-ሰር ወደ Brave  ላክ</translation>
 <translation id="5288333155754958121">ይህ ስም አልባ፣ የግል ፒንጅ፣ Brave ንቁ ተጠቃሚዎችን እንዲገምት ያስችለዋል።</translation>
 <translation id="1872784258300710671">Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናዎችን ይጠቀማል።</translation>
@@ -188,6 +199,8 @@
 <translation id="6817415381278637662">በከፈቱት በእያንዳንዱ ድረ-ገጽ ላይ የ Brave ን ግላዊነት ጥበቃ ለማግኘት Brave ን እንደ ነባሪ አሳሽዎ አድርገው ያቀናብሩ።</translation>
 <translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
 <translation id="2370739752330685659">ምናልባት በኋላ</translation>
+<translation id="961012016278832836">የማይክሮሶፍት ኤጅ ቅርስ</translation>
+<translation id="6436994631426134065">ከ<ph name="BROWSER_NAME"/> የመጣ።</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
@@ -204,9 +217,11 @@
 <translation id="2906510232093002459">የ Brave ነባሪ ምስሎች</translation>
 <translation id="2396127686705429331">የዕልባቶች አዝራር አሳይ</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
-<translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
-<translation id="597020512043916976">ዋና ዋና ገጾችን በራስ መሙያ ሃሳቦች ላይ አሳይ</translation>
-<translation id="301088458323355543">የተጠቆሙ ገጾችን በራስ መሙያ ጥቁምተ ሃሳቦች ላይ አሳይ</translation>
+<translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
+<translation id="2858138569776157458">ከፍተኛ ጣቢያዎች</translation>
+<translation id="65774893852758517">የተጠቆሙ ጣቢያዎች</translation>
+<translation id="7859704718976024901">የፍለጋ ታሪክ</translation>
+<translation id="8820817407110198400">ዕልባቶች</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="1811404036171336214">ምንጊዜም በአዲስ የ ትር ገጽ ላይ አዳዲስ ዕልባቶችን አሳይ</translation>
 <translation id="5529693968082667490">የትር ፍለጋ አዝራርን አሳይ</translation>
@@ -362,6 +377,8 @@
 እርግጠኛ ነዎት ይህን ማድረግ ይፈልጋሉ?</translation>
 <translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
 <translation id="919715748352669592">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ-ሰር ይጠቁማል።</translation>
+<translation id="842628013524824194">መደበኛ መስኮት - በአድራሻ ማስገቢያው ውስጥ ጥቅም ላይ የሚውል የፍለጋ ኤንጅን</translation>
+<translation id="5324939009884545145">የግል መስኮት - በአድራሻ ማስገቢያው ውስጥ ጥቅም ላይ የዋለው የፍለጋ ኤንጅን</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
 <translation id="7878791177459550035">የሚዲያ ራውተር በአሳሽ ውስጥ የcast ባህሪ እንዲሰራ ያደርጋል።</translation>
@@ -461,6 +478,7 @@
 <translation id="616058968889448209">የ IPFS አገልግሎት ማስጀመሪያ ስህተት ፣ ተጨማሪ መረጃ በ <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' ቁልፍን ማስመጣት አልተሳካም</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' ቁልፍ መላክ አልተሳካም</translation>
+<translation id="5840868269342837751">ማሳሰቢያ፡ የአውታረ መረብ ጥያቄዎች የአሳሽ ፕሮክሲ እና የዲ.ኤን.ኤስ ቅንብሮችን ላይጠቀሙ ይችላሉ።</translation>
 <translation id="8275038454117074363">ያስመጡ</translation>
 <translation id="3654980960391973513">ይፍጠሩ</translation>
 <translation id="5531501313997312487">የተገናኝ መሳሪያዎን ያስጀምሩ</translation>

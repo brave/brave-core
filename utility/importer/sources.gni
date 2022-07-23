@@ -16,7 +16,6 @@ if (!is_android) {
     "//brave/utility/importer/brave_profile_import_impl.h",
     "//brave/utility/importer/chrome_importer.cc",
     "//brave/utility/importer/chrome_importer.h",
-    "//brave/utility/importer/edge_importer.h",
   ]
 
   brave_utility_importer_deps += [

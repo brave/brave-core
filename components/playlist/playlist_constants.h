@@ -8,28 +8,15 @@
 
 namespace playlist {
 
-constexpr char kPlaylistMediaFileUrlKey[] = "mediaFileUrl";
-constexpr char kPlaylistMediaFileTitleKey[] = "mediaFileTitle";
-
-constexpr char kPlaylistPlaylistNameKey[] = "playlistName";
-constexpr char kPlaylistPlaylistThumbnailUrlKey[] = "playlistThumbnailUrl";
-constexpr char kPlaylistVideoMediaFilesKey[] = "videoMediaFiles";
-constexpr char kPlaylistAudioMediaFilesKey[] = "audioMediaFiles";
-
 constexpr char kPlaylistIDKey[] = "id";
-constexpr char kPlaylistThumbnailPathKey[] = "thumbnailPath";
-constexpr char kPlaylistVideoMediaFilePathKey[] = "videoMediaFilePath";
-constexpr char kPlaylistAudioMediaFilePathKey[] = "audioMediaFilePath";
-constexpr char kPlaylistReadyKey[] = "ready";
-constexpr char kPlaylistTitlesKey[] = "titles";
-constexpr char kPlaylistCreateParamsKey[] = "createParams";
+constexpr char kPlaylistNameKey[] = "name";
+constexpr char kPlaylistItemsKey[] = "items";
 
-constexpr char kPlaylistCreateParamsThumbnailUrlPathKey[] =
-    "createParams.playlistThumbnailUrl";
-constexpr char kPlaylistCreateParamsVideoMediaFilesPathKey[] =
-    "createParams.videoMediaFiles";
-constexpr char kPlaylistCreateParamsAudioMediaFilesPathKey[] =
-    "createParams.audioMediaFiles";
+constexpr char kPlaylistItemIDKey[] = "id";
+constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
+constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
+constexpr char kPlaylistItemReadyKey[] = "ready";
+constexpr char kPlaylistItemTitleKey[] = "title";
 
 }  // namespace playlist
 

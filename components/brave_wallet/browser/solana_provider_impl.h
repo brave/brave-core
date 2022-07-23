@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -78,23 +79,31 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                                      const std::string& account,
                                      SignMessageCallback callback,
                                      bool approved,
-                                     const std::string& signature,
-                                     const std::string& error);
-  void OnSignTransactionRequestProcessed(std::unique_ptr<SolanaTransaction> tx,
-                                         SignTransactionCallback callback,
-                                         bool approved);
+                                     mojom::ByteArrayStringUnionPtr signature,
+                                     const absl::optional<std::string>& error);
+  void OnSignTransactionRequestProcessed(
+      std::unique_ptr<SolanaTransaction> tx,
+      const std::string& account,
+      SignTransactionCallback callback,
+      bool approved,
+      mojom::ByteArrayStringUnionPtr signature,
+      const absl::optional<std::string>& error);
   void OnSignAllTransactionsRequestProcessed(
       const std::vector<std::unique_ptr<SolanaTransaction>>& txs,
+      const std::string& account,
       SignAllTransactionsCallback callback,
-      bool approved);
+      bool approved,
+      absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      const absl::optional<std::string>& error);
   void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,
                                   bool success,
                                   const std::string& tx_meta_id,
                                   const std::string& error_message);
 
-  absl::optional<SolanaMessage> GetDeserializedMessage(
-      const std::string& encoded_serialized_msg,
-      const std::string& account);
+  // Returns a pair of SolanaMessage and a raw message byte array.
+  absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>>
+  GetDeserializedMessage(const std::string& encoded_serialized_msg,
+                         const std::string& account);
 
   void OnRequestConnect(RequestCallback callback,
                         mojom::SolanaProviderError error,

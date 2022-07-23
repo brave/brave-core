@@ -46,7 +46,7 @@ function AllowAddChangeNetworkPanel (props: Props) {
     onApproveAddNetwork,
     onApproveChangeNetwork
   } = props
-  const rpcUrl = networkPayload.rpcUrls.length ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
+  const rpcUrl = networkPayload.rpcUrls.length ? networkPayload.rpcUrls[0] : ''
   const blockUrl = networkPayload.blockExplorerUrls.length ? networkPayload.blockExplorerUrls[0] : ''
 
   const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
@@ -92,12 +92,12 @@ function AllowAddChangeNetworkPanel (props: Props) {
           <PanelTab
             isSelected={selectedTab === 'network'}
             onSubmit={onSelectTab('network')}
-            text='Network'
+            text={getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
           />
           <PanelTab
             isSelected={selectedTab === 'details'}
             onSubmit={onSelectTab('details')}
-            text='Details'
+            text={getLocale('braveWalletAllowAddNetworkDetailsPanelTitle')}
           />
         </TabRow>
         <MessageBox>

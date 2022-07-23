@@ -16,12 +16,12 @@ namespace ads {
 
 namespace {
 
-bool DoesMatchDayOfWeek(const CreativeDaypartInfo& daypart,
-                        const std::string& day_of_week) {
+bool MatchDayOfWeek(const CreativeDaypartInfo& daypart,
+                    const std::string& day_of_week) {
   return daypart.dow.find(day_of_week) != std::string::npos;
 }
 
-bool DoesMatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
+bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
   if (minutes < daypart.start_minute || minutes > daypart.end_minute) {
     return false;
   }
@@ -71,11 +71,11 @@ bool DaypartExclusionRule::DoesRespectCap(
   const std::string& day_of_week_as_string = base::NumberToString(day_of_week);
 
   for (const CreativeDaypartInfo& daypart : creative_ad.dayparts) {
-    if (!DoesMatchDayOfWeek(daypart, day_of_week_as_string)) {
+    if (!MatchDayOfWeek(daypart, day_of_week_as_string)) {
       continue;
     }
 
-    if (!DoesMatchTimeSlot(daypart, local_time_as_minutes)) {
+    if (!MatchTimeSlot(daypart, local_time_as_minutes)) {
       continue;
     }
 

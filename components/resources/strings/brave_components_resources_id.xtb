@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Gunakan node IPFS lokal Brave</translation>
 <translation id="8148464361648742409">Gunakan gerbang jaringan publik</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) adalah jaringan publik untuk penyimpanan dan pengiriman data antar-rekan (peer-to-peer). Protokol ini memiliki pertimbangan privasi yang berbeda dengan HTTP(S).</translation>
-<translation id="5410952114182173389">Komputer Anda berkontribusi ke jaringan publik, tetapi alamat IP Anda dan segala konten yang Anda minta atau sediakan dapat terpapar. Konten yang Anda minta melalui IPFS diverifikasi sebelum disalurkan kepada Anda.</translation>
+<translation id="1216911189668016151">Komputer Anda berkontribusi untuk jaringan publik, namun alamat IP Anda dan setiap konten yang Anda minta atau berikan dapat terekspos. Konten yang Anda minta di IPFS diverifikasi sebelum disajikan kepada Anda. Permintaan jaringan mungkin tidak menggunakan proksi peramban dan pengaturan DNS.</translation>
 <translation id="8664689531113048642">Melindungi alamat IP dan konten yang Anda minta dari kemungkinan adanya pengamat pihak ketiga, tetapi tidak dari operator gerbang jaringan publik. Operator gerbang jaringan bertanggung jawab untuk memastikan bahwa konten yang disajikan kepada Anda melalui gerbang jaringan mereka benar-benar konten yang Anda minta. Juga, komputer Anda tidak berkontribusi kepada jaringan IPFS publik.</translation>
 <translation id="3977809385703587108">Anda dapat mengubah preferensi Anda lagi pada</translation>
 <translation id="3340978935015468852">setelan</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Impor dari dompet kripto Brave yang lama?</translation>
 <translation id="3331452756822160641">Kata Sandi Baru</translation>
 <translation id="8624315169751085215">Salin ke Papan Klip</translation>
+<translation id="7885157704277298658">Disalin!</translation>
 <translation id="1121335910737476837">Akun kripto primer</translation>
 <translation id="6969147029062037757">Akun yang diimpor</translation>
 <translation id="4057718162494343222">Anda dapat membuat akun primer di Dompet Brave yang mungkin telah didukung atau dipulihkan dari frasa pemulihan Anda. Untuk mempelajari lebih lanjut tentang jenis akun, silakan hubungi bantuan akun</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL Ikon</translation>
 <translation id="2144247757675997850">Tambahkan aset</translation>
 <translation id="2708402071160162126">PERINGATAN: Jangan pernah membagikan frasa pemulihan Anda. Siapa pun yang mengetahui frasa ini dapat mengambil aset Anda selamanya.</translation>
+<translation id="2416098547200943834">CATATAN: Kunci privat diberikan sebagai JSON dikodekan-hex yang berisi kunci privat dan informasi protokol. <ph name="LINK_START"/>Pelajari lebih lanjut<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">CATATAN: Kunci privat harus diberikan sebagai JSON dikodekan-hex yang berisi kunci privat dan informasi protokol. <ph name="LINK_START"/>Pelajari lebih lanjut<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Tunjukkan kunci</translation>
 <translation id="8033497299373164724">Sembunyikan kunci</translation>
 <translation id="2702143907607790516">Gagal memperbarui nama akun, silakan coba lagi.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Pesan</translation>
 <translation id="3586752056660754651">Tanda tangani</translation>
 <translation id="3484981968509595506">Ada DApp yang meminta kunci enkripsi publik Anda</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> meminta kunci enkripsi publik dompet Anda. Jika Anda mengizinkan pemberian kunci ini, situs ini akan dapat menyusun pesan terenkripsi bagi Anda.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> meminta kunci enkripsi publik dompet Anda. Jika Anda setuju untuk memberikan kunci ini, situs ini akan dapat menyusun pesan terenkripsi bagi Anda.</translation>
 <translation id="3340247553212049934">Sediakan</translation>
 <translation id="1619778919922494944">DApp ini ingin membaca pesan ini sebelum menyelesaikan permintaan Anda</translation>
 <translation id="714506544401754321">Dekripsi pesan</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus</translation>
 <translation id="5317781812114905957">Instruksi</translation>
 <translation id="1178198982208000092">Hubungkan <ph name="DEVICE_NAME"/> Anda</translation>
-<translation id="4358411489835404360">Dompet peranti keras memerlukan konfirmasi pada perangkat. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Dompet peranti keras perlu membuka Aplikasi Ethereum di <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Dompet perangkat keras memerlukan konfirmasi pada perangkat<ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Dompet perangkat keras memerlukan Aplikasi <ph name="NETWORK"/> dibuka di <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dikirim</translation>
 <translation id="5013754027092416509">diterima</translation>
 <translation id="5867988533873716616">Memblokir URL penjelajah tidak tersedia.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> bukanlah jaringan kerja saat ini</translation>
 <translation id="7340805872138998391">Tidak dapat membuka kunci perangkat, cobalah untuk menyambungkan kembali</translation>
 <translation id="1984410139271779110">Kesalahan internal, skema tidak dikenal</translation>
-<translation id="8682200134223578011">disetujui</translation>
+<translation id="6989562355845156390">setujui</translation>
 <translation id="4674380028960132654">Ledger: Tanda tangan tidak sesuai dengan alamat yang benar</translation>
 <translation id="3183932890629254743">Akun peranti keras tidak ditemukan</translation>
 <translation id="4287068151777838754">Data JSON tidak diharapkan</translation>
@@ -1175,7 +1178,7 @@
 <translation id="6423985584914773314">Bukan alamat FIL yang valid</translation>
 <translation id="3898731124813934210">Beli dengan Wyre</translation>
 <translation id="5522073372365069684">Beli dengan Ramp</translation>
-<translation id="8725252491405767337">Jaringan.Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="7667423728712601865">Beli kripto dengan Visa atau Mastercard.</translation>
 <translation id="8528916244724490964">Semua Jaringan</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transaksi dikonfirmasi</translation>
 <translation id="310693998838023022">Kesalahan transaksi</translation>
 <translation id="6395870673621520684">Transaksi dibatalkan</translation>
+<translation id="1237782734462409503">Tab tidak aktif</translation>
+<translation id="756701799684433105">Setujui transaksi</translation>
+<translation id="6450792191436242818">Program Sistem</translation>
+<translation id="6252742184395380448">Program Konfigurasi</translation>
+<translation id="5358970666412490132">Program Taruhan</translation>
+<translation id="346636227344244984">Program Pemberian Suara</translation>
+<translation id="3538368258493053874">Pemuat BPF</translation>
+<translation id="2334098351242742927">Program Ed25519</translation>
+<translation id="8780753288764281797">Program Secp256k1</translation>
+<translation id="5275550100743015683">Alamat Dari:</translation>
+<translation id="2678433693746214764">Alamat Ke:</translation>
+<translation id="4576396475962922672">Akun Baru:</translation>
+<translation id="4719005063558335704">Akun:</translation>
+<translation id="4337554812324118382">Data:</translation>
+<translation id="569870799832027680">ID Program:</translation>
+<translation id="7843211152394841558">Coba Ulang Maksimal:</translation>
+<translation id="8496335570810457">Komitmen Simulasi Transaksi:</translation>
+<translation id="5100124500279922001">Lewati Simulasi Transaksi:</translation>
+<translation id="8060029310790625334">Pusat Bantuan</translation>
+<translation id="2095142195578664632">Perlu bantuan? Lihat</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
 <translation id="3745016858329272300">Info Umum</translation>
 <translation id="4045404575593562245">Peristiwa Kendali Tor</translation>

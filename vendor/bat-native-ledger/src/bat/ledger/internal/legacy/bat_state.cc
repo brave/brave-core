@@ -6,11 +6,11 @@
 #include <algorithm>
 #include <utility>
 
-#include "bat/ledger/internal/legacy/bat_helper.h"
-#include "bat/ledger/internal/legacy/bat_state.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/legacy/client_state.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
+#include "bat/ledger/internal/legacy/bat_state.h"
+#include "bat/ledger/internal/legacy/client_properties.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -24,7 +24,7 @@ LegacyBatState::LegacyBatState(ledger::LedgerImpl* ledger) :
 
 LegacyBatState::~LegacyBatState() = default;
 
-void LegacyBatState::Load(ledger::ResultCallback callback) {
+void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
   auto load_callback = std::bind(&LegacyBatState::OnLoad,
       this,
       _1,
@@ -33,18 +33,16 @@ void LegacyBatState::Load(ledger::ResultCallback callback) {
   ledger_->ledger_client()->LoadLedgerState(load_callback);
 }
 
-void LegacyBatState::OnLoad(
-      const ledger::type::Result result,
-      const std::string& data,
-      ledger::ResultCallback callback) {
+void LegacyBatState::OnLoad(ledger::type::Result result,
+                            const std::string& data,
+                            ledger::LegacyResultCallback callback) {
   if (result != ledger::type::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
   ledger::ClientProperties state;
-  const ledger::ClientState client_state;
-  if (!client_state.FromJson(data, &state)) {
+  if (!state.FromJson(data)) {
     BLOG(0, "Failed to load client state");
     BLOG(6, "Client state contents: " << data);
     callback(ledger::type::Result::LEDGER_ERROR);

@@ -37,9 +37,8 @@ class BatLedgerClientMojoBridge :
   void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
 
-  void LoadURL(
-      ledger::type::UrlRequestPtr request,
-      ledger::client::LoadURLCallback callback) override;
+  void LoadURL(ledger::type::UrlRequestPtr request,
+               ledger::client::LoadURLCallback callback) override;
 
   void OnPanelPublisherInfo(ledger::type::Result result,
                             ledger::type::PublisherInfoPtr info,
@@ -57,6 +56,9 @@ class BatLedgerClientMojoBridge :
   std::string URIEncode(const std::string& value) override;
 
   void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
+
+  void OnPublisherRegistryUpdated() override;
+  void OnPublisherUpdated(const std::string& publisher_id) override;
 
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;
@@ -87,10 +89,9 @@ class BatLedgerClientMojoBridge :
 
   std::string GetLegacyWallet() override;
 
-  void ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      ledger::client::ResultCallback callback) override;
+  void ShowNotification(const std::string& type,
+                        const std::vector<std::string>& args,
+                        ledger::client::LegacyResultCallback callback) override;
 
   ledger::type::ClientInfoPtr GetClientInfo() override;
 
@@ -116,7 +117,7 @@ class BatLedgerClientMojoBridge :
 
   void WalletDisconnected(const std::string& wallet_type) override;
 
-  void DeleteLog(ledger::client::ResultCallback callback) override;
+  void DeleteLog(ledger::client::LegacyResultCallback callback) override;
 
   absl::optional<std::string> EncryptString(const std::string& name) override;
 

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 
@@ -21,8 +22,8 @@ struct ADS_EXPORT PromotedContentAdInfo final : AdInfo {
 
   bool IsValid() const;
 
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string title;
   std::string description;

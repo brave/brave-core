@@ -61,6 +61,21 @@ class SwapService : public KeyedService, public mojom::SwapService {
                                const std::string& chain_id);
   static GURL GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
                                        const std::string& chain_id);
+
+  static GURL GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
+                                 const std::string& chain_id);
+
+  static GURL GetJupiterSwapTransactionsURL(const std::string& chain_id);
+
+  // Obtains a price quote from Jupiter for a Solana swap
+  void GetJupiterQuote(mojom::JupiterQuoteParamsPtr swap_params,
+                       GetJupiterQuoteCallback callback) override;
+
+  // Get the serialized transactions to perform the swap
+  void GetJupiterSwapTransactions(
+      mojom::JupiterSwapParamsPtr params,
+      GetJupiterSwapTransactionsCallback callback) override;
+
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:
@@ -70,6 +85,18 @@ class SwapService : public KeyedService, public mojom::SwapService {
                        const base::flat_map<std::string, std::string>& headers);
   void OnGetTransactionPayload(
       GetTransactionPayloadCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetJupiterQuote(
+      GetJupiterQuoteCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetJupiterSwapTransactions(
+      GetJupiterSwapTransactionsCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

@@ -15,6 +15,7 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 
 // types
 import { BraveWallet, CreateAccountOptionsType, WalletRoutes, WalletState } from '../../../../constants/types'
+import { FilecoinNetworkTypes, FilecoinNetworkLocaleMapping, FilecoinNetwork } from '../../../../common/hardware/types'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -24,11 +25,13 @@ import { WalletActions } from '../../../../common/actions'
 import { DividerLine, NavButton } from '../../../../components/extension'
 import PopupModal from '..'
 import { SelectAccountType } from './select-account-type'
+import { Select } from 'brave-ui/components'
 
 // style
 import {
   Input,
-  StyledWrapper
+  StyledWrapper,
+  SelectWrapper
 } from './style'
 
 interface Params {
@@ -49,6 +52,7 @@ export const CreateAccountModal = () => {
 
   // state
   const [accountName, setAccountName] = React.useState<string>('')
+  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
 
   // memos
   const selectedAccountType: CreateAccountOptionsType | undefined = React.useMemo(() => {
@@ -80,14 +84,21 @@ export const CreateAccountModal = () => {
     setImportAccountError(false)
   }, [setImportAccountError])
 
+  const onChangeFilecoinNetwork = React.useCallback((network: FilecoinNetwork) => {
+    setFilecoinNetwork(network)
+  }, [])
+
   const onClickCreateAccount = React.useCallback(() => {
-    const created = dispatch(WalletActions.addAccount({ accountName, coin: selectedAccountType?.coin || BraveWallet.CoinType.ETH }))
+    const created =
+       (selectedAccountType?.coin === BraveWallet.CoinType.FIL)
+          ? dispatch(WalletActions.addFilecoinAccount({ accountName, network: filecoinNetwork }))
+          : dispatch(WalletActions.addAccount({ accountName, coin: selectedAccountType?.coin || BraveWallet.CoinType.ETH }))
     if (created) {
       if (walletLocation.includes(WalletRoutes.Accounts)) {
         history.push(WalletRoutes.Accounts)
       }
     }
-  }, [accountName, selectedAccountType])
+  }, [accountName, selectedAccountType, filecoinNetwork])
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -118,6 +129,23 @@ export const CreateAccountModal = () => {
       <DividerLine />
       {selectedAccountType &&
         <StyledWrapper>
+          {selectedAccountType?.coin === BraveWallet.CoinType.FIL &&
+            <>
+            <SelectWrapper>
+              <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
+                {FilecoinNetworkTypes.map((network, index) => {
+                  const networkLocale = FilecoinNetworkLocaleMapping[network]
+                  return (
+                    <div data-value={network} key={index}>
+                      {networkLocale}
+                    </div>
+                  )
+                })}
+              </Select>
+            </SelectWrapper>
+          </>
+          }
+
           <Input
             value={accountName}
             placeholder={getLocale('braveWalletAddAccountPlaceholder')}
@@ -125,6 +153,7 @@ export const CreateAccountModal = () => {
             onChange={handleAccountNameChanged}
             autoFocus={true}
           />
+
           <NavButton
             onSubmit={onClickCreateAccount}
             disabled={isDisabled}

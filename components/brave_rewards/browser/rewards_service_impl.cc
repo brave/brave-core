@@ -503,9 +503,8 @@ void RewardsServiceImpl::OnLedgerCreated() {
       base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnResult(
-    ledger::ResultCallback callback,
-    const ledger::type::Result result) {
+void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
+                                  ledger::type::Result result) {
   callback(result);
 }
 
@@ -966,13 +965,12 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
       data);
 }
 
-void RewardsServiceImpl::LoadURL(
-    ledger::type::UrlRequestPtr request,
-    ledger::client::LoadURLCallback callback) {
+void RewardsServiceImpl::LoadURL(ledger::type::UrlRequestPtr request,
+                                 ledger::client::LoadURLCallback callback) {
   if (!request || request->url.empty()) {
     ledger::type::UrlResponse response;
     response.status_code = net::HTTP_BAD_REQUEST;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 
@@ -981,7 +979,7 @@ void RewardsServiceImpl::LoadURL(
     ledger::type::UrlResponse response;
     response.url = request->url;
     response.status_code = net::HTTP_BAD_REQUEST;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 
@@ -1001,7 +999,7 @@ void RewardsServiceImpl::LoadURL(
     response.status_code = response_status_code;
     response.body = test_response;
     response.headers = test_headers;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 
@@ -1045,7 +1043,7 @@ void RewardsServiceImpl::LoadURL(
           ->GetURLLoaderFactoryForBrowserProcess()
           .get(),
       base::BindOnce(&RewardsServiceImpl::OnURLLoaderComplete,
-                     base::Unretained(this), loader_it, callback));
+                     base::Unretained(this), loader_it, std::move(callback)));
 }
 
 void RewardsServiceImpl::OnURLLoaderComplete(
@@ -1090,7 +1088,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
     }
   }
 
-  callback(response);
+  std::move(callback).Run(response);
 }
 
 void RewardsServiceImpl::OnGetRewardsParameters(
@@ -1112,7 +1110,7 @@ void RewardsServiceImpl::GetRewardsParameters(
 }
 
 void RewardsServiceImpl::OnFetchPromotions(
-    const ledger::type::Result result,
+    ledger::type::Result result,
     ledger::type::PromotionList promotions) {
   for (auto& observer : observers_) {
     ledger::type::PromotionList promotions_clone;
@@ -1963,6 +1961,18 @@ void RewardsServiceImpl::UpdateMediaDuration(
       first_visit);
 }
 
+void RewardsServiceImpl::IsPublisherRegistered(
+    const std::string& publisher_id,
+    base::OnceCallback<void(bool)> callback) {
+  if (!Connected()) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), false));
+    return;
+  }
+
+  bat_ledger_->IsPublisherRegistered(publisher_id, std::move(callback));
+}
+
 void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
@@ -2526,6 +2536,18 @@ void RewardsServiceImpl::PublisherListNormalized(
   }
 }
 
+void RewardsServiceImpl::OnPublisherRegistryUpdated() {
+  for (auto& observer : observers_) {
+    observer.OnPublisherRegistryUpdated();
+  }
+}
+
+void RewardsServiceImpl::OnPublisherUpdated(const std::string& publisher_id) {
+  for (auto& observer : observers_) {
+    observer.OnPublisherUpdated(publisher_id);
+  }
+}
+
 void RewardsServiceImpl::RefreshPublisher(
     const std::string& publisher_key,
     RefreshPublisherCallback callback) {
@@ -2886,9 +2908,9 @@ void RewardsServiceImpl::DisconnectWallet() {
 }
 
 void RewardsServiceImpl::ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      ledger::ResultCallback callback) {
+    const std::string& type,
+    const std::vector<std::string>& args,
+    ledger::LegacyResultCallback callback) {
   if (type.empty()) {
     callback(ledger::type::Result::LEDGER_ERROR);
     return;
@@ -3082,7 +3104,7 @@ void RewardsServiceImpl::OnRunDBTransaction(
     ledger::client::RunDBTransactionCallback callback,
     ledger::type::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  callback(std::move(response));
+  std::move(callback).Run(std::move(response));
 }
 
 void RewardsServiceImpl::GetCreateScript(
@@ -3171,7 +3193,7 @@ void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
 
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service) {
-    ads_service->ResetAllState(/* should_shutdown */ true);
+    ads_service->WipeState(/* should_shutdown */ true);
   }
 
   StopNotificationTimers();
@@ -3208,14 +3230,15 @@ void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
   OnDisconnectWallet(wallet_type, ledger::type::Result::LEDGER_OK);
 }
 
-void RewardsServiceImpl::DeleteLog(ledger::ResultCallback callback) {
+void RewardsServiceImpl::DeleteLog(ledger::LegacyResultCallback callback) {
   diagnostic_log_->Delete(
       base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogDeleted, AsWeakPtr(),
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnDiagnosticLogDeleted(ledger::ResultCallback callback,
-                                                const bool success) {
+void RewardsServiceImpl::OnDiagnosticLogDeleted(
+    ledger::LegacyResultCallback callback,
+    bool success) {
   const auto result = success
       ? ledger::type::Result::LEDGER_OK
       : ledger::type::Result::LEDGER_ERROR;

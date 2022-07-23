@@ -11,7 +11,6 @@
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
-#include "bat/ads/internal/ads/serving/delivery/notification_ads/notification_ad_delivery.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
 #include "bat/ads/internal/ads/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
@@ -23,7 +22,6 @@
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
@@ -145,14 +143,7 @@ void Serving::MaybeServeAd() {
         const CreativeNotificationAdInfo& creative_ad = creative_ads.at(rand);
 
         const NotificationAdInfo& ad = BuildNotificationAd(creative_ad);
-        if (!ServeAd(ad)) {
-          BLOG(1, "Failed to serve notification ad");
-          FailedToServeAd();
-          return;
-        }
-
-        BLOG(1, "Served notification ad");
-        ServedAd(ad);
+        ServeAd(ad);
       });
 }
 
@@ -207,7 +198,7 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  const int64_t ads_per_hour = settings::GetNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }
@@ -236,10 +227,14 @@ base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
       base::BindOnce(&Serving::MaybeServeAd, base::Unretained(this)));
 }
 
-bool Serving::ServeAd(const NotificationAdInfo& ad) const {
-  DCHECK(ad.IsValid());
+void Serving::ServeAd(const NotificationAdInfo& ad) {
+  if (!ad.IsValid()) {
+    BLOG(1, "Failed to serve notification ad");
+    FailedToServeAd();
+    return;
+  }
 
-  BLOG(1, "Serving notification ad:\n"
+  BLOG(1, "Served notification ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
@@ -250,14 +245,14 @@ bool Serving::ServeAd(const NotificationAdInfo& ad) const {
               << "  body: " << ad.body << "\n"
               << "  targetUrl: " << ad.target_url);
 
-  Delivery delivery;
-  if (!delivery.MaybeDeliverAd(ad)) {
-    return false;
-  }
+  DCHECK(eligible_ads_);
+  eligible_ads_->SetLastServedAd(ad);
 
   NotifyDidServeNotificationAd(ad);
 
-  return true;
+  is_serving_ = false;
+
+  MaybeServeAdAtNextRegularInterval();
 }
 
 void Serving::FailedToServeAd() {
@@ -266,15 +261,6 @@ void Serving::FailedToServeAd() {
   NotifyFailedToServeNotificationAd();
 
   RetryServingAdAtNextInterval();
-}
-
-void Serving::ServedAd(const NotificationAdInfo& ad) {
-  DCHECK(eligible_ads_);
-  eligible_ads_->SetLastServedAd(ad);
-
-  is_serving_ = false;
-
-  MaybeServeAdAtNextRegularInterval();
 }
 
 void Serving::NotifyOpportunityAroseToServeNotificationAd(
@@ -303,8 +289,8 @@ void Serving::OnPrefChanged(const std::string& path) {
 }
 
 void Serving::OnAdsPerHourPrefChanged() {
-  const int64_t ads_per_hour = settings::GetAdsPerHour();
-  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+  const int64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {
     return;

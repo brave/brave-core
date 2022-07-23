@@ -94,6 +94,10 @@ void TestLedgerClient::OnPanelPublisherInfo(
     mojom::PublisherInfoPtr publisher_info,
     uint64_t windowId) {}
 
+void TestLedgerClient::OnPublisherRegistryUpdated() {}
+
+void TestLedgerClient::OnPublisherUpdated(const std::string& publisher_id) {}
+
 void TestLedgerClient::FetchFavIcon(const std::string& url,
                                     const std::string& favicon_key,
                                     client::FetchIconCallback callback) {
@@ -108,9 +112,9 @@ void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
                                client::LoadURLCallback callback) {
   DCHECK(request);
   base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
-                     weak_factory_.GetWeakPtr(), std::move(request), callback));
+      FROM_HERE, base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
+                                weak_factory_.GetWeakPtr(), std::move(request),
+                                std::move(callback)));
 }
 
 void TestLedgerClient::Log(const char* file,
@@ -250,7 +254,8 @@ std::string TestLedgerClient::GetLegacyWallet() {
 
 void TestLedgerClient::ShowNotification(const std::string& type,
                                         const std::vector<std::string>& args,
-                                        client::ResultCallback callback) {}
+                                        client::LegacyResultCallback callback) {
+}
 
 mojom::ClientInfoPtr TestLedgerClient::GetClientInfo() {
   auto info = mojom::ClientInfo::New();
@@ -269,7 +274,7 @@ void TestLedgerClient::RunDBTransaction(
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(&TestLedgerClient::RunDBTransactionAfterDelay,
                                 weak_factory_.GetWeakPtr(),
-                                std::move(transaction), callback));
+                                std::move(transaction), std::move(callback)));
 }
 
 void TestLedgerClient::GetCreateScript(
@@ -283,7 +288,7 @@ void TestLedgerClient::ClearAllNotifications() {}
 
 void TestLedgerClient::WalletDisconnected(const std::string& wallet_type) {}
 
-void TestLedgerClient::DeleteLog(client::ResultCallback callback) {
+void TestLedgerClient::DeleteLog(client::LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);
 }
 
@@ -322,7 +327,7 @@ void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
                            });
 
   if (iter != network_results_.end()) {
-    callback(*iter->response);
+    std::move(callback).Run(*iter->response);
     network_results_.erase(iter);
     return;
   }
@@ -333,14 +338,14 @@ void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
   mojom::UrlResponse response;
   response.url = request->url;
   response.status_code = net::HTTP_BAD_REQUEST;
-  callback(response);
+  std::move(callback).Run(response);
 }
 
 void TestLedgerClient::RunDBTransactionAfterDelay(
     mojom::DBTransactionPtr transaction,
     client::RunDBTransactionCallback callback) {
   auto response = ledger_database_.RunTransaction(std::move(transaction));
-  callback(std::move(response));
+  std::move(callback).Run(std::move(response));
 }
 
 }  // namespace ledger

@@ -6,7 +6,9 @@ import { HostState } from './interfaces'
 
 export function getInitialState (): HostState {
   return {
+    openTime: Date.now(),
     loading: true,
+    requestedView: null,
     rewardsEnabled: false,
     balance: 0,
     settings: {
@@ -27,6 +29,7 @@ export function getInitialState (): HostState {
       earningsThisMonth: 0,
       earningsLastMonth: 0
     },
+    payoutStatus: {},
     publisherInfo: null,
     publisherRefreshing: false,
     externalWalletProviders: [],

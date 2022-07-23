@@ -59,6 +59,7 @@
       <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
 
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
+      <part file="../playlist/resources/playlist_resources.grdp" />
       <part file="brave_blank_page_resources.grdp" />
       <part file="brave_translate_resources.grdp" />
       <part file="speedreader_resources.grdp" />

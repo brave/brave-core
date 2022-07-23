@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_INLINE_CONTENT_ADS_CREATIVE_INLINE_CONTENT_AD_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "url/gurl.h"
@@ -30,6 +31,8 @@ struct CreativeInlineContentAdInfo final : CreativeAdInfo {
   std::string dimensions;
   std::string cta_text;
 };
+
+using CreativeInlineContentAdList = std::vector<CreativeInlineContentAdInfo>;
 
 }  // namespace ads
 

@@ -38,7 +38,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostClaimUpholdCallback =
-    std::function<void(const type::Result result, const std::string& address)>;
+    base::OnceCallback<void(type::Result result, const std::string& address)>;
 
 class PostClaimUphold {
  public:
@@ -56,9 +56,9 @@ class PostClaimUphold {
 
   std::string GetUrl() const;
 
-  void OnRequest(const type::UrlResponse& response,
+  void OnRequest(PostClaimUpholdCallback callback,
                  const std::string& address,
-                 PostClaimUpholdCallback callback) const;
+                 const type::UrlResponse& response) const;
 
   type::Result ProcessResponse(const type::UrlResponse& response) const;
 

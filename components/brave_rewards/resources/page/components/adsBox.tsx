@@ -20,6 +20,8 @@ import {
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 
+import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
+import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
 
 import * as style from './style'
@@ -409,12 +411,13 @@ class AdsBox extends React.Component<Props, State> {
     let earningsThisMonth = 0
     let earningsLastMonth = 0
     let adEarningsReceived = false
-    let needsBrowserUpdateToSeeAds = false
+    let needsBrowserUpgradeToServeAds = false
 
     const {
       adsData,
       adsHistory,
       balanceReport,
+      externalWallet,
       parameters
     } = this.props.rewardsData
 
@@ -427,7 +430,7 @@ class AdsBox extends React.Component<Props, State> {
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
-      needsBrowserUpdateToSeeAds = adsData.needsBrowserUpdateToSeeAds
+      needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
     }
 
     if (balanceReport) {
@@ -441,6 +444,13 @@ class AdsBox extends React.Component<Props, State> {
     const historyEntries = adsHistory || []
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
     const tokenString = getLocale('tokens')
+
+    const walletStatus = externalWallet ? externalWallet.status : null
+    const walletProvider = externalWallet
+      ? externalWalletProviderFromString(externalWallet.type) : null
+    const providerPayoutStatus = getProviderPayoutStatus(
+      parameters.payoutStatus,
+      walletProvider && walletStatus ? walletProvider : null)
 
     return (
       <>
@@ -458,7 +468,7 @@ class AdsBox extends React.Component<Props, State> {
           onSettingsClick={this.onSettingsToggle}
           attachedAlert={this.adsNotSupportedAlert(adsIsSupported)}
           headerAlert={
-            (needsBrowserUpdateToSeeAds && !this.state.settings)
+            (needsBrowserUpgradeToServeAds && !this.state.settings)
               ? this.needsBrowserUpdateView()
               : null
           }
@@ -468,6 +478,7 @@ class AdsBox extends React.Component<Props, State> {
               earningsLastMonth={earningsLastMonth}
               earningsReceived={adEarningsReceived}
               nextPaymentDate={nextPaymentDate}
+              providerPayoutStatus={providerPayoutStatus}
             />
           </style.PaymentStatus>
           <List title={getLocale('adsCurrentEarnings')}>
@@ -496,7 +507,7 @@ class AdsBox extends React.Component<Props, State> {
           </List>
           {
             <ShowAdsHistory
-                onAdsHistoryOpen={this.onAdsHistoryToggle}
+              onAdsHistoryOpen={this.onAdsHistoryToggle}
             />
           }
         </Box>

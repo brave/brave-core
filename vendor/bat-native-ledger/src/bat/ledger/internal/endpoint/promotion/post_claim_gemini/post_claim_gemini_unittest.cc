@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
@@ -59,7 +60,7 @@ TEST_F(PostClaimGeminiTest, ServerOK) {
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](const type::Result result) {
@@ -80,7 +81,7 @@ TEST_F(PostClaimGeminiTest, ServerError400FlaggedWallet) {
     "code": 400
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](type::Result result) {
@@ -101,7 +102,7 @@ TEST_F(PostClaimGeminiTest, ServerError400RegionNotSupported) {
     "code": 400
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](type::Result result) {
@@ -122,7 +123,7 @@ TEST_F(PostClaimGeminiTest, ServerError400UnknownMessage) {
     "code": 400
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](type::Result result) {
@@ -143,7 +144,7 @@ TEST_F(PostClaimGeminiTest, ServerError403MismatchedProviderAccounts) {
     "code": 403
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](type::Result result) {
@@ -164,7 +165,7 @@ TEST_F(PostClaimGeminiTest, ServerError403RequestSignatureVerificationFailure) {
     "code": 403
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](type::Result result) {
@@ -185,7 +186,7 @@ TEST_F(PostClaimGeminiTest, ServerError403UnknownMessage) {
     "code": 403
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](type::Result result) {
@@ -201,7 +202,7 @@ TEST_F(PostClaimGeminiTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](const type::Result result) {
@@ -217,7 +218,7 @@ TEST_F(PostClaimGeminiTest, ServerError409) {
             response.status_code = net::HTTP_CONFLICT;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](const type::Result result) {
@@ -233,7 +234,7 @@ TEST_F(PostClaimGeminiTest, ServerError500) {
             response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](const type::Result result) {
@@ -249,7 +250,7 @@ TEST_F(PostClaimGeminiTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("mock_linking_info", "id", [](const type::Result result) {

@@ -6,7 +6,7 @@
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {loadTimeData} from "../i18n_setup.js"
 import '../settings_shared_css.js';
-import '../settings_vars_css.js';
+import '../settings_vars.css.js';
 
 /**
  * 'settings-brave-appearance-toolbar' is the settings page area containing

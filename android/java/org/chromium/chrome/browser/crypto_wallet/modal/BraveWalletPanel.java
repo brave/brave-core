@@ -24,13 +24,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.lifecycle.Observer;
 
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -39,11 +42,13 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -77,6 +82,30 @@ public class BraveWalletPanel implements DialogInterface {
     private BraveWalletPanelServices mBraveWalletPanelServices;
     private ImageView mAccountChangeAnchor;
     private View mContainerConstraintLayout;
+    private WalletModel mWalletModel;
+    private Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
+        if (accountInfo == null) return;
+        // TODO (pav): remove BraveWalletConstants.DEFAULT_KEYRING_ID
+        mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
+                BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+                    if (keyringInfo != null) {
+                        mAccountInfos = keyringInfo.accountInfos;
+                    }
+                    AccountsPermissionsHelper accountsPermissionsHelper =
+                            new AccountsPermissionsHelper(
+                                    mBraveWalletPanelServices.getBraveWalletService(),
+                                    mAccountInfos, Utils.getCurrentMojomOrigin());
+                    accountsPermissionsHelper.checkAccounts(() -> {
+                        mAccountsWithPermissions =
+                                accountsPermissionsHelper.getAccountsWithPermissions();
+                        updateAccountInfo(accountInfo.address);
+                    });
+                });
+    };
+
+    private final Observer<NetworkInfo> mDefaultNetworkObserver = networkInfo -> {
+        mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
+    };
 
     public interface BraveWalletPanelServices {
         AssetRatioService getAssetRatioService();
@@ -118,6 +147,10 @@ public class BraveWalletPanel implements DialogInterface {
                 dismiss();
             }
         });
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
         setUpViews();
     }
 
@@ -196,6 +229,7 @@ public class BraveWalletPanel implements DialogInterface {
 
     @Override
     public void dismiss() {
+        cleanUpObservers();
         mPopupWindow.dismiss();
         if (mOnDismissListener != null) {
             mOnDismissListener.onDismiss(this);
@@ -203,69 +237,30 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     public void resume() {
-        if (isShowing()) {
-            updateState();
-            updateStatus();
-        }
+        setUpObservers();
+    }
+
+    public void pause() {
+        cleanUpObservers();
     }
 
     public boolean isShowing() {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }
 
-    private void updateState() {
-        mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
-            mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String strNetwork =
-                        Utils.getNetworkShortText(mActivity, chainId, customNetworks).toString();
-                mBtnSelectedNetwork.setText(strNetwork);
-            });
-        });
+    private void setUpObservers() {
+        cleanUpObservers();
+        mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().observeForever(
+                mAccountInfoObserver);
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observeForever(
+                mDefaultNetworkObserver);
     }
 
-    private void updateStatus() {
-        mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
-                BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-                    if (keyringInfo != null) {
-                        mAccountInfos = keyringInfo.accountInfos;
-                    }
-                    AccountsPermissionsHelper accountsPermissionsHelper =
-                            new AccountsPermissionsHelper(
-                                    mBraveWalletPanelServices.getBraveWalletService(),
-                                    mAccountInfos, Utils.getCurrentMojomOrigin());
-                    accountsPermissionsHelper.checkAccounts(() -> {
-                        mAccountsWithPermissions =
-                                accountsPermissionsHelper.getAccountsWithPermissions();
-                        updateAccount();
-                    });
-                });
-    }
-
-    private void updateAccount() {
-        mBraveWalletPanelServices.getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
-            String selectedAccount = "";
-            if (address != null && !address.isEmpty()) {
-                selectedAccount = address;
-                updateAccountInfo(selectedAccount);
-            } else {
-                if (!mAccountsWithPermissions.isEmpty()) {
-                    selectedAccount = mAccountsWithPermissions.iterator().next().address;
-                } else if (mAccountInfos.length > 0) {
-                    selectedAccount = mAccountInfos[0].address;
-                }
-                setSelectedAccount(selectedAccount);
-            }
-        });
-    }
-
-    private void setSelectedAccount(String selectedAccount) {
-        mBraveWalletPanelServices.getKeyringService().setSelectedAccount(
-                selectedAccount, CoinType.ETH, success -> {
-                    if (success) {
-                        updateAccountInfo(selectedAccount);
-                    }
-                });
+    private void cleanUpObservers() {
+        mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().removeObserver(
+                mAccountInfoObserver);
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.removeObserver(
+                mDefaultNetworkObserver);
     }
 
     private void updateAccountInfo(String selectedAccount) {
@@ -300,42 +295,30 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void getBalance(AccountInfo[] selectedAccount) {
-        if (selectedAccount.length == 0) {
+        if (selectedAccount.length != 1) {
             return;
         }
-        mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
-            mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
-                SingleTokenBalanceHelper singleTokenBalanceHelper = new SingleTokenBalanceHelper(
-                        mBraveWalletPanelServices.getAssetRatioService(),
-                        mBraveWalletPanelServices.getJsonRpcService());
-                String chainSymbol = "ETH";
-                int chainDecimals = 18;
-                for (NetworkInfo chain : chains) {
-                    if (chainId.equals(chain.chainId) && Utils.isCustomNetwork(chainId)) {
-                        chainSymbol = chain.symbol;
-                        chainDecimals = chain.decimals;
-                        break;
-                    }
-                }
-                final String chainSymbolFinal = chainSymbol;
-                singleTokenBalanceHelper.getPerAccountBalances(chainId, "",
-                        chainSymbol.toLowerCase(Locale.getDefault()), chainDecimals,
-                        selectedAccount, () -> {
-                            Double thisAccountFiatBalance = Utils.getOrDefault(
-                                    singleTokenBalanceHelper.getPerAccountFiatBalance(),
-                                    selectedAccount[0].address, 0.0d);
-                            String fiatBalanceString = String.format(
-                                    Locale.getDefault(), "$%,.2f", thisAccountFiatBalance);
-
-                            Double thisAccountCryptoBalance = Utils.getOrDefault(
-                                    singleTokenBalanceHelper.getPerAccountCryptoBalance(),
-                                    selectedAccount[0].address, 0.0d);
-                            String cryptoBalanceString = String.format(Locale.getDefault(),
-                                    "%.4f %s", thisAccountCryptoBalance, chainSymbolFinal);
-                            mAmountAsset.setText(cryptoBalanceString);
-                            mAmountFiat.setText(fiatBalanceString);
-                        });
-            });
+        mBraveWalletPanelServices.getJsonRpcService().getNetwork(CoinType.ETH, selectedNetwork -> {
+            BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
+            AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
+                    new BlockchainToken[] {asset}, assetPrices -> {
+                        BalanceHelper.getNativeAssetsBalances(
+                                mBraveWalletPanelServices.getJsonRpcService(), selectedNetwork,
+                                selectedAccount, nativeAssetsBalances -> {
+                                    double price = Utils.getOrDefault(assetPrices,
+                                            asset.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+                                    double balance = Utils.getOrDefault(nativeAssetsBalances,
+                                            selectedAccount[0].address.toLowerCase(
+                                                    Locale.getDefault()),
+                                            0.0d);
+                                    String fiatBalanceString = String.format(
+                                            Locale.getDefault(), "$%,.2f", balance * price);
+                                    String cryptoBalanceString = String.format(Locale.getDefault(),
+                                            "%.4f %s", balance, selectedNetwork.symbol);
+                                    mAmountAsset.setText(cryptoBalanceString);
+                                    mAmountFiat.setText(fiatBalanceString);
+                                });
+                    });
         });
     }
 
@@ -386,7 +369,14 @@ public class BraveWalletPanel implements DialogInterface {
                 activity.startActivity(new Intent(activity, AccountSelectorActivity.class));
             }
         });
-        updateState();
-        updateStatus();
+        mBtnSelectedNetwork.setOnLongClickListener(v -> {
+            NetworkInfo networkInfo =
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            if (networkInfo != null) {
+                Toast.makeText(mActivity, networkInfo.chainName, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
+        setUpObservers();
     }
 }

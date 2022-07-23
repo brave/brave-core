@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Gunakan nod IPFS tempatan Brave</translation>
 <translation id="8148464361648742409">Menggunakan get laluan awam</translation>
 <translation id="5123478056123923857">IPFS (Sistem Fail InterPlanetary) adalah rangkaian awam untuk penyimpanan dan penghantaran data rakan-ke-rakan. Protokol ini mempunyai pertimbangan privasi yang berbeza daripada HTTP(S).</translation>
-<translation id="5410952114182173389">Komputer anda menyumbang kepada rangkaian awam, tetapi alamat IP anda dan apa-apa kandungan yang anda minta atau menyediakan mungkin terdedah. Kandungan yang anda minta melalui IPFS disahkan sebelum disampaikan kepada anda.</translation>
+<translation id="1216911189668016151">Komputer anda menyumbang kepada rangkaian awam, tetapi alamat IP anda dan apa-apa kandungan yang anda minta atau sediakan mungkin terdedah. Kandungan yang anda minta melalui IPFS akan disahkan sebelum disampaikan kepada anda. Permintaan rangkaian tidak boleh menggunakan proksi penyemak imbas dan tetapan DNS.</translation>
 <translation id="8664689531113048642">Melindungi alamat IP dan kandungan anda yang anda meminta dari pemerhati pihak ketiga yang berpotensi, tetapi bukan daripada pengendali get laluan awam. Pengendali get laluan awam bertanggungjawab untuk memastikan kandungan yang disampaikan kepada anda melalui get laluan merupakan kandungan yang anda minta. Selain itu, komputer anda tidak menyumbang kepada rangkaian IPFS awam.</translation>
 <translation id="3977809385703587108">Anda boleh menukar keutamaan anda lagi di</translation>
 <translation id="3340978935015468852">tetapan</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Import daripada legasi dompet kripto Brave?</translation>
 <translation id="3331452756822160641">Kata Laluan Baharu</translation>
 <translation id="8624315169751085215">Salin ke Papan Klip</translation>
+<translation id="7885157704277298658">Disalin!</translation>
 <translation id="1121335910737476837">Akaun kripto utama</translation>
 <translation id="6969147029062037757">Akaun yang diimport</translation>
 <translation id="4057718162494343222">Anda boleh mencipta akaun utama dalam Dompet Brave yang mungkin disandarkan atau dipulihkan daripada frasa pemulihan anda. Untuk mengetahui lebih lanjut tentang jenis akaun, lawati bantuan akaun.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Ikon URL</translation>
 <translation id="2144247757675997850">Tambah aset</translation>
 <translation id="2708402071160162126">AMARAN: Jangan sekali-kali berkongsi frasa pemulihan anda. Sesiapa yang mempunyai frasa ini boleh mengambil aset anda selama-lamanya.</translation>
+<translation id="2416098547200943834">NOTA: Kekunci peribadi diberikan sebagai JSON terkod heks yang mengandungi kekunci peribadi dan maklumat protokol. <ph name="LINK_START"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">NOTA: Kekunci peribadi mesti diberikan sebagai JSON terkod heks yang mengandungi kekunci peribadi dan maklumat protokol. <ph name="LINK_START"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Tunjukkan kekunci</translation>
 <translation id="8033497299373164724">Sembunyikan kunci</translation>
 <translation id="2702143907607790516">Gagal mengemas kini nama akaun, sila cuba lagi.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Mesej</translation>
 <translation id="3586752056660754651">Tandatangan</translation>
 <translation id="3484981968509595506">DApp meminta kekunci penyulitan awam anda</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> meminta kekunci penyulitan awam dompet anda. Jika anda bersetuju untuk memberikan kekunci ini, laman tersebut boleh mengarang mesej tersulit kepada anda.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> meminta kekunci penyulitan awam dompet anda. Jika anda bersetuju untuk memberikan kekunci ini, laman tersebut boleh mengarang mesej tersulit kepada anda.</translation>
 <translation id="3340247553212049934">Sediakan</translation>
 <translation id="1619778919922494944">DApp ini mahu membaca mesej ini untuk melengkapkan permintaan anda</translation>
 <translation id="714506544401754321">Nyahsulitkan mesej</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus sambungan</translation>
 <translation id="5317781812114905957">Arahan</translation>
 <translation id="1178198982208000092">Sambungkan <ph name="DEVICE_NAME"/> anda</translation>
-<translation id="4358411489835404360">Dompet perkakasan memerlukan pengesahan pada peranti. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Dompet perkakasan memerlukan Aplikasi Ethereum dibuka pada <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Dompet perkakasan memerlukan pengesahan pada peranti <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Dompet perkakasan memerlukan <ph name="NETWORK"/> Apl dibuka pada <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dihantar</translation>
 <translation id="5013754027092416509">diterima</translation>
 <translation id="5867988533873716616">Sekatan penjelajah URL tidak tersedia.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> bukan rangkaian semasa</translation>
 <translation id="7340805872138998391">Gagal untuk membuka kunci peranti, cuba sambung semula</translation>
 <translation id="1984410139271779110">Ralat dalaman, skim tidak diketahui</translation>
-<translation id="8682200134223578011">diluluskan</translation>
+<translation id="6989562355845156390">luluskan</translation>
 <translation id="4674380028960132654">Ledger: Tandatangan tidak sepadan dengan alamat yang betul</translation>
 <translation id="3183932890629254743">Akaun perkakasan tidak ditemui</translation>
 <translation id="4287068151777838754">Data JSON tidak dijangka</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transaksi disahkan</translation>
 <translation id="310693998838023022">Ralat transaksi</translation>
 <translation id="6395870673621520684">Transaksi menurun</translation>
+<translation id="1237782734462409503">Tab tidak aktif</translation>
+<translation id="756701799684433105">Luluskan transaksi</translation>
+<translation id="6450792191436242818">Atur Cara Sistem</translation>
+<translation id="6252742184395380448">Konfigurasikan Atur Cara</translation>
+<translation id="5358970666412490132">Atur Cara Kepentingan</translation>
+<translation id="346636227344244984">Atur Cara Undi</translation>
+<translation id="3538368258493053874">Pemuat BPF</translation>
+<translation id="2334098351242742927">Atur Cara Ed25519</translation>
+<translation id="8780753288764281797">Atur Cara Secp256k1</translation>
+<translation id="5275550100743015683">Alamat Daripada:</translation>
+<translation id="2678433693746214764">Alamat Kepada:</translation>
+<translation id="4576396475962922672">Akaun Baharu:</translation>
+<translation id="4719005063558335704">Akaun:</translation>
+<translation id="4337554812324118382">Data:</translation>
+<translation id="569870799832027680">ID Atur Cara:</translation>
+<translation id="7843211152394841558">Maks Cubaan Semula:</translation>
+<translation id="8496335570810457">Komitmen Praterbang:</translation>
+<translation id="5100124500279922001">Langkau Praterbang:</translation>
+<translation id="8060029310790625334">Pusat Bantuan</translation>
+<translation id="2095142195578664632">Perlukan bantuan? Lihat</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>

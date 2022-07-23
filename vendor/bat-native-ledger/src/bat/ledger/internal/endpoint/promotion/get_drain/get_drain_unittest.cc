@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/strings/string_split.h"
@@ -68,7 +69,7 @@ TEST_F(GetDrainTest, DrainComplete) {
         response.status_code = 200;
         response.url = request->url;
         response.body = MakeDrainBody(request->url, "complete");
-        callback(response);
+        std::move(callback).Run(response);
       }));
 
   drain_->Request(test_drain_id_, [](const type::Result result,
@@ -86,7 +87,7 @@ TEST_F(GetDrainTest, DrainPending) {
         response.status_code = 200;
         response.url = request->url;
         response.body = MakeDrainBody(request->url, "pending");
-        callback(response);
+        std::move(callback).Run(response);
       }));
 
   drain_->Request(test_drain_id_, [](const type::Result result,
@@ -104,7 +105,7 @@ TEST_F(GetDrainTest, DrainInvalidResponse) {
         response.status_code = 200;
         response.url = request->url;
         response.body = MakeDrainBody(request->url, "thisdoesnotexist");
-        callback(response);
+        std::move(callback).Run(response);
       }));
 
   drain_->Request(test_drain_id_, [](const type::Result result,

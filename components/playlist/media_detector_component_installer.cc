@@ -23,14 +23,12 @@ namespace playlist {
 
 namespace {
 
-constexpr size_t kHashSize = 32;
+constexpr char kComponentID[] = "jccpmjhflblpphnhgemhlllckflnipjn";
+
 class MediaDetectorComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   explicit MediaDetectorComponentInstallerPolicy(
-      const std::string& component_public_key,
-      const std::string& component_id,
-      const std::string& component_name,
       OnComponentReadyCallback callback);
   ~MediaDetectorComponentInstallerPolicy() override;
 
@@ -57,23 +55,31 @@ class MediaDetectorComponentInstallerPolicy
   update_client::InstallerAttributes GetInstallerAttributes() const override;
 
  private:
-  const std::string component_id_;
-  const std::string component_name_;
+  static constexpr size_t kHashSize = 32;
+
   OnComponentReadyCallback ready_callback_;
   uint8_t component_hash_[kHashSize];
 };
 
 MediaDetectorComponentInstallerPolicy::MediaDetectorComponentInstallerPolicy(
-    const std::string& component_public_key,
-    const std::string& component_id,
-    const std::string& component_name,
     OnComponentReadyCallback callback)
-    : component_id_(component_id),
-      component_name_(component_name),
-      ready_callback_(callback) {
+    : ready_callback_(callback) {
   // Generate hash from public key.
+  constexpr char kComponentPublicKey[] =
+      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0l8glPqaai2KyD+"
+      "R2KoJaaWv7Lafg2"
+      "aWijf78E7i5ta4AxL5hMEIXlXA1bJupyDuPWOXH8LAItlgdbJh8xiDzrX7uj4Nr+"
+      "UiWOrQwd6Y"
+      "orvnqHRDzN1NEQBI2gL6IuA22/vNsXKAemu0lS2Gd3FkShuKUJPljdjAskfgn/"
+      "NHnDUWqxESb3"
+      "N6d+shcJw53Tm+nwcxdyDOet6p+VMugIMiUAbb+"
+      "EhfEmx4iEhJC9XTpl6yjRNzCwaNhcsXrO9U"
+      "pdaxZYSYceCm/"
+      "BKd5TyxNr2MVjGYWKdA1nemhXdz1zvy76ZAUCYPLcSyyKgx5KiJnB8mhtXUWF"
+      "Xw5qMzxOoIzAjHeQIDAQAB";
+
   std::string decoded_public_key;
-  base::Base64Decode(component_public_key, &decoded_public_key);
+  base::Base64Decode(kComponentPublicKey, &decoded_public_key);
   crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
 }
 
@@ -113,7 +119,7 @@ bool MediaDetectorComponentInstallerPolicy::VerifyInstallation(
 
 base::FilePath MediaDetectorComponentInstallerPolicy::GetRelativeInstallDir()
     const {
-  return base::FilePath::FromUTF8Unsafe(component_id_);
+  return base::FilePath::FromUTF8Unsafe(kComponentID);
 }
 
 void MediaDetectorComponentInstallerPolicy::GetHash(
@@ -122,12 +128,16 @@ void MediaDetectorComponentInstallerPolicy::GetHash(
 }
 
 std::string MediaDetectorComponentInstallerPolicy::GetName() const {
-  return component_name_;
+  return "playlist-component";
 }
 
 update_client::InstallerAttributes
 MediaDetectorComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
+}
+
+void OnRegisteredToComponentUpdateService() {
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(kComponentID);
 }
 
 }  // namespace
@@ -139,7 +149,10 @@ void RegisterMediaDetectorComponent(
   if (!cus)
     return;
 
-  NOTIMPLEMENTED();
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<MediaDetectorComponentInstallerPolicy>(callback));
+  installer->Register(cus,
+                      base::BindOnce(OnRegisteredToComponentUpdateService));
 }
 
 }  // namespace playlist

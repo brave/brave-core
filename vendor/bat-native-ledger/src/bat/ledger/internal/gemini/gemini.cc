@@ -58,8 +58,8 @@ void Gemini::Initialize() {
 
 void Gemini::StartContribution(const std::string& contribution_id,
                                type::ServerPublisherInfoPtr info,
-                               const double amount,
-                               ResultCallback callback) {
+                               double amount,
+                               LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
     ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
@@ -81,12 +81,12 @@ void Gemini::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Gemini::ContributionCompleted(const type::Result result,
+void Gemini::ContributionCompleted(type::Result result,
                                    const std::string& transaction_id,
                                    const std::string& contribution_id,
-                                   const double fee,
+                                   double fee,
                                    const std::string& publisher_key,
-                                   ResultCallback callback) {
+                                   LegacyResultCallback callback) {
   if (result == type::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -104,39 +104,40 @@ void Gemini::FetchBalance(FetchBalanceCallback callback) {
   const auto wallet = GetWallet();
 
   if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    callback(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
     return;
   }
 
   if (wallet->status != type::WalletStatus::VERIFIED) {
     BLOG(1, "Wallet is not verified");
-    callback(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
     return;
   }
 
-  auto url_callback =
-      std::bind(&Gemini::OnFetchBalance, this, _1, _2, callback);
+  auto url_callback = base::BindOnce(
+      &Gemini::OnFetchBalance, base::Unretained(this), std::move(callback));
 
-  gemini_server_->post_balance()->Request(wallet->token, url_callback);
+  gemini_server_->post_balance()->Request(wallet->token,
+                                          std::move(url_callback));
 }
 
-void Gemini::OnFetchBalance(const type::Result result,
-                            const double available,
-                            FetchBalanceCallback callback) {
+void Gemini::OnFetchBalance(FetchBalanceCallback callback,
+                            const type::Result result,
+                            const double available) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet();
-    callback(type::Result::EXPIRED_TOKEN, 0.0);
+    std::move(callback).Run(type::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    callback(type::Result::LEDGER_ERROR, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
-  callback(type::Result::LEDGER_OK, available);
+  std::move(callback).Run(type::Result::LEDGER_OK, available);
 }
 
 void Gemini::TransferFunds(const double amount,
@@ -155,7 +156,7 @@ void Gemini::WalletAuthorization(
 }
 
 void Gemini::GenerateWallet(ResultCallback callback) {
-  wallet_->Generate(callback);
+  wallet_->Generate(std::move(callback));
 }
 
 void Gemini::DisconnectWallet(const bool manual) {

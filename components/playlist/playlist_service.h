@@ -35,7 +35,6 @@ namespace playlist {
 
 class PlaylistServiceObserver;
 class MediaDetectorComponentManager;
-struct CreatePlaylistParams;
 
 // This class is key interace for playlist. Client will ask any playlist related
 // requests to this class.
@@ -52,7 +51,7 @@ struct CreatePlaylistParams;
 // Next, PlaylistService asks downloading audio/video media files and thumbnails
 // to PlaylistMediaFileDownloadManager and PlaylistThumbnailDownloader.
 // When each of data is ready to use it's notified to client.
-// You can see all notification type - PlaylistChangeParams::ChangeType.
+// You can see all notification type - PlaylistItemChangeParams::Type.
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate,
@@ -69,12 +68,17 @@ class PlaylistService : public KeyedService,
   void RecoverPlaylistItem(const std::string& id);
   void DeletePlaylistItem(const std::string& id);
   void DeleteAllPlaylistItems();
-  void RequestDownload(const std::string& url);
+  void RequestDownloadMediaFilesFromPage(const std::string& playlist_id,
+                                         const std::string& url);
+
+  void RemoveItemFromPlaylist(const std::string& playlist_id,
+                              const std::string& item_id);
 
   void AddObserver(PlaylistServiceObserver* observer);
   void RemoveObserver(PlaylistServiceObserver* observer);
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
+  bool GetMediaPath(const std::string& id, base::FilePath* media_path);
 
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
 
@@ -92,8 +96,7 @@ class PlaylistService : public KeyedService,
   // PlaylistMediaFileDownloadManager::Delegate overrides:
   // Called when all audio/video media file are downloaded.
   void OnMediaFileReady(const std::string& id,
-                        const std::string& audio_file_path,
-                        const std::string& video_file_path) override;
+                        const std::string& media_file_path) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
   bool IsValidPlaylistItem(const std::string& id) override;
 
@@ -105,14 +108,14 @@ class PlaylistService : public KeyedService,
   // PlaylistDownloadRequestManager::Delegate overrides:
   // Called when meta data is ready. |params| have playlist item's audio/video
   // media files url, thumbnail and title.
-  void OnPlaylistCreationParamsReady(
-      const CreatePlaylistParams& params) override;
+  void OnPlaylistCreationParamsReady(const PlaylistItemInfo& params) override;
 
-  void OnPlaylistItemDirCreated(const std::string& id, bool directory_ready);
+  void OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
+                                bool directory_ready);
 
-  void CreatePlaylistItem(const CreatePlaylistParams& params);
-  void DownloadThumbnail(const std::string& id);
-  void GenerateMediafileForPlaylistItem(const std::string& id);
+  void CreatePlaylistItem(const PlaylistItemInfo& info);
+  void DownloadThumbnail(const PlaylistItemInfo& info);
+  void GenerateMediafileForPlaylistItem(const PlaylistItemInfo& info);
 
   base::SequencedTaskRunner* task_runner();
 
@@ -120,10 +123,10 @@ class PlaylistService : public KeyedService,
   void CleanUp();
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
-  void NotifyPlaylistChanged(const PlaylistChangeParams& params);
+  void NotifyPlaylistItemChanged(const PlaylistItemChangeParams& params);
 
-  void UpdatePlaylistValue(const std::string& id, base::Value value);
-  void RemovePlaylist(const std::string& id);
+  void UpdatePlaylistItemValue(const std::string& id, base::Value value);
+  void RemovePlaylistItem(const std::string& id);
 
   bool HasPrefStorePlaylistItem(const std::string& id) const;
 

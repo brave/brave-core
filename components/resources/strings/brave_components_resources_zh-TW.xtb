@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">使用 Brave 本機 IPFS 節點</translation>
 <translation id="8148464361648742409">使用公共閘道</translation>
 <translation id="5123478056123923857">IPFS（星際檔案系統）是用於點對點資料儲存和傳送的公共網絡。此通訊協定與 HTTP（S）具有不同的隱私權考量。</translation>
-<translation id="5410952114182173389">您的電腦參與公共網絡，但是您的 IP 位址和您要求或提供的任何內容可能被洩漏。透過 IPFS 要求的內容，在提供給您之前已經過驗證。</translation>
+<translation id="1216911189668016151">您的電腦參與公共網絡，但是您的 IP 位址和您要求或提供的任何內容可能遭洩漏。透過 IPFS 要求的內容，在提供給您之前已經過驗證。網路要求不得使用瀏覽器 Proxy 和 DNS 設定。</translation>
 <translation id="8664689531113048642">保護您向潛在的第三方觀察者，而不是公共閘道營運商，要求的 IP 位址和內容。 閘道營運商負責確保透過閘道提供給您的內容，是您請求的內容。此外，您的電腦不參與公共 IPFS 網絡。</translation>
 <translation id="3977809385703587108">您可以再次變更您的喜好設定，透過</translation>
 <translation id="3340978935015468852">設定</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">從舊 Brave 加密幣錢包匯入？</translation>
 <translation id="3331452756822160641">新密碼</translation>
 <translation id="8624315169751085215">複製到剪貼簿</translation>
+<translation id="7885157704277298658">已複製！</translation>
 <translation id="1121335910737476837">主要加密貨幣帳戶</translation>
 <translation id="6969147029062037757">匯入的帳戶</translation>
 <translation id="4057718162494343222">您可以在 Brave 錢包中建立主要帳戶，以執行備份作業或從還原階段復原。如要深入瞭解帳戶類型，請參閱帳戶說明。</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">圖示 URL</translation>
 <translation id="2144247757675997850">新增資產</translation>
 <translation id="2708402071160162126">警告：切勿分享您的還原片語。任何人只要知道這個短語就能永遠拿走您的資產。</translation>
+<translation id="2416098547200943834">注意：私密金鑰以十六進位編碼 JSON 提供，內含私密金鑰和通訊協定資訊。<ph name="LINK_START"/>深入瞭解<ph name="LINK_END"/>。</translation>
+<translation id="7657130382217527063">注意：私密金鑰必須以十六進位編碼 JSON 提供，內含私密金鑰和通訊協定資訊。<ph name="LINK_START"/>深入瞭解<ph name="LINK_END"/>。</translation>
 <translation id="2902856457593699108">顯示密鑰</translation>
 <translation id="8033497299373164724">隱藏密鑰</translation>
 <translation id="2702143907607790516">更新帳戶名稱失敗，請再試一次。</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">訊息</translation>
 <translation id="3586752056660754651">簽署</translation>
 <translation id="3484981968509595506">DApp 要求取得您的公共加密金鑰</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> 要求取得您錢包的公共加密金鑰。如果您同意提供此金鑰，本網站就能編寫要傳送給您的加密訊息。</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> 要求取得您錢包的公共加密金鑰。如果您同意提供此金鑰，本網站就能編寫要傳送給您的加密訊息。</translation>
 <translation id="3340247553212049934">提供</translation>
 <translation id="1619778919922494944">此 DApp 想讀取此訊息，以完成您的要求</translation>
 <translation id="714506544401754321">解密郵件</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 已中斷連線</translation>
 <translation id="5317781812114905957">說明</translation>
 <translation id="1178198982208000092">連接 <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">須先在裝置上完成確認，才能使用硬體錢包。<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">硬體錢包要求在 <ph name="DEVICE_NAME"/> 上開啟 Ethereum 應用程式</translation>
+<translation id="6291765462876399333">硬體錢包要求在裝置 <ph name="DEVICE_NAME"/> 上確認</translation>
+<translation id="2288190100157580461">硬體錢包要求在 <ph name="DEVICE_NAME"/> 上開啟 <ph name="NETWORK"/> 應用程式</translation>
 <translation id="8687869982094542529">已傳送</translation>
 <translation id="5013754027092416509">已收到</translation>
 <translation id="5867988533873716616">區塊瀏覽器 URL 不可用。</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> 不是目前的網路</translation>
 <translation id="7340805872138998391">無法解鎖裝置，請嘗試重新連線</translation>
 <translation id="1984410139271779110">內部錯誤，不明架構</translation>
-<translation id="8682200134223578011">已核准</translation>
+<translation id="6989562355845156390">核准</translation>
 <translation id="4674380028960132654">Ledger：簽名與正確的位址不符</translation>
 <translation id="3183932890629254743">硬體帳戶未找到</translation>
 <translation id="4287068151777838754">非預期的 JSON 資料</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">交易已確認</translation>
 <translation id="310693998838023022">交易錯誤</translation>
 <translation id="6395870673621520684">交易已廢除</translation>
+<translation id="1237782734462409503">此分頁處於閒置狀態</translation>
+<translation id="756701799684433105">核准交易</translation>
+<translation id="6450792191436242818">系統程式</translation>
+<translation id="6252742184395380448">設定程式</translation>
+<translation id="5358970666412490132">權益程式</translation>
+<translation id="346636227344244984">投票程式</translation>
+<translation id="3538368258493053874">BPF 載入程式</translation>
+<translation id="2334098351242742927">Ed25519 程式</translation>
+<translation id="8780753288764281797">Secp256k1 程式</translation>
+<translation id="5275550100743015683">來源位址：</translation>
+<translation id="2678433693746214764">目的地位址：</translation>
+<translation id="4576396475962922672">新帳戶：</translation>
+<translation id="4719005063558335704">帳戶：</translation>
+<translation id="4337554812324118382">資料：</translation>
+<translation id="569870799832027680">程式 ID：</translation>
+<translation id="7843211152394841558">重試次數上限：</translation>
+<translation id="8496335570810457">預檢承諾：</translation>
+<translation id="5100124500279922001">略過預檢：</translation>
+<translation id="8060029310790625334">帮助中心</translation>
+<translation id="2095142195578664632">需要協助嗎？請參閱</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>

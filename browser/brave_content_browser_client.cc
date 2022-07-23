@@ -60,11 +60,13 @@
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
-#include "brave/components/debounce/browser/debounce_throttle.h"
+#include "brave/components/debounce/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags.h"
@@ -192,6 +194,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -199,6 +202,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
+#include "brave/components/brave_rewards/common/brave_rewards_panel.mojom.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
@@ -209,6 +214,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #elif BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/brave_ads/brave_ads_host.h"
 #endif  // BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/ui/webui/playlist_ui.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 namespace {
 
@@ -564,6 +573,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
   if (base::FeatureList::IsEnabled(
+          brave_rewards::features::kWebUIPanelFeature)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
+  }
+  if (base::FeatureList::IsEnabled(
           brave_federated::features::kFederatedLearning)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         federated_internals::mojom::PageHandlerFactory,
@@ -581,6 +595,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        playlist::mojom::PageHandlerFactory, playlist::PlaylistUI>(map);
   }
 #endif
 
@@ -705,8 +726,6 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id);
   content::WebContents* contents = wc_getter.Run();
-  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context));
 
   if (contents) {
     const bool isMainFrame =
@@ -714,7 +733,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         static_cast<int>(blink::mojom::ResourceType::kMainFrame);
     // Speedreader
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-    using DistillState = speedreader::DistillState;
+    auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
+        Profile::FromBrowserContext(browser_context));
+
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
     if (tab_helper) {
@@ -722,7 +743,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       if (speedreader::PageWantsDistill(state) && isMainFrame) {
         // Only check for disabled sites if we are in Speedreader mode
         const bool check_disabled_sites =
-            state == DistillState::kSpeedreaderModePending;
+            state == speedreader::DistillState::kSpeedreaderModePending;
         std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
             speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
                 g_brave_browser_process->speedreader_rewriter_service(),
@@ -742,14 +763,6 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       }
     }
   }
-
-  // Debounce
-  if (auto debounce_throttle =
-          debounce::DebounceThrottle::MaybeCreateThrottleFor(
-              debounce::DebounceServiceFactory::GetForBrowserContext(
-                  browser_context),
-              settings_map))
-    result.push_back(std::move(debounce_throttle));
 
   return result;
 }
@@ -987,6 +1000,13 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                   handle, HostContentSettingsMapFactory::GetForProfile(
                               Profile::FromBrowserContext(context))))
     throttles.push_back(std::move(reduce_language_navigation_throttle));
+
+  // Debounce
+  if (auto debounce_throttle =
+          debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
+              handle,
+              debounce::DebounceServiceFactory::GetForBrowserContext(context)))
+    throttles.push_back(std::move(debounce_throttle));
 
   return throttles;
 }

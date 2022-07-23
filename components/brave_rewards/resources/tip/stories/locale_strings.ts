@@ -44,6 +44,7 @@ export const localeStrings = {
   tipCanceled: 'Your monthly tip to this creator has been canceled.',
   tipDelayNote: 'Note: Your tip can take several minutes to process',
   tipHasBeenSent: 'Your one-time tip has been sent.',
+  tipIsPending: 'You’ve set up a pending tip!',
   tippingFeeNote: 'Brave collects 5% of the tip amount as a processing fee.',
   tipPostSubtitle: 'for their post',
   tokens: 'tokens',

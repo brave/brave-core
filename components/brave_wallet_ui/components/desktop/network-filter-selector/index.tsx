@@ -91,8 +91,7 @@ function NetworkFilterSelector () {
               selectedNetwork={selectedNetworkFilter}
               isSubItem={isTestNetworksEnabled ? !SupportedTopLevelChainIds.includes(network.chainId) : true}
             >
-              {/* Disabled Filecoin Submenu until testnetworks are enabled */}
-              {isTestNetworksEnabled && network.coin !== BraveWallet.CoinType.FIL &&
+              {isTestNetworksEnabled &&
                 <SubDropDown>
                   {sortedNetworks.filter((n) =>
                     n.coin === network.coin &&

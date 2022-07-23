@@ -106,6 +106,16 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Đóng tất cả các tab?</translation>
 <translation id="7551864359422178684">Bạn có <ph name="NUMBER_OF_TABS"/> tab đang mở trong cửa sổ trình duyệt này.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
+<translation id="2272117088509540883">- Brave Tìm kiếm</translation>
+<translation id="2701279958223202597">Hỗ trợ tìm kiếm độc lập với quyền riêng tư tốt hơn. Brave Tìm kiếm không theo dõi bạn, truy vấn của bạn hoặc các nhấp chuột của bạn.</translation>
+<translation id="6438467592401259882">Hỗ trợ tìm kiếm độc lập với quyền riêng tư tốt hơn.</translation>
+<translation id="1688359110799098115">Hỗ trợ tìm kiếm độc lập với quyền riêng tư tốt hơn</translation>
+<translation id="8579317236683491484">Brave Tìm kiếm không theo dõi bạn, truy vấn của bạn hoặc các nhấp chuột của bạn.</translation>
+<translation id="5240031343741051161">Dùng thử Tìm kiếm Brave</translation>
+<translation id="5026874946691314267">Không hiển thị lại</translation>
+<translation id="5234764350956374838">Dismiss</translation>
+<translation id="214744058941501853">"&gt;
+          Bỏ qua chuyển đổi Brave tìm kiếm, nhấn Enter để xóa đề xuất này</translation>
 <translation id="2515126961943087659">Dịch vụ Bat Ads</translation>
 <translation id="7924918279836988121">Dịch vụ Sổ cái Bat</translation>
 <translation id="6040143037577758943">Đóng</translation>
@@ -135,6 +145,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8490082094734500369">Tắt chế độ đọc</translation>
 <translation id="2036503787657622020">Bật chế độ đọc</translation>
 <translation id="5226458915125328323">Cài đặt Speedreader</translation>
+<translation id="1621606336827646158">Hiển thị trang gốc</translation>
 <translation id="6284218950354553099">Tự động gửi ping sử dụng hàng ngày đến Brave</translation>
 <translation id="5288333155754958121">Ping ẩn danh, riêng tư này cho phép Brave ước tính người dùng đang hoạt động.</translation>
 <translation id="1872784258300710671">Brave sử dụng dữ liệu phân tích sản phẩm hoàn toàn riêng tư để ước tính mức độ sử dụng tổng thể của một số tính năng nhất định</translation>
@@ -185,6 +196,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Đặt Brave làm trình duyệt mặc định của bạn để nhận các biện pháp bảo vệ quyền riêng tư của Brave trên mọi trang web bạn mở.</translation>
 <translation id="8722651357687610395">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="2370739752330685659">Có lẽ để sau</translation>
+<translation id="961012016278832836">Microsoft Edge Cũ</translation>
+<translation id="6436994631426134065">Đã nhập khẩu từ <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="4472575034687746823">Bắt đầu</translation>
@@ -201,9 +214,11 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2906510232093002459">Hình ảnh mặc định của Brave</translation>
 <translation id="2396127686705429331">Hiển thị nút dấu trang</translation>
 <translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
-<translation id="5802665280774361839">Hiện đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
-<translation id="597020512043916976">Hiển thị các trang web hàng đầu trong các đề xuất tự động hoàn thành</translation>
-<translation id="301088458323355543">Hiển thị các trang web được đề xuất trong các đề xuất tự động hoàn thành</translation>
+<translation id="4109670531935487117">Hiển thị các đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
+<translation id="2858138569776157458">Trang web hàng đầu</translation>
+<translation id="65774893852758517">Trang web được đề xuất</translation>
+<translation id="7859704718976024901">Lịch sử duyệt web</translation>
+<translation id="8820817407110198400">Dấu trang</translation>
 <translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
 <translation id="1811404036171336214">Luôn hiển thị dấu trang trên trang tab mới</translation>
 <translation id="5529693968082667490">Hiển thị nút tìm kiếm tab</translation>
@@ -362,6 +377,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
     Bạn có chắc chắn muốn làm điều này?</translation>
 <translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
 <translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
+<translation id="842628013524824194">Cửa sổ thông thường - Công cụ tìm kiếm được sử dụng trên thanh địa chỉ</translation>
+<translation id="5324939009884545145">Cửa sổ riêng tư - Công cụ tìm kiếm được sử dụng trên thanh địa chỉ</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
 <translation id="7878791177459550035">Bộ định tuyến phương tiện cho phép tính năng truyền trong trình duyệt.</translation>
@@ -461,6 +478,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="616058968889448209">Lỗi khởi chạy dịch vụ IPFS, thông tin thêm có sẵn trên <ph name="BEGIN_LINK"/>trang chẩn đoán<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619"><ph name="KEY_NAME"/> nhập khóa không thành công</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' khóa xuất không thành công</translation>
+<translation id="5840868269342837751">Lưu ý: Yêu cầu mạng có thể không sử dụng cài đặt proxy và DNS của trình duyệt.</translation>
 <translation id="8275038454117074363">Nhập</translation>
 <translation id="3654980960391973513">Nhập khóa</translation>
 <translation id="5531501313997312487">Nút Bắt đầu</translation>

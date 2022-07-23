@@ -37,6 +37,8 @@ constexpr char kBraveWalletMonthlyHistogramName[] =
     "Brave.Wallet.UsageMonthly.2";
 constexpr char kBraveWalletNewUserReturningHistogramName[] =
     "Brave.Wallet.NewUserReturning";
+constexpr char kBraveWalletOnboardingConvHistogramName[] =
+    "Brave.Wallet.OnboardingConversion";
 
 class KeyringService;
 class JsonRpcService;
@@ -47,9 +49,17 @@ class BraveWalletService : public KeyedService,
                            public BraveWalletServiceDelegate::Observer {
  public:
   using SignMessageRequestCallback =
-      base::OnceCallback<void(bool, const std::string&, const std::string&)>;
-  using SignTransactionRequestCallback = base::OnceCallback<void(bool)>;
-  using SignAllTransactionsRequestCallback = base::OnceCallback<void(bool)>;
+      base::OnceCallback<void(bool,
+                              mojom::ByteArrayStringUnionPtr,
+                              const absl::optional<std::string>&)>;
+  using SignTransactionRequestCallback =
+      base::OnceCallback<void(bool,
+                              mojom::ByteArrayStringUnionPtr,
+                              const absl::optional<std::string>&)>;
+  using SignAllTransactionsRequestCallback = base::OnceCallback<void(
+      bool,
+      absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>>,
+      const absl::optional<std::string>&)>;
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
@@ -122,6 +132,9 @@ class BraveWalletService : public KeyedService,
                        const url::Origin& origin,
                        const std::string& account,
                        ResetPermissionCallback callback) override;
+  void IsPermissionDenied(mojom::CoinType coin,
+                          const url::Origin& origin,
+                          IsPermissionDeniedCallback callback) override;
   void GetWebSitesWithPermission(
       mojom::CoinType coin,
       GetWebSitesWithPermissionCallback callback) override;
@@ -137,15 +150,21 @@ class BraveWalletService : public KeyedService,
       GetPendingSignTransactionRequestsCallback callback) override;
   void GetPendingSignAllTransactionsRequests(
       GetPendingSignAllTransactionsRequestsCallback callback) override;
-  void NotifySignTransactionRequestProcessed(bool approved, int id) override;
-  void NotifySignAllTransactionsRequestProcessed(bool approved,
-                                                 int id) override;
-  void NotifySignMessageRequestProcessed(bool approved, int id) override;
-  void NotifySignMessageHardwareRequestProcessed(
+  void NotifySignTransactionRequestProcessed(
       bool approved,
       int id,
-      const std::string& signature,
-      const std::string& error) override;
+      mojom::ByteArrayStringUnionPtr signature,
+      const absl::optional<std::string>& error) override;
+  void NotifySignAllTransactionsRequestProcessed(
+      bool approved,
+      int id,
+      absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      const absl::optional<std::string>& error) override;
+  void NotifySignMessageRequestProcessed(
+      bool approved,
+      int id,
+      mojom::ByteArrayStringUnionPtr signature,
+      const absl::optional<std::string>& error) override;
   void GetPendingAddSuggestTokenRequests(
       GetPendingAddSuggestTokenRequestsCallback callback) override;
   void GetPendingGetEncryptionPublicKeyRequests(
@@ -194,8 +213,11 @@ class BraveWalletService : public KeyedService,
 
   void RemovePrefListenersForTests();
 
+  void OnOnboardingShown() override;
+
  private:
   friend class EthereumProviderImplUnitTest;
+  friend class SolanaProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
@@ -225,6 +247,7 @@ class BraveWalletService : public KeyedService,
   void WriteStatsToHistogram(base::Time wallet_last_used,
                              base::Time first_p3a_report,
                              base::Time last_p3a_report,
+                             bool was_onboarding_shown,
                              unsigned use_days_in_week);
 
   void OnGetImportInfo(

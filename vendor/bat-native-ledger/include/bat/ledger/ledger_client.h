@@ -12,6 +12,7 @@
 #include <string>
 #include <map>
 
+#include "base/callback_forward.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -21,19 +22,25 @@ namespace client {
 
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 
-using LoadURLCallback = std::function<void(const type::UrlResponse&)>;
+using LegacyLoadURLCallback = std::function<void(const type::UrlResponse&)>;
+
+using LoadURLCallback = base::OnceCallback<void(const type::UrlResponse&)>;
 
 using OnLoadCallback =
     std::function<void(const type::Result, const std::string&)>;
 
-using RunDBTransactionCallback =
+using LegacyRunDBTransactionCallback =
     std::function<void(type::DBCommandResponsePtr)>;
+
+using RunDBTransactionCallback =
+    base::OnceCallback<void(type::DBCommandResponsePtr)>;
 
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
-using ResultCallback =
-    std::function<void(const type::Result)>;
+using LegacyResultCallback = std::function<void(type::Result)>;
+
+using ResultCallback = base::OnceCallback<void(type::Result)>;
 
 using GetPromotionListCallback = std::function<void(type::PromotionList)>;
 
@@ -62,6 +69,10 @@ class LEDGER_EXPORT LedgerClient {
       type::PublisherInfoPtr publisher_info,
       uint64_t windowId) = 0;
 
+  virtual void OnPublisherRegistryUpdated() = 0;
+
+  virtual void OnPublisherUpdated(const std::string& publisher_id) = 0;
+
   virtual void FetchFavIcon(
       const std::string& url,
       const std::string& favicon_key,
@@ -69,9 +80,8 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void LoadURL(
-      type::UrlRequestPtr request,
-      client::LoadURLCallback callback) = 0;
+  virtual void LoadURL(type::UrlRequestPtr request,
+                       client::LoadURLCallback callback) = 0;
 
   virtual void Log(
       const char* file,
@@ -129,10 +139,9 @@ class LEDGER_EXPORT LedgerClient {
   // DEPRECATED
   virtual std::string GetLegacyWallet() = 0;
 
-  virtual void ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      client::ResultCallback callback) = 0;
+  virtual void ShowNotification(const std::string& type,
+                                const std::vector<std::string>& args,
+                                client::LegacyResultCallback callback) = 0;
 
   virtual type::ClientInfoPtr GetClientInfo() = 0;
 
@@ -140,9 +149,8 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void ReconcileStampReset() = 0;
 
-  virtual void RunDBTransaction(
-      type::DBTransactionPtr transaction,
-      client::RunDBTransactionCallback callback) = 0;
+  virtual void RunDBTransaction(type::DBTransactionPtr transaction,
+                                client::RunDBTransactionCallback callback) = 0;
 
   virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
 
@@ -152,7 +160,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void WalletDisconnected(const std::string& wallet_type) = 0;
 
-  virtual void DeleteLog(client::ResultCallback callback) = 0;
+  virtual void DeleteLog(client::LegacyResultCallback callback) = 0;
 
   virtual absl::optional<std::string> EncryptString(
       const std::string& value) = 0;

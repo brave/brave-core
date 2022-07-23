@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -77,14 +78,14 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
             response.body = R"(
               {"drainId": "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"}
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_OK);
                     EXPECT_EQ(drain_id, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b");
-                  });
+                  }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
@@ -95,14 +96,14 @@ TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(drain_id, "");
-                  });
+                  }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError400) {
@@ -113,14 +114,14 @@ TEST_F(PostSuggestionsClaimTest, ServerError400) {
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(drain_id, "");
-                  });
+                  }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError500) {
@@ -131,14 +132,14 @@ TEST_F(PostSuggestionsClaimTest, ServerError500) {
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(drain_id, "");
-                  });
+                  }));
 }
 
 }  // namespace promotion

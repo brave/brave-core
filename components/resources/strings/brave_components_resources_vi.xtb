@@ -276,6 +276,8 @@
 <translation id="5112354605357157725">Tiếp tục đến đăng nhập</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> yêu cầu số dư tối thiểu là <ph name="AMOUNT"/> BAT để tạo tài khoản. Nếu bạn đã kết nối một tài khoản trước đó,</translation>
 <translation id="1892970806832316900">Chờ xử lý cho đến <ph name="DATE"/></translation>
+<translation id="7849926087559412554">Ối! Trình duyệt của bạn không thể nhận Quảng cáo riêng tư Brave.</translation>
+<translation id="5177429570315095022">Trình duyệt của bạn cần được cập nhật để tiếp tục xem quảng cáo.</translation>
 <translation id="752216563428219524">Quảng cáo chưa được khởi tạo, vui lòng làm mới trang.</translation>
 <translation id="7422678632904904341">Số lượng:</translation>
 <translation id="6969783933307596818">Tự động làm mới sau mỗi 5 giây</translation>
@@ -720,7 +722,7 @@
 <translation id="4780526507945807546">Sử dụng nút IPFS cục bộ Brave</translation>
 <translation id="8148464361648742409">Sử dụng cổng công cộng</translation>
 <translation id="5123478056123923857">IPFS (Hệ thống Tập tin Liên Hành tinh) là mạng công cộng để lưu trữ và phân phối dữ liệu ngang hàng. Giao thức này có các cân nhắc về quyền riêng tư khác với HTTP(S).</translation>
-<translation id="5410952114182173389">Máy tính của bạn đóng góp vào mạng công cộng, nhưng địa chỉ IP của bạn và bất kỳ nội dung nào bạn đang yêu cầu hoặc cung cấp có thể bị lộ. Nội dung bạn yêu cầu qua IPFS được xác minh trước khi được cung cấp cho bạn.</translation>
+<translation id="1216911189668016151">Máy tính của bạn đóng góp vào mạng công cộng nhưng địa chỉ IP của bạn và nội dung bạn đang yêu cầu hoặc cung cấp có thể bị lộ. Nội dung bạn yêu cầu qua IPFS được xác minh trước khi cung cấp cho bạn. Yêu cầu mạng có thể không sử dụng cài đặt proxy và DNS của trình duyệt.</translation>
 <translation id="8664689531113048642">Bảo vệ địa chỉ IP và nội dung mà bạn đang yêu cầu khỏi những người quan sát tiềm năng của bên thứ ba, nhưng không bảo vệ những thông tin đó khỏi nhà điều hành cổng công cộng. Nhà điều hành cổng có trách nhiệm đảm bảo rằng nội dung được cung cấp cho bạn thông qua cổng là nội dung bạn đã yêu cầu. Ngoài ra, máy tính của bạn không đóng góp vào mạng IPFS công cộng.</translation>
 <translation id="3977809385703587108">Bạn có thể thay đổi tùy chọn của mình một lần nữa sau</translation>
 <translation id="3340978935015468852">cài đặt</translation>
@@ -756,6 +758,7 @@
 <translation id="7306880305145342514">Chúc mừng! Phần thưởng <ph name="MONTH"/> của bạn đã về!</translation>
 <translation id="3007207731685398329">Phần thưởng <ph name="AMOUNT"/><ph name="MONTH"/> của bạn sẽ về trong <ph name="DAYS"/> nữa</translation>
 <translation id="5878420576943709750">Phần thưởng <ph name="AMOUNT"/><ph name="MONTH"/> của bạn đang trên đường. Hãy chú ý!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Đăng nhập vào <ph name="PROVIDER"/><ph name="END_BOLD"/> để xem số dư của bạn</translation>
 <translation id="2659764755126740206">Đến tài khoản <ph name="PROVIDER"/> của tôi</translation>
 <translation id="1165667598801520610">Thêm Nguồn tiền</translation>
 <translation id="2394961582378297792">Đã đăng xuất</translation>
@@ -795,6 +798,7 @@
 <translation id="167698752210114155">Đã xảy ra lỗi nội bộ</translation>
 <translation id="2326876601333401685">Phương pháp RPC này không được hỗ trợ.</translation>
 <translation id="1128992132632883337">Đã xảy ra lỗi phân tích cú pháp phản hồi</translation>
+<translation id="5382339341735118861">Đã xảy ra lỗi xử lý yêu cầu chung</translation>
 <translation id="1680597601664421644">Cụm từ ghi nhớ được nhập không hợp lệ cho Ví Brave</translation>
 <translation id="4641919696349069826">Một yêu cầu đang được thực hiện</translation>
 <translation id="872806943696014633">Dữ liệu giao dịch bị thiếu</translation>
@@ -820,6 +824,7 @@
 <translation id="875506212625074179">Phản hồi mã chuỗi không hợp lệ từ dịch vụ RPC</translation>
 <translation id="5486744676117070166">Tải giá trị số giao dịch tiếp theo không thành công</translation>
 <translation id="6180576227145734714">Dữ liệu giao dịch 'to' phải là địa chỉ hợp lệ khi được chỉ rõ</translation>
+<translation id="6688162556547723415">Phương thức và/hoặc tài khoản được yêu cầu chưa được người dùng cho phép.</translation>
 <translation id="4958950550253325418">Ứng dụng Defi</translation>
 <translation id="735961408871282410">Chợ NFT</translation>
 <translation id="7740287852186792672">Kết quả tìm kiếm</translation>
@@ -863,6 +868,7 @@
 <translation id="632241521608275119">Tỷ lệ trượt giá</translation>
 <translation id="4500473291496079954">Hết hạn trong</translation>
 <translation id="2236833281018938257">Địa chỉ ví hay URL</translation>
+<translation id="928500657730628112">Địa chỉ ví</translation>
 <translation id="2860280209982026951">Brave sử dụng <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> làm bộ tổng hợp DEX.</translation>
 <translation id="151946611346774041">0x sẽ xử lý địa chỉ Ethereum và địa chỉ IP để thực hiện một giao dịch (bao gồm nhận báo giá). 0x sẽ CHỈ sử dụng dữ liệu này cho mục đích xử lý giao dịch.</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
@@ -908,6 +914,7 @@
 <translation id="4359319875297001084">Nhập từ ví tiền mã hóa Brave cũ?</translation>
 <translation id="3331452756822160641">Mật khẩu mới</translation>
 <translation id="8624315169751085215">Sao chép vào Bộ nhớ đệm</translation>
+<translation id="7885157704277298658">Đã sao chép!</translation>
 <translation id="1121335910737476837">Tài khoản tiền mã hóa chính</translation>
 <translation id="6969147029062037757">Các tài khoản đã nhập khẩu</translation>
 <translation id="4057718162494343222">Bạn có thể tạo tài khoản chính trong Ví Brave có thể được sao lưu hoặc khôi phục từ cụm từ khôi phục của bạn. Để tìm hiểu thêm về các loại tài khoản, vui lòng truy cập trợ giúp tài khoản.</translation>
@@ -965,6 +972,8 @@
 <translation id="7642841516562576649">URL biểu tượng</translation>
 <translation id="2144247757675997850">Thêm tài sản</translation>
 <translation id="2708402071160162126">CẢNH BÁO: Không bao giờ chia sẻ cụm từ khôi phục của bạn. Bất cứ ai có cụm từ này có thể lấy đi vĩnh viễn tài sản của bạn.</translation>
+<translation id="2416098547200943834">LƯU Ý: Khóa cá nhân được cung cấp dưới dạng JSON được mã hóa hex có chứa khóa cá nhân và thông tin giao thức. <ph name="LINK_START"/>Tìm hiểu thêm<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">LƯU Ý: Khóa cá nhân phải được cung cấp dưới dạng JSON được mã hóa hex có chứa khóa cá nhân và thông tin giao thức. <ph name="LINK_START"/>Tìm hiểu thêm<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Hiển thị khóa</translation>
 <translation id="8033497299373164724">Ẩn khóa</translation>
 <translation id="2702143907607790516">Không cập nhật được tên tài khoản, vui lòng thử lại.</translation>
@@ -1000,7 +1009,7 @@
 <translation id="5488357322146334497">Tin nhắn</translation>
 <translation id="3586752056660754651">Ký nhận</translation>
 <translation id="3484981968509595506">DApp đang yêu cầu khóa mã hóa công khai của bạn</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> đang yêu cầu khóa mã hóa công khai ví của bạn. Nếu bạn đồng ý cung cấp khóa này thì trang web sẽ có thể soạn tin nhắn được mã hóa cho bạn.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> đang yêu cầu khóa mã hóa công khai ví của bạn. Nếu bạn đồng ý cung cấp khóa này thì trang web sẽ có thể soạn tin nhắn được mã hóa cho bạn.</translation>
 <translation id="3340247553212049934">Cung cấp</translation>
 <translation id="1619778919922494944">DApp muốn đọc thông báo này để hoàn thành yêu cầu của bạn</translation>
 <translation id="714506544401754321">Giải mã tin nhắn</translation>
@@ -1054,7 +1063,7 @@
 <translation id="7739762330714405363">Sử dụng mật khẩu giống nhau</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Nhập từ <ph name="WALLET_EXTENSION"/></translation>
-<translation id="1737856990004825123">Nhập từ tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng Web3 DApps nhanh hơn và bảo mật hơn.</translation>
+<translation id="1737856990004825123">Nhập tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng Web3 DApps nhanh hơn và bảo mật hơn.</translation>
 <translation id="4237840336687249184">Mật khẩu MetaMask</translation>
 <translation id="2381605201035323535">ví tiền mã hóa</translation>
 <translation id="2770851145415891830">Đã phát hiện ví tiền mã hóa hiện hành</translation>
@@ -1067,8 +1076,8 @@
 <translation id="7051244143160304048">Đã ngắt kết nối <ph name="DEVICE_NAME"/></translation>
 <translation id="5317781812114905957">Hướng dẫn</translation>
 <translation id="1178198982208000092">Kết nối <ph name="DEVICE_NAME"/> của bạn</translation>
-<translation id="4358411489835404360">Ví phần cứng yêu cầu xác nhận trên thiết bị. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Ví phần cứng yêu cầu mở Ứng dụng Ethereum trên <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Ví phần cứng yêu cầu xác nhận trên thiết bị <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Ví phần cứng yêu cầu mở Ứng dụng <ph name="NETWORK"/> trên <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">đã gửi</translation>
 <translation id="5013754027092416509">đã nhận</translation>
 <translation id="5867988533873716616">URL trình khám phá khối không khả dụng.</translation>
@@ -1116,6 +1125,7 @@
 <translation id="1599636444563952897">Quyền giới hạn chi tiêu cho phép <ph name="SITE_ORIGIN"/> rút và chi tiêu tối đa số tiền sau:</translation>
 <translation id="4512871563176965522">Trợ cấp tùy chỉnh</translation>
 <translation id="749944179568745958">Không phải là địa chỉ ETH hợp lệ</translation>
+<translation id="2832270987629018596">Không phải là địa chỉ SOL hợp lệ</translation>
 <translation id="882486206986535424">Không phải là địa chỉ hợp lệ</translation>
 <translation id="6825399159373612149">Tên miền <ph name="DOMAIN_NAME"/> chưa được đăng ký</translation>
 <translation id="8971278306757462297">Địa chỉ nhận là địa chỉ của riêng bạn</translation>
@@ -1138,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> không phải là mạng hiện tại</translation>
 <translation id="7340805872138998391">Không thể mở khóa thiết bị, hãy thử kết nối lại</translation>
 <translation id="1984410139271779110">Lỗi nội bộ, lược đồ không xác định</translation>
-<translation id="8682200134223578011">đã phê duyệt</translation>
+<translation id="6989562355845156390">duyệt</translation>
 <translation id="4674380028960132654">Ledger: Chữ ký không khớp với đúng địa chỉ</translation>
 <translation id="3183932890629254743">Không tìm thấy tài khoản phần cứng</translation>
 <translation id="4287068151777838754">Dữ liệu JSON không được kỳ vọng</translation>
@@ -1168,11 +1178,39 @@
 <translation id="6423985584914773314">Không phải là địa chỉ FIL hợp lệ</translation>
 <translation id="3898731124813934210">Mua bằng Wyre</translation>
 <translation id="5522073372365069684">Mua bằng Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">Mua tiền mã hóa bằng thẻ Visa hoặc Mastercard.</translation>
 <translation id="8528916244724490964">Tất cả các mạng</translation>
 <translation id="2781668117338732220">Mạng phụ</translation>
 <translation id="2816106784624007524">Giới hạn khí phải là một số nguyên lớn hơn 0</translation>
 <translation id="3354376789153561654">Dữ liệu giao dịch 'to' phải được chỉ định</translation>
 <translation id="8728991256628663004">Dữ liệu giao dịch 'from' phải là địa chỉ Filecoin hợp lệ</translation>
+<translation id="7003028930816622496">Thiết bị sổ cái bị khóa</translation>
+<translation id="3939390290522058485">Nhấp vào đây để kiểm tra chi tiết giao dịch cho <ph name="VALUE"/></translation>
+<translation id="2317956709076373213">Đã xác nhận giao dịch</translation>
+<translation id="310693998838023022">Lỗi giao dịch</translation>
+<translation id="6395870673621520684">Giao dịch bị giảm</translation>
+<translation id="1237782734462409503">Tab không hoạt động</translation>
+<translation id="756701799684433105">Duyệt giao dịch</translation>
+<translation id="6450792191436242818">Chương trình hệ thống</translation>
+<translation id="6252742184395380448">Chương trình cấu hình</translation>
+<translation id="5358970666412490132">Chương trình đặt cọc</translation>
+<translation id="346636227344244984">Chương trình bình chọn</translation>
+<translation id="3538368258493053874">Bộ tải BPF</translation>
+<translation id="2334098351242742927">Chương trình Ed25519</translation>
+<translation id="8780753288764281797">Chương trình Secp256k1</translation>
+<translation id="5275550100743015683">Từ địa chỉ:</translation>
+<translation id="2678433693746214764">Đến địa chỉ:</translation>
+<translation id="4576396475962922672">Tài khoản mới:</translation>
+<translation id="4719005063558335704">Tài khoản:</translation>
+<translation id="4337554812324118382">Dữ liệu:</translation>
+<translation id="569870799832027680">Mã chương trình</translation>
+<translation id="7843211152394841558">Số lần thử tối đa:</translation>
+<translation id="8496335570810457">Cam kết mô phỏng giao dịch:</translation>
+<translation id="5100124500279922001">Bỏ qua mô phỏng giao dịch:</translation>
+<translation id="8060029310790625334">Trung tâm trợ giúp</translation>
+<translation id="2095142195578664632">Cần trợ giúp? Xem</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1187,6 +1225,7 @@
 <translation id="7709075156958117386">Nếu trang web này có vẻ bị hỏng thì hãy thử tắt Khiên. 
    <ph name="LINK_BEFORE"/>Lưu ý: điều này có thể làm giảm các khả năng bảo vệ quyền riêng tư của Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Đã chặn trình theo dõi, quảng cáo và nhiều hơn nữa <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Không được bảo vệ bởi Khiên Brave <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kiểm soát nâng cao</translation>
 <translation id="5799940914270080805">Thay đổi các cài đặt này có thể làm hỏng các trang web.</translation>
 <translation id="9204041448536398473">Cài đặt Lá chắn toàn cục</translation>
@@ -1213,6 +1252,7 @@
 <translation id="7194012750329511146">Khiên Brave 
 <ph name="NUMBER"/> Trình theo dõi, quảng cáo và hơn thế nữa bị chặn</translation>
 <translation id="4292121526390005808">Các script đã bị chặn</translation>
+<translation id="3541307549916475335">Brave VPN Panel UI</translation>
 <translation id="1742469581923031760">Đang kết nối…</translation>
 <translation id="1287487756047817908">Đang ngắt kết nối…</translation>
 <translation id="2325196879156848326">Kết nối không thành công</translation>
@@ -1230,7 +1270,9 @@
 <translation id="3181339219453722970">Chọn vị trí VPN của bạn</translation>
 <translation id="1751947227857853925">Nhanh và không giới hạn lên đến 100 Mbps</translation>
 <translation id="1400240082805528049">Hỗ trợ 24/7</translation>
+<translation id="1693568075761612600">Không tạo được thẻ hỗ trợ, vui lòng kiểm tra kết nối của bạn.</translation>
 <translation id="8463313539532697053">Chờ một chút trong khi tải…</translation>
+<translation id="4317307602527599178">Không thể kiểm tra trạng thái mua hàng của bạn. Điều này có thể do sự cố mạng.</translation>
 <translation id="4613076894734402086">Chỉnh sửa phương thức thanh toán</translation>
 <translation id="8373427068383038263">Có vẻ như khoản thanh toán gần đây nhất của bạn cho <ph name="VALUE"/> không thành công. Quyền truy cập vào đăng ký này sẽ tạm dừng cho đến khi vấn đề thanh toán được giải quyết. Hãy cố gắng sửa phương thức thanh toán của bạn hoặc liên hệ với bộ phận hỗ trợ của Brave.</translation>
 <translation id="1839021455997460752">Địa chỉ email của bạn</translation>
@@ -1249,6 +1291,9 @@
 <translation id="6676791921618140305">Phiên bản HĐH:</translation>
 <translation id="1156325797949437777">Hỗ trợ được cung cấp thông qua Guardian.</translation>
 <translation id="3307461350293459700">Kết nối VPN không thành công. Vui lòng thử kết nối lại và nhớ nhấp vào Cho phép để bật cấu hình VPN của Brave.</translation>
+<translation id="7261518280726313829">Tắt DNS bảo mật hoặc sử dụng máy chủ mặc định trên Windows có thể tiết lộ tên của các trang web bạn truy cập với nhà cung cấp dịch vụ Internet của mình. Brave không khuyên bạn nên làm điều này. Bạn có muốn làm điều đó hay không?</translation>
+<translation id="888284761945060750">DNS bảo mật bị vô hiệu hóa bởi các chính sách của tổ chức của bạn. Việc sử dụng Brave VPN mà không có DNS bảo mật có thể tiết lộ tên của các trang web bạn truy cập với tổ chức hoặc nhà cung cấp dịch vụ Internet của mình.</translation>
+<translation id="1657858090675311947">Không cảnh báo tôi về điều này nữa.</translation>
 <translation id="7586151660465233733">Thêm thị trường trên <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Xem thị trường và giao dịch tiền điện tử trên FTX</translation>
 <translation id="5963745988819586370">Thị trường</translation>

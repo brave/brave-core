@@ -13,7 +13,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/time/time_util.h"
-#include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
 
 namespace ads {
 namespace rewards {

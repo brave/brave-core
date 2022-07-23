@@ -36,26 +36,31 @@ class BatAdsClientMojoBridge
   BatAdsClientMojoBridge(const BatAdsClientMojoBridge&) = delete;
   BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
 
-  // AdsClient implementation
-  bool CanShowBackgroundNotifications() const override;
-
+  // AdsClient:
   bool IsNetworkConnectionAvailable() const override;
 
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
 
-  void ShowNotification(const ads::NotificationAdInfo& info) override;
-  bool ShouldShowNotifications() override;
-  void CloseNotification(const std::string& placement_id) override;
+  bool CanShowNotificationAds() override;
+  bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
+  void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
+  void CloseNotificationAd(const std::string& placement_id) override;
+
+  void UpdateAdRewards() override;
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
                           const base::Time time) const override;
-  std::vector<base::Time> GetAdEvents(
+  std::vector<base::Time> GetAdEventHistory(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
-  void ResetAdEventsForId(const std::string& id) const override;
+  void ResetAdEventHistoryForId(const std::string& id) const override;
+
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          ads::GetBrowsingHistoryCallback callback) override;
 
   void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
@@ -63,45 +68,28 @@ class BatAdsClientMojoBridge
   void Save(const std::string& name,
             const std::string& value,
             ads::ResultCallback callback) override;
-
-  void LoadFileResource(const std::string& id,
-                        const int version,
-                        ads::LoadFileCallback callback) override;
-
-  void GetBrowsingHistory(const int max_count,
-                          const int days_ago,
-                          ads::GetBrowsingHistoryCallback callback) override;
-
-  void RecordP2AEvent(const std::string& name,
-                      const ads::mojom::P2AEventType type,
-                      const std::string& value) override;
-
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
-                               training_instance) override;
-
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;
-
+  void LoadFileResource(const std::string& id,
+                        const int version,
+                        ads::LoadFileCallback callback) override;
   std::string LoadDataResource(const std::string& name) override;
 
-  void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,
                            ads::GetScheduledCaptchaCallback callback) override;
-
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
+  void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
-  void OnAdRewardsChanged() override;
+  void RecordP2AEvent(const std::string& name,
+                      const std::string& value) override;
 
-  void Log(
-      const char* file,
-      const int line,
-      const int verbose_level,
-      const std::string& message) override;
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
+                               training_instance) override;
 
   bool GetBooleanPref(const std::string& path) const override;
   void SetBooleanPref(const std::string& path, const bool value) override;
@@ -122,6 +110,11 @@ class BatAdsClientMojoBridge
   void SetTimePref(const std::string& path, const base::Time value) override;
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
+
+  void Log(const char* file,
+           const int line,
+           const int verbose_level,
+           const std::string& message) override;
 
  private:
   bool connected() const;

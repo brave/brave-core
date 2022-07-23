@@ -77,19 +77,30 @@ class LedgerImpl : public Ledger {
   virtual database::Database* database() const;
 
   virtual void LoadURL(type::UrlRequestPtr request,
+                       client::LegacyLoadURLCallback callback);
+
+  virtual void LoadURL(type::UrlRequestPtr request,
                        client::LoadURLCallback callback);
+
+  virtual void RunDBTransaction(
+      type::DBTransactionPtr transaction,
+      client::LegacyRunDBTransactionCallback callback);
+
+  virtual void RunDBTransaction(type::DBTransactionPtr transaction,
+                                client::RunDBTransactionCallback callback);
 
   bool IsShuttingDown() const;
 
   // Ledger Implementation
 
-  void Initialize(bool execute_create_script, ResultCallback callback) override;
+  void Initialize(bool execute_create_script,
+                  LegacyResultCallback callback) override;
 
-  void CreateWallet(ResultCallback callback) override;
+  void CreateWallet(LegacyResultCallback callback) override;
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,
-                  ResultCallback callback) override;
+                  LegacyResultCallback callback) override;
 
   void OnLoad(type::VisitDataPtr visit_data, uint64_t current_time) override;
 
@@ -173,13 +184,13 @@ class LedgerImpl : public Ledger {
   type::AutoContributePropertiesPtr GetAutoContributeProperties() override;
 
   void RecoverWallet(const std::string& pass_phrase,
-                     ResultCallback callback) override;
+                     LegacyResultCallback callback) override;
 
   void SetPublisherExclude(const std::string& publisher_id,
                            type::PublisherExclude exclude,
-                           ResultCallback callback) override;
+                           LegacyResultCallback callback) override;
 
-  void RestorePublishers(ResultCallback callback) override;
+  void RestorePublishers(LegacyResultCallback callback) override;
 
   void GetPublisherActivityFromUrl(uint64_t window_id,
                                    type::VisitDataPtr visit_data,
@@ -189,7 +200,7 @@ class LedgerImpl : public Ledger {
                           PublisherBannerCallback callback) override;
 
   void RemoveRecurringTip(const std::string& publisher_key,
-                          ResultCallback callback) override;
+                          LegacyResultCallback callback) override;
 
   uint64_t GetCreationStamp() override;
 
@@ -199,7 +210,7 @@ class LedgerImpl : public Ledger {
   void GetRewardsInternalsInfo(RewardsInternalsInfoCallback callback) override;
 
   void SaveRecurringTip(type::RecurringTipPtr info,
-                        ResultCallback callback) override;
+                        LegacyResultCallback callback) override;
 
   void GetRecurringTips(PublisherInfoListCallback callback) override;
 
@@ -219,6 +230,9 @@ class LedgerImpl : public Ledger {
                            uint64_t duration,
                            bool first_visit) override;
 
+  void IsPublisherRegistered(const std::string& publisher_id,
+                             std::function<void(bool)> callback) override;
+
   void GetPublisherInfo(const std::string& publisher_key,
                         PublisherInfoCallback callback) override;
 
@@ -227,7 +241,7 @@ class LedgerImpl : public Ledger {
 
   void SavePublisherInfo(uint64_t window_id,
                          type::PublisherInfoPtr publisher_info,
-                         ResultCallback callback) override;
+                         LegacyResultCallback callback) override;
 
   void SetInlineTippingPlatformEnabled(type::InlineTipsPlatforms platform,
                                        bool enabled) override;
@@ -241,9 +255,10 @@ class LedgerImpl : public Ledger {
   void GetPendingContributions(
       PendingContributionInfoListCallback callback) override;
 
-  void RemovePendingContribution(uint64_t id, ResultCallback callback) override;
+  void RemovePendingContribution(uint64_t id,
+                                 LegacyResultCallback callback) override;
 
-  void RemoveAllPendingContributions(ResultCallback callback) override;
+  void RemoveAllPendingContributions(LegacyResultCallback callback) override;
 
   void GetPendingContributionsTotal(
       PendingContributionsTotalCallback callback) override;
@@ -259,11 +274,11 @@ class LedgerImpl : public Ledger {
       ExternalWalletAuthorizationCallback callback) override;
 
   void DisconnectWallet(const std::string& wallet_type,
-                        ResultCallback callback) override;
+                        LegacyResultCallback callback) override;
 
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
-  void GetAnonWalletStatus(ResultCallback callback) override;
+  void GetAnonWalletStatus(LegacyResultCallback callback) override;
 
   void GetTransactionReport(type::ActivityMonth month,
                             int year,
@@ -276,7 +291,7 @@ class LedgerImpl : public Ledger {
   void GetAllContributions(ContributionInfoListCallback callback) override;
 
   void SavePublisherInfoForTip(type::PublisherInfoPtr info,
-                               ResultCallback callback) override;
+                               LegacyResultCallback callback) override;
 
   void GetMonthlyReport(type::ActivityMonth month,
                         int year,
@@ -288,7 +303,7 @@ class LedgerImpl : public Ledger {
                   const std::string& wallet_type,
                   SKUOrderCallback callback) override;
 
-  void Shutdown(ResultCallback callback) override;
+  void Shutdown(LegacyResultCallback callback) override;
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
@@ -314,20 +329,29 @@ class LedgerImpl : public Ledger {
 
   bool IsReady() const;
 
-  void OnInitialized(type::Result result, ResultCallback callback);
+  void OnInitialized(type::Result result, LegacyResultCallback callback);
 
   void StartServices();
 
-  void OnStateInitialized(type::Result result, ResultCallback callback);
+  void OnStateInitialized(type::Result result, LegacyResultCallback callback);
 
-  void InitializeDatabase(bool execute_create_script, ResultCallback callback);
+  void InitializeDatabase(bool execute_create_script,
+                          LegacyResultCallback callback);
 
-  void OnDatabaseInitialized(type::Result result, ResultCallback callback);
+  void OnDatabaseInitialized(type::Result result,
+                             LegacyResultCallback callback);
 
-  void OnAllDone(type::Result result, ResultCallback callback);
+  void OnAllDone(type::Result result, LegacyResultCallback callback);
 
   template <typename T>
   void WhenReady(T callback);
+
+  template <typename LoadURLCallback>
+  void LoadURLImpl(type::UrlRequestPtr request, LoadURLCallback callback);
+
+  template <typename RunDBTransactionCallback>
+  void RunDBTransactionImpl(type::DBTransactionPtr transaction,
+                            RunDBTransactionCallback callback);
 
   LedgerClient* ledger_client_;
 

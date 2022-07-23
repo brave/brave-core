@@ -25,13 +25,13 @@ void FrequencyCappingHelper::RecordAdEventForId(
   history_.RecordForId(id, ad_type, confirmation_type, time);
 }
 
-std::vector<base::Time> FrequencyCappingHelper::GetAdEvents(
+std::vector<base::Time> FrequencyCappingHelper::GetAdEventHistory(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   return history_.Get(ad_type, confirmation_type);
 }
 
-void FrequencyCappingHelper::ResetAdEventsForId(const std::string& id) {
+void FrequencyCappingHelper::ResetAdEventHistoryForId(const std::string& id) {
   history_.ResetForId(id);
 }
 

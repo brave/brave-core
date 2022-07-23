@@ -28,12 +28,10 @@ class BraveAdsRenderFrameObserver : public content::RenderFrameObserver {
       delete;
   ~BraveAdsRenderFrameObserver() override;
 
-  // RenderFrameObserver implementation.
+ private:
+  // RenderFrameObserver:
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
-
- private:
-  // RenderFrameObserver implementation.
   void OnDestruct() override;
 
   // Handle to "handler" JavaScript object functionality.

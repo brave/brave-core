@@ -53,7 +53,7 @@ DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
 void DatabaseContributionInfo::InsertOrUpdate(
     type::ContributionInfoPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
     callback(type::Result::LEDGER_ERROR);
@@ -94,9 +94,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::GetRecord(
@@ -133,9 +131,7 @@ void DatabaseContributionInfo::GetRecord(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetRecord(
@@ -226,9 +222,7 @@ void DatabaseContributionInfo::GetAllRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::GetOneTimeTips(
@@ -291,9 +285,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
@@ -374,9 +366,7 @@ void DatabaseContributionInfo::GetContributionReport(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetContributionReport(
@@ -504,9 +494,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetList(
@@ -577,8 +565,8 @@ void DatabaseContributionInfo::OnGetListPublishers(
 
 void DatabaseContributionInfo::UpdateStep(
     const std::string& contribution_id,
-    const type::ContributionStep step,
-    ledger::ResultCallback callback) {
+    type::ContributionStep step,
+    ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -604,16 +592,14 @@ void DatabaseContributionInfo::UpdateStep(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::UpdateStepAndCount(
     const std::string& contribution_id,
-    const type::ContributionStep step,
-    const int32_t retry_count,
-    ledger::ResultCallback callback) {
+    type::ContributionStep step,
+    int32_t retry_count,
+    ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -640,15 +626,13 @@ void DatabaseContributionInfo::UpdateStepAndCount(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   publishers_->UpdateContributedAmount(
       contribution_id,
       publisher_key,
@@ -656,7 +640,7 @@ void DatabaseContributionInfo::UpdateContributedAmount(
 }
 
 void DatabaseContributionInfo::FinishAllInProgressRecords(
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0",
@@ -677,9 +661,7 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

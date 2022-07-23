@@ -8,22 +8,24 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
-#include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
+#include "bat/ads/internal/ads/notification_ad_util.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
-#include "bat/ads/internal/settings/settings.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
@@ -31,17 +33,6 @@
 #include "bat/ads/pref_names.h"
 
 namespace ads {
-
-namespace {
-
-bool ShouldServeAtRegularIntervals() {
-  return ShouldRewardUser() &&
-         (BrowserManager::GetInstance()->IsBrowserActive() ||
-          AdsClientHelper::GetInstance()->CanShowBackgroundNotifications()) &&
-         settings::GetAdsPerHour() > 0;
-}
-
-}  // namespace
 
 NotificationAd::NotificationAd(
     Account* account,
@@ -56,14 +47,15 @@ NotificationAd::NotificationAd(
   DCHECK(transfer_);
   DCHECK(epsilon_greedy_bandit_processor_);
 
+  account_->AddObserver(this);
+
   event_handler_ = std::make_unique<notification_ads::EventHandler>();
+  event_handler_->AddObserver(this);
 
   serving_ = std::make_unique<notification_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
-
-  account_->AddObserver(this);
-  event_handler_->AddObserver(this);
   serving_->AddObserver(this);
+
   BrowserManager::GetInstance()->AddObserver(this);
   PrefManager::GetInstance()->AddObserver(this);
   IdleDetectionManager::GetInstance()->AddObserver(this);
@@ -79,7 +71,7 @@ NotificationAd::~NotificationAd() {
 }
 
 void NotificationAd::MaybeServeAtRegularIntervals() {
-  if (!PlatformHelper::GetInstance()->IsMobile()) {
+  if (!CanServeAtRegularIntervals()) {
     return;
   }
 
@@ -118,11 +110,7 @@ void NotificationAd::OnPrefChanged(const std::string& path) {
 
 void NotificationAd::OnUserDidBecomeActive(const base::TimeDelta idle_time,
                                            const bool was_locked) {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
-    return;
-  }
-
-  if (!ShouldRewardUser()) {
+  if (!CanServeIfUserIsActive() || !ShouldServe()) {
     return;
   }
 
@@ -141,16 +129,25 @@ void NotificationAd::OnUserDidBecomeActive(const base::TimeDelta idle_time,
 
 void NotificationAd::OnOpportunityAroseToServeNotificationAd(
     const SegmentList& segments) {
+  BLOG(1, "Opportunity arose to serve a notification ad");
+
   privacy::p2a::RecordAdOpportunityForSegments(AdType::kNotificationAd,
                                                segments);
 }
 
 void NotificationAd::OnDidServeNotificationAd(const NotificationAdInfo& ad) {
-  event_handler_->FireEvent(ad.placement_id,
-                            mojom::NotificationAdEventType::kServed);
+  ShowNotificationAd(ad);
+
+  TriggerEvent(ad.placement_id, mojom::NotificationAdEventType::kServed);
+}
+
+void NotificationAd::OnNotificationAdServed(const NotificationAdInfo& ad) {
+  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
 void NotificationAd::OnNotificationAdViewed(const NotificationAdInfo& ad) {
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 
@@ -160,7 +157,11 @@ void NotificationAd::OnNotificationAdViewed(const NotificationAdInfo& ad) {
 }
 
 void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
+  CloseNotificationAd(ad.placement_id);
+
   transfer_->SetLastClickedAd(ad);
+
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -174,6 +175,10 @@ void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
 }
 
 void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
+  DismissNotificationAd(ad.placement_id);
+
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kDismissed);
+
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kDismissed);
 
@@ -186,6 +191,8 @@ void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
 }
 
 void NotificationAd::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
+  NotificationAdTimedOut(ad.placement_id);
+
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 

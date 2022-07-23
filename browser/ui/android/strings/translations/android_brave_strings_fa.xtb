@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">وقتی «مروگر Brave» خراب یا متوقف می‌شود، با ارسال خودکار گزارش‌های عیب‌یابی، به بهبود پایداری محصول Brave کمک کنید.</translation>
 <translation id="7977176350719484850">داده به‌صورت تخمینی\nذخیره شده است</translation>
 <translation id="9008534313521214777">زمان تخمینی ذخیره شد</translation>
-<translation id="6572660632052512096">حالت دسک‌تاپ</translation>
-<translation id="1340503115760585811">فعال کردن نمای دسک‌تاپ برای زبانه‌های جدید</translation>
-<translation id="7924540991929826186">استفاده از نسخه تلفن همراه سایت‌ها برای زبانه‌های جدید (توصیه می‌شود)</translation>
-<translation id="807636106793708118">ترجیح دادن نسخه تلفن همراه سایت‌ها</translation>
-<translation id="4479934682648362332">ترجیح دادن نسخه دسک‌تاپ سایت‌ها</translation>
 <translation id="1842747674580016420">بازپخش ویدئو در Brave</translation>
 <translation id="5368992950177874750">در صورت فعال شدن آن، ویدیوها به جای برنامه مربوطه در مرورگر Brave پخش خواهند شد</translation>
 <translation id="410351446219883937">پخش خودکار</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">مرورگر Brave را انتخاب کنید و روی «همیشه» ضربه بزنید</translation>
 <translation id="3546439402724649282">Brave در حال حاضر به‌عنوان مرورگر پیش‌فرض شما تنظیم شده است.</translation>
 <translation id="8389661903259423907">در حال حاضر مرورگر پیش‌فرض را تنظیم کرده‌اید. می‌توانید در تنظیمات برنامه خود آن را تغییر دهید.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">سپاسگزاریم</translation>
 <translation id="6665366815203065060">به‌تازگی انعامی را به این مورد ارسال کردید:</translation>
 <translation id="5441565662498481293">به‌طور خودکار انعامی به این مورد ارسال می‌کنید:</translation>
@@ -864,23 +860,34 @@
 <translation id="4804818685124855865">قطع اتصال</translation>
 <translation id="8009571545960303544">امضاء شما درخواست میشود</translation>
 <translation id="3484981968509595506">یک DApp در حال ارائه درخواست برای کلید رمزگذاری عمومی شما است</translation>
-<translation id="2291002548681057345">کلید رمزگذاری عمومی کیف پول‌هایتان را درخواست می‌کند. اگر به ارائه این کلید رضایت دهید، سایت می‌تواند پیام‌های رمزگذاری‌شده را برای شما بنویسد.</translation>
 <translation id="3340247553212049934">تهیه کنید</translation>
 <translation id="1982257600591932657">نام شبکه</translation>
 <translation id="5052727830821470769">نشانی وب شبکه</translation>
 <translation id="4822132585477111396">آی دی زنجیره</translation>
 <translation id="7131971375297699539">نماد رمزارز</translation>
 <translation id="7982789257301363584">شبکه</translation>
-<translation id="7540715999708954128">این کار به این شبکه اجازه می‌دهد تا در «کیف پول Brave» استفاده شود. بیشتر بدانید.</translation>
-<translation id="8759753423332885148">بیشتر بدانید.</translation>
 <translation id="4717431746210146708">این سایت مجاز به افزودن شبکه شود؟</translation>
+<translation id="4857321293515555666">این DApp می‌خواهد برای تکمیل درخواست شما،‌ این پیام را بخواند.</translation>
+<translation id="714506544401754321">رمزگشایی پیام</translation>
+<translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="3378339846292573874">افزودن توکن پیشنهادی</translation>
 <translation id="2322227405137827074">آیا می‌خواهید این توکن را وارد کنید؟</translation>
 <translation id="1324417023773393937">مرورگر Brave</translation>
 <translation id="6044189892950611565">کانال اعلان برای «مرورگر Brave»</translation>
 <translation id="1173919438868967364">انتخاب حساب</translation>
 <translation id="8922793255489232731">منطقه زمانی منطبق برای این مورد دریافت نشد: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">نمایش سایت‌های برتر</translation>
+<translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
 <translation id="6471216025161697462">به <ph name="VALUE"/> متصل شد</translation>
 <translation id="1968852757206592413">آزمایشی</translation>
+<translation id="7733890291091968191">نمایش اعلان‌های Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave شما را ردیابی نمی‌کند و نمی‌داند شما به چه شکل از برنامه ما استفاده می‌کنید، به همین دلیل نمی‌دانیم چطور VPN را راه‌اندازی کرده‌اید. لطفاً اطلاعاتی درباره مشکلی که با آن مواجه هستید در اختیارمان بگذارید و ما نهایت تلاش خود را برای حل آن در اسرع وقت انجام خواهیم داد. n. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN نام میزبان\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nنوع اشتراک\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nتوکن Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nنسخه برنامه\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nمنطقه زمانی\n</translation>
+<translation id="8107843365677337047">\n\nنوع شبکه\n</translation>
+<translation id="5334952096674914470">\n\nCشبکه مخابراتی\n</translation>
+<translation id="5393042357629679588">\n\nمشکلات دیگر\n</translation>
+<translation id="8095666712177294104">\n\nپلتفرم\n</translation>
 </translationbundle>

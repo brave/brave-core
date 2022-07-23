@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/endpoint/gemini/post_balance/post_balance_gemini.h"
@@ -14,7 +15,7 @@
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=PostBalanceGeminiTest.*
+// npm run test -- brave_unit_tests --filter=GeminiPostBalanceTest.*
 
 using ::testing::_;
 using ::testing::Invoke;
@@ -77,14 +78,15 @@ TEST_F(GeminiPostBalanceTest, ServerOK) {
                   "availableForWithdrawal": "93677.40"
               }
             ])";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  balance_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                    [](const type::Result result, const double available) {
-                      EXPECT_EQ(result, type::Result::LEDGER_OK);
-                      EXPECT_EQ(available, 5000.0);
-                    });
+  balance_->Request(
+      "4c2b665ca060d912fec5c735c734859a06118cc8",
+      base::BindOnce([](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(available, 5000.0);
+      }));
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError401) {
@@ -95,14 +97,15 @@ TEST_F(GeminiPostBalanceTest, ServerError401) {
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  balance_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                    [](const type::Result result, const double available) {
-                      EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-                      EXPECT_EQ(available, 0.0);
-                    });
+  balance_->Request(
+      "4c2b665ca060d912fec5c735c734859a06118cc8",
+      base::BindOnce([](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+        EXPECT_EQ(available, 0.0);
+      }));
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError403) {
@@ -113,14 +116,15 @@ TEST_F(GeminiPostBalanceTest, ServerError403) {
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  balance_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                    [](const type::Result result, const double available) {
-                      EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-                      EXPECT_EQ(available, 0.0);
-                    });
+  balance_->Request(
+      "4c2b665ca060d912fec5c735c734859a06118cc8",
+      base::BindOnce([](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+        EXPECT_EQ(available, 0.0);
+      }));
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError404) {
@@ -131,14 +135,15 @@ TEST_F(GeminiPostBalanceTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  balance_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                    [](const type::Result result, const double available) {
-                      EXPECT_EQ(result, type::Result::NOT_FOUND);
-                      EXPECT_EQ(available, 0.0);
-                    });
+  balance_->Request(
+      "4c2b665ca060d912fec5c735c734859a06118cc8",
+      base::BindOnce([](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::NOT_FOUND);
+        EXPECT_EQ(available, 0.0);
+      }));
 }
 
 TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
@@ -149,14 +154,15 @@ TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  balance_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                    [](const type::Result result, const double available) {
-                      EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                      EXPECT_EQ(available, 0.0);
-                    });
+  balance_->Request(
+      "4c2b665ca060d912fec5c735c734859a06118cc8",
+      base::BindOnce([](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+        EXPECT_EQ(available, 0.0);
+      }));
 }
 
 }  // namespace gemini

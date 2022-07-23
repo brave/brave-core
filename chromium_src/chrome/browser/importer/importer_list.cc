@@ -10,6 +10,7 @@
 #include "base/values.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/common/importer/importer_type.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -33,6 +34,12 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                                      profile->begin(), profile->end())),
                                  &items))
       continue;
+#if BUILDFLAG(IS_MAC)
+    // https://github.com/brave/brave-browser/issues/24130
+    if (type == importer::TYPE_OPERA && (items & importer::PASSWORDS)) {
+      items ^= importer::PASSWORDS;
+    }
+#endif
     importer::SourceProfile chrome;
     std::string importer_name(brand);
     importer_name.append(*name);
@@ -49,20 +56,49 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetChromeUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetChromeUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetChromeUserDataFolder(), "Chrome ", importer::TYPE_CHROME);
 #if !BUILDFLAG(IS_LINUX)
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetCanaryUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetCanaryUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetCanaryUserDataFolder(), "Chrome Canary ", importer::TYPE_CHROME);
 #endif
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetChromiumUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetChromiumUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetChromiumUserDataFolder(), "Chromium ", importer::TYPE_CHROME);
 
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetEdgeUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetEdgeUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetEdgeUserDataFolder(), "Microsoft Edge ", importer::TYPE_EDGE_CHROMIUM);
+
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetVivaldiUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetVivaldiUserDataFolder(), "Vivaldi ", importer::TYPE_VIVALDI);
+
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetOperaUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetOperaUserDataFolder(), "Opera ", importer::TYPE_OPERA);
+
+#if BUILDFLAG(IS_LINUX)
+  // Installed via snap Opera has different profile path.
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetOperaSnapUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetOperaSnapUserDataFolder(), "Opera ", importer::TYPE_OPERA);
+#endif
 }
 
 }  // namespace

@@ -40,6 +40,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void ShowPanel() override;
   void WalletInteractionDetected() override;
   void ShowWalletOnboarding() override;
+  void ShowAccountCreation(mojom::CoinType type) override;
   url::Origin GetOrigin() const override;
   void GetAllowedAccounts(mojom::CoinType type,
                           const std::vector<std::string>& accounts,
@@ -50,6 +51,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void IsAccountAllowed(mojom::CoinType type,
                         const std::string& account,
                         IsAccountAllowedCallback callback) override;
+  bool IsPermissionDenied(mojom::CoinType type) override;
   void AddSolanaConnectedAccount(const std::string& account) override;
   void RemoveSolanaConnectedAccount(const std::string& account) override;
   bool IsSolanaAccountConnected(const std::string& account) override;

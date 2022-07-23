@@ -16,6 +16,7 @@ namespace features {
 
 extern const base::Feature kOmniboxBanner;
 extern const base::Feature kOmniboxButton;
+extern const base::Feature kNTP;
 
 }  // namespace features
 

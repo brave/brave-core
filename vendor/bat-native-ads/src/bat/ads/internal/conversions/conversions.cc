@@ -27,7 +27,6 @@
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/locale/locale_manager.h"
-#include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/resource_manager.h"
@@ -127,7 +126,7 @@ std::string ExtractConversionIdFromText(
     if (conversion_id_pattern_info.search_in == kSearchInUrl) {
       const auto url_iter = std::find_if(
           redirect_chain.cbegin(), redirect_chain.cend(), [=](const GURL& url) {
-            return DoesUrlMatchPattern(url, conversion_url_pattern);
+            return MatchUrlPattern(url, conversion_url_pattern);
           });
 
       if (url_iter == redirect_chain.end()) {
@@ -234,7 +233,7 @@ void Conversions::MaybeConvert(
   }
 
   const GURL& url = redirect_chain.back();
-  if (!url.SchemeIsHTTPOrHTTPS()) {
+  if (!SchemeIsSupported(url)) {
     BLOG(1, "URL is not supported for conversions");
     return;
   }
@@ -369,7 +368,7 @@ ConversionList Conversions::FilterConversions(
                  const auto iter = std::find_if(
                      redirect_chain.begin(), redirect_chain.end(),
                      [&conversion](const GURL& url) {
-                       return DoesUrlMatchPattern(url, conversion.url_pattern);
+                       return MatchUrlPattern(url, conversion.url_pattern);
                      });
 
                  if (iter == redirect_chain.end()) {

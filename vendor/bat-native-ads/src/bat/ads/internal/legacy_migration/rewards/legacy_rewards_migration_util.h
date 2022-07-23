@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/transaction_info_aliases.h"
+#include "bat/ads/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

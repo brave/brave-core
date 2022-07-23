@@ -15,6 +15,11 @@ base::FilePath GetChromeUserDataFolder() {
   return result.Append("Application Support/Google/Chrome");
 }
 
+base::FilePath GetVivaldiUserDataFolder() {
+  base::FilePath result = base::mac::GetUserLibraryPath();
+  return result.Append("Application Support/Vivaldi");
+}
+
 base::FilePath GetCanaryUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
   return result.Append("Application Support/Google/Chrome Canary");
@@ -28,4 +33,9 @@ base::FilePath GetChromiumUserDataFolder() {
 base::FilePath GetEdgeUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
   return result.Append("Application Support/Microsoft Edge");
+}
+
+base::FilePath GetOperaUserDataFolder() {
+  base::FilePath result = base::mac::GetUserLibraryPath();
+  return result.Append("Application Support/com.operasoftware.Opera");
 }

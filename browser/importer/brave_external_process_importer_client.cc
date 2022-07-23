@@ -14,9 +14,15 @@
 
 namespace {
 bool ShouldUseBraveImporter(importer::ImporterType type) {
-  if (type == importer::TYPE_CHROME || type == importer::TYPE_EDGE_CHROMIUM)
-    return true;
-
+  switch (type) {
+    case importer::TYPE_CHROME:
+    case importer::TYPE_EDGE_CHROMIUM:
+    case importer::TYPE_VIVALDI:
+    case importer::TYPE_OPERA:
+      return true;
+    default:
+      return false;
+  }
   return false;
 }
 }  // namespace

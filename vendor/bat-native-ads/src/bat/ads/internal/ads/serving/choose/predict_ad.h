@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "bat/ads/internal/ads/serving/choose/ad_predictor_aliases.h"
+#include "bat/ads/internal/ads/serving/choose/ad_predictor_info.h"
 #include "bat/ads/internal/ads/serving/choose/eligible_ads_predictor_util.h"
 #include "bat/ads/internal/ads/serving/choose/sample_ads.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing.h"
@@ -22,7 +22,7 @@ absl::optional<T> PredictAd(const targeting::UserModelInfo& user_model,
                             const std::vector<T>& creative_ads) {
   DCHECK(!creative_ads.empty());
 
-  const std::vector<T>& paced_creative_ads = PaceAds(creative_ads);
+  const std::vector<T>& paced_creative_ads = PaceCreativeAds(creative_ads);
 
   CreativeAdPredictorMap<T> creative_ad_predictors;
   creative_ad_predictors =

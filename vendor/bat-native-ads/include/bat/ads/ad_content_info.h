@@ -8,16 +8,12 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/export.h"
 #include "url/gurl.h"
-
-namespace base {
-class DictionaryValue;
-class Value;
-}  // namespace base
 
 namespace ads {
 
@@ -33,8 +29,8 @@ struct ADS_EXPORT AdContentInfo final {
   AdContentLikeActionType ToggleThumbUpActionType() const;
   AdContentLikeActionType ToggleThumbDownActionType() const;
 
-  base::DictionaryValue ToValue() const;
-  bool FromValue(const base::Value& value);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

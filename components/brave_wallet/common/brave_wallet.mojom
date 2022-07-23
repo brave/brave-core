@@ -295,6 +295,8 @@ struct AssetPrice {
   string asset_timeframe_change;
 };
 
+// Structs to model 0x (swap) HTTP API interactions
+// Docs: https://docs.0x.org/0x-api-swap
 struct SwapParams {
   string taker_address;
   string sell_amount;
@@ -326,10 +328,68 @@ struct SwapResponse {
   // Note we could also expose "sources" later
 };
 
+// Structs to model Jupiter (swap) HTTP API interactions
+// Swagger spec: https://quote-api.jup.ag/docs/static/index.html
+//
+// Note that amount field is incorrectly modelled as number in spec,
+// but it has been fixed here.
+struct JupiterFee {
+  uint64 amount;
+  string mint;
+  double pct;
+};
+
+struct JupiterMarketInfo {
+  string id;
+  string label;
+  string input_mint;
+  string output_mint;
+  bool not_enough_liquidity;
+  uint64 in_amount;
+  uint64 out_amount;
+  double price_impact_pct;
+  JupiterFee lp_fee;
+  JupiterFee platform_fee;
+};
+
+struct JupiterRoute {
+  uint64 in_amount;
+  uint64 out_amount;
+  uint64 amount;
+  uint64 other_amount_threshold;
+  string swap_mode;
+  double price_impact_pct;
+  array<JupiterMarketInfo> market_infos;
+};
+
+struct JupiterQuote {
+  array<JupiterRoute> routes;
+};
+
+struct JupiterQuoteParams {
+  string input_mint;
+  string output_mint;
+  string amount;
+  double slippage_percentage;
+};
+
+struct JupiterSwapParams {
+  JupiterRoute route;
+  string user_public_key;
+};
+
+struct JupiterSwapTransactions {
+  string setup_transaction;
+  string swap_transaction;
+  string cleanup_transaction;
+};
+
 const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
 const string kFilecoinKeyringId = "filecoin";
+const string kFilecoinTestnetKeyringId = "filecoin_testnet";
+
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
@@ -345,6 +405,7 @@ struct HardwareWalletAccount {
   string hardware_vendor;
   string device_id;
   CoinType coin;
+  string? network;
 };
 
 struct HardwareInfo {
@@ -359,6 +420,9 @@ struct AccountInfo {
   bool is_imported;
   HardwareInfo? hardware;
   CoinType coin;
+  // Keyring, account is attached on.
+  // Used for separate filecoin networks in the UI.
+  string? keyring_id;
 };
 
 struct KeyringInfo {
@@ -460,8 +524,8 @@ interface BlockchainRegistry {
   // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
 
-  // Returns networks filtered by chain_id and/or chain_name.
-  SearchNetworks(string? chain_id_filter, string? chain_name_filter) => (array<NetworkInfo> networks);
+  // Returns list of prepopulated networks.
+  GetPrepopulatedNetworks() => (array<NetworkInfo> networks);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
@@ -491,7 +555,11 @@ interface KeyringService {
   IsLocked() => (bool isLocked);
 
   // Adds an account to the keyring.
-  AddAccount(string accountName, CoinType coin ) => (bool success);
+  // For filecoin strictly use AddFilecoinAccount.
+  AddAccount(string accountName, CoinType coin) => (bool success);
+
+  // Adds an account to the filecoin(keyring is choosed by network).
+  AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
 
   // Obtains the private key for the keyring.
   GetPrivateKeyForKeyringAccount(string address, CoinType coin)
@@ -499,6 +567,7 @@ interface KeyringService {
 
   // Imports an account with a specific private key to the corresponding keyring
   // privateKey can be coin preferred encoding, ex. hex or base58
+  // For filecoin strictly use ImportFilecoinAccount.
   ImportAccount(string accountName, string privateKey, CoinType coin)
     => (bool success, string address);
 
@@ -546,7 +615,11 @@ interface KeyringService {
   NotifyUserInteraction();
 
   // Obtains the selected account
+  // For filecoin strictly use GetFilecoinSelectedAccount
   GetSelectedAccount(CoinType coin) => (string? address);
+
+  // Obtains the selected filecoin account
+  GetFilecoinSelectedAccount(string network) => (string? address);
 
   // Sets the selected account
   SetSelectedAccount(string address, CoinType coin) => (bool success);
@@ -606,6 +679,14 @@ interface SwapService {
   GetTransactionPayload(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
 
+  // Obtains a price quote from Jupiter for a Solana swap
+  GetJupiterQuote(JupiterQuoteParams params) =>
+      (bool success, JupiterQuote? response, string? error_response);
+
+  // Get the serialized transactions to perform the swap
+  GetJupiterSwapTransactions(JupiterSwapParams params) =>
+      (bool success, JupiterSwapTransactions? response, string? error_response);
+
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
 };
@@ -660,6 +741,7 @@ const string kAvalancheMainnetChainId = "0xa86a"; // Avalanche C-Chain
 const string kFantomMainnetChainId = "0xfa"; // Fantom Opera
 const string kCeloMainnetChainId = "0xa4ec";
 const string kOptimismMainnetChainId = "0xa";
+const string kAuroraMainnetChainId = "0x4e454152";
 const string kSolanaMainnet = "0x65";
 const string kSolanaTestnet = "0x66";
 const string kSolanaDevnet = "0x67";
@@ -807,7 +889,7 @@ interface JsonRpcService {
   // address, otherwise balance is 0x0.
   GetERC721TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
-  // Obtains the quanitity of ERC1155 tokens a user has 
+  // Obtains the quanitity of ERC1155 tokens a user has
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Solana JSON RPCs
@@ -1013,6 +1095,10 @@ struct SignMessageRequest {
   // Should be used only if is_eip712 is true
   string? domain_hash;
   string? primary_hash;
+
+  // This will be passed for Solana, in hardware keyring case, it will be used
+  // to sign.
+  array<uint8>? message_bytes;
   CoinType coin;
 };
 
@@ -1021,6 +1107,8 @@ struct SignTransactionRequest {
   int32 id;
   string from_address;
   TxDataUnion tx_data;
+  ByteArrayStringUnion raw_message;
+  CoinType coin;
 };
 
 struct SignAllTransactionsRequest {
@@ -1028,6 +1116,8 @@ struct SignAllTransactionsRequest {
   int32 id;
   string from_address;
   array<TxDataUnion> tx_datas;
+  array<ByteArrayStringUnion> raw_messages;
+  CoinType coin;
 };
 
 enum ExternalWalletType {
@@ -1038,6 +1128,11 @@ enum ExternalWalletType {
 struct AddSuggestTokenRequest {
   OriginInfo origin;
   BlockchainToken token;
+};
+
+union ByteArrayStringUnion {
+  array<uint8> bytes;
+  string str;
 };
 
 // For default wallet setting, user assets, permission checks, importing
@@ -1113,11 +1208,14 @@ interface BraveWalletService {
   ResetPermission(CoinType coin, url.mojom.Origin origin, string account)
     => (bool success);
 
+  // Check if permission is denied for the origin
+  IsPermissionDenied(CoinType coin, url.mojom.Origin origin) => (bool denied);
+
   // Obtains the active origin info.
   GetActiveOrigin() => (OriginInfo origin_info);
 
   // Obtains the active origin info with eTLD+1
-  GeteTLDPlusOneFromOrigin(url.mojom.Origin origin) 
+  GeteTLDPlusOneFromOrigin(url.mojom.Origin origin)
     => (OriginInfo origin_info);
 
   // Gets all websites with a permission of coin
@@ -1127,20 +1225,20 @@ interface BraveWalletService {
     => (bool success);
 
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
-  NotifySignMessageRequestProcessed(bool approved, int32 id);
+  NotifySignMessageRequestProcessed(bool approved, int32 id, ByteArrayStringUnion? signature, string? error);
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
-  NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
 
   GetPendingSignTransactionRequests() => (array<SignTransactionRequest> requests);
   // Used for UI notifying native when the user apprrove/reject sign
   // transaction request.
-  NotifySignTransactionRequestProcessed(bool approved, int32 id);
+  NotifySignTransactionRequestProcessed(bool approved, int32 id, ByteArrayStringUnion? signature, string? error);
 
   GetPendingSignAllTransactionsRequests() => (array<SignAllTransactionsRequest> requests);
   // Used for UI notifying native when the user apprrove/reject sign all
   // transactions request.
-  NotifySignAllTransactionsRequestProcessed(bool approved, int32 id);
+  NotifySignAllTransactionsRequestProcessed(bool approved, int32 id,
+      array<ByteArrayStringUnion>? signatures, string? error);
 
   // Used for UI notifying native when the user apprrove/reject add suggest
   // token requests.
@@ -1165,6 +1263,9 @@ interface BraveWalletService {
 
   // Resets the keyring and the related preferences
   Reset();
+
+  // Called when onboarding is shown (for analytics)
+  OnOnboardingShown();
 };
 
 enum DefaultWallet {

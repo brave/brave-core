@@ -7,6 +7,7 @@ import * as React from 'react'
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GrantInfo } from '../../lib/grant_info'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
+import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
 import { SettingsIcon } from '../icons/settings_icon'
@@ -64,10 +65,11 @@ interface Props {
   rewardsEnabled: boolean
   adsEnabled: boolean
   adsSupported: boolean
-  needsBrowserUpdateToSeeAds: boolean
+  needsBrowserUpgradeToServeAds: boolean
   rewardsBalance: number
   exchangeRate: number
   exchangeCurrency: string
+  providerPayoutStatus: ProviderPayoutStatus
   nextPaymentDate: number
   earningsThisMonth: number
   earningsLastMonth: number
@@ -119,7 +121,7 @@ export function RewardsCard (props: Props) {
       )
     }
 
-    if (props.needsBrowserUpdateToSeeAds && props.adsSupported) {
+    if (props.needsBrowserUpgradeToServeAds && props.adsSupported) {
       return (
         <style.balance>
           <style.needsBrowserUpdateView>
@@ -135,6 +137,7 @@ export function RewardsCard (props: Props) {
               earningsLastMonth={props.earningsLastMonth}
               earningsReceived={props.earningsReceived}
               nextPaymentDate={props.nextPaymentDate}
+              providerPayoutStatus={props.providerPayoutStatus}
             />
           </style.pendingRewards>
         </style.balance>
@@ -174,6 +177,7 @@ export function RewardsCard (props: Props) {
             earningsLastMonth={props.earningsLastMonth}
             earningsReceived={props.earningsReceived}
             nextPaymentDate={props.nextPaymentDate}
+            providerPayoutStatus={props.providerPayoutStatus}
           />
         </style.pendingRewards>
       </style.balance>

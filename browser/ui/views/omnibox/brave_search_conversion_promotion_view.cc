@@ -544,7 +544,6 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       std::make_unique<TryButton>(views::Button::PressedCallback(
           base::BindRepeating(&BraveSearchConversionPromotionView::OpenMatch,
                               base::Unretained(this)))));
-  try_button->SetPreferredSize(gfx::Size(151, 32));
   try_button->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,

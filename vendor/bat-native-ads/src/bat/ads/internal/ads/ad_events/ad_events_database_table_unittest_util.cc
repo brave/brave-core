@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table_unittest_util.h"
 
-#include <functional>
 #include <utility>
 
+#include "base/check.h"
+#include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_table_util.h"
-#include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -25,7 +25,19 @@ void Reset(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      [callback](mojom::DBCommandResponsePtr command_response) {
+        if (!command_response ||
+            command_response->status !=
+                mojom::DBCommandResponse::Status::RESPONSE_OK) {
+          DCHECK(false);
+          callback(/* success */ false);
+          return;
+        }
+
+        RebuildAdEventHistoryFromDatabase();
+
+        callback(/* success */ true);
+      });
 }
 
 }  // namespace ad_events

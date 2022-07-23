@@ -3,6 +3,7 @@ import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -37,11 +38,12 @@ brave_grit("static_resources") {
   }
 
   defines = [
-    "enable_speedreader=$enable_speedreader",
-    "enable_ipfs=$enable_ipfs",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
-    "enable_ftx=$enable_ftx",
     "enable_brave_vpn=$enable_brave_vpn",
+    "enable_ftx=$enable_ftx",
+    "enable_ipfs=$enable_ipfs",
+    "enable_playlist=$enable_playlist",
+    "enable_speedreader=$enable_speedreader",
   ]
 
   output_dir = "$root_gen_dir/components"
@@ -110,6 +112,11 @@ repack("resources") {
       sources += [ "$root_gen_dir/brave/components/ethereum_remote_client_page/resources/ethereum_remote_client_page_generated.pak" ]
       deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
     }
+  }
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/resources:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/playlist/resources/playlist_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"

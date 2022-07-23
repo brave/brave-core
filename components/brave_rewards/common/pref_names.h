@@ -54,6 +54,7 @@ extern const char kParametersAutoContributeChoice[];
 extern const char kParametersAutoContributeChoices[];
 extern const char kParametersTipChoices[];
 extern const char kParametersMonthlyTipChoices[];
+extern const char kParametersPayoutStatus[];
 extern const char kFetchOldBalance[];
 extern const char kEmptyBalanceChecked[];
 extern const char kWalletBrave[];

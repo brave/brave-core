@@ -26,17 +26,17 @@ public class BraveAdsNativeHelper {
         return BraveAdsNativeHelperJni.get().isSupportedLocale(profile);
     };
 
-    public static void nativeOnShowNotificationAd(Profile profile, String j_notification_id) {
-        BraveAdsNativeHelperJni.get().onShowNotificationAd(profile, j_notification_id);
+    public static void nativeOnNotificationAdShown(Profile profile, String j_notification_id) {
+        BraveAdsNativeHelperJni.get().onNotificationAdShown(profile, j_notification_id);
     };
 
-    public static void nativeOnCloseNotificationAd(
+    public static void nativeOnNotificationAdClosed(
             Profile profile, String j_notification_id, boolean j_by_user) {
-        BraveAdsNativeHelperJni.get().onCloseNotificationAd(profile, j_notification_id, j_by_user);
+        BraveAdsNativeHelperJni.get().onNotificationAdClosed(profile, j_notification_id, j_by_user);
     };
 
-    public static void nativeOnClickNotificationAd(Profile profile, String j_notification_id) {
-        BraveAdsNativeHelperJni.get().onClickNotificationAd(profile, j_notification_id);
+    public static void nativeOnNotificationAdClicked(Profile profile, String j_notification_id) {
+        BraveAdsNativeHelperJni.get().onNotificationAdClicked(profile, j_notification_id);
     };
 
     @NativeMethods
@@ -44,8 +44,8 @@ public class BraveAdsNativeHelper {
         boolean isBraveAdsEnabled(Profile profile);
         void setAdsEnabled(Profile profile);
         boolean isSupportedLocale(Profile profile);
-        void onShowNotificationAd(Profile profile, String j_notification_id);
-        void onCloseNotificationAd(Profile profile, String j_notification_id, boolean j_by_user);
-        void onClickNotificationAd(Profile profile, String j_notification_id);
+        void onNotificationAdShown(Profile profile, String j_notification_id);
+        void onNotificationAdClosed(Profile profile, String j_notification_id, boolean j_by_user);
+        void onNotificationAdClicked(Profile profile, String j_notification_id);
     }
 }

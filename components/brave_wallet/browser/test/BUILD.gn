@@ -60,6 +60,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/solana_tx_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_tx_meta_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_tx_state_manager_unittest.cc",
+    "//brave/components/brave_wallet/browser/swap_request_helper_unittest.cc",
     "//brave/components/brave_wallet/browser/swap_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/swap_service_unittest.cc",
     "//brave/components/brave_wallet/browser/tx_meta_unittest.cc",

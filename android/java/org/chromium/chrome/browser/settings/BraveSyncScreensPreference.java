@@ -197,9 +197,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         InvalidateCodephrase();
 
-        if (ensureCameraPermission()) {
-            createCameraSource(true, false);
-        }
         mInflater = inflater;
         // Read which category we should be showing.
         return mInflater.inflate(R.layout.brave_sync_layout, container, false);
@@ -223,22 +220,27 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode != RC_HANDLE_CAMERA_PERM) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
             return;
         }
 
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // we have permission, so create the camerasource
             createCameraSource(true, false);
-
             return;
         }
 
         Log.e(TAG,
                 "Permission not granted: results len = " + grantResults.length + " Result code = "
                         + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
-        // We still allow to enter words
-        // getActivity().onBackPressed();
+
+        Toast.makeText(getActivity().getApplicationContext(),
+                     getResources().getString(
+                             R.string.sync_camera_permission_was_not_granted_toast),
+                     Toast.LENGTH_LONG)
+                .show();
+
+        // Go to main sync settings screen
+        getActivity().onBackPressed();
     }
 
     public void onSyncError(String message) {
@@ -246,16 +248,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (null == getActivity()) {
                 return;
             }
-            if (null != message && !message.isEmpty()) {
-                message = " [" + message + "]";
-            }
-            final String messageFinal = (null == message) ? "" : message;
+            final String messageFinal = (null == message || message.isEmpty())
+                    ? getResources().getString(R.string.sync_device_failure)
+                    : message;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    showEndDialog(
-                            getResources().getString(R.string.sync_device_failure) + messageFinal,
-                            () -> {});
+                    showEndDialog(messageFinal, () -> {});
                 }
             });
         } catch (Exception exc) {
@@ -1189,6 +1188,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       if (null != mScrollViewSyncStartChain) {
           mScrollViewSyncStartChain.setVisibility(View.GONE);
       }
+
+      if (ensureCameraPermission()) {
+          createCameraSource(true, false);
+      }
+
       setQRCodeText();
       getActivity().setTitle(R.string.brave_sync_scan_chain_code);
       if (null != mScrollViewSyncChainCode) {

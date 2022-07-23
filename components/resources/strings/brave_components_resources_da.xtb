@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Brug Braves lokale IPFS-node</translation>
 <translation id="8148464361648742409">Brug en offentlig gateway</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) er det offentlige netværk til peer-to-peer datalagring og levering. Denne protokol har forskellige privatlivsovervejelser fra HTTP(S).</translation>
-<translation id="5410952114182173389">Din computer bidrager til det offentlige netværk, men din IP-adresse og alt indhold, du’ beder om eller leverer, kan blive eksponeret. Indhold, du anmoder om via IPFS, bekræftes, før det serveres til dig.</translation>
+<translation id="1216911189668016151">Din computer bidrager til det offentlige netværk, men din IP-adresse og alt indhold, du’ beder om eller leverer, kan blive eksponeret. Indhold, du anmoder om via IPFS, bekræftes, før det serveres til dig. Netværksanmodninger må ikke bruge browserens proxy og DNS-indstillinger.</translation>
 <translation id="8664689531113048642">Beskytter din IP-adresse og indhold, du’ anmoder om fra potentielle tredjepartsobservatører, men ikke fra den offentlige gatewayoperatør. Gatewayoperatøren er ansvarlig for at sikre, at det indhold, der serveres dig via en gateway, er det indhold, du har anmodet om. Desuden bidrager din computer ikke til det offentlige IPFS-netværk.</translation>
 <translation id="3977809385703587108">Du kan ændre dine præferencer igen i</translation>
 <translation id="3340978935015468852">indstillinger</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Importér fra legacy Brave crypto-wallets?</translation>
 <translation id="3331452756822160641">Ny adgangskode</translation>
 <translation id="8624315169751085215">Kopier til udklipsholder</translation>
+<translation id="7885157704277298658">Kopieret!</translation>
 <translation id="1121335910737476837">Primære crypto-konti</translation>
 <translation id="6969147029062037757">Importerede konti</translation>
 <translation id="4057718162494343222">Du kan oprette primære konti i Brave-wallet, som kan sikkerhedskopieres eller gendannes via din gendannelsessætning. Besøg vores kontohjælp for at få mere at vide om kontotyper.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Ikon-url</translation>
 <translation id="2144247757675997850">Tilføj aktiv</translation>
 <translation id="2708402071160162126">ADVARSEL: Del aldrig din gendannelsessætning. Personer i besiddelse af sætningen kan tage dine aktiver permanent.</translation>
+<translation id="2416098547200943834">BEMÆRK: Privat nøgle tildeles som en hex-kodet JSON, som indeholder privat nøgle- og protokoloplysninger. <ph name="LINK_START"/>Læs mere<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">BEMÆRK: Privat nøgle tildeles som en hex-kodet JSON, som indeholder privat nøgle- og protokoloplysninger. <ph name="LINK_START"/>Læs mere <ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Vis nøgle</translation>
 <translation id="8033497299373164724">Skjul nøgle</translation>
 <translation id="2702143907607790516">Kunne ikke opdatere kontonavnet. Prøv igen.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Besked</translation>
 <translation id="3586752056660754651">Underskriv</translation>
 <translation id="3484981968509595506">En DApp anmoder om din offentlige krypteringsnøgle</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> anmoder om din wallets offentlige krypteringsnøgle. Hvis du giver dit samtykke til at levere denne nøgle, vil sitet kunne sende krypterede beskeder til dig.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> anmoder om din wallets offentlige krypteringsnøgle. Hvis du giver dit samtykke til at levere denne nøgle, vil sitet kunne sende krypterede beskeder til dig.</translation>
 <translation id="3340247553212049934">Giv</translation>
 <translation id="1619778919922494944">Denne DApp vil gerne læse denne besked for at fuldføre din anmodning</translation>
 <translation id="714506544401754321">Dekrypter besked</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> afbrudt</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="1178198982208000092">Opret forbindelse til <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Hardware Wallet kræver bekræftelse på enheden. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Hardware Wallet kræver, at Ethereum-appen er åben på <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Hardware Wallet kræver bekræftelse på enheden <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Hardware wallet kræver <ph name="NETWORK"/>-app åbnet på <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sendt</translation>
 <translation id="5013754027092416509">modtaget</translation>
 <translation id="5867988533873716616">Blokér Explorer-url ikke tilgængelig.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> er ikke det aktive netværk</translation>
 <translation id="7340805872138998391">Kunne ikke låse op for enhed. Prøv at oprette forbindelse igen</translation>
 <translation id="1984410139271779110">Intern fejl. Ukendt grund.</translation>
-<translation id="8682200134223578011">godkendt</translation>
+<translation id="6989562355845156390">godkend</translation>
 <translation id="4674380028960132654">Ledger: Denne signatur matching ikke den rigtige adresse</translation>
 <translation id="3183932890629254743">Hardware-konto ikke fundet</translation>
 <translation id="4287068151777838754">JSON-data ikke forventet</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Betaling gennemført</translation>
 <translation id="310693998838023022">Betalingsfejl</translation>
 <translation id="6395870673621520684">Betaling annulleret</translation>
+<translation id="1237782734462409503">Fanen er ikke aktiv</translation>
+<translation id="756701799684433105">Godkend transaktion</translation>
+<translation id="6450792191436242818">Systemprogram</translation>
+<translation id="6252742184395380448">Konfigurér program</translation>
+<translation id="5358970666412490132">Belønningsprogram</translation>
+<translation id="346636227344244984">Afstemningsprogram</translation>
+<translation id="3538368258493053874">BPF-indlæser</translation>
+<translation id="2334098351242742927">Ed25519-program</translation>
+<translation id="8780753288764281797">Secp256k1-program</translation>
+<translation id="5275550100743015683">Fra adresse:</translation>
+<translation id="2678433693746214764">Til adresse:</translation>
+<translation id="4576396475962922672">Ny konto:</translation>
+<translation id="4719005063558335704">Konti:</translation>
+<translation id="4337554812324118382">Data:</translation>
+<translation id="569870799832027680">Program-ID:</translation>
+<translation id="7843211152394841558">Maks. forsøg:</translation>
+<translation id="8496335570810457">Transaktionssimulation-forpligtelse:</translation>
+<translation id="5100124500279922001">Spring transaktionssimulation over:</translation>
+<translation id="8060029310790625334">Hjælp</translation>
+<translation id="2095142195578664632">Har du brug for hjælp? Se</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="3745016858329272300">Generel info</translation>
 <translation id="4045404575593562245">Tor kontrolhændelser</translation>

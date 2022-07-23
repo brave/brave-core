@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">עזור לשפר את יציבות המוצר של Brave על ידי שליחת דוחות אבחון אוטומטית כאשר הדפדפן האמיץ קורס או קופא.</translation>
 <translation id="7977176350719484850">הערכת נתונים/n שנשמרו</translation>
 <translation id="9008534313521214777">זמן מוערך\n שנשמר</translation>
-<translation id="6572660632052512096">מצב שולחן עבודה</translation>
-<translation id="1340503115760585811">אפשר תצוגת שולחן עבודה לכרטיסיית חדשות</translation>
-<translation id="7924540991929826186">השתמש בגרסאות נייד של אתרים עבור כרטיסיות חדשות (מומלץ)</translation>
-<translation id="807636106793708118">העדף גרסת נייד של אתרים</translation>
-<translation id="4479934682648362332">העדף את גרסת שולחן העבודה של אתרים</translation>
 <translation id="1842747674580016420">הפעלת וידאו ב-Brave</translation>
 <translation id="5368992950177874750">אם מופעל, סרטונים ינוגנו ב-Brave במקום באפליקציה המתאימה</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">בחר/י בדפדפן Brave והקש/י על "תמיד"</translation>
 <translation id="3546439402724649282">Brave כבר מוגדר כדפדפן ברירת המחדל שלך.</translation>
 <translation id="8389661903259423907">כבר הגדרת דפדפן ברירת מחדל. באפשרותך לשנות את דפדפן ברירת המחדל בהגדרות האפליקציה שלך.</translation>
+<translation id="8112367589167674370">שיחת Brave</translation>
 <translation id="8826007068782654809">תודה</translation>
 <translation id="6665366815203065060">הרגע שלחת טיפ אל:</translation>
 <translation id="5441565662498481293">את/ה שולח/ת אוטומטי טיפ אל:</translation>
@@ -865,23 +861,34 @@
 <translation id="4804818685124855865">נתק</translation>
 <translation id="8009571545960303544">נדרשת חתימתך</translation>
 <translation id="3484981968509595506">אפליקציית DApp מבקשת את מפתח ההצפנה הפומבי שלך</translation>
-<translation id="2291002548681057345">מבקש את מפתח ההצפנה הציבורי של הארנקים שלך. הסכמתך לספק את המפתח תאפשר לאתר ליצור עבורך הודעות מוצפנות.</translation>
 <translation id="3340247553212049934">ספק</translation>
 <translation id="1982257600591932657">שם רשת</translation>
 <translation id="5052727830821470769">כתובת URL של הרשת</translation>
 <translation id="4822132585477111396">מזהה שרשרת</translation>
 <translation id="7131971375297699539">סמל מטבע</translation>
 <translation id="7982789257301363584">רשת</translation>
-<translation id="7540715999708954128">יאפשר לעשות שימוש ברשת הזו בתוך Brave Wallet. לפרטים נוספים.</translation>
-<translation id="8759753423332885148">למד עוד.</translation>
 <translation id="4717431746210146708">לאפשר לאתר זה להוסיף רשת?</translation>
+<translation id="4857321293515555666">אפליקציית DApp זו מבקשת לקרוא הודעה זו כדי להשלים את בקשתך.</translation>
+<translation id="714506544401754321">פענח הודעה</translation>
+<translation id="5039804452771397117">אפשר</translation>
 <translation id="3378339846292573874">הוסף אסימון מוצע</translation>
 <translation id="2322227405137827074">האם תהיה מעוניין לייבא אסימון זה?</translation>
 <translation id="1324417023773393937">דפדפן Brave</translation>
 <translation id="6044189892950611565">ערוץ התראות עבור Brave Browser</translation>
 <translation id="1173919438868967364">בחירת חשבון</translation>
 <translation id="8922793255489232731">לא ניתן היה להשיג אזור זמן תואם עבור: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">הצג אתרים מובילים</translation>
+<translation id="8643377320501056697">הצג אתרים מובילים</translation>
 <translation id="6471216025161697462">מחובר אל <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">ניסיון</translation>
+<translation id="7733890291091968191">הצגת התראות Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave אינה עוקבת אחריך ואינה יודעת באיזה אופן החלטת לעשות שימוש באפליקציה שלנו, ולכן, אנו לא יודעים באיזה אופן הגדרת את ה-VPN. עליך לשתף מידע על הבעיה שחווית כדי שנוכל לעשות את מירב המאמצים לפתור אותה בהקדם האפשרי.####\n\n</translation>
+<translation id="3367162038532116157">\n\nשם מארח VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nסוג מינוי\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nטוקן Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nגרסת אפליקציה\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nאזור זמן\n</translation>
+<translation id="8107843365677337047">\n\nסוג רשת\n</translation>
+<translation id="5334952096674914470">\n\nמפעיל סלולארי\n</translation>
+<translation id="5393042357629679588">\n\nנושא אחר\n</translation>
+<translation id="8095666712177294104">\n\nפלטפורמה\n</translation>
 </translationbundle>

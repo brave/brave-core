@@ -37,6 +37,8 @@ extern const char kBraveWalletP3AFirstUnlockTime[];
 extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
 
+extern const char kBraveWalletWasOnboardingShown[];
+
 // DEPRECATED
 extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];
@@ -50,5 +52,7 @@ extern const char kBraveWalletBackupComplete[];
 extern const char kBraveWalletCustomNetworksDeprecated[];
 extern const char kBraveWalletCurrentChainId[];
 extern const char kBraveWalletUserAssetsDeprecated[];
+extern const char
+    kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

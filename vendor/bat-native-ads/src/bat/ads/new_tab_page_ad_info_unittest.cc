@@ -4,12 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "base/json/json_reader.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAdsNewTabPageAdInfoTest*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
@@ -79,9 +79,9 @@ NewTabPageAdInfo GetSampleNewTabPageAdInfo() {
 
 class BatAdsNewTabPageAdInfoTest : public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdInfoTest() {}
+  BatAdsNewTabPageAdInfoTest() = default;
 
-  ~BatAdsNewTabPageAdInfoTest() override {}
+  ~BatAdsNewTabPageAdInfoTest() override = default;
 };
 
 TEST_F(BatAdsNewTabPageAdInfoTest, DeserializeNewTabPageAdInfo) {
@@ -94,15 +94,12 @@ TEST_F(BatAdsNewTabPageAdInfoTest, DeserializeNewTabPageAdInfo) {
 
 TEST_F(BatAdsNewTabPageAdInfoTest, SerializeNewTabPageAdInfo) {
   NewTabPageAdInfo ad_info = GetSampleNewTabPageAdInfo();
-  std::string json = ad_info.ToJson();
 
-  rapidjson::Document document;
-  document.Parse(kSampleNewTabPageAdInfoJson);
-  rapidjson::StringBuffer expected_buffer;
-  JsonWriter writer(expected_buffer);
-  document.Accept(writer);
+  auto document = base::JSONReader::Read(kSampleNewTabPageAdInfoJson);
+  ASSERT_TRUE(document);
+  ASSERT_TRUE(document->is_dict());
 
-  EXPECT_EQ(expected_buffer.GetString(), json);
+  EXPECT_EQ(document->GetDict(), ad_info.ToValue());
 }
 
 }  // namespace ads

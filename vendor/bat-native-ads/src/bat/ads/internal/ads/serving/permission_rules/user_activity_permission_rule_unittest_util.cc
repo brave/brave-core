@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 
-#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 
 namespace ads {
 

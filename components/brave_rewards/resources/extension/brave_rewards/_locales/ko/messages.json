@@ -136,7 +136,7 @@
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
-    "message": "$begin_bold$Log in to $provider$ $end_bold$to see your balance",
+    "message": "$begin_bold$ $provider$에 로그인$end_bold$하여 잔액 보기",
     "description": "",
     "placeholders": {
       "begin_bold": {

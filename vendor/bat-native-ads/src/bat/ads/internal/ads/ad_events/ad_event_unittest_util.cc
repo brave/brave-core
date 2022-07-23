@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 
-#include <algorithm>
+#include <vector>
 
 #include "base/check_op.h"
 #include "base/guid.h"
@@ -128,14 +128,10 @@ void FireAdEvents(const AdEventInfo& ad_event, const int count) {
 }
 
 int GetAdEventCount(const AdType& ad_type,
-                    const ConfirmationType& confirmation_type,
-                    const AdEventList& ad_events) {
-  return std::count_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&ad_type, &confirmation_type](const AdEventInfo& ad_event) {
-        return ad_event.type == ad_type &&
-               ad_event.confirmation_type == confirmation_type;
-      });
+                    const ConfirmationType& confirmation_type) {
+  const std::vector<base::Time> ad_events =
+      GetAdEventHistory(ad_type, confirmation_type);
+  return ad_events.size();
 }
 
 }  // namespace ads

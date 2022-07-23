@@ -17,8 +17,6 @@
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using ledger::uphold::Capabilities;
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace ledger {
 namespace uphold {
@@ -37,7 +35,7 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
     uphold_wallet->status = type::WalletStatus::NOT_CONNECTED;
     if (!ledger_->uphold()->SetWallet(uphold_wallet->Clone())) {
       BLOG(0, "Unable to set the Uphold wallet!");
-      return callback(type::Result::LEDGER_ERROR);
+      return std::move(callback).Run(type::Result::LEDGER_ERROR);
     }
 
     OnWalletStatusChange(ledger_, {}, uphold_wallet->status);
@@ -51,7 +49,7 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
   const auto status = uphold_wallet->status;
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   // In VERIFIED state TransferTokens is done in OnGetUser after checking
@@ -60,30 +58,31 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
   // retrieved), so call TransferTokens here instead.
   if (status == type::WalletStatus::DISCONNECTED_VERIFIED) {
     return ledger_->promotion()->TransferTokens(
-        std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
+        base::BindOnce(&UpholdWallet::OnTransferTokens, base::Unretained(this),
+                       std::move(callback)));
   }
 
   if (status != type::WalletStatus::PENDING &&
       status != type::WalletStatus::VERIFIED) {
-    return callback(type::Result::LEDGER_OK);
+    return std::move(callback).Run(type::Result::LEDGER_OK);
   }
 
-  ledger_->uphold()->GetUser(
-      std::bind(&UpholdWallet::OnGetUser, this, _1, _2, callback));
+  ledger_->uphold()->GetUser(base::BindOnce(
+      &UpholdWallet::OnGetUser, base::Unretained(this), std::move(callback)));
 }
 
-void UpholdWallet::OnGetUser(const type::Result result,
-                             const User& user,
-                             ledger::ResultCallback callback) const {
+void UpholdWallet::OnGetUser(ledger::ResultCallback callback,
+                             type::Result result,
+                             const User& user) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   if (uphold_wallet->status != type::WalletStatus::PENDING &&
       uphold_wallet->status != type::WalletStatus::VERIFIED) {
-    return callback(type::Result::LEDGER_OK);
+    return std::move(callback).Run(type::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -93,44 +92,45 @@ void UpholdWallet::OnGetUser(const type::Result result,
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return callback(type::Result::EXPIRED_TOKEN);
+    return std::move(callback).Run(type::Result::EXPIRED_TOKEN);
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get the user object from Uphold!");
-    return callback(type::Result::CONTINUE);
+    return std::move(callback).Run(type::Result::CONTINUE);
   }
 
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet("");
-    return callback(type::Result::UPHOLD_BAT_NOT_ALLOWED);
+    return std::move(callback).Run(type::Result::UPHOLD_BAT_NOT_ALLOWED);
   }
 
   uphold_wallet->user_name = user.name;
   uphold_wallet->member_id = user.member_id;
   if (!ledger_->uphold()->SetWallet(uphold_wallet->Clone())) {
     BLOG(0, "Unable to set the Uphold wallet!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
-  ledger_->uphold()->GetCapabilities(std::bind(
-      &UpholdWallet::OnGetCapabilities, this, _1, _2, std::move(callback)));
+  ledger_->uphold()->GetCapabilities(
+      base::BindOnce(&UpholdWallet::OnGetCapabilities, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void UpholdWallet::OnGetCapabilities(type::Result result,
-                                     Capabilities capabilities,
-                                     ledger::ResultCallback callback) const {
+void UpholdWallet::OnGetCapabilities(ledger::ResultCallback callback,
+                                     type::Result result,
+                                     Capabilities capabilities) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   if (uphold_wallet->status != type::WalletStatus::PENDING &&
       uphold_wallet->status != type::WalletStatus::VERIFIED) {
-    return callback(type::Result::LEDGER_OK);
+    return std::move(callback).Run(type::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -140,13 +140,13 @@ void UpholdWallet::OnGetCapabilities(type::Result result,
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return callback(type::Result::EXPIRED_TOKEN);
+    return std::move(callback).Run(type::Result::EXPIRED_TOKEN);
   }
 
   if (result != type::Result::LEDGER_OK || !capabilities.can_receive ||
       !capabilities.can_send) {
     BLOG(0, "Couldn't get capabilities from Uphold!");
-    return callback(type::Result::CONTINUE);
+    return std::move(callback).Run(type::Result::CONTINUE);
   }
 
   if (!*capabilities.can_receive || !*capabilities.can_send) {
@@ -159,29 +159,32 @@ void UpholdWallet::OnGetCapabilities(type::Result result,
     } else {
       ledger_->uphold()->DisconnectWallet("");
     }
-    return callback(type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES);
+    return std::move(callback).Run(
+        type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES);
   }
 
   if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
     return ledger_->promotion()->TransferTokens(
-        std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
+        base::BindOnce(&UpholdWallet::OnTransferTokens, base::Unretained(this),
+                       std::move(callback)));
   }
 
-  ledger_->uphold()->CreateCard(std::bind(&UpholdWallet::OnCreateCard, this, _1,
-                                          _2, std::move(callback)));
+  ledger_->uphold()->CreateCard(base::BindOnce(&UpholdWallet::OnCreateCard,
+                                               base::Unretained(this),
+                                               std::move(callback)));
 }
 
-void UpholdWallet::OnCreateCard(const type::Result result,
-                                const std::string& id,
-                                ledger::ResultCallback callback) const {
+void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
+                                type::Result result,
+                                const std::string& id) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   if (uphold_wallet->status != type::WalletStatus::PENDING) {
-    return callback(type::Result::LEDGER_OK);
+    return std::move(callback).Run(type::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -191,20 +194,20 @@ void UpholdWallet::OnCreateCard(const type::Result result,
     // Entering NOT_CONNECTED.
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return callback(type::Result::EXPIRED_TOKEN);
+    return std::move(callback).Run(type::Result::EXPIRED_TOKEN);
   }
 
   if (result != type::Result::LEDGER_OK) {
-    return callback(type::Result::CONTINUE);
+    return std::move(callback).Run(type::Result::CONTINUE);
   }
 
   if (id.empty()) {
     BLOG(0, "Card ID is empty!");
-    return callback(type::Result::CONTINUE);
+    return std::move(callback).Run(type::Result::CONTINUE);
   }
 
-  GetAnonFunds(
-      std::bind(&UpholdWallet::OnGetAnonFunds, this, _1, _2, id, callback));
+  GetAnonFunds(base::BindOnce(&UpholdWallet::OnGetAnonFunds,
+                              base::Unretained(this), id, std::move(callback)));
 }
 
 void UpholdWallet::GetAnonFunds(
@@ -212,36 +215,38 @@ void UpholdWallet::GetAnonFunds(
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
   if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
-    return callback(type::Result::LEDGER_OK, type::Balance::New());
+    return std::move(callback).Run(type::Result::LEDGER_OK,
+                                   type::Balance::New());
   }
 
   const auto rewards_wallet = ledger_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(1, "Rewards wallet is null!");
     ledger_->state()->SetFetchOldBalanceEnabled(false);
-    return callback(type::Result::LEDGER_OK, type::Balance::New());
+    return std::move(callback).Run(type::Result::LEDGER_OK,
+                                   type::Balance::New());
   }
 
   if (rewards_wallet->payment_id.empty()) {
     BLOG(0, "Payment ID is empty!");
-    return callback(type::Result::LEDGER_ERROR, nullptr);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
   }
 
-  promotion_server_->get_wallet_balance()->Request(callback);
+  promotion_server_->get_wallet_balance()->Request(std::move(callback));
 }
 
-void UpholdWallet::OnGetAnonFunds(const type::Result result,
-                                  type::BalancePtr balance,
-                                  const std::string& id,
-                                  ledger::ResultCallback callback) const {
+void UpholdWallet::OnGetAnonFunds(const std::string& id,
+                                  ledger::ResultCallback callback,
+                                  const type::Result result,
+                                  type::BalancePtr balance) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   if (uphold_wallet->status != type::WalletStatus::PENDING) {
-    return callback(type::Result::LEDGER_OK);
+    return std::move(callback).Run(type::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -249,7 +254,7 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
 
   if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't get anonymous funds!");
-    return callback(type::Result::CONTINUE);
+    return std::move(callback).Run(type::Result::CONTINUE);
   }
 
   if (balance->user_funds == 0.0) {  // == floating-point comparison!
@@ -257,27 +262,29 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
   }
 
   LinkWallet(balance->user_funds, id,
-             std::bind(&UpholdWallet::OnLinkWallet, this, _1, _2, callback));
+             base::BindOnce(&UpholdWallet::OnLinkWallet, base::Unretained(this),
+                            std::move(callback)));
 }
 
 void UpholdWallet::LinkWallet(
-    const double user_funds,
+    double user_funds,
     const std::string& id,
     ledger::endpoint::promotion::PostClaimUpholdCallback callback) const {
-  promotion_server_->post_claim_uphold()->Request(user_funds, id, callback);
+  promotion_server_->post_claim_uphold()->Request(user_funds, id,
+                                                  std::move(callback));
 }
 
-void UpholdWallet::OnLinkWallet(const type::Result result,
-                                const std::string& id,
-                                ledger::ResultCallback callback) const {
+void UpholdWallet::OnLinkWallet(ledger::ResultCallback callback,
+                                type::Result result,
+                                const std::string& id) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   if (uphold_wallet->status != type::WalletStatus::PENDING) {
-    return callback(type::Result::LEDGER_OK);
+    return std::move(callback).Run(type::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -295,11 +302,11 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(result),
           constant::kWalletUphold + std::string("/") + id.substr(0, 5));
-      return callback(result);
+      return std::move(callback).Run(result);
     default:
       if (result != type::Result::LEDGER_OK) {
         BLOG(0, "Couldn't claim wallet!");
-        return callback(type::Result::CONTINUE);
+        return std::move(callback).Run(type::Result::CONTINUE);
       }
   }
 
@@ -309,7 +316,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   OnWalletStatusChange(ledger_, from, to);
@@ -325,31 +332,32 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   }
 
   ledger_->promotion()->TransferTokens(
-      std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
+      base::BindOnce(&UpholdWallet::OnTransferTokens, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void UpholdWallet::OnTransferTokens(const type::Result result,
-                                    const std::string& drain_id,
-                                    ledger::ResultCallback callback) const {
+void UpholdWallet::OnTransferTokens(ledger::ResultCallback callback,
+                                    type::Result result,
+                                    std::string) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
   if (uphold_wallet->status != type::WalletStatus::VERIFIED &&
       uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
-    return callback(type::Result::LEDGER_OK);
+    return std::move(callback).Run(type::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Transferring tokens failed!");
-    return callback(type::Result::CONTINUE);
+    return std::move(callback).Run(type::Result::CONTINUE);
   }
 
-  callback(type::Result::LEDGER_OK);
+  std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
 }  // namespace uphold

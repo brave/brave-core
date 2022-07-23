@@ -250,6 +250,9 @@ class RewardsServiceImpl : public RewardsService,
       const uint64_t duration,
       const bool first_visit) override;
 
+  void IsPublisherRegistered(const std::string& publisher_id,
+                             base::OnceCallback<void(bool)> callback) override;
+
   void GetPublisherInfo(
       const std::string& publisher_key,
       GetPublisherInfoCallback callback) override;
@@ -380,8 +383,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
 #endif
 
-  void OnConnectionClosed(const ledger::type::Result result);
-
   void InitPrefChangeRegistrar();
 
   void OnPreferenceChanged(const std::string& key);
@@ -405,9 +406,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnLedgerCreated();
 
-  void OnResult(
-      ledger::ResultCallback callback,
-      const ledger::type::Result result);
+  void OnResult(ledger::LegacyResultCallback callback,
+                ledger::type::Result result);
 
   void OnCreateWallet(CreateWalletCallback callback,
                       ledger::type::Result result);
@@ -418,28 +418,11 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetRewardsParameters(
       GetRewardsParametersCallback callback,
       ledger::type::RewardsParametersPtr parameters);
-  void OnFetchPromotions(
-    const ledger::type::Result result,
-    ledger::type::PromotionList promotions);
-  void TriggerOnPromotion(
-      const ledger::type::Result result,
-      ledger::type::PromotionPtr promotion);
+  void OnFetchPromotions(ledger::type::Result result,
+                         ledger::type::PromotionList promotions);
   void OnRestorePublishers(const ledger::type::Result result);
-  void OnSavedState(ledger::ResultCallback callback, bool success);
-  void OnLoadedState(ledger::client::OnLoadCallback callback,
-                     const std::string& value);
-  void OnResetState(ledger::ResultCallback callback,
-                                 bool success);
-  void OnTipPublisherInfoSaved(
-      const ledger::type::Result result,
-      ledger::type::PublisherInfoPtr info,
-      const bool recurring,
-      const double amount);
 
   void OnRecurringTip(const ledger::type::Result result);
-
-  void TriggerOnGetCurrentBalanceReport(
-      ledger::type::BalanceReportInfoPtr report);
 
   void MaybeShowBackupNotification(uint64_t boot_stamp);
 
@@ -561,9 +544,8 @@ class RewardsServiceImpl : public RewardsService,
       ledger::type::PromotionPtr promotion);
   void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
-  void LoadURL(
-      ledger::type::UrlRequestPtr request,
-      ledger::client::LoadURLCallback callback) override;
+  void LoadURL(ledger::type::UrlRequestPtr request,
+               ledger::client::LoadURLCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
@@ -649,10 +631,12 @@ class RewardsServiceImpl : public RewardsService,
 
   void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
 
-  void ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      ledger::ResultCallback callback) override;
+  void OnPublisherRegistryUpdated() override;
+  void OnPublisherUpdated(const std::string& publisher_id) override;
+
+  void ShowNotification(const std::string& type,
+                        const std::vector<std::string>& args,
+                        ledger::LegacyResultCallback callback) override;
 
   ledger::type::ClientInfoPtr GetClientInfo() override;
 
@@ -679,7 +663,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void WalletDisconnected(const std::string& wallet_type) override;
 
-  void DeleteLog(ledger::ResultCallback callback) override;
+  void DeleteLog(ledger::LegacyResultCallback callback) override;
 
   // end ledger::LedgerClient
 
@@ -735,9 +719,8 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::type::Result result,
       ledger::type::MonthlyReportInfoPtr report);
 
-  void OnRunDBTransaction(
-      ledger::client::RunDBTransactionCallback callback,
-      ledger::type::DBCommandResponsePtr response);
+  void OnRunDBTransaction(ledger::client::RunDBTransactionCallback callback,
+                          ledger::type::DBCommandResponsePtr response);
 
   void OnGetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback,
@@ -756,8 +739,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnStartProcessForCompleteReset(SuccessCallback callback, bool success);
 
-  void OnDiagnosticLogDeleted(ledger::ResultCallback callback,
-                              const bool success);
+  void OnDiagnosticLogDeleted(ledger::LegacyResultCallback callback,
+                              bool success);
 
   void OnGetEventLogs(
       GetEventLogsCallback callback,
@@ -773,9 +756,6 @@ class RewardsServiceImpl : public RewardsService,
 
 #if BUILDFLAG(IS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
-  void GrantAttestationResult(
-      const std::string& promotion_id, bool result,
-      const std::string& result_string);
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
 

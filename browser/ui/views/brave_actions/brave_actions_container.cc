@@ -18,8 +18,10 @@
 #include "brave/browser/ui/brave_actions/brave_action_view_controller_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
@@ -38,7 +40,6 @@
 #include "extensions/common/constants.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
 
 BraveActionsContainer::BraveActionInfo::BraveActionInfo()
@@ -104,7 +105,12 @@ void BraveActionsContainer::Init() {
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
   AddActionViewForShields();
-  actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
+  if (base::FeatureList::IsEnabled(
+          brave_rewards::features::kWebUIPanelFeature)) {
+    AddActionViewForRewards();
+  } else {
+    actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
+  }
 
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
@@ -135,7 +141,7 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
     return false;
   }
 
-  if (!brave::IsRegularProfile(browser_->profile())) {
+  if (!rewards_service_) {
     return false;
   }
 
@@ -267,26 +273,53 @@ void BraveActionsContainer::AddActionViewForShields() {
   shields_action_btn_->Init();
 }
 
+void BraveActionsContainer::AddActionViewForRewards() {
+  auto button = std::make_unique<BraveRewardsActionView>(browser_);
+  rewards_action_btn_ = AddChildViewAt(std::move(button), 2);
+  rewards_action_btn_->SetPreferredSize(GetToolbarActionSize());
+  rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
+  rewards_action_btn_->Update();
+}
+
 void BraveActionsContainer::Update() {
-  // Update state of each action and also determine if there are any buttons to
-  // show
+  if (shields_action_btn_) {
+    shields_action_btn_->Update();
+  }
+
+  if (rewards_action_btn_) {
+    rewards_action_btn_->Update();
+  }
+
+  for (auto& [_, value] : actions_) {
+    if (value.view_controller_) {
+      value.view_controller_->UpdateState();
+    }
+  }
+
+  UpdateVisibility();
+  Layout();
+}
+
+void BraveActionsContainer::UpdateVisibility() {
   bool can_show = false;
 
   if (shields_action_btn_) {
-    shields_action_btn_->Update();
     can_show = shields_action_btn_->GetVisible();
   }
 
-  for (auto const& pair : actions_) {
-    if (pair.second.view_controller_)
-      pair.second.view_controller_->UpdateState();
-    if (!can_show && pair.second.view_ && pair.second.view_->GetVisible())
-      can_show = true;
+  if (rewards_action_btn_) {
+    can_show = can_show || rewards_action_btn_->GetVisible();
   }
-  // only show separator if we're showing any buttons
-  const bool visible = !should_hide_ && can_show;
-  SetVisible(visible);
-  Layout();
+
+  for (auto& [_, value] : actions_) {
+    if (value.view_) {
+      can_show = can_show || value.view_->GetVisible();
+    }
+  }
+
+  // If no buttons are visible, then we want to hide this view so that the
+  // separator is not displayed.
+  SetVisible(!should_hide_ && can_show);
 }
 
 void BraveActionsContainer::SetShouldHide(bool should_hide) {
@@ -357,7 +390,10 @@ void BraveActionsContainer::OnExtensionSystemReady() {
   extension_action_observer_.Observe(extension_action_api_);
   brave_action_observer_.Observe(brave_action_api_);
   // Check if extensions already loaded
-  AddAction(brave_rewards_extension_id);
+  if (!base::FeatureList::IsEnabled(
+          brave_rewards::features::kWebUIPanelFeature)) {
+    AddAction(brave_rewards_extension_id);
+  }
 }
 
 // ExtensionRegistry::Observer
@@ -410,7 +446,11 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
 
 // Brave Rewards preferences change observers callback
 void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
-  UpdateActionVisibility(brave_rewards_extension_id);
+  if (rewards_action_btn_) {
+    rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
+  } else {
+    UpdateActionVisibility(brave_rewards_extension_id);
+  }
 }
 
 ToolbarActionViewController* BraveActionsContainer::GetActionForId(
@@ -473,9 +513,6 @@ bool BraveActionsContainer::ShowToolbarActionPopupForAPICall(
 }
 
 void BraveActionsContainer::ShowToolbarActionBubble(
-    std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
-
-void BraveActionsContainer::ShowToolbarActionBubbleAsync(
     std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
 
 void BraveActionsContainer::ToggleExtensionsMenu() {}

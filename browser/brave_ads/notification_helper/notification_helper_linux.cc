@@ -27,11 +27,12 @@ bool NotificationHelperLinux::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperLinux::CanShowBackgroundNotifications() const {
+bool NotificationHelperLinux::
+    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperLinux::ShowMyFirstNotificationAd() {
+bool NotificationHelperLinux::ShowOnboardingNotification() {
   return false;
 }
 

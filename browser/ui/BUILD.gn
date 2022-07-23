@@ -5,6 +5,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -99,6 +100,10 @@ source_set("ui") {
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
+      "webui/brave_rewards/rewards_panel_handler.cc",
+      "webui/brave_rewards/rewards_panel_handler.h",
+      "webui/brave_rewards/rewards_panel_ui.cc",
+      "webui/brave_rewards/rewards_panel_ui.h",
       "webui/brave_settings_ui.cc",
       "webui/brave_settings_ui.h",
       "webui/brave_shields/shields_panel_data_handler.cc",
@@ -289,7 +294,6 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_rewards/resources:internals_generated_resources",
     "//brave/components/brave_rewards/resources:page_generated_resources",
-    "//brave/components/brave_rewards/resources:tip_generated_resources",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/browser",
@@ -305,6 +309,8 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a:buildflags",
+    "//brave/components/playlist/buildflags",
+    "//brave/components/resources:static_resources",
     "//brave/components/sidebar/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor",
@@ -443,11 +449,15 @@ source_set("ui") {
       "//brave/browser/resources/history:resources",
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
+      "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_new_tab_ui:mojom",
       "//brave/components/brave_private_new_tab_ui/common",
       "//brave/components/brave_private_new_tab_ui/common:mojom",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
+      "//brave/components/brave_rewards/common:mojom",
+      "//brave/components/brave_rewards/resources:tip_generated_resources",
+      "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_generated",
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_sync",
@@ -485,6 +495,8 @@ source_set("ui") {
       "views/brave_actions/brave_actions_container.h",
       "views/brave_actions/brave_rewards_action_stub_view.cc",
       "views/brave_actions/brave_rewards_action_stub_view.h",
+      "views/brave_actions/brave_rewards_action_view.cc",
+      "views/brave_actions/brave_rewards_action_view.h",
       "views/brave_actions/brave_shields_action_view.cc",
       "views/brave_actions/brave_shields_action_view.h",
       "views/location_bar/brave_location_bar_view.cc",
@@ -647,6 +659,19 @@ source_set("ui") {
 
   if (enable_ftx) {
     deps += [ "//brave/components/ftx/common" ]
+  }
+
+  if (enable_playlist) {
+    sources += [
+      "webui/playlist_page_handler.cc",
+      "webui/playlist_page_handler.h",
+      "webui/playlist_ui.cc",
+      "webui/playlist_ui.h",
+    ]
+    deps += [
+      "//brave/components/playlist/mojom",
+      "//brave/components/playlist/resources:generated_resources",
+    ]
   }
 
   if (toolkit_views) {

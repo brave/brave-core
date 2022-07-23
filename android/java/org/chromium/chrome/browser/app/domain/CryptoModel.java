@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.app.domain;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -24,8 +26,12 @@ import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
+import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.mojo.bindings.Callbacks.Callback1;
 import org.chromium.url.internal.mojom.Origin;
 
@@ -44,6 +50,7 @@ public class CryptoModel {
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
+    private CryptoSharedActions mCryptoSharedActions;
     private CryptoSharedData mSharedData;
     private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
             new MutableLiveData<>(CoinType.ETH);
@@ -53,16 +60,21 @@ public class CryptoModel {
     public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
             _mProcessNextDAppsRequest;
     private final Object mLock = new Object();
+    private Context mContext;
+
+    public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
 
     private NetworkModel mNetworkModel;
     // Todo: create a models for portfolio
     // Todo: create method to create and return new models for Asset, Account,
     //  TransactionConfirmation
 
-    public CryptoModel(TxService mTxService, KeyringService mKeyringService,
+    public CryptoModel(Context context, TxService mTxService, KeyringService mKeyringService,
             BlockchainRegistry mBlockchainRegistry, JsonRpcService mJsonRpcService,
             EthTxManagerProxy mEthTxManagerProxy, SolanaTxManagerProxy mSolanaTxManagerProxy,
-            BraveWalletService mBraveWalletService, AssetRatioService mAssetRatioService) {
+            BraveWalletService mBraveWalletService, AssetRatioService mAssetRatioService,
+            CryptoSharedActions cryptoSharedActions) {
+        mContext = context;
         this.mTxService = mTxService;
         this.mKeyringService = mKeyringService;
         this.mBlockchainRegistry = mBlockchainRegistry;
@@ -71,16 +83,19 @@ public class CryptoModel {
         this.mSolanaTxManagerProxy = mSolanaTxManagerProxy;
         this.mBraveWalletService = mBraveWalletService;
         this.mAssetRatioService = mAssetRatioService;
+        mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
-        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, null, true);
-        mNetworkModel = new NetworkModel(mJsonRpcService, mSharedData);
+        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
+        mNetworkModel =
+                new NetworkModel(mJsonRpcService, mSharedData, mCryptoSharedActions, context);
     }
 
-    public void resetServices(TxService mTxService, KeyringService mKeyringService,
+    public void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
             BlockchainRegistry mBlockchainRegistry, JsonRpcService mJsonRpcService,
             EthTxManagerProxy mEthTxManagerProxy, SolanaTxManagerProxy mSolanaTxManagerProxy,
             BraveWalletService mBraveWalletService, AssetRatioService mAssetRatioService) {
         synchronized (mLock) {
+            mContext = context;
             this.mTxService = mTxService;
             this.mKeyringService = mKeyringService;
             this.mBlockchainRegistry = mBlockchainRegistry;
@@ -221,6 +236,20 @@ public class CryptoModel {
         }
     }
 
+    public List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes() {
+        List<CryptoAccountTypeInfo> cryptoAccountTypeInfos = new ArrayList<>();
+        if (isSolanaEnabled()) {
+            cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
+                    mContext.getString(R.string.brave_wallet_create_account_solana_description),
+                    mContext.getString(R.string.wallet_sol_name), CoinType.SOL,
+                    R.drawable.ic_sol_asset_icon));
+        }
+        cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
+                mContext.getString(R.string.brave_wallet_create_account_ethereum_description),
+                mContext.getString(R.string.wallet_eth_name), CoinType.ETH, R.drawable.eth));
+        return cryptoAccountTypeInfos;
+    }
+
     public PendingTxHelper getPendingTxHelper() {
         return mPendingTxHelper;
     }
@@ -231,6 +260,34 @@ public class CryptoModel {
 
     public NetworkModel getNetworkModel() {
         return mNetworkModel;
+    }
+
+    public boolean isSolanaEnabled() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SOLANA);
+    }
+
+    public void updateCoinType() {
+        updateCoinType(null);
+    }
+
+    public void updateCoinType(Callback1<Integer> callback) {
+        mBraveWalletService.getSelectedCoin(coinType -> {
+            _mCoinTypeMutableLiveData.postValue(coinType);
+            if (callback != null) {
+                callback.call(coinType);
+            }
+        });
+    }
+
+    /**
+     * Initialise the account observable via setter (to avoid dependency cycle)
+     * @param accountInfosFromKeyRingModel from the keyrin model
+     */
+    public void setAccountInfosFromKeyRingModel(
+            LiveData<List<AccountInfo>> accountInfosFromKeyRingModel) {
+        this.mAccountInfosFromKeyRingModel = accountInfosFromKeyRingModel;
+        // pass on the observer to other object
+        mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
     }
 
     /*
@@ -252,6 +309,36 @@ public class CryptoModel {
                 return BraveWalletConstants.MAINNET_CHAIN_ID;
             }
             return mNetworkModel.mChainId.getValue();
+        }
+
+        @Override
+        public Context getContext() {
+            return mContext;
+        }
+
+        @Override
+        public LiveData<Integer> getCoinTypeLd() {
+            return mCoinTypeMutableLiveData;
+        }
+
+        @Override
+        public String[] getEnabledKeyrings() {
+            ArrayList<String> keyRings = new ArrayList<>();
+            keyRings.add(BraveWalletConstants.DEFAULT_KEYRING_ID);
+            if (isSolanaEnabled()) {
+                keyRings.add(BraveWalletConstants.SOLANA_KEYRING_ID);
+            }
+            return keyRings.toArray(new String[0]);
+        }
+
+        @Override
+        public List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes() {
+            return CryptoModel.this.getSupportedCryptoAccountTypes();
+        }
+
+        @Override
+        public LiveData<List<AccountInfo>> getAccounts() {
+            return mAccountInfosFromKeyRingModel;
         }
     }
 }

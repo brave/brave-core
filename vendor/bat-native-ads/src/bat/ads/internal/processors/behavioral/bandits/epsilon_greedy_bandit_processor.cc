@@ -14,7 +14,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
-#include "bat/ads/internal/segments/segments_util.h"
+#include "bat/ads/internal/segments/segment_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {

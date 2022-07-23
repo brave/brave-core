@@ -9,18 +9,12 @@
 #include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/ads_callback.h"
-#include "bat/ads/internal/account/confirmations/confirmation_info_aliases.h"
-#include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
-
-namespace base {
-class DictionaryValue;
-class Value;
-}  // namespace base
+#include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/issuers/issuer_info.h"
 
 namespace ads {
-
-constexpr char kConfirmationsFilename[] = "confirmations.json";
 
 namespace privacy {
 class UnblindedPaymentTokens;
@@ -44,6 +38,9 @@ class ConfirmationStateManager final {
   void Load();
   void Save();
 
+  std::string ToJson();
+  bool FromJson(const std::string& json);
+
   void SetIssuers(const IssuerList& issuers);
   IssuerList GetIssuers() const;
 
@@ -65,21 +62,17 @@ class ConfirmationStateManager final {
   bool is_mutated() const { return is_mutated_; }
 
  private:
-  std::string ToJson();
-  bool FromJson(const std::string& json);
-  bool ParseIssuersFromDictionary(base::DictionaryValue* dictionary);
+  bool ParseIssuersFromDictionary(const base::Value::Dict& dict);
 
-  base::Value GetFailedConfirmationsAsDictionary(
+  base::Value::Dict GetFailedConfirmationsAsDictionary(
       const ConfirmationList& confirmations) const;
-  bool GetFailedConfirmationsFromDictionary(base::Value* dictionary,
+  bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
                                             ConfirmationList* confirmations);
-  bool ParseFailedConfirmationsFromDictionary(
-      base::DictionaryValue* dictionary);
+  bool ParseFailedConfirmationsFromDictionary(const base::Value::Dict& dict);
 
-  bool ParseUnblindedTokensFromDictionary(base::DictionaryValue* dictionary);
+  bool ParseUnblindedTokensFromDictionary(const base::Value::Dict& dict);
 
-  bool ParseUnblindedPaymentTokensFromDictionary(
-      base::DictionaryValue* dictionary);
+  bool ParseUnblindedPaymentTokensFromDictionary(const base::Value::Dict& dict);
 
   bool is_mutated_ = false;
 

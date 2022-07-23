@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -53,17 +54,15 @@ class PostWalletBraveTest : public testing::Test {
 
 TEST_F(PostWalletBraveTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 201;
             response.url = request->url;
             response.body = R"({
               "paymentId": "37742974-3b80-461a-acfb-937e105e5af4"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(
@@ -75,15 +74,13 @@ TEST_F(PostWalletBraveTest, ServerOK) {
 
 TEST_F(PostWalletBraveTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(
@@ -95,15 +92,13 @@ TEST_F(PostWalletBraveTest, ServerError400) {
 
 TEST_F(PostWalletBraveTest, ServerError503) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 503;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(
@@ -115,15 +110,13 @@ TEST_F(PostWalletBraveTest, ServerError503) {
 
 TEST_F(PostWalletBraveTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(

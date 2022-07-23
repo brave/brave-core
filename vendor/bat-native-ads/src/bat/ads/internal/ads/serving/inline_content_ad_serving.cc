@@ -95,14 +95,7 @@ void Serving::MaybeServeAd(const std::string& dimensions,
         const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
 
         const InlineContentAdInfo& ad = BuildInlineContentAd(creative_ad);
-        if (!ServeAd(ad, callback)) {
-          BLOG(1, "Failed to serve inline content ad");
-          FailedToServeAd(dimensions, callback);
-          return;
-        }
-
-        BLOG(1, "Served inline content ad");
-        ServedAd(ad);
+        ServeAd(ad, callback);
       });
 }
 
@@ -116,11 +109,15 @@ bool Serving::IsSupported() const {
   return true;
 }
 
-bool Serving::ServeAd(const InlineContentAdInfo& ad,
-                      MaybeServeInlineContentAdCallback callback) const {
-  DCHECK(ad.IsValid());
+void Serving::ServeAd(const InlineContentAdInfo& ad,
+                      MaybeServeInlineContentAdCallback callback) {
+  if (!ad.IsValid()) {
+    BLOG(1, "Failed to serve inline content ad");
+    FailedToServeAd(ad.dimensions, callback);
+    return;
+  }
 
-  BLOG(1, "Serving inline content ad:\n"
+  BLOG(1, "Served inline content ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
@@ -134,23 +131,19 @@ bool Serving::ServeAd(const InlineContentAdInfo& ad,
               << "  ctaText: " << ad.cta_text << "\n"
               << "  targetUrl: " << ad.target_url);
 
-  callback(/* success */ true, ad.dimensions, ad);
+  DCHECK(eligible_ads_);
+  eligible_ads_->SetLastServedAd(ad);
 
   NotifyDidServeInlineContentAd(ad);
 
-  return true;
+  callback(/* success */ true, ad.dimensions, ad);
 }
 
 void Serving::FailedToServeAd(const std::string& dimensions,
                               MaybeServeInlineContentAdCallback callback) {
-  callback(/* success */ false, dimensions, {});
-
   NotifyFailedToServeInlineContentAd();
-}
 
-void Serving::ServedAd(const InlineContentAdInfo& ad) {
-  DCHECK(eligible_ads_);
-  eligible_ads_->SetLastServedAd(ad);
+  callback(/* success */ false, dimensions, {});
 }
 
 void Serving::NotifyOpportunityAroseToServeInlineContentAd(

@@ -47,8 +47,10 @@ void WalletHandler::OnConnectionError() {
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   EnsureConnected();
   std::vector<std::string> ids = {brave_wallet::mojom::kDefaultKeyringId};
-  if (brave_wallet::IsFilecoinEnabled())
+  if (brave_wallet::IsFilecoinEnabled()) {
     ids.push_back(brave_wallet::mojom::kFilecoinKeyringId);
+    ids.push_back(brave_wallet::mojom::kFilecoinTestnetKeyringId);
+  }
   if (brave_wallet::IsSolanaEnabled())
     ids.push_back(brave_wallet::mojom::kSolanaKeyringId);
 

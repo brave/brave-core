@@ -45,10 +45,8 @@ class RewardsBrowserTestContextHelper {
  private:
   void OpenPopup();
 
-  void OpenPopupFirstTime();
-
   raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
-  bool loaded_ = false;
+  base::WeakPtr<content::WebContents> popup_contents_;
 };
 
 }  // namespace rewards_browsertest

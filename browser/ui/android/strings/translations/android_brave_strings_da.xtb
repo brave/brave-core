@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Hjælp med at forbedre Braves produktstabilitet ved automatisk at sende diagnostioceringsrapporter, Brave Browser bryder sammen eller fryser.</translation>
 <translation id="7977176350719484850">Est. datamængde\ngemt</translation>
 <translation id="9008534313521214777">Forventet tid\nsparet</translation>
-<translation id="6572660632052512096">Computertilstand</translation>
-<translation id="1340503115760585811">Slå computervisning til for nye faner</translation>
-<translation id="7924540991929826186">Brug mobile versioner af websteder til nye faner (anbefales)</translation>
-<translation id="807636106793708118">Foretræk mobilversion af sider</translation>
-<translation id="4479934682648362332">Foretrækker desktop-version af sider</translation>
 <translation id="1842747674580016420">Videoafspilning i Brave</translation>
 <translation id="5368992950177874750">Hvis aktiveret, afspilles videoer i Brave i stedet for i den tilknyttede app</translation>
 <translation id="410351446219883937">Autoplay</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Vælg Brave Browser, og tryk på "Altid"</translation>
 <translation id="3546439402724649282">Brave er allerede indstillet som din standardbrowser.</translation>
 <translation id="8389661903259423907">Du har allerede indstillet en standardbrowser. Du kan ændre standardbrowser i dine appindstillinger.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Tak</translation>
 <translation id="6665366815203065060">Du har lige sendt drikkepenge til:</translation>
 <translation id="5441565662498481293">Du sender automatisk drikkepenge til:</translation>
@@ -863,23 +859,34 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4804818685124855865">Afbryd</translation>
 <translation id="8009571545960303544">Din signatur er ønsket</translation>
 <translation id="3484981968509595506">En DApp anmoder om din offentlige krypteringsnøgle</translation>
-<translation id="2291002548681057345">anmoder om din wallets offentlige krypteringsnøgle. Hvis du giver dit samtykke til at give nøglen, vil siden kunne udarbejde krypterede beskeder til dig.</translation>
 <translation id="3340247553212049934">Giv</translation>
 <translation id="1982257600591932657">Netværksnavn</translation>
 <translation id="5052727830821470769">Netværks-url</translation>
 <translation id="4822132585477111396">Kæde-ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="7982789257301363584">Netværk</translation>
-<translation id="7540715999708954128">Dette giver tilladelse til, at netværket bruges inden i Brave Wallet. Læs mere.</translation>
-<translation id="8759753423332885148">Lær mere.</translation>
 <translation id="4717431746210146708">Tillad denne side at tilføje te netværk?</translation>
+<translation id="4857321293515555666">Denne DApp vil gerne læse denne besked for at fuldføre din anmodning.</translation>
+<translation id="714506544401754321">Dekrypter besked</translation>
+<translation id="5039804452771397117">Tillad</translation>
 <translation id="3378339846292573874">Tilføj foreslåede token</translation>
 <translation id="2322227405137827074">Ønsker du at tilføje dette token?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="6044189892950611565">Notifikationskanal for Brave Browser</translation>
 <translation id="1173919438868967364">Vælg konto</translation>
 <translation id="8922793255489232731">Kunne ikke lokalisere en matchende tidszone til : <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Vis topsider</translation>
+<translation id="8643377320501056697">Vis topsider</translation>
 <translation id="6471216025161697462">Forbundet til <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prøveperiode</translation>
+<translation id="7733890291091968191">Vis Web3-notifikationer</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave sporer dig ikke og ved heller ikke, hvordan du bruger vores app, så vi ved ikke, hvordan du har opsat din VPN. Beskriv problemet, du oplever, og så skal vi gøre vores bedste for at hjælpe dig hurtigst muligt. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN-værtsnavn\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nAbonnementstype\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore-polet\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nApp-version\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nTidszone\n</translation>
+<translation id="8107843365677337047">\n\nNetværkstype\n</translation>
+<translation id="5334952096674914470">\n\nMobilselskab\n</translation>
+<translation id="5393042357629679588">\n\nAndre problemer\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>

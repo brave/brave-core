@@ -467,9 +467,8 @@ void Twitch::OnMediaPublisherInfo(
                     media_id);
 }
 
-void Twitch::FetchDataFromUrl(
-    const std::string& url,
-    ledger::client::LoadURLCallback callback) {
+void Twitch::FetchDataFromUrl(const std::string& url,
+                              ledger::client::LegacyLoadURLCallback callback) {
   auto request = ledger::type::UrlRequest::New();
   request->url = url;
   request->skip_log = true;

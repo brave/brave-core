@@ -13,7 +13,7 @@
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace base {
 class Time;
@@ -65,9 +65,8 @@ class Serving final : public PrefManagerObserver {
   void RetryServingAdAtNextInterval();
   base::Time MaybeServeAdAfter(const base::TimeDelta delay);
 
-  bool ServeAd(const NotificationAdInfo& ad) const;
+  void ServeAd(const NotificationAdInfo& ad);
   void FailedToServeAd();
-  void ServedAd(const NotificationAdInfo& ad);
 
   void NotifyOpportunityAroseToServeNotificationAd(
       const SegmentList& segments) const;

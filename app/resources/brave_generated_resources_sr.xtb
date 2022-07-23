@@ -106,6 +106,15 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Zatvori sve kartice?</translation>
 <translation id="7551864359422178684">Imate <ph name="NUMBER_OF_TABS"/> kartica otvorenih u ovom prozoru pretraživača.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> kartica</translation>
+<translation id="2272117088509540883">- Brave pretraživač</translation>
+<translation id="2701279958223202597">Podržava nezavisnu pretragu uz bolju privatnost. Brave pretraživač ne prati vas, vaše upite niti vaše klikove.</translation>
+<translation id="6438467592401259882">Podržava nezavisnu pretragu uz bolju privatnost.</translation>
+<translation id="1688359110799098115">Podržava nezavisnu pretragu uz bolju privatnost</translation>
+<translation id="8579317236683491484">Brave pretraživač ne prati vas, vaše upite niti vaše klikove.</translation>
+<translation id="5240031343741051161">Isprobajte Brave pretraživač</translation>
+<translation id="5026874946691314267">Ne prikazuj ovo ponovo</translation>
+<translation id="5234764350956374838">Одбаци</translation>
+<translation id="214744058941501853">Obustavlja prelazak na Brave pretraživač. Pritisnite Enter da biste uklonili ovaj predlog</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
 <translation id="6040143037577758943">Затвори</translation>
@@ -135,6 +144,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8490082094734500369">Isključi režim čitaoca</translation>
 <translation id="2036503787657622020">Uključi režim čitaoca</translation>
 <translation id="5226458915125328323">Podešavanje Speedreader-a</translation>
+<translation id="1621606336827646158">Prikaži originalnu stranicu</translation>
 <translation id="6284218950354553099">Automatski šalji dnevni signal provere odziva Brave-u</translation>
 <translation id="5288333155754958121">Ova anonimna, privatna provera odziva omogućava Brave-u da proceni broj aktivnih korisnika.</translation>
 <translation id="1872784258300710671">Brave koristi potpuno privatnu analitiku proizvoda da bi procenio ukupno korišćenje određenih karakteristika</translation>
@@ -185,6 +195,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Podesite Brave kao podrazumevani pretraživač kako biste dobili Brave zaštite privatnosti na svakoj veb-stranici koju otvorite.</translation>
 <translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
 <translation id="2370739752330685659">Možda kasnije</translation>
+<translation id="961012016278832836">Zastarela verzija pregledača Microsoft Edge</translation>
+<translation id="6436994631426134065">Uvezeno iz <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="4472575034687746823">Започнимо</translation>
@@ -201,9 +213,11 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2906510232093002459">Brave podrazumevane slike</translation>
 <translation id="2396127686705429331">Prikaži dugme sa obeleživačima</translation>
 <translation id="2814998458708016836">Koristi široku traku sa adresama</translation>
-<translation id="5802665280774361839">Na traci sa adresama prikaži automatsko dovršavanje</translation>
-<translation id="597020512043916976">Prikaži najpopularnije veb stranice u predlozima za automatsko dovršavanje</translation>
-<translation id="301088458323355543">Prikazati predložene veb stranice u automatskom dovršavanju</translation>
+<translation id="4109670531935487117">Prikaži predloge za automatsko dovršavanje na traci za adrese</translation>
+<translation id="2858138569776157458">Најбољи сајтови</translation>
+<translation id="65774893852758517">Predložene lokacije</translation>
+<translation id="7859704718976024901">Istorije pretrage</translation>
+<translation id="8820817407110198400">Трака са обележивачима</translation>
 <translation id="6333347122924254968">Prikaži ikonu Brave nagrada na traci sa adresama</translation>
 <translation id="1811404036171336214">Uvek prikazuj obeleživače na stranici nove kartice</translation>
 <translation id="5529693968082667490">Prikaži dugme kartice za pretragu</translation>
@@ -362,6 +376,8 @@ Molimo vas da dobro proverite da li je ovaj kod generisao uređaj koji vi posedu
 Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
+<translation id="842628013524824194">Normalan prozor - pretraživač se koristi u traci za adrese</translation>
+<translation id="5324939009884545145">Privatni prozor - pretraživač se koristi u traci za adrese</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
 <translation id="7878791177459550035">Medijski ruter omogućuje korišćenje funkcije preslikavanja ekrana u pretraživaču.</translation>
@@ -461,6 +477,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="616058968889448209">Greška u pokretanju IPFS servisa, više informacija je dostupno na <ph name="BEGIN_LINK"/>dijagnostičkoj stranici<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uvoz ključa '<ph name="KEY_NAME"/>' nije uspeo</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' uvoz ključa nije uspeo</translation>
+<translation id="5840868269342837751">Napomena: Mrežni zahtevi ne mogu da koriste proksi pretraživača i DNS podešavanja.</translation>
 <translation id="8275038454117074363">Uvoz</translation>
 <translation id="3654980960391973513">Generisati</translation>
 <translation id="5531501313997312487">Pokreni čvor</translation>

@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Uporabite lokalno vozlišče IPFS Brave</translation>
 <translation id="8148464361648742409">Uporabite javni prehod</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) je javno omrežje za medsebojno shranjevanje in dostavo podatkov. Ta protokol se glede zasebnosti razlikuje od HTTP(S).</translation>
-<translation id="5410952114182173389">Vaš računalnik prispeva v javno omrežje, vendar bi lahko bili izpostavljeni vaš naslov IP in vsa vsebina, ki jo zahtevate ali zagotovite. Vsebina, ki jo zahtevate prek IPFS, je preverjena, preden vam jo ponudimo.</translation>
+<translation id="1216911189668016151">Vaš računalnik sodeluje v javnem omrežju, vendar so lahko vaš naslov IP in vsebina, ki jo zahtevate ali posredujete, izpostavljeni. Vsebina, ki jo zahtevate prek sistema IPFS, se preveri, preden vam je posredovana. Pri omrežnih zahtevah se ne smejo uporabljati nastavitve posredniškega strežnika brskalnika in nastavitve DNS.</translation>
 <translation id="8664689531113048642">Ščiti vaš naslov IP in vsebino, ki jo zahtevate od morebitnih zunanjih opazovalcev, ne pa tudi od javnega operaterja prehoda. Operater prehoda je odgovoren za to, da je vsebina, ki vam je bila posredovana prek prehoda, vsebina, ki ste jo zahtevali. Računalnik tudi ne prispeva v javno omrežje IPFS.</translation>
 <translation id="3977809385703587108">Nastavitve lahko znova spremenite v</translation>
 <translation id="3340978935015468852">nastavitve</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Uvozim iz starejših Brave kripto denarnic?</translation>
 <translation id="3331452756822160641">Novo geslo</translation>
 <translation id="8624315169751085215">Kopiraj v odložišče</translation>
+<translation id="7885157704277298658">Kopirano!</translation>
 <translation id="1121335910737476837">Primarni kripto računi</translation>
 <translation id="6969147029062037757">Uvoženi računi</translation>
 <translation id="4057718162494343222">V aplikaciji Brave Wallet lahko ustvarite primarne račune, ki jih lahko varnostno kopirate ali obnovite iz stavka za obnovitev. Če želite izvedeti več o vrstah računov, obiščite pomoč za račune.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL ikone</translation>
 <translation id="2144247757675997850">Dodaj sredstvo</translation>
 <translation id="2708402071160162126">OPOZORILO: Svoje fraze za obnovitev nikoli z nikom ne delite. Vsakdo, ki jo ima, vam lahko vzame sredstva za vedno.</translation>
+<translation id="2416098547200943834">OPOMBA: Zasebni ključ je na voljo kot šestnajstiško kodiran JSON, ki vsebuje informacije o zasebnem ključu in protokolu. <ph name="LINK_START"/>Več o tem<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">OPOMBA: Zasebni ključ je treba zagotoviti kot šestnajstiško kodiran JSON, ki vsebuje informacije o zasebnem ključu in protokolu. <ph name="LINK_START"/>Več o tem<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Pokaži ključ</translation>
 <translation id="8033497299373164724">Skrij ključ</translation>
 <translation id="2702143907607790516">Ime računa ni bilo mogoče posodobiti. Poskusite znova.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Sporočilo</translation>
 <translation id="3586752056660754651">Podpiši</translation>
 <translation id="3484981968509595506">Aplikacija DApp zahteva vaš javni šifrirni ključ</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> zahteva javni šifrirni ključ vaše denarnice. Če se strinjate s posredovanjem tega ključa, vam bo spletno mesto lahko pošiljalo šifrirana sporočila.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> zahteva javni šifrirni ključ vaše denarnice. Če se strinjate s posredovanjem tega ključa, vam bo spletno mesto lahko pripravilo šifrirana sporočila.</translation>
 <translation id="3340247553212049934">Zagotovite</translation>
 <translation id="1619778919922494944">Ta aplikacija želi prebrati to sporočilo za dokončanje vaše zahteve</translation>
 <translation id="714506544401754321">Dešifriraj sporočilo</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> prekinjena</translation>
 <translation id="5317781812114905957">Navodila</translation>
 <translation id="1178198982208000092">Povežite <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Hardverska denarnica zahteva potrditev na napravi.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Za hardversko denarnico je potrebna odprta aplikacija Ethereum <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Strojna denarnica zahteva potrditev v napravi <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Strojna denarnica zahteva aplikacijo <ph name="NETWORK"/>, ki je odprta na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslano</translation>
 <translation id="5013754027092416509">prejeto</translation>
 <translation id="5867988533873716616">URL raziskovalca blokov ni na voljo.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> ni trenutno omrežje</translation>
 <translation id="7340805872138998391">Naprave ni mogoče odkleniti, poskusite se znova povezati</translation>
 <translation id="1984410139271779110">Notranja napaka, neznana shema</translation>
-<translation id="8682200134223578011">odobreno</translation>
+<translation id="6989562355845156390">odobri</translation>
 <translation id="4674380028960132654">Vknjižba bilance: Podpis se ne ujema s pravim naslovom</translation>
 <translation id="3183932890629254743">Račun strojne opreme ni najden</translation>
 <translation id="4287068151777838754">Podatki JSON niso pričakovani</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transakcija potrjena</translation>
 <translation id="310693998838023022">Napaka transakcije</translation>
 <translation id="6395870673621520684">Prekinitev transakcije</translation>
+<translation id="1237782734462409503">Zavihek ni aktiven</translation>
+<translation id="756701799684433105">Odobri transakcijo</translation>
+<translation id="6450792191436242818">Program sistema</translation>
+<translation id="6252742184395380448">Konfiguracijski program</translation>
+<translation id="5358970666412490132">Program deležev</translation>
+<translation id="346636227344244984">Program glasovanja</translation>
+<translation id="3538368258493053874">BPF nalagalnik</translation>
+<translation id="2334098351242742927">Program Ed25519</translation>
+<translation id="8780753288764281797">Program Secp256k1</translation>
+<translation id="5275550100743015683">Iz naslova:</translation>
+<translation id="2678433693746214764">Na naslov:</translation>
+<translation id="4576396475962922672">Nov račun:</translation>
+<translation id="4719005063558335704">Računi:</translation>
+<translation id="4337554812324118382">Podatki:</translation>
+<translation id="569870799832027680">ID programa:</translation>
+<translation id="7843211152394841558">Največ ponovitev:</translation>
+<translation id="8496335570810457">Simulacija transakcij:</translation>
+<translation id="5100124500279922001">Preskoči simulacijo transakcij:</translation>
+<translation id="8060029310790625334">Središče za pomoč</translation>
+<translation id="2095142195578664632">Potrebujete pomoč? Oglejte si stran</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="3745016858329272300">Splošne informacije</translation>
 <translation id="4045404575593562245">Tor nadzorni dogodki</translation>

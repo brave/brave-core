@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
-#define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_H_
 
 #include <stdint.h>
 
@@ -62,10 +62,9 @@ class Contribution {
 
   void ContributeUnverifiedPublishers();
 
-  void OneTimeTip(
-      const std::string& publisher_key,
-      const double amount,
-      ledger::ResultCallback callback);
+  void OneTimeTip(const std::string& publisher_key,
+                  double amount,
+                  ledger::LegacyResultCallback callback);
 
   void CheckContributionQueue();
 
@@ -75,20 +74,17 @@ class Contribution {
       const std::string& wallet_type,
       client::TransactionCallback callback);
 
-  void SKUAutoContribution(
-      const std::string& contribution_id,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void SKUAutoContribution(const std::string& contribution_id,
+                           const std::string& wallet_type,
+                           ledger::LegacyResultCallback callback);
 
-  void StartUnblinded(
-      const std::vector<type::CredsBatchType>& types,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void StartUnblinded(const std::vector<type::CredsBatchType>& types,
+                      const std::string& contribution_id,
+                      ledger::LegacyResultCallback callback);
 
-  void RetryUnblinded(
-      const std::vector<type::CredsBatchType>& types,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void RetryUnblinded(const std::vector<type::CredsBatchType>& types,
+                      const std::string& contribution_id,
+                      ledger::LegacyResultCallback callback);
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback);
 
@@ -111,10 +107,9 @@ class Contribution {
 
   void NotCompletedContributions(type::ContributionInfoList list);
 
-  void OnBalance(
-      const type::Result result,
-      type::BalancePtr info,
-      std::shared_ptr<type::ContributionQueuePtr> shared_queue);
+  void OnBalance(type::ContributionQueuePtr queue,
+                 const type::Result result,
+                 type::BalancePtr info);
 
   void CreateNewEntry(
       const std::string& wallet_type,
@@ -145,7 +140,7 @@ class Contribution {
   void RetryUnblindedContribution(
       type::ContributionInfoPtr contribution,
       const std::vector<type::CredsBatchType>& types,
-      ledger::ResultCallback callback);
+      ledger::LegacyResultCallback callback);
 
   void Result(
       const type::Result result,
@@ -188,4 +183,4 @@ class Contribution {
 
 }  // namespace contribution
 }  // namespace ledger
-#endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_H_

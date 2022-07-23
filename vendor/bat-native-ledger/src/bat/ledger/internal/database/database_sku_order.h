@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_ORDER_H_
-#define BRAVELEDGER_DATABASE_DATABASE_ORDER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SKU_ORDER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SKU_ORDER_H_
 
 #include <memory>
 #include <string>
@@ -22,14 +22,12 @@ class DatabaseSKUOrder: public DatabaseTable {
   explicit DatabaseSKUOrder(LedgerImpl* ledger);
   ~DatabaseSKUOrder() override;
 
-  void InsertOrUpdate(
-      type::SKUOrderPtr info,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(type::SKUOrderPtr info,
+                      ledger::LegacyResultCallback callback);
 
-  void UpdateStatus(
-      const std::string& order_id,
-      const type::SKUOrderStatus status,
-      ledger::ResultCallback callback);
+  void UpdateStatus(const std::string& order_id,
+                    type::SKUOrderStatus status,
+                    ledger::LegacyResultCallback callback);
 
   void GetRecord(
       const std::string& order_id,
@@ -39,10 +37,9 @@ class DatabaseSKUOrder: public DatabaseTable {
       const std::string& contribution_id,
       GetSKUOrderCallback callback);
 
-  void SaveContributionIdForSKUOrder(
-      const std::string& order_id,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void SaveContributionIdForSKUOrder(const std::string& order_id,
+                                     const std::string& contribution_id,
+                                     ledger::LegacyResultCallback callback);
 
  private:
   void OnGetRecord(
@@ -60,4 +57,4 @@ class DatabaseSKUOrder: public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_ORDER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SKU_ORDER_H_

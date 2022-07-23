@@ -6,7 +6,7 @@
 #include "bat/ads/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAdsAdPreferencesInfoTest.*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
@@ -40,8 +40,9 @@ constexpr char kSampleAdPreferencesInfoJson[] = R"(
 
 class BatAdsAdPreferencesInfoTest : public UnitTestBase {
  public:
-  BatAdsAdPreferencesInfoTest() {}
-  ~BatAdsAdPreferencesInfoTest() override {}
+  BatAdsAdPreferencesInfoTest() = default;
+
+  ~BatAdsAdPreferencesInfoTest() override = default;
 
   void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
     // Arrange

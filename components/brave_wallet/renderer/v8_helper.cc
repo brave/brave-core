@@ -108,4 +108,14 @@ void SetProviderNonWritable(v8::Local<v8::Context> context,
   global->DefineProperty(context, provider_name, desc).Check();
 }
 
+void SetOwnPropertyNonWritable(v8::Local<v8::Context> context,
+                               v8::Local<v8::Object> provider_object,
+                               v8::Local<v8::String> property_name) {
+  v8::Local<v8::Value> property;
+  if (!provider_object->Get(context, property_name).ToLocal(&property))
+    return;
+  v8::PropertyDescriptor desc(property, false);
+  provider_object->DefineProperty(context, property_name, desc).Check();
+}
+
 }  // namespace brave_wallet

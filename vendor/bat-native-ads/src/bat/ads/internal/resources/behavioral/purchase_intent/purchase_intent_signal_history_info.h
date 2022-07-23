@@ -7,9 +7,12 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_
 
 #include <cstdint>
+#include <map>
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
+#include "base/values.h"
 
 namespace ads {
 namespace targeting {
@@ -26,12 +29,17 @@ struct PurchaseIntentSignalHistoryInfo final {
   bool operator==(const PurchaseIntentSignalHistoryInfo& rhs) const;
   bool operator!=(const PurchaseIntentSignalHistoryInfo& rhs) const;
 
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   base::Time created_at;
   uint16_t weight = 0;
 };
+
+using PurchaseIntentSignalHistoryList =
+    std::vector<PurchaseIntentSignalHistoryInfo>;
+using PurchaseIntentSignalHistoryMap =
+    std::map<std::string, PurchaseIntentSignalHistoryList>;
 
 }  // namespace targeting
 }  // namespace ads

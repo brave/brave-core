@@ -3,7 +3,7 @@ import {
   BraveWallet,
   BuySendSwapViewTypes,
   ToOrFromType,
-  BuyOption, WalletState
+  BuyOption, WalletState, SupportedTestNetworks
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -12,7 +12,8 @@ import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
-  Spacer
+  Spacer,
+  NetworkNotSupported
 } from './style'
 import { BuyOptions } from '../../../options/buy-with-options'
 import { useAssets, useLib } from '../../../common/hooks'
@@ -96,10 +97,9 @@ function Buy (props: Props) {
   }, [])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
-    return [...rampAssetOptions, ...wyreAssetOptions]
-      .map(asset => asset.chainId.toLowerCase())
-      .includes(selectedNetwork.chainId.toLowerCase())
-  }, [selectedNetwork, rampAssetOptions, wyreAssetOptions])
+    // Test networks are not supported in buy tab
+    return !SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())
+  }, [selectedNetwork])
 
   return (
     <StyledWrapper>
@@ -110,26 +110,29 @@ function Buy (props: Props) {
           onBack={onBack}
         />
         : <>
-          {isSelectedNetworkSupported &&
-            <SwapInputComponent
-              defaultCurrencies={defaultCurrencies}
-              componentType='buyAmount'
-              onInputChange={setBuyAmount}
-              selectedAssetInputAmount={buyAmount}
-              inputName='buy'
-              selectedAsset={selectedAsset}
-              selectedNetwork={selectedNetwork}
-              onShowSelection={onShowAssets}
-              autoFocus={true}
-            />
+          {isSelectedNetworkSupported
+            ? <>
+              <SwapInputComponent
+                defaultCurrencies={defaultCurrencies}
+                componentType='buyAmount'
+                onInputChange={setBuyAmount}
+                selectedAssetInputAmount={buyAmount}
+                inputName='buy'
+                selectedAsset={selectedAsset}
+                selectedNetwork={selectedNetwork}
+                onShowSelection={onShowAssets}
+                autoFocus={true}
+              />
+              <Spacer />
+              <NavButton
+                disabled={false}
+                buttonType='primary'
+                text={getLocale('braveWalletBuyContinueButton')}
+                onSubmit={onContinue}
+              />
+            </>
+            : <NetworkNotSupported>{getLocale('braveWalletBuyTapBuyNotSupportedMessage')}</NetworkNotSupported>
           }
-          <Spacer />
-          <NavButton
-            disabled={false}
-            buttonType='primary'
-            text={getLocale('braveWalletBuyContinueButton')}
-            onSubmit={onContinue}
-          />
         </>
       }
     </StyledWrapper>

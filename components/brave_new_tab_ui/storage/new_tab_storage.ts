@@ -16,6 +16,7 @@ export const defaultState: NewTab.State = {
   featureFlagBraveNewsEnabled: loadTimeData.getBoolean('featureFlagBraveNewsEnabled'),
   featureFlagBraveNewsPromptEnabled: loadTimeData.getBoolean('featureFlagBraveNewsPromptEnabled'),
   featureCustomBackgroundEnabled: loadTimeData.getBoolean('featureCustomBackgroundEnabled'),
+  searchPromotionEnabled: false,
   showBackgroundImage: false,
   showStats: false,
   showToday: false,
@@ -74,13 +75,14 @@ export const defaultState: NewTab.State = {
     dismissedNotifications: [],
     rewardsEnabled: false,
     enabledAds: false,
-    needsBrowserUpdateToSeeAds: false,
+    needsBrowserUpgradeToServeAds: false,
     adsSupported: false,
     promotions: [],
     totalContribution: 0.0,
     parameters: {
       rate: 0,
-      monthlyTipChoices: []
+      monthlyTipChoices: [],
+      payoutStatus: {}
     }
   },
   currentStackWidget: '',

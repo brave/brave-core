@@ -37,23 +37,23 @@ class UpholdCard {
  private:
   void GetBATCardId(endpoint::uphold::GetCardsCallback callback) const;
 
-  void OnGetBATCardId(const type::Result result,
-                      const std::string& id,
-                      CreateCardCallback callback) const;
+  void OnGetBATCardId(CreateCardCallback callback,
+                      type::Result result,
+                      const std::string& id) const;
 
   void CreateBATCard(endpoint::uphold::PostCardsCallback callback) const;
 
-  void OnCreateBATCard(const type::Result result,
-                       const std::string& id,
-                       CreateCardCallback callback) const;
+  void OnCreateBATCard(CreateCardCallback callback,
+                       type::Result result,
+                       const std::string& id) const;
 
   void UpdateBATCardSettings(
       const std::string& id,
       endpoint::uphold::PatchCardCallback callback) const;
 
-  void OnUpdateBATCardSettings(const type::Result result,
+  void OnUpdateBATCardSettings(CreateCardCallback callback,
                                const std::string& id,
-                               CreateCardCallback callback) const;
+                               type::Result result) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;

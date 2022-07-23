@@ -15,7 +15,9 @@ namespace ads {
 
 GURL GetUrlWithEmptyQuery(const GURL& url);
 
-bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern);
+bool SchemeIsSupported(const GURL& url);
+
+bool MatchUrlPattern(const GURL& url, const std::string& pattern);
 
 bool SameDomainOrHost(const GURL& lhs, const GURL& rhs);
 bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url);

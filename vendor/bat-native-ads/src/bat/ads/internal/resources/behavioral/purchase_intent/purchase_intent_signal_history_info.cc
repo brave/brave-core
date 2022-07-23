@@ -6,41 +6,12 @@
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
 #include "base/check.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/values.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace targeting {
-
-namespace {
-
-base::Time GetCreatedAtTime(base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  const std::string* value = dictionary->FindStringKey("timestamp_in_seconds");
-  if (!value) {
-    return base::Time();
-  }
-
-  double value_as_double = 0;
-  if (!base::StringToDouble(*value, &value_as_double)) {
-    return base::Time();
-  }
-
-  return base::Time::FromDoubleT(value_as_double);
-}
-
-uint16_t GetWeight(base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  return static_cast<uint16_t>(dictionary->FindIntKey("weight").value_or(0));
-}
-
-}  // namespace
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo() = default;
 
@@ -68,34 +39,28 @@ bool PurchaseIntentSignalHistoryInfo::operator!=(
   return !(*this == rhs);
 }
 
-std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+base::Value::Dict PurchaseIntentSignalHistoryInfo::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("timestamp_in_seconds",
+           base::NumberToString(created_at.ToDoubleT()));
 
-  dictionary.SetStringKey("timestamp_in_seconds",
-                          base::NumberToString(created_at.ToDoubleT()));
-
-  dictionary.SetIntKey("weight", static_cast<int>(weight));
-
-  std::string json;
-  base::JSONWriter::Write(dictionary, &json);
-
-  return json;
+  dict.Set("weight", static_cast<int>(weight));
+  return dict;
 }
 
-bool PurchaseIntentSignalHistoryInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value) {
-    return false;
+bool PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
+  weight = static_cast<uint16_t>(root.FindInt("weight").value_or(0));
+
+  if (const auto* value = root.FindString("timestamp_in_seconds")) {
+    double value_as_double = 0;
+    if (base::StringToDouble(*value, &value_as_double)) {
+      created_at = base::Time::FromDoubleT(value_as_double);
+    } else {
+      created_at = base::Time();
+    }
+  } else {
+    created_at = base::Time();
   }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return false;
-  }
-
-  created_at = GetCreatedAtTime(dictionary);
-
-  weight = GetWeight(dictionary);
 
   return true;
 }

@@ -31,7 +31,7 @@ void LedgerClientIOS::LoadPublisherState(
 }
 void LedgerClientIOS::LoadURL(ledger::type::UrlRequestPtr request,
                               ledger::client::LoadURLCallback callback) {
-  [bridge_ loadURL:std::move(request) callback:callback];
+  [bridge_ loadURL:std::move(request) callback:std::move(callback)];
 }
 void LedgerClientIOS::Log(const char* file,
                           const int line,
@@ -47,6 +47,8 @@ void LedgerClientIOS::OnPanelPublisherInfo(
                   publisherInfo:std::move(publisher_info)
                        windowId:windowId];
 }
+void LedgerClientIOS::OnPublisherRegistryUpdated() {}
+void LedgerClientIOS::OnPublisherUpdated(const std::string& publisher_id) {}
 void LedgerClientIOS::OnReconcileComplete(
     ledger::type::Result result,
     ledger::type::ContributionInfoPtr contribution) {
@@ -113,7 +115,7 @@ std::string LedgerClientIOS::GetLegacyWallet() {
 void LedgerClientIOS::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::client::ResultCallback callback) {
+    ledger::client::LegacyResultCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
 bool LedgerClientIOS::GetBooleanOption(const std::string& name) const {
@@ -146,7 +148,8 @@ void LedgerClientIOS::ReconcileStampReset() {
 void LedgerClientIOS::RunDBTransaction(
     ledger::type::DBTransactionPtr transaction,
     ledger::client::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(transaction) callback:callback];
+  [bridge_ runDBTransaction:std::move(transaction)
+                   callback:std::move(callback)];
 }
 void LedgerClientIOS::GetCreateScript(
     ledger::client::GetCreateScriptCallback callback) {
@@ -162,7 +165,7 @@ void LedgerClientIOS::ClearAllNotifications() {
 void LedgerClientIOS::WalletDisconnected(const std::string& wallet_type) {
   [bridge_ walletDisconnected:wallet_type];
 }
-void LedgerClientIOS::DeleteLog(ledger::client::ResultCallback callback) {
+void LedgerClientIOS::DeleteLog(ledger::client::LegacyResultCallback callback) {
   [bridge_ deleteLog:callback];
 }
 absl::optional<std::string> LedgerClientIOS::EncryptString(

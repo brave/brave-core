@@ -100,7 +100,7 @@ void EligibleAdsV1::GetForChildSegments(
           return;
         }
 
-        const CreativeInlineContentAdList& eligible_creative_ads =
+        const CreativeInlineContentAdList eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
@@ -146,7 +146,7 @@ void EligibleAdsV1::GetForParentSegments(
           return;
         }
 
-        const CreativeInlineContentAdList& eligible_creative_ads =
+        const CreativeInlineContentAdList eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
@@ -181,16 +181,18 @@ void EligibleAdsV1::GetForUntargeted(
           return;
         }
 
-        const CreativeInlineContentAdList& eligible_creative_ads =
+        const CreativeInlineContentAdList eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
                                             << " ads for untargeted segment");
-        } else {
-          BLOG(1, eligible_creative_ads.size()
-                      << " eligible ads out of " << creative_ads.size()
-                      << " ads for untargeted segment");
+          callback(/* had_opportunity */ false, {});
+          return;
         }
+
+        BLOG(1, eligible_creative_ads.size()
+                    << " eligible ads out of " << creative_ads.size()
+                    << " ads for untargeted segment");
 
         callback(/* had_opportunity */ true, eligible_creative_ads);
       });
@@ -217,9 +219,9 @@ CreativeInlineContentAdList EligibleAdsV1::FilterCreativeAds(
   eligible_creative_ads = FilterSeenAdsAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kInlineContentAd);
 
-  eligible_creative_ads = PaceAds(eligible_creative_ads);
+  eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
 
-  eligible_creative_ads = PrioritizeAds(eligible_creative_ads);
+  eligible_creative_ads = PrioritizeCreativeAds(eligible_creative_ads);
 
   return eligible_creative_ads;
 }

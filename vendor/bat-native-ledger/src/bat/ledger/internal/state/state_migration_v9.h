@@ -18,7 +18,7 @@ class StateMigrationV9 {
   StateMigrationV9();
   ~StateMigrationV9();
 
-  void Migrate(ledger::ResultCallback callback);
+  void Migrate(ledger::LegacyResultCallback callback);
 };
 
 }  // namespace state

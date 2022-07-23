@@ -30,12 +30,8 @@ export type HardwareOperationResult = {
   code?: string | number
 }
 
-export type SignHardwareTransactionOperationResult = HardwareOperationResult & {
-  payload?: EthereumSignedTx | SignedLotusMessage | Buffer
-}
-
-export type SignHardwareMessageOperationResult = HardwareOperationResult & {
-  payload?: string
+export type SignHardwareOperationResult = HardwareOperationResult & {
+  payload?: EthereumSignedTx | SignedLotusMessage | Buffer | string
 }
 
 export interface TrezorBridgeAccountsPayload {
@@ -63,6 +59,14 @@ type HardwareWalletAccountBytesAddress = BraveWallet.HardwareWalletAccount & {
 
 export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
   payload?: HardwareWalletAccountBytesAddress[]
+}
+
+// Did not create a string for these yet since it is
+// likely these names will be returned from another service
+// that will be localized.
+export const FilecoinNetworkLocaleMapping = {
+  [BraveWallet.FILECOIN_MAINNET]: 'Filecoin Mainnet',
+  [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
 }
 
 // Batch size of accounts imported from the device in one step.

@@ -17,6 +17,7 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 
 // types
 import { BraveWallet, CreateAccountOptionsType, PageState, WalletRoutes, WalletState } from '../../../../constants/types'
+import { FilecoinNetworkTypes, FilecoinNetworkLocaleMapping, FilecoinNetwork } from '../../../../common/hardware/types'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -79,11 +80,8 @@ export const ImportAccountModal = () => {
   }, [accountTypeName, isFilecoinEnabled, isSolanaEnabled])
 
   // state
-  const selectedFilecoinNetwork = useSelector(({ wallet }: { wallet: WalletState }) => {
-    return wallet.defaultNetworks.find((network) => { return network.coin === BraveWallet.CoinType.FIL })
-})
   const [accountName, setAccountName] = React.useState<string>('')
-  const networkSymbol = selectedFilecoinNetwork?.chainId.toLowerCase() === BraveWallet.FILECOIN_MAINNET.toLowerCase() ? BraveWallet.FILECOIN_MAINNET : BraveWallet.FILECOIN_TESTNET
+  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
   const [importOption, setImportOption] = React.useState<string>('key')
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
@@ -120,6 +118,10 @@ export const ImportAccountModal = () => {
     setImportError(false)
   }, [setImportError])
 
+  const onChangeFilecoinNetwork = React.useCallback((network: FilecoinNetwork) => {
+    setFilecoinNetwork(network)
+  }, [])
+
   const handlePrivateKeyChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPrivateKey(event.target.value)
     setImportError(false)
@@ -145,7 +147,7 @@ export const ImportAccountModal = () => {
   const onClickCreateAccount = React.useCallback(() => {
     if (importOption === 'key') {
       if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-        importFilecoinAccount(accountName, privateKey, networkSymbol)
+        importFilecoinAccount(accountName, privateKey, filecoinNetwork)
       } else {
         importAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
       }
@@ -174,7 +176,8 @@ export const ImportAccountModal = () => {
     accountName,
     privateKey,
     file,
-    password
+    password,
+    filecoinNetwork
   ])
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -216,14 +219,29 @@ export const ImportAccountModal = () => {
           </ImportDisclaimer>
 
           {selectedAccountType?.coin === BraveWallet.CoinType.FIL &&
-            <WarningWrapper>
-               <WarningText>
-                 {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                  <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
-                    {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                  </a>
-                {filPrivateKeyFormatDescriptionTextParts.afterTag}</WarningText>
-            </WarningWrapper>
+            <>
+              <WarningWrapper>
+                <WarningText>
+                  {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+                    <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
+                      {filPrivateKeyFormatDescriptionTextParts.duringTag}
+                    </a>
+                  {filPrivateKeyFormatDescriptionTextParts.afterTag}</WarningText>
+              </WarningWrapper>
+
+              <SelectWrapper>
+                <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
+                  {FilecoinNetworkTypes.map((network, index) => {
+                    const networkLocale = FilecoinNetworkLocaleMapping[network]
+                    return (
+                      <div data-value={network} key={index}>
+                        {networkLocale}
+                      </div>
+                    )
+                  })}
+                </Select>
+              </SelectWrapper>
+            </>
           }
 
           {selectedAccountType?.coin === BraveWallet.CoinType.ETH &&

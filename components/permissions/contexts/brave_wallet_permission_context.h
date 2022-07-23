@@ -45,8 +45,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
    * will then consume one address from the saved list and call
    * PermissionContextBase::RequestPermission with it.
    */
-  void RequestPermission(content::WebContents* web_contents,
-                         const PermissionRequestID& id,
+  void RequestPermission(const PermissionRequestID& id,
                          const GURL& requesting_frame,
                          bool user_gesture,
                          BrowserPermissionCallback callback) override;
@@ -69,6 +68,12 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses,
       base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
+
+  // We will only check global setting and setting per origin since we won't
+  // write block rule per address on an origin.
+  static bool IsPermissionDenied(blink::PermissionType permission,
+                                 content::BrowserContext* context,
+                                 const url::Origin& origin);
 
   static bool AddPermission(blink::PermissionType permission,
                             content::BrowserContext* context,

@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "向上",
+    "message": "开启",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "向下",
+    "message": "关闭",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {

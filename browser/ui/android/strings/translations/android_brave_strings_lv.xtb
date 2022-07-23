@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Palīdziet uzlabot Brave\u2019s produktu stabilitāti, automātiski nosūtot diagnostikas ziņojumus, kad Brave pārlūks avarē vai pārstāj darboties.</translation>
 <translation id="7977176350719484850">Apr. ietaupītie\ndati</translation>
 <translation id="9008534313521214777">Apr. ietaupītais\nlaiks</translation>
-<translation id="6572660632052512096">Darbvirsmas režīms</translation>
-<translation id="1340503115760585811">Aktivizēt darbvirsmas skatu jaunām cilnēm</translation>
-<translation id="7924540991929826186">Jaunās cilnēs atvērt vietnes mobilo tālruņu versiju (ieteicams)</translation>
-<translation id="807636106793708118">Dot priekšroku vietņu mobilo tālruņu versijām</translation>
-<translation id="4479934682648362332">Dot priekšroku vietņu darbvirsmas versijām</translation>
 <translation id="1842747674580016420">Video atskaņošana programmā Brave</translation>
 <translation id="5368992950177874750">Kad funkcija ir aktivizēta, video tiek atskaņoti nevis atbilstošajā lietotnē, bet programmā Brave</translation>
 <translation id="410351446219883937">Automātiskā atskaņošana</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Atlasiet Brave pārlūku un pieskarieties pie "Vienmēr"</translation>
 <translation id="3546439402724649282">Brave jau ir iestatīts kā jūsu noklusējuma pārlūks.</translation>
 <translation id="8389661903259423907">Jums jau ir iestatīts noklusējuma pārlūks. Savu noklusējuma pārlūku varat nomainīt lietotņu iestatījumos.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Paldies!</translation>
 <translation id="6665366815203065060">Jūs tikko nosūtījāt dzeramnaudu:</translation>
 <translation id="5441565662498481293">Jūs automātiski nosūtāt dzeramnaudu:</translation>
@@ -864,23 +860,36 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="4804818685124855865">Atvienot</translation>
 <translation id="8009571545960303544">Nepieciešams jūsu paraksts</translation>
 <translation id="3484981968509595506">DApp pieprasa jūsu publisko šifrēšanas atslēgu</translation>
-<translation id="2291002548681057345">pieprasa jūsu maku publisko šifrēšanas atslēgu. Ja piekrītat sniegt šo atslēgu, vietne varēs sastādīt šifrētus ziņojumus jums.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> pieprasa jūsu maka publisko šifrēšanas atslēgu. Ja piekrītat sniegt šo atslēgu, vietne varēs sastādīt šifrētus ziņojumus jums.</translation>
 <translation id="3340247553212049934">Iesniegt</translation>
 <translation id="1982257600591932657">Tīkla nosaukums</translation>
 <translation id="5052727830821470769">Tīkla URL</translation>
 <translation id="4822132585477111396">Ķēdes ID</translation>
 <translation id="7131971375297699539">Valūtas simbols</translation>
 <translation id="7982789257301363584">Tīkls</translation>
-<translation id="7540715999708954128">Tas ļaus šo tīklu izmantot Brave maka ietvaros. Uzzināt vairāk.</translation>
-<translation id="8759753423332885148">Uzzināt vairāk.</translation>
+<translation id="6936860995365507185">Tas ļaus šo tīklu izmantot Brave maka ietvaros. <ph name="CLICK_START"/>Uzzināt vairāk<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Vai atļaut šai vietnei pievienot tīklu?</translation>
+<translation id="4857321293515555666">Lai izpildītu jūsu pieprasījumu, DApp vēlas izlasīt šo ziņojumu.</translation>
+<translation id="714506544401754321">Atšifrēt ziņojumu</translation>
+<translation id="5039804452771397117">Atļaut</translation>
 <translation id="3378339846292573874">Pievienot ieteikto marķieri</translation>
 <translation id="2322227405137827074">Vai vēlaties importēt šo marķieri?</translation>
 <translation id="1324417023773393937">Brave pārlūks</translation>
 <translation id="6044189892950611565">Brave pārlūkprogrammas paziņojumu kanāls</translation>
 <translation id="1173919438868967364">Atlasīt kontu</translation>
 <translation id="8922793255489232731">Nevarēja atrast atbilstošu laika joslu: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Rādīt populārākās vietnes</translation>
+<translation id="8643377320501056697">Rādīt populāras vietnes</translation>
 <translation id="6471216025161697462">Savienots ar <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Izmēģinājums</translation>
+<translation id="7733890291091968191">Parādīt Web3 paziņojumus</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave neizseko jūs vai to, kā jūs izmantojat mūsu lietotni, tāpēc mēs nezinām, kā jūs esat uzstādījuši VPN. Lūdzu, pastāstiet par savu problēmu, un mēs darīsim, kas mūsu spēkos, lai to atrisinātu pēc iespējas ātrāk. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN resursdatora nosaukums\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nAbonementa tips\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore marķieris\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nLietotnes versija\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nLaika zona\n</translation>
+<translation id="8107843365677337047">\n\nTīkla tips\n</translation>
+<translation id="5334952096674914470">\n\nMobilo sakaru operators\n</translation>
+<translation id="5393042357629679588">\n\nCits jautājums\n</translation>
+<translation id="8095666712177294104">\n\nPlatforma\n</translation>
 </translationbundle>

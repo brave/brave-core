@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_GET_WALLET_BALANCE_GET_WALLET_BALANCE_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_GET_WALLET_BALANCE_GET_WALLET_BALANCE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_WALLET_BALANCE_GET_WALLET_BALANCE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_WALLET_BALANCE_GET_WALLET_BALANCE_H_
 
 #include <string>
 
+#include "base/callback_forward.h"
 #include "bat/ledger/ledger.h"
 
 // GET /v3/wallet/uphold/{payment_id}
@@ -34,9 +35,9 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using GetWalletBalanceCallback = std::function<void(
-    const type::Result result,
-    type::BalancePtr balance)>;
+using GetWalletBalanceCallback =
+    base::OnceCallback<void(const type::Result result,
+                            type::BalancePtr balance)>;
 
 class GetWalletBalance {
  public:
@@ -54,9 +55,8 @@ class GetWalletBalance {
       const std::string& body,
       type::Balance* balance);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetWalletBalanceCallback callback);
+  void OnRequest(GetWalletBalanceCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -65,5 +65,4 @@ class GetWalletBalance {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_GET_WALLET_BALANCE_GET_WALLET_\
-// BALANCE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_WALLET_BALANCE_GET_WALLET_BALANCE_H_

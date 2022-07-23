@@ -54,6 +54,15 @@ bool UpdateConfigJSON(const std::string& source,
   dict->Set("Swarm.ConnMgr.HighWater", std::make_unique<base::Value>(40));
   dict->Set("Datastore.StorageMax",
             std::make_unique<base::Value>(config->storage_max));
+
+  if (config->doh_server_url) {
+    std::unique_ptr<base::DictionaryValue> dns_resolvers =
+        std::make_unique<base::DictionaryValue>();
+    dns_resolvers->SetWithoutPathExpansion(
+        ".", std::make_unique<base::Value>(*(config->doh_server_url)));
+    dict->Set("DNS.Resolvers", std::move(dns_resolvers));
+  }
+
   std::unique_ptr<base::ListValue> list = std::make_unique<base::ListValue>();
   list->Append(base::Value("/ip4/0.0.0.0/tcp/" + config->swarm_port));
   list->Append(base::Value("/ip6/::/tcp/" + config->swarm_port));

@@ -17,7 +17,6 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "brave/utility/importer/chrome_importer.h"
-#include "brave/utility/importer/edge_importer.h"
 #include "build/build_config.h"
 #include "chrome/common/importer/profile_import.mojom.h"
 #include "chrome/utility/importer/external_process_importer_bridge.h"
@@ -33,7 +32,11 @@ scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
     case importer::TYPE_CHROME:
       return new ChromeImporter();
     case importer::TYPE_EDGE_CHROMIUM:
-      return new EdgeImporter();
+      return new ChromeImporter();
+    case importer::TYPE_VIVALDI:
+      return new ChromeImporter();
+    case importer::TYPE_OPERA:
+      return new ChromeImporter();
     default:
       NOTREACHED();
       return nullptr;

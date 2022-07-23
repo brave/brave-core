@@ -19,6 +19,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -38,10 +39,12 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
             TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
             @Nullable OneshotSupplier<LayoutStateProvider> layoutStateProvidersSupplier,
             @Nullable OneshotSupplier<StartSurface> startSurfaceSupplier,
-            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier) {
+            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
+            @Nullable OneshotSupplier<IncognitoReauthController>
+                    incognitoReauthControllerOneshotSupplier) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
                 toolbarManager, decorView, layoutStateProvidersSupplier, startSurfaceSupplier,
-                bookmarkBridgeSupplier);
+                bookmarkBridgeSupplier, incognitoReauthControllerOneshotSupplier);
     }
 
     @Override

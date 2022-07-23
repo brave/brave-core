@@ -13,6 +13,8 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace database {
+namespace table {
 
 class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
  protected:
@@ -20,7 +22,7 @@ class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
 
   ~BatAdsCreativeNewTabPageAdsDatabaseTableTest() override = default;
 
-  database::table::CreativeNewTabPageAds database_table;
+  CreativeNewTabPageAds database_table;
 };
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -332,4 +334,6 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
+}  // namespace table
+}  // namespace database
 }  // namespace ads

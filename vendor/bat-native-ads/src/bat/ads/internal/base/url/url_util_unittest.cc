@@ -14,13 +14,169 @@
 
 namespace ads {
 
+TEST(BatAdsUrlUtilTest, HttpsSchemeIsSupported) {
+  // Arrange
+  const GURL url = GURL("https://foobar.com");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, HttpSchemeIsNotSupported) {
+  // Arrange
+  const GURL url = GURL("http://foobar.com");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_FALSE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, FooBarSchemeIsNotSupported) {
+  // Arrange
+  const GURL url = GURL("foobar://baz");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_FALSE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithFooBarHostNameIsNotSupported) {
+  // Arrange
+  const GURL url = GURL("brave://foobar");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_FALSE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://wallet");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameAndPathIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://wallet/foo");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://sync");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameAndPathIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://sync/foo");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://rewards");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameAndPathIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://rewards/foo");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest,
+     BraveSchemeWithSettingsHostNameAndSearchEnginesPathIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://settings/searchEngines");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest,
+     BraveSchemeWithSettingsHostNameAndFooBarPathIsNotSupported) {
+  // Arrange
+  const GURL url = GURL("brave://settings/foobar");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_FALSE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, BraveSchemeWithSettingsHostNameIsNotSupported) {
+  // Arrange
+  const GURL url = GURL("brave://settings");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_FALSE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest, MalformedUrlIsNotSupported) {
+  // Arrange
+  const GURL url = GURL("http://foobar.com/brave://wallet");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_FALSE(is_supported);
+}
+
 TEST(BatAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
   // Arrange
   const GURL url = GURL("https://www.foo.com/");
   const std::string pattern = "https://www.foo.com/";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -32,7 +188,7 @@ TEST(BatAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
   const std::string pattern = "https://www.foo.com/bar";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -44,7 +200,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPattern) {
   const std::string pattern = "www.foo.com";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);
@@ -56,7 +212,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
   const std::string pattern = "https://www.foo.com";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);
@@ -68,7 +224,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
   const std::string pattern = "https://www.foo.com/bar*";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -80,7 +236,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -92,7 +248,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);

@@ -54,6 +54,10 @@ class LedgerClientMojoBridge :
 
   void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
 
+  void OnPublisherRegistryUpdated() override;
+
+  void OnPublisherUpdated(const std::string& publisher_id) override;
+
   void SetBooleanState(const std::string& name,
                        bool value,
                        SetBooleanStateCallback callback) override;
@@ -185,17 +189,9 @@ class LedgerClientMojoBridge :
       bool success,
       const std::string& favicon_url);
 
-  static void OnLoadURL(
-      CallbackHolder<LoadURLCallback>* holder,
-      const ledger::type::UrlResponse& response);
-
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::type::Result result);
-
-  static void OnRunDBTransaction(
-      CallbackHolder<RunDBTransactionCallback>* holder,
-      ledger::type::DBCommandResponsePtr response);
 
   static void OnGetCreateScript(
       CallbackHolder<GetCreateScriptCallback>* holder,

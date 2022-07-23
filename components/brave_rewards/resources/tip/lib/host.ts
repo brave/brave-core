@@ -63,6 +63,20 @@ export function createHost (): Host {
   const stateManager = createStateManager<HostState>({})
   const dialogArgs = getDialogArgs()
   const onboardingCompleted = new OnboardingCompletedStore()
+  let tipResultPending = false
+
+  function checkPendingTipResult (result: number) {
+    if (tipResultPending) {
+      tipResultPending = false
+      if (result === 0) {
+        stateManager.update({ tipProcessed: true })
+      } else {
+        stateManager.update({ hostError: { type: 'ERR_TIP_FAILED' } })
+      }
+      return true
+    }
+    return false
+  }
 
   addWebUIListeners({
 
@@ -92,13 +106,13 @@ export function createHost (): Host {
     },
 
     tipProcessed (amount: number) {
-      stateManager.update({
-        tipProcessed: true,
-        tipAmount: amount
-      })
+      if (!tipResultPending) {
+        stateManager.update({ tipProcessed: true })
+      }
     },
 
     tipFailed () {
+      tipResultPending = false
       stateManager.update({
         hostError: { type: 'ERR_TIP_FAILED' }
       })
@@ -171,6 +185,15 @@ export function createHost (): Host {
       if (data.result === 0) {
         chrome.send('fetchBalance')
       }
+      if (data.type === 8) { // RewardsType::ONE_TIME_TIP
+        checkPendingTipResult(data.result)
+      }
+    },
+
+    pendingContributionSaved (result: number) {
+      if (checkPendingTipResult(result)) {
+        stateManager.update({ tipPending: true })
+      }
     },
 
     unblindedTokensReady () {
@@ -242,22 +265,30 @@ export function createHost (): Host {
         return
       }
 
+      stateManager.update({ tipAmount: amount })
+
       chrome.send('onTip', [
         dialogArgs.publisherKey,
         amount,
         kind === 'monthly'
       ])
 
-      // Gemini currently has up to a 10-minute delay on the balance
-      // actually being moved from the user's account.
-      // If the tipping banner doesn't hear back within 3 seconds,
-      // we consider the transaction as non-errored and show the success UI.
-      setTimeout(() => {
-        stateManager.update({
-          tipProcessed: true,
-          tipAmount: amount
-        })
-      }, 3000)
+      // For one-time tips, we need to listen for additional events to know
+      // whether the tip was successful because the `tipProcessed` event may
+      // only indicate that the tip was added to the contribution queue.
+      tipResultPending = kind === 'one-time'
+
+      // If we are waiting for confirmation that a one-time tip was successful
+      // and we don't receive an indication of success or failure within a
+      // reasonable amount of time, then assume that the tip is now sitting
+      // within the contribution queue and will be processed shortly. Display a
+      // success message to the user.
+      if (tipResultPending) {
+        setTimeout(() => {
+          tipResultPending = false
+          stateManager.update({ tipProcessed: true })
+        }, 3000)
+      }
     },
 
     shareTip (target: ShareTarget) {

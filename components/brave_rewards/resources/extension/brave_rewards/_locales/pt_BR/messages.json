@@ -136,7 +136,7 @@
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
-    "message": "$begin_bold$Faça login no $provider$ $end_bold$ para ver seu saldo",
+    "message": "$begin_bold$Faça login no $provider$ $end_bold$para ver seu saldo",
     "description": "",
     "placeholders": {
       "begin_bold": {

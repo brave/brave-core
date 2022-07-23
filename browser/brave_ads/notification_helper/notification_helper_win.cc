@@ -90,11 +90,12 @@ bool NotificationHelperWin::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperWin::CanShowBackgroundNotifications() const {
+bool NotificationHelperWin::
+    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperWin::ShowMyFirstNotificationAd() {
+bool NotificationHelperWin::ShowOnboardingNotification() {
   return false;
 }
 

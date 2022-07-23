@@ -111,13 +111,11 @@ absl::optional<URLEndpointResponsePair> GetNextUrlEndpointResponse(
     // uuid does not exist so insert a new index set to 0 for the endpoint
     GetUrlEndpointIndexes()[uuid] = url_endpoint_response_index;
   } else {
-    if (url_endpoint_response_indexes_iter->second ==
-        url_endpoint_responses.size() - 1) {
-      NOTREACHED() << "Missing MockUrlRequest endpoint response for " << url;
-      return absl::nullopt;
-    }
-
     url_endpoint_response_indexes_iter->second++;
+    if (url_endpoint_response_indexes_iter->second ==
+        url_endpoint_responses.size()) {
+      url_endpoint_response_indexes_iter->second = 0;
+    }
 
     url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
   }

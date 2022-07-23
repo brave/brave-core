@@ -62,6 +62,7 @@ export function wireApiEventsToStore () {
     privateTabDataAPI.addChangeListener(updatePrivateTabData)
     newTabAdsDataAPI.addChangeListener(updateNewTabAdsData)
     getNTPBrowserAPI().addCustomBackgroundUpdatedListener(onCustomBackgroundUpdated)
+    getNTPBrowserAPI().addSearchPromotionDisabledListener(() => getActions().searchPromotionDisabled())
   })
   .catch(e => {
     console.error('New Tab Page fatal error:', e)

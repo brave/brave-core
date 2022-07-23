@@ -90,27 +90,28 @@ type::Result GetBalance::ParseBody(const std::string& body, double* available) {
 
 void GetBalance::Request(const std::string& token,
                          GetBalanceCallback callback) {
-  auto url_callback = std::bind(&GetBalance::OnRequest, this, _1, callback);
+  auto url_callback = base::BindOnce(
+      &GetBalance::OnRequest, base::Unretained(this), std::move(callback));
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetBalance::OnRequest(const type::UrlResponse& response,
-                           GetBalanceCallback callback) {
+void GetBalance::OnRequest(GetBalanceCallback callback,
+                           const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, 0.0);
+    std::move(callback).Run(result, 0.0);
     return;
   }
 
   double available;
   result = ParseBody(response.body, &available);
-  callback(result, available);
+  std::move(callback).Run(result, available);
 }
 
 }  // namespace bitflyer

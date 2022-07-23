@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser.</translation>
 <translation id="7977176350719484850">Uppsk. data\nsparade</translation>
 <translation id="9008534313521214777">Ber. tid\nsparad</translation>
-<translation id="6572660632052512096">Skrivbordsläge</translation>
-<translation id="1340503115760585811">Aktivera Skrivbordsvy för nya flikar</translation>
-<translation id="7924540991929826186">Använd mobilversioner av webbplatser för nya flikar (rekommenderas)</translation>
-<translation id="807636106793708118">Föredra mobilversionen av webbplatser</translation>
-<translation id="4479934682648362332">Föredra skrivbordsversionen av webbplatser</translation>
 <translation id="1842747674580016420">Videouppspelning i Brave</translation>
 <translation id="5368992950177874750">Om det är aktiverat kommer videor att spelas upp i Brave istället för i motsvarande app</translation>
 <translation id="410351446219883937">Automatisk uppspelning</translation>
@@ -85,6 +80,17 @@
 <translation id="8701563696941209024">STARTA OM NU</translation>
 <translation id="834487290629916192">SENARE</translation>
 <translation id="7207456302801184289">Välkommen till Brave</translation>
+<translation id="4117451092682672487">Sekretess har gjorts enkelt.</translation>
+<translation id="7909375417585209817">Om du gör Brave till standard öppnas alla länkar som du trycker på med Braves sekretesskydd.</translation>
+<translation id="5148943178722443958">Hjälp till att göra Brave bättre.</translation>
+<translation id="6188781052835527980">Skicka anonyma diagnostikrapporter om systemet kraschar eller låser sig.</translation>
+<translation id="1929905278861178845">Dela fullständigt anonyma produktinsikter om vilka funktioner som Brave-användarna använder.</translation>
+<translation id="2877653791257935258">Ange ett webbplatsnamn eller URL</translation>
+<translation id="5329830149661250028">Se Brave-skillnaden: Inga annonser. Inga spårare. Mycket snabbare hämtning av sidor.</translation>
+<translation id="3545804467215833536">Tryck för att visa Brave Shields</translation>
+<translation id="1724327820822194498">Se alla dåliga saker som Brave har blockerat, på varje sida, med Shields.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> och <ph name="TRACKER"/> andra annonser och spårare har blockerats</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annonser och spårare har blockerats</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
 <translation id="6165508094623778733">Lär dig mer</translation>
 <translation id="986879628471635371">Felsökning onboarding</translation>
@@ -108,16 +114,19 @@
 <translation id="19715420010996093">Välj webbläsaren Brave och tryck på ”Alltid”.</translation>
 <translation id="3546439402724649282">Brave är redan inställd som din standardwebbläsare.</translation>
 <translation id="8389661903259423907">Du har redan angett en standardwebbläsare. Du kan ändra din standardwebbläsare i appinställningarna.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Tack</translation>
 <translation id="6665366815203065060">Du skickade precis dricks till:</translation>
 <translation id="5441565662498481293">Du skickar automatiskt dricks till:</translation>
 <translation id="1166682575529520472">Månatligen</translation>
 <translation id="1628742278973105368">Du skickar din första månadsdricks den:</translation>
 <translation id="298349922412901215">OBS: Den här innehållsskaparen har inte registrerat sig för att ta emot bidrag från Brave-användare ännu. Vi fortsätter att försöka bidra tills de verifierar sig, eller tills 90 dagar har gått.</translation>
+<translation id="635752162765375187">OBS: Den här skaparen är för närvarande inte konfigurerad för att ta emot dricks från din plånboksförvaringstjänst för belöningar. Om du skapar dricks kommer dessa att förbli i väntande läge och autamatiskt försöka igen i 90 dagar.</translation>
 <translation id="1910721550319506122">Välkommen!</translation>
 <translation id="3165726837666415756">Du kan stödja den här webbplatsen genom att skicka dricks. Det är ett sätt att tacka dem för bra innehåll. Verifierade innehållsskapare får betalt för sin dricks under den första veckan i varje kalendermånad.</translation>
 <translation id="1704859330137112950">Om du vill kan du schemalägga månatliga dricks för att stödja den här webbplatsen på kontinuerlig basis.</translation>
 <translation id="245015745140252435">Dricksbelopp</translation>
+<translation id="7873874596836611687">Belöningssaldo</translation>
 <translation id="2573313946367623146">skicka min dricks</translation>
 <translation id="3250511771491660127">Gör det här varje månad</translation>
 <translation id="7658239707568436148">Avbryt</translation>
@@ -613,6 +622,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
 <translation id="4993345308607970390">Återställ Brave Wallet</translation>
+<translation id="4322846864135539519">Är du säker på att du vill återställa dina Brave-belöningar? Om din plånbok saknar säkerhetskopia kommer återställning leda till att alla data för kontot går förlorade (inklusive eventuellt kapital associerat med kontot). Skriv ”<ph name="CONFIRMATION_PHRASE"/>” för att bekräfta.</translation>
 <translation id="4862812525895306758">Rensa transaktions- och nonce-information</translation>
 <translation id="5693968582510626466">Att rensa transaktioner kan vara användbart för utvecklare eller vid rensning av status på en lokal server</translation>
 <translation id="5421107279168565467">Är du säker på att du vill återställa transaktions- och nonce-informationen? Det här alternativet används oftast av utvecklare som kör en lokal testserver. Skriv <ph name="CONFIRMATION_PHRASE"/> för att bekräfta.</translation>
@@ -632,6 +642,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1190117345570417902">Använder Wireguard säker krypterad VPN-tunnel</translation>
 <translation id="1571230671455380494">Vi delar eller säljer aldrig din information</translation>
 <translation id="276866628038850725">Alla planer inkluderar en gratis 7-dagars testperiod!</translation>
+<translation id="1532536259167115948">Månatlig prenumeration <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Årsprenumeration <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Förnyas varje månad</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">Ett år</translation>
@@ -652,6 +664,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din internetanslutning kommer inte att vara säker.</translation>
 <translation id="2429299231491852747">Acceptera anslutningsbegäran</translation>
 <translation id="3428909627460825679">Det gick inte att skapa en VPN-profil. Vänligen försök igen.</translation>
+<translation id="1264320790738638119">Din prenumeration har gått ut. Du kan när som helst prenumerera igen.</translation>
 <translation id="8681480718817027245">Prenumeration</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Upphör att gälla</translation>
@@ -679,12 +692,15 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1219475260382643267">Webbplatsen fungerar inte</translation>
 <translation id="7138678301420049075">Övrigt</translation>
 <translation id="4827315939627587219">Återställ VPN-konfiguration</translation>
+<translation id="1705662265912724430">Är du säker på att du vill återställa VPN-konfiguration?</translation>
 <translation id="604124094241169006">Automatisk</translation>
 <translation id="7475580600756356589">Ansluter till din server. Ska bara ta en stund...</translation>
 <translation id="1342728075788541348">Kopplar från din server. Detta ska bara ta en kort stund...</translation>
 <translation id="669072536454692117">Prenumerationen har slutförts</translation>
 <translation id="1187506504156101449">Det gick inte att bekräfta köpet:</translation>
 <translation id="8420522105268941892">Du har redan prenumererat på prenumerationen. Testa att återställa prenumerationen.</translation>
+<translation id="404414664190867625">Du har avslutat ditt prenumerationsköp.</translation>
+<translation id="3515141458161417228">Köp misslyckades. Kontakta Google Play-supporten.</translation>
 <translation id="6452181791372256707">Avvisa</translation>
 <translation id="8030852056903932865">Godkänn</translation>
 <translation id="1597199892790541240">Gasavgift</translation>
@@ -719,6 +735,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2199215899212542417">FUNKTIONSTYP: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Inga data</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> skickade<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> skickade <ph name="ASSET"/> nr. <ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> har godkänts <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Godkände Obegränsat <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> byt - <ph name="DATE"/></translation>
@@ -783,6 +800,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
+<translation id="8982438328166986164">Visa förslag på webbplatser baserat på dina bokmärken och webbhistorik.</translation>
 <translation id="1241283133946520352">Nätverk</translation>
 <translation id="1062463687579789365">Anpassning av plånboksnätverk</translation>
 <translation id="2512821599885971349">Lägg till nätverk</translation>
@@ -833,6 +851,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="85136472535634474">Öppna VPN-inställningar</translation>
 <translation id="8352805003811526272">Återställa konfigurationen ...</translation>
 <translation id="6809312301323611382">Du har redan valt samma server</translation>
+<translation id="5665084657857645952">Du har stoppat installeringen av VPN-profilen.</translation>
 <translation id="9106265941552476098">Avvisa <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
 <translation id="523862956770478816">Webbplatsbehörigheter</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> konton anslutna</translation>
@@ -841,16 +860,36 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="4804818685124855865">Koppla från</translation>
 <translation id="8009571545960303544">En begäran om din signatur har skickats</translation>
 <translation id="3484981968509595506">En DApp begär att få din offentliga krypteringsnyckel</translation>
+<translation id="2300240008330189182"><ph name="URL"/> begär din plånboks offentliga krypteringsnyckel. Om du samtycker till att tillhandahålla den här nyckeln kan webbplatsen skriva krypterade meddelanden till dig.</translation>
 <translation id="3340247553212049934">Förse</translation>
 <translation id="1982257600591932657">Nätverksnamn</translation>
 <translation id="5052727830821470769">Nätverk URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="7982789257301363584">Nätverk</translation>
-<translation id="8759753423332885148">Lär dig mer.</translation>
+<translation id="6936860995365507185">Det här låter nätverket användas med Brave-plånboken. <ph name="CLICK_START"/>Läs mer<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Tillåta denna webbplats att lägga till ett nätverk?</translation>
+<translation id="4857321293515555666">Denna DApp vill läsa detta meddelande för att slutföra din förfrågan.</translation>
+<translation id="714506544401754321">Dekryptera meddelande</translation>
+<translation id="5039804452771397117">Tillåt</translation>
 <translation id="3378339846292573874">Lägg till föreslagna token</translation>
 <translation id="2322227405137827074">Vill du importera denna token?</translation>
 <translation id="1324417023773393937">Brave-webbläsaren</translation>
 <translation id="6044189892950611565">Aviseringskanal för Brave webbläsare</translation>
+<translation id="1173919438868967364">Välj konto</translation>
+<translation id="8922793255489232731">Det gick inte att få en matchande tidszon för: <ph name="VALUE"/></translation>
+<translation id="8643377320501056697">Visa populäraste webbplatser</translation>
+<translation id="6471216025161697462">Ansluten till <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Provversion</translation>
+<translation id="7733890291091968191">Visa web3-notiser</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave spårar inte dig och vet inte hur du använder appen, så vi kan inte se hur du har konfigurerat VPN. Berätta mer om problemet så ska vi göra vårt bästa för att hjälpa dig så fort som möjligt. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN-värdnamn\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nPrenumerationstyp\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlay Store-token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nAppversion\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nTidszon\n</translation>
+<translation id="8107843365677337047">\n\nNätverkstyp\n</translation>
+<translation id="5334952096674914470">\n\nMobilnätsleverantör\n</translation>
+<translation id="5393042357629679588">\n\nAnnat problem\n</translation>
+<translation id="8095666712177294104">\n\nPlattform\n</translation>
 </translationbundle>

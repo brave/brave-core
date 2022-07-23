@@ -10,13 +10,13 @@
 
 #include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "bat/ads/internal/conversions/conversion_info_aliases.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
@@ -67,18 +67,6 @@ mojom::SearchResultAdPtr BuildAdWithConversion(
   ad_mojom->conversion->expire_at = DistantFuture();
 
   return ad_mojom;
-}
-
-void ExpectAdEventCountEquals(const ConfirmationType& confirmation_type,
-                              const int expected_count) {
-  database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
-    ASSERT_TRUE(success);
-
-    const int count =
-        GetAdEventCount(AdType::kSearchResultAd, confirmation_type, ad_events);
-    EXPECT_EQ(expected_count, count);
-  });
 }
 
 void ExpectDepositExistsForCreativeInstanceId(
@@ -181,8 +169,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   EXPECT_FALSE(did_fail_to_fire_event_);
   const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
   EXPECT_EQ(expected_ad, ad_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
   ExpectConversionCountEquals(0);
 }
@@ -204,8 +192,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   EXPECT_FALSE(did_fail_to_fire_event_);
   const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
   EXPECT_EQ(expected_ad, ad_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
   ExpectConversionCountEquals(1);
 }
@@ -224,7 +212,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
   ExpectConversionCountEquals(0);
 }
@@ -246,8 +235,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   EXPECT_FALSE(did_fail_to_fire_event_);
   const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
   EXPECT_EQ(expected_ad, ad_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -264,7 +253,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kClicked);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -281,8 +271,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(
+      0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -299,8 +289,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(
+      0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
@@ -316,8 +306,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(
+      0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -339,7 +329,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour);
+  EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
   ExpectConversionCountEquals(0);
 }
@@ -363,7 +354,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour);
+  EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -388,7 +380,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_day);
+  EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
+                                         ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
   ExpectConversionCountEquals(0);
 }
@@ -415,7 +408,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_day);
+  EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
+                                         ConfirmationType::kViewed));
 }
 
 }  // namespace search_result_ads

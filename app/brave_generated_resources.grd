@@ -599,8 +599,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_LABEL" desc="The text for the dismiss button in a promotion match">
           Dismiss
         </message>
-        <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">">
-          Dismiss brave search conversion, press Enter to remove this suggestion
+        <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">
+          Dismiss Brave search conversion, press Enter to remove this suggestion
         </message>
       </if>
 
@@ -706,7 +706,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
           Speedreader settings
         </message>
-        <message name="IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK">
+        <message name="IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">
           Show original page
         </message>
       </if>

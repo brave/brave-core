@@ -25,9 +25,9 @@ extern const char kAdsPerHour[];
 
 extern const char kIdleTimeThreshold[];
 
-extern const char kShouldAllowAdsSubdivisionTargeting[];
-extern const char kAdsSubdivisionTargetingCode[];
-extern const char kAutoDetectedAdsSubdivisionTargetingCode[];
+extern const char kShouldAllowSubdivisionTargeting[];
+extern const char kSubdivisionTargetingCode[];
+extern const char kAutoDetectedSubdivisionTargetingCode[];
 
 extern const char kCatalogId[];
 extern const char kCatalogVersion[];
@@ -42,6 +42,7 @@ extern const char kEpsilonGreedyBanditEligibleSegments[];
 extern const char kNextTokenRedemptionAt[];
 
 extern const char kHasMigratedClientState[];
+extern const char kHasMigratedConfirmationState[];
 extern const char kHasMigratedConversionState[];
 extern const char kHasMigratedRewardsState[];
 

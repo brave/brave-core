@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
@@ -24,7 +25,7 @@ class State {
   explicit State(LedgerImpl* ledger);
   ~State();
 
-  void Initialize(ledger::ResultCallback callback);
+  void Initialize(ledger::LegacyResultCallback callback);
 
   void SetVersion(const int version);
 
@@ -88,6 +89,8 @@ class State {
   std::vector<double> GetTipChoices();
 
   std::vector<double> GetMonthlyTipChoices();
+
+  base::flat_map<std::string, std::string> GetPayoutStatus();
 
   void SetFetchOldBalanceEnabled(bool enabled);
 

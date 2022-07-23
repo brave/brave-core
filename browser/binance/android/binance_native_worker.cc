@@ -46,15 +46,15 @@ void BinanceNativeWorker::Destroy(
 std::string BinanceNativeWorker::StdStrVecMapToJsonString(
     const std::map<std::string, std::vector<std::string>>& args) {
   std::string json_args;
-  base::DictionaryValue dict;
+  base::Value::Dict dict;
   for (const auto& item : args) {
-    auto inner_list = std::make_unique<base::ListValue>();
+    base::Value::List inner_list;
     if (!item.second.empty()) {
       for (const auto& it : item.second) {
-        inner_list->Append(it);
+        inner_list.Append(it);
       }
     }
-    dict.SetList(item.first, std::move(inner_list));
+    dict.Set(item.first, std::move(inner_list));
   }
   base::JSONWriter::Write(dict, &json_args);
   return json_args;
@@ -64,15 +64,15 @@ std::string BinanceNativeWorker::ConvertAssetsToJsonString(
     const std::map<std::string,
                    std::vector<std::map<std::string, std::string>>>& args) {
   std::string json_args;
-  base::DictionaryValue dict;
+  base::Value::Dict dict;
   for (const auto& item : args) {
-    auto inner_list = std::make_unique<base::ListValue>();
+    base::Value::List inner_list;
     if (!item.second.empty()) {
       for (const auto& it : item.second) {
-        inner_list->Append(StdStrStrMapToJsonString(it));
+        inner_list.Append(StdStrStrMapToJsonString(it));
       }
     }
-    dict.SetList(item.first, std::move(inner_list));
+    dict.Set(item.first, std::move(inner_list));
   }
   base::JSONWriter::Write(dict, &json_args);
   return json_args;

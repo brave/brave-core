@@ -13,5 +13,11 @@
     "defaultMonthlyChoices": [
       1, 10, 100
     ]
+  },
+  "payoutStatus": {
+    "bitflyer": "off",
+    "gemini": "off",
+    "uphold": "off",
+    "unverified": "off"
   }
 }

@@ -10,13 +10,12 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace ads {
 namespace privacy {
 
 class UnblindedPaymentTokens;
-struct UnblindedPaymentTokenInfo;
 
 UnblindedPaymentTokens* GetUnblindedPaymentTokens();
 
@@ -36,7 +35,7 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count);
 
 UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count);
 
-base::Value GetUnblindedPaymentTokensAsList(const int count);
+base::Value::List GetUnblindedPaymentTokensAsList(const int count);
 
 }  // namespace privacy
 }  // namespace ads

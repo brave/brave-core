@@ -60,6 +60,7 @@ const defaultState: PanelState = {
     isEip712: false,
     domainHash: '',
     primaryHash: '',
+    messageBytes: undefined,
     coin: BraveWallet.CoinType.ETH
   }],
   signAllTransactionsRequests: [],

@@ -7,6 +7,20 @@
 // chromium_src/chrome/browser/prefs/browser_prefs.cc
 #include "components/translate/core/browser/translate_prefs.h"
 
+#include "build/build_config.h"
+
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #include "src/components/translate/core/browser/translate_prefs.cc"
 #undef MigrateObsoleteProfilePrefs
+
+#include "base/feature_override.h"
+
+namespace translate {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+#if BUILDFLAG(IS_ANDROID)
+    {kTranslate, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
+}});
+
+}  // namespace translate

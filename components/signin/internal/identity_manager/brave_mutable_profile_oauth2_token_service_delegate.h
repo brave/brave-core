@@ -26,7 +26,8 @@ class BraveMutableProfileOAuth2TokenServiceDelegate
   BraveMutableProfileOAuth2TokenServiceDelegate& operator=(
       const BraveMutableProfileOAuth2TokenServiceDelegate&) = delete;
 
-  void LoadCredentials(const CoreAccountId& primary_account_id) override;
+  void LoadCredentials(const CoreAccountId& primary_account_id,
+                       bool is_syncing) override;
 
  private:
   raw_ptr<AccountTrackerService> account_tracker_service_ = nullptr;

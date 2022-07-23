@@ -18,10 +18,9 @@ class NotificationHelperWin
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperWin> {
  public:
-  ~NotificationHelperWin() override;
-
   NotificationHelperWin(const NotificationHelperWin&) = delete;
   NotificationHelperWin& operator=(const NotificationHelperWin&) = delete;
+  ~NotificationHelperWin() override;
 
  protected:
   friend class NotificationHelperHolder;
@@ -46,10 +45,9 @@ class NotificationHelperWin
 
   // NotificationHelper:
   bool CanShowNativeNotifications() override;
+  bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const override;
 
-  bool CanShowBackgroundNotifications() const override;
-
-  bool ShowMyFirstNotificationAd() override;
+  bool ShowOnboardingNotification() override;
 };
 
 }  // namespace brave_ads

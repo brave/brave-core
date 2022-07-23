@@ -42,6 +42,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3094628781200061820">Publicera och hämta filer från IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Öppna med hjälp av .onion-adress</translation>
+<translation id="4759098689276706664">Tvinga inklistring</translation>
 <translation id="4901618511712685702">Importera till IPFS</translation>
 <translation id="6794469945030154569">Den här sidan</translation>
 <translation id="5037852323412456577">Vald bild</translation>
@@ -69,6 +70,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3425600262621021599">Öppna länk i Brave i ett privat fönster med Tor</translation>
 <translation id="3229091547987707389">Importera och dela en katalog</translation>
 <translation id="5029193871181468990">Dölj Brave Rewards-ikonen</translation>
+<translation id="7595540212376041331">Dölj ikonen för Brave-plånboken</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Visa i Web Extensions Store</translation>
 <translation id="3161744659507801211">Varning: Brave kan inte förhindra tillägg från att spela in din sökhistorik.</translation>
@@ -104,9 +106,20 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Stäng alla flikar?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> flikar öppna i webbläsarfönstret.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> flikar</translation>
+<translation id="2272117088509540883">- Brave-sökning</translation>
+<translation id="2701279958223202597">Stötta oberoende sökningar med bättre integritetsskydd. Brave-sökningar spårar varken dig, dina sökningar eller dina klick.</translation>
+<translation id="6438467592401259882">Stötta oberoende sökningar med bättre integritetsskydd.</translation>
+<translation id="1688359110799098115">Stötta oberoende sökningar med bättre integritetsskydd.</translation>
+<translation id="8579317236683491484">Brave-sökningar spårar varken dig, dina sökningar eller dina klick.</translation>
+<translation id="5240031343741051161">Prova Brave-sökning</translation>
+<translation id="5026874946691314267">Visa inte detta igen</translation>
+<translation id="5234764350956374838">Ta bort permanent</translation>
+<translation id="214744058941501853">"&gt;
+          Avfärda konvertering för Brave-sökningar, tryck på Enter för att ta bort förslaget</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
 <translation id="6040143037577758943">Stäng</translation>
+<translation id="6665472986740899785">Brave-notifikationsannons</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Bidra med anonym sökning &amp; surfdata för att förfina Brave Search.</translation>
 <translation id="1516554614404600536">Brave-knappbeskrivning</translation>
@@ -132,6 +145,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8490082094734500369">Stäng av läsläge</translation>
 <translation id="2036503787657622020">Aktivera läsläge</translation>
 <translation id="5226458915125328323">Inställningar för Speedreader</translation>
+<translation id="1621606336827646158">Visa originalsidan</translation>
 <translation id="6284218950354553099">Skicka daglig användningsping till Brave automatiskt</translation>
 <translation id="5288333155754958121">Den här anonyma pingen låter Brave uppskatta antalet aktiva användare.</translation>
 <translation id="1872784258300710671">Brave använder helt privat produktanalys för att uppskatta den sammanlagda användningen av vissa funktioner.</translation>
@@ -182,6 +196,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Ange Brave som standardwebbläsare för att få Braves sekretesskydd på varje webbsida du öppnar.</translation>
 <translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
 <translation id="2370739752330685659">Kanske senare</translation>
+<translation id="961012016278832836">Äldre Microsoft Edge-version</translation>
+<translation id="6436994631426134065">Importerade från <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="4472575034687746823">Kom igång</translation>
@@ -198,9 +214,11 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2906510232093002459">Ordinarie bilder i Brave</translation>
 <translation id="2396127686705429331">Visa bokmärkesknapp</translation>
 <translation id="2814998458708016836">Använd brett adressfält</translation>
-<translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
-<translation id="597020512043916976">Vissa toppsajter i förslagen</translation>
-<translation id="301088458323355543">Visa föreslagna webbplatser i komplettera automatiskt-förslag</translation>
+<translation id="4109670531935487117">Visa textförslag i adressfältet</translation>
+<translation id="2858138569776157458">Populärt</translation>
+<translation id="65774893852758517">Föreslagna webbplatser</translation>
+<translation id="7859704718976024901">Webbhistorik</translation>
+<translation id="8820817407110198400">Bokmärkesfältet</translation>
 <translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
 <translation id="1811404036171336214">Visa alltid bokmärken på en ny fliksida</translation>
 <translation id="5529693968082667490">Visa knappen fliksök</translation>
@@ -236,14 +254,29 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7390783310074170337">Standardvy</translation>
 <translation id="130615081792797568">Enkel vy</translation>
 <translation id="2360360976480535628">Avancerad vy</translation>
+<translation id="6486983549008741930">Innehållsfiltrering</translation>
+<translation id="8694564340481124390">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och irritationsmoment.</translation>
+<translation id="6522618763902154348">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och 
+    <ph name="BEGIN_LINK"/>irritationsmoment<ph name="END_LINK"/>.</translation>
+<translation id="3482656215021340727">Lägg till anpassade filterlistor</translation>
+<translation id="1020877116991797978">Lägg till ytterligare listor som skapas och underhålls av gemenskapen som du litar på.</translation>
 <translation id="7617831480435794399">Prenumerera bara på listor från entiteter som du litar på. Din webbläsare söker regelbundet efter listuppdateringar från webbadressen du anger och avslöjar din IP-adress för deras server.</translation>
+<translation id="2831397936251948638">Skapa anpassade filter</translation>
+<translation id="4618274268052410139">Lägg till anpassade filter som du har skapat, en per rad, i fältet nedan. Se till att använda <ph name="BEGIN_LINK"/>Adblock-filtersyntaxen<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Lägg till</translation>
+<translation id="571950783952070673">Listans URL</translation>
 <translation id="9204006549413740506">Senast uppdaterad</translation>
 <translation id="6745592621698551453">Uppdatera nu</translation>
 <translation id="5334844597069022743">Visa källa</translation>
 <translation id="4720556299488643018">Avsluta prenumeration</translation>
+<translation id="6532106788206463496">Spara ändringar</translation>
 <translation id="4516904298421534459">Filtrera listor</translation>
+<translation id="4435215931544457255">Ytterligare populära listor från gemenskapen. Observera att webbläsarens hastighet försämras om för många filter aktiveras.</translation>
 <translation id="802154636333426148">Nedladdningen misslyckades</translation>
+<translation id="7889605993994647168">Uppdatering misslyckades</translation>
+<translation id="5438573563213942361">Anpassade listor</translation>
+<translation id="4182731739150761577">Se fullständig lista</translation>
+<translation id="1340263054776016283">Ange filterlistans URL</translation>
 <translation id="6821903322090655051">Brave Rewards är inaktiverade</translation>
 <translation id="413570371620795359">Öppna Rewards-panelen för att aktivera och komma igång</translation>
 <translation id="3849957491997306859">Auto-upptäck</translation>
@@ -330,6 +363,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5093410893656857925">Välj enhetstyp</translation>
 <translation id="4581190919849683048">Vilken slags enhet vill du synka med?</translation>
 <translation id="4112587618563511470">Ogiltig synkningskod, kontrollera och prova igen.</translation>
+<translation id="3995714999835224798">Den här koden är ogiltig</translation>
 <translation id="859506441384380749">Den här koden genererades av en Brave-version som är för gammal, uppgradera enheten först</translation>
 <translation id="3132642509209154999">Den här koden har upphört att gälla. Generera en ny på din andra enhet och försök igen.</translation>
 <translation id="2859229680945501779">Den här koden är ogiltig. Kontrollera att tid och tidszon är korrekt inställda på din enhet.</translation>
@@ -343,6 +377,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 Är du säker på att du vill göra detta?</translation>
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
 <translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
+<translation id="842628013524824194">Normalt fönster – sökmotorn som används i adressfältet</translation>
+<translation id="5324939009884545145">Privat fönster – sökmotorn som används i adressfältet</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
 <translation id="7878791177459550035">Mediarouter aktiverar cast-funktion i webbläsaren.</translation>
@@ -403,6 +439,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1062463687579789365">Anpassning av plånboksnätverk</translation>
 <translation id="2234108191702901162">Kunde inte lägga till nätverk</translation>
 <translation id="8996633027318264334">Vill du verkligen radera <ph name="KEY_NAME"/>?</translation>
+<translation id="7893578599666249602">Vill du verkligen återställa <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vill du uppdatera det befintliga nätverket?</translation>
 <translation id="9170907049676078643">Metod för att lösa IPFS-resurser</translation>
 <translation id="1327977588028644528">Gateway</translation>
@@ -441,6 +478,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="616058968889448209">IPFS-tjänsten har startfel, mer information finns tillgänglig på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' nyckelimport misslyckades</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' nyckelexport misslyckades</translation>
+<translation id="5840868269342837751">Obs! Nätverksförfrågningar får inte använda webbläsarens proxy- eller DNS-inställningar.</translation>
 <translation id="8275038454117074363">Importera</translation>
 <translation id="3654980960391973513">Skapa</translation>
 <translation id="5531501313997312487">Starta nod</translation>

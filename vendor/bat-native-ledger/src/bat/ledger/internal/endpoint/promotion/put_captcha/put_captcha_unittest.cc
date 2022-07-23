@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -44,15 +45,13 @@ class PutCaptchaTest : public testing::Test {
 
 TEST_F(PutCaptchaTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   captcha_->Request(
@@ -66,15 +65,13 @@ TEST_F(PutCaptchaTest, ServerOK) {
 
 TEST_F(PutCaptchaTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   captcha_->Request(
@@ -88,15 +85,13 @@ TEST_F(PutCaptchaTest, ServerError400) {
 
 TEST_F(PutCaptchaTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   captcha_->Request(
@@ -110,15 +105,13 @@ TEST_F(PutCaptchaTest, ServerError401) {
 
 TEST_F(PutCaptchaTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   captcha_->Request(
@@ -132,15 +125,13 @@ TEST_F(PutCaptchaTest, ServerError500) {
 
 TEST_F(PutCaptchaTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   captcha_->Request(

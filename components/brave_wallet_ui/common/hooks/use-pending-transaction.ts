@@ -55,7 +55,7 @@ export const usePendingTransactions = () => {
 
   // custom hooks
   const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
-  const parseTransaction = useTransactionParser(selectedNetwork)
+  const parseTransaction = useTransactionParser(transactionsNetwork)
   const { findAssetPrice } = usePricing(transactionSpotPrices)
   const {
     onFindTokenInfoByContractAddress,

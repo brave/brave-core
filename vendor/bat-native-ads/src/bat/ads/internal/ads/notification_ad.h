@@ -14,10 +14,8 @@
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/browser/browser_manager_observer.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -92,6 +90,7 @@ class NotificationAd final : public AccountObserver,
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
   // notification_ads::EventHandlerObserver:
+  void OnNotificationAdServed(const NotificationAdInfo& ad) override;
   void OnNotificationAdViewed(const NotificationAdInfo& ad) override;
   void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
   void OnNotificationAdDismissed(const NotificationAdInfo& ad) override;

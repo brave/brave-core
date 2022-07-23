@@ -5,39 +5,32 @@
 
 #include "brave/browser/brave_ads/brave_ads_host.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/extensions/api/brave_action_api.h"
-#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_contents.h"
-#include "extensions/browser/extension_system.h"
-#include "extensions/common/constants.h"
 
 namespace brave_ads {
-
-namespace {
-
-constexpr char kAdsEnableRelativeUrl[] = "request_ads_enabled_panel.html";
-
-}  // namespace
 
 BraveAdsHost::BraveAdsHost(Profile* profile, content::WebContents* web_contents)
     : profile_(profile),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   DCHECK(profile_);
+  if (web_contents) {
+    browser_ = chrome::FindBrowserWithWebContents(web_contents);
+    DCHECK(browser_);
+  }
 }
 
 BraveAdsHost::~BraveAdsHost() {}
@@ -90,7 +83,7 @@ void BraveAdsHost::RequestAdsEnabled(RequestAdsEnabledCallback callback) {
 
   rewards_service_observation_.Observe(rewards_service);
 
-  if (!ShowRewardsPopup(rewards_service)) {
+  if (!ShowRewardsPopup()) {
     RunCallbacksAndReset(false);
   }
 }
@@ -109,34 +102,19 @@ void BraveAdsHost::OnAdsEnabled(brave_rewards::RewardsService* rewards_service,
   RunCallbacksAndReset(ads_enabled);
 }
 
-bool BraveAdsHost::ShowRewardsPopup(
-    brave_rewards::RewardsService* rewards_service) {
-  DCHECK(rewards_service);
-
-  Browser* browser = chrome::FindBrowserWithProfile(profile_);
-  DCHECK(browser);
-
-  auto* extension_service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  if (!extension_service) {
+bool BraveAdsHost::ShowRewardsPopup() {
+  if (!browser_) {
     return false;
   }
 
-  extensions::BraveComponentLoader* component_loader =
-      static_cast<extensions::BraveComponentLoader*>(
-          extension_service->component_loader());
-  DCHECK(component_loader);
+  auto* coordinator =
+      brave_rewards::RewardsPanelCoordinator::FromBrowser(browser_);
 
-  if (!component_loader->Exists(brave_rewards_extension_id)) {
-    component_loader->AddRewardsExtension();
-
-    rewards_service->StartProcess(base::DoNothing());
+  if (coordinator) {
+    return coordinator->ShowBraveTalkOptIn();
   }
 
-  std::string error;
-  return extensions::BraveActionAPI::ShowActionUI(
-      browser, brave_rewards_extension_id,
-      std::make_unique<std::string>(kAdsEnableRelativeUrl), &error);
+  return false;
 }
 
 void BraveAdsHost::RunCallbacksAndReset(bool result) {

@@ -13,12 +13,61 @@
 
 namespace ads {
 
+namespace {
+
+constexpr char kBraveScheme[] = "brave";
+constexpr char kChromeScheme[] = "chrome";
+
+constexpr char kRewardsHostName[] = "rewards";
+constexpr char kSettingsHostName[] = "settings";
+constexpr char kSyncHostName[] = "sync";
+constexpr char kWalletHostName[] = "wallet";
+
+constexpr char kSearchEnginesPath[] = "/searchEngines";
+
+GURL ReplaceUrlBraveHostWithChromeHost(const GURL& url) {
+  if (!url.SchemeIs(kBraveScheme)) {
+    return url;
+  }
+
+  GURL::Replacements replacements;
+  replacements.SetSchemeStr(kChromeScheme);
+  return url.ReplaceComponents(replacements);
+}
+
+}  // namespace
+
 GURL GetUrlWithEmptyQuery(const GURL& url) {
   return GURL(base::StrCat(
       {url.scheme(), url::kStandardSchemeSeparator, url.host(), url.path()}));
 }
 
-bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern) {
+bool SchemeIsSupported(const GURL& url) {
+  if (url.SchemeIs(url::kHttpsScheme)) {
+    return true;
+  }
+
+  // We must replace the brave:// host with chrome:// due to GURL not correctly
+  // parsing brave:// hosts.
+  const GURL modified_url = ReplaceUrlBraveHostWithChromeHost(url);
+
+  if (!modified_url.SchemeIs(kChromeScheme)) {
+    return false;
+  }
+
+  const std::string host_name = modified_url.host();
+  if (host_name == kRewardsHostName || host_name == kSyncHostName ||
+      host_name == kWalletHostName) {
+    return true;
+  } else if (host_name == kSettingsHostName &&
+             modified_url.path() == kSearchEnginesPath) {
+    return true;
+  }
+
+  return false;
+}
+
+bool MatchUrlPattern(const GURL& url, const std::string& pattern) {
   if (!url.is_valid() || pattern.empty()) {
     return false;
   }

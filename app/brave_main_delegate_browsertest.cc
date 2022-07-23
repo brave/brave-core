@@ -6,6 +6,7 @@
 #include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
+#include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -105,6 +106,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &commerce::kShoppingList,
     &commerce::kShoppingPDPMetrics,
     &commerce::kRetailCoupons,
+    &enterprise_connectors::kLocalContentAnalysisEnabled,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif
@@ -116,11 +118,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kNavigationRequestPreconnect,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
-#if BUILDFLAG(IS_WIN)
-    &features::kPrewarmSearchResultsPageFonts,
-#endif
+    &features::kPrivacyGuide,
     &features::kPrivacyGuide2,
     &features::kPrivacySandboxAdsAPIsOverride,
+    &features::kSCTAuditing,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
 #if !BUILDFLAG(IS_ANDROID)
@@ -164,6 +165,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &autofill::features::kAutofillDisableShadowHeuristics,
     &blink::features::kPrefetchPrivacyChanges,
     &blink::features::kReducedReferrerGranularity,
+    &blink::features::kReduceUserAgentMinorVersion,
 #if BUILDFLAG(IS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif

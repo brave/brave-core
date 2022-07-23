@@ -15,7 +15,8 @@ export const mockSignMessageRequest = {
   isEip712: false,
   domainHash: '',
   primaryHash: '',
-  coin: BraveWallet.CoinType.ETH
+  coin: BraveWallet.CoinType.ETH,
+  messageBytes: undefined
 }
 
 export const mockAddChainRequest = {

@@ -19,7 +19,7 @@ specific_include_rules = {
   "speedreader_throttle.h": [
     "+third_party/blink/public",
   ],
-  "speedreader_util.h": [
+  "url_readable_hints.cc": [
     "+third_party/re2",
   ],
 }

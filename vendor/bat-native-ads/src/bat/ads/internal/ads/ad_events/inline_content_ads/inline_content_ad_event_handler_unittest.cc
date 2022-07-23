@@ -11,7 +11,6 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -88,19 +87,6 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
     return creative_ad;
   }
 
-  void ExpectAdEventCountEquals(const ConfirmationType& confirmation_type,
-                                const int expected_count) {
-    database::table::AdEvents database_table;
-    database_table.GetAll(
-        [=](const bool success, const AdEventList& ad_events) {
-          ASSERT_TRUE(success);
-
-          const int count = GetAdEventCount(AdType::kInlineContentAd,
-                                            confirmation_type, ad_events);
-          EXPECT_EQ(expected_count, count);
-        });
-  }
-
   std::unique_ptr<EventHandler> event_handler_;
 
   InlineContentAdInfo ad_;
@@ -127,7 +113,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
       BuildInlineContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
 
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest,
@@ -143,7 +130,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
                             mojom::InlineContentAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
@@ -162,8 +150,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   const InlineContentAdInfo& expected_ad =
       BuildInlineContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest,
@@ -179,7 +167,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
                             mojom::InlineContentAdEventType::kClicked);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest, DoNotFireEventWithInvalidUuid) {
@@ -194,8 +183,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, DoNotFireEventWithInvalidUuid) {
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(
+      0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest,
@@ -211,8 +200,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(
+      0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest,
@@ -228,8 +217,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(
+      0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
 }  // namespace inline_content_ads

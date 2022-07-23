@@ -32,14 +32,16 @@ class PlaylistMediaFileDownloadManager
   class Delegate {
    public:
     virtual void OnMediaFileReady(const std::string& id,
-                                  const std::string& audio_file_path,
-                                  const std::string& video_file_path) = 0;
+                                  const std::string& media_file_path) = 0;
     virtual void OnMediaFileGenerationFailed(const std::string& id) = 0;
     virtual bool IsValidPlaylistItem(const std::string& id) = 0;
 
    protected:
     virtual ~Delegate() {}
   };
+
+  static constexpr base::FilePath::CharType kMediaFileName[] =
+      FILE_PATH_LITERAL("media_file.mp4");
 
   PlaylistMediaFileDownloadManager(content::BrowserContext* context,
                                    Delegate* delegate,
@@ -51,35 +53,31 @@ class PlaylistMediaFileDownloadManager
   PlaylistMediaFileDownloadManager& operator=(
       const PlaylistMediaFileDownloadManager&) = delete;
 
-  void GenerateMediaFileForPlaylistItem(const base::Value& playlist_item);
+  void GenerateMediaFileForPlaylistItem(const PlaylistItemInfo& playlist_item);
   void CancelDownloadRequest(const std::string& id);
   void CancelAllDownloadRequests();
 
  private:
   // PlaylistMediaFileDownloader::Delegate overrides:
   void OnMediaFileReady(const std::string& id,
-                        const std::string& media_file_path_key,
                         const std::string& media_file_path) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
 
   void GenerateMediaFiles();
-  base::Value GetNextPlaylistItemTarget();
+  std::unique_ptr<PlaylistItemInfo> GetNextPlaylistItemTarget();
   std::string GetCurrentDownloadingPlaylistItemID() const;
   void CancelCurrentDownloadingPlaylistItem();
   bool IsCurrentDownloadingInProgress() const;
-  void ResetCurrentPlaylistItemInfo();
 
   const base::FilePath base_dir_;
   raw_ptr<Delegate> delegate_;
-  base::queue<base::Value> pending_media_file_creation_jobs_;
-  std::string current_playlist_item_id_;
-  std::string current_playlist_item_audio_file_path_;
-  std::string current_playlist_item_video_file_path_;
+  base::queue<PlaylistItemInfo> pending_media_file_creation_jobs_;
 
-  // TODO(simonhong): Unify these two downloader into one. Using two downloaders
-  // just increase complexity.
-  std::unique_ptr<PlaylistMediaFileDownloader> video_media_file_downloader_;
-  std::unique_ptr<PlaylistMediaFileDownloader> audio_media_file_downloader_;
+  std::unique_ptr<PlaylistItemInfo> current_item_;
+
+  std::unique_ptr<PlaylistMediaFileDownloader> media_file_downloader_;
+
+  base::WeakPtrFactory<PlaylistMediaFileDownloadManager> weak_factory_{this};
 };
 
 }  // namespace playlist

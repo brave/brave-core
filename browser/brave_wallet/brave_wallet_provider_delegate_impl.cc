@@ -78,6 +78,19 @@ absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
   }
 }
 
+absl::optional<std::string> CoinTypeToKeyringId(mojom::CoinType coin_type) {
+  switch (coin_type) {
+    case mojom::CoinType::ETH:
+      return mojom::kDefaultKeyringId;
+    case mojom::CoinType::SOL:
+      return mojom::kSolanaKeyringId;
+    case mojom::CoinType::FIL:
+      return mojom::kFilecoinKeyringId;
+    default:
+      return absl::nullopt;
+  }
+}
+
 }  // namespace
 
 BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
@@ -113,10 +126,21 @@ void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
   ::brave_wallet::ShowWalletOnboarding(web_contents_);
 }
 
+void BraveWalletProviderDelegateImpl::ShowAccountCreation(
+    mojom::CoinType type) {
+  auto keyring_id = CoinTypeToKeyringId(type);
+  if (keyring_id)
+    ::brave_wallet::ShowAccountCreation(web_contents_, *keyring_id);
+}
+
 void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     mojom::CoinType type,
     const std::vector<std::string>& accounts,
     GetAllowedAccountsCallback callback) {
+  if (IsPermissionDenied(type)) {
+    std::move(callback).Run(true, std::vector<std::string>());
+    return;
+  }
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
     std::move(callback).Run(false, std::vector<std::string>());
@@ -170,6 +194,24 @@ void BraveWalletProviderDelegateImpl::IsAccountAllowed(
   permissions::BraveWalletPermissionContext::GetAllowedAccounts(
       *permission, content::RenderFrameHost::FromID(host_id_), {account},
       base::BindOnce(&OnIsAccountAllowed, account, std::move(callback)));
+}
+
+bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
+  auto permission = CoinTypeToPermissionType(type);
+  if (!permission) {
+    return false;
+  }
+
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  if (!rfh) {
+    return false;
+  }
+
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+
+  return permissions::BraveWalletPermissionContext::IsPermissionDenied(
+      *permission, web_contents->GetBrowserContext(),
+      url::Origin::Create(rfh->GetLastCommittedURL()));
 }
 
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(

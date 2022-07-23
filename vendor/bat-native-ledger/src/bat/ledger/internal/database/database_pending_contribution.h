@@ -20,9 +20,8 @@ class DatabasePendingContribution: public DatabaseTable {
   explicit DatabasePendingContribution(LedgerImpl* ledger);
   ~DatabasePendingContribution() override;
 
-  void InsertOrUpdateList(
-      type::PendingContributionList list,
-      ledger::ResultCallback callback);
+  void InsertOrUpdateList(type::PendingContributionList list,
+                          ledger::LegacyResultCallback callback);
 
   void GetReservedAmount(ledger::PendingContributionsTotalCallback callback);
 
@@ -30,9 +29,9 @@ class DatabasePendingContribution: public DatabaseTable {
 
   void GetUnverifiedPublishers(ledger::UnverifiedPublishersCallback callback);
 
-  void DeleteRecord(const uint64_t id, ledger::ResultCallback callback);
+  void DeleteRecord(uint64_t id, ledger::LegacyResultCallback callback);
 
-  void DeleteAllRecords(ledger::ResultCallback callback);
+  void DeleteAllRecords(ledger::LegacyResultCallback callback);
 
  private:
   void OnGetReservedAmount(

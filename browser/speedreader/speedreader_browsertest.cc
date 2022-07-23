@@ -352,3 +352,29 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
             tab_helper->PageDistillState());
 }
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageSimple);
+  auto* web_contents = ActiveWebContents();
+
+  constexpr const char kCheckNoElement[] =
+      R"js(
+        document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e') == null
+      )js";
+
+  EXPECT_TRUE(content::EvalJs(web_contents, kCheckNoElement,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              speedreader::kIsolatedWorldId)
+                  .ExtractBool());
+
+  constexpr const char kCheckNoApi[] =
+      R"js(
+        document.speedreader === undefined
+      )js";
+
+  EXPECT_TRUE(content::EvalJs(web_contents, kCheckNoApi,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              speedreader::kIsolatedWorldId)
+                  .ExtractBool());
+}

@@ -106,6 +106,16 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="4870911314065352661">Bezárja az összes lapot?</translation>
 <translation id="7551864359422178684">Ebben a böngészőablakban <ph name="NUMBER_OF_TABS"/> lap van megnyitva.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> lap</translation>
+<translation id="2272117088509540883">- Brave kereső</translation>
+<translation id="2701279958223202597">Támogassa a független és fokozott adatvédelmet nyújtó keresőket. A Brave kereső nem követi nyomon Önt, a kereséseit vagy a kattintásait.</translation>
+<translation id="6438467592401259882">Támogassa a független és fokozott adatvédelmet nyújtó keresőket.</translation>
+<translation id="1688359110799098115">Támogassa a független és fokozott adatvédelmet nyújtó keresőket</translation>
+<translation id="8579317236683491484">A Brave kereső nem követi nyomon Önt, a kereséseit vagy a kattintásait.</translation>
+<translation id="5240031343741051161">A Brave kereső kipróbálása</translation>
+<translation id="5026874946691314267">Ne jelenjen meg újra</translation>
+<translation id="5234764350956374838">Elvetés</translation>
+<translation id="214744058941501853">"&gt;
+           A Brave keresőre történő váltás elvetése, nyomja meg az Entert a javaslat eltávolításához</translation>
 <translation id="2515126961943087659">BAT hirdetési szolgáltatás</translation>
 <translation id="7924918279836988121">Bat főkönyvi szolgáltatás</translation>
 <translation id="6040143037577758943">Bezárás</translation>
@@ -135,6 +145,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8490082094734500369">Olvasási mód kikapcsolása</translation>
 <translation id="2036503787657622020">Olvasási mód bekapcsolása</translation>
 <translation id="5226458915125328323">Speedreader beállítások</translation>
+<translation id="1621606336827646158">Eredeti oldal megjelenítése</translation>
 <translation id="6284218950354553099">Napi használatról szóló jelzések automatikus küldése a Brave-be</translation>
 <translation id="5288333155754958121">Ez az anonimizált, privát jelzés lehetővé teszi a Brave számára, hogy megbecsülje az aktív felhasználók számát.</translation>
 <translation id="1872784258300710671">A Brave teljes mértékben anonimizált termékanalízis segítségével becsüli meg egyes funkciók összesített használatát.</translation>
@@ -185,6 +196,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6817415381278637662">A Brave alapértelmezett böngészőként való beállításával a Brave adatvédelmét élvezheti minden megnyitott webhelyen.</translation>
 <translation id="8722651357687610395">Tedd a Brave-et alapértelmezetté</translation>
 <translation id="2370739752330685659">Talán később</translation>
+<translation id="961012016278832836">Microsoft Edge régi verzió</translation>
+<translation id="6436994631426134065">Importálva a következőből: <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
 <translation id="7179921470347911571">Indítsd újra most</translation>
 <translation id="4472575034687746823">Kezdő lépések</translation>
@@ -201,9 +214,11 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="2906510232093002459">Brave alapértelmezett képek</translation>
 <translation id="2396127686705429331">Könyvjelzők gomb megjelenítése</translation>
 <translation id="2814998458708016836">Használj széles címsort</translation>
-<translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
-<translation id="597020512043916976">A legjobb oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
-<translation id="301088458323355543">Az ajánlott oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
+<translation id="4109670531935487117">Mutassa az automatikus kiegészítési javaslatokat a címsorban</translation>
+<translation id="2858138569776157458">Népszerűek</translation>
+<translation id="65774893852758517">Ajánlott oldalak</translation>
+<translation id="7859704718976024901">Böngészési előzmények</translation>
+<translation id="8820817407110198400">Könyvjelzők</translation>
 <translation id="6333347122924254968">A Brave-jutalmak ikonjának megjelenítése a címsorban</translation>
 <translation id="1811404036171336214">Mindig mutassa könyvjelzőket az új ablakban</translation>
 <translation id="5529693968082667490">Lapkeresés gomb megjelenítése</translation>
@@ -362,6 +377,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
      Biztosan végrehajtja a műveletet?</translation>
 <translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
 <translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
+<translation id="842628013524824194">Normál ablak – a címsorban használt keresőmotor</translation>
+<translation id="5324939009884545145">Privát ablak – a címsorban használt keresőmotor</translation>
 <translation id="6864914031231797928">Google bejelentkezés engedélyezése a bővítmények számára</translation>
 <translation id="6554397389149987360">Hangouts komponenseket használ, hogy lehetővé tegye a képernyőmegosztást és más funkciókat a böngészőben.</translation>
 <translation id="7878791177459550035">A média router engedélyezi a kivetítés funkciót a böngészőben.</translation>
@@ -461,6 +478,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="616058968889448209">IPFS szolgáltatásindítási hiba, további információkat itt találhat: <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">A(z) '<ph name="KEY_NAME"/>' importálása sikertelen volt</translation>
 <translation id="3364053282600191535">A(z) '<ph name="KEY_NAME"/>' exportálása sikertelen volt</translation>
+<translation id="5840868269342837751">Megjegyzés: előfordulhat, hogy a hálózati kérések nem alkalmazzák a böngésző proxy- és DNS-beállításait.</translation>
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="3654980960391973513">Generálás</translation>
 <translation id="5531501313997312487">Csomópont indítása</translation>

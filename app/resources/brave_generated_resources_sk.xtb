@@ -106,6 +106,16 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4870911314065352661">Zavrieť všetky karty?</translation>
 <translation id="7551864359422178684">V tomto okne prehliadača máte otvorených <ph name="NUMBER_OF_TABS"/> kariet.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> kariet</translation>
+<translation id="2272117088509540883">- Brave Search</translation>
+<translation id="2701279958223202597">Podporte nezávislé vyhľadávanie s lepším zabezpečením ochrany osobných údajov. Nástroj Brave search nesleduje vás, vaše otázky ani kliknutia.</translation>
+<translation id="6438467592401259882">Podporte nezávislé vyhľadávanie s lepším zabezpečením ochrany osobných údajov.</translation>
+<translation id="1688359110799098115">Podporte nezávislé vyhľadávanie s lepším zabezpečením ochrany osobných údajov</translation>
+<translation id="8579317236683491484">Nástroj Brave search nesleduje vás, vaše otázky ani kliknutia.</translation>
+<translation id="5240031343741051161">Vyskúšajte nástroj Brave Search</translation>
+<translation id="5026874946691314267">Toto už nezobrazovať</translation>
+<translation id="5234764350956374838">Zatvoriť</translation>
+<translation id="214744058941501853">"&gt;
+          Odmietnite konverziu brave search a stlačením klávesu Enter odstráňte tento návrh</translation>
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
 <translation id="7924918279836988121">Služba Bat ledger</translation>
 <translation id="6040143037577758943">Zavrieť</translation>
@@ -135,6 +145,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8490082094734500369">Vypnúť režim čítačky</translation>
 <translation id="2036503787657622020">Zapnúť režim čítačky</translation>
 <translation id="5226458915125328323">Nastavenia Speedreader</translation>
+<translation id="1621606336827646158">Zobraziť pôvodnú stránku</translation>
 <translation id="6284218950354553099">Automaticky odoslať správu o dennom využívaní službe Brave</translation>
 <translation id="5288333155754958121">Táto anonymná, súkromná správa umožní Brave odhadnúť počet aktívnych používateľov.</translation>
 <translation id="1872784258300710671">Na výpočet odhadu celkového využívania určitých funkcií používa Brave výlučne vlastné produktové analýzy</translation>
@@ -185,6 +196,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6817415381278637662">Nastavte Brave ako predvolený prehliadač, aby ste získali ochranu osobných údajov Brave na každej webovej stránke, ktorú otvoríte.</translation>
 <translation id="8722651357687610395">Nastaviť Brave ako predvolené</translation>
 <translation id="2370739752330685659">Možno neskôr</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Importované z <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="7179921470347911571">Spustiť ešte raz</translation>
 <translation id="4472575034687746823">Začíname</translation>
@@ -201,9 +214,11 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2906510232093002459">Predvolené obrázky Brave</translation>
 <translation id="2396127686705429331">Zobrazovať tlačidlo záložiek</translation>
 <translation id="2814998458708016836">Použite široký riadok adresy</translation>
-<translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
-<translation id="597020512043916976">Zobraziť top stránky v návrhoch na automatické dopĺňanie</translation>
-<translation id="301088458323355543">Zobraziť stránky v návrhoch na automatické dopĺňanie</translation>
+<translation id="4109670531935487117">Zobraziť návrhy automatického dopĺňania na paneli s adresou</translation>
+<translation id="2858138569776157458">Hlavné weby</translation>
+<translation id="65774893852758517">Odporúčané stránky</translation>
+<translation id="7859704718976024901">História prehliadania</translation>
+<translation id="8820817407110198400">Záložky</translation>
 <translation id="6333347122924254968">Zobraziť ikonu odmien Brave v paneli s adresou</translation>
 <translation id="1811404036171336214">Vždy zobraziť záložky na novej karte</translation>
 <translation id="5529693968082667490">Tlačidlo zobrazenia karty vyhľadávania</translation>
@@ -362,6 +377,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
     Naozaj chcete pokračovať?</translation>
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch.</translation>
+<translation id="842628013524824194">Normal Window - vyhľadávací nástroj použitý na paneli s adresou</translation>
+<translation id="5324939009884545145">Private Window - vyhľadávací nástroj použitý na paneli s adresou</translation>
 <translation id="6864914031231797928">Povoliť prihlasovanie Google pre rozšírenia</translation>
 <translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
 <translation id="7878791177459550035">Mediálny router umožňuje v prehliadači funkciu vysielania.</translation>
@@ -461,6 +478,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="616058968889448209">Chyba spúšťania služby IPFS. Viac informácií nájdete na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importovanie kľúča zlyhalo</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' exportovanie kľúča zlyhalo</translation>
+<translation id="5840868269342837751">Poznámka: Sieťové požiadavky nemusia používať nastavenia proxy servera a DNS prehliadača.</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="3654980960391973513">Generovať</translation>
 <translation id="5531501313997312487">Spustiť uzol</translation>

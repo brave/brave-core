@@ -34,6 +34,11 @@ void BraveWalletProviderDelegateBridge::ShowWalletOnboarding() {
   [bridge_ showWalletOnboarding];
 }
 
+void BraveWalletProviderDelegateBridge::ShowAccountCreation(
+    mojom::CoinType type) {
+  [bridge_ showAccountCreation:static_cast<BraveWalletCoinType>(type)];
+}
+
 void BraveWalletProviderDelegateBridge::RequestPermissions(
     mojom::CoinType type,
     const std::vector<std::string>& accounts,
@@ -96,6 +101,11 @@ void BraveWalletProviderDelegateBridge::GetAllowedAccounts(
   [bridge_ getAllowedAccounts:static_cast<BraveWalletCoinType>(type)
                      accounts:brave::vector_to_ns(accounts)
                    completion:completion];
+}
+
+bool BraveWalletProviderDelegateBridge::IsPermissionDenied(
+    mojom::CoinType type) {
+  return [bridge_ isPermissionDenied:static_cast<BraveWalletCoinType>(type)];
 }
 
 }  // namespace brave_wallet

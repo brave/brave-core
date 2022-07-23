@@ -248,22 +248,21 @@ BinanceGetConvertAssetsFunction::Run() {
 
 void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
     const BinanceConvertAsserts& assets) {
-  base::Value result(base::Value::Type::DICTIONARY);
+  base::Value::Dict result;
 
   for (const auto& asset : assets) {
-    base::ListValue sub_selectors;
+    base::Value::List sub_selectors;
     for (const auto& sub : asset.second) {
-      auto sub_selector = std::make_unique<base::Value>(
-          base::Value::Type::DICTIONARY);
+      base::Value::Dict sub_selector;
       for (const auto& att : sub) {
-        sub_selector->SetStringKey(att.first, att.second);
+        sub_selector.Set(att.first, att.second);
       }
       sub_selectors.Append(std::move(sub_selector));
     }
-    result.SetKey(asset.first, std::move(sub_selectors));
+    result.Set(asset.first, std::move(sub_selectors));
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(OneArgument(base::Value(std::move(result))));
 }
 
 ExtensionFunction::ResponseAction

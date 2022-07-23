@@ -43,7 +43,7 @@ using PrefMap = base::flat_map<std::string, std::string>;
 
 namespace {
 
-AdEventMap& GetAdEvents() {
+AdEventMap& GetAdEventHistory() {
   static base::NoDestructor<AdEventMap> ad_events;
   return *ad_events;
 }
@@ -54,6 +54,10 @@ PrefMap& GetPrefs() {
 }
 
 }  // namespace
+
+void MockEnvironment(const mojom::Environment environment) {
+  g_environment = environment;
+}
 
 void MockBuildChannel(const BuildChannelType type) {
   switch (type) {
@@ -78,10 +82,6 @@ void MockBuildChannel(const BuildChannelType type) {
 
   NOTREACHED() << "Unexpected value for BuildChannelType: "
                << static_cast<int>(type);
-}
-
-void MockEnvironment(const mojom::Environment environment) {
-  g_environment = environment;
 }
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
@@ -159,22 +159,29 @@ void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
       .WillByDefault(Return(is_browser_in_full_screen_mode));
 }
 
-void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
-                                 const bool should_show) {
-  ON_CALL(*mock, ShouldShowNotifications()).WillByDefault(Return(should_show));
+void MockCanShowNotificationAds(const std::unique_ptr<AdsClientMock>& mock,
+                                const bool can_show) {
+  ON_CALL(*mock, CanShowNotificationAds()).WillByDefault(Return(can_show));
 }
 
-void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, ShowNotification(_))
-      .WillByDefault(Invoke([](const NotificationAdInfo& notification_ad) {
-        CHECK(notification_ad.IsValid());
-      }));
+void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool can_show) {
+  ON_CALL(*mock, CanShowNotificationAdsWhileBrowserIsBackgrounded())
+      .WillByDefault(Return(can_show));
 }
 
-void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, CloseNotification(_))
+void MockShowNotificationAd(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, ShowNotificationAd(_))
       .WillByDefault(
-          Invoke([](const std::string& uuid) { CHECK(!uuid.empty()); }));
+          Invoke([](const NotificationAdInfo& ad) { CHECK(ad.IsValid()); }));
+}
+
+void MockCloseNotificationAd(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, CloseNotificationAd(_))
+      .WillByDefault(Invoke([](const std::string& placement_id) {
+        CHECK(!placement_id.empty());
+      }));
 }
 
 void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock) {
@@ -188,12 +195,12 @@ void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock) {
 
             const std::string& uuid = GetUuidForCurrentTestSuiteAndName(id);
             const std::string& type_id = ad_type + confirmation_type;
-            GetAdEvents()[uuid][type_id].push_back(time);
+            GetAdEventHistory()[uuid][type_id].push_back(time);
           }));
 }
 
-void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, GetAdEvents(_, _))
+void MockGetAdEventHistory(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, GetAdEventHistory(_, _))
       .WillByDefault(Invoke(
           [](const std::string& ad_type,
              const std::string& confirmation_type) -> std::vector<base::Time> {
@@ -207,7 +214,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
 
             std::vector<base::Time> timestamps;
 
-            for (const auto& ad_event : GetAdEvents()) {
+            for (const auto& ad_event : GetAdEventHistory()) {
               const std::string& uuid = ad_event.first;
               if (!base::EndsWith(uuid, current_test_suite_and_name,
                                   base::CompareCase::SENSITIVE)) {
@@ -236,13 +243,13 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
           }));
 }
 
-void MockResetAdEventsForId(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, ResetAdEventsForId(_))
+void MockResetAdEventHistoryForId(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, ResetAdEventHistoryForId(_))
       .WillByDefault(Invoke([](const std::string& id) {
         CHECK(!id.empty());
 
         const std::string& uuid = GetUuidForCurrentTestSuiteAndName(id);
-        GetAdEvents()[uuid] = {};
+        GetAdEventHistory()[uuid] = {};
       }));
 }
 
@@ -260,6 +267,30 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
 
         callback(history);
       }));
+}
+
+void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
+                    const URLEndpointMap& endpoints) {
+  ON_CALL(*mock, UrlRequest(_, _))
+      .WillByDefault(Invoke([endpoints](const mojom::UrlRequestPtr& url_request,
+                                        UrlRequestCallback callback) {
+        mojom::UrlResponse url_response;
+
+        const absl::optional<mojom::UrlResponse> url_response_optional =
+            GetNextUrlResponse(url_request, endpoints);
+        if (url_response_optional) {
+          url_response = url_response_optional.value();
+        }
+
+        callback(url_response);
+      }));
+}
+
+void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, Save(_, _, _))
+      .WillByDefault(Invoke(
+          [](const std::string& name, const std::string& value,
+             ResultCallback callback) { callback(/* success */ true); }));
 }
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
@@ -305,30 +336,6 @@ void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock) {
         }
 
         return content_optional.value();
-      }));
-}
-
-void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, Save(_, _, _))
-      .WillByDefault(Invoke(
-          [](const std::string& name, const std::string& value,
-             ResultCallback callback) { callback(/* success */ true); }));
-}
-
-void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
-                    const URLEndpointMap& endpoints) {
-  ON_CALL(*mock, UrlRequest(_, _))
-      .WillByDefault(Invoke([endpoints](const mojom::UrlRequestPtr& url_request,
-                                        UrlRequestCallback callback) {
-        mojom::UrlResponse url_response;
-
-        const absl::optional<mojom::UrlResponse> url_response_optional =
-            GetNextUrlResponse(url_request, endpoints);
-        if (url_response_optional) {
-          url_response = url_response_optional.value();
-        }
-
-        callback(url_response);
       }));
 }
 

@@ -205,7 +205,7 @@ TEST_P(DisconnectBitflyerWallet, Paths) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-            callback(rewards_unlink_wallet_response);
+            std::move(callback).Run(rewards_unlink_wallet_response);
           });
 
   mock_ledger_impl_->SetInitializedForTesting();

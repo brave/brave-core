@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/threading/sequence_bound.h"
+#include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -62,7 +63,7 @@ AdsServiceFactory::AdsServiceFactory()
 #endif
 }
 
-AdsServiceFactory::~AdsServiceFactory() {}
+AdsServiceFactory::~AdsServiceFactory() = default;
 
 KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
@@ -96,7 +97,8 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
           brave_adaptive_captcha_service,
           std::make_unique<AdsTooltipsDelegateImpl>(profile),
 #endif
-          history_service, rewards_service, notification_ad_async_data_store);
+          std::make_unique<DeviceIdImpl>(), history_service, rewards_service,
+          notification_ad_async_data_store);
   return ads_service.release();
 }
 

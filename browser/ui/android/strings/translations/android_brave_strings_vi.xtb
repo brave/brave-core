@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Giúp cải thiện độ ổn định của sản phẩm Brave bằng cách tự động gửi báo cáo chẩn đoán khi Trình duyệt Brave gặp sự cố hoặc đóng băng.</translation>
 <translation id="7977176350719484850">Dữ liệu ước tính\ntiết kiệm được</translation>
 <translation id="9008534313521214777">Thời gian tiết kiệm được\nước tính</translation>
-<translation id="6572660632052512096">Chế độ cho máy tính để bàn</translation>
-<translation id="1340503115760585811">Bật Chế độ xem cho máy tính để bàn cho các tab mới</translation>
-<translation id="7924540991929826186">Sử dụng các phiên bản trang web dành cho thiết bị di động cho các tab mới (được đề xuất)</translation>
-<translation id="807636106793708118">Ưu tiên phiên bản di động của website</translation>
-<translation id="4479934682648362332">Thích phiên bản trang web cho máy tính để bàn</translation>
 <translation id="1842747674580016420">Phát lại video trong Brave</translation>
 <translation id="5368992950177874750">Nếu bật, các video sẽ được phát trong Brave thay vì ứng dụng tương ứng</translation>
 <translation id="410351446219883937">Tự động phát</translation>
@@ -85,6 +80,17 @@
 <translation id="8701563696941209024">KHỞI CHẠY LẠI NGAY</translation>
 <translation id="834487290629916192">ĐỂ SAU</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
+<translation id="4117451092682672487">Bảo mật. Đơn giản.</translation>
+<translation id="7909375417585209817">Với việc đặt Brave làm mặc định, mọi liên kết bạn chạm vào sẽ mở ra với các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
+<translation id="5148943178722443958">Giúp cải thiện Brave.</translation>
+<translation id="6188781052835527980">Gửi báo cáo chẩn đoán ẩn danh nếu bạn gặp sự cố hoặc đóng băng.</translation>
+<translation id="1929905278861178845">Chia sẻ thông tin chi tiết về sản phẩm hoàn toàn riêng tư và ẩn danh về những tính năng đang được người dùng của Brave sử dụng.</translation>
+<translation id="2877653791257935258">Nhập tên trang web hoặc URL</translation>
+<translation id="5329830149661250028">Hãy xem sự khác biệt của Brave: Không có quảng cáo. Không có trình theo dõi. Tải trang nhanh hơn.</translation>
+<translation id="3545804467215833536">Chạm để xem Khiên Brave</translation>
+<translation id="1724327820822194498">Xem tất cả nội dung xấu mà Brave đã chặn, trên mọi trang, với Khiên.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> và <ph name="TRACKER"/> quảng cáo khác &amp; trình theo dõi bị chặn</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> quảng cáo &amp; trình theo dõi bị chặn</translation>
 <translation id="8281886186245836920">Bỏ qua</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="986879628471635371">Bắt đầu sử dụng công cụ khắc phục sự cố</translation>
@@ -108,6 +114,7 @@
 <translation id="19715420010996093">Chọn Trình duyệt Brave rồi nhấn vào "Luôn luôn"</translation>
 <translation id="3546439402724649282">Brave đã được đặt làm trình duyệt mặc định của bạn.</translation>
 <translation id="8389661903259423907">Bạn đã đặt trình duyệt mặc định. Bạn có thể thay đổi trình duyệt mặc định trong mục cài đặt ứng dụng.</translation>
+<translation id="8112367589167674370">Brave Trò chuyện</translation>
 <translation id="8826007068782654809">Xin cám ơn</translation>
 <translation id="6665366815203065060">Bạn vừa gửi một khoản tiền tip đến:</translation>
 <translation id="5441565662498481293">Bạn đang tự động gửi tiền tip đến:</translation>
@@ -726,6 +733,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2199215899212542417">LOẠI CHỨC NĂNG: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Không có dữ liệu</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> đã gửi <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/>$) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> đã gửi <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> đã phê duyệt <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Đã phê duyệt không giới hạn <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378">Hoán đổi <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
@@ -790,6 +798,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Hiển thị đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
+<translation id="8982438328166986164">Hiển thị các đề xuất trang web dựa trên dấu trang và lịch sử duyệt web của bạn.</translation>
 <translation id="1241283133946520352">Mạng</translation>
 <translation id="1062463687579789365">Tùy chỉnh mạng ví</translation>
 <translation id="2512821599885971349">Thêm mạng</translation>
@@ -855,11 +864,28 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Ký hiệu tiền tệ</translation>
 <translation id="7982789257301363584">Mạng</translation>
-<translation id="7540715999708954128">Điều này sẽ cho phép sử dụng mạng này bên trong Ví Brave. Tìm hiểu thêm.</translation>
-<translation id="8759753423332885148">Learn more.</translation>
 <translation id="4717431746210146708">Cho phép trang web này thêm mạng?</translation>
+<translation id="4857321293515555666">DApp muốn đọc thông báo này để hoàn thành yêu cầu của bạn.</translation>
+<translation id="714506544401754321">Giải mã tin nhắn</translation>
+<translation id="5039804452771397117">Cho phép</translation>
 <translation id="3378339846292573874">Thêm token được đề xuất</translation>
 <translation id="2322227405137827074">Bạn có muốn nhập token này không?</translation>
 <translation id="1324417023773393937">Trình duyệt Brave</translation>
 <translation id="6044189892950611565">Kênh thông báo cho Trình duyệt Brave</translation>
+<translation id="1173919438868967364">Chọn tài khoản</translation>
+<translation id="8922793255489232731">Không thể tải múi giờ phù hợp cho: <ph name="VALUE"/></translation>
+<translation id="8643377320501056697">Hiển thị Các trang Hàng đầu</translation>
+<translation id="6471216025161697462">Đã kết nối với <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Dùng thử</translation>
+<translation id="7733890291091968191">Hiển thị thông báo Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave không theo dõi bạn hoặc không biết cách bạn sử dụng ứng dụng của chúng tôi, vì vậy chúng tôi không biết bạn đã thiết lập VPN như thế nào. Vui lòng chia sẻ thông tin về sự cố bạn đang gặp phải và chúng tôi sẽ cố gắng hết sức để giải quyết ngay khi có thể. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nTên máy chủ VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nLoại thuê bao\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore Token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nPhiên bản ứng dụng\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nMúi giờ\n</translation>
+<translation id="8107843365677337047">\n\nLoại mạng\n</translation>
+<translation id="5334952096674914470">\n\nNhà mạng di động\n</translation>
+<translation id="5393042357629679588">\n\nVấn đề khác\n</translation>
+<translation id="8095666712177294104">\n\nNền tảng\n</translation>
 </translationbundle>

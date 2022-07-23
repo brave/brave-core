@@ -1,0 +1,31 @@
+diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
+index 9a0313f63c318ee137424a9616c420add1dede5d..351453f65a40161c411aab31597748fd263faa86 100644
+--- a/ui/webui/resources/cr_elements/BUILD.gn
++++ b/ui/webui/resources/cr_elements/BUILD.gn
+@@ -111,7 +111,7 @@ preprocess_if_expr("preprocess_src_ts") {
+       "mouse_hoverable_mixin.ts",
+     ]
+ 
+-    if (is_chromeos) {
++    if (!is_android || is_chromeos) {
+       in_files += [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
+     }
+   }
+@@ -274,7 +274,7 @@ preprocess_if_expr("preprocess_generated_ts") {
+       "search_highlight_style.css.ts",
+     ]
+ 
+-    if (is_chromeos) {
++    if (!is_android || is_chromeos) {
+       in_files += [ "cr_searchable_drop_down/cr_searchable_drop_down.html.ts" ]
+     }
+   }
+@@ -498,7 +498,7 @@ if (include_polymer) {
+       "mwb_shared_icons.html",
+     ]
+ 
+-    if (is_chromeos) {
++    if (!is_android || is_chromeos) {
+       in_files += [ "cr_searchable_drop_down/cr_searchable_drop_down.html" ]
+     }
+   }

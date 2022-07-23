@@ -17,7 +17,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -29,7 +28,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -311,10 +309,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        brave_wallet::features::kBraveWalletFilecoinFeature,
-        {{brave_wallet::features::kFilecoinTestnetEnabled.name, "true"}});
-
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
@@ -952,7 +946,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
 
  private:
-  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -1144,9 +1137,10 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   values.push_back(EthNetworkInfoToValue(chain1));
   UpdateCustomNetworks(prefs(), &values);
 
-  EXPECT_CALL(callback, Run(ElementsAreArray({"0x1", "0x89", "0x38", "0xa4ec",
-                                              "0xa86a", "0xfa", "0xa", "0x4",
-                                              "0x3", "0x5", "0x2a", "0x539"})));
+  EXPECT_CALL(callback,
+              Run(ElementsAreArray({"0x1", "0x89", "0x38", "0xa4ec", "0xa86a",
+                                    "0xfa", "0xa", "0x4e454152", "0x4", "0x3",
+                                    "0x5", "0x2a", "0x539"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -1790,8 +1784,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
       "0x4e02f254184E904300e0775E4b8eeCB1", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "",
-                     "0x00000000000000000000000000000000000000000000000166e12cf"
-                     "ce39a0000"));
+                     "0x166e12cfce39a0000"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -1866,8 +1859,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "",
-                     "0x00000000000000000000000000000000000000000000000166e12cf"
-                     "ce39a0000"));
+                     "0x166e12cfce39a0000"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 

@@ -117,7 +117,7 @@
 <translation id="4644024131266615376">Tor Bağlantısı ile</translation>
 <translation id="8541421872680304667">Tor, gözatmanızı hedefinize ulaşmadan önce birçok Tor sunucusundan yönlendirerek IP adresinizi ziyaret ettiğiniz sitelerden gizler. Tor gözatmayı yavaşlatabilir ve bazı siteler hiç çalışmayabilir.</translation>
 <translation id="8897548669448660973">Gizli Pencereler kullanmak yalnızca Brave'in cihazınız üzerinde yaptıklarını değiştirir; başka bir kimsenin davranışını değiştirmez. Tor, IP adresinizi ziyaret ettiğiniz sitelerden gizler ve İSS'nizin veya işvereninizin ziyaret ettiğiniz siteleri görmesini imkansız olmasa da biraz daha zor hale getirir. Menüden veya [[ key ]] kullanarak Tor ile Gizli Pencere açın.</translation>
-<translation id="6975708438781948564">Brave'in Tor'u hakkında daha fazla bilgi edin</translation>
+<translation id="6975708438781948564">Brave'deki Tor hakkında daha fazla bilgi edin</translation>
 <translation id="4712050378540986986">Tor Durumu</translation>
 <translation id="1939334281379458295">Tor başarıyla bağlandı</translation>
 <translation id="8030169304546394654">Bağlantı kesildi</translation>
@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Bir Brave yerel IPFS düğümü kullanın</translation>
 <translation id="8148464361648742409">Herkese açık bir ağ geçidi kullan</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary Dosya Sistemi), eşler arası veri depolama ve teslimatına yönelik ortak bir ağdır. Bu protokolün, HTTP(S)'den farklı gizlilik hususları vardır.</translation>
-<translation id="5410952114182173389">Bilgisayarınız ortak ağa katkıda bulunuyor, ama talep ettiğiniz veya sunduğunuz tüm içerikler ifşa edilebilir. IPFS üzerinden talep ettiğiniz içerik, size sunulmadan önce doğrulanır.</translation>
+<translation id="1216911189668016151">Bilgisayarınız ortak ağa katkıda bulunuyor, ama talep ettiğiniz veya sunduğumuz tüm IP adresleri ifşa edilebilir. IPFS üzerinden talep ettiğiniz içerik, size sunulmadan önce doğrulanır. Ağ talepleri, tarayıcı proxy ve DNS ayarlarını kullanmayabilir.</translation>
 <translation id="8664689531113048642">IP adresinizi ve potansiyel üçüncü kişi gözlemcilerden talep ettiğiniz içeriği korur, ama herkese açık ağ geçidi operatöründen talep ettiğiniz içeriği korumaz. Size bir ağ geçidi üzerinden sunulan içeriğin talep ettiğiniz içerik olmasını sağlamaktan ağ geçidi operatörü sorumludur. Ayrıca bilgisayarınız ortak IPFS ağına katkıda bulunmaz.</translation>
 <translation id="3977809385703587108">Tercihlerinizi şu süre içinde tekrar değiştirebilirsiniz:</translation>
 <translation id="3340978935015468852">ayarlar</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Eski Brave kripto cüzdanlarından içe aktarılsın mı?</translation>
 <translation id="3331452756822160641">Yeni Şifre</translation>
 <translation id="8624315169751085215">Panoya Kopyala</translation>
+<translation id="7885157704277298658">Kopyalandı!</translation>
 <translation id="1121335910737476837">Ana kripto hesapları</translation>
 <translation id="6969147029062037757">İçe aktarılan hesaplar</translation>
 <translation id="4057718162494343222">Brave Cüzdan'da, yedeklenebilecek ve kurtarma cümlenizle geri alınabilecek birincil hesaplar oluşturabilirsiniz. Hesap türleri hakkında daha fazlasını öğrenmek için hesap yardımı bölümünü ziyaret edin.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Simge URL'si</translation>
 <translation id="2144247757675997850">Varlık ekle</translation>
 <translation id="2708402071160162126">UYARI: Kurtarma cümlenizi asla paylaşmayın. Bu cümleyi bilen herkes varlıklarınızı sonsuza dek sizden alabilir.</translation>
+<translation id="2416098547200943834">NOT: Özel anahtar, özel anahtar ve protokol bilgisini içeren onaltılık kodlanmış bir JSON olarak sağlanır.<ph name="LINK_START"/>Daha fazlasını öğrenin<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">NOT: Özel anahtar, özel anahtar ve protokol bilgisini içeren onaltılık kodlanmış bir JSON olarak sağlanmalıdır. <ph name="LINK_START"/>Daha fazlasını öğrenin<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Anahtarı göster</translation>
 <translation id="8033497299373164724">Anahtarı gizle</translation>
 <translation id="2702143907607790516">Hesap adı güncellenemedi, lütfen tekrar deneyin.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="3586752056660754651">İmza</translation>
 <translation id="3484981968509595506">Bir DApp, açık şifreleme anahtarınızı istiyor</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> cüzdanlarınızın herkese açık şifreleme anahtarlarını talep ediyor. Eğer bu anahtarların verilmesine rıza verirseniz, site size şifrelenmiş mesajlar gönderebilecektir.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> cüzdanınızın herkese açık şifreleme anahtarını talep ediyor. Bu anahtarı vermeyi kabul ederseniz, site size şifrelenmiş mesajlar gönderebilecek.</translation>
 <translation id="3340247553212049934">Ver</translation>
 <translation id="1619778919922494944">Bu DApp talebinizi tamamlamak için bu mesajı okumak istiyor</translation>
 <translation id="714506544401754321">Mesajı çöz</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> bağlantısı kesildi</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
 <translation id="1178198982208000092"><ph name="DEVICE_NAME"/> cihazını bağla</translation>
-<translation id="4358411489835404360">Donanım cüzdanı cihaz üzerinden doğrulama gerektiriyor. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Donanım cüzdanı, Ethereum uygulamasının <ph name="DEVICE_NAME"/> üzerinde açılmasını gerektirir</translation>
+<translation id="6291765462876399333">Cihaz cüzdanı, cihaz <ph name="DEVICE_NAME"/> üzerinden doğrulama gerektiriyor</translation>
+<translation id="2288190100157580461">Donanım cüzdanı, <ph name="DEVICE_NAME"/> üzerinden <ph name="NETWORK"/> Uygulamasının açılmasını gerektiriyor</translation>
 <translation id="8687869982094542529">gönderildi</translation>
 <translation id="5013754027092416509">alındı</translation>
 <translation id="5867988533873716616">Blok gezgini URL'si mevcut değil.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> mevcut ağ değil</translation>
 <translation id="7340805872138998391">Cihazın kilidi açılamıyor, yeniden bağlanmayı deneyin</translation>
 <translation id="1984410139271779110">İç hata, bilinmeyen şema</translation>
-<translation id="8682200134223578011">onaylandı</translation>
+<translation id="6989562355845156390">onayla</translation>
 <translation id="4674380028960132654">Ledger: İmza, doğru adresle eşleşmiyor</translation>
 <translation id="3183932890629254743">Donanım hesabı bulunamadı</translation>
 <translation id="4287068151777838754">JSON verisi beklenmiyor</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">İşlem onaylandı</translation>
 <translation id="310693998838023022">İşlem hatası</translation>
 <translation id="6395870673621520684">İşlem bırakıldı</translation>
+<translation id="1237782734462409503">Sekme etkin değil</translation>
+<translation id="756701799684433105">İşlemi onayla</translation>
+<translation id="6450792191436242818">Sistem Programı</translation>
+<translation id="6252742184395380448">Konfig Programı</translation>
+<translation id="5358970666412490132">Paydaş Programı</translation>
+<translation id="346636227344244984">Oy Programı</translation>
+<translation id="3538368258493053874">BPF Yükleyici</translation>
+<translation id="2334098351242742927">Ed25519 Programı</translation>
+<translation id="8780753288764281797">Secp256k1 Programı</translation>
+<translation id="5275550100743015683">Gönderen Adres:</translation>
+<translation id="2678433693746214764">Alıcı Adres:</translation>
+<translation id="4576396475962922672">Yeni Hesap:</translation>
+<translation id="4719005063558335704">Hesaplar:</translation>
+<translation id="4337554812324118382">Veri:</translation>
+<translation id="569870799832027680">Program Kimliği:</translation>
+<translation id="7843211152394841558">Maks Yeniden Deneme:</translation>
+<translation id="8496335570810457">Denetim Öncesi Taahhüt:</translation>
+<translation id="5100124500279922001">Denetim Öncesini Atla:</translation>
+<translation id="8060029310790625334">Yardım Merkezi</translation>
+<translation id="2095142195578664632">Yardıma ihtiyacınız mı var? Bakınız</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>

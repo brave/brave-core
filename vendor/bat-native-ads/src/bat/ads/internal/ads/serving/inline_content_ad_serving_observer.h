@@ -7,7 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_OBSERVER_H_
 
 #include "base/observer_list_types.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 
@@ -17,14 +17,15 @@ namespace inline_content_ads {
 
 class ServingObserver : public base::CheckedObserver {
  public:
-  // Invoked when an opportunity arises to serve an inline content ad
+  // Invoked when an opportunity arises to serve an inline content ad for the
+  // |segments|.
   virtual void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) {}
 
-  // Invoked when an inline content ad is served
+  // Invoked when an inline content ad is served.
   virtual void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {}
 
-  // Invoked when an inline content ad fails to serve
+  // Invoked when an inline content ad fails to serve.
   virtual void OnFailedToServeInlineContentAd() {}
 
  protected:

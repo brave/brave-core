@@ -9,7 +9,7 @@
 #include <functional>
 #include <string>
 
-#include "bat/ads/transaction_info_aliases.h"
+#include "bat/ads/transaction_info.h"
 
 namespace base {
 class Time;
@@ -19,7 +19,6 @@ namespace ads {
 
 class AdType;
 class ConfirmationType;
-struct TransactionInfo;
 
 namespace transactions {
 

@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Brave ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Brave\u2019s प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
 <translation id="7977176350719484850">डेटा\nसेव किया गया</translation>
 <translation id="9008534313521214777">अनुमानित समय\nसेव किया गया</translation>
-<translation id="6572660632052512096">डेस्कटॉप मोड</translation>
-<translation id="1340503115760585811">नए टैब के लिए डेस्कटॉप व्यू को सक्षम करें</translation>
-<translation id="7924540991929826186">नए टैब के लिए साइटों के मोबाइल संस्करणों का उपयोग करें (अनुशंसित)</translation>
-<translation id="807636106793708118">साइटों के मोबाइल संस्करण को प्राथमिकता दें</translation>
-<translation id="4479934682648362332">साइटों के डेस्कटॉप संस्करण को प्राथमिकता दें</translation>
 <translation id="1842747674580016420">Brave में वीडियो प्लेबैक</translation>
 <translation id="5368992950177874750">यदि सक्षम है, तो वीडियो संगत ऐप के बजाय Brave में चलाया जाएगा</translation>
 <translation id="410351446219883937">अपने आप चलाएं</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Brave ब्राउज़र का चयन करें और 'हमेशा' टैप करें</translation>
 <translation id="3546439402724649282">Brave पहले से ही आपके डिफ़ॉल्ट ब्राउज़र के रूप में सेट है।</translation>
 <translation id="8389661903259423907">आपने पहले ही एक डिफ़ॉल्ट ब्राउज़र सेट कर लिया है। आप अपनी ऐप सेटिंग में डिफ़ॉल्ट ब्राउज़र को बदल सकते हैं।</translation>
+<translation id="8112367589167674370">Brave टॉक</translation>
 <translation id="8826007068782654809">धन्यवाद</translation>
 <translation id="6665366815203065060">आपने अभी को एक टिप भेजा है:</translation>
 <translation id="5441565662498481293">आप स्वचालित रूप से को एक टिप भेज रहे हैं:</translation>
@@ -699,7 +695,7 @@
 <translation id="669072536454692117">सब्सक्रिप्शन सफ़लतापूर्वक ले लिया गया</translation>
 <translation id="1187506504156101449">ख़रीदारी स्वीकार नहीं हो पाई:</translation>
 <translation id="8420522105268941892">आप पहले ही सब्सक्रिप्शन के लिए सब्स्क्राइब कर चुके हैं. सब्सक्रिप्शन को रिस्टोर करने की कोशिश करें.</translation>
-<translation id="404414664190867625">आपने सदस्यता खरीदने का प्रोसेस बीच में छोड़ दिया है.</translation>
+<translation id="404414664190867625">आपने सदस्यता खरीदने की प्रक्रिया बीच में छोड़ दी है.</translation>
 <translation id="3515141458161417228">खरीदारी पूरी नहीं हो सकी. कृपया Google Play की सपोर्ट टीम से संपर्क करें.</translation>
 <translation id="6452181791372256707">अस्‍वीकार करें</translation>
 <translation id="8030852056903932865">स्वीकृत</translation>
@@ -860,23 +856,34 @@
 <translation id="4804818685124855865">डिस्कनेक्ट</translation>
 <translation id="8009571545960303544">आपके हस्ताक्षर का अनुरोध किया जा रहा है</translation>
 <translation id="3484981968509595506">एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है</translation>
-<translation id="2291002548681057345">आपके वॉलेट के पब्लिक एनक्रिप्शन की का अनुरोध कर रहा है. अगर आप यह की देने पर सहमति देते हैं, तो साइट आपके लिए एनक्रिप्ट किए हुए मैसेज बना पाएगी.</translation>
 <translation id="3340247553212049934">प्रदान करें</translation>
 <translation id="1982257600591932657">नेटवर्क का नाम</translation>
 <translation id="5052727830821470769">नेटवर्क URL</translation>
 <translation id="4822132585477111396">चेन आई.डी.</translation>
 <translation id="7131971375297699539">करेंसी का चिन्ह</translation>
 <translation id="7982789257301363584">नेटवर्क</translation>
-<translation id="7540715999708954128">इससे यह नेटवर्क Brave वॉलेट में इस्तेमाल किया जा सकेगा. और जानें.</translation>
-<translation id="8759753423332885148">और जानें।</translation>
 <translation id="4717431746210146708">इस साइट को एक नेटवर्क जोड़ने की अनुमति दें?</translation>
+<translation id="4857321293515555666">आपके अनुरोध को पूरा करने के लिए DApp इस मैसेज को पढ़ना चाहेगा.</translation>
+<translation id="714506544401754321">संदेश को डिक्रिप्ट करें</translation>
+<translation id="5039804452771397117">अनुमति दें</translation>
 <translation id="3378339846292573874">सुझाए गए टोकन जोड़ें</translation>
 <translation id="2322227405137827074">क्या आप इन टोकन को इम्पोर्ट करना चाहेंगे?</translation>
 <translation id="1324417023773393937">Brave ब्राउज़र</translation>
 <translation id="6044189892950611565">Brave Browser के लिए नोटिफ़िकेशन चैनल</translation>
 <translation id="1173919438868967364">अकाउंट चुनें</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/> : के लिए मिलता-जुलता टाइमज़ोन नहीं मिला</translation>
-<translation id="8231907121684689093">मुख्य साइट दिखाएँ</translation>
+<translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> से कनेक्ट किया गया है</translation>
 <translation id="1968852757206592413">ट्रायल</translation>
+<translation id="7733890291091968191">Web3 के नोटिफ़िकेशन दिखाएँ</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave आपको ट्रैक नहीं करता है या न ही ये जानता है कि आप हमारे ऐप का इस्तेमाल कैसे करते हैं, इसलिए हम नहीं जानते कि आपने VPN कैसे सेट किया है. जिस समस्या का आप सामना कर रहे हैं, उसके बारे में जानकारी दें और हम जल्द-से-जल्द इसे हल करने की पूरी कोशिश करेंगे. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN का होस्टनेम\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nसदस्यता का प्रकार\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nप्लेस्टोर टोकन\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nऐप का वर्ज़न\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nटाइमज़ोन\n</translation>
+<translation id="8107843365677337047">\n\nनेटवर्क का प्रकार\n</translation>
+<translation id="5334952096674914470">\n\nसेल्युलर सेवा देने वाली कंपनी\n</translation>
+<translation id="5393042357629679588">\n\nकोई और समस्या\n</translation>
+<translation id="8095666712177294104">\n\nप्लैटफ़ॉर्म\n</translation>
 </translationbundle>

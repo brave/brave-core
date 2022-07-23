@@ -8,13 +8,9 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
-
-namespace base {
-class DictionaryValue;
-class Value;
-}  // namespace base
 
 namespace ads {
 
@@ -27,11 +23,8 @@ struct ADS_EXPORT CategoryContentInfo final {
   bool operator==(const CategoryContentInfo& rhs) const;
   bool operator!=(const CategoryContentInfo& rhs) const;
 
-  base::DictionaryValue ToValue() const;
-  bool FromValue(const base::Value& value);
-
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  base::Value::Dict ToValue() const;
+  void FromValue(const base::Value::Dict& value);
 
   std::string category;
   CategoryContentOptActionType opt_action_type =

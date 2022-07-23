@@ -17,16 +17,16 @@ namespace search_result_ads {
 
 class EventHandlerObserver : public base::CheckedObserver {
  public:
-  // Invoked when a search result ad is served
+  // Invoked when the search result |ad| is served.
   virtual void OnSearchResultAdServed(const SearchResultAdInfo& ad) {}
 
-  // Invoked when a search result ad is viewed
+  // Invoked when the search result |ad| is viewed.
   virtual void OnSearchResultAdViewed(const SearchResultAdInfo& ad) {}
 
-  // Invoked when a search result ad is clicked
+  // Invoked when the search result |ad| is clicked.
   virtual void OnSearchResultAdClicked(const SearchResultAdInfo& ad) {}
 
-  // Invoked when a search result ad event fails
+  // Invoked when the search result |ad| event fails for |event_type|.
   virtual void OnSearchResultAdEventFailed(
       const SearchResultAdInfo& ad,
       const mojom::SearchResultAdEventType event_type) {}

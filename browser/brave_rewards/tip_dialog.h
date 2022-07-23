@@ -9,9 +9,7 @@
 #include <memory>
 #include <string>
 
-namespace base {
-class DictionaryValue;
-}
+#include "base/values.h"
 
 namespace content {
 class WebContents;
@@ -19,9 +17,7 @@ class WebContents;
 
 namespace brave_rewards {
 
-void OpenTipDialog(content::WebContents* initiator,
-                   std::unique_ptr<base::DictionaryValue> params);
-
+void OpenTipDialog(content::WebContents* initiator, base::Value::Dict params);
 }
 
 #endif  // BRAVE_BROWSER_BRAVE_REWARDS_TIP_DIALOG_H_

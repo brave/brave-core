@@ -99,6 +99,8 @@ static_library("browser") {
     "solana_tx_meta.h",
     "solana_tx_state_manager.cc",
     "solana_tx_state_manager.h",
+    "swap_request_helper.cc",
+    "swap_request_helper.h",
     "swap_response_parser.cc",
     "swap_response_parser.h",
     "swap_service.cc",
@@ -238,7 +240,6 @@ source_set("hd_keyring") {
 
   deps = [
     ":transaction",
-    ":utils",
     "internal:hd_key",
     "//base",
     "//brave/components/brave_wallet/common",

@@ -29,7 +29,7 @@ const SelectNetworkButton = (props: Props) => {
     isPanel
   } = props
   return (
-    <OvalButton isPanel={isPanel} onClick={onClick}>
+    <OvalButton isPanel={isPanel} onClick={onClick} data-test-id='select-network-button'>
       <CreateNetworkIcon network={selectedNetwork} marginRight={4} />
       <OvalButtonText isPanel={isPanel}>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
       <CaratDownIcon isPanel={isPanel} />

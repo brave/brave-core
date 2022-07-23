@@ -106,6 +106,16 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="4870911314065352661">Zaprem vse zavihke?</translation>
 <translation id="7551864359422178684">V tem oknu brskalnika so odprti <ph name="NUMBER_OF_TABS"/> zavihki.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> zavihkov</translation>
+<translation id="2272117088509540883">- Brave iskanje</translation>
+<translation id="2701279958223202597">Podprite neodvisno iskanje z boljšo zasebnostjo. Brave iskanje ne sledi vam, vašim poizvedbam ali klikom.</translation>
+<translation id="6438467592401259882">Podprite neodvisno iskanje z boljšo zasebnostjo.</translation>
+<translation id="1688359110799098115">Podpora neodvisnemu iskanju z boljšo zasebnostjo</translation>
+<translation id="8579317236683491484">Brave iskanje ne sledi niti vam, vašim poizvedbam niti klikom.</translation>
+<translation id="5240031343741051161">Preizkusite iskanje Brave</translation>
+<translation id="5026874946691314267">Ne pokaži več tega</translation>
+<translation id="5234764350956374838">Opusti</translation>
+<translation id="214744058941501853">"&gt;
+          Opustite pretvorbo iskanja Brave. Pritisnite Enter, da odstranite ta predlog.</translation>
 <translation id="2515126961943087659">Storitev oglasov Bat Ads</translation>
 <translation id="7924918279836988121">Storitev poslovne knjige Bat</translation>
 <translation id="6040143037577758943">Zapri</translation>
@@ -135,6 +145,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="8490082094734500369">Izklopi način bralnika</translation>
 <translation id="2036503787657622020">Vklopi način bralnika</translation>
 <translation id="5226458915125328323">Nastavitve hitrega bralnika</translation>
+<translation id="1621606336827646158">Prikaži izvirno stran</translation>
 <translation id="6284218950354553099">Samodejno pošlji ping o dnevni uporabi Braveu</translation>
 <translation id="5288333155754958121">Zaradi tega anonimnega, zasebnega pinga lahko Brave oceni število aktivnih uporabnikov.</translation>
 <translation id="1872784258300710671">Brave uporablja popolnoma zasebno analizo izdelkov za oceno splošne uporabe nekaterih funkcij</translation>
@@ -185,6 +196,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="6817415381278637662">Brave nastavite kot privzeti brskalnik, da se na vsaki odprti spletni strani prikaže Brave zaščita zasebnosti.</translation>
 <translation id="8722651357687610395">Privzeto nastavite Brave</translation>
 <translation id="2370739752330685659">Morda pozneje</translation>
+<translation id="961012016278832836">Starejši Microsoft Edge</translation>
+<translation id="6436994631426134065">Uvoženo iz <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
@@ -201,9 +214,11 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2906510232093002459">Privzete slike brskalnika Brave</translation>
 <translation id="2396127686705429331">Prikaži gumb za zaznamke</translation>
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
-<translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
-<translation id="597020512043916976">V samoizpolnjenih predlogih prikaži najbolj priljubljena spletna mesta</translation>
-<translation id="301088458323355543">Prikaži predlagana spletna mesta v predlogih za samodejno dokončanje</translation>
+<translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
+<translation id="2858138569776157458">Najb. prilj.</translation>
+<translation id="65774893852758517">Predlagana spletna mesta</translation>
+<translation id="7859704718976024901">Zgodovina iskanja</translation>
+<translation id="8820817407110198400">Zaznamki</translation>
 <translation id="6333347122924254968">Pokaži ikono Brave Rewards v naslovni vrstici</translation>
 <translation id="1811404036171336214">Zaznamke vedno prikaži na strani novega zavihka</translation>
 <translation id="5529693968082667490">Prikaži gumb za iskanje po zavihkih</translation>
@@ -362,6 +377,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
     Ste prepričani, da želite to storiti?</translation>
 <translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
 <translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
+<translation id="842628013524824194">Običajno okno - iskalnik, ki se uporablja v naslovni vrstici</translation>
+<translation id="5324939009884545145">Zasebno okno - iskalnik, ki se uporablja v naslovni vrstici</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="7878791177459550035">Predstavnostni usmerjevalnik omogoča funkcijo oddajanja v brskalniku.</translation>
@@ -461,6 +478,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="616058968889448209">Napaka pri zagonu storitve IPFS, več informacij je na voljo na <ph name="BEGIN_LINK"/>diagnostični strani<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uvoz '<ph name="KEY_NAME"/>' ni uspešen</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' izvoz ključa ni uspel</translation>
+<translation id="5840868269342837751">Opomba: Omrežne zahteve ne smejo uporabljati nastavitev posredniškega strežnika in DNS v brskalniku.</translation>
 <translation id="8275038454117074363">Uvoz</translation>
 <translation id="3654980960391973513">Generiraj</translation>
 <translation id="5531501313997312487">Zaženi vozlišče</translation>

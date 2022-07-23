@@ -32,7 +32,7 @@ DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
 void DatabaseServerPublisherInfo::InsertOrUpdate(
     const type::ServerPublisherInfo& server_info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (server_info.publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -57,9 +57,8 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
   banner_->InsertOrUpdate(transaction.get(), server_info);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  ledger_->RunDBTransaction(std::move(transaction),
+                            std::bind(&OnResultCallback, _1, callback));
 }
 
 void DatabaseServerPublisherInfo::GetRecord(
@@ -118,9 +117,7 @@ void DatabaseServerPublisherInfo::OnGetRecordBanner(
           *banner,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherInfo::OnGetRecord(
@@ -154,8 +151,8 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 }
 
 void DatabaseServerPublisherInfo::DeleteExpiredRecords(
-    const int64_t max_age_seconds,
-    ledger::ResultCallback callback) {
+    int64_t max_age_seconds,
+    ledger::LegacyResultCallback callback) {
   int64_t cutoff =
       util::GetCurrentTimeStamp() - max_age_seconds;
 
@@ -181,14 +178,12 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      select_callback);
+  ledger_->RunDBTransaction(std::move(transaction), select_callback);
 }
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
     type::DBCommandResponsePtr response,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Unable to query for expired records");
@@ -224,9 +219,8 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  ledger_->RunDBTransaction(std::move(transaction),
+                            std::bind(&OnResultCallback, _1, callback));
 }
 
 }  // namespace database

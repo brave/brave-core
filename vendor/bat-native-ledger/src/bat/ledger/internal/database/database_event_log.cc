@@ -56,14 +56,13 @@ void DatabaseEventLog::Insert(
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      [](type::DBCommandResponsePtr response){});
+  ledger_->RunDBTransaction(std::move(transaction),
+                            [](type::DBCommandResponsePtr response) {});
 }
 
 void DatabaseEventLog::InsertRecords(
     const std::map<std::string, std::string>& records,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (records.empty()) {
     BLOG(0, "No records");
     callback(type::Result::NOT_FOUND);
@@ -95,18 +94,16 @@ void DatabaseEventLog::InsertRecords(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
   auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-    "SELECT event_log_id, key, value, created_at "
-    "FROM %s ORDER BY created_at DESC LIMIT 2000",
-    kTableName);
+      "SELECT event_log_id, key, value, created_at "
+      "FROM %s ORDER BY created_at DESC, ROWID DESC LIMIT 2000",
+      kTableName);
 
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
@@ -126,9 +123,7 @@ void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::OnGetAllRecords(

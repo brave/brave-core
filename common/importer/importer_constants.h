@@ -16,5 +16,6 @@ constexpr char kChromeExtensionsPreferencesFile[] =
     "Secure Preferences";
 #endif
 constexpr char kChromeExtensionsListPath[] = "extensions.settings";
+constexpr char kChromeLocalStateFile[] = "Local State";
 
 #endif  // BRAVE_COMMON_IMPORTER_IMPORTER_CONSTANTS_H_

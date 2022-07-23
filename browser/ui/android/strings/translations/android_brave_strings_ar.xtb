@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">ساعد في تحسين استقرار منتج Brave\u2019s عن خلال إرسال التقارير التشخيصية تلقائيًا أثناء تعطل متصفح Brave أو توقفه عن العمل.</translation>
 <translation id="7977176350719484850">البيانات التقديرية المحفوظة</translation>
 <translation id="9008534313521214777">الوقت المقدر\nالذي تم توفيره</translation>
-<translation id="6572660632052512096">نمط سطح المكتب</translation>
-<translation id="1340503115760585811">تمكين عرض سطح المكتب لعلامات التبويب الجديدة</translation>
-<translation id="7924540991929826186">استخدم إصدارات الهواتف المحمولة للمواقع لعلامات التبويب الجديدة (يُنصح بذلك)</translation>
-<translation id="807636106793708118">يفضل إصدار الهاتف المحمول للمواقع</translation>
-<translation id="4479934682648362332">يفضل إصدار سطح المكتب  للمواقع</translation>
 <translation id="1842747674580016420">إعادة تشغيل الفيديو في متصفح Brave</translation>
 <translation id="5368992950177874750">في حالة التمكين، سيتم تشغيل مقاطع الفيديو في متصفح Brave بدلاً من التطبيق المقابل</translation>
 <translation id="410351446219883937">التشغيل التلقائي</translation>
@@ -93,7 +88,7 @@
 <translation id="2877653791257935258">كتابة اسم موقع ويب أو عنوان URL</translation>
 <translation id="5329830149661250028">شاهد اختلاف Brave: لا توجد إعلانات. لا توجد أجهزة تعقب. طريقة أسرع لتحميل الصفحة.</translation>
 <translation id="3545804467215833536">انقر لعرض Brave Shields</translation>
-<translation id="1724327820822194498">شاهد كل الأشياء السيئة، تم حظر Brave، في كل صفحة، باستخدام Shields.</translation>
+<translation id="1724327820822194498">شاهد كل الأشياء السيئةالتي تم حظرها بواسطة Brave، في كل صفحة، باستخدام Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> و<ph name="TRACKER"/> إعلانات أخرى &amp; تم حظر أجهزة التعقب</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> إعلانات &amp;تم حظر أجهزة التعقب</translation>
 <translation id="8281886186245836920">تخطّي</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">حدد متصفح Brave وانقر على "دائماً"</translation>
 <translation id="3546439402724649282">تم تعيين Brave بالفعل كمتصفح افتراضي.</translation>
 <translation id="8389661903259423907">لقد قمت بالفعل بتعيين المتصفح الافتراضي. يمكنك تغيير المتصفح الافتراضي في إعدادات التطبيق الخاصة بك.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">شكراً لك</translation>
 <translation id="6665366815203065060">تم إرسال إكراميتك للتو إلى:</translation>
 <translation id="5441565662498481293">إنك ترسل الإكراميات تلقائيًا إلى:</translation>
@@ -732,7 +728,7 @@
 <translation id="2199215899212542417">نوع الوظيفة:<ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">لا توجد بيانات</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/>تم إرسال<ph name="CRYPTO_VALUE"/><ph name="ASSET"/>($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046">تم إرسال <ph name="ACCOUNT_NAME"/>  <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/>تم إرسال<ph name="ASSET"/>#<ph name="ASSET_ID"/>-<ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>تمت الموافقة<ph name="ASSET"/><ph name="DATE"/></translation>
 <translation id="7400134344541309180">تمت الموافقة بشكل غير محدود <ph name="ASSET"/><ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/>تبديل - <ph name="DATE"/></translation>
@@ -857,23 +853,34 @@
 <translation id="4804818685124855865">قطع الاتصال</translation>
 <translation id="8009571545960303544">جاري طلب توقيعك</translation>
 <translation id="3484981968509595506">يطلب DApp مفتاح التشفير العام الخاص بك</translation>
-<translation id="2291002548681057345">يطلب مفتاح التشفير العام لمحافظك. إذا وافقت على تقديم هذا المفتاح، فسيكون الموقع قادرًا على إنشاء رسائل مشفرة لك.</translation>
 <translation id="3340247553212049934">تزويد</translation>
 <translation id="1982257600591932657">اسم الشبكة</translation>
 <translation id="5052727830821470769">عنوان URL للشبكة</translation>
 <translation id="4822132585477111396">معرّف السلسلة</translation>
 <translation id="7131971375297699539">رمز العملة</translation>
 <translation id="7982789257301363584">الشبكة</translation>
-<translation id="7540715999708954128">سيسمح هذا باستخدام هذه الشبكة داخل Brave Wallet. تعرّف على المزيد.</translation>
-<translation id="8759753423332885148">اعرف المزيد.</translation>
 <translation id="4717431746210146708">هل تسمح لهذا الموقع بإضافة شبكة؟</translation>
+<translation id="4857321293515555666">يود DApp هذا قراءة هذه الرسالة لإكمال طلبك.</translation>
+<translation id="714506544401754321">فك تشفير الرسالة</translation>
+<translation id="5039804452771397117">سماح</translation>
 <translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
 <translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
 <translation id="1324417023773393937">متصفح Brave</translation>
 <translation id="6044189892950611565">قناة الإشعار لمتصفح Brave</translation>
 <translation id="1173919438868967364">تحديد حساب</translation>
 <translation id="8922793255489232731">تعذّر الحصول على المنطقة الزمنية المطابقة لـ: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">عرض أهم المواقع</translation>
+<translation id="8643377320501056697">عرض أهم المواقع</translation>
 <translation id="6471216025161697462">متصل بـ <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">إصدار تجريبي</translation>
+<translation id="7733890291091968191">عرض إشعارات Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### لا يقوم Brave بتتبعك أو معرفة كيفية استخدامك لتطبيقنا، لذلك لا نعرف كيف قمت بإعداد VPN. يرجى مشاركة المعلومات حول المشكلة التي تواجهها وسنبذل قصارى جهدنا لحلها بأسرع ما يمكن. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nاسم مضيف VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nنوع الاشتراك\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nالرمز المميز لـ Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nنسخة التطبيق\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nالمنطقة الزمنية\n</translation>
+<translation id="8107843365677337047">\n\nنوع الشبكة\n</translation>
+<translation id="5334952096674914470">\n\nالناقل الخلوي\n</translation>
+<translation id="5393042357629679588">\n\nإصدار آخر\n</translation>
+<translation id="8095666712177294104">\n\nالمنصة\n</translation>
 </translationbundle>

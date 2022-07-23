@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_HISTORY_ITEM_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_content_info.h"
@@ -24,13 +25,15 @@ struct ADS_EXPORT HistoryItemInfo final {
   bool operator==(const HistoryItemInfo& rhs) const;
   bool operator!=(const HistoryItemInfo& rhs) const;
 
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   base::Time created_at;
   AdContentInfo ad_content;
   CategoryContentInfo category_content;
 };
+
+using HistoryItemList = std::vector<HistoryItemInfo>;
 
 }  // namespace ads
 

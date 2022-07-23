@@ -129,37 +129,33 @@ UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count) {
   return unblinded_payment_tokens;
 }
 
-base::Value GetUnblindedPaymentTokensAsList(const int count) {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List GetUnblindedPaymentTokensAsList(const int count) {
+  base::Value::List list;
 
   const UnblindedPaymentTokenList& unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
 
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::Value::Dict dict;
 
-    dictionary.SetStringKey("transaction_id",
-                            unblinded_payment_token.transaction_id);
+    dict.Set("transaction_id", unblinded_payment_token.transaction_id);
 
     const absl::optional<std::string> unblinded_token_base64_optional =
         unblinded_payment_token.value.EncodeBase64();
     DCHECK(unblinded_token_base64_optional);
-    dictionary.SetStringKey("unblinded_token",
-                            unblinded_token_base64_optional.value());
+    dict.Set("unblinded_token", unblinded_token_base64_optional.value());
 
     const absl::optional<std::string> public_key_base64_optional =
         unblinded_payment_token.public_key.EncodeBase64();
     DCHECK(public_key_base64_optional);
-    dictionary.SetStringKey("public_key", public_key_base64_optional.value());
+    dict.Set("public_key", public_key_base64_optional.value());
 
-    dictionary.SetStringKey(
-        "confirmation_type",
-        unblinded_payment_token.confirmation_type.ToString());
+    dict.Set("confirmation_type",
+             unblinded_payment_token.confirmation_type.ToString());
 
-    dictionary.SetStringKey("ad_type",
-                            unblinded_payment_token.ad_type.ToString());
+    dict.Set("ad_type", unblinded_payment_token.ad_type.ToString());
 
-    list.Append(std::move(dictionary));
+    list.Append(std::move(dict));
   }
 
   return list;

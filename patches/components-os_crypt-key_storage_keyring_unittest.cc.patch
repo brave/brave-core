@@ -1,8 +1,8 @@
 diff --git a/components/os_crypt/key_storage_keyring_unittest.cc b/components/os_crypt/key_storage_keyring_unittest.cc
-index ae92edbb1f95987a38d1f7578c83d80319431d9e..7585b1f1ff54aa663ee32f7855dcedcbfadc2643 100644
+index cbd4c72d6a451f8745267d8524be9b185ba8cf21..eea67de94dc24162eec0afaf4427607184a665d1 100644
 --- a/components/os_crypt/key_storage_keyring_unittest.cc
 +++ b/components/os_crypt/key_storage_keyring_unittest.cc
-@@ -17,7 +17,7 @@ namespace {
+@@ -18,7 +18,7 @@ namespace {
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
  const char kApplicationName[] = "chrome";
  #else

@@ -6,9 +6,11 @@
 #include "bat/ads/internal/ads/search_result_ad.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
+#include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/transfer/transfer.h"
 
 namespace ads {
@@ -41,12 +43,16 @@ void SearchResultAd::TriggerEvent(
 ///////////////////////////////////////////////////////////////////////////////
 
 void SearchResultAd::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 }
 
 void SearchResultAd::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
+
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);

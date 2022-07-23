@@ -1,0 +1,37 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+source_set("device_id") {
+  sources = [
+    "device_id_impl.cc",
+    "device_id_impl.h",
+  ]
+  if (is_linux) {
+    sources += [ "device_id_impl_linux.cc" ]
+  } else if (is_mac) {
+    sources += [ "device_id_impl_mac.cc" ]
+  } else if (is_ios) {
+    sources += [ "device_id_impl_ios.cc" ]
+  } else if (is_android) {
+    sources += [ "device_id_impl_android.cc" ]
+  } else if (is_win) {
+    sources += [ "device_id_impl_win.cc" ]
+  }
+
+  deps = [
+    "//base",
+    "//brave/components/brave_ads/browser",
+    "//components/metrics",
+    "//content/public/browser",
+    "//crypto",
+  ]
+
+  libs = []
+  if (is_win) {
+    libs += [ "iphlpapi.lib" ]
+  }
+}

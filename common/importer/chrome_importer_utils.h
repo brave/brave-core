@@ -25,9 +25,14 @@ base::FilePath GetChromiumUserDataFolder();
 
 base::FilePath GetEdgeUserDataFolder();
 
-base::Value::List GetChromeSourceProfiles(
-    const base::FilePath& user_data_folder);
+base::FilePath GetVivaldiUserDataFolder();
+base::FilePath GetOperaUserDataFolder();
 
+#if BUILDFLAG(IS_LINUX)
+base::FilePath GetOperaSnapUserDataFolder();
+#endif
+base::Value::List GetChromeSourceProfiles(const base::FilePath& local_state);
+base::ListValue* GetOperaSourceProfiles(const base::FilePath& user_data_folder);
 bool ChromeImporterCanImport(const base::FilePath& profile,
                              uint16_t* services_supported);
 

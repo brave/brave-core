@@ -6,7 +6,7 @@
 import * as Cr from 'chrome://resources/js/cr.m'
 
 export type NewTabAdsData = {
-  needsBrowserUpdateToSeeAds: boolean
+  needsBrowserUpgradeToServeAds: boolean
 }
 
 type NewTabAdsDataUpdatedHandler = (data: NewTabAdsData) => void

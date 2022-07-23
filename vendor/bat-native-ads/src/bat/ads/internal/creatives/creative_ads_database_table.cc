@@ -6,9 +6,7 @@
 #include "bat/ads/internal/creatives/creative_ads_database_table.h"
 
 #include <algorithm>
-#include <functional>
 #include <map>
-#include <string>
 #include <utility>
 
 #include "base/check.h"
@@ -19,7 +17,6 @@
 #include "bat/ads/internal/base/database/database_table_util.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "url/gurl.h"
 
 namespace ads {

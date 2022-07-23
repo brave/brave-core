@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
-<translation id="6572660632052512096">デスクトップモード</translation>
-<translation id="1340503115760585811">新しいタブ用にデスクトップ版サイトを表示する</translation>
-<translation id="7924540991929826186">新しいタブ用にモバイル版サイトを表示する（推奨）</translation>
-<translation id="807636106793708118">モバイルサイトを優先して表示</translation>
-<translation id="4479934682648362332">PCサイトを優先して表示</translation>
 <translation id="1842747674580016420">Braveで動画を再生</translation>
 <translation id="5368992950177874750">有効にすると動画は、対応するアプリではなくBraveで再生されます</translation>
 <translation id="410351446219883937">自動再生</translation>
@@ -86,7 +81,7 @@
 <translation id="834487290629916192">後で</translation>
 <translation id="7207456302801184289">Braveへようこそ</translation>
 <translation id="4117451092682672487">シンプルに、プライバシーを保護。</translation>
-<translation id="7909375417585209817">Braveをデフォルトで使用すると、タップしたすべてのリンクがプライバシー保護モードで開かれます。</translation>
+<translation id="7909375417585209817">Braveをデフォルトで使用すると、タップしたすべてのリンクがBrave流のプライバシー保護モードで開かれます。</translation>
 <translation id="5148943178722443958">Braveの品質向上にご協力ください。</translation>
 <translation id="6188781052835527980">クラッシュまたはフリーズが発生した場合に匿名の診断レポートが送信されます。</translation>
 <translation id="1929905278861178845">Braveユーザーにより使用されている機能に関する製品インサイトが、完全にプライバシーが保護され匿名で共有されます。</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Braveブラウザーを選択して[常に]をタップします</translation>
 <translation id="3546439402724649282">Braveは、すでにデフォルトブラウザとして設定されています。</translation>
 <translation id="8389661903259423907">すでにデフォルトブラウザが設定されています。アプリの設定でデフォルトブラウザを変更するこができます。</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">ありがとうございます</translation>
 <translation id="6665366815203065060">チップを送りました! 宛先 :</translation>
 <translation id="5441565662498481293">チップの毎月定期支払い設定が完了しました! 宛先:</translation>
@@ -862,23 +858,34 @@
 <translation id="4804818685124855865">切断</translation>
 <translation id="8009571545960303544">あなたの署名がリクエストされています。</translation>
 <translation id="3484981968509595506">DAppが公開暗号化キーを要求しています</translation>
-<translation id="2291002548681057345">がウォレットの公開暗号化キーを要求しています。このキーを提供することに同意すると、サイトはあなたへの暗号化されたメッセージを作成することができます。</translation>
 <translation id="3340247553212049934">提供</translation>
 <translation id="1982257600591932657">ネットワーク名</translation>
 <translation id="5052727830821470769">ネットワーク URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">通貨記号</translation>
 <translation id="7982789257301363584">ネットワーク</translation>
-<translation id="7540715999708954128">これにより、このネットワークをBraveウォレット内で使用できるようになります。詳細。</translation>
-<translation id="8759753423332885148">詳しく見る</translation>
 <translation id="4717431746210146708">このサイトにネットワークの追加を許可しますか？</translation>
+<translation id="4857321293515555666">このDAppは、このメッセージを読みリクエストを完了しようとしています。</translation>
+<translation id="714506544401754321">メッセージを復号化</translation>
+<translation id="5039804452771397117">許可</translation>
 <translation id="3378339846292573874">推奨トークンを追加</translation>
 <translation id="2322227405137827074">このトークンをインポートしますか?</translation>
 <translation id="1324417023773393937">Braveブラウザ</translation>
 <translation id="6044189892950611565">Braveブラウザへの通知チャンネル</translation>
 <translation id="1173919438868967364">アカウントを選択</translation>
 <translation id="8922793255489232731">以下に一致するタイムゾーンを取得できません : <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">上位サイトを表示</translation>
+<translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>に接続済み</translation>
 <translation id="1968852757206592413">トライアル</translation>
+<translation id="7733890291091968191">Web3の通知を表示</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Braveはお客様を追跡したり、お客様がどのようにアプリを使用したかを把握していないため、現在のVPN設定についてお答えすることはできません。できるだけ早く解決できるよう、最善を尽くします。 ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPNホスト名\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nサブスクリプションタイプ\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystoreトークン\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nアプリのバージョン\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nタイムゾーン\n</translation>
+<translation id="8107843365677337047">\n\nネットワークタイプ\n</translation>
+<translation id="5334952096674914470">\n\nセルラーキャリア\n</translation>
+<translation id="5393042357629679588">\n\nその他の問題\n</translation>
+<translation id="8095666712177294104">\n\nプラットフォーム\n</translation>
 </translationbundle>

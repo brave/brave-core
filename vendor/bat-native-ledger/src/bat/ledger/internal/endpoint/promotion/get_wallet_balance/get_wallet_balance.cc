@@ -94,30 +94,28 @@ type::Result GetWalletBalance::ParseBody(
 }
 
 void GetWalletBalance::Request(GetWalletBalanceCallback callback) {
-  auto url_callback = std::bind(&GetWalletBalance::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback =
+      base::BindOnce(&GetWalletBalance::OnRequest, base::Unretained(this),
+                     std::move(callback));
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetWalletBalance::OnRequest(
-    const type::UrlResponse& response,
-    GetWalletBalanceCallback callback) {
+void GetWalletBalance::OnRequest(GetWalletBalanceCallback callback,
+                                 const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
   type::Balance balance;
   result = ParseBody(response.body, &balance);
-  callback(result, type::Balance::New(balance));
+  std::move(callback).Run(result, type::Balance::New(balance));
 }
 
 }  // namespace promotion

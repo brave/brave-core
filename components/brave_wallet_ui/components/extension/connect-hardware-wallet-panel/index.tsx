@@ -17,8 +17,9 @@ import { BraveWallet } from '../../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 
 export interface Props {
-  onCancel: () => void
+  onCancel: (accountAddress: string, coinType: BraveWallet.CoinType) => void
   walletName: string
+  accountAddress: string
   coinType: BraveWallet.CoinType
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
   retryCallable: () => void
@@ -29,6 +30,7 @@ function ConnectHardwareWalletPanel (props: Props) {
   const {
     onCancel,
     walletName,
+    accountAddress,
     coinType,
     hardwareWalletCode,
     retryCallable,
@@ -36,12 +38,12 @@ function ConnectHardwareWalletPanel (props: Props) {
   } = props
 
   const isConnected = React.useMemo((): boolean => {
-    return hardwareWalletCode !== undefined && hardwareWalletCode !== 'deviceNotConnected'
+    return hardwareWalletCode !== 'deviceNotConnected'
   }, [hardwareWalletCode])
 
   const title = React.useMemo(() => {
     if (hardwareWalletCode === 'deviceBusy') {
-      return getLocale('braveWalletConnectHardwarePanelConfirmation').replace('$1', walletName)
+      return getLocale('braveWalletConnectHardwarePanelConfirmation')
     }
 
     if (hardwareWalletCode === 'openLedgerApp') {
@@ -53,6 +55,10 @@ function ConnectHardwareWalletPanel (props: Props) {
 
     return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
   }, [hardwareWalletCode])
+
+  const onCancelConnect = () => {
+    onCancel(accountAddress, coinType)
+  }
 
   useInterval(retryCallable, 3000, !isConnected ? 5000 : null)
 
@@ -75,7 +81,7 @@ function ConnectHardwareWalletPanel (props: Props) {
       {
         hardwareWalletCode !== 'deviceBusy' && (
           <ButtonWrapper>
-            <NavButton buttonType='secondary' text={getLocale('braveWalletBackupButtonCancel')} onSubmit={onCancel} />
+            <NavButton buttonType='secondary' text={getLocale('braveWalletBackupButtonCancel')} onSubmit={onCancelConnect} />
           </ButtonWrapper>
         )
       }

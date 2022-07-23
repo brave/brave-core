@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
@@ -59,7 +60,7 @@ TEST_F(DeleteClaimTest, ServerOK) {
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   disconnect_->Request("test-custodian", [](const type::Result result) {
@@ -75,7 +76,7 @@ TEST_F(DeleteClaimTest, ServerError400) {
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   disconnect_->Request("test-custodian", [](const type::Result result) {
@@ -91,7 +92,7 @@ TEST_F(DeleteClaimTest, ServerError403) {
             response.status_code = 403;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   disconnect_->Request("test-custodian", [](const type::Result result) {
@@ -107,7 +108,7 @@ TEST_F(DeleteClaimTest, ServerError404) {
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   disconnect_->Request("test-custodian", [](const type::Result result) {
@@ -123,7 +124,7 @@ TEST_F(DeleteClaimTest, ServerError409) {
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   disconnect_->Request("test-custodian", [](const type::Result result) {
@@ -139,7 +140,7 @@ TEST_F(DeleteClaimTest, ServerError500) {
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   disconnect_->Request("test-custodian", [](const type::Result result) {
@@ -155,7 +156,7 @@ TEST_F(DeleteClaimTest, ServerErrorRandom) {
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   disconnect_->Request("test-custodian", [](const type::Result result) {

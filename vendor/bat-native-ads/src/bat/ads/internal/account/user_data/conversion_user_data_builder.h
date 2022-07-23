@@ -9,7 +9,9 @@
 #include <functional>
 #include <string>
 
-#include "base/values.h"
+namespace base {
+class Value;
+}  // namespace base
 
 namespace ads {
 namespace user_data {

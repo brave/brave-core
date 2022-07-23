@@ -7,8 +7,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_util.h"
 
 namespace ads {
 

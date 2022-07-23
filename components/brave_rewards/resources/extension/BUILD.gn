@@ -7,10 +7,10 @@ import("//tools/grit/repack.gni")
 assert(enable_extensions)
 
 pack_web_resources("extension_generated_resources") {
-  resource_name = "brave_rewards_panel"
+  resource_name = "brave_rewards_extension_panel"
   output_dir =
       "$root_gen_dir/brave/components/brave_rewards/resources/extension"
-  deps = [ "brave_rewards:brave_rewards_panel" ]
+  deps = [ "brave_rewards:brave_rewards_extension_panel" ]
 }
 
 brave_grit("static_resources") {
@@ -30,8 +30,8 @@ repack("resources") {
   ]
 
   sources = [
+    "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_panel_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_static.pak",
-    "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_panel_generated.pak",
   ]
 
   output = "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak"

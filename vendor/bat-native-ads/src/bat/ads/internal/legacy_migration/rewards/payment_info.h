@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_REWARDS_PAYMENT_INFO_H_
 
 #include <string>
+#include <vector>
 
 namespace ads {
 namespace rewards {
@@ -16,6 +17,8 @@ struct PaymentInfo final {
   std::string month;
   int transaction_count = 0;
 };
+
+using PaymentList = std::vector<PaymentInfo>;
 
 }  // namespace rewards
 }  // namespace ads

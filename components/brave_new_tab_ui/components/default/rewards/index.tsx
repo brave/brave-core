@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -9,6 +9,7 @@ import createWidget from '../widget/index'
 import { StyledTitleTab } from '../widgetTitleTab'
 
 import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/locale_context'
+import { getProviderPayoutStatus } from '../../../../brave_rewards/resources/shared/lib/provider_payout_status'
 import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
 import { GrantInfo } from '../../../../brave_rewards/resources/shared/lib/grant_info'
 import { OnboardingCompletedStore } from '../../../../brave_rewards/resources/shared/lib/onboarding_completed_store'
@@ -28,7 +29,7 @@ const onboardingCompleted = new OnboardingCompletedStore()
 export function showRewardsOnboarding () {
   if (!onboardingCompleted.load()) {
     onboardingCompleted.save()
-    chrome.braveRewards.openBrowserActionUI('brave_rewards_panel.html#tour')
+    chrome.braveRewards.showRewardsTour()
   }
 }
 
@@ -45,7 +46,7 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 export interface RewardsProps {
   rewardsEnabled: boolean
   enabledAds: boolean
-  needsBrowserUpdateToSeeAds: boolean
+  needsBrowserUpgradeToServeAds: boolean
   balance: NewTab.RewardsBalance
   externalWallet?: RewardsExtension.ExternalWallet
   report?: NewTab.RewardsBalanceReport
@@ -92,10 +93,15 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   const adsInfo = props.adsAccountStatement || null
   const grantInfo = getVisibleGrant(props.promotions || [])
 
+  const externalWallet = externalWalletFromExtensionData(props.externalWallet)
+  const walletProvider = externalWallet ? externalWallet.provider : null
+  const providerPayoutStatus = props.parameters.payoutStatus
+    ? getProviderPayoutStatus(props.parameters.payoutStatus, walletProvider)
+    : 'off'
+
   const onClaimGrant = () => {
     if (grantInfo) {
-      chrome.braveRewards.openBrowserActionUI(
-        `brave_rewards_panel.html#grant_${grantInfo.id}`)
+      chrome.braveRewards.showGrantCaptcha(grantInfo.id)
     }
   }
 
@@ -104,12 +110,13 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       rewardsEnabled={props.rewardsEnabled}
       adsEnabled={props.enabledAds}
       adsSupported={Boolean(props.adsSupported)}
-      needsBrowserUpdateToSeeAds={props.needsBrowserUpdateToSeeAds}
+      needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
       rewardsBalance={props.balance.total}
       exchangeCurrency='USD'
       exchangeRate={props.parameters.rate}
+      providerPayoutStatus={providerPayoutStatus}
       grantInfo={grantInfo}
-      externalWallet={externalWalletFromExtensionData(props.externalWallet)}
+      externalWallet={externalWallet}
       nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
       earningsThisMonth={adsInfo ? adsInfo.earningsThisMonth : 0}
       earningsLastMonth={adsInfo ? adsInfo.earningsLastMonth : 0}

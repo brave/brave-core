@@ -100,9 +100,12 @@ uphold::Uphold* LedgerImpl::uphold() const {
   return uphold_.get();
 }
 
-void LedgerImpl::LoadURL(
-    type::UrlRequestPtr request,
-    client::LoadURLCallback callback) {
+template <typename>
+inline constexpr bool dependent_false_v = false;
+
+template <typename LoadURLCallback>
+void LedgerImpl::LoadURLImpl(type::UrlRequestPtr request,
+                             LoadURLCallback callback) {
   DCHECK(request);
   if (IsShuttingDown()) {
     BLOG(1, request->url + " will not be executed as we are shutting down");
@@ -114,7 +117,71 @@ void LedgerImpl::LoadURL(
                                request->content_type, request->method));
   }
 
-  ledger_client_->LoadURL(std::move(request), callback);
+  if constexpr (std::is_same_v<LoadURLCallback,
+                               ledger::client::LegacyLoadURLCallback>) {
+    ledger_client_->LoadURL(
+        std::move(request),
+        base::BindOnce(
+            [](ledger::client::LegacyLoadURLCallback callback,
+               const type::UrlResponse& response) { callback(response); },
+            std::move(callback)));
+  } else if constexpr (std::is_same_v<LoadURLCallback,  // NOLINT
+                                      ledger::client::LoadURLCallback>) {
+    ledger_client_->LoadURL(std::move(request), std::move(callback));
+  } else {
+    static_assert(dependent_false_v<LoadURLCallback>,
+                  "LoadURLCallback must be either "
+                  "ledger::client::LegacyLoadURLCallback, or "
+                  "ledger::client::LoadURLCallback!");
+  }
+}
+
+void LedgerImpl::LoadURL(type::UrlRequestPtr request,
+                         client::LegacyLoadURLCallback callback) {
+  LoadURLImpl(std::move(request), std::move(callback));
+}
+
+void LedgerImpl::LoadURL(type::UrlRequestPtr request,
+                         client::LoadURLCallback callback) {
+  LoadURLImpl(std::move(request), std::move(callback));
+}
+
+template <typename RunDBTransactionCallback>
+void LedgerImpl::RunDBTransactionImpl(type::DBTransactionPtr transaction,
+                                      RunDBTransactionCallback callback) {
+  if constexpr (std::is_same_v<  // NOLINT
+                    RunDBTransactionCallback,
+                    ledger::client::LegacyRunDBTransactionCallback>) {
+    ledger_client_->RunDBTransaction(
+        std::move(transaction),
+        base::BindOnce(
+            [](ledger::client::LegacyRunDBTransactionCallback callback,
+               type::DBCommandResponsePtr response) {
+              callback(std::move(response));
+            },
+            std::move(callback)));
+  } else if constexpr (std::is_same_v<  // NOLINT
+                           RunDBTransactionCallback,
+                           ledger::client::RunDBTransactionCallback>) {
+    ledger_client_->RunDBTransaction(std::move(transaction),
+                                     std::move(callback));
+  } else {
+    static_assert(dependent_false_v<RunDBTransactionCallback>,
+                  "RunDBTransactionCallback must be either "
+                  "ledger::client::LegacyRunDBTransactionCallback, or "
+                  "ledger::client::RunDBTransactionCallback!");
+  }
+}
+
+void LedgerImpl::RunDBTransaction(
+    type::DBTransactionPtr transaction,
+    client::LegacyRunDBTransactionCallback callback) {
+  RunDBTransactionImpl(std::move(transaction), std::move(callback));
+}
+
+void LedgerImpl::RunDBTransaction(type::DBTransactionPtr transaction,
+                                  client::RunDBTransactionCallback callback) {
+  RunDBTransactionImpl(std::move(transaction), std::move(callback));
 }
 
 void LedgerImpl::StartServices() {
@@ -130,7 +197,7 @@ void LedgerImpl::StartServices() {
 }
 
 void LedgerImpl::Initialize(bool execute_create_script,
-                            ResultCallback callback) {
+                            LegacyResultCallback callback) {
   if (ready_state_ != ReadyState::kUninitialized) {
     BLOG(0, "Ledger already initializing");
     callback(type::Result::LEDGER_ERROR);
@@ -142,10 +209,10 @@ void LedgerImpl::Initialize(bool execute_create_script,
 }
 
 void LedgerImpl::InitializeDatabase(bool execute_create_script,
-                                    ResultCallback callback) {
+                                    LegacyResultCallback callback) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
-  ResultCallback finish_callback =
+  LegacyResultCallback finish_callback =
       std::bind(&LedgerImpl::OnInitialized, this, _1, std::move(callback));
 
   auto database_callback =
@@ -153,7 +220,8 @@ void LedgerImpl::InitializeDatabase(bool execute_create_script,
   database()->Initialize(execute_create_script, database_callback);
 }
 
-void LedgerImpl::OnInitialized(type::Result result, ResultCallback callback) {
+void LedgerImpl::OnInitialized(type::Result result,
+                               LegacyResultCallback callback) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result == type::Result::LEDGER_OK) {
@@ -174,7 +242,7 @@ void LedgerImpl::OnInitialized(type::Result result, ResultCallback callback) {
 }
 
 void LedgerImpl::OnDatabaseInitialized(type::Result result,
-                                       ResultCallback callback) {
+                                       LegacyResultCallback callback) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result != type::Result::LEDGER_OK) {
@@ -190,7 +258,7 @@ void LedgerImpl::OnDatabaseInitialized(type::Result result,
 }
 
 void LedgerImpl::OnStateInitialized(type::Result result,
-                                    ResultCallback callback) {
+                                    LegacyResultCallback callback) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result != type::Result::LEDGER_OK) {
@@ -201,14 +269,14 @@ void LedgerImpl::OnStateInitialized(type::Result result,
   callback(type::Result::LEDGER_OK);
 }
 
-void LedgerImpl::CreateWallet(ResultCallback callback) {
+void LedgerImpl::CreateWallet(LegacyResultCallback callback) {
   WhenReady(
       [this, callback]() { wallet()->CreateWalletIfNecessary(callback); });
 }
 
 void LedgerImpl::OneTimeTip(const std::string& publisher_key,
                             double amount,
-                            ResultCallback callback) {
+                            LegacyResultCallback callback) {
   WhenReady([this, publisher_key, amount, callback]() {
     contribution()->OneTimeTip(publisher_key, amount, callback);
   });
@@ -504,7 +572,7 @@ type::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
 }
 
 void LedgerImpl::RecoverWallet(const std::string& pass_phrase,
-                               ResultCallback callback) {
+                               LegacyResultCallback callback) {
   WhenReady([this, pass_phrase, callback]() {
     wallet()->RecoverWallet(pass_phrase, callback);
   });
@@ -512,13 +580,13 @@ void LedgerImpl::RecoverWallet(const std::string& pass_phrase,
 
 void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
                                      type::PublisherExclude exclude,
-                                     ResultCallback callback) {
+                                     LegacyResultCallback callback) {
   WhenReady([this, publisher_id, exclude, callback]() {
     publisher()->SetPublisherExclude(publisher_id, exclude, callback);
   });
 }
 
-void LedgerImpl::RestorePublishers(ResultCallback callback) {
+void LedgerImpl::RestorePublishers(LegacyResultCallback callback) {
   WhenReady([this, callback]() { database()->RestorePublishers(callback); });
 }
 
@@ -541,7 +609,7 @@ void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
 }
 
 void LedgerImpl::RemoveRecurringTip(const std::string& publisher_key,
-                                    ResultCallback callback) {
+                                    LegacyResultCallback callback) {
   WhenReady([this, publisher_key, callback]() {
     database()->RemoveRecurringTip(publisher_key, callback);
   });
@@ -595,7 +663,7 @@ void LedgerImpl::GetRewardsInternalsInfo(
 }
 
 void LedgerImpl::SaveRecurringTip(type::RecurringTipPtr info,
-                                  ResultCallback callback) {
+                                  LegacyResultCallback callback) {
   WhenReady([this, info = std::move(info), callback]() mutable {
     database()->SaveRecurringTip(std::move(info), callback);
   });
@@ -642,6 +710,17 @@ void LedgerImpl::UpdateMediaDuration(uint64_t window_id,
   });
 }
 
+void LedgerImpl::IsPublisherRegistered(const std::string& publisher_id,
+                                       std::function<void(bool)> callback) {
+  WhenReady([this, publisher_id, callback]() {
+    publisher()->GetServerPublisherInfo(
+        publisher_id, true /* use_prefix_list */,
+        [callback](type::ServerPublisherInfoPtr info) {
+          callback(info && info->status != type::PublisherStatus::NOT_VERIFIED);
+        });
+  });
+}
+
 void LedgerImpl::GetPublisherInfo(const std::string& publisher_key,
                                   PublisherInfoCallback callback) {
   WhenReady([this, publisher_key, callback]() {
@@ -658,7 +737,7 @@ void LedgerImpl::GetPublisherPanelInfo(const std::string& publisher_key,
 
 void LedgerImpl::SavePublisherInfo(uint64_t window_id,
                                    type::PublisherInfoPtr publisher_info,
-                                   ResultCallback callback) {
+                                   LegacyResultCallback callback) {
   WhenReady(
       [this, window_id, info = std::move(publisher_info), callback]() mutable {
         publisher()->SavePublisherInfo(window_id, std::move(info), callback);
@@ -702,13 +781,13 @@ void LedgerImpl::GetPendingContributions(
 }
 
 void LedgerImpl::RemovePendingContribution(uint64_t id,
-                                           ResultCallback callback) {
+                                           LegacyResultCallback callback) {
   WhenReady([this, id, callback]() {
     database()->RemovePendingContribution(id, callback);
   });
 }
 
-void LedgerImpl::RemoveAllPendingContributions(ResultCallback callback) {
+void LedgerImpl::RemoveAllPendingContributions(LegacyResultCallback callback) {
   WhenReady([this, callback]() {
     database()->RemoveAllPendingContributions(callback);
   });
@@ -722,41 +801,35 @@ void LedgerImpl::GetPendingContributionsTotal(
 }
 
 void LedgerImpl::FetchBalance(FetchBalanceCallback callback) {
-  WhenReady([this, callback]() { wallet()->FetchBalance(callback); });
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    wallet()->FetchBalance(std::move(callback));
+  });
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
                                    ExternalWalletCallback callback) {
-  WhenReady([this, wallet_type, callback]() {
-    if (wallet_type == "") {
-      callback(type::Result::LEDGER_OK, nullptr);
-      return;
-    }
-
-    auto on_generated = [this, wallet_type, callback](type::Result result) {
-      if (result == type::Result::CONTINUE) {
-        result = type::Result::LEDGER_OK;
-      }
-      callback(result, wallet::GetWallet(this, wallet_type));
-    };
+  WhenReady([this, wallet_type, callback = std::move(callback)]() mutable {
+    auto on_generated = base::BindOnce(
+        [](ExternalWalletCallback callback, LedgerImpl* ledger_impl,
+           const std::string& wallet_type, type::Result result) {
+          if (result == type::Result::CONTINUE) {
+            result = type::Result::LEDGER_OK;
+          }
+          std::move(callback).Run(result,
+                                  wallet::GetWallet(ledger_impl, wallet_type));
+        },
+        std::move(callback), this, wallet_type);
 
     if (wallet_type == constant::kWalletUphold) {
-      uphold()->GenerateWallet(on_generated);
-      return;
+      uphold()->GenerateWallet(std::move(on_generated));
+    } else if (wallet_type == constant::kWalletBitflyer) {
+      bitflyer()->GenerateWallet(std::move(on_generated));
+    } else if (wallet_type == constant::kWalletGemini) {
+      gemini()->GenerateWallet(std::move(on_generated));
+    } else {
+      NOTREACHED();
+      std::move(on_generated).Run(type::Result::LEDGER_OK);
     }
-
-    if (wallet_type == constant::kWalletBitflyer) {
-      bitflyer()->GenerateWallet(on_generated);
-      return;
-    }
-
-    if (wallet_type == constant::kWalletGemini) {
-      gemini()->GenerateWallet(on_generated);
-      return;
-    }
-
-    NOTREACHED();
-    callback(type::Result::LEDGER_OK, nullptr);
   });
 }
 
@@ -770,7 +843,7 @@ void LedgerImpl::ExternalWalletAuthorization(
 }
 
 void LedgerImpl::DisconnectWallet(const std::string& wallet_type,
-                                  ResultCallback callback) {
+                                  LegacyResultCallback callback) {
   WhenReady([this, wallet_type, callback]() {
     wallet()->DisconnectWallet(wallet_type, callback);
   });
@@ -780,7 +853,7 @@ void LedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
   WhenReady([this, callback]() { database()->GetAllPromotions(callback); });
 }
 
-void LedgerImpl::GetAnonWalletStatus(ResultCallback callback) {
+void LedgerImpl::GetAnonWalletStatus(LegacyResultCallback callback) {
   WhenReady([this, callback]() { wallet()->GetAnonWalletStatus(callback); });
 }
 
@@ -805,7 +878,7 @@ void LedgerImpl::GetAllContributions(ContributionInfoListCallback callback) {
 }
 
 void LedgerImpl::SavePublisherInfoForTip(type::PublisherInfoPtr info,
-                                         ResultCallback callback) {
+                                         LegacyResultCallback callback) {
   WhenReady([this, info = std::move(info), callback]() mutable {
     database()->SavePublisherInfo(std::move(info), callback);
   });
@@ -832,7 +905,7 @@ void LedgerImpl::ProcessSKU(const std::vector<type::SKUOrderItem>& items,
   });
 }
 
-void LedgerImpl::Shutdown(ResultCallback callback) {
+void LedgerImpl::Shutdown(LegacyResultCallback callback) {
   if (!IsReady()) {
     callback(type::Result::LEDGER_ERROR);
     return;
@@ -854,7 +927,7 @@ void LedgerImpl::Shutdown(ResultCallback callback) {
   });
 }
 
-void LedgerImpl::OnAllDone(type::Result result, ResultCallback callback) {
+void LedgerImpl::OnAllDone(type::Result result, LegacyResultCallback callback) {
   database()->Close(callback);
 }
 
@@ -884,9 +957,10 @@ std::string LedgerImpl::GetWalletPassphrase() {
 
 void LedgerImpl::LinkBraveWallet(const std::string& destination_payment_id,
                                  PostSuggestionsClaimCallback callback) {
-  WhenReady([this, destination_payment_id, callback]() {
-    wallet()->LinkBraveWallet(destination_payment_id, callback);
-  });
+  WhenReady(
+      [this, destination_payment_id, callback = std::move(callback)]() mutable {
+        wallet()->LinkBraveWallet(destination_payment_id, std::move(callback));
+      });
 }
 
 void LedgerImpl::GetDrainStatus(const std::string& drain_id,

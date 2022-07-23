@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Автоматически отправляя данные диагностики при сбое браузера Brave, вы помогаете повышать стабильность его работы.</translation>
 <translation id="7977176350719484850">Данных\nНе скачано</translation>
 <translation id="9008534313521214777">Сохранено\nвремени</translation>
-<translation id="6572660632052512096">Режим компьютера</translation>
-<translation id="1340503115760585811">Включает отображение версии для компьютера в новых вкладках</translation>
-<translation id="7924540991929826186">Использовать мобильные версии сайтов в новых вкладках (рекомендуется)</translation>
-<translation id="807636106793708118">Предпочитать мобильную версию сайтов</translation>
-<translation id="4479934682648362332">Предпочитаю версию сайтов для компьютеров</translation>
 <translation id="1842747674580016420">Воспроизведение видео в Brave</translation>
 <translation id="5368992950177874750">В случае включения, видео будет воспроизводиться в Brave, а не в соответствующем приложении</translation>
 <translation id="410351446219883937">Автовоспроизведение</translation>
@@ -92,7 +87,7 @@
 <translation id="1929905278861178845">Делитесь полностью конфиденциальными и анонимными данными о том, какие функции популярны среди пользователей Brave.</translation>
 <translation id="2877653791257935258">Введите название сайта или URL</translation>
 <translation id="5329830149661250028">Браузер Brave не похож на другие. Наслаждайтесь непревзойденной скоростью загрузки страниц без рекламы и трекеров.</translation>
-<translation id="3545804467215833536">Коснитесь, чтобы настроить Brave Щит.</translation>
+<translation id="3545804467215833536">Коснитесь, чтобы открыть окно настройки Brave Щита.</translation>
 <translation id="1724327820822194498">Узнайте, сколько объявлений и трекеров заблокировал Brave Щит на каждой странице.</translation>
 <translation id="5386259141409498372">Заблокированные объявления и трекеры: <ph name="BIG_TECH"/> и еще <ph name="TRACKER"/>.</translation>
 <translation id="3092683655478890840">Заблокировано объявлений и трекеров: <ph name="TRACKER_COUNT"/></translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Выберите Brave Browser в списке и нажмите 'Всегда'</translation>
 <translation id="3546439402724649282">Brave уже установлен в качестве браузера по умолчанию.</translation>
 <translation id="8389661903259423907">Вы уже установили браузер по умолчанию. Вы можете изменить браузер по умолчанию в настройках вашего приложения.</translation>
+<translation id="8112367589167674370">Brave Разговоры</translation>
 <translation id="8826007068782654809">Спасибо</translation>
 <translation id="6665366815203065060">Вы только что отправили чаевые:</translation>
 <translation id="5441565662498481293">Вы автоматически отправляете чаевые:</translation>
@@ -864,23 +860,34 @@
 <translation id="4804818685124855865">Отключиться</translation>
 <translation id="8009571545960303544">Запрашивается ваша подпись</translation>
 <translation id="3484981968509595506">DApp запрашивает открытый ключ шифрования</translation>
-<translation id="2291002548681057345">запрашивает открытый ключ шифрования вашего кошелька. После получения согласия этот сайт сможет создавать для вас зашифрованные сообщения.</translation>
 <translation id="3340247553212049934">Предоставить</translation>
 <translation id="1982257600591932657">Название сети</translation>
 <translation id="5052727830821470769">URL сети</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Символ валюты</translation>
 <translation id="7982789257301363584">Сеть</translation>
-<translation id="7540715999708954128">Добавьте сеть, чтобы использовать ее в Brave Кошельке. Подробнее…</translation>
-<translation id="8759753423332885148">Узнать больше</translation>
 <translation id="4717431746210146708">Разрешить сайту добавить сеть?</translation>
+<translation id="4857321293515555666">DApp необходимо прочесть это сообщение, чтобы выполнить ваш запрос.</translation>
+<translation id="714506544401754321">Расшифровать сообщение</translation>
+<translation id="5039804452771397117">Разрешить</translation>
 <translation id="3378339846292573874">Добавить предполагаемый балл</translation>
 <translation id="2322227405137827074">Вы хотите импортировать этот балл?</translation>
 <translation id="1324417023773393937">Браузер Brave</translation>
 <translation id="6044189892950611565">Канал уведомлений для браузера Brave</translation>
 <translation id="1173919438868967364">Выберите счет</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/>: не удалось найти подходящий часовой пояс.</translation>
-<translation id="8231907121684689093">Показывать популярные сайты</translation>
-<translation id="6471216025161697462"><ph name="VALUE"/>: подключено</translation>
+<translation id="8643377320501056697">Показывать лучшие сайты</translation>
+<translation id="6471216025161697462">Подключено к <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">(пробная версия)</translation>
+<translation id="7733890291091968191">Показать уведомления Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave не следит за тем, как вы используете наше приложение, и не получает данные об этом. Поэтому мы не знаем, как вы настроили VPN. Расскажите нам, с какой проблемой вы столкнулись, и мы постараемся устранить ее в кратчайшие сроки. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nИмя хоста VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nТип подписки\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nТокен Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nВерсия приложения\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nЧасовой пояс\n</translation>
+<translation id="8107843365677337047">\n\nТип сети\n</translation>
+<translation id="5334952096674914470">\n\nОператор сотовой связи\n</translation>
+<translation id="5393042357629679588">\n\nДругая проблема\n</translation>
+<translation id="8095666712177294104">\n\nПлатформа\n</translation>
 </translationbundle>

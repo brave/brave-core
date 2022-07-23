@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Envía informes de diagnóstico automáticamente cuando el navegador de Brave falle o se bloquee para ayudarnos a mejorar la estabilidad de los productos de Brave.</translation>
 <translation id="7977176350719484850">Est. de datos\nahorrados</translation>
 <translation id="9008534313521214777">Estimación de tiempo ahorrado</translation>
-<translation id="6572660632052512096">Modo Escritorio</translation>
-<translation id="1340503115760585811">Habilitar Vista de Escritorio para nuevas pestañas</translation>
-<translation id="7924540991929826186">Usa las versiones móviles de sitios para nuevas pestañas (recomendado)</translation>
-<translation id="807636106793708118">Prefiero la versión móvil de los sitios</translation>
-<translation id="4479934682648362332">Preferir la versión de escritorio de los sitios web</translation>
 <translation id="1842747674580016420">Reproducción de vídeo en Brave</translation>
 <translation id="5368992950177874750">Si está habilitado, los vídeos se reproducirán en Brave en vez de en la aplicación correspondiente</translation>
 <translation id="410351446219883937">Reproducción automática</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Selecciona Brave Browser y pulsa en «Siempre».</translation>
 <translation id="3546439402724649282">Brave ya está configurado como tu navegador predeterminado.</translation>
 <translation id="8389661903259423907">Ya has configurado un navegador predeterminado. Puedes cambiar el navegador predeterminado en la configuración de la aplicación.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Acabas de enviar una propina a:</translation>
 <translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
@@ -646,8 +642,8 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="1190117345570417902">Usa un túnel VPN cifrado y seguro Wireguard</translation>
 <translation id="1571230671455380494">Nunca compartimos ni vendemos tu información</translation>
 <translation id="276866628038850725">Todos los planes incluyen una prueba gratuita de 7 días</translation>
-<translation id="1532536259167115948"><ph name="TRIAL_TEXT"/> de suscripción mensual</translation>
-<translation id="6344668702581136255"><ph name="TRIAL_TEXT"/> de suscripción anual</translation>
+<translation id="1532536259167115948">Suscripción mensual - <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Suscripción anual - <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Se renueva mensualmente</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> al mes</translation>
 <translation id="1163809943099641131">Un año</translation>
@@ -864,23 +860,34 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="4804818685124855865">Desvincular</translation>
 <translation id="8009571545960303544">Tu firma ya fue solicitada</translation>
 <translation id="3484981968509595506">Una dApp solicita tu clave de cifrado público</translation>
-<translation id="2291002548681057345">solicita la clave de cifrado público de tus carteras. Si aceptas compartir esta clave, el sitio podrá enviarte mensajes cifrados.</translation>
 <translation id="3340247553212049934">Proporcionar</translation>
 <translation id="1982257600591932657">Nombre de red</translation>
 <translation id="5052727830821470769">Network URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Currency symbol</translation>
 <translation id="7982789257301363584">Red</translation>
-<translation id="7540715999708954128">Esto permitirá que la red se utilice en Cartera de Brave. Más información.</translation>
-<translation id="8759753423332885148">Más información.</translation>
 <translation id="4717431746210146708">Allow this site to add a network?</translation>
+<translation id="4857321293515555666">Esta dApp quiere leer este mensaje para responder a tu solicitud.</translation>
+<translation id="714506544401754321">Descifrar el mensaje</translation>
+<translation id="5039804452771397117">Permitir</translation>
 <translation id="3378339846292573874">Añadir sugerencia de token</translation>
 <translation id="2322227405137827074">¿Te gustaría importar este token?</translation>
 <translation id="1324417023773393937">Navegador Brave</translation>
 <translation id="6044189892950611565">Canal de notificación del navegador de Brave</translation>
 <translation id="1173919438868967364">Seleccionar cuenta</translation>
 <translation id="8922793255489232731">No se ha encontrado la zona horaria correspondiente a: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Mostrar sitios populares</translation>
+<translation id="8643377320501056697">Mostrar páginas principales</translation>
 <translation id="6471216025161697462">Conexión establecida con <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prueba</translation>
+<translation id="7733890291091968191">Mostrar notificaciones de Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave no rastrea tu actividad ni sabe cómo usas nuestra aplicación, por lo que desconocemos cómo has configurado tu VPN. Envíanos información sobre el problema, y haremos todo lo posible para resolverlo cuanto antes. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nNombre de host de la VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nTipo de suscripción\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken de Play Store\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVersión de la aplicación\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nZona horaria\n</translation>
+<translation id="8107843365677337047">\n\nTipo de red\n</translation>
+<translation id="5334952096674914470">\n\nProveedor de red móvil\n</translation>
+<translation id="5393042357629679588">\n\nOtro problema\n</translation>
+<translation id="8095666712177294104">\n\nPlataforma\n</translation>
 </translationbundle>

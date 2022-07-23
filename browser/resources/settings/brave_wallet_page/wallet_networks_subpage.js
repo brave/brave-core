@@ -90,6 +90,23 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.updateNetworks()
   }
 
+  /** @override */
+  connectedCallback() {
+    super.connectedCallback();
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing['walletNetworks'] = this.shadowRoot
+    }
+  }
+
+  /** @override */
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      delete window.testing['walletNetworks']
+    }
+  }
+
   getNetworkItemClass(item) {
     if (this.isDefaultNetwork(item.chainId)) {
       return "flex cr-padded-text active-network"
@@ -99,9 +116,13 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
   getHideButtonClass(hiddenNetworks, item) {
     if (hiddenNetworks.indexOf(item.chainId) > -1) {
-      return "icon-visibility-off"
+      return "hide-network-button icon-visibility-off"
     }
-    return "icon-visibility"
+    return "hide-network-button icon-visibility"
+  }
+
+  getDataTestId(item) {
+    return 'chain-' + item.chainId
   }
 
   isDefaultNetwork(chainId) {

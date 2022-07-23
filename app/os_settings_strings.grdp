@@ -724,10 +724,10 @@
     Disabled
   </message>
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
-    Personalize your device
+    Set your wallpaper &amp; style
   </message>
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
-    Customize wallpaper, avatar, screensaver and more
+    Personalize wallpaper, screen saver, accent colors, and more
   </message>
 
   <!-- Ambient Mode Page -->
@@ -1840,6 +1840,15 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_IMAGE_ALIAS" desc="Heading for the input field for entering the image alias string e.g. debian/buster when creating a new Linux container.">
     Image Alias
   </message>
+  <message name="IDS_SETTINGS_CROSTINI_PRECONFIGURED_CONTAINERS_ADD_PLAYBOOK" desc="Heading for the input field for uploading an Ansible playbook to preconfigure a Linux container.">
+    Add playbook
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PRECONFIGURED_CONTAINERS_ATTACH_PLAYBOOK_BUTTON_LABEL" desc="Label for button to attach an Ansible Playbook to preconfigure a Linux container.">
+    Apply playbook
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_ANSIBLE_PLAYBOOK_SELECT_DIALOG_TITLE" desc="The text used as the title for Ansible Playbook selection">
+    Select an Ansible Playbook to add
+  </message>
   <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_SHOW_BUTTON" desc="The label of the button/link the user clicks to open the disk resizing dialogue." meaning="The label of the button/link the user clicks to open the disk resizing dialogue.">
     Change
   </message>
@@ -1918,6 +1927,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
     Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_CROSTINI_SUBTEXT_NOT_SUPPORTED" desc="Description for the Developers section when crostini is not supported due to hardware limitation or account restrictions.">
+    Linux is not supported on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
     Remove Linux development environment
   </message>
@@ -1932,6 +1944,15 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_MIC_DIALOG_SHUTDOWN_BUTTON" desc="Label for the shutdown button in the Crostini mic sharing dialog.">
     Shut down
+  </message>
+
+  <!-- Bruschetta sub-page -->
+  <!-- TODO(b/233129383): Finalize and translate these strings -->
+  <message name="IDS_SETTINGS_BRUSCHETTA_LABEL" translateable="false" desc="Label for the Bruschetta sub-page.">
+    Bruschetta
+  </message>
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_USB_DEVICES_DESCRIPTION" translateable="false" desc="Description for managing shared USB devices.">
+    Give Bruschetta permission to access USB devices. Bruschetta won't remember a USB device after it's removed.
   </message>
 
   <!-- Android apps page (OS settings) -->
@@ -3170,11 +3191,8 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with work profiles cannot opt into this feature.">
     Notification syncing is not supported for phones in a work profile
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_DISABLED_BY_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with notification access disabled by their phones' administrator cannot opt into this feature.">
-    Notification syncing is disabled by your phone's administrator
-  </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_APPS_ACCESS_PROHIBITED_DISABLED_BY_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub apps streaming feature. The tooltip describes how users with apps access disabled by their phones' administrator cannot opt into this feature.">
-    Apps streaming is disabled by your phone's administrator.
+  <message name="IDS_SETTINGS_MULTIDEVICE_ITEM_DISABLED_BY_PHONE_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing or apps streaming feature. The tooltip describes how users with feature disabled by their phones' administrator cannot opt into this feature.">
+    This setting is managed by your phone's administrator
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_GET_STARTED_BUTTON_LABEL" desc="The label to a button in the Phone Hub notification opt-in flow that appears when the dialog first opens. Clicking the button will allow the user to try enabling the feature.">
     Get started
@@ -3204,13 +3222,16 @@ Press an assigned switch or key to remove assignment.
     Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> can then:
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_CAMERA_ROLL_ITEM_SUMMARY" desc="The summary of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Recent photos' setup button. Explains to the user that they need to grant Google Play Services permission to access files on the phone.">
-    View your phone's recent photos and media
+    View your phone's photos and media
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ITEM_SUMMARY" desc="The summary of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Notifications' setup button. Explains to the user that they need to grant permission to use notifications by enabling access to the Google Play Services app on their phone.">
     View, dismiss, and reply to your phone's notifications
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_APPS_ITEM_SUMMARY" desc="The summary of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Apps' setup button. Explains to the user that they need to grant phone permission to stream apps.">
-    Stream messaging apps
+    Stream your phone's apps
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_INSTRUCTIONS" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that to grant permissions, they need to have their phone unlocked, close by, and with Bluetooth/Wi-Fi on to complete setup.">
+    Make sure your phone is close by, unlocked, and Bluetooth and Wi-Fi are turned on
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_AWAITING_RESPONSE_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow shown when the user needs to follow the setup flow instructions on their phone.">
     Finish setting up on your phone
@@ -4223,6 +4244,12 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_NOTIFICATIONS" desc="Text for the name of the toggle in the smart privacy section requesting notification hiding when a snooper is detected.">
     Hide notification content when someone else is detected
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_TITLE" desc="Text on the privacy page that opens up the privacy hub section.">
+    Privacy Hub
+  </message>
+  <message name="IDS_OS_SETTINGS_CAMERA_TOGGLE_TITLE" desc="The title of the toggle to enable/disable camera from the privacy hub.">
+    Camera
   </message>
   <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in ChromeOS Flex.">
     <ph name="DEVICE_OS">$1<ex>ChromeOS Flex</ex></ph> hardware support and stability

@@ -146,6 +146,7 @@ void ServerPublisherFetcher::RunCallbacks(
   for (auto& callback : callbacks) {
     callback(server_info ? server_info.Clone() : nullptr);
   }
+  ledger_->ledger_client()->OnPublisherUpdated(publisher_key);
 }
 
 }  // namespace publisher

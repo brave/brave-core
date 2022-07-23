@@ -191,8 +191,8 @@ base::Value ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   base::Value branded_wallpaper_data =
       GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
   if (!branded_wallpaper_data.is_dict()) {
-    ads_service_->OnFailedToServeNewTabPageAd(ad_info->placement_id,
-                                              ad_info->creative_instance_id);
+    ads_service_->OnFailedToPrefetchNewTabPageAd(ad_info->placement_id,
+                                                 ad_info->creative_instance_id);
   }
 
   return branded_wallpaper_data;
@@ -301,6 +301,7 @@ void ViewCounterService::RegisterPageView() {
   // This will be no-op when component is not ready.
   service_->CheckNTPSIComponentUpdateIfNeeded();
   model_.RegisterPageView();
+  MaybePrefetchNewTabPageAd();
 }
 
 void ViewCounterService::BrandedWallpaperLogoClicked(
@@ -372,6 +373,17 @@ std::string ViewCounterService::GetSuperReferralThemeName() const {
 
 std::string ViewCounterService::GetSuperReferralCode() const {
   return service_->GetSuperReferralCode();
+}
+
+void ViewCounterService::MaybePrefetchNewTabPageAd() {
+  NTPSponsoredImagesData* images_data = GetCurrentBrandedWallpaperData();
+  if (!IsBrandedWallpaperActive() || !ads_service_ ||
+      !ads_service_->IsEnabled() || !images_data ||
+      images_data->IsSuperReferral()) {
+    return;
+  }
+
+  ads_service_->PrefetchNewTabPageAd();
 }
 
 void ViewCounterService::UpdateP3AValues() const {

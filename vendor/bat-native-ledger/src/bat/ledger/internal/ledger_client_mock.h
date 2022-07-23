@@ -44,6 +44,10 @@ class MockLedgerClient : public LedgerClient {
       type::PublisherInfoPtr,
       uint64_t windowId));
 
+  MOCK_METHOD0(OnPublisherRegistryUpdated, void());
+
+  MOCK_METHOD1(OnPublisherUpdated, void(const std::string& publisher_id));
+
   MOCK_METHOD3(FetchFavIcon, void(
       const std::string& url,
       const std::string& favicon_key,
@@ -51,9 +55,9 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD1(URIEncode, std::string(const std::string& value));
 
-  MOCK_METHOD2(LoadURL, void(
-      type::UrlRequestPtr request,
-      client::LoadURLCallback callback));
+  MOCK_METHOD2(LoadURL,
+               void(type::UrlRequestPtr request,
+                    client::LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude, void(
       const std::string& publisher_key,
@@ -135,10 +139,10 @@ class MockLedgerClient : public LedgerClient {
       const std::string& publisher_key,
       const std::string& publisher_name));
 
-  MOCK_METHOD3(ShowNotification, void(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      client::ResultCallback callback));
+  MOCK_METHOD3(ShowNotification,
+               void(const std::string& type,
+                    const std::vector<std::string>& args,
+                    client::LegacyResultCallback callback));
 
   MOCK_METHOD0(GetClientInfo, type::ClientInfoPtr());
 
@@ -146,9 +150,8 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD0(ReconcileStampReset, void());
 
-  MOCK_METHOD2(RunDBTransaction, void(
-      type::DBTransactionPtr,
-      client::RunDBTransactionCallback));
+  MOCK_METHOD2(RunDBTransaction,
+               void(type::DBTransactionPtr, client::RunDBTransactionCallback));
 
   MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
 
@@ -158,7 +161,7 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
 
-  MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
+  MOCK_METHOD1(DeleteLog, void(client::LegacyResultCallback callback));
 
   MOCK_METHOD0(GetLegacyWallet, std::string());
 };

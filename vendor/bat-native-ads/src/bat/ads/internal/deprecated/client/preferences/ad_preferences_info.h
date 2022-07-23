@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info_aliases.h"
-#include "bat/ads/internal/deprecated/client/preferences/filtered_category_info_aliases.h"
-#include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info_aliases.h"
-#include "bat/ads/internal/deprecated/client/preferences/saved_ad_info_aliases.h"
+#include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
+#include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
+#include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"
+#include "bat/ads/internal/deprecated/client/preferences/saved_ad_info.h"
 
 namespace ads {
 
@@ -20,6 +20,9 @@ struct AdPreferencesInfo final {
   AdPreferencesInfo(const AdPreferencesInfo& info);
   AdPreferencesInfo& operator=(const AdPreferencesInfo& info);
   ~AdPreferencesInfo();
+
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

@@ -70,7 +70,7 @@ std::string eth_blockNumber() {
   return GetJsonRpcNoParams("eth_blockNumber");
 }
 
-std::string eth_feeHistory(int num_blocks,
+std::string eth_feeHistory(const std::string& num_blocks,
                            const std::string& head,
                            const std::vector<double>& reward_percentiles) {
   base::Value percentile_values(base::Value::Type::LIST);

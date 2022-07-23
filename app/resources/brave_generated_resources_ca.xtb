@@ -106,6 +106,16 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Vols tancar totes les pestanyes?</translation>
 <translation id="7551864359422178684">Tens <ph name="NUMBER_OF_TABS"/> pestanyes obertes a la finestra del navegador.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> petanyes</translation>
+<translation id="2272117088509540883">- Cerca de Brave</translation>
+<translation id="2701279958223202597">Accepta la cerca independent amb millor privadesa. La Cerca de Brave no fa un seguiment vostre ni de les vostres consultes o els vostres clics.</translation>
+<translation id="6438467592401259882">Accepta la cerca independent amb millor privadesa.</translation>
+<translation id="1688359110799098115">Accepta la cerca independent amb millor privadesa</translation>
+<translation id="8579317236683491484">La Cerca de Brave no fa un seguiment vostre ni de les vostres consultes o els vostres clics.</translation>
+<translation id="5240031343741051161">Prova la Cerca de Brave</translation>
+<translation id="5026874946691314267">No mostris això una altra vegada</translation>
+<translation id="5234764350956374838">Omet</translation>
+<translation id="214744058941501853">"&gt;
+          Descarta la conversió de la Cerca de Brave, premeu Retorn per eliminar aquest suggeriment</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
 <translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="6040143037577758943">Tanca</translation>
@@ -135,6 +145,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8490082094734500369">Desactiva el mode de lector</translation>
 <translation id="2036503787657622020">Activa el mode de lector</translation>
 <translation id="5226458915125328323">Configuració de l'Speedreader</translation>
+<translation id="1621606336827646158">Mostra la pàgina original</translation>
 <translation id="6284218950354553099">Envieu automàticament el ping d'ús diari a Brave</translation>
 <translation id="5288333155754958121">Aquest ping anònim privat permet a Brave calcular els usuaris actius.</translation>
 <translation id="1872784258300710671">Brave fa servir analítiques dels seus productes totalment privades per a estimar l'ús global de determinades característiques</translation>
@@ -185,6 +196,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Definiu el Brave com a navegador per defecte per obtenir les proteccions de privadesa de Brave a totes les pàgines web que obriu.</translation>
 <translation id="8722651357687610395">Estableix Brave com a predeterminat</translation>
 <translation id="2370739752330685659">Potser més tard</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Importat des de <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
 <translation id="7179921470347911571">Rellançar Ara</translation>
 <translation id="4472575034687746823">Comença</translation>
@@ -201,9 +214,11 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2906510232093002459">Imatges predeterminades de Brave</translation>
 <translation id="2396127686705429331">Mostra el botó d'adreces d'interès</translation>
 <translation id="2814998458708016836">Fer servir una barra d'adreces ampla</translation>
-<translation id="5802665280774361839">Mostra Autocompletar a la barra d'adreces</translation>
-<translation id="597020512043916976">Mostreu els llocs principals en suggeriments de complet automàtic</translation>
-<translation id="301088458323355543">Mostra els llocs suggerits en suggeriments de compleció automàtica</translation>
+<translation id="4109670531935487117">Mostra suggeriments d'autocompletat a la barra d'adreces</translation>
+<translation id="2858138569776157458">Llocs populars</translation>
+<translation id="65774893852758517">Llocs suggerits</translation>
+<translation id="7859704718976024901">Historial de navegació</translation>
+<translation id="8820817407110198400">Adreces d'interès</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
 <translation id="1811404036171336214">Mostrar sempre els marcadors a la nova pestanya</translation>
 <translation id="5529693968082667490">Mostra el botó de cerca de pestanyes</translation>
@@ -362,6 +377,8 @@ Revisa que aquests codis de paraules s'hagin generat a partir d'un dels teus dis
 Segur que vols continuar?</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
+<translation id="842628013524824194">Finestra normal - Motor de cerca utilitzat a la barra d'adreces</translation>
+<translation id="5324939009884545145">Finestra d'incògnit - Motor de cerca utilitzat a la barra d'adreces</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
 <translation id="7878791177459550035">L'encaminador multimèdia habilita la funció de transmissió al navegador.</translation>
@@ -461,6 +478,7 @@ Segur que vols continuar?</translation>
 <translation id="616058968889448209">Error d'inici del sistema IPFS, trobaràs més informació disponible a la <ph name="BEGIN_LINK"/>pàgina de diagnòstic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">No ha estat possible importar la clau '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Error en l'exportació de la clau '<ph name="KEY_NAME"/>'</translation>
+<translation id="5840868269342837751">Nota: Les sol·licituds de xarxa no poden utilitzar el servidor intermediari del navegador i la configuració DNS.</translation>
 <translation id="8275038454117074363">Importa</translation>
 <translation id="3654980960391973513">Genera</translation>
 <translation id="5531501313997312487">Node d'inici</translation>

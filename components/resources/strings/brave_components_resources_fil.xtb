@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Gumamit ng Brave local IPFS node</translation>
 <translation id="8148464361648742409">Gumamit ng pampublikong gateway</translation>
 <translation id="5123478056123923857">Ang IPFS (InterPlanetary File System) ay ang pampublikong network para sa peer-to-peer na pag-store at paghahatid ng data. May iba't ibang pagsasaalang-alang sa privacy ang protocol na ito mula sa HTTP(S).</translation>
-<translation id="5410952114182173389">Nag-aambag ang iyong computer sa pampublikong network, pero posibleng malantad ang IP address mo at anumang content na hinihiling o ibinibigay mo. Vine-verify ang content na hinihiling mo sa IPFS bago ito ihatid sa iyo.</translation>
+<translation id="1216911189668016151">Nag-aambag ang iyong computer sa pampublikong network, pero posibleng malantad ang IP address mo at anumang content na hinihiling o ibinibigay mo. Vine-verify ang content na hinihiling mo sa IPFS bago ito ihatid sa iyo. Hindi puwedeng gamitin ng mga kahilingan sa network ang proxy ng browser at mga setting ng DNS.</translation>
 <translation id="8664689531113048642">Pinoprotektahan ang iyong IP address at content na hinihiling mo mula sa mga potensyal na third-party na tagamasid, pero hindi mula sa operator ng pampublikong gateway. Responsibilidad ng operator ng gateway na tiyaking ang content na inihatid sa iyo sa pamamagitan ng isang gateway ay ang content na hiniling mo. Dagdag pa rito, hindi nag-aambag ang iyong computer sa pampublikong network ng IPFS.</translation>
 <translation id="3977809385703587108">Puwede mo ulit baguhin ang iyong mga kagustuhan sa</translation>
 <translation id="3340978935015468852">mga setting</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Mag-import mula sa mga legacy na wallet ng cryptocurrency ng Brave?</translation>
 <translation id="3331452756822160641">Bagong Password</translation>
 <translation id="8624315169751085215">Kopyahin sa Clipboard</translation>
+<translation id="7885157704277298658">Nakopya!</translation>
 <translation id="1121335910737476837">Mga pangunahing account sa cryptocurrency</translation>
 <translation id="6969147029062037757">Na-import na mga account</translation>
 <translation id="4057718162494343222">Maaari kang gumawa ng mga pangunahing account sa Brave Wallet na maaaring i-back up o i-restore gamit ang iyong recovery phrase. Bisitahain ang tulong sa account para mas matuto pa tungkol sa mga uri ng account.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL ng icon</translation>
 <translation id="2144247757675997850">Magdagdag ng asset</translation>
 <translation id="2708402071160162126">BABALA: Huwag kailanman ibahagi ang iyong parirala sa pag-recover. Pwedeng kunin at hindi na ibalik pa ng sinumang mayroon ng pariralang ito ang iyong mga asset.</translation>
+<translation id="2416098547200943834">TANDAAN: Ibinbigay ang private key bilang hex-encoded JSON na naglalaman ng private key at impormasyon ng protocol. <ph name="LINK_START"/>Matuto pa<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">TANDAAN: Dapat na ibigay ang private key bilang hex-encoded JSON na naglalaman ng private key at impormasyon ng protocol. <ph name="LINK_START"/>Matuto pa<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Ipakita ang key</translation>
 <translation id="8033497299373164724">Itago ang key</translation>
 <translation id="2702143907607790516">Hindi na-update ang pangalan ng account, pakisubukan ulit.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Mensahe</translation>
 <translation id="3586752056660754651">I-sign</translation>
 <translation id="3484981968509595506">Hinihingi ng DApp ang iyong public encryption key</translation>
-<translation id="1915212737651531313">Hinihiling ng <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> ang pampublikong encryption key ng iyong mga wallet. Kung papahintulutan mong ibigay ang key na ito, makakapagsulat ang site ng mga naka-encrypt na mensahe para sa iyo.</translation>
+<translation id="2950511942409261729">Hinihiling ng <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> ang public encryption key ng iyong wallet. Kung papahintulutan mo ang pagbibigay ng key na ito, makakapag-compose ng mga naka-encrypt na mensahe ang site sa iyo.</translation>
 <translation id="3340247553212049934">Magbigay ng</translation>
 <translation id="1619778919922494944">Gusto ng DApp na ito na basahin ang mensaheng ito para makumpleto ang iyong kahilingan</translation>
 <translation id="714506544401754321">I-decrypt ang mensahe</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ang nadiskonekta</translation>
 <translation id="5317781812114905957">Mga Tagubilin</translation>
 <translation id="1178198982208000092">Ikonekta ang iyong <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Nangangailangan ng pagkumpirma sa device ang hardware wallet.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Kailangan ng hardware wallet na nakabukas ang Ethereum App sa <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Kailangan ng hardware wallet ng kumpirmasyon sa device <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Kailangan ng hardware wallet na nakabukas ang <ph name="NETWORK"/> App sa <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">naipadala</translation>
 <translation id="5013754027092416509">natanggap</translation>
 <translation id="5867988533873716616">Hindi available ang URL ng block explorer.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397">Hindi kasalukuyang network ang <ph name="ADDRESS"/></translation>
 <translation id="7340805872138998391">Hindi ma-unlock ang device, subukang kumonekta ulit</translation>
 <translation id="1984410139271779110">Internal na error, hindi alam na scheme</translation>
-<translation id="8682200134223578011">aprubado</translation>
+<translation id="6989562355845156390">aprubahan</translation>
 <translation id="4674380028960132654">Ledger: Hindi tugma ang pirma sa tamang address</translation>
 <translation id="3183932890629254743">Hindi nahanap ang harware account</translation>
 <translation id="4287068151777838754">Hindi inaasahan ang JSON data</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Nakumpirma ang transaksyon</translation>
 <translation id="310693998838023022">Error sa transaksyon</translation>
 <translation id="6395870673621520684">Na-drop ang transaksyon</translation>
+<translation id="1237782734462409503">Hindi aktibo ang tab</translation>
+<translation id="756701799684433105">Aprubahan ang transaksyon</translation>
+<translation id="6450792191436242818">System Program</translation>
+<translation id="6252742184395380448">Config Program</translation>
+<translation id="5358970666412490132">Stake Program</translation>
+<translation id="346636227344244984">Program ng Pagboto</translation>
+<translation id="3538368258493053874">BPF Loader</translation>
+<translation id="2334098351242742927">Ed25519 Program</translation>
+<translation id="8780753288764281797">Secp256k1 Program</translation>
+<translation id="5275550100743015683">Pinagmulang Address:</translation>
+<translation id="2678433693746214764">Patutunguhang Address:</translation>
+<translation id="4576396475962922672">Bagong Account:</translation>
+<translation id="4719005063558335704">Mga Account:</translation>
+<translation id="4337554812324118382">Data:</translation>
+<translation id="569870799832027680">Program ID:</translation>
+<translation id="7843211152394841558">Max na Retry:</translation>
+<translation id="8496335570810457">Preflight Commitment:</translation>
+<translation id="5100124500279922001">Laktawan ang Preflight:</translation>
+<translation id="8060029310790625334">Help Center</translation>
+<translation id="2095142195578664632">Kailangan ng tulong? Tingnan ang</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="3745016858329272300">Pangkalahatang Impormasyon</translation>
 <translation id="4045404575593562245">Mga Control Event ng Tor</translation>

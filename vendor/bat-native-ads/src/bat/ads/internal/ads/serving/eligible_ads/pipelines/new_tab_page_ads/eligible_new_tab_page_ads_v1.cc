@@ -93,7 +93,7 @@ void EligibleAdsV1::GetForChildSegments(
           return;
         }
 
-        const CreativeNewTabPageAdList& eligible_creative_ads =
+        const CreativeNewTabPageAdList eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
@@ -137,7 +137,7 @@ void EligibleAdsV1::GetForParentSegments(
           return;
         }
 
-        const CreativeNewTabPageAdList& eligible_creative_ads =
+        const CreativeNewTabPageAdList eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
@@ -170,15 +170,13 @@ void EligibleAdsV1::GetForUntargeted(
           return;
         }
 
-        const CreativeNewTabPageAdList& eligible_creative_ads =
+        const CreativeNewTabPageAdList eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
                                             << " ads for untargeted segment");
-        } else {
-          BLOG(1, eligible_creative_ads.size()
-                      << " eligible ads out of " << creative_ads.size()
-                      << " ads for untargeted segment");
+          callback(/* had_opportunity */ false, {});
+          return;
         }
 
         callback(/* had_opportunity */ true, eligible_creative_ads);
@@ -206,9 +204,9 @@ CreativeNewTabPageAdList EligibleAdsV1::FilterCreativeAds(
   eligible_creative_ads = FilterSeenAdsAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kNewTabPageAd);
 
-  eligible_creative_ads = PaceAds(eligible_creative_ads);
+  eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
 
-  eligible_creative_ads = PrioritizeAds(eligible_creative_ads);
+  eligible_creative_ads = PrioritizeCreativeAds(eligible_creative_ads);
 
   return eligible_creative_ads;
 }

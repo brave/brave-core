@@ -106,6 +106,16 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Vil du lukke alle fanene?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> åpne faner i dette nettleservinduet.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
+<translation id="2272117088509540883">- Brave-søk</translation>
+<translation id="2701279958223202597">Støtt uavhengige søk med styrket personvern. Brave-søket sporer verken deg, søkene dine eller klikkene dine.</translation>
+<translation id="6438467592401259882">Støtt uavhengige søk med styrket personvern.</translation>
+<translation id="1688359110799098115">Støtt uavhengige søk med styrket personvern</translation>
+<translation id="8579317236683491484">Brave-søk sporer verken deg, søkene dine eller klikkene dine.</translation>
+<translation id="5240031343741051161">Prøv Brave-søk</translation>
+<translation id="5026874946691314267">Ikke vis dette igjen.</translation>
+<translation id="5234764350956374838">Lukk</translation>
+<translation id="214744058941501853">"&gt;
+          Avvis konvertering til Brave-søk, trykk på Enter for å fjerne dette forslaget</translation>
 <translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="7924918279836988121">Bat-reskontrotjeneste</translation>
 <translation id="6040143037577758943">Lukk</translation>
@@ -135,6 +145,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8490082094734500369">Slå av lesemodus</translation>
 <translation id="2036503787657622020">Slå på lesemodus</translation>
 <translation id="5226458915125328323">Innstillinger for hurtiglesing</translation>
+<translation id="1621606336827646158">Vis opprinnelig side</translation>
 <translation id="6284218950354553099">Automatisk ping dagsforbruk til Brave</translation>
 <translation id="5288333155754958121">Denne anonyme, private pingen gjør at Brave kan estimere antall aktive brukere.</translation>
 <translation id="1872784258300710671">Brave bruker helt privat produktdiagnostikk til å beregne den totale bruken av visse funksjoner</translation>
@@ -185,6 +196,8 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Sett Brave som standardnettleser for å benytte deg av Braves personvernbeskyttelse på alle nettsider du åpner.</translation>
 <translation id="8722651357687610395">Sett Brave som standard</translation>
 <translation id="2370739752330685659">Kanskje senere</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">importert fra <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
 <translation id="7179921470347911571">Start på nytt nå</translation>
 <translation id="4472575034687746823">Kom i gang</translation>
@@ -201,9 +214,11 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2906510232093002459">Standardbilder for Brave</translation>
 <translation id="2396127686705429331">Vis bokmerke-knappen</translation>
 <translation id="2814998458708016836">Bruk vid adresselinje</translation>
-<translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
-<translation id="597020512043916976">Vis toppsider med autofullførte forslag</translation>
-<translation id="301088458323355543">Vis foreslåtte sider i autofullfør-forslag</translation>
+<translation id="4109670531935487117">Vis forslag til autofullføring i adressefeltet</translation>
+<translation id="2858138569776157458">Populært</translation>
+<translation id="65774893852758517">Foreslåtte sider</translation>
+<translation id="7859704718976024901">Nettleserlogg</translation>
+<translation id="8820817407110198400">Bokmerker</translation>
 <translation id="6333347122924254968">Vis Brave Rewards-ikonet i adresselinjen</translation>
 <translation id="1811404036171336214">Vis alltid bokmerker på den nye fanesiden</translation>
 <translation id="5529693968082667490">Vis knapp for å søke i faner</translation>
@@ -362,6 +377,8 @@ Dobbeltsjekk at kodeordene ble generert av en enhet du eier.
 Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
 <translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
+<translation id="842628013524824194">Normalt vindu – Søkemotor brukt i adressefeltet</translation>
+<translation id="5324939009884545145">Privat vindu – Søkemotor brukt i adressefeltet</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
 <translation id="7878791177459550035">Mediaruteren slår på cast-funksjonen i nettleseren.</translation>
@@ -461,6 +478,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="616058968889448209">IPFS-opplastingafeil. Du finner mer informasjon på <ph name="BEGIN_LINK"/>diagnosesiden<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>'-nøkkelimport mislyktes</translation>
 <translation id="3364053282600191535">Kunne ikke eksportere nøkkel '<ph name="KEY_NAME"/>'</translation>
+<translation id="5840868269342837751">Merk: Nettverksforespørslene kan ikke bruke nettleserens proxy- og DNS-instillinger.</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Generer</translation>
 <translation id="5531501313997312487">Start noden</translation>

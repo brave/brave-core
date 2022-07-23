@@ -21,15 +21,12 @@
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
 <translation id="7823038307453615214">பிரேவ் செய்திகளை காட்டு</translation>
 <translation id="6527303717912515753">பகிர்</translation>
+<translation id="1717242776111689224">பிரேவ் செய்திகளை இயக்கு</translation>
 <translation id="7459000603787995422">வெளியேறுகையில் தாவல்களை மூடு</translation>
 <translation id="4448697385961650078">தடமிகள் &amp; விளம்பரங்கள் தடு</translation>
 <translation id="1680858055899097121">உலாவல் அமர்வுகளுக்கு இடையே தாவல்களை நிலைத்திருக்காதே</translation>
 <translation id="7977176350719484850">மதிப்பிட. சேமித்த\nதரவு</translation>
 <translation id="9008534313521214777">மதிப்பிட. சேமித்த\nநேரம்</translation>
-<translation id="6572660632052512096">சாளர பயன்முறை</translation>
-<translation id="1340503115760585811">புது தாவல்களுக்கு சாளர பார்வையை இயக்கு</translation>
-<translation id="807636106793708118">தளங்களின் கைபேசி பதிப்பை விரும்பு</translation>
-<translation id="4479934682648362332">தளங்களின் சாளர பதிப்பை விரும்பு</translation>
 <translation id="1842747674580016420">பிரேவில் காணொளி இயக்கம்</translation>
 <translation id="410351446219883937">தானியங்கி</translation>
 <translation id="7445411102860286510">ஒலியடக்கிய வீடியோக்களைத் தானாகவே இயக்க, தளங்களை அனுமதி (பரிந்துரைக்கப்படுகிறது)</translation>
@@ -82,6 +79,8 @@
 <translation id="8220228041552340594">அக்டொபர்</translation>
 <translation id="8280223431922155812">நவம்பர்</translation>
 <translation id="4254029385847607686">டிசம்பர்</translation>
+<translation id="3960619311638643872">பிரேவ் VPN</translation>
+<translation id="1772301834467143364">பிரேவ் செய்திகள்</translation>
 <translation id="1165667598801520610">நிதி சேர்</translation>
 <translation id="8428213095426709021">அமைப்புகள்</translation>
 <translation id="8918760045046434238">துணுக்குதவியை அனுப்பு...</translation>
@@ -242,6 +241,7 @@
 <translation id="8239147115686034860">தானாக பிரேவ் பணப்பையைப் பூட்டு</translation>
 <translation id="414639769490080648">பிரேவ் பணப்பை தானாக பூட்டப்படும் வரை காத்திருக்க வேண்டிய நிமிடங்கள்</translation>
 <translation id="4993345308607970390">பிரேவ் பணப்பையை அகரமாக்கு</translation>
+<translation id="4449475351935531438">பிரேவ் தீச்சுவர் + VPN</translation>
 <translation id="3435896845095436175">இயக்கு</translation>
 <translation id="7805768142964895445">நிலை</translation>
 <translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
@@ -280,6 +280,7 @@
 <translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
 <translation id="5052727830821470769">பிணைய உரலி</translation>
 <translation id="7982789257301363584">நெட்வொர்க்</translation>
-<translation id="8759753423332885148">மேலும் அறிக.</translation>
+<translation id="714506544401754321">தகவலை மறைநீக்கு</translation>
+<translation id="5039804452771397117">அனுமதி</translation>
 <translation id="1324417023773393937">பிரேவ் உலாவி</translation>
 </translationbundle>

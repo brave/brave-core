@@ -11,10 +11,14 @@
 
 namespace brave_wallet {
 
-bool ParseSwapResponse(const std::string& json,
-                       bool expect_transaction_data,
-                       mojom::SwapResponsePtr* swap_response);
+mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
+                                         bool expect_transaction_data);
 
+mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json);
+mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
+    const std::string& json);
+absl::optional<std::string> ConvertJupiterQuoteUint64ToString(
+    const std::string& json);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_

@@ -20,7 +20,6 @@
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
@@ -116,13 +115,7 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
-    BLOG(1,
-         "Failed to redeem unblinded payment token as a browser upgrade is "
-         "required");
-    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ false);
-    return;
-  } else if (url_response.status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     FailedToRedeemUnblindedPaymentTokens(/* should_retry */ true);
     return;
   }

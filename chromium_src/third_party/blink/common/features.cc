@@ -28,6 +28,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},

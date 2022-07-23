@@ -6,6 +6,7 @@
 #include "brave/components/playlist/playlist_download_request_manager.h"
 
 #include "base/bind.h"
+#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -14,7 +15,9 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/isolated_world_ids.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "ui/base/page_transition_types.h"
 
 namespace playlist {
 
@@ -50,6 +53,7 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
       delegate_(delegate),
       media_detector_component_manager_(manager) {
   observed_.Observe(media_detector_component_manager_);
+
   media_detector_script_ = media_detector_component_manager_->script();
 }
 
@@ -60,22 +64,19 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
     return;
 
   // |web_contents_| is created on demand.
-  constexpr char kYoutubeURL[] = "https://www.youtube.com/";
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
-  web_contents_->GetController().LoadURLWithParams(
-      content::NavigationController::LoadURLParams(GURL(kYoutubeURL)));
+
   Observe(web_contents_.get());
 }
 
-void PlaylistDownloadRequestManager::GeneratePlaylistCreateParamsForYoutubeURL(
+void PlaylistDownloadRequestManager::GetMediaFilesFromPage(
     const std::string& url) {
   web_contents_destroy_timer_.reset();
 
+  CreateWebContents();
   if (!ReadyToRunMediaDetectorScript()) {
-    pending_youtube_urls_.push_back(url);
-
-    CreateWebContents();
+    pending_urls_.push_back(url);
     media_detector_component_manager_->RegisterIfNeeded();
     return;
   }
@@ -87,26 +88,64 @@ void PlaylistDownloadRequestManager::OnScriptReady(const std::string& script) {
   media_detector_script_ = script;
 
   if (ReadyToRunMediaDetectorScript())
-    FetchAllPendingYoutubeURLs();
+    FetchPendingURL();
 }
 
-void PlaylistDownloadRequestManager::FetchAllPendingYoutubeURLs() {
-  if (pending_youtube_urls_.empty())
+void PlaylistDownloadRequestManager::FetchPendingURL() {
+  if (pending_urls_.empty())
     return;
 
-  // Run all pending request.
-  for (const auto& url : pending_youtube_urls_) {
-    RunMediaDetector(url);
-  }
-
-  pending_youtube_urls_.clear();
+  auto url = pending_urls_.front();
+  pending_urls_.pop_front();
+  RunMediaDetector(url);
 }
 
 void PlaylistDownloadRequestManager::RunMediaDetector(const std::string& url) {
   DCHECK(PlaylistJavaScriptWorldIdIsSet());
 
-  DCHECK_GE(in_progress_youtube_urls_count_, 0);
-  in_progress_youtube_urls_count_++;
+  DCHECK_GE(in_progress_urls_count_, 0);
+  in_progress_urls_count_++;
+
+  web_contents_->GetController().LoadURLWithParams(
+      content::NavigationController::LoadURLParams(GURL(url)));
+}
+
+bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
+  return !media_detector_script_.empty();
+}
+
+void PlaylistDownloadRequestManager::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  DCHECK(web_contents_->GetMainFrame());
+
+  // This script is from
+  // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/PlaylistSwizzler.js
+  static const std::u16string kScriptToHideMediaSourceAPI =
+      uR"-(
+    (function() {
+      // Stub out the MediaSource API so video players do not attempt to use `blob` for streaming
+      if (window.MediaSource || window.WebKitMediaSource || window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId) {
+        window.MediaSource = null;
+        window.WebKitMediaSource = null;
+        delete window.MediaSource;
+        delete window.WebKitMediaSource;
+      }
+    })();
+    )-";
+
+  // In order to hide js API from main world, use testing
+  // api temporarily.
+  web_contents_->GetMainFrame()->ExecuteJavaScriptForTests(
+      kScriptToHideMediaSourceAPI, base::NullCallback());
+}
+
+void PlaylistDownloadRequestManager::DidFinishLoad(
+    content::RenderFrameHost* render_frame_host,
+    const GURL& validated_url) {
+  if (in_progress_urls_count_ == 0)
+    return;
+
+  DCHECK(web_contents_->GetMainFrame());
 
   web_contents_->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script_),
@@ -115,84 +154,69 @@ void PlaylistDownloadRequestManager::RunMediaDetector(const std::string& url) {
       g_playlist_javascript_world_id);
 }
 
-bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
-  if (!media_detector_script_.empty() && web_contents_ && web_contents_ready_)
-    return true;
-
-  return false;
-}
-
-void PlaylistDownloadRequestManager::DidFinishLoad(
-    content::RenderFrameHost* render_frame_host,
-    const GURL& validated_url) {
-  if (render_frame_host->GetMainFrame()) {
-    // To run youtubedown.js, frame should be ready.
-    // After that, we don't need to observe.
-    web_contents_ready_ = true;
-    Observe(nullptr);
-
-    if (ReadyToRunMediaDetectorScript())
-      FetchAllPendingYoutubeURLs();
-  }
-}
-
 void PlaylistDownloadRequestManager::OnGetMedia(base::Value value) {
-  DCHECK_GT(in_progress_youtube_urls_count_, 0);
-  in_progress_youtube_urls_count_--;
+  auto print_value = [](const base::Value& value) {
+    std::string out;
+    base::JSONWriter::Write(value, &out);
+    LOG(ERROR) << value;
+  };
 
-  if (in_progress_youtube_urls_count_ == 0)
+  DCHECK_GT(in_progress_urls_count_, 0);
+  in_progress_urls_count_--;
+
+  /* Expected output:
+    [
+      {
+        "detected": boolean,
+        "mimeType": "video" | "audio",
+        "name": string,
+        "pageSrc": url,
+        "pageTitle": string
+        "src": url
+        "thumbnail": url | undefined
+      }
+    ]
+  */
+
+  if (in_progress_urls_count_ == 0)
     ScheduleWebContentsDestroying();
 
   if (!value.is_list()) {
     LOG(ERROR) << __func__
-               << " Got invalid value after running media detector script";
+               << " Got invalid value after running media detector script:";
+    print_value(value);
     return;
   }
 
-  CreatePlaylistParams params;
-
-  const auto& list = value.GetList();
-  if (list.empty()) {
-    LOG(ERROR) << __func__
-               << " Got invalid value after running media detector script";
-    return;
-  }
-
-  const bool has_audio = list.size() > 1;
-
-  // Get clean playlist name.
-  // TODO(sko) This routine is set for youtubedown.js. We need to clean this up
-  // with new script.
-  auto* file = list[0].FindStringKey("file");
-  auto* thumb = list[0].FindStringKey("thumb");
-  DCHECK(file);
-  DCHECK(thumb);
-
-  params.playlist_name = *file;
-  RE2::Replace(&params.playlist_name, "\\s\\[.*$", "");
-
-  params.playlist_thumbnail_url = *thumb;
-  if (const std::string* url = list[0].FindStringKey("url")) {
-    params.video_media_files.emplace_back(*url, "");
-  } else {
-    DCHECK(list[0].FindListKey("url"));
-    for (const auto& value : list[0].FindListKey("url")->GetList()) {
-      params.video_media_files.emplace_back(value.GetString(), "");
+  for (const auto& media : value.GetList()) {
+    if (!media.is_dict()) {
+      LOG(ERROR) << __func__
+                 << " Got invalid value after running media detector script";
+      print_value(media);
+      return;
     }
+
+    auto* name = media.FindStringKey("name");
+    auto* page_title = media.FindStringKey("pageTitle");
+    auto* page_source = media.FindStringKey("pageSrc");
+    auto* mime_type = media.FindStringKey("mimeType");
+    auto* src = media.FindStringKey("src");
+    auto* thumbnail = media.FindStringKey("thumbnail");
+    DCHECK(name);
+    DCHECK(page_source);
+    DCHECK(page_title);
+    DCHECK(mime_type);
+    DCHECK(src);
+
+    PlaylistItemInfo info;
+    info.title = *name;
+    if (thumbnail)
+      info.thumbnail_path = *thumbnail;
+    info.media_file_path = *src;
+    delegate_->OnPlaylistCreationParamsReady(info);
   }
 
-  if (has_audio) {
-    if (const std::string* url = list[1].FindStringKey("url")) {
-      params.audio_media_files.emplace_back(*url, "");
-    } else {
-      DCHECK(list[0].FindListKey("url"));
-      for (const auto& value : list[1].FindListKey("url")->GetList()) {
-        params.audio_media_files.emplace_back(value.GetString(), "");
-      }
-    }
-  }
-
-  delegate_->OnPlaylistCreationParamsReady(params);
+  FetchPendingURL();
 }
 
 void PlaylistDownloadRequestManager::ScheduleWebContentsDestroying() {

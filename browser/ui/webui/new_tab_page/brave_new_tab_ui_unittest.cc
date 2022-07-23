@@ -11,13 +11,14 @@
 TEST(BraveNewTabUITest, ConstantsTest) {
   // Make sure history/ntp_tiles module has proper constants for our NTP
   // requirements.
-  constexpr size_t kBraveMaxTopSitesNumber = 12;
-  constexpr size_t kTopSitesNumber = history::TopSitesImpl::kTopSitesNumber;
+  constexpr size_t kBraveMaxNumMostVisited = 12;
+  constexpr size_t kBraveMaxNumCustomLinks = 48;
+  constexpr size_t kTopSitesNumber = history::kTopSitesNumber;
 
-  EXPECT_EQ(kBraveMaxTopSitesNumber, kTopSitesNumber);
-  EXPECT_EQ(kBraveMaxTopSitesNumber, ntp_tiles::kMaxNumCustomLinks);
-  EXPECT_EQ(kBraveMaxTopSitesNumber, ntp_tiles::kMaxNumMostVisited);
-  EXPECT_EQ(static_cast<int>(kBraveMaxTopSitesNumber), ntp_tiles::kMaxNumTiles);
+  EXPECT_EQ(kBraveMaxNumMostVisited, kTopSitesNumber);
+  EXPECT_EQ(kBraveMaxNumCustomLinks, ntp_tiles::kMaxNumCustomLinks);
+  EXPECT_EQ(kBraveMaxNumMostVisited, ntp_tiles::kMaxNumMostVisited);
+  EXPECT_EQ(static_cast<int>(kBraveMaxNumMostVisited), ntp_tiles::kMaxNumTiles);
 }
 
 TEST(BraveNewTabUITest, TopSiteURLValidation) {

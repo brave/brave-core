@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_aliases.h"
+#include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 
 namespace ads {
 

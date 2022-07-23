@@ -6,11 +6,9 @@
 #include "bat/ads/internal/ads/ad_events/search_result_ads/search_result_ad_event_viewed.h"
 
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "bat/ads/internal/history/history_manager.h"
 
 namespace ads {
 namespace search_result_ads {
@@ -32,8 +30,6 @@ void AdEventViewed::FireEvent(const SearchResultAdInfo& ad) {
 
     BLOG(6, "Successfully logged search result ad viewed event");
   });
-
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 }
 
 }  // namespace search_result_ads

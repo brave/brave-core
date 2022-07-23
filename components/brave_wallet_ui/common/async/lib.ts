@@ -34,7 +34,7 @@ import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
-import SolanaLedgerKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
+import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -78,7 +78,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
-    } else if (keyring instanceof SolanaLedgerKeyring && opts.network) {
+    } else if (keyring instanceof SolanaLedgerBridgeKeyring && opts.network) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex)
         .then(async (result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
@@ -564,6 +564,7 @@ export function refreshNetworkInfo () {
 
     // Get current selected networks info
     const chainId = await jsonRpcService.getChainId(selectedCoin)
+
     const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
     dispatch(WalletActions.setNetwork(currentNetwork))
     return currentNetwork
@@ -573,9 +574,9 @@ export function refreshNetworkInfo () {
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const { wallet: { selectedCoin } } = getState()
-    const apiProxy = getAPIProxy()
-    const { keyringService, walletHandler } = apiProxy
 
+    const apiProxy = getAPIProxy()
+    const { keyringService, walletHandler, jsonRpcService } = apiProxy
     const walletInfoBase = await walletHandler.getWalletInfo()
     const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
 
@@ -587,15 +588,21 @@ export function refreshKeyringInfo () {
 
     // Get default accounts for each CoinType
     const defaultAccounts = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      const defaultAccount = await keyringService.getSelectedAccount(coin)
+      const chainId = await jsonRpcService.getChainId(coin)
+      const defaultAccount = coin === BraveWallet.CoinType.FIL
+          ? await keyringService.getFilecoinSelectedAccount(chainId.chainId)
+          : await keyringService.getSelectedAccount(coin)
       const defaultAccountAddress = defaultAccount.address
       return walletInfo.accountInfos.find((account) => account.address.toLowerCase() === defaultAccountAddress?.toLowerCase()) ?? {} as BraveWallet.AccountInfo
     }))
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
+    const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
 
     // Get selectedAccountAddress
-    const getSelectedAccount = await keyringService.getSelectedAccount(selectedCoin)
+    const getSelectedAccount = selectedCoin === BraveWallet.CoinType.FIL
+        ? await keyringService.getFilecoinSelectedAccount(coinsChainId.chainId)
+        : await keyringService.getSelectedAccount(selectedCoin)
     const selectedAddress = getSelectedAccount.address
 
     // Fallback account address if selectedAccount returns null

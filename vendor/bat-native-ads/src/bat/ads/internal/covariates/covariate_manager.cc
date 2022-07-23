@@ -6,7 +6,6 @@
 #include "bat/ads/internal/covariates/covariate_manager.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/no_destructor.h"
@@ -37,11 +36,11 @@ GetUserActivityEventToCovariateTypesMapping() {
              kNumberOfBrowserDidBecomeActiveEvents,
          brave_federated::mojom::CovariateType::
              kTimeSinceLastBrowserDidBecomeActiveEvent}},
-       {UserActivityEventType::kBrowserDidBecomeActive,
+       {UserActivityEventType::kBrowserDidEnterForeground,
         {brave_federated::mojom::CovariateType::
-             kNumberOfBrowserWindowIsActiveEvents,
+             kNumberOfBrowserDidEnterForegroundEvents,
          brave_federated::mojom::CovariateType::
-             kTimeSinceLastBrowserWindowIsActiveEvent}},
+             kTimeSinceLastBrowserDidEnterForegroundEvent}},
        {UserActivityEventType::kBrowserDidResignActive,
         {brave_federated::mojom::CovariateType::
              kNumberOfBrowserWindowIsInactiveEvents,

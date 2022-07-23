@@ -13,6 +13,7 @@ enum Environment {
 };
 
 struct SysInfo {
+  string device_id;
   bool did_override_command_line_args_flag;
   bool is_uncertain_future;
 };
@@ -83,10 +84,6 @@ enum SearchResultAdEventType {
   kServed = 0,
   kViewed,
   kClicked
-};
-
-enum P2AEventType {
-  kListType = 0
 };
 
 enum UrlRequestMethod {

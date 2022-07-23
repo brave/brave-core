@@ -28,7 +28,8 @@ class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
     CopyFileFromTestPathToTempPath("database_issue_17199.sqlite",
                                    kDatabaseFilename);
 
-    CopyFileFromTestPathToTempPath("client_issue_17199.json", kClientFilename);
+    CopyFileFromTestPathToTempPath("client_issue_17199.json",
+                                   kClientStateFilename);
   }
 };
 
@@ -43,8 +44,9 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel({"technology & computing-computing"}, {}, {}),
-      [](const bool success, const CreativeNotificationAdList& creative_ads) {
-        EXPECT_TRUE(success);
+      [](const bool had_opportunity,
+         const CreativeNotificationAdList& creative_ads) {
+        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       });
 

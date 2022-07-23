@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/legacy/report_balance_state.h"
+#include "bat/ledger/internal/legacy/report_balance_properties.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=ReportBalanceStateTest.*
@@ -19,14 +19,10 @@ TEST(ReportBalanceStateTest, ToJsonSerialization) {
   report_balance_properties.recurring_donations = 1;
   report_balance_properties.one_time_donations = 1;
 
-  // Act
-  const ReportBalanceState report_balance_state;
-  const std::string json =
-      report_balance_state.ToJson(report_balance_properties);
-
   // Assert
   ReportBalanceProperties expected_report_balance_properties;
-  report_balance_state.FromJson(json, &expected_report_balance_properties);
+  expected_report_balance_properties.FromJson(
+      report_balance_properties.ToJson());
   EXPECT_EQ(expected_report_balance_properties, report_balance_properties);
 }
 
@@ -43,8 +39,7 @@ TEST(ReportBalanceStateTest, FromJsonDeserialization) {
 
   // Act
   ReportBalanceProperties expected_report_balance;
-  const ReportBalanceState report_balance_state;
-  report_balance_state.FromJson(json, &expected_report_balance);
+  expected_report_balance.FromJson(json);
 
   // Assert
   EXPECT_EQ(expected_report_balance, report_balance);

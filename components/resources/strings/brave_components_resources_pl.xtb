@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Skorzystaj z lokalnego węzła IPFS Brave</translation>
 <translation id="8148464361648742409">Skorzystaj z publicznej bramki</translation>
 <translation id="5123478056123923857">IFPS (InterPlanetary File System) to sieć publiczna do przechowywania i dostarczania danych w oparciu o model peer-to-peer. Protokół ten różni się parametrami prywatności od protokołu HTTP(S).</translation>
-<translation id="5410952114182173389">Twój komputer ma wkład w sieć publcizną, ale Twój adres IP i wszelkie treści, których żądasz lub które dostarczasz, mogą być narażone. Treści, których żądasz przez IPFS, są weryfikowane przed podaniem Ci ich.</translation>
+<translation id="1216911189668016151">Twój komputer wchodzi w skład sieci publicznej, ale może dojść do ujawnienia Twojego adresu IP lub wszelkich treści, o które prosisz lub które udostępniasz. Treści zażądane za pośrednictwem protokołu IPFS są weryfikowane przed ich dostarczeniem do użytkownika. Żądania sieciowe mogą nie korzystać z serwera proxy przeglądarki i ustawień DNS.</translation>
 <translation id="8664689531113048642">Chroni Twój adres IP i treści, których żądasz, przed potencjalnymi obserwatorami będącymi osobami trzecimi, ale nie przed operatorem bramki publicznej. Operator bramki jest odpowiedzialny za dbanie o to, by podawane Ci przez bramkę treści były tymi, których żądasz. Ponadto Twój komputer nie ma wkładu w publiczną sieć IPFS.</translation>
 <translation id="3977809385703587108">Możesz jeszcze raz zmienić preferencje w</translation>
 <translation id="3340978935015468852">ustawienia</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Importować ze starszych portfeli kryptowalutowych Brave?</translation>
 <translation id="3331452756822160641">Nowe hasło</translation>
 <translation id="8624315169751085215">Kopiuj do schowka</translation>
+<translation id="7885157704277298658">Skopiowano!</translation>
 <translation id="1121335910737476837">Główne konta kryptowalutowe</translation>
 <translation id="6969147029062037757">Zaimportowane konta</translation>
 <translation id="4057718162494343222">Możesz utworzyć główne konta w Portfelu Brave, których kopie zapasowe możesz wykonać lub odzyskać za pomocą wyrażenia odzyskiwania. Aby dowiedzieć się więcej o typach kont, odwiedź dział pomocy związany z kontem.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL ikony</translation>
 <translation id="2144247757675997850">Dodaj aktywo</translation>
 <translation id="2708402071160162126">UWAGA: Nigdy nie ujawniaj swojego wyrażenia odzyskiwania. Każdy, kto zna to wyrażenie, może zabrać Twoje aktywa na zawsze.</translation>
+<translation id="2416098547200943834">UWAGA: klucz prywatny jest dostarczany jako plik JSON z szyfrowaniem szesnastkowym. Plik zawiera klucz prywatny i informacje dotyczące protokołu. <ph name="LINK_START"/>Dowiedz się więcej<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">UWAGA: klucz prywatny powinien być dostarczony jako plik JSON z szyfrowaniem szesnastkowym. Plik powinien zawierać klucz prywatny i informacje dotyczące protokołu. <ph name="LINK_START"/>Dowiedz się więcej<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Pokaż klucz</translation>
 <translation id="8033497299373164724">Ukryj klucz</translation>
 <translation id="2702143907607790516">Aktualizacja nazwy konta nie powiodła się. Spróbuj ponownie później.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Wiadomość</translation>
 <translation id="3586752056660754651">Podpisz</translation>
 <translation id="3484981968509595506">DApp żąda Twojego publicznego klucza szyfrowania</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> żąda publicznego klucza szyfrowania Twojego portfela. Jeśli zgodzisz się na jego przesłanie, strona będzie mogła wysyłać do Ciebie szyfrowane wiadomości.</translation>
+<translation id="2950511942409261729">Adres URL <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> żąda publicznego klucza szyfrującego Twojego portfela. Jeśli wyrazisz zgodę na udostępnienie tego klucza, witryna będzie mogła tworzyć i wysyłać do Ciebie szyfrowane komunikaty.</translation>
 <translation id="3340247553212049934">Dostarcz</translation>
 <translation id="1619778919922494944">Ten DApp chciałby przeczytać tę wiadomość, aby zrealizować Twoje żądanie</translation>
 <translation id="714506544401754321">Odszyfruj wiadomość</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048">Odłączono portfel <ph name="DEVICE_NAME"/></translation>
 <translation id="5317781812114905957">Instrukcje</translation>
 <translation id="1178198982208000092">Podłączanie portfela <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Portfel sprzętowy wymaga potwierdzenia na urządzeniu.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Portfel sprzętowy wymaga otwarcia aplikacji Ethereum <ph name="DEVICE_NAME"/>.</translation>
+<translation id="6291765462876399333">Portfel sprzętowy wymaga potwierdzenia na urządzeniu <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Portfel sprzętowy wymaga otworzenia aplikacji <ph name="NETWORK"/> na urządzeniu <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">przesłana</translation>
 <translation id="5013754027092416509">odebrana</translation>
 <translation id="5867988533873716616">Adres URL eksploratora bloków jest niedostępny.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> nie jest bieżącą siecią</translation>
 <translation id="7340805872138998391">Nie można odblokować urządzenia. Spróbuj podłączyć je ponownie.</translation>
 <translation id="1984410139271779110">Błąd wewnętrzny, nieznany schemat</translation>
-<translation id="8682200134223578011">zatwierdzono</translation>
+<translation id="6989562355845156390">zatwierdź</translation>
 <translation id="4674380028960132654">Ledger: podpis nie pasuje do właściwego adresu</translation>
 <translation id="3183932890629254743">Nie znaleziono konta sprzętowego</translation>
 <translation id="4287068151777838754">Dane JSON nie są oczekiwane</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transakcja potwierdzona</translation>
 <translation id="310693998838023022">Błąd transakcji</translation>
 <translation id="6395870673621520684">Transakcja odrzucona</translation>
+<translation id="1237782734462409503">Karta jest nieaktywna</translation>
+<translation id="756701799684433105">Zatwierdź transakcję</translation>
+<translation id="6450792191436242818">Program systemowy</translation>
+<translation id="6252742184395380448">Program konfiguracji</translation>
+<translation id="5358970666412490132">Program stakowania</translation>
+<translation id="346636227344244984">Program głosowania</translation>
+<translation id="3538368258493053874">Moduł ładowania BPF</translation>
+<translation id="2334098351242742927">Program Ed25519</translation>
+<translation id="8780753288764281797">Program Secp256k1</translation>
+<translation id="5275550100743015683">Z adresu:</translation>
+<translation id="2678433693746214764">Na adres:</translation>
+<translation id="4576396475962922672">Nowe konto:</translation>
+<translation id="4719005063558335704">Konta:</translation>
+<translation id="4337554812324118382">Dane:</translation>
+<translation id="569870799832027680">Identyfikator programu:</translation>
+<translation id="7843211152394841558">Maks. liczb ponownych prób:</translation>
+<translation id="8496335570810457">Zatwierdzenie Preflight:</translation>
+<translation id="5100124500279922001">Pomiń etap Preflight:</translation>
+<translation id="8060029310790625334">Centrum pomocy</translation>
+<translation id="2095142195578664632">Potrzebujesz pomocy? Zobacz</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>

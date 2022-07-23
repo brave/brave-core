@@ -28,9 +28,8 @@ DatabaseCredsBatch::DatabaseCredsBatch(
 
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;
 
-void DatabaseCredsBatch::InsertOrUpdate(
-    type::CredsBatchPtr creds,
-    ledger::ResultCallback callback) {
+void DatabaseCredsBatch::InsertOrUpdate(type::CredsBatchPtr creds,
+                                        ledger::LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
     callback(type::Result::LEDGER_ERROR);
@@ -66,9 +65,7 @@ void DatabaseCredsBatch::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::GetRecordByTrigger(
@@ -111,9 +108,7 @@ void DatabaseCredsBatch::GetRecordByTrigger(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::OnGetRecordByTrigger(
@@ -153,7 +148,7 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
 
 void DatabaseCredsBatch::SaveSignedCreds(
     type::CredsBatchPtr creds,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
     callback(type::Result::LEDGER_ERROR);
@@ -185,9 +180,7 @@ void DatabaseCredsBatch::SaveSignedCreds(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::GetAllRecords(
@@ -223,9 +216,7 @@ void DatabaseCredsBatch::GetAllRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::OnGetRecords(
@@ -261,11 +252,10 @@ void DatabaseCredsBatch::OnGetRecords(
   callback(std::move(list));
 }
 
-void DatabaseCredsBatch::UpdateStatus(
-    const std::string& trigger_id,
-    const type::CredsBatchType trigger_type,
-    const type::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
+void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
+                                      type::CredsBatchType trigger_type,
+                                      type::CredsBatchStatus status,
+                                      ledger::LegacyResultCallback callback) {
   if (trigger_id.empty()) {
     BLOG(0, "Trigger id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -292,16 +282,14 @@ void DatabaseCredsBatch::UpdateStatus(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::UpdateRecordsStatus(
     const std::vector<std::string>& trigger_ids,
-    const type::CredsBatchType trigger_type,
-    const type::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
+    type::CredsBatchType trigger_type,
+    type::CredsBatchStatus status,
+    ledger::LegacyResultCallback callback) {
   if (trigger_ids.empty()) {
     BLOG(0, "Trigger id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -328,9 +316,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::GetRecordsByTriggers(
@@ -369,9 +355,7 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

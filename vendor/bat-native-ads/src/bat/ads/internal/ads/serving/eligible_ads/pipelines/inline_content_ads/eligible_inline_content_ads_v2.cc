@@ -19,7 +19,7 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 namespace inline_content_ads {
@@ -35,7 +35,7 @@ void EligibleAdsV2::GetForUserModel(
     const targeting::UserModelInfo& user_model,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
-  BLOG(1, "Get eligible inline content ads:");
+  BLOG(1, "Get eligible inline content ads");
 
   database::table::AdEvents database_table;
   database_table.GetForType(
@@ -76,25 +76,32 @@ void EligibleAdsV2::GetEligibleAds(
           return;
         }
 
-        const CreativeInlineContentAdList& eligible_creative_ads =
+        if (creative_ads.empty()) {
+          BLOG(1, "No eligible ads");
+          callback(/* had_opportunity */ false, {});
+          return;
+        }
+
+        const CreativeInlineContentAdList eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
-          BLOG(1, "No eligible ads");
+          BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
           callback(/* had_opportunity */ true, {});
           return;
         }
 
-        const absl::optional<CreativeInlineContentAdInfo>&
-            creative_ad_optional =
-                PredictAd(user_model, ad_events, eligible_creative_ads);
+        const absl::optional<CreativeInlineContentAdInfo> creative_ad_optional =
+            PredictAd(user_model, ad_events, eligible_creative_ads);
         if (!creative_ad_optional) {
-          BLOG(1, "No eligible ads");
+          BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
           callback(/* had_opportunity */ true, {});
           return;
         }
-
         const CreativeInlineContentAdInfo& creative_ad =
             creative_ad_optional.value();
+
+        BLOG(1, eligible_creative_ads.size() << " eligible ads out of "
+                                             << creative_ads.size() << " ads");
 
         callback(/* had_opportunity */ true, {creative_ad});
       });
@@ -110,7 +117,7 @@ CreativeInlineContentAdList EligibleAdsV2::FilterCreativeAds(
 
   ExclusionRules exclusion_rules(ad_events, subdivision_targeting_,
                                  anti_targeting_resource_, browsing_history);
-  const CreativeInlineContentAdList& eligible_creative_ads =
+  const CreativeInlineContentAdList eligible_creative_ads =
       ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
   return eligible_creative_ads;

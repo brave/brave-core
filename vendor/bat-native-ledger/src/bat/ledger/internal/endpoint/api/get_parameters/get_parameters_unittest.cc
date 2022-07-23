@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -19,6 +20,7 @@
 
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::NiceMock;
 
 namespace ledger {
 namespace endpoint {
@@ -34,19 +36,18 @@ class GetParametersTest : public testing::Test {
   std::unique_ptr<GetParameters> parameters_;
 
   GetParametersTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+    mock_ledger_client_ =
+        std::make_unique<NiceMock<ledger::MockLedgerClient>>();
+    mock_ledger_impl_ = std::make_unique<NiceMock<ledger::MockLedgerImpl>>(
+        mock_ledger_client_.get());
     parameters_ = std::make_unique<GetParameters>(mock_ledger_impl_.get());
   }
 };
 
 TEST_F(GetParametersTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -71,9 +72,15 @@ TEST_F(GetParametersTest, ServerOK) {
                   10,
                   15
                 ]
+              },
+              "payoutStatus": {
+                "unverified": "off",
+                "uphold": "off",
+                "gemini": "off",
+                "bitflyer": "complete"
               }
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   parameters_->Request([](
@@ -85,6 +92,10 @@ TEST_F(GetParametersTest, ServerOK) {
     expected_parameters.auto_contribute_choices = {5, 10, 15};
     expected_parameters.tip_choices = {1, 10, 100};
     expected_parameters.monthly_tip_choices = {5, 10, 15};
+    expected_parameters.payout_status = {{"unverified", "off"},
+                                         {"uphold", "off"},
+                                         {"gemini", "off"},
+                                         {"bitflyer", "complete"}};
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
@@ -92,15 +103,13 @@ TEST_F(GetParametersTest, ServerOK) {
 
 TEST_F(GetParametersTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   parameters_->Request([](
@@ -112,15 +121,13 @@ TEST_F(GetParametersTest, ServerError400) {
 
 TEST_F(GetParametersTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   parameters_->Request([](
@@ -132,15 +139,13 @@ TEST_F(GetParametersTest, ServerError500) {
 
 TEST_F(GetParametersTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   parameters_->Request([](
@@ -152,10 +157,8 @@ TEST_F(GetParametersTest, ServerErrorRandom) {
 
 TEST_F(GetParametersTest, WrongListValues) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -184,9 +187,15 @@ TEST_F(GetParametersTest, WrongListValues) {
                   "10",
                   "100"
                 ]
+              },
+              "payoutStatus": {
+                "unverified": "off",
+                "uphold": "off",
+                "gemini": "off",
+                "bitflyer": "complete"
               }
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   parameters_->Request([](
@@ -196,16 +205,18 @@ TEST_F(GetParametersTest, WrongListValues) {
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
+    expected_parameters.payout_status = {{"unverified", "off"},
+                                         {"uphold", "off"},
+                                         {"gemini", "off"},
+                                         {"bitflyer", "complete"}};
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
 }
 
 TEST_F(GetParametersTest, DoubleListValues) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -230,9 +241,15 @@ TEST_F(GetParametersTest, DoubleListValues) {
                   10.5,
                   15.0
                 ]
+              },
+              "payoutStatus": {
+                "unverified": "off",
+                "uphold": "off",
+                "gemini": "off",
+                "bitflyer": "complete"
               }
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   parameters_->Request([](
@@ -244,6 +261,10 @@ TEST_F(GetParametersTest, DoubleListValues) {
     expected_parameters.auto_contribute_choices = {5, 10.5, 15};
     expected_parameters.tip_choices = {1, 10.5, 100};
     expected_parameters.monthly_tip_choices = {5, 10.5, 15};
+    expected_parameters.payout_status = {{"unverified", "off"},
+                                         {"uphold", "off"},
+                                         {"gemini", "off"},
+                                         {"bitflyer", "complete"}};
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });

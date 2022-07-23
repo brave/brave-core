@@ -36,6 +36,11 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
+    public boolean isSignOutAllowed() {
+        return false;
+    }
+
+    @Override
     public boolean isSigninSupported() {
         return false;
     }
@@ -79,9 +84,6 @@ public class BraveSigninManager implements SigninManager {
     public boolean isSigninDisabledByPolicy() {
         return false;
     }
-
-    @Override
-    public void onFirstRunCheckDone() {}
 
     @Override
     public IdentityManager getIdentityManager() {

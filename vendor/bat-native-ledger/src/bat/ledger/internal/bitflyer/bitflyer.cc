@@ -57,8 +57,8 @@ void Bitflyer::Initialize() {
 
 void Bitflyer::StartContribution(const std::string& contribution_id,
                                  type::ServerPublisherInfoPtr info,
-                                 const double amount,
-                                 ledger::ResultCallback callback) {
+                                 double amount,
+                                 ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
     ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
@@ -80,12 +80,12 @@ void Bitflyer::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Bitflyer::ContributionCompleted(const type::Result result,
+void Bitflyer::ContributionCompleted(type::Result result,
                                      const std::string& transaction_id,
                                      const std::string& contribution_id,
-                                     const double fee,
+                                     double fee,
                                      const std::string& publisher_key,
-                                     ledger::ResultCallback callback) {
+                                     ledger::LegacyResultCallback callback) {
   if (result == type::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -103,39 +103,40 @@ void Bitflyer::FetchBalance(FetchBalanceCallback callback) {
   const auto wallet = GetWallet();
 
   if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    callback(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
     return;
   }
 
   if (wallet->status == type::WalletStatus::CONNECTED) {
     BLOG(1, "Wallet is connected");
-    callback(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
     return;
   }
 
-  auto url_callback =
-      std::bind(&Bitflyer::OnFetchBalance, this, _1, _2, callback);
+  auto url_callback = base::BindOnce(
+      &Bitflyer::OnFetchBalance, base::Unretained(this), std::move(callback));
 
-  bitflyer_server_->get_balance()->Request(wallet->token, url_callback);
+  bitflyer_server_->get_balance()->Request(wallet->token,
+                                           std::move(url_callback));
 }
 
-void Bitflyer::OnFetchBalance(const type::Result result,
-                              const double available,
-                              FetchBalanceCallback callback) {
+void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
+                              const type::Result result,
+                              const double available) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet();
-    callback(type::Result::EXPIRED_TOKEN, 0.0);
+    std::move(callback).Run(type::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    callback(type::Result::LEDGER_ERROR, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
-  callback(type::Result::LEDGER_OK, available);
+  std::move(callback).Run(type::Result::LEDGER_OK, available);
 }
 
 void Bitflyer::TransferFunds(const double amount,
@@ -154,7 +155,7 @@ void Bitflyer::WalletAuthorization(
 }
 
 void Bitflyer::GenerateWallet(ledger::ResultCallback callback) {
-  wallet_->Generate(callback);
+  wallet_->Generate(std::move(callback));
 }
 
 void Bitflyer::DisconnectWallet(const bool manual) {

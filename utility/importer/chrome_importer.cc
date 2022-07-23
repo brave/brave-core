@@ -108,7 +108,6 @@ bool SetEncryptionKeyForPasswordImporting(
       return true;
     }
   }
-
   return false;
 }
 #endif
@@ -125,7 +124,7 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
 #endif
 
 #if BUILDFLAG(IS_WIN)
-  base::FilePath local_state_path = source_path.DirName().Append(
+  base::FilePath local_state_path = source_path.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
   if (!base::PathExists(local_state_path))
     return false;
@@ -198,7 +197,14 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
     bridge_->NotifyItemEnded(importer::FAVORITES);
   }
 
-  const bool set_encryption_key = SetEncryptionKey(source_path_);
+#if BUILDFLAG(IS_WIN)
+  auto source_path = source_profile.importer_type == importer::TYPE_OPERA
+                         ? source_path_
+                         : source_path_.DirName();
+#else
+  auto source_path = source_path_;
+#endif
+  const bool set_encryption_key = SetEncryptionKey(source_path);
   if ((items & importer::PASSWORDS) && !cancelled() && set_encryption_key) {
     bridge_->NotifyItemStarted(importer::PASSWORDS);
     ImportPasswords();

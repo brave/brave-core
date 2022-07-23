@@ -9,7 +9,7 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 

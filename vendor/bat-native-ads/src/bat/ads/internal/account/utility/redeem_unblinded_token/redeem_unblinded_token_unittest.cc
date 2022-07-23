@@ -26,15 +26,19 @@ namespace ads {
 
 class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
  protected:
-  BatAdsRedeemUnblindedTokenTest()
-      : redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()),
-        redeem_unblinded_token_delegate_mock_(
-            std::make_unique<NiceMock<RedeemUnblindedTokenDelegateMock>>()) {
+  BatAdsRedeemUnblindedTokenTest() = default;
+
+  ~BatAdsRedeemUnblindedTokenTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    redeem_unblinded_token_ = std::make_unique<RedeemUnblindedToken>();
+    redeem_unblinded_token_delegate_mock_ =
+        std::make_unique<NiceMock<RedeemUnblindedTokenDelegateMock>>();
     redeem_unblinded_token_->SetDelegate(
         redeem_unblinded_token_delegate_mock_.get());
   }
-
-  ~BatAdsRedeemUnblindedTokenTest() override = default;
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
   std::unique_ptr<RedeemUnblindedTokenDelegateMock>
@@ -100,8 +104,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnDidRedeemUnblindedToken(expected_confirmation, _))
-      .Times(1);
+              OnDidRedeemUnblindedToken(expected_confirmation, _));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToRedeemUnblindedToken(_, _, _))
@@ -142,8 +145,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToRedeemUnblindedToken(expected_confirmation,
                                              /* should_retry */ true,
-                                             /* should_backoff */ true))
-      .Times(1);
+                                             /* should_backoff */ true));
 
   redeem_unblinded_token_->Redeem(confirmation);
 
@@ -198,8 +200,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnDidRedeemUnblindedToken(expected_confirmation, _))
-      .Times(1);
+              OnDidRedeemUnblindedToken(expected_confirmation, _));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToRedeemUnblindedToken(_, _, _))
@@ -253,8 +254,7 @@ TEST_F(
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToRedeemUnblindedToken(expected_confirmation,
                                              /* should_retry */ true,
-                                             /* should_backoff */ false))
-      .Times(1);
+                                             /* should_backoff */ false));
 
   redeem_unblinded_token_->Redeem(confirmation);
 
@@ -304,8 +304,7 @@ TEST_F(
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToRedeemUnblindedToken(expected_confirmation,
                                              /* should_retry */ true,
-                                             /* should_backoff */ false))
-      .Times(1);
+                                             /* should_backoff */ false));
 
   redeem_unblinded_token_->Redeem(confirmation);
 
@@ -355,8 +354,7 @@ TEST_F(
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToRedeemUnblindedToken(expected_confirmation,
                                              /* should_retry */ true,
-                                             /* should_backoff */ true))
-      .Times(1);
+                                             /* should_backoff */ true));
 
   redeem_unblinded_token_->Redeem(confirmation);
 
@@ -392,8 +390,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
   const ConfirmationInfo& expected_confirmation = confirmation;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnDidSendConfirmation(expected_confirmation))
-      .Times(1);
+              OnDidSendConfirmation(expected_confirmation));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToSendConfirmation(_, _))
@@ -436,8 +433,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(expected_confirmation, false))
-      .Times(1);
+              OnFailedToSendConfirmation(expected_confirmation, false));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -476,8 +472,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(expected_confirmation, false))
-      .Times(1);
+              OnFailedToSendConfirmation(expected_confirmation, false));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -516,8 +511,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(expected_confirmation, true))
-      .Times(1);
+              OnFailedToSendConfirmation(expected_confirmation, true));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))

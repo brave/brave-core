@@ -1741,43 +1741,51 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   auto request1 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 1, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt, mojom::CoinType::ETH);
+      absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
-      std::move(request1), base::BindLambdaForTesting(
-                               [&](bool approved, const std::string& signature,
-                                   const std::string& error) {
-                                 ASSERT_TRUE(approved);
-                                 EXPECT_EQ(signature, expected_signature);
-                                 ASSERT_TRUE(error.empty());
-                                 callback_is_called = true;
-                               }));
+      std::move(request1),
+      base::BindLambdaForTesting([&](bool approved,
+                                     mojom::ByteArrayStringUnionPtr signature,
+                                     const absl::optional<std::string>& error) {
+        ASSERT_TRUE(approved);
+        ASSERT_TRUE(signature->is_str());
+        EXPECT_EQ(signature->get_str(), expected_signature);
+        EXPECT_FALSE(error);
+        callback_is_called = true;
+      }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageHardwareRequestProcessed(
-      true, 1, expected_signature, std::string());
+  service_->NotifySignMessageRequestProcessed(
+      true, 1, mojom::ByteArrayStringUnion::NewStr(expected_signature),
+      absl::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
-  service_->NotifySignMessageHardwareRequestProcessed(
-      true, 1, expected_signature, std::string());
+  service_->NotifySignMessageRequestProcessed(
+      true, 1, mojom::ByteArrayStringUnion::NewStr(expected_signature),
+      absl::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 2, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt, mojom::CoinType::ETH);
+      absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
-      std::move(request2), base::BindLambdaForTesting(
-                               [&](bool approved, const std::string& signature,
-                                   const std::string& error) {
-                                 ASSERT_FALSE(approved);
-                                 EXPECT_EQ(signature, expected_signature);
-                                 EXPECT_EQ(error, expected_error);
-                                 callback_is_called = true;
-                               }));
+      std::move(request2),
+      base::BindLambdaForTesting([&](bool approved,
+                                     mojom::ByteArrayStringUnionPtr signature,
+                                     const absl::optional<std::string>& error) {
+        ASSERT_FALSE(approved);
+        ASSERT_TRUE(signature->is_str());
+        EXPECT_EQ(signature->get_str(), expected_signature);
+        ASSERT_TRUE(error);
+        EXPECT_EQ(*error, expected_error);
+        callback_is_called = true;
+      }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageHardwareRequestProcessed(
-      false, 2, expected_signature, expected_error);
+  service_->NotifySignMessageRequestProcessed(
+      false, 2, mojom::ByteArrayStringUnion::NewStr(expected_signature),
+      expected_error);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -1791,36 +1799,42 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   auto request1 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 1, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt, mojom::CoinType::ETH);
+      absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
-      std::move(request1), base::BindLambdaForTesting(
-                               [&](bool approved, const std::string& signature,
-                                   const std::string& error) {
-                                 ASSERT_TRUE(approved);
-                                 callback_is_called = true;
-                               }));
+      std::move(request1),
+      base::BindLambdaForTesting([&](bool approved,
+                                     mojom::ByteArrayStringUnionPtr signature,
+                                     const absl::optional<std::string>& error) {
+        ASSERT_TRUE(approved);
+        EXPECT_FALSE(signature);
+        EXPECT_FALSE(error);
+        callback_is_called = true;
+      }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(true, 1);
+  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, absl::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
-  service_->NotifySignMessageRequestProcessed(true, 1);
+  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, absl::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 2, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt, mojom::CoinType::ETH);
+      absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
-      std::move(request2), base::BindLambdaForTesting(
-                               [&](bool approved, const std::string& signature,
-                                   const std::string& error) {
-                                 ASSERT_FALSE(approved);
-                                 callback_is_called = true;
-                               }));
+      std::move(request2),
+      base::BindLambdaForTesting([&](bool approved,
+                                     mojom::ByteArrayStringUnionPtr signature,
+                                     const absl::optional<std::string>& error) {
+        ASSERT_FALSE(approved);
+        EXPECT_FALSE(signature);
+        EXPECT_FALSE(error);
+        callback_is_called = true;
+      }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(false, 2);
+  service_->NotifySignMessageRequestProcessed(false, 2, nullptr, absl::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -2016,11 +2030,11 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   auto request1 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 1, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt, mojom::CoinType::ETH);
+      absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request1),
-      base::BindLambdaForTesting(
-          [](bool, const std::string&, const std::string&) {}));
+      base::BindLambdaForTesting([](bool, mojom::ByteArrayStringUnionPtr,
+                                    const absl::optional<std::string>&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
       "COLOR", 18, true, "", "", "0x1", mojom::CoinType::ETH);
@@ -2108,6 +2122,32 @@ TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
   task_environment_.FastForwardBy(base::Hours(30));
   histogram_tester_->ExpectBucketCount(
       kBraveWalletNewUserReturningHistogramName, 1, 2);
+}
+
+TEST_F(BraveWalletServiceUnitTest, OnboardingConversionMetric) {
+  histogram_tester_->ExpectTotalCount(kBraveWalletOnboardingConvHistogramName,
+                                      0);
+
+  service_->OnOnboardingShown();
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
+                                       0, 1);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
+                                       0, 2);
+
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
+                                       1, 1);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletOnboardingConvHistogramName,
+                                       1, 2);
 }
 
 }  // namespace brave_wallet

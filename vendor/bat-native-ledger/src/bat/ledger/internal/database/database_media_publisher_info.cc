@@ -32,7 +32,7 @@ DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
 void DatabaseMediaPublisherInfo::InsertOrUpdate(
     const std::string& media_key,
     const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << media_key << "/" << publisher_key);
     callback(type::Result::LEDGER_ERROR);
@@ -58,9 +58,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::GetRecord(
@@ -108,9 +106,7 @@ void DatabaseMediaPublisherInfo::GetRecord(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::OnGetRecord(

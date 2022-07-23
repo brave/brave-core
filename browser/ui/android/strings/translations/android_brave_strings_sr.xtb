@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Pomaže kompaniji Brave da poboljša stabilnost proizvoda tako što automatski šalje izveštaje o dijagnostici kada dođe do otkazivanja ili zamrzavanja Brave pregledača.</translation>
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
 <translation id="9008534313521214777">Istočno standardno vreme\nsačuvano</translation>
-<translation id="6572660632052512096">Režim radne površine</translation>
-<translation id="1340503115760585811">Omogući Pregled radne površine za nove kartice</translation>
-<translation id="7924540991929826186">Koristite mobilne verzije lokacija za nove kartice (preporučuje se)</translation>
-<translation id="807636106793708118">Više volim mobilnu verziju lokacija</translation>
-<translation id="4479934682648362332">Poželjna verzija sajtova za računare</translation>
 <translation id="1842747674580016420">Reprodukcija video zapisa u Brave-u</translation>
 <translation id="5368992950177874750">Ako je opcija omogućena, reprodukovanje video-zapisa će biti u Brave-u umesto u odgovarajućoj aplikaciji</translation>
 <translation id="410351446219883937">Аутоплеј</translation>
@@ -85,7 +80,7 @@
 <translation id="8701563696941209024">PONOVO POKRENI SADA</translation>
 <translation id="834487290629916192">KASNIJE</translation>
 <translation id="7207456302801184289">Dobrodošli u Brave</translation>
-<translation id="4117451092682672487">Privatnost. Pojednostavljena.</translation>
+<translation id="4117451092682672487">Pojednostavljena zaštita privatnosti.</translation>
 <translation id="7909375417585209817">Kada je Brave postavljen kao podrazumevan pregledač, svaki link na koji kliknete otvara se sa Brave zaštitom privatnosti.</translation>
 <translation id="5148943178722443958">Pomozite nam da poboljšamo Brave.</translation>
 <translation id="6188781052835527980">Pošaljite nam anoniman dijagnostički izveštaj u slučaju da dođe do pada ili kočenja programa.</translation>
@@ -94,7 +89,7 @@
 <translation id="5329830149661250028">Uverite se u to koliko se Brave razlikuje od drugih pregledača: nema oglasa, nema praćenja, a učitavanje stranica je znatno brže.</translation>
 <translation id="3545804467215833536">Dodirnite da biste videli Brave štitove</translation>
 <translation id="1724327820822194498">Pogledajte sve loše stvari koje je, na svakoj stranici, blokirala funkcija Brave štitovi.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> i <ph name="TRACKER"/> drugi oglasi &amp; praćenja su blokirani</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> i <ph name="TRACKER"/> druga oglasa i praćenja su blokirani</translation>
 <translation id="3092683655478890840">Blokiranih oglasa &amp; praćenja: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Preskoči</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Izaberite Brave pregledač i dodirnite 'Uvek'</translation>
 <translation id="3546439402724649282">Brave je već postavljen kao vaš podrazumevani pregledač.</translation>
 <translation id="8389661903259423907">Već ste postavili podrazumevani pregledač. Možete promeniti podrazumevani pregledač u vašim podešavanjima aplikacije.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Hvala vam</translation>
 <translation id="6665366815203065060">Upravo ste poslali napojnicu ka:</translation>
 <translation id="5441565662498481293">Ne šaljete automatski napojnicu ka:</translation>
@@ -862,23 +858,34 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="4804818685124855865">Прекини везу</translation>
 <translation id="8009571545960303544">Zahteva se vaš potpis</translation>
 <translation id="3484981968509595506">DApp zahteva vaš javni ključ za šifrovanje</translation>
-<translation id="2291002548681057345">traži vaš javni ključ za šifrovanje novčanika. Ako pristanete na davanje ključa, ovaj sajt će moći da vam sastavlja šifrovane poruke.</translation>
 <translation id="3340247553212049934">Obezbedi</translation>
 <translation id="1982257600591932657">Ime mreže</translation>
 <translation id="5052727830821470769">URL adresa mreže</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Simbol valute</translation>
 <translation id="7982789257301363584">Mreža</translation>
-<translation id="7540715999708954128">To će omogućiti ovoj mreži da bude korišćena unutar usluge Brave novčanik. Saznajte više.</translation>
-<translation id="8759753423332885148">Saznajte više.</translation>
 <translation id="4717431746210146708">Želite li da dozvolite ovoj veb-lokaciji da doda mrežu?</translation>
+<translation id="4857321293515555666">Ova aplikacija bi želela da pročita ovu poruku da bi dovršila vaš zahtev.</translation>
+<translation id="714506544401754321">Dešifruj poruku</translation>
+<translation id="5039804452771397117">Дозволи</translation>
 <translation id="3378339846292573874">Dodavanje predloženog tokena</translation>
 <translation id="2322227405137827074">Da li želite da uvezete ovaj token?</translation>
 <translation id="1324417023773393937">Brave pretraživač</translation>
 <translation id="6044189892950611565">Kanal za obaveštenja za Brave pretraživač</translation>
-<translation id="1173919438868967364">Izaberite nalog</translation>
+<translation id="1173919438868967364">Izaberite račun</translation>
 <translation id="8922793255489232731">Nije moguće dobiti odgovarajuću vremensku zonu za: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Prikaži najposećenije sajtove</translation>
+<translation id="8643377320501056697">Prikaži najposećenije lokacije</translation>
 <translation id="6471216025161697462">Povezano sa <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Probna verzija</translation>
+<translation id="7733890291091968191">Prikaži Web3 obaveštenja</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave vas ne prati niti poseduje uvid u to kako koristite našu aplikaciju, tako da ne znamo kako ste podesili VPN. Dostavite nam informacije o problemu koji imate i daćemo sve od sebe da ga što pre rešimo. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN naziv hosta\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nVrsta pretplate\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVerzija aplikacije\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nVremenska zona\n</translation>
+<translation id="8107843365677337047">\n\nVrsta mreže\n</translation>
+<translation id="5334952096674914470">\n\nMobilni operater\n</translation>
+<translation id="5393042357629679588">\n\nDrugi problem\n</translation>
+<translation id="8095666712177294104">\n\nPlatforma\n</translation>
 </translationbundle>

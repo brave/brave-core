@@ -270,6 +270,11 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
   // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
 }
 
+void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
+    bool is_checked) {
+  // Suppress adding "Get image descriptions from Brave"
+}
+
 #if BUILDFLAG(ENABLE_IPFS)
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
   if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
@@ -381,6 +386,7 @@ void BraveRenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
   if (!TorProfileServiceFactory::IsTorDisabled() &&
+      content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
       !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();
     const bool is_app = browser && browser->is_type_app();

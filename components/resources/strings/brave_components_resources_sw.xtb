@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Tumia nodi ya ndani ya IPFS ya Brave</translation>
 <translation id="8148464361648742409">Tumia lango la umma</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) ni mtandao wa umma wa uhifadhi na uwasilishaji wa data kutoka kwa wenzao. Itifaki hii ina maoni tofauti ya faragha kutoka kwa HTTP (S).</translation>
-<translation id="5410952114182173389">Kompyuta yako inachangia mtandao wa umma, lakini anwani yako ya IP na maudhui yoyote wewe Kuomba au kutoa inaweza kufichuliwa. Yaliyomo unayoomba juu ya IPFS yamethibitishwa kabla ya kutumiwa kwako.</translation>
+<translation id="1216911189668016151">Kompyuta yako inachangia mtandao wa umma, lakini anwani yako ya IP na maudhui yoyote unayoomba au kutoa yanaweza kufichuliwa. Maudhui unayoomba kupitia IPFS huthibitishwa kabla ya kutolewa kwako. Huenda maombi ya mtandao yasitumie kishenga cha kivinjari na mipangilio ya DNS.</translation>
 <translation id="8664689531113048642">Inalinda anwani yako ya IP na yaliyomo kwako kuomba kutoka kwa waangalizi wengine wa tatu, lakini sio kutoka kwa mwendeshaji wa lango la umma. Mwendeshaji wa lango ana jukumu la kuhakikisha kuwa yaliyokupa huduma juu ya lango ni yaliyomo uliyoomba. Pia, kompyuta yako haichangii mtandao wa umma wa IPFS.</translation>
 <translation id="3977809385703587108">Unaweza kubadilisha mapendeleo yako tena katika</translation>
 <translation id="3340978935015468852">mipangilio</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Leta kutoka kwenye pochi za jadi za crypto ya Brave?</translation>
 <translation id="3331452756822160641">Nenosiri Jipya</translation>
 <translation id="8624315169751085215">Nakili kwenye Ubao wa Kunakili</translation>
+<translation id="7885157704277298658">Imenakiliwa!</translation>
 <translation id="1121335910737476837">Akaunti za msingi za crypto</translation>
 <translation id="6969147029062037757">Akaunti zilizohamishwa</translation>
 <translation id="4057718162494343222">Unaweza kuunda akaunti za msingi kwenye Pochi ya Brave ambazo zinaweza kunakiliwa au kurejeshwa kutoka kwa awamu yako ya kurejesha. Ili kujifunza zaidi kuhusu aina za akaunti tembelea msaada wa akaunti.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL ya Ikoni</translation>
 <translation id="2144247757675997850">Ongeza rasilimali</translation>
 <translation id="2708402071160162126">ONYO: Usiwahi kushiriki kauli yako ya urejeshaji. Yeyote aliye na kauli hii anaweza kuchukua rasilimali zako kabisa.</translation>
+<translation id="2416098547200943834">KUMBUKA: Ufunguo wa faragha hutolewa kama JSON iliyosimbwa kwa hex ambayo ina ufunguo wa faragha na maelezo ya itifaki. <ph name="LINK_START"/>Jifunze zaidi <ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">KUMBUKA: Ufunguo wa faragha lazima utolewe kama JSON iliyosimbwa kwa hex ambayo ina ufunguo wa faragha na maelezo ya itifaki. <ph name="LINK_START"/>Jifunze zaidi <ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Onyesha ufunguo</translation>
 <translation id="8033497299373164724">Ficha ufunguo</translation>
 <translation id="2702143907607790516">Imeshindwa kusasisha jina la akaunti, tafadhali jaribu tena.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Ujumbe</translation>
 <translation id="3586752056660754651">Ingia kwenye akaunti</translation>
 <translation id="3484981968509595506">DApp inaomba ufunguo wako wa usimbaji fiche wa umma</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>na url<ph name="URL_AFTER"/> inaomba ufunguo wa usimbaji fiche wa umma wa pochi yako. Ukikubali kutoa ufunguo huu, tovuti itaweza kukutungia ujumbe uliosimbwa.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> inaomba ufunguo wa usimbaji fiche wa umma wa pochi yako. Ukikubali kutoa ufunguo huu, tovuti hiyo itaweza kukutungia ujumbe uliosimbwa.</translation>
 <translation id="3340247553212049934">Kutoa</translation>
 <translation id="1619778919922494944">DApp ingependa kusoma ujumbe huu ili kukamilisha ombi lako</translation>
 <translation id="714506544401754321">Ficha ujumbe</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> imetenganishwa</translation>
 <translation id="5317781812114905957">Maagizo</translation>
 <translation id="1178198982208000092">Unganisha <ph name="DEVICE_NAME"/>yako</translation>
-<translation id="4358411489835404360">Pochi ya maunzi inahitaji uthibitishaji kwenye kifaa. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Pochi ya maunzi inahitaji Programu ya Ethereum ifunguliwe kwenye <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Pochi ya maunzi inahitaji uthibitishaji katika kifaa cha<ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Pochi ya maunzi inahitaji Programu ya<ph name="NETWORK"/> kufunguliwa katika<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">limetumwa</translation>
 <translation id="5013754027092416509">limepokelewa</translation>
 <translation id="5867988533873716616">Kipengele cha Zuia explorer URL hakipatikani.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> sio mtandao wa sasa</translation>
 <translation id="7340805872138998391">Imeshindwa kufungua kifaa, jaribu kuunganisha tena</translation>
 <translation id="1984410139271779110">Hitilafu ya ndani, mfumo usiojulikana</translation>
-<translation id="8682200134223578011">imeidhinishwa</translation>
+<translation id="6989562355845156390">idhinisha</translation>
 <translation id="4674380028960132654">Ledger: Sahihi hailingani na anwani inayofaa</translation>
 <translation id="3183932890629254743">Akaunti ya maunzi haipatikani</translation>
 <translation id="4287068151777838754">Data ya JSON haitarajiwi</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Muamala umethibitishwa</translation>
 <translation id="310693998838023022">Hitilafu ya muamala</translation>
 <translation id="6395870673621520684">Muamala umekomeshwa</translation>
+<translation id="1237782734462409503">Kichupo hicho si amilifu</translation>
+<translation id="756701799684433105">Idhinisha muamala</translation>
+<translation id="6450792191436242818">Programu ya Mfumo</translation>
+<translation id="6252742184395380448">Programu ya Kusanidi</translation>
+<translation id="5358970666412490132">Programu ya Dau</translation>
+<translation id="346636227344244984">Programu ya Kupiga Kura</translation>
+<translation id="3538368258493053874">Kipakiaji cha BPF</translation>
+<translation id="2334098351242742927">Programu ya Ed25519</translation>
+<translation id="8780753288764281797">Programu ya Secp256k1</translation>
+<translation id="5275550100743015683">Anwani Inayotuma:</translation>
+<translation id="2678433693746214764">Anwani Pokezi:</translation>
+<translation id="4576396475962922672">Akaunti Mpya:</translation>
+<translation id="4719005063558335704">Akaunti:</translation>
+<translation id="4337554812324118382">Data:</translation>
+<translation id="569870799832027680">Kitambulisho cha Programu:</translation>
+<translation id="7843211152394841558">Majaribio ya Kiwango cha Juu Zaidi:</translation>
+<translation id="8496335570810457">Ahadi ya Kabla ya Muamala Halisi:</translation>
+<translation id="5100124500279922001">Ruka Hatua ya Kabla ya Muamala Halisi:</translation>
+<translation id="8060029310790625334">Kituo cha Usaidizi</translation>
+<translation id="2095142195578664632">Unahitaji usaidizi? Tazama</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="3745016858329272300">Maelezo ya Jumla</translation>
 <translation id="4045404575593562245">Matukio ya Udhibiti wa Tor</translation>

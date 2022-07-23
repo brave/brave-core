@@ -59,9 +59,14 @@
     "includes": [49400]
   },
   # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
-    "META": {"sizes": {"includes": [200]}},
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_extension_panel/brave_rewards_extension_panel.grd": {
+    "META": {"sizes": {"includes": [100]}},
     "includes": [49500],
+  },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [49600],
   },
   "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
     "includes": [49700]
@@ -186,5 +191,9 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_private_new_tab/brave_private_new_tab.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [59000]
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-playlist/playlist.grd": {
+    "META": {"sizes": {"includes": [250]}},
+    "includes": [59020]
   },
 }

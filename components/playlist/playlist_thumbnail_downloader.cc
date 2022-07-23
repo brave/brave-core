@@ -51,14 +51,18 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
     const std::string& id,
     const GURL& thumbnail_url,
     const base::FilePath& target_thumbnail_path) {
+  VLOG(2) << __func__ << " " << id << " : " << thumbnail_url.spec();
+  CancelDownloadRequest(id);
+
   auto ticket = request_helper_->Download(
       thumbnail_url, {}, {}, true, target_thumbnail_path,
       base::BindOnce(&PlaylistThumbnailDownloader::OnThumbnailDownloaded,
                      base::Unretained(this), id));
-  ticket_map_.insert_or_assign(id, ticket);
+  ticket_map_[id] = ticket;
 }
 
 void PlaylistThumbnailDownloader::CancelDownloadRequest(const std::string& id) {
+  VLOG(2) << __func__ << " " << id;
   if (!ticket_map_.count(id))
     return;
 
@@ -67,6 +71,7 @@ void PlaylistThumbnailDownloader::CancelDownloadRequest(const std::string& id) {
 }
 
 void PlaylistThumbnailDownloader::CancelAllDownloadRequests() {
+  VLOG(2) << __func__;
   request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetNetworkTrafficAnnotationTagForURLLoad(), url_loader_factory_);
   ticket_map_.clear();
@@ -74,6 +79,7 @@ void PlaylistThumbnailDownloader::CancelAllDownloadRequests() {
 
 void PlaylistThumbnailDownloader::OnThumbnailDownloaded(const std::string& id,
                                                         base::FilePath path) {
+  VLOG(2) << __func__ << " id: " << id;
   DCHECK(!ticket_map_.empty());
   ticket_map_.erase(id);
   delegate_->OnThumbnailDownloaded(id, path);

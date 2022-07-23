@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Help improve Brave\u2019s product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.</translation>
 <translation id="7977176350719484850">Est. Data\nSaved</translation>
 <translation id="9008534313521214777">Est. Time\nSaved</translation>
-<translation id="6572660632052512096">Desktop mode</translation>
-<translation id="1340503115760585811">Enable desktop view for new tabs</translation>
-<translation id="7924540991929826186">Use mobile versions of sites for new tabs (recommended)</translation>
-<translation id="807636106793708118">Prefer mobile version of sites</translation>
-<translation id="4479934682648362332">Prefer desktop version of sites</translation>
 <translation id="1842747674580016420">Video playback in Brave</translation>
 <translation id="5368992950177874750">If enabled, videos will be played in Brave instead of corresponding app</translation>
 <translation id="410351446219883937">Auto-play</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Select Brave Browser and tap 'Always'</translation>
 <translation id="3546439402724649282">Brave is already set as your default browser.</translation>
 <translation id="8389661903259423907">You've already set a default browser. You can change the default browser in your app settings.</translation>
+<translation id="8112367589167674370">Brave talk</translation>
 <translation id="8826007068782654809">Thank you</translation>
 <translation id="6665366815203065060">You've just sent a tip to:</translation>
 <translation id="5441565662498481293">You are automatically sending a tip to:</translation>
@@ -864,23 +860,34 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4804818685124855865">Disconnect</translation>
 <translation id="8009571545960303544">Your signature is being requested</translation>
 <translation id="3484981968509595506">A DApp is requesting your public encryption key</translation>
-<translation id="2291002548681057345">is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</translation>
 <translation id="3340247553212049934">Provide</translation>
 <translation id="1982257600591932657">Network name</translation>
 <translation id="5052727830821470769">Network URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Currency symbol</translation>
 <translation id="7982789257301363584">Network</translation>
-<translation id="7540715999708954128">This will allow this network to be used within Brave Wallet. Learn more.</translation>
-<translation id="8759753423332885148">Learn more.</translation>
 <translation id="4717431746210146708">Allow this site to add a network?</translation>
+<translation id="4857321293515555666">This DApp would like to read this message to complete your request.</translation>
+<translation id="714506544401754321">Decrypt message</translation>
+<translation id="5039804452771397117">Allow</translation>
 <translation id="3378339846292573874">Add suggested token</translation>
 <translation id="2322227405137827074">Would you like to import this token?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="6044189892950611565">Notification channel for Brave browser</translation>
 <translation id="1173919438868967364">Select account</translation>
 <translation id="8922793255489232731">Couldn't get matching timezone for : <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Show top sites</translation>
+<translation id="8643377320501056697">Show Top Sites</translation>
 <translation id="6471216025161697462">Connected to <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Trial</translation>
+<translation id="7733890291091968191">Display Web3 notifications</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN Hostname\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nSubscription type\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nApp version\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nTimezone\n</translation>
+<translation id="8107843365677337047">\n\nNetwork type\n</translation>
+<translation id="5334952096674914470">\n\nMobile network operator\n</translation>
+<translation id="5393042357629679588">\n\nOther issue\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>

@@ -14,8 +14,7 @@ import {
   FilecoinNetwork,
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareMessageOperationResult,
-  SignHardwareTransactionOperationResult
+  SignHardwareOperationResult
 } from '../types'
 import { getLocale } from '../../../../common/locale'
 import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
@@ -50,7 +49,8 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
         name: getCoinName(this.coin()) + ' ' + this.type(),
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
-        coin: this.coin()
+        coin: this.coin(),
+        network: network
       })
     }
     return { success: true, payload: [...result] }
@@ -100,11 +100,11 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     }
   }
 
-  signPersonalMessage (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> {
+  signPersonalMessage (path: string, address: string, message: string): Promise<SignHardwareOperationResult> {
     throw new Error('Method not implemented.')
   }
 
-  signTransaction = async (message: string): Promise<SignHardwareTransactionOperationResult> => {
+  signTransaction = async (message: string): Promise<SignHardwareOperationResult> => {
     const unlocked = await this.unlock()
     if (!unlocked.success || !this.provider) {
       return { success: false, error: unlocked.error }

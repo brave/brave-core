@@ -24,7 +24,7 @@ import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
 import { TrezorCommandHandler } from './trezor-command-handler'
 import { getMockedTransactionInfo } from '../../constants/mocks'
-import { HardwareOperationResult, SignHardwareTransactionOperationResult } from '../../hardware_operations'
+import { HardwareOperationResult, SignHardwareOperationResult } from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
 import { SignHardwareMessageOperationResult, TrezorDerivationPaths } from '../types'
 
@@ -74,7 +74,7 @@ const createTransport = (url: string, hardwareTransport: TrezorBridgeTransport |
 
 const createTrezorTransport = (unlock: HardwareOperationResult,
                                accounts?: GetAccountsResponsePayload,
-                               signedPayload?: SignHardwareTransactionOperationResult,
+                               signedPayload?: SignHardwareOperationResult,
                                signedMessagePayload?: SignHardwareMessageOperationResult) => {
   let hardwareTransport = createTransport(kTrezorBridgeUrl, new TrezorBridgeTransport(kTrezorBridgeUrl))
   hardwareTransport.contentWindow = {
@@ -335,7 +335,8 @@ test('Extract accounts from unlocked device returned success', () => {
             'deviceId': '5454545',
             'hardwareVendor': 'Trezor',
             'name': 'Trezor',
-            'coin': BraveWallet.CoinType.ETH
+            'coin': BraveWallet.CoinType.ETH,
+            'network': undefined
           },
           {
             'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
@@ -343,7 +344,8 @@ test('Extract accounts from unlocked device returned success', () => {
             'deviceId': '5454545',
             'hardwareVendor': 'Trezor',
             'name': 'Trezor',
-            'coin': BraveWallet.CoinType.ETH
+            'coin': BraveWallet.CoinType.ETH,
+            'network': undefined
           }],
           success: true
     })
@@ -375,7 +377,8 @@ test('Extracting accounts from unlocked device returned success without zero ind
         'deviceId': '5454545',
         'hardwareVendor': 'Trezor',
         'name': 'Trezor',
-        'coin': BraveWallet.CoinType.ETH
+        'coin': BraveWallet.CoinType.ETH,
+        'network': undefined
       }],
       success: true
     })

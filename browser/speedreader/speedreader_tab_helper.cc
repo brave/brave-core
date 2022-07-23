@@ -366,7 +366,7 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   )js";
 
   const auto link_text = brave_l10n::GetLocalizedResourceUTF16String(
-      IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
+      IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
   // Make sure that the link text doesn't contain js injection
   CHECK_EQ(std::u16string::npos, link_text.find(u'\''));
   CHECK_EQ(std::u16string::npos, link_text.find(u'\\'));

@@ -11,7 +11,6 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
@@ -37,8 +36,13 @@ bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
 }
 }  // namespace
 
-FilecoinKeyring::FilecoinKeyring() = default;
 FilecoinKeyring::~FilecoinKeyring() = default;
+
+FilecoinKeyring::FilecoinKeyring(const std::string& chain_id) {
+  network_ = chain_id;
+  DCHECK(network_ == mojom::kFilecoinMainnet ||
+         network_ == mojom::kFilecoinTestnet);
+}
 
 // static
 bool FilecoinKeyring::DecodeImportPayload(
@@ -135,7 +139,6 @@ std::string FilecoinKeyring::GetExportEncodedJSON(
 
 std::string FilecoinKeyring::ImportFilecoinAccount(
     const std::vector<uint8_t>& private_key,
-    const std::string& network,
     mojom::FilecoinAddressProtocol protocol) {
   if (private_key.empty()) {
     return std::string();
@@ -150,12 +153,12 @@ std::string FilecoinKeyring::ImportFilecoinAccount(
     if (!GetBLSPublicKey(private_key, &public_key)) {
       return std::string();
     }
-    address = FilAddress::FromPayload(public_key, protocol, network);
+    address = FilAddress::FromPayload(public_key, protocol, network_);
   } else if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
     auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
     address = FilAddress::FromUncompressedPublicKey(
         uncompressed_public_key, mojom::FilecoinAddressProtocol::SECP256K1,
-        network);
+        network_);
   }
 
   if (address.IsEmpty() ||
@@ -182,13 +185,9 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base)
     return std::string();
   HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
-  // TODO(cypt4): Get network from settings.
   return FilAddress::FromUncompressedPublicKey(
              hd_key->GetUncompressedPublicKey(),
-             mojom::FilecoinAddressProtocol::SECP256K1,
-             // See description of IsFilecoinTestnetEnabled
-             IsFilecoinTestnetEnabled() ? mojom::kFilecoinTestnet
-                                        : mojom::kFilecoinMainnet)
+             mojom::FilecoinAddressProtocol::SECP256K1, network_)
       .EncodeAsString();
 }
 

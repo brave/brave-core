@@ -13,8 +13,6 @@
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving_observer.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -55,9 +53,12 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
 
  private:
   // new_tab_page_ads::ServingObserver:
+  void OnOpportunityAroseToServeNewTabPageAd(
+      const SegmentList& segments) override;
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
   // new_tab_page_ads::EventHandlerObserver:
+  void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
 

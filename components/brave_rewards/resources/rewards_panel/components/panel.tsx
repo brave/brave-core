@@ -5,12 +5,11 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
+import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { WalletCard } from '../../shared/components/wallet_card'
 import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
-
-import * as style from './panel.style'
 
 type ActiveView = 'tip' | 'summary'
 
@@ -25,6 +24,8 @@ export function Panel () {
     React.useState(host.state.exchangeInfo)
   const [earningsInfo, setEarningsInfo] =
     React.useState(host.state.earningsInfo)
+  const [payoutStatus, setPayoutStatus] =
+    React.useState(host.state.payoutStatus)
   const [summaryData, setSummaryData] = React.useState(host.state.summaryData)
   const [publisherInfo, setPublisherInfo] =
     React.useState(host.state.publisherInfo)
@@ -38,33 +39,41 @@ export function Panel () {
     setExternalWallet(state.externalWallet)
     setExchangeInfo(state.exchangeInfo)
     setEarningsInfo(state.earningsInfo)
+    setPayoutStatus(state.payoutStatus)
     setSummaryData(state.summaryData)
     setPublisherInfo(state.publisherInfo)
   })
 
+  const walletProvider = externalWallet ? externalWallet.provider : null
+  const providerPayoutStatus = getProviderPayoutStatus(
+    payoutStatus, walletProvider)
+
   return (
-    <style.root data-test-id='rewards-panel'>
-      <WalletCard
-        balance={balance}
-        externalWallet={externalWallet}
-        earningsThisMonth={earningsInfo.earningsThisMonth}
-        earningsLastMonth={earningsInfo.earningsLastMonth}
-        nextPaymentDate={earningsInfo.nextPaymentDate}
-        exchangeRate={exchangeInfo.rate}
-        exchangeCurrency={exchangeInfo.currency}
-        showSummary={activeView === 'summary'}
-        summaryData={summaryData}
-        autoContributeEnabled={settings.autoContributeEnabled}
-        onExternalWalletAction={host.handleExternalWalletAction}
-      />
-      {activeView === 'tip' && <PublisherCard />}
-      <NavBar
-        canTip={Boolean(publisherInfo)}
-        activeView={activeView}
-        onActiveViewChange={setActiveView}
-        onSettingsClick={host.openRewardsSettings}
-      />
+    <div>
+      <div className='rewards-panel' data-test-id='rewards-panel'>
+        <WalletCard
+          balance={balance}
+          externalWallet={externalWallet}
+          providerPayoutStatus={providerPayoutStatus}
+          earningsThisMonth={earningsInfo.earningsThisMonth}
+          earningsLastMonth={earningsInfo.earningsLastMonth}
+          nextPaymentDate={earningsInfo.nextPaymentDate}
+          exchangeRate={exchangeInfo.rate}
+          exchangeCurrency={exchangeInfo.currency}
+          showSummary={activeView === 'summary'}
+          summaryData={summaryData}
+          autoContributeEnabled={settings.autoContributeEnabled}
+          onExternalWalletAction={host.handleExternalWalletAction}
+        />
+        {activeView === 'tip' && <PublisherCard />}
+        <NavBar
+          canTip={Boolean(publisherInfo)}
+          activeView={activeView}
+          onActiveViewChange={setActiveView}
+          onSettingsClick={host.openRewardsSettings}
+        />
+      </div>
       <PanelOverlays />
-    </style.root>
+    </div>
   )
 }

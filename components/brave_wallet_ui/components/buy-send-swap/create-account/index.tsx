@@ -56,7 +56,11 @@ function CreateAccountTab (props: Props) {
   }, [prevNetwork, networkList, isPanel])
 
   const onCreateAccount = React.useCallback(() => {
-    dispatch(WalletActions.addAccount({ accountName: suggestedAccountName, coin: selectedNetwork.coin }))
+    if (selectedNetwork.coin === BraveWallet.CoinType.FIL) {
+      dispatch(WalletActions.addFilecoinAccount({ accountName: suggestedAccountName, network: selectedNetwork.chainId }))
+    } else {
+      dispatch(WalletActions.addAccount({ accountName: suggestedAccountName, coin: selectedNetwork.coin }))
+    }
     if (isPanel) {
       dispatch(PanelActions.navigateTo('main'))
     }

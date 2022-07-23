@@ -10,6 +10,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration_util.h"
 #include "bat/ads/pref_names.h"
 
@@ -17,8 +18,6 @@ namespace ads {
 namespace client {
 
 namespace {
-
-constexpr char kFilename[] = "client.json";
 
 void FailedToMigrate(InitializeCallback callback) {
   callback(/* success */ false);
@@ -41,7 +40,7 @@ void Migrate(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
   AdsClientHelper::GetInstance()->Load(
-      kFilename, [=](const bool success, const std::string& json) {
+      kClientStateFilename, [=](const bool success, const std::string& json) {
         if (!success) {
           // Client state does not exist
           SuccessfullyMigrated(callback);
@@ -63,7 +62,7 @@ void Migrate(InitializeCallback callback) {
         SetHashForJson(migrated_json);
 
         AdsClientHelper::GetInstance()->Save(
-            kFilename, migrated_json, [=](const bool success) {
+            kClientStateFilename, migrated_json, [=](const bool success) {
               if (!success) {
                 BLOG(0, "Failed to save client state");
                 FailedToMigrate(callback);

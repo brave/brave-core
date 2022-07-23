@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_CLIENT_STATE_H_
-#define BRAVELEDGER_BAT_CLIENT_STATE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_BAT_STATE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_BAT_STATE_H_
 
 #include <map>
 #include <memory>
@@ -26,7 +26,7 @@ class LegacyBatState {
   explicit LegacyBatState(ledger::LedgerImpl* ledger);
   ~LegacyBatState();
 
-  void Load(ledger::ResultCallback callback);
+  void Load(ledger::LegacyResultCallback callback);
 
   bool GetRewardsMainEnabled() const;
 
@@ -49,10 +49,9 @@ class LegacyBatState {
   bool GetInlineTipSetting(const std::string& key) const;
 
  private:
-  void OnLoad(
-      const ledger::type::Result result,
-      const std::string& data,
-      ledger::ResultCallback callback);
+  void OnLoad(ledger::type::Result result,
+              const std::string& data,
+              ledger::LegacyResultCallback callback);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::ClientProperties> state_;
@@ -60,4 +59,4 @@ class LegacyBatState {
 
 }  // namespace braveledger_bat_state
 
-#endif  // BRAVELEDGER_BAT_CLIENT_STATE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_BAT_STATE_H_

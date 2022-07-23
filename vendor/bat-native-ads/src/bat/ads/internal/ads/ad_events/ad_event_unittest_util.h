@@ -8,8 +8,6 @@
 
 #include <string>
 
-#include "bat/ads/internal/ads/ad_events/ad_event_info_aliases.h"
-
 namespace base {
 class Time;
 }  // namespace base
@@ -48,8 +46,7 @@ void FireAdEvent(const AdEventInfo& ad_event);
 void FireAdEvents(const AdEventInfo& ad_event, const int count);
 
 int GetAdEventCount(const AdType& ad_type,
-                    const ConfirmationType& confirmation_type,
-                    const AdEventList& ad_events);
+                    const ConfirmationType& confirmation_type);
 
 }  // namespace ads
 

@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/ads/ad_events/ad_event_info_aliases.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_callback.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_aliases.h"
+#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
-#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
 namespace ads {
 

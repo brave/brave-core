@@ -176,3 +176,16 @@ TEST_F(WebDiscoveryDialogTest, ShouldCreateTabHelperTest) {
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents());
   EXPECT_TRUE(tab_helper());
 }
+
+TEST_F(WebDiscoveryDialogTest, ShouldCreateTabHelperWithPrivateProfileTest) {
+  // We don't need tab helper for private profile.
+  auto* private_profile = profile()->GetOffTheRecordProfile(
+      Profile::OTRProfileID::CreateUniqueForTesting(), true);
+  auto web_contents = content::WebContentsTester::CreateTestWebContents(
+      private_profile, nullptr);
+  ASSERT_TRUE(web_contents.get());
+
+  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents.get());
+  // Check helper is not attached.
+  EXPECT_FALSE(WebDiscoveryTabHelper::FromWebContents(web_contents.get()));
+}

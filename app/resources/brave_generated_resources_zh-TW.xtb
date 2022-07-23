@@ -106,6 +106,15 @@
 <translation id="4870911314065352661">關閉所有分頁？</translation>
 <translation id="7551864359422178684">這個瀏覽器視窗中還有 <ph name="NUMBER_OF_TABS"/> 個分頁維持於開啟狀態。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 個分頁</translation>
+<translation id="2272117088509540883">- Brave 搜尋</translation>
+<translation id="2701279958223202597">支援隱私權更佳的獨立搜尋。Brave 搜尋不會追蹤您、您的查詢或您的點選行為。</translation>
+<translation id="6438467592401259882">支援隱私權更佳的獨立搜尋。</translation>
+<translation id="1688359110799098115">支援隱私權更佳的獨立搜尋</translation>
+<translation id="8579317236683491484">Brave 搜尋不會追蹤您、您的查詢或您的點選行為。</translation>
+<translation id="5240031343741051161">尝试Brave搜索</translation>
+<translation id="5026874946691314267">不要再顯示本訊息</translation>
+<translation id="5234764350956374838">關閉</translation>
+<translation id="214744058941501853">關閉 Brave 搜尋切換，請按 Enter 移除此建議</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="6040143037577758943">關閉</translation>
@@ -135,6 +144,7 @@
 <translation id="8490082094734500369">關閉閱讀器模式</translation>
 <translation id="2036503787657622020">開啟閱讀器模式</translation>
 <translation id="5226458915125328323">Speedreader 設定</translation>
+<translation id="1621606336827646158">顯示原始頁面</translation>
 <translation id="6284218950354553099">自動傳送每日使用 ping 到 Brave</translation>
 <translation id="5288333155754958121">這種匿名且私人的 ping 讓 Brave 可以估計活躍使用者。</translation>
 <translation id="1872784258300710671">Brave 使用完全私密的產品分析來評估特定功能的整體使用量</translation>
@@ -185,6 +195,8 @@
 <translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
 <translation id="2370739752330685659">稍後再說</translation>
+<translation id="961012016278832836">Microsoft Edge 舊版</translation>
+<translation id="6436994631426134065">已從 <ph name="BROWSER_NAME"/> 匯入。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -201,9 +213,11 @@
 <translation id="2906510232093002459">Brave 預設圖像</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
-<translation id="5802665280774361839">在網址列顯示自動完成</translation>
-<translation id="597020512043916976">在自動完成建議中顯示熱門網站</translation>
-<translation id="301088458323355543">在自動完成建議中顯示建議的網站</translation>
+<translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
+<translation id="2858138569776157458">熱門網站</translation>
+<translation id="65774893852758517">建議的網站</translation>
+<translation id="7859704718976024901">瀏覽記錄</translation>
+<translation id="8820817407110198400">書籤列</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
 <translation id="1811404036171336214">總是在新分頁上顯示書籤</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
@@ -362,6 +376,8 @@
 確定要這麼做嗎？</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
+<translation id="842628013524824194">一般視窗 - 在網址列使用搜尋引擎</translation>
+<translation id="5324939009884545145">隱私視窗 - 在網址列使用搜尋引擎</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="7878791177459550035">媒體路由器可在瀏覽器中啟用投影功能。</translation>
@@ -461,6 +477,7 @@
 <translation id="616058968889448209">IPFS 服務啟動錯誤，更多資訊請參閱<ph name="BEGIN_LINK"/>診斷頁面<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 金鑰匯入失敗</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 金鑰匯出失敗</translation>
+<translation id="5840868269342837751">注意：網路要求不得使用瀏覽器 Proxy 和 DNS 設定。</translation>
 <translation id="8275038454117074363">匯入</translation>
 <translation id="3654980960391973513">產生</translation>
 <translation id="5531501313997312487">啟動節點</translation>

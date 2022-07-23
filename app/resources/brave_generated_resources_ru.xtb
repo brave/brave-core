@@ -106,6 +106,16 @@
 <translation id="4870911314065352661">Закрыть все вкладки?</translation>
 <translation id="7551864359422178684">У вас остались открытые вкладки (<ph name="NUMBER_OF_TABS"/>) в этом окне браузера.</translation>
 <translation id="2571596981920752023">Вкладок: <ph name="NUMBER_OF_TABS"/></translation>
+<translation id="2272117088509540883">- Brave Поиск</translation>
+<translation id="2701279958223202597">Обеспечение конфиденциальности во время поиска. Brave Поиск не следит за вами, вашими запросами и нажатиями.</translation>
+<translation id="6438467592401259882">Обеспечение конфиденциальности во время поиска.</translation>
+<translation id="1688359110799098115">Обеспечение конфиденциальности во время поиска</translation>
+<translation id="8579317236683491484">Brave Поиск не следит за вами, вашими запросами и нажатиями.</translation>
+<translation id="5240031343741051161">Попробовать Brave Поиск</translation>
+<translation id="5026874946691314267">Больше не показывать</translation>
+<translation id="5234764350956374838">Dismiss</translation>
+<translation id="214744058941501853">"&gt;
+          Отклонить переход на Brave Поиск. Нажмите Ввод, чтобы удалить это предложение.</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
 <translation id="6040143037577758943">Близко</translation>
@@ -135,6 +145,7 @@
 <translation id="8490082094734500369">Отключить режим чтения</translation>
 <translation id="2036503787657622020">Включить режим чтения</translation>
 <translation id="5226458915125328323">Настройки Speedreader</translation>
+<translation id="1621606336827646158">Показать исходную страницу</translation>
 <translation id="6284218950354553099">Автоматически отправлять ежедневные данные PING в Brave</translation>
 <translation id="5288333155754958121">Закрытые анонимные данные PING позволяют Brave определить число активных пользователей.</translation>
 <translation id="1872784258300710671">Brave использует полностью конфиденциальную аналитику для оценки общего использования определенных функций</translation>
@@ -185,6 +196,8 @@
 <translation id="6817415381278637662">Сделайте Brave браузером по умолчанию, чтобы на каждой открытой странице ваша конфиденциальность была под защитой.</translation>
 <translation id="8722651357687610395">Установить Brave по умолчанию</translation>
 <translation id="2370739752330685659">Не сейчас</translation>
+<translation id="961012016278832836">Устаревшая версия Microsoft Edge</translation>
+<translation id="6436994631426134065">Импортировано из <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="4472575034687746823">Начало работы</translation>
@@ -201,9 +214,11 @@
 <translation id="2906510232093002459">Изображения Brave по умолчанию</translation>
 <translation id="2396127686705429331">Показывать кнопку закладок</translation>
 <translation id="2814998458708016836">Использовать широкую адресную строку</translation>
-<translation id="5802665280774361839">Показывать автозаполнение в адресной строке</translation>
-<translation id="597020512043916976">Показывать лучшие сайты при автодополнении ввода</translation>
-<translation id="301088458323355543">Показывать рекомендуемые сайты при автозаполнении</translation>
+<translation id="4109670531935487117">Показывать предложения для автозаполнения в адресной строке</translation>
+<translation id="2858138569776157458">Топ сайтов</translation>
+<translation id="65774893852758517">Предлагаемые сайты</translation>
+<translation id="7859704718976024901">История просмотров</translation>
+<translation id="8820817407110198400">Закладки</translation>
 <translation id="6333347122924254968">Показывать значок сервиса «Brave Награды» в адресной строке</translation>
 <translation id="1811404036171336214">Всегда отображать закладки на странице новой вкладки</translation>
 <translation id="5529693968082667490">Показать кнопку «Поиск по вкладкам»</translation>
@@ -361,6 +376,8 @@
     Продолжить?</translation>
 <translation id="6285118765755298263">Добавлять другие поисковые системы</translation>
 <translation id="919715748352669592">Сайты, соответствующие спецификациям OpenSearch, будут автоматически индексироваться.</translation>
+<translation id="842628013524824194">Обычное окно — поисковая система используется в адресной строке</translation>
+<translation id="5324939009884545145">Окно инкогнито — поисковая система используется в адресной строке</translation>
 <translation id="6864914031231797928">Разрешить вход с помощью Google для расширений</translation>
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>
 <translation id="7878791177459550035">Расширение Media router включает в браузере функцию трансляции.</translation>
@@ -460,6 +477,7 @@
 <translation id="616058968889448209">Ошибка запуска IPFS. Чтобы узнать больше, посетите <ph name="BEGIN_LINK"/>страницу диагностики<ph name="END_LINK"/>.</translation>
 <translation id="6912148685459054619">Не удалось импортировать ключ '<ph name="KEY_NAME"/>'.</translation>
 <translation id="3364053282600191535">Не удалось экспортировать ключ <ph name="KEY_NAME"/>.</translation>
+<translation id="5840868269342837751">Примечание. Для сетевых запросов могут не применяться настройки прокси-сервера и DNS.</translation>
 <translation id="8275038454117074363">Импортировать</translation>
 <translation id="3654980960391973513">Сгенерировать</translation>
 <translation id="5531501313997312487">Запустить узел</translation>

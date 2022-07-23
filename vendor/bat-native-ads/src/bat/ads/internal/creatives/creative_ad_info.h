@@ -11,7 +11,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/creatives/creative_daypart_info_aliases.h"
+#include "bat/ads/internal/creatives/creative_daypart_info.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -46,6 +46,8 @@ struct CreativeAdInfo {
   base::flat_set<std::string> geo_targets;
   GURL target_url;
 };
+
+using CreativeAdList = std::vector<CreativeAdInfo>;
 
 }  // namespace ads
 

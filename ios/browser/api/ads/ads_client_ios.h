@@ -24,18 +24,18 @@ class AdsClientIOS : public ads::AdsClient {
   bool IsNetworkConnectionAvailable() const override;
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
-  bool CanShowBackgroundNotifications() const override;
-  void ShowNotification(const ads::NotificationAdInfo& info) override;
-  bool ShouldShowNotifications() override;
-  void CloseNotification(const std::string& uuid) override;
+  bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
+  void ShowNotificationAd(const ads::NotificationAdInfo& info) override;
+  bool CanShowNotificationAds() override;
+  void CloseNotificationAd(const std::string& placement_id) override;
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
                           const base::Time time) const override;
-  std::vector<base::Time> GetAdEvents(
+  std::vector<base::Time> GetAdEventHistory(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
-  void ResetAdEventsForId(const std::string& id) const override;
+  void ResetAdEventHistoryForId(const std::string& id) const override;
   void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,
@@ -60,7 +60,7 @@ class AdsClientIOS : public ads::AdsClient {
            const std::string& message) override;
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
-  void OnAdRewardsChanged() override;
+  void UpdateAdRewards() override;
   void SetBooleanPref(const std::string& path, const bool value) override;
   bool GetBooleanPref(const std::string& path) const override;
   void SetIntegerPref(const std::string& path, const int value) override;
@@ -79,7 +79,6 @@ class AdsClientIOS : public ads::AdsClient {
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
   void RecordP2AEvent(const std::string& name,
-                      const ads::mojom::P2AEventType type,
                       const std::string& value) override;
   void LogTrainingInstance(
       const std::vector<brave_federated::mojom::CovariatePtr> training_instance)

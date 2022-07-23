@@ -156,6 +156,8 @@ class EthereumProviderImpl final
                            RequestEthereumPermissionsNoWallet);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsLocked);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
+                           RequestEthereumPermissionsWithAccounts);
   friend class EthereumProviderImplUnitTest;
 
   // mojom::BraveWalletProvider:
@@ -297,16 +299,8 @@ class EthereumProviderImpl final
                                      std::vector<uint8_t>&& message,
                                      bool is_eip712,
                                      bool approved,
-                                     const std::string& signature,
-                                     const std::string& error);
-  void OnHardwareSignMessageRequestProcessed(RequestCallback callback,
-                                             base::Value id,
-                                             const std::string& address,
-                                             std::vector<uint8_t>&& message,
-                                             bool is_eip712,
-                                             bool approved,
-                                             const std::string& signature,
-                                             const std::string& error);
+                                     mojom::ByteArrayStringUnionPtr signature,
+                                     const absl::optional<std::string>& error);
 
   // KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override {}

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
-#define BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
 
 #include <memory>
 #include <string>
@@ -21,17 +21,15 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
   explicit DatabaseServerPublisherInfo(LedgerImpl* ledger);
   ~DatabaseServerPublisherInfo() override;
 
-  void InsertOrUpdate(
-      const type::ServerPublisherInfo& server_info,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(const type::ServerPublisherInfo& server_info,
+                      ledger::LegacyResultCallback callback);
 
   void GetRecord(
       const std::string& publisher_key,
       client::GetServerPublisherInfoCallback callback);
 
-  void DeleteExpiredRecords(
-      const int64_t max_age_seconds,
-      ledger::ResultCallback callback);
+  void DeleteExpiredRecords(int64_t max_age_seconds,
+                            ledger::LegacyResultCallback callback);
 
  private:
   void OnGetRecordBanner(
@@ -45,9 +43,8 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
       const type::PublisherBanner& banner,
       client::GetServerPublisherInfoCallback callback);
 
-  void OnExpiredRecordsSelected(
-      type::DBCommandResponsePtr response,
-      ledger::ResultCallback callback);
+  void OnExpiredRecordsSelected(type::DBCommandResponsePtr response,
+                                ledger::LegacyResultCallback callback);
 
   std::unique_ptr<DatabaseServerPublisherBanner> banner_;
 };
@@ -55,4 +52,4 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_

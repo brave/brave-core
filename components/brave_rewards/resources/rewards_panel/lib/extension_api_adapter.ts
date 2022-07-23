@@ -2,10 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Store } from 'webext-redux'
-
 import { Notification } from '../../shared/components/notifications'
 import { GrantInfo } from '../../shared/lib/grant_info'
+import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
 import { mapNotification } from './notification_adapter'
 
@@ -65,6 +64,7 @@ export function getEarningsInfo () {
 export function getRewardsParameters () {
   interface Result {
     exchangeInfo: ExchangeInfo
+    payoutStatus: Record<string, ProviderPayoutStatus>
     options: Options
   }
 
@@ -77,7 +77,8 @@ export function getRewardsParameters () {
         exchangeInfo: {
           currency: 'USD',
           rate: parameters.rate
-        }
+        },
+        payoutStatus: parameters.payoutStatus
       })
     })
   })
@@ -223,31 +224,6 @@ function getMonthlyTipAmount (publisherKey: string) {
   })
 }
 
-// The mapping from WebContents (via tab) to publisher ID is currently
-// maintained in the Rewards extension's background script and is accessed using
-// message passing, implemented as a Redux store proxy using the "webext-redux"
-// library. Eventually, we should move the mapping into the browser and remove
-// this proxy.
-const backgroundReduxStore = new Store({ portName: 'REWARDSPANEL' })
-
-async function getPublisherFromBackgroundState (tabId: number) {
-  await backgroundReduxStore.ready()
-
-  const state = backgroundReduxStore.getState()
-  if (!state) {
-    return {}
-  }
-  const { rewardsPanelData } = state
-  if (!rewardsPanelData) {
-    return {}
-  }
-  const { publishers } = rewardsPanelData
-  if (!publishers) {
-    return {}
-  }
-  return publishers[`key_${tabId}`] || {}
-}
-
 function getTab (tabId: number) {
   return new Promise<chrome.tabs.Tab | null>((resolve) => {
     chrome.tabs.get(tabId, (tab) => { resolve(tab || null) })
@@ -341,19 +317,26 @@ function getPublisherPlatform (name: string) {
 
 export async function getPublisherInfo (tabId: number) {
   const tab = await getTab(tabId)
-  if (!tab) {
+  if (!tab || !tab.url) {
     return null
   }
 
-  const publisher = await getPublisherFromBackgroundState(tabId)
+  if (!isPublisherURL(tab.url)) {
+    return null
+  }
+
+  const publisher = await new Promise<any>((resolve) => {
+    chrome.braveRewards.getPublisherInfoForTab(tabId, resolve)
+  })
+
+  if (!publisher) {
+    return defaultPublisherInfo(tab.url)
+  }
+
   const { publisherKey } = publisher
 
   if (!publisherKey || typeof publisherKey !== 'string') {
-    const url = tab.url || ''
-    if (isPublisherURL(url)) {
-      return defaultPublisherInfo(url)
-    }
-    return null
+    return defaultPublisherInfo(tab.url)
   }
 
   const supportedWalletProviders: ExternalWalletProvider[] = []

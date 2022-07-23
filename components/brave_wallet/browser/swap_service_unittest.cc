@@ -28,6 +28,55 @@ brave_wallet::mojom::SwapParamsPtr GetCannedSwapParams() {
   return params;
 }
 
+brave_wallet::mojom::JupiterQuoteParamsPtr GetCannedJupiterQuoteParams() {
+  auto params = brave_wallet::mojom::JupiterQuoteParams::New();
+  params->output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  params->input_mint = "So11111111111111111111111111111111111111112";
+  params->amount = "10000";
+  params->slippage_percentage = 1;
+  return params;
+}
+
+brave_wallet::mojom::JupiterSwapParamsPtr GetCannedJupiterSwapParams() {
+  auto params = brave_wallet::mojom::JupiterSwapParams::New();
+
+  auto route = brave_wallet::mojom::JupiterRoute::New();
+  route->in_amount = 10000ULL;
+  route->out_amount = 261273ULL;
+  route->amount = 10000ULL;
+  route->other_amount_threshold = 258660ULL;
+  route->swap_mode = "ExactIn";
+  route->price_impact_pct = 0.008955716118219659;
+
+  auto market_info = brave_wallet::mojom::JupiterMarketInfo::New();
+  market_info->id = "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK";
+  market_info->label = "Orca";
+  market_info->input_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  market_info->output_mint = "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey";
+  market_info->not_enough_liquidity = false;
+  market_info->in_amount = 10000ULL;
+  market_info->out_amount = 117001203ULL;
+  market_info->price_impact_pct = 1.196568750220778e-7;
+
+  auto lp_fee = brave_wallet::mojom::JupiterFee::New();
+  lp_fee->amount = 30ULL;
+  lp_fee->mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  lp_fee->pct = 0.003;
+
+  auto platform_fee = brave_wallet::mojom::JupiterFee::New();
+  platform_fee->amount = 0ULL;
+  platform_fee->mint = "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey";
+  platform_fee->pct = 0;
+
+  market_info->lp_fee = lp_fee.Clone();
+  market_info->platform_fee = platform_fee.Clone();
+  route->market_infos.push_back(market_info.Clone());
+  params->route = route.Clone();
+  params->user_public_key = "foo";
+
+  return params;
+}
+
 void OnRequestResponse(
     bool* callback_run,
     bool expected_success,
@@ -92,6 +141,66 @@ class SwapServiceUnitTest : public testing::Test {
                                    }));
     run_loop.Run();
     return result;
+  }
+
+  void TestGetJupiterQuoteCase(const std::string& json,
+                               const bool expected_success) {
+    SetInterceptor(json);
+    base::RunLoop run_loop;
+    swap_service_->GetJupiterQuote(
+        GetCannedJupiterQuoteParams(),
+        base::BindLambdaForTesting(
+            [&](bool success, brave_wallet::mojom::JupiterQuotePtr response,
+                const absl::optional<std::string>& error) {
+              if (expected_success) {
+                EXPECT_TRUE(success);
+                EXPECT_TRUE(response);
+                EXPECT_EQ(error, absl::nullopt);
+              } else {
+                EXPECT_FALSE(success);
+                EXPECT_FALSE(response);
+                EXPECT_NE(error, absl::nullopt);
+              }
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestGetJupiterQuoteUint64Cases(const char* json_template) {
+    // KO: negative uint64 value
+    auto json = base::StringPrintf(json_template, "-10000");
+    TestGetJupiterQuoteCase(json, false);
+
+    // KO: non-integer uint64 value
+    json = base::StringPrintf(json_template, "\"foo\"");
+    TestGetJupiterQuoteCase(json, false);
+
+    // KO: uint64 value overflow (UINT64_MAX + 1)
+    json = base::StringPrintf(json_template, "18446744073709551616");
+    TestGetJupiterQuoteCase(json, false);
+
+    // OK: max uint64 amount value
+    json = base::StringPrintf(json_template, "18446744073709551615");
+    TestGetJupiterQuoteCase(json, true);
+  }
+
+  void TestGetJupiterSwapTransactions(
+      const bool expected_success,
+      brave_wallet::mojom::JupiterSwapTransactionsPtr expected_response,
+      const bool has_error) {
+    base::RunLoop run_loop;
+    swap_service_->GetJupiterSwapTransactions(
+        GetCannedJupiterSwapParams(),
+        base::BindLambdaForTesting(
+            [&](bool success,
+                brave_wallet::mojom::JupiterSwapTransactionsPtr response,
+                const absl::optional<std::string>& error) {
+              EXPECT_EQ(success, expected_success);
+              EXPECT_EQ(response, expected_response);
+              EXPECT_EQ(error.has_value(), has_error);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
   }
 
  protected:
@@ -320,6 +429,292 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
   EXPECT_FALSE(IsSwapSupported(mojom::kRinkebyChainId));
   EXPECT_FALSE(IsSwapSupported(""));
   EXPECT_FALSE(IsSwapSupported("invalid chain_id"));
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
+  auto url = swap_service_->GetJupiterQuoteURL(GetCannedJupiterQuoteParams(),
+                                               mojom::kSolanaMainnet);
+  ASSERT_EQ(url,
+            "https://quote-api.jup.ag/v1/quote?"
+            "inputMint=So11111111111111111111111111111111111111112&"
+            "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
+            "amount=10000&"
+            "feeBps=85&"
+            "slippagePercentage=1.000000");
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactionsURL) {
+  auto url =
+      swap_service_->GetJupiterSwapTransactionsURL(mojom::kSolanaMainnet);
+  ASSERT_EQ(url, "https://quote-api.jup.ag/v1/swap");
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
+  SetInterceptor(R"(
+    {
+      "data": [
+        {
+          "inAmount": 10000,
+          "outAmount": 261273,
+          "amount": 10000,
+          "otherAmountThreshold": 258660,
+          "outAmountWithSlippage": 258660,
+          "swapMode": "ExactIn",
+          "priceImpactPct": 0.008955716118219659,
+          "marketInfos": [
+            {
+              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
+              "label": "Orca",
+              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+              "notEnoughLiquidity": false,
+              "inAmount": 10000,
+              "outAmount": 117001203,
+              "priceImpactPct": 1.196568750220778e-7,
+              "lpFee": {
+                "amount": 30,
+                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "pct": 0.003
+              },
+              "platformFee": {
+                "amount": 0,
+                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+                "pct": 0
+              }
+            }
+          ]
+        }
+      ],
+      "timeTaken": 0.044471802000089156
+    })");
+  base::RunLoop run_loop;
+  swap_service_->GetJupiterQuote(
+      GetCannedJupiterQuoteParams(),
+      base::BindLambdaForTesting([&](bool success,
+                                     brave_wallet::mojom::JupiterQuotePtr
+                                         response,
+                                     const absl::optional<std::string>& error) {
+        ASSERT_TRUE(success);
+        ASSERT_EQ(error, absl::nullopt);
+
+        ASSERT_EQ(response->routes.size(), 1UL);
+        EXPECT_EQ(response->routes.at(0)->in_amount, 10000ULL);
+        EXPECT_EQ(response->routes.at(0)->out_amount, 261273ULL);
+        EXPECT_EQ(response->routes.at(0)->amount, 10000ULL);
+        EXPECT_EQ(response->routes.at(0)->other_amount_threshold, 258660ULL);
+        EXPECT_EQ(response->routes.at(0)->swap_mode, "ExactIn");
+        EXPECT_EQ(response->routes.at(0)->price_impact_pct,
+                  0.008955716118219659);
+        ASSERT_EQ(response->routes.at(0)->market_infos.size(), 1UL);
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->id,
+                  "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK");
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->label, "Orca");
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->input_mint,
+                  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->output_mint,
+                  "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey");
+        EXPECT_EQ(
+            response->routes.at(0)->market_infos.at(0)->not_enough_liquidity,
+            false);
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->in_amount,
+                  10000ULL);
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->out_amount,
+                  117001203ULL);
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->price_impact_pct,
+                  1.196568750220778e-7);
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->lp_fee->amount,
+                  30ULL);
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->lp_fee->mint,
+                  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->lp_fee->pct,
+                  0.003);
+        EXPECT_EQ(
+            response->routes.at(0)->market_infos.at(0)->platform_fee->amount,
+            0ULL);
+        EXPECT_EQ(
+            response->routes.at(0)->market_infos.at(0)->platform_fee->mint,
+            "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey");
+        EXPECT_EQ(response->routes.at(0)->market_infos.at(0)->platform_fee->pct,
+                  0);
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+
+  // KO: empty JSON for conversion
+  TestGetJupiterQuoteCase(R"({})", false);
+
+  // KO: invalid JSON
+  TestGetJupiterQuoteCase(R"(foo)", false);
+
+  // Test inAmount uint64 value
+  TestGetJupiterQuoteUint64Cases(R"(
+    {
+      "data": [
+        {
+          "inAmount": %s,
+          "outAmount": 261273,
+          "amount": 10000,
+          "otherAmountThreshold": 258660,
+          "outAmountWithSlippage": 258660,
+          "swapMode": "ExactIn",
+          "priceImpactPct": 0.008955716118219659,
+          "marketInfos": []
+        }
+      ],
+      "timeTaken": 0.044471802000089156
+    })");
+
+  // Test outAmount uint64 value
+  TestGetJupiterQuoteUint64Cases(R"(
+    {
+      "data": [
+        {
+          "inAmount": 10000,
+          "outAmount": %s,
+          "amount": 10000,
+          "otherAmountThreshold": 258660,
+          "outAmountWithSlippage": 258660,
+          "swapMode": "ExactIn",
+          "priceImpactPct": 0.008955716118219659,
+          "marketInfos": []
+        }
+      ],
+      "timeTaken": 0.044471802000089156
+    })");
+
+  // Test amount uint64 value
+  TestGetJupiterQuoteUint64Cases(R"(
+    {
+      "data": [
+        {
+          "inAmount": 10000,
+          "outAmount": 261273,
+          "amount": %s,
+          "otherAmountThreshold": 258660,
+          "outAmountWithSlippage": 258660,
+          "swapMode": "ExactIn",
+          "priceImpactPct": 0.008955716118219659,
+          "marketInfos": []
+        }
+      ],
+      "timeTaken": 0.044471802000089156
+    })");
+
+  // Test otherAmountThreshold uint64 value
+  TestGetJupiterQuoteUint64Cases(R"(
+    {
+      "data": [
+        {
+          "inAmount": 10000,
+          "outAmount": 261273,
+          "amount": 10000,
+          "otherAmountThreshold": %s,
+          "outAmountWithSlippage": 258660,
+          "swapMode": "ExactIn",
+          "priceImpactPct": 0.008955716118219659,
+          "marketInfos": []
+        }
+      ],
+      "timeTaken": 0.044471802000089156
+    })");
+
+  // Test marketInfos->inAmount uint64 value
+  TestGetJupiterQuoteUint64Cases(R"(
+    {
+      "data": [
+        {
+          "inAmount": 10000,
+          "outAmount": 261273,
+          "amount": 10000,
+          "otherAmountThreshold": 258660,
+          "outAmountWithSlippage": 258660,
+          "swapMode": "ExactIn",
+          "priceImpactPct": 0.008955716118219659,
+          "marketInfos": [
+            {
+              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
+              "label": "Orca",
+              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+              "notEnoughLiquidity": false,
+              "inAmount": %s,
+              "outAmount": 117001203,
+              "priceImpactPct": 1.196568750220778e-7,
+              "lpFee": {
+                "amount": 30,
+                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "pct": 0.003
+              },
+              "platformFee": {
+                "amount": 0,
+                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+                "pct": 0
+              }
+            }
+          ]
+        }
+      ],
+      "timeTaken": 0.044471802000089156
+    })");
+
+  // Test marketInfos->outAmount uint64 value
+  TestGetJupiterQuoteUint64Cases(R"(
+    {
+      "data": [
+        {
+          "inAmount": 10000,
+          "outAmount": 261273,
+          "amount": 10000,
+          "otherAmountThreshold": 258660,
+          "outAmountWithSlippage": 258660,
+          "swapMode": "ExactIn",
+          "priceImpactPct": 0.008955716118219659,
+          "marketInfos": [
+            {
+              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
+              "label": "Orca",
+              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+              "notEnoughLiquidity": false,
+              "inAmount": 10000,
+              "outAmount": %s,
+              "priceImpactPct": 1.196568750220778e-7,
+              "lpFee": {
+                "amount": 30,
+                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "pct": 0.003
+              },
+              "platformFee": {
+                "amount": 0,
+                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+                "pct": 0
+              }
+            }
+          ]
+        }
+      ],
+      "timeTaken": 0.044471802000089156
+    })");
+
+  // lpFee->amount and platformFee->amount are not uint64 fields.
+  // Test cases can be found in swap_response_parser_unittest.cc.
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactions) {
+  SetInterceptor(R"(
+    {
+      "setupTransaction": "foo",
+      "swapTransaction": "bar",
+      "cleanupTransaction": "baz"
+    })");
+
+  auto expected_response =
+      brave_wallet::mojom::JupiterSwapTransactions::New("foo", "bar", "baz");
+  TestGetJupiterSwapTransactions(true, std::move(expected_response), false);
+
+  // Invalid JSON
+  SetInterceptor(R"(foo)");
+  TestGetJupiterSwapTransactions(false, nullptr, true);
 }
 
 }  // namespace brave_wallet

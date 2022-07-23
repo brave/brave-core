@@ -161,6 +161,13 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <!-- Error pages -->
+      <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_HEADING" desc="Heading of the IPFS not available in incognito error page.">
+        IPFS page cannot be loaded.
+      </message>
+      <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_SUMMARY" desc="Summary in the error page when IPFS failed in incognito mode.">
+        IPFS pages are not allowed in private windows.
+      </message>
       <!-- WebUI newtab resources -->
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Trackers &amp; ads blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
@@ -219,6 +226,19 @@
       <message name="IDS_BRAVE_NEW_TAB_ADD_SITE_MENU_LABEL" desc="Label for adding site to top sites menu item of topsites tiles">Add site</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL" desc="Label for showing frecency menu item of topsites tiles">Show frequently visited</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL" desc="Label for showing favorites menu item of topsites tiles">Show favorites</message>
+
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1" desc="The text for brave search promotion from NTP">
+        Want even better privacy?
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2" desc="The text for brave search promotion from NTP">
+        It's time to ditch Google.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC" desc="The text for brave search promotion from NTP">
+        Brave Search doesn't bias or censor results, and it doesn't track you, your queries, or your clicks.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for brave search promotion from NTP">
+        Try Brave Search now
+      </message>
 
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
@@ -610,7 +630,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_HISTORY" desc="">Wallet History</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Wallet was not yet created</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet payment ID:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Rewards payment ID">Rewards payment ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Wallet status:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
@@ -655,57 +675,9 @@
       <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_DELAY_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Note: <ph name="BOLD_END">$2</ph>Your tip can take several minutes to process</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one-time tip has been sent.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING" desc="">You’ve set up a pending tip!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT" desc="">Tweet about your support</message>
-
-      <!-- WebUI rewards onboarding resources -->
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS" desc="">Brave Rewards</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS" desc=""><ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph> or <ph name="LEARN_LINK_BEGIN">$3</ph>learn more<ph name="LEARN_LINK_END">$4</ph> for details.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">Earn Tokens &amp; Give Back</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">Maybe Later</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER" desc="">Need a refresher on Rewards?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT" desc="">Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">How often do you want to see ads?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER" desc="">(ads per hour)</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER" desc="">How much monthly support do you want to give to your favorite creators?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER" desc="">(from your ads earnings)</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">Start using Brave Rewards</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR" desc="">Take a quick tour</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER" desc="">Tip with Brave Rewards</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT" desc="">Earn Rewards by viewing Brave Private Ads and support content creators automatically</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK" desc="">Go Back</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN" desc="">Let’s take a quick tour</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE" desc="">Continue</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE" desc="">Done</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP" desc="">Skip</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW" desc="">Skip for now</message>
-
-      <!-- WebUI rewards onboarding tour panel content -->
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER" desc="">Welcome to Brave Rewards!</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT" desc="">Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER" desc="">Where do ads show up?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER" desc="">When do you receive rewards?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT" desc="">Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">Giving back made effortless</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT" desc="">Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER" desc="">Say thank you with tips</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">Tipping is a way to personally encourage and support content or creators that you love. Get tippin!</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER" desc="">What can you do with tokens?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT" desc="">Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER" desc="">Lastly, let’s get you set up on the basic settings</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT" desc="">You can change this later.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">Woohoo, you’re all set!</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER" desc="">Verify</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT" desc="">In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER" desc="">Do it later</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW" desc="">Verify Brave Rewards</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE" desc="">The bitFlyer wallet is a service managed by bitFlyer, Inc.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT" desc="">By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE" desc=""><ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc=""> Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>

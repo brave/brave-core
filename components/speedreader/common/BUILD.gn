@@ -15,6 +15,8 @@ static_library("common") {
     "constants.h",
     "features.cc",
     "features.h",
+    "url_readable_hints.cc",
+    "url_readable_hints.h",
   ]
 
   public_deps = [
@@ -22,6 +24,8 @@ static_library("common") {
     "//base",
     "//content/public/common",
   ]
+
+  deps = [ "//third_party/re2" ]
 }
 
 mojom("mojom") {

@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 
+#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"
@@ -38,9 +39,9 @@ class UpholdCard;
 class UpholdAuthorization;
 class UpholdWallet;
 
-using FetchBalanceCallback = std::function<void(type::Result, double)>;
+using FetchBalanceCallback = base::OnceCallback<void(type::Result, double)>;
 using CreateCardCallback =
-    std::function<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(type::Result, const std::string&)>;
 using endpoint::uphold::GetCapabilitiesCallback;
 
 class Uphold {
@@ -53,8 +54,8 @@ class Uphold {
 
   void StartContribution(const std::string& contribution_id,
                          type::ServerPublisherInfoPtr info,
-                         const double amount,
-                         ledger::ResultCallback callback);
+                         double amount,
+                         ledger::LegacyResultCallback callback);
 
   void FetchBalance(FetchBalanceCallback callback);
 
@@ -81,16 +82,16 @@ class Uphold {
   bool SetWallet(type::ExternalWalletPtr wallet);
 
  private:
-  void ContributionCompleted(const type::Result result,
+  void ContributionCompleted(type::Result result,
                              const std::string& transaction_id,
                              const std::string& contribution_id,
-                             const double fee,
+                             double fee,
                              const std::string& publisher_key,
-                             ledger::ResultCallback callback);
+                             ledger::LegacyResultCallback callback);
 
-  void OnFetchBalance(const type::Result result,
-                      const double available,
-                      FetchBalanceCallback callback);
+  void OnFetchBalance(FetchBalanceCallback callback,
+                      const type::Result result,
+                      const double available);
 
   void SaveTransferFee(const std::string& contribution_id, const double amount);
 

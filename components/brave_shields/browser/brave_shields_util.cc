@@ -344,23 +344,6 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
   return type == ControlType::BLOCK;
 }
 
-bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url) {
-  // Don't debounce if debounce feature is disabled
-  if (!base::FeatureList::IsEnabled(debounce::features::kBraveDebounce))
-    return false;
-
-  // Don't debounce if Brave Shields is down (this also handles cases where
-  // the URL is not HTTP(S))
-  if (!brave_shields::GetBraveShieldsEnabled(map, url))
-    return false;
-
-  // Don't debounce if ad blocking is off
-  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
-    return false;
-
-  return true;
-}
-
 bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
   // Don't reduce language if feature is disabled
   if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage))

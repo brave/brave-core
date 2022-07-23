@@ -10,14 +10,12 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -84,23 +82,9 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
   NotificationAdInfo BuildAndSaveNotificationAd() {
     const CreativeNotificationAdInfo& creative_ad =
         BuildCreativeNotificationAd();
-
     const NotificationAdInfo& ad = BuildNotificationAd(creative_ad);
     NotificationAdManager::GetInstance()->PushBack(ad);
     return ad;
-  }
-
-  void ExpectAdEventCountEquals(const ConfirmationType& confirmation_type,
-                                const int expected_count) {
-    database::table::AdEvents database_table;
-    database_table.GetAll(
-        [=](const bool success, const AdEventList& ad_events) {
-          ASSERT_TRUE(success);
-
-          const int count = GetAdEventCount(AdType::kNotificationAd,
-                                            confirmation_type, ad_events);
-          EXPECT_EQ(expected_count, count);
-        });
   }
 
   std::unique_ptr<EventHandler> event_handler_;
@@ -130,9 +114,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_TRUE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
-
-  ExpectAdEventCountEquals(ConfirmationType::kServed, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
@@ -151,9 +134,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_TRUE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
@@ -172,9 +154,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
-
-  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
@@ -193,9 +174,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
-
-  ExpectAdEventCountEquals(ConfirmationType::kDismissed, 1);
+  EXPECT_EQ(1, GetAdEventCount(AdType::kNotificationAd,
+                               ConfirmationType::kDismissed));
 }
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
@@ -214,7 +194,6 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   EXPECT_TRUE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 }
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
@@ -231,8 +210,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
   EXPECT_FALSE(did_dismiss_ad_);
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(
+      0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
 }  // namespace notification_ads

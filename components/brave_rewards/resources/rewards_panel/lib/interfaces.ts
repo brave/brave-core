@@ -4,6 +4,7 @@
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
 import { GrantInfo } from '../../shared/lib/grant_info'
+import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
 import { ExternalWalletAction, RewardsSummaryData } from '../../shared/components/wallet_card'
 import { Notification, NotificationAction } from '../../shared/components/notifications'
@@ -64,22 +65,27 @@ export interface Options {
   autoContributeAmounts: number[]
 }
 
+type RequestedView = 'rewards-tour' | 'brave-talk-opt-in'
+
 export interface HostState {
+  openTime: number
   loading: boolean
+  requestedView: RequestedView | null
   rewardsEnabled: boolean
   balance: number
   settings: Settings
   options: Options
   grantCaptchaInfo: GrantCaptchaInfo | null
+  adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
   exchangeInfo: ExchangeInfo
   earningsInfo: EarningsInfo
+  payoutStatus: Record<string, ProviderPayoutStatus>
   publisherInfo: PublisherInfo | null
   publisherRefreshing: boolean
   externalWalletProviders: ExternalWalletProvider[]
   externalWallet: ExternalWallet | null
   summaryData: RewardsSummaryData
   notifications: Notification[]
-  adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
 }
 
 export type HostListener = (state: HostState) => void
@@ -105,4 +111,5 @@ export interface Host {
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
+  onAppRendered: () => void
 }

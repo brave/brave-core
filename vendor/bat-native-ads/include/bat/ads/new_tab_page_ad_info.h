@@ -8,9 +8,10 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/new_tab_page_ad_wallpaper_info_aliases.h"
+#include "bat/ads/new_tab_page_ad_wallpaper_info.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -24,6 +25,9 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   bool operator==(const NewTabPageAdInfo& rhs) const;
 
   bool IsValid() const;
+
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

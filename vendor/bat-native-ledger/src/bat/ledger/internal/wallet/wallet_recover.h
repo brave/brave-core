@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_WALLET_WALLET_RECOVER_H_
-#define BRAVELEDGER_WALLET_WALLET_RECOVER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_RECOVER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_RECOVER_H_
 
 #include <stdint.h>
 
@@ -25,17 +25,15 @@ class WalletRecover {
   explicit WalletRecover(LedgerImpl* ledger);
   ~WalletRecover();
 
-  void Start(
-      const std::string& pass_phrase,
-      ledger::ResultCallback callback);
+  void Start(const std::string& pass_phrase,
+             ledger::LegacyResultCallback callback);
 
  private:
-  void OnRecover(
-      const type::Result result,
-      const std::string& payment_id,
-      const bool legacy_wallet,
-      const std::vector<uint8_t>& new_seed,
-      ledger::ResultCallback callback);
+  void OnRecover(type::Result result,
+                 const std::string& payment_id,
+                 bool legacy_wallet,
+                 const std::vector<uint8_t>& new_seed,
+                 ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
@@ -43,4 +41,4 @@ class WalletRecover {
 
 }  // namespace wallet
 }  // namespace ledger
-#endif  // BRAVELEDGER_WALLET_WALLET_RECOVER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_RECOVER_H_

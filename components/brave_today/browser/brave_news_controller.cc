@@ -323,7 +323,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
   }
   auto on_ad_received = base::BindOnce(
       [](GetDisplayAdCallback callback, const bool success,
-         const std::string& dimensions, const base::DictionaryValue& ad_data) {
+         const std::string& dimensions, const base::Value::Dict& ad_data) {
         if (!success) {
           VLOG(1) << "GetDisplayAd: no ad";
           std::move(callback).Run(nullptr);
@@ -334,16 +334,16 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
         // TODO(petemill): brave_ads seems to use mojom, perhaps we can receive
         // and send to callback the actual typed mojom struct from brave_ads?
         auto ad = mojom::DisplayAd::New();
-        ad->uuid = *ad_data.FindStringKey("uuid");
-        ad->creative_instance_id = *ad_data.FindStringKey("creativeInstanceId");
-        if (ad_data.HasKey("ctaText"))
-          ad->cta_text = *ad_data.FindStringKey("ctaText");
-        ad->dimensions = *ad_data.FindStringKey("dimensions");
-        ad->title = *ad_data.FindStringKey("title");
-        ad->description = *ad_data.FindStringKey("description");
+        ad->uuid = *ad_data.FindString("uuid");
+        ad->creative_instance_id = *ad_data.FindString("creativeInstanceId");
+        if (const auto* value = ad_data.FindString("ctaText"))
+          ad->cta_text = *value;
+        ad->dimensions = *ad_data.FindString("dimensions");
+        ad->title = *ad_data.FindString("title");
+        ad->description = *ad_data.FindString("description");
         ad->image = mojom::Image::NewPaddedImageUrl(
-            GURL(*ad_data.FindStringKey("imageUrl")));
-        ad->target_url = GURL(*ad_data.FindStringKey("targetUrl"));
+            GURL(*ad_data.FindString("imageUrl")));
+        ad->target_url = GURL(*ad_data.FindString("targetUrl"));
         std::move(callback).Run(std::move(ad));
       },
       std::move(callback));

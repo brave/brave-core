@@ -5,7 +5,9 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 
+#include <algorithm>
 #include <functional>
+#include <iterator>
 #include <utility>
 
 #include "base/check.h"
@@ -56,13 +58,21 @@ void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
     const CreativeNewTabPageAdList& creative_ads) {
   DCHECK(transaction);
 
-  if (creative_ads.empty()) {
+  CreativeNewTabPageAdList filtered_creative_ads;
+  std::copy_if(creative_ads.cbegin(), creative_ads.cend(),
+               std::back_inserter(filtered_creative_ads),
+               [](const CreativeNewTabPageAdInfo& creative_ad) {
+                 return !creative_ad.wallpapers.empty();
+               });
+
+  if (filtered_creative_ads.empty()) {
     return;
   }
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
+  command->command =
+      BuildInsertOrUpdateQuery(command.get(), filtered_creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }

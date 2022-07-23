@@ -7,14 +7,16 @@
 
 #include <memory>
 
+#include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -23,18 +25,23 @@ namespace notification_ads {
 
 class BatAdsEligibleNotificationAdsV1Test : public UnitTestBase {
  protected:
-  BatAdsEligibleNotificationAdsV1Test()
-      : database_table_(
-            std::make_unique<database::table::CreativeNotificationAds>()) {}
+  BatAdsEligibleNotificationAdsV1Test() = default;
 
   ~BatAdsEligibleNotificationAdsV1Test() override = default;
 
-  void Save(const CreativeNotificationAdList& creative_ads) {
-    database_table_->Save(creative_ads,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    subdivision_targeting_ =
+        std::make_unique<geographic::SubdivisionTargeting>();
+    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
+    eligible_ads_ = std::make_unique<EligibleAdsV1>(
+        subdivision_targeting_.get(), anti_targeting_resource_.get());
   }
 
-  std::unique_ptr<database::table::CreativeNotificationAds> database_table_;
+  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
+  std::unique_ptr<EligibleAdsV1> eligible_ads_;
 };
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
@@ -49,77 +56,61 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
-  Save(creative_ads);
+  SaveCreativeAds(creative_ads);
 
   // Act
-  geographic::SubdivisionTargeting subdivision_targeting;
-  resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
-
   const CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
-  eligible_ads.GetForUserModel(
+  eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
-      [&expected_creative_ads](const bool success,
+      [&expected_creative_ads](const bool had_opportunity,
                                const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
         EXPECT_EQ(expected_creative_ads, creative_ads);
       });
-
-  // Assert
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.segment = "technology & computing";
   creative_ads.push_back(creative_ad);
-
-  Save(creative_ads);
+  SaveCreativeAds(creative_ads);
 
   // Act
-  geographic::SubdivisionTargeting subdivision_targeting;
-  resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
-
   const CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
-  eligible_ads.GetForUserModel(
+  eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
-      [&expected_creative_ads](const bool success,
+      [&expected_creative_ads](const bool had_opportunity,
                                const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
         EXPECT_EQ(expected_creative_ads, creative_ads);
       });
-
-  // Assert
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.segment = "untargeted";
   creative_ads.push_back(creative_ad);
-
-  Save(creative_ads);
+  SaveCreativeAds(creative_ads);
 
   // Act
-  geographic::SubdivisionTargeting subdivision_targeting;
-  resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
-
   const CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
-  eligible_ads.GetForUserModel(
+  eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"finance-banking"}, {}, {}),
-      [&expected_creative_ads](const bool success,
+      [&expected_creative_ads](const bool had_opportunity,
                                const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
         EXPECT_EQ(expected_creative_ads, creative_ads);
       });
-
-  // Assert
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
@@ -138,79 +129,174 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
-  Save(creative_ads);
+  SaveCreativeAds(creative_ads);
 
   // Act
-  geographic::SubdivisionTargeting subdivision_targeting;
-  resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
-
   const CreativeNotificationAdList expected_creative_ads = {creative_ad_1,
                                                             creative_ad_3};
 
-  eligible_ads.GetForUserModel(
+  eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
-      [&expected_creative_ads](const bool success,
+      [&expected_creative_ads](const bool had_opportunity,
                                const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
-
-  // Assert
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.segment = "untargeted";
   creative_ads.push_back(creative_ad);
-
-  Save(creative_ads);
+  SaveCreativeAds(creative_ads);
 
   // Act
-  geographic::SubdivisionTargeting subdivision_targeting;
-  resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
-
   const CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
-  eligible_ads.GetForUserModel(
+  eligible_ads_->GetForUserModel(
       {},
-      [&expected_creative_ads](const bool success,
+      [&expected_creative_ads](const bool had_opportunity,
                                const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
         EXPECT_EQ(expected_creative_ads, creative_ads);
       });
-
-  // Assert
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUnmatchedSegments) {
+TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.segment = "technology & computing";
   creative_ads.push_back(creative_ad);
-
-  Save(creative_ads);
+  SaveCreativeAds(creative_ads);
 
   // Act
-  geographic::SubdivisionTargeting subdivision_targeting;
-  resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
-
-  const CreativeNotificationAdList expected_creative_ads = {};
-
-  eligible_ads.GetForUserModel(
+  eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"UNMATCHED"}, {}, {}),
-      [&expected_creative_ads](const bool success,
+      [](const bool had_opportunity,
+         const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_FALSE(had_opportunity);
+        EXPECT_TRUE(creative_ads.empty());
+      });
+}
+
+TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
+  // Arrange
+
+  // Act
+  eligible_ads_->GetForUserModel(
+      targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
+                                {}),
+      [](const bool had_opportunity,
+         const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_FALSE(had_opportunity);
+        EXPECT_TRUE(creative_ads.empty());
+      });
+}
+
+TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
+  // Arrange
+  CreativeNotificationAdList creative_ads;
+
+  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  creative_ad_1.segment = "technology & computing";
+  creative_ads.push_back(creative_ad_1);
+
+  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  creative_ad_2.segment = "food & drink";
+  creative_ads.push_back(creative_ad_2);
+
+  SaveCreativeAds(creative_ads);
+
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad_1);
+  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+
+  // Act
+  const CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
+
+  eligible_ads_->GetForUserModel(
+      targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
+                                {}),
+      [&expected_creative_ads](const bool had_opportunity,
                                const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
         EXPECT_EQ(expected_creative_ads, creative_ads);
       });
+}
 
-  // Assert
+TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
+  // Arrange
+  CreativeNotificationAdList creative_ads;
+
+  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  creative_ad_1.segment = "technology & computing";
+  creative_ad_1.ptr = 0.1;
+  creative_ads.push_back(creative_ad_1);
+
+  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  creative_ad_2.segment = "food & drink";
+  creative_ad_2.ptr = 0.5;
+  creative_ads.push_back(creative_ad_2);
+
+  SaveCreativeAds(creative_ads);
+
+  // Act
+  ScopedPacingRandomNumberSetter scoped_setter(0.3);
+
+  const CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
+
+  eligible_ads_->GetForUserModel(
+      targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
+                                {}),
+      [&expected_creative_ads](const bool had_opportunity,
+                               const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
+        EXPECT_EQ(expected_creative_ads, creative_ads);
+      });
+}
+
+TEST_F(BatAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
+  // Arrange
+  CreativeNotificationAdList creative_ads;
+
+  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  creative_ad_1.segment = "technology & computing";
+  creative_ad_1.priority = 1;
+  creative_ads.push_back(creative_ad_1);
+
+  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  creative_ad_2.segment = "finance-banking";
+  creative_ad_2.priority = 1;
+  creative_ads.push_back(creative_ad_2);
+
+  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  creative_ad_3.segment = "food & drink";
+  creative_ad_3.priority = 2;
+  creative_ads.push_back(creative_ad_3);
+
+  SaveCreativeAds(creative_ads);
+
+  // Act
+  const CreativeNotificationAdList expected_creative_ads = {creative_ad_1};
+
+  eligible_ads_->GetForUserModel(
+      targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
+                                {}),
+      [&expected_creative_ads](const bool had_opportunity,
+                               const CreativeNotificationAdList& creative_ads) {
+        // Assert
+        EXPECT_TRUE(had_opportunity);
+        EXPECT_EQ(expected_creative_ads, creative_ads);
+      });
 }
 
 }  // namespace notification_ads

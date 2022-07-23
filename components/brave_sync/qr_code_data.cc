@@ -80,7 +80,8 @@ std::unique_ptr<QrCodeData> QrCodeData::FromJson(
     return nullptr;
   }
 
-  const std::string* version_value = value->FindStringKey("version");
+  const auto& root = value->GetDict();
+  const std::string* version_value = root.FindString("version");
   if (!version_value) {
     VLOG(1) << "Missing version";
     return nullptr;
@@ -93,15 +94,14 @@ std::unique_ptr<QrCodeData> QrCodeData::FromJson(
   }
   qr_data->version = version;
 
-  const std::string* sync_code_hex_value =
-      value->FindStringKey("sync_code_hex");
+  const std::string* sync_code_hex_value = root.FindString("sync_code_hex");
   if (!sync_code_hex_value) {
     VLOG(1) << "Missing sync code hex";
     return nullptr;
   }
   qr_data->sync_code_hex = *sync_code_hex_value;
 
-  const std::string* not_after_string = value->FindStringKey("not_after");
+  const std::string* not_after_string = root.FindString("not_after");
   if (!not_after_string) {
     VLOG(1) << "Missing not after time";
     return nullptr;

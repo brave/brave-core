@@ -35,8 +35,8 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   std::string GetSubdivisionCode() const;
 
  private:
-  void OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged();
-  void OnAdsSubdivisionTargetingCodePrefChanged();
+  void OnAutoDetectedSubdivisionTargetingCodePrefChanged();
+  void OnSubdivisionTargetingCodePrefChanged();
 
   std::string GetLazyAutoDetectedSubdivisionCode() const;
   std::string GetLazySubdivisionCode() const;

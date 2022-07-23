@@ -8,10 +8,10 @@
 #include <memory>
 #include <utility>
 
-#include "base/values.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
+#include "base/values.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/common/importer/scoped_copy_file.h"
 #include "chrome/common/importer/importer_data_types.h"
@@ -72,17 +72,9 @@ bool HasPaymentMethods(const base::FilePath& payments_path) {
 }  // namespace
 
 base::Value::List GetChromeSourceProfiles(
-    const base::FilePath& user_data_folder) {
+    const base::FilePath& local_state_path) {
   base::Value::List profiles;
-  base::FilePath local_state_path =
-    user_data_folder.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
-  if (!base::PathExists(local_state_path)) {
-    base::Value::Dict entry;
-    entry.Set("id", "Default");
-    entry.Set("name", "Default");
-    profiles.Append(std::move(entry));
-  } else {
+  if (base::PathExists(local_state_path)) {
     std::string local_state_content;
     base::ReadFileToString(local_state_path, &local_state_content);
     absl::optional<base::Value> local_state =
@@ -100,7 +92,7 @@ base::Value::List GetChromeSourceProfiles(
       if (info_cache) {
         for (const auto value : *info_cache) {
           const auto* profile = value.second.GetIfDict();
-          if (profile)
+          if (!profile)
             continue;
 
           auto* name = profile->FindString("name");
@@ -112,6 +104,12 @@ base::Value::List GetChromeSourceProfiles(
         }
       }
     }
+  }
+  if (profiles.empty()) {
+    base::Value::Dict entry;
+    entry.Set("id", "");
+    entry.Set("name", "Default");
+    profiles.Append(std::move(entry));
   }
   return profiles;
 }

@@ -22,7 +22,7 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
   std::string updated;
   auto config = ipfs::mojom::IpfsConfig::New(
       base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
-      "APIPort", "SwarmPort", "StorageSize");
+      "APIPort", "SwarmPort", "StorageSize", absl::nullopt);
 
   std::string expect =
       "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
@@ -63,6 +63,26 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
   updated.clear();
   ASSERT_FALSE(UpdateConfigJSON("[]", config.get(), &updated));
   EXPECT_EQ(updated, "");
+}
+
+TEST_F(IPFSServiceUtils, DNSResolversUpdate) {
+  std::string json = R"({})";
+  std::string updated;
+  auto config = ipfs::mojom::IpfsConfig::New(
+      base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
+      "APIPort", "SwarmPort", "StorageSize",
+      "https://cloudflare.com/dns-query");
+
+  std::string expect =
+      "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
+      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
+      "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
+      "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
+      "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
+      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+      "\"HighWater\":40,\"LowWater\":20}}}";
+  ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
+  EXPECT_EQ(updated, expect);
 }
 
 TEST_F(IPFSServiceUtils, GetVerisonFromNodeFilename) {

@@ -9,24 +9,27 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace database {
+namespace table {
 
 class BatAdsConversionQueueDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsConversionQueueDatabaseTableTest()
-      : database_table_(std::make_unique<database::table::ConversionQueue>()) {}
+  BatAdsConversionQueueDatabaseTableTest() = default;
 
   ~BatAdsConversionQueueDatabaseTableTest() override = default;
 
-  void Save(const ConversionQueueItemList& conversion_queue_items) {
-    database_table_->Save(conversion_queue_items,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    database_table_ = std::make_unique<ConversionQueue>();
   }
 
-  std::unique_ptr<database::table::ConversionQueue> database_table_;
+  std::unique_ptr<ConversionQueue> database_table_;
 };
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
@@ -34,7 +37,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   const ConversionQueueItemList conversion_queue_items = {};
 
   // Act
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
 }
@@ -62,7 +65,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
   conversion_queue_items.push_back(info_2);
 
   // Act
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
   const ConversionQueueItemList& expected_conversion_queue_items =
@@ -91,10 +94,10 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   info.process_at = Now();
   conversion_queue_items.push_back(info);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
   const ConversionQueueItemList& expected_conversion_queue_items = {info, info};
@@ -143,7 +146,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   conversion_queue_items.push_back(info_3);
 
   // Act
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
   const ConversionQueueItemList& expected_conversion_queue_items =
@@ -181,7 +184,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   info_2.process_at = Now();
   conversion_queue_items.push_back(info_2);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
 
@@ -225,7 +228,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   info_2.process_at = Now();
   conversion_queue_items.push_back(info_2);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
 
@@ -273,7 +276,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   info_3.process_at = Now();
   conversion_queue_items.push_back(info_3);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
 
@@ -312,7 +315,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
   info_2.process_at = Now();
   conversion_queue_items.push_back(info_2);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
   database_table_->Delete(info_1,
@@ -353,7 +356,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   info_2.process_at = Now();
   conversion_queue_items.push_back(info_2);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
   ConversionQueueItemInfo invalid_conversion_queue_item;
@@ -405,7 +408,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
   info_2.process_at = Now();
   conversion_queue_items.push_back(info_2);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
   database_table_->Update(info_1,
@@ -446,7 +449,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   info_2.process_at = Now();
   conversion_queue_items.push_back(info_2);
 
-  Save(conversion_queue_items);
+  SaveConversionQueueItems(conversion_queue_items);
 
   // Act
   ConversionQueueItemInfo invalid_conversion_queue_item;
@@ -487,4 +490,6 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
+}  // namespace table
+}  // namespace database
 }  // namespace ads

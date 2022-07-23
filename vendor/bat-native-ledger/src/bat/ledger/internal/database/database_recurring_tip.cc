@@ -33,7 +33,7 @@ DatabaseRecurringTip::~DatabaseRecurringTip() = default;
 
 void DatabaseRecurringTip::InsertOrUpdate(
     type::RecurringTipPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -62,9 +62,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseRecurringTip::GetAllRecords(
@@ -103,9 +101,7 @@ void DatabaseRecurringTip::GetAllRecords(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseRecurringTip::OnGetAllRecords(
@@ -140,9 +136,8 @@ void DatabaseRecurringTip::OnGetAllRecords(
   callback(std::move(list));
 }
 
-void DatabaseRecurringTip::DeleteRecord(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
+                                        ledger::LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -167,9 +162,7 @@ void DatabaseRecurringTip::DeleteRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

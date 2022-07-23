@@ -828,23 +828,14 @@ void EthereumProviderImpl::ContinueSignMessage(
 
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(origin), -1, address, message, is_eip712, domain_hash,
-      primary_hash, mojom::CoinType::ETH);
+      primary_hash, absl::nullopt, mojom::CoinType::ETH);
 
-  if (keyring_service_->IsHardwareAccount(address)) {
-    brave_wallet_service_->AddSignMessageRequest(
-        std::move(request),
-        base::BindOnce(
-            &EthereumProviderImpl::OnHardwareSignMessageRequestProcessed,
-            weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
-            address, std::move(message_to_sign), is_eip712));
-  } else {
-    brave_wallet_service_->AddSignMessageRequest(
-        std::move(request),
-        base::BindOnce(&EthereumProviderImpl::OnSignMessageRequestProcessed,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), address, std::move(message_to_sign),
-                       is_eip712));
-  }
+  brave_wallet_service_->AddSignMessageRequest(
+      std::move(request),
+      base::BindOnce(&EthereumProviderImpl::OnSignMessageRequestProcessed,
+                     weak_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(id), address, std::move(message_to_sign),
+                     is_eip712));
   delegate_->ShowPanel();
 }
 
@@ -855,10 +846,18 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     std::vector<uint8_t>&& message,
     bool is_eip712,
     bool approved,
-    const std::string& signature,
-    const std::string& error) {
+    mojom::ByteArrayStringUnionPtr signature,
+    const absl::optional<std::string>& error) {
   std::unique_ptr<base::Value> formed_response;
   bool reject = false;
+  if (error && !error->empty()) {
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kInternalError, *error);
+    reject = true;
+    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+                            "", false);
+    return;
+  }
   if (!approved) {
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
@@ -869,51 +868,30 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     return;
   }
 
-  auto signature_with_err = keyring_service_->SignMessageByDefaultKeyring(
-      address, message, is_eip712);
-  if (!signature_with_err.signature) {
-    formed_response = GetProviderErrorDictionary(
-        mojom::ProviderError::kInternalError, signature_with_err.error_message);
-    reject = true;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                            "", false);
+  if (!keyring_service_->IsHardwareAccount(address)) {
+    auto signature_with_err = keyring_service_->SignMessageByDefaultKeyring(
+        address, message, is_eip712);
+    if (!signature_with_err.signature) {
+      formed_response =
+          GetProviderErrorDictionary(mojom::ProviderError::kInternalError,
+                                     signature_with_err.error_message);
+      reject = true;
+    } else {
+      formed_response = base::Value::ToUniquePtrValue(
+          base::Value(ToHex(*signature_with_err.signature)));
+    }
   } else {
-    formed_response = base::Value::ToUniquePtrValue(
-        base::Value(ToHex(*signature_with_err.signature)));
-    reject = false;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                            "", false);
-  }
-}
-
-void EthereumProviderImpl::OnHardwareSignMessageRequestProcessed(
-    RequestCallback callback,
-    base::Value id,
-    const std::string& address,
-    std::vector<uint8_t>&& message,
-    bool is_eip712,
-    bool approved,
-    const std::string& signature,
-    const std::string& error) {
-  std::unique_ptr<base::Value> formed_response;
-  bool reject = false;
-  if (!approved) {
-    mojom::ProviderError error_code =
-        error.empty() ? mojom::ProviderError::kUserRejectedRequest
-                      : mojom::ProviderError::kInternalError;
-    auto error_message =
-        error.empty()
-            ? l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST)
-            : error;
-    formed_response = GetProviderErrorDictionary(error_code, error_message);
-    reject = true;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                            "", false);
-    return;
+    if (!signature || !signature->is_str()) {  // Missing hardware signature.
+      formed_response = GetProviderErrorDictionary(
+          mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      reject = true;
+    } else {
+      formed_response =
+          base::Value::ToUniquePtrValue(base::Value(signature->get_str()));
+    }
   }
 
-  formed_response = base::Value::ToUniquePtrValue(base::Value(signature));
-  reject = false;
   std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
                           "", false);
 }
@@ -1180,6 +1158,12 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     const std::string& method,
     const url::Origin& origin) {
   DCHECK(delegate_);
+  if (delegate_->IsPermissionDenied(mojom::CoinType::ETH)) {
+    OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
+                                 origin, RequestPermissionsError::kNone,
+                                 std::vector<std::string>());
+    return;
+  }
   keyring_service_->GetKeyringInfo(
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindOnce(

@@ -21,9 +21,7 @@ class DatabaseMigration {
   explicit DatabaseMigration(LedgerImpl* ledger);
   ~DatabaseMigration();
 
-  void Start(
-      const uint32_t table_version,
-      ledger::ResultCallback callback);
+  void Start(uint32_t table_version, ledger::LegacyResultCallback callback);
 
   static void SetTargetVersionForTesting(uint32_t version);
 

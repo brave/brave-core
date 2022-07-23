@@ -6,8 +6,10 @@
 #include "bat/ads/internal/ads/promoted_content_ad.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
+#include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/promoted_content_ad_info.h"
 
@@ -37,6 +39,8 @@ void PromotedContentAd::TriggerEvent(
 
 void PromotedContentAd::OnPromotedContentAdViewed(
     const PromotedContentAdInfo& ad) {
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 }
@@ -44,6 +48,8 @@ void PromotedContentAd::OnPromotedContentAdViewed(
 void PromotedContentAd::OnPromotedContentAdClicked(
     const PromotedContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
+
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);

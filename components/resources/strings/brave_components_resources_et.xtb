@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Kasuta Brave'i kohalikku IPFS-i sõlme</translation>
 <translation id="8148464361648742409">Kasuta avalikku lüüsi</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) on avalik võrdvõrk andmete salvestamiseks ja edastamiseks. Sellel protokollil on HTTP(S)-ist erinevad privaatsuse kaalutlused.</translation>
-<translation id="5410952114182173389">Teie arvuti panustab avalikku võrku, kuid teie IP-aadress ja kogu sisu, mida taotlete või edastate, võivad olla nähtavad. IPFS-i kaudu taotletud sisu kontrollitakse enne selle teile edastamist.</translation>
+<translation id="1216911189668016151">Teie arvuti panustab avalikku võrku, kuid teie IP-aadress ja kogu sisu, mida taotlete või edastate, võivad olla nähtavad. IPFS-i kaudu taotletud sisu kontrollitakse enne selle teile edastamist. Võrgupäringud ei tohi kasutada brauseri puhverserveri ega DNS-seadeid.</translation>
 <translation id="8664689531113048642">Kaitseb teie IP-aadressi ja sisu, mida taotlete, potentsiaalse kolmandast osapoolest vaataja eest, kuid mitte avaliku lüüsioperaatori eest. Lüüsioperaator vastutab selle eest, et teile lüüsis edastatud sisu oleks teie soovitud sisu. Samuti ei panusta teie arvuti avalikku IPFS-võrku.</translation>
 <translation id="3977809385703587108">Saate oma eelistusi uuesti muuta jaotises</translation>
 <translation id="3340978935015468852">seaded</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Kas importida Brave'i pärand-krüptokontodelt?</translation>
 <translation id="3331452756822160641">Uus parool</translation>
 <translation id="8624315169751085215">Kopeeri lõikelauale</translation>
+<translation id="7885157704277298658">Kopeeritud!</translation>
 <translation id="1121335910737476837">Põhikrüptokontod</translation>
 <translation id="6969147029062037757">Imporditud kontod</translation>
 <translation id="4057718162494343222">Brave'i rahakotis saate luua põhikontod, mida saab varundada või taastefraasi abil taastada. Kui soovite kontotüüpide kohta lisateavet, vaadake konto spikrit</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Ikooni URL</translation>
 <translation id="2144247757675997850">Lisa vara</translation>
 <translation id="2708402071160162126">HOIATUS! Ärge jagage oma taastefraasi. Igaüks, kes seda fraasi teab, saab teie varad jäädavalt endale võtta.</translation>
+<translation id="2416098547200943834">MÄRKUS: privaatvõti antakse hex-kodeeritud JSON-failina, mis sisaldab privaatvõtit ja protokolli teavet. <ph name="LINK_START"/>Lisateave<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">MÄRKUS: privaatvõti tuleb anda hex-kodeeritud JSON-failina, mis sisaldab privaatvõtit ja protokolli teavet. <ph name="LINK_START"/>Lisateave<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Kuva võti</translation>
 <translation id="8033497299373164724">Peida võti</translation>
 <translation id="2702143907607790516">Konto nime uuendamine nurjus, proovige uuesti.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Sõnum</translation>
 <translation id="3586752056660754651">Allkirjasta</translation>
 <translation id="3484981968509595506">Detsentraliseeritud rakendus küsib teie avalikku krüptovõtit</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$URL<ph name="URL_AFTER"/> küsib teie rahakoti avalikku krüptovõtit. Kui nõustute selle võtme andmisega, saab see veebisait koostada teile krüptitud sõnumeid.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> küsib teie rahakoti avalikku krüptovõtit. Kui nõustute selle võtme andmisega, saab see veebisait koostada teile krüptitud sõnumeid.</translation>
 <translation id="3340247553212049934">Pakkuda</translation>
 <translation id="1619778919922494944">See detsentraliseeritud rakendus soovib lugeda seda sõnumit, et täita teie päring</translation>
 <translation id="714506544401754321">Sõnumi dekrüpteerimine</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048">Seadme <ph name="DEVICE_NAME"/> ühendus on katkestatud</translation>
 <translation id="5317781812114905957">Juhised</translation>
 <translation id="1178198982208000092">Ühendage oma <ph name="DEVICE_NAME"/>.</translation>
-<translation id="4358411489835404360">Riistvararahakott nõuab seadme kinnitamist. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Riistvararahakott nõuab, et seadmes <ph name="DEVICE_NAME"/> oleks avatud Ethereumi rakendus</translation>
+<translation id="6291765462876399333">Riistvararahakott nõuab kinnitust seadmes <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Riistvararahakott nõuab, et seadmes <ph name="DEVICE_NAME"/> oleks avatud rakendus <ph name="NETWORK"/></translation>
 <translation id="8687869982094542529">saadetud</translation>
 <translation id="5013754027092416509">vastu võetud</translation>
 <translation id="5867988533873716616">Plokiuurija URL ei ole saadaval.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> ei ole aktiivne võrk</translation>
 <translation id="7340805872138998391">Seadme avamine ei õnnestu, proovige uuesti ühendust luua</translation>
 <translation id="1984410139271779110">Sisetõrge, tundmatu skeem</translation>
-<translation id="8682200134223578011">kinnitatud</translation>
+<translation id="6989562355845156390">kinnita</translation>
 <translation id="4674380028960132654">Pearaamat: allkiri ei vasta õigele aadressile</translation>
 <translation id="3183932890629254743">Riistvarakontot ei leitud</translation>
 <translation id="4287068151777838754">Ei oodatud JSON-andmeid</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Tehing on kinnitatud</translation>
 <translation id="310693998838023022">Tehingutõrge</translation>
 <translation id="6395870673621520684">Tehing jäeti ära</translation>
+<translation id="1237782734462409503">Vaheleht ei ole aktiivne</translation>
+<translation id="756701799684433105">Kinnita tehing</translation>
+<translation id="6450792191436242818">Süsteemiprogramm</translation>
+<translation id="6252742184395380448">Konfiguratsiooniprogramm</translation>
+<translation id="5358970666412490132">Panuseprogramm</translation>
+<translation id="346636227344244984">Hääletusprogramm</translation>
+<translation id="3538368258493053874">BPF-laadur</translation>
+<translation id="2334098351242742927">Ed25519 programm</translation>
+<translation id="8780753288764281797">Secp256k1 programm</translation>
+<translation id="5275550100743015683">Saatja aadress:</translation>
+<translation id="2678433693746214764">Saaja aadress:</translation>
+<translation id="4576396475962922672">Uus konto:</translation>
+<translation id="4719005063558335704">Kontod:</translation>
+<translation id="4337554812324118382">Andmed:</translation>
+<translation id="569870799832027680">Programmi ID:</translation>
+<translation id="7843211152394841558">Max katsete arv:</translation>
+<translation id="8496335570810457">Eelkohustumus:</translation>
+<translation id="5100124500279922001">Jäta eelpäring vahele:</translation>
+<translation id="8060029310790625334">Abikeskus</translation>
+<translation id="2095142195578664632">Vajate abi? Vaadake</translation>
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="3745016858329272300">Üldine teave</translation>
 <translation id="4045404575593562245">Tori juhtelemendid</translation>

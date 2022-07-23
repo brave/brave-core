@@ -35,6 +35,8 @@ class LedgerClientIOS : public ledger::LedgerClient {
   void OnPanelPublisherInfo(ledger::type::Result result,
                             ledger::type::PublisherInfoPtr publisher_info,
                             uint64_t windowId) override;
+  void OnPublisherRegistryUpdated() override;
+  void OnPublisherUpdated(const std::string& publisher_id) override;
   void OnReconcileComplete(
       ledger::type::Result result,
       ledger::type::ContributionInfoPtr contribution) override;
@@ -61,7 +63,7 @@ class LedgerClientIOS : public ledger::LedgerClient {
   std::string GetLegacyWallet() override;
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
-                        ledger::client::ResultCallback callback) override;
+                        ledger::client::LegacyResultCallback callback) override;
   bool GetBooleanOption(const std::string& name) const override;
   int GetIntegerOption(const std::string& name) const override;
   double GetDoubleOption(const std::string& name) const override;
@@ -79,7 +81,7 @@ class LedgerClientIOS : public ledger::LedgerClient {
   void PendingContributionSaved(const ledger::type::Result result) override;
   void ClearAllNotifications() override;
   void WalletDisconnected(const std::string& wallet_type) override;
-  void DeleteLog(ledger::client::ResultCallback callback) override;
+  void DeleteLog(ledger::client::LegacyResultCallback callback) override;
   absl::optional<std::string> EncryptString(const std::string& value) override;
   absl::optional<std::string> DecryptString(const std::string& value) override;
 };

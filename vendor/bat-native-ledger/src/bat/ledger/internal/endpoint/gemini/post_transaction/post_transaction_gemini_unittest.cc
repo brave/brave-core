@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -57,7 +58,7 @@ TEST_F(GeminiPostTransactionTest, ServerOK) {
               "status": "Completed",
               "timestampms": 1623171893237
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::gemini::Transaction transaction;
@@ -87,7 +88,7 @@ TEST_F(GeminiPostTransactionTest, UnrecognizedStatus) {
               "status": "Processing",
               "timestampms": 1623171893237
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::gemini::Transaction transaction;
@@ -109,7 +110,7 @@ TEST_F(GeminiPostTransactionTest, ServerError401) {
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::gemini::Transaction transaction;
@@ -131,7 +132,7 @@ TEST_F(GeminiPostTransactionTest, ServerError403) {
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::gemini::Transaction transaction;
@@ -153,7 +154,7 @@ TEST_F(GeminiPostTransactionTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::gemini::Transaction transaction;
@@ -175,7 +176,7 @@ TEST_F(GeminiPostTransactionTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::gemini::Transaction transaction;

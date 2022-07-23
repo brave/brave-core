@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">השתמשו בצומת IPFS מקומי של Brave</translation>
 <translation id="8148464361648742409">השתמש/י בשער ציבורי</translation>
 <translation id="5123478056123923857">IPFS (מערכת הקבצים המבוזרת, InterPlanetary File System) היא רשת ציבורית לאחסון והעברת נתונים מעמית לעמית. לפרוטוקול זה יש שיקולי פרטיות שונים מאלה של רשתות HTTP.</translation>
-<translation id="5410952114182173389">המחשב שלך תורם לרשת הציבורית, אך כתובת ה-IP שלך ותכנים אחרים שאת/ה מבקש/ת או מספק עלולים להיחשף. תוכן שאת/ה מבקש/ת באמצעות IPFS מאומת לפני שהוא מוגש לך.</translation>
+<translation id="1216911189668016151">המחשב שלך תורם לרשת הציבורית, אבל כתובת ה-IP שלך וכל תוכן שיבוקש או שיסופק על ידך עלולים להיחשף. תוכן שיבוקש על ידך באמצעות IPFS יעבור אימות לפני שיוגש לך. ייתכן שבקשות רשת לא ישתמשו בהגדרות פרוקסי ו-DNS של הדפדפן.</translation>
 <translation id="8664689531113048642">מגן על כתובת ה-IP ועל תכנים שאת/ה מבקש/ת מצופים חיצוניים פוטנציאלים, אבל לא ממפעיל שער חיצוני. מפעיל השער אחראי להבטיח שהתוכן המוגש לך באמצעות השער הוא התוכן שביקשת. כמו כן, המחשב שלך אינו תורם לרשת ה-IPFS הציבורית.</translation>
 <translation id="3977809385703587108">תוכל/י לשנות את ההעדפות שלך שוב בעוד</translation>
 <translation id="3340978935015468852">הגדרות</translation>
@@ -916,6 +916,7 @@
 <translation id="4359319875297001084">לייבא מארנקי קריפטו Brave מדור קודם?</translation>
 <translation id="3331452756822160641">סיסמה חדשה</translation>
 <translation id="8624315169751085215">העתק ללוח מודעות</translation>
+<translation id="7885157704277298658">הועתק!</translation>
 <translation id="1121335910737476837">חשבונות קריפטו עיקריים</translation>
 <translation id="6969147029062037757">חשבונות מיובאים</translation>
 <translation id="4057718162494343222">באפשרותך ליצור חשבונות ראשיים בארנק Brave שאותם ניתן לגבות או לשחזר באמצעות ביטוי השחזור שלך. למידע נוסף על סוגי חשבונות, יש לבקר בעמוד העזרה של החשבון.</translation>
@@ -973,6 +974,8 @@
 <translation id="7642841516562576649">סמל URL</translation>
 <translation id="2144247757675997850">הוסף נכס חדש</translation>
 <translation id="2708402071160162126">אזהרה: לעולם אל תחשוף את ביטוי השחזור שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
+<translation id="2416098547200943834">הערה: מפתח פרטי מסופק בתור JSON בקידוד הקסדצימלי המכיל מפתח פרטי ומידע פרוטוקול. <ph name="LINK_START"/>פרטים נוספים<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">הערה: יש לספק מפתח פרטי בתור JSON בקידוד הקסדצימלי המכיל מפתח פרטי ומידע פרוטוקול.<ph name="LINK_START"/>פרטים נוספים<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">הצג מפתח</translation>
 <translation id="8033497299373164724">הסתר מפתח</translation>
 <translation id="2702143907607790516">עדכון שם החשבון נכשל. נסה שוב.</translation>
@@ -1008,7 +1011,7 @@
 <translation id="5488357322146334497">הודעה</translation>
 <translation id="3586752056660754651">חתימה</translation>
 <translation id="3484981968509595506">אפליקציית DApp מבקשת את מפתח ההצפנה הפומבי שלך</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> מבקש את מפתח ההצפנה הציבורי של הארנקים שלך. הסכמתך לתת מפתח זה, תאפשר לאתר לשלוח לך הודעות מוצפנות.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> מבקש את מפתח ההצפנה הציבורי של הארנק שלך. חשוב לדעת שאם החלטת לאפשר מתן מפתח זה, אתר זה יוכל לשלוח אליך הודעות מוצפנות.</translation>
 <translation id="3340247553212049934">ספק</translation>
 <translation id="1619778919922494944">האפליקציה המבוזרת (DApp) מבקשת לקרוא הודעה זו כדי להשלים את בקשתך.</translation>
 <translation id="714506544401754321">פענח הודעה</translation>
@@ -1075,8 +1078,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> מנותק</translation>
 <translation id="5317781812114905957">הוראות</translation>
 <translation id="1178198982208000092">חבר את<ph name="DEVICE_NAME"/>שלך</translation>
-<translation id="4358411489835404360">חומרת הארנק דורשת אישור על גבי המכשיר. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">יש לפתוח את אפליקציית Ethereum ב<ph name="DEVICE_NAME"/> לפי דרישת Hardware Wallert</translation>
+<translation id="6291765462876399333">ארנק החומרה דורש אישור במכשיר <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">ארנק החומרה דורש לפתוח אפליקציית <ph name="NETWORK"/> ב-<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">נשלח</translation>
 <translation id="5013754027092416509">התקבל</translation>
 <translation id="5867988533873716616">חסימת כתובת URL של סייר אינה זמינה.</translation>
@@ -1147,7 +1150,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/>אינו הרשת הנוכחית</translation>
 <translation id="7340805872138998391">לא ניתן לבטל נעילת המכשיר, נסה לחבר מחדש</translation>
 <translation id="1984410139271779110">שגיאה פנימית, ערכה לא ידועה</translation>
-<translation id="8682200134223578011">אושר</translation>
+<translation id="6989562355845156390">אישור</translation>
 <translation id="4674380028960132654">Ledger: החתימה אינה מתאימה לכתובת הנכונה</translation>
 <translation id="3183932890629254743">חשבון החומרה לא נמצא</translation>
 <translation id="4287068151777838754">נתוני JSON לא צפויים</translation>
@@ -1190,6 +1193,26 @@
 <translation id="2317956709076373213">העסקה אושרה</translation>
 <translation id="310693998838023022">שגיאה בהשלמת העסקה</translation>
 <translation id="6395870673621520684">העסקה נפלה</translation>
+<translation id="1237782734462409503">לשונית זו אינה פעילה</translation>
+<translation id="756701799684433105">אישור עסקה</translation>
+<translation id="6450792191436242818">תוכנית מערכת</translation>
+<translation id="6252742184395380448">תוכנית הגדרות</translation>
+<translation id="5358970666412490132">תוכנית סיכויים</translation>
+<translation id="346636227344244984">תוכנית הצבעות</translation>
+<translation id="3538368258493053874">הטענת BPF</translation>
+<translation id="2334098351242742927">תוכנית Ed25519</translation>
+<translation id="8780753288764281797">תוכנית Secp256k1</translation>
+<translation id="5275550100743015683">מאת (כתובת):</translation>
+<translation id="2678433693746214764">אל (כתובת):</translation>
+<translation id="4576396475962922672">חשבון חדש:</translation>
+<translation id="4719005063558335704">חשבונות:</translation>
+<translation id="4337554812324118382">נתונים:</translation>
+<translation id="569870799832027680">זיהוי תוכנית:</translation>
+<translation id="7843211152394841558">מקס׳ נסיונות חוזרים:</translation>
+<translation id="8496335570810457">התחייבות קדם טיסה:</translation>
+<translation id="5100124500279922001">דילוג על קדם טיסה:</translation>
+<translation id="8060029310790625334">מרכז תמיכה</translation>
+<translation id="2095142195578664632">צריכים עזרה? יש לעיין</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>

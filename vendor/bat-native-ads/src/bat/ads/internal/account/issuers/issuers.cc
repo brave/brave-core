@@ -82,11 +82,7 @@ void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
-    BLOG(1, "Failed to fetch issuers as a browser upgrade is required");
-    FailedToFetchIssuers(/* should_retry */ false);
-    return;
-  } else if (url_response.status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     FailedToFetchIssuers(/* should_retry */ true);
     return;
   }

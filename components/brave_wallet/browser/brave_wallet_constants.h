@@ -287,6 +287,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPreset50", IDS_BRAVE_WALLET_PRESET50},
     {"braveWalletPreset75", IDS_BRAVE_WALLET_PRESET75},
     {"braveWalletPreset100", IDS_BRAVE_WALLET_PRESET100},
+    {"braveWalletUnsupportedNetwork", IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK},
     {"braveWalletNetworkETH", IDS_BRAVE_WALLET_NETWORK_E_T_H},
     {"braveWalletNetworkMain", IDS_BRAVE_WALLET_NETWORK_MAIN},
     {"braveWalletNetworkTest", IDS_BRAVE_WALLET_NETWORK_TEST},
@@ -375,6 +376,10 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL},
     {"braveWalletAllowAddNetworkExplorer",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER},
+    {"braveWalletAllowAddNetworkNetworkPanelTitle",
+     IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE},
+    {"braveWalletAllowAddNetworkDetailsPanelTitle",
+     IDS_BRAVE_WALLET_ALLOW_ADD_DETAILS_PANEL_TITLE},
     {"braveWalletConfirmTransactionTotal",
      IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL},
     {"braveWalletConfirmTransactionGasFee",
@@ -417,6 +422,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS},
     {"braveWalletAssetsPanelTitle", IDS_BRAVE_WALLET_ASSETS_PANEL_TITLE},
     {"braveWalletPanelDisconnected", IDS_BRAVE_WALLET_PANEL_DISCONNECTED},
+    {"braveWalletPanelBlocked", IDS_BRAVE_WALLET_PANEL_BLOCKED},
     {"braveWalletWelcomePanelDescription",
      IDS_BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION},
     {"braveWalletWelcomePanelButton", IDS_BRAVE_WALLET_WELCOME_PANEL_BUTTON},
@@ -596,6 +602,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR},
     {"braveWalletProcessMessageError",
      IDS_BRAVE_WALLET_HARDWARE_SIGN_MESSAGE_ERROR},
+    {"braveWalletHardwareOperationUnsupportedError",
+     IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR},
     {"braveWalletUnknownKeyringError",
      IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR},
     {"braveWalletBridgeCommandInProgress",
@@ -654,9 +662,11 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNetworkFilterSecondary",
      IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY},
     {"braveWalletHelpCenter", IDS_BRAVE_WALLET_HELP_CENTER},
-    {"braveWalletHelpCenterText", IDS_BRAVE_WALLET_HELP_CENTER_TEXT}};
+    {"braveWalletHelpCenterText", IDS_BRAVE_WALLET_HELP_CENTER_TEXT},
+    {"braveWalletBuyTapBuyNotSupportedMessage",
+     IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE}};
 
-// Swap constants
+// 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 // As of 22-02-2022, this address is controlled by @onyb.
 constexpr char kRopstenFeeRecipient[] =
@@ -672,6 +682,12 @@ constexpr char kBuyTokenPercentageFee[] = "0.00875";
 constexpr char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 constexpr char kAffiliateAddress[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+
+// Jupiter swap constants
+constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";
+constexpr char kSolanaBuyTokenFeeBps[] = "85";
+constexpr char kSolanaFeeRecipient[] =
+    "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 

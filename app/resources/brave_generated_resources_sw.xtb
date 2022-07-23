@@ -106,6 +106,16 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Ungependa kufunga vichupo vyote?</translation>
 <translation id="7551864359422178684">Una vichupo <ph name="NUMBER_OF_TABS"/> vilivyofunguliwa kwenye dirisha hili la kivinjari.</translation>
 <translation id="2571596981920752023">Vichupo <ph name="NUMBER_OF_TABS"/></translation>
+<translation id="2272117088509540883">- Utafutaji wa Brave</translation>
+<translation id="2701279958223202597">Unga mkono utafutaji huru ulio na faragha bora. Utafutaji wa Brave haukufuatilii, maswali yako au mibofyo yako.</translation>
+<translation id="6438467592401259882">Unga mkono utafutaji huru ulio na faragha bora.</translation>
+<translation id="1688359110799098115">Unga mkono utafutaji huru ulio na faragha bora</translation>
+<translation id="8579317236683491484">Utafutaji wa Brave haukufuatilii, maswali yako au mibofyo yako.</translation>
+<translation id="5240031343741051161">Jaribu Utafutaji wa Brave</translation>
+<translation id="5026874946691314267">Usionyeshe hii tena</translation>
+<translation id="5234764350956374838">Ondoa</translation>
+<translation id="214744058941501853">"&gt;
+         Ondosha ubadilishaji wa utafutaji wa Brave, bonyeza Ingiza ili uondoe pendekezo hili</translation>
 <translation id="2515126961943087659">Huduma ya Matangazo ya Bat</translation>
 <translation id="7924918279836988121">Huduma ya Leja ya Bat</translation>
 <translation id="6040143037577758943">Funga</translation>
@@ -135,6 +145,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8490082094734500369">Zima hali ya kisomaji</translation>
 <translation id="2036503787657622020">Washa hali ya kisomaji</translation>
 <translation id="5226458915125328323">Mipangilio ya Speedreader</translation>
+<translation id="1621606336827646158">Onyesha ukurasa asili</translation>
 <translation id="6284218950354553099">Tuma kiotomatiki mlio wa matumizi ya kila siku kwa Brave</translation>
 <translation id="5288333155754958121">Mlio huu wa faragha usiotambulisha huruhusu Brave kukadiria watumiaji hai.</translation>
 <translation id="1872784258300710671">Brave hutumia uchanganuzi wa bidhaa wa faragha kabisa kukadiria matumizi ya jumla ya vipengele fulani</translation>
@@ -185,6 +196,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Weka Brave kama kivinjari chako chaguomsingi ili kupata ulinzi wa faragha wa Brave kwenye kila ukurasa wa wavuti unaofungua.</translation>
 <translation id="8722651357687610395">Weka Brave kuwa chaguomsingi</translation>
 <translation id="2370739752330685659">Labda baadaye</translation>
+<translation id="961012016278832836">Urithi wa Microsoft Edge</translation>
+<translation id="6436994631426134065">Imehamishwa kutoka<ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
 <translation id="7179921470347911571">Zindua Sasa</translation>
 <translation id="4472575034687746823">Anza</translation>
@@ -201,9 +214,11 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2906510232093002459">Picha chaguomsingi za Brave</translation>
 <translation id="2396127686705429331">Onyesha kitufe cha alamisho</translation>
 <translation id="2814998458708016836">Tumia upao wa anwani pana</translation>
-<translation id="5802665280774361839">Onyesha ukamilishaji kiotomatiki kwenye upau wa anwani</translation>
-<translation id="597020512043916976">Onyesha tovuti maarufu katika mapendekezo ya kukamilika kiotomatiki</translation>
-<translation id="301088458323355543">Onyesha tovuti zilizopendekezwa katika mapendekezo ya kukamilika kiotomatiki</translation>
+<translation id="4109670531935487117">Onyesha mapendekezo ya ukamilishaji otomatiki kwenye upau wa anwani</translation>
+<translation id="2858138569776157458">Tovuti maarufu</translation>
+<translation id="65774893852758517">Tovuti zinazopendekezwa</translation>
+<translation id="7859704718976024901">Historia ya Kuvinjari</translation>
+<translation id="8820817407110198400">Sehemu ya Alamisho</translation>
 <translation id="6333347122924254968">Onyesha ikoni ya Brave Rewards kwenye upau wa anwani</translation>
 <translation id="1811404036171336214">Onyesha vialamisho kwenye ukurasa wa kichupo kipya wakati wote</translation>
 <translation id="5529693968082667490">Onyesha kitufe cha utafutaji wa kichupo</translation>
@@ -362,6 +377,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
     Je, una uhakika kwamba unataka kufanya hivi?</translation>
 <translation id="6285118765755298263">Orodhesha mitambo mingine ya kutafuta</translation>
 <translation id="919715748352669592">Inaorodhesha kiotomatiki tovuti zinazofuata OpenSearch</translation>
+<translation id="842628013524824194">Dirisha la Kawaida - Injini ya utafutaji inayotumika kwenye upau wa anwani</translation>
+<translation id="5324939009884545145">Dirisha la Faragha - Injini ya utafutaji inayotumika kwenye upau wa anwani</translation>
 <translation id="6864914031231797928">Ruhusu kuingia kwa Google kwa ajili hya viendelezi</translation>
 <translation id="6554397389149987360">Hutumia vipengele vya Hangouts ili kuwezesha kushiriki skrini na vipengele vingine kwenye kisakuzi.</translation>
 <translation id="7878791177459550035">Kisambaza data cha midia huwezesha kutuma kipengele katika kivinjari.</translation>
@@ -463,6 +480,7 @@ kuhusu nodi ya IPFS ya Jasiri ya eneo lako na masuala ya faragha ya lango.</tran
 <translation id="616058968889448209">Hitilafu ya ufunguaji wa huduma ya IPFS, maelezo zaidi yanapatikana kwenye <ph name="BEGIN_LINK"/>ukurasa wa utambuzi<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uleteaji ufunguo wa '<ph name="KEY_NAME"/>' haijafaulu</translation>
 <translation id="3364053282600191535">Uletaji ufunguo wa '<ph name="KEY_NAME"/>' haujafaulu</translation>
+<translation id="5840868269342837751">Kumbuka: Huenda maombi ya mtandao yasitumie kishenga cha kivinjari na mipangilio ya DNS.</translation>
 <translation id="8275038454117074363">Ingiza</translation>
 <translation id="3654980960391973513">Zalisha</translation>
 <translation id="5531501313997312487">Nodi ya kuanza</translation>

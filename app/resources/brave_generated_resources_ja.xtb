@@ -106,6 +106,16 @@
 <translation id="4870911314065352661">すべてのタブを閉じますか？</translation>
 <translation id="7551864359422178684">このブラウザウィンドウで<ph name="NUMBER_OF_TABS"/>個のタブを開いています。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>個のタブ</translation>
+<translation id="2272117088509540883">- Brave Search</translation>
+<translation id="2701279958223202597">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。Brave Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
+<translation id="6438467592401259882">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。</translation>
+<translation id="1688359110799098115">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。</translation>
+<translation id="8579317236683491484">Brave Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
+<translation id="5240031343741051161">Brave Searchを試してみる</translation>
+<translation id="5026874946691314267">再度表示しない</translation>
+<translation id="5234764350956374838">閉じる</translation>
+<translation id="214744058941501853">"&gt;
+          Brave Searchへの切り替えを行いません。Enterキーを押してこの提案を非表示にできます</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="6040143037577758943">近い</translation>
@@ -135,6 +145,7 @@
 <translation id="8490082094734500369">リーダーモードをオフにする</translation>
 <translation id="2036503787657622020">リーダーモードをオンにする</translation>
 <translation id="5226458915125328323">Speedreader設定</translation>
+<translation id="1621606336827646158">元のページを表示</translation>
 <translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
 <translation id="5288333155754958121">この匿名かつプライベートなPingにより、Braveはアクティブユーザーを推定することができます。</translation>
 <translation id="1872784258300710671">Braveは完全に匿名の製品分析を使い、特定の機能が全体でどの程度使われているか予測します</translation>
@@ -185,6 +196,8 @@
 <translation id="6817415381278637662">Braveをデフォルトのブラウザに設定すると、訪問するすべてのウェブページでBraveプライバシー保護を利用できます。</translation>
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
 <translation id="2370739752330685659">あとで</translation>
+<translation id="961012016278832836">Microsoft Edgeレガシー</translation>
+<translation id="6436994631426134065"><ph name="BROWSER_NAME"/>からインポート</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -201,9 +214,11 @@
 <translation id="2906510232093002459">Braveデフォルト画像</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
-<translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
-<translation id="597020512043916976">トップサイトをオートコンプリートでリコメンド</translation>
-<translation id="301088458323355543">推奨サイトをオートコンプリートで表示</translation>
+<translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
+<translation id="2858138569776157458">トップサイトをサイト候補に含める</translation>
+<translation id="65774893852758517">Braveによる予測をサイト候補に含める</translation>
+<translation id="7859704718976024901">閲覧履歴</translation>
+<translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="1811404036171336214">常に新しいタブページにブックマークを表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
@@ -240,12 +255,12 @@
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
 <translation id="6486983549008741930">コンテンツフィルター</translation>
-<translation id="8694564340481124390">カスタムフィルターを有効にすると、地域や言語を特化したトラッカーや不快な表示をブロックできます。</translation>
-<translation id="6522618763902154348">カスタムフィルターを有効にすると、地域や言語を特化したトラッカーや
+<translation id="8694564340481124390">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや不快な表示をブロックできます。</translation>
+<translation id="6522618763902154348">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや
  <ph name="BEGIN_LINK"/>不快な表示<ph name="END_LINK"/>をブロックできます。</translation>
 <translation id="3482656215021340727">カスタムフィルターのリストを追加</translation>
 <translation id="1020877116991797978">信頼できるコミュニティにより作成および管理されているリストを追加します。</translation>
-<translation id="7617831480435794399">信頼するエンティティのリストにのみサブスクライブしてください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
+<translation id="7617831480435794399">信頼できる作成者のリストにのみ登録してください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
 <translation id="2831397936251948638">カスタムフィルターの作成</translation>
 <translation id="4618274268052410139">以下のフィールドで、作成したカスタムフィルターを1行に1つずつ追加します。必ず <ph name="BEGIN_LINK"/>Adblock フィルター構文<ph name="END_LINK"/>を使用してください。</translation>
 <translation id="7791543448312431591">追加</translation>
@@ -363,6 +378,8 @@
     続行してよろしいですか？</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
+<translation id="842628013524824194">標準ウィンドウ - アドレスバーで使用される検索エンジン</translation>
+<translation id="5324939009884545145">プライベートウィンドウ - アドレスバーで使用される検索エンジン</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="6554397389149987360">ハングアウトコンポーネントでスクリーン共有やその他の機能を有効にします</translation>
 <translation id="7878791177459550035">メディアルーターは、ブラウザのキャスト機能を有効にします。</translation>
@@ -462,6 +479,7 @@
 <translation id="616058968889448209">IPFSサービス起動エラー。詳細は<ph name="BEGIN_LINK"/>診断ページ<ph name="END_LINK"/>を参照</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' キーのインポートに失敗しました</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' キーのエクスポートに失敗しました</translation>
+<translation id="5840868269342837751">注: ネットワークリクエストでは、ブラウザのプロキシやDNS設定が使用されない場合があります。</translation>
 <translation id="8275038454117074363">追加</translation>
 <translation id="3654980960391973513">生成</translation>
 <translation id="5531501313997312487">ノードの開始</translation>

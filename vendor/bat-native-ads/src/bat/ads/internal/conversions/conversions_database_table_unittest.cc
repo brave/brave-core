@@ -10,33 +10,31 @@
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/conversions/conversions_database_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace database {
+namespace table {
 
 class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsConversionsDatabaseTableTest()
-      : database_table_(std::make_unique<database::table::Conversions>()) {}
+  BatAdsConversionsDatabaseTableTest() = default;
 
   ~BatAdsConversionsDatabaseTableTest() override = default;
 
-  void Save(const ConversionList& conversions) {
-    database_table_->Save(conversions,
-                          [](const bool success) { ASSERT_TRUE(success); });
-  }
+  void SetUp() override {
+    UnitTestBase::SetUp();
 
-  void PurgeExpired() {
-    database_table_->PurgeExpired(
-        [](const bool success) { ASSERT_TRUE(success); });
+    database_table_ = std::make_unique<Conversions>();
   }
 
   base::Time CalculateExpireAtTime(const int observation_window) {
     return Now() + base::Days(observation_window);
   }
 
-  std::unique_ptr<database::table::Conversions> database_table_;
+  std::unique_ptr<Conversions> database_table_;
 };
 
 TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
@@ -44,7 +42,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
   ConversionList conversions = {};
 
   // Act
-  Save(conversions);
+  SaveConversions(conversions);
 
   // Assert
   const ConversionList expected_conversions = conversions;
@@ -78,7 +76,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
   conversions.push_back(info_2);
 
   // Act
-  Save(conversions);
+  SaveConversions(conversions);
 
   // Assert
   const ConversionList expected_conversions = conversions;
@@ -103,10 +101,10 @@ TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
   info.expire_at = CalculateExpireAtTime(info.observation_window);
   conversions.push_back(info);
 
-  Save(conversions);
+  SaveConversions(conversions);
 
   // Act
-  Save(conversions);
+  SaveConversions(conversions);
 
   // Assert
   const ConversionList expected_conversions = conversions;
@@ -147,12 +145,12 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   info_3.expire_at = CalculateExpireAtTime(info_3.observation_window);
   conversions.push_back(info_3);
 
-  Save(conversions);
+  SaveConversions(conversions);
 
   // Act
   AdvanceClockBy(base::Days(4));
 
-  PurgeExpired();
+  PurgeExpiredConversions();
 
   // Assert
   ConversionList expected_conversions;
@@ -180,7 +178,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   info_1.expire_at = CalculateExpireAtTime(info_1.observation_window);
   conversions.push_back(info_1);
 
-  Save(conversions);
+  SaveConversions(conversions);
 
   // Act
   ConversionInfo info_2;  // Should supersede info_1
@@ -191,7 +189,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   info_2.expire_at = CalculateExpireAtTime(info_2.observation_window);
   conversions.push_back(info_2);
 
-  Save(conversions);
+  SaveConversions(conversions);
 
   // Assert
   ConversionList expected_conversions;
@@ -216,4 +214,6 @@ TEST_F(BatAdsConversionsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
+}  // namespace table
+}  // namespace database
 }  // namespace ads

@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -43,10 +44,8 @@ class GetRecoverWalletTest : public testing::Test {
 
 TEST_F(GetRecoverWalletTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -59,7 +58,7 @@ TEST_F(GetRecoverWalletTest, ServerOK) {
               "altcurrency": "BAT",
               "publicKey": "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(
@@ -76,15 +75,13 @@ TEST_F(GetRecoverWalletTest, ServerOK) {
 
 TEST_F(GetRecoverWalletTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(
@@ -100,15 +97,13 @@ TEST_F(GetRecoverWalletTest, ServerError400) {
 
 TEST_F(GetRecoverWalletTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(
@@ -124,15 +119,13 @@ TEST_F(GetRecoverWalletTest, ServerError404) {
 
 TEST_F(GetRecoverWalletTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   wallet_->Request(

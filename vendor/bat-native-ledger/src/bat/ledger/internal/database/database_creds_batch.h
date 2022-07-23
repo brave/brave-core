@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_CREDS_BATCH_H_
-#define BRAVELEDGER_DATABASE_DATABASE_CREDS_BATCH_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_CREDS_BATCH_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_CREDS_BATCH_H_
 
 #include <string>
 #include <vector>
@@ -22,32 +22,28 @@ class DatabaseCredsBatch: public DatabaseTable {
   explicit DatabaseCredsBatch(LedgerImpl* ledger);
   ~DatabaseCredsBatch() override;
 
-  void InsertOrUpdate(
-      type::CredsBatchPtr creds,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(type::CredsBatchPtr creds,
+                      ledger::LegacyResultCallback callback);
 
   void GetRecordByTrigger(
       const std::string& trigger_id,
       const type::CredsBatchType trigger_type,
       GetCredsBatchCallback callback);
 
-  void SaveSignedCreds(
-      type::CredsBatchPtr creds,
-      ledger::ResultCallback callback);
+  void SaveSignedCreds(type::CredsBatchPtr creds,
+                       ledger::LegacyResultCallback callback);
 
   void GetAllRecords(GetCredsBatchListCallback callback);
 
-  void UpdateStatus(
-      const std::string& trigger_id,
-      const type::CredsBatchType trigger_type,
-      const type::CredsBatchStatus status,
-      ledger::ResultCallback callback);
+  void UpdateStatus(const std::string& trigger_id,
+                    type::CredsBatchType trigger_type,
+                    type::CredsBatchStatus status,
+                    ledger::LegacyResultCallback callback);
 
-  void UpdateRecordsStatus(
-      const std::vector<std::string>& trigger_ids,
-      const type::CredsBatchType trigger_type,
-      const type::CredsBatchStatus status,
-      ledger::ResultCallback callback);
+  void UpdateRecordsStatus(const std::vector<std::string>& trigger_ids,
+                           type::CredsBatchType trigger_type,
+                           type::CredsBatchStatus status,
+                           ledger::LegacyResultCallback callback);
 
   void GetRecordsByTriggers(
       const std::vector<std::string>& trigger_ids,
@@ -66,4 +62,4 @@ class DatabaseCredsBatch: public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_CREDS_BATCH_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_CREDS_BATCH_H_

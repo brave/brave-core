@@ -9,7 +9,7 @@ import {routes} from '../route.js';
 import {Router} from '../router.js';
 import 'chrome://resources/cr_elements/md_select_css.m.js';
 import '../settings_shared_css.js';
-import '../settings_vars_css.js';
+import '../settings_vars.css.js';
 import {loadTimeData} from "../i18n_setup.js"
 import {BraveAppearanceBrowserProxy,  BraveAppearanceBrowserProxyImpl} from './brave_appearance_browser_proxy.js';
 

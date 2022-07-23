@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Допоможіть Brave покращити стабільність продукту, автоматично надсилаючи звіти про діагностику, коли браузер Brave несподівано завершить роботу або зависне.</translation>
 <translation id="7977176350719484850">Приблизн. заощаджено\nданих</translation>
 <translation id="9008534313521214777">Приблизно зекономлено\nчасу</translation>
-<translation id="6572660632052512096">Настільний режим</translation>
-<translation id="1340503115760585811">Увімкнути перегляд робочого столу для нових вкладок</translation>
-<translation id="7924540991929826186">Використовувати мобільні версії сайтів для нових вкладок (рекомендовано)</translation>
-<translation id="807636106793708118">Віддавати перевагу мобільній версії сайтів</translation>
-<translation id="4479934682648362332">Віддавати перевагу настільній версії сайтів</translation>
 <translation id="1842747674580016420">Відтворення відео у Brave</translation>
 <translation id="5368992950177874750">Якщо увімкнено, відео будуть відтворюватись у Brave, а не у відповідному застосунку</translation>
 <translation id="410351446219883937">Автовідтворення</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Оберіть браузер Brave та клацніть "Завжди"</translation>
 <translation id="3546439402724649282">Brave вже є вашим типовим веб-переглядачем.</translation>
 <translation id="8389661903259423907">Ви вже визначили типовий веб-переглядач. Його можна змінити у налаштуваннях вашого застосунку.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Дякуємо</translation>
 <translation id="6665366815203065060">Ви щойно надіслали чайові:</translation>
 <translation id="5441565662498481293">Ви автоматично надсилаєте чайові:</translation>
@@ -861,23 +857,34 @@
 <translation id="4804818685124855865">Від'єднатись</translation>
 <translation id="8009571545960303544">Надійшов запит вашого підпису</translation>
 <translation id="3484981968509595506">DApp запитує ваш відкритий ключ шифрування</translation>
-<translation id="2291002548681057345">запитує ваш відкритий ключ шифрування гаманців. Якщо ви погодитеся надати цей ключ, то цей сайт зможе надсилати вам зашифровані повідомлення.</translation>
 <translation id="3340247553212049934">Надати</translation>
 <translation id="1982257600591932657">Назва мережі</translation>
 <translation id="5052727830821470769">URL-адреса мережі</translation>
 <translation id="4822132585477111396">ID мережі</translation>
 <translation id="7131971375297699539">Символ валюти</translation>
 <translation id="7982789257301363584">Мережа</translation>
-<translation id="7540715999708954128">Це дасть можливість використовувати цю мережу в гаманці Brave. Дізнайтеся більше.</translation>
-<translation id="8759753423332885148">Дізнатись більше.</translation>
 <translation id="4717431746210146708">Дозволити цьому сайту додати мережу?</translation>
+<translation id="4857321293515555666">Децентралізований додаток запитує доступ на читання цього повідомлення, щоб завершити ваш запит.</translation>
+<translation id="714506544401754321">Розшифрувати повідомлення</translation>
+<translation id="5039804452771397117">Дозволити</translation>
 <translation id="3378339846292573874">Додавання рекомендованого токена</translation>
 <translation id="2322227405137827074">Імпортувати цей токен?</translation>
 <translation id="1324417023773393937">Браузер Brave</translation>
 <translation id="6044189892950611565">Канал сповіщення для браузера Brave</translation>
 <translation id="1173919438868967364">Вибір облікового запису</translation>
 <translation id="8922793255489232731">Не вдалося знайти відповідний часовий пояс для <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Відображення найпопулярніших сайтів</translation>
+<translation id="8643377320501056697">Показати топ-сайти</translation>
 <translation id="6471216025161697462">Підключено до <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Пробний період</translation>
+<translation id="7733890291091968191">Показувати сповіщення Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave не відстежує вас і не знає, як ви використовуєте додаток, тож ми не знаємо, як ви налаштували VPN. Надішліть нам інформацію про проблему, з якою ви зіткнулися, щоб ми могли вирішити її якомога скоріше. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nІм’я хосту VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nТип підписки\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nТокен у Play Store\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nВерсія додатку\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nЧасовий пояс\n</translation>
+<translation id="8107843365677337047">\n\nТип мережі\n</translation>
+<translation id="5334952096674914470">\n\nОператор мобільного зв’язку\n</translation>
+<translation id="5393042357629679588">\n\nІнша проблема\n</translation>
+<translation id="8095666712177294104">\n\nПлатформа\n</translation>
 </translationbundle>

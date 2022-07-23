@@ -31,7 +31,10 @@ import {
   SendSolTransactionParams,
   SPLTransferFromParams
 } from '../../constants/types'
-import { AddAccountPayloadType } from '../../page/constants/action_types'
+import {
+  AddAccountPayloadType,
+  AddFilecoinAccountPayloadType
+} from '../../page/constants/action_types'
 
 // Utils
 
@@ -117,19 +120,21 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
     return
   }
   const { braveWalletService, keyringService, jsonRpcService } = getAPIProxy()
+  const coinsChainId = await jsonRpcService.getChainId(coin)
 
   // Update Selected Coin
   await braveWalletService.setSelectedCoin(coin)
   await store.dispatch(WalletActions.setSelectedCoin(coin))
 
   // Updated Selected Account
-  const selectedAccountAddress = await keyringService.getSelectedAccount(coin)
-  const defaultAccount = accounts.find((account) => account.address === selectedAccountAddress.address) ?? accounts[0]
+  const selectedAccountAddress = coin === BraveWallet.CoinType.FIL
+      ? await keyringService.getFilecoinSelectedAccount(coinsChainId.chainId)
+      : await keyringService.getSelectedAccount(coin)
+  const defaultAccount = accounts.find((account) => account.address === selectedAccountAddress.address) || accounts[0]
   await store.dispatch(WalletActions.setSelectedAccount(defaultAccount))
   await store.dispatch(refreshTransactionHistory(defaultAccount.address))
 
   // Updated Selected Network
-  const coinsChainId = await jsonRpcService.getChainId(coin)
   const defaultNetwork = getNetworkInfo(coinsChainId.chainId, coin, networkList)
   await store.dispatch(WalletActions.setNetwork(defaultNetwork))
 }
@@ -635,27 +640,15 @@ handler.on(WalletActions.setSelectedNetworkFilter.getType(), async (store: Store
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
 })
 
-handler.on(WalletActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
-  const { keyringService, walletHandler } = getAPIProxy()
-  const { accounts } = getWalletState(store)
-
-  // Creates a new account by the payloads coinType
+handler.on(WalletActions.addAccount.getType(), async (_store: Store, payload: AddAccountPayloadType) => {
+  const { keyringService } = getAPIProxy()
   const result = await keyringService.addAccount(payload.accountName, payload.coin)
+  return result.success
+})
 
-  // Looks to see if an account exist for the payloads coinType
-  const hasCoinTypeAccount = accounts.some(account => account.coin === payload.coin)
-
-  // If this is the first time creating an account for a coinType
-  // we set it as the defualt account for that coinType.
-  if (result.success && !hasCoinTypeAccount) {
-    // Get updated accountInfo
-    const walletInfo = await walletHandler.getWalletInfo()
-    const updatedAccounts = walletInfo.accountInfos
-
-    // Finds the new account and sets it as default
-    const foundAccount = updatedAccounts.find((account) => account.coin === payload.coin)
-    await keyringService.setSelectedAccount(foundAccount?.address ?? updatedAccounts[0].address, foundAccount?.coin ?? updatedAccounts[0].coin)
-  }
+handler.on(WalletActions.addFilecoinAccount.getType(), async (_store: Store, payload: AddFilecoinAccountPayloadType) => {
+  const { keyringService } = getAPIProxy()
+  const result = await keyringService.addFilecoinAccount(payload.accountName, payload.network)
   return result.success
 })
 

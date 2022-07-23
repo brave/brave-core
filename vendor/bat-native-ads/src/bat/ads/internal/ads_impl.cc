@@ -37,6 +37,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
+#include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/locale/locale_manager.h"
@@ -54,8 +55,8 @@
 #include "bat/ads/internal/studies/studies_util.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/transfer/transfer.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
@@ -146,11 +147,11 @@ void AdsImpl::Initialize(InitializeCallback callback) {
 
   if (IsInitialized()) {
     BLOG(1, "Already initialized ads");
-    callback(/* success */ false);
+    FailedToInitialize(callback);
     return;
   }
 
-  InitializeDatabase(callback);
+  CreateOrOpenDatabase(callback);
 }
 
 void AdsImpl::Shutdown(ShutdownCallback callback) {
@@ -165,7 +166,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   callback(/* success */ true);
 }
 
-void AdsImpl::ChangeLocale(const std::string& locale) {
+void AdsImpl::OnChangeLocale(const std::string& locale) {
   LocaleManager::GetInstance()->OnLocaleDidChange(locale);
 }
 
@@ -418,11 +419,11 @@ bool AdsImpl::ToggleSavedAd(const std::string& json) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdsImpl::InitializeDatabase(InitializeCallback callback) {
+void AdsImpl::CreateOrOpenDatabase(InitializeCallback callback) {
   DatabaseManager::GetInstance()->CreateOrOpen([=](const bool success) {
     if (!success) {
       BLOG(0, "Failed to create or open database");
-      callback(/* success */ false);
+      FailedToInitialize(callback);
       return;
     }
 
@@ -433,7 +434,7 @@ void AdsImpl::InitializeDatabase(InitializeCallback callback) {
 void AdsImpl::MigrateConversions(InitializeCallback callback) {
   conversions::Migrate([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      FailedToInitialize(callback);
       return;
     }
 
@@ -444,7 +445,7 @@ void AdsImpl::MigrateConversions(InitializeCallback callback) {
 void AdsImpl::MigrateRewards(InitializeCallback callback) {
   rewards::Migrate([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      FailedToInitialize(callback);
       return;
     }
 
@@ -455,7 +456,7 @@ void AdsImpl::MigrateRewards(InitializeCallback callback) {
 void AdsImpl::MigrateClientState(InitializeCallback callback) {
   client::Migrate([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      FailedToInitialize(callback);
       return;
     }
 
@@ -465,6 +466,17 @@ void AdsImpl::MigrateClientState(InitializeCallback callback) {
 
 void AdsImpl::LoadClientState(InitializeCallback callback) {
   ClientStateManager::GetInstance()->Initialize([=](const bool success) {
+    if (!success) {
+      FailedToInitialize(callback);
+      return;
+    }
+
+    MigrateConfirmationState(callback);
+  });
+}
+
+void AdsImpl::MigrateConfirmationState(InitializeCallback callback) {
+  confirmations::Migrate([=](const bool success) {
     if (!success) {
       callback(/* success */ false);
       return;
@@ -477,7 +489,7 @@ void AdsImpl::LoadClientState(InitializeCallback callback) {
 void AdsImpl::LoadConfirmationState(InitializeCallback callback) {
   ConfirmationStateManager::GetInstance()->Initialize([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      FailedToInitialize(callback);
       return;
     }
 
@@ -488,21 +500,27 @@ void AdsImpl::LoadConfirmationState(InitializeCallback callback) {
 void AdsImpl::LoadNotificationAdState(InitializeCallback callback) {
   NotificationAdManager::GetInstance()->Initialize([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      FailedToInitialize(callback);
       return;
     }
 
-    Initialized(callback);
+    SuccessfullyInitialized(callback);
   });
 }
 
-void AdsImpl::Initialized(InitializeCallback callback) {
+void AdsImpl::FailedToInitialize(InitializeCallback callback) {
+  BLOG(1, "Failed to initialize ads");
+
+  callback(/* success */ false);
+}
+
+void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
   BLOG(1, "Successfully initialized ads");
+
+  is_initialized_ = true;
 
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kInitializedAds);
-
-  is_initialized_ = true;
 
   callback(/* success */ true);
 
@@ -533,7 +551,7 @@ void AdsImpl::Start() {
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {
-  AdsClientHelper::GetInstance()->OnAdRewardsChanged();
+  AdsClientHelper::GetInstance()->UpdateAdRewards();
 }
 
 void AdsImpl::OnConversion(

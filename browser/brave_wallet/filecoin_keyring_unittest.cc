@@ -98,10 +98,9 @@ TEST(FilecoinKeyring, ImportFilecoinSECP) {
   ASSERT_FALSE(input_key.empty());
   std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
 
-  FilecoinKeyring keyring;
-  auto address =
-      keyring.ImportFilecoinAccount(private_key, mojom::kFilecoinTestnet,
-                                    mojom::FilecoinAddressProtocol::SECP256K1);
+  FilecoinKeyring keyring(brave_wallet::mojom::kFilecoinTestnet);
+  auto address = keyring.ImportFilecoinAccount(
+      private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_EQ(address, "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
   EXPECT_EQ(keyring.GetImportedAccountsNumber(), size_t(1));
 }
@@ -116,19 +115,17 @@ TEST(FilecoinKeyring, ImportFilecoinBLS) {
   ASSERT_TRUE(FilecoinKeyring::DecodeImportPayload(private_key_hex,
                                                    &private_key, &protocol));
   EXPECT_EQ(protocol, mojom::FilecoinAddressProtocol::BLS);
-  FilecoinKeyring keyring;
-  std::string address = keyring.ImportFilecoinAccount(
-      private_key, mojom::kFilecoinTestnet, protocol);
+  FilecoinKeyring keyring(brave_wallet::mojom::kFilecoinTestnet);
+  std::string address = keyring.ImportFilecoinAccount(private_key, protocol);
   EXPECT_EQ(address,
             "t3wwtato54ee5aod7j5uv2n75jpyn4hpwx3f2kx5cijtoxgytiul2dczrak3ghlbt5"
             "zjnj574y3snhcb5bthva");
   EXPECT_EQ(keyring.GetImportedAccountsNumber(), size_t(1));
 
   // empty private key
-  ASSERT_TRUE(keyring
-                  .ImportFilecoinAccount({}, mojom::kFilecoinTestnet,
-                                         mojom::FilecoinAddressProtocol::BLS)
-                  .empty());
+  ASSERT_TRUE(
+      keyring.ImportFilecoinAccount({}, mojom::FilecoinAddressProtocol::BLS)
+          .empty());
 
   // broken private key
   private_key_hex = "6a4b3d3f3ccb3676e34e16bc07a937";
@@ -136,20 +133,17 @@ TEST(FilecoinKeyring, ImportFilecoinBLS) {
   ASSERT_TRUE(base::HexStringToBytes(private_key_hex, &broken_private_key));
   ASSERT_TRUE(keyring
                   .ImportFilecoinAccount(broken_private_key,
-                                         mojom::kFilecoinTestnet,
                                          mojom::FilecoinAddressProtocol::BLS)
                   .empty());
 
   std::vector<uint8_t> zero_private_key(32, 0);
-  EXPECT_EQ(
-      keyring.ImportFilecoinAccount(zero_private_key, mojom::kFilecoinTestnet,
-                                    mojom::FilecoinAddressProtocol::BLS),
-      "t3yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-      "aaaaaaaaaaaaby2smx7a");
+  EXPECT_EQ(keyring.ImportFilecoinAccount(zero_private_key,
+                                          mojom::FilecoinAddressProtocol::BLS),
+            "t3yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            "aaaaaaaaaaaaby2smx7a");
   std::vector<uint8_t> ff_private_key(32, 255);
   ASSERT_TRUE(keyring
                   .ImportFilecoinAccount(ff_private_key,
-                                         mojom::kFilecoinTestnet,
                                          mojom::FilecoinAddressProtocol::BLS)
                   .empty());
 }
@@ -168,7 +162,7 @@ TEST(FilecoinKeyring, fil_private_key_public_key) {
 }
 
 TEST(FilecoinKeyring, SignTransaction) {
-  FilecoinKeyring keyring;
+  FilecoinKeyring keyring(brave_wallet::mojom::kFilecoinTestnet);
   EXPECT_FALSE(keyring.SignTransaction(nullptr));
 
   auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
@@ -183,9 +177,8 @@ TEST(FilecoinKeyring, SignTransaction) {
   ASSERT_FALSE(input_key.empty());
   std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
 
-  auto address =
-      keyring.ImportFilecoinAccount(private_key, mojom::kFilecoinTestnet,
-                                    mojom::FilecoinAddressProtocol::SECP256K1);
+  auto address = keyring.ImportFilecoinAccount(
+      private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_EQ(address, "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
   EXPECT_TRUE(keyring.SignTransaction(&transaction.value()));
 }

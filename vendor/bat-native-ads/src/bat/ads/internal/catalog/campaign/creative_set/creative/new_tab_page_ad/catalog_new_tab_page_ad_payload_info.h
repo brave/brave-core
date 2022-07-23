@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info_aliases.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "url/gurl.h"
 
 namespace ads {

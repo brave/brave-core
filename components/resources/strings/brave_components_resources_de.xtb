@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Lokalen Brave-IPFS-Knoten verwenden</translation>
 <translation id="8148464361648742409">Ein öffentliches Gateway nutzen</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) ist das öffentliche Netzwerk für Peer-to-Peer-Datenspeicherung und -lieferung. Dieses Protokoll hat eine andere Berücksichtigung der Privatsphäre als HTTP(S).</translation>
-<translation id="5410952114182173389">Ihr Computer trägt zum öffentlichen Netzwerk bei, aber Ihre IP-Adresse und jeder Inhalt, den Sie anfordern oder bereitstellen, könnte preisgegeben werden. Inhalt, den Sie über IPFS anfordern wird verifiziert, bevor er Ihnen zur Verfügung gestellt wird.</translation>
+<translation id="1216911189668016151">Ihr Computer trägt zum öffentlichen Netzwerk bei, aber Ihre IP-Adresse und jeder Inhalt, den Sie anfordern oder bereitstellen, könnte preisgegeben werden. Inhalt, den Sie über IPFS anfordern, wird verifiziert, bevor er Ihnen zur Verfügung gestellt wird. Netzwerkanforderungen verwenden möglicherweise keine Browser-Proxy- und DNS-Einstellungen.</translation>
 <translation id="8664689531113048642">Schützt Ihre IP-Adresse und Inhalt, den Sie von möglichen Drittbeobachtern, aber nicht vom Betreiber des öffentlichen Gateways anfordern. Der Gateway-Betreiber ist dafür verantwortlich, sicherzustellen, dass der Inhalt, der Ihnen über ein Gateway zur Verfügung gestellt wird, der Inhalt ist, den Sie angefordert haben. Außerdem trägt Ihr Computer nicht zum öffentlichen IPFS-Netzwerk bei.</translation>
 <translation id="3977809385703587108">Sie können Ihre Einstellungen in ... erneut ändern</translation>
 <translation id="3340978935015468852">Einstellungen</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Import aus alten Brave-Krypto-Wallets?</translation>
 <translation id="3331452756822160641">Neues Passwort</translation>
 <translation id="8624315169751085215">In Zwischenablage kopieren</translation>
+<translation id="7885157704277298658">Kopiert!</translation>
 <translation id="1121335910737476837">Primäre Kryptokonten</translation>
 <translation id="6969147029062037757">Importierte Konten</translation>
 <translation id="4057718162494343222">Sie können in Brave Wallet primäre Konten erstellen, die von Ihrer Wiederherstellungsphrase gesichert oder damit wiederhergestellt werden können. Weitere Informationen zu Kontotypen finden Sie in der Kontohilfe.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Symbol-URL</translation>
 <translation id="2144247757675997850">Asset hinzufügen</translation>
 <translation id="2708402071160162126">WARNUNG: Teilen Sie niemals Ihre Wiederherstellungsphrase. Wer diese Phrase besitzt, kann sich Ihre Assets permanent aneignen.</translation>
+<translation id="2416098547200943834">HINWEIS: Der private Schlüssel wird als JSON-Datei mit Hexadezimalcodierung bereitgestellt, die den privaten Schlüssel und Protokolldaten enthält. <ph name="LINK_START"/>Mehr erfahren<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">HINWEIS: Der private Schlüssel muss als JSON-Datei mit Hexadezimalcodierung bereitgestellt werden, die den privaten Schlüssel und Protokolldaten enthält.<ph name="LINK_START"/>Mehr erfahren<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Schlüssel anzeigen</translation>
 <translation id="8033497299373164724">Schlüssel ausblenden</translation>
 <translation id="2702143907607790516">Fehler beim Aktualisieren des Kontonamens. Bitte versuchen Sie es erneut.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Nachricht</translation>
 <translation id="3586752056660754651">Unterschreiben</translation>
 <translation id="3484981968509595506">Eine DApp fordert Ihren öffentlichen Verschlüsselungscode an</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> fordert den öffentlichen Verschlüsselungscode Ihrer Wallet an. Wenn Sie der Bereitstellung dieses Schlüssels zustimmen, kann die Website verschlüsselte Nachrichten an Sie verfassen.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> fordert den öffentlichen Verschlüsselungscode Ihrer Wallet an. Wenn Sie der Bereitstellung dieses Schlüssels zustimmen, kann die Website verschlüsselte Nachrichten an Sie verfassen.</translation>
 <translation id="3340247553212049934">Bereitstellen</translation>
 <translation id="1619778919922494944">Diese DApp möchte diese Nachricht lesen, um Ihre Anfrage abzuschließen</translation>
 <translation id="714506544401754321">Nachricht entschlüsseln</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> getrennt</translation>
 <translation id="5317781812114905957">Anleitungen</translation>
 <translation id="1178198982208000092">Verbinden Sie Ihren <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Für die Hardware-Wallet ist eine Bestätigung auf dem Gerät erforderlich. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Hardware-Wallet erfordert das Öffnen der Ethereum-App in <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Für die Hardware-Wallet ist eine Bestätigung auf dem Gerät <ph name="DEVICE_NAME"/> erforderlich.</translation>
+<translation id="2288190100157580461">Hardware Wallet erfordert das Öffnen der <ph name="NETWORK"/>-App in <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">gesendet</translation>
 <translation id="5013754027092416509">empfangen</translation>
 <translation id="5867988533873716616">Block-Explorer-URL ist nicht verfügbar.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> ist kein aktuelles Netzwerk</translation>
 <translation id="7340805872138998391">Das Gerät kann nicht entsperrt werden. Versuchen Sie, erneut zu verbinden</translation>
 <translation id="1984410139271779110">Interner Fehler, unbekanntes Schema</translation>
-<translation id="8682200134223578011">genehmigt</translation>
+<translation id="6989562355845156390">genehmigen</translation>
 <translation id="4674380028960132654">Ledger: Die Signatur stimmt nicht mit der richtigen Adresse überein</translation>
 <translation id="3183932890629254743">Hardware-Konto nicht gefunden</translation>
 <translation id="4287068151777838754">JSON-Daten nicht unterstützt</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transaktion bestätigt</translation>
 <translation id="310693998838023022">Transaktionsfehler</translation>
 <translation id="6395870673621520684">Transaktion abgebrochen</translation>
+<translation id="1237782734462409503">Tab inaktiv</translation>
+<translation id="756701799684433105">Transaktion genehmigen</translation>
+<translation id="6450792191436242818">Systemprogramm</translation>
+<translation id="6252742184395380448">Konfigurationsprogramm</translation>
+<translation id="5358970666412490132">Einsatzprogramm</translation>
+<translation id="346636227344244984">Abstimmungsprogramm</translation>
+<translation id="3538368258493053874">BPF-Ladeprogramm</translation>
+<translation id="2334098351242742927">Ed25519-Programm</translation>
+<translation id="8780753288764281797">Secp256k1-Program</translation>
+<translation id="5275550100743015683">Von Adresse:</translation>
+<translation id="2678433693746214764">Zu Adresse:</translation>
+<translation id="4576396475962922672">Neues Konto:</translation>
+<translation id="4719005063558335704">Konten:</translation>
+<translation id="4337554812324118382">Daten:</translation>
+<translation id="569870799832027680">Programm-ID:</translation>
+<translation id="7843211152394841558">Wiederholungen maximal:</translation>
+<translation id="8496335570810457">Simulationsverpflichtung:</translation>
+<translation id="5100124500279922001">Simulation überspringen:</translation>
+<translation id="8060029310790625334">Hilfe-Center</translation>
+<translation id="2095142195578664632">Sie benötigen Hilfe? Zum</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>

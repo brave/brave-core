@@ -15,7 +15,7 @@ namespace ads {
 namespace ml {
 namespace model {
 
-Linear::Linear() {}
+Linear::Linear() = default;
 
 Linear::Linear(std::map<std::string, VectorData> weights,
                std::map<std::string, double> biases) {

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_EVENT_LOG_H_
-#define BRAVELEDGER_DATABASE_DATABASE_EVENT_LOG_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_EVENT_LOG_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_EVENT_LOG_H_
 
 #include <map>
 #include <string>
@@ -21,9 +21,8 @@ class DatabaseEventLog: public DatabaseTable {
 
   void Insert(const std::string& key, const std::string& value);
 
-  void InsertRecords(
-      const std::map<std::string, std::string>& records,
-      ledger::ResultCallback callback);
+  void InsertRecords(const std::map<std::string, std::string>& records,
+                     ledger::LegacyResultCallback callback);
 
   // returns last 2000 records
   void GetLastRecords(ledger::GetEventLogsCallback callback);
@@ -37,4 +36,4 @@ class DatabaseEventLog: public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_EVENT_LOG_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_EVENT_LOG_H_

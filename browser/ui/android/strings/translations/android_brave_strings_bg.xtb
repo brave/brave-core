@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
-<translation id="7307834434086582547">Разрешаване/забраняване на Brave Shields</translation>
+<translation id="7307834434086582547">Разрешаване/забраняване на щитове на Brave</translation>
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="2278950434998763147">Отваря някои сайтове, използвайки защитена HTTPS връзка вместо обикновен HTTP.</translation>
 <translation id="5510493033031835532">Автоматично пренасочване на AMP страници</translation>
@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Помогнете за подобряването на стабилността на продуктите на Brave чрез изпращане на отчети с диагностика, когато браузърът Brave се срине или не отговаря.</translation>
 <translation id="7977176350719484850">Прибл. запазени данни</translation>
 <translation id="9008534313521214777">Очакв. спестено\nвреме</translation>
-<translation id="6572660632052512096">Режим на работния плот</translation>
-<translation id="1340503115760585811">Активиране на изглед на работния плот за нови раздели</translation>
-<translation id="7924540991929826186">Използвайте мобилни версии на сайтовете за нови раздели (препоръчително)</translation>
-<translation id="807636106793708118">Предпочитам мобилната версия на сайтовете</translation>
-<translation id="4479934682648362332">Предпочитам настолната версия на сайтовете</translation>
 <translation id="1842747674580016420">Възпроизвеждане на видео в Brave</translation>
 <translation id="5368992950177874750">Ако са активирани, видеоклиповете ще се възпроизвеждат в Brave, вместо в съответното приложение</translation>
 <translation id="410351446219883937">Автоматично възпроизвеждане</translation>
@@ -85,6 +80,17 @@
 <translation id="8701563696941209024">РЕСТАРТИРАЙТЕ СЕГА</translation>
 <translation id="834487290629916192">ПО-КЪСНО</translation>
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
+<translation id="4117451092682672487">Поверителност. Опростена.</translation>
+<translation id="7909375417585209817">Когато Brave е избран по подразбиране, всяка връзка, която докоснете, се отваря със защитите на поверителността на Brave.</translation>
+<translation id="5148943178722443958">Помогнете ни да направим Brave по-добър.</translation>
+<translation id="6188781052835527980">Изпратете анонимни диагностични отчети, ако възникне срив или блокиране.</translation>
+<translation id="1929905278861178845">Споделете поверителна и изцяло анонимна информация за продукти относно това какви функции се използват от потребителите на Brave.</translation>
+<translation id="2877653791257935258">Въведете име на уебсайт или URL адрес</translation>
+<translation id="5329830149661250028">Вижте разликата с Brave: без реклами. Без проследяващи елементи. Много по-бързо зареждане на страниците.</translation>
+<translation id="3545804467215833536">Докоснете, за да видите щитовете на Brave</translation>
+<translation id="1724327820822194498">Вижте всички лоши неща, които Brave е блокирал, на всяка страница с помощта на „Щитове“.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> и <ph name="TRACKER"/> други реклами и проследяващи елемента са блокирани</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> реклами и проследяващи елемента са блокирани</translation>
 <translation id="8281886186245836920">Пропускане</translation>
 <translation id="6165508094623778733">Научете повече</translation>
 <translation id="986879628471635371">Отстраняване на неизправности на борда</translation>
@@ -108,16 +114,19 @@
 <translation id="19715420010996093">Изберете Brave Browser и докоснете „Винаги“</translation>
 <translation id="3546439402724649282">Brave вече е зададен като браузърът ви по подразбиране.</translation>
 <translation id="8389661903259423907">Вече сте задали браузър по подразбиране. Можете да промените браузъра по подразбиране в настройките на приложението си.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Благодарим Ви</translation>
 <translation id="6665366815203065060">Току-що изпратихте бакшиш на:</translation>
 <translation id="5441565662498481293">Автоматично изпращате бакшиш на:</translation>
 <translation id="1166682575529520472">Месечен</translation>
 <translation id="1628742278973105368">Вашият първи месечен бакшиш ще бъде изпратен на:</translation>
 <translation id="298349922412901215">ЗАБЕЛЕЖКА: този създател все още не се е регистрирал да получава приноси от потребители на Brave. Ще продължим да се опитваме да допринасяме, докато те не потвърдят, или докато не изминат 90 дни.</translation>
+<translation id="635752162765375187">ЗАБЕЛЕЖКА: Този създател в момента не е конфигуриран да получава дарения от вашия портфейл с попечителски услуги в „Награди“. Всяко дарение, което направите, ще остане в състояние на изчакване и ще се извършва повторен опит автоматично в продължение на 90 дни.</translation>
 <translation id="1910721550319506122">Добре дошли!</translation>
 <translation id="3165726837666415756">Можете да подкрепите този сайт, като изпратите бакшиш. Това е начин да им благодарите, че правят страхотно съдържание. Проверени създатели на съдържание получават заплащане за своите бакшиши през първата седмица на всеки календарен месец.</translation>
 <translation id="1704859330137112950">Ако желаете, можете да зададете ежемесечни дарения, за да подкрепяте този сайт непрекъснато.</translation>
 <translation id="245015745140252435">Количество бакшиш</translation>
+<translation id="7873874596836611687">Баланс на наградите:</translation>
 <translation id="2573313946367623146">изпрати моя бакшиш</translation>
 <translation id="3250511771491660127">Направи това месечно</translation>
 <translation id="7658239707568436148">Отказ</translation>
@@ -612,6 +621,7 @@
 <translation id="8239147115686034860">Автоматично заключване на портфейла на Brave</translation>
 <translation id="414639769490080648">Оставащи минути до автоматичното заключване на портфейл на Brave</translation>
 <translation id="4993345308607970390">Нулиране на портфейл в Brave</translation>
+<translation id="4322846864135539519">Наистина ли искате да нулирате своите награди в Brave? Ако портфейлът ви няма резервно копие, нулирането ще предизвика загуба на всички данни на сметката (включително всички свързани средства). Въведете „<ph name="CONFIRMATION_PHRASE"/>“ за потвърждаване.</translation>
 <translation id="4862812525895306758">Изчистване на транзакцията; информация за еднократно използван числов параметър</translation>
 <translation id="5693968582510626466">Изчистването на трансакциите може да бъде полезно за разработчиците или при изчистване на състоянието на локален сървър</translation>
 <translation id="5421107279168565467">Наистина ли искате да нулирате информацията за транзакциите и еднократно използвания числов параметър? Тази опция се използва предимно от разработчици, занимаващи се с локален тестов сървър. Въведете „<ph name="CONFIRMATION_PHRASE"/>“, за да потвърдите.</translation>
@@ -631,6 +641,8 @@
 <translation id="1190117345570417902">Използва защитен криптиран VPN тунел на Wireguard</translation>
 <translation id="1571230671455380494">Не споделяме или продаваме вашата информация</translation>
 <translation id="276866628038850725">Всички планове включват безплатен 7-дневен пробен период!</translation>
+<translation id="1532536259167115948">Месечен абонамент <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Годишен абонамент <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Месечно подновяване</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /месечно.</translation>
 <translation id="1163809943099641131">Една година</translation>
@@ -651,6 +663,7 @@
 Ако не я приемете, VPN няма да се свърже отново и вашата интернет връзка няма да бъде защитена.</translation>
 <translation id="2429299231491852747">Приемане на заявката за връзка</translation>
 <translation id="3428909627460825679">Създаването на профил за VPN е неуспешно. Опитайте отново.</translation>
+<translation id="1264320790738638119">Абонаментът ви е изтекъл. Можете да се абонирате отново по всяко време.</translation>
 <translation id="8681480718817027245">Абонамент</translation>
 <translation id="7805768142964895445">Състояние</translation>
 <translation id="5747552184818312860">Изтича на</translation>
@@ -678,12 +691,15 @@
 <translation id="1219475260382643267">Уебсайтът не работи</translation>
 <translation id="7138678301420049075">Друго</translation>
 <translation id="4827315939627587219">Нулиране на конфигурацията на VPN</translation>
+<translation id="1705662265912724430">Наистина ли искате да нулирате VPN конфигурацията?</translation>
 <translation id="604124094241169006">Автоматично</translation>
 <translation id="7475580600756356589">Свързване със сървъра. Трябва да отнеме само минута...</translation>
 <translation id="1342728075788541348">Прекъсване на връзката със сървъра. Трябва да отнеме само минута...</translation>
 <translation id="669072536454692117">Абонаментът е използван успешно</translation>
 <translation id="1187506504156101449">Неуспешно потвърждаване на покупката:</translation>
 <translation id="8420522105268941892">Вече сте абонирани за абонамента. Опитайте да го възстановите.</translation>
+<translation id="404414664190867625">Излязохте от покупката на абонамент.</translation>
+<translation id="3515141458161417228">Неуспешна покупка. Моля, свържете се с поддръжката на Google Play.</translation>
 <translation id="6452181791372256707">Отхвърляне</translation>
 <translation id="8030852056903932865">Одобри</translation>
 <translation id="1597199892790541240">Такса за газ</translation>
@@ -718,6 +734,7 @@
 <translation id="2199215899212542417">ТИП ФУНКЦИЯ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Няма данни</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> изпрати <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> изпрати <ph name="ASSET"/> #<ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> одобри <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Одобрено без ограничение <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> размяна - <ph name="DATE"/></translation>
@@ -782,6 +799,7 @@
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Показване на автоматично попълване в адресната лента</translation>
+<translation id="8982438328166986164">Показва предложения на уебсайта въз основа на отметките и историята на сърфиране.</translation>
 <translation id="1241283133946520352">Mрежи</translation>
 <translation id="1062463687579789365">Персонализиране на мрежите на портфейла</translation>
 <translation id="2512821599885971349">Добавяне на мрежа</translation>
@@ -832,6 +850,7 @@
 <translation id="85136472535634474">Отваряне на настройките за VPN</translation>
 <translation id="8352805003811526272">Конфигурацията се нулира ...</translation>
 <translation id="6809312301323611382">Вече сте избрали същия сървър.</translation>
+<translation id="5665084657857645952">Спряхте инсталирането на VPN профил.</translation>
 <translation id="9106265941552476098">Отхвърляне на <ph name="TRANSACTION_LENGTH"/> трансакции</translation>
 <translation id="523862956770478816">Разрешения на сайта</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> свързани акаунта</translation>
@@ -846,10 +865,28 @@
 <translation id="4822132585477111396">Идентификатор на веригата</translation>
 <translation id="7131971375297699539">Символ на валута</translation>
 <translation id="7982789257301363584">Мрежа</translation>
-<translation id="8759753423332885148">Научете повече.</translation>
 <translation id="4717431746210146708">Разрешаване на този сайт да добави мрежа?</translation>
+<translation id="4857321293515555666">DApp иска да прочете това съобщение, за да изпълни заявката ви.</translation>
+<translation id="714506544401754321">Дешифриране на съобщението</translation>
+<translation id="5039804452771397117">Позволи</translation>
 <translation id="3378339846292573874">Добавяне на препоръчан маркер</translation>
 <translation id="2322227405137827074">Искате ли да импортирате този токен?</translation>
 <translation id="1324417023773393937">Браузър Brave</translation>
 <translation id="6044189892950611565">Канал за известия за Brave Browser</translation>
+<translation id="1173919438868967364">Избиране на акаунт</translation>
+<translation id="8922793255489232731">Неуспешно получаване на съответстваща часова зона за: <ph name="VALUE"/></translation>
+<translation id="8643377320501056697">Покажи най-добрите сайтове</translation>
+<translation id="6471216025161697462">Свързан с <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Пробен период</translation>
+<translation id="7733890291091968191">Показване на известия от Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave не ви следи и не знае как използвате нашето приложение, така че не знаем как сте настроили VPN. Моля, споделете информация за проблема, с който се сблъсквате, и ще направим всичко възможно, за да го разрешим възможно най-скоро. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nИме на VPN хост\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nТип абонамент\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nЖетон за Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nВерсия на приложението\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nВремева зона\n</translation>
+<translation id="8107843365677337047">\n\nТип мрежа\n</translation>
+<translation id="5334952096674914470">\n\nМобилен оператор\n</translation>
+<translation id="5393042357629679588">\n\nДруг проблем\n</translation>
+<translation id="8095666712177294104">\n\nПлатформа\n</translation>
 </translationbundle>

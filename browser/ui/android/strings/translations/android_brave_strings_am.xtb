@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
-<translation id="6572660632052512096">የዴስክቶፕ ኩነት</translation>
-<translation id="1340503115760585811">ለአዳዲስ ትሮች የዴስክቶፕ እይታን ያንቁ</translation>
-<translation id="7924540991929826186">ለአዳዲስ ትሮች የድረ ገጾቹን ሞባይል ስሪቶች ይጠቀሙ (የሚመከር)</translation>
-<translation id="807636106793708118">የድረ ገጾችን የሞባይል ስሪት ይምረጡ</translation>
-<translation id="4479934682648362332">የድረ ገጾችን የዴስክቶፕ ስሪት ይምረጡ</translation>
 <translation id="1842747674580016420">በ Brave ውስጥ የቪድዮ መልሰህ አጫውት</translation>
 <translation id="5368992950177874750">ከነቃ፣ ቪድዮዎች ከተጓዳኝ መተግበሪያ ይልቅ በ Brave ይጫወታሉ</translation>
 <translation id="410351446219883937">ራስ-አጫውት</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">የ Brave አሳሹን ይምረጡ እና «ሁልጊዜ» የሚለውን መታ ያድርጉ</translation>
 <translation id="3546439402724649282">Brave ቀደም ሲል ነባሪ አሳሽዎ ሆኗል።</translation>
 <translation id="8389661903259423907">ነባሪ አሳሽዎን ቀደም ሲል አዘጋጅተዋል። በመተግበሪያ ቅንብሮችዎ ውስጥ ነባሪ አሳሹን መቀየር ይችላሉ።</translation>
+<translation id="8112367589167674370">Brave ቶክ</translation>
 <translation id="8826007068782654809">እናመሰግናለን</translation>
 <translation id="6665366815203065060">አሁን ጉርሻ ሰጥተዋል ለ:</translation>
 <translation id="5441565662498481293">ጉርሻ በራስ-ሰር እየላኩ ነው ለ:</translation>
@@ -867,23 +863,34 @@
 <translation id="4804818685124855865">ግንኙነት አቋርጥ</translation>
 <translation id="8009571545960303544">ፊርማዎ እየተጠየቀ ነው</translation>
 <translation id="3484981968509595506">DApp ይፋዊ ምስጠራ ቁልፍዎን እየጠየቀ ነው።</translation>
-<translation id="2291002548681057345">የእርስዎን ዋሌት ይፋዊ የምስጠራ ቁልፍ እየጠየቀ ነው። ይህን ቁልፍ ለማቅረብ ፈቃደኛ ከሆኑ ጣቢያው የተመሰጠሩ መልዕክቶችን ለእርስዎ ማሰባሰብ ይችላል።</translation>
 <translation id="3340247553212049934">ያቅርቡ</translation>
 <translation id="1982257600591932657">የአውታረ መረብ ስም</translation>
 <translation id="5052727830821470769">የአውታር URL</translation>
 <translation id="4822132585477111396">የሰንሰለት መታወቂያ</translation>
 <translation id="7131971375297699539">የመገበያያ ምልክት</translation>
 <translation id="7982789257301363584">አውታረ መረብ</translation>
-<translation id="7540715999708954128">ይህ ይህ አውታረ መረብ በBrave ዋሌት ውስጥ ጥቅም ላይ እንዲውል ያስችለዋል። ተጨማሪ ይወቁ።</translation>
-<translation id="8759753423332885148">ተጨማሪ ይማሩ</translation>
 <translation id="4717431746210146708">ይህ ጣቢያ አውታረ መረብ እንዲያክል ይፈቀድለት?</translation>
+<translation id="4857321293515555666">ይህ DApp ጥያቄዎን ለማጠናቀቅ ይህን መልእክት ማንበብ ይፈልጋል።</translation>
+<translation id="714506544401754321">ዲክሪፕት መልእክት</translation>
+<translation id="5039804452771397117">ፍቀድ</translation>
 <translation id="3378339846292573874">የተጠቆመ ማስመሰያ ያክሉ</translation>
 <translation id="2322227405137827074">ይህን ማስመሰያ ማስመጣት ይፈልጋሉ?</translation>
 <translation id="1324417023773393937">Brave አሳሽ</translation>
 <translation id="6044189892950611565">ለ Brave Browser የማስታወቂያ ጣቢያ</translation>
 <translation id="1173919438868967364">መለያ ይምረጡ</translation>
 <translation id="8922793255489232731">የሚዛመደውን የሰዓት ሰቅ ማግኘት አልተቻለም ለ፦ <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">ከፍተኛ ጣቢያዎችን አሳይ</translation>
+<translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
 <translation id="6471216025161697462">ከ<ph name="VALUE"/> ጋር ተገናኝቷል</translation>
 <translation id="1968852757206592413">ሙከራ</translation>
+<translation id="7733890291091968191">የዊብ3 ማሳወቂያዎችን አሳይ</translation>
+<translation id="1371627247679035769">\n\n\n\n#### ብሬቭ እርስዎን አይከታተልዎትም ወይም የእኛን መተግበሪያ እንዴት እንደሚጠቀሙ አያውቅም፣ ስለዚህ VPNን እንዴት እንዳዋቀሩ አናውቅም። እባክዎ እያጋጠሞት ስላለው ችግር መረጃ ያጋሩን እና በተቻለን ፍጥነት ለመፍታት የተቻለንን ሁሉ እናደርጋለን። ####\n\n</translation>
+<translation id="3367162038532116157">\n\nየቪፒኤን አስተናጋጅ ስም\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nየደንበኝነት አይነት\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nየፕሌይስቶር ማስመሰያn\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nየመተግበሪያ ሥሪት\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nየጊዜ ክልል\n</translation>
+<translation id="8107843365677337047">\n\nየአውታረ መረብ አይነት\n</translation>
+<translation id="5334952096674914470">\n\nሴሉላር ተሸካሚ\n</translation>
+<translation id="5393042357629679588">\n\nሌላ ጉዳይ\n</translation>
+<translation id="8095666712177294104">\n\nመድረክ\n</translation>
 </translationbundle>

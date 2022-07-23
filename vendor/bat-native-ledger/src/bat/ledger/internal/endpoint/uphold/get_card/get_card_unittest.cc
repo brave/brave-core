@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -43,10 +44,8 @@ class GetCardTest : public testing::Test {
 
 TEST_F(GetCardTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -100,60 +99,56 @@ TEST_F(GetCardTest, ServerOK) {
                }
               ]
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const double available) {
+      base::BindOnce([](const type::Result result, const double available) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(available, 4.0);
-      });
+      }));
 }
 
 TEST_F(GetCardTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const double available) {
+      base::BindOnce([](const type::Result result, const double available) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(available, 0.0);
-      });
+      }));
 }
 
 TEST_F(GetCardTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const double available) {
+      base::BindOnce([](const type::Result result, const double available) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(available, 0.0);
-      });
+      }));
 }
 
 }  // namespace uphold

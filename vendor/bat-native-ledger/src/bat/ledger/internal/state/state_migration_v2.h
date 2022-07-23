@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V2_H_
-#define BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V2_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_V2_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_V2_H_
 
 #include <memory>
 #include <string>
@@ -22,12 +22,10 @@ class StateMigrationV2 {
   explicit StateMigrationV2(LedgerImpl* ledger);
   ~StateMigrationV2();
 
-  void Migrate(ledger::ResultCallback callback);
+  void Migrate(ledger::LegacyResultCallback callback);
 
  private:
-  void OnLoadState(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void OnLoadState(type::Result result, ledger::LegacyResultCallback callback);
 
   std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_state_;
   LedgerImpl* ledger_;  // NOT OWNED
@@ -36,4 +34,4 @@ class StateMigrationV2 {
 }  // namespace state
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V2_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_V2_H_

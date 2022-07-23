@@ -21,10 +21,10 @@ BatLedgerClientMojoBridge::BatLedgerClientMojoBridge(
 
 BatLedgerClientMojoBridge::~BatLedgerClientMojoBridge() = default;
 
-void OnLoadURL(
-    const ledger::client::LoadURLCallback& callback,
-    ledger::type::UrlResponsePtr response_ptr) {
-  callback(response_ptr ? *response_ptr : ledger::type::UrlResponse());
+void OnLoadURL(ledger::client::LoadURLCallback callback,
+               ledger::type::UrlResponsePtr response_ptr) {
+  std::move(callback).Run(response_ptr ? *response_ptr
+                                       : ledger::type::UrlResponse());
 }
 
 void BatLedgerClientMojoBridge::LoadURL(
@@ -146,6 +146,15 @@ void BatLedgerClientMojoBridge::PublisherListNormalized(
   }
 
   bat_ledger_client_->PublisherListNormalized(std::move(list));
+}
+
+void BatLedgerClientMojoBridge::OnPublisherRegistryUpdated() {
+  bat_ledger_client_->OnPublisherRegistryUpdated();
+}
+
+void BatLedgerClientMojoBridge::OnPublisherUpdated(
+    const std::string& publisher_id) {
+  bat_ledger_client_->OnPublisherUpdated(publisher_id);
 }
 
 void BatLedgerClientMojoBridge::SetBooleanState(const std::string& name,
@@ -287,16 +296,15 @@ std::string BatLedgerClientMojoBridge::GetLegacyWallet() {
   return wallet;
 }
 
-void OnShowNotification(
-    const ledger::client::ResultCallback& callback,
-    const ledger::type::Result result) {
+void OnShowNotification(const ledger::client::LegacyResultCallback& callback,
+                        ledger::type::Result result) {
   callback(result);
 }
 
 void BatLedgerClientMojoBridge::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::client::ResultCallback callback) {
+    ledger::client::LegacyResultCallback callback) {
   bat_ledger_client_->ShowNotification(
       type,
       args,
@@ -317,10 +325,9 @@ void BatLedgerClientMojoBridge::ReconcileStampReset() {
   bat_ledger_client_->ReconcileStampReset();
 }
 
-void OnRunDBTransaction(
-    const ledger::client::RunDBTransactionCallback& callback,
-    ledger::type::DBCommandResponsePtr response) {
-  callback(std::move(response));
+void OnRunDBTransaction(ledger::client::RunDBTransactionCallback callback,
+                        ledger::type::DBCommandResponsePtr response) {
+  std::move(callback).Run(std::move(response));
 }
 
 void BatLedgerClientMojoBridge::RunDBTransaction(
@@ -358,14 +365,13 @@ void BatLedgerClientMojoBridge::WalletDisconnected(
   bat_ledger_client_->WalletDisconnected(wallet_type);
 }
 
-void OnDeleteLog(
-    const ledger::client::ResultCallback callback,
-    const ledger::type::Result result) {
+void OnDeleteLog(ledger::client::LegacyResultCallback callback,
+                 ledger::type::Result result) {
   callback(result);
 }
 
 void BatLedgerClientMojoBridge::DeleteLog(
-    ledger::client::ResultCallback callback) {
+    ledger::client::LegacyResultCallback callback) {
   bat_ledger_client_->DeleteLog(
       base::BindOnce(&OnDeleteLog, std::move(callback)));
 }

@@ -106,6 +106,16 @@
 <translation id="4870911314065352661">ปิดแท็บทั้งหมดหรือไม่</translation>
 <translation id="7551864359422178684">คุณเปิดแท็บทั้งหมด <ph name="NUMBER_OF_TABS"/> แท็บในหน้าต่างเบราว์เซอร์นี้</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> แท็บ</translation>
+<translation id="2272117088509540883">- เครื่องมือค้นหา Brave</translation>
+<translation id="2701279958223202597">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น เครื่องมือค้นหา Brave จะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
+<translation id="6438467592401259882">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น</translation>
+<translation id="1688359110799098115">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น</translation>
+<translation id="8579317236683491484">เครื่องมือค้นหา Brave จะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
+<translation id="5240031343741051161">ลอง Brave Search</translation>
+<translation id="5026874946691314267">ไม่ต้องแสดงสิ่งนี้อีก</translation>
+<translation id="5234764350956374838">ปิด</translation>
+<translation id="214744058941501853">"&gt;
+          ปิดคอนเวอร์ชันเครื่องมือค้นหา Brave และกด Enter เพื่อลบคำแนะนำนี้</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
 <translation id="6040143037577758943">ปิด</translation>
@@ -135,6 +145,7 @@
 <translation id="8490082094734500369">ปิดโหมดผู้อ่าน</translation>
 <translation id="2036503787657622020">เปิดโหมดผู้อ่าน</translation>
 <translation id="5226458915125328323">ตั้งค่า Speedreader</translation>
+<translation id="1621606336827646158">แสดงหน้าเดิม</translation>
 <translation id="6284218950354553099">ส่งปิงการใช้งานรายวันไปยัง Brave โดยอัตโนมัติ</translation>
 <translation id="5288333155754958121">ปิงส่วนตัวที่ไม่ระบุตัวตนนี้จะช่วยให้ Brave ประเมินผู้ใช้ที่ใช้งานอยู่ได้</translation>
 <translation id="1872784258300710671">Brave ใช้เครื่องมือวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ในการคาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่าง</translation>
@@ -185,6 +196,8 @@
 <translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
 <translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
 <translation id="2370739752330685659">ภายหลัง</translation>
+<translation id="961012016278832836">Microsoft Edge เวอร์ชันเก่า</translation>
+<translation id="6436994631426134065">นำเข้าจาก <ph name="BROWSER_NAME"/></translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -201,9 +214,11 @@
 <translation id="2906510232093002459">ภาพเริ่มต้นของ Brave</translation>
 <translation id="2396127686705429331">แสดงปุ่มบุ๊กมาร์ก</translation>
 <translation id="2814998458708016836">ใช้แถบที่อยู่แบบกว้าง</translation>
-<translation id="5802665280774361839">แสดงรายการที่ดำเนินการอัตโนมัติในแถบแอดเดรส</translation>
-<translation id="597020512043916976">แสดงเว็บยอดนิยมในช่องแนะนำกรอกอัตโนมัติ</translation>
-<translation id="301088458323355543">แสดงเว็บไซต์แนะนำในช่องแนะนำแบบกรอกอัตโนมัติ</translation>
+<translation id="4109670531935487117">แสดงคำแนะนำการเติมข้อความอัตโนมัติในแถบที่อยู่</translation>
+<translation id="2858138569776157458">เว็บไซต์อันดับสูงสุด</translation>
+<translation id="65774893852758517">เว็บที่แนะนำ</translation>
+<translation id="7859704718976024901">ประวัติการเรียกดู</translation>
+<translation id="8820817407110198400">บุ๊กมาร์ก</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="1811404036171336214">แสดงบุ๊กมาร์คบนหน้าแท็บใหม่</translation>
 <translation id="5529693968082667490">แสดงปุ่มค้นหาแท็บ</translation>
@@ -362,6 +377,8 @@
 คุณแน่ใจหรือว่าต้องการดำเนินการนี้</translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
+<translation id="842628013524824194">หน้าต่างทั่วไป - เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
+<translation id="5324939009884545145">หน้าต่างส่วนตัว - เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="7878791177459550035">เราเตอร์สื่อจะเปิดใช้งานฟีเจอร์การส่งภาพในเบราว์เซอร์</translation>
@@ -461,6 +478,7 @@
 <translation id="616058968889448209">เกิดข้อผิดพลาดในการเปิดใช้บริการ IPFS กรุณาดูข้อมูลเพิ่มเติมได้ที่ <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">การนำเข้าคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
 <translation id="3364053282600191535">ส่งออกคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
+<translation id="5840868269342837751">หมายเหตุ: คำขอเครือข่ายไม่สามารถใช้การตั้งค่าพร็อกซีของเบราว์เซอร์และ DNS ได้</translation>
 <translation id="8275038454117074363">นำเข้า</translation>
 <translation id="3654980960391973513">สร้าง</translation>
 <translation id="5531501313997312487">เริ่มต้นใช้งานโหนด</translation>

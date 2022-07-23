@@ -95,9 +95,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
@@ -172,9 +170,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
@@ -213,7 +209,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
 void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << contribution_id << "/" << publisher_key);
     callback(type::Result::LEDGER_ERROR);
@@ -243,9 +239,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

@@ -344,7 +344,7 @@ public class BraveWalletUtilsTest {
                 if (!t.isPrimitive()) {
                     String varName = f.getName();
                     if (varName.equals("address") || varName.equals("name")
-                            || varName.equals("hardware")) {
+                            || varName.equals("hardware") || varName.equals("keyringId")) {
                         continue;
                     }
                     if (v == null) {

@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Use a Brave local IPFS node</translation>
 <translation id="8148464361648742409">Use a public gateway</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S).</translation>
-<translation id="5410952114182173389">Your computer contributes to the public network, but your IP address and any content you’re requesting or providing could be exposed. Content you request over IPFS is verified before being served to you.</translation>
+<translation id="1216911189668016151">Your computer contributes to the public network, but your IP address and any content you’re requesting or providing could be exposed. Content you request over IPFS is verified before being served to you. Network requests may not use browser proxy and DNS settings.</translation>
 <translation id="8664689531113048642">Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator. The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your computer does not contribute to the public IPFS network.</translation>
 <translation id="3977809385703587108">You can change your preferences again in</translation>
 <translation id="3340978935015468852">settings</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Import from legacy Brave crypto wallets?</translation>
 <translation id="3331452756822160641">New password</translation>
 <translation id="8624315169751085215">Copy to clipboard</translation>
+<translation id="7885157704277298658">Copied!</translation>
 <translation id="1121335910737476837">Primary crypto accounts</translation>
 <translation id="6969147029062037757">Imported accounts</translation>
 <translation id="4057718162494343222">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types, visit account help.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Icon URL</translation>
 <translation id="2144247757675997850">Add asset</translation>
 <translation id="2708402071160162126">WARNING: never share your recovery phrase. Anyone with this phrase can take your assets forever.</translation>
+<translation id="2416098547200943834">NOTE: private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">NOTE: private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Show key</translation>
 <translation id="8033497299373164724">Hide key</translation>
 <translation id="2702143907607790516">Failed to update account name, please try again.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Message</translation>
 <translation id="3586752056660754651">Sign</translation>
 <translation id="3484981968509595506">A DApp is requesting your public encryption key</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</translation>
 <translation id="3340247553212049934">Provide</translation>
 <translation id="1619778919922494944">This dApp would like to read this message to complete your request</translation>
 <translation id="714506544401754321">Decrypt message</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="1178198982208000092">Connect your <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Hardware wallet requires confirmation on device. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Hardware wallet requires Ethereum App opened on <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Hardware wallet requires confirmation on device <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Hardware wallet requires <ph name="NETWORK"/> App opened on <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sent</translation>
 <translation id="5013754027092416509">received</translation>
 <translation id="5867988533873716616">Block explorer URL is not available.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> is not the current network</translation>
 <translation id="7340805872138998391">Unable to unlock device, try to reconnect</translation>
 <translation id="1984410139271779110">Internal error, unknown scheme</translation>
-<translation id="8682200134223578011">approved</translation>
+<translation id="6989562355845156390">approve</translation>
 <translation id="4674380028960132654">Ledger: the signature doesn't match the right address</translation>
 <translation id="3183932890629254743">Hardware account not found</translation>
 <translation id="4287068151777838754">JSON data is not expected</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transaction confirmed</translation>
 <translation id="310693998838023022">Transaction error</translation>
 <translation id="6395870673621520684">Transaction dropped</translation>
+<translation id="1237782734462409503">The tab is not active</translation>
+<translation id="756701799684433105">Approve transaction</translation>
+<translation id="6450792191436242818">System Program</translation>
+<translation id="6252742184395380448">Config Program</translation>
+<translation id="5358970666412490132">Stake Program</translation>
+<translation id="346636227344244984">Vote Program</translation>
+<translation id="3538368258493053874">BPF Loader</translation>
+<translation id="2334098351242742927">Ed25519 Program</translation>
+<translation id="8780753288764281797">Secp256k1 Program</translation>
+<translation id="5275550100743015683">From address:</translation>
+<translation id="2678433693746214764">To address:</translation>
+<translation id="4576396475962922672">New account:</translation>
+<translation id="4719005063558335704">Accounts:</translation>
+<translation id="4337554812324118382">Data:</translation>
+<translation id="569870799832027680">Program ID:</translation>
+<translation id="7843211152394841558">Max retries:</translation>
+<translation id="8496335570810457">Preflight commitment:</translation>
+<translation id="5100124500279922001">Skip preflight:</translation>
+<translation id="8060029310790625334">Help Centre</translation>
+<translation id="2095142195578664632">Need help? See</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>

@@ -7,13 +7,14 @@ import { createAction } from 'redux-act'
 import {
   AccountPayloadType,
   AddSuggestTokenProcessedPayload,
+  CancelConnectHardwareWalletPayload,
   GetEncryptionPublicKeyProcessedPayload,
   DecryptProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainRequestPayload,
   SignMessagePayload,
   SignMessageProcessedPayload,
-  SignMessageHardwareProcessedPayload,
+  SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
 import { BraveWallet } from '../../constants/types'
@@ -41,10 +42,10 @@ export const navigateToMain = createAction('navigateToMain')
 export const signMessage = createAction<SignMessagePayload[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
 export const signMessageHardware = createAction<BraveWallet.SignMessageRequest>('signMessageHardware')
-export const signMessageHardwareProcessed = createAction<SignMessageHardwareProcessedPayload>('signMessageHardwareProcessed')
+export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
 export const approveHardwareTransaction = createAction<BraveWallet.TransactionInfo>('approveHardwareTransaction')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
-export const cancelConnectHardwareWallet = createAction<BraveWallet.TransactionInfo>('cancelConnectHardwareWallet')
+export const cancelConnectHardwareWallet = createAction<CancelConnectHardwareWalletPayload>('cancelConnectHardwareWallet')
 export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>('addSuggestToken')
 export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
 export const getEncryptionPublicKey = createAction<BraveWallet.GetEncryptionPublicKeyRequest>('getEncryptionPublicKey')
@@ -53,6 +54,8 @@ export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
 export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')
 export const setSelectedTransaction = createAction<BraveWallet.TransactionInfo | undefined>('setSelectedTransaction')
 export const signTransaction = createAction<BraveWallet.SignTransactionRequest[]>('signTransaction')
+export const signTransactionHardware = createAction<BraveWallet.SignTransactionRequest>('signTransactionHardware')
 export const signTransactionProcessed = createAction<SignMessageProcessedPayload>('signTransactionProcessed')
 export const signAllTransactions = createAction<BraveWallet.SignAllTransactionsRequest[]>('signAllTransactions')
-export const signAllTransactionsProcessed = createAction<SignMessageProcessedPayload>('signAllTransactionsProcessed')
+export const signAllTransactionsHardware = createAction<BraveWallet.SignAllTransactionsRequest>('signAllTransactionsHardware')
+export const signAllTransactionsProcessed = createAction<SignAllTransactionsProcessedPayload>('signAllTransactionsProcessed')

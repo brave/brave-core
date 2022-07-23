@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
-
 namespace ads {
 
 FilteredAdvertiserInfo::FilteredAdvertiserInfo() = default;
@@ -20,35 +17,17 @@ FilteredAdvertiserInfo& FilteredAdvertiserInfo::operator=(
 
 FilteredAdvertiserInfo::~FilteredAdvertiserInfo() = default;
 
-std::string FilteredAdvertiserInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
+base::Value::Dict FilteredAdvertiserInfo::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("id", id);
+  return dict;
 }
 
-bool FilteredAdvertiserInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
+bool FilteredAdvertiserInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("id")) {
+    id = *value;
   }
-
-  if (document.HasMember("id")) {
-    id = document["id"].GetString();
-  }
-
   return true;
-}
-
-void SaveToJson(JsonWriter* writer, const FilteredAdvertiserInfo& info) {
-  writer->StartObject();
-
-  writer->String("id");
-  writer->String(info.id.c_str());
-
-  writer->EndObject();
 }
 
 }  // namespace ads

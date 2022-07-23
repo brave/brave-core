@@ -28,7 +28,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
   registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);
 
-  registry->RegisterBooleanPref(prefs::kShouldShowMyFirstNotificationAd, true);
+  registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
 
   registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
                                 0);
@@ -53,12 +53,11 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
 
-  registry->RegisterBooleanPref(ads::prefs::kShouldAllowAdsSubdivisionTargeting,
+  registry->RegisterBooleanPref(ads::prefs::kShouldAllowSubdivisionTargeting,
                                 false);
-  registry->RegisterStringPref(ads::prefs::kAdsSubdivisionTargetingCode,
-                               "AUTO");
+  registry->RegisterStringPref(ads::prefs::kSubdivisionTargetingCode, "AUTO");
   registry->RegisterStringPref(
-      ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
+      ads::prefs::kAutoDetectedSubdivisionTargetingCode, "");
 
   registry->RegisterStringPref(ads::prefs::kCatalogId, "");
   registry->RegisterIntegerPref(ads::prefs::kCatalogVersion, 0);
@@ -75,6 +74,8 @@ void AdsService::RegisterProfilePrefs(
                              base::Time::Now());
 
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedClientState, false);
+  registry->RegisterBooleanPref(ads::prefs::kHasMigratedConfirmationState,
+                                false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
 

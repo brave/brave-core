@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index 4480c50562cf497c02cbd725f029be2d2ae034b7..b373e6273bd1444f235645fbffeaff9d79a6326a 100644
+index cd3ee9766ea9246d75293a829fb6562729f17e8e..1db8dd230d892d8ea59cb19c4117be3dae9d358a 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -51,6 +51,7 @@ generate_grd("build_grd") {
+@@ -50,6 +50,7 @@ generate_grd("build_grd") {
      deps = [ ":build_ts" ]
      manifest_files = [ "$target_gen_dir/tsconfig.manifest" ]
    }
@@ -10,7 +10,7 @@ index 4480c50562cf497c02cbd725f029be2d2ae034b7..b373e6273bd1444f235645fbffeaff9d
  }
  
  preprocess_if_expr("preprocess") {
-@@ -128,4 +129,5 @@ ts_library("build_ts") {
+@@ -121,4 +122,5 @@ ts_library("build_ts") {
      ":preprocess",
      ":preprocess_generated",
    ]

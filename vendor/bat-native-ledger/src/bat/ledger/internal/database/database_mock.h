@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_DATABASE_DATABASE_MOCK_H_
-#define BAT_LEDGER_DATABASE_DATABASE_MOCK_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_MOCK_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_MOCK_H_
 
 #include <string>
 
@@ -29,9 +29,9 @@ class MockDatabase : public Database {
       const std::string& redeem_id,
       GetUnblindedTokenListCallback callback));
 
-  MOCK_METHOD2(SavePromotion, void(
-      type::PromotionPtr info,
-      ledger::ResultCallback callback));
+  MOCK_METHOD2(SavePromotion,
+               void(type::PromotionPtr info,
+                    ledger::LegacyResultCallback callback));
 
   MOCK_METHOD1(GetAllPromotions,
       void(ledger::GetAllPromotionsCallback callback));
@@ -40,4 +40,4 @@ class MockDatabase : public Database {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_DATABASE_DATABASE_MOCK_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_MOCK_H_

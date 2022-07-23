@@ -1,0 +1,49 @@
+import("//extensions/buildflags/buildflags.gni")
+
+source_set("rewards_panel") {
+  if (!is_android) {
+    sources = [
+      "rewards_panel_coordinator.cc",
+      "rewards_panel_coordinator.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/brave_rewards/browser",
+      "//brave/components/brave_rewards/common:features",
+      "//brave/components/brave_rewards/common:mojom",
+      "//brave/components/constants",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//url",
+    ]
+
+    if (enable_extensions) {
+      sources += [
+        "rewards_panel_extension_handler.cc",
+        "rewards_panel_extension_handler.h",
+      ]
+
+      deps += [
+        "//brave/browser/extensions",
+        "//chrome/browser/extensions",
+        "//extensions/browser",
+      ]
+    }
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  if (!is_android) {
+    sources = [ "rewards_panel_coordinator_unittest.cc" ]
+    deps = [
+      ":rewards_panel",
+      "//base",
+      "//brave/components/brave_rewards/common:features",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support",
+    ]
+  }
+}

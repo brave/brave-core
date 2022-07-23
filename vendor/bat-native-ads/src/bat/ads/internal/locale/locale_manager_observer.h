@@ -14,7 +14,7 @@ namespace ads {
 
 class LocaleManagerObserver : public base::CheckedObserver {
  public:
-  // Invoked when the |locale| did change.
+  // Invoked when the |locale| has changed.
   virtual void OnLocaleDidChange(const std::string& locale) {}
 
  protected:

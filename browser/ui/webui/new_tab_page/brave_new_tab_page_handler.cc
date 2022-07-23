@@ -14,11 +14,14 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ntp_background_images/constants.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -41,6 +44,11 @@ data_decoder::DataDecoder* GetDataDecoder() {
   return data_decoder.get();
 }
 
+bool IsNTPPromotionEnabled(Profile* profile) {
+  return brave_search_conversion::IsNTPPromotionEnabled(
+      profile->GetPrefs(), TemplateURLServiceFactory::GetForProfile(profile));
+}
+
 }  // namespace
 
 BraveNewTabPageHandler::BraveNewTabPageHandler(
@@ -53,9 +61,29 @@ BraveNewTabPageHandler::BraveNewTabPageHandler(
       page_(std::move(pending_page)),
       profile_(profile),
       web_contents_(web_contents),
-      weak_factory_(this) {}
+      weak_factory_(this) {
+  InitForSearchPromotion();
+}
 
 BraveNewTabPageHandler::~BraveNewTabPageHandler() = default;
+
+void BraveNewTabPageHandler::InitForSearchPromotion() {
+  // If promotion is disabled for this loading, we do nothing.
+  // If some condition is changed and it can be enabled, promotion
+  // will be shown at the next NTP loading.
+  if (!IsNTPPromotionEnabled(profile_))
+    return;
+
+  // Observing user's dismiss or default search provider change to hide
+  // promotion from NTP while NTP is loaded.
+  pref_change_registrar_.Init(profile_->GetPrefs());
+  pref_change_registrar_.Add(
+      brave_search_conversion::prefs::kDismissed,
+      base::BindRepeating(&BraveNewTabPageHandler::OnSearchPromotionDismissed,
+                          base::Unretained(this)));
+  template_url_service_observation_.Observe(
+      TemplateURLServiceFactory::GetForProfile(profile_));
+}
 
 void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   // Early return if the select file dialog is already active.
@@ -85,6 +113,42 @@ void BraveNewTabPageHandler::UseBraveBackground() {
   profile_->GetPrefs()->SetBoolean(kNewTabPageCustomBackgroundEnabled, false);
   OnCustomBackgroundImageUpdated();
   DeleteSanitizedImageFile();
+}
+
+void BraveNewTabPageHandler::TryBraveSearchPromotion(const std::string& input,
+                                                     bool open_new_tab) {
+  const GURL promo_url = brave_search_conversion::GetPromoURL(input);
+  auto window_open_disposition = WindowOpenDisposition::CURRENT_TAB;
+  if (open_new_tab) {
+    window_open_disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
+  }
+
+  web_contents_->OpenURL(content::OpenURLParams(
+      promo_url, content::Referrer(), window_open_disposition,
+      ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT, false));
+}
+
+void BraveNewTabPageHandler::DismissBraveSearchPromotion() {
+  brave_search_conversion::SetDismissed(profile_->GetPrefs());
+}
+
+void BraveNewTabPageHandler::IsSearchPromotionEnabled(
+    IsSearchPromotionEnabledCallback callback) {
+  std::move(callback).Run(IsNTPPromotionEnabled(profile_));
+}
+
+void BraveNewTabPageHandler::NotifySearchPromotionDisabledIfNeeded() const {
+  // If enabled, we don't do anything. When NTP is reloaded or opened,
+  // user will see promotion.
+  if (IsNTPPromotionEnabled(profile_))
+    return;
+
+  // Hide promotion when it's disabled.
+  page_->OnSearchPromotionDisabled();
+}
+
+void BraveNewTabPageHandler::OnSearchPromotionDismissed() {
+  NotifySearchPromotionDisabledIfNeeded();
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundEnabled() const {
@@ -121,6 +185,14 @@ void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
 
 void BraveNewTabPageHandler::FileSelectionCanceled(void* params) {
   select_file_dialog_ = nullptr;
+}
+
+void BraveNewTabPageHandler::OnTemplateURLServiceChanged() {
+  NotifySearchPromotionDisabledIfNeeded();
+}
+
+void BraveNewTabPageHandler::OnTemplateURLServiceShuttingDown() {
+  template_url_service_observation_.Reset();
 }
 
 void BraveNewTabPageHandler::ConvertSelectedImageFileAndSave(

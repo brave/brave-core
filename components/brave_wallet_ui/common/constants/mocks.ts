@@ -143,7 +143,8 @@ export const mockAccount: WalletAccountType = {
   },
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
-  tokenBalanceRegistry: {}
+  tokenBalanceRegistry: {},
+  keyringId: undefined
 }
 
 export const mockSolanaAccount: WalletAccountType = {
@@ -157,7 +158,21 @@ export const mockSolanaAccount: WalletAccountType = {
   },
   coin: BraveWallet.CoinType.SOL,
   accountType: 'Primary',
-  tokenBalanceRegistry: {}
+  tokenBalanceRegistry: {},
+  keyringId: undefined
+}
+
+export const mockFilecoinAccount: WalletAccountType = {
+  id: 'mockId-3',
+  name: 'MockFilecoinAccount',
+  address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
+  nativeBalanceRegistry: {
+    [BraveWallet.FILECOIN_MAINNET]: '1000000000'
+  },
+  coin: BraveWallet.CoinType.FIL,
+  accountType: 'Primary',
+  tokenBalanceRegistry: {},
+  keyringId: BraveWallet.FILECOIN_TESTNET_KEYRING_ID
 }
 
 export const mockAssetPrices: BraveWallet.AssetPrice[] = [
@@ -270,7 +285,9 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
       'sendOptions': undefined,
       'signTransactionParam': undefined
     }
-  }
+  },
+  'rawMessage': { bytes: [1], str: undefined },
+  'coin': BraveWallet.CoinType.SOL
 }
 
 // BraveWallet.TransactionInfo (selectedPendingTransaction)
@@ -412,5 +429,7 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
         'signTransactionParam': undefined
       }
     }
-  ]
+  ],
+  'rawMessages': [{ bytes: [1], str: undefined }],
+  'coin': BraveWallet.CoinType.SOL
 }

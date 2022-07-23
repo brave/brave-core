@@ -7,7 +7,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
-#include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
+#include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_json_reader_util.h"
 
@@ -26,7 +26,8 @@ absl::optional<IssuersInfo> ReadIssuers(const std::string& json) {
   }
   const int ping = ping_optional.value();
 
-  const absl::optional<IssuerList>& issuers_optional = ParseIssuers(*value);
+  const absl::optional<IssuerList>& issuers_optional =
+      ParseIssuers(value->GetDict());
   if (!issuers_optional) {
     return absl::nullopt;
   }

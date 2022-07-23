@@ -88,7 +88,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
           rewardsEnabled: preInitialRewardsDataPayload.rewardsEnabled,
           enabledAds: preInitialRewardsDataPayload.enabledAds,
           adsSupported: preInitialRewardsDataPayload.adsSupported,
-          needsBrowserUpdateToSeeAds: preInitialRewardsDataPayload.needsBrowserUpdateToSeeAds
+          needsBrowserUpgradeToServeAds: preInitialRewardsDataPayload.needsBrowserUpgradeToServeAds
         }
       }
       break

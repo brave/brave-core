@@ -13,6 +13,12 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
+base::FilePath GetTestProfilePath() {
+  base::FilePath test_dir;
+  base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
+  return test_dir.AppendASCII("import").AppendASCII("chrome").AppendASCII(
+      "default");
+}
 // This sample prefs file is fetched after installing two extensions and one
 // theme from webstore with fresh profile.
 base::FilePath GetTestPreferencesPath() {
@@ -38,4 +44,24 @@ TEST(ChromeImporterUtilsTest, BasicTest) {
   // Only 2 extensions installed from webstore are importing target extensions.
   // We don't import theme, pre-installed extensions and installed by default.
   EXPECT_EQ(2UL, extensions_list.size());
+}
+
+TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {
+  EXPECT_EQ(
+      GetChromeSourceProfiles(base::FilePath(FILE_PATH_LITERAL("fake"))),
+      base::JSONReader::Read(R"([{"id": "", "name": "Default" }])")->GetList());
+
+  EXPECT_EQ(GetChromeSourceProfiles(GetTestProfilePath().Append(
+                base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+            base::JSONReader::Read(R"([
+        {"id": "Default", "name": "Profile 1"},
+        {"id": "Profile 2",  "name": "Profile 2"}
+      ])")
+                ->GetList());
+
+  EXPECT_EQ(
+      GetChromeSourceProfiles(
+          GetTestProfilePath().Append(base::FilePath::StringType(
+              FILE_PATH_LITERAL("No Profile Local State")))),
+      base::JSONReader::Read(R"([{"id": "", "name": "Default" }])")->GetList());
 }

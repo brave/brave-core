@@ -168,7 +168,7 @@ void EventHandler::FireViewedEvent(
             }
 
             // We must fire an ad served event due to search result ads not
-            // being delivered by the library
+            // being delivered by the library.
             FireEvent(ad, mojom::SearchResultAdEventType::kServed, callback);
 
             FireEvent(ad, event_type, callback);

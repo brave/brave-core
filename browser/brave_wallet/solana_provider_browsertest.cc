@@ -634,8 +634,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   // user rejected request
-  brave_wallet_service_->NotifySignMessageRequestProcessed(false,
-                                                           request_index++);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(
+      false, request_index++, nullptr, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignMessageResult(),
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
@@ -646,8 +646,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
     // user approved request
-    brave_wallet_service_->NotifySignMessageRequestProcessed(true,
-                                                             request_index++);
+    brave_wallet_service_->NotifySignMessageRequestProcessed(
+        true, request_index++, nullptr, absl::nullopt);
     WaitForResultReady();
     EXPECT_EQ(GetSignMessageResult(), kExpectedSignature);
   }
@@ -885,8 +885,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   // user rejected request
-  brave_wallet_service_->NotifySignTransactionRequestProcessed(false,
-                                                               request_index++);
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(
+      false, request_index++, nullptr, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignTransactionResult(),
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
@@ -896,8 +896,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   // user approved request
-  brave_wallet_service_->NotifySignTransactionRequestProcessed(true,
-                                                               request_index++);
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(
+      true, request_index++, nullptr, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr);
 
@@ -907,8 +907,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   // user approved request
-  brave_wallet_service_->NotifySignTransactionRequestProcessed(true,
-                                                               request_index++);
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(
+      true, request_index++, nullptr, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr2);
 }
@@ -933,7 +933,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
           ->IsShowingBubble());
   // user rejected request
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
-      false, request_index++);
+      false, request_index++, absl::nullopt, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignAllTransactionsResult(),
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
@@ -944,7 +944,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
           ->IsShowingBubble());
   // user approved request
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
-      true, request_index++);
+      true, request_index++, absl::nullopt, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignAllTransactionsResult(), "success");
 
@@ -955,7 +955,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
           ->IsShowingBubble());
   // user approved request
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
-      true, request_index++);
+      true, request_index++, absl::nullopt, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignAllTransactionsResult(), "success");
 }
@@ -1002,7 +1002,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, 0);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, 0, nullptr,
+                                                           absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), kExpectedEncodedSignature);
 
@@ -1013,7 +1014,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
-  brave_wallet_service_->NotifySignTransactionRequestProcessed(true, 0);
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(true, 0, nullptr,
+                                                               absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), kEncodedSignature);
 
@@ -1047,7 +1049,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
-  brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(true, 0);
+  brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
+      true, 0, absl::nullopt, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(),
             base::StrCat({kEncodedSignature, ",", kEncodedSignature}));

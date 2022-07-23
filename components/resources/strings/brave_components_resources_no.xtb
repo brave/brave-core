@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Bruk en lokal IPFS-node for Brave</translation>
 <translation id="8148464361648742409">Bruk en offentlig systemport</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) er det offentlig tilgjengelige nettverket for lagring og levering av maskin-til-maskin-data. Denne protokollen innebærer andre hensyn til personvern enn HTTP(S) gjør.</translation>
-<translation id="5410952114182173389">Datamaskinen din bidrar til det åpne nettverket, men IP-adressen din, og eventuelt innhold du ber om eller legger inn, kan være eksponert. Innhold du ber om over IPFS blir verifisert før det leveres til deg.</translation>
+<translation id="1216911189668016151">Datamaskinen din bidrar til det åpne nettverket, men IP-adressen din, og eventuelt innhold du ber om eller legger inn, kan være eksponert. Innhold du ber om over IPFS, blir verifisert før det leveres til deg. Nettverksforespørsler kan ikke bruke nettleserens proxy- og DNS-innstillinger.</translation>
 <translation id="8664689531113048642">Beskytter IP-adressen din og innhold du ber om fra potensielle tredjepartsobservatører, men ikke fra drifteren av den offentlig tilgjengelige systemporten. Drifteren av systemporten har ansvaret for å sikre at innholdet som leveres til deg via en systemport er innholdet du ba om. Datamaskinen din bidrar forøvrig ikke til det offentlig tilgjengelige IPFS-nettverket.</translation>
 <translation id="3977809385703587108">Du kan endre innstillingene dine igjen i</translation>
 <translation id="3340978935015468852">innstillinger</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Vil du importere fra utrangerte Brave-kryptolommebøker?</translation>
 <translation id="3331452756822160641">Nytt passord</translation>
 <translation id="8624315169751085215">Kopier til utklippstavlen</translation>
+<translation id="7885157704277298658">Kopiert!</translation>
 <translation id="1121335910737476837">Primære kryptokontoer</translation>
 <translation id="6969147029062037757">Importerte kontoer</translation>
 <translation id="4057718162494343222">Du kan opprette primærkontoer i Brave-lommeboken som kan sikkerhetskopieres eller gjenopprettes ved hjelp av gjenopprettingsfrasen din. Gå til kontohjelpesidene for mer informasjon om kontotyper.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Ikon-URL</translation>
 <translation id="2144247757675997850">Legg til ressurs</translation>
 <translation id="2708402071160162126">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen, kan ta ut verdiene dine for alltid.</translation>
+<translation id="2416098547200943834">MERK: Den private nøkkelen er gitt som en hex-kodet JSON som inneholder privatnøkkel- og protokollinfo. <ph name="LINK_START"/>Les mer<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">MERK: Den private nøkkelen må gis som en hex-kodet JSON som inneholder privatnøkkel- og protokollinfo. <ph name="LINK_START"/>Les mer<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Vis nøkkel</translation>
 <translation id="8033497299373164724">Skjul nøkkel</translation>
 <translation id="2702143907607790516">Kunne ikke oppdatere kontonavnet – prøv på nytt.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Melding</translation>
 <translation id="3586752056660754651">Undertegn</translation>
 <translation id="3484981968509595506">En DApp ber om din offentlige krypteringsnøkkel</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> ber om den offentlige krypteringsnøkkelen for lommeboken din. Hvis du samtykker til å oppgi denne nøkkelen, vil siden kunne opprette krypterte meldinger til deg.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> ber om den offentlige krypteringsnøkkelen for lommeboken din. Hvis du samtykker til å oppgi denne nøkkelen, vil siden kunne opprette krypterte meldinger til deg.</translation>
 <translation id="3340247553212049934">Lever</translation>
 <translation id="1619778919922494944">Denne DApp-en vil lese denne meldingen for å fullføre forespørselen din</translation>
 <translation id="714506544401754321">Dekrypter melding</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> frakoblet</translation>
 <translation id="5317781812114905957">Instruksjoner</translation>
 <translation id="1178198982208000092">Koble til din <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Maskinvarelommeboken krever bekreftelse på enheten. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Maskinvarelommeboken krever at Ethereum-appen åpnes på <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Maskinvarelommeboken krever bekreftelse på enheten <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Maskinvarelommeboken krever at <ph name="NETWORK"/>-appen åpnes i <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sendt</translation>
 <translation id="5013754027092416509">mottatt</translation>
 <translation id="5867988533873716616">Block Explorer-nettadressen er ikke tilgjengelig.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> er ikke det gjeldende nettverket</translation>
 <translation id="7340805872138998391">Kunne ikke låse opp enheten, prøv å koble til på nytt</translation>
 <translation id="1984410139271779110">Intern feil, ukjent skjema</translation>
-<translation id="8682200134223578011">godkjent</translation>
+<translation id="6989562355845156390">godkjenn</translation>
 <translation id="4674380028960132654">Ledger: Signaturen samsvarer ikke med riktig adresse</translation>
 <translation id="3183932890629254743">Fant ikke maskinvarekonto</translation>
 <translation id="4287068151777838754">JSON-data forventes ikke</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transaksjonen er bekreftet</translation>
 <translation id="310693998838023022">Transaksjonsfeil</translation>
 <translation id="6395870673621520684">Transaksjonen er droppet</translation>
+<translation id="1237782734462409503">Fanen er ikke aktiv.</translation>
+<translation id="756701799684433105">Godkjenn transaksjon</translation>
+<translation id="6450792191436242818">System program</translation>
+<translation id="6252742184395380448">Konfig. program</translation>
+<translation id="5358970666412490132">Stake program</translation>
+<translation id="346636227344244984">Vote program</translation>
+<translation id="3538368258493053874">BPF-laster</translation>
+<translation id="2334098351242742927">Ed25519 Program</translation>
+<translation id="8780753288764281797">Secp256k1 Program</translation>
+<translation id="5275550100743015683">Fra adresse:</translation>
+<translation id="2678433693746214764">Til adresse:</translation>
+<translation id="4576396475962922672">Ny konto:</translation>
+<translation id="4719005063558335704">Kontoer:</translation>
+<translation id="4337554812324118382">Data:</translation>
+<translation id="569870799832027680">Program-ID:</translation>
+<translation id="7843211152394841558">Maks. nye forsøk:</translation>
+<translation id="8496335570810457">Preflight-forpliktelse:</translation>
+<translation id="5100124500279922001">Hopp over Preflight:</translation>
+<translation id="8060029310790625334">Brukerstøtte</translation>
+<translation id="2095142195578664632">Trenger du hjelp? Gå til</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>

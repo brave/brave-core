@@ -106,6 +106,16 @@
 <translation id="4870911314065352661">هل تريد إغلاق جميع علامات التبويب؟</translation>
 <translation id="7551864359422178684">لديك <ph name="NUMBER_OF_TABS"/> علامة تبويب مفتوحة في نافذة المتصفح هذه.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> علامة تبويب</translation>
+<translation id="2272117088509540883">- البحث في Brave</translation>
+<translation id="2701279958223202597">دعم البحث المستقل بخصوصية أفضل. البحث في Brave لا يتتبعك أو يتتبع استفساراتك أو نقراتك.</translation>
+<translation id="6438467592401259882">دعم البحث المستقل بخصوصية أفضل.</translation>
+<translation id="1688359110799098115">دعم البحث المستقل بخصوصية أفضل</translation>
+<translation id="8579317236683491484">البحث في Brave لا يتتبعك أو يتتبع استفساراتك أو نقراتك.</translation>
+<translation id="5240031343741051161">تجربة البحث في Brave</translation>
+<translation id="5026874946691314267">لا تظهر هذا مرة أخرى</translation>
+<translation id="5234764350956374838">رفض</translation>
+<translation id="214744058941501853">"&gt;
+          رفض تحويل البحث في brave، اضغط (إدخال) لإزالة هذا الاقتراح</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="6040143037577758943">إغلاق</translation>
@@ -135,6 +145,7 @@
 <translation id="8490082094734500369">إلغاء تفعيل وضع القارئ</translation>
 <translation id="2036503787657622020">تفعيل وضع القارئ</translation>
 <translation id="5226458915125328323">إعدادات Speedreader</translation>
+<translation id="1621606336827646158">عرض الصفحة الأصلية</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
 <translation id="5288333155754958121">يتيح هذا أمر البينج المجهول والخاص لـ Brave تقدير المستخدمين النشطين.</translation>
 <translation id="1872784258300710671">يستخدم Brave تحليلات المنتج الخاصة بالكامل لتقدير الاستخدام الكلي لبعض الميزات</translation>
@@ -185,6 +196,8 @@
 <translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="2370739752330685659">ربما لاحقًا</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">تم الاستيراد من <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
@@ -201,9 +214,11 @@
 <translation id="2906510232093002459">الصور الأساسية لمتصفح Brave</translation>
 <translation id="2396127686705429331">عرض زر الإشارات المرجعية</translation>
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
-<translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
-<translation id="597020512043916976">عرض أهم المواقع في اقتراحات الإكمال التلقائي</translation>
-<translation id="301088458323355543">إظهار المواقع المقترحة ضمن اقتراحات الإكمال التلقائي</translation>
+<translation id="4109670531935487117">عرض اقتراحات الإكمال التلقائي في شريط العنوان</translation>
+<translation id="2858138569776157458">أهم المواقع</translation>
+<translation id="65774893852758517">المواقع المقترحة</translation>
+<translation id="7859704718976024901">تاريخ التصفح</translation>
+<translation id="8820817407110198400">إشارات</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
 <translation id="1811404036171336214">اظهر دائماً الإشارات المرجعية على صفحة علامة تبويب جديدة</translation>
 <translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
@@ -241,9 +256,8 @@
 <translation id="2360360976480535628">عرض متقدم</translation>
 <translation id="6486983549008741930">تصفية المحتوى</translation>
 <translation id="8694564340481124390">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب والمضايقات الإقليمية واللغوية.</translation>
-<translation id="6522618763902154348">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب
-  <ph name="BEGIN_LINK"/>والمضايقات<ph name="END_LINK"/>الإقليمية واللغوية .
-</translation>
+<translation id="6522618763902154348">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب 
+    <ph name="BEGIN_LINK"/>والمضايقات<ph name="END_LINK"/>الإقليمية واللغوية .</translation>
 <translation id="3482656215021340727">إضافة قوائم عوامل التصفية المخصصة</translation>
 <translation id="1020877116991797978">أضف قوائم إضافية أنشأها مجتمعك الموثوق واحتفظ بها.</translation>
 <translation id="7617831480435794399">لا تشترك إلا في قوائم من كيانات تثق بها. سيتحقق متصفحك دوريًّا من تحديثات القائمة من رابط URL تُدخله أنت، كاشفًا عن عنوان IP الخاص بك لهذا الخادم.</translation>
@@ -363,6 +377,8 @@
 هل أنت متأكد من أنك تريد القيام بهذا؟</translation>
 <translation id="6285118765755298263">فهرسة محركات البحث الأخرى</translation>
 <translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
+<translation id="842628013524824194">نافذة عادية - تم استخدام محرك البحث في شريط العنوان</translation>
+<translation id="5324939009884545145">نافذة خاصة - تم استخدام محرك البحث في شريط العنوان</translation>
 <translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
 <translation id="7878791177459550035">موجّه الوسائط يتيح خاصية الإرسال في المتصفح.</translation>
@@ -463,6 +479,7 @@
 <translation id="6912148685459054619">فشل استيراد المفتاح '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed
 فشل تصدير المفتاح</translation>
+<translation id="5840868269342837751">ملاحظة: قد لا تستخدم طلبات الشبكة الخادم الوكيل للمتصفح وإعدادات DNS.</translation>
 <translation id="8275038454117074363">الاستيراد</translation>
 <translation id="3654980960391973513">إنشاء</translation>
 <translation id="5531501313997312487">بدء العقدة</translation>

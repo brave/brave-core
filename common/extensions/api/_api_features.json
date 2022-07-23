@@ -73,7 +73,8 @@
       "chrome://tab-strip/*",
       "chrome://wallet-panel.top-chrome/*",
       "chrome://wallet/*",
-      "chrome://brave-shields.top-chrome/*"
+      "chrome://brave-shields.top-chrome/*",
+      "chrome://rewards-panel.top-chrome/*"
     ]
   }, {
     "channel": "stable",
@@ -123,18 +124,25 @@
       "matches": [
         "chrome://newtab/*",
         "chrome://rewards/*",
+        "chrome://rewards-panel.top-chrome/*",
         "chrome://settings/*"
       ]
     }
   ],
-  "rewardsNotifications": {
+  "rewardsNotifications": [{
     "channel": "stable",
     "dependencies": [],
     "contexts": ["blessed_extension"],
     "allowlist": [
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
     ]
-  },
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://rewards-panel.top-chrome/*"
+    ]
+  }],
   "braveTheme": [{
     "channel": "stable",
     "contexts": ["blessed_extension"],
@@ -153,7 +161,9 @@
       "chrome://webcompat/*",
       "chrome://wallet/*",
       "chrome://wallet-panel.top-chrome/*",
-      "chrome://brave-shields.top-chrome/*"
+      "chrome://brave-shields.top-chrome/*",
+      "chrome://rewards-panel.top-chrome/*",
+      "chrome://playlist/*"
     ]
   }],
   "greaselion": [{

@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">在 Brave 瀏覽器當機或凍結時自動傳送診斷報告，協助改善 Brave 的產品穩定性。</translation>
 <translation id="7977176350719484850">預估節省\n時間</translation>
 <translation id="9008534313521214777">預估節省\n時間</translation>
-<translation id="6572660632052512096">桌面模式</translation>
-<translation id="1340503115760585811">啟用以桌面模式顯示新分頁</translation>
-<translation id="7924540991929826186">在新分頁開啟行動版網站（推薦）</translation>
-<translation id="807636106793708118">建議使用行動版網站</translation>
-<translation id="4479934682648362332">建議使用桌面版網站</translation>
 <translation id="1842747674580016420">在 Brave 播放影片</translation>
 <translation id="5368992950177874750">如啟用，影片將改為在 Brave 播放，而非在原先預設的應用程式</translation>
 <translation id="410351446219883937">自動播放</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">選取 Brave 瀏覽器並點擊「一律使用」</translation>
 <translation id="3546439402724649282">Brave 已設為預設瀏覽器。</translation>
 <translation id="8389661903259423907">你已有預設瀏覽器。你可到應用程式設定頁面更改預設瀏覽器。</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">謝謝您</translation>
 <translation id="6665366815203065060">您已經傳送小費給：</translation>
 <translation id="5441565662498481293">您正在自動傳送小費給：</translation>
@@ -861,23 +857,34 @@
 <translation id="4804818685124855865">解除連線</translation>
 <translation id="8009571545960303544">正在請求您的簽署</translation>
 <translation id="3484981968509595506">DApp 要求取得您的公共加密金鑰</translation>
-<translation id="2291002548681057345">要求取得您錢包的公開加密金鑰。如果您同意提供金鑰，本網站就能編寫加密訊息並傳送給您。</translation>
 <translation id="3340247553212049934">提供</translation>
 <translation id="1982257600591932657">網路名稱</translation>
 <translation id="5052727830821470769">網路 URL</translation>
 <translation id="4822132585477111396">鏈 ID</translation>
 <translation id="7131971375297699539">貨幣符號</translation>
 <translation id="7982789257301363584">網路</translation>
-<translation id="7540715999708954128">這可讓您在 Brave 錢包內使用此網路。深入瞭解。</translation>
-<translation id="8759753423332885148">深入瞭解。</translation>
 <translation id="4717431746210146708">允許此站點新增網路？</translation>
+<translation id="4857321293515555666">此 DApp 想讀取此訊息，以完成您的要求。</translation>
+<translation id="714506544401754321">解密郵件</translation>
+<translation id="5039804452771397117">允許</translation>
 <translation id="3378339846292573874">加入建議的代幣</translation>
 <translation id="2322227405137827074">要匯入此代幣嗎？</translation>
 <translation id="1324417023773393937">Brave 瀏覽器</translation>
 <translation id="6044189892950611565">Brave 瀏覽器的通知頻道</translation>
 <translation id="1173919438868967364">選取帳戶</translation>
 <translation id="8922793255489232731">找不到符合的時區：<ph name="VALUE"/></translation>
-<translation id="8231907121684689093">顯示熱門網站</translation>
+<translation id="8643377320501056697">顯示頂部網站</translation>
 <translation id="6471216025161697462">已連線至 <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">試用</translation>
+<translation id="7733890291091968191">顯示 Web3 通知</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave 不會追蹤您，或知道您如何使用我們的應用程式，因此不了解您如何設定 VPN。請分享您所遭遇問題的資訊，我們會努力盡快解決。 ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN 主機名稱\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\n訂閱類型\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlay 商店權杖\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\n應用程式版本\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\n時區\n</translation>
+<translation id="8107843365677337047">\n\n網路類型\n</translation>
+<translation id="5334952096674914470">\n\n行動網路提供商\n</translation>
+<translation id="5393042357629679588">\n\n其他問題\n</translation>
+<translation id="8095666712177294104">\n\n平台\n</translation>
 </translationbundle>

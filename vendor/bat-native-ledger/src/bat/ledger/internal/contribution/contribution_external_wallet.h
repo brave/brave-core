@@ -22,18 +22,15 @@ class ContributionExternalWallet {
 
   ~ContributionExternalWallet();
 
-  void Process(
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void Process(const std::string& contribution_id,
+               ledger::LegacyResultCallback callback);
 
-  void Retry(
-      type::ContributionInfoPtr contribution,
-      ledger::ResultCallback callback);
+  void Retry(type::ContributionInfoPtr contribution,
+             ledger::LegacyResultCallback callback);
 
  private:
-  void ContributionInfo(
-      type::ContributionInfoPtr contribution,
-      ledger::ResultCallback callback);
+  void ContributionInfo(type::ContributionInfoPtr contribution,
+                        ledger::LegacyResultCallback callback);
 
   void OnAC(
       const type::Result result,
@@ -44,16 +41,15 @@ class ContributionExternalWallet {
 
   void OnServerPublisherInfo(type::ServerPublisherInfoPtr info,
                              const std::string& contribution_id,
-                             const double amount,
-                             const type::RewardsType type,
-                             const type::ContributionProcessor processor,
-                             const bool single_publisher,
-                             ledger::ResultCallback callback);
+                             double amount,
+                             type::RewardsType type,
+                             type::ContributionProcessor processor,
+                             bool single_publisher,
+                             ledger::LegacyResultCallback callback);
 
-  void Completed(
-      const type::Result result,
-      const bool single_publisher,
-      ledger::ResultCallback callback);
+  void Completed(type::Result result,
+                 bool single_publisher,
+                 ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

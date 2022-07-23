@@ -6,22 +6,20 @@
 #include <string>
 
 #include "base/test/bind.h"
-#include "brave/browser/extensions/api/brave_action_api.h"
-#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/test/browser_test_utils.h"
-#include "extensions/common/constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace rewards_browsertest {
+
+using brave_rewards::RewardsPanelCoordinator;
 
 RewardsBrowserTestContextHelper::RewardsBrowserTestContextHelper(
     Browser* browser) {
@@ -32,68 +30,54 @@ RewardsBrowserTestContextHelper::~RewardsBrowserTestContextHelper() = default;
 
 void RewardsBrowserTestContextHelper::OpenPopup() {
   // Ask the popup to open
-  std::string error;
-  bool popup_shown = extensions::BraveActionAPI::ShowActionUI(
-    browser_,
-    brave_rewards_extension_id,
-    nullptr,
-    &error);
+  auto* coordinator = RewardsPanelCoordinator::FromBrowser(browser_);
+  ASSERT_TRUE(coordinator);
+  bool popup_shown = coordinator->OpenRewardsPanel();
   if (!popup_shown) {
-    LOG(ERROR) << "Could not open rewards popup: " << error;
+    LOG(ERROR) << "Could not open rewards popup";
   }
+
   EXPECT_TRUE(popup_shown);
-}
-
-void RewardsBrowserTestContextHelper::OpenPopupFirstTime() {
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  BraveLocationBarView* brave_location_bar_view =
-      static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
-  ASSERT_NE(brave_location_bar_view, nullptr);
-  auto* brave_actions = brave_location_bar_view->GetBraveActionsContainer();
-  ASSERT_NE(brave_actions, nullptr);
-
-  brave_actions->OnRewardsStubButtonClicked();
-  loaded_ = true;
 }
 
 base::WeakPtr<content::WebContents>
 RewardsBrowserTestContextHelper::OpenRewardsPopup() {
+  if (popup_contents_) {
+    return popup_contents_;
+  }
+
+  base::WeakPtr<content::WebContents> popup_web_contents;
+
   // Construct an observer to wait for the popup to load
-  base::WeakPtr<content::WebContents> popup_contents;
   auto check_load_is_rewards_panel =
-      [&](const content::NotificationSource& source,
-          const content::NotificationDetails&) -> bool {
+      [this](const content::NotificationSource& source,
+             const content::NotificationDetails&) {
         auto web_contents_source =
             static_cast<const content::Source<content::WebContents>&>(source);
-        popup_contents = web_contents_source.ptr()->GetWeakPtr();
+        auto* web_contents = web_contents_source.ptr();
+        GURL url = web_contents->GetLastCommittedURL();
 
-        // Check that this notification is for the Rewards panel and not, say,
-        // the extension background page.
-        std::string url = popup_contents->GetLastCommittedURL().spec();
-        std::string rewards_panel_url = std::string("chrome-extension://") +
-            brave_rewards_extension_id + "/brave_rewards_panel.html";
-        return url == rewards_panel_url;
+        if (RewardsPanelCoordinator::IsRewardsPanelURLForTesting(url)) {
+          popup_contents_ = web_contents->GetWeakPtr();
+          return true;
+        }
+
+        return false;
       };
 
   content::WindowedNotificationObserver popup_observer(
       content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
       base::BindLambdaForTesting(check_load_is_rewards_panel));
 
-  bool ac_enabled = browser_->profile()->GetPrefs()->
-      GetBoolean(brave_rewards::prefs::kAutoContributeEnabled);
-
-  if (loaded_ || ac_enabled) {
-    OpenPopup();
-  } else {
-    OpenPopupFirstTime();
-  }
+  OpenPopup();
 
   // Wait for the popup to load
   popup_observer.Wait();
-  rewards_browsertest_util::WaitForElementToAppear(
-      popup_contents.get(), "[data-test-id=rewards-panel]");
 
-  return popup_contents;
+  rewards_browsertest_util::WaitForElementToAppear(
+      popup_contents_.get(), "[data-test-id=rewards-panel]");
+
+  return popup_contents_;
 }
 
 base::WeakPtr<content::WebContents>

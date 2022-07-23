@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">Upisani ključ za vraćanje više se ne podržava. Posjetite <ph name="BEGIN_LINK"/>ovdje<ph name="END_LINK"/> za dobivanje novog ključa.</translation>
 <translation id="7583327070390027131">Datum sljedećih mjesečnih napojnica</translation>
 <translation id="6231182869178328516">Upravo sam dao/la napojnicu <ph name="NAME"/> uporabom preglednika Brave. Provjerite na mrežnoj stranici: https://brave.com/tips.</translation>
+<translation id="5916536234616514390">Obožavam što mi <ph name="HASHTAG"/>Brave omogućuje da podržavam stvaratelje! Upravo sam dao napojnicu <ph name="NAME"/> s <ph name="HASHTAG2"/>BAT-om. Ako potvrde na stranici https://creators.brave.com prije <ph name="DATE"/>, BAT je njihov!</translation>
 <translation id="8404935570206006581">Nagradite uslugom Brave</translation>
 <translation id="3082557070674409251">Kliknuto</translation>
 <translation id="7119308337584989771">Odbačeno</translation>
@@ -256,6 +257,7 @@
 <translation id="8218538368080510976">Pogreška: regija nije podržana</translation>
 <translation id="5382684862562314222">Još se ne podržava BAT u vašoj regiji putem usluge Uphold.</translation>
 <translation id="9074594632540931067">Greška: BAT nije dostupan</translation>
+<translation id="5376524136040178759">Prema banci Uphold trenutačno postoje određena ograničenja na vašem računu Uphold. Prijavite se u svoj račun Uphold i provjerite ima li bilo kojih obavijesti ili preostalih zahtjeva za račun koje je potrebno ispuniti, a zatim pokušajte ponovno. Na primjer, možda ćete morati poslati više informacija banci Uphold.</translation>
 <translation id="6996157559236886133">Pogreška: Ograničena funkcionalnost računa za uslugu Uphold</translation>
 <translation id="3274650021044762770">Nastao je problem pri potvrđivanju zahtjeva preglednika za povezivanje Nagrada Brave s računom <ph name="PROVIDER"/>. Možete se <ph name="BEGIN_LINK"/> obratiti službi za korisničku podršku <ph name="END_LINK"/> za pomoć.</translation>
 <translation id="1316066811927496401">Pogreška: Nije moguće potvrditi zahtjev</translation>
@@ -274,6 +276,8 @@
 <translation id="5112354605357157725">Nastavi do prijave</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> zahtijeva najmanji raspoloživi odnos od <ph name="AMOUNT"/> BATA za stvaranje računa. Ako ste se prethodno povezali s računom,</translation>
 <translation id="1892970806832316900">Na čekanju do <ph name="DATE"/></translation>
+<translation id="7849926087559412554">Ups! Vaš preglednik ne može primati privatne oglase Brave.</translation>
+<translation id="5177429570315095022">Potrebno je ažurirati vaš preglednik kako biste nastavili viđati oglase.</translation>
 <translation id="752216563428219524">Oglasi se nisu incijalizirali, stoga osvježite stranicu.</translation>
 <translation id="7422678632904904341">Iznos:</translation>
 <translation id="6969783933307596818">Automatski osvježi svakih pet sekundi</translation>
@@ -718,7 +722,7 @@
 <translation id="4780526507945807546">Upotrijebi lokalni čvor značajke IPFS preglednika Brave</translation>
 <translation id="8148464361648742409">Upotrijebi javni pristupnik</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) je javna mreža za ravnopravno pohranjivanje podataka i dostavljanje. Ovaj protokol ima drugačije stavke privatnosti od protokola HTTP(S).</translation>
-<translation id="5410952114182173389">Vašim se računalom doprinosi javnoj mreži, ali vaša adresa IP i bilo koji sadržaj koji tražite ili pružate može se izložiti. Sadržaj koji tražite preko IPFS-a provjerava se prije nego što vam se pruži.</translation>
+<translation id="1216911189668016151">Vašim se računalom doprinosi javnoj mreži, ali vaša adresa IP i bilo koji sadržaj koji tražite ili pružate može se izložiti. Sadržaj koji tražite preko IPFS-a provjerava se prije nego što vam se pruži. U okviru mrežnih zahtjeva možda se neće upotrebljavati proxy preglednika i postavke DNS-a.</translation>
 <translation id="8664689531113048642">Štiti se vaša adresa IP i sadržaj koji tražite od potencijalnih trećih promatrača, ali ne od pružatelja javnog pristupnika. Rukovatelj je pristupnika odgovoran za jamčenje da je sadržaj koji vam se pruža preko pristupnika sadržaj onaj koji tražite. Također, vašim se računalom ne doprinosi javnoj mreži IPFS.</translation>
 <translation id="3977809385703587108">Svoje osobne postavke možete promijeniti ponovno u</translation>
 <translation id="3340978935015468852">postavke</translation>
@@ -754,6 +758,7 @@
 <translation id="7306880305145342514">Čestitamo! Stigle su vaše nagrade za <ph name="MONTH"/>!</translation>
 <translation id="3007207731685398329">Vaše nagrade od <ph name="AMOUNT"/> za<ph name="MONTH"/> stižu za <ph name="DAYS"/></translation>
 <translation id="5878420576943709750">Vaše nagrade od <ph name="AMOUNT"/> za<ph name="MONTH"/> stižu. Pripazite!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Prijavite se u <ph name="PROVIDER"/><ph name="END_BOLD"/> kako biste vidjeli svoje raspoloživo stanje</translation>
 <translation id="2659764755126740206">Idi na moj račun <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Dodaj sredstva</translation>
 <translation id="2394961582378297792">Odjavljeni ste</translation>
@@ -793,6 +798,7 @@
 <translation id="167698752210114155">Došlo je do pogreške</translation>
 <translation id="2326876601333401685">Ova metoda RPC nije podržana.</translation>
 <translation id="1128992132632883337">Pojavila se pogreška raščlanjivanja odgovora</translation>
+<translation id="5382339341735118861">Došlo je do generičke pogreške pri obradi zahtjeva</translation>
 <translation id="1680597601664421644">Rečenica za oporavak koja se uvozi nije valjana za novčanik Brave</translation>
 <translation id="4641919696349069826">Zahtjev već u tijeku</translation>
 <translation id="872806943696014633">Nema transakcijskih podataka</translation>
@@ -818,6 +824,7 @@
 <translation id="875506212625074179">Odgovor usluge RPC o nevažećem ID-u lanca</translation>
 <translation id="5486744676117070166">Neuspješno dohvaćanje vrijednosti nonce</translation>
 <translation id="6180576227145734714">Transakcijski podatak „to” mora biti valjana adresa kada se specificira</translation>
+<translation id="6688162556547723415">Zatraženi način i/ili račun nije odobrio korisnik.</translation>
 <translation id="4958950550253325418">Aplikacije za decentralizirane financije</translation>
 <translation id="735961408871282410">Trgovine NFT</translation>
 <translation id="7740287852186792672">Rezultati pretraživanja</translation>
@@ -860,6 +867,8 @@
 <translation id="1191686659164947414">Transakcija može podlijeći unaprijednom trgovanju</translation>
 <translation id="632241521608275119">Tolerancija prekoračenja</translation>
 <translation id="4500473291496079954">Istječe za</translation>
+<translation id="2236833281018938257">Adresa novčanika ili URL</translation>
+<translation id="928500657730628112">Adresa novčanika</translation>
 <translation id="2860280209982026951">Preglednikom Brave upotrebljava se <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kao agregator DEX.</translation>
 <translation id="151946611346774041">Protokolom 0x obrađuju se adresa Ethereum i IP adresa radi obavljanja transakcije (uključujući dobivanje ponuda). Protokolom 0x upotrebljavaju se ovi podatci ISKLJUČIVO za svrhe obrađivanja transakcija.</translation>
 <translation id="4626407663177532837">Ponudom se uključuje naknada od 0,875 % za preglednik Brave.</translation>
@@ -867,6 +876,7 @@
 <translation id="6575120282593094155">Još nemate račun <ph name="ACCOUNT_TYPE"/>. Želite li ga sada napraviti?</translation>
 <translation id="2704606927547763573">Kopirano</translation>
 <translation id="1420318137760245955">Dobro došli u Braveov novi novčanik</translation>
+<translation id="3671745544278414606">Čuvajte kriptoimovinu. Pratite učinak portfelja i upotrebljavajte decentralizirane aplikacije Web3. Mijenjajte, ulažite, posuđujte i pozajmljujte pomoću DeFija. Sve izravno iz privatnog preglednika Brave. Ne trebaju proširenja ni preuzimanja.</translation>
 <translation id="6972754398087986839">Početak upotrebe</translation>
 <translation id="375882617301124395">Izradi sigurnosnu kopiju kriptonovčanika</translation>
 <translation id="180032279811483155">U sljedećem se koraku navodi rečenica za oporavak od <ph name="RECOVERY_PHRASE_LENGTH"/> riječi koju možete upotrijebiti za oporavak primarnih računa za kriptovalute. Spremite je na sigurno mjesto. Vaša rečenica za oporavak jedini je način za povraćanje pristupa računu ako zaboravite lozinku, ako se izgubi ili ukrade uređaj ili ako želite promijeniti novčanike.</translation>
@@ -895,6 +905,7 @@
 <translation id="163697698769819510">Odmah izradite sigurnosnu kopiju novčanika radi zaštite imovine i jamčenja da nikada ne izgubite pristup.</translation>
 <translation id="1018806299114415224">Sada izradi sigurnosnu kopiju</translation>
 <translation id="5234764350956374838">Odbaci</translation>
+<translation id="1400709719911593089">Novčanik preglednika Brave Wallet nije vaš zadani novčanik i njime se ne reagira na decentralizirane aplikacije Web3. Idite na postavke za promjenu zadanog novčanika.</translation>
 <translation id="4362717653795263052">Vrati primarne račune za kriptovalute</translation>
 <translation id="3038077262567136741">Upišite svoju rečenicu za oporavak za vraćanje svog računa za kriptovalute novčanika preglednika Brave.</translation>
 <translation id="955918646509748368">Upisana rečenica za oporavak nije važeća.</translation>
@@ -903,8 +914,11 @@
 <translation id="4359319875297001084">Uvoziti iz starijih kriptonovčanika Brave?</translation>
 <translation id="3331452756822160641">Nova lozinka</translation>
 <translation id="8624315169751085215">Kopiraj u međuspremnik</translation>
+<translation id="7885157704277298658">Kopirano!</translation>
 <translation id="1121335910737476837">Primarni računi za kriptovalute</translation>
 <translation id="6969147029062037757">Uvezeni računi</translation>
+<translation id="4057718162494343222">Možete stvarati primarne račune u novčaniku Brave Wallet koje možete sigurnosno kopirati ili vratiti pomoću svoje rečenice za oporavak. Da biste doznali više o vrstama računa, posjetite stranicu pomoći za račun.</translation>
+<translation id="1011614786846182272">Ti se računi mogu upotrijebiti s decentraliziranim aplikacijama Web3 i mogu se prikazati u vašem portfelju. Međutim, imajte na umu da se sekundarni računi ne mogu vratiti pomoću rečenice za oporavak iz sigurnosne kopije vašeg primarnog računa.</translation>
 <translation id="1940465339426637378">Imovine</translation>
 <translation id="2236507293802791911">Vidljiva imovina</translation>
 <translation id="7525067979554623046">Stvori</translation>
@@ -958,6 +972,8 @@
 <translation id="7642841516562576649">URL ikone</translation>
 <translation id="2144247757675997850">Dodaj imovinu</translation>
 <translation id="2708402071160162126">UPOZORENJE: Nikada ne otkrivajte svoju rečenicu za oporavak. Bilo tko s tom rečenicom može zauvijek preuzeti vašu imovinu.</translation>
+<translation id="2416098547200943834">NAPOMENA: privatni ključ pruža se kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">NAPOMENA: privatni ključ mora se pružiti kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Prikaži ključ</translation>
 <translation id="8033497299373164724">Sakrij ključ</translation>
 <translation id="2702143907607790516">Neuspješno ažuriranje naziva računa. Pokušajte ponovno.</translation>
@@ -986,13 +1002,14 @@
 <translation id="8569380433211549748">Cijena u</translation>
 <translation id="2490428413101944234">Testni svežanj</translation>
 <translation id="3352959425838279177">Dohvati Ether iz svežnja za<ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">Odaberite način kupnje</translation>
 <translation id="8009571545960303544">Vaš se potpis zahtijeva</translation>
 <translation id="5294062982587710720">Imajte na umu da se preglednikom Brave ’ ne može potvrditi što se događa ako potpišete. Potpisom se mogu ovlastiti gotovo sve radnje na vašem računu ili u vaše ime uključujući (između ostalog) davanje potpune kontrole nad računom i kriptoimovinom mrežnom mjestu s kojeg potječe zahtjev. Potpišite samo ako ste ’ sigurni da želite poduzeti tu radnju i vjerujete tom mrežnom mjestu.</translation>
 <translation id="3474375934783434676">Potpiši na vlastitu odgovornost</translation>
 <translation id="5488357322146334497">Poruka</translation>
 <translation id="3586752056660754651">Potpis</translation>
 <translation id="3484981968509595506">Decentralizirana aplikacija traži vaš javni ključ za šifriranje</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> traži javni ključ za šifriranje novčanika. Ako pristanete na davanje ključa, mrežno vam mjesto može slati šifrirane poruke.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> traži javni ključ za šifriranje novčanika. Ako pristanete na davanje ključa, mrežno mjesto može vam slati šifrirane poruke.</translation>
 <translation id="3340247553212049934">Pružiti</translation>
 <translation id="1619778919922494944">Decentralizirana aplikacija želi pročitati ovu poruku za ispunjavanje vašeg zahtjeva</translation>
 <translation id="714506544401754321">Dešifriraj poruku</translation>
@@ -1034,6 +1051,7 @@
 <translation id="3890989020011724401">Novi račun</translation>
 <translation id="7257603403519636638">Prikaži imovinu računa</translation>
 <translation id="2092132085082887098">Imovina računa</translation>
+<translation id="4612979983851181941">Upotrijebite ovu ploču za sigurno pristupanje mreži web3 i čitavoj svojoj kriptoimovini.</translation>
 <translation id="4460220693591349571">VRSTA FUNKCIJE</translation>
 <translation id="838933475572692615">PODATCI ZA HEX</translation>
 <translation id="2240831799756994975">BAJTOVI</translation>
@@ -1045,19 +1063,21 @@
 <translation id="7739762330714405363">Upotrijebi istu lozinku</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Uvezi iz<ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Uvezite svoje račune <ph name="WALLET_EXTENSION"/> u novčanik Brave Wallet. Uživajte u bržem i sigurnijem načinu upravljanja kriptoimovinom i interakciji s decentraliziranim aplikacijama Web3.</translation>
 <translation id="4237840336687249184">Lozinka za uslugu MetaMask</translation>
 <translation id="2381605201035323535">kriptonovčanike</translation>
 <translation id="2770851145415891830">Otkriveni postojeći kriptonovčanici</translation>
 <translation id="4938145712652668388">Kada kliknete na „Početak rada”, uvozite prijašnji novčanik za kriptovalute u novo iskustvo novčanika preglednika Brave i iskorištavate sve gore navedene koristi. Isprobajte i recite nam svoje mišljenje!</translation>
 <translation id="2237759620789871865">Ako biste radije preskočili uvoz i zadržali stare kriptovalutne novčanike, idite na <ph name="LINK_BEFORE"/>Postavke<ph name="LINK_AFTER"/> preglednika Brave i promijenite zadano natrag na kriptovalutne novčanike. Također možete uvesti, isprobati novi novčanik Brave Wallet i vratiti natrag u bilo kojem trenutku.</translation>
+<translation id="5590175005414413980">Upišite lozinku svojih postojećih novčanika za kriptovalute za uvoz u novčanik Brave Wallet. Uživajte u bržem i sigurnijem načinu upravljanja kriptoimovinom i upotrijebite decentralizirane aplikacije Web3.</translation>
 <translation id="9099900965604225657">Lozinka za kriptonovčanike</translation>
 <translation id="4020495774166914146">’ve Izgubio/la sam svoju lozinku i rečenicu za oporavak. Izradi novi novčanik.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> povezan</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odspojen</translation>
 <translation id="5317781812114905957">Upute</translation>
 <translation id="1178198982208000092">Poveži svoj <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Za novčanik hardvera treba potvrda na uređaju. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Novčanikom hardvera zahtijeva se otvaranje aplikacije Ethereum na<ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Za novčanik hardvera potrebna je potvrda na uređaju <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Novčanikom hardvera zahtijeva se otvaranje aplikacije <ph name="NETWORK"/> na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslano</translation>
 <translation id="5013754027092416509">primljeno</translation>
 <translation id="5867988533873716616">URL tražilice Block Explorer nije dostupan.</translation>
@@ -1105,6 +1125,7 @@
 <translation id="1599636444563952897">Dopuštenjem ograničenja potrošnje dopušta se za <ph name="SITE_ORIGIN"/> povlačenje i trošenje do sljedećeg iznosa:</translation>
 <translation id="4512871563176965522">Prilagođeni doplatak</translation>
 <translation id="749944179568745958">Nevaljana adresa ETH</translation>
+<translation id="2832270987629018596">Nevaljana adresa SOL</translation>
 <translation id="882486206986535424">Nevaljana adresa</translation>
 <translation id="6825399159373612149">Domena <ph name="DOMAIN_NAME"/> nije registrirana</translation>
 <translation id="8971278306757462297">Adresa primatelja vaša je adresa</translation>
@@ -1127,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> nije trenutačna mreža</translation>
 <translation id="7340805872138998391">Nije moguće otključati uređaj, pokušajte se ponovno povezati</translation>
 <translation id="1984410139271779110">Interna pogreška, nepoznata shema</translation>
-<translation id="8682200134223578011">odobreno</translation>
+<translation id="6989562355845156390">odobri</translation>
 <translation id="4674380028960132654">Ledger: Potpis nije u skladu s točnom adresom</translation>
 <translation id="3183932890629254743">Nije pronađen račun hardvera</translation>
 <translation id="4287068151777838754">Podatci JSON nisu očekivani</translation>
@@ -1157,11 +1178,39 @@
 <translation id="6423985584914773314">Nevaljana adresa FIL</translation>
 <translation id="3898731124813934210">Kupi uslugom Wyre</translation>
 <translation id="5522073372365069684">Kupi uslugom Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">Kupite kriptovalute karticom Visa ili Mastercard.</translation>
 <translation id="8528916244724490964">Sve mreže</translation>
 <translation id="2781668117338732220">Sekundarne mreže</translation>
 <translation id="2816106784624007524">Ograničenje naknade mora biti cijeli broj veći od 0</translation>
 <translation id="3354376789153561654">Treba odrediti transakcijski podatak „za”</translation>
 <translation id="8728991256628663004">Transakcijski podatak „od” mora biti valjana adresa Filecoin</translation>
+<translation id="7003028930816622496">Zaključan uređaj Ledger</translation>
+<translation id="3939390290522058485">Kliknite ovdje da biste provjerili pojedinosti o transakciji za <ph name="VALUE"/></translation>
+<translation id="2317956709076373213">Transakcija je potvrđena</translation>
+<translation id="310693998838023022">Pogreška pri transakciji</translation>
+<translation id="6395870673621520684">Transakcija je neuspješna</translation>
+<translation id="1237782734462409503">Kartica nije aktivna</translation>
+<translation id="756701799684433105">Odobrenje transakcije</translation>
+<translation id="6450792191436242818">Program sustava</translation>
+<translation id="6252742184395380448">Konfiguracijski program</translation>
+<translation id="5358970666412490132">Program udjela</translation>
+<translation id="346636227344244984">Program glasanja</translation>
+<translation id="3538368258493053874">Učitavač BPF</translation>
+<translation id="2334098351242742927">Program Ed25519</translation>
+<translation id="8780753288764281797">Program Secp256k1</translation>
+<translation id="5275550100743015683">S adrese:</translation>
+<translation id="2678433693746214764">Na adresu:</translation>
+<translation id="4576396475962922672">Novi račun:</translation>
+<translation id="4719005063558335704">Računi:</translation>
+<translation id="4337554812324118382">Podaci:</translation>
+<translation id="569870799832027680">ID programa:</translation>
+<translation id="7843211152394841558">Maks. broj ponovnih pokušaja:</translation>
+<translation id="8496335570810457">Obveza pripreme prije leta:</translation>
+<translation id="5100124500279922001">Preskoči pripremu prije leta:</translation>
+<translation id="8060029310790625334">Centar za pomoć</translation>
+<translation id="2095142195578664632">Potrebna vam je pomoć? Pogledajte</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="3745016858329272300">Opće informacije</translation>
 <translation id="4045404575593562245">Događaji kontrole Tor</translation>
@@ -1176,6 +1225,7 @@
 <translation id="7709075156958117386">Ako se čini da je mrežno mjesto neispravno, pokušate onemogućiti Štitove. 
     <ph name="LINK_BEFORE"/>Napomena:  time se može smanjiti zaštita privatnosti preglednika Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Blokirani elementi za praćenje, oglasi i više <ph name="LINK_BEFORE"/>Doznaj više<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Nije zaštićeno štitovima Brave <ph name="LINK_BEFORE"/>Saznajte više <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
 <translation id="5799940914270080805">Mijenjanjem tih postavki mogu se rušiti mrežna mjesta.</translation>
 <translation id="9204041448536398473">Postavke globalnog štita</translation>
@@ -1202,6 +1252,7 @@
 <translation id="7194012750329511146">Štitovi Brave
 Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</translation>
 <translation id="4292121526390005808">Blokirane skripte</translation>
+<translation id="3541307549916475335">Korisničko sučelje ploče VPN za Brave</translation>
 <translation id="1742469581923031760">Povezivanje…</translation>
 <translation id="1287487756047817908">Prekidanje veze…</translation>
 <translation id="2325196879156848326">Neuspješno povezivanje</translation>
@@ -1219,8 +1270,11 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="3181339219453722970">Odaberi lokaciju VPN-a</translation>
 <translation id="1751947227857853925">Brzo i neograničeno do 100 Mbps</translation>
 <translation id="1400240082805528049">Podrška 24/7</translation>
+<translation id="1693568075761612600">Neuspješna izrada kartice za podršku, provjerite svoju vezu.</translation>
 <translation id="8463313539532697053">Pričekajte dok ne završi učitavanje…</translation>
+<translation id="4317307602527599178">Nije moguće provjeriti status vaše kupnje. To bi moglo biti uzrokovano problemom s mrežom.</translation>
 <translation id="4613076894734402086">Uredi način plaćanja</translation>
+<translation id="8373427068383038263">Izgleda da vaše najnedavnije plaćanje za <ph name="VALUE"/> nije prošlo. Zaustavlja se pristup ovoj pretplati dok se problem s plaćanjem ne riješi. Pokušajte urediti svoj način plaćanja ili se obratite podršci društva Brave.</translation>
 <translation id="1839021455997460752">Vaša adresa e-pošte</translation>
 <translation id="5154702632169343078">Predmet</translation>
 <translation id="6625978880678465492">Odaberite razlog</translation>
@@ -1237,6 +1291,9 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="6676791921618140305">Inačica operativnog sustava:</translation>
 <translation id="1156325797949437777">Podrška pružena u suradnji s timom Guardian.</translation>
 <translation id="3307461350293459700">Veza s mrežom VPN nije uspjela. Pokušajte se ponovno povezati i kliknite na Dopusti da biste omogućili konfiguraciju mreže VPN preglednika Brave.</translation>
+<translation id="7261518280726313829">Isključivanjem sigurnog DNS-a ili upotrebom zadanih poslužitelja na operativnom sustavu Windows mogu se otkriti nazivi mrežnih mjesta koja posjećujete vašem pružatelju internetskih usluga. Brave vam to ne preporučuje. Želite li svejedno to napraviti?</translation>
+<translation id="888284761945060750">Sigurni DNS onemogućen je pravilima vaše organizacije. Upotrebom VPN-a Brave bez sigurnog DNS-a mogu se otkriti nazivi mrežnih mjesta koja posjećujete vašem pružatelju internetskih usluga ili organizaciji.</translation>
+<translation id="1657858090675311947">Ne upozoravaj me više na ovo.</translation>
 <translation id="7586151660465233733">Više tržišta na <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Pregledaj tržišta i trguj kriptovalutama putem značajke FTX</translation>
 <translation id="5963745988819586370">Tržišta</translation>

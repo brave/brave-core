@@ -146,9 +146,6 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
       <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
         While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
       </message>
-      <message name="IDS_DOWNLOAD_LOCATION_INCOGNITO_WARNING" desc="Text that indicates to the user that downloaded files in Private are still saved on the device and are visible to other users of this device.">
-        Anyone using this device can see files you download in Private
-      </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
       </message>

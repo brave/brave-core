@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -57,7 +58,7 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Completed) {
               "status": "Completed",
               "reason": ""
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -83,7 +84,7 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Pending) {
               "status": "Pending",
               "reason": ""
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -109,7 +110,7 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Error) {
               "status": "Error",
               "reason": ""
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -135,7 +136,7 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Processing) {
               "status": "Processing",
               "reason": ""
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -153,7 +154,7 @@ TEST_F(GeminiGetTransactionTest, ServerError401) {
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -171,7 +172,7 @@ TEST_F(GeminiGetTransactionTest, ServerError403) {
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -189,7 +190,7 @@ TEST_F(GeminiGetTransactionTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -207,7 +208,7 @@ TEST_F(GeminiGetTransactionTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",

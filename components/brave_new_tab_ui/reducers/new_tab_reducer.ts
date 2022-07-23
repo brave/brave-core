@@ -48,6 +48,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
         ftxSupported: initialDataPayload.ftxSupported,
         binanceSupported: initialDataPayload.binanceSupported,
+        searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         // Auto-dismiss of together prompt only
         // takes effect on the next page view and not the
         // page view that the action occured on.
@@ -102,6 +103,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.SEARCH_PROMOTION_DISABLED:
+      state = {
+        ...state,
+        searchPromotionEnabled: false
+      }
+      break
+
     case types.CUSTOM_BACKGROUND_UPDATED:
       // While customizing background, background has
       // custom or brave default background. Branded wallpaper will
@@ -129,7 +137,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
     case types.NEW_TAB_ADS_DATA_UPDATED:
       const newTabAdsData = payload as NewTabAdsData
-      state.rewardsState.needsBrowserUpdateToSeeAds = newTabAdsData.needsBrowserUpdateToSeeAds
+      state.rewardsState.needsBrowserUpgradeToServeAds = newTabAdsData.needsBrowserUpgradeToServeAds
       break
 
     case types.NEW_TAB_DISMISS_BRANDED_WALLPAPER_NOTIFICATION:

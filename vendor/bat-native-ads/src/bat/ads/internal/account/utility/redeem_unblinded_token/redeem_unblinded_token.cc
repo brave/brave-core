@@ -99,11 +99,6 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     } else if (url_response.status_code == net::HTTP_BAD_REQUEST) {
       OnFailedToSendConfirmation(confirmation, /* should_retry */ false);
       return;
-    } else if (url_response.status_code == net::kHttpUpgradeRequired) {
-      BLOG(1, "Failed to create confirmation as a browser upgrade is required");
-      OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false,
-                                     /* should_backoff */ false);
-      return;
     }
 
     OnFailedToSendConfirmation(confirmation, /* should_retry */ true);
@@ -156,11 +151,6 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   } else if (url_response.status_code == net::HTTP_ACCEPTED) {
     BLOG(1, "Payment token is not ready");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
-                                   /* should_backoff */ false);
-    return;
-  } else if (url_response.status_code == net::kHttpUpgradeRequired) {
-    BLOG(1, "Failed to fetch payment token as a browser upgrade is required");
-    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false,
                                    /* should_backoff */ false);
     return;
   } else if (url_response.status_code != net::HTTP_OK) {

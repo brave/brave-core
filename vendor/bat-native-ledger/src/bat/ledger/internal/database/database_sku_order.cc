@@ -29,9 +29,8 @@ DatabaseSKUOrder::DatabaseSKUOrder(
 
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
-void DatabaseSKUOrder::InsertOrUpdate(
-    type::SKUOrderPtr order,
-    ledger::ResultCallback callback) {
+void DatabaseSKUOrder::InsertOrUpdate(type::SKUOrderPtr order,
+                                      ledger::LegacyResultCallback callback) {
   if (!order) {
     BLOG(1, "Order is null");
     callback(type::Result::LEDGER_ERROR);
@@ -66,15 +65,12 @@ void DatabaseSKUOrder::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseSKUOrder::UpdateStatus(
-    const std::string& order_id,
-    const type::SKUOrderStatus status,
-    ledger::ResultCallback callback) {
+void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
+                                    type::SKUOrderStatus status,
+                                    ledger::LegacyResultCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -100,9 +96,7 @@ void DatabaseSKUOrder::UpdateStatus(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::GetRecord(
@@ -143,9 +137,7 @@ void DatabaseSKUOrder::GetRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecord(
@@ -233,15 +225,13 @@ void DatabaseSKUOrder::GetRecordByContributionId(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
     const std::string& order_id,
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (order_id.empty() || contribution_id.empty()) {
     BLOG(1, "Order/contribution id is empty " <<
         order_id << "/" << contribution_id);
@@ -268,9 +258,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

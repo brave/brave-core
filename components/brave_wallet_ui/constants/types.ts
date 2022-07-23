@@ -29,6 +29,8 @@ export interface WalletAccountType {
   accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
   deviceId?: string
   coin: BraveWallet.CoinType
+  // Used to separate networks for filecoin.
+  keyringId?: string
 }
 
 export interface UserAccountType {
@@ -298,6 +300,7 @@ export interface AccountInfo {
   isImported: boolean
   hardware?: HardwareInfo
   coin: BraveWallet.CoinType
+  keyringId?: string
 }
 
 export interface WalletInfoBase {
@@ -538,7 +541,9 @@ export const BuySupportedChains = [
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
-  BraveWallet.SOLANA_MAINNET
+  BraveWallet.SOLANA_MAINNET,
+  BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
+  BraveWallet.FILECOIN_MAINNET
 ]
 
 export interface GetAllNetworksList {

@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Saidia kuimarisha uthabiti wa bidhaa ya Brave\u2019s kwa kutuma ripoti za uchunguzi kiotomatiki Kivinjari cha Brave kinapoacha kufanya kazi au kukwama.</translation>
 <translation id="7977176350719484850">Data\nIliyookolewa</translation>
 <translation id="9008534313521214777">Saa za Mashariki\nImehifadhiwa</translation>
-<translation id="6572660632052512096">Hali ya Kopyuta ya Mezani</translation>
-<translation id="1340503115760585811">Washa Mwonekano wa Eneokazi kwa vichupo vipya</translation>
-<translation id="7924540991929826186">Kwa vichupo vipya, tumia matoleo ya tovuti  ya vifaa vya mkononi (inapendekezwa)</translation>
-<translation id="807636106793708118">Yape kipaumbele matoleo ya tovuti ya vifaa vya mkononi</translation>
-<translation id="4479934682648362332">Weka kipaumbele cha matoleo ya tovuti za kompyuta ya mezani</translation>
 <translation id="1842747674580016420">Kucheza video katika Brave</translation>
 <translation id="5368992950177874750">Ukiwasha, video zitachezwa katika Brave badala ya programu nyingine husika</translation>
 <translation id="410351446219883937">Kucheza kiotomatiki</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Chagua Brave Browser na ubofye 'Daima'</translation>
 <translation id="3546439402724649282">Brave tayari imewekwa kuwa kivinjari chako chaguo msingi.</translation>
 <translation id="8389661903259423907">Tayari umeweka kivinjari chaguo msingi. Unaweza kubadilisha kivinjari chaguo msingi katika mipangilio ya programu yako.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Asante</translation>
 <translation id="6665366815203065060">Umetuma zawadi kwa:</translation>
 <translation id="5441565662498481293">Unatuma zawadi kiotomatiki kwa:</translation>
@@ -864,23 +860,36 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="4804818685124855865">Ondoa</translation>
 <translation id="8009571545960303544">Saini yako inaombwa</translation>
 <translation id="3484981968509595506">DApp inaomba ufunguo wako wa usimbaji fiche wa umma</translation>
-<translation id="2291002548681057345">inaomba ufunguo wa pochi yako wa usimbaji fiche wa umma. Ukikubali kutoa ufunguo huu, tovuti hiyo itaweza kukutungia ujumbe uliosimbwa.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> inaomba ufunguo wa pochi yako wa usimbaji fiche wa umma. Ukikubali kutoa ufunguo huu, tovuti hiyo itaweza kukuandikia ujumbe uliosimbwa.</translation>
 <translation id="3340247553212049934">Kutoa</translation>
 <translation id="1982257600591932657">Jina la mtandao</translation>
 <translation id="5052727830821470769">URL ya Mtandao</translation>
 <translation id="4822132585477111396">Utambulisho wa Mnyororo</translation>
 <translation id="7131971375297699539">Alama ya sarafu</translation>
 <translation id="7982789257301363584">Mtandao</translation>
-<translation id="7540715999708954128">Hii itaruhusu mtandao huu kutumiwa ndani ya Pochi ya Brave. Jifunze zaidi.</translation>
-<translation id="8759753423332885148">Jifunze zaidi.</translation>
+<translation id="6936860995365507185">Hii itaruhusu mtandao huu kutumiwa ndani ya Pochi ya Brave. <ph name="CLICK_START"/>Jifunze zaidi<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Ruhusu tovuti hii kuongeza mtandao?</translation>
+<translation id="4857321293515555666">DApp hii ingependa kusoma ujumbe huu ili kukamilisha ombi lako.</translation>
+<translation id="714506544401754321">Ficha ujumbe</translation>
+<translation id="5039804452771397117">Ruhusu</translation>
 <translation id="3378339846292573874">Ongeza kianzio kilichopendekezwa</translation>
 <translation id="2322227405137827074">Je, ungependa kuhamisha kianzio hiki?</translation>
 <translation id="1324417023773393937">Kivinjari cha Brave</translation>
 <translation id="6044189892950611565">Kituo cha taarifa cha Kivinjari cha Brave</translation>
 <translation id="1173919438868967364">Teua Akaunti</translation>
 <translation id="8922793255489232731">Haikuweza kupata saa za eneo zinazolingana kwa: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Onyesha tovuti Bora</translation>
+<translation id="8643377320501056697">Onyesha Tovuti Bora</translation>
 <translation id="6471216025161697462">Imeunganishwa kwa <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Jaribio</translation>
+<translation id="7733890291091968191">Onyesha taarifa za Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave haikufuatilii wala kujua jinsi unavyotumia programu yetu, kwa hivyo hatujui jinsi ambavyo umesanidi VPN. Tafadhali shiriki maelezo kuhusu suala unalokumbana nalo na tutajitahidi tuwezavyo kulitatua haraka tuwezavyo. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nJina la Upangishaji la VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nAina ya Usajili\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nTokeni ya Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nToleo la Programu\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nSaa za Eneo\n</translation>
+<translation id="8107843365677337047">\n\nAina ya Mtandao\n</translation>
+<translation id="5334952096674914470">\n\Mtoa Huduma wa Simu ya Mkononi\n</translation>
+<translation id="5393042357629679588">\n\nSuala Lingine\n</translation>
+<translation id="8095666712177294104">\n\nJukwaa\n</translation>
 </translationbundle>

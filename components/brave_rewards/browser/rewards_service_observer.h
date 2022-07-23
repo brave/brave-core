@@ -65,6 +65,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       ledger::type::PublisherInfoList list) {}
 
+  virtual void OnPublisherRegistryUpdated() {}
+
+  virtual void OnPublisherUpdated(const std::string& publisher_id) {}
+
   virtual void OnStatementChanged(
       brave_rewards::RewardsService* rewards_service) {}
 

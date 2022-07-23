@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">使用 Brave 本地 IPFS 节点</translation>
 <translation id="8148464361648742409">使用公共网关</translation>
 <translation id="5123478056123923857">IPFS（行星际文件系统）是用于对等数据存储和传递的公共网络。该协议具有与 HTTP(S) 不同的隐私考量。</translation>
-<translation id="5410952114182173389">您的计算机为公用网络做出了贡献，但是您的 IP 地址和您请求或提供的任何内容都可能被公开。通过 IPFS 请求的内容在提供给您之前已经过验证。</translation>
+<translation id="1216911189668016151">您的计算机参与了公共网络，但您的 IP 地址和您要求提供或提供的任何内容都可能被泄露。您通过 IPFS 请求的内容在提供给您之前会经过验证。网络请求不得使用浏览器代理和 DNS 设置。</translation>
 <translation id="8664689531113048642">保护您潜在的第三方观察者（而不是公共网关运营商）所请求的 IP 地址和内容。网关运营商负责确保通过网关提供给您的内容是您所请求的内容。另外，您的计算机不参与公共 IPFS 网络。</translation>
 <translation id="3977809385703587108">您可以再次更改您的首选项：</translation>
 <translation id="3340978935015468852">设置</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">从旧的 Brave 加密钱包导入？</translation>
 <translation id="3331452756822160641">新密码</translation>
 <translation id="8624315169751085215">复制到剪贴板</translation>
+<translation id="7885157704277298658">已复制</translation>
 <translation id="1121335910737476837">主加密账户</translation>
 <translation id="6969147029062037757">导入的账户</translation>
 <translation id="4057718162494343222">您可以在 Brave 钱包中创建可以根据您的恢复短语备份或恢复的主要帐户。要了解有关帐户类型的更多信息，请访问帐户帮助。</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">图标 URL</translation>
 <translation id="2144247757675997850">添加资产</translation>
 <translation id="2708402071160162126">警告：切勿分享您的恢复密语。任何人一旦持有该密语，即可永久取走您的资产。</translation>
+<translation id="2416098547200943834">注意：私钥以十六进制编码的 JSON 形式提供，内含私钥和协议信息。<ph name="LINK_START"/>了解更多<ph name="LINK_END"/>。</translation>
+<translation id="7657130382217527063">注意：私钥必须以十六进制编码的 JSON 形式提供，内含私钥和协议信息。<ph name="LINK_START"/>了解更多<ph name="LINK_END"/>。</translation>
 <translation id="2902856457593699108">显示密钥</translation>
 <translation id="8033497299373164724">隐藏密钥</translation>
 <translation id="2702143907607790516">更新账户名称失败，请重试。</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">消息</translation>
 <translation id="3586752056660754651">签名</translation>
 <translation id="3484981968509595506">DApp 正在请求提供你的公共加密密钥</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> 要求获得您的钱包的公共加密密钥。如果您同意提供此密钥，该站点就能编写要发送给您的加密消息。</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> 正在请求提供您钱包的公共加密密钥。如果您同意提供此密钥，该站点将能够编写要发送给您的加密消息。</translation>
 <translation id="3340247553212049934">提供</translation>
 <translation id="1619778919922494944">此 DApp 想读取此消息以完成您的请求</translation>
 <translation id="714506544401754321">解密信息</translation>
@@ -1073,9 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 已断开连接</translation>
 <translation id="5317781812114905957">说明</translation>
 <translation id="1178198982208000092">连接 <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">硬件钱包需要设备上确认。
-<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">硬件钱包需要在 <ph name="DEVICE_NAME"/> 上打开 Ethereum 应用</translation>
+<translation id="6291765462876399333">硬件钱包需要在 <ph name="DEVICE_NAME"/> 设备上确认</translation>
+<translation id="2288190100157580461">硬件钱包需要在 <ph name="NETWORK"/> 上开启<ph name="DEVICE_NAME"/> 应用</translation>
 <translation id="8687869982094542529">已发送</translation>
 <translation id="5013754027092416509">已接收</translation>
 <translation id="5867988533873716616">区块浏览器 URL 不可用</translation>
@@ -1146,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> 不是当前网络</translation>
 <translation id="7340805872138998391">无法解锁设备，尝试重新连接</translation>
 <translation id="1984410139271779110">内部错误，未知架构</translation>
-<translation id="8682200134223578011">已批准</translation>
+<translation id="6989562355845156390">核准</translation>
 <translation id="4674380028960132654">Ledger：签名和正确的地址不匹配</translation>
 <translation id="3183932890629254743">未找到硬件账户</translation>
 <translation id="4287068151777838754">异常 JSON 数据</translation>
@@ -1189,6 +1191,26 @@
 <translation id="2317956709076373213">交易已确认</translation>
 <translation id="310693998838023022">交易错误</translation>
 <translation id="6395870673621520684">交易被放弃</translation>
+<translation id="1237782734462409503">此选项卡处于未激活状态</translation>
+<translation id="756701799684433105">核准交易</translation>
+<translation id="6450792191436242818">系统程序</translation>
+<translation id="6252742184395380448">配置程序</translation>
+<translation id="5358970666412490132">权益程序</translation>
+<translation id="346636227344244984">投票程序</translation>
+<translation id="3538368258493053874">BPF 加载程序</translation>
+<translation id="2334098351242742927">Ed25519 程序</translation>
+<translation id="8780753288764281797">Secp256k1 程序</translation>
+<translation id="5275550100743015683">来源地址：</translation>
+<translation id="2678433693746214764">目的地地址：</translation>
+<translation id="4576396475962922672">新账户</translation>
+<translation id="4719005063558335704">帐户</translation>
+<translation id="4337554812324118382">数据：</translation>
+<translation id="569870799832027680">程序 ID：</translation>
+<translation id="7843211152394841558">最大重试次数：</translation>
+<translation id="8496335570810457">预检承诺：</translation>
+<translation id="5100124500279922001">跳过预检：</translation>
+<translation id="8060029310790625334">帮助中心</translation>
+<translation id="2095142195578664632">需要帮忙？请查阅</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1198,12 +1220,12 @@
 <translation id="1671503397662036257">Tor 连接状态</translation>
 <translation id="6024292492796847324">Tor 的初始化进度</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
-<translation id="7509914170164691086">Shields 已为<ph name="LINK_AFTER"/> <ph name="LINK_BEFORE"/></translation>
+<translation id="7509914170164691086">Shields 已为<ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Shields 已<ph name="LINK_BEFORE"/>停用<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">如果这个网站无法正常工作，试试关闭 Shields。
 <ph name="LINK_BEFORE"/>注意：这可能会削弱 Brave 的隐私保护。<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">拦截了跟踪器、广告和其他 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">不受 Brave Shields 保护 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">不受 Brave 防护盾保护 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">高级控制</translation>
 <translation id="5799940914270080805">更改这些设置有可能会影响网站的兼容性。</translation>
 <translation id="9204041448536398473">盾牌全局设置</translation>
@@ -1252,7 +1274,7 @@
 <translation id="8463313539532697053">正在加载，请稍候…</translation>
 <translation id="4317307602527599178">无法检查您的购买状态。这可能是由网络问题引起的。</translation>
 <translation id="4613076894734402086">编辑付款方式</translation>
-<translation id="8373427068383038263">您最近对 <ph name="VALUE"/>的付款未能完成。在付款问题得到解决之前，我们将暂停您对此订阅项目的访问权限。付款問題解決之前，请尝试编辑付款方式，或与 Brave 支持人员联系。</translation>
+<translation id="8373427068383038263">您最近对 <ph name="VALUE"/>的付款未能完成。在付款问题得到解决之前，我们将暂停您对此订阅项目的访问权限。付款問題解決之前，请尝试编辑付款方式，或联系 Brave 支持人员。</translation>
 <translation id="1839021455997460752">您的电子邮件地址</translation>
 <translation id="5154702632169343078">主题</translation>
 <translation id="6625978880678465492">请选择原因</translation>

@@ -14,8 +14,6 @@
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-using std::placeholders::_1;
-
 namespace {
 
 const char kTableName[] = "publisher_prefix_list";
@@ -79,9 +77,8 @@ void DatabasePublisherPrefixList::Search(
   auto transaction = type::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      [callback](type::DBCommandResponsePtr response) {
+  ledger_->RunDBTransaction(
+      std::move(transaction), [callback](type::DBCommandResponsePtr response) {
         if (!response || !response->result ||
             response->status !=
               type::DBCommandResponse::Status::RESPONSE_OK ||
@@ -97,7 +94,7 @@ void DatabasePublisherPrefixList::Search(
 
 void DatabasePublisherPrefixList::Reset(
     std::unique_ptr<publisher::PrefixListReader> reader,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (reader_) {
     BLOG(1, "Publisher prefix list batch insert in progress");
     callback(type::Result::LEDGER_ERROR);
@@ -114,7 +111,7 @@ void DatabasePublisherPrefixList::Reset(
 
 void DatabasePublisherPrefixList::InsertNext(
     publisher::PrefixIterator begin,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
   auto transaction = type::DBTransaction::New();
@@ -143,7 +140,7 @@ void DatabasePublisherPrefixList::InsertNext(
 
   auto iter = std::get<publisher::PrefixIterator>(insert_tuple);
 
-  ledger_->ledger_client()->RunDBTransaction(
+  ledger_->RunDBTransaction(
       std::move(transaction),
       [this, iter, callback](type::DBCommandResponsePtr response) {
         if (!response ||

@@ -23,6 +23,8 @@ import {
   StyledNeedsBrowserUpdateContentBody
 } from './style'
 
+import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
+import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
 
 // Utils
@@ -216,11 +218,12 @@ class AdsBox extends React.Component<Props, {}> {
     let earningsThisMonth = 0
     let earningsLastMonth = 0
     let adEarningsReceived = false
-    let needsBrowserUpdateToSeeAds = false
+    let needsBrowserUpgradeToServeAds = false
 
     const {
       adsData,
       balanceReport,
+      externalWallet,
       safetyNetFailed,
       parameters
     } = this.props.rewardsData
@@ -233,7 +236,7 @@ class AdsBox extends React.Component<Props, {}> {
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
-      needsBrowserUpdateToSeeAds = adsData.needsBrowserUpdateToSeeAds
+      needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
     }
 
     if (balanceReport) {
@@ -263,11 +266,18 @@ class AdsBox extends React.Component<Props, {}> {
     if (!isDisabled && !boxPropsExtra.checked) {
       boxPropsExtra.extraDescriptionChild = <AdsOnboarding />
     }
-    if (needsBrowserUpdateToSeeAds) {
+    if (needsBrowserUpgradeToServeAds) {
       boxPropsExtra.headerAlertContent = this.needsBrowserUpdateView()
     }
 
     const tokenString = getLocale('tokens')
+
+    const walletStatus = externalWallet ? externalWallet.status : null
+    const walletProvider = externalWallet
+      ? externalWalletProviderFromString(externalWallet.type) : null
+    const providerPayoutStatus = getProviderPayoutStatus(
+      parameters.payoutStatus,
+      walletProvider && walletStatus ? walletProvider : null)
 
     return (
       <BoxMobile
@@ -282,6 +292,7 @@ class AdsBox extends React.Component<Props, {}> {
             earningsLastMonth={earningsLastMonth}
             earningsReceived={adEarningsReceived}
             nextPaymentDate={nextPaymentDate}
+            providerPayoutStatus={providerPayoutStatus}
           />
         </StyledArrivingSoon>
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>

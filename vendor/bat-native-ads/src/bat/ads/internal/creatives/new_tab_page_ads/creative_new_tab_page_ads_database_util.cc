@@ -6,7 +6,6 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"

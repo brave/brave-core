@@ -218,4 +218,9 @@ handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
   })
 })
 
+handler.on(WalletPageActions.onOnboardingShown.getType(), async (store: Store) => {
+  const braveWalletService = getWalletPageApiProxy().braveWalletService
+  await braveWalletService.onOnboardingShown()
+})
+
 export default handler.middleware

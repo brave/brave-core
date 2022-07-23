@@ -36,7 +36,9 @@ function actionLogger (name: string) {
 
 function createHost (): Host {
   const stateManager = createStateManager<HostState>({
+    openTime: Date.now(),
     loading: false,
+    requestedView: null,
     rewardsEnabled: false,
     settings: {
       adsPerHour: 3,
@@ -71,6 +73,9 @@ function createHost (): Host {
       earningsThisMonth: 1.2,
       earningsLastMonth: 2.4,
       nextPaymentDate: Date.now() + 1000 * 60 * 60 * 24 * 3
+    },
+    payoutStatus: {
+      uphold: 'complete'
     },
     publisherInfo: {
       id: 'brave.com',
@@ -252,6 +257,9 @@ function createHost (): Host {
         case 'error':
           break
       }
+    },
+    onAppRendered () {
+      console.log('onAppRendered')
     }
   }
 }

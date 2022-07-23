@@ -32,10 +32,9 @@ class WalletBalance {
       base::flat_map<std::string, double> wallets);
 
  private:
-  void OnFetch(
-      const type::Result result,
-      type::BalancePtr balance,
-      ledger::FetchBalanceCallback callback);
+  void OnFetch(ledger::FetchBalanceCallback callback,
+               const type::Result result,
+               type::BalancePtr balance);
 
   void GetUnblindedTokens(
       type::BalancePtr balance,

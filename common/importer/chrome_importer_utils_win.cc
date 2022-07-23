@@ -20,6 +20,17 @@ base::FilePath GetChromeUserDataFolder() {
   return result;
 }
 
+base::FilePath GetVivaldiUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  result = result.AppendASCII("Vivaldi");
+  result = result.AppendASCII("User Data");
+
+  return result;
+}
+
 base::FilePath GetCanaryUserDataFolder() {
   base::FilePath result;
   if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
@@ -51,6 +62,16 @@ base::FilePath GetEdgeUserDataFolder() {
   result = result.AppendASCII("Microsoft");
   result = result.AppendASCII("Edge");
   result = result.AppendASCII("User Data");
+  return result;
+}
+
+base::FilePath GetOperaUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_ROAMING_APP_DATA, &result))
+    return base::FilePath();
+
+  result = result.AppendASCII("Opera Software");
+  result = result.AppendASCII("Opera Stable");
 
   return result;
 }

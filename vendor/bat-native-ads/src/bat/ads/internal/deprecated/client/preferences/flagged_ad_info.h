@@ -7,6 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DEPRECATED_CLIENT_PREFERENCES_FLAGGED_AD_INFO_H_
 
 #include <string>
+#include <vector>
+
+#include "base/values.h"
 
 namespace ads {
 
@@ -16,11 +19,13 @@ struct FlaggedAdInfo final {
   FlaggedAdInfo& operator=(const FlaggedAdInfo& info);
   ~FlaggedAdInfo();
 
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string creative_set_id;
 };
+
+using FlaggedAdList = std::vector<FlaggedAdInfo>;
 
 }  // namespace ads
 

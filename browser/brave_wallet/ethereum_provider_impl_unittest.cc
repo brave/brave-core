@@ -277,7 +277,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-        mojom::CoinType::ETH));
+        mojom::CoinType::ETH, absl::nullopt));
 
     keyring_service_->AddHardwareAccounts(std::move(hw_accounts));
   }
@@ -454,9 +454,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
         base::Value());
     // Wait for EthereumProviderImpl::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
-    brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
+    brave_wallet_service_->NotifySignMessageRequestProcessed(
         user_approved, brave_wallet_service_->sign_message_id_ - 1,
-        hardware_signature, error_in);
+        mojom::ByteArrayStringUnion::NewStr(hardware_signature), error_in);
     run_loop.Run();
   }
 
@@ -489,7 +489,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
     if (user_approved)
       brave_wallet_service_->NotifySignMessageRequestProcessed(
-          *user_approved, brave_wallet_service_->sign_message_id_ - 1);
+          *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
+          absl::nullopt);
     run_loop.Run();
   }
 
@@ -552,7 +553,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
     if (user_approved)
       brave_wallet_service_->NotifySignMessageRequestProcessed(
-          *user_approved, brave_wallet_service_->sign_message_id_ - 1);
+          *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
+          absl::nullopt);
     run_loop.Run();
   }
 
@@ -1441,6 +1443,33 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
   SetSelectedAccount(from(2), mojom::CoinType::ETH);
   EXPECT_EQ(RequestEthereumPermissions(),
             (std::vector<std::string>{from(0), from(1)}));
+
+  // CONTENT_SETTING_BLOCK will rule out previous granted permission.
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
+  base::RunLoop run_loop;
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting([&](base::Value id,
+                                     base::Value formed_response,
+                                     const bool reject,
+                                     const std::string& first_allowed_account,
+                                     const bool update_bind_js_properties) {
+        mojom::ProviderError error;
+        std::string error_message;
+        GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
+        EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+        EXPECT_EQ(error_message,
+                  l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+        run_loop.Quit();
+      }),
+      base::Value(), "", GetOrigin());
+  run_loop.Run();
+  // When CONTENT_SETTING_BLOCK is removed, previously granted permission works
+  // again.
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_DEFAULT);
+  EXPECT_EQ(RequestEthereumPermissions(),
+            (std::vector<std::string>{from(0), from(1)}));
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
@@ -1754,6 +1783,13 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   AddEthereumPermission(GetOrigin(), hardware);
   const std::vector<std::string> addresses = GetAddresses();
 
+  // Select account that is not participating in signing process.
+  // If there is allowed account which is also selected then only
+  // this account may be used for signin process.
+  // address[1] is not allowed because it has no permission.
+  // Also see EthereumProviderImpl.FilterAccounts method.
+  SetSelectedAccount(addresses[1], mojom::CoinType::ETH);
+
   const std::string message1 = "0x68656c6c6f20776f726c64";
   const std::string message2 = "0x4120756e69636f646520c68e20737472696e6720c3b1";
   const std::string message3 = "0xbeef03";
@@ -1786,18 +1822,20 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   }
 
   // wrong order
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
 
-  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(true, id3,
-                                                                   "", "");
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
 
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
@@ -1811,12 +1849,14 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   }
 
   // old id
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
 
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 1u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id3);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message3_in_queue);
@@ -1827,8 +1867,8 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
     EXPECT_EQ(queue[0]->message, message3_in_queue);
   }
 
-  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(true, id3,
-                                                                   "", "");
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 0u);
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 0u);
 }

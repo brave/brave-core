@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-index a139b33ce534ed5197a3913404a5ad34f4659d12..c3e96f523395f0e9a1c526e5d2378f09d51a19c5 100644
+index 7286fbd0494003c1049a5b6ab9755f5e1488a904..89cfccd6d8f149ef505e9234d50b939fc1aebb93 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-@@ -227,6 +227,7 @@ void BookmarkBubbleView::ShowBubble(
+@@ -226,6 +226,7 @@ void BookmarkBubbleView::ShowBubble(
    auto bubble = std::make_unique<views::BubbleDialogModelHost>(
        std::move(dialog_model), anchor_view, views::BubbleBorder::TOP_RIGHT);
    bookmark_bubble_ = bubble.get();

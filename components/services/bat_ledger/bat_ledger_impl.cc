@@ -595,6 +595,26 @@ void BatLedgerImpl::UpdateMediaDuration(
 }
 
 // static
+void BatLedgerImpl::OnIsPublisherRegistered(
+    CallbackHolder<IsPublisherRegisteredCallback>* holder,
+    bool is_registered) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(is_registered);
+  delete holder;
+}
+
+void BatLedgerImpl::IsPublisherRegistered(
+    const std::string& publisher_id,
+    IsPublisherRegisteredCallback callback) {
+  auto* holder = new CallbackHolder<IsPublisherRegisteredCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->IsPublisherRegistered(
+      publisher_id,
+      std::bind(BatLedgerImpl::OnIsPublisherRegistered, holder, _1));
+}
+
+// static
 void BatLedgerImpl::OnPublisherInfo(
     CallbackHolder<GetPublisherInfoCallback>* holder,
     const ledger::type::Result result,
@@ -795,47 +815,13 @@ void BatLedgerImpl::GetPendingContributionsTotal(
                 _1));
 }
 
-// static
-void BatLedgerImpl::OnFetchBalance(
-    CallbackHolder<FetchBalanceCallback>* holder,
-    ledger::type::Result result,
-    ledger::type::BalancePtr balance) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(balance));
-  delete holder;
-}
-
-void BatLedgerImpl::FetchBalance(
-    FetchBalanceCallback callback) {
-  auto* holder = new CallbackHolder<FetchBalanceCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->FetchBalance(
-      std::bind(BatLedgerImpl::OnFetchBalance,
-                holder,
-                _1,
-                _2));
-}
-
-// static
-void BatLedgerImpl::OnGetExternalWallet(
-    CallbackHolder<GetExternalWalletCallback>* holder,
-    ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(wallet));
-  delete holder;
+void BatLedgerImpl::FetchBalance(FetchBalanceCallback callback) {
+  ledger_->FetchBalance(std::move(callback));
 }
 
 void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
                                       GetExternalWalletCallback callback) {
-  auto* holder = new CallbackHolder<GetExternalWalletCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->GetExternalWallet(
-      wallet_type,
-      std::bind(BatLedgerImpl::OnGetExternalWallet, holder, _1, _2));
+  ledger_->GetExternalWallet(wallet_type, std::move(callback));
 }
 
 // static

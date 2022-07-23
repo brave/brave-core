@@ -7,7 +7,8 @@ export const defaultState: RewardsExtension.State = {
   parameters: {
     monthlyTipChoices: [],
     rate: 0,
-    autoContributeChoices: [5, 10, 15, 20]
+    autoContributeChoices: [5, 10, 15, 20],
+    payoutStatus: {}
   },
   balanceReport: {
     ads: 0.0,

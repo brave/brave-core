@@ -33,7 +33,7 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   // we can skip balance server ping
   if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
     auto balance = type::Balance::New();
-    GetUnblindedTokens(std::move(balance), callback);
+    GetUnblindedTokens(std::move(balance), std::move(callback));
     return;
   }
 
@@ -42,32 +42,28 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
     BLOG(1, "Wallet is not created");
     ledger_->state()->SetFetchOldBalanceEnabled(false);
     auto balance = type::Balance::New();
-    callback(type::Result::LEDGER_OK, std::move(balance));
+    std::move(callback).Run(type::Result::LEDGER_OK, std::move(balance));
     return;
   }
 
   if (wallet->payment_id.empty()) {
     BLOG(0, "Payment ID is empty");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  auto load_callback = std::bind(&WalletBalance::OnFetch,
-      this,
-      _1,
-      _2,
-      callback);
+  auto load_callback = base::BindOnce(
+      &WalletBalance::OnFetch, base::Unretained(this), std::move(callback));
 
-  promotion_server_->get_wallet_balance()->Request(load_callback);
+  promotion_server_->get_wallet_balance()->Request(std::move(load_callback));
 }
 
-void WalletBalance::OnFetch(
-    const type::Result result,
-    type::BalancePtr balance,
-    ledger::FetchBalanceCallback callback) {
+void WalletBalance::OnFetch(ledger::FetchBalanceCallback callback,
+                            const type::Result result,
+                            type::BalancePtr balance) {
   if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't fetch wallet balance");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -75,7 +71,7 @@ void WalletBalance::OnFetch(
     ledger_->state()->SetFetchOldBalanceEnabled(false);
   }
 
-  GetUnblindedTokens(std::move(balance), callback);
+  GetUnblindedTokens(std::move(balance), std::move(callback));
 }
 
 void WalletBalance::GetUnblindedTokens(
@@ -83,18 +79,19 @@ void WalletBalance::GetUnblindedTokens(
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    callback(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
-  auto tokens_callback = std::bind(&WalletBalance::OnGetUnblindedTokens,
-      this,
-      *balance,
-      callback,
-      _1);
+  auto tokens_callback =
+      base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
+                     base::Unretained(this), *balance, std::move(callback));
   ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
       {type::CredsBatchType::PROMOTION},
-      tokens_callback);
+      [callback = std::make_shared<decltype(tokens_callback)>(
+           std::move(tokens_callback))](type::UnblindedTokenList list) {
+        std::move(*callback).Run(std::move(list));
+      });
 }
 
 void WalletBalance::OnGetUnblindedTokens(
@@ -108,33 +105,34 @@ void WalletBalance::OnGetUnblindedTokens(
   }
   info_ptr->total += total;
   info_ptr->wallets.insert(std::make_pair(constant::kWalletUnBlinded, total));
-  ExternalWallets(std::move(info_ptr), callback);
+  ExternalWallets(std::move(info_ptr), std::move(callback));
 }
 
 void WalletBalance::ExternalWallets(
     type::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
-  FetchBalanceUphold(std::move(balance), callback);
+  FetchBalanceUphold(std::move(balance), std::move(callback));
 }
 
 void WalletBalance::FetchBalanceUphold(type::BalancePtr balance,
                                        ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    callback(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
-  auto balance_callback = std::bind(&WalletBalance::OnFetchBalanceUphold, this,
-                                    *balance, callback, _1, _2);
+  auto balance_callback =
+      base::BindOnce(&WalletBalance::OnFetchBalanceUphold,
+                     base::Unretained(this), *balance, std::move(callback));
 
   auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
-    balance_callback(type::Result::LEDGER_OK, 0);
+    std::move(balance_callback).Run(type::Result::LEDGER_OK, 0);
     return;
   }
 
-  ledger_->uphold()->FetchBalance(balance_callback);
+  ledger_->uphold()->FetchBalance(std::move(balance_callback));
 }
 
 void WalletBalance::OnFetchBalanceUphold(type::Balance info,
@@ -150,7 +148,7 @@ void WalletBalance::OnFetchBalanceUphold(type::Balance info,
     BLOG(0, "Can't get uphold balance");
   }
 
-  FetchBalanceBitflyer(std::move(info_ptr), callback);
+  FetchBalanceBitflyer(std::move(info_ptr), std::move(callback));
 }
 
 void WalletBalance::FetchBalanceBitflyer(
@@ -158,20 +156,21 @@ void WalletBalance::FetchBalanceBitflyer(
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    callback(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
-  auto balance_callback = std::bind(&WalletBalance::OnFetchBalanceBitflyer,
-                                    this, *balance, callback, _1, _2);
+  auto balance_callback =
+      base::BindOnce(&WalletBalance::OnFetchBalanceBitflyer,
+                     base::Unretained(this), *balance, std::move(callback));
 
   auto wallet = ledger_->bitflyer()->GetWallet();
   if (!wallet) {
-    balance_callback(type::Result::LEDGER_OK, 0);
+    std::move(balance_callback).Run(type::Result::LEDGER_OK, 0);
     return;
   }
 
-  ledger_->bitflyer()->FetchBalance(balance_callback);
+  ledger_->bitflyer()->FetchBalance(std::move(balance_callback));
 }
 
 void WalletBalance::OnFetchBalanceBitflyer(
@@ -189,27 +188,28 @@ void WalletBalance::OnFetchBalanceBitflyer(
     BLOG(0, "Can't get bitflyer balance");
   }
 
-  FetchBalanceGemini(std::move(info_ptr), callback);
+  FetchBalanceGemini(std::move(info_ptr), std::move(callback));
 }
 
 void WalletBalance::FetchBalanceGemini(type::BalancePtr balance,
                                        ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    callback(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
-  auto balance_callback = std::bind(&WalletBalance::OnFetchBalanceGemini, this,
-                                    *balance, callback, _1, _2);
+  auto balance_callback =
+      base::BindOnce(&WalletBalance::OnFetchBalanceGemini,
+                     base::Unretained(this), *balance, std::move(callback));
 
   auto wallet = ledger_->gemini()->GetWallet();
   if (!wallet) {
-    balance_callback(type::Result::LEDGER_OK, 0);
+    std::move(balance_callback).Run(type::Result::LEDGER_OK, 0);
     return;
   }
 
-  ledger_->gemini()->FetchBalance(balance_callback);
+  ledger_->gemini()->FetchBalance(std::move(balance_callback));
 }
 
 void WalletBalance::OnFetchBalanceGemini(type::Balance info,
@@ -225,7 +225,7 @@ void WalletBalance::OnFetchBalanceGemini(type::Balance info,
     BLOG(0, "Can't get gemini balance");
   }
 
-  callback(result, std::move(info_ptr));
+  std::move(callback).Run(result, std::move(info_ptr));
 }
 
 // static

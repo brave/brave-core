@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -43,10 +44,8 @@ class PostCardsTest : public testing::Test {
 
 TEST_F(PostCardsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -100,57 +99,50 @@ TEST_F(PostCardsTest, ServerOK) {
                }
              ]
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& id) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-        EXPECT_EQ(id, "bd91a720-f3f9-42f8-b2f5-19548004f6a7");
-      });
+  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result, const std::string& id) {
+                   EXPECT_EQ(result, type::Result::LEDGER_OK);
+                   EXPECT_EQ(id, "bd91a720-f3f9-42f8-b2f5-19548004f6a7");
+                 }));
 }
 
 TEST_F(PostCardsTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& id) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-        EXPECT_EQ(id, "");
-      });
+  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result, const std::string& id) {
+                   EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                   EXPECT_EQ(id, "");
+                 }));
 }
 
 TEST_F(PostCardsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(id, "");
-      });
+  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result, const std::string& id) {
+                   EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                   EXPECT_EQ(id, "");
+                 }));
 }
 
 }  // namespace uphold

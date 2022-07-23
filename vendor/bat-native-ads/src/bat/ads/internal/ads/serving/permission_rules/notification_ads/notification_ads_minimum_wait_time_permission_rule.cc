@@ -34,7 +34,7 @@ bool MinimumWaitTimePermissionRule::ShouldAllow() {
   }
 
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
+      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ =
@@ -51,7 +51,7 @@ std::string MinimumWaitTimePermissionRule::GetLastMessage() const {
 
 bool MinimumWaitTimePermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return false;
   }

@@ -9,6 +9,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -233,6 +234,24 @@ bool ParseEthSendRawTransaction(const std::string& json, std::string* tx_hash) {
 
 bool ParseEthCall(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
+}
+
+absl::optional<std::vector<std::string>> DecodeEthCallResponse(
+    const std::string& data,
+    const std::vector<std::string>& abi_types) {
+  std::vector<uint8_t> response_bytes;
+  if (!PrefixedHexStringToBytes(data, &response_bytes))
+    return absl::nullopt;
+
+  auto decoded = ABIDecode(abi_types, response_bytes);
+  if (decoded == absl::nullopt)
+    return absl::nullopt;
+
+  const auto& args = std::get<1>(*decoded);
+  if (args.size() != abi_types.size())
+    return absl::nullopt;
+
+  return args;
 }
 
 bool ParseEthEstimateGas(const std::string& json, std::string* result) {

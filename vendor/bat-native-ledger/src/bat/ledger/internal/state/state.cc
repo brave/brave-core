@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
@@ -53,6 +54,39 @@ std::vector<double> StringToVectorDouble(const std::string& items_string) {
   return items;
 }
 
+std::string PayoutStatusToString(
+    const base::flat_map<std::string, std::string>& payout_status) {
+  base::Value::Dict dict;
+  for (const auto& status : payout_status) {
+    dict.Set(status.first, status.second);
+  }
+
+  std::string payout_status_string;
+  base::JSONWriter::Write(dict, &payout_status_string);
+
+  return payout_status_string;
+}
+
+base::flat_map<std::string, std::string> StringToPayoutStatus(
+    const std::string& payout_status_string) {
+  base::DictionaryValue* dictionary_value = nullptr;
+  auto dict = base::JSONReader::Read(payout_status_string);
+  if (!dict || !dict->GetAsDictionary(&dictionary_value)) {
+    return {};
+  }
+  DCHECK(dictionary_value);
+
+  base::flat_map<std::string, std::string> payout_status;
+  for (const auto [key, value] : dictionary_value->GetDict()) {
+    if (!value.is_string()) {
+      continue;
+    }
+    payout_status.emplace(key, value.GetString());
+  }
+
+  return payout_status;
+}
+
 std::string ConvertInlineTipPlatformToKey(
     const ledger::type::InlineTipsPlatforms platform) {
   switch (platform) {
@@ -85,7 +119,7 @@ State::State(LedgerImpl* ledger) :
 
 State::~State() = default;
 
-void State::Initialize(ledger::ResultCallback callback) {
+void State::Initialize(ledger::LegacyResultCallback callback) {
   migration_->Start(callback);
 }
 
@@ -263,6 +297,8 @@ void State::SetRewardsParameters(const type::RewardsParameters& parameters) {
   ledger_->ledger_client()->SetStringState(
       kParametersMonthlyTipChoices,
       VectorDoubleToString(parameters.monthly_tip_choices));
+  ledger_->ledger_client()->SetStringState(
+      kParametersPayoutStatus, PayoutStatusToString(parameters.payout_status));
 }
 
 type::RewardsParametersPtr State::GetRewardsParameters() {
@@ -272,6 +308,7 @@ type::RewardsParametersPtr State::GetRewardsParameters() {
   parameters->auto_contribute_choices = GetAutoContributeChoices();
   parameters->tip_choices = GetTipChoices();
   parameters->monthly_tip_choices = GetMonthlyTipChoices();
+  parameters->payout_status = GetPayoutStatus();
 
   return parameters;
 }
@@ -316,6 +353,11 @@ std::vector<double> State::GetTipChoices() {
 std::vector<double> State::GetMonthlyTipChoices() {
   return StringToVectorDouble(ledger_->ledger_client()->GetStringState(
       kParametersMonthlyTipChoices));
+}
+
+base::flat_map<std::string, std::string> State::GetPayoutStatus() {
+  return StringToPayoutStatus(
+      ledger_->ledger_client()->GetStringState(kParametersPayoutStatus));
 }
 
 void State::SetFetchOldBalanceEnabled(bool enabled) {

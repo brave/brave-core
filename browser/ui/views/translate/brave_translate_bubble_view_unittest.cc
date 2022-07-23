@@ -136,6 +136,8 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
     can_add_site_to_never_prompt_list_ = value;
   }
 
+  void ReportUIChange(bool is_ui_shown) override {}
+
   ViewState current_view_state_;
   translate::TranslateErrors::Type error_type_;
   int original_language_index_;
@@ -158,13 +160,14 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
   MockBraveTranslateBubbleView(views::View* anchor_view,
                                std::unique_ptr<TranslateBubbleModel> model,
                                translate::TranslateErrors::Type error_type,
-                               content::WebContents* web_contents)
-    : BraveTranslateBubbleView(anchor_view,
-                               std::move(model),
-                               error_type,
-                               web_contents)
-    , install_google_translate_called_(false) {
-  }
+                               content::WebContents* web_contents,
+                               base::OnceClosure on_closing)
+      : BraveTranslateBubbleView(anchor_view,
+                                 std::move(model),
+                                 error_type,
+                                 web_contents,
+                                 std::move(on_closing)),
+        install_google_translate_called_(false) {}
 
   ~MockBraveTranslateBubbleView() override {
   }
@@ -209,9 +212,8 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
   void CreateAndShowBubble() {
     std::unique_ptr<TranslateBubbleModel> model(mock_model_);
     bubble_ = new MockBraveTranslateBubbleView(
-        anchor_widget_->GetContentsView(),
-        std::move(model),
-        translate::TranslateErrors::NONE, NULL);
+        anchor_widget_->GetContentsView(), std::move(model),
+        translate::TranslateErrors::NONE, nullptr, base::DoNothing());
     views::BubbleDialogDelegateView::CreateBubble(bubble_)->Show();
   }
 

@@ -106,6 +106,16 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="4870911314065352661">Fermer tous les onglets ?</translation>
 <translation id="7551864359422178684">Vous avez <ph name="NUMBER_OF_TABS"/> onglets ouverts dans cette fenêtre du navigateur.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> onglets</translation>
+<translation id="2272117088509540883">- Moteur de recherche Brave</translation>
+<translation id="2701279958223202597">Soutenez un moteur de recherche indépendant offrant davantage de confidentialité. Le moteur de recherche Brave ne vous suit pas, ni vous, ni vos requêtes, ni vos clics.</translation>
+<translation id="6438467592401259882">Soutenez un moteur de recherche indépendant offrant davantage de confidentialité.</translation>
+<translation id="1688359110799098115">Soutenez un moteur de recherche indépendant offrant davantage de confidentialité</translation>
+<translation id="8579317236683491484">Le moteur de recherche Brave ne vous suit pas, ni vous, ni vos requêtes, ni vos clics.</translation>
+<translation id="5240031343741051161">Essayer Brave Search</translation>
+<translation id="5026874946691314267">Ne plus afficher ceci</translation>
+<translation id="5234764350956374838">Ignorer</translation>
+<translation id="214744058941501853">"&gt;
+          Ignorez la transition vers le moteur de recherche Brave, appuyez sur Entrée pour supprimer cette suggestion</translation>
 <translation id="2515126961943087659">Service de publicités BAT</translation>
 <translation id="7924918279836988121">Service Bat Ledger</translation>
 <translation id="6040143037577758943">Fermer</translation>
@@ -135,6 +145,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8490082094734500369">Désactiver le mode Lecteur</translation>
 <translation id="2036503787657622020">Activer le mode Lecteur</translation>
 <translation id="5226458915125328323">Paramètres de Speedreader</translation>
+<translation id="1621606336827646158">Afficher la page d'origine</translation>
 <translation id="6284218950354553099">Envoyer automatiquement un signal d'utilisation quotidienne à Brave</translation>
 <translation id="5288333155754958121">Ce signal anonyme et privé permet à Brave d'estimer le nombre d'utilisateurs actifs.</translation>
 <translation id="1872784258300710671">Brave utilise des analyses de produits entièrement privées pour estimer l'utilisation globale de certaines fonctionnalités.</translation>
@@ -185,6 +196,8 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="6817415381278637662">Définissez Brave comme votre navigateur par défaut pour bénéficier des protections de confidentialité de Brave sur chaque page Web que vous ouvrez.</translation>
 <translation id="8722651357687610395">Définir Brave par défaut</translation>
 <translation id="2370739752330685659">Peut-être plus tard</translation>
+<translation id="961012016278832836">Anciennes versions de Microsoft Edge</translation>
+<translation id="6436994631426134065">Importation depuis <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="7179921470347911571">Relancer maintenant</translation>
 <translation id="4472575034687746823">Premiers pas</translation>
@@ -201,9 +214,11 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="2906510232093002459">Images par défaut de Brave</translation>
 <translation id="2396127686705429331">Afficher le bouton des favoris</translation>
 <translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
-<translation id="5802665280774361839">Afficher la saisie automatique dans la barre d'adresse</translation>
-<translation id="597020512043916976">Afficher les meilleurs sites dans les suggestions semi-automatiques</translation>
-<translation id="301088458323355543">Afficher les sites suggérés dans les suggestions semi-automatiques</translation>
+<translation id="4109670531935487117">Afficher les suggestions semi-automatiques dans la barre d'adresse</translation>
+<translation id="2858138569776157458">Sites populaires</translation>
+<translation id="65774893852758517">Sites suggérés</translation>
+<translation id="7859704718976024901">Historique de Navigation</translation>
+<translation id="8820817407110198400">Favoris</translation>
 <translation id="6333347122924254968">Afficher l'icône de récompenses Brave dans la barre d'adresse</translation>
 <translation id="1811404036171336214">Toujours afficher les favoris sur la nouvelle page d'onglet</translation>
 <translation id="5529693968082667490">Afficher le bouton de recherche d'onglet</translation>
@@ -362,6 +377,8 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
     Voulez-vous vraiment continuer ?</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
+<translation id="842628013524824194">Fenêtre normale : moteur de recherche utilisé dans la barre d'adresse</translation>
+<translation id="5324939009884545145">Fenêtre privée : moteur de recherche utilisé dans la barre d'adresse</translation>
 <translation id="6864914031231797928">Autoriser la connexion Google pour les extensions</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
 <translation id="7878791177459550035">Le routeur multimédia active la fonctionnalité de diffusion dans le navigateur.</translation>
@@ -461,6 +478,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="616058968889448209">Erreur du lancement du service IPFS, plus d'informations sont disponibles sur <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Échec lors de l'importation de la clé « <ph name="KEY_NAME"/> »</translation>
 <translation id="3364053282600191535">Échec lors de l'exportation de la clé « <ph name="KEY_NAME"/> »</translation>
+<translation id="5840868269342837751">Remarque : les demandes réseau peuvent ne pas utiliser de paramètres DNS et du proxy du navigateur.</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Générer</translation>
 <translation id="5531501313997312487">Nœud de départ</translation>

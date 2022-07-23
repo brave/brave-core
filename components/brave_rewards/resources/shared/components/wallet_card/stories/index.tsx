@@ -61,6 +61,7 @@ export function Wallet () {
           <WalletCard
             balance={0}
             externalWallet={externalWallet}
+            providerPayoutStatus={'complete'}
             earningsThisMonth={0}
             earningsLastMonth={1}
             nextPaymentDate={nextPaymentDate.getTime()}

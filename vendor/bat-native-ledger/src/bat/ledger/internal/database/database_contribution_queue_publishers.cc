@@ -34,7 +34,7 @@ DatabaseContributionQueuePublishers::
 void DatabaseContributionQueuePublishers::InsertOrUpdate(
     const std::string& id,
     type::ContributionQueuePublisherList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (id.empty() || list.empty()) {
     BLOG(1, "Empty data");
     callback(type::Result::LEDGER_ERROR);
@@ -64,9 +64,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
@@ -104,9 +102,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(

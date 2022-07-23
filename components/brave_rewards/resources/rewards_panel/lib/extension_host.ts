@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as mojom from 'gen/brave/components/brave_rewards/common/brave_rewards_panel.mojom.m.js'
+
 import { Host, GrantCaptchaStatus } from './interfaces'
 import { GrantInfo } from '../../shared/lib/grant_info'
 
@@ -16,20 +18,10 @@ import { getInitialState } from './initial_state'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
 import * as apiAdapter from './extension_api_adapter'
+import { RewardsPanelProxy } from './rewards_panel_proxy'
+import { RewardsPanelExtensionProxy } from './rewards_panel_extension_proxy'
 
 type LocalStorageKey = 'catcha-grant-id' | 'load-adaptive-captcha'
-
-function closePanel () {
-  window.close()
-}
-
-function openTab (url: string) {
-  if (!url) {
-    console.error(new Error('Cannot open a tab with an empty URL'))
-    return
-  }
-  chrome.tabs.create({ url }, () => { closePanel() })
-}
 
 function getCurrentTabInfo () {
   interface TabInfo {
@@ -50,18 +42,43 @@ function getCurrentTabInfo () {
   })
 }
 
+function openTab (url: string) {
+  if (!url) {
+    console.error(new Error('Cannot open a tab with an empty URL'))
+    return
+  }
+  chrome.tabs.create({ url })
+}
+
+function isWebUI () {
+  return Boolean((window as any).loadTimeData)
+}
+
+function getString (key: string) {
+  return isWebUI()
+    ? String((window as any).loadTimeData.getString(key) || '')
+    : RewardsPanelExtensionProxy.getString(key)
+}
+
 export function createHost (): Host {
   const stateManager = createStateManager(getInitialState())
   const storage = createLocalStorageScope<LocalStorageKey>('rewards-panel')
   const grants = new Map<string, GrantInfo>()
 
+  const proxy = isWebUI()
+    ? RewardsPanelProxy.getInstance()
+    : RewardsPanelExtensionProxy.getInstance()
+
+  function closePanel () {
+    proxy.handler.closeUI()
+  }
+
   async function updatePublisherInfo () {
     const tabInfo = await getCurrentTabInfo()
     if (tabInfo) {
-      const publisherInfo = await apiAdapter.getPublisherInfo(tabInfo.id)
-      if (publisherInfo) {
-        stateManager.update({ publisherInfo })
-      }
+      stateManager.update({
+        publisherInfo: await apiAdapter.getPublisherInfo(tabInfo.id)
+      })
     }
   }
 
@@ -168,41 +185,45 @@ export function createHost (): Host {
 
     const url = getExternalWalletActionURL(action)
     if (!url) {
-      console.error(`Action URL does not exist for '${action}`)
+      console.error(new Error(`Action URL does not exist for '${action}`))
       return
     }
 
     openTab(url)
   }
 
-  function handleStartupParameters () {
-    const { hash } = location
-
-    const adaptiveCaptchaMatch = hash.match(/^#?load_adaptive_captcha$/i)
-    if (adaptiveCaptchaMatch) {
-      location.hash = ''
-      loadAdaptiveCaptcha()
-      return
-    }
-
+  function loadPersistedState () {
     const shouldLoadAdaptiveCaptcha = storage.readJSON('load-adaptive-captcha')
-    if (shouldLoadAdaptiveCaptcha && typeof shouldLoadAdaptiveCaptcha === 'boolean') {
-      location.hash = ''
+    if (shouldLoadAdaptiveCaptcha) {
       loadAdaptiveCaptcha()
-      return
+      return true
     }
 
-    const grantMatch = hash.match(/^#?grant_([\s\S]+)$/i)
-    if (grantMatch) {
-      location.hash = ''
-      loadGrantCaptcha(grantMatch[1], 'pending')
-      return
+    const storedGrantId = storage.readJSON('catcha-grant-id')
+    if (storedGrantId && typeof storedGrantId === 'string') {
+      loadGrantCaptcha(storedGrantId, 'pending')
+      return true
     }
 
-    const grantId = storage.readJSON('catcha-grant-id')
-    if (grantId && typeof grantId === 'string') {
-      location.hash = ''
-      loadGrantCaptcha(grantId, 'pending')
+    return false
+  }
+
+  function handleRewardsPanelArgs (args: mojom.RewardsPanelArgs) {
+    switch (args.view) {
+      case mojom.RewardsPanelView.kRewardsTour:
+        stateManager.update({ requestedView: 'rewards-tour' })
+        return true
+      case mojom.RewardsPanelView.kGrantCaptcha:
+        loadGrantCaptcha(args.data, 'pending')
+        return true
+      case mojom.RewardsPanelView.kAdaptiveCaptcha:
+        loadAdaptiveCaptcha()
+        return true
+      case mojom.RewardsPanelView.kBraveTalkOptIn:
+        stateManager.update({ requestedView: 'brave-talk-opt-in' })
+        return true
+      default:
+        return false
     }
   }
 
@@ -243,7 +264,14 @@ export function createHost (): Host {
     }).catch(console.error)
   }
 
-  async function requestPublisherInfo () {
+  function maybeNotifyRequestAdsEnabled (enabling: boolean) {
+    if (stateManager.getState().requestedView === 'brave-talk-opt-in') {
+      chrome.braveRewards.requestAdsEnabledPopupClosed(enabling)
+      stateManager.update({ requestedView: null })
+    }
+  }
+
+  async function requestPublisherInfoForExtension () {
     const tabInfo = await getCurrentTabInfo()
     if (tabInfo) {
       await apiAdapter.fetchPublisherInfo(tabInfo.id)
@@ -251,21 +279,43 @@ export function createHost (): Host {
   }
 
   function addListeners () {
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      if (tab.active && changeInfo.status === 'complete') {
-        requestPublisherInfo().catch(console.error)
-      }
-    })
+    // If a Rewards panel request occurs when we are still open or cached,
+    // reload data and re-render the app.
+    proxy.callbackRouter.onRewardsPanelRequested.addListener(
+      (panelArgs: mojom.RewardsPanelArgs) => {
+        loadPanelData().then(() => {
+          stateManager.update({
+            openTime: Date.now(),
+            requestedView: null
+          })
+          handleRewardsPanelArgs(panelArgs)
+        }).catch(console.error)
+      })
 
     apiAdapter.onPublisherDataUpdated(() => {
       updatePublisherInfo().catch(console.error)
     })
 
-    // Update user settings after rewards has been enabled.
+    window.addEventListener('visibilitychange', () => {
+      // If we are hiding the panel and we are currently displaying the Brave
+      // Talk opt-in, notify initators that panel is being closed without
+      // opt-in.
+      if (document.visibilityState === 'hidden') {
+        maybeNotifyRequestAdsEnabled(false)
+      }
+    })
+
+    // Update user settings and other data after rewards has been enabled.
     apiAdapter.onRewardsEnabled(() => {
+      stateManager.update({ rewardsEnabled: true })
+
       apiAdapter.getSettings().then((settings) => {
         stateManager.update({ settings })
       }).catch(console.error)
+
+      // After enabling rewards, we may be able to display additional data about
+      // the current publisher.
+      updatePublisherInfo().catch(console.error)
     })
 
     apiAdapter.onGrantsUpdated(updateGrants)
@@ -285,20 +335,7 @@ export function createHost (): Host {
       updateNotifications)
   }
 
-  async function initialize () {
-    // Expose the state manager for debugging purposes
-    Object.assign(window, {
-      braveRewardsPanel: { stateManager }
-    })
-
-    addListeners()
-
-    // Set a maximum time to display the loading indicator. Several calls to
-    // the `braveRewards` extension API can block on network requests. If the
-    // network is unavailable or an endpoint is unresponsive, we want to display
-    // the data that we have, rather than a stalled loading indicator.
-    setTimeout(() => { stateManager.update({ loading: false }) }, 3000)
-
+  async function loadPanelData () {
     await Promise.all([
       apiAdapter.getGrants().then((list) => {
         updateGrants(list)
@@ -310,8 +347,8 @@ export function createHost (): Host {
         stateManager.update({ balance })
       }),
       apiAdapter.getRewardsParameters().then((params) => {
-        const { options, exchangeInfo } = params
-        stateManager.update({ options, exchangeInfo })
+        const { options, exchangeInfo, payoutStatus } = params
+        stateManager.update({ options, exchangeInfo, payoutStatus })
       }),
       apiAdapter.getSettings().then((settings) => {
         stateManager.update({ settings })
@@ -334,10 +371,34 @@ export function createHost (): Host {
     ])
 
     updateNotifications()
+  }
 
-    requestPublisherInfo().catch(console.error)
+  async function initialize () {
+    // Expose the state manager for debugging purposes.
+    Object.assign(window, {
+      braveRewardsPanel: { stateManager }
+    })
 
-    handleStartupParameters()
+    addListeners()
+
+    // Set a maximum time to display the loading indicator. Several calls to
+    // the `braveRewards` extension API can block on network requests. If the
+    // network is unavailable or an endpoint is unresponsive, we want to display
+    // the data that we have, rather than a stalled loading indicator.
+    setTimeout(() => { stateManager.update({ loading: false }) }, 3000)
+
+    await proxy.handler.startRewards()
+
+    await loadPanelData()
+
+    if (!isWebUI()) {
+      // If we are running in the Rewards extension, then ensure that publisher
+      // info has been initialized in the Rewards database.
+      requestPublisherInfoForExtension().catch(console.error)
+    }
+
+    loadPersistedState()
+    handleRewardsPanelArgs((await proxy.handler.getRewardsPanelArgs()).args)
 
     stateManager.update({ loading: false })
   }
@@ -350,18 +411,17 @@ export function createHost (): Host {
 
     addListener: stateManager.addListener,
 
-    getString (key) {
-      // In order to normalize messages across extensions and WebUI, replace all
-      // chrome.i18n message placeholders with $N marker patterns. UI components
-      // are responsible for replacing these markers with appropriate text or
-      // using the markers to build HTML.
-      return chrome.i18n.getMessage(key,
-        ['$1', '$2', '$3', '$4', '$5', '$6', '$7', '$8', '$9'])
-    },
+    getString,
 
     enableRewards () {
       chrome.braveRewards.enableRewards()
       stateManager.update({ rewardsEnabled: true })
+
+      // The communication protocol for the Brave Talk opt-in flow requires that
+      // we call `requestAdsEnabledPopupClosed` when then user enables Rewards.
+      // This will indicate to the initiator that Rewards is in the process of
+      // starting up and it should expect to see Ads enabled soon.
+      maybeNotifyRequestAdsEnabled(true)
     },
 
     openRewardsSettings () {
@@ -377,7 +437,7 @@ export function createHost (): Host {
       stateManager.update({ publisherRefreshing: true })
 
       chrome.braveRewards.refreshPublisher(publisherInfo.id, () => {
-        requestPublisherInfo().then(() => {
+        updatePublisherInfo().then(() => {
           stateManager.update({ publisherRefreshing: false })
         }).catch(console.error)
       })
@@ -560,6 +620,10 @@ export function createHost (): Host {
           loadAdaptiveCaptcha()
           break
       }
+    },
+
+    onAppRendered () {
+      proxy.handler.showUI()
     }
   }
 }

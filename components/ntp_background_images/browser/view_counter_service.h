@@ -145,6 +145,8 @@ class ViewCounterService : public KeyedService,
 
   void ResetModel();
 
+  void MaybePrefetchNewTabPageAd();
+
   void UpdateP3AValues() const;
 
   raw_ptr<NTPBackgroundImagesService> service_ = nullptr;

@@ -106,6 +106,16 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4870911314065352661">Chcete zavřít všechny karty?</translation>
 <translation id="7551864359422178684">V tomto okně prohlížeče máte otevřeny karty: <ph name="NUMBER_OF_TABS"/>.</translation>
 <translation id="2571596981920752023">Počet karet: <ph name="NUMBER_OF_TABS"/></translation>
+<translation id="2272117088509540883">- vyhledávání ve službě Brave</translation>
+<translation id="2701279958223202597">Podpora nezávislého vyhledávání s lepší ochranou soukromí. Vyhledávání Brave nesleduje vás, vaše dotazy ani kliknutí.</translation>
+<translation id="6438467592401259882">Podpora nezávislého vyhledávání s lepší ochranou soukromí.</translation>
+<translation id="1688359110799098115">Podpora nezávislého vyhledávání s lepší ochranou soukromí</translation>
+<translation id="8579317236683491484">Vyhledávání Brave nesleduje vás, vaše dotazy ani kliknutí.</translation>
+<translation id="5240031343741051161">Vyzkoušejte vyhledávání Brave</translation>
+<translation id="5026874946691314267">Znovu nezobrazovat</translation>
+<translation id="5234764350956374838">Zavřít</translation>
+<translation id="214744058941501853">"&gt;
+          Pokud chcete odmítnout konverzi vyhledávání Brave, stisknutím klávesy Enter tento návrh odeberete</translation>
 <translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="7924918279836988121">Služba účetní knihy Bat</translation>
 <translation id="6040143037577758943">Zavřít</translation>
@@ -135,6 +145,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8490082094734500369">Vypnutí režimu čtečky</translation>
 <translation id="2036503787657622020">Zapnutí režimu čtečky</translation>
 <translation id="5226458915125328323">Nastavení rychlého čtení</translation>
+<translation id="1621606336827646158">Zobrazit původní stránku</translation>
 <translation id="6284218950354553099">Automatické odesílání denního pingu do služby Brave</translation>
 <translation id="5288333155754958121">Tento anonymní, soukromý ping umožňuje společnosti Brave odhadnout počet aktivních uživatelů.</translation>
 <translation id="1872784258300710671">Brave používá zcela soukromé produktové analýzy pro odhad celkového využití určitých funkcí</translation>
@@ -185,6 +196,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="6817415381278637662">Nastavte si Brave jako výchozí prohlížet a získejte tak ochranu soukromí na všech stránkách, které navštívíte.</translation>
 <translation id="8722651357687610395">Nastavit Brave jako výchozí</translation>
 <translation id="2370739752330685659">Možná později</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Importováno z <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="4472575034687746823">Začít</translation>
@@ -201,9 +214,11 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2906510232093002459">Výchozí obrázky Brave</translation>
 <translation id="2396127686705429331">Zobrazit tlačítko záložek</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
-<translation id="5802665280774361839">V adresním řádku používat automatické doplňování</translation>
-<translation id="597020512043916976">Ukazovat nejoblíbenější stránky v návrzích automatického dokončení</translation>
-<translation id="301088458323355543">Ukázat doporučené stránky v návrzích automatického dokončování</translation>
+<translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
+<translation id="2858138569776157458">Top weby</translation>
+<translation id="65774893852758517">Navrhované stránky</translation>
+<translation id="7859704718976024901">Historie procházení</translation>
+<translation id="8820817407110198400">Záložky</translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
 <translation id="1811404036171336214">Vždy na nové kartě zobrazit záložky</translation>
 <translation id="5529693968082667490">Tlačítko Zobrazit záložky pro vyhledávání</translation>
@@ -239,14 +254,29 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7390783310074170337">Výchozí zobrazení</translation>
 <translation id="130615081792797568">Jednoduché zobrazení</translation>
 <translation id="2360360976480535628">Pokročilé zobrazení</translation>
+<translation id="6486983549008741930">Filtrování obsahu</translation>
+<translation id="8694564340481124390">Aktivuje vlastní filtry, které blokují regionální a jazykově specifické trackery a jiné nepříjemnosti.</translation>
+<translation id="6522618763902154348">Aktivuje vlastní filtry, které blokují regionální a jazykově specifické trackery a 
+    <ph name="BEGIN_LINK"/>nepříjemnosti<ph name="END_LINK"/>.</translation>
+<translation id="3482656215021340727">Přidat vlastní seznamy filtrů</translation>
+<translation id="1020877116991797978">Přidá další seznamy vytvořené a spravované komunitou, které věříte.</translation>
 <translation id="7617831480435794399">Přihlašujte se pouze k seznamům od subjektů, kterým důvěřujete. Prohlížeč bude pravidelně kontrolovat aktualizace seznamu z adresy URL, kterou zadáte, takže se server dozví vaši IP adresu.</translation>
+<translation id="2831397936251948638">Vytvořit vlastní filtry</translation>
+<translation id="4618274268052410139">Do pole níže přidejte vlastní filtry, které jste vytvořili. Filtry přidávejte po jednom na řádek. Nezapomeňte použít syntaxi filtru <ph name="BEGIN_LINK"/>Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Přidat</translation>
+<translation id="571950783952070673">Seznam adres URL</translation>
 <translation id="9204006549413740506">Poslední aktualizace</translation>
 <translation id="6745592621698551453">Aktualizovat</translation>
 <translation id="5334844597069022743">Zobrazit zdroj</translation>
 <translation id="4720556299488643018">Odhlásit z odběru</translation>
+<translation id="6532106788206463496">Uložit změny</translation>
 <translation id="4516904298421534459">Seznamy filtrů</translation>
+<translation id="4435215931544457255">Další oblíbené komunitní seznamy. Zapnutí příliš mnoha filtrů sníží rychlost procházení.</translation>
 <translation id="802154636333426148">Stažení se nezdařilo</translation>
+<translation id="7889605993994647168">Aktualizace selhala</translation>
+<translation id="5438573563213942361">Vlastní seznamy</translation>
+<translation id="4182731739150761577">Zobrazit celý seznam</translation>
+<translation id="1340263054776016283">Zadejte odkaz na seznam filtrů</translation>
 <translation id="6821903322090655051">Odměny Brave jsou vypnuté</translation>
 <translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
 <translation id="3849957491997306859">Automatické rozpoznání</translation>
@@ -333,6 +363,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5093410893656857925">Zvolte typ zařízení</translation>
 <translation id="4581190919849683048">S jakým typem zařízení chcete synchronizovat?</translation>
 <translation id="4112587618563511470">Nesprávný synchronizační kód, prosím zkontrolujte správnost a zkuste synchronizaci znovu.</translation>
+<translation id="3995714999835224798">Tento kód je neplatný</translation>
 <translation id="859506441384380749">Tento kód byl vygenerován zastaralou verzí prohlížeče Brave, nejprve aktualizujte své druhé zařízení</translation>
 <translation id="3132642509209154999">Platnost tohoto kódu vypršela. Vygenerujte si nový na jiném zařízení a zkuste to znovu.</translation>
 <translation id="2859229680945501779">Tento kód je neplatný. Zkontrolujte, je na vašem zařízení správně nastaven čas a časové pásmo.</translation>
@@ -346,6 +377,8 @@ Zkontrolujte, zda byla tato kódová slova vygenerována zařízením, které vl
 Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
+<translation id="842628013524824194">Normální okno – vyhledávač používaný v adresním řádku</translation>
+<translation id="5324939009884545145">Soukromé okno – vyhledávač používaný v adresním řádku</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Googlu</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
 <translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>
@@ -406,6 +439,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1062463687579789365">Přizpůsobení sítí peněženek</translation>
 <translation id="2234108191702901162">Nelze přidat síť</translation>
 <translation id="8996633027318264334">Opravdu chcete odstranit <ph name="KEY_NAME"/>?</translation>
+<translation id="7893578599666249602">Opravdu chcete resetovat <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Chcete aktualizovat stávající síť?</translation>
 <translation id="9170907049676078643">Metoda řešení prostředků IPFS</translation>
 <translation id="1327977588028644528">Brána</translation>
@@ -444,6 +478,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="616058968889448209">Chyba spuštění služby IPFS, více informací je dostupných na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Import klíče '<ph name="KEY_NAME"/>' se nezdařil</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' export klíče se nezdařil</translation>
+<translation id="5840868269342837751">Poznámka: Síťové požadavky nemusí používat nastavení proxy serveru a DNS prohlížeče.</translation>
 <translation id="8275038454117074363">Nahrát</translation>
 <translation id="3654980960391973513">Generovat</translation>
 <translation id="5531501313997312487">Spustit uzel</translation>

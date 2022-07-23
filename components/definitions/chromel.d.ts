@@ -73,6 +73,10 @@ declare namespace chrome.braveRewards {
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
   const getPublisherPanelInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
+
+  const setPublisherIdForTab: (tabId: number, publisherId: string) => void
+  const getPublisherInfoForTab: (tabId: number, callback: (publisher?: RewardsExtension.PublisherInfo) => void) => void
+
   const savePublisherInfo: (windowId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string, callback: (result: RewardsExtension.Result) => void) => {}
   const tipSite: (tabId: number, publisherKey: string, entryPoint: RewardsExtension.TipDialogEntryPoint) => {}
   const tipUser: (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, publisherScreenName: string, favIconUrl: string, postId: string, postTimestamp: string, postText: string) => {}
@@ -139,7 +143,11 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: {result: number, walletType: string}) => void) => void
   }
 
-  const openBrowserActionUI: (path?: string) => {}
+  const openRewardsPanel: () => void
+
+  const showRewardsTour: () => void
+
+  const showGrantCaptcha: (grantId: string) => void
 
   const onUnblindedTokensReady: {
     addListener: (callback: () => void) => void
@@ -155,11 +163,11 @@ declare namespace chrome.braveRewards {
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
 
-  function getScheduledCaptchaInfo (
+  const getScheduledCaptchaInfo: (
     callback: (scheduledCaptcha: RewardsExtension.ScheduledCaptcha) => void
-  ): void
+  ) => void
 
-  function updateScheduledCaptchaResult (result: boolean): void
+  const updateScheduledCaptchaResult: (result: boolean) => void
 
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
 

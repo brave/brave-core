@@ -106,6 +106,16 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4870911314065352661">Tutup semua tab?</translation>
 <translation id="7551864359422178684">Anda memiliki <ph name="NUMBER_OF_TABS"/>tab terbuka di jendela peramban ini.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
+<translation id="2272117088509540883">- Pencarian Brave</translation>
+<translation id="2701279958223202597">Mendukung pencarian independen dengan privasi yang lebih baik. Pencarian Brave tidak melacak Anda, kueri Anda, atau klik Anda.</translation>
+<translation id="6438467592401259882">Mendukung pencarian independen dengan privasi yang lebih baik.</translation>
+<translation id="1688359110799098115">Mendukung pencarian independen dengan privasi yang lebih baik</translation>
+<translation id="8579317236683491484">Pencarian Brave tidak melacak Anda, kueri Anda, atau klik Anda.</translation>
+<translation id="5240031343741051161">Coba Pencarian Brave</translation>
+<translation id="5026874946691314267">Jangan tampilkan ini lagi</translation>
+<translation id="5234764350956374838">Tutup</translation>
+<translation id="214744058941501853">"&gt;
+          Hapus peralihan pencarian Brave, tekan Masuk untuk menghapus usulan ini</translation>
 <translation id="2515126961943087659">Layanan Iklan Bat</translation>
 <translation id="7924918279836988121">Layanan Buku Besar BAT</translation>
 <translation id="6040143037577758943">Tutup</translation>
@@ -135,6 +145,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8490082094734500369">Matikan mode pembaca</translation>
 <translation id="2036503787657622020">Hidupkan mode pembaca</translation>
 <translation id="5226458915125328323">Aturan pembaca cepat</translation>
+<translation id="1621606336827646158">Tampilkan halaman asli</translation>
 <translation id="6284218950354553099">Kirimkan ping penggunaan harian secara otomatis ke Brave</translation>
 <translation id="5288333155754958121">Ping anonim dan privat ini memungkinkan Brave memperkirakan pengguna aktifnya.</translation>
 <translation id="1872784258300710671">Brave menggunakan analitis produk yang benar-benar pribadi untuk memperkirakan penggunaan fitur tertentu secara keseluruhan</translation>
@@ -185,6 +196,8 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="6817415381278637662">Tetapkan Brave sebagai peramban bawaan Anda untuk mendapatkan perlindungan privasi Brave pada setiap halaman web yang Anda buka.</translation>
 <translation id="8722651357687610395">Setel Brave sebagai peramban baku</translation>
 <translation id="2370739752330685659">Mungkin nanti</translation>
+<translation id="961012016278832836">Microsoft Edge Lama</translation>
+<translation id="6436994631426134065">Diimpor dari <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
 <translation id="7179921470347911571">Luncurkan Ulang Sekarang</translation>
 <translation id="4472575034687746823">Memulai</translation>
@@ -201,9 +214,11 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2906510232093002459">Gambar default Brave</translation>
 <translation id="2396127686705429331">Tampilkan tombol markah</translation>
 <translation id="2814998458708016836">Gunakan bilah alamat lebar</translation>
-<translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>
-<translation id="597020512043916976">Tampilkan situs teratas di saran pengisian otomatis</translation>
-<translation id="301088458323355543">Menampilkan situs yang diusulkan dalam usulan yang dilengkapi secara otomatis</translation>
+<translation id="4109670531935487117">Tampilkan usulan penyelesaian otomatis pada bilah alamat</translation>
+<translation id="2858138569776157458">Situs populer</translation>
+<translation id="65774893852758517">Situs yang disarankan</translation>
+<translation id="7859704718976024901">Riwayat Ramban</translation>
+<translation id="8820817407110198400">Bookmark</translation>
 <translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
 <translation id="1811404036171336214">Selalu tampilkan bookmark di halaman tab baru</translation>
 <translation id="5529693968082667490">Tampilkan tombol pencarian tab</translation>
@@ -240,7 +255,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="130615081792797568">Tampilan sederhana</translation>
 <translation id="2360360976480535628">Tampilan lanjut</translation>
 <translation id="6486983549008741930">Penyaringan Konten</translation>
-<translation id="8694564340481124390">Aktifkan filter khusus yang memblokir pelacak serta Gangguan regional dan berbahasa tertentu.</translation>
+<translation id="8694564340481124390">Aktifkan filter khusus yang memblokir pelacak serta gangguan regional dan berbahasa tertentu.</translation>
 <translation id="6522618763902154348">Aktifkan filter khusus yang memblokir pelacak serta
     <ph name="BEGIN_LINK"/>Gangguan<ph name="END_LINK"/> regional dan berbahasa tertentu.</translation>
 <translation id="3482656215021340727">Tambahkan daftar filter khusus</translation>
@@ -249,7 +264,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2831397936251948638">Buat Filter Khusus</translation>
 <translation id="4618274268052410139">Tambahkan filter khusus yang Anda telah buat, satu per baris, pada bidang di bawah ini. Pastikanlah untuk menggunakan <ph name="BEGIN_LINK"/>sintaksis filter Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
-<translation id="571950783952070673">URL Daftar</translation>
+<translation id="571950783952070673">Daftar URL</translation>
 <translation id="9204006549413740506">Terakhir diperbarui</translation>
 <translation id="6745592621698551453">Perbarui sekarang</translation>
 <translation id="5334844597069022743">Lihat sumber</translation>
@@ -362,6 +377,8 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
     Anda yakin ingin melakukannya?</translation>
 <translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
 <translation id="919715748352669592">Menyusun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
+<translation id="842628013524824194">Window Biasa - Mesin pencarian yang digunakan di bilah alamat</translation>
+<translation id="5324939009884545145">Window Privat - Mesin pencarian yang digunakan di bilah alamat</translation>
 <translation id="6864914031231797928">Izinkan login Google untuk ekstensi</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
 <translation id="7878791177459550035">Perute media memungkinkan fitur tayang di peramban.</translation>
@@ -461,6 +478,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="616058968889448209">Kesalahan peluncuran layanan IPFS, informasi lebih lanjut tersedia di <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Impor kunci '<ph name="KEY_NAME"/>' telah gagal</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
+<translation id="5840868269342837751">Catatan: Permintaan jaringan mungkin tidak menggunakan proksi peramban dan pengaturan DNS.</translation>
 <translation id="8275038454117074363">Impor</translation>
 <translation id="3654980960391973513">Hasilkan</translation>
 <translation id="5531501313997312487">Mulai simpul</translation>

@@ -46,6 +46,9 @@ bool IsIPFSLocalGateway(PrefService* prefs) {
 namespace ipfs {
 
 bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
+  if (!brave::IsRegularProfile(browser_context)) {
+    return false;
+  }
   // This is needed for triggering ReverseRewrite later.
   if (url->SchemeIs("http") &&
       (base::EndsWith(url->host_piece(), kIpfsLocalhost) ||

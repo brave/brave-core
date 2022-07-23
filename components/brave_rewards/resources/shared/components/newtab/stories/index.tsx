@@ -41,10 +41,11 @@ export function Card () {
             rewardsEnabled={true}
             adsEnabled={true}
             adsSupported={true}
-            needsBrowserUpdateToSeeAds={false}
+            needsBrowserUpgradeToServeAds={false}
             rewardsBalance={91.5812}
             exchangeCurrency='USD'
             exchangeRate={0.82}
+            providerPayoutStatus={'complete'}
             grantInfo={showGrant ? {
               id: '',
               amount: 0.15,

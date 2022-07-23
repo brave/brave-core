@@ -31,7 +31,7 @@ DatabaseProcessedPublisher::~DatabaseProcessedPublisher() = default;
 
 void DatabaseProcessedPublisher::InsertOrUpdateList(
     const std::vector<std::string>& list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(type::Result::LEDGER_OK);
@@ -58,14 +58,12 @@ void DatabaseProcessedPublisher::InsertOrUpdateList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseProcessedPublisher::WasProcessed(
     const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -96,14 +94,12 @@ void DatabaseProcessedPublisher::WasProcessed(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseProcessedPublisher::OnWasProcessed(
     type::DBCommandResponsePtr response,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

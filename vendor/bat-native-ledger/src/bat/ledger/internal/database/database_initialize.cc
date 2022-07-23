@@ -24,9 +24,8 @@ DatabaseInitialize::DatabaseInitialize(LedgerImpl* ledger) :
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
-void DatabaseInitialize::Start(
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
+void DatabaseInitialize::Start(bool execute_create_script,
+                               ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   transaction->version = GetCurrentVersion();
   transaction->compatible_version = GetCompatibleVersion();
@@ -34,19 +33,14 @@ void DatabaseInitialize::Start(
   command->type = type::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&DatabaseInitialize::OnInitialize,
-          this,
-          _1,
-          execute_create_script,
-          callback));
+  ledger_->RunDBTransaction(std::move(transaction),
+                            std::bind(&DatabaseInitialize::OnInitialize, this,
+                                      _1, execute_create_script, callback));
 }
 
-void DatabaseInitialize::OnInitialize(
-    type::DBCommandResponsePtr response,
-    const bool execute_create_script,
-    ledger::ResultCallback callback) {
+void DatabaseInitialize::OnInitialize(type::DBCommandResponsePtr response,
+                                      bool execute_create_script,
+                                      ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -70,7 +64,8 @@ void DatabaseInitialize::OnInitialize(
   migration_->Start(current_table_version, callback);
 }
 
-void DatabaseInitialize::GetCreateScript(ledger::ResultCallback callback) {
+void DatabaseInitialize::GetCreateScript(
+    ledger::LegacyResultCallback callback) {
   auto script_callback = std::bind(&DatabaseInitialize::ExecuteCreateScript,
       this,
       _1,
@@ -81,8 +76,8 @@ void DatabaseInitialize::GetCreateScript(ledger::ResultCallback callback) {
 
 void DatabaseInitialize::ExecuteCreateScript(
     const std::string& script,
-    const int table_version,
-    ledger::ResultCallback callback) {
+    int table_version,
+    ledger::LegacyResultCallback callback) {
   if (script.empty()) {
     BLOG(1, "Script is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -103,15 +98,13 @@ void DatabaseInitialize::ExecuteCreateScript(
   command->command = script;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      script_callback);
+  ledger_->RunDBTransaction(std::move(transaction), script_callback);
 }
 
 void DatabaseInitialize::OnExecuteCreateScript(
     type::DBCommandResponsePtr response,
-    const int table_version,
-    ledger::ResultCallback callback) {
+    int table_version,
+    ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

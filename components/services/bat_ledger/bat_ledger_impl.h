@@ -160,6 +160,9 @@ class BatLedgerImpl :
       const uint64_t duration,
       const bool first_visit) override;
 
+  void IsPublisherRegistered(const std::string& publisher_id,
+                             IsPublisherRegisteredCallback callback) override;
+
   void GetPublisherInfo(
       const std::string& publisher_key,
       GetPublisherInfoCallback callback) override;
@@ -251,20 +254,22 @@ class BatLedgerImpl :
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>
-    class CallbackHolder {
-     public:
-      CallbackHolder(base::WeakPtr<BatLedgerImpl> client,
-          Callback callback)
-        : client_(client),
-        callback_(std::move(callback)) {}
-      ~CallbackHolder() = default;
-      bool is_valid() { return !!client_.get(); }
-      Callback& get() { return callback_; }
+  class CallbackHolder {
+   public:
+    CallbackHolder(base::WeakPtr<BatLedgerImpl> client, Callback callback)
+        : client_(client), callback_(std::move(callback)) {}
+    ~CallbackHolder() = default;
+    bool is_valid() { return !!client_.get(); }
+    Callback& get() { return callback_; }
 
-     private:
-      base::WeakPtr<BatLedgerImpl> client_;
-      Callback callback_;
-    };
+   private:
+    base::WeakPtr<BatLedgerImpl> client_;
+    Callback callback_;
+  };
+
+  static void OnIsPublisherRegistered(
+      CallbackHolder<IsPublisherRegisteredCallback>* holder,
+      bool is_registered);
 
   static void OnPublisherInfo(
       CallbackHolder<GetPublisherInfoCallback>* holder,
@@ -383,16 +388,6 @@ class BatLedgerImpl :
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);
-
-  static void OnFetchBalance(
-      CallbackHolder<FetchBalanceCallback>* holder,
-      ledger::type::Result result,
-      ledger::type::BalancePtr balance);
-
-  static void OnGetExternalWallet(
-      CallbackHolder<GetExternalWalletCallback>* holder,
-      ledger::type::Result result,
-      ledger::type::ExternalWalletPtr wallet);
 
   static void OnExternalWalletAuthorization(
     CallbackHolder<ExternalWalletAuthorizationCallback>* holder,

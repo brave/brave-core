@@ -106,6 +106,16 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="4870911314065352661">Isara ang lahat ng tab?</translation>
 <translation id="7551864359422178684">Mayroon kang <ph name="NUMBER_OF_TABS"/> tab na nakabukas sa window ng browser na ito.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
+<translation id="2272117088509540883">- Brave Search</translation>
+<translation id="2701279958223202597">Suportahan ang independiyenteng paghahanap na may mas mahusay na privacy. Hindi ka sinusubaybayan ng Brave, ang iyong mga query, o ang iyong mga pag-click.</translation>
+<translation id="6438467592401259882">Suportahan ang independiyenteng paghahanap na may mas mahusay na privacy.</translation>
+<translation id="1688359110799098115">Suportahan ang independiyenteng paghahanap na may mas mahusay na privacy</translation>
+<translation id="8579317236683491484">Hindi ka sinusubaybayan ng Brave, ang iyong mga query, o iyong mga pag-click.</translation>
+<translation id="5240031343741051161">Subukan ang Brave Search</translation>
+<translation id="5026874946691314267">Huwag na itong ipakita ulit</translation>
+<translation id="5234764350956374838">Balewalain</translation>
+<translation id="214744058941501853">"&gt;
+          I-dismiss ang conversion ng brave search, pindutin ang Enter para alisin ang suhestyong ito</translation>
 <translation id="2515126961943087659">Serbisyo ng Mga Ad ng Bat</translation>
 <translation id="7924918279836988121">Serbisyong Ledger ng Bat</translation>
 <translation id="6040143037577758943">Isara</translation>
@@ -135,6 +145,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="8490082094734500369">I-off ang reader mode</translation>
 <translation id="2036503787657622020">I-on ang reader mode</translation>
 <translation id="5226458915125328323">Mga setting ng Speedreader</translation>
+<translation id="1621606336827646158">Ipakita ang orihinal na page</translation>
 <translation id="6284218950354553099">Awtomatikong ipadala sa Brave ang ping ng araw-araw na paggamit</translation>
 <translation id="5288333155754958121">Nagbibigay-daan sa Brave ang anonymous na pribadong ping na ito na matantiya ang mga aktibong user.</translation>
 <translation id="1872784258300710671">Gumagamit ang Brave ng ganap na pribadong analytics ng produkto upang tantyahin ang kabuuang paggamit ng ilang partikular na feature</translation>
@@ -185,6 +196,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6817415381278637662">Itakda ang Brave bilang default mong browser para makuha ang mga privacy protection ng Brave sa bawat web page na bubuksan mo.</translation>
 <translation id="8722651357687610395">Itakda ang Brave bilang default</translation>
 <translation id="2370739752330685659">Sa ibang pagkakataon siguro</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Na-import mula sa <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="7179921470347911571">Muling Ilunsad Ngayon</translation>
 <translation id="4472575034687746823">Magsimula</translation>
@@ -201,9 +214,11 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="2906510232093002459">Mga default na image ng Brave</translation>
 <translation id="2396127686705429331">Ipakita ang bookmarks button</translation>
 <translation id="2814998458708016836">Gumamit ng malapad na address bar</translation>
-<translation id="5802665280774361839">Ipakita ang awtomatikong pagkumpleto sa address bar.</translation>
-<translation id="597020512043916976">Ipakita ang mga nangungunang site sa mga iminumungkahi ng autocomplete</translation>
-<translation id="301088458323355543">Ipakita ang mga iminumungkahing site sa mga iminimungkahi ng autocomplete</translation>
+<translation id="4109670531935487117">Ipakita ang mga suhestyon sa autocomplete sa address bar</translation>
+<translation id="2858138569776157458">Top na sites</translation>
+<translation id="65774893852758517">Mga iminumungkahing site</translation>
+<translation id="7859704718976024901">History ng Pagba-browse</translation>
+<translation id="8820817407110198400">Bar ng Mga Bookmark</translation>
 <translation id="6333347122924254968">Ipakita ang icon ng Mga Brave Reward sa address bar</translation>
 <translation id="1811404036171336214">Ipakita palagi ang mga bookmark sa page na bagong tab</translation>
 <translation id="5529693968082667490">Ipakita ang button para sa paghahanap ng tab</translation>
@@ -240,7 +255,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="130615081792797568">Simpleng view</translation>
 <translation id="2360360976480535628">Advanced na view</translation>
 <translation id="6486983549008741930">Content Filtering</translation>
-<translation id="8694564340481124390">Mag-enable ng mga custom filter na nagba-block ng mga tracker na partikular sa rehiyon at wika at Mga Annoyance.</translation>
+<translation id="8694564340481124390">Mag-enable ng mga custom filter na nagba-block ng mga tracker na partikular sa rehiyon at wika at mga annoyance.</translation>
 <translation id="6522618763902154348">Mag-enable ng mga custom filter na nagba-block ng mga tracker na partikular sa rehiyon at wika at 
     <ph name="BEGIN_LINK"/>Mga Annoyance<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Magdagdag ng mga custom filter list</translation>
@@ -362,6 +377,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
     Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6285118765755298263">I-index ang iba pang search engine</translation>
 <translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
+<translation id="842628013524824194">Normal na Window - Search engine na ginamit sa address bar</translation>
+<translation id="5324939009884545145">Pribadong Window - Search engine na ginamit sa address bar</translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
 <translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
 <translation id="7878791177459550035">Ine-enable ng media router ang feature na cast sa browser.</translation>
@@ -461,6 +478,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="616058968889448209">Error sa paglulunsad ng serbisyo ng IPFS, may higit pang impormasyon sa <ph name="BEGIN_LINK"/>page ng diagnostic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Hindi na-import ang key na '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Hindi na-export ang key na '<ph name="KEY_NAME"/>'</translation>
+<translation id="5840868269342837751">Tandaan: Hindi puwedeng gamitin ng mga kahilingan sa network ang proxy ng browser at mga setting ng DNS.</translation>
 <translation id="8275038454117074363">I-import</translation>
 <translation id="3654980960391973513">Buuin</translation>
 <translation id="5531501313997312487">Simulan ang node</translation>

@@ -53,6 +53,10 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
           source_url_client_receiver,
       mojo::ScopedDataPipeConsumerHandle body);
 
+  mojo::ScopedDataPipeConsumerHandle* GetNextConsumerHandle() {
+    return &next_body_consumer_handle_;
+  }
+
  protected:
   BodySnifferURLLoader(
       base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
@@ -74,8 +78,6 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
                         OnUploadProgressCallback ack_callback) override;
   void OnReceiveCachedMetadata(mojo_base::BigBuffer data) override;
   void OnTransferSizeUpdated(int32_t transfer_size_diff) override;
-  void OnStartLoadingResponseBody(
-      mojo::ScopedDataPipeConsumerHandle body) override;
   void OnComplete(const network::URLLoaderCompletionStatus& status) override;
 
   // network::mojom::URLLoader implementation (called from the destination of
@@ -124,6 +126,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   mojo::ScopedDataPipeProducerHandle body_producer_handle_;
   mojo::SimpleWatcher body_consumer_watcher_;
   mojo::SimpleWatcher body_producer_watcher_;
+  mojo::ScopedDataPipeConsumerHandle next_body_consumer_handle_;
 
  private:
   void CancelAndResetHandles();

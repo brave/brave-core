@@ -723,7 +723,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4780526507945807546">ใช้โหนด IPFS เฉพาะที่บน Brave</translation>
 <translation id="8148464361648742409">ใช้เกตเวย์สาธารณะ</translation>
 <translation id="5123478056123923857">PFS (ระบบไฟล์ InterPlanetary) คือเครือข่ายสาธารณะสำหรับการจัดเก็บและจัดส่งข้อมูลแบบเพียร์ทูเพียร์ โปรโตคอลนี้มีการพิจารณาความเป็นส่วนตัวที่แตกต่างจาก HTTP(S)</translation>
-<translation id="5410952114182173389">คอมพิวเตอร์ของคุณสนับสนุนเครือข่ายสาธารณะ แต่ที่อยู่ IP ของคุณและเนื้อหาใด ๆ ที่คุณร้องขอหรือจัดหาให้อาจถูกเปิดเผย เนื้อหาที่คุณร้องขอผ่าน IPFS ได้รับการตรวจสอบก่อนที่จะให้บริการแก่คุณ</translation>
+<translation id="1216911189668016151">คอมพิวเตอร์ของคุณรองรับเครือข่ายสาธารณะ แต่ที่อยู่ IP ของคุณและเนื้อหาใดๆ ที่คุณร้องขอหรือจัดหาให้อาจถูกเปิดเผย โดยเนื้อหาที่คุณร้องขอผ่าน IPFS ต้องได้รับการตรวจสอบก่อนที่จะให้บริการแก่คุณ ทั้งนี้ คำขอเครือข่ายไม่สามารถใช้การตั้งค่าพร็อกซีของเบราว์เซอร์และ DNS ได้</translation>
 <translation id="8664689531113048642">ปกป้องที่อยู่ IP และเนื้อหาที่คุณร้องขอจากผู้สังเกตการณ์บุคคลที่สามที่มีศักยภาพ แต่ไม่ใช่จากผู้ให้บริการเกตเวย์สาธารณะ ผู้ให้บริการเกตเวย์มีหน้าที่รับผิดชอบในการตรวจสอบว่าเนื้อหาที่ให้บริการแก่คุณผ่านเกตเวย์เป็นเนื้อหาที่คุณร้องขอ และคอมพิวเตอร์ของคุณไม่สนับสนุนเครือข่าย IPFS สาธารณะ</translation>
 <translation id="3977809385703587108">คุณสามารถเปลี่ยนการตั้งค่าของคุณได้อีกครั้งใน</translation>
 <translation id="3340978935015468852">การตั้งค่า</translation>
@@ -915,6 +915,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4359319875297001084">นำเข้าจากคริปโตวอลเล็ตของ Brave ที่มีอยู่เดิมหรือไม่</translation>
 <translation id="3331452756822160641">รหัสผ่านใหม่</translation>
 <translation id="8624315169751085215">คัดลอกไปยังคลิปบอร์ด</translation>
+<translation id="7885157704277298658">คัดลอกแล้ว!</translation>
 <translation id="1121335910737476837">บัญชีคริปโตหลัก</translation>
 <translation id="6969147029062037757">บัญชีที่นำเข้า</translation>
 <translation id="4057718162494343222">คุณสามารถสร้างบัญชีหลักใน Brave วอลเล็ต ซึ่งสามารถสำรองหรือกู้คืนข้อมูลจากกลุ่มคำสำหรับการกู้คืนของคุณได้ หากต้องการเรียนรู้เพิ่มเติมเกี่ยวกับประเภทบัญชี กรุณาไปที่ความช่วยเหลือเกี่ยวกับบัญชี</translation>
@@ -972,6 +973,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7642841516562576649">URL ไอคอน</translation>
 <translation id="2144247757675997850">เพิ่มสินทรัพย์</translation>
 <translation id="2708402071160162126">คำเตือน: อย่าให้ใครรู้กลุ่มคำสำหรับการกู้คืนของคุณ ใครก็ตามที่มีกลุ่มคำเหล่านี้จะสามารถนำสินทรัพย์ของคุณไปได้ตลอดกาล</translation>
+<translation id="2416098547200943834">หมายเหตุ: ระบุคีย์ส่วนตัวเป็น JSON ที่เข้ารหัสด้วยเลขฐานสิบหกซึ่งประกอบด้วยคีย์ส่วนตัวและข้อมูลโปรโตคอล <ph name="LINK_START"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/></translation>
+<translation id="7657130382217527063">หมายเหตุ: ต้องระบุคีย์ส่วนตัวเป็น JSON ที่เข้ารหัสด้วยเลขฐานสิบหกซึ่งประกอบด้วยคีย์ส่วนตัวและข้อมูลโปรโตคอล <ph name="LINK_START"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="2902856457593699108">แสดงคีย์</translation>
 <translation id="8033497299373164724">ซ่อนคีย์</translation>
 <translation id="2702143907607790516">อัปเดตชื่อบัญชีไม่สำเร็จ โปรดลองอีกครั้ง</translation>
@@ -1007,7 +1010,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5488357322146334497">ข้อความ</translation>
 <translation id="3586752056660754651">เซ็นชื่อ</translation>
 <translation id="3484981968509595506">DApp กำลังขอกุญแจเข้ารหัสสาธารณะของคุณ</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> กำลังขอกุญแจเข้ารหัสสาธารณะของวอลเล็ตของคุณ หากคุณยินยอมที่จะให้กุญแจนี้ เว็บไซต์นี้จะสามารถสร้างข้อความเข้ารหัสให้คุณได้</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> กำลังขอคีย์เข้ารหัสสาธารณะของวอลเล็ตของคุณ หากคุณยินยอมที่จะให้คีย์นี้ เว็บไซต์นี้จะสามารถสร้างข้อความเข้ารหัสให้คุณได้</translation>
 <translation id="3340247553212049934">ระบุ</translation>
 <translation id="1619778919922494944">DApp ต้องการอ่านข้อความนี้เพื่อดำเนินการตามคำขอของคุณให้เสร็จสมบูรณ์</translation>
 <translation id="714506544401754321">ถอดรหัสลับของข้อความ</translation>
@@ -1074,8 +1077,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7051244143160304048">ยกเลิกการเชื่อมต่อ <ph name="DEVICE_NAME"/> แล้ว</translation>
 <translation id="5317781812114905957">คำแนะนำ</translation>
 <translation id="1178198982208000092">เชื่อมต่อ <ph name="DEVICE_NAME"/> ของคุณ</translation>
-<translation id="4358411489835404360">Hardware Wallet ต้องการการยืนยันบนอุปกรณ์ <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">กระเป๋าเงินฮาร์ดแวร์ต้องเปิดแอป Ethereum บน <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">ต้องยืนยันวอลเล็ตฮาร์ดแวร์บนอุปกรณ์ <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">วอลเล็ตฮาร์ดแวร์ต้องมีแอป <ph name="NETWORK"/> ที่เปิดบน <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">ส่งแล้ว</translation>
 <translation id="5013754027092416509">ได้รับแล้ว</translation>
 <translation id="5867988533873716616">ไม่มี URL ของ Block Explorer</translation>
@@ -1146,7 +1149,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1470129769517088397"><ph name="ADDRESS"/> ไม่ใช่เครือข่ายปัจจุบัน</translation>
 <translation id="7340805872138998391">ไม่สามารถปลดล็อกอุปกรณ์ได้ ลองเชื่อมต่อใหม่</translation>
 <translation id="1984410139271779110">เกิดข้อผิดพลาดภายใน รูปแบบที่ไม่รู้จัก</translation>
-<translation id="8682200134223578011">อนุมัติแล้ว</translation>
+<translation id="6989562355845156390">อนุมัติ</translation>
 <translation id="4674380028960132654">Ledger: ลายเซ็นไม่ตรงกับที่อยู่ที่ถูกต้อง</translation>
 <translation id="3183932890629254743">ไม่พบบัญชีฮาร์ดแวร์</translation>
 <translation id="4287068151777838754">ข้อมูล JSON ไม่ได้รับการคาดหวัง</translation>
@@ -1189,6 +1192,26 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2317956709076373213">ยืนยันการทำธุรกรรมแล้ว</translation>
 <translation id="310693998838023022">เกิดข้อผิดพลาดในการทำธุรกรรม</translation>
 <translation id="6395870673621520684">ยกเลิกการทำธุรกรรมแล้ว</translation>
+<translation id="1237782734462409503">แท็บใช้ไม่ได้</translation>
+<translation id="756701799684433105">อนุมัติธุรกรรม</translation>
+<translation id="6450792191436242818">โปรแกรมระบบ</translation>
+<translation id="6252742184395380448">โปรแกรมกำหนดค่า</translation>
+<translation id="5358970666412490132">โปรแกรมสเตก</translation>
+<translation id="346636227344244984">โปรแกรมโหวต</translation>
+<translation id="3538368258493053874">โปรแกรมโหลด BPF</translation>
+<translation id="2334098351242742927">โปรแกรม Ed25519</translation>
+<translation id="8780753288764281797">โปรแกรม Secp256k1</translation>
+<translation id="5275550100743015683">จากที่อยู่:</translation>
+<translation id="2678433693746214764">ถึงที่อยู่:</translation>
+<translation id="4576396475962922672">บัญชีใหม่:</translation>
+<translation id="4719005063558335704">บัญชี:</translation>
+<translation id="4337554812324118382">วันที่:</translation>
+<translation id="569870799832027680">ID โปรแกรม:</translation>
+<translation id="7843211152394841558">จำนวนความพยายามสูงสุด:</translation>
+<translation id="8496335570810457">ความรับผิดชอบต่อการจำลองการทำธุรกรรม:</translation>
+<translation id="5100124500279922001">ข้ามการจำลองการทำธุรกรรม:</translation>
+<translation id="8060029310790625334">ศูนย์ช่วยเหลือ</translation>
+<translation id="2095142195578664632">ต้องการความช่วยเหลือใช่ไหม โปรดดู</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>

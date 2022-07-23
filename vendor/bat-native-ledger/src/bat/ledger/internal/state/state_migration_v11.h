@@ -19,7 +19,7 @@ class StateMigrationV11 {
   explicit StateMigrationV11(LedgerImpl* ledger);
   ~StateMigrationV11();
 
-  void Migrate(ResultCallback callback);
+  void Migrate(LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

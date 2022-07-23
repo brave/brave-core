@@ -35,7 +35,9 @@ void SpeedreaderJSHandler::AddJavaScriptObjectToFrame(
   v8::Local<v8::Object> global = context->Global();
 
   gin::Handle<SpeedreaderJSHandler> handler = gin::CreateHandle(isolate, this);
-  CHECK(!handler.IsEmpty());
+  if (handler.IsEmpty())
+    return;
+
   v8::PropertyDescriptor desc(handler.ToV8(), false);
   desc.set_configurable(false);
 

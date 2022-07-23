@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Contribuiți la îmbunătățirea stabilității Brave prin trimiterea automată de rapoarte de diagnosticare când apar erori ale browserului Brave sau când acesta se blochează.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
 <translation id="9008534313521214777">Timp\neconomisit estimat</translation>
-<translation id="6572660632052512096">Mod desktop</translation>
-<translation id="1340503115760585811">Activați vizualizarea desktop pentru paginile noi</translation>
-<translation id="7924540991929826186">Folosește versiuni mobile ale site-urilor pentru filele noi (recomandat)</translation>
-<translation id="807636106793708118">Preferă versiunile mobile ale siteurilor</translation>
-<translation id="4479934682648362332">Se preferă versiunea desktop a siteurilor</translation>
 <translation id="1842747674580016420">Redare video în Brave</translation>
 <translation id="5368992950177874750">Dacă este activat, fișierele video vor fi redate pe Brave în loc de aplicația corespondentă</translation>
 <translation id="410351446219883937">Redare automată</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Selectați Brave Browser și atingeți „Întotdeauna”</translation>
 <translation id="3546439402724649282">Brave este setat deja ca browser implicit.</translation>
 <translation id="8389661903259423907">Ați setat deja un browser implicit. Puteți să schimbați browserul implicit din setările aplicației.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Vă mulțumim</translation>
 <translation id="6665366815203065060">Tocmai ai trimis o plată către:</translation>
 <translation id="5441565662498481293">Trimiți automat o plată către:</translation>
@@ -863,23 +859,34 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4804818685124855865">Deconectează-te</translation>
 <translation id="8009571545960303544">Semnătura dvs. este solicitată</translation>
 <translation id="3484981968509595506">A DApp vă solicită cheia publică de criptare</translation>
-<translation id="2291002548681057345">solicită cheia publică de criptare a portofelului dvs. Dacă sunteți de acord să furnizați această cheie, site-ul vă va putea trimite mesaje criptate.</translation>
 <translation id="3340247553212049934">Indicați</translation>
 <translation id="1982257600591932657">Numele rețelei</translation>
 <translation id="5052727830821470769">URL rețea</translation>
 <translation id="4822132585477111396">ID lanț</translation>
 <translation id="7131971375297699539">Simbolul monedei</translation>
 <translation id="7982789257301363584">Rețea</translation>
-<translation id="7540715999708954128">Această acțiune va permite utilizarea acestei rețele pentru accesarea portofelului Brave. Aflați mai multe.</translation>
-<translation id="8759753423332885148">Aflați mai multe.</translation>
 <translation id="4717431746210146708">Permiteți acestui site să adauge o rețea?</translation>
+<translation id="4857321293515555666">DApp dorește să citească acest mesaj pentru a finaliza solicitarea.</translation>
+<translation id="714506544401754321">Decriptați mesajul</translation>
+<translation id="5039804452771397117">Permite</translation>
 <translation id="3378339846292573874">Adăugați token sugerat</translation>
 <translation id="2322227405137827074">Doriți să importați acest token?</translation>
 <translation id="1324417023773393937">Browserul Brave</translation>
 <translation id="6044189892950611565">Canal de notificare pentru browserul Brave</translation>
 <translation id="1173919438868967364">Selectați contul</translation>
 <translation id="8922793255489232731">Nu s-a putut obține fusul orar corespunzător pentru : <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Afișează site-urile vizitate cel mai des</translation>
+<translation id="8643377320501056697">Afișare site-uri de top</translation>
 <translation id="6471216025161697462">Conectat la <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Versiune de încercare</translation>
+<translation id="7733890291091968191">Afișați notificările Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave nu vă urmărește pe dvs. sau cum utilizați aplicația, astfel că nu știm cum v-ați configurat conexiunea VPN. Trimiteți-ne informațiile despre problema pe care o întâmpinați și vom face tot posibilul să o rezolvăm cât mai repede cu putință.####\n\n</translation>
+<translation id="3367162038532116157">\n\nNume gazdă VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nTip abonament\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVersiune aplicație\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nFus orar\n</translation>
+<translation id="8107843365677337047">\n\nTip rețea\n</translation>
+<translation id="5334952096674914470">\n\nFurnizor de date mobile\n</translation>
+<translation id="5393042357629679588">\n\nAltă problemă\n</translation>
+<translation id="8095666712177294104">\n\nPlatformă\n</translation>
 </translationbundle>

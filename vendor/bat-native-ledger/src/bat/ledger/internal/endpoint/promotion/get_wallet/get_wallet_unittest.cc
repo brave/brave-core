@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <tuple>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/global_constants.h"
@@ -180,7 +181,7 @@ TEST_P(GetWalletTest, Paths) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-            callback(rewards_services_get_wallet_response);
+            std::move(callback).Run(rewards_services_get_wallet_response);
           });
 
   get_wallet_->Request(

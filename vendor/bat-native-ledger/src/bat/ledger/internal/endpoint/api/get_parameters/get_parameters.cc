@@ -2,6 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "bat/ledger/internal/endpoint/api/get_parameters/get_parameters.h"
 
 #include <utility>
@@ -127,6 +128,18 @@ type::Result GetParameters::ParseBody(
       continue;
     }
     parameters->monthly_tip_choices.push_back(choice.GetDouble());
+  }
+
+  const auto* payout_status_dict = value->GetDict().FindDict("payoutStatus");
+  if (!payout_status_dict) {
+    BLOG(0, "Missing payout status");
+    return type::Result::LEDGER_ERROR;
+  }
+
+  for (auto&& [key, value] : *payout_status_dict) {
+    if (value.is_string()) {
+      parameters->payout_status.emplace(key, value.GetString());
+    }
   }
 
   return type::Result::LEDGER_OK;

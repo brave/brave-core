@@ -20,10 +20,8 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history_constants.h"
-#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/pref_names.h"
 #include "build/build_config.h"
 
@@ -559,7 +557,7 @@ void ClientStateManager::Save() {
 
   auto callback =
       std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->Save(kClientFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json, callback);
 }
 
 void ClientStateManager::OnSaved(const bool success) {
@@ -577,7 +575,7 @@ void ClientStateManager::Load() {
 
   auto callback = std::bind(&ClientStateManager::OnLoaded, this,
                             std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::GetInstance()->Load(kClientFilename, callback);
+  AdsClientHelper::GetInstance()->Load(kClientStateFilename, callback);
 }
 
 void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
@@ -613,8 +611,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
 
 bool ClientStateManager::FromJson(const std::string& json) {
   ClientInfo client;
-  const bool success = LoadFromJson(&client, json);
-  if (!success) {
+  if (!client.FromJson(json)) {
     return false;
   }
 

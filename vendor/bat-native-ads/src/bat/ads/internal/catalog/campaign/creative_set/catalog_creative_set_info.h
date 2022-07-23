@@ -7,14 +7,15 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CATALOG_CREATIVE_SET_INFO_H_
 
 #include <string>
+#include <vector>
 
-#include "bat/ads/internal/catalog/campaign/creative_set/catalog_os_info_aliases.h"
-#include "bat/ads/internal/catalog/campaign/creative_set/catalog_segment_info_aliases.h"
-#include "bat/ads/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info_aliases.h"
-#include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info_aliases.h"
-#include "bat/ads/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info_aliases.h"
-#include "bat/ads/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info_aliases.h"
-#include "bat/ads/internal/conversions/conversion_info_aliases.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/catalog_os_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/catalog_segment_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 
 namespace ads {
 
@@ -44,6 +45,8 @@ struct CatalogCreativeSetInfo final {
   CatalogCreativePromotedContentAdList creative_promoted_content_ads;
   ConversionList conversions;
 };
+
+using CatalogCreativeSetList = std::vector<CatalogCreativeSetInfo>;
 
 }  // namespace ads
 

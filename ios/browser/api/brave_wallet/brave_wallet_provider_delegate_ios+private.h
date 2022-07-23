@@ -30,6 +30,7 @@ class BraveWalletProviderDelegateBridge
   void WalletInteractionDetected() override;
   url::Origin GetOrigin() const override;
   void ShowWalletOnboarding() override;
+  void ShowAccountCreation(mojom::CoinType type) override;
   void RequestPermissions(mojom::CoinType type,
                           const std::vector<std::string>& accounts,
                           RequestPermissionsCallback) override;
@@ -39,6 +40,7 @@ class BraveWalletProviderDelegateBridge
   void GetAllowedAccounts(mojom::CoinType type,
                           const std::vector<std::string>& accounts,
                           GetAllowedAccountsCallback callback) override;
+  bool IsPermissionDenied(mojom::CoinType type) override;
 };
 
 }  // namespace brave_wallet

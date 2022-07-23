@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/check.h"

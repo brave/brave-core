@@ -10,8 +10,8 @@
 #include "base/guid.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
@@ -90,19 +90,6 @@ class BatAdsNewTabPageAdEventHandlerTest : public EventHandlerObserver,
     return creative_ad;
   }
 
-  void ExpectAdEventCountEquals(const ConfirmationType& confirmation_type,
-                                const int expected_count) {
-    database::table::AdEvents database_table;
-    database_table.GetAll([=](const bool success,
-                              const AdEventList& ad_events) {
-      ASSERT_TRUE(success);
-
-      const int count =
-          GetAdEventCount(AdType::kNewTabPageAd, confirmation_type, ad_events);
-      EXPECT_EQ(expected_count, count);
-    });
-  }
-
   std::unique_ptr<EventHandler> event_handler_;
 
   NewTabPageAdInfo ad_;
@@ -128,8 +115,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
   const NewTabPageAdInfo& expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(1,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest, DoNotFireViewedEventIfAlreadyFired) {
@@ -146,7 +133,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, DoNotFireViewedEventIfAlreadyFired) {
                             mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  EXPECT_EQ(1,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
@@ -165,8 +153,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
   const NewTabPageAdInfo& expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
+  EXPECT_EQ(1,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest,
@@ -182,7 +170,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
                             mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
+  EXPECT_EQ(1,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest, DoNotFireEventWithInvalidUuid) {
@@ -197,8 +186,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, DoNotFireEventWithInvalidUuid) {
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(0,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest,
@@ -214,8 +203,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(0,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest,
@@ -231,8 +220,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
+  EXPECT_EQ(0,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest,
@@ -258,7 +247,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
                             mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour);
+  EXPECT_EQ(ads_per_hour,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
 }  // namespace new_tab_page_ads

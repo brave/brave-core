@@ -26,7 +26,6 @@ namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
-bool IsFilecoinTestnetEnabled();
 bool IsSolanaEnabled();
 bool IsDappsSupportEnabled();
 
@@ -160,6 +159,13 @@ std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 
+bool IsFilecoinKeyringId(const std::string& keyring_id);
+
+std::string GetFilecoinKeyringId(const std::string& network);
+
+std::string GetFilecoinChainId(const std::string& keyring_id);
+
+mojom::CoinType GetCoinForKeyring(const std::string& keyring_id);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

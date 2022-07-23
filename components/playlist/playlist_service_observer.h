@@ -10,12 +10,12 @@
 
 namespace playlist {
 
-struct PlaylistChangeParams;
+struct PlaylistItemChangeParams;
 
 class PlaylistServiceObserver : public base::CheckedObserver {
  public:
   virtual void OnPlaylistItemStatusChanged(
-      const PlaylistChangeParams& params) = 0;
+      const PlaylistItemChangeParams& params) = 0;
 };
 
 }  // namespace playlist

@@ -15,7 +15,7 @@ namespace features {
 // and automatically redirect to the final URL without sending any
 // network requests to the tracker.
 const base::Feature kBraveDebounce{"BraveDebounce",
-                                   base::FEATURE_DISABLED_BY_DEFAULT};
+                                   base::FEATURE_ENABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace debounce

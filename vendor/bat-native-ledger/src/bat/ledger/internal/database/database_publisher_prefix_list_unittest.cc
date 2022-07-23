@@ -84,20 +84,20 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 TEST_F(DatabasePublisherPrefixListTest, Reset) {
   std::vector<std::string> commands;
 
-  auto on_run_db_transaction = [&](
-      type::DBTransactionPtr transaction,
-      ledger::client::RunDBTransactionCallback callback) {
-    ASSERT_TRUE(transaction);
-    if (transaction) {
-      for (auto& command : transaction->commands) {
-        commands.push_back(std::move(command->command));
-      }
-    }
-    commands.push_back("---");
-    auto response = type::DBCommandResponse::New();
-    response->status = type::DBCommandResponse::Status::RESPONSE_OK;
-    callback(std::move(response));
-  };
+  auto on_run_db_transaction =
+      [&](type::DBTransactionPtr transaction,
+          ledger::client::RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        if (transaction) {
+          for (auto& command : transaction->commands) {
+            commands.push_back(std::move(command->command));
+          }
+        }
+        commands.push_back("---");
+        auto response = type::DBCommandResponse::New();
+        response->status = type::DBCommandResponse::Status::RESPONSE_OK;
+        std::move(callback).Run(std::move(response));
+      };
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(Invoke(on_run_db_transaction));

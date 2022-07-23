@@ -85,7 +85,6 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
         return skus::SkusServiceFactory::GetForContext(context);
       },
       context);
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   auto* vpn_service = new BraveVpnService(
       shared_url_loader_factory, user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
@@ -96,9 +95,6 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     dns_observer_service->Observe(vpn_service);
 #endif
   return vpn_service;
-#elif BUILDFLAG(IS_ANDROID)
-  return new BraveVpnService(shared_url_loader_factory, callback);
-#endif
 }
 
 }  // namespace brave_vpn

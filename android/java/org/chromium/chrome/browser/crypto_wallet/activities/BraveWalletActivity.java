@@ -142,11 +142,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mSwapButton.setOnClickListener(v -> {
             assert mJsonRpcService != null;
             mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
-                SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
-                        SwapBottomSheetDialogFragment.newInstance();
-                swapBottomSheetDialogFragment.setChainId(chainId);
-                swapBottomSheetDialogFragment.show(
-                        getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
+                Utils.isCustomNetwork(mJsonRpcService, CoinType.ETH, chainId, isCustomNetwork -> {
+                    SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
+                            SwapBottomSheetDialogFragment.newInstance();
+                    swapBottomSheetDialogFragment.setIsCustomNetwork(isCustomNetwork);
+                    swapBottomSheetDialogFragment.show(getSupportFragmentManager(),
+                            SwapBottomSheetDialogFragment.TAG_FRAGMENT);
+                });
             });
         });
 
@@ -437,6 +439,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     @Override
     public void gotoOnboardingPage() {
+        mBraveWalletService.onOnboardingShown();
         replaceNavigationFragments(ONBOARDING_ACTION, true);
     }
 

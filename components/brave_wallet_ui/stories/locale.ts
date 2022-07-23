@@ -85,6 +85,7 @@ provideStrings({
   braveWalletSwapDisclaimerDescription: '0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.',
   braveWalletSwapFeesNotice: 'Quote includes a 0.875% Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
+  braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
 
   // Create Account Tab
   braveWalletCreateAccountDescription: 'You don’t yet have a $1 account. Create one now?',
@@ -289,6 +290,8 @@ provideStrings({
   braveWalletBuyWyreName: 'Wyre',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
+  braveWalletBuyWithWyre: 'Buy with Wyre',
+  braveWalletBuyWithRamp: 'Buy with Ramp',
 
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',
@@ -331,6 +334,8 @@ provideStrings({
   braveWalletAllowChangeNetworkTitle: 'Allow this site to switch the network?',
   braveWalletAllowChangeNetworkDescription: 'This will switch the network to a previously added network.',
   braveWalletAllowChangeNetworkButton: 'Switch network',
+  braveWalletAllowAddNetworkNetworkPanelTitle: 'Network',
+  braveWalletAllowAddNetworkDetailsPanelTitle: 'Details',
 
   // Confirm Transaction Panel
   braveWalletConfirmTransactionTotal: 'Total',
@@ -354,6 +359,7 @@ provideStrings({
   braveWalletPanelViewAccountAssets: 'View account assets',
   braveWalletAssetsPanelTitle: 'Account assets',
   braveWalletPanelDisconnected: 'Disconnected',
+  braveWalletPanelBlocked: 'Blocked',
 
   // Wallet Welcome Panel
   braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',
@@ -404,7 +410,7 @@ provideStrings({
   braveWalletConnectHardwarePanelDisconnected: '$1 disconnected',
   braveWalletConnectHardwarePanelInstructions: 'Instructions',
   braveWalletConnectHardwarePanelConnect: 'Connect your $1',
-  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation $1',
+  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation on device.',
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
   // Transaction List Item

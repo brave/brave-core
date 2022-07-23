@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/export.h"
+#include "bat/ads/history_item_info.h"
 
 namespace ads {
-
-struct HistoryItemInfo;
 
 struct ADS_EXPORT HistoryInfo final {
   HistoryInfo();
@@ -21,10 +21,13 @@ struct ADS_EXPORT HistoryInfo final {
   HistoryInfo& operator=(const HistoryInfo& info);
   ~HistoryInfo();
 
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
+
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  std::vector<HistoryItemInfo> items;
+  HistoryItemList items;
 };
 
 }  // namespace ads

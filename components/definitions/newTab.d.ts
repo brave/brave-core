@@ -127,6 +127,7 @@ declare namespace NewTab {
     featureFlagBraveNTPSponsoredImagesWallpaper: boolean
     featureFlagBraveNewsEnabled: boolean
     featureFlagBraveNewsPromptEnabled: boolean
+    searchPromotionEnabled: boolean
     featureCustomBackgroundEnabled: boolean
     isIncognito: boolean
     useAlternativePrivateSearchEngine: boolean
@@ -156,7 +157,7 @@ declare namespace NewTab {
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
     enabledAds: boolean
-    needsBrowserUpdateToSeeAds: boolean
+    needsBrowserUpgradeToServeAds: boolean
     promotions: Promotion[]
     parameters: RewardsParameters
     totalContribution: number
@@ -278,9 +279,12 @@ declare namespace NewTab {
     earningsLastMonth: number
   }
 
+  export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
+
   export interface RewardsParameters {
     rate: number
     monthlyTipChoices: number[]
+    payoutStatus?: Record<string, ProviderPayoutStatus>
   }
 
   export interface DefaultSuperReferralTopSite {

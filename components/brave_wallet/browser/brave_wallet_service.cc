@@ -611,6 +611,16 @@ void BraveWalletService::ResetPermission(mojom::CoinType coin,
     std::move(callback).Run(false);
 }
 
+void BraveWalletService::IsPermissionDenied(
+    mojom::CoinType coin,
+    const url::Origin& origin,
+    IsPermissionDeniedCallback callback) {
+  if (delegate_)
+    delegate_->IsPermissionDenied(coin, origin, std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
 void BraveWalletService::GetWebSitesWithPermission(
     mojom::CoinType coin,
     GetWebSitesWithPermissionCallback callback) {
@@ -823,11 +833,18 @@ void BraveWalletService::OnWalletUnlockPreferenceChanged(
   RecordWalletUsage(true);
 }
 
+void BraveWalletService::OnOnboardingShown() {
+  prefs_->SetBoolean(kBraveWalletWasOnboardingShown, true);
+  RecordWalletUsage(false);
+}
+
 void BraveWalletService::RecordWalletUsage(bool unlocked) {
   VLOG(1) << "Wallet P3A: starting report";
   base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
   base::Time first_p3a_report = prefs_->GetTime(kBraveWalletP3AFirstReportTime);
   base::Time last_p3a_report = prefs_->GetTime(kBraveWalletP3ALastReportTime);
+  bool was_onboarding_shown =
+      prefs_->GetBoolean(kBraveWalletWasOnboardingShown);
 
   VLOG(1) << "Wallet P3A: first report: " << first_p3a_report
           << " last_report: " << last_p3a_report;
@@ -840,7 +857,7 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
   }
 
   WriteStatsToHistogram(wallet_last_used, first_p3a_report, last_p3a_report,
-                        weekly_store.GetWeeklySum());
+                        was_onboarding_shown, weekly_store.GetWeeklySum());
 
   prefs_->SetTime(kBraveWalletP3ALastReportTime, base::Time::Now());
   if (first_p3a_report.is_null())
@@ -864,6 +881,7 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
 void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
                                                base::Time first_p3a_report,
                                                base::Time last_p3a_report,
+                                               bool was_onboarding_shown,
                                                unsigned use_days_in_week) {
   base::Time::Exploded now_exp;
   base::Time::Exploded last_report_exp;
@@ -897,6 +915,11 @@ void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
     VLOG(1) << "Wallet P3A: Need 7 days of reports before recording "
                "daily/weekly, skipping";
   }
+
+  if (was_onboarding_shown) {
+    UMA_HISTOGRAM_BOOLEAN(kBraveWalletOnboardingConvHistogramName,
+                          !wallet_last_used.is_null());
+  }
 }
 
 void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
@@ -927,26 +950,11 @@ void BraveWalletService::GetPendingSignMessageRequests(
   std::move(callback).Run(std::move(requests));
 }
 
-void BraveWalletService::NotifySignMessageRequestProcessed(bool approved,
-                                                           int id) {
-  if (sign_message_requests_.empty() ||
-      sign_message_requests_.front()->id != id) {
-    VLOG(1) << "id: " << id << " is not expected, should be "
-            << sign_message_requests_.front()->id;
-    return;
-  }
-  auto callback = std::move(sign_message_callbacks_.front());
-  sign_message_requests_.pop_front();
-  sign_message_callbacks_.pop_front();
-
-  std::move(callback).Run(approved, std::string(), std::string());
-}
-
-void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
+void BraveWalletService::NotifySignMessageRequestProcessed(
     bool approved,
     int id,
-    const std::string& signature,
-    const std::string& error) {
+    mojom::ByteArrayStringUnionPtr signature,
+    const absl::optional<std::string>& error) {
   if (sign_message_requests_.empty() ||
       sign_message_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -957,7 +965,7 @@ void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
   sign_message_requests_.pop_front();
   sign_message_callbacks_.pop_front();
 
-  std::move(callback).Run(approved, signature, error);
+  std::move(callback).Run(approved, std::move(signature), error);
 }
 
 void BraveWalletService::GetPendingSignTransactionRequests(
@@ -975,8 +983,11 @@ void BraveWalletService::GetPendingSignTransactionRequests(
   std::move(callback).Run(std::move(requests));
 }
 
-void BraveWalletService::NotifySignTransactionRequestProcessed(bool approved,
-                                                               int id) {
+void BraveWalletService::NotifySignTransactionRequestProcessed(
+    bool approved,
+    int id,
+    mojom::ByteArrayStringUnionPtr signature,
+    const absl::optional<std::string>& error) {
   if (sign_transaction_requests_.empty() ||
       sign_transaction_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -987,7 +998,7 @@ void BraveWalletService::NotifySignTransactionRequestProcessed(bool approved,
   sign_transaction_requests_.pop_front();
   sign_transaction_callbacks_.pop_front();
 
-  std::move(callback).Run(approved);
+  std::move(callback).Run(approved, std::move(signature), error);
 }
 
 void BraveWalletService::GetPendingSignAllTransactionsRequests(
@@ -1007,7 +1018,9 @@ void BraveWalletService::GetPendingSignAllTransactionsRequests(
 
 void BraveWalletService::NotifySignAllTransactionsRequestProcessed(
     bool approved,
-    int id) {
+    int id,
+    absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+    const absl::optional<std::string>& error) {
   if (sign_all_transactions_requests_.empty() ||
       sign_all_transactions_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -1018,7 +1031,7 @@ void BraveWalletService::NotifySignAllTransactionsRequestProcessed(
   sign_all_transactions_requests_.pop_front();
   sign_all_transactions_callbacks_.pop_front();
 
-  std::move(callback).Run(approved);
+  std::move(callback).Run(approved, std::move(signatures), error);
 }
 
 void BraveWalletService::AddObserver(
@@ -1395,7 +1408,7 @@ void BraveWalletService::CancelAllSignMessageCallbacks() {
     auto callback = std::move(sign_message_callbacks_.front());
     sign_message_requests_.pop_front();
     sign_message_callbacks_.pop_front();
-    std::move(callback).Run(false, std::string(), std::string());
+    std::move(callback).Run(false, nullptr, absl::nullopt);
   }
 }
 
@@ -1404,7 +1417,7 @@ void BraveWalletService::CancelAllSignTransactionCallbacks() {
     auto callback = std::move(sign_transaction_callbacks_.front());
     sign_transaction_requests_.pop_front();
     sign_transaction_callbacks_.pop_front();
-    std::move(callback).Run(false);
+    std::move(callback).Run(false, nullptr, absl::nullopt);
   }
 }
 
@@ -1413,7 +1426,7 @@ void BraveWalletService::CancelAllSignAllTransactionsCallbacks() {
     auto callback = std::move(sign_all_transactions_callbacks_.front());
     sign_all_transactions_requests_.pop_front();
     sign_all_transactions_callbacks_.pop_front();
-    std::move(callback).Run(false);
+    std::move(callback).Run(false, absl::nullopt, absl::nullopt);
   }
 }
 

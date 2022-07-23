@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -150,6 +152,13 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                             base::Unretained(this)));
     // Show the correct value in settings on initial start
     UpdateSearchTabsButtonState();
+  }
+
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(browser_->profile());
+  if (rewards_service) {
+    brave_rewards::RewardsPanelCoordinator::CreateForBrowser(browser_.get(),
+                                                             rewards_service);
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

@@ -106,6 +106,16 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="4870911314065352661">Uždaryti visus skirtukus?</translation>
 <translation id="7551864359422178684">Šiame naršyklės lange esate atvėrę <ph name="NUMBER_OF_TABS"/> skirtukus (-ų).</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> skirtukai (-ų)</translation>
+<translation id="2272117088509540883">- „Brave“ paieška</translation>
+<translation id="2701279958223202597">Įdiegta nepriklausomos paieškos funkcija, geriau sauganti privatumą. „Brave“ neseka nei jūsų, nei jūsų užklausų, nei spustelėjimų.</translation>
+<translation id="6438467592401259882">Įdiegta nepriklausomos paieškos funkcija, geriau sauganti privatumą.</translation>
+<translation id="1688359110799098115">Įdiegta nepriklausomos paieškos funkcija, geriau sauganti privatumą</translation>
+<translation id="8579317236683491484">„Brave“ neseka nei jūsų, nei jūsų užklausų, nei spustelėjimų.</translation>
+<translation id="5240031343741051161">Išbandykite „Brave“ paiešką</translation>
+<translation id="5026874946691314267">Daugiau to nerodykite</translation>
+<translation id="5234764350956374838">Atsisakyti</translation>
+<translation id="214744058941501853">"&gt;
+          Atsisakykite „Brave“ paieškos konversijos, paspauskite „Enter“ šiam pasiūlymui pašalinti</translation>
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7924918279836988121">BAT žurnalo paslauga</translation>
 <translation id="6040143037577758943">Uždaryti</translation>
@@ -135,6 +145,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8490082094734500369">Išjungti skait. veikseną</translation>
 <translation id="2036503787657622020">Įjungti skait. veikseną</translation>
 <translation id="5226458915125328323">Sparčiojo skaitlio nuostatos</translation>
+<translation id="1621606336827646158">Rodyti pirminį puslapį</translation>
 <translation id="6284218950354553099">Automatiškai siųsti „Brave“ kasdienio naudojimo signalą</translation>
 <translation id="5288333155754958121">Šis anoniminis inkognito signalas leidžia „Brave“ įvertinti aktyvius naudotojus.</translation>
 <translation id="1872784258300710671">„Brave“ naudoja visiškai privačią produktų analizę bendram tam tikrų funkcijų naudojimui įvertinti</translation>
@@ -185,6 +196,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6817415381278637662">Nustatykite „Brave“ kaip savo numatytąją naršyklę, kad galėtumėte pasinaudoti „Brave“ privatumo apsauga visuose tinklalapiuose, kuriuos atveriate.</translation>
 <translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
 <translation id="2370739752330685659">Gal vėliau</translation>
+<translation id="961012016278832836">„Microsoft Edge Legacy“</translation>
+<translation id="6436994631426134065">Importuota iš <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
 <translation id="7179921470347911571">Paleisti iš naujo dabar</translation>
 <translation id="4472575034687746823">Pradėkite</translation>
@@ -201,9 +214,11 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2906510232093002459">„Brave“ numatytieji vaizdai</translation>
 <translation id="2396127686705429331">Rodyti žymių mygtuką</translation>
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
-<translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
-<translation id="597020512043916976">Rodyti populiariausias svetaines automatinio užbaigimo pasiūlymuose</translation>
-<translation id="301088458323355543">Rodyti siūlomas svetaines automatinio užbaigimo pasiūlymuose</translation>
+<translation id="4109670531935487117">Adreso juostoje rodyti automatinio užbaigimo pasiūlymus</translation>
+<translation id="2858138569776157458">Popul. svet.</translation>
+<translation id="65774893852758517">Siūlomos svetainės</translation>
+<translation id="7859704718976024901">Naršymo istorija</translation>
+<translation id="8820817407110198400">Žymių juosta</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
 <translation id="1811404036171336214">Visada rodyti žymes naujos kortelės puslapyje</translation>
 <translation id="5529693968082667490">Rodyti skirtuko paieškos mygtuką</translation>
@@ -362,6 +377,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 Ar tikrai norite tai padaryti?</translation>
 <translation id="6285118765755298263">Indeksuoti kitus ieškos modulius</translation>
 <translation id="919715748352669592">Automatiškai indeksuoja svetaines, kurios atitinka „OpenSearch“ specifikaciją.</translation>
+<translation id="842628013524824194">Įprastinis langas – paieškos sistema naudojama adreso juostoje</translation>
+<translation id="5324939009884545145">Privatus langas – paieškos sistema naudojama adreso juostoje</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
 <translation id="7878791177459550035">Medijos maršrutizatorius naršyklėje įgalina perdavimo funkciją.</translation>
@@ -461,6 +478,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="616058968889448209">IPFS tarnybos paleidimo klaida, daugiau informacijos rasite <ph name="BEGIN_LINK"/>diagnostikos puslapyje<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">„<ph name="KEY_NAME"/>“ rakto importuoti nepavyko</translation>
 <translation id="3364053282600191535">„<ph name="KEY_NAME"/>“ rakto eksportuoti nepavyko</translation>
+<translation id="5840868269342837751">Pastaba. Gali būti, kad naršyklės tarpinio serverio ir DNS nuostatos tinklo užklausoms netaikomos.</translation>
 <translation id="8275038454117074363">Importuoti</translation>
 <translation id="3654980960391973513">Generuoti</translation>
 <translation id="5531501313997312487">Pradėti mazgą</translation>

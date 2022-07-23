@@ -12,7 +12,7 @@
 #include "base/observer_list.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 
@@ -47,11 +47,10 @@ class Serving final {
  private:
   bool IsSupported() const;
 
-  bool ServeAd(const InlineContentAdInfo& ad,
-               MaybeServeInlineContentAdCallback callback) const;
+  void ServeAd(const InlineContentAdInfo& ad,
+               MaybeServeInlineContentAdCallback callback);
   void FailedToServeAd(const std::string& dimensions,
                        MaybeServeInlineContentAdCallback callback);
-  void ServedAd(const InlineContentAdInfo& ad);
 
   void NotifyOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) const;

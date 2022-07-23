@@ -239,7 +239,7 @@
 <translation id="1911900517212490188">入力された回復キーはもうサポートされていません。<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>に進んで、新しいキーを取得してください。</translation>
 <translation id="7583327070390027131">次の毎月のチップ日</translation>
 <translation id="6231182869178328516">Braveでチップを送りました！ <ph name="NAME"/> https://brave.com/ja/tips/</translation>
-<translation id="5916536234616514390"><ph name="HASHTAG"/>Braveでは、クリエイターをサポートできるので気に入っています！ちょうど今、<ph name="NAME"/>に<ph name="HASHTAG2"/>BATのチップを送信しました。<ph name="DATE"/>までに https://creators.brave.com で確認すれば、BATを手に入れることができるのです！</translation>
+<translation id="5916536234616514390"><ph name="HASHTAG"/>Brave でクリエイターをサポートできて最高です！<ph name="NAME"/>に<ph name="HASHTAG2"/>BATのチップを送信したので、<ph name="DATE"/>までに https://creators.brave.com で認証してBATを手に入れてください！</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">クリック済み</translation>
 <translation id="7119308337584989771">却下済み</translation>
@@ -725,7 +725,7 @@
 <translation id="4780526507945807546">BraveローカルIPFSノードを使用する</translation>
 <translation id="8148464361648742409">パブリックゲートウェイを使用</translation>
 <translation id="5123478056123923857">IPFS (惑星間ファイルシステム) はP2Pデータストレージおよびデータ配信用のパブリックネットワークです。このプロトコルはHTTP（S）とは異なる仕方でプライバシーが考慮されています。</translation>
-<translation id="5410952114182173389">あなたのコンピューターはパブリックネットワークに寄与しますが、あなたのIPアドレス、およびあなたがリクエストまたは提供するコンテンツが公開される可能性があります。IPFSを介してリクエストするコンテンツはあなたに提供される前に検証されます。</translation>
+<translation id="1216911189668016151">お使いのコンピューターでパブリックネットワークに貢献すると、お客様のIPアドレスと、現在リクエストまたは提供しているコンテンツが公開される可能性があります。IPFSを介してリクエストするコンテンツは配信される前に検証されます。ネットワークリクエストは、ブラウザのプロキシやDNS設定を使用しない場合があります。</translation>
 <translation id="8664689531113048642">あなたのIPアドレスとあなたがリクエストしているコンテンツを、潜在的な第三者のオブザーバーから保護しますが、パブリックゲートウェイ・オペレーターからは保護しません。ゲートウェイ・オペレーターはゲートウェイを介してあなたに提供されるコンテンツがあなたがリクエストしたコンテンツであることを確保することに責任を負います。また、あなたのコンピューターはパブリックIPFSネットワークに寄与しません。</translation>
 <translation id="3977809385703587108">以下で設定を再度変更できます:</translation>
 <translation id="3340978935015468852">設定</translation>
@@ -917,6 +917,7 @@
 <translation id="4359319875297001084">従来の Brave 暗号資産ウォレットからインポートしますか？</translation>
 <translation id="3331452756822160641">新しいパスワード</translation>
 <translation id="8624315169751085215">クリップボードにコピー</translation>
+<translation id="7885157704277298658">コピー完了!</translation>
 <translation id="1121335910737476837">プライマリ暗号資産アカウント</translation>
 <translation id="6969147029062037757">インポート済みのアカウント</translation>
 <translation id="4057718162494343222">Braveウォレットでは、リカバリーフレーズからバックアップまたは復元できるプライマリーアカウントを作成することができます。アカウントの種類についての詳細は、アカウントのヘルプをご覧ください。</translation>
@@ -974,6 +975,8 @@
 <translation id="7642841516562576649">アイコンURL</translation>
 <translation id="2144247757675997850">アセットを追加</translation>
 <translation id="2708402071160162126">警告: リカバリフレーズは絶対に他の人に教えないでください。このフレーズを知っている人はだれでも、あなたの資産を完全に取得することができます。</translation>
+<translation id="2416098547200943834">注: 秘密鍵は、秘密鍵およびプロトコル情報を含む16進エンコードされたJSONとして提供されます。<ph name="LINK_START"/>さらに詳しく<ph name="LINK_END"/></translation>
+<translation id="7657130382217527063">注: 秘密鍵は、秘密鍵とプロトコル情報を含む16進エンコードされたJSONとして提供する必要があります。<ph name="LINK_START"/>さらに詳しく<ph name="LINK_END"/></translation>
 <translation id="2902856457593699108">キーを表示</translation>
 <translation id="8033497299373164724">キーを隠す</translation>
 <translation id="2702143907607790516">アカウント名の更新に失敗しました。もう一度やり直してください。</translation>
@@ -1009,7 +1012,7 @@
 <translation id="5488357322146334497">メッセージ</translation>
 <translation id="3586752056660754651">署名</translation>
 <translation id="3484981968509595506">DAppがあなたの公開暗号鍵を要求しています。</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> は、ウォレットの公開暗号化キーを要求しています。このキーを提供することに同意すると、暗号化されたメッセージがサイトで作成されます。</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> は、ウォレットの公開暗号化キーを要求しています。このキーを提供することに同意すると、暗号化されたメッセージがサイトで作成されます。</translation>
 <translation id="3340247553212049934">提供</translation>
 <translation id="1619778919922494944">このDAppは、このメッセージを読みリクエストを完了しようとしています</translation>
 <translation id="714506544401754321">メッセージを復号化</translation>
@@ -1076,8 +1079,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/>との接続を解除しました</translation>
 <translation id="5317781812114905957">手順</translation>
 <translation id="1178198982208000092"><ph name="DEVICE_NAME"/>を接続</translation>
-<translation id="4358411489835404360">ハードウェアウォレットが、デバイスでの確認を要求しています。<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">ハードウェアウォレットが、<ph name="DEVICE_NAME"/>でイーサリアムアプリを開くことを要求しています</translation>
+<translation id="6291765462876399333">ハードウェアウォレットが、デバイスでの確認を要求しています<ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">ハードウェアウォレットが<ph name="DEVICE_NAME"/>で<ph name="NETWORK"/>アプリを開くことを要求しています</translation>
 <translation id="8687869982094542529">送信済み</translation>
 <translation id="5013754027092416509">受取済み</translation>
 <translation id="5867988533873716616">ブロックエクスプローラーの URL は使用できません。</translation>
@@ -1148,7 +1151,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/>は現在のネットワークではありません</translation>
 <translation id="7340805872138998391">デバイスのロックを解除できません。再接続しています</translation>
 <translation id="1984410139271779110">内部エラーが発生しました。不明なスキームです</translation>
-<translation id="8682200134223578011">承認済み</translation>
+<translation id="6989562355845156390">承認</translation>
 <translation id="4674380028960132654">Ledger: 署名が正しいアドレスと一致しません</translation>
 <translation id="3183932890629254743">ハードウェアアカウントが見つかりません</translation>
 <translation id="4287068151777838754">JSONデータはサポート対象外です</translation>
@@ -1191,6 +1194,26 @@
 <translation id="2317956709076373213">トランザクションが確認されました</translation>
 <translation id="310693998838023022">トランザクションエラー</translation>
 <translation id="6395870673621520684">トランザクション失敗</translation>
+<translation id="1237782734462409503">タブがアクティブではありません</translation>
+<translation id="756701799684433105">トランザクションを承認</translation>
+<translation id="6450792191436242818">システムプログラム</translation>
+<translation id="6252742184395380448">構成プログラム</translation>
+<translation id="5358970666412490132">ステーキングプログラム</translation>
+<translation id="346636227344244984">投票プログラム</translation>
+<translation id="3538368258493053874">BPFローダー</translation>
+<translation id="2334098351242742927">Ed25519プログラム</translation>
+<translation id="8780753288764281797">Secp256k1プログラム</translation>
+<translation id="5275550100743015683">送信元アドレス:</translation>
+<translation id="2678433693746214764">宛先アドレス:</translation>
+<translation id="4576396475962922672">新規アカウント:</translation>
+<translation id="4719005063558335704">アカウント:</translation>
+<translation id="4337554812324118382">データ:</translation>
+<translation id="569870799832027680">プログラムID:</translation>
+<translation id="7843211152394841558">最大再試行数:</translation>
+<translation id="8496335570810457">プリフライトコミットメント:</translation>
+<translation id="5100124500279922001">プリフライトをスキップ:</translation>
+<translation id="8060029310790625334">ヘルプセンター</translation>
+<translation id="2095142195578664632">ヘルプが必要ですか？次をご覧ください:</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>

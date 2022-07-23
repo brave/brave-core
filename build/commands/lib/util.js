@@ -51,6 +51,43 @@ async function applyPatches() {
   }
 }
 
+const isOverrideNewer = (original, override) => {
+  return (fs.statSync(override).mtimeMs - fs.statSync(original).mtimeMs > 0)
+}
+
+const updateFileUTimesIfOverrideIsNewer = (original, override) => {
+  if (isOverrideNewer(original, override)) {
+    const date = new Date()
+    fs.utimesSync(original, date, date)
+    console.log(original + ' is touched.')
+  }
+}
+
+const deleteFileIfOverrideIsNewer = (original, override) => {
+  if (fs.existsSync(original) && isOverrideNewer(original, override)) {
+    try {
+      fs.unlinkSync(original)
+      console.log(original + ' has been deleted.')
+    } catch (err) {
+      console.error('Unable to delete file: ' + original + ' error: ', err)
+      process.exit(1)
+    }
+  }
+}
+
+const getAdditionalGenLocation = () => {
+  if (config.targetOS === 'android') {
+    if (config.targetArch === 'arm64') {
+      return 'android_clang_arm'
+    } else if (config.targetArch === 'x64') {
+      return 'android_clang_x86'
+    }
+  } else if ((process.platform === 'darwin' || process.platform === 'linux') && config.targetArch === 'arm64') {
+    return 'clang_x64_v8_arm64'
+  }
+  return ''
+}
+
 const util = {
 
   runProcess: (cmd, args = [], options = {}) => {
@@ -416,6 +453,75 @@ const util = {
       })
       removeUnlistedAndroidResources(braveOverwrittenFiles)
     }
+  },
+
+  touchOverriddenFiles: () => {
+    console.log('touch original files overridden by chromium_src...')
+
+    // Return true when original file of |file| should be touched.
+    const applyFileFilter = (file) => {
+      // Only include overridable files.
+      const ext = path.extname(file)
+      if (ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom') {
+        return false
+      }
+      return true
+    }
+
+    const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
+    var sourceFiles = util.walkSync(chromiumSrcDir, applyFileFilter)
+    const additionalGen = getAdditionalGenLocation()
+
+    // Touch original files by updating mtime.
+    const chromiumSrcDirLen = chromiumSrcDir.length
+    sourceFiles.forEach(chromiumSrcFile => {
+      const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
+      let overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
+      if (fs.existsSync(overriddenFile)) {
+        // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
+        updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+      } else {
+        // If the original file doesn't exist, assume that it's in the gen dir.
+        overriddenFile = path.join(config.outputDir, 'gen', relativeChromiumSrcFile)
+        deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+        // Also check the secondary gen dir, if exists
+        if (!!additionalGen) {
+          overriddenFile = path.join(config.outputDir, additionalGen, 'gen', relativeChromiumSrcFile)
+          deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+        }
+      }
+    })
+  },
+
+  touchOverriddenVectorIconFiles: () => {
+    console.log('touch original vector icon files overridden by brave/vector_icons...')
+
+    // Return true when original file of |file| should be touched.
+    const applyFileFilter = (file) => {
+      // Only includes icon files.
+      const ext = path.extname(file)
+      if (ext !== '.icon') { return false }
+      return true
+    }
+
+    const braveVectorIconsDir = path.join(config.srcDir, 'brave', 'vector_icons')
+    var braveVectorIconFiles = util.walkSync(braveVectorIconsDir, applyFileFilter)
+
+    // Touch original files by updating mtime.
+    const braveVectorIconsDirLen = braveVectorIconsDir.length
+    braveVectorIconFiles.forEach(braveVectorIconFile => {
+      var overriddenFile = path.join(config.srcDir, braveVectorIconFile.slice(braveVectorIconsDirLen))
+      if (fs.existsSync(overriddenFile)) {
+        // If overriddenFile is older than file in vector_icons, touch it to trigger rebuild.
+        updateFileUTimesIfOverrideIsNewer(overriddenFile, braveVectorIconFile)
+      }
+    })
+  },
+
+  touchOverriddenFilesAndUpdateBranding: () => {
+    util.touchOverriddenFiles()
+    util.touchOverriddenVectorIconFiles()
+    util.updateBranding()
   },
 
   // Chromium compares pre-installed midl files and generated midl files from IDL during the build to check integrity.

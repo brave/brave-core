@@ -6,11 +6,14 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/playlist/features.h"
 #include "brave/components/playlist/media_detector_component_manager.h"
+#include "brave/components/playlist/playlist_constants.h"
 #include "brave/components/playlist/playlist_download_request_manager.h"
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/pref_names.h"
@@ -46,7 +49,15 @@ bool PlaylistServiceFactory::IsPlaylistEnabled(
 
 void PlaylistServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterDictionaryPref(kPlaylistItems);
+  base::Value::Dict default_playlist;
+  default_playlist.Set(kPlaylistIDKey, std::string());
+  default_playlist.Set(kPlaylistNameKey, std::string());
+  default_playlist.Set(kPlaylistItemsKey, base::Value::List());
+
+  base::Value::List list;
+  list.Append(std::move(default_playlist));
+  registry->RegisterListPref(kPlaylistListsPref, base::Value(std::move(list)));
+  registry->RegisterDictionaryPref(kPlaylistItemsPref);
 }
 
 PlaylistServiceFactory::PlaylistServiceFactory()

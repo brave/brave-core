@@ -53,6 +53,10 @@ class HDKeyring {
   std::vector<uint8_t> SignMessage(const std::string& address,
                                    const std::vector<uint8_t>& message);
 
+  bool HasAddress(const std::string& addr);
+
+  bool HasImportedAddress(const std::string& addr);
+
  protected:
   // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddressInternal(HDKeyBase* hd_key) const = 0;
