@@ -314,11 +314,14 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
         }
 
+        let metadata_parent = dom::create_element_simple(dom, "div", "", None);
+        dom.append_before_sibling(&first_child, NodeOrText::AppendNode(metadata_parent.clone()));
+
         // Add in the author
         if let Some(ref text) = meta.author {
             let author =
                 dom::create_element_simple(dom, "p", "metadata", Some(&format!("By {}", text)));
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(author));
+            dom.append(&metadata_parent, NodeOrText::AppendNode(author));
         }
 
         // Add in last modified datetime
@@ -329,17 +332,17 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             if let Some(formatted) = last_modified.format(format).ok() {
                 let modified =
                     dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
-                dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
+                dom.append(&metadata_parent, NodeOrText::AppendNode(modified));
             }
         }
 
         // Add 'show original'
         {
             let show_original_link =
-                dom::create_element_simple(dom, "a", "subhead metadata", None);
+                dom::create_element_simple(dom, "a", "metadata show_original", None);
             dom::set_attr("id", "c93e2206-2f31-4ddc-9828-2bb8e8ed940e", show_original_link.clone(), true);
             dom::set_attr("href", "", show_original_link.clone(), true);
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(show_original_link));
+            dom.append(&metadata_parent, NodeOrText::AppendNode(show_original_link));
         }
 
         // Vertical split

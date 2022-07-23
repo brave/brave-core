@@ -62,6 +62,15 @@ li {
   display: inline !important;
 }
 
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
 .metadata :matches(ul, ol, li) {
   list-style-type: none;
   -webkit-padding-start: 0;
