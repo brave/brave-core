@@ -87,6 +87,7 @@ Polymer({
 
   handleClose_: function() {
     this.codeType = null
+    this.syncCodeValidationError = ''
   },
 
   handleChooseMobile_: function() {
