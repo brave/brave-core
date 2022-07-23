@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Assets
 require('../../../../ui/webui/resources/fonts/muli.css')
+require('../styles/styles.css')
 
 // Components
 import { StyledTorrentViewer } from '../styles/styles'

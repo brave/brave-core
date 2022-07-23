@@ -9,8 +9,3 @@ export const StyledTorrentViewer = styled('div')<{}>`
   padding: 100px;
   font-family: Muli, sans-serif;
 `
-
-export const StyledButtonContainer = styled('div')<{}>`
-  display: inline-block;
-  margin: 10px 10px 0 0;
-`
