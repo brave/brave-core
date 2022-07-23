@@ -40,7 +40,14 @@ OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchVModule;
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSyncURL;
 
-typedef bool (^BraveCoreLogHandler)(int severity,
+typedef int BraveCoreLogSeverity NS_TYPED_ENUM;
+OBJC_EXPORT const BraveCoreLogSeverity BraveCoreLogSeverityFatal;
+OBJC_EXPORT const BraveCoreLogSeverity BraveCoreLogSeverityError;
+OBJC_EXPORT const BraveCoreLogSeverity BraveCoreLogSeverityWarning;
+OBJC_EXPORT const BraveCoreLogSeverity BraveCoreLogSeverityInfo;
+OBJC_EXPORT const BraveCoreLogSeverity BraveCoreLogSeverityVerbose;
+
+typedef bool (^BraveCoreLogHandler)(BraveCoreLogSeverity severity,
                                     NSString* file,
                                     int line,
                                     size_t messageStart,
@@ -59,6 +66,11 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) BravePasswordAPI* passwordAPI;
 
+/// Sets the global log handler for Chromium & BraveCore logs.
+///
+/// When a custom log handler is set, it is the responsibility of the client
+/// to handle fatal logs from CHECK (and DCHECK on debug builds) by checking
+/// the `serverity` passed in.
 + (void)setLogHandler:(nullable BraveCoreLogHandler)logHandler;
 
 - (instancetype)init NS_UNAVAILABLE;
