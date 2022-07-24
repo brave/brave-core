@@ -82,7 +82,7 @@ class SidebarModel : public SidebarService::Observer,
   int GetIndexOf(const SidebarItem& item) const;
 
   // Don't cache item list. list can be changed during the runtime.
-  const std::vector<SidebarItem> GetAllSidebarItems() const;
+  const std::vector<SidebarItem>& GetAllSidebarItems() const;
 
   // Return -1 if sidebar panel is not opened.
   int active_index() const { return active_index_; }

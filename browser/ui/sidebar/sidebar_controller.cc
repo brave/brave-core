@@ -70,7 +70,7 @@ void SidebarController::ActivateItemAt(int index,
     return;
   }
 
-  const auto item = sidebar_model_->GetAllSidebarItems()[index];
+  const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
     sidebar_model_->SetActiveIndex(index);
