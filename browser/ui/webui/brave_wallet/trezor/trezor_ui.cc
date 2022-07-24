@@ -31,7 +31,7 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src chrome://resources/js/ 'self' ") +
+      std::string("script-src chrome://resources/js/load_time_data.m.js 'self' ") +
           kTrezorConnectURL + ";");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
@@ -39,7 +39,7 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'unsafe-inline';"));
-  untrusted_source->AddResourcePath("load_time_data.js",
+  untrusted_source->AddResourcePath("load_time_data.m.js",
                                     IDR_WEBUI_JS_LOAD_TIME_DATA_JS);
   untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletTrezorBridgeUrl",
