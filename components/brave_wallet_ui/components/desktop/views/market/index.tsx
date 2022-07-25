@@ -8,25 +8,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // Constants
-import {
-  BraveWallet,
-  WalletRoutes,
-  WalletState
-} from '../../../../constants/types'
+import { BraveWallet, WalletRoutes, WalletState } from '../../../../constants/types'
 
 // Actions
 import { WalletActions } from '../../../../common/actions'
 
 // Styled Components
-import {
-  LoadIcon,
-  LoadIconWrapper,
-  MarketDataIframe,
-  StyledWrapper
-} from './style'
-
-// Hooks
-import { useSwap } from '../../../../common/hooks'
+import { LoadIcon, LoadIconWrapper, MarketDataIframe, StyledWrapper } from './style'
 
 // Utils
 import { WalletPageActions } from '../../../../page/actions'
@@ -36,7 +24,8 @@ import {
   MarketUiCommand,
   SelectCoinMarketMessage,
   sendMessageToMarketUiFrame,
-  UpdateCoinMarketMessage
+  UpdateCoinMarketMessage,
+  UpdateTradableAssetsMessage
 } from '../../../../market/market-ui-messages'
 
 const defaultCurrency = 'usd'
@@ -50,16 +39,12 @@ export const MarketView = () => {
   const dispatch = useDispatch()
   const {
     isLoadingCoinMarketData,
-    coinMarketData: allCoins
+    coinMarketData: allCoins,
+    userVisibleTokensInfo: tradableAssets
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // Hooks
   const history = useHistory()
-
-  // Custom Hooks
-  const swap = useSwap()
-  const { swapAssetOptions: tradableAssets } = swap
-  console.log(tradableAssets)
 
   const onSelectCoinMarket = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
     dispatch(WalletPageActions.selectCoinMarket(coinMarket))
@@ -90,13 +75,19 @@ export const MarketView = () => {
   }, [allCoins])
 
   React.useEffect(() => {
-    if (iframeLoaded && marketDataIframeRef?.current) {
-      const command: UpdateCoinMarketMessage = {
-        command: MarketUiCommand.UpdateCoinMarkets,
-        payload: allCoins
-      }
-      sendMessageToMarketUiFrame(marketDataIframeRef.current.contentWindow, command)
+    if (!iframeLoaded || !marketDataIframeRef?.current) return
+
+    const updateCoinsMsg: UpdateCoinMarketMessage = {
+      command: MarketUiCommand.UpdateCoinMarkets,
+      payload: allCoins
     }
+    sendMessageToMarketUiFrame(marketDataIframeRef.current.contentWindow, updateCoinsMsg)
+
+    const updateAssetsMsg: UpdateTradableAssetsMessage = {
+      command: MarketUiCommand.UpdateTradableAssets,
+      payload: tradableAssets
+    }
+    sendMessageToMarketUiFrame(marketDataIframeRef.current.contentWindow, updateAssetsMsg)
   }, [iframeLoaded, marketDataIframeRef, allCoins])
 
   React.useEffect(() => {

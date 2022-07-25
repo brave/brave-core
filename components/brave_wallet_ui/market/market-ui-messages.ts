@@ -19,7 +19,8 @@ export const braveMarketUiOrigin = marketUiOrigin.endsWith('/') ? marketUiOrigin
 
 export const enum MarketUiCommand {
   UpdateCoinMarkets = 'update-coin-markets',
-  SelectCoinMarket = 'select-coin-market'
+  SelectCoinMarket = 'select-coin-market',
+  UpdateTradableAssets = 'update-tradable-assets'
 }
 
 export type MarketCommandMessage = {
@@ -32,6 +33,10 @@ export type UpdateCoinMarketMessage = MarketCommandMessage & {
 
 export type SelectCoinMarketMessage = MarketCommandMessage & {
   payload: BraveWallet.CoinMarket
+}
+
+export type UpdateTradableAssetsMessage = MarketCommandMessage & {
+  payload: BraveWallet.BlockchainToken[]
 }
 
 export const sendMessageToMarketUiFrame = (targetWindow: Window | null, message: MarketCommandMessage) => {

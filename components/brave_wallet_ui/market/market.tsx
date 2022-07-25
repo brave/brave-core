@@ -20,12 +20,7 @@ import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 
 // constants
-import {
-  AssetFilterOption,
-  BraveWallet,
-  MarketDataTableColumnTypes,
-  SortOrder
-} from '../constants/types'
+import { AssetFilterOption, BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../constants/types'
 
 // utils
 import {
@@ -34,13 +29,11 @@ import {
   MarketUiCommand,
   SelectCoinMarketMessage,
   sendMessageToWalletUi,
-  UpdateCoinMarketMessage
+  UpdateCoinMarketMessage,
+  UpdateTradableAssetsMessage
+
 } from './market-ui-messages'
-import {
-  filterCoinMarkets,
-  searchCoinMarkets,
-  sortCoinMarkets
-} from '../utils/coin-market-utils'
+import { filterCoinMarkets, searchCoinMarkets, sortCoinMarkets } from '../utils/coin-market-utils'
 
 // Options
 import { AssetFilterOptions } from '../options/market-data-filter-options'
@@ -60,11 +53,12 @@ const App = () => {
   const [sortByColumnId, setSortByColumnId] = React.useState<MarketDataTableColumnTypes>('marketCap')
   const [searchTerm, setSearchTerm] = React.useState('')
   const [coinMarkets, setCoinMarkets] = React.useState<BraveWallet.CoinMarket[]>([])
+  const [tradableAssets, setTradableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
 
   // Memos
   const visibleCoinMarkets = React.useMemo(() => {
     const searchResults = searchTerm === '' ? coinMarkets : searchCoinMarkets(coinMarkets, searchTerm)
-    const filteredCoins = filterCoinMarkets(searchResults, [], currentFilter)
+    const filteredCoins = filterCoinMarkets(searchResults, tradableAssets, currentFilter)
     return [...sortCoinMarkets(filteredCoins, sortOrder, sortByColumnId)]
   }, [coinMarkets, sortOrder, sortByColumnId, searchTerm, currentFilter])
 
@@ -82,6 +76,11 @@ const App = () => {
         const { payload } = message as UpdateCoinMarketMessage
         setCoinMarkets(payload)
         break
+      }
+
+      case MarketUiCommand.UpdateTradableAssets: {
+        const { payload } = message as UpdateTradableAssetsMessage
+        setTradableAssets(payload)
       }
     }
   }, [])
