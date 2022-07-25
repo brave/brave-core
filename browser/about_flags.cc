@@ -47,8 +47,6 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/features.h"
-#include "chrome/common/channel_info.h"
-#include "components/version_info/version_info.h"
 #endif
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
@@ -471,22 +469,11 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-uint16_t AllowForDevVersion(uint16_t os) {
-  if (auto channel = chrome::GetChannel();
-      channel == version_info::Channel::STABLE ||
-      channel == version_info::Channel::BETA) {
-    return 0;
-  }
-
-  return os;
-}
-
 #define PLAYLIST_FEATURE_ENTRIES                                           \
-     {"playlist",                                                          \
+     {kPlaylistFeatureInternalName,                                        \
      flag_descriptions::kPlaylistName,                                     \
      flag_descriptions::kPlaylistDescription,                              \
-     AllowForDevVersion(                                                   \
-        flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsLinux),         \
+     flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsLinux,             \
      FEATURE_VALUE_TYPE(playlist::features::kPlaylist)},
 #else
 #define PLAYLIST_FEATURE_ENTRIES

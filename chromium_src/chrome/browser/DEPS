@@ -25,6 +25,7 @@ include_rules = [
   "+brave/components/ntp_tiles",
   "+brave/components/omnibox",
   "+brave/components/permissions",
+  "+brave/components/playlist",
   "+brave/components/privacy_sandbox",
   "+brave/components/sidebar",
   "+brave/components/sync",
