@@ -54,7 +54,7 @@ bool ParseEthDecryptData(const std::string& json,
 bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* address,
                                  std::string* message,
-                                 base::Value* domain,
+                                 base::Value::Dict* domain,
                                  EthSignTypedDataHelper::Version version,
                                  std::vector<uint8_t>* domain_hash_out,
                                  std::vector<uint8_t>* primary_hash_out);

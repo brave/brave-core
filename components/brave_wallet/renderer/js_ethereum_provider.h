@@ -92,7 +92,7 @@ class JSEthereumProvider : public mojom::EventsListener {
                     v8::Global<v8::Promise::Resolver> promise_resolver,
                     v8::Isolate* isolate,
                     bool force_json_response,
-                    std::unique_ptr<base::Value> formed_response,
+                    base::Value formed_response,
                     bool success);
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;

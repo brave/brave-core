@@ -12,7 +12,7 @@
 namespace brave {
 
 bool BraveRewriteManifest(const std::string& extension_id,
-    base::DictionaryValue* manifest) {
+                          base::Value::Dict* manifest) {
   if (extension_id == ipfs_companion_extension_id ||
       extension_id == ipfs_companion_beta_extension_id) {
     // Set appropriate sockets permissions for IPFS Companion
@@ -33,7 +33,7 @@ bool BraveRewriteManifest(const std::string& extension_id,
     )";
 
     base::Value sockets = base::JSONReader::Read(json).value();
-    manifest->SetKey("sockets", std::move(sockets));
+    manifest->Set("sockets", std::move(sockets));
     return true;
   }
   return false;
@@ -41,9 +41,9 @@ bool BraveRewriteManifest(const std::string& extension_id,
 
 }  // namespace brave
 
-#define BRAVE_SANDBOXEDUNPACKER_REWRITEMANIFESTFILE \
-  base::DictionaryValue* dict_manifest;             \
-  final_manifest.GetAsDictionary(&dict_manifest);   \
+#define BRAVE_SANDBOXEDUNPACKER_REWRITEMANIFESTFILE              \
+  base::Value::Dict* dict_manifest = final_manifest.GetIfDict(); \
+  DCHECK(dict_manifest);                                         \
   brave::BraveRewriteManifest(extension_id_, dict_manifest);
 
 #include "src/extensions/browser/sandboxed_unpacker.cc"

@@ -285,7 +285,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
   }
 
   // Get base::Value arg to pass and ignore extra parameters
-  absl::optional<base::Value> arg = absl::nullopt;
+  absl::optional<base::Value::Dict> arg = absl::nullopt;
   v8::Local<v8::Value> v8_arg;
   if (arguments->Length() >= 1 && !arguments->GetNext(&v8_arg)) {
     arguments->ThrowTypeError(
@@ -300,7 +300,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
       return v8::Local<v8::Promise>();
     }
-    arg = std::move(*arg_value);
+    arg = std::move(arg_value->GetDict());
   }
 
   auto global_context(
@@ -360,7 +360,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
     return v8::Local<v8::Promise>();
   }
 
-  absl::optional<base::Value> send_options = absl::nullopt;
+  absl::optional<base::Value::Dict> send_options = absl::nullopt;
   v8::Local<v8::Value> v8_send_options;
   if (arguments->Length() > 1 && !arguments->GetNext(&v8_send_options)) {
     arguments->ThrowTypeError(
@@ -376,7 +376,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
       return v8::Local<v8::Promise>();
     }
-    send_options = std::move(*send_options_value);
+    send_options = std::move(send_options_value->GetDict());
   }
 
   auto global_context(
@@ -465,7 +465,8 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
   // Passing method to OnRequest in case it needs special handling, ex. connect
   // which requires us to construct a solanaWeb3.PublicKey object which can only
   // be done on renderer side.
-  const std::string* method = arg_value->FindStringKey("method");
+  auto& arg_dict = arg_value->GetDict();
+  const std::string* method = arg_dict.FindString("method");
   if (!method) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -477,7 +478,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->Request(
-      std::move(*arg_value),
+      std::move(arg_dict),
       base::BindOnce(&JSSolanaProvider::OnRequest, base::Unretained(this),
                      std::move(global_context), std::move(promise_resolver),
                      isolate, *method));
@@ -599,9 +600,9 @@ void JSSolanaProvider::OnConnect(
   if (error == mojom::SolanaProviderError::kSuccess) {
     result = CreatePublicKey(context, public_key);
   } else {
-    std::unique_ptr<base::Value> formed_response =
+    base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    result = v8_value_converter_->ToV8Value(formed_response.get(), context);
+    result = v8_value_converter_->ToV8Value(&formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -623,18 +624,19 @@ void JSSolanaProvider::OnSignAndSendTransaction(
     v8::Isolate* isolate,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    base::Value result) {
+    base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    v8_result = v8_value_converter_->ToV8Value(&result, context);
+    base::Value value(std::move(result));
+    v8_result = v8_value_converter_->ToV8Value(&value, context);
   } else {
-    std::unique_ptr<base::Value> formed_response =
+    base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    v8_result = v8_value_converter_->ToV8Value(formed_response.get(), context);
+    v8_result = v8_value_converter_->ToV8Value(&formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -647,7 +649,7 @@ void JSSolanaProvider::OnSignMessage(
     v8::Isolate* isolate,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    base::Value result) {
+    base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -655,8 +657,8 @@ void JSSolanaProvider::OnSignMessage(
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    const std::string* public_key = result.FindStringKey("publicKey");
-    const std::string* signature = result.FindStringKey("signature");
+    const std::string* public_key = result.FindString("publicKey");
+    const std::string* signature = result.FindString("signature");
     DCHECK(public_key && signature);
     v8::Local<v8::Value> v8_public_key;
     CHECK(GetProperty(context, CreatePublicKey(context, *public_key),
@@ -679,9 +681,9 @@ void JSSolanaProvider::OnSignMessage(
               .ToChecked());
     v8_result = object;
   } else {
-    std::unique_ptr<base::Value> formed_response =
+    base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    v8_result = v8_value_converter_->ToV8Value(formed_response.get(), context);
+    v8_result = v8_value_converter_->ToV8Value(&formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -703,9 +705,9 @@ void JSSolanaProvider::OnSignTransaction(
   if (error == mojom::SolanaProviderError::kSuccess) {
     result = CreateTransaction(context, serialized_tx);
   } else {
-    std::unique_ptr<base::Value> formed_response =
+    base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    result = v8_value_converter_->ToV8Value(formed_response.get(), context);
+    result = v8_value_converter_->ToV8Value(&formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -737,9 +739,9 @@ void JSSolanaProvider::OnSignAllTransactions(
     }
     result = tx_array;
   } else {
-    std::unique_ptr<base::Value> formed_response =
+    base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    result = v8_value_converter_->ToV8Value(formed_response.get(),
+    result = v8_value_converter_->ToV8Value(&formed_response,
                                             global_context.Get(isolate));
   }
 
@@ -754,7 +756,7 @@ void JSSolanaProvider::OnRequest(
     const std::string& method,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    base::Value result) {
+    base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -763,19 +765,20 @@ void JSSolanaProvider::OnRequest(
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     if (method == "connect") {
-      const std::string* public_key = result.FindStringKey("publicKey");
+      const std::string* public_key = result.FindString("publicKey");
       DCHECK(public_key);
 
       v8_result = CreatePublicKey(context, *public_key);
     } else {
       // Dictionary to object
+      base::Value value(std::move(result));
       v8_result =
-          v8_value_converter_->ToV8Value(&result, global_context.Get(isolate));
+          v8_value_converter_->ToV8Value(&value, global_context.Get(isolate));
     }
   } else {
-    std::unique_ptr<base::Value> formed_response =
+    base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    v8_result = v8_value_converter_->ToV8Value(formed_response.get(),
+    v8_result = v8_value_converter_->ToV8Value(&formed_response,
                                                global_context.Get(isolate));
   }
 

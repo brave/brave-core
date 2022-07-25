@@ -99,7 +99,7 @@ class EthereumProviderImpl final
                         const std::string& message,
                         const std::vector<uint8_t>& domain_hash,
                         const std::vector<uint8_t>& primary_hash,
-                        base::Value domain,
+                        base::Value::Dict domain,
                         RequestCallback callback,
                         base::Value id);
   void ContinueGetAllowedAccounts(

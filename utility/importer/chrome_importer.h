@@ -16,15 +16,12 @@
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/nix/xdg_util.h"
+#include "base/values.h"
 #include "build/build_config.h"
 #include "chrome/utility/importer/importer.h"
 #include "components/favicon_base/favicon_usage_data.h"
 
 struct ImportedBookmarkEntry;
-
-namespace base {
-class DictionaryValue;
-}
 
 namespace sql {
 class Database;
@@ -68,7 +65,7 @@ class ChromeImporter : public Importer {
                        favicon_base::FaviconUsageDataList* favicons);
 
   void RecursiveReadBookmarksFolder(
-      const base::DictionaryValue* folder,
+      const base::Value::Dict* folder,
       const std::vector<std::u16string>& parent_path,
       bool is_in_toolbar,
       std::vector<ImportedBookmarkEntry>* bookmarks);

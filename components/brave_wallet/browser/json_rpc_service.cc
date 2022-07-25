@@ -221,10 +221,10 @@ void JsonRpcService::OnRequestResult(
     const std::string& message,
     const base::flat_map<std::string, std::string>& headers) {
   bool reject;
-  std::unique_ptr<base::Value> formed_response =
+  base::Value formed_response =
       GetProviderRequestReturnFromEthJsonResponse(code, message, &reject);
-  std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                          "", false);
+  std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
+                          false);
 }
 
 void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
@@ -2002,18 +2002,15 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
   switch_chain_ids_.erase(origin);
 
   bool reject = false;
-  std::unique_ptr<base::Value> formed_response;
   if (approved) {
     reject = false;
-    formed_response = base::Value::ToUniquePtrValue(base::Value());
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                            "", false);
+    std::move(callback).Run(std::move(id), base::Value(), reject, "", false);
   } else {
-    formed_response = GetProviderErrorDictionary(
+    base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
                             "", false);
   }
 }
@@ -2023,34 +2020,31 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
                                                    RequestCallback callback,
                                                    base::Value id) {
   bool reject = false;
-  std::unique_ptr<base::Value> formed_response;
   if (!GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH).is_valid()) {
-    formed_response = GetProviderErrorDictionary(
+    base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUnknownChain,
         l10n_util::GetStringFUTF8(IDS_WALLET_UNKNOWN_CHAIN,
                                   base::ASCIIToUTF16(chain_id)));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
                             "", false);
     return false;
   }
 
   // Already on the chain
   if (GetChainId(mojom::CoinType::ETH) == chain_id) {
-    formed_response = base::Value::ToUniquePtrValue(base::Value());
     reject = false;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                            "", false);
+    std::move(callback).Run(std::move(id), base::Value(), reject, "", false);
     return false;
   }
 
   // There can be only 1 request per origin
   if (switch_chain_requests_.contains(origin)) {
-    formed_response = GetProviderErrorDictionary(
+    base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
                             "", false);
     return false;
   }
@@ -2069,13 +2063,13 @@ void JsonRpcService::Reset() {
   switch_chain_requests_.clear();
   // Reject pending suggest token requests when network changed.
   for (auto& callback : switch_chain_callbacks_) {
-    std::unique_ptr<base::Value> formed_response = GetProviderErrorDictionary(
+    base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     bool reject = true;
     std::move(callback.second)
         .Run(std::move(switch_chain_ids_[callback.first]),
-             std::move(*formed_response), reject, "", false);
+             std::move(formed_response), reject, "", false);
   }
   switch_chain_callbacks_.clear();
   switch_chain_ids_.clear();

@@ -57,9 +57,9 @@ class GreaselionRule {
   GreaselionRule& operator=(const GreaselionRule& name);
   ~GreaselionRule();
 
-  void Parse(base::DictionaryValue* preconditions_value,
-             base::ListValue* urls_value,
-             base::ListValue* scripts_value,
+  void Parse(base::Value::Dict* preconditions_value,
+             base::Value::List* urls_value,
+             base::Value::List* scripts_value,
              const std::string& run_at_value,
              const std::string& minimum_brave_version_value,
              const base::FilePath& messages_value,

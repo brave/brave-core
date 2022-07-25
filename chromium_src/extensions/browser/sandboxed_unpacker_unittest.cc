@@ -9,11 +9,11 @@
 
 namespace brave {
 bool BraveRewriteManifest(const std::string& extension_id,
-    base::DictionaryValue* manifest);
+                          base::Value::Dict* manifest);
 }
 
 TEST(BraveSandboxedUnpacker, DoesNotRewriteForDifferentExtension) {
-  base::DictionaryValue manifest;
+  base::Value::Dict manifest;
   ASSERT_FALSE(
       brave::BraveRewriteManifest("fffkpbalmllkdoenhmdmpbkajipdjfam",
       &manifest));
@@ -24,14 +24,14 @@ TEST(BraveSandboxedUnpacker, RewriteForIPFSEExtension) {
   // brave::BraveRewriteManifest instead. But it would have required
   // more patching for making that function protected or else more
   // time than I am willing to spend otherwise.
-  base::DictionaryValue manifest1;
+  base::Value::Dict manifest1;
   ASSERT_TRUE(
       brave::BraveRewriteManifest(ipfs_companion_extension_id,
       &manifest1));
-  ASSERT_TRUE(manifest1.FindKey("sockets"));
-  base::DictionaryValue manifest2;
+  ASSERT_TRUE(manifest1.Find("sockets"));
+  base::Value::Dict manifest2;
   ASSERT_TRUE(
       brave::BraveRewriteManifest(ipfs_companion_beta_extension_id,
       &manifest2));
-  ASSERT_TRUE(manifest2.FindKey("sockets"));
+  ASSERT_TRUE(manifest2.Find("sockets"));
 }

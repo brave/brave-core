@@ -14,19 +14,17 @@
 
 namespace brave_wallet {
 
-std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
+base::Value GetProviderRequestReturnFromEthJsonResponse(
     int http_code,
     const std::string& service_response,
     bool* reject);
-std::unique_ptr<base::Value> GetProviderErrorDictionary(
-    mojom::ProviderError code,
-    const std::string& message);
-std::unique_ptr<base::Value> GetSolanaProviderErrorDictionary(
-    mojom::SolanaProviderError code,
-    const std::string& message);
-std::unique_ptr<base::Value> ToProviderResponse(base::Value id,
-                                                base::Value* result,
-                                                base::Value* error);
+base::Value GetProviderErrorDictionary(mojom::ProviderError code,
+                                       const std::string& message);
+base::Value GetSolanaProviderErrorDictionary(mojom::SolanaProviderError code,
+                                             const std::string& message);
+base::Value ToProviderResponse(base::Value id,
+                               base::Value* result,
+                               base::Value* error);
 
 }  // namespace brave_wallet
 

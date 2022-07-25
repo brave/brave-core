@@ -8,11 +8,12 @@
 
 #include <memory>
 
+#include "base/values.h"
+
 class ChromeBrowserState;
 
 namespace base {
 class FilePath;
-class Value;
 }  // namespace base
 
 // Observer for bookmark html output. Used only in tests.
@@ -41,7 +42,7 @@ void WriteBookmarks(ChromeBrowserState* browser_state,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 
-void WriteBookmarks(base::Value encoded_bookmarks,
+void WriteBookmarks(base::Value::Dict encoded_bookmarks,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 

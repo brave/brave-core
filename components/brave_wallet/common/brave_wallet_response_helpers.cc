@@ -17,41 +17,33 @@ namespace brave_wallet {
 namespace {
 const char kRequestJsonRPC[] = "2.0";
 
-std::unique_ptr<base::Value> GetProviderErrorDictionaryIternal(
-    int code,
-    const std::string& message) {
+base::Value GetProviderErrorDictionaryIternal(int code,
+                                              const std::string& message) {
   std::string formed_response;
-  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
-  result->SetIntKey("code", code);
-  result->SetStringKey("message", message);
-  return std::move(result);
+  base::Value::Dict result;
+  result.Set("code", code);
+  result.Set("message", message);
+  return base::Value(std::move(result));
 }
 
 }  // namespace
 
-std::unique_ptr<base::Value> GetProviderErrorDictionary(
-    mojom::ProviderError code,
-    const std::string& message) {
+base::Value GetProviderErrorDictionary(mojom::ProviderError code,
+                                       const std::string& message) {
   return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);
 }
 
-std::unique_ptr<base::Value> GetSolanaProviderErrorDictionary(
-    mojom::SolanaProviderError code,
-    const std::string& message) {
+base::Value GetSolanaProviderErrorDictionary(mojom::SolanaProviderError code,
+                                             const std::string& message) {
   return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);
 }
 
-std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
+base::Value GetProviderRequestReturnFromEthJsonResponse(
     int http_code,
     const std::string& service_response,
     bool* reject) {
   DCHECK(reject);
   *reject = true;
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          service_response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& response = value_with_error.value;
 
   if (http_code != 200) {
     mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
@@ -60,7 +52,10 @@ std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
     return GetProviderErrorDictionary(code, message);
   }
 
-  if (!response) {
+  absl::optional<base::Value> response = base::JSONReader::Read(
+      service_response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                            base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!response || !response->is_dict()) {
     mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
     std::string message =
         "Invalid response, could not parse JSON: " + service_response;
@@ -68,36 +63,37 @@ std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
     return GetProviderErrorDictionary(code, message);
   }
 
-  const base::Value* error = response->FindKey("error");
+  auto& dict = response->GetDict();
+  base::Value* error = dict.Find("error");
   if (error) {
-    return base::Value::ToUniquePtrValue(error->Clone());
+    return std::move(*error);
   }
 
   // We have a result
-  const base::Value* result = response->FindKey("result");
+  base::Value* result = dict.Find("result");
   DCHECK(result);
 
   *reject = false;
-  return base::Value::ToUniquePtrValue(result->Clone());
+  return std::move(*result);
 }
 
-std::unique_ptr<base::Value> ToProviderResponse(base::Value id,
-                                                base::Value* result,
-                                                base::Value* error) {
-  base::Value response(base::Value::Type::DICTIONARY);
+base::Value ToProviderResponse(base::Value id,
+                               base::Value* result,
+                               base::Value* error) {
+  base::Value::Dict response;
 
-  response.SetKey("id", std::move(id));
-  response.SetStringKey("jsonrpc", kRequestJsonRPC);
+  response.Set("id", std::move(id));
+  response.Set("jsonrpc", kRequestJsonRPC);
 
   if (result) {
-    response.SetKey("result", result->Clone());
+    response.Set("result", result->Clone());
   }
 
   if (error) {
-    response.SetKey("error", error->Clone());
+    response.Set("error", error->Clone());
   }
 
-  return base::Value::ToUniquePtrValue(std::move(response));
+  return base::Value(std::move(response));
 }
 
 }  // namespace brave_wallet

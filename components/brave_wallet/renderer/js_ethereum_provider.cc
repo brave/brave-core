@@ -62,7 +62,7 @@ void JSEthereumProvider::SendResponse(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    std::unique_ptr<base::Value> formed_response,
+    base::Value formed_response,
     bool success) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
@@ -72,13 +72,13 @@ void JSEthereumProvider::SendResponse(
 
   if (global_callback || force_json_response) {
     auto full_formed_response = brave_wallet::ToProviderResponse(
-        std::move(id), success ? formed_response.get() : nullptr,
-        success ? nullptr : formed_response.get());
+        std::move(id), success ? &formed_response : nullptr,
+        success ? nullptr : &formed_response);
     formed_response = std::move(full_formed_response);
   }
 
-  v8::Local<v8::Value> result = content::V8ValueConverter::Create()->ToV8Value(
-      formed_response.get(), context);
+  v8::Local<v8::Value> result =
+      content::V8ValueConverter::Create()->ToV8Value(&formed_response, context);
   if (global_callback) {
     v8::Local<v8::Value> result_null = v8::Null(isolate);
     v8::Local<v8::Value> argv[] = {success ? result_null : result,
@@ -495,10 +495,9 @@ void JSEthereumProvider::OnRequestOrSendAsync(
     first_allowed_account_ = first_allowed_account;
     UpdateAndBindJSProperties();
   }
-  SendResponse(
-      std::move(id), std::move(global_context), std::move(global_callback),
-      std::move(promise_resolver), isolate, force_json_response,
-      base::Value::ToUniquePtrValue(std::move(formed_response)), !reject);
+  SendResponse(std::move(id), std::move(global_context),
+               std::move(global_callback), std::move(promise_resolver), isolate,
+               force_json_response, std::move(formed_response), !reject);
 }
 
 v8::Local<v8::Promise> JSEthereumProvider::Enable() {
@@ -558,7 +557,7 @@ void JSEthereumProvider::InjectInitScript(bool is_main_world) {
 
 void JSEthereumProvider::FireEvent(const std::string& event,
                                    base::Value event_args) {
-  base::Value args_list = base::Value(base::Value::Type::LIST);
+  base::Value::List args_list;
   args_list.Append(event);
   args_list.Append(std::move(event_args));
 
@@ -568,7 +567,7 @@ void JSEthereumProvider::FireEvent(const std::string& event,
       render_frame_->GetWebFrame()->MainWorldScriptContext();
 
   std::vector<v8::Local<v8::Value>> args;
-  for (auto const& argument : args_list.GetList()) {
+  for (auto const& argument : args_list) {
     args.push_back(
         content::V8ValueConverter::Create()->ToV8Value(&argument, context));
   }
@@ -585,9 +584,9 @@ void JSEthereumProvider::ConnectEvent() {
 }
 
 void JSEthereumProvider::OnGetChainId(const std::string& chain_id) {
-  base::DictionaryValue event_args;
-  event_args.SetStringKey("chainId", chain_id);
-  FireEvent(kConnectEvent, std::move(event_args));
+  base::Value::Dict event_args;
+  event_args.Set("chainId", chain_id);
+  FireEvent(kConnectEvent, base::Value(std::move(event_args)));
   is_connected_ = true;
   chain_id_ = chain_id;
   UpdateAndBindJSProperties();

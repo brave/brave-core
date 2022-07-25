@@ -64,7 +64,7 @@ class CosmeticFiltersJSHandler {
 
   void OnUrlCosmeticResources(base::OnceClosure callback,
                               base::Value result);
-  void CSSRulesRoutine(base::DictionaryValue* resources_dict);
+  void CSSRulesRoutine(const base::Value::Dict& resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);
   bool OnIsFirstParty(const std::string& url_string);
 
@@ -79,7 +79,7 @@ class CosmeticFiltersJSHandler {
   bool enabled_1st_party_cf_;
   std::vector<std::string> exceptions_;
   GURL url_;
-  std::unique_ptr<base::DictionaryValue> resources_dict_;
+  absl::optional<base::Value::Dict> resources_dict_;
 
   // True if the content_cosmetic.bundle.js has injected in the current frame.
   bool bundle_injected_ = false;

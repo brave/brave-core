@@ -160,7 +160,7 @@ interface SolanaProvider {
   // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
   // connect and emit a connect event if the application is trusted.
   // It will returns base58 encoded public key when success
-  Connect(mojo_base.mojom.DeprecatedDictionaryValue? arg)
+  Connect(mojo_base.mojom.DictionaryValue? arg)
     => (SolanaProviderError error, string error_message, string public_key);
   Disconnect();
   [Sync]
@@ -188,9 +188,9 @@ interface SolanaProvider {
   //   }
   SignAndSendTransaction(
       SolanaSignTransactionParam param,
-      mojo_base.mojom.DeprecatedDictionaryValue? send_options)
+      mojo_base.mojom.DictionaryValue? send_options)
     => (SolanaProviderError error, string error_message,
-        mojo_base.mojom.DeprecatedDictionaryValue result);
+        mojo_base.mojom.DictionaryValue result);
   // It takes a byte array and an optional display encoding for
   // users and returns an object as
   // { publicKey: <base58 encoded string>,
@@ -198,13 +198,13 @@ interface SolanaProvider {
   // }
   SignMessage(array<uint8> blob_msg, string? display_encoding)
     => (SolanaProviderError error, string error_message,
-        mojo_base.mojom.DeprecatedDictionaryValue result);
+        mojo_base.mojom.DictionaryValue result);
 
   // Arg is {method: <string>, params: {...}}
   // returns a dictionary result to be converted into a v8 object
-  Request(mojo_base.mojom.DeprecatedDictionaryValue arg)
+  Request(mojo_base.mojom.DictionaryValue arg)
     => (SolanaProviderError error, string error_message,
-        mojo_base.mojom.DeprecatedDictionaryValue result);
+        mojo_base.mojom.DictionaryValue result);
 
 };
 

@@ -33,7 +33,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
   ASSERT_TRUE(types_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types_value,
+      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
@@ -65,10 +65,10 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays) {
   auto types_value =
       base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                              base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value);
+  ASSERT_TRUE(types_value && types_value->is_dict());
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types_value,
+      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
@@ -110,24 +110,25 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
       base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
+  auto& data_dict = data_value->GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types_value,
+      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  auto encoded_mail_v4 = helper->EncodeData("Mail", *data_value);
+  auto encoded_mail_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_mail_v4);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_mail_v4)),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2"
             "fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd"
             "54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aa"
             "df3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8");
-  auto data_mail_hash_v4 = helper->HashStruct("Mail", *data_value);
+  auto data_mail_hash_v4 = helper->HashStruct("Mail", data_dict);
   ASSERT_TRUE(data_mail_hash_v4);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*data_mail_hash_v4)),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
   auto encoded_person_v4 =
-      helper->EncodeData("Person", *(data_value->FindKey("to")));
+      helper->EncodeData("Person", *(data_dict.FindDict("to")));
   ASSERT_TRUE(encoded_person_v4);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_person_v4)),
             "b9d8c78acf9b987311de6c7b45bb6a9c8e1bf361fa7fd3467a2163f994c79500"
@@ -136,11 +137,11 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
 
   // v3 should be same as v4
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  auto encoded_mail_v3 = helper->EncodeData("Mail", *data_value);
+  auto encoded_mail_v3 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_mail_v3);
   EXPECT_EQ(encoded_mail_v4, encoded_mail_v3);
   auto encoded_person_v3 =
-      helper->EncodeData("Person", *(data_value->FindKey("to")));
+      helper->EncodeData("Person", *(data_dict.FindDict("to")));
   EXPECT_EQ(encoded_person_v4, encoded_person_v3);
 }
 
@@ -176,12 +177,13 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
       base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
+  auto& data_dict = data_value->GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types_value,
+      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  auto encoded_data_v4 = helper->EncodeData("Mail", *data_value);
+  auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v4);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v4)),
             "66658e9662034bcd21df657297dab8ba47f0ae05dd8aa253cc935d9aacfd9d10fc"
@@ -192,7 +194,7 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
 
   // v3 and v4 handles resursive types differently
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  auto encoded_data_v3 = helper->EncodeData("Mail", *data_value);
+  auto encoded_data_v3 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v3);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v3)),
             "66658e9662034bcd21df657297dab8ba47f0ae05dd8aa253cc935d9aacfd9d10fc"
@@ -227,12 +229,13 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
       base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
+  auto& data_dict = data_value->GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types_value,
+      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  auto encoded_data_v4 = helper->EncodeData("Mail", *data_value);
+  auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v4);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v4)),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac200"
@@ -242,7 +245,7 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
 
   // v3 and v4 handles resursive types differently
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  auto encoded_data_v3 = helper->EncodeData("Mail", *data_value);
+  auto encoded_data_v3 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v3);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v3)),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2cd"
@@ -279,12 +282,13 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
       base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
+  auto& data_dict = data_value->GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types_value,
+      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  auto encoded_data = helper->EncodeData("Mail", *data_value);
+  auto encoded_data = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data)),
             "dd57d9596af52b430ced3d5b52d4e3d5dccfdf3e0572db1dcf526baad311fbd1fc"
@@ -294,13 +298,13 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
 
   // v3 doesn't support array
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  EXPECT_FALSE(helper->EncodeData("Mail", *data_value));
+  EXPECT_FALSE(helper->EncodeData("Mail", data_dict));
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   // types won't matter here
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(base::DictionaryValue(),
+      EthSignTypedDataHelper::Create(base::Value::Dict(),
                                      EthSignTypedDataHelper::Version::kV3);
   ASSERT_TRUE(helper);
 
@@ -743,17 +747,18 @@ TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
   ASSERT_TRUE(ds_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types_value,
+      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
 
-  auto ds_hash = helper->HashStruct("EIP712Domain", *ds_value);
+  auto ds_hash = helper->HashStruct("EIP712Domain", ds_value->GetDict());
   ASSERT_TRUE(ds_hash);
-  auto domain_hash = helper->GetTypedDataDomainHash(*ds_value);
+  auto domain_hash = helper->GetTypedDataDomainHash(ds_value->GetDict());
   ASSERT_TRUE(domain_hash);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*domain_hash)),
             "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
-  auto primary_hash = helper->GetTypedDataPrimaryHash("Mail", *data_value);
+  auto primary_hash =
+      helper->GetTypedDataPrimaryHash("Mail", data_value->GetDict());
   ASSERT_TRUE(primary_hash);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*primary_hash)),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");

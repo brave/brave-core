@@ -157,28 +157,35 @@ bool GeminiJSONParser::GetOrderQuoteInfoFromJSON(
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     return false;
   }
 
-  const base::DictionaryValue* data_dict;
-  if (!response_dict->GetDictionary("data", &data_dict)) {
+  const auto* data_dict = response_dict->FindDict("data");
+  if (!data_dict) {
     return false;
   }
 
-  int temp_id;
+  auto* error_value = data_dict->FindString("error");
+  if (error_value)
+    *error = *error_value;
 
-  data_dict->GetString("error", error);
-  if (!data_dict->GetInteger("quoteId", &temp_id) ||
-      !data_dict->GetString("quantity", quantity) ||
-      !data_dict->GetString("fee", fee) ||
-      !data_dict->GetString("price", price) ||
-      !data_dict->GetString("totalSpend", total_price)) {
+  auto quote_id_value = data_dict->FindInt("quoteId");
+  auto* quantity_value = data_dict->FindString("quantity");
+  auto* fee_value = data_dict->FindString("fee");
+  auto* price_value = data_dict->FindString("price");
+  auto* total_price_value = data_dict->FindString("totalSpend");
+
+  if (!quote_id_value || !quantity_value || !fee_value || !price_value ||
+      !total_price_value)
     return false;
-  }
 
-  *quote_id = std::to_string(temp_id);
+  *quantity = *quantity_value;
+  *fee = *fee_value;
+  *price = *price_value;
+  *total_price = *total_price_value;
+  *quote_id = std::to_string(*quote_id_value);
 
   return true;
 }

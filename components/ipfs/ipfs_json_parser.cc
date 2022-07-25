@@ -12,44 +12,37 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
-base::Value* FindPeerElement(base::Value* root, const std::string& peer_id) {
-  for (base::Value& val : root->GetList()) {
-    base::Value* id = val.FindKey("ID");
-    bool has_peer = id && id->is_string();
-    if (!has_peer)
+base::Value::Dict* FindPeerElement(base::Value::List* root,
+                                   const std::string& peer_id) {
+  for (base::Value& val : *root) {
+    auto& dict = val.GetDict();
+    const auto* id = dict.FindString("ID");
+    if (!id || *id != peer_id)
       continue;
-
-    if (id->GetString() != peer_id)
-      continue;
-    return &val;
+    return &dict;
   }
   return nullptr;
 }
 
-bool RemoveElementFromList(base::Value* root,
-                           const base::Value& item_to_remove) {
+template <typename T>
+bool RemoveValueFromList(base::Value::List* root, const T& value_to_remove) {
   DCHECK(root);
-  base::ListValue* list = nullptr;
-  if (!root->GetAsList(&list) || !list)
-    return false;
-  return list->EraseListValue(item_to_remove);
-}
-
-bool RemoveValueFromList(base::Value* root,
-                         const std::string& value_to_remove) {
-  DCHECK(root);
-  for (base::Value& item : root->GetList()) {
-    auto current = item.GetString();
-    if (current != value_to_remove)
-      continue;
-    return RemoveElementFromList(root, item);
-  }
-  return false;
+  return root->EraseIf([&value_to_remove](const auto& value) {
+    // TODO(cdesouza): From cr104 onwards the equality operator for
+    // base::Value/base::Value::Dict is included upstream, and this snippet
+    // should be updated accordingly when possible.
+    if constexpr (std::is_same_v<T, base::Value::Dict>) {
+      return value == base::Value(value_to_remove.Clone());
+    } else {
+      return value == value_to_remove;
+    }
+  });
 }
 
 }  // namespace
@@ -74,35 +67,31 @@ bool RemoveValueFromList(base::Value* root,
 // }
 bool IPFSJSONParser::GetPeersFromJSON(const std::string& json,
                                       std::vector<std::string>* peers) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
-  if (!records_v) {
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v || !records_v->is_dict()) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* peers_arr = records_v->FindKey("Peers");
-  if (!peers_arr || !peers_arr->is_list()) {
+  auto& dict = records_v->GetDict();
+  const auto* peers_arr = dict.FindList("Peers");
+  if (!peers_arr) {
     VLOG(1) << "Invalid response, can not find Peers array.";
     return false;
   }
 
-  for (const base::Value& val : peers_arr->GetList()) {
-    const base::Value* addr = val.FindKey("Addr");
-    const base::Value* peer = val.FindKey("Peer");
+  for (const base::Value& item : *peers_arr) {
+    const auto& val = item.GetDict();
+    const auto* addr = val.FindString("Addr");
+    const auto* peer = val.FindString("Peer");
 
-    bool has_addr = addr && addr->is_string();
-    bool has_peer = peer && peer->is_string();
-
-    if (!has_addr || !has_peer) {
+    if (!addr || !peer) {
       continue;
     }
 
-    peers->push_back(addr->GetString() + "/p2p/" + peer->GetString());
+    peers->push_back(base::StrCat({*addr, "/p2p/", *peer}));
   }
 
   return true;
@@ -136,19 +125,19 @@ bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     return false;
   }
 
-  const base::DictionaryValue* val_dict;
-  if (!response_dict->GetDictionary("Value", &val_dict)) {
+  const auto* val_dict = response_dict->FindDict("Value");
+  if (!val_dict) {
     return false;
   }
 
-  const std::string* api = val_dict->FindStringKey("API");
-  const std::string* gateway = val_dict->FindStringKey("Gateway");
-  const base::Value* swarm = val_dict->FindListKey("Swarm");
+  const std::string* api = val_dict->FindString("API");
+  const std::string* gateway = val_dict->FindString("Gateway");
+  const auto* swarm = val_dict->FindList("Swarm");
   if (!api || !gateway || !swarm) {
     VLOG(1) << "Invalid response, missing required keys in value dictionary.";
     return false;
@@ -156,7 +145,7 @@ bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
 
   config->api = *api;
   config->gateway = *gateway;
-  for (const base::Value& val : swarm->GetList()) {
+  for (const base::Value& val : *swarm) {
     if (!val.is_string()) {
       continue;
     }
@@ -189,17 +178,17 @@ bool IPFSJSONParser::GetRepoStatsFromJSON(const std::string& json,
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const auto num_objects_value = response_dict->FindDoubleKey("NumObjects");
-  const auto size_value = response_dict->FindDoubleKey("RepoSize");
-  const auto storage_max_value = response_dict->FindDoubleKey("StorageMax");
-  const std::string* path = response_dict->FindStringKey("RepoPath");
-  const std::string* version = response_dict->FindStringKey("Version");
+  const auto num_objects_value = response_dict->FindDouble("NumObjects");
+  const auto size_value = response_dict->FindDouble("RepoSize");
+  const auto storage_max_value = response_dict->FindDouble("StorageMax");
+  const std::string* path = response_dict->FindString("RepoPath");
+  const std::string* version = response_dict->FindString("Version");
 
   if (!num_objects_value || !size_value || !storage_max_value || !path ||
       !version) {
@@ -238,13 +227,13 @@ bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
-  const std::string* version = response_dict->FindStringKey("AgentVersion");
-  const std::string* peerid = response_dict->FindStringKey("ID");
+  const std::string* version = response_dict->FindString("AgentVersion");
+  const std::string* peerid = response_dict->FindString("ID");
 
   if (!peerid || !version) {
     VLOG(1) << "Invalid response, missing required keys in value dictionary.";
@@ -277,12 +266,12 @@ bool IPFSJSONParser::GetGarbageCollectionFromJSON(const std::string& json,
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
-  const std::string* error_message = response_dict->FindStringKey("Error");
+  const std::string* error_message = response_dict->FindString("Error");
   if (error_message)
     *error = *error_message;
   return true;
@@ -308,20 +297,20 @@ bool IPFSJSONParser::GetImportResponseFromJSON(const std::string& json,
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
-  const std::string* name = response_dict->FindStringKey("Name");
+  const std::string* name = response_dict->FindString("Name");
   if (name)
     data->filename = *name;
 
-  const std::string* hash = response_dict->FindStringKey("Hash");
+  const std::string* hash = response_dict->FindString("Hash");
   if (hash)
     data->hash = *hash;
 
-  const std::string* size_value = response_dict->FindStringKey("Size");
+  const std::string* size_value = response_dict->FindString("Size");
   if (size_value)
     data->size = std::stoll(*size_value);
   return true;
@@ -347,18 +336,25 @@ bool IPFSJSONParser::GetParseKeysFromJSON(
     return false;
   }
 
-  const base::Value* list = records_v->FindListKey("Keys");
+  const auto* dict = records_v->GetIfDict();
+  if (!dict) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const auto* list = dict->FindList("Keys");
   if (!list) {
     VLOG(1) << "Invalid response, missing required keys in value dictionary.";
     return false;
   }
   auto& keys = *data;
-  for (const base::Value& val : list->GetList()) {
-    if (!val.is_dict()) {
+  for (const base::Value& item : *list) {
+    const auto* val = item.GetIfDict();
+    if (!val) {
       continue;
     }
-    const std::string* name = val.FindStringKey("Name");
-    const std::string* id = val.FindStringKey("Id");
+    const std::string* name = val->FindString("Name");
+    const std::string* id = val->FindString("Id");
     if (!name || !id)
       continue;
 
@@ -384,13 +380,13 @@ bool IPFSJSONParser::GetParseSingleKeyFromJSON(const std::string& json,
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict) || !response_dict) {
+  const auto* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
-  const std::string* key_name = response_dict->FindStringKey("Name");
-  const std::string* key_id = response_dict->FindStringKey("Id");
+  const std::string* key_name = response_dict->FindString("Name");
+  const std::string* key_id = response_dict->FindString("Id");
   if (!key_name || !key_id)
     return false;
   *name = *key_name;
@@ -417,37 +413,39 @@ std::string IPFSJSONParser::PutNewPeerToConfigJSON(const std::string& json,
     VLOG(1) << "Could not parse JSON, JSON is: " << json;
     return std::string();
   }
-  base::Value* peering = records_v->FindKey("Peering");
+
+  auto* dict = records_v->GetIfDict();
+  if (!dict) {
+    VLOG(1) << "Could not parse JSON, JSON is: " << json;
+    return std::string();
+  }
+
+  base::Value::Dict* peering = dict->FindDict("Peering");
   if (!peering) {
-    records_v->SetKey("Peering", base::Value(base::Value::Type::DICTIONARY));
-    peering = records_v->FindKey("Peering");
+    peering = dict->Set("Peering", base::Value::Dict())->GetIfDict();
   }
   DCHECK(peering);
-  base::Value* peers_arr = peering->FindListKey("Peers");
+  base::Value::List* peers_arr = peering->FindList("Peers");
   if (!peers_arr) {
-    base::Value item(base::Value::Type::LIST);
-    peering->SetPath("Peers", std::move(item));
-    peers_arr = peering->FindListKey("Peers");
+    peers_arr = peering->Set("Peers", base::Value::List())->GetIfList();
   }
   DCHECK(peers_arr);
-  DCHECK(peers_arr->is_list());
-  base::Value* peer_to_update = FindPeerElement(peers_arr, peer_id);
+  base::Value::Dict* peer_to_update = FindPeerElement(peers_arr, peer_id);
   if (!peer_to_update) {
-    base::Value item(base::Value::Type::DICTIONARY);
-    item.SetKey("ID", base::Value(peer_id));
+    base::Value::Dict item;
+    item.Set("ID", peer_id);
     peers_arr->Append(std::move(item));
     peer_to_update = FindPeerElement(peers_arr, peer_id);
   }
   DCHECK(peer_to_update);
   if (!address.empty()) {
-    base::Value item(address);
-    base::Value* addresses = peer_to_update->FindListKey("Addrs");
+    auto* addresses = peer_to_update->FindList("Addrs");
     if (addresses) {
-      addresses->Append(std::move(item));
+      addresses->Append(address);
     } else {
-      base::Value list(base::Value::Type::LIST);
-      list.Append(std::move(item));
-      peer_to_update->SetKey("Addrs", std::move(list));
+      base::Value::List list;
+      list.Append(address);
+      peer_to_update->Set("Addrs", std::move(list));
     }
   }
 
@@ -470,33 +468,37 @@ bool IPFSJSONParser::GetPeersFromConfigJSON(const std::string& json,
     VLOG(1) << "Could not parse JSON, JSON is: " << json;
     return false;
   }
-  const base::Value* peers_arr = records_v->FindPath("Peering.Peers");
-  if (!peers_arr || !peers_arr->is_list()) {
+
+  const auto* dict = records_v->GetIfDict();
+  if (!dict) {
+    VLOG(1) << "Could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const auto* peers_arr = dict->FindListByDottedPath("Peering.Peers");
+  if (!peers_arr) {
     VLOG(1) << "Invalid json, can not find Peers array.";
     return false;
   }
 
-  for (const base::Value& val : peers_arr->GetList()) {
-    const base::Value* peer = val.FindKey("ID");
-    const base::Value* addr = val.FindListKey("Addrs");
+  for (const base::Value& item : *peers_arr) {
+    const auto& val = item.GetDict();
+    const auto* peer = val.FindString("ID");
+    const auto* addr = val.FindList("Addrs");
 
-    bool has_addr = addr && addr->is_list() && !addr->GetList().empty();
-    bool has_peer = peer && peer->is_string();
-    if (!has_addr && !has_peer) {
+    bool has_addr = addr && !addr->empty();
+    if (!peer) {
       continue;
     }
-    auto peer_id = peer->GetString();
-    std::string value;
     if (has_addr) {
-      for (const base::Value& item : addr->GetList()) {
+      for (const base::Value& item : *addr) {
         auto address = item.GetString();
         if (address.empty())
           continue;
-        auto value = address + "/p2p/" + peer_id;
-        peers->push_back(value);
+        peers->push_back(base::StrCat({address, "/p2p/", *peer}));
       }
     } else {
-      peers->push_back(peer_id);
+      peers->push_back(*peer);
     }
   }
   return true;
@@ -518,23 +520,29 @@ std::string IPFSJSONParser::RemovePeerFromConfigJSON(
     VLOG(1) << "Could not parse JSON, JSON is: " << json;
     return std::string();
   }
-  base::Value* peers_arr = records_v->FindPath("Peering.Peers");
-  if (!peers_arr || !peers_arr->is_list())
+
+  auto* dict = records_v->GetIfDict();
+  if (!dict) {
+    VLOG(1) << "Could not parse JSON, JSON is: " << json;
+    return std::string();
+  }
+
+  base::Value::List* peers_arr = dict->FindListByDottedPath("Peering.Peers");
+  if (!peers_arr)
     return json;
-  base::Value* peer_to_update = FindPeerElement(peers_arr, peer_id);
+  base::Value::Dict* peer_to_update = FindPeerElement(peers_arr, peer_id);
   if (!peer_to_update)
     return json;
-  DCHECK(peer_to_update);
   if (!peer_address.empty()) {
-    base::Value* addresses = peer_to_update->FindListKey("Addrs");
+    base::Value::List* addresses = peer_to_update->FindList("Addrs");
     if (!addresses)
       return json;
-    if (!RemoveValueFromList(addresses, peer_address))
+    if (!RemoveValueFromList(addresses, base::Value(peer_address)))
       return json;
-    if (addresses->GetList().empty())
-      RemoveElementFromList(peers_arr, *peer_to_update);
+    if (addresses->empty())
+      RemoveValueFromList(peers_arr, *peer_to_update);
   } else {
-    RemoveElementFromList(peers_arr, *peer_to_update);
+    RemoveValueFromList(peers_arr, *peer_to_update);
   }
 
   std::string json_string;

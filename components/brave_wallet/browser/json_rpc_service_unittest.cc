@@ -133,7 +133,7 @@ std::string GetFilStateSearchMsgLimitedResponse(int64_t value) {
 }
 
 void UpdateCustomNetworks(PrefService* prefs,
-                          std::vector<base::Value>* values) {
+                          std::vector<base::Value::Dict>* values) {
   DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
   base::Value* dict = update.Get();
   ASSERT_TRUE(dict);
@@ -142,9 +142,10 @@ void UpdateCustomNetworks(PrefService* prefs,
     list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
   }
   ASSERT_TRUE(list);
-  list->ClearList();
+  auto& list_value = list->GetList();
+  list_value.clear();
   for (auto& it : *values) {
-    list->Append(std::move(it));
+    list_value.Append(std::move(it));
   }
 }
 
@@ -1012,7 +1013,7 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
-  std::vector<base::Value> values;
+  std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
                             {"https://url1.com"}, {"https://url1.com"},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
@@ -1053,7 +1054,7 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
-  std::vector<base::Value> values;
+  std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
                             {"https://url1.com"}, {"https://url1.com"},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
@@ -1101,7 +1102,7 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
 
 TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
   base::MockCallback<mojom::JsonRpcService::GetCustomNetworksCallback> callback;
-  std::vector<base::Value> values;
+  std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1(mojom::kMainnetChainId, "chain_name",
                             {"https://url1.com"}, {"https://url1.com"},
                             {"https://url1.com"}, "symbol_name", "symbol", 11,
@@ -1127,7 +1128,7 @@ TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
 
 TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   base::MockCallback<mojom::JsonRpcService::GetKnownNetworksCallback> callback;
-  std::vector<base::Value> values;
+  std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1(mojom::kMainnetChainId, "chain_name",
                             {"https://url1.com"}, {"https://url1.com"},
                             {"https://url1.com"}, "symbol_name", "symbol", 11,
@@ -2350,7 +2351,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
-  std::vector<base::Value> values;
+  std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
                             {"https://url1.com"}, {"https://url1.com"},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
@@ -3098,7 +3099,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, Reset) {
-  std::vector<base::Value> values;
+  std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain("0x1", "chain_name", {"https://url1.com"},
                            {"https://url1.com"}, {"https://url1.com"},
                            "symbol_name", "symbol", 11, mojom::CoinType::ETH,

@@ -1137,7 +1137,7 @@ std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
 void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
   DCHECK(prefs);
 
-  base::Value value = brave_wallet::EthNetworkInfoToValue(chain);
+  base::Value::Dict value = brave_wallet::EthNetworkInfoToValue(chain);
 
   {  // Update needs to be done before GetNetworkId below.
     DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
@@ -1149,7 +1149,7 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
           dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
     }
     CHECK(list);
-    list->Append(std::move(value));
+    list->GetList().Append(std::move(value));
   }
 
   const std::string network_id =
@@ -1162,18 +1162,17 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
       base::StrCat({kEthereumPrefKey, ".", network_id}),
       base::Value(base::Value::Type::LIST));
 
-  base::Value native_asset(base::Value::Type::DICTIONARY);
-  native_asset.SetStringKey("address", "");
-  native_asset.SetStringKey("name", chain.symbol_name);
-  native_asset.SetStringKey("symbol", chain.symbol);
-  native_asset.SetBoolKey("is_erc20", false);
-  native_asset.SetBoolKey("is_erc721", false);
-  native_asset.SetIntKey("decimals", chain.decimals);
-  native_asset.SetBoolKey("visible", true);
-  native_asset.SetStringKey("logo",
-                            chain.icon_urls.empty() ? "" : chain.icon_urls[0]);
+  base::Value::Dict native_asset;
+  native_asset.Set("address", "");
+  native_asset.Set("name", chain.symbol_name);
+  native_asset.Set("symbol", chain.symbol);
+  native_asset.Set("is_erc20", false);
+  native_asset.Set("is_erc721", false);
+  native_asset.Set("decimals", chain.decimals);
+  native_asset.Set("visible", true);
+  native_asset.Set("logo", chain.icon_urls.empty() ? "" : chain.icon_urls[0]);
 
-  asset_list->Append(std::move(native_asset));
+  asset_list->GetList().Append(std::move(native_asset));
 }
 
 void RemoveCustomNetwork(PrefService* prefs,
