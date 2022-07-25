@@ -239,13 +239,18 @@ def get_grd_strings(grd_file_path, validate_tags=True):
         message_value = textify(message_tag)
         assert message_name, 'Message name is empty'
         assert (message_name.startswith('IDS_') or
+                message_name.startswith('IDR_') or
                 message_name.startswith('PRINT_PREVIEW_MEDIA_')), \
             f'Invalid message ID: {message_name}'
         # None of the PRINT_PREVIEW_MEDIA_ messages currently get uploaded for
         # translation, but in case this changes let's keep the prefix in the
         # name (as opposed to IDS_ which we strip)
+        # There are some Chromium strings which (mistakenly) have IDR_ prefixes.
+        # Keep the prefix for them as well.
         if message_name.startswith('IDS_'):
             string_name = message_name[4:].lower()
+        else:
+            string_name = message_name.lower()
         string_fp = get_fingerprint_for_xtb(message_tag)
         string_tuple = (string_name, message_value, string_fp, message_desc)
         strings.append(string_tuple)
