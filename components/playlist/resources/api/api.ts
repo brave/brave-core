@@ -7,60 +7,54 @@ import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 type PlaylistEventListener = (event: PlaylistMojo.PlaylistEvent) => void
 
-interface API {
-  pageCallbackRouter: PlaylistMojo.PageCallbackRouter
-  pageHandler: PlaylistMojo.PageHandlerRemote
+let apiInstance: API
 
-  getAllPlaylists: () => Promise<{playlists: PlaylistMojo.Playlist[]}>
-  getPlaylist: (id: string) => Promise<{playlist?: PlaylistMojo.Playlist}>
-  addMediaFilesFromPageToPlaylist: (playlistId: string, url: string) => void
-  removeItemFromPlaylist: (playlistId: string, itemId: string) => void
-
-  addEventListener: (listener: PlaylistEventListener) => void
-}
-
-let playlistAPIInstance: API
-
-class PlaylistAPIInstance implements API {
-  pageCallbackRouter = new PlaylistMojo.PageCallbackRouter()
-  pageHandler = new PlaylistMojo.PageHandlerRemote()
+class API {
+  #pageCallbackRouter = new PlaylistMojo.PageCallbackRouter()
+  #pageHandler = new PlaylistMojo.PageHandlerRemote()
 
   constructor () {
     const factory = PlaylistMojo.PageHandlerFactory.getRemote()
     factory.createPageHandler(
-        this.pageCallbackRouter.$.bindNewPipeAndPassRemote(),
-        this.pageHandler.$.bindNewPipeAndPassReceiver())
+        this.#pageCallbackRouter.$.bindNewPipeAndPassRemote(),
+        this.#pageHandler.$.bindNewPipeAndPassReceiver())
   }
 
-  getAllPlaylists = async function ():
-      Promise<{playlists: PlaylistMojo.Playlist[]}> {
-        return this.pageHandler.getAllPlaylists()
-      }
+  async getAllPlaylists () {
+    return this.#pageHandler.getAllPlaylists()
+  }
 
-  getPlaylist = async function (id: string):
-  Promise<{playlist?: PlaylistMojo.Playlist}> {
-    return this.pageHandler.getPlaylist(id)
+  async getPlaylist (id: string) {
+    return this.#pageHandler.getPlaylist(id)
+  }
+
+  createPlaylist (playlist: PlaylistMojo.Playlist) {
+    this.#pageHandler.createPlaylist(playlist)
+  }
+
+  removePlaylist (playlistId: string) {
+    this.#pageHandler.removePlaylist(playlistId)
   }
 
   addEventListener (listener: PlaylistEventListener) {
-    this.pageCallbackRouter.onEvent.addListener(listener)
+    this.#pageCallbackRouter.onEvent.addListener(listener)
   }
 
   addMediaFilesFromPageToPlaylist (playlistId: string, url: string) {
     let mojoUrl = new Url()
     mojoUrl.url = url
-    this.pageHandler.addMediaFilesFromPageToPlaylist(
+    this.#pageHandler.addMediaFilesFromPageToPlaylist(
         playlistId, mojoUrl)
   }
 
   removeItemFromPlaylist (playlistId: string, itemId: string) {
-    this.pageHandler.removeItemFromPlaylist(playlistId, itemId)
+    this.#pageHandler.removeItemFromPlaylist(playlistId, itemId)
   }
 }
 
 export function getPlaylistAPI (): API {
-  if (!playlistAPIInstance) {
-    playlistAPIInstance = new PlaylistAPIInstance()
+  if (!apiInstance) {
+    apiInstance = new API()
   }
-  return playlistAPIInstance
+  return apiInstance
 }

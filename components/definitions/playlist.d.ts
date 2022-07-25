@@ -11,5 +11,6 @@ declare namespace Playlist {
 
   export interface State {
     lists : PlaylistMojo.Playlist[]
+    currentList: PlaylistMojo.Playlist|undefined
   }
 }

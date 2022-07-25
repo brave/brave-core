@@ -53,13 +53,15 @@ bool PlaylistServiceFactory::IsPlaylistEnabled(
 void PlaylistServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   base::Value::Dict default_playlist;
-  default_playlist.Set(kPlaylistIDKey, std::string());
+  default_playlist.Set(kPlaylistIDKey, kDefaultPlaylistID);
   default_playlist.Set(kPlaylistNameKey, std::string());
   default_playlist.Set(kPlaylistItemsKey, base::Value::List());
 
-  base::Value::List list;
-  list.Append(std::move(default_playlist));
-  registry->RegisterListPref(kPlaylistListsPref, base::Value(std::move(list)));
+  base::Value::Dict dict;
+  dict.Set(kDefaultPlaylistID, base::Value(std::move(default_playlist)));
+
+  registry->RegisterDictionaryPref(kPlaylistsPref,
+                                   base::Value(std::move(dict)));
   registry->RegisterDictionaryPref(kPlaylistItemsPref);
 }
 

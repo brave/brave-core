@@ -14,8 +14,7 @@ struct PlaylistItemChangeParams;
 
 class PlaylistServiceObserver : public base::CheckedObserver {
  public:
-  virtual void OnPlaylistItemStatusChanged(
-      const PlaylistItemChangeParams& params) = 0;
+  virtual void OnPlaylistStatusChanged(const PlaylistChangeParams& params) = 0;
 };
 
 }  // namespace playlist

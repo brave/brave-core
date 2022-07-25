@@ -18,6 +18,8 @@ constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
 constexpr char kPlaylistItemReadyKey[] = "ready";
 constexpr char kPlaylistItemTitleKey[] = "title";
 
+constexpr char kDefaultPlaylistID[] = "default";
+
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_PLAYLIST_CONSTANTS_H_

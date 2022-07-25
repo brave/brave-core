@@ -5,5 +5,7 @@
 export const enum types {
   PLAYLIST_LOADED = '@@playlist/PLAYLIST_LOADED',
 
+  PLAYLIST_SELECTED = '@@playlist/PLAYLIST_SELECTED',
+
   // TODO(sko) Need more actions for each events
 }

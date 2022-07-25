@@ -10,37 +10,45 @@
 
 namespace playlist {
 
-std::string PlaylistItemChangeParams::GetPlaylistChangeTypeAsString(
-    PlaylistItemChangeParams::Type type) {
+std::string PlaylistChangeParams::GetPlaylistChangeTypeAsString(
+    PlaylistChangeParams::Type type) {
   switch (type) {
-    case PlaylistItemChangeParams::Type::kAdded:
+    case PlaylistChangeParams::Type::kItemAdded:
       return "item: added";
-    case PlaylistItemChangeParams::Type::kDeleted:
+    case PlaylistChangeParams::Type::kItemDeleted:
       return "item: deleted";
-    case PlaylistItemChangeParams::Type::kAborted:
+    case PlaylistChangeParams::Type::kItemAborted:
       return "item: aborted";
-    case PlaylistItemChangeParams::Type::kThumbnailReady:
+    case PlaylistChangeParams::Type::kItemThumbnailReady:
       return "item: thumbnail_ready";
-    case PlaylistItemChangeParams::Type::kThumbnailFailed:
+    case PlaylistChangeParams::Type::kItemThumbnailFailed:
       return "item: thumbnail_failed";
-    case PlaylistItemChangeParams::Type::kPlayReady:
+    case PlaylistChangeParams::Type::kItemPlayReady:
       return "item: play_ready";
-    case PlaylistItemChangeParams::Type::kAllDeleted:
+    case PlaylistChangeParams::Type::kListCreated:
+      return "list: created";
+    case PlaylistChangeParams::Type::kAllDeleted:
       return "item: all deleted";
-    case PlaylistItemChangeParams::Type::kNone:
+    case PlaylistChangeParams::Type::kNone:
       [[fallthrough]];
     default:
-      NOTREACHED();
+      NOTREACHED() << "Unknown type: " << static_cast<int>(type);
       return "item: unknown";
   }
 }
 
-PlaylistItemChangeParams::PlaylistItemChangeParams() = default;
+PlaylistChangeParams::PlaylistChangeParams() = default;
 
-PlaylistItemChangeParams::PlaylistItemChangeParams(Type type,
-                                                   const std::string& id)
+PlaylistChangeParams::PlaylistChangeParams(Type type, const std::string& id)
     : change_type(type), playlist_id(id) {}
-PlaylistItemChangeParams::~PlaylistItemChangeParams() = default;
+PlaylistChangeParams::~PlaylistChangeParams() = default;
+
+PlaylistInfo::PlaylistInfo() = default;
+PlaylistInfo::~PlaylistInfo() = default;
+PlaylistInfo::PlaylistInfo(const PlaylistInfo& rhs) = default;
+PlaylistInfo& PlaylistInfo::operator=(const PlaylistInfo& rhs) = default;
+PlaylistInfo::PlaylistInfo(PlaylistInfo&& rhs) noexcept = default;
+PlaylistInfo& PlaylistInfo::operator=(PlaylistInfo&& rhs) noexcept = default;
 
 PlaylistItemInfo::PlaylistItemInfo() = default;
 PlaylistItemInfo::~PlaylistItemInfo() = default;

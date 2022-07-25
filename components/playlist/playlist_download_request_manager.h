@@ -9,7 +9,9 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <vector>
 
+#include "base/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/playlist/media_detector_component_manager.h"
@@ -34,16 +36,24 @@ class PlaylistDownloadRequestManager
     : public MediaDetectorComponentManager::Observer,
       public content::WebContentsObserver {
  public:
-  class Delegate {
-   public:
-    virtual void OnPlaylistCreationParamsReady(
-        const PlaylistItemInfo& params) = 0;
+  struct Request {
+    using Callback =
+        base::OnceCallback<void(const std::vector<PlaylistItemInfo>&)>;
+
+    Request();
+    Request& operator=(const Request&) = delete;
+    Request(const Request&) = delete;
+    Request& operator=(Request&&) noexcept;
+    Request(Request&&) noexcept;
+    ~Request();
+
+    std::string url;
+    Callback callback = base::NullCallback();
   };
 
   static void SetPlaylistJavaScriptWorldId(const int32_t id);
 
   PlaylistDownloadRequestManager(content::BrowserContext* context,
-                                 Delegate* delegate,
                                  MediaDetectorComponentManager* manager);
   ~PlaylistDownloadRequestManager() override;
   PlaylistDownloadRequestManager(const PlaylistDownloadRequestManager&) =
@@ -52,20 +62,20 @@ class PlaylistDownloadRequestManager
       const PlaylistDownloadRequestManager&) = delete;
 
   // Delegate will get called with generated param.
-  void GetMediaFilesFromPage(const std::string& url);
+  void GetMediaFilesFromPage(Request request);
 
  private:
   // Calling this will trigger loading |url| on a web contents,
   // and we'll inject javascript on the contents to get a list of
   // media files on the page.
-  void RunMediaDetector(const std::string& url);
+  void RunMediaDetector(Request request);
 
   bool ReadyToRunMediaDetectorScript() const;
   void CreateWebContents();
   void OnGetMedia(base::Value value);
 
   // Pop a task from queue and detect media from the page if any.
-  void FetchPendingURL();
+  void FetchPendingRequest();
 
   void ScheduleWebContentsDestroying();
   void DestroyWebContents();
@@ -83,7 +93,7 @@ class PlaylistDownloadRequestManager
   // requested, |web_contents_| may not be ready to inject js script. This
   // list caches already requested urls and used after |web_contents_| is
   // ready to use.
-  std::list<std::string> pending_urls_;
+  std::list<Request> pending_requests_;
 
   // Used to inject js script to get playlist item metadata to download
   // its media files/thumbnail images and get titile.
@@ -93,10 +103,10 @@ class PlaylistDownloadRequestManager
   // If it's zero, all requested fetching are completed. Then |web_contents_|
   // destroying task will be scheduled.
   int in_progress_urls_count_ = 0;
+  Request::Callback callback_for_current_request_ = base::NullCallback();
 
   std::string media_detector_script_;
   raw_ptr<content::BrowserContext> context_;
-  raw_ptr<Delegate> delegate_;
 
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
   base::ScopedObservation<MediaDetectorComponentManager,
