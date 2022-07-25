@@ -2369,10 +2369,6 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
   }
 }
 
-void RewardsServiceImpl::HandleFlagsForTesting(const std::string& input) {
-  return HandleFlags(RewardsFlags::Parse(input));
-}
-
 void RewardsServiceImpl::SetBackupCompleted() {
   profile_->GetPrefs()->SetBoolean(prefs::kBackupSucceeded, true);
 }

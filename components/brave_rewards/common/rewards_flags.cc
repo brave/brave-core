@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
+#include <string>
 #include <vector>
 
 #include "base/command_line.h"
@@ -15,6 +16,8 @@
 namespace brave_rewards {
 
 namespace {
+
+bool g_force_parsing_for_testing = false;
 
 constexpr char kSwitchName[] = "rewards";
 
@@ -40,30 +43,30 @@ absl::optional<int> ReadPositiveInt(const std::string& value) {
   return ReadInt(value, [](int v) { return v > 0; });
 }
 
-}  // namespace
-
-RewardsFlags RewardsFlags::Parse(const std::string& input) {
+RewardsFlags Parse(const std::string& input) {
   RewardsFlags flags;
 
-  std::vector<std::string> entries = base::SplitString(
+  const std::vector<std::string> entries = base::SplitString(
       input, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-  for (auto& entry : entries) {
-    std::vector<std::string> values = base::SplitString(
+  for (const auto& entry : entries) {
+    const std::vector<std::string> values = base::SplitString(
         entry, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-    std::string name = values.empty() ? "" : base::ToLowerASCII(values[0]);
-    std::string value = values.size() > 1 ? values[1] : "";
+    const std::string name =
+        values.empty() ? "" : base::ToLowerASCII(values[0]);
+    const std::string value = values.size() > 1 ? values[1] : "";
 
     if (name == "staging") {
       // The "staging" flag allows the user to specify the staging or production
       // environment; if the flag is "falsy", the production environment is
       // used.
-      flags.environment = ReadBoolFlag(value) ? Environment::kStaging
-                                              : Environment::kProduction;
+      flags.environment = ReadBoolFlag(value)
+                              ? RewardsFlags::Environment::kStaging
+                              : RewardsFlags::Environment::kProduction;
     } else if (name == "development") {
       if (ReadBoolFlag(value) && !flags.environment) {
-        flags.environment = Environment::kDevelopment;
+        flags.environment = RewardsFlags::Environment::kDevelopment;
       }
     } else if (name == "debug") {
       flags.debug = ReadBoolFlag(value);
@@ -83,19 +86,29 @@ RewardsFlags RewardsFlags::Parse(const std::string& input) {
   return flags;
 }
 
+}  // namespace
+
+void RewardsFlags::SetForceParsingForTesting(bool force_parsing_for_testing) {
+  g_force_parsing_for_testing = force_parsing_for_testing;
+}
+
 const RewardsFlags& RewardsFlags::ForCurrentProcess() {
-  static RewardsFlags parsed_flags = [] {
-    std::string input;
+  static absl::optional<RewardsFlags> parsed_flags;
 
-    const auto* command_line = base::CommandLine::ForCurrentProcess();
-    if (command_line->HasSwitch(kSwitchName)) {
-      input = command_line->GetSwitchValueASCII(kSwitchName);
-    }
+  if (parsed_flags && !g_force_parsing_for_testing) {
+    return *parsed_flags;
+  }
 
-    return Parse(input);
-  }();
+  std::string input;
 
-  return parsed_flags;
+  const auto* const command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(kSwitchName)) {
+    input = command_line->GetSwitchValueASCII(kSwitchName);
+  }
+
+  parsed_flags = Parse(input);
+
+  return *parsed_flags;
 }
 
 }  // namespace brave_rewards

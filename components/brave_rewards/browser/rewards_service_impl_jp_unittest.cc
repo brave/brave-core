@@ -5,6 +5,7 @@
 
 #include <map>
 
+#include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
@@ -16,6 +17,7 @@
 #include "brave/components/brave_rewards/browser/test_util.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "chrome/browser/profiles/profile.h"
@@ -57,9 +59,12 @@ class RewardsServiceJPTest : public testing::Test {
     RewardsServiceFactory::SetServiceForTesting(std::move(rewards_));
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile()));
-    rewards_service_->HandleFlagsForTesting("countryid=19024");
     ASSERT_TRUE(RewardsServiceFactory::GetInstance() != NULL);
     ASSERT_TRUE(rewards_service() != NULL);
+
+    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+    command_line->AppendSwitchASCII("rewards", "countryid=19024");
+    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
   }
 
   void TearDown() override {

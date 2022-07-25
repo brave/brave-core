@@ -5,14 +5,17 @@
 
 #include <memory>
 
+#include "base/command_line.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
+#include "base/test/scoped_command_line.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -35,6 +38,8 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
+    brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
 
     // HTTP resolver
     https_server_.reset(new net::EmbeddedTestServer(
@@ -75,8 +80,10 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
         response);
   }
 
-  void TearDown() override {
-    InProcessBrowserTest::TearDown();
+  void TearDownOnMainThread() override {
+    brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
+
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   void ResetWaitForCallback() {
@@ -185,21 +192,49 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlagsForTesting("staging=true");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "staging=true");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlagsForTesting("staging=1");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "staging=1");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
-  rewards_service_->HandleFlagsForTesting("staging=false");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "staging=false");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
-  rewards_service_->HandleFlagsForTesting("staging=werwe");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "staging=foobar");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
@@ -212,21 +247,49 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
   rewards_service_->SetDebug(true);
   GetDebug();
 
-  rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlagsForTesting("debug=true");
-  GetDebug();
+  {
+    rewards_service_->SetDebug(false);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "debug=true");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetDebug();
+  }
 
-  rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlagsForTesting("debug=1");
-  GetDebug();
+  {
+    rewards_service_->SetDebug(false);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "debug=1");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetDebug();
+  }
 
-  rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlagsForTesting("debug=false");
-  GetDebug();
+  {
+    rewards_service_->SetDebug(false);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "debug=false");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetDebug();
+  }
 
-  rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlagsForTesting("debug=werwe");
-  GetDebug();
+  {
+    rewards_service_->SetDebug(false);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "debug=foobar");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetDebug();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
@@ -241,21 +304,49 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlagsForTesting("development=true");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "development=true");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlagsForTesting("development=1");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "development=1");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlagsForTesting("development=false");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "development=false");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlagsForTesting("development=werwe");
-  GetEnvironment();
+  {
+    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "development=foobar");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetEnvironment();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsReconcile) {
@@ -265,17 +356,38 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsReconcile) {
 
   testing::InSequence s;
 
-  rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlagsForTesting("reconcile-interval=10");
-  GetReconcileInterval();
+  {
+    rewards_service_->SetReconcileInterval(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "reconcile-interval=10");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetReconcileInterval();
+  }
 
-  rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlagsForTesting("reconcile-interval=-1");
-  GetReconcileInterval();
+  {
+    rewards_service_->SetReconcileInterval(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "reconcile-interval=-1");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetReconcileInterval();
+  }
 
-  rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlagsForTesting("reconcile-interval=sdf");
-  GetReconcileInterval();
+  {
+    rewards_service_->SetReconcileInterval(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "reconcile-interval=foobar");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetReconcileInterval();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsRetryInterval) {
@@ -285,17 +397,38 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsRetryInterval) {
 
   testing::InSequence s;
 
-  rewards_service_->SetRetryInterval(0);
-  rewards_service_->HandleFlagsForTesting("retry-interval=10");
-  GetRetryInterval();
+  {
+    rewards_service_->SetRetryInterval(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "retry-interval=10");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetRetryInterval();
+  }
 
-  rewards_service_->SetRetryInterval(0);
-  rewards_service_->HandleFlagsForTesting("retry-interval=-1");
-  GetRetryInterval();
+  {
+    rewards_service_->SetRetryInterval(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "retry-interval=-1");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetRetryInterval();
+  }
 
-  rewards_service_->SetRetryInterval(0);
-  rewards_service_->HandleFlagsForTesting("retry-interval=sdf");
-  GetRetryInterval();
+  {
+    rewards_service_->SetRetryInterval(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "retry-interval=foobar");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetRetryInterval();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsGeminiRetries) {
@@ -306,17 +439,38 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsGeminiRetries) {
 
   testing::InSequence s;
 
-  rewards_service_->SetGeminiRetries(0);
-  rewards_service_->HandleFlagsForTesting("gemini-retries=2");
-  GetGeminiRetries();
+  {
+    rewards_service_->SetGeminiRetries(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "gemini-retries=2");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetGeminiRetries();
+  }
 
-  rewards_service_->SetGeminiRetries(0);
-  rewards_service_->HandleFlagsForTesting("gemini-retries=10");
-  GetGeminiRetries();
+  {
+    rewards_service_->SetGeminiRetries(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "gemini-retries=10");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetGeminiRetries();
+  }
 
-  rewards_service_->SetGeminiRetries(0);
-  rewards_service_->HandleFlagsForTesting("gemini-retries=-1");
-  GetGeminiRetries();
+  {
+    rewards_service_->SetGeminiRetries(0);
+    base::test::ScopedCommandLine scoped_command_line;
+    base::CommandLine* command_line =
+        scoped_command_line.GetProcessCommandLine();
+    command_line->AppendSwitchASCII("rewards", "gemini-retries=-1");
+    rewards_service_->HandleFlags(
+        brave_rewards::RewardsFlags::ForCurrentProcess());
+    GetGeminiRetries();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
@@ -333,9 +487,12 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetRetryInterval(0);
 
-  rewards_service_->HandleFlagsForTesting(
-      "staging=true,debug=true,retry-interval=1,reconcile-interval=10,gemini-"
-      "retries=2");
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  command_line->AppendSwitchASCII("rewards",
+                                  "staging=true,debug=true,retry-interval=1,"
+                                  "reconcile-interval=10,gemini-retries=2");
+  rewards_service_->HandleFlags(
+      brave_rewards::RewardsFlags::ForCurrentProcess());
 
   GetReconcileInterval();
   GetRetryInterval();
@@ -359,8 +516,12 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   rewards_service_->SetRetryInterval(0);
   rewards_service_->SetGeminiRetries(3);
 
-  rewards_service_->HandleFlagsForTesting(
-      "staging=,debug=,retryinterval=true,reconcile-interval,gemini-retries");
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  command_line->AppendSwitchASCII("rewards",
+                                  "staging=,debug=,retryinterval="
+                                  "true,reconcile-interval,gemini-retries");
+  rewards_service_->HandleFlags(
+      brave_rewards::RewardsFlags::ForCurrentProcess());
 
   GetReconcileInterval();
   GetRetryInterval();
