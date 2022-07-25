@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include <vector>
-#include "absl/types/optional.h"
+
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
@@ -28,6 +28,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "third_party/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
 
 class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {

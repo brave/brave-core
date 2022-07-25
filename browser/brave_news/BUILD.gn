@@ -6,9 +6,14 @@ source_set("brave_news") {
 
   deps = [
     "//base",
+    "//brave/browser/profiles:util",
     "//brave/components/brave_today/browser",
     "//brave/components/brave_today/common",
+    "//brave/components/brave_today/common:common",
+    "//brave/components/brave_today/common:mojom",
+    "//chrome/browser:browser",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content",
     "//components/user_prefs",
     "//content/public/browser",
@@ -29,8 +34,15 @@ source_set("browser_tests") {
 
     deps = [
       "//brave/components//brave_rewards/browser",
+      "//brave/components/brave_today/common:common",
+      "//brave/components/brave_today/common:mojom",
       "//brave/components/constants",
       "//chrome/browser",
+      "//chrome/browser/profiles:profiles",
+      "//chrome/browser/ui:ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+      "//net:test_support",
       "//testing/gmock",
       "//testing/gtest",
     ]
