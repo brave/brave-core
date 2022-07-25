@@ -98,6 +98,8 @@ class MockAdsService : public AdsService {
                     const ads::mojom::SearchResultAdEventType,
                     TriggerSearchResultAdEventCallback));
 
+  MOCK_METHOD0(PrefetchNewTabPageAd, void());
+
   MOCK_METHOD0(GetPrefetchedNewTabPageAd,
                absl::optional<ads::NewTabPageAdInfo>());
 

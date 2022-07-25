@@ -687,21 +687,30 @@ void AdsServiceImpl::OnInitialize(const bool success) {
   StartCheckIdleStateTimer();
 
   if (!is_setup_on_first_initialize_done_) {
-    SetupOnFirstInitialize();
     is_setup_on_first_initialize_done_ = true;
+    SetupOnFirstInitialize();
   }
 }
 
 void AdsServiceImpl::SetupOnFirstInitialize() {
-  DCHECK(!is_setup_on_first_initialize_done_);
-
   file_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&RemoveDeprecatedAdsDataFiles, base_path_));
 
   // Purge orphaned new tab page ad events which may have remained from the
-  // previous browser startup.
-  PurgeOrphanedAdEventsForType(ads::mojom::AdType::kNewTabPageAd,
-                               base::DoNothing());
+  // previous browser startup. If prefetch_new_tab_page_ad_on_first_run_ value
+  // is true, then it means that there was an attempt to prefetch a new tab page
+  // ad prior to CleanUpOnFirstRun() call. In this case, repeating the prefetch
+  // of a new tab page ad is needed after the purge.
+  if (prefetch_new_tab_page_ad_on_first_run_) {
+    prefetch_new_tab_page_ad_on_first_run_ = false;
+    PurgeOrphanedAdEventsForType(
+        ads::mojom::AdType::kNewTabPageAd,
+        base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedAdEventsForNewTabPageAds,
+                       AsWeakPtr()));
+  } else {
+    PurgeOrphanedAdEventsForType(ads::mojom::AdType::kNewTabPageAd,
+                                 base::DoNothing());
+  }
 }
 
 void AdsServiceImpl::ShutdownBatAds() {
@@ -1195,10 +1204,7 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
 void AdsServiceImpl::OnFailedToServeNewTabPageAd(
     const std::string& placement_id,
     const std::string& creative_instance_id) {
-  if (!purge_orphaned_new_tab_page_ad_events_time_) {
-    purge_orphaned_new_tab_page_ad_events_time_ =
-        base::Time::Now() + base::Hours(1);
-  }
+  need_purge_orphaned_new_tab_page_ad_events_ = true;
 }
 
 void AdsServiceImpl::TriggerPromotedContentAdEvent(
@@ -1265,17 +1271,6 @@ AdsServiceImpl::GetPrefetchedNewTabPageAd() {
     prefetched_new_tab_page_ad_info_.reset();
   }
 
-  if (purge_orphaned_new_tab_page_ad_events_time_ &&
-      *purge_orphaned_new_tab_page_ad_events_time_ <= base::Time::Now()) {
-    purge_orphaned_new_tab_page_ad_events_time_.reset();
-    PurgeOrphanedAdEventsForType(
-        ads::mojom::AdType::kNewTabPageAd,
-        base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedAdEventsForNewTabPageAds,
-                       AsWeakPtr()));
-  } else {
-    PrefetchNewTabPageAd();
-  }
-
   return ad_info;
 }
 
@@ -1340,6 +1335,13 @@ void AdsServiceImpl::RegisterResourceComponentsForLocale(
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {
+  if (!is_setup_on_first_initialize_done_) {
+    // Postpone prefetching of a new tab page ad at a later time during
+    // CleanUpOnFirstRun() call.
+    prefetch_new_tab_page_ad_on_first_run_ = true;
+    return;
+  }
+
   if (!connected()) {
     return;
   }
@@ -1350,21 +1352,22 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
     return;
   }
 
-  bat_ads_->GetNewTabPageAd(
-      base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
+  if (need_purge_orphaned_new_tab_page_ad_events_) {
+    need_purge_orphaned_new_tab_page_ad_events_ = false;
+    PurgeOrphanedAdEventsForType(
+        ads::mojom::AdType::kNewTabPageAd,
+        base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedAdEventsForNewTabPageAds,
+                       AsWeakPtr()));
+  } else {
+    bat_ads_->GetNewTabPageAd(
+        base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
+  }
 }
 
 void AdsServiceImpl::OnPrefetchNewTabPageAd(bool success,
                                             const std::string& json) {
   if (!success) {
     return;
-  }
-
-  // The previous successfully prefetched new tab page ad was not served.
-  if (prefetched_new_tab_page_ad_info_ &&
-      !purge_orphaned_new_tab_page_ad_events_time_) {
-    purge_orphaned_new_tab_page_ad_events_time_ =
-        base::Time::Now() + base::Hours(1);
   }
 
   ads::NewTabPageAdInfo ad_info;
