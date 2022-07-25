@@ -70,6 +70,14 @@ const BraveCoreSwitch BraveCoreSwitchVModule =
 const BraveCoreSwitch BraveCoreSwitchSyncURL =
     base::SysUTF8ToNSString(syncer::kSyncServiceURL);
 
+const BraveCoreLogSeverity BraveCoreLogSeverityFatal = logging::LOGGING_FATAL;
+const BraveCoreLogSeverity BraveCoreLogSeverityError = logging::LOGGING_ERROR;
+const BraveCoreLogSeverity BraveCoreLogSeverityWarning =
+    logging::LOGGING_WARNING;
+const BraveCoreLogSeverity BraveCoreLogSeverityInfo = logging::LOGGING_INFO;
+const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
+    logging::LOGGING_VERBOSE;
+
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
@@ -242,7 +250,7 @@ static bool CustomLogHandler(int severity,
     return false;
   }
   const int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (severity <= vlog_level) {
+  if (severity <= vlog_level || severity == logging::LOGGING_FATAL) {
     return _logHandler(severity, base::SysUTF8ToNSString(file), line,
                        message_start, base::SysUTF8ToNSString(str));
   }
