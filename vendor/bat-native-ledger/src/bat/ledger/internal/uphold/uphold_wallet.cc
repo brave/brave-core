@@ -15,8 +15,10 @@
 #include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 
 using ledger::uphold::Capabilities;
+using ledger::wallet::OnWalletStatusChange;
 
 namespace ledger {
 namespace uphold {

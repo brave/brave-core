@@ -41,10 +41,6 @@ std::string GetActivityUrl(const std::string& address);
 
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
-void OnWalletStatusChange(LedgerImpl* ledger,
-                          absl::optional<type::WalletStatus> from,
-                          type::WalletStatus to);
-
 void CheckWalletState(const type::ExternalWallet* wallet);
 
 }  // namespace uphold

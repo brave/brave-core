@@ -29,6 +29,10 @@ bool SetWallet(LedgerImpl* ledger,
 
 type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
 
+void OnWalletStatusChange(LedgerImpl* ledger,
+                          absl::optional<type::WalletStatus> from,
+                          type::WalletStatus to);
+
 }  // namespace wallet
 }  // namespace ledger
 

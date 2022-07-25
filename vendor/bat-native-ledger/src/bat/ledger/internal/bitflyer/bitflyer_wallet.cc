@@ -11,6 +11,9 @@
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
+
+using ledger::wallet::OnWalletStatusChange;
 
 namespace ledger {
 namespace bitflyer {
@@ -25,6 +28,12 @@ void BitflyerWallet::Generate(ledger::ResultCallback callback) {
     wallet = type::ExternalWallet::New();
     wallet->type = constant::kWalletBitflyer;
     wallet->status = type::WalletStatus::NOT_CONNECTED;
+    if (!ledger_->bitflyer()->SetWallet(wallet->Clone())) {
+      BLOG(0, "Unable to set bitFlyer wallet!");
+      return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    }
+
+    OnWalletStatusChange(ledger_, {}, wallet->status);
   }
 
   if (wallet->one_time_string.empty()) {
@@ -35,14 +44,23 @@ void BitflyerWallet::Generate(ledger::ResultCallback callback) {
     wallet->code_verifier = util::GeneratePKCECodeVerifier();
   }
 
+  absl::optional<type::WalletStatus> from;
   if (wallet->token.empty() &&
       (wallet->status == type::WalletStatus::PENDING ||
        wallet->status == type::WalletStatus::CONNECTED)) {
+    from = wallet->status;
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
 
   wallet = GenerateLinks(std::move(wallet));
-  ledger_->bitflyer()->SetWallet(wallet->Clone());
+  if (!ledger_->bitflyer()->SetWallet(wallet->Clone())) {
+    BLOG(0, "Unable to set bitFlyer wallet!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+  }
+
+  if (from) {
+    OnWalletStatusChange(ledger_, from, wallet->status);
+  }
 
   if (wallet->status == type::WalletStatus::VERIFIED ||
       wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED) {

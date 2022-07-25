@@ -25,6 +25,7 @@
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "brave_base/random.h"
 
+using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -184,7 +185,7 @@ void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
   }
 
   BLOG(1, "Disconnecting wallet");
-  const std::string uphold_wallet_address = wallet->address;
+  const std::string wallet_address = wallet->address;
 
   const bool manual = !notification.has_value();
 
@@ -211,11 +212,10 @@ void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
     ledger_->ledger_client()->WalletDisconnected(constant::kWalletUphold);
   }
 
-  ledger_->database()->SaveEventLog(
-      log::kWalletDisconnected,
-      std::string(constant::kWalletUphold) +
-          (!uphold_wallet_address.empty() ? "/" : "") +
-          uphold_wallet_address.substr(0, 5));
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(constant::kWalletUphold) +
+                                        (!wallet_address.empty() ? "/" : "") +
+                                        wallet_address.substr(0, 5));
 }
 
 void Uphold::GetUser(GetUserCallback callback) {
