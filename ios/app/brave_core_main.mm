@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
+#include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
@@ -162,7 +163,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     web::WebUIIOSControllerFactory::RegisterFactory(
         ChromeWebUIIOSControllerFactory::GetInstance());
 
-    [self registerComponentsForUpdate];
+    component_updater::ComponentUpdateService* cus =
+        GetApplicationContext()->GetComponentUpdateService();
+    DCHECK(cus);
+
+    _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
+
+    [self registerComponentsForUpdate:cus];
 
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
@@ -219,17 +226,16 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   [StartupTasks scheduleDeferredBrowserStateInitialization:_mainBrowserState];
 }
 
-- (void)registerComponentsForUpdate {
+- (void)registerComponentsForUpdate:
+    (component_updater::ComponentUpdateService*)cus {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdateCallback(
           base::BindRepeating(&component_updater::BraveOnDemandUpdate));
 
-  component_updater::ComponentUpdateService* cus =
-      GetApplicationContext()->GetComponentUpdateService();
-  DCHECK(cus);
-
   RegisterSafetyTipsComponent(cus);
   brave_wallet::RegisterWalletDataFilesComponent(cus);
+
+  [self.adblockService registerDefaultShieldsComponent];
 }
 
 - (void)dealloc {
