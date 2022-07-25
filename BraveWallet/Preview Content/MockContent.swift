@@ -68,6 +68,21 @@ extension BraveWallet.BlockchainToken {
     chainId: "",
     coin: .sol
   )
+
+  static let mockSPLToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "0x1111111111222222222233333333334444444445",
+    name: "Non-SOL",
+    logo: "",
+    isErc20: false,
+    isErc721: false,
+    symbol: "NONSOL",
+    decimals: 9,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: "",
+    coin: .sol
+  )
 }
 
 extension BraveWallet.AccountInfo {
