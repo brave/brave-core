@@ -77,10 +77,21 @@ public class NetworkStore: ObservableObject {
       // Need to prompt user to create new account via alert
       return .selectedChainHasNoAccounts
     } else {
-      guard self.selectedChainId != network.chainId else { return .chainAlreadySelected }
-      self.selectedChainId = network.chainId
-      let success = await rpcService.setNetwork(network.chainId, coin: network.coin)
-      return success ? nil : .unknown
+      let selectedCoin = await walletService.selectedCoin()
+      if self.selectedChainId != network.chainId {
+        self.selectedChainId = network.chainId
+      }
+      if selectedCoin != network.coin {
+        let success = await rpcService.setNetwork(network.chainId, coin: network.coin)
+        return success ? nil : .unknown
+      } else {
+        let rpcServiceNetwork = await rpcService.network(network.coin)
+        guard rpcServiceNetwork.chainId != network.chainId else {
+          return .chainAlreadySelected
+        }
+        let success = await rpcService.setNetwork(network.chainId, coin: network.coin)
+        return success ? nil : .unknown
+      }
     }
   }
 
