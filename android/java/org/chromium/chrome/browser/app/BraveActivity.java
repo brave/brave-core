@@ -178,7 +178,6 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -186,6 +185,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+//import com.brave.braveandroidplaylist.activity.PlaylistOnboardingActivity;
 
 /**
  * Brave's extension for ChromeActivity
@@ -1114,10 +1115,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void openBraveWallet(boolean fromDapp) {
-        Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
-        braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
-        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(braveWalletIntent);
+        // Intent braveWalletIntent = new Intent(this, PlaylistOnboardingActivity.class);
+        // braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
+        // braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        // startActivity(braveWalletIntent);
     }
 
     public void viewOnBlockExplorer(String address, @CoinType.EnumType int coinType) {
