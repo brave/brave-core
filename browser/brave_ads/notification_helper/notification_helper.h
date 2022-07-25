@@ -8,6 +8,10 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
+
+class Profile;
+
 namespace base {
 template <typename Type>
 struct DefaultSingletonTraits;
@@ -21,10 +25,14 @@ class NotificationHelper final {
  public:
   static NotificationHelper* GetInstance();
 
+  void InitForProfile(Profile* profile);
+
   bool CanShowNativeNotifications();
   bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
 
   bool ShowOnboardingNotification();
+
+  bool SystemNotificationsSupported() const;
 
  private:
   friend struct base::DefaultSingletonTraits<NotificationHelper>;
@@ -32,7 +40,13 @@ class NotificationHelper final {
   NotificationHelper();
   ~NotificationHelper();
 
+  void OnSystemNotificationPlatformBridgeReady(bool success);
+
+  bool system_notifications_supported_ = true;
+
   std::unique_ptr<NotificationHelperImpl> impl_;
+
+  base::WeakPtrFactory<NotificationHelper> weak_factory_{this};
 };
 
 }  // namespace brave_ads
