@@ -36,15 +36,13 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
       controller_(
           brave_news::BraveNewsControllerFactory::GetControllerForContext(
               contents->GetBrowserContext())) {
-  controller_->publisher_controller()->AddObserver(this);
+  publishers_observation_.Observe(controller_->publisher_controller());
   controller_->GetPublishers(base::DoNothing());
 }
 
-BraveNewsTabHelper::~BraveNewsTabHelper() {
-  controller_->publisher_controller()->RemoveObserver(this);
-}
+BraveNewsTabHelper::~BraveNewsTabHelper() = default;
 
-std::vector<BraveNewsTabHelper::FeedDetails>
+const std::vector<BraveNewsTabHelper::FeedDetails>
 BraveNewsTabHelper::GetAvailableFeeds() {
   std::vector<FeedDetails> feeds;
 
@@ -70,22 +68,22 @@ BraveNewsTabHelper::GetAvailableFeeds() {
   return feeds;
 }
 
-bool BraveNewsTabHelper::is_subscribed(const FeedDetails& feed_details) {
+bool BraveNewsTabHelper::IsSubscribed(const FeedDetails& feed_details) {
   auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
   return brave_news::IsPublisherEnabled(publisher);
 }
 
-bool BraveNewsTabHelper::is_subscribed() {
+bool BraveNewsTabHelper::IsSubscribed() {
   for (const auto& feed : GetAvailableFeeds()) {
-    if (is_subscribed(feed))
+    if (IsSubscribed(feed))
       return true;
   }
   return false;
 }
 
 void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
-  bool subscribed = is_subscribed(feed_details);
+  bool subscribed = IsSubscribed(feed_details);
   auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
   if (publisher) {
@@ -125,16 +123,16 @@ void BraveNewsTabHelper::OnFoundFeeds(
 }
 
 void BraveNewsTabHelper::AddObserver(PageFeedsObserver* observer) {
-  observers_.push_back(observer);
+  observers_.AddObserver(observer);
 }
 
 void BraveNewsTabHelper::RemoveObserver(PageFeedsObserver* observer) {
-  observers_.erase(std::find(observers_.begin(), observers_.end(), observer));
+  observers_.RemoveObserver(observer);
 }
 
 void BraveNewsTabHelper::AvailableFeedsChanged() {
-  for (auto* observer : observers_)
-    observer->OnAvailableFeedsChanged(GetAvailableFeeds());
+  for (auto& observer : observers_)
+    observer.OnAvailableFeedsChanged(GetAvailableFeeds());
 }
 
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {

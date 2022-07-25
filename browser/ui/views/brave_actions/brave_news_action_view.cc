@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/callback_forward.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
@@ -37,6 +38,7 @@
 #include "ui/views/background.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/button/label_button_border.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
@@ -47,8 +49,9 @@ SkColor selectedColor = SkColorSetRGB(30, 33, 82);
 
 BraveNewsActionView::BraveNewsActionView(Profile* profile,
                                          TabStripModel* tab_strip)
-    : views::LabelButton(base::BindRepeating(&BraveNewsActionView::ShowBubble,
-                                             base::Unretained(this))),
+    : views::LabelButton(
+          base::BindRepeating(&BraveNewsActionView::ButtonPressed,
+                              base::Unretained(this))),
       profile_(profile),
       tab_strip_(tab_strip) {
   DCHECK(profile_);
@@ -74,6 +77,13 @@ BraveNewsActionView::BraveNewsActionView(Profile* profile,
                     profile->GetPrefs(),
                     base::BindRepeating(&BraveNewsActionView::Update,
                                         base::Unretained(this)));
+
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&BraveNewsActionView::ButtonPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  SetButtonController(std::move(menu_button_controller));
 
   Update();
 }
@@ -104,7 +114,7 @@ void BraveNewsActionView::Update() {
     auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
     if (!tab_helper->GetAvailableFeeds().empty()) {
       feed = tab_helper->GetAvailableFeeds()[0];
-      subscribed = tab_helper->is_subscribed();
+      subscribed = tab_helper->IsSubscribed();
     }
   }
 
@@ -150,7 +160,7 @@ void BraveNewsActionView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  if (selection.old_contents != selection.new_contents) {
+  if (selection.active_tab_changed()) {
     if (selection.old_contents) {
       BraveNewsTabHelper::FromWebContents(selection.old_contents)
           ->RemoveObserver(this);
@@ -170,7 +180,13 @@ void BraveNewsActionView::OnAvailableFeedsChanged(
   Update();
 }
 
-void BraveNewsActionView::ShowBubble() {
+void BraveNewsActionView::ButtonPressed() {
+  // If the bubble is opened, closed it.
+  if (bubble_widget_) {
+    bubble_widget_->Close();
+    return;
+  }
+
   if (!tab_strip_->GetActiveWebContents())
     return;
 
@@ -178,10 +194,6 @@ void BraveNewsActionView::ShowBubble() {
       BraveNewsTabHelper::FromWebContents(tab_strip_->GetActiveWebContents());
   if (tab_helper->GetAvailableFeeds().empty())
     return;
-
-  if (bubble_widget_) {
-    bubble_widget_->Close();
-  }
 
   bubble_widget_ =
       BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());

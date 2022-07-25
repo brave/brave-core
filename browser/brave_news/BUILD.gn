@@ -25,7 +25,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   if (!is_android) {
-    sources = [ "brave_news_tabhelper_browsertest.cc" ]
+    sources = [ "brave_news_tab_helper_browsertest.cc" ]
 
     deps = [
       "//brave/components//brave_rewards/browser",

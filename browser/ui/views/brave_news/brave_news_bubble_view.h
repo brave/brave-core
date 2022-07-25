@@ -14,6 +14,7 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
+
 class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
  public:
   static base::WeakPtr<views::Widget> Show(views::View* anchor,
@@ -26,7 +27,6 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
   BraveNewsBubbleView& operator=(const BraveNewsBubbleView&) = delete;
   ~BraveNewsBubbleView() override;
 
-  void Update();
   void DismissForever();
 
  private:

@@ -448,7 +448,7 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
      {"brave-news-subscribe-button", \
       flag_descriptions::kBraveNewsSubscribeButtonName, \
       flag_descriptions::kBraveNewsSubscribeButtonDescription, \
-      kOsDesktop, \
+      kOsLinux | kOsMac | kOsWin, \
       FEATURE_VALUE_TYPE( \
       brave_today::features::kBraveNewsSubscribeButtonFeature)},
 

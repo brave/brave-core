@@ -9,6 +9,7 @@
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
@@ -33,10 +34,10 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  public:
   explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper)
       : tab_helper_(tab_helper) {
-    tab_helper_->AddObserver(this);
+    news_observer_.Observe(tab_helper_);
   }
 
-  ~WaitForFeedsChanged() { tab_helper_->RemoveObserver(this); }
+  ~WaitForFeedsChanged() override = default;
 
   std::vector<BraveNewsTabHelper::FeedDetails> WaitForChange() {
     if (!last_feeds_)
@@ -55,6 +56,10 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
   raw_ptr<BraveNewsTabHelper> tab_helper_;
   absl::optional<std::vector<BraveNewsTabHelper::FeedDetails>> last_feeds_ =
       absl::nullopt;
+
+  base::ScopedObservation<BraveNewsTabHelper,
+                          BraveNewsTabHelper::PageFeedsObserver>
+      news_observer_{this};
 };
 
 class BraveNewsTabHelperTest : public InProcessBrowserTest {

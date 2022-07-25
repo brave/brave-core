@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/components/brave_today/common/pref_names.h"
@@ -50,12 +51,14 @@ base::WeakPtr<views::Widget> BraveNewsBubbleView::Show(
 class BraveNewsFeedRow : public views::View,
                          public BraveNewsTabHelper::PageFeedsObserver {
  public:
+  METADATA_HEADER(BraveNewsFeedRow);
+
   explicit BraveNewsFeedRow(BraveNewsTabHelper::FeedDetails details,
                             content::WebContents* contents)
       : feed_details_(details), contents_(contents) {
     DCHECK(contents_);
     tab_helper_ = BraveNewsTabHelper::FromWebContents(contents);
-    tab_helper_->AddObserver(this);
+    tab_helper_observation_.Observe(tab_helper_);
 
     auto* const layout =
         SetLayoutManager(std::make_unique<views::FlexLayout>());
@@ -89,17 +92,12 @@ class BraveNewsFeedRow : public views::View,
     Update();
   }
 
-  ~BraveNewsFeedRow() override { tab_helper_->RemoveObserver(this); }
+  ~BraveNewsFeedRow() override = default;
 
   void Update() {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-    auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents_);
-    if (!tab_helper) {
-      return;
-    }
-
-    auto is_subscribed = tab_helper->is_subscribed(feed_details_);
+    auto is_subscribed = tab_helper_->IsSubscribed(feed_details_);
     subscribe_button_->SetText(l10n_util::GetStringUTF16(
         loading_        ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING
         : is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
@@ -130,7 +128,14 @@ class BraveNewsFeedRow : public views::View,
   BraveNewsTabHelper::FeedDetails feed_details_;
   raw_ptr<content::WebContents> contents_;
   raw_ptr<BraveNewsTabHelper> tab_helper_;
+
+  base::ScopedObservation<BraveNewsTabHelper,
+                          BraveNewsTabHelper::PageFeedsObserver>
+      tab_helper_observation_{this};
 };
+
+BEGIN_METADATA(BraveNewsFeedRow, views::View)
+END_METADATA
 
 BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                          content::WebContents* contents)
@@ -175,8 +180,6 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
 }
 
 BraveNewsBubbleView::~BraveNewsBubbleView() = default;
-
-void BraveNewsBubbleView::Update() {}
 
 void BraveNewsBubbleView::DismissForever() {
   GetWidget()->Hide();

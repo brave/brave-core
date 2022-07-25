@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
@@ -51,12 +52,12 @@ class BraveNewsActionView : public views::LabelButton,
       const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
 
  private:
-  void ShowBubble();
+  void ButtonPressed();
 
   BooleanPrefMember should_show_;
 
-  Profile* profile_;
-  TabStripModel* tab_strip_;
+  base::raw_ptr<Profile> profile_;
+  base::raw_ptr<TabStripModel> tab_strip_;
   base::WeakPtr<views::Widget> bubble_widget_;
 };
 
