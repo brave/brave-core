@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
+from builtins import object
 import json
 import os
 import re
@@ -7,7 +11,7 @@ import requests
 import sys
 import base64
 try:
-    from util import execute, scoped_cwd
+    from .util import execute, scoped_cwd
 except ImportError:
     pass
 
@@ -20,7 +24,7 @@ GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
 
 
-class GitHub:
+class GitHub(object):
     def __init__(self, access_token):
         self._authorization = 'token %s' % access_token
 
@@ -57,7 +61,7 @@ class GitHub:
         return r
 
 
-class _Executable:
+class _Executable(object):
     def __init__(self, gh, method, path):
         self._gh = gh
         self._method = method
