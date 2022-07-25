@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/feature_list.h"
+#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
@@ -16,6 +17,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
@@ -29,7 +31,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
@@ -173,6 +178,14 @@ SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
   return speedreader_bubble_;
 }
 
+views::BubbleDialogDelegateView*
+SpeedreaderTabHelper::speedreader_webui_bubble_delegate_view() const {
+  if (!speedreader_webui_bubble_manager_) {
+    return nullptr;
+  }
+  return speedreader_webui_bubble_manager_->bubble_view_for_testing().get();
+}
+
 bool SpeedreaderTabHelper::MaybeUpdateCachedState(
     content::NavigationHandle* handle) {
   auto* entry = handle->GetNavigationEntry();
@@ -231,6 +244,7 @@ void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
 
 void SpeedreaderTabHelper::OnBubbleClosed() {
   speedreader_bubble_ = nullptr;
+  speedreader_webui_bubble_manager_ = nullptr;
   UpdateButtonIfNeeded();
 }
 
@@ -242,6 +256,21 @@ void SpeedreaderTabHelper::ShowReaderModeBubble() {
   ShowBubble(false);
 }
 
+void SpeedreaderTabHelper::ShowSpeedreaderWebUIBubble() {
+  if (!speedreader_webui_bubble_manager_) {
+    Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+
+    speedreader_webui_bubble_manager_ =
+        std::make_unique<WebUIBubbleManagerT<SpeedreaderPanelUI>>(
+            browser_view->GetLocationBarView(), GetProfile(),
+            GURL(base::StringPiece(kSpeedreaderPanelURL)),
+            IDS_SPEEDREADER_BRAND_LABEL);
+  }
+
+  speedreader_webui_bubble_manager_->ShowBubble();
+}
+
 Profile* SpeedreaderTabHelper::GetProfile() const {
   auto* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
@@ -250,6 +279,11 @@ Profile* SpeedreaderTabHelper::GetProfile() const {
 }
 
 void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
+  if (speedreader::IsSpeedreaderPanelV2Enabled()) {
+    ShowSpeedreaderWebUIBubble();
+    return;
+  }
+
   auto* contents = web_contents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
@@ -259,6 +293,11 @@ void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
 }
 
 void SpeedreaderTabHelper::HideBubble() {
+  if (speedreader_webui_bubble_manager_ &&
+      speedreader_webui_bubble_manager_->GetBubbleWidget()) {
+    speedreader_webui_bubble_manager_->CloseBubble();
+  }
+
   if (speedreader_bubble_) {
     speedreader_bubble_->Hide();
     speedreader_bubble_ = nullptr;

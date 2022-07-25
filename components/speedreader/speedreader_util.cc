@@ -5,6 +5,8 @@
 
 #include "brave/components/speedreader/speedreader_util.h"
 
+#include "base/feature_list.h"
+#include "brave/components/speedreader/common/features.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -54,6 +56,10 @@ bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
   const bool enabled =
       setting == CONTENT_SETTING_ALLOW || setting == CONTENT_SETTING_DEFAULT;
   return enabled;
+}
+
+bool IsSpeedreaderPanelV2Enabled() {
+  return base::FeatureList::IsEnabled(speedreader::kSpeedreaderPanelV2);
 }
 
 }  // namespace speedreader
