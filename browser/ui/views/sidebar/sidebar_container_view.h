@@ -79,7 +79,11 @@ class SidebarContainerView
   void ShowSidebar() override;
 
   // sidebar::SidebarModel::Observer overrides:
+  void OnItemAdded(const sidebar::SidebarItem& item,
+                   int index,
+                   bool user_gesture) override;
   void OnActiveIndexChanged(int old_index, int new_index) override;
+  void OnItemRemoved(int index) override;
 
   // SidePanelEntryObserver:
   void OnEntryShown(SidePanelEntry* entry) override;
@@ -103,6 +107,7 @@ class SidebarContainerView
   void ShowSidebar(bool show_sidebar, bool show_event_detect_widget);
   SidebarShowOptionsEventDetectWidget* GetEventDetectWidget();
   bool ShouldForceShowSidebar() const;
+  void UpdateToolbarButtonVisibility();
 
   // On some condition(ex, add item bubble is visible),
   // sidebar should not be hidden even if mouse goes out from sidebar ui.

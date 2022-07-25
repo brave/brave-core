@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
@@ -115,6 +116,7 @@ void SidebarContainerView::Init() {
   AddChildViews();
   // Hide by default. Visibility will be controlled by show options later.
   DoHideSidebar(false);
+  UpdateToolbarButtonVisibility();
 }
 
 void SidebarContainerView::SetSidebarShowOption(
@@ -278,6 +280,16 @@ void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
   InvalidateLayout();
 }
 
+void SidebarContainerView::OnItemAdded(const sidebar::SidebarItem& item,
+                                       int index,
+                                       bool user_gesture) {
+  UpdateToolbarButtonVisibility();
+}
+
+void SidebarContainerView::OnItemRemoved(int index) {
+  UpdateToolbarButtonVisibility();
+}
+
 SidebarShowOptionsEventDetectWidget*
 SidebarContainerView::GetEventDetectWidget() {
   if (!show_options_widget_) {
@@ -320,6 +332,17 @@ void SidebarContainerView::DoHideSidebar(bool show_event_detect_widget) {
   sidebar_control_view_->SetVisible(false);
   ShowOptionsEventDetectWidget(show_event_detect_widget);
   InvalidateLayout();
+}
+
+void SidebarContainerView::UpdateToolbarButtonVisibility() {
+  // Coordinate sidebar toolbar button visibility based on
+  // whether there are any sibar items with a sidepanel.
+  // This is similar to how chromium's side_panel_coordinator View
+  // also has some control on the toolbar button.
+  auto has_panel_item =
+      GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  browser_view->toolbar()->side_panel_button()->SetVisible(has_panel_item);
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {

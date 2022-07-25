@@ -25,6 +25,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 
@@ -349,6 +350,25 @@ SidebarService::GetDefaultSidebarItemsFromCurrentItems() const {
 
 SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
   return static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
+}
+
+absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
+  static const base::NoDestructor preferred_item_types(
+      std::vector<SidebarItem::BuiltInItemType>{
+          SidebarItem::BuiltInItemType::kReadingList,
+          SidebarItem::BuiltInItemType::kBookmarks});
+  absl::optional<SidebarItem> default_item;
+  for (const auto& type : *preferred_item_types) {
+    auto found_item_iter = base::ranges::find_if(
+        items_,
+        [type](SidebarItem item) { return (item.built_in_item_type == type); });
+    if (found_item_iter != items_.end()) {
+      default_item = *found_item_iter;
+      DCHECK_EQ(default_item->open_in_panel, true);
+      break;
+    }
+  }
+  return default_item;
 }
 
 void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
