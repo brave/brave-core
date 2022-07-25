@@ -198,7 +198,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
       if (old_id == 0 && notification_type == 2)
         notification_id = "rewards_notification_grant";
       else
-        notification_id = std::to_string(old_id);
+        notification_id = base::NumberToString(old_id);
     } else if (notification_id == "0" && notification_type == 2) {
       notification_id = "rewards_notification_grant";
     }
@@ -228,7 +228,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     base::Value::Dict dict;
     dict.Set("id", item.second.id_);
     dict.Set("type", item.second.type_);
-    dict.Set("timestamp", static_cast<int>(item.second.timestamp_));
+    dict.Set("timestamp", static_cast<double>(item.second.timestamp_));
     base::Value::List args;
     for (auto& arg : item.second.args_) {
       args.Append(arg);
@@ -399,9 +399,9 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
       result == ledger::type::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(contribution_id);
-    args.push_back(std::to_string(static_cast<int>(result)));
-    args.push_back(std::to_string(static_cast<int>(type)));
-    args.push_back(std::to_string(amount));
+    args.push_back(base::NumberToString(static_cast<int>(result)));
+    args.push_back(base::NumberToString(static_cast<int>(type)));
+    args.push_back(base::NumberToString(amount));
 
     AddNotification(
         RewardsNotificationService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
