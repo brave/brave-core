@@ -238,12 +238,7 @@ def get_json_strings(json_file_path):
         data = json.load(f)
     strings = []
     for key in data:
-        # Our json (brave_extension and rewards_extension) resources somehow
-        # ended up on Transifex with keys having a '.message' suffix.
-        # Adding the same files to a new projects doesn't result in the suffix
-        # being added, so perhaps this is some old quirk of Transifex that's
-        # been grandfathered for the brave project.
-        string_name = key + '.message'
+        string_name = key
         string_value = data[key]["message"]
         string_desc = data[key]["description"] if "description" \
             in data[key] else ""
