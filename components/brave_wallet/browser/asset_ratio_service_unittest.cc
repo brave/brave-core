@@ -18,6 +18,16 @@
 
 namespace {
 
+void OnGetBuyUrl(bool* callback_run,
+                 std::string expected_url,
+                 const absl::optional<std::string>& expected_error,
+                 const std::string& url,
+                 const absl::optional<std::string>& error) {
+  EXPECT_EQ(expected_url, url);
+  EXPECT_EQ(expected_error, error);
+  *callback_run = true;
+}
+
 void OnGetPrice(bool* callback_run,
                 bool expected_success,
                 std::vector<brave_wallet::mojom::AssetPricePtr> expected_values,
@@ -59,9 +69,10 @@ class AssetRatioServiceUnitTest : public testing::Test {
     return shared_url_loader_factory_;
   }
 
-  void SetInterceptor(const std::string& content) {
+  void SetInterceptor(const std::string& content,
+                      const std::string expected_header = "") {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, content](const network::ResourceRequest& request) {
+        [&, content, expected_header](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           std::string header;
           request.headers.GetHeader("Authorization", &header);
