@@ -12,7 +12,7 @@ import lxml.etree  # pylint: disable=import-error
 
 from lib.l10n.grd_utils import textify
 
-brave_project_name = 'brave'
+brave_project_name = 'brave_en'
 
 # Transifex API v2 will be deprecated on April 7, 2022
 use_api_v3 = True
