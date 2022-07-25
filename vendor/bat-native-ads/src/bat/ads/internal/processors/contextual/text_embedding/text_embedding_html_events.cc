@@ -17,42 +17,42 @@
 
 namespace ads {
 
-void LogTextEmbeddingHTMLEvent(const std::string embedding_formatted,
+void LogTextEmbeddingHtmlEvent(const std::string embedding_formatted,
                                const std::string hashed_key,
-                               TextEmbeddingHTMLEventCallback callback) {
+                               TextEmbeddingHtmlEventCallback callback) {
   TextEmbeddingEventInfo text_embedding_event_info;
-  text_embedding_event_info.timestamp = base::Time::Now();
+  text_embedding_event_info.created_at = base::Time::Now();
   text_embedding_event_info.version = "";
   text_embedding_event_info.locale = "";
   text_embedding_event_info.hashed_key = hashed_key;
   text_embedding_event_info.embedding = embedding_formatted;
 
-  database::table::TextEmbeddingHTMLEvents database_table;
+  database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(
       text_embedding_event_info,
       [callback](const bool success) { callback(success); });
 }
 
-void PurgeStaleTextEmbeddingHTMLEvents(
-    TextEmbeddingHTMLEventCallback callback) {
-  database::table::TextEmbeddingHTMLEvents database_table;
+void PurgeStaleTextEmbeddingHtmlEvents(
+    TextEmbeddingHtmlEventCallback callback) {
+  database::table::TextEmbeddingHtmlEvents database_table;
   database_table.PurgeStale(
       [callback](const bool success) { callback(success); });
 }
 
 void GetTextEmbeddingEventsFromDatabase() {
-  database::table::TextEmbeddingHTMLEvents database_table;
+  database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(
       [=](const bool success,
-          const TextEmbeddingHTMLEventList& text_embedding_html_events) {
+          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         if (!success) {
-          BLOG(1, "Failed to get ad events");
+          BLOG(1, "Failed to get embeddings");
           return;
         }
 
         for (const auto& text_embedding_html_event :
              text_embedding_html_events) {
-          BLOG(1, "Stored embedding: " << text_embedding_html_event.embedding);
+          BLOG(7, "Stored embedding: " << text_embedding_html_event.embedding);
         }
       });
 }

@@ -4,37 +4,20 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/base/strings/string_html_parse_util.h"
-
-#include <regex>
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
-
-std::string FindFirstRegexMatch(const std::string& search_text,
-                                const std::string& rgx_str) {
-  std::string match_str;
-  std::regex rgx(rgx_str);
-  std::smatch match;
-  while (std::regex_search(search_text, match, rgx)) {
-    for (auto x : match) {
-      match_str = x;
-      break;
-    }
-    if (match_str.length() > 0) {
-      break;
-    }
-    match_str = match.suffix().str();
-  }
-  return match_str;
-}
 
 std::string ParseTagAttribute(const std::string& html,
                               const std::string& tag_substr,
                               const std::string& tag_attribute) {
+  std::string tag_text;
   std::string attribute_text;
-  const std::string search_text = html;
-  attribute_text =
-      FindFirstRegexMatch(search_text, "<[^>]*" + tag_substr + "[^<]*>");
-  attribute_text = FindFirstRegexMatch(attribute_text, tag_attribute + "=.*>");
+  re2::RE2::PartialMatch(
+    html, "(<[^>]*" + tag_substr + "[^<]*>)", &tag_text);
+  re2::RE2::PartialMatch(
+    tag_text, "(" + tag_attribute + "=.*>)", &attribute_text);
+
   if (attribute_text.length() > tag_attribute.length()) {
     attribute_text =
         attribute_text.substr(tag_attribute.length(),

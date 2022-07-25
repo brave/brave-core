@@ -41,11 +41,10 @@ class VectorData final : public Data {
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
   void VectorAddElementWise(const VectorData& v_add);
   void VectorDivideByScalar(float scalar);
-  float VectorSumElements();
   void Normalize();
 
   int GetDimensionCount() const;
-  int GetNonZeroElementsCount();
+  int GetNonZeroElementsCount() const;
 
   const std::string GetVectorAsString() const;
   const std::vector<float>& GetValuesForTesting() const;

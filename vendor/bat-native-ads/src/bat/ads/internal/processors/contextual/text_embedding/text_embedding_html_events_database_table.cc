@@ -27,7 +27,7 @@ constexpr char kTableName[] = "text_embedding_html_events";
 
 int BindParameters(
     mojom::DBCommand* command,
-    const TextEmbeddingHTMLEventList& text_embedding_html_events) {
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   DCHECK(command);
 
   int count = 0;
@@ -35,7 +35,7 @@ int BindParameters(
   int index = 0;
   for (const auto& text_embedding_html_event : text_embedding_html_events) {
     BindDouble(command, index++,
-               text_embedding_html_event.timestamp.ToDoubleT());
+               text_embedding_html_event.created_at.ToDoubleT());
     BindString(command, index++, text_embedding_html_event.version);
     BindString(command, index++, text_embedding_html_event.locale);
     BindString(command, index++, text_embedding_html_event.hashed_key);
@@ -52,7 +52,7 @@ TextEmbeddingEventInfo GetFromRecord(mojom::DBRecord* record) {
 
   TextEmbeddingEventInfo text_embedding_html_event;
 
-  text_embedding_html_event.timestamp =
+  text_embedding_html_event.created_at =
       base::Time::FromDoubleT(ColumnDouble(record, 0));
   text_embedding_html_event.version = ColumnString(record, 1);
   text_embedding_html_event.locale = ColumnString(record, 2);
@@ -64,11 +64,11 @@ TextEmbeddingEventInfo GetFromRecord(mojom::DBRecord* record) {
 
 }  // namespace
 
-TextEmbeddingHTMLEvents::TextEmbeddingHTMLEvents() = default;
+TextEmbeddingHtmlEvents::TextEmbeddingHtmlEvents() = default;
 
-TextEmbeddingHTMLEvents::~TextEmbeddingHTMLEvents() = default;
+TextEmbeddingHtmlEvents::~TextEmbeddingHtmlEvents() = default;
 
-void TextEmbeddingHTMLEvents::LogEvent(
+void TextEmbeddingHtmlEvents::LogEvent(
     const TextEmbeddingEventInfo& text_embedding_html_event,
     ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -80,29 +80,29 @@ void TextEmbeddingHTMLEvents::LogEvent(
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-void TextEmbeddingHTMLEvents::GetAll(
-    GetTextEmbeddingHTMLEventsCallback callback) {
+void TextEmbeddingHtmlEvents::GetAll(
+    GetTextEmbeddingHtmlEventsCallback callback) {
   const std::string& query = base::StringPrintf(
       "SELECT "
-      "tehe.timestamp, "
+      "tehe.created_at, "
       "tehe.version, "
       "tehe.locale, "
       "tehe.hashed_key, "
       "tehe.embedding "
       "FROM %s AS tehe "
-      "ORDER BY timestamp DESC",
+      "ORDER BY created_at DESC",
       GetTableName().c_str());
 
   RunTransaction(query, callback);
 }
 
-void TextEmbeddingHTMLEvents::PurgeStale(ResultCallback callback) {
+void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) {
   std::string limit =
       std::to_string(targeting::features::GetTextEmbeddingsHistorySize());
   const std::string& query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE id NOT IN "
-      "(SELECT id from %s ORDER BY timestamp DESC LIMIT %s) ",
+      "(SELECT id from %s ORDER BY created_at DESC LIMIT %s) ",
       GetTableName().c_str(), GetTableName().c_str(), limit.c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
@@ -117,11 +117,11 @@ void TextEmbeddingHTMLEvents::PurgeStale(ResultCallback callback) {
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-std::string TextEmbeddingHTMLEvents::GetTableName() const {
+std::string TextEmbeddingHtmlEvents::GetTableName() const {
   return kTableName;
 }
 
-void TextEmbeddingHTMLEvents::Migrate(mojom::DBTransaction* transaction,
+void TextEmbeddingHtmlEvents::Migrate(mojom::DBTransaction* transaction,
                                       const int to_version) {
   DCHECK(transaction);
 
@@ -139,15 +139,15 @@ void TextEmbeddingHTMLEvents::Migrate(mojom::DBTransaction* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextEmbeddingHTMLEvents::RunTransaction(
+void TextEmbeddingHtmlEvents::RunTransaction(
     const std::string& query,
-    GetTextEmbeddingHTMLEventsCallback callback) {
+    GetTextEmbeddingHtmlEventsCallback callback) {
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // created_at
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // version
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // locale
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // hashed_key
@@ -159,13 +159,13 @@ void TextEmbeddingHTMLEvents::RunTransaction(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&TextEmbeddingHTMLEvents::OnGetTextEmbeddingHTMLEvents, this,
+      std::bind(&TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents, this,
                 std::placeholders::_1, callback));
 }
 
-void TextEmbeddingHTMLEvents::InsertOrUpdate(
+void TextEmbeddingHtmlEvents::InsertOrUpdate(
     mojom::DBTransaction* transaction,
-    const TextEmbeddingHTMLEventList& text_embedding_html_events) {
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   DCHECK(transaction);
 
   if (text_embedding_html_events.empty()) {
@@ -180,16 +180,16 @@ void TextEmbeddingHTMLEvents::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 }
 
-std::string TextEmbeddingHTMLEvents::BuildInsertOrUpdateQuery(
+std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
     mojom::DBCommand* command,
-    const TextEmbeddingHTMLEventList& text_embedding_html_events) {
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   DCHECK(command);
 
   const int count = BindParameters(command, text_embedding_html_events);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-      "(timestamp, "
+      "(created_at, "
       "version, "
       "locale, "
       "hashed_key, "
@@ -198,17 +198,17 @@ std::string TextEmbeddingHTMLEvents::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
-void TextEmbeddingHTMLEvents::OnGetTextEmbeddingHTMLEvents(
+void TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents(
     mojom::DBCommandResponsePtr response,
-    GetTextEmbeddingHTMLEventsCallback callback) {
+    GetTextEmbeddingHtmlEventsCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Failed to get ad events");
+    BLOG(0, "Failed to get embeddings");
     callback(/* success */ false, {});
     return;
   }
 
-  TextEmbeddingHTMLEventList text_embedding_html_events;
+  TextEmbeddingHtmlEventList text_embedding_html_events;
 
   for (const auto& record : response->result->get_records()) {
     const TextEmbeddingEventInfo& text_embedding_html_event =
@@ -219,13 +219,13 @@ void TextEmbeddingHTMLEvents::OnGetTextEmbeddingHTMLEvents(
   callback(/* success */ true, text_embedding_html_events);
 }
 
-void TextEmbeddingHTMLEvents::MigrateToV25(mojom::DBTransaction* transaction) {
+void TextEmbeddingHtmlEvents::MigrateToV25(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string& query = base::StringPrintf(
       "CREATE TABLE text_embedding_html_events "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-      "timestamp TIMESTAMP NOT NULL, "
+      "created_at TIMESTAMP NOT NULL, "
       "version TEXT NOT NULL, "
       "locale TEXT NOT NULL, "
       "hashed_key TEXT NOT NULL UNIQUE, "

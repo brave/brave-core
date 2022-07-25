@@ -6,12 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_PROCESSING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_PROCESSING_H_
 
-#include <cstdint>
-#include <map>
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 
@@ -38,11 +35,11 @@ class EmbeddingProcessing final {
 
   bool IsInitialized() const;
 
-  void SetInfo(const PipelineEmbeddingInfo& info);
+  void SetEmbeddingPipeline(const PipelineEmbeddingInfo& info);
 
   bool FromValue(base::Value resource_value);
 
-  std::string CleanText(const std::string& text, bool is_html);
+  std::string SanitizeText(const std::string& text, bool is_html);
 
   TextEmbeddingData EmbedText(const std::string& text) const;
 

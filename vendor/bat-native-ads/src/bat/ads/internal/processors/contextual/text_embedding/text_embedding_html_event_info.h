@@ -19,7 +19,7 @@ struct TextEmbeddingEventInfo final {
   TextEmbeddingEventInfo& operator=(const TextEmbeddingEventInfo& info);
   ~TextEmbeddingEventInfo();
 
-  base::Time timestamp;
+  base::Time created_at;
   std::string version;
   std::string locale;
   std::string hashed_key;

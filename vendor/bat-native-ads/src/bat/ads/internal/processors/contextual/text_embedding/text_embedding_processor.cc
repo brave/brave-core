@@ -6,9 +6,6 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
-#include <algorithm>
-#include <vector>
-
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
@@ -54,7 +51,7 @@ void TextEmbedding::Process(const std::string& text) {
   ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
 
   const std::string cleaned_text =
-      embedding_proc_pipeline->CleanText(text, true);
+      embedding_proc_pipeline->SanitizeText(text, true);
   if (cleaned_text.length() == 0) {
     BLOG(1, "No text available for embedding");
     return;
@@ -63,21 +60,21 @@ void TextEmbedding::Process(const std::string& text) {
   ml::pipeline::TextEmbeddingData embedding_data =
       embedding_proc_pipeline->EmbedText(cleaned_text);
   if (embedding_data.embedding.GetNonZeroElementsCount() == 0) {
-    BLOG(1, "Text not embedded");
+    BLOG(1, "Failed to create text embedding");
     return;
   }
 
   const std::string embedding_formatted =
       embedding_data.embedding.GetVectorAsString();
-  BLOG(1, "Embedding: " << embedding_formatted);
-  LogTextEmbeddingHTMLEvent(
+  BLOG(3, "Embedding: " << embedding_formatted);
+  LogTextEmbeddingHtmlEvent(
       embedding_formatted, embedding_data.text_hashed, [](const bool success) {
         if (!success) {
-          BLOG(1, "Failed to text embedding html event");
+          BLOG(1, "Failed to log text embedding html event");
           return;
         }
 
-        PurgeStaleTextEmbeddingHTMLEvents([](const bool success) {
+        PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
           if (!success) {
             BLOG(1, "Failed to purge stale text embedding html events");
             return;

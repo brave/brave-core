@@ -498,7 +498,6 @@ source_set("ads") {
     "src/bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h",
     "src/bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_model.cc",
     "src/bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_model.h",
-    "src/bat/ads/internal/ads/serving/targeting/models/contextual/text_embedding/text_embedding_aliases.h",
     "src/bat/ads/internal/ads/serving/targeting/models/model_interface.h",
     "src/bat/ads/internal/ads/serving/targeting/top_segments.cc",
     "src/bat/ads/internal/ads/serving/targeting/top_segments.h",

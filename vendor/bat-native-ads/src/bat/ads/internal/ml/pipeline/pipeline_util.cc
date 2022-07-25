@@ -269,11 +269,11 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(
     embeddings_dim = embeddings[item.first].GetDimensionCount();
   }
 
-  absl::optional<PipelineEmbeddingInfo> pipeline_embedding_info =
+  absl::optional<PipelineEmbeddingInfo> pipeline_embedding =
       PipelineEmbeddingInfo(version, timestamp, locale, embeddings_dim,
                             embeddings);
 
-  return pipeline_embedding_info;
+  return pipeline_embedding;
 }
 
 }  // namespace pipeline

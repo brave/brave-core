@@ -12,7 +12,7 @@
 
 namespace ads {
 
-using TextEmbeddingHTMLEventList = std::vector<TextEmbeddingEventInfo>;
+using TextEmbeddingHtmlEventList = std::vector<TextEmbeddingEventInfo>;
 
 }  // namespace ads
 

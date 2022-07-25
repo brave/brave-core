@@ -16,8 +16,8 @@ namespace ads {
 namespace ml {
 namespace pipeline {
 
-struct PipelineInfo;
 struct PipelineEmbeddingInfo;
+struct PipelineInfo;
 
 absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value);
 absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(

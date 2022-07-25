@@ -70,7 +70,7 @@ void Migration::ToVersion(mojom::DBTransaction* transaction,
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Migrate(transaction, to_version);
 
-  table::TextEmbeddingHTMLEvents text_embedding_html_events_database_table;
+  table::TextEmbeddingHtmlEvents text_embedding_html_events_database_table;
   text_embedding_html_events_database_table.Migrate(transaction, to_version);
 
   table::Transactions transactions_database_table;

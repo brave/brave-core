@@ -16,12 +16,11 @@ namespace {
 constexpr char kFeatureName[] = "TextEmbedding";
 
 constexpr char kFieldTrialParameterPageEmbeddingsHistorySize[] =
-    "page_embeddings_history_size";
-const int kDefaultPageEmbeddingsHistorySize = 10;
+    "text_embeddings_history_size";
+const int kDefaultTextEmbeddingsHistorySize = 10;
 
 constexpr char kFieldTrialParameterResourceVersion[] =
     "text_embedding_resource_version";
-
 constexpr int kDefaultResourceVersion = 1;
 
 }  // namespace
@@ -36,7 +35,7 @@ bool IsTextEmbeddingEnabled() {
 int GetTextEmbeddingsHistorySize() {
   return GetFieldTrialParamByFeatureAsInt(
       kTextEmbedding, kFieldTrialParameterPageEmbeddingsHistorySize,
-      kDefaultPageEmbeddingsHistorySize);
+      kDefaultTextEmbeddingsHistorySize);
 }
 
 int GetTextEmbeddingResourceVersion() {

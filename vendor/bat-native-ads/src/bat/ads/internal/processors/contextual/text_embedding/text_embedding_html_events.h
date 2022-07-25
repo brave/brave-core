@@ -11,20 +11,16 @@
 
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace base {
-class Time;
-}  // namespace base
-
 namespace ads {
 
 struct TextEmbeddingEventInfo;
 
-using TextEmbeddingHTMLEventCallback = std::function<void(const bool)>;
+using TextEmbeddingHtmlEventCallback = std::function<void(const bool)>;
 
-void LogTextEmbeddingHTMLEvent(const std::string embedding_formatted,
+void LogTextEmbeddingHtmlEvent(const std::string embedding_formatted,
                                const std::string hashed_key,
-                               TextEmbeddingHTMLEventCallback callback);
-void PurgeStaleTextEmbeddingHTMLEvents(TextEmbeddingHTMLEventCallback callback);
+                               TextEmbeddingHtmlEventCallback callback);
+void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
 void GetTextEmbeddingEventsFromDatabase();
 
 }  // namespace ads
