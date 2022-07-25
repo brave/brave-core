@@ -269,12 +269,6 @@
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
     Reconnect
   </message>
-  <message name="IDS_REWARDS_NOTIFICATION_WALLET_VERIFIED_TITLE" desc="">
-    Your Brave Rewards is verified!
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_WALLET_VERIFIED_TEXT" desc="">
-    Your Brave Rewards was successfully verified with <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_TOKEN_GRANT_TITLE" desc="">
     A token grant is available!
   </message>

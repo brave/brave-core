@@ -22,10 +22,6 @@
 namespace ledger {
 namespace uphold {
 
-namespace {
-bool g_show_newly_verified_wallet = true;
-}  // namespace
-
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
              ? BUILDFLAG(UPHOLD_CLIENT_ID)
@@ -165,15 +161,6 @@ void OnWalletStatusChange(LedgerImpl* ledger,
   oss << "==> " << to;
 
   ledger->database()->SaveEventLog(log::kWalletStatusChange, oss.str());
-
-  if (to == type::WalletStatus::PENDING) {
-    DCHECK(from);
-    g_show_newly_verified_wallet = *from == type::WalletStatus::NOT_CONNECTED;
-  }
-}
-
-bool ShouldShowNewlyVerifiedWallet() {
-  return g_show_newly_verified_wallet;
 }
 
 void CheckWalletState(const type::ExternalWallet* wallet) {

@@ -72,9 +72,6 @@ NSNotificationName const BraveLedgerNotificationAdded =
     @"BATBraveLedgerNotificationAdded";
 
 BraveGeneralLedgerNotificationID const
-    BATBraveGeneralLedgerNotificationIDWalletNowVerified =
-        @"wallet_new_verified";
-BraveGeneralLedgerNotificationID const
     BATBraveGeneralLedgerNotificationIDWalletDisconnected =
         @"wallet_disconnected";
 

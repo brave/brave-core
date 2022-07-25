@@ -107,13 +107,7 @@ function createHost (): Host {
         type: 'backup-wallet',
         id: '1',
         timeStamp: Date.now() - 100
-      },
-      {
-        type: 'external-wallet-verified',
-        id: '2',
-        timeStamp: Date.now(),
-        provider: 'uphold'
-      } as any
+      }
     ],
     adaptiveCaptchaInfo: {
       url: '',
