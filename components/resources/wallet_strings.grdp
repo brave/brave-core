@@ -112,7 +112,7 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_BUTTON" desc="Onboarding get started button">Create new wallet</message>
-  <message name="BRAVE_WALLET_IMPORT_EXISTING_WALLET" desc="Wallet onboarding welcome import wallet button">Import an existing wallet</message>
+  <message name="BRAVE_WALLET_IMPORT_EXISTING_WALLET" desc="Wallet onboarding welcome import wallet button">Import existing wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH">$1</ph>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS" desc="Backup screen terms check box">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</message>
