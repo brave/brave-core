@@ -1646,6 +1646,13 @@ extension Strings {
       value: "Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.",
       comment: "A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum."
     )
+    public static let sendWarningSolAddressNotValid = NSLocalizedString(
+      "wallet.sendWarningSolAddressNotValid",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Not a valid SOL address",
+      comment: "A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address."
+    )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",

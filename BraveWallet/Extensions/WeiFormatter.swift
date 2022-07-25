@@ -149,6 +149,16 @@ struct WeiFormatter {
     return (gwei * (BDouble(10) ** 9))
       .rounded().asString(radix: outputRadix.rawValue)
   }
+  
+  static func decimalToLamports(_ decimalString: String) -> UInt64? {
+    guard isStringValid(decimalString, radix: .decimal),
+          let value = BDouble(decimalString, radix: Radix.decimal.rawValue)
+    else {
+      return nil
+    }
+    let stringValue = (value * (BDouble(10) ** 9)).rounded().description
+    return UInt64(stringValue)
+  }
 }
 
 extension String {

@@ -195,7 +195,7 @@ extension BraveWalletJsonRpcService {
     network: BraveWallet.NetworkInfo,
     completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
   ) {
-    if token.symbol == network.symbol {
+    if network.isNativeAsset(token) {
       balance(
         accountAddress,
         coin: .eth,

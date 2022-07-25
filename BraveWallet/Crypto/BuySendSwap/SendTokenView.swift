@@ -35,10 +35,7 @@ struct SendTokenView: View {
       return true
     }
 
-    return sendAmount == 0
-      || sendAmount > balance
-      || sendTokenStore.sendAmount.isEmpty
-      || (sendTokenStore.addressError != nil && sendTokenStore.addressError != .missingChecksum)
+    return sendAmount == 0 || sendAmount > balance || sendTokenStore.sendAmount.isEmpty || sendTokenStore.sendAddress.isEmpty || (sendTokenStore.addressError != nil && sendTokenStore.addressError != .missingChecksum)
   }
 
   var body: some View {
@@ -157,7 +154,9 @@ struct SendTokenView: View {
             WalletLoadingButton(
               isLoading: sendTokenStore.isMakingTx,
               action: {
-                sendTokenStore.sendToken(amount: sendTokenStore.sendAmount) { success in
+                sendTokenStore.sendToken(
+                  amount: sendTokenStore.sendAmount
+                ) { success, _ in
                   isShowingError = !success
                   completion?(success)
                 }

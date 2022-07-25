@@ -117,7 +117,7 @@ class PortfolioStoreTests: XCTestCase {
     let mockAccountInfos: [BraveWallet.AccountInfo] = [.mockSolAccount]
     let network: BraveWallet.NetworkInfo = .mockSolana
     let chainId = network.chainId
-    let mockUserAssets: [BraveWallet.BlockchainToken] = [.mockSolToken.then { $0.visible = true }]
+    let mockUserAssets: [BraveWallet.BlockchainToken] = [BraveWallet.NetworkInfo.mockSolana.nativeToken.then { $0.visible = true }]
     let mockLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
     let mockDecimalBalance: Double = 3.8765 // rounded
     let mockSolAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "sol", toAsset: "usd", price: "200.00", assetTimeframeChange: "-57.23")

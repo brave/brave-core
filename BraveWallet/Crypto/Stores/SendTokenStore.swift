@@ -16,6 +16,7 @@ public class SendTokenStore: ObservableObject {
   @Published var selectedSendToken: BraveWallet.BlockchainToken? {
     didSet {
       fetchAssetBalance()
+      validateSendAddress()
     }
   }
   /// The current selected token balance. Default with nil value.
@@ -44,6 +45,7 @@ public class SendTokenStore: ObservableObject {
     case notEthAddress
     case missingChecksum
     case invalidChecksum
+    case notSolAddress
 
     var errorDescription: String? {
       switch self {
@@ -57,6 +59,8 @@ public class SendTokenStore: ObservableObject {
         return Strings.Wallet.sendWarningAddressMissingChecksumInfo
       case .invalidChecksum:
         return Strings.Wallet.sendWarningAddressInvalidChecksum
+      case .notSolAddress:
+        return Strings.Wallet.sendWarningSolAddressNotValid
       }
     }
   }
@@ -67,6 +71,7 @@ public class SendTokenStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
+  private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var currentAccountAddress: String?
   private var timer: Timer?
@@ -78,6 +83,7 @@ public class SendTokenStore: ObservableObject {
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.keyringService = keyringService
@@ -86,6 +92,7 @@ public class SendTokenStore: ObservableObject {
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.ethTxManagerProxy = ethTxManagerProxy
+    self.solTxManagerProxy = solTxManagerProxy
     self.selectedSendToken = prefilledToken
 
     self.keyringService.add(self)
@@ -179,43 +186,53 @@ public class SendTokenStore: ObservableObject {
     chainId: String,
     baseData: BraveWallet.TxData,
     from address: String,
-    completion: @escaping (_ success: Bool) -> Void
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
     let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: "", maxFeePerGas: "", gasEstimation: nil)
     let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
     self.txService.addUnapprovedTransaction(txDataUnion, from: address, origin: nil) { success, txMetaId, errorMessage in
-      completion(success)
+      completion(success, errorMessage)
     }
   }
 
   private func validateSendAddress() {
-    guard !sendAddress.isEmpty else {
+    guard !sendAddress.isEmpty, let token = selectedSendToken else {
       addressError = nil
       return
     }
     let normalizedSendAddress = sendAddress.lowercased()
-    if !sendAddress.isETHAddress {
-      // 1. check if send address is a valid eth address
-      addressError = .notEthAddress
-    } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
-      // 2. check if send address is the same as the from address
-      addressError = .sameAsFromAddress
-    } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
-      || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil) {
-      // 3. check if send address is a contract address
-      addressError = .contractAddress
-    } else {
-      keyringService.checksumEthAddress(sendAddress) { [self] checksumAddress in
-        if sendAddress == checksumAddress {
-          // 4. check if send address is the same as the checksum address from the `KeyringService`
-          addressError = nil
-        } else if sendAddress.removingHexPrefix.lowercased() == sendAddress.removingHexPrefix || sendAddress.removingHexPrefix.uppercased() == sendAddress.removingHexPrefix {
-          // 5. check if send address has each of the alphabetic character as uppercase, or has each of
-          // the alphabeic character as lowercase
-          addressError = .missingChecksum
-        } else {
-          // 6. send address has mixed with uppercase and lowercase and does not match with the checksum address
-          addressError = .invalidChecksum
+    if token.coin == .eth {
+      if !sendAddress.isETHAddress {
+        // 1. check if send address is a valid eth address
+        addressError = .notEthAddress
+      } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
+        // 2. check if send address is the same as the from address
+        addressError = .sameAsFromAddress
+      } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
+                  || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil) {
+        // 3. check if send address is a contract address
+        addressError = .contractAddress
+      } else {
+        keyringService.checksumEthAddress(sendAddress) { [self] checksumAddress in
+          if sendAddress == checksumAddress {
+            // 4. check if send address is the same as the checksum address from the `KeyringService`
+            addressError = nil
+          } else if sendAddress.removingHexPrefix.lowercased() == sendAddress.removingHexPrefix || sendAddress.removingHexPrefix.uppercased() == sendAddress.removingHexPrefix {
+            // 5. check if send address has each of the alphabetic character as uppercase, or has each of
+            // the alphabeic character as lowercase
+            addressError = .missingChecksum
+          } else {
+            // 6. send address has mixed with uppercase and lowercase and does not match with the checksum address
+            addressError = .invalidChecksum
+          }
+        }
+      }
+    } else if token.coin == .sol {
+      walletService.isBase58EncodedSolanaPubkey(sendAddress) { [self] valid in
+        if !valid {
+          addressError = .notSolAddress
+        } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
+          addressError = .sameAsFromAddress
         }
       }
     }
@@ -223,7 +240,24 @@ public class SendTokenStore: ObservableObject {
 
   func sendToken(
     amount: String,
-    completion: @escaping (_ success: Bool) -> Void
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    walletService.selectedCoin { [weak self] coin in
+      guard let self = self else { return }
+      switch coin {
+      case .eth:
+        self.sendTokenOnEth(amount: amount, completion: completion)
+      case .sol:
+        self.sendTokenOnSol(amount: amount, completion: completion)
+      default:
+        break
+      }
+    }
+  }
+
+  func sendTokenOnEth(
+    amount: String,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
@@ -233,42 +267,89 @@ public class SendTokenStore: ObservableObject {
     else { return }
 
     isMakingTx = true
-    walletService.selectedCoin { [weak self] coin in
+    rpcService.network(.eth) { [weak self] network in
       guard let self = self else { return }
-      self.rpcService.network(coin) { network in
-        if token.contractAddress.isEmpty {
-          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
+      if network.isNativeAsset(token) {
+        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
+        if network.isEip1559 {
+          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success, errorMessage  in
+            self.isMakingTx = false
+            completion(success, errorMessage)
+          }
+        } else {
+          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errorMessage in
+            self.isMakingTx = false
+            completion(success, errorMessage)
+          }
+        }
+      } else {
+        self.ethTxManagerProxy.makeErc20TransferData(self.sendAddress, amount: "0x\(weiHexString)") { success, data in
+          guard success else {
+            completion(false, nil)
+            return
+          }
+          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
           if network.isEip1559 {
-            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in
+            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success, errorMessage  in
               self.isMakingTx = false
-              completion(success)
+              completion(success, errorMessage)
             }
           } else {
             let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
             self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errorMessage in
               self.isMakingTx = false
-              completion(success)
+              completion(success, errorMessage)
             }
           }
-        } else {
-          self.ethTxManagerProxy.makeErc20TransferData(self.sendAddress, amount: "0x\(weiHexString)") { success, data in
-            guard success else {
-              completion(false)
-              return
-            }
-            let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
-            if network.isEip1559 {
-              self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in
-                self.isMakingTx = false
-                completion(success)
-              }
-            } else {
-              let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-              self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errorMessage in
-                self.isMakingTx = false
-                completion(success)
-              }
-            }
+        }
+      }
+    }
+  }
+  
+  private func sendTokenOnSol(
+    amount: String,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    guard let token = selectedSendToken,
+          let fromAddress = currentAccountAddress,
+          let lamports = WeiFormatter.decimalToLamports(amount)
+    else {
+      completion(false, "An Internal Error")
+      return
+    }
+    
+    rpcService.network(.sol) { [weak self] network in
+      guard let self = self else { return }
+      if network.isNativeAsset(token) {
+        self.solTxManagerProxy.makeSystemProgramTransferTxData(
+          fromAddress,
+          to: self.sendAddress,
+          lamports: lamports
+        ) { solTxData, error, errMsg in
+          guard let solanaTxData = solTxData else {
+            completion(false, errMsg)
+            return
+          }
+          let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errMsg in
+            completion(success, errMsg)
+          }
+        }
+      } else {
+        self.solTxManagerProxy.makeTokenProgramTransferTxData(
+          token.contractAddress,
+          fromWalletAddress: fromAddress,
+          toWalletAddress: self.sendAddress,
+          amount: lamports
+        ) { solTxData, error, errMsg in
+          guard let solanaTxData = solTxData else {
+            completion(false, errMsg)
+            return
+          }
+          let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errorMessage in
+            completion(success, errorMessage)
           }
         }
       }

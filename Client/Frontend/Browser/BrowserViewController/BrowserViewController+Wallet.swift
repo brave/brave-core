@@ -25,7 +25,8 @@ extension WalletStore {
       let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
       let swapService = BraveWallet.SwapServiceFactory.get(privateMode: privateMode),
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
-      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode)
+      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
+      let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode)
     else {
       log.error("Failed to load wallet. One or more services were unavailable")
       return nil
@@ -38,7 +39,8 @@ extension WalletStore {
       swapService: swapService,
       blockchainRegistry: BraveCoreMain.blockchainRegistry,
       txService: txService,
-      ethTxManagerProxy: ethTxManagerProxy
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy
     )
   }
 }
@@ -53,7 +55,8 @@ extension CryptoStore {
       let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
       let swapService = BraveWallet.SwapServiceFactory.get(privateMode: privateMode),
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
-      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode)
+      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
+      let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode)
     else {
       log.error("Failed to load wallet. One or more services were unavailable")
       return nil
@@ -66,7 +69,8 @@ extension CryptoStore {
       swapService: swapService,
       blockchainRegistry: BraveCoreMain.blockchainRegistry,
       txService: txService,
-      ethTxManagerProxy: ethTxManagerProxy
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy
     )
   }
 }

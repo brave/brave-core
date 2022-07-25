@@ -67,6 +67,7 @@ public class CryptoStore: ObservableObject {
   let blockchainRegistry: BraveWalletBlockchainRegistry
   private let txService: BraveWalletTxService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
+  private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   
   public init(
     keyringService: BraveWalletKeyringService,
@@ -76,7 +77,8 @@ public class CryptoStore: ObservableObject {
     swapService: BraveWalletSwapService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
-    ethTxManagerProxy: BraveWalletEthTxManagerProxy
+    ethTxManagerProxy: BraveWalletEthTxManagerProxy,
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -86,6 +88,7 @@ public class CryptoStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.txService = txService
     self.ethTxManagerProxy = ethTxManagerProxy
+    self.solTxManagerProxy = solTxManagerProxy
     
     self.networkStore = .init(
       keyringService: keyringService,
@@ -130,6 +133,7 @@ public class CryptoStore: ObservableObject {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: prefilledToken
     )
     sendTokenStore = store
@@ -258,12 +262,45 @@ public class CryptoStore: ObservableObject {
 
   @MainActor
   func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
-    let keyring = await keyringService.keyringInfo(BraveWallet.DefaultKeyringId)
+    var allKeyrings: [BraveWallet.KeyringInfo] = []
+    allKeyrings = await withTaskGroup(
+      of: BraveWallet.KeyringInfo.self,
+      returning: [BraveWallet.KeyringInfo].self,
+      body: { [weak keyringService] group in
+        guard let keyringService = keyringService else { return [] }
+        for coin in WalletConstants.supportedCoinTypes {
+          group.addTask {
+            await keyringService.keyringInfo(coin.keyringId)
+          }
+        }
+        var allKeyrings: [BraveWallet.KeyringInfo] = []
+        for await keyring in group {
+          allKeyrings.append(keyring)
+        }
+        return allKeyrings
+      }
+    )
+
     var pendingTransactions: [BraveWallet.TransactionInfo] = []
-    for info in keyring.accountInfos {
-      let allTransactionInfo = await txService.allTransactionInfo(.eth, from: info.address)
-      pendingTransactions.append(contentsOf: allTransactionInfo.filter { $0.txStatus == .unapproved })
-    }
+    pendingTransactions = await withTaskGroup(
+      of: [BraveWallet.TransactionInfo].self,
+      body: { [weak txService] group in
+        guard let txService = txService else { return [] }
+        for keyring in allKeyrings {
+          for info in keyring.accountInfos {
+            group.addTask {
+              await txService.allTransactionInfo(info.coin, from: info.address)
+            }
+          }
+        }
+        var allPendingTx: [BraveWallet.TransactionInfo] = []
+        for await transactions in group {
+          allPendingTx.append(contentsOf: transactions.filter { $0.txStatus == .unapproved })
+        }
+        return allPendingTx
+      }
+    )
+
     return pendingTransactions
   }
 

@@ -67,6 +67,10 @@ struct TransactionConfirmationView: View {
         .joined(separator: "\n\n")
     }
   }
+  
+  private var isConfirmDisabled: Bool {
+    confirmationStore.activeTransaction.coin != networkStore.selectedChain.coin
+  }
 
   /// View showing the currently selected account with a blockie
   @ViewBuilder private var accountView: some View {
@@ -454,7 +458,7 @@ struct TransactionConfirmationView: View {
       Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
-    .disabled(!confirmationStore.state.isBalanceSufficient)
+    .disabled(!confirmationStore.state.isBalanceSufficient || isConfirmDisabled)
   }
 }
 

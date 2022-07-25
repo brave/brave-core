@@ -202,7 +202,7 @@ extension BraveWallet.NetworkInfo {
     rpcUrls: [],
     symbol: "SOL",
     symbolName: "Solana",
-    decimals: 18,
+    decimals: 9,
     coin: .sol,
     data: nil
   )
