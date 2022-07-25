@@ -75,6 +75,7 @@ export const PortfolioAsset = () => {
   const history = useHistory()
   const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
   const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
+  const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
   // redux
   const dispatch = useDispatch()
   const {
@@ -315,6 +316,8 @@ export const PortfolioAsset = () => {
   }, [nftDetailsRef, isFetchingNFTMetadata])
 
   React.useEffect(() => {
+    if (!nftIframeLoaded) return
+
     if (selectedAsset && nftDetailsRef?.current) {
       const command: UpdateSelectedAssetMessage = {
         command: NftUiCommand.UpdateSelectedAsset,
@@ -339,7 +342,7 @@ export const PortfolioAsset = () => {
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
-  }, [nftDetailsRef, selectedAsset, nftMetadata, networkList])
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList])
 
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
@@ -420,6 +423,7 @@ export const PortfolioAsset = () => {
       }
 
       <NftDetails
+        onLoad={() => setNftIframeLoaded(true)}
         visible={selectedAsset?.isErc721}
         ref={nftDetailsRef}
         sandbox="allow-scripts allow-popups allow-same-origin"
