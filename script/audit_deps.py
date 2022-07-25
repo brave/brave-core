@@ -46,8 +46,8 @@ IGNORED_NPM_ADVISORIES = [
     'https://github.com/advisories/GHSA-w8qv-6jwh-64r5',  # rxdos
     'https://github.com/advisories/GHSA-whgm-jr23-g3j9',  # rxdos
     'https://github.com/advisories/GHSA-ww39-953v-wcq6',  # rxdos
-    # Only affects dev dependencies (storybook, enzyme for unit test)
-    'https://github.com/advisories/GHSA-cj88-88mr-972w'   # rxdos
+    'https://github.com/advisories/GHSA-cj88-88mr-972w',  # rxdos
+    'https://github.com/advisories/GHSA-mhxj-85r3-2x55'
 ]
 
 
