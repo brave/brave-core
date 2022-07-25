@@ -19,11 +19,13 @@
   title_left = alert_indicator_button_->x() +                      \
                alert_indicator_button_->width() + after_title_padding;
 
-#define BRAVE_TAB_HOVER_TOOLTIPS                                   \
-  if (brave_tabs::AreTooltipsEnabled(                              \
-          controller_->GetBrowser()->profile()->GetPrefs())) {     \
-    return GetTooltipText(data_.title,                             \
-                          GetAlertStateToShow(data_.alert_state)); \
+#define BRAVE_TAB_HOVER_TOOLTIPS                                        \
+  /* In some of the Chromium unit tests, browser is null */             \
+  auto* browser = controller_->GetBrowser();                            \
+  if (browser &&                                                        \
+      brave_tabs::AreTooltipsEnabled(browser->profile()->GetPrefs())) { \
+    return GetTooltipText(data_.title,                                  \
+                          GetAlertStateToShow(data_.alert_state));      \
   }
 
 #define BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY \
