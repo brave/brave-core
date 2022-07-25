@@ -5,10 +5,7 @@
 
 #include "brave/browser/ui/views/brave_actions/brave_news_action_view.h"
 
-#include <memory>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/bind.h"
 #include "base/callback_forward.h"
@@ -21,7 +18,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
-#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "extensions/common/constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -44,7 +40,7 @@
 #include "ui/views/widget/widget.h"
 
 namespace {
-SkColor selectedColor = SkColorSetRGB(30, 33, 82);
+constexpr SkColor selectedColor = SkColorSetRGB(30, 33, 82);
 }
 
 BraveNewsActionView::BraveNewsActionView(Profile* profile,
@@ -108,14 +104,13 @@ void BraveNewsActionView::Update() {
 
   auto* contents = tab_strip_->GetActiveWebContents();
   bool subscribed = false;
+  bool has_feeds = false;
   absl::optional<BraveNewsTabHelper::FeedDetails> feed = absl::nullopt;
 
   if (contents) {
     auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-    if (!tab_helper->GetAvailableFeeds().empty()) {
-      feed = tab_helper->GetAvailableFeeds()[0];
-      subscribed = tab_helper->IsSubscribed();
-    }
+    subscribed = tab_helper->IsSubscribed();
+    has_feeds = !tab_helper->GetAvailableFeeds().empty();
   }
 
   auto background =
@@ -130,13 +125,11 @@ void BraveNewsActionView::Update() {
                                 subscribed ? SK_ColorWHITE : SK_ColorBLACK));
   SetImage(ButtonState::STATE_NORMAL, image);
   SetBackground(std::move(background));
-  SetVisible(!!feed);
+  SetVisible(has_feeds);
 }
 
 SkPath BraveNewsActionView::GetHighlightPath() const {
-  auto highlight_insets = gfx::Insets();
   gfx::Rect rect(GetPreferredSize());
-  rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::Emphasis::kMaximum, rect.size());
   SkPath path;
@@ -152,7 +145,7 @@ std::unique_ptr<views::LabelButtonBorder>
 BraveNewsActionView::CreateDefaultBorder() const {
   std::unique_ptr<views::LabelButtonBorder> border =
       LabelButton::CreateDefaultBorder();
-  border->set_insets(gfx::Insets::TLBR(3, 0, 3, 0));
+  border->set_insets(gfx::Insets::VH(3, 0));
   return border;
 }
 
@@ -181,19 +174,10 @@ void BraveNewsActionView::OnAvailableFeedsChanged(
 }
 
 void BraveNewsActionView::ButtonPressed() {
-  // If the bubble is opened, closed it.
+  // If the bubble is already open, do nothing.
   if (bubble_widget_) {
-    bubble_widget_->Close();
     return;
   }
-
-  if (!tab_strip_->GetActiveWebContents())
-    return;
-
-  auto* tab_helper =
-      BraveNewsTabHelper::FromWebContents(tab_strip_->GetActiveWebContents());
-  if (tab_helper->GetAvailableFeeds().empty())
-    return;
 
   bubble_widget_ =
       BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());

@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 
-#include <dirent.h>
 #include <algorithm>
 #include <string>
 #include <unordered_set>

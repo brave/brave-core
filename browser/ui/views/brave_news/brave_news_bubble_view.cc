@@ -170,7 +170,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   auto* dismiss_button = AddChildView(std::make_unique<views::MdTextButton>(
       base::BindRepeating(&BraveNewsBubbleView::DismissForever,
                           base::Unretained(this)),
-      u"Hide and don't show this again"));
+      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER)));
   dismiss_button->SetProperty(views::kMarginsKey,
                               gfx::Insets::TLBR(10, 0, 0, 0));
   dismiss_button->SetProperty(
