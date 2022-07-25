@@ -34,6 +34,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
   void GetAutoLockMinutes(const base::Value::List& args);
+  void GetSolanaProviderOptions(const base::Value::List& args);
   void RemoveEthereumChain(const base::Value::List& args);
   void ResetEthereumChain(const base::Value::List& args);
   void GetNetworksList(const base::Value::List& args);

@@ -109,8 +109,11 @@ class BraveWalletService : public KeyedService,
       const std::string& new_password,
       ImportFromExternalWalletCallback callback) override;
 
-  void GetDefaultWallet(GetDefaultWalletCallback callback) override;
-  void SetDefaultWallet(mojom::DefaultWallet default_wallet) override;
+  void GetDefaultEthereumWallet(
+      GetDefaultEthereumWalletCallback callback) override;
+  void GetDefaultSolanaWallet(GetDefaultSolanaWalletCallback callback) override;
+  void SetDefaultEthereumWallet(mojom::DefaultWallet default_wallet) override;
+  void SetDefaultSolanaWallet(mojom::DefaultWallet default_wallet) override;
   void GetDefaultBaseCurrency(GetDefaultBaseCurrencyCallback callback) override;
   void SetDefaultBaseCurrency(const std::string& currency) override;
   void GetDefaultBaseCryptocurrency(
@@ -227,7 +230,8 @@ class BraveWalletService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAssetAddress);
 
-  void OnDefaultWalletChanged();
+  void OnDefaultEthereumWalletChanged();
+  void OnDefaultSolanaWalletChanged();
   void OnDefaultBaseCurrencyChanged();
   void OnDefaultBaseCryptocurrencyChanged();
   void OnNetworkListChanged();

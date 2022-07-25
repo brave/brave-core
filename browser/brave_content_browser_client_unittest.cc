@@ -79,7 +79,7 @@ TEST_F(BraveWalleBrowserClientUnitTest,
     ResolvesEthereumRemoteClientIfInstalled) {
   AddExtension();
   profile()->GetPrefs()->SetInteger(
-      kDefaultWallet2,
+      kDefaultEthereumWallet,
       static_cast<int>(brave_wallet::mojom::DefaultWallet::CryptoWallets));
   GURL url("chrome://wallet/");
   ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(

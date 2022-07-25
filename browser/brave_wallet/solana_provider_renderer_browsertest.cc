@@ -583,26 +583,19 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, DefaultWallet) {
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
 
   EXPECT_EQ(base::Value(true), result.value);
-  brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::None);
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
   ReloadAndWaitForLoadStop(browser());
   auto result2 = EvalJs(web_contents(browser()), CheckSolanaProviderScript,
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), result2.value);
-
-  brave_wallet::SetDefaultWallet(
-      browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::CryptoWallets);
-  ReloadAndWaitForLoadStop(browser());
-  auto result3 = EvalJs(web_contents(browser()), CheckSolanaProviderScript,
-                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(false), result3.value);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
   constexpr char OverwriteScript[] = "window.%s = ['test'];window.%s[0]";
   for (const std::string& provider : {"solana", "phantom.solana"}) {
-    brave_wallet::SetDefaultWallet(
+    brave_wallet::SetDefaultSolanaWallet(
         browser()->profile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     ReloadAndWaitForLoadStop(browser());
@@ -618,7 +611,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
                     base::StringPrintf("window.%s.isPhantom", provider.c_str()))
                     .ExtractBool());
 
-    brave_wallet::SetDefaultWallet(
+    brave_wallet::SetDefaultSolanaWallet(
         browser()->profile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
     ReloadAndWaitForLoadStop(browser());
@@ -1107,7 +1100,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnAccountChanged) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultSolanaWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   GURL url = embedded_test_server()->GetURL("/empty.html");

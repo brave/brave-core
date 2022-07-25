@@ -187,7 +187,7 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
 #endif
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
-      kDefaultWallet2,
+      kDefaultEthereumWallet,
       base::BindRepeating(&BraveDefaultExtensionsHandler::OnWalletTypeChanged,
                           base::Unretained(this)));
 }
@@ -370,7 +370,7 @@ void BraveDefaultExtensionsHandler::IsWidevineEnabled(
 }
 
 void BraveDefaultExtensionsHandler::OnWalletTypeChanged() {
-  if (brave_wallet::GetDefaultWallet(profile_->GetPrefs()) ==
+  if (brave_wallet::GetDefaultEthereumWallet(profile_->GetPrefs()) ==
       brave_wallet::mojom::DefaultWallet::CryptoWallets)
     return;
   extensions::ExtensionService* service =

@@ -824,7 +824,8 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
                        EnsurePropertiesCantBeDeletedNoOverwrite) {
-  brave_wallet_service_->SetDefaultWallet(mojom::DefaultWallet::BraveWallet);
+  brave_wallet_service_->SetDefaultEthereumWallet(
+      mojom::DefaultWallet::BraveWallet);
   GURL url =
       https_server_for_files()->GetURL("a.com", "/send_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

@@ -95,7 +95,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
-      auto default_wallet = brave_wallet::GetDefaultWallet(profile->GetPrefs());
+      auto default_wallet =
+          brave_wallet::GetDefaultEthereumWallet(profile->GetPrefs());
       if (default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets)
         return new EthereumRemoteClientUI(web_ui, url.host());
       return new WalletPageUI(web_ui);

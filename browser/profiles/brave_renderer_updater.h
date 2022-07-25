@@ -51,7 +51,8 @@ class BraveRendererUpdater : public KeyedService {
   PrefChangeRegistrar pref_change_registrar_;
 
   // Prefs that we sync to the renderers.
-  IntegerPrefMember brave_wallet_web3_provider_;
+  IntegerPrefMember brave_wallet_ethereum_provider_;
+  IntegerPrefMember brave_wallet_solana_provider_;
   BooleanPrefMember de_amp_enabled_;
   bool is_wallet_allowed_for_context_;
 };

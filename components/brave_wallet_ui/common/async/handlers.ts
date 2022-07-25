@@ -90,8 +90,10 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.getAllTokensList())
 
   const braveWalletService = apiProxy.braveWalletService
-  const defaultWallet = await braveWalletService.getDefaultWallet()
-  store.dispatch(WalletActions.defaultWalletUpdated(defaultWallet.defaultWallet))
+  const defaultEthereumResult = await braveWalletService.getDefaultEthereumWallet()
+  store.dispatch(WalletActions.defaultEthereumWalletUpdated(defaultEthereumResult.defaultWallet))
+  const defaultSolanaResult = await braveWalletService.getDefaultSolanaWallet()
+  store.dispatch(WalletActions.defaultSolanaWalletUpdated(defaultSolanaResult.defaultWallet))
 
   const mmResult =
     await braveWalletService.isExternalWalletInstalled(
@@ -202,7 +204,11 @@ handler.on(WalletActions.selectedAccountChanged.getType(), async (store, payload
   await updateCoinAccountNetworkInfo(store, payload.coin)
 })
 
-handler.on(WalletActions.defaultWalletChanged.getType(), async (store) => {
+handler.on(WalletActions.defaultEthereumWalletChanged.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.defaultSolanaWalletChanged.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
 

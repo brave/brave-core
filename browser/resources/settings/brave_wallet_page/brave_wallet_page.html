@@ -29,11 +29,19 @@
 </style>
 <div hidden="[[isNetworkEditor_]]">
   <div class="settings-box first">
-    <div class="start">$i18n{defaultWalletDesc}</div>
-    <settings-dropdown-menu id="defaultWalletType"
+    <div class="start">$i18n{defaultEthereumWalletDesc}</div>
+    <settings-dropdown-menu id="defaultEthereumWalletType"
                             class="wide-drop-down"
                             pref="{{prefs.brave.wallet.default_wallet2}}"
-                            menu-options="[[wallets_]]">
+                            menu-options="[[ethereum_provider_options_]]">
+    </settings-dropdown-menu>
+  </div>
+  <div class="settings-box">
+    <div class="start">$i18n{defaultSolanaWalletDesc}</div>
+    <settings-dropdown-menu id="defaultSolanaWalletType"
+                            class="wide-drop-down"
+                            pref="{{prefs.brave.wallet.default_solana_wallet}}"
+                            menu-options="[[solana_provider_options_]]">
     </settings-dropdown-menu>
   </div>
   <div class="settings-box">

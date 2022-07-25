@@ -12,6 +12,7 @@ export class BraveWalletBrowserProxy {
    */
    setBraveWalletEnabled (value) {}
    getWeb3ProviderList () {}
+   getSolanaProviderList () {}
    isNativeWalletEnabled () {}
    getAutoLockMinutes () {}
    getNetworksList () {}
@@ -95,6 +96,11 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   getAutoLockMinutes () {
     return sendWithPromise('getAutoLockMinutes')
+  }
+
+  /** @override */
+  getSolanaProviderOptions() {
+    return sendWithPromise('getSolanaProviderOptions')
   }
 }
 

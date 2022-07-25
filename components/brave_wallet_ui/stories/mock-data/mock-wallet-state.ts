@@ -172,7 +172,8 @@ export const mockWalletState: WalletState = {
     crypto: 'ETH',
     fiat: 'USD'
   },
-  defaultWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
+  defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
+  defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   favoriteApps: [],
   fullTokenList: [
     {

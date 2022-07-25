@@ -76,7 +76,11 @@ export type UpdateUnapprovedTransactionNonceType = {
   nonce: string
 }
 
-export type DefaultWalletChanged = {
+export type DefaultEthereumWalletChanged = {
+  defaultWallet: BraveWallet.DefaultWallet
+}
+
+export type DefaultSolanaWalletChanged = {
   defaultWallet: BraveWallet.DefaultWallet
 }
 

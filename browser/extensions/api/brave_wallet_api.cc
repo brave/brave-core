@@ -147,7 +147,8 @@ BraveWalletResetWalletFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto default_wallet = ::brave_wallet::GetDefaultWallet(profile->GetPrefs());
+  auto default_wallet =
+      ::brave_wallet::GetDefaultEthereumWallet(profile->GetPrefs());
   std::string extension_id;
   // This API is used so an extension can know when to prompt to
   // be the default Dapp provider. Since the new wallet is not an

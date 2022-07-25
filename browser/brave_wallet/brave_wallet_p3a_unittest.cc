@@ -39,14 +39,14 @@ class BraveWalletP3AUnitTest : public testing::Test {
   BraveWalletService* wallet_service_;
 };
 
-TEST_F(BraveWalletP3AUnitTest, DefaultWalletSetting) {
+TEST_F(BraveWalletP3AUnitTest, DefaultEthereumWalletSetting) {
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 1);
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
       static_cast<int>(mojom::DefaultWallet::None), 0);
-  wallet_service_->SetDefaultWallet(mojom::DefaultWallet::None);
+  wallet_service_->SetDefaultEthereumWallet(mojom::DefaultWallet::None);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
@@ -54,7 +54,8 @@ TEST_F(BraveWalletP3AUnitTest, DefaultWalletSetting) {
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
       static_cast<int>(mojom::DefaultWallet::CryptoWallets), 0);
-  wallet_service_->SetDefaultWallet(mojom::DefaultWallet::CryptoWallets);
+  wallet_service_->SetDefaultEthereumWallet(
+      mojom::DefaultWallet::CryptoWallets);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
@@ -62,16 +63,44 @@ TEST_F(BraveWalletP3AUnitTest, DefaultWalletSetting) {
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
       static_cast<int>(mojom::DefaultWallet::BraveWallet), 0);
-  wallet_service_->SetDefaultWallet(mojom::DefaultWallet::BraveWallet);
+  wallet_service_->SetDefaultEthereumWallet(mojom::DefaultWallet::BraveWallet);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
       static_cast<int>(mojom::DefaultWallet::BraveWallet), 1);
-  wallet_service_->SetDefaultWallet(
+  wallet_service_->SetDefaultEthereumWallet(
       mojom::DefaultWallet::BraveWalletPreferExtension);
   WaitForResponse();
   histogram_tester_->ExpectBucketCount(
       "Brave.Wallet.DefaultWalletSetting",
+      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 2);
+}
+
+TEST_F(BraveWalletP3AUnitTest, DefaultSolanaWalletSetting) {
+  histogram_tester_->ExpectBucketCount(
+      "Brave.Wallet.DefaultSolanaWalletSetting",
+      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 1);
+  histogram_tester_->ExpectBucketCount(
+      "Brave.Wallet.DefaultSolanaWalletSetting",
+      static_cast<int>(mojom::DefaultWallet::None), 0);
+  wallet_service_->SetDefaultSolanaWallet(mojom::DefaultWallet::None);
+  WaitForResponse();
+  histogram_tester_->ExpectBucketCount(
+      "Brave.Wallet.DefaultSolanaWalletSetting",
+      static_cast<int>(mojom::DefaultWallet::None), 1);
+  histogram_tester_->ExpectBucketCount(
+      "Brave.Wallet.DefaultSolanaWalletSetting",
+      static_cast<int>(mojom::DefaultWallet::CryptoWallets), 0);
+  wallet_service_->SetDefaultSolanaWallet(mojom::DefaultWallet::BraveWallet);
+  WaitForResponse();
+  histogram_tester_->ExpectBucketCount(
+      "Brave.Wallet.DefaultSolanaWalletSetting",
+      static_cast<int>(mojom::DefaultWallet::BraveWallet), 1);
+  wallet_service_->SetDefaultSolanaWallet(
+      mojom::DefaultWallet::BraveWalletPreferExtension);
+  WaitForResponse();
+  histogram_tester_->ExpectBucketCount(
+      "Brave.Wallet.DefaultSolanaWalletSetting",
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension), 2);
 }
 

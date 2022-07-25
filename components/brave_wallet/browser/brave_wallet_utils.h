@@ -96,8 +96,12 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
 std::string GetNetworkId(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id);
-void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet);
-mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
+void SetDefaultEthereumWallet(PrefService* prefs,
+                              mojom::DefaultWallet default_wallet);
+void SetDefaultSolanaWallet(PrefService* prefs,
+                            mojom::DefaultWallet default_wallet);
+mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs);
+mojom::DefaultWallet GetDefaultSolanaWallet(PrefService* prefs);
 void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
