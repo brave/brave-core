@@ -3037,6 +3037,24 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype">
       Solana
     </message>
+    <message name="IDS_EXCLUDED_APPS" desc="Vpn splittunnel, Excluded apps title text">
+      Excluded Apps
+    </message>
+    <message name="IDS_ALLOWED_REGULAR_APPS" desc="Vpn splittunnel, Allowed regular apps title text">
+      Allowed Regular Apps
+    </message>
+    <message name="IDS_ALLOWED_SYSTEM_APPS" desc="Vpn splittunnel, Allowed system apps title text">
+      Allowed System Apps
+    </message>
+    <message name="IDS_SHOW_SYSTEM_APPS" desc="Vpn splittunnel, Show system apps button text">
+      Show System Apps
+    </message>
+    <message name="IDS_SPLIT_TUNNEL_DESC" desc="Empty excluded apps list text">
+      Add apps to be excluded from the VPN traffic.
+    </message>
+    <message name="IDS_SPLIT_TUNNELING" desc="Vpn splittunnel text">
+      Split Tunneling
+    </message>
   </messages>
   </release>
 </grit>

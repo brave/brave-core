@@ -63,6 +63,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     public static final String PREF_SUPPORT_TECHNICAL = "support_technical";
     public static final String PREF_SUPPORT_VPN = "support_vpn";
     public static final String PREF_SERVER_RESET_CONFIGURATION = "server_reset_configuration";
+    private static final String PREF_SPLIT_TUNNELING = "split_tunneling";
 
     private static final int INVALIDATE_CREDENTIAL_TIMER_COUNT = 5000;
 
@@ -155,6 +156,15 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         showConfirmDialog();
+                        return true;
+                    }
+                });
+
+        findPreference(PREF_SPLIT_TUNNELING)
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        BraveVpnUtils.openSplitTunnelActivity(getActivity());
                         return true;
                     }
                 });
@@ -253,6 +263,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         @Override
                         public void run() {
                             findPreference(PREF_SERVER_CHANGE_LOCATION)
+                                    .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
+                            findPreference(PREF_SPLIT_TUNNELING)
                                     .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
                         }
                     });
@@ -477,20 +489,25 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 getActivity().getResources().getString(R.string.reset_vpn_config_dialog_message));
         confirmDialog.setPositiveButton(
                 getActivity().getResources().getString(android.R.string.yes), (dialog, which) -> {
-                    BraveVpnNativeWorker.getInstance().invalidateCredentials(
-                            BraveVpnPrefUtils.getHostname(), BraveVpnPrefUtils.getClientId(),
-                            BraveVpnPrefUtils.getSubscriberCredential(),
-                            BraveVpnPrefUtils.getApiAuthToken());
-                    BraveVpnUtils.showProgressDialog(
-                            getActivity(), getResources().getString(R.string.resetting_config));
-                    new Handler().postDelayed(() -> {
-                        BraveVpnUtils.resetProfileConfiguration(getActivity());
-                        new Handler().post(() -> updateSummaries());
-                    }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
+                    resetConfiguration();
                     dialog.dismiss();
                 });
         confirmDialog.setNegativeButton(getActivity().getResources().getString(android.R.string.no),
                 (dialog, which) -> { dialog.dismiss(); });
         confirmDialog.show();
+    }
+
+    private void resetConfiguration() {
+        BraveVpnNativeWorker.getInstance().invalidateCredentials(BraveVpnPrefUtils.getHostname(),
+                BraveVpnPrefUtils.getClientId(), BraveVpnPrefUtils.getSubscriberCredential(),
+                BraveVpnPrefUtils.getApiAuthToken());
+        BraveVpnUtils.showProgressDialog(
+                getActivity(), getResources().getString(R.string.resetting_config));
+        new Handler().postDelayed(() -> {
+            if (isResumed()) {
+                BraveVpnUtils.resetProfileConfiguration(getActivity());
+                new Handler().post(() -> updateSummaries());
+            }
+        }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
     }
 }

@@ -15,6 +15,7 @@ import com.wireguard.config.Peer;
 import com.wireguard.crypto.KeyPair;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class WireguardUtils {
         builder.parseDnsServers("1.1.1.1, 1.0.0.1");
         builder.parseListenPort("51821");
         builder.parsePrivateKey(clientPrivateKey);
+        builder.excludeApplications(BraveVpnPrefUtils.getExcludedPackages());
         return builder.build();
     }
 
