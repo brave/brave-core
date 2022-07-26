@@ -222,20 +222,37 @@ extension BrowserViewController: WKNavigationDelegate {
        let currentURL = tab?.webView?.url,
        currentURL.baseDomain != url.baseDomain,
        domainForRequestURL.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
-       navigationAction.targetFrame?.isMainFrame == true,
-       let redirectURL = DebouncingResourceDownloader.shared.redirectURL(for: url) {
-      // Cancel the original request. We don't want it to load as it's tracking us
-      decisionHandler(.cancel, preferences)
+       navigationAction.targetFrame?.isMainFrame == true {
+      
+      // Lets get the redirect chain.
+      // Then we simply get all elements up until the user allows us to redirect
+      // (i.e. appropriate settings are enabled for that redirect rule)
+      let redirectChain = DebouncingResourceDownloader.shared
+        .redirectChain(for: url)
+        .contiguousUntil { _, rule in
+          return rule.preferences.allSatisfy { pref in
+            switch pref {
+            case .deAmpEnabled:
+              return Preferences.Shields.autoRedirectAMPPages.value
+            }
+          }
+        }
+      
+      // Once we check the redirect chain only need the last (final) url from our redirect chain
+      if let redirectURL = redirectChain.last?.url {
+        // Cancel the original request. We don't want it to load as it's tracking us
+        decisionHandler(.cancel, preferences)
 
-      // For now we only allow the `Referer`. The browser will other headers during navigation.
-      var modifiedRequest = URLRequest(url: redirectURL)
+        // For now we only allow the `Referer`. The browser will add other headers during navigation.
+        var modifiedRequest = URLRequest(url: redirectURL)
 
-      for (headerKey, headerValue) in navigationAction.request.allHTTPHeaderFields ?? [:] {
-        guard headerKey == "Referer" else { continue }
-        modifiedRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
+        for (headerKey, headerValue) in navigationAction.request.allHTTPHeaderFields ?? [:] {
+          guard headerKey == "Referer" else { continue }
+          modifiedRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
+        }
+
+        tab?.loadRequest(modifiedRequest)
       }
-
-      tab?.loadRequest(modifiedRequest)
     }
     
     // Add de-amp script
