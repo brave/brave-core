@@ -9,8 +9,6 @@
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/constants/network_constants.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -19,11 +17,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/browser_thread.h"
-#include "content/public/browser/web_contents.h"
-#include "net/http/http_request_headers.h"
-#include "net/http/http_util.h"
-#include "net/url_request/url_request.h"
+#include "net/base/net_errors.h"
 
 using brave_shields::ControlType;
 

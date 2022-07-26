@@ -131,9 +131,9 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
-    if (expected_http_accept_language_.empty())
-      return;
     if (request.relative_url.find("/reduce-language/") == std::string::npos)
+      return;
+    if (expected_http_accept_language_.empty())
       return;
     EXPECT_EQ(request.headers.at("accept-language"),
               expected_http_accept_language_);
