@@ -386,7 +386,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
 
   constexpr const char kGetTheme[] =
       R"js(
-        document.documentElement.getAttribute('theme-data')
+        document.documentElement.getAttribute('data-theme')
       )js";
 
   EXPECT_EQ("", speedreader_service()->GetSelectedTheme());

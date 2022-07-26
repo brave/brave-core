@@ -457,7 +457,7 @@ iframe {
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not([theme-data]) {
+  html:not([data-theme]) {
     --background-color: #17171F;
     --article-background-color: #1E2029;
     --summary-text-color: #C2C4CF;
@@ -467,7 +467,7 @@ iframe {
 }
 
 html,
-html[theme-data='light'] {
+html[data-theme='light'] {
   --background-color: #F8F9FA;
   --article-background-color: #FFFFFF;
   --summary-text-color: #495057;
@@ -477,7 +477,7 @@ html[theme-data='light'] {
   background-color: var(--background-color);
 }
 
-html[theme-data='sepia'] {
+html[data-theme='sepia'] {
   --background-color: #E9E0CA;
   --article-background-color: #F2EBD9;
   --summary-text-color: #5B4635;
@@ -485,7 +485,7 @@ html[theme-data='sepia'] {
   --quote-text-color: rgba(0, 0, 0, 0.65);
 }
 
-html[theme-data='dark'] {
+html[data-theme='dark'] {
   --background-color: #17171F;
   --article-background-color: #1E2029;
   --summary-text-color: #C2C4CF;

@@ -271,10 +271,10 @@ void SpeedreaderTabHelper::ChangeTheme(const std::string& theme) {
       uR"js(
     (function() {
       const theme = '$1'
-      if (theme == 'system' || theme == '') {
-        document.documentElement.removeAttribute('theme-data')
+      if (theme == '') {
+        document.documentElement.removeAttribute('data-theme')
       } else {
-        document.documentElement.setAttribute('theme-data', theme)
+        document.documentElement.setAttribute('data-theme', theme)
       }
     })();
   )js";

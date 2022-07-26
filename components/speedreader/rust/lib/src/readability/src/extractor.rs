@@ -284,7 +284,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     }
 
     if let Some(theme) = theme {
-        content = format!("<html theme-data=\"{}\">", theme) + &content + "</html>";
+        content = format!("<html data-theme=\"{}\">", theme) + &content + "</html>";
     }
 
     Ok(Product { meta, content })
