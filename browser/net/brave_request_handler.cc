@@ -14,6 +14,7 @@
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
+#include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
@@ -111,6 +112,13 @@ void BraveRequestHandler::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeStartTransaction_ReferralsWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 #endif
+
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveReduceLanguage)) {
+    start_transaction_callback = base::BindRepeating(
+        brave::OnBeforeStartTransaction_ReduceLanguageWork);
+    before_start_transaction_callbacks_.push_back(start_transaction_callback);
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   brave::OnHeadersReceivedCallback headers_received_callback =
