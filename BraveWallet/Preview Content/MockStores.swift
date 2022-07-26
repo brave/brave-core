@@ -105,6 +105,7 @@ extension AssetDetailStore {
       walletService: MockBraveWalletService(),
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       token: .previewToken
     )
   }
@@ -146,7 +147,8 @@ extension AccountActivityStore {
       rpcService: MockJsonRpcService(),
       assetRatioService: MockAssetRatioService(),
       txService: MockTxService(),
-      blockchainRegistry: MockBlockchainRegistry()
+      blockchainRegistry: MockBlockchainRegistry(),
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy
     )
   }
 }
