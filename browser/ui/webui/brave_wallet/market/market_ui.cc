@@ -60,7 +60,8 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletTrezorBridgeUrl",
                               kUntrustedTrezorURL);
-  untrusted_source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
+  untrusted_source->AddString("braveWalletLedgerBridgeUrl",
+                              kUntrustedLedgerURL);
   untrusted_source->AddString("braveWalletMarketUiBridgeUrl",
                               kUntrustedMarketURL);
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
