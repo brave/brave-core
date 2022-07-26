@@ -8,13 +8,13 @@
 #include <algorithm>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_view_ids.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/defaults.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -130,13 +130,13 @@ SkColor BookmarkBarInstructionsView::GetInstructionsTextColor() {
   if (!cp || !tp)
     return text_color;
 
-  if (brave::IsRegularProfile(browser_->profile())) {
+  if (browser_->profile()->IsIncognitoProfile()) {
+    text_color = tp->GetColor(
+        BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT);
+  } else {
     const SkColor toolbar_color = cp->GetColor(kColorToolbar);
     text_color = color_utils::PickContrastingColor(
         kLightToolbarIcon, SK_ColorWHITE, toolbar_color);
-  } else {
-    text_color = tp->GetColor(
-        BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT);
   }
 
   return text_color;
