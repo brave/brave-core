@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {RegisterStyleOverride, RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
-import {loadTimeData} from '../i18n_setup.js'
+import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { RegisterStyleOverride, RegisterPolymerTemplateModifications } from 'chrome://brave-resources/polymer_overriding.js'
+import { loadTimeData } from '../i18n_setup.js'
 import '../brave_icons.m.js'
 
-function createMenuElement (title, href, iconName, pageVisibilitySection) {
+function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
   if (pageVisibilitySection) {
     menuEl.setAttribute('hidden', `[[!pageVisibility.${pageVisibilitySection}]]`)
@@ -26,7 +26,7 @@ function createMenuElement (title, href, iconName, pageVisibilitySection) {
   return menuEl
 }
 
-function getMenuElement (templateContent, href) {
+function getMenuElement(templateContent, href) {
   let menuEl = templateContent.querySelector(`a[href="${href}"]`)
   if (!menuEl) {
     // Search templates
@@ -109,22 +109,23 @@ RegisterStyleOverride(
       }
 
       a[href].iron-selected {
-        color: none;
-        background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%) !important;
-
-        -webkit-background-clip: text !important;;
-        -webkit-text-fill-color: transparent !important;
-        font-weight: 600 !important;
+        color: #DB2F04;
+        font-weight: 500 !important;
       }
 
       a:hover, iron-icon:hover {
-        color: rgba(76, 84, 210, 1) !important;
+        --iron-icon-fill-color: #444DD0;
+        color: #444DD0 !important;
       }
 
       iron-icon {
-        margin-inline-end: 16px !important;
-        width: 20px;
-        height: 20px;
+        margin-inline-end: 14px !important;
+        width: 24px;
+        height: 24px;
+      }
+
+      a[href].iron-selected iron-icon:host svg {
+        fill: pink !important;
       }
 
       a[href].iron-selected::before {
@@ -136,16 +137,21 @@ RegisterStyleOverride(
         display: block;
         height: 170%;
         width: 4px;
-        background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);
         border-radius: 0px 2px 2px 0px;
       }
 
       @media (prefers-color-scheme: dark) {
-        a[href].iron-selected iron-icon {
-          color: var(--settings-nav-item-color) !important;
+        a[href].iron-selected {
+          color: #FB5930;
         }
+
+        a[href].iron-selected iron-icon {
+          color: transparent;
+        }
+
         a:hover, iron-icon:hover {
-          color: #737ADE !important;
+          --iron-icon-fill-color: #A6ABE9 !important;
+          color: #A6ABE9 !important;
         }
       }
 
@@ -202,6 +208,18 @@ RegisterStyleOverride(
 
 RegisterPolymerTemplateModifications({
   'settings-menu': (templateContent) => {
+    const svg = document.createElement('svg');
+    svg.innerHTML = `
+<defs>
+  <linearGradient id="selectedFill" x1="0" y1="0" x2="-0.5377411334031563" y2="0.8431100007984064">
+    <stop offset="0%" stop-color="#4C54D2" />
+    <stop offset="56.25%" stop-color="#BF14A2" />
+    <stop offset="100%" stop-color="#F73A1C" />
+  </linearGradient>
+</defs>
+`;
+    templateContent.appendChild(svg);
+
     // Add title
     const titleEl = document.createElement('h1')
     titleEl.id = 'settingsHeader'
