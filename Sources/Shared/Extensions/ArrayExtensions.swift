@@ -79,6 +79,12 @@ public extension Array {
       Array(self[$0..<Swift.min($0 + n, self.count)])
     }
   }
+  
+  /// Returns all elements up until a condition is no longer satisfied.
+  func contiguousUntil(condition: (Element) -> Bool) -> ArraySlice<Element> {
+    let index = firstIndex(where: { !condition($0) }) ?? self.count
+    return self[0..<index]
+  }
 }
 
 public extension Sequence {

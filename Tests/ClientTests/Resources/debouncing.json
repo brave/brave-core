@@ -192,5 +192,66 @@
     ],
     "action": "base64,redirect",
     "param": "url"
+  },
+  {
+    "include": [
+      "*://brave.com/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(.*)$"
+  },
+  {
+    "include": [
+      "*://brave-scheme.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "prepend_scheme": "https",
+    "action": "regex-path",
+    "param": "^/(.*)$"
+  },
+  {
+    "include": [
+      "*://brave-base64.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path,base64",
+    "param": "^/(.*)$"
+  },
+  {
+    "include": [
+      "*://brave-invalid-regex.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(.*$"
+  },
+  {
+    "include": [
+      "*://brave-multiple-matchers.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(.*)/(.*)$"
+  },
+  {
+    "include": [
+      "*://brave-long-regex.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(https:\/\/lorem.example|https:\/\/ipsum.example|https:\/\/dolor.example|https:\/\/sit.example|https:\/\/amet.example|https:\/\/consectetur.example|https:\/\/adipiscing.example|https:\/\/elit.example|https:\/\/donec.example|https:\/\/ornare.example|https:\/\/odio.example|https:\/\/nec.example|https:\/\/ex.example|https:\/\/pulvinar.https:\/\/example|.example|https:\/\/pellentesque.example|https:\/\/diam.example|https:\/\/tristique.example|https:\/\/nullam.example|https:\/\/sollicitudin.example|https:\/\/et.example|https:\/\/arcu.example|https:\/\/feugiat.example|https:\/\/suspendisse.example|https:\/\/turpis.example|https:\/\/odio.example|https:\/\/faucibus.example|https:\/\/vitae.example|https:\/\/blandit.example|https:\/\/vel.example|https:\/\/convallis.example|https:\/\/tincidunt.example|https:\/\/lacus.example|https:\/\/fusce.example|https:\/\/malesuada.example|https:\/\/nunc.example|https:\/\/nec.example|https:\/\/ligula.example|https:\/\/mattis.example|https:\/\/non.example|https:\/\/lacinia.example|https:\/\/sem.example|https:\/\/commodo.example|https:\/\/donec.example|https:\/\/at.example|https:\/\/nunc.example|https:\/\/eu.example|https:\/\/nunc.example|https:\/\/dignissim.example|https:\/\/malesuada.example|https:\/\/ullamcorper.example|https:\/\/et.example|https:\/\/mauris.example|https:\/\/fusce.example|https:\/\/et.example|https:\/\/placerat.example|https:\/\/justo.example|https:\/\/Nulla.example|https:\/\/non.example|https:\/\/gravida.example|https:\/\/risus.example|https:\/\/integer.example|https:\/\/est.example|https:\/\/diam.example|https:\/\/ullamcorper.example|https:\/\/quis.example|https:\/\/sapien.example|https:\/\/at.example|https:\/\/placerat.example|https:\/\/bibendum.example|https:\/\/quisque.example|https:\/\/bibendum.example|https:\/\/mi.example|https:\/\/id.example|https:\/\/dictum.example|https:\/\/imperdiet.example|https:\/\/augue.example|https:\/\/sem.example|https:\/\/gravida.example|https:\/\/quis.example|https:\/\/ullamcorper.example|https:\/\/nulla.example|https:\/\/nisi.example|https:\/\/sed.example|https:\/\/mauris.example)$"
   }
 ]
