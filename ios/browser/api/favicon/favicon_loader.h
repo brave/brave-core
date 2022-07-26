@@ -11,14 +11,20 @@
 
 @class FaviconAttributes;
 
-typedef NSInteger BraveFaviconLoaderSize
-    NS_TYPED_ENUM NS_SWIFT_NAME(FaviconLoader.Sizes);
-/// Minimal acceptable favicon size, in points.
-OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeMin;
+typedef NSInteger BraveFaviconLoaderSize NS_TYPED_ENUM
+    NS_SWIFT_NAME(FaviconLoader.Sizes);
+/// Smallest acceptable favicon size, in points.
+OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredSmallest;
 /// Desired small favicon size, in points.
 OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredSmall;
 /// Desired medium favicon size, in points.
 OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredMedium;
+/// Desired large favicon size, in points.
+OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLarge;
+/// Desired larger favicon size, in points.
+OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLarger;
+/// Desired largest favicon size, in points.
+OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLargest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,31 +37,16 @@ NS_SWIFT_NAME(FaviconLoader)
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)getForPrivateMode:(bool)privateMode;
 
+/// |url - the page url
 /// |sizeInPoints| - the desired size of the favIcon
 /// |minSizeInPoints| - the minimum acceptable favIcon size
 /// |completion| may be called more than once (once with a default image, and
 /// one with the actual fav-icon if found).
-- (void)faviconForPageURL:(NSURL*)url
-              sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
-           minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
-    fallbackToGoogleServer:(bool)fallbackToGoogleServer
-                completion:(void (^)(FaviconAttributes* attributes))completion;
-
-/// |sizeInPoints| the desired size of the favIcon
-/// |completion| may be called more than once (once with a default image, and
-/// one with the actual fav-icon if found).
 - (void)faviconForPageURLOrHost:(NSURL*)url
                    sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
+                minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
                      completion:
                          (void (^)(FaviconAttributes* attributes))completion;
-
-/// |sizeInPoints| the desired size of the favIcon
-/// |completion| may be called more than once (once with a default image, and
-/// one with the actual fav-icon if found).
-- (void)faviconForIconURL:(NSURL*)url
-             sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
-          minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
-               completion:(void (^)(FaviconAttributes* attributes))completion;
 @end
 
 NS_ASSUME_NONNULL_END

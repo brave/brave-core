@@ -15,6 +15,7 @@
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/favicon/favicon_status.h"
 #include "ios/web/public/navigation/navigation_item.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"

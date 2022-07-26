@@ -16,9 +16,9 @@
 namespace SVGImage {
 std::unique_ptr<SkCanvas> CreateCanvas(int width, int height) {
   SkBitmap bitmap;
-  bitmap.setInfo(SkImageInfo::MakeN32(width, height, kPremul_SkAlphaType));
 
-  if (!bitmap.tryAllocPixels()) {
+  if (!bitmap.tryAllocPixels(
+          SkImageInfo::MakeN32(width, height, kPremul_SkAlphaType))) {
     return nullptr;
   }
 
@@ -28,7 +28,11 @@ std::unique_ptr<SkCanvas> CreateCanvas(int width, int height) {
 
 SkBitmap BitmapFromCanvas(SkCanvas* canvas) {
   SkBitmap bitmap;
-  bitmap.allocPixels(canvas->imageInfo());
+
+  if (!bitmap.tryAllocPixels(canvas->imageInfo())) {
+    return bitmap;
+  }
+
   if (!canvas->readPixels(bitmap, 0, 0)) {
     bitmap.reset();
   }
@@ -47,30 +51,38 @@ SkMatrix ComputeScaleMatrix(std::size_t image_width,
 SkBitmap MakeFromData(const NSData* data,
                       std::size_t width,
                       std::size_t height) {
-  if ([data length] > 0) {
-    // No need for `SkMemoryStream::MakeCopy` because the stream deallocates
-    std::unique_ptr<SkStream> stream =
-        SkMemoryStream::MakeDirect([data bytes], [data length]);
-    if (stream) {
-      sk_sp<SkSVGDOM> document = SkSVGDOM::MakeFromStream(*stream);
-
-      if (document && document->getRoot()) {
-        SkSVGSVG* root_svg_element = document->getRoot();
-        root_svg_element->setPreserveAspectRatio(SkSVGPreserveAspectRatio());
-
-        SkSize size = root_svg_element->intrinsicSize(
-            SkSVGLengthContext(SkSize::Make(0, 0)));
-        document->setContainerSize(
-            SkSize::Make(SkIntToScalar(width), SkIntToScalar(height)));
-
-        std::unique_ptr<SkCanvas> canvas = CreateCanvas(width, height);
-        canvas->concat(
-            ComputeScaleMatrix(size.width(), size.height(), width, height));
-        document->render(canvas.get());
-        return BitmapFromCanvas(canvas.get());
-      }
-    }
+  if ([data length] == 0) {
+    return SkBitmap();
   }
-  return SkBitmap();
+
+  // No need for `SkMemoryStream::MakeCopy` because the stream deallocates
+  std::unique_ptr<SkStream> stream =
+      SkMemoryStream::MakeDirect([data bytes], [data length]);
+  if (!stream) {
+    return SkBitmap();
+  }
+
+  sk_sp<SkSVGDOM> document = SkSVGDOM::MakeFromStream(*stream);
+  if (!document || !document->getRoot()) {
+    return SkBitmap();
+  }
+
+  SkSVGSVG* root_svg_element = document->getRoot();
+  root_svg_element->setPreserveAspectRatio(SkSVGPreserveAspectRatio());
+
+  SkSize size =
+      root_svg_element->intrinsicSize(SkSVGLengthContext(SkSize::Make(0, 0)));
+  document->setContainerSize(
+      SkSize::Make(SkIntToScalar(width), SkIntToScalar(height)));
+
+  std::unique_ptr<SkCanvas> canvas = CreateCanvas(width, height);
+  if (!canvas) {
+    return SkBitmap();
+  }
+
+  canvas->concat(
+      ComputeScaleMatrix(size.width(), size.height(), width, height));
+  document->render(canvas.get());
+  return BitmapFromCanvas(canvas.get());
 }
 }  // namespace SVGImage

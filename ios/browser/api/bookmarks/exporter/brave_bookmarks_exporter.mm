@@ -81,9 +81,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (instancetype)init {
   if ((self = [super init])) {
-    export_thread_ = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    export_thread_ = web::GetIOThreadTaskRunner({});
   }
   return self;
 }

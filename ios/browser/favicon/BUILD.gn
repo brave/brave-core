@@ -7,6 +7,8 @@ source_set("favicon") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
+    "brave_ios_favicon_loader.h",
+    "brave_ios_favicon_loader.mm",
     "brave_ios_web_favicon_driver.h",
     "brave_ios_web_favicon_driver.mm",
   ]
