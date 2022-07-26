@@ -306,6 +306,8 @@ export const PortfolioAsset = () => {
   }, [selectedAssetFromParams])
 
   React.useEffect(() => {
+    if (!nftIframeLoaded) return
+
     if (nftDetailsRef?.current) {
       const command: UpdateLoadingMessage = {
         command: NftUiCommand.UpdateLoading,
@@ -313,7 +315,7 @@ export const PortfolioAsset = () => {
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
-  }, [nftDetailsRef, isFetchingNFTMetadata])
+  }, [nftIframeLoaded, nftDetailsRef, isFetchingNFTMetadata])
 
   React.useEffect(() => {
     if (!nftIframeLoaded) return
