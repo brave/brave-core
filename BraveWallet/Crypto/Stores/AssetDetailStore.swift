@@ -55,6 +55,7 @@ class AssetDetailStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
+  private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
 
   let token: BraveWallet.BlockchainToken
 
@@ -65,6 +66,7 @@ class AssetDetailStore: ObservableObject {
     walletService: BraveWalletBraveWalletService,
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     token: BraveWallet.BlockchainToken
   ) {
     self.assetRatioService = assetRatioService
@@ -73,6 +75,7 @@ class AssetDetailStore: ObservableObject {
     self.walletService = walletService
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
+    self.solTxManagerProxy = solTxManagerProxy
     self.token = token
 
     self.keyringService.add(self)
@@ -164,25 +167,43 @@ class AssetDetailStore: ObservableObject {
     keyring: BraveWallet.KeyringInfo,
     assetRatios: [String: Double]
   ) async -> [TransactionSummary] {
-    let network = await rpcService.network(.eth)
+    let coin = token.coin
+    let network = await rpcService.network(coin)
+    let userVisibleAssets = await walletService.userAssets(network.chainId, coin: coin)
+    let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin)
     let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { group -> [BraveWallet.TransactionInfo] in
       for account in keyring.accountInfos {
         group.addTask {
-          await self.txService.allTransactionInfo(.eth, from: account.address)
+          await self.txService.allTransactionInfo(coin, from: account.address)
         }
       }
       return await group.reduce([BraveWallet.TransactionInfo](), { partialResult, prior in
         return partialResult + prior
       })
     }
+    var solEstimatedTxFees: [String: UInt64] = [:]
+    if token.coin == .sol {
+      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: allTransactions.map(\.id))
+    }
     return allTransactions
       .filter { tx in
         switch tx.txType {
         case .erc20Approve, .erc20Transfer:
-          let toAddress = tx.txDataUnion.ethTxData1559?.baseData.to
-          return toAddress == self.token.contractAddress
+          guard let tokenContractAddress = tx.txDataUnion.ethTxData1559?.baseData.to else {
+            return false
+          }
+          return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
         case .ethSend, .ethSwap, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
           return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
+        case .solanaSystemTransfer:
+          return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
+        case .solanaSplTokenTransfer, .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
+          guard let tokenContractAddress = tx.txDataUnion.solanaTxData?.splTokenMintAddress else {
+            return false
+          }
+          return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
+        case .erc1155SafeTransferFrom, .solanaDappSignTransaction, .solanaDappSignAndSendTransaction:
+          return false
         @unknown default:
           return false
         }
@@ -193,9 +214,10 @@ class AssetDetailStore: ObservableObject {
           from: transaction,
           network: network,
           accountInfos: keyring.accountInfos,
-          visibleTokens: [token],
-          allTokens: [],
+          visibleTokens: userVisibleAssets,
+          allTokens: allTokens,
           assetRatios: assetRatios,
+          solEstimatedTxFee: solEstimatedTxFees[transaction.id],
           currencyFormatter: self.currencyFormatter
         )
       }

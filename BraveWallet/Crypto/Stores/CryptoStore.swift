@@ -172,6 +172,7 @@ public class CryptoStore: ObservableObject {
       walletService: walletService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
+      solTxManagerProxy: solTxManagerProxy,
       token: token
     )
     assetDetailStore = store
@@ -196,7 +197,8 @@ public class CryptoStore: ObservableObject {
       rpcService: rpcService,
       assetRatioService: assetRatioService,
       txService: txService,
-      blockchainRegistry: blockchainRegistry
+      blockchainRegistry: blockchainRegistry,
+      solTxManagerProxy: solTxManagerProxy
     )
     accountActivityStore = store
     return store

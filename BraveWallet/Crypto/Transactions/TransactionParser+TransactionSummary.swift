@@ -44,6 +44,7 @@ extension TransactionParser {
     visibleTokens: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
+    solEstimatedTxFee: UInt64?,
     currencyFormatter: NumberFormatter
   ) -> TransactionSummary {
     guard let parsedTransaction = parseTransaction(
@@ -53,6 +54,7 @@ extension TransactionParser {
       visibleTokens: visibleTokens,
       allTokens: allTokens,
       assetRatios: assetRatios,
+      solEstimatedTxFee: solEstimatedTxFee,
       currencyFormatter: currencyFormatter,
       decimalFormatStyle: .balance // use 4 digit precision for summary
     ) else {
@@ -72,17 +74,17 @@ extension TransactionParser {
     }
     switch parsedTransaction.details {
     case let .ethSend(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromTokenSymbol, details.fromFiat ?? "")
+      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken.symbol, details.fromFiat ?? "")
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: details.gasFee,
-        networkSymbol: details.fromTokenSymbol
+        networkSymbol: parsedTransaction.networkSymbol
       )
     case let .erc20Transfer(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromTokenSymbol, details.fromFiat ?? "")
+      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken.symbol, details.fromFiat ?? "")
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -133,6 +135,16 @@ extension TransactionParser {
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: nil,
+        networkSymbol: parsedTransaction.networkSymbol
+      )
+    case let .solSystemTransfer(details), let .solSplTokenTransfer(details):
+      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken.symbol, details.fromFiat ?? "")
+      return .init(
+        txInfo: transaction,
+        namedFromAddress: parsedTransaction.namedFromAddress,
+        namedToAddress: parsedTransaction.namedToAddress,
+        title: title,
+        gasFee: details.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
     }

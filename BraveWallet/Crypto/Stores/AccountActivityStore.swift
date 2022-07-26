@@ -26,6 +26,7 @@ class AccountActivityStore: ObservableObject {
   private let assetRatioService: BraveWalletAssetRatioService
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
+  private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
 
   init(
     account: BraveWallet.AccountInfo,
@@ -34,7 +35,8 @@ class AccountActivityStore: ObservableObject {
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
     txService: BraveWalletTxService,
-    blockchainRegistry: BraveWalletBlockchainRegistry
+    blockchainRegistry: BraveWalletBlockchainRegistry,
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   ) {
     self.account = account
     self.keyringService = keyringService
@@ -43,6 +45,7 @@ class AccountActivityStore: ObservableObject {
     self.assetRatioService = assetRatioService
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
+    self.solTxManagerProxy = solTxManagerProxy
     
     self.keyringService.add(self)
     self.rpcService.add(self)
@@ -124,7 +127,12 @@ class AccountActivityStore: ObservableObject {
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double]
   ) async -> [TransactionSummary] {
-    await txService.allTransactionInfo(.eth, from: account.address)
+    let transactions = await txService.allTransactionInfo(account.coin, from: account.address)
+    var solEstimatedTxFees: [String: UInt64] = [:]
+    if account.coin == .sol {
+      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: transactions.map(\.id))
+    }
+    return transactions
       .sorted(by: { $0.createdTime > $1.createdTime })
       .map { transaction in
         TransactionParser.transactionSummary(
@@ -134,6 +142,7 @@ class AccountActivityStore: ObservableObject {
           visibleTokens: userVisibleTokens,
           allTokens: allTokens,
           assetRatios: assetRatios,
+          solEstimatedTxFee: solEstimatedTxFees[transaction.id],
           currencyFormatter: currencyFormatter
         )
       }

@@ -341,7 +341,7 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .mockSPLToken
+      prefilledToken: .mockSpdToken
     )
     
     let ex = expectation(description: "send-sol-transaction")
