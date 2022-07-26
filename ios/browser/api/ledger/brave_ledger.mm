@@ -456,7 +456,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  ledger->CreateWallet(^(ledger::type::Result result) {
+  ledger->CreateWallet(base::BindOnce(^(ledger::type::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) {
       return;
@@ -497,7 +497,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
         }
       }
     });
-  });
+  }));
 }
 
 - (void)currentWalletInfo:
@@ -515,7 +515,8 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 
 - (void)getRewardsParameters:
     (void (^)(LedgerRewardsParameters* _Nullable))completion {
-  ledger->GetRewardsParameters(^(ledger::type::RewardsParametersPtr info) {
+  ledger->GetRewardsParameters(base::BindOnce(^(
+      ledger::type::RewardsParametersPtr info) {
     if (info) {
       self.rewardsParameters = [[LedgerRewardsParameters alloc]
           initWithRewardsParametersPtr:std::move(info)];
@@ -528,7 +529,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
         completion(weakSelf.rewardsParameters);
       }
     });
-  });
+  }));
 }
 
 - (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {
@@ -795,7 +796,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   ledger->SetPublisherExclude(
       base::SysNSStringToUTF8(publisherId),
       (ledger::type::PublisherExclude)state,
-      ^(const ledger::type::Result result) {
+      base::BindOnce(^(ledger::type::Result result) {
         if (result != ledger::type::Result::LEDGER_OK) {
           return;
         }
@@ -804,11 +805,11 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
             observer.excludedSitesChanged(publisherId, state);
           }
         }
-      });
+      }));
 }
 
 - (void)restoreAllExcludedPublishers {
-  ledger->RestorePublishers(^(const ledger::type::Result result) {
+  ledger->RestorePublishers(base::BindOnce(^(ledger::type::Result result) {
     if (result != ledger::type::Result::LEDGER_OK) {
       return;
     }
@@ -820,7 +821,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                                           ledger::type::PublisherExclude::ALL));
       }
     }
-  });
+  }));
 }
 
 - (void)publisherBannerForId:(NSString*)publisherId
@@ -1008,8 +1009,8 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 - (void)fetchPromotions:
     (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion {
   ledger->FetchPromotions(
-      ^(ledger::type::Result result,
-        std::vector<ledger::type::PromotionPtr> promotions) {
+      base::BindOnce(^(ledger::type::Result result,
+                       std::vector<ledger::type::PromotionPtr> promotions) {
         if (result != ledger::type::Result::LEDGER_OK) {
           return;
         }
@@ -1018,7 +1019,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
             completion(self.pendingPromotions);
           }
         }];
-      });
+      }));
 }
 
 - (void)claimPromotion:(NSString*)promotionId
@@ -1038,12 +1039,12 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                                                 encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(
       base::SysNSStringToUTF8(promotionId), base::SysNSStringToUTF8(jsonString),
-      ^(const ledger::type::Result result, const std::string& nonce) {
+      base::BindOnce(^(ledger::type::Result result, const std::string& nonce) {
         const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
         dispatch_async(dispatch_get_main_queue(), ^{
           completion(static_cast<LedgerResult>(result), bridgedNonce);
         });
-      });
+      }));
 }
 
 - (void)attestPromotion:(NSString*)promotionId

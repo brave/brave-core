@@ -28,7 +28,7 @@ WalletCreate::WalletCreate(LedgerImpl* ledger) :
 
 WalletCreate::~WalletCreate() = default;
 
-void WalletCreate::Start(ledger::LegacyResultCallback callback) {
+void WalletCreate::Start(ledger::ResultCallback callback) {
   bool corrupted = false;
   auto wallet = ledger_->wallet()->GetWallet(&corrupted);
 
@@ -41,31 +41,28 @@ void WalletCreate::Start(ledger::LegacyResultCallback callback) {
     wallet = type::BraveWallet::New();
     wallet->recovery_seed = util::Security::GenerateSeed();
     if (!ledger_->wallet()->SetWallet(wallet->Clone())) {
-      callback(type::Result::LEDGER_ERROR);
+      std::move(callback).Run(type::Result::LEDGER_ERROR);
       return;
     }
   }
 
   if (!wallet->payment_id.empty()) {
     BLOG(1, "Wallet already exists");
-    callback(type::Result::WALLET_CREATED);
+    std::move(callback).Run(type::Result::WALLET_CREATED);
     return;
   }
 
-  auto url_callback = std::bind(&WalletCreate::OnCreate,
-      this,
-      _1,
-      _2,
-      callback);
+  auto url_callback = base::BindOnce(
+      &WalletCreate::OnCreate, base::Unretained(this), std::move(callback));
 
-  promotion_server_->post_wallet_brave()->Request(url_callback);
+  promotion_server_->post_wallet_brave()->Request(std::move(url_callback));
 }
 
-void WalletCreate::OnCreate(type::Result result,
-                            const std::string& payment_id,
-                            ledger::LegacyResultCallback callback) {
+void WalletCreate::OnCreate(ledger::ResultCallback callback,
+                            type::Result result,
+                            const std::string& payment_id) {
   if (result != type::Result::LEDGER_OK) {
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
@@ -74,7 +71,7 @@ void WalletCreate::OnCreate(type::Result result,
   const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
 
   if (!success) {
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -85,7 +82,7 @@ void WalletCreate::OnCreate(type::Result result,
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
-  callback(type::Result::WALLET_CREATED);
+  std::move(callback).Run(type::Result::WALLET_CREATED);
 }
 
 }  // namespace wallet

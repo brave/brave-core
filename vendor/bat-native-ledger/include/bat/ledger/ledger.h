@@ -30,7 +30,7 @@ extern int retry_interval;      // seconds
 using PublisherBannerCallback = std::function<void(type::PublisherBannerPtr)>;
 
 using GetRewardsParametersCallback =
-    std::function<void(type::RewardsParametersPtr)>;
+    base::OnceCallback<void(type::RewardsParametersPtr)>;
 
 using OnRefreshPublisherCallback = std::function<void(type::PublisherStatus)>;
 
@@ -46,10 +46,10 @@ using ExternalWalletAuthorizationCallback =
     std::function<void(type::Result, base::flat_map<std::string, std::string>)>;
 
 using FetchPromotionCallback =
-    std::function<void(type::Result, type::PromotionList)>;
+    base::OnceCallback<void(type::Result, type::PromotionList)>;
 
 using ClaimPromotionCallback =
-    std::function<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(type::Result, const std::string&)>;
 
 using RewardsInternalsInfoCallback =
     std::function<void(type::RewardsInternalsInfoPtr)>;
@@ -128,7 +128,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 
-  virtual void CreateWallet(LegacyResultCallback callback) = 0;
+  virtual void CreateWallet(ResultCallback callback) = 0;
 
   virtual void OneTimeTip(const std::string& publisher_key,
                           double amount,
@@ -242,9 +242,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherExclude(const std::string& publisher_id,
                                    type::PublisherExclude exclude,
-                                   LegacyResultCallback callback) = 0;
+                                   ResultCallback callback) = 0;
 
-  virtual void RestorePublishers(LegacyResultCallback callback) = 0;
+  virtual void RestorePublishers(ResultCallback callback) = 0;
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t window_id,

@@ -28,7 +28,7 @@ class Wallet {
   explicit Wallet(LedgerImpl* ledger);
   ~Wallet();
 
-  void CreateWalletIfNecessary(ledger::LegacyResultCallback callback);
+  void CreateWalletIfNecessary(ledger::ResultCallback callback);
 
   void RecoverWallet(const std::string& pass_phrase,
                      ledger::LegacyResultCallback callback);
@@ -64,6 +64,12 @@ class Wallet {
 
   void OnClaimWallet(ledger::PostSuggestionsClaimCallback callback,
                      type::Result result);
+
+  void OnCreateWalletIfNecessary(
+      ledger::ExternalWalletAuthorizationCallback callback,
+      const std::string& wallet_type,
+      const base::flat_map<std::string, std::string>& args,
+      type::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;

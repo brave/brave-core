@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/bind.h"
 #include "bat/ledger/internal/core/bat_ledger_test.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -32,10 +33,11 @@ class WalletTest : public BATLedgerTest {
 
     base::RunLoop run_loop;
     mojom::Result result;
-    ledger->wallet()->CreateWalletIfNecessary([&result, &run_loop](auto r) {
-      result = r;
-      run_loop.Quit();
-    });
+    ledger->wallet()->CreateWalletIfNecessary(
+        base::BindLambdaForTesting([&result, &run_loop](type::Result r) {
+          result = r;
+          run_loop.Quit();
+        }));
 
     run_loop.Run();
     return result;

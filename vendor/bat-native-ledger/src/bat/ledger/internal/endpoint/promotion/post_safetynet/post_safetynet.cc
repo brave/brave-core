@@ -13,8 +13,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -96,34 +94,31 @@ type::Result PostSafetynet::ParseBody(
 }
 
 void PostSafetynet::Request(PostSafetynetCallback callback) {
-  auto url_callback = std::bind(&PostSafetynet::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PostSafetynet::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostSafetynet::OnRequest(
-    const type::UrlResponse& response,
-    PostSafetynetCallback callback) {
+void PostSafetynet::OnRequest(PostSafetynetCallback callback,
+                              const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string nonce;
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, nonce);
+    std::move(callback).Run(result, nonce);
     return;
   }
 
   result = ParseBody(response.body, &nonce);
-  callback(result, nonce);
+  std::move(callback).Run(result, nonce);
 }
 
 }  // namespace promotion

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_
 
 #include <string>
 
@@ -29,9 +29,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using GetCaptchaCallback = std::function<void(
-    const type::Result result,
-    const std::string& image)>;
+using GetCaptchaCallback =
+    base::OnceCallback<void(type::Result result, const std::string& image)>;
 
 class GetCaptcha {
  public:
@@ -51,9 +50,8 @@ class GetCaptcha {
       const std::string& body,
       std::string* image);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetCaptchaCallback callback);
+  void OnRequest(GetCaptchaCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -62,4 +60,4 @@ class GetCaptcha {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_

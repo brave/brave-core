@@ -66,10 +66,10 @@ TEST_F(PostWalletBraveTest, ServerOK) {
           }));
 
   wallet_->Request(
-      [](const type::Result result, const std::string& payment_id) {
+      base::BindOnce([](type::Result result, const std::string& payment_id) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(payment_id, "37742974-3b80-461a-acfb-937e105e5af4");
-      });
+      }));
 }
 
 TEST_F(PostWalletBraveTest, ServerError400) {
@@ -83,11 +83,11 @@ TEST_F(PostWalletBraveTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  wallet_->Request(
+  wallet_->Request(base::BindOnce(
       [](const type::Result result, const std::string& payment_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
-      });
+      }));
 }
 
 TEST_F(PostWalletBraveTest, ServerError503) {
@@ -101,11 +101,11 @@ TEST_F(PostWalletBraveTest, ServerError503) {
             std::move(callback).Run(response);
           }));
 
-  wallet_->Request(
+  wallet_->Request(base::BindOnce(
       [](const type::Result result, const std::string& payment_id) {
         EXPECT_EQ(result, type::Result::BAD_REGISTRATION_RESPONSE);
         EXPECT_EQ(payment_id, "");
-      });
+      }));
 }
 
 TEST_F(PostWalletBraveTest, ServerErrorRandom) {
@@ -119,11 +119,11 @@ TEST_F(PostWalletBraveTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  wallet_->Request(
+  wallet_->Request(base::BindOnce(
       [](const type::Result result, const std::string& payment_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
-      });
+      }));
 }
 
 }  // namespace promotion

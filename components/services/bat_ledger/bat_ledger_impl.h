@@ -75,10 +75,9 @@ class BatLedgerImpl :
       const std::string& first_party_url, const std::string& referrer,
       ledger::type::VisitDataPtr visit_data) override;
 
-  void SetPublisherExclude(
-      const std::string& publisher_key,
-      const ledger::type::PublisherExclude exclude,
-      SetPublisherExcludeCallback callback) override;
+  void SetPublisherExclude(const std::string& publisher_key,
+                           ledger::type::PublisherExclude exclude,
+                           SetPublisherExcludeCallback callback) override;
   void RestorePublishers(RestorePublishersCallback callback) override;
 
   void FetchPromotions(FetchPromotionsCallback callback) override;
@@ -286,19 +285,10 @@ class BatLedgerImpl :
       const ledger::type::Result result,
       ledger::type::BalanceReportInfoPtr report_info);
 
-  static void OnClaimPromotion(
-      CallbackHolder<ClaimPromotionCallback>* holder,
-      const ledger::type::Result result,
-      const std::string& response);
-
   static void OnAttestPromotion(
       CallbackHolder<AttestPromotionCallback>* holder,
       const ledger::type::Result result,
       ledger::type::PromotionPtr promotion);
-
-  static void OnCreateWallet(
-      CallbackHolder<CreateWalletCallback>* holder,
-      ledger::type::Result result);
 
   static void OnInitialize(
       CallbackHolder<InitializeCallback>* holder,
@@ -307,18 +297,6 @@ class BatLedgerImpl :
   static void OnRecoverWallet(
       CallbackHolder<RecoverWalletCallback>* holder,
       ledger::type::Result result);
-
-  static void OnGetRewardsParameters(
-      CallbackHolder<GetRewardsParametersCallback>* holder,
-      ledger::type::RewardsParametersPtr properties);
-
-  static void OnSetPublisherExclude(
-      CallbackHolder<SetPublisherExcludeCallback>* holder,
-      const ledger::type::Result result);
-
-  static void OnRestorePublishers(
-      CallbackHolder<SetPublisherExcludeCallback>* holder,
-      const ledger::type::Result result);
 
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,
@@ -379,11 +357,6 @@ class BatLedgerImpl :
   static void OnGetPendingContributionsTotal(
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount);
-
-  static void OnFetchPromotions(
-    CallbackHolder<FetchPromotionsCallback>* holder,
-    const ledger::type::Result result,
-    ledger::type::PromotionList promotions);
 
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,

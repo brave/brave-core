@@ -92,29 +92,25 @@ void AttestationIOS::Start(
 
   if (key.empty()) {
     BLOG(0, "Key is empty");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
-  auto url_callback = std::bind(&AttestationIOS::OnStart,
-      this,
-      _1,
-      _2,
-      callback);
+  auto url_callback = base::BindOnce(
+      &AttestationIOS::OnStart, base::Unretained(this), std::move(callback));
 
-  promotion_server_->post_devicecheck()->Request(key, url_callback);
+  promotion_server_->post_devicecheck()->Request(key, std::move(url_callback));
 }
 
-void AttestationIOS::OnStart(
-    const type::Result result,
-    const std::string& nonce,
-    StartCallback callback) {
+void AttestationIOS::OnStart(StartCallback callback,
+                             type::Result result,
+                             const std::string& nonce) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to start attestation");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(type::Result::LEDGER_OK, nonce);
+  std::move(callback).Run(type::Result::LEDGER_OK, nonce);
 }
 
 void AttestationIOS::Confirm(

@@ -206,19 +206,16 @@ type::Result GetAvailable::ParseBody(
 void GetAvailable::Request(
     const std::string& platform,
     GetAvailableCallback callback) {
-  auto url_callback = std::bind(&GetAvailable::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &GetAvailable::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(platform);
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetAvailable::OnRequest(
-    const type::UrlResponse& response,
-    GetAvailableCallback callback) {
+void GetAvailable::OnRequest(GetAvailableCallback callback,
+                             const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::PromotionList list;
@@ -226,12 +223,12 @@ void GetAvailable::OnRequest(
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, std::move(list), corrupted_promotions);
+    std::move(callback).Run(result, std::move(list), corrupted_promotions);
     return;
   }
 
   result = ParseBody(response.body, &list, &corrupted_promotions);
-  callback(result, std::move(list), corrupted_promotions);
+  std::move(callback).Run(result, std::move(list), corrupted_promotions);
 }
 
 }  // namespace promotion

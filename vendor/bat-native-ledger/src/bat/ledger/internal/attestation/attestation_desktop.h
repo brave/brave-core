@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ATTESTATION_ATTESTATION_DESKTOP_H_
-#define BRAVELEDGER_ATTESTATION_ATTESTATION_DESKTOP_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ATTESTATION_ATTESTATION_DESKTOP_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ATTESTATION_ATTESTATION_DESKTOP_H_
 
 #include <memory>
 #include <string>
@@ -36,18 +36,16 @@ class AttestationDesktop : public Attestation {
       int* y,
       std::string* captcha_id);
 
-  void DownloadCaptchaImage(
-      const type::Result result,
-      const std::string& hint,
-      const std::string& captcha_id,
-      StartCallback callback);
+  void DownloadCaptchaImage(StartCallback callback,
+                            type::Result result,
+                            const std::string& hint,
+                            const std::string& captcha_id);
 
-  void OnDownloadCaptchaImage(
-      const type::Result result,
-      const std::string& image,
-      const std::string& hint,
-      const std::string& captcha_id,
-      StartCallback callback);
+  void OnDownloadCaptchaImage(StartCallback callback,
+                              const std::string& hint,
+                              const std::string& captcha_id,
+                              type::Result result,
+                              const std::string& image);
 
   void OnConfirm(
       const type::Result result,
@@ -58,4 +56,4 @@ class AttestationDesktop : public Attestation {
 
 }  // namespace attestation
 }  // namespace ledger
-#endif  // BRAVELEDGER_ATTESTATION_ATTESTATION_DESKTOP_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ATTESTATION_ATTESTATION_DESKTOP_H_

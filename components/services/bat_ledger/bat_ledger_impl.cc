@@ -49,39 +49,13 @@ void BatLedgerImpl::Initialize(
       std::bind(BatLedgerImpl::OnInitialize, holder, _1));
 }
 
-// static
-void BatLedgerImpl::OnCreateWallet(
-    CallbackHolder<CreateWalletCallback>* holder,
-    ledger::type::Result result) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
 void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
-  // deleted in OnCreateWallet
-  auto* holder = new CallbackHolder<CreateWalletCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->CreateWallet(std::bind(BatLedgerImpl::OnCreateWallet, holder, _1));
-}
-
-// static
-void BatLedgerImpl::OnGetRewardsParameters(
-    CallbackHolder<GetRewardsParametersCallback>* holder,
-    ledger::type::RewardsParametersPtr parameters) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(parameters));
-  delete holder;
+  ledger_->CreateWallet(std::move(callback));
 }
 
 void BatLedgerImpl::GetRewardsParameters(
     GetRewardsParametersCallback callback) {
-  // delete in OnGetRewardsParameters
-  auto* holder = new CallbackHolder<GetRewardsParametersCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetRewardsParameters(
-      std::bind(BatLedgerImpl::OnGetRewardsParameters, holder, _1));
+  ledger_->GetRewardsParameters(std::move(callback));
 }
 
 void BatLedgerImpl::GetAutoContributeProperties(
@@ -163,91 +137,26 @@ void BatLedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url,
         first_party_url, referrer, std::move(visit_data));
 }
 
-// static
-void BatLedgerImpl::OnSetPublisherExclude(
-    CallbackHolder<SetPublisherExcludeCallback>* holder,
-    const ledger::type::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::SetPublisherExclude(
-    const std::string& publisher_key,
-    const ledger::type::PublisherExclude exclude,
-    SetPublisherExcludeCallback callback) {
-  // delete in OnSetPublisherExclude
-  auto* holder = new CallbackHolder<SetPublisherExcludeCallback>(
-    AsWeakPtr(), std::move(callback));
-
-  ledger_->SetPublisherExclude(
-    publisher_key,
-    exclude,
-    std::bind(BatLedgerImpl::OnSetPublisherExclude, holder, _1));
-}
-
-// static
-void BatLedgerImpl::OnRestorePublishers(
-  CallbackHolder<SetPublisherExcludeCallback>* holder,
-  const ledger::type::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
+void BatLedgerImpl::SetPublisherExclude(const std::string& publisher_key,
+                                        ledger::type::PublisherExclude exclude,
+                                        SetPublisherExcludeCallback callback) {
+  ledger_->SetPublisherExclude(publisher_key, exclude, std::move(callback));
 }
 
 void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
-  // delete in OnRestorePublishers
-  auto* holder = new CallbackHolder<RestorePublishersCallback>(
-    AsWeakPtr(), std::move(callback));
-  ledger_->RestorePublishers(
-    std::bind(BatLedgerImpl::OnRestorePublishers, holder, _1));
-}
-
-void BatLedgerImpl::OnFetchPromotions(
-    CallbackHolder<FetchPromotionsCallback>* holder,
-    const ledger::type::Result result,
-    ledger::type::PromotionList promotions) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result, std::move(promotions));
-  }
-  delete holder;
+  ledger_->RestorePublishers(std::move(callback));
 }
 
 void BatLedgerImpl::FetchPromotions(
     FetchPromotionsCallback callback) {
-  // deleted in OnFetchPromotions
-  auto* holder = new CallbackHolder<FetchPromotionsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->FetchPromotions(
-      std::bind(BatLedgerImpl::OnFetchPromotions, holder, _1, _2));
+  ledger_->FetchPromotions(std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnClaimPromotion(
-    CallbackHolder<ClaimPromotionCallback>* holder,
-    const ledger::type::Result result,
-    const std::string& response) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, response);
-  delete holder;
-}
 void BatLedgerImpl::ClaimPromotion(
     const std::string& promotion_id,
     const std::string& payload,
     ClaimPromotionCallback callback) {
-  // deleted in OnClaimPromotion
-  auto* holder = new CallbackHolder<ClaimPromotionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->ClaimPromotion(
-      promotion_id,
-      payload,
-      std::bind(BatLedgerImpl::OnClaimPromotion, holder, _1, _2));
+  ledger_->ClaimPromotion(promotion_id, payload, std::move(callback));
 }
 
 // static

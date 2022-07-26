@@ -58,14 +58,12 @@ TEST_F(PostCaptchaTest, ServerOK) {
           }));
 
   captcha_->Request(
-      [](
-          const type::Result result,
-          const std::string& hint,
-          const std::string& captcha_id) {
+      base::BindOnce([](type::Result result, const std::string& hint,
+                        const std::string& captcha_id) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(hint, "circle");
         EXPECT_EQ(captcha_id, "d155d2d2-2627-425b-9be8-44ae9f541762");
-      });
+      }));
 }
 
 TEST_F(PostCaptchaTest, ServerError400) {
@@ -80,12 +78,10 @@ TEST_F(PostCaptchaTest, ServerError400) {
           }));
 
   captcha_->Request(
-      [](
-          const type::Result result,
-          const std::string& hint,
-          const std::string& captcha_id) {
+      base::BindOnce([](type::Result result, const std::string& hint,
+                        const std::string& captcha_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 TEST_F(PostCaptchaTest, ServerErrorRandom) {
@@ -100,12 +96,10 @@ TEST_F(PostCaptchaTest, ServerErrorRandom) {
           }));
 
   captcha_->Request(
-      [](
-          const type::Result result,
-          const std::string& hint,
-          const std::string& captcha_id) {
+      base::BindOnce([](type::Result result, const std::string& hint,
+                        const std::string& captcha_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 }  // namespace promotion

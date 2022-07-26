@@ -21,8 +21,6 @@
 
 // npm run test -- brave_unit_tests --filter=PromotionTest.*
 
-using std::placeholders::_1;
-using std::placeholders::_2;
 using ::testing::_;
 using ::testing::Invoke;
 
@@ -99,11 +97,6 @@ class PromotionTest : public testing::Test {
 };
 
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
-  ledger::FetchPromotionCallback fetch_promotion_callback =
-      std::bind([&](type::Result result, type::PromotionList promotions) {},
-      _1,
-      _2);
-
   bool inserted = false;
   ON_CALL(*mock_database_, GetAllPromotions(_))
     .WillByDefault(
@@ -125,11 +118,10 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
 
   EXPECT_CALL(*mock_database_, SavePromotion(_, _)).Times(1);
 
-  promotion_->Fetch(fetch_promotion_callback);
+  promotion_->Fetch(base::DoNothing());
   inserted = true;
-  promotion_->Fetch(fetch_promotion_callback);
+  promotion_->Fetch(base::DoNothing());
 }
-
 
 }  // namespace promotion
 }  // namespace ledger

@@ -256,8 +256,7 @@ void DatabasePublisherInfo::OnGetPanelRecord(
   callback(type::Result::LEDGER_OK, std::move(info));
 }
 
-void DatabasePublisherInfo::RestorePublishers(
-    ledger::LegacyResultCallback callback) {
+void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "UPDATE %s SET excluded=? WHERE excluded=?",
@@ -280,18 +279,21 @@ void DatabasePublisherInfo::RestorePublishers(
 
   ledger_->RunDBTransaction(
       std::move(transaction),
-      [this, callback](type::DBCommandResponsePtr response) {
-        if (!response ||
-            response->status !=
-              type::DBCommandResponse::Status::RESPONSE_OK) {
-          callback(type::Result::LEDGER_ERROR);
-          return;
-        }
+      base::BindOnce(&DatabasePublisherInfo::OnRestorePublishers,
+                     base::Unretained(this), std::move(callback)));
+}
 
-        ledger_->publisher()->OnRestorePublishers(
-            type::Result::LEDGER_OK,
-            callback);
-      });
+void DatabasePublisherInfo::OnRestorePublishers(
+    ledger::ResultCallback callback,
+    type::DBCommandResponsePtr response) {
+  if (!response ||
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return;
+  }
+
+  ledger_->publisher()->OnRestorePublishers(type::Result::LEDGER_OK,
+                                            std::move(callback));
 }
 
 void DatabasePublisherInfo::GetExcludedList(

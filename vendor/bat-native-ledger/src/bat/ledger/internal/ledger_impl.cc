@@ -269,9 +269,10 @@ void LedgerImpl::OnStateInitialized(type::Result result,
   callback(type::Result::LEDGER_OK);
 }
 
-void LedgerImpl::CreateWallet(LegacyResultCallback callback) {
-  WhenReady(
-      [this, callback]() { wallet()->CreateWalletIfNecessary(callback); });
+void LedgerImpl::CreateWallet(ResultCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    wallet()->CreateWalletIfNecessary(std::move(callback));
+  });
 }
 
 void LedgerImpl::OneTimeTip(const std::string& publisher_key,
@@ -510,30 +511,33 @@ bool LedgerImpl::GetAutoContributeEnabled() {
 }
 
 void LedgerImpl::GetRewardsParameters(GetRewardsParametersCallback callback) {
-  WhenReady([this, callback]() {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     auto params = state()->GetRewardsParameters();
     if (params->rate == 0.0) {
       // A rate of zero indicates that the rewards parameters have
       // not yet been successfully initialized from the server.
       BLOG(1, "Rewards parameters not set - fetching from server");
-      api()->FetchParameters(callback);
+      api()->FetchParameters(std::move(callback));
       return;
     }
 
-    callback(std::move(params));
+    std::move(callback).Run(std::move(params));
   });
 }
 
 void LedgerImpl::FetchPromotions(FetchPromotionCallback callback) {
-  WhenReady([this, callback]() { promotion()->Fetch(callback); });
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    promotion()->Fetch(std::move(callback));
+  });
 }
 
 void LedgerImpl::ClaimPromotion(const std::string& promotion_id,
                                 const std::string& payload,
                                 ClaimPromotionCallback callback) {
-  WhenReady([this, promotion_id, payload, callback]() {
-    promotion()->Claim(promotion_id, payload, callback);
-  });
+  WhenReady(
+      [this, promotion_id, payload, callback = std::move(callback)]() mutable {
+        promotion()->Claim(promotion_id, payload, std::move(callback));
+      });
 }
 
 void LedgerImpl::AttestPromotion(const std::string& promotion_id,
@@ -580,14 +584,18 @@ void LedgerImpl::RecoverWallet(const std::string& pass_phrase,
 
 void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
                                      type::PublisherExclude exclude,
-                                     LegacyResultCallback callback) {
-  WhenReady([this, publisher_id, exclude, callback]() {
-    publisher()->SetPublisherExclude(publisher_id, exclude, callback);
-  });
+                                     ResultCallback callback) {
+  WhenReady(
+      [this, publisher_id, exclude, callback = std::move(callback)]() mutable {
+        publisher()->SetPublisherExclude(publisher_id, exclude,
+                                         std::move(callback));
+      });
 }
 
-void LedgerImpl::RestorePublishers(LegacyResultCallback callback) {
-  WhenReady([this, callback]() { database()->RestorePublishers(callback); });
+void LedgerImpl::RestorePublishers(ResultCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    database()->RestorePublishers(std::move(callback));
+  });
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(

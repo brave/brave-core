@@ -439,8 +439,8 @@ void Database::GetPanelPublisherInfo(
   publisher_info_->GetPanelRecord(std::move(filter), callback);
 }
 
-void Database::RestorePublishers(ledger::LegacyResultCallback callback) {
-  publisher_info_->RestorePublishers(callback);
+void Database::RestorePublishers(ledger::ResultCallback callback) {
+  publisher_info_->RestorePublishers(std::move(callback));
 }
 
 void Database::GetExcludedList(ledger::PublisherInfoListCallback callback) {

@@ -52,29 +52,29 @@ class Promotion {
                       ledger::GetDrainCallback callback);
 
  private:
-  void OnFetch(
-      const type::Result result,
-      type::PromotionList list,
-      const std::vector<std::string>& corrupted_promotions,
-      ledger::FetchPromotionCallback callback);
+  void OnFetch(ledger::FetchPromotionCallback callback,
+               type::Result result,
+               type::PromotionList list,
+               const std::vector<std::string>& corrupted_promotions);
 
-  void OnGetAllPromotions(
-      type::PromotionMap promotions,
-      std::shared_ptr<type::PromotionList> list,
-      ledger::FetchPromotionCallback callback);
+  void OnGetAllPromotions(ledger::FetchPromotionCallback callback,
+                          type::PromotionList list,
+                          type::PromotionMap promotions);
 
-  void OnGetAllPromotionsFromDatabase(
-      type::PromotionMap promotions,
-      ledger::FetchPromotionCallback callback);
+  void OnGetAllPromotionsFromDatabase(ledger::FetchPromotionCallback callback,
+                                      type::PromotionMap promotions);
 
   void LegacyClaimedSaved(
       const type::Result result,
       std::shared_ptr<type::PromotionPtr> shared_promotion);
 
-  void OnClaimPromotion(
-      type::PromotionPtr promotion,
-      const std::string& payload,
-      ledger::ClaimPromotionCallback callback);
+  void OnClaimPromotion(ledger::ClaimPromotionCallback callback,
+                        const std::string& payload,
+                        type::PromotionPtr promotion);
+
+  void OnCreateWalletIfNecessary(ledger::ClaimPromotionCallback callback,
+                                 const std::string& payload,
+                                 type::Result result);
 
   void OnAttestPromotion(
       type::PromotionPtr promotion,

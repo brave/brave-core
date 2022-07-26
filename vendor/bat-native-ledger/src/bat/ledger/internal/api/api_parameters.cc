@@ -11,9 +11,6 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
 namespace ledger {
 namespace api {
 
@@ -26,12 +23,12 @@ APIParameters::APIParameters(LedgerImpl* ledger) :
 APIParameters::~APIParameters() = default;
 
 void APIParameters::Initialize() {
-  Fetch([](type::RewardsParametersPtr) {});
+  Fetch(base::DoNothing());
 }
 
 void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
   bool first_request = callbacks_.empty();
-  callbacks_.push_back(callback);
+  callbacks_.push_back(std::move(callback));
   if (!first_request) {
     BLOG(1, "API parameters fetch in progress");
     return;
@@ -39,12 +36,10 @@ void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
 
   refresh_timer_.Stop();
 
-  auto url_callback = std::bind(&APIParameters::OnFetch,
-      this,
-      _1,
-      _2);
+  auto url_callback =
+      base::BindOnce(&APIParameters::OnFetch, base::Unretained(this));
 
-  api_server_->get_parameters()->Request(url_callback);
+  api_server_->get_parameters()->Request(std::move(url_callback));
 }
 
 void APIParameters::OnFetch(
@@ -77,7 +72,7 @@ void APIParameters::RunCallbacks() {
 
   auto callbacks = std::move(callbacks_);
   for (auto& callback : callbacks) {
-    callback(parameters->Clone());
+    std::move(callback).Run(parameters->Clone());
   }
 }
 
@@ -94,10 +89,10 @@ void APIParameters::SetRefreshTimer(
 
   BLOG(1, "Params timer set for " << start_in);
 
-  refresh_timer_.Start(FROM_HERE, start_in,
-      base::BindOnce(&APIParameters::Fetch,
-          base::Unretained(this),
-          [](type::RewardsParametersPtr) {}));
+  refresh_timer_.Start(
+      FROM_HERE, start_in,
+      base::BindOnce(&APIParameters::Fetch, base::Unretained(this),
+                     base::DoNothing()));
 }
 
 }  // namespace api
