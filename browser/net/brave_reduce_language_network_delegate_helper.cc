@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string>
+#include <vector>
+
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 
 #include "brave/browser/brave_browser_process.h"

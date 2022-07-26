@@ -115,8 +115,8 @@ void BraveRequestHandler::SetupCallbacks() {
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveReduceLanguage)) {
-    start_transaction_callback = base::BindRepeating(
-        brave::OnBeforeStartTransaction_ReduceLanguageWork);
+    start_transaction_callback =
+        base::BindRepeating(brave::OnBeforeStartTransaction_ReduceLanguageWork);
     before_start_transaction_callbacks_.push_back(start_transaction_callback);
   }
 
