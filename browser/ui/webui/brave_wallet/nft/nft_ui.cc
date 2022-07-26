@@ -56,6 +56,8 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
   untrusted_source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   untrusted_source->AddString("braveWalletTrezorBridgeUrl",
                               kUntrustedTrezorURL);
+  untrusted_source->AddString("braveWalletLedgerBridgeUrl",
+                              kUntrustedLedgerURL);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' https: data:;"));
