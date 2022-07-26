@@ -519,9 +519,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       api_request_helper::APIRequestHelper::ResponseConversionCallback
           conversion_callback);
   void OnEthChainIdValidatedForOrigin(
-      mojom::NetworkInfoPtr chain,
-      const url::Origin& origin,
-      AddEthereumChainForOriginCallback callback,
+      const std::string& chain_id,
       const int http_code,
       const std::string& response,
       const base::flat_map<std::string, std::string>& headers);

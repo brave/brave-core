@@ -11,6 +11,20 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "net/base/url_util.h"
+
+namespace {
+
+// Allow only HTTPS or localhost HTTP URLs in params of AddEthereumChain dApp
+// requests.
+bool IsValidURL(const std::string& url_string) {
+  GURL url(url_string);
+  return url.is_valid() &&
+         (url.SchemeIs(url::kHttpsScheme) ||
+          (net::IsLocalhost(url) && url.SchemeIs(url::kHttpScheme)));
+}
+
+}  // namespace
 
 namespace brave_wallet {
 
@@ -26,7 +40,8 @@ absl::optional<std::string> ExtractChainIdFromValue(
   return *chain_id;
 }
 
-mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
+mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
+                                            bool check_url) {
   mojom::NetworkInfo chain;
   const base::DictionaryValue* params_dict = nullptr;
   if (!value.GetAsDictionary(&params_dict) || !params_dict)
@@ -47,19 +62,22 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
       params_dict->FindListKey("blockExplorerUrls");
   if (explorerUrlsListValue) {
     for (const auto& entry : explorerUrlsListValue->GetList())
-      chain.block_explorer_urls.push_back(entry.GetString());
+      if (!check_url || IsValidURL(entry.GetString()))
+        chain.block_explorer_urls.push_back(entry.GetString());
   }
 
   const base::Value* iconUrlsValue = params_dict->FindListKey("iconUrls");
   if (iconUrlsValue) {
     for (const auto& entry : iconUrlsValue->GetList())
-      chain.icon_urls.push_back(entry.GetString());
+      if (!check_url || IsValidURL(entry.GetString()))
+        chain.icon_urls.push_back(entry.GetString());
   }
 
   const base::Value* rpcUrlsValue = params_dict->FindListKey("rpcUrls");
   if (rpcUrlsValue) {
     for (const auto& entry : rpcUrlsValue->GetList())
-      chain.rpc_urls.push_back(entry.GetString());
+      if (!check_url || IsValidURL(entry.GetString()))
+        chain.rpc_urls.push_back(entry.GetString());
   }
   const base::Value* nativeCurrencyValue =
       params_dict->FindDictKey("nativeCurrency");
