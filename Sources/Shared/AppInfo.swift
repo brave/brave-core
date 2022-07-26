@@ -15,8 +15,7 @@ open class AppInfo {
       // .../Client.app/PlugIns/SendTo.appex
       return Bundle(url: bundle.bundleURL.deletingLastPathComponent().deletingLastPathComponent())!
     default:
-      return Bundle.module
-//      fatalError("Unable to get application Bundle (Bundle.main.bundlePath=\(bundle.bundlePath))")
+      return Bundle.main
     }
   }
 
@@ -74,10 +73,5 @@ open class AppInfo {
       return components[0..<components.count - 1].joined(separator: ".")
     }
     return baseBundleIdentifier
-  }
-
-  // Return whether the currently executing code is running in an Application
-  public static var isApplication: Bool {
-    return Bundle.main.infoDictionaryString(forKey: "CFBundlePackageType") == "APPL"
   }
 }

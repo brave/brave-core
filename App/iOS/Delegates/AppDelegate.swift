@@ -226,7 +226,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AdblockEngine.setDomainResolver(AdblockEngine.defaultDomainResolver)
 
-    UIScrollView.doBadSwizzleStuff()
     UIView.applyAppearanceDefaults()
 
     if Preferences.Rewards.isUsingBAP.value == nil {

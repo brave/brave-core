@@ -4,18 +4,6 @@
 
 import Foundation
 
-public extension Array where Element: Comparable {
-  func sameElements(_ arr: [Element]) -> Bool {
-    guard self.count == arr.count else { return false }
-    let sorted = self.sorted(by: <)
-    let arrSorted = arr.sorted(by: <)
-    for elements in sorted.zip(arrSorted) where elements.0 != elements.1 {
-      return false
-    }
-    return true
-  }
-}
-
 public extension Array {
 
   func find(_ f: (Iterator.Element) -> Bool) -> Iterator.Element? {
@@ -25,15 +13,6 @@ public extension Array {
       }
     }
     return nil
-  }
-
-  func contains(_ x: Element, f: (Element, Element) -> Bool) -> Bool {
-    for y in self {
-      if f(x, y) {
-        return true
-      }
-    }
-    return false
   }
 
   // Performs a union operator using the result of f(Element) as the value to base uniqueness on.
@@ -56,18 +35,6 @@ public extension Array {
     }
   }
 
-  /// Returns a unique list of Elements using a custom comparator.
-  /// Super inefficient.
-  func unique(f: (Element, Element) -> Bool) -> [Element] {
-    var result = [Element]()
-    self.forEach {
-      if !result.contains($0, f: f) {
-        result.append($0)
-      }
-    }
-    return result
-  }
-
   /// Splits an array into smaller arrays.
   /// For example `[1, 2, 3 ,4 ,5 ,6].splitEvery(3)`
   /// results in `[[1, 2, 3], [4, 5, 6]]`
@@ -84,17 +51,6 @@ public extension Array {
   func contiguousUntil(condition: (Element) -> Bool) -> ArraySlice<Element> {
     let index = firstIndex(where: { !condition($0) }) ?? self.count
     return self[0..<index]
-  }
-}
-
-public extension Sequence {
-  func every(_ f: (Self.Iterator.Element) -> Bool) -> Bool {
-    for x in self {
-      if !f(x) {
-        return false
-      }
-    }
-    return true
   }
 }
 

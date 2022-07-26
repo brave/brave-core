@@ -4,12 +4,6 @@
 
 import Foundation
 
-public struct PrefsKeys {
-  // Activity Stream
-  public static let keyTopSitesCacheIsValid = "topSitesCacheIsValid"
-  public static let keyTopSitesCacheSize = "topSitesCacheSize"
-}
-
 public protocol Prefs {
   func getBranchPrefix() -> String
   func branch(_ branch: String) -> Prefs

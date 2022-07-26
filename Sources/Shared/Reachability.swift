@@ -73,24 +73,6 @@ open class Reach {
 
         return ReachabilityStatus(reachabilityFlags: flags)
     }
-
-    func monitorReachabilityChanges() {
-        let host = "google.com"
-        var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
-        let reachability = SCNetworkReachabilityCreateWithName(nil, host)!
-
-        SCNetworkReachabilitySetCallback(reachability, { (_, flags, _) in
-            let status = ReachabilityStatus(reachabilityFlags: flags)
-
-            NotificationCenter.default.post(name: .reachabilityStatusChanged,
-                object: nil,
-                userInfo: ["Status": status.description])
-
-            }, &context)
-
-        SCNetworkReachabilityScheduleWithRunLoop(reachability, CFRunLoopGetMain(), CFRunLoopMode.commonModes.rawValue)
-    }
-
 }
 
 extension ReachabilityStatus {
