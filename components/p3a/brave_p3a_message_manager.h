@@ -74,8 +74,6 @@ class BraveP3AMessageManager : public BraveP3AMetricLogStore::Delegate {
 
   PrefService* local_state_ = nullptr;
 
-  base::OneShotTimer rnd_info_retry_timer;
-
   MessageMetainfo message_meta_;
 
   BraveP3AConfig* config_;

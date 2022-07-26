@@ -13,7 +13,8 @@
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
 #include "brave/components/nested_star/src/lib.rs.h"
-#include "brave/components/p3a/brave_p3a_star_randomness.h"
+#include "brave/components/p3a/brave_p3a_star_randomness_meta.h"
+#include "brave/components/p3a/brave_p3a_star_randomness_points.h"
 
 class PrefService;
 class PrefRegistrySimple;
@@ -39,7 +40,7 @@ class BraveP3AStar {
       PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       StarMessageCallback message_callback,
-      BraveP3AStarRandomness::RandomnessServerInfoCallback info_callback,
+      BraveP3AStarRandomnessMeta::RandomnessServerInfoCallback info_callback,
       BraveP3AConfig* config);
   ~BraveP3AStar();
 
@@ -66,7 +67,8 @@ class BraveP3AStar {
       const rust::Vec<nested_star::VecU8>& resp_proofs,
       std::string* output);
 
-  BraveP3AStarRandomness randomness_manager_;
+  BraveP3AStarRandomnessMeta rand_meta_manager_;
+  BraveP3AStarRandomnessPoints rand_points_manager_;
 
   StarMessageCallback message_callback_;
 

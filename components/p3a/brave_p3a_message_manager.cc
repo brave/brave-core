@@ -25,7 +25,6 @@ namespace brave {
 namespace {
 
 const size_t kMaxEpochsToRetain = 4;
-const int kRndInfoRetryMinutes = 10;
 
 }  // namespace
 
@@ -146,25 +145,24 @@ void BraveP3AMessageManager::OnNewStarMessage(
     std::string histogram_name,
     uint8_t epoch,
     std::unique_ptr<std::string> serialized_message) {
+  VLOG(2) << "BraveP3AMessageManager::OnNewStarMessage: has val? "
+          << (serialized_message != nullptr);
   if (!serialized_message) {
     star_prep_scheduler_->UploadFinished(false);
     return;
   }
-  star_prep_scheduler_->UploadFinished(true);
   star_send_log_store_->UpdateMessage(histogram_name, epoch,
                                       *serialized_message);
+  star_prep_log_store_->DiscardStagedLog();
+  star_prep_scheduler_->UploadFinished(true);
 }
 
 void BraveP3AMessageManager::OnRandomnessServerInfoReady(
     RandomnessServerInfo* server_info) {
   if (server_info == nullptr) {
-    LOG(ERROR)
-        << "BraveP3AMessageManager: scheduling rnd server info request retry";
-    rnd_info_retry_timer.Start(FROM_HERE, base::Minutes(kRndInfoRetryMinutes),
-                               star_manager_.get(),
-                               &BraveP3AStar::UpdateRandomnessServerInfo);
     return;
   }
+  VLOG(2) << "BraveP3AMessageManager::OnRandomnessServerInfoReady";
   star_send_log_store_->SetCurrentEpoch(server_info->current_epoch);
   star_send_log_store_->LoadPersistedUnsentLogs();
   star_prep_scheduler_->Start();
@@ -230,7 +228,8 @@ void BraveP3AMessageManager::StartScheduledStarPrep() {
   const std::string log = star_prep_log_store_->staged_log();
   const std::string log_key = star_prep_log_store_->staged_log_key();
   VLOG(2) << "BraveP3AMessageManager::StartScheduledStarPrep - Requesting "
-             "randomness for log";
+             "randomness for histogram: "
+          << log_key;
   if (!star_manager_->StartMessagePreparation(log_key.c_str(), log)) {
     star_upload_scheduler_->UploadFinished(false);
   }
