@@ -210,7 +210,6 @@ let package = Package(
     .target(
       name: "BraveShared",
       dependencies: ["SDWebImage", "Shared", "Strings", "SnapKit", "XCGLogger"],
-      path: "BraveShared",
       resources: [
         .copy("Certificates/AmazonRootCA1.cer"),
         .copy("Certificates/AmazonRootCA2.cer"),
