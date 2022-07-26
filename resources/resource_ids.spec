@@ -203,7 +203,7 @@
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ledger_bridge/ledger_bridge.grd": {
     "META": {"sizes": {"includes": [250]}},
-    "includes": [59270]
+    "includes": [59520]
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-nft_display/nft_display.grd": {

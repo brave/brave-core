@@ -63,6 +63,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
           kUntrustedLedgerURL + " " + kUntrustedNftURL + " " + kUntrustedMarketURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
   content::URLDataSource::Add(profile,
