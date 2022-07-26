@@ -17,9 +17,17 @@ import {
   WarningIcon
 } from './style'
 
-export interface Props extends Partial<Pick<HTMLInputElement, 'name'>> {
+interface PasswordInputState {
+  hasError: boolean
+  error: string
+  showPassword: boolean
+  value?: string
+}
+
+export interface Props extends Pick<React.DOMAttributes<HTMLInputElement>, 'onFocus' | 'onBlur'> {
   onChange: (value: string) => void
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
+  onVisibilityToggled?: (isVisible: boolean) => void
   autoFocus?: boolean
   value?: string
   placeholder: string
@@ -27,7 +35,9 @@ export interface Props extends Partial<Pick<HTMLInputElement, 'name'>> {
   error: string
   showToggleButton?: boolean
   label?: string
-  labelName?: string
+  name?: string
+  children?: React.ReactChild | ((state: PasswordInputState) => React.ReactElement)
+  revealValue?: boolean
 }
 
 export function PasswordInput ({
@@ -40,7 +50,12 @@ export function PasswordInput ({
   value,
   showToggleButton = true,
   label,
-  name
+  name,
+  onBlur,
+  onFocus,
+  onVisibilityToggled,
+  children,
+  revealValue
 }: Props) {
   // state
   const [showPassword, setShowPassword] = React.useState(false)
@@ -54,6 +69,11 @@ export function PasswordInput ({
     setShowPassword(prev => !prev)
   }, [])
 
+  // effects
+  React.useEffect(() => {
+    onVisibilityToggled?.(showPassword) // expose state to parent
+  }, [onVisibilityToggled, showPassword])
+
   // render
   return (
     <StyledWrapper>
@@ -64,13 +84,15 @@ export function PasswordInput ({
         <Input
           name={name}
           hasError={hasError}
-          type={(showToggleButton && showPassword) ? 'text' : 'password'}
+          type={(revealValue || (showToggleButton && showPassword)) ? 'text' : 'password'}
           placeholder={placeholder}
           value={value}
           onChange={inputPassword}
           onKeyDown={onKeyDown}
           autoFocus={autoFocus}
           autoComplete='off'
+          onBlur={onBlur}
+          onFocus={onFocus}
         />
         {showToggleButton &&
           <ToggleVisibilityButton onClick={onTogglePasswordVisibility}>
@@ -78,11 +100,22 @@ export function PasswordInput ({
           </ToggleVisibilityButton>
         }
       </InputWrapper>
-      {hasError &&
+      {hasError && error &&
         <ErrorRow>
           <WarningIcon />
           <ErrorText>{error}</ErrorText>
         </ErrorRow>
+      }
+      {/* Allow custom child elements */}
+      {children &&
+        typeof children === 'function'
+          ? children({
+              error,
+              hasError,
+              showPassword,
+              value
+            })
+          : children
       }
     </StyledWrapper>
   )

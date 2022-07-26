@@ -166,7 +166,7 @@ export const WalletButtonLink = styled(Link)`
   ${walletButtonFocusMixin}
 `
 
-export const ToggleVisibilityButton = styled(WalletButton)<{
+export const ToggleVisibilityButton = styled.button<{
   isVisible: boolean
 }>`
   display: flex;
@@ -186,6 +186,12 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   mask-size: contain;
   mask-position: center;
   mask-repeat: no-repeat;
+  &:focus-visible {
+    outline: auto;
+    outline-style: solid;
+    outline-color: ${p => p.theme.palette.blurple300};
+    outline-width: 2px;
+  } 
 `
 
 export const CopyButton = styled(WalletButton)<{
