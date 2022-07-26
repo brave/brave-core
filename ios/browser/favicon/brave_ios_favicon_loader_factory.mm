@@ -23,7 +23,8 @@ std::unique_ptr<KeyedService> BuildFaviconLoader(web::BrowserState* context) {
   ChromeBrowserState* browser_state =
       ChromeBrowserState::FromBrowserState(context);
   return std::make_unique<brave_favicon::BraveFaviconLoader>(
-      ios::FaviconServiceFactory::GetForBrowserState(browser_state, ServiceAccessType::EXPLICIT_ACCESS));
+      ios::FaviconServiceFactory::GetForBrowserState(
+          browser_state, ServiceAccessType::EXPLICIT_ACCESS));
 }
 
 }  // namespace

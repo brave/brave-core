@@ -20,15 +20,16 @@ class BraveFaviconLoader;
 // ChromeBrowserState.
 class BraveIOSFaviconLoaderFactory : public BrowserStateKeyedServiceFactory {
  public:
-  static BraveFaviconLoader* GetForBrowserState(ChromeBrowserState* browser_state);
+  static BraveFaviconLoader* GetForBrowserState(
+      ChromeBrowserState* browser_state);
   static BraveFaviconLoader* GetForBrowserStateIfExists(
       ChromeBrowserState* browser_state);
   static BraveIOSFaviconLoaderFactory* GetInstance();
   static TestingFactory GetDefaultFactory();
 
   BraveIOSFaviconLoaderFactory(const BraveIOSFaviconLoaderFactory&) = delete;
-  BraveIOSFaviconLoaderFactory& operator=(
-      const BraveIOSFaviconLoaderFactory&) = delete;
+  BraveIOSFaviconLoaderFactory& operator=(const BraveIOSFaviconLoaderFactory&) =
+      delete;
 
  private:
   friend class base::NoDestructor<BraveIOSFaviconLoaderFactory>;
