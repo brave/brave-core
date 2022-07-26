@@ -22,7 +22,7 @@ constexpr char kSpeedreaderPrefPromptCount[] = "brave.speedreader.prompt_count";
 
 // The theme selected by the user. If it has a default value then system theme
 // should be used.
-constexpr char kSpeedreaderPrefThemeName[] = "brave.speedreader.theme";
+constexpr char kSpeedreaderPrefTheme[] = "brave.speedreader.theme";
 
 }  // namespace speedreader
 

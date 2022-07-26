@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefRegistrySimple;
@@ -28,8 +29,10 @@ class SpeedreaderService : public KeyedService {
   bool IsEnabled();
   bool ShouldPromptUserToEnable() const;
   void IncrementPromptCount();
-  void SelectedTheme(const std::string& theme_name);
-  std::string GetSelectedTheme() const;
+
+  void SetTheme(Theme theme_name);
+  Theme GetTheme() const;
+  std::string GetThemeName() const;
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;

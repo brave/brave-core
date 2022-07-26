@@ -5,9 +5,9 @@
 
 #include "brave/components/speedreader/speedreader_service.h"
 
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
@@ -85,7 +85,8 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);
   registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);
-  registry->RegisterStringPref(kSpeedreaderPrefThemeName, {});
+  registry->RegisterIntegerPref(kSpeedreaderPrefTheme,
+                                static_cast<int>(Theme::kDefault));
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
@@ -128,20 +129,27 @@ void SpeedreaderService::IncrementPromptCount() {
   prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
 }
 
-void SpeedreaderService::SelectedTheme(const std::string& theme_name) {
-#if DCHECK_IS_ON()
-  static constexpr const char* kValidNames[] = {
-      "",
-      "system",  // same as ''
-      "light",  "sepia", "dark",
-  };
-  DCHECK(base::Contains(kValidNames, theme_name));
-#endif
-  prefs_->SetString(kSpeedreaderPrefThemeName, theme_name);
+void SpeedreaderService::SetTheme(Theme theme) {
+  prefs_->SetInteger(kSpeedreaderPrefTheme, static_cast<int>(theme));
 }
 
-std::string SpeedreaderService::GetSelectedTheme() const {
-  return prefs_->GetString(kSpeedreaderPrefThemeName);
+Theme SpeedreaderService::GetTheme() const {
+  return static_cast<Theme>(prefs_->GetInteger(kSpeedreaderPrefTheme));
+}
+
+std::string SpeedreaderService::GetThemeName() const {
+  switch (GetTheme()) {
+    case Theme::kDefault:
+      return {};
+    case Theme::kLight:
+      return "light";
+    case Theme::kSepia:
+      return "sepia";
+    case Theme::kDark:
+      return "dark";
+  }
+  NOTREACHED();
+  return {};
 }
 
 }  // namespace speedreader

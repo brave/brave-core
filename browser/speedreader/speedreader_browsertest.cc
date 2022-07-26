@@ -389,20 +389,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
         document.documentElement.getAttribute('data-theme')
       )js";
 
-  EXPECT_EQ("", speedreader_service()->GetSelectedTheme());
+  EXPECT_EQ(speedreader::Theme::kDefault, speedreader_service()->GetTheme());
 
   EXPECT_EQ(nullptr, content::EvalJs(web_contents, kGetTheme,
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                      speedreader::kIsolatedWorldId));
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
-  tab_helper->ChangeTheme("dark");
+  tab_helper->SetTheme(speedreader::Theme::kDark);
 
   EXPECT_EQ("dark", content::EvalJs(web_contents, kGetTheme,
                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                     speedreader::kIsolatedWorldId)
                         .ExtractString());
-  EXPECT_EQ("dark", speedreader_service()->GetSelectedTheme());
+  EXPECT_EQ(speedreader::Theme::kDark, speedreader_service()->GetTheme());
 
   // New page
   NavigateToPageSynchronously(kTestPageReadable);

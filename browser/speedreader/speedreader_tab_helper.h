@@ -88,9 +88,9 @@ class SpeedreaderTabHelper
   // mojom::SpeedreaderHost:
   void OnShowOriginalPage() override;
 
-  void ChangeTheme(const std::string& theme);
-  std::string GetSelectedTheme();
-  std::string GetSystemTheme();
+  void SetTheme(Theme theme);
+  Theme GetTheme();
+  std::string GetThemeName();
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;

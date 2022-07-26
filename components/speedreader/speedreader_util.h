@@ -11,6 +11,14 @@ class HostContentSettingsMap;
 
 namespace speedreader {
 
+// Enum is used in prefs. Be careful when changing or extending.
+enum class Theme {
+  kDefault = 0,  // Use browser's theme
+  kLight = 1,
+  kSepia = 2,
+  kDark = 3,
+};
+
 // DistillState is an enum for the current state of a speedreader WebContents
 enum class DistillState {
   // Used as an initialization state

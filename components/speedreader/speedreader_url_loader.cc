@@ -141,7 +141,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
             },
             std::move(body),
             rewriter_service_->MakeRewriter(
-                response_url_, speedreader_service_->GetSelectedTheme()),
+                response_url_, speedreader_service_->GetThemeName()),
             rewriter_service_->GetContentStylesheet()),
         base::BindOnce(
             [](base::WeakPtr<SpeedReaderURLLoader> self, std::string result) {

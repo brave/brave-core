@@ -260,12 +260,9 @@ void SpeedreaderTabHelper::OnShowOriginalPage() {
   ReloadContents();
 }
 
-void SpeedreaderTabHelper::ChangeTheme(const std::string& theme) {
-  if (GetSelectedTheme() == theme)
+void SpeedreaderTabHelper::SetTheme(Theme theme) {
+  if (GetTheme() == theme)
     return;
-
-  CHECK_EQ(std::u16string::npos, theme.find(u'\''));
-  CHECK_EQ(std::u16string::npos, theme.find(u'\\'));
 
   constexpr const char16_t kSetTheme[] =
       uR"js(
@@ -279,29 +276,31 @@ void SpeedreaderTabHelper::ChangeTheme(const std::string& theme) {
     })();
   )js";
 
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  speedreader_service->SetTheme(theme);
+
   const auto script = base::ReplaceStringPlaceholders(
-      kSetTheme, base::UTF8ToUTF16(theme), nullptr);
+      kSetTheme, base::UTF8ToUTF16(speedreader_service->GetThemeName()),
+      nullptr);
 
   web_contents()->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       script, base::DoNothing(), kIsolatedWorldId);
-  SpeedreaderServiceFactory::GetForProfile(GetProfile())->SelectedTheme(theme);
 }
 
-std::string SpeedreaderTabHelper::GetSelectedTheme() {
-  return SpeedreaderServiceFactory::GetForProfile(GetProfile())
-      ->GetSelectedTheme();
-}
-
-std::string SpeedreaderTabHelper::GetSystemTheme() {
-  switch (dark_mode::GetActiveBraveDarkModeType()) {
-    case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK:
-      return "dark";
-    case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT:
-      return "light";
-    default:
-      break;
+Theme SpeedreaderTabHelper::GetTheme() {
+  const Theme theme =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile())->GetTheme();
+  if (theme == Theme::kDefault) {
+    switch (dark_mode::GetActiveBraveDarkModeType()) {
+      case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK:
+        return Theme::kDark;
+      case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT:
+      case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT:
+        return Theme::kLight;
+    }
   }
-  return "light";
+  return theme;
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {
