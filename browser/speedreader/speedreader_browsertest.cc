@@ -382,7 +382,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
-  auto* web_contents = ActiveWebContents();
 
   constexpr const char kGetTheme[] =
       R"js(
@@ -391,14 +390,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
 
   EXPECT_EQ(speedreader::Theme::kDefault, speedreader_service()->GetTheme());
 
-  EXPECT_EQ(nullptr, content::EvalJs(web_contents, kGetTheme,
+  EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kGetTheme,
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                      speedreader::kIsolatedWorldId));
   auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+      speedreader::SpeedreaderTabHelper::FromWebContents(ActiveWebContents());
   tab_helper->SetTheme(speedreader::Theme::kDark);
 
-  EXPECT_EQ("dark", content::EvalJs(web_contents, kGetTheme,
+  EXPECT_EQ("dark", content::EvalJs(ActiveWebContents(), kGetTheme,
                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                     speedreader::kIsolatedWorldId)
                         .ExtractString());
@@ -406,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
 
   // New page
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_EQ("dark", content::EvalJs(web_contents, kGetTheme,
+  EXPECT_EQ("dark", content::EvalJs(ActiveWebContents(), kGetTheme,
                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                     speedreader::kIsolatedWorldId)
                         .ExtractString());
