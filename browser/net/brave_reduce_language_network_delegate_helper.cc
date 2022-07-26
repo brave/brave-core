@@ -8,6 +8,7 @@
 
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 
+#include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -53,6 +54,13 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     std::string languages =
         pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
     accept_language_string = language::GetFirstLanguage(languages);
+    // If the first language is a multi-part code like "en-US" or "zh-HK",
+    // extract and append the base language code to |accept_language_string|.
+    const std::vector<std::string> tokens = base::SplitString(
+        accept_language_string, "-", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+    if (!tokens.empty() && tokens[0] != accept_language_string) {
+        accept_language_string += "," + tokens[0];
+    }
     // Add a fake q value after the language code.
     std::vector<std::string> q_values = {";q=0.5", ";q=0.6", ";q=0.7", ";q=0.8",
                                          ";q=0.9"};
