@@ -162,7 +162,7 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
   if (info) {
     info_dict.Set("walletPaymentId", info->payment_id);
     info_dict.Set("isKeyInfoSeedValid", info->is_key_info_seed_valid);
-    info_dict.Set("bootStamp", static_cast<int>(info->boot_stamp));
+    info_dict.Set("bootStamp", static_cast<double>(info->boot_stamp));
   }
   CallJavascriptFunction("brave_rewards_internals.onGetRewardsInternalsInfo",
                          base::Value(std::move(info_dict)));
@@ -230,7 +230,7 @@ void RewardsInternalsDOMHandler::OnGetContributions(
     contribution.Set("type", static_cast<int>(item->type));
     contribution.Set("step", static_cast<int>(item->step));
     contribution.Set("retryCount", item->retry_count);
-    contribution.Set("createdAt", static_cast<int>(item->created_at));
+    contribution.Set("createdAt", static_cast<double>(item->created_at));
     contribution.Set("processor", static_cast<int>(item->processor));
     base::Value::List publishers;
     for (const auto& publisher_item : item->publishers) {
@@ -272,10 +272,10 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
     base::Value::Dict dict;
     dict.Set("amount", item->approximate_value);
     dict.Set("promotionId", item->id);
-    dict.Set("expiresAt", static_cast<int>(item->expires_at));
+    dict.Set("expiresAt", static_cast<double>(item->expires_at));
     dict.Set("type", static_cast<int>(item->type));
     dict.Set("status", static_cast<int>(item->status));
-    dict.Set("claimedAt", static_cast<int>(item->claimed_at));
+    dict.Set("claimedAt", static_cast<double>(item->claimed_at));
     dict.Set("legacyClaimed", item->legacy_claimed);
     dict.Set("claimId", item->claim_id);
     dict.Set("version", static_cast<int>(item->version));
@@ -412,7 +412,7 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
     item.Set("id", log->event_log_id);
     item.Set("key", log->key);
     item.Set("value", log->value);
-    item.Set("createdAt", static_cast<int>(log->created_at));
+    item.Set("createdAt", static_cast<double>(log->created_at));
     data.Append(std::move(item));
   }
 

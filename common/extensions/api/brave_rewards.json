@@ -878,7 +878,7 @@
                   },
                   "expiresAt": {
                     "optional": true,
-                    "type": "integer"
+                    "type": "number"
                   },
                   "amount": {
                     "optional": true,
@@ -1158,7 +1158,7 @@
                       "description": "notification type"
                     },
                     "timestamp": {
-                      "type": "integer",
+                      "type": "number",
                       "description": "timestamp when notification was created"
                     },
                     "args": {

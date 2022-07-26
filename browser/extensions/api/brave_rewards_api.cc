@@ -710,7 +710,7 @@ void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
     return;
   }
 
-  data.Set("expiresAt", static_cast<int>(promotion->expires_at));
+  data.Set("expiresAt", static_cast<double>(promotion->expires_at));
   data.Set("amount", static_cast<double>(promotion->approximate_value));
   data.Set("type", static_cast<int>(promotion->type));
   Respond(TwoArguments(base::Value(static_cast<int>(result)),
@@ -985,7 +985,7 @@ BraveRewardsGetAllNotificationsFunction::Run() {
     base::Value::Dict item;
     item.Set("id", notification.second.id_);
     item.Set("type", notification.second.type_);
-    item.Set("timestamp", static_cast<int>(notification.second.timestamp_));
+    item.Set("timestamp", static_cast<double>(notification.second.timestamp_));
 
     base::Value::List args;
     for (auto const& arg : notification.second.args_) {

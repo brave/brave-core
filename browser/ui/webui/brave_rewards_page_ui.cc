@@ -760,9 +760,9 @@ void RewardsDOMHandler::OnFetchPromotions(
     dict.Set("promotionId", item->id);
     dict.Set("type", static_cast<int>(item->type));
     dict.Set("status", static_cast<int>(item->status));
-    dict.Set("createdAt", static_cast<int>(item->created_at));
-    dict.Set("claimableUntil", static_cast<int>(item->claimable_until));
-    dict.Set("expiresAt", static_cast<int>(item->expires_at));
+    dict.Set("createdAt", static_cast<double>(item->created_at));
+    dict.Set("claimableUntil", static_cast<double>(item->claimable_until));
+    dict.Set("expiresAt", static_cast<double>(item->expires_at));
     dict.Set("amount", item->approximate_value);
     promotions.Append(std::move(dict));
   }
@@ -855,7 +855,7 @@ void RewardsDOMHandler::OnAttestPromotion(
   promotion_dict.Set("promotionId", promotion_id);
 
   if (promotion) {
-    promotion_dict.Set("expiresAt", static_cast<int>(promotion->expires_at));
+    promotion_dict.Set("expiresAt", static_cast<double>(promotion->expires_at));
     promotion_dict.Set("amount", promotion->approximate_value);
     promotion_dict.Set("type", static_cast<int>(promotion->type));
   }
@@ -1206,7 +1206,7 @@ void RewardsDOMHandler::OnGetOneTimeTips(ledger::type::PublisherInfoList list) {
     publisher.Set("provider", item->provider);
     publisher.Set("url", item->url);
     publisher.Set("favIcon", item->favicon_url);
-    publisher.Set("tipDate", static_cast<int>(item->reconcile_stamp));
+    publisher.Set("tipDate", static_cast<double>(item->reconcile_stamp));
     publishers.Append(std::move(publisher));
   }
 
@@ -1666,10 +1666,11 @@ void RewardsDOMHandler::OnGetPendingContributions(
     contribution.Set("url", item->url);
     contribution.Set("favIcon", item->favicon_url);
     contribution.Set("amount", item->amount);
-    contribution.Set("addedDate", std::to_string(item->added_date));
+    contribution.Set("addedDate", base::NumberToString(item->added_date));
     contribution.Set("type", static_cast<int>(item->type));
     contribution.Set("viewingId", item->viewing_id);
-    contribution.Set("expirationDate", std::to_string(item->expiration_date));
+    contribution.Set("expirationDate",
+                     base::NumberToString(item->expiration_date));
     contributions.Append(std::move(contribution));
   }
 
@@ -1933,7 +1934,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
     transaction_report.Set("amount", item->amount);
     transaction_report.Set("type", static_cast<int>(item->type));
     transaction_report.Set("processor", static_cast<int>(item->processor));
-    transaction_report.Set("created_at", static_cast<int>(item->created_at));
+    transaction_report.Set("created_at", static_cast<double>(item->created_at));
 
     transactions.Append(std::move(transaction_report));
   }
@@ -1961,7 +1962,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
     contribution_report.Set("processor",
                             static_cast<int>(contribution->processor));
     contribution_report.Set("created_at",
-                            static_cast<int>(contribution->created_at));
+                            static_cast<double>(contribution->created_at));
     contribution_report.Set("publishers", std::move(publishers));
     contributions.Append(std::move(contribution_report));
   }
