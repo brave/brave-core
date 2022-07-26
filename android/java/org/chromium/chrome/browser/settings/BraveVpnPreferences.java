@@ -504,8 +504,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         BraveVpnUtils.showProgressDialog(
                 getActivity(), getResources().getString(R.string.resetting_config));
         new Handler().postDelayed(() -> {
-            BraveVpnUtils.resetProfileConfiguration(getActivity());
-            new Handler().post(() -> updateSummaries());
+            if (isResumed()) {
+                BraveVpnUtils.resetProfileConfiguration(getActivity());
+                new Handler().post(() -> updateSummaries());
+            }
         }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
     }
 }

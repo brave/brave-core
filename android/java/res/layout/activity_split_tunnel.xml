@@ -54,6 +54,7 @@
                 android:id="@+id/rv_excluded_apps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
                 android:nestedScrollingEnabled="true" />
 
             <TextView
@@ -67,6 +68,7 @@
                 android:id="@+id/rv_apps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
                 android:nestedScrollingEnabled="true" />
 
             <TextView
@@ -90,6 +92,7 @@
                 android:id="@+id/rv_system_apps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
                 android:visibility="gone"
                 android:nestedScrollingEnabled="true" />
 

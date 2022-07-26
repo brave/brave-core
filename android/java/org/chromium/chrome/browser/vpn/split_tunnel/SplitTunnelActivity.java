@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -34,7 +33,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class SplitTunnelActivity extends AsyncInitializationActivity
         implements LifecycleOwner, ApplicationListAdapter.OnApplicationClickListener {
-    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private RecyclerView mRecyclerViewSystemApps;
     private ApplicationListAdapter mRecyclerViewAdapterExcludedApps;
     private ApplicationListAdapter mRecyclerViewAdapterApps;
@@ -50,32 +48,20 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(getResources().getString(R.string.split_tunneling));
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(SplitTunnelActivity.this, LinearLayoutManager.VERTICAL);
 
         RecyclerView recyclerViewExcludedApps = findViewById(R.id.rv_excluded_apps);
-        recyclerViewExcludedApps.setLayoutManager(linearLayoutManager);
         recyclerViewExcludedApps.addItemDecoration(dividerItemDecoration);
         mRecyclerViewAdapterExcludedApps = new ApplicationListAdapter(this, true);
         recyclerViewExcludedApps.setAdapter(mRecyclerViewAdapterExcludedApps);
 
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
         RecyclerView recyclerViewApps = findViewById(R.id.rv_apps);
-        recyclerViewApps.setLayoutManager(linearLayoutManager2);
         recyclerViewApps.addItemDecoration(dividerItemDecoration);
         mRecyclerViewAdapterApps = new ApplicationListAdapter(this, false);
         recyclerViewApps.setAdapter(mRecyclerViewAdapterApps);
 
-        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
-        linearLayoutManager3.setOrientation(LinearLayoutManager.VERTICAL);
-
         mRecyclerViewSystemApps = findViewById(R.id.rv_system_apps);
-        mRecyclerViewSystemApps.setLayoutManager(linearLayoutManager3);
         mRecyclerViewSystemApps.addItemDecoration(dividerItemDecoration);
         mRecyclerViewAdapterSystemApps = new ApplicationListAdapter(this, false);
         mRecyclerViewSystemApps.setAdapter(mRecyclerViewAdapterSystemApps);
@@ -116,13 +102,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
-            @Override
-            public void onFlowIsKnown(Bundle freProperties) {
-                initializeViews();
-            }
-        };
-        mFirstRunFlowSequencer.start();
+        initializeViews();
         onInitialLayoutInflationComplete();
     }
 
@@ -173,7 +153,11 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
                     mRecyclerViewAdapterApps.removeApplication(applicationDataModel);
                 }
             }
-            findViewById(R.id.empty_excluded_apps_text).setVisibility(mRecyclerViewAdapterExcludedApps.getApplicationPackages().size() > 0 ? View.GONE : View.VISIBLE);
+            findViewById(R.id.empty_excluded_apps_text)
+                    .setVisibility(
+                            mRecyclerViewAdapterExcludedApps.getApplicationPackages().size() > 0
+                                    ? View.GONE
+                                    : View.VISIBLE);
         }
     }
 

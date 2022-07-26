@@ -23,14 +23,10 @@ import java.util.List;
 import java.util.Set;
 
 public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    interface OnApplicationClickListener {
-        void onApplicationCLick(
-                ApplicationDataModel applicationDataModel, int position, boolean isExcludeApps);
-    }
-
     private final SortedList<ApplicationDataModel> mApplicationList;
     private final OnApplicationClickListener mOnApplicationClickListener;
     private final boolean mIsExcludedApps;
+    private static final int ANIMATION_DURATION = 1000;
 
     public Set<String> getApplicationPackages() {
         Set<String> applicationSet = new HashSet<>();
@@ -120,7 +116,7 @@ public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private void setFadeAnimation(View view) {
         AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(1000);
+        anim.setDuration(ANIMATION_DURATION);
         view.startAnimation(anim);
     }
 
@@ -148,5 +144,10 @@ public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             mAppName = itemView.findViewById(R.id.app_name);
             mActionIcon = itemView.findViewById(R.id.action_icon);
         }
+    }
+
+    interface OnApplicationClickListener {
+        void onApplicationCLick(
+                ApplicationDataModel applicationDataModel, int position, boolean isExcludeApps);
     }
 }

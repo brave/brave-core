@@ -7,8 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingVertical="8dp">
 
     <ImageView
         android:id="@+id/app_icon"
@@ -23,8 +22,7 @@
         style="?android:attr/textAppearanceMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_weight="1"
         android:ellipsize="end"
         android:maxLines="1"

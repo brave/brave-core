@@ -11,6 +11,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -23,25 +24,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ApplicationViewModel extends ViewModel {
-    MutableLiveData<List<ApplicationDataModel>> excludedApplicationDataLiveData;
-    MutableLiveData<List<ApplicationDataModel>> applicationDataLiveData;
-    MutableLiveData<List<ApplicationDataModel>> systemApplicationDataLiveData;
+    private final MutableLiveData<List<ApplicationDataModel>>
+            mExcludedApplicationDataMutableLiveData = new MutableLiveData<>();
+    LiveData<List<ApplicationDataModel>> mExcludedApplicationDataLiveData =
+            mExcludedApplicationDataMutableLiveData;
 
-    public ApplicationViewModel() {
-        excludedApplicationDataLiveData = new MutableLiveData<>();
-        applicationDataLiveData = new MutableLiveData<>();
-        systemApplicationDataLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ApplicationDataModel>> mApplicationDataMutableLiveData =
+            new MutableLiveData<>();
+    LiveData<List<ApplicationDataModel>> mApplicationDataLiveData = mApplicationDataMutableLiveData;
+
+    private final MutableLiveData<List<ApplicationDataModel>>
+            mSystemApplicationDataMutableLiveData = new MutableLiveData<>();
+    LiveData<List<ApplicationDataModel>> mSystemApplicationDataLiveData =
+            mSystemApplicationDataMutableLiveData;
+
+    public LiveData<List<ApplicationDataModel>> getExcludedApplicationDataLiveData() {
+        return mExcludedApplicationDataLiveData;
     }
 
-    public MutableLiveData<List<ApplicationDataModel>> getExcludedApplicationDataLiveData() {
-        return excludedApplicationDataLiveData;
+    public LiveData<List<ApplicationDataModel>> getApplicationDataMutableLiveData() {
+        return mApplicationDataLiveData;
     }
-
-    public MutableLiveData<List<ApplicationDataModel>> getApplicationDataMutableLiveData() {
-        return applicationDataLiveData;
-    }
-    public MutableLiveData<List<ApplicationDataModel>> getSystemApplicationDataMutableLiveData() {
-        return systemApplicationDataLiveData;
+    public LiveData<List<ApplicationDataModel>> getSystemApplicationDataMutableLiveData() {
+        return mSystemApplicationDataLiveData;
     }
 
     public void getApplications(Activity activity) {
@@ -71,9 +76,9 @@ public class ApplicationViewModel extends ViewModel {
                     applicationDataModels.add(applicationDataModel);
                 }
             }
-            excludedApplicationDataLiveData.postValue(excludedApplicationDataModels);
-            systemApplicationDataLiveData.postValue(systemApplicationDataModels);
-            applicationDataLiveData.postValue(applicationDataModels);
+            mExcludedApplicationDataMutableLiveData.postValue(excludedApplicationDataModels);
+            mSystemApplicationDataMutableLiveData.postValue(systemApplicationDataModels);
+            mApplicationDataMutableLiveData.postValue(applicationDataModels);
         });
     }
 
