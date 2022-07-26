@@ -54,6 +54,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();
   void ShieldsDown(const GURL& url);
+  void DisableAggressiveMode();
   void LoadDAT(base::FilePath path);
   void EnableRedirectUrlParsing();
   content::WebContents* web_contents();

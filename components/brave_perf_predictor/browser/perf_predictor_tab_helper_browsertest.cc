@@ -9,9 +9,11 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -47,6 +49,15 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
+
+    auto* content_settings =
+        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+
+    // Most tests are written for aggressive mode. Individual tests should reset
+    // this using `DisableAggressiveMode` if they are testing standard mode
+    // behavior.
+    brave_shields::SetCosmeticFilteringControlType(
+        content_settings, brave_shields::ControlType::BLOCK, GURL());
   }
 
   void SetUp() override {
