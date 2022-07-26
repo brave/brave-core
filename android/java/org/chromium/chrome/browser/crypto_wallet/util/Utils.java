@@ -134,6 +134,7 @@ public class Utils {
     public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
+    public static final String COIN_TYPE = "coinType";
     public static final String ISIMPORTED = "isImported";
     public static final String ISUPDATEACCOUNT = "isUpdateAccount";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
@@ -996,6 +997,10 @@ public class Utils {
         } else if (network.chainId.equals(
                            BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)) {
             logo = "bnb.png";
+        } else if (network.chainId.equals(BraveWalletConstants.SOLANA_MAINNET)
+                || network.chainId.equals(BraveWalletConstants.SOLANA_TESTNET)
+                || network.chainId.equals(BraveWalletConstants.SOLANA_DEVNET)) {
+            logo = "sol.png";
         } else {
             logo = "eth.png";
         }
@@ -1411,12 +1416,13 @@ public class Utils {
             String cryptoBalanceString =
                     String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-            WalletListItemModel walletListItemModel = new WalletListItemModel(R.drawable.ic_eth,
-                    userAsset.name, userAsset.symbol, userAsset.tokenId,
-                    // Amount in USD
-                    fiatBalanceString,
-                    // Amount in current crypto currency/token
-                    cryptoBalanceString);
+            WalletListItemModel walletListItemModel =
+                    new WalletListItemModel(Utils.getCoinIcon(userAsset.coin), userAsset.name,
+                            userAsset.symbol, userAsset.tokenId,
+                            // Amount in USD
+                            fiatBalanceString,
+                            // Amount in current crypto currency/token
+                            cryptoBalanceString);
 
             walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
             walletListItemModel.setBlockchainToken(userAsset);
@@ -1497,5 +1503,25 @@ public class Utils {
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {
         if (token.symbol.equals(selectedNetwork.symbol)) return true;
         return false;
+    }
+
+    public static int getCoinIcon(int coinType) {
+        int drawableId = R.drawable.ic_eth;
+        switch (coinType) {
+            case CoinType.ETH:
+                drawableId = R.drawable.ic_eth;
+                break;
+            case CoinType.SOL:
+                drawableId = R.drawable.ic_sol_asset_icon;
+                break;
+            case CoinType.FIL:
+                // TODO(sergz): Add FIL asset icon
+                break;
+            default:
+                drawableId = R.drawable.ic_eth;
+                break;
+        }
+
+        return drawableId;
     }
 }

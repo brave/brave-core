@@ -62,6 +62,7 @@ public class AccountDetailActivity
     private String mAddress;
     private String mName;
     private boolean mIsImported;
+    private int mCoinType;
     private TextView mAccountText;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -77,6 +78,7 @@ public class AccountDetailActivity
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
             mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
+            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -144,6 +146,7 @@ public class AccountDetailActivity
 
     private void fetchAccountInfo(NetworkInfo selectedNetwork) {
         assert mKeyringService != null;
+        // TODO(sergz): replace for a correct keyring
         mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             if (keyringInfo == null) {
                 return;
@@ -159,8 +162,8 @@ public class AccountDetailActivity
                                 AccountInfo[] accountInfos = new AccountInfo[1];
                                 accountInfos[0] = accountInfo;
                                 WalletListItemModel thisAccountItemModel =
-                                        new WalletListItemModel(R.drawable.ic_eth, mName, mAddress,
-                                                null, null, mIsImported);
+                                        new WalletListItemModel(Utils.getCoinIcon(mCoinType), mName,
+                                                mAddress, null, null, mIsImported);
                                 Utils.setUpTransactionList(this, accountInfos, thisAccountItemModel,
                                         assetPrices, fullTokenList, nativeAssetsBalances,
                                         blockchainTokensBalances,
@@ -191,7 +194,7 @@ public class AccountDetailActivity
 
         initState();
         assert mJsonRpcService != null;
-        mJsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+        mJsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
             setUpAssetList(selectedNetwork);
             fetchAccountInfo(selectedNetwork);
         });
@@ -200,7 +203,7 @@ public class AccountDetailActivity
     @Override
     public void onAssetClick(BlockchainToken asset) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
+        mJsonRpcService.getChainId(mCoinType, chainId -> {
             Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset.symbol,
                     asset.name, asset.tokenId, asset.contractAddress, asset.logo, asset.decimals);
         });
@@ -243,7 +246,7 @@ public class AccountDetailActivity
         accountInfo.address = mAddress;
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
-        accountInfo.coin = CoinType.ETH;
+        accountInfo.coin = mCoinType;
         return accountInfo;
     }
 
