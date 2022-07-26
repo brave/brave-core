@@ -33,6 +33,8 @@ PlaylistServiceFactory* PlaylistServiceFactory::GetInstance() {
 PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   if (IsPlaylistEnabled(context)) {
+    GetInstance()->PrepareMediaDetectorComponentManager();
+
     return static_cast<PlaylistService*>(
         GetInstance()->GetServiceForBrowserContext(context, true));
   }
@@ -66,16 +68,24 @@ PlaylistServiceFactory::PlaylistServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
       ISOLATED_WORLD_ID_CHROME_INTERNAL);
-  media_detector_component_manager_ =
-      std::make_unique<MediaDetectorComponentManager>(
-          g_browser_process->component_updater());
 }
 
 PlaylistServiceFactory::~PlaylistServiceFactory() {}
 
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  DCHECK(media_detector_component_manager_);
   return new PlaylistService(context, media_detector_component_manager_.get());
+}
+
+void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {
+  if (!media_detector_component_manager_) {
+    DCHECK(g_browser_process);
+
+    media_detector_component_manager_ =
+        std::make_unique<MediaDetectorComponentManager>(
+            g_browser_process->component_updater());
+  }
 }
 
 }  // namespace playlist

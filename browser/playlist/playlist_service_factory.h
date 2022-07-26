@@ -40,6 +40,8 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
 
+  void PrepareMediaDetectorComponentManager();
+
   // The media detector component is global extension and it's used all service
   // instances.
   std::unique_ptr<MediaDetectorComponentManager>
