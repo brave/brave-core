@@ -24,11 +24,11 @@ void BodySnifferThrottle::InterceptAndStartLoader(
     mojo::PendingRemote<network::mojom::URLLoader> new_remote,
     mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver,
     BodySnifferURLLoader* loader) {
-  mojo::ScopedDataPipeConsumerHandle body;
+  mojo::ScopedDataPipeConsumerHandle* body = loader->GetNextConsumerHandle();
   delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
-                               &source_loader, &source_client_receiver, &body);
+                               &source_loader, &source_client_receiver, body);
   loader->Start(std::move(source_loader), std::move(source_client_receiver),
-                std::move(body));
+                std::move(*body));
 }
 
 void BodySnifferThrottle::Resume() {

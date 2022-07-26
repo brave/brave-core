@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 7b4670597248635874b2b1650b1eae40fddb52e7..1888150f0ad27c60b19bc451c6a70eb7f78545e2 100644
+index e0aa34c191965e9af561e38aeeeee0d9866add28..124d32f0e088979749e5ad398b8afc2a992e47bd 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -391,6 +391,7 @@ void Tab::Layout() {

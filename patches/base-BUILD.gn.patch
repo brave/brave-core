@@ -1,10 +1,10 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 3f4eb14a38603bc4f6512a03ac8ea0f58b1b260b..1e49b48d669d63e735756da9b60853474ddd9d4c 100644
+index 2b1a93670de430138c32493e2eabe475d7839c23..f1995c0b72443d7086de809132aeaadfd221d506 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4176,6 +4176,7 @@ if (is_android) {
+@@ -4202,6 +4202,7 @@ if (is_android) {
+       "android/java/src/org/chromium/base/task/TaskTraitsExtensionDescriptor.java",
        "android/java/src/org/chromium/base/time/Timer.java",
-       "android/java/src/org/chromium/base/time/UptimeTimer.java",
      ]
 +    sources += brave_java_base_sources
  

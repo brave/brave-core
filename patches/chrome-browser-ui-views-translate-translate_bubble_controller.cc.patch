@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/translate/translate_bubble_controller.cc b/chrome/browser/ui/views/translate/translate_bubble_controller.cc
+index 1841b2899898bbaae66be4e24e84bfc01cd48e43..03e438e74a95506e898c013767106be70d652b43 100644
+--- a/chrome/browser/ui/views/translate/translate_bubble_controller.cc
++++ b/chrome/browser/ui/views/translate/translate_bubble_controller.cc
+@@ -69,7 +69,7 @@ views::Widget* TranslateBubbleController::ShowTranslateBubble(
+                                                        std::move(ui_delegate));
+   }
+ 
+-  auto translate_bubble_view = std::make_unique<TranslateBubbleView>(
++  auto translate_bubble_view = MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW(
+       anchor_view, std::move(model), error_type, web_contents,
+       GetOnTranslateBubbleClosedCallback());
+   translate_bubble_view_ = translate_bubble_view.get();

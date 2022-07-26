@@ -1476,7 +1476,7 @@ void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
 
   // Build the list structure required by the webUI
   int uuid = 0;
-  base::ListValue list;
+  base::Value::List list;
 
   for (const auto& item : history.items) {
     base::DictionaryValue history_item_dictionary;
@@ -1499,7 +1499,7 @@ void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
     list.Append(std::move(dictionary));
   }
 
-  std::move(callback).Run(list);
+  std::move(callback).Run(std::move(list));
 }
 
 bool AdsServiceImpl::CanShowBackgroundNotifications() const {

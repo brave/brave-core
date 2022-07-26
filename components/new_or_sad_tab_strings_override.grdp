@@ -22,11 +22,11 @@
       </if>
       <if expr="is_macosx or chromeos_ash or chromeos_lacros">
         </if>
-      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
+      <if expr="is_linux">
         </if>
       <if expr="is_macosx or chromeos_ash or chromeos_lacros or is_ios">
         </if>
-      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
+      <if expr="is_linux">
         </if>
       <if expr="_google_chrome">
         </if>

@@ -8,38 +8,13 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "third_party/blink/public/common/features.h"
 
-namespace chrome {
-namespace android {
-
-namespace {
-
-const base::Feature* kBraveFeaturesExposedToJava[] = {
-    &brave_rewards::features::kBraveRewards,
-    &blink::features::kForceWebContentsDarkMode,
-    &brave_wallet::features::kNativeBraveWalletFeature,
-    &brave_wallet::features::kBraveWalletSolanaFeature,
-    &brave_today::features::kBraveNewsFeature,
-};
-
-const base::Feature* BraveFindFeatureExposedToJava(
-    const std::string& feature_name) {
-  for (const base::Feature* feature : kBraveFeaturesExposedToJava) {
-    if (feature->name == feature_name)
-      return feature;
-  }
-
-  return nullptr;
-}
-
-}  // namespace
-
-}  // namespace android
-}  // namespace chrome
-
-#define BRAVE_FIND_FEATURE_EXPOSED_TO_JAVA                                    \
-  const base::Feature* feature = BraveFindFeatureExposedToJava(feature_name); \
-  if (feature)                                                                \
-    return feature;
+// clang-format off
+#define kForceWebContentsDarkMode kForceWebContentsDarkMode, \
+    &brave_rewards::features::kBraveRewards,                 \
+    &brave_today::features::kBraveNewsFeature,               \
+    &brave_wallet::features::kNativeBraveWalletFeature,      \
+    &brave_wallet::features::kBraveWalletSolanaFeature
+// clang-format on
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"
-#undef BRAVE_FIND_FEATURE_EXPOSED_TO_JAVA
+#undef kForceWebContentsDarkMode

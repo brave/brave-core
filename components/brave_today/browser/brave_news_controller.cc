@@ -336,8 +336,8 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
         auto ad = mojom::DisplayAd::New();
         ad->uuid = *ad_data.FindStringKey("uuid");
         ad->creative_instance_id = *ad_data.FindStringKey("creativeInstanceId");
-        if (ad_data.HasKey("ctaText"))
-          ad->cta_text = *ad_data.FindStringKey("ctaText");
+        if (const auto* cta_text = ad_data.FindStringKey("ctaText"))
+          ad->cta_text = *cta_text;
         ad->dimensions = *ad_data.FindStringKey("dimensions");
         ad->title = *ad_data.FindStringKey("title");
         ad->description = *ad_data.FindStringKey("description");

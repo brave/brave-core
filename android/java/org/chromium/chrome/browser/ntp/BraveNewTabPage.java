@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.xsurface.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
@@ -43,6 +44,7 @@ public class BraveNewTabPage extends NewTabPage {
     private FeedSurfaceProvider mFeedSurfaceProvider;
     private Supplier<Toolbar> mToolbarSupplier;
     private TabModelSelector mTabModelSelector;
+    private BottomSheetController mBottomSheetController;
 
     public BraveNewTabPage(Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
@@ -53,11 +55,11 @@ public class BraveNewTabPage extends NewTabPage {
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
             JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
-            CrowButtonDelegate crowButtonDelegate) {
+            SettingsLauncher settingsLauncher, CrowButtonDelegate crowButtonDelegate) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
                 tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
-                toolbarSupplier, crowButtonDelegate);
+                toolbarSupplier, settingsLauncher, crowButtonDelegate);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -69,7 +71,6 @@ public class BraveNewTabPage extends NewTabPage {
     @Override
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
-            BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, CrowButtonDelegate crowButtonDelegate,
             String url) {
         // Override surface provider
@@ -83,7 +84,7 @@ public class BraveNewTabPage extends NewTabPage {
                 snackbarManager, windowAndroid,
                 new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
                 mBrowserControlsStateProvider.getTopControlsHeight(), isInNightMode, this, profile,
-                /* isPlaceholderShownInitially= */ false, bottomSheetController,
+                /* isPlaceholderShownInitially= */ false, mBottomSheetController,
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
                 NewTabPageUtils.decodeOriginFromNtpUrl(url),
                 PrivacyPreferencesManagerImpl.getInstance(), mToolbarSupplier,

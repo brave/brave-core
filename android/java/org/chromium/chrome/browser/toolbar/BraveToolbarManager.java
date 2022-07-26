@@ -27,6 +27,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
+import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -160,7 +161,7 @@ public class BraveToolbarManager extends ToolbarManager {
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
-            boolean initializeWithIncognitoColors) {
+            boolean initializeWithIncognitoColors, @Nullable BackPressManager backPressManager) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
@@ -174,7 +175,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
                 snackbarManager, jankTracker, merchantTrustSignalsCoordinatorSupplier,
                 tabReparentingControllerSupplier, omniboxPedalDelegate,
-                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors);
+                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors, backPressManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;

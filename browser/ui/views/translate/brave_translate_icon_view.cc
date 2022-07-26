@@ -11,6 +11,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/views/translate/translate_bubble_controller.h"
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/common/constants.h"
@@ -63,7 +64,11 @@ void BraveTranslateIconView::UpdateImpl() {
   if (translate::IsTranslateExtensionEnabled(
           GetWebContents()->GetBrowserContext())) {
     SetVisible(false);
-    TranslateBubbleView::CloseCurrentBubble();
+    TranslateBubbleController* controller =
+        TranslateBubbleController::FromWebContents(GetWebContents());
+    if (controller)
+      controller->CloseBubble();
+
     return;
   }
 

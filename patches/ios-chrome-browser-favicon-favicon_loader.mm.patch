@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/favicon/favicon_loader.mm b/ios/chrome/browser/favicon/favicon_loader.mm
-index 3304fb2e6737bff121aeed5ac95e4abcf5a504a8..0d5f36fc6b7d73e66a4e18e190047e54f2f156fb 100644
+index febf7b0da8ec3e1e74f481a404a38d1d5db52458..e8c53c4570c1da132d66df6d52ba9b3f42ba99a5 100644
 --- a/ios/chrome/browser/favicon/favicon_loader.mm
 +++ b/ios/chrome/browser/favicon/favicon_loader.mm
 @@ -49,7 +49,7 @@ const net::NetworkTrafficAnnotationTag kTrafficAnnotation =

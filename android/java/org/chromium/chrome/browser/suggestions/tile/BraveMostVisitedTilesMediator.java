@@ -26,7 +26,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
                 snapshotTileGridChangedRunnable, tileCountChangedRunnable);
     }
 
-    protected void updateTileGridPlaceholderVisibility() {
+    protected void updateTilePlaceholderVisibility() {
         // This function is kept empty to avoid placeholder implementation
     }
 }

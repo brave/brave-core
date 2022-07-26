@@ -19,48 +19,51 @@
 #include "extensions/browser/extension_registry.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/button/md_text_button.h"
-#include "ui/views/layout/grid_layout.h"
+#include "ui/views/layout/table_layout.h"
 #include "ui/views/style/platform_style.h"
 
 BraveTranslateBubbleView::BraveTranslateBubbleView(
     views::View* anchor_view,
     std::unique_ptr<TranslateBubbleModel> model,
     translate::TranslateErrors::Type error_type,
-    content::WebContents* web_contents)
+    content::WebContents* web_contents,
+    base::OnceClosure on_closing)
     : TranslateBubbleView(anchor_view,
                           std::move(model),
                           error_type,
-                          web_contents) {
-}
+                          web_contents,
+                          std::move(on_closing)) {}
 
 BraveTranslateBubbleView::~BraveTranslateBubbleView() {
 }
 
 std::unique_ptr<views::View>
 BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
+  const float kPaddingResizesEqually = 1.0;
   auto view = std::make_unique<views::View>();
-  views::GridLayout* layout =
-      view->SetLayoutManager(std::make_unique<views::GridLayout>());
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
 
-  constexpr int kButtonColumnSetId = 0;
-  views::ColumnSet* cs = layout->AddColumnSet(kButtonColumnSetId);
-  cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
-                views::GridLayout::kFixedSize,
-                views::GridLayout::ColumnSize::kUsePreferred, 0,
-                0);
-  cs->AddPaddingColumn(1.0, 0);
-  cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
-                views::GridLayout::kFixedSize,
-                views::GridLayout::ColumnSize::kUsePreferred, 0,
-                0);
-  cs->AddPaddingColumn(
-      views::GridLayout::kFixedSize,
-      provider->GetDistanceMetric(views::DISTANCE_RELATED_BUTTON_HORIZONTAL));
-  cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
-                views::GridLayout::kFixedSize,
-                views::GridLayout::ColumnSize::kUsePreferred, 0,
-                0);
+  view->SetLayoutManager(std::make_unique<views::TableLayout>())
+      ->AddColumn(views::LayoutAlignment::kStart,
+                  views::LayoutAlignment::kCenter,
+                  views::TableLayout::kFixedSize,
+                  views::TableLayout::ColumnSize::kUsePreferred, 0, 0)
+      .AddPaddingColumn(kPaddingResizesEqually, 0)
+      .AddColumn(views::LayoutAlignment::kStart,
+                 views::LayoutAlignment::kCenter,
+                 views::TableLayout::kFixedSize,
+                 views::TableLayout::ColumnSize::kUsePreferred, 0, 0)
+      .AddPaddingColumn(views::TableLayout::kFixedSize,
+                        provider->GetDistanceMetric(
+                            views::DISTANCE_RELATED_BUTTON_HORIZONTAL))
+      .AddColumn(views::LayoutAlignment::kStart,
+                 views::LayoutAlignment::kCenter,
+                 views::TableLayout::kFixedSize,
+                 views::TableLayout::ColumnSize::kUsePreferred, 0, 0)
+      .AddPaddingRow(views::TableLayout::kFixedSize,
+                     provider->GetDistanceMetric(
+                         views::DISTANCE_UNRELATED_CONTROL_VERTICAL))
+      .AddRows(1, views::TableLayout::kFixedSize);
 
   auto dont_ask_button = std::make_unique<views::LabelButton>(
       base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
@@ -84,11 +87,6 @@ BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
           IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL));
   cancel_button->SetID(BUTTON_ID_CLOSE);
 
-  layout->StartRowWithPadding(
-      views::GridLayout::kFixedSize, kButtonColumnSetId,
-      views::GridLayout::kFixedSize,
-      provider->GetDistanceMetric(views::DISTANCE_UNRELATED_CONTROL_VERTICAL));
-
   // We can't call views::style::GetColor() until the associated widget has been
   // initialized or views::View::GetNativeTheme() will be called to avoid using
   // the global NativeInstance, which would be an error.
@@ -101,14 +99,14 @@ BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
       },
       base::Unretained(dont_ask_button.get())));
 
-  layout->AddView(std::move(dont_ask_button));
+  view->AddChildView(std::move(dont_ask_button));
 
   if (views::PlatformStyle::kIsOkButtonLeading) {
-    layout->AddView(std::move(accept_button));
-    layout->AddView(std::move(cancel_button));
+    view->AddChildView(std::move(accept_button));
+    view->AddChildView(std::move(cancel_button));
   } else {
-    layout->AddView(std::move(cancel_button));
-    layout->AddView(std::move(accept_button));
+    view->AddChildView(std::move(cancel_button));
+    view->AddChildView(std::move(accept_button));
   }
 
   return view;

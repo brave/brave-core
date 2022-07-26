@@ -7,6 +7,7 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
+#include "base/ranges/algorithm.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -155,6 +156,10 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
           &sub_request_origins[j]))
           << "case: " << i << ", address: " << j;
     }
+    // The activation of features::kPermissionQuietChip affects the order in
+    // which permission_request_manager->Requests() stores the request in to
+    // FILO.
+    base::ranges::reverse(sub_request_origins);
 
     url::Origin origin;
     ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
@@ -231,6 +236,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     EXPECT_TRUE(!observer->IsShowingBubble()) << "case: " << i;
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
+    // Reversing back sub_request_origins to its original ordering.
+    base::ranges::reverse(sub_request_origins);
     for (size_t j = 0; j < addresses.size(); ++j) {
       EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                     sub_request_origins[j].GetURL(),
@@ -275,6 +282,10 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
           &sub_request_origins[j]))
           << "case: " << i << ", address: " << j;
     }
+    // The activation of features::kPermissionQuietChip affects the order in
+    // which permission_request_manager->Requests() stores the request in to
+    // FILO.
+    base::ranges::reverse(sub_request_origins);
 
     url::Origin origin;
     ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(

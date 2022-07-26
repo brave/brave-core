@@ -148,7 +148,6 @@ void SidebarModel::OnItemRemoved(const SidebarItem& item, int index) {
 void SidebarModel::OnURLVisited(history::HistoryService* history_service,
                                 ui::PageTransition transition,
                                 const history::URLRow& row,
-                                const history::RedirectList& redirects,
                                 base::Time visit_time) {
   for (const auto& item : GetAllSidebarItems()) {
     // Don't try to update builtin items image. It uses bundled one.

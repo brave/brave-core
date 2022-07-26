@@ -12,6 +12,7 @@
 #include "base/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
@@ -34,7 +35,7 @@ class PrefRegistrySyncable;
 
 namespace brave_ads {
 
-using OnGetHistoryCallback = base::OnceCallback<void(const base::ListValue&)>;
+using OnGetHistoryCallback = base::OnceCallback<void(base::Value::List)>;
 
 using OnToggleAdThumbUpCallback = base::OnceCallback<void(const std::string&)>;
 using OnToggleAdThumbDownCallback =

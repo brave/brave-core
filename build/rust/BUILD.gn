@@ -46,12 +46,6 @@ if (is_apple) {
       "--output=" + rebase_path(unexport_list_path, root_build_dir),
     ]
 
-    # Temporary workaround to avoid bitcode-related problem when opaque pointers
-    # are enabled on iOS (see https://github.com/llvm/llvm-project/issues/55506)
-    if (is_ios) {
-      args += [ "--disable_bitcode_reader" ]
-    }
-
     deps = [ ":rust_lib" ]
   }
 }

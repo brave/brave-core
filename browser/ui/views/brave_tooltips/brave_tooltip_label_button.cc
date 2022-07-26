@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_label_button.h"
 
 #include "ui/base/cursor/cursor.h"
-#include "ui/views/native_cursor.h"
 
 namespace brave_tooltips {
 
@@ -17,11 +16,10 @@ BraveTooltipLabelButton::BraveTooltipLabelButton(PressedCallback callback,
 
 BraveTooltipLabelButton::~BraveTooltipLabelButton() = default;
 
-gfx::NativeCursor BraveTooltipLabelButton::GetCursor(
-    const ui::MouseEvent& event) {
+ui::Cursor BraveTooltipLabelButton::GetCursor(const ui::MouseEvent& event) {
   if (!GetEnabled())
-    return gfx::kNullCursor;
-  return views::GetNativeHandCursor();
+    return ui::Cursor();
+  return ui::mojom::CursorType::kHand;
 }
 
 }  // namespace brave_tooltips
