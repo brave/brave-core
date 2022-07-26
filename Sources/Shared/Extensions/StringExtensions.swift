@@ -20,26 +20,6 @@ extension String {
     return self.removingPercentEncoding
   }
 
-  /**
-    Ellipsizes a String only if it's longer than `maxLength`
-
-      "ABCDEF".ellipsize(4)
-      // "AB…EF"
-
-    :param: maxLength The maximum length of the String.
-
-    :returns: A String with `maxLength` characters or less
-    */
-  public func ellipsize(maxLength: Int) -> String {
-    if (maxLength >= 2) && (self.count > maxLength) {
-      let index1 = self.index(self.startIndex, offsetBy: (maxLength + 1) / 2)  // `+ 1` has the same effect as an int ceil
-      let index2 = self.index(self.endIndex, offsetBy: maxLength / -2)
-
-      return String(self[..<index1]) + "…\u{2060}" + String(self[index2...])
-    }
-    return self
-  }
-
   private var stringWithAdditionalEscaping: String {
     return self.replacingOccurrences(of: "|", with: "%7C")
   }
@@ -67,35 +47,10 @@ extension String {
     return self.trimmingCharacters(in: CharacterSet(charactersIn: charactersInString))
   }
 
-  /// Adds a newline at the closest space from the middle of a string.
-  /// Example turning "Mark as Read" into "Mark as\n Read"
-  public func stringSplitWithNewline() -> String {
-    let mid = self.count / 2
-
-    let arr: [Int] = self.indices.compactMap {
-      if self[$0] == " " {
-        return self.distance(from: startIndex, to: $0)
-      }
-
-      return nil
-    }
-    guard let closest = arr.enumerated().min(by: { abs($0.1 - mid) < abs($1.1 - mid) }) else {
-      return self
-    }
-    var newString = self
-    newString.insert("\n", at: newString.index(newString.startIndex, offsetBy: closest.element))
-    return newString
-  }
-
   public static func contentsOfFileWithResourceName(_ name: String, ofType type: String, fromBundle bundle: Bundle, encoding: String.Encoding, error: NSErrorPointer) -> String? {
     return bundle.path(forResource: name, ofType: type).flatMap {
       try? String(contentsOfFile: $0, encoding: encoding)
     }
-  }
-
-  public func regexReplacePattern(_ pattern: String, with: String) throws -> String {
-    let regex = try NSRegularExpression(pattern: pattern, options: [])
-    return regex.stringByReplacingMatches(in: self, options: [], range: NSRange(location: 0, length: self.count), withTemplate: with)
   }
 
   public func separatedBy(_ string: String) -> [String] {
@@ -116,20 +71,6 @@ extension String {
 
   public var capitalizeFirstLetter: String {
     return prefix(1).capitalized + dropFirst()
-  }
-
-  public func attributedText(stringToChange: String, font: UIFont, color: UIColor = .black) -> NSAttributedString {
-    let attributedString =
-      NSMutableAttributedString(
-        string: self,
-        attributes: [
-          NSAttributedString.Key.font: font,
-          NSAttributedString.Key.foregroundColor: color,
-        ])
-    let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
-    let range = (self as NSString).range(of: stringToChange)
-    attributedString.addAttributes(boldFontAttribute, range: range)
-    return attributedString
   }
 
   public var withNonBreakingSpace: String {

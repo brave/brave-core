@@ -92,11 +92,6 @@ public extension FileManager {
       .sorted { $0 < $1 }
   }
 
-  func removeItemInDirectory(_ directory: String, named: String) throws {
-    let file = URL(fileURLWithPath: directory).appendingPathComponent(named).path
-    try self.removeItem(atPath: file)
-  }
-
   private func errorWithCode(_ code: NSFileManagerExtensionsErrorCodes, underlyingError error: NSError? = nil) -> NSError {
     var userInfo = [String: AnyObject]()
     if let _ = error {

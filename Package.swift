@@ -204,8 +204,7 @@ let package = Package(
         "SwiftKeychainWrapper",
         "SwiftyJSON",
         "XCGLogger"
-      ],
-      resources: [.copy("effective_tld_names.dat")]
+      ]
     ),
     .target(
       name: "BraveShared",

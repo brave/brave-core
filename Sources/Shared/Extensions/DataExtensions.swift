@@ -5,19 +5,10 @@
 import Foundation
 
 extension Data {
-  public mutating func appendBytes(fromData data: Data) {
-    var bytes = [UInt8](repeating: 0, count: data.count)
-    data.copyBytes(to: &bytes, count: data.count)
-    self.append(bytes, count: bytes.count)
-  }
 
   public func getBytes() -> [UInt8] {
     var bytes = [UInt8](repeating: 0, count: self.count)
     self.copyBytes(to: &bytes, count: self.count)
     return bytes
-  }
-
-  public var int8Array: [Int8] {
-    return self.map { Int8(bitPattern: $0) }
   }
 }

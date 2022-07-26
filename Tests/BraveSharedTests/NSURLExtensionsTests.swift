@@ -536,21 +536,6 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     urls.forEach { XCTAssertEqual(URL(string: $0.0)!.hostSLD, $0.1) }
   }
-  
-  func testhostPort() {
-    let urls = [
-      ("https://www.example.com", "www.example.com"),
-      ("https://user:pass@www.example.com", "www.example.com"),
-      ("http://localhost:6000/blah", "localhost:6000"),
-    ]
-
-    let badurls = [
-      "blah",
-      "http://",
-    ]
-    urls.forEach { XCTAssertEqual(URL(string: $0.0)!.hostPort, $0.1) }
-    badurls.forEach { XCTAssertNil(URL(string: $0)!.hostPort) }
-  }
 
   func testgetQuery() {
     let url = URL(string: "http://example.com/path?a=1&b=2&c=3")!
@@ -558,17 +543,6 @@ class NSURLExtensionsTests: XCTestCase {
 
     let urlParams = url.getQuery()
     params.forEach { XCTAssertEqual(urlParams[$0], $1, "The values in params should be the same in urlParams") }
-  }
-
-  func testwithQueryParams() {
-    let url = URL(string: "http://example.com/path")!
-    let params = ["a": "1", "b": "2", "c": "3"]
-
-    let newURL = url.withQueryParams(params.map { URLQueryItem(name: $0, value: $1) })
-
-    //make sure the new url has all the right params.
-    let newURLParams = newURL.getQuery()
-    params.forEach { XCTAssertEqual(newURLParams[$0], $1, "The values in params should be the same in newURLParams") }
   }
 
   func testWithQueryParam() {
@@ -630,55 +604,20 @@ class NSURLExtensionsTests: XCTestCase {
     for u in urls {
       let url = URL(string: u)!
 
-      let original = url.absoluteDisplayString
+      let original = url.absoluteDisplayString.replacingOccurrences(of: ".", with: "\u{2024}")
       let matches = detector.matches(in: original, options: [], range: NSMakeRange(0, original.count))
       guard matches.count > 0 else {
         print("\(url) doesn't match as a URL")
         continue
       }
 
-      let modified = url.absoluteDisplayExternalString
+      let modified = url.absoluteDisplayString.replacingOccurrences(of: ".", with: "\u{2024}")
       XCTAssertNotEqual(original, modified)
 
       let newMatches = detector.matches(in: modified, options: [], range: NSMakeRange(0, modified.count))
 
       XCTAssertEqual(0, newMatches.count, "\(modified) is not a valid URL")
     }
-
-  }
-
-  func testeligibleForPeekAndPop() {
-    let goodurls = [
-      "https://www.example.com",
-      "https://www.example.com/index.html",
-      "https://m.foo.com/bar/baz?noo=abc#123",
-      "https://m.example.co.uk/index.html",
-    ]
-    let badurls = [
-      "about:home",
-      "http://localhost:1234/about/firefox",
-    ]
-
-    goodurls.forEach { XCTAssertTrue(URL(string: $0)!.eligibleForPeekAndPop) }
-    badurls.forEach { XCTAssertFalse(URL(string: $0)!.eligibleForPeekAndPop) }
-  }
-
-  func testisImageResource() {
-    let goodurls = [
-      "https://www.example.com/image.png",
-      "https://www.example.com/image.jpg",
-      "https://m.foo.com/bar/image.jpeg",
-    ]
-    let badurls = [
-      "https://www.example.com",
-      "https://www.example.com/index.html",
-      "https://m.foo.com/bar/baz?noo=abc#123",
-      "about:home",
-      "http://localhost:1234/about/firefox",
-    ]
-
-    goodurls.forEach { XCTAssertTrue(URL(string: $0)!.isImageResource) }
-    badurls.forEach { XCTAssertFalse(URL(string: $0)!.isImageResource) }
   }
 
   func testIsBookmarkletURL() {
@@ -722,36 +661,6 @@ class NSURLExtensionsTests: XCTestCase {
 
     badURLs.forEach {
       XCTAssertNil($0.bookmarkletCodeComponent)
-    }
-  }
-
-  func testVideoSteamingSiteURL() {
-    let streamingSiteURLs = [
-      "https://www.vimeo.com",
-      "https://m.twitch.tv",
-      "https://www.twitch.tv",
-    ]
-
-    let notSteamingSiteUrls = [
-      "https://m.youtube.com",
-      "https://www.youtube.com",
-      "https://xyz.com",
-      "https://tube.tube",
-      "https://www.google.com",
-      "https://www.cnn.com",
-
-    ]
-
-    func getURL(url: String) -> URL? {
-      return URL(string: url)
-    }
-
-    streamingSiteURLs.forEach {
-      XCTAssertTrue(URL(string: $0)?.isVideoSteamingSiteURL ?? true, "failed for \($0)")
-    }
-
-    notSteamingSiteUrls.forEach {
-      XCTAssertFalse(URL(string: $0)?.isVideoSteamingSiteURL ?? false, "failed for \($0)")
     }
   }
 

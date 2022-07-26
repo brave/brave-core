@@ -5,8 +5,8 @@
 import Foundation
 import SwiftKeychainWrapper
 
-public let KeychainKeyAuthenticationInfo = "authenticationInfo"
-public let AllowedPasscodeFailedAttempts = 3
+fileprivate let KeychainKeyAuthenticationInfo = "authenticationInfo"
+fileprivate let AllowedPasscodeFailedAttempts = 3
 
 // MARK: - Helper methods for accessing Authentication information from the Keychain
 public extension KeychainWrapper {

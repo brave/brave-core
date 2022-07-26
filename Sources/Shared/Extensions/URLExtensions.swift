@@ -5,64 +5,9 @@
 import UIKit
 import BraveCore
 
-private struct ETLDEntry: CustomStringConvertible {
-  let entry: String
-
-  var isNormal: Bool { return isWild || !isException }
-  var isWild: Bool = false
-  var isException: Bool = false
-
-  init(entry: String) {
-    self.entry = entry
-    self.isWild = entry.hasPrefix("*")
-    self.isException = entry.hasPrefix("!")
-  }
-
-  fileprivate var description: String {
-    return "{ Entry: \(entry), isWildcard: \(isWild), isException: \(isException) }"
-  }
-}
-
-private typealias TLDEntryMap = [String: ETLDEntry]
-
-private func loadEntriesFromDisk() -> TLDEntryMap? {
-  if let data = String.contentsOfFileWithResourceName("effective_tld_names", ofType: "dat", fromBundle: .module, encoding: .utf8, error: nil) {
-    let lines = data.components(separatedBy: "\n")
-    let trimmedLines = lines.filter { !$0.hasPrefix("//") && $0 != "\n" && $0 != "" }
-
-    var entries = TLDEntryMap()
-    for line in trimmedLines {
-      let entry = ETLDEntry(entry: line)
-      let key: String
-      if entry.isWild {
-        // Trim off the '*.' part of the line
-        key = String(line[line.index(line.startIndex, offsetBy: 2)...])
-      } else if entry.isException {
-        // Trim off the '!' part of the line
-        key = String(line[line.index(line.startIndex, offsetBy: 1)...])
-      } else {
-        key = line
-      }
-      entries[key] = entry
-    }
-    return entries
-  }
-  return nil
-}
-
-private var etldEntries: TLDEntryMap? = {
-  return loadEntriesFromDisk()
-}()
-
 // MARK: - Local Resource URL Extensions
 extension URL {
-  public struct Strings {
-    static let localhost = "localhost"
-    static let localhostIp = "127.0.0.1"
-    static let http = "http"
-
-  }
-
+  
   public func allocatedFileSize() -> Int64 {
     // First try to get the total allocated size and in failing that, get the file allocated size
     return getResourceLongLongForKey(URLResourceKey.totalFileAllocatedSizeKey.rawValue)
@@ -114,15 +59,6 @@ private let ignoredSchemes = ["data"]
 private let supportedSchemes = permanentURISchemes.filter { !ignoredSchemes.contains($0) }
 
 extension URL {
-  public func withQueryParams(_ params: [URLQueryItem]) -> URL {
-    var components = URLComponents(url: self, resolvingAgainstBaseURL: false)!
-    var items = (components.queryItems ?? [])
-    for param in params {
-      items.append(param)
-    }
-    components.queryItems = items
-    return components.url!
-  }
 
   public func withQueryParam(_ name: String, value: String) -> URL {
     var components = URLComponents(url: self, resolvingAgainstBaseURL: false)!
@@ -145,16 +81,6 @@ extension URL {
     }
 
     return results
-  }
-
-  public var hostPort: String? {
-    if let host = self.host {
-      if let port = (self as NSURL).port?.int32Value {
-        return "\(host):\(port)"
-      }
-      return host
-    }
-    return nil
   }
 
   /**
@@ -198,12 +124,6 @@ extension URL {
     }
 
     return urlString
-  }
-
-  /// String suitable for displaying outside of the app, for example in notifications, were Data Detectors will
-  /// linkify the text and make it into a openable-in-Safari link.
-  public var absoluteDisplayExternalString: String {
-    return self.absoluteDisplayString.replacingOccurrences(of: ".", with: "\u{2024}")
   }
 
   public var displayURL: URL? {
@@ -408,26 +328,6 @@ extension URL {
 // Helpers to deal with ErrorPage URLs
 
 extension URL {
-  private var isLocalhost: Bool {
-    return scheme == "http" && (host == "localhost" || host == "127.0.0.1")
-  }
-
-  // Check if the website is a video streaming content site used inside product notifications
-  public var isVideoSteamingSiteURL: Bool {
-    guard let domain = self.baseDomain else {
-      return false
-    }
-
-    /// Video domains that should show ad block video pop-up
-    var siteList = ["vimeo", "twitch"]
-
-    /// Additional sites for Japanese locale
-    if Locale.current.regionCode == "JP" {
-      siteList.append(contentsOf: ["nicovideo", "tiktok", "instagram"])
-    }
-
-    return siteList.contains(where: domain.contains)
-  }
   
   // Check if the website is a night mode blocked site
   public var isNightModeBlockedURL: Bool {
@@ -500,22 +400,6 @@ extension URL {
       siteList.formUnion(japanList)
     }
 
-    /// Additonal sites for NewZealand and Australia locale
-    /*if Locale.current.regionCode == "AU" || Locale.current.regionCode == "NZ" {
-            let nzAUList = Set<String>([
-                "sparksport.co.nz",
-                "neontv.co.nz",
-                "stan.com.au",
-                "binge.com.au",
-                "sbs.com.au",
-                "7plus.com.au",
-                "9now.com.au",
-                "iview.abc.net.au",
-                "10play.com.au"
-            ])
-         siteList.formUnion(nzAUList)
-        }*/
-
     return siteList.contains(where: domain.contains)
   }
 
@@ -538,56 +422,6 @@ extension URL {
   }
 }
 
-// Helpers to deal with Peek and Pop
-
-extension URL {
-  public var eligibleForPeekAndPop: Bool {
-    let ignoredSchemes = ["about"]
-
-    guard let scheme = self.scheme else { return false }
-
-    if let _ = ignoredSchemes.firstIndex(of: scheme) {
-      return false
-    }
-
-    if self.host == "localhost" || self.host == "127.0.0.1" {
-      return false
-    }
-
-    return true
-  }
-
-  public var isImageResource: Bool {
-    return ["jpg", "jpeg", "png", "gif"].contains(pathExtension)
-  }
-
-  public var imageSize: CGSize? {
-    let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
-    guard let imageSource = CGImageSourceCreateWithURL(self as CFURL, imageSourceOptions),
-      let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, imageSourceOptions) as? [AnyHashable: Any],
-      let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as String],
-      let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as String]
-    else {
-      return nil
-    }
-
-    var width: CGFloat = 0
-    var height: CGFloat = 0
-
-    // swiftlint:disable force_cast
-    CFNumberGetValue((pixelWidth as! CFNumber), .cgFloatType, &width)
-
-    // swiftlint:disable force_cast
-    CFNumberGetValue((pixelHeight as! CFNumber), .cgFloatType, &height)
-
-    guard width > 0, height > 0 else {
-      return nil
-    }
-
-    return CGSize(width: width, height: height)
-  }
-}
-
 // Helper To deal with Bookmark URLs
 
 extension URL {
@@ -597,14 +431,6 @@ extension URL {
 
   public var bookmarkletCodeComponent: String? {
     return self.absoluteString.bookmarkletCodeComponent
-  }
-}
-
-// Helper To deal with File URLs
-
-extension URL {
-  public var isFileScheme: Bool {
-    return self.scheme == "file"
   }
 }
 
@@ -750,103 +576,5 @@ public struct InternalURL {
       return String(url.path.dropFirst(aboutPath.count))
     }
     return nil
-  }
-}
-
-// MARK: Private Helpers
-private extension URL {
-  @available(*, deprecated, message: "Use URL.publicSuffix or URL.baseDomain depending on your needs")
-  func publicSuffixFromHost(_ host: String, withAdditionalParts additionalPartCount: Int) -> String? {
-    if host.isEmpty {
-      return nil
-    }
-
-    // Check edge case where the host is either a single or double '.'.
-    if host.isEmpty || NSString(string: host).lastPathComponent == "." {
-      return ""
-    }
-
-    var currentHost = host
-    // Hosts can have a trailing period after the tld
-    if host.hasSuffix(".") {
-      currentHost.removeLast()
-    }
-
-    /**
-        *  The following algorithm breaks apart the domain and checks each sub domain against the effective TLD
-        *  entries from the effective_tld_names.dat file. It works like this:
-        *
-        *  Example Domain: test.bbc.co.uk
-        *  TLD Entry: bbc
-        *
-        *  1. Start off by checking the current domain (test.bbc.co.uk)
-        *  2. Also store the domain after the next dot (bbc.co.uk)
-        *  3. If we find an entry that matches the current domain (test.bbc.co.uk), perform the following checks:
-        *    i. If the domain is a wildcard AND the previous entry is not nil, then the current domain matches
-        *       since it satisfies the wildcard requirement.
-        *    ii. If the domain is normal (no wildcard) and we don't have anything after the next dot, then
-        *        currentDomain is a valid TLD
-        *    iii. If the entry we matched is an exception case, then the base domain is the part after the next dot
-        *
-        *  On the next run through the loop, we set the new domain to check as the part after the next dot,
-        *  update the next dot reference to be the string after the new next dot, and check the TLD entries again.
-        *  If we reach the end of the host (nextDot = nil) and we haven't found anything, then we've hit the
-        *  top domain level so we use it by default.
-        */
-
-    let tokens = currentHost.components(separatedBy: ".")
-    let tokenCount = tokens.count
-    var suffix: String?
-    var previousDomain: String?
-    var currentDomain: String = currentHost
-
-    for offset in 0..<tokenCount {
-      // Store the offset for use outside of this scope so we can add additional parts if needed
-      let nextDot: String? = offset + 1 < tokenCount ? tokens[offset + 1..<tokenCount].joined(separator: ".") : nil
-
-      if let entry = etldEntries?[currentDomain] {
-        if entry.isWild && (previousDomain != nil) {
-          suffix = previousDomain
-          break
-        } else if entry.isNormal || (nextDot == nil) {
-          suffix = currentDomain
-          break
-        } else if entry.isException {
-          suffix = nextDot
-          break
-        }
-      }
-
-      previousDomain = currentDomain
-      if let nextDot = nextDot {
-        currentDomain = nextDot
-      } else {
-        break
-      }
-    }
-
-    var baseDomain: String?
-    if additionalPartCount > 0 {
-      if let suffix = suffix {
-        // Take out the public suffixed and add in the additional parts we want.
-        let literalFromEnd: NSString.CompareOptions = [
-          .literal,  // Match the string exactly.
-          .backwards,  // Search from the end.
-          .anchored,
-        ]  // Stick to the end.
-        let suffixlessHost = currentHost.replacingOccurrences(of: suffix, with: "", options: literalFromEnd, range: nil)
-        let suffixlessTokens = suffixlessHost.components(separatedBy: ".").filter { $0 != "" }
-        let maxAdditionalCount = max(0, suffixlessTokens.count - additionalPartCount)
-        let additionalParts = suffixlessTokens[maxAdditionalCount..<suffixlessTokens.count]
-        let partsString = additionalParts.joined(separator: ".")
-        baseDomain = [partsString, suffix].joined(separator: ".")
-      } else {
-        return nil
-      }
-    } else {
-      baseDomain = suffix
-    }
-
-    return baseDomain
   }
 }

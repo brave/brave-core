@@ -51,19 +51,12 @@ public enum KVOConstants: String {
 }
 
 public struct AppConstants {
-  public static let isRunningTest = NSClassFromString("XCTestCase") != nil || ProcessInfo.processInfo.arguments.contains(LaunchArguments.test)
+  public static let isRunningTest = NSClassFromString("XCTestCase") != nil
 
   /// Build Channel.
   public static var buildChannel: AppBuildChannel = .release
 
-  public static func iOSVersionGreaterThanOrEqual(to version: Int) -> Bool {
-    ProcessInfo().operatingSystemVersion.majorVersion >= version
-  }
-
   public static let webServerPort: Int = {
     AppConstants.buildChannel.isPublic ? 6571 : Int.random(in: 6572..<6600)
   }()
-
-  /// The maximum length of a URL stored by Firefox. Shared with Places on desktop.
-  public static let DB_URL_LENGTH_MAX = 65536
 }

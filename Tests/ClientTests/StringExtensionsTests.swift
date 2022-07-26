@@ -8,35 +8,10 @@ import XCTest
 
 class StringExtensionsTests: XCTestCase {
 
-  func testEllipsize() {
-    // Odd maxLength. Note that we ellipsize with a Unicode join character to avoid wrapping.
-    XCTAssertEqual("abcd…\u{2060}fgh", "abcdefgh".ellipsize(maxLength: 7))
-
-    // Even maxLength.
-    XCTAssertEqual("abcd…\u{2060}ijkl", "abcdefghijkl".ellipsize(maxLength: 8))
-
-    // String shorter than maxLength.
-    XCTAssertEqual("abcd", "abcd".ellipsize(maxLength: 7))
-
-    // Empty String.
-    XCTAssertEqual("", "".ellipsize(maxLength: 8))
-
-    // maxLength < 2.
-    XCTAssertEqual("abcdefgh", "abcdefgh".ellipsize(maxLength: 0))
-  }
-
   func testStringByTrimmingLeadingCharactersInSet() {
     XCTAssertEqual("foo   ", "   foo   ".stringByTrimmingLeadingCharactersInSet(.whitespaces))
     XCTAssertEqual("foo456", "123foo456".stringByTrimmingLeadingCharactersInSet(.decimalDigits))
     XCTAssertEqual("", "123456".stringByTrimmingLeadingCharactersInSet(.decimalDigits))
-  }
-
-  func testStringSplitWithNewline() {
-    XCTAssertEqual("", "".stringSplitWithNewline())
-    XCTAssertEqual("foo", "foo".stringSplitWithNewline())
-    XCTAssertEqual("aaa\n bbb", "aaa bbb".stringSplitWithNewline())
-    XCTAssertEqual("Mark as\n Read", "Mark as Read".stringSplitWithNewline())
-    XCTAssertEqual("aa\n bbbbbb", "aa bbbbbb".stringSplitWithNewline())
   }
 
   func testPercentEscaping() {
