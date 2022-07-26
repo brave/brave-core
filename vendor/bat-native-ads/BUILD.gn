@@ -983,7 +983,6 @@ source_set("ads") {
     "src/bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.cc",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h",
-    "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info_aliases.h",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.cc",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.cc",

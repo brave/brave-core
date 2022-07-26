@@ -51,6 +51,10 @@ EmbeddingProcessing::EmbeddingProcessing() = default;
 
 EmbeddingProcessing::~EmbeddingProcessing() = default;
 
+void EmbeddingProcessing::SetIsInitialized(bool is_initialized) {
+  is_initialized_ = is_initialized;
+}
+
 void EmbeddingProcessing::SetEmbeddingPipeline(const PipelineEmbeddingInfo& info) {
   embedding_pipeline_.version = info.version;
   embedding_pipeline_.timestamp = info.timestamp;
@@ -65,9 +69,9 @@ bool EmbeddingProcessing::FromValue(base::Value resource_value) {
 
   if (pipeline_embedding.has_value()) {
     SetEmbeddingPipeline(pipeline_embedding.value());
-    is_initialized_ = true;
+    SetIsInitialized(true);
   } else {
-    is_initialized_ = false;
+    SetIsInitialized(false);
   }
 
   return is_initialized_;

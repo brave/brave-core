@@ -153,6 +153,58 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
               std::isnan(wrong_sd) && std::isnan(wrong_ds));
 }
 
+TEST_F(BatAdsVectorDataTest, AddElementWise) {
+  // Arrange
+  VectorData v1 = VectorData({0.3, 0.5, 0.8});
+  VectorData v1_b = VectorData({0.3, 0.5, 0.8});
+  VectorData v2 = VectorData({1.0, -0.6, 0.0});
+  VectorData v3 = VectorData({0.0, 0.0, 0.0});
+  VectorData v4 = VectorData({0.7, 0.2, -0.35});
+
+  std::vector<float> v12({1.3, -0.1, 0.8});
+  std::vector<float> v21({1.3, -0.1, 0.8});
+  std::vector<float> v34({0.7, 0.2, -0.35});
+
+  // Act
+  v1.VectorAddElementWise(v2);
+  v2.VectorAddElementWise(v1_b);
+  v3.VectorAddElementWise(v4);
+
+  // Assert
+  for (int i=0; i<3; i++) {
+    EXPECT_NEAR(v1.GetValuesForTesting()[i], v12[i], 0.001f);
+    EXPECT_NEAR(v2.GetValuesForTesting()[i], v21[i], 0.001f);
+    EXPECT_NEAR(v3.GetValuesForTesting()[i], v34[i], 0.001f);
+  }
+}
+
+TEST_F(BatAdsVectorDataTest, DivideByScalar) {
+  // Arrange
+  VectorData v1 = VectorData({0.4, 0.3, 0.8});
+  VectorData v2 = VectorData({1.9, -0.75, 0.0});
+  VectorData v3 = VectorData({0.0, 0.0, 0.0});
+  VectorData v4 = VectorData({0.8, 0.2, -0.35});
+
+  std::vector<float> v1d({8.0, 6.0, 16.0});
+  std::vector<float> v2d({1.9, -0.75, 0.0});
+  std::vector<float> v3d({0.0, 0.0, 0.0});
+  std::vector<float> v4d({-3.2, -0.8, 1.4});
+
+  // Act
+  v1.VectorDivideByScalar(0.05);
+  v2.VectorDivideByScalar(1.0);
+  v3.VectorDivideByScalar(2.3);
+  v4.VectorDivideByScalar(-0.25);
+
+  // Assert
+  for (int i=0; i<3; i++) {
+    EXPECT_NEAR(v1.GetValuesForTesting()[i], v1d[i], 0.001f);
+    EXPECT_NEAR(v2.GetValuesForTesting()[i], v2d[i], 0.001f);
+    EXPECT_NEAR(v3.GetValuesForTesting()[i], v3d[i], 0.001f);
+    EXPECT_NEAR(v4.GetValuesForTesting()[i], v4d[i], 0.001f);
+  }
+}
+
 TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {
   VectorData dense_data_vector_5({1, 3, 5, 5, 2});
   dense_data_vector_5.Normalize();

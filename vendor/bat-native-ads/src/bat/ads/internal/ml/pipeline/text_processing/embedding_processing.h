@@ -35,6 +35,8 @@ class EmbeddingProcessing final {
 
   bool IsInitialized() const;
 
+  void SetIsInitialized(bool is_initialized);
+
   void SetEmbeddingPipeline(const PipelineEmbeddingInfo& info);
 
   bool FromValue(base::Value resource_value);

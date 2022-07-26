@@ -10,9 +10,6 @@
 
 namespace ads {
 
-std::string FindFirstRegexMatch(const std::string& search_text,
-                                const std::string& rgx_str);
-
 std::string ParseTagAttribute(const std::string& html,
                               const std::string& tag_substr,
                               const std::string& tag_attribute);

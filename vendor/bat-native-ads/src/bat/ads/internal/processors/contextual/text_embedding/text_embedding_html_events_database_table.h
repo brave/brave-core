@@ -11,7 +11,7 @@
 
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/database/database_table_interface.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info_aliases.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
