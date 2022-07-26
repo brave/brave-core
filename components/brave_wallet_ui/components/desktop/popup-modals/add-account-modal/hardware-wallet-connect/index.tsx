@@ -12,6 +12,7 @@ import { getBalance } from '../../../../../common/async/lib'
 
 // components
 import HardwareWalletAccountsList from './accounts-list'
+import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
 import { NavButton } from '../../../../extension'
 
 // Styled Components
@@ -36,6 +37,7 @@ import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, Deriv
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 import { WalletPageActions } from '../../../../../page/actions'
 import { BraveWallet, CreateAccountOptionsType, WalletState } from '../../../../../constants/types'
+import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
 import { useLib } from '../../../../../common/hooks'
@@ -45,17 +47,26 @@ export interface Props {
   onSuccess: () => void
 }
 
-const getErrorMessage = (error: any, accountTypeName: string) => {
+const getErrorMessage = (error: undefined | string | LedgerError, accountTypeName: string) => {
+  if (typeof error === 'undefined') {
+    return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
+  }
+
+  if (typeof error === 'string') {
+    return { error: error, userHint: '' }
+  }
+
+  // error must be of type LedgerError
   if (error.statusCode && error.statusCode === 27404) { // Unknown Error
     return { error: getLocale('braveWalletConnectHardwareInfo2').replace('$1', accountTypeName), userHint: '' }
   }
 
-  if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) { // INCORRECT_LENGTH or INS_NOT_SUPPORTED
-    return { error: error.message, userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint') }
+  if (!error.message) {
+    return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
   }
 
-  if (!error || !error.message) {
-    return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
+  if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) { // INCORRECT_LENGTH or INS_NOT_SUPPORTED
+    return { error: error.message, userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint') }
   }
 
   return { error: error.message, userHint: '' }
@@ -81,6 +92,8 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   )
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
   const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
+  const [showAuthorizeDevice, setShowAuthorizeDevice] = React.useState<boolean>(false)
+  const hideAuthorizeDevice = () => setShowAuthorizeDevice(false)
 
   // methods
   const onFilecoinNetworkChanged = React.useCallback((network: FilecoinNetwork) => {
@@ -90,7 +103,8 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
       startIndex: 0,
       stopIndex: DerivationBatchSize,
       network: network,
-      coin: BraveWallet.CoinType.FIL
+      coin: BraveWallet.CoinType.FIL,
+      onAuthorized: hideAuthorizeDevice
     }).then((result) => {
       setAccounts(result)
     }).catch((error) => {
@@ -115,7 +129,8 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
       stopIndex: DerivationBatchSize,
       scheme: scheme,
       coin: selectedAccountType.coin,
-      network: filecoinNetwork
+      network: filecoinNetwork,
+      onAuthorized: hideAuthorizeDevice
     }).then((result) => {
       setAccounts(result)
     }).catch((error) => {
@@ -180,13 +195,19 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
       stopIndex: accounts.length + DerivationBatchSize,
       scheme: selectedDerivationScheme,
       coin: selectedAccountType.coin,
-      network: filecoinNetwork
+      network: filecoinNetwork,
+      onAuthorized: hideAuthorizeDevice
     }).then((result) => {
       setAccounts([...accounts, ...result])
       setShowAccountsList(true)
     }).catch((error) => {
-      setConnectionError(getErrorMessage(error, selectedAccountType.name))
-      setShowAccountsList(false)
+      if (error === 'unauthorized') {
+        setShowAuthorizeDevice(true)
+        setShowAccountsList(false)
+      } else {
+        setConnectionError(getErrorMessage(error, selectedAccountType.name))
+        setShowAccountsList(false)
+      }
     }).finally(
       () => setIsConnecting(false)
     )
@@ -200,6 +221,22 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   }, [savedAccounts])
 
   // render
+  if (showAuthorizeDevice) {
+    return (
+      <>
+        <HardwareInfoRow>
+          <InfoIcon />
+          <HardwareInfoColumn>
+            <DisclaimerText>
+              {getLocale('braveWalletConnectHardwareAuthorizationNeeded')}
+            </DisclaimerText>
+          </HardwareInfoColumn>
+        </HardwareInfoRow>
+        <AuthorizeHardwareDeviceIFrame/>
+      </>
+    )
+  }
+
   if (showAccountsList) {
     return (
       <HardwareWalletAccountsList

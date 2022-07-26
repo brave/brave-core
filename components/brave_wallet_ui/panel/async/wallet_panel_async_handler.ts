@@ -320,6 +320,11 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
     }
 
     if (code) {
+      if (code === 'unauthorized') {
+        await store.dispatch(PanelActions.setHardwareWalletInteractionError(code))
+        return
+      }
+
       const deviceError = dialogErrorFromLedgerErrorCode(code)
       if (deviceError === 'transactionRejected') {
         await store.dispatch(WalletActions.rejectTransaction(txInfo))
@@ -532,7 +537,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   const payload: SignMessageProcessedPayload =
     signed.success
       ? { approved: signed.success, id: messageData.id, signature: signature }
-      : { approved: signed.success, id: messageData.id, error: signed.error }
+      : { approved: signed.success, id: messageData.id, error: signed.error as (string | undefined) }
   store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
   await store.dispatch(PanelActions.navigateToMain())
   apiProxy.panelHandler.closeUI()
@@ -575,7 +580,13 @@ handler.on(PanelActions.signTransactionHardware.getType(), async (store, message
 
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
-  const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.rawMessage, messageData.coin)
+  const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.rawMessage, messageData.coin, () => {
+    store.dispatch(PanelActions.signTransaction([messageData]))
+  })
+  if (signed?.code === 'unauthorized') {
+    await store.dispatch(PanelActions.setHardwareWalletInteractionError(signed.code))
+    return
+  }
   let signature: BraveWallet.ByteArrayStringUnion | undefined
   if (signed.success) {
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
@@ -585,7 +596,7 @@ handler.on(PanelActions.signTransactionHardware.getType(), async (store, message
   const payload: SignMessageProcessedPayload =
     signed.success
       ? { approved: signed.success, id: messageData.id, signature: signature }
-      : { approved: signed.success, id: messageData.id, error: signed.error }
+      : { approved: signed.success, id: messageData.id, error: signed.error as (string | undefined) }
   store.dispatch(PanelActions.signTransactionProcessed(payload))
   await store.dispatch(PanelActions.navigateToMain())
   apiProxy.panelHandler.closeUI()
@@ -627,15 +638,20 @@ handler.on(PanelActions.signAllTransactionsHardware.getType(), async (store, mes
 
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
-
   // Send serialized requests to hardware keyring to sign.
   let payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.id, signatures: [] }
   for (const rawMessage of messageData.rawMessages) {
-    const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, rawMessage, messageData.coin)
+    const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, rawMessage, messageData.coin, () => {
+      store.dispatch(PanelActions.signAllTransactions([messageData]))
+    })
     if (!signed.success) {
+      if (signed.code && signed.code === 'unauthorized') {
+        await store.dispatch(PanelActions.setHardwareWalletInteractionError(signed.code))
+        return
+      }
       payload.approved = false
       payload.signatures = undefined
-      payload.error = signed.error
+      payload.error = signed.error as string
       break
     }
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not

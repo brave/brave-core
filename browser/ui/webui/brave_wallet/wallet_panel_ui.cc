@@ -58,9 +58,11 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                               base::make_span(kBraveWalletPanelGenerated,
                                               kBraveWalletPanelGeneratedSize),
                               IDR_WALLET_PANEL_HTML);
+  source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + ";");
+      std::string("frame-src ") + kUntrustedTrezorURL + " " +
+          kUntrustedLedgerURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   if (ShouldDisableCSPForTesting()) {
     source->DisableContentSecurityPolicy();

@@ -203,6 +203,7 @@ provideStrings({
   braveWalletConnectHardwareInfo2: 'Unlock your device and select the $1 app.',
   braveWalletConnectHardwareTrezor: 'Trezor',
   braveWalletConnectHardwareLedger: 'Ledger',
+  braveWalletConnectHardwareAuthorizationNeeded: 'Grant Brave access to your Ledger device.',
   braveWalletConnectingHardwareWallet: 'Connecting...',
   braveWalletAddCheckedAccountsHardwareWallet: 'Add checked accounts',
   braveWalletLoadMoreAccountsHardwareWallet: 'Load more',

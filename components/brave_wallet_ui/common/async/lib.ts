@@ -59,7 +59,7 @@ export const getERC20Allowance = (
 
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
-    const keyring = getHardwareKeyring(opts.hardware, opts.coin)
+    const keyring = getHardwareKeyring(opts.hardware, opts.coin, opts.onAuthorized)
     if ((keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) && opts.scheme) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
         .then((result: GetAccountsHardwareOperationResult) => {

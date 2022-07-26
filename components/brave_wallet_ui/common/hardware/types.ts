@@ -1,6 +1,7 @@
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
 import { BraveWallet } from '../../constants/types'
 import { SignedLotusMessage } from '@glif/filecoin-message'
+import { LedgerError } from './ledgerjs/ledger-messages'
 
 export const FilecoinNetworkTypes = [
   BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
@@ -12,6 +13,7 @@ export type HardwareWalletResponseCodeType =
   | 'deviceBusy'
   | 'openLedgerApp'
   | 'transactionRejected'
+  | 'unauthorized'
 
 export interface SignHardwareTransactionType {
   success: boolean
@@ -26,12 +28,16 @@ export interface SignatureVRS {
 
 export type HardwareOperationResult = {
   success: boolean
-  error?: string
+  error?: string | LedgerError
   code?: string | number
 }
 
 export type SignHardwareOperationResult = HardwareOperationResult & {
   payload?: EthereumSignedTx | SignedLotusMessage | Buffer | string
+}
+
+export type GetAccountOperationResult = HardwareOperationResult & {
+  payload?: Buffer
 }
 
 export interface TrezorBridgeAccountsPayload {
