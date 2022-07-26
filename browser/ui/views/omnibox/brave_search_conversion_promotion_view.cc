@@ -89,7 +89,8 @@ class HorizontalGradientBackground : public views::Background {
     //  - linear-gradient(90deg, from_color, 19.6%, to_color, 100%).
     cc::PaintFlags flags;
     SkPoint points[2] = {SkPoint::Make(0, 0), SkPoint::Make(view->width(), 0)};
-    SkColor colors[2] = {from_color, to_color};
+    SkColor4f colors[2] = {SkColor4f::FromColor(from_color),
+                           SkColor4f::FromColor(to_color)};
     SkScalar positions[2] = {0.196f, 1.f};
     flags.setShader(cc::PaintShader::MakeLinearGradient(
         points, colors, positions, 2, SkTileMode::kClamp));
