@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENT_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "url/gurl.h"

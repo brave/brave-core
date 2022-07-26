@@ -55,7 +55,8 @@ void EmbeddingProcessing::SetIsInitialized(bool is_initialized) {
   is_initialized_ = is_initialized;
 }
 
-void EmbeddingProcessing::SetEmbeddingPipeline(const PipelineEmbeddingInfo& info) {
+void EmbeddingProcessing::SetEmbeddingPipeline(
+    const PipelineEmbeddingInfo& info) {
   embedding_pipeline_.version = info.version;
   embedding_pipeline_.timestamp = info.timestamp;
   embedding_pipeline_.locale = info.locale;
@@ -78,7 +79,7 @@ bool EmbeddingProcessing::FromValue(base::Value resource_value) {
 }
 
 std::string EmbeddingProcessing::SanitizeText(const std::string& text,
-                                           bool is_html) {
+                                              bool is_html) {
   std::string cleaned_text = text;
   if (is_html) {
     cleaned_text = ParseTagAttribute(cleaned_text, "og:title", "content");

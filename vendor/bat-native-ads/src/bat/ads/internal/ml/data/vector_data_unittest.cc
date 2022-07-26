@@ -171,7 +171,7 @@ TEST_F(BatAdsVectorDataTest, AddElementWise) {
   v3.VectorAddElementWise(v4);
 
   // Assert
-  for (int i=0; i<3; i++) {
+  for (int i = 0; i < 3; i++) {
     EXPECT_NEAR(v1.GetValuesForTesting()[i], v12[i], 0.001f);
     EXPECT_NEAR(v2.GetValuesForTesting()[i], v21[i], 0.001f);
     EXPECT_NEAR(v3.GetValuesForTesting()[i], v34[i], 0.001f);
@@ -197,7 +197,7 @@ TEST_F(BatAdsVectorDataTest, DivideByScalar) {
   v4.VectorDivideByScalar(-0.25);
 
   // Assert
-  for (int i=0; i<3; i++) {
+  for (int i = 0; i < 3; i++) {
     EXPECT_NEAR(v1.GetValuesForTesting()[i], v1d[i], 0.001f);
     EXPECT_NEAR(v2.GetValuesForTesting()[i], v2d[i], 0.001f);
     EXPECT_NEAR(v3.GetValuesForTesting()[i], v3d[i], 0.001f);

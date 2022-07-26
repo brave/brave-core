@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
 #include <algorithm>
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -14,12 +15,12 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/strings/string_html_parse_util.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
@@ -44,18 +45,27 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, SanitizeTextHtml) {
   const std::map<std::string, std::string> samples = {
       {"<meta property=\"og:title\" content=\"test\">", "test"},
       {"<meta property=\"og:title\" content=\" testing   \">", "testing"},
-      {"<meta property=\"og:title\" content=\"test (string) - for 78 unittest 246\">", "test string for unittest"},
-      {"<meta property=\"og:title\" content=\"Test this,string - for UNiTTeST\">", "test this string for unittest"},
-      {"<meta property=\"og:title\" content=\"Test string, string,... for unittest\">", "test string string for unittest"},
-      {"<meta property=\"og:title\" content=\"Test string1, string2,... for unittest\">", "test for unittest"},
+      {"<meta property=\"og:title\" content=\"test (string) - for 78 unittest "
+       "246\">",
+       "test string for unittest"},
+      {"<meta property=\"og:title\" content=\"Test this,string - for "
+       "UNiTTeST\">",
+       "test this string for unittest"},
+      {"<meta property=\"og:title\" content=\"Test string, string,... for "
+       "unittest\">",
+       "test string string for unittest"},
+      {"<meta property=\"og:title\" content=\"Test string1, string2,... for "
+       "unittest\">",
+       "test for unittest"},
       {"<meta property=\"og:tt\" content=\" testing   \">", ""},
       {"<meta property=\"og:title\" cc=\" testing   \">", ""},
       {"<meta property=\"og:title\" content=\"test\"", ""},
       {"meta property=\"og:title\" content=\"test\">", ""}};
 
   for (auto const& sample : samples) {
-    std::string sanitized = embedding_processing.SanitizeText(sample.first, true); // Act
-    ASSERT_EQ(sanitized, sample.second);  // Assert
+    std::string sanitized =
+        embedding_processing.SanitizeText(sample.first, true);  // Act
+    ASSERT_EQ(sanitized, sample.second);                        // Assert
   }
 }
 
@@ -86,8 +96,10 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
       {"", VectorData({0.0, 0.0, 0.0})}};
 
   for (auto const& sample : samples) {
-    pipeline::TextEmbeddingData embedding_data = embedding_processing.EmbedText(sample.first); // Act
-    EXPECT_EQ(embedding_data.embedding.GetValuesForTesting(), sample.second.GetValuesForTesting());  // Assert
+    pipeline::TextEmbeddingData embedding_data =
+        embedding_processing.EmbedText(sample.first);  // Act
+    EXPECT_EQ(embedding_data.embedding.GetValuesForTesting(),
+              sample.second.GetValuesForTesting());  // Assert
   }
 }
 

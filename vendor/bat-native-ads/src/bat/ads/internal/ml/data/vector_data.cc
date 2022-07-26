@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "base/check_op.h"
-#include "base/strings/string_util.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 
 namespace ads {
 namespace ml {
@@ -226,7 +226,8 @@ const std::string VectorData::GetVectorAsString() const {
   int v_index = 0;
   int storage_size = storage_->GetSize();
   while (v_index < storage_size) {
-    vector_as_string.push_back(base::NumberToString(storage_->values()[v_index]));
+    vector_as_string.push_back(
+        base::NumberToString(storage_->values()[v_index]));
     ++v_index;
   }
   return base::JoinString(vector_as_string, " ");

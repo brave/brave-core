@@ -15,15 +15,14 @@ std::string ParseTagAttribute(const std::string& html,
   std::string trailing;
   std::string attribute_text;
 
-  re2::RE2::PartialMatch(
-    html, "(<[^>]*" + tag_substr + "[^<]*>)", &tag_text);
-  re2::RE2::PartialMatch(
-    tag_text, "(" + tag_attribute + "=.*>)", &trailing);
+  re2::RE2::PartialMatch(html, "(<[^>]*" + tag_substr + "[^<]*>)", &tag_text);
+  re2::RE2::PartialMatch(tag_text, "(" + tag_attribute + "=.*>)", &trailing);
 
   if (trailing.length() > tag_attribute.length() + 2) {
     const std::string delim = trailing.substr(tag_attribute.length() + 1, 1);
-    re2::RE2::PartialMatch(
-      trailing, "(" + delim + "[^" + delim + "]*" + delim + ")", &attribute_text);
+    re2::RE2::PartialMatch(trailing,
+                           "(" + delim + "[^" + delim + "]*" + delim + ")",
+                           &attribute_text);
     attribute_text = attribute_text.substr(1, attribute_text.length() - 2);
   }
   return attribute_text;
