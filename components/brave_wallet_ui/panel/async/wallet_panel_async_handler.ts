@@ -47,7 +47,7 @@ import {
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { isFromDifferentOrigin } from '../../utils/string-utils'
+import { isRemoteImageURL } from '../../utils/string-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 
 const handler = new AsyncActionHandler()
@@ -146,7 +146,7 @@ async function getPendingAddSuggestTokenRequest () {
     (await braveWalletService.getPendingAddSuggestTokenRequests()).requests
   if (requests && requests.length) {
     const logo = requests[0].token.logo
-    if (logo !== '' && !isFromDifferentOrigin(logo)) {
+    if (logo !== '' && !isRemoteImageURL(logo)) {
       requests[0].token.logo = `chrome://erc-token-images/${logo}`
     }
     return requests[0]

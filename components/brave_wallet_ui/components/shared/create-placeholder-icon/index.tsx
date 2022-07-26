@@ -5,7 +5,7 @@ import { background } from 'ethereum-blockies'
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, isFromDifferentOrigin, isValidIconExtension, httpifyIpfsUrl } from '../../../utils/string-utils'
+import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension, httpifyIpfsUrl } from '../../../utils/string-utils'
 
 // Styled components
 import { IconWrapper, PlaceholderText } from './style'
@@ -49,7 +49,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
     )
 
     const tokenImageURL = stripERC20TokenImageURL(asset.logo)
-    const isRemoteURL = isFromDifferentOrigin(tokenImageURL)
+    const isRemoteURL = isRemoteImageURL(tokenImageURL)
     const isDataURL = asset.logo.startsWith('chrome://erc-token-images/')
     const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
 

@@ -7,7 +7,7 @@ export const toProperCase = (value: string) =>
   value.replace(/\w\S*/g,
     (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
 
-export const isFromDifferentOrigin = (url?: string) =>
+export const isRemoteImageURL = (url?: string) =>
   url?.startsWith('http://') || url?.startsWith('https://') || url?.startsWith('data:image/') || url?.startsWith('ipfs://')
 
 export const isValidIconExtension = (url?: string) =>
