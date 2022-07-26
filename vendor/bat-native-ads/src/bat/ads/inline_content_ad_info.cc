@@ -48,6 +48,7 @@ bool InlineContentAdInfo::IsValid() const {
 base::Value::Dict InlineContentAdInfo::ToValue() const {
   base::Value::Dict dict;
 
+  dict.Set("type", static_cast<int>(type.value()));
   dict.Set("uuid", placement_id);
   dict.Set("creativeInstanceId", creative_instance_id);
   dict.Set("creativeSetId", creative_set_id);
@@ -73,19 +74,19 @@ bool InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
     placement_id = *value;
   }
 
-  if (const auto* value = root.FindString("creative_instance_id")) {
+  if (const auto* value = root.FindString("creativeInstanceId")) {
     creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString("creative_set_id")) {
+  if (const auto* value = root.FindString("creativeSetId")) {
     creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString("campaign_id")) {
+  if (const auto* value = root.FindString("campaignId")) {
     campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString("advertiser_id")) {
+  if (const auto* value = root.FindString("advertiserId")) {
     advertiser_id = *value;
   }
 
@@ -101,7 +102,7 @@ bool InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
     description = *value;
   }
 
-  if (const auto* value = root.FindString("image_url")) {
+  if (const auto* value = root.FindString("imageUrl")) {
     image_url = GURL(*value);
   }
 
@@ -109,11 +110,11 @@ bool InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
     dimensions = *value;
   }
 
-  if (const auto* value = root.FindString("cta_text")) {
+  if (const auto* value = root.FindString("ctaText")) {
     cta_text = *value;
   }
 
-  if (const auto* value = root.FindString("target_url")) {
+  if (const auto* value = root.FindString("targetUrl")) {
     target_url = GURL(*value);
   }
 
