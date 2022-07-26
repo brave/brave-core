@@ -1,18 +1,28 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
 
-<if expr="enable_brave_wayback_machine">
-  <settings-toggle-button class="cr-row"
-                          pref="{{prefs.brave.wayback_machine_enabled}}"
-                          label="$i18n{braveHelpTipsWaybackMachineLabel}">
-  </settings-toggle-button>
-</if>
-  <settings-toggle-button class="cr-row"
-                          pref="{{prefs.brave.enable_window_closing_confirm}}"
-                          label="$i18n{braveHelpTipsWarnBeforeClosingWindow}">
-  </settings-toggle-button>
-<if expr="is_macosx">
-  <settings-toggle-button class="cr-row"
-                          pref="{{prefs.browser.confirm_to_quit}}"
-                          label="$i18n{warnBeforeQuitting}">
-  </settings-toggle-button>
-</if>
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
+<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_vars_css.js"></script>
 
+<dom-module id="settings-brave-help-tips-page">
+  <template>
+  <if expr="enable_brave_wayback_machine">
+    <settings-toggle-button class="cr-row"
+                            pref="{{prefs.brave.wayback_machine_enabled}}"
+                            label="$i18n{braveHelpTipsWaybackMachineLabel}">
+    </settings-toggle-button>
+  </if>
+    <settings-toggle-button class="cr-row"
+                            pref="{{prefs.brave.enable_window_closing_confirm}}"
+                            label="$i18n{braveHelpTipsWarnBeforeClosingWindow}">
+    </settings-toggle-button>
+  <if expr="is_macosx">
+    <settings-toggle-button class="cr-row"
+                            pref="{{prefs.browser.confirm_to_quit}}"
+                            label="$i18n{warnBeforeQuitting}">
+    </settings-toggle-button>
+  </if>
+  </template>
+  <script src="brave_help_tips_page.js"></script>
+</dom-module>
