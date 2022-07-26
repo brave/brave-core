@@ -206,19 +206,34 @@ RegisterStyleOverride(
   `
 )
 
+RegisterStyleOverride('iron-icon', html`
+  <style>
+    :host svg {
+      fill: var(--iron-icon-fill-color);
+    }
+
+    :host .gradients {
+      width: 0px;
+      height: 0px;
+    }
+  </style>
+`)
+
 RegisterPolymerTemplateModifications({
-  'settings-menu': (templateContent) => {
+  'iron-icon': templateContent => {
     const svg = document.createElement('svg');
-    svg.innerHTML = `
-<defs>
-  <linearGradient id="selectedFill" x1="0" y1="0" x2="-0.5377411334031563" y2="0.8431100007984064">
-    <stop offset="0%" stop-color="#4C54D2" />
-    <stop offset="56.25%" stop-color="#BF14A2" />
-    <stop offset="100%" stop-color="#F73A1C" />
-  </linearGradient>
-</defs>
-`;
-    templateContent.appendChild(svg);
+    svg.setAttribute('class', 'gradients');
+    svg.innerHTML = `<defs>
+      <linearGradient id="grad" x2="1" y2="1">
+      <stop offset="0%" stop-color="#447799" />
+      <stop offset="50%" stop-color="#224488" />
+      <stop offset="100%" stop-color="#112266" />
+      </linearGradient>
+    </defs>`;
+
+    templateContent.prepend(svg);
+  },
+  'settings-menu': (templateContent) => {
 
     // Add title
     const titleEl = document.createElement('h1')
