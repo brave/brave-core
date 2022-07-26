@@ -12,8 +12,8 @@ brave_browser_brave_shields_sources = [
   "//brave/browser/brave_shields/brave_shields_web_contents_observer.h",
   "//brave/browser/brave_shields/https_everywhere_component_installer.cc",
   "//brave/browser/brave_shields/https_everywhere_component_installer.h",
-  "//brave/browser/brave_shields/reduce_language_navigation_throttle.cc",
-  "//brave/browser/brave_shields/reduce_language_navigation_throttle.h",
+  "//brave/browser/brave_shields/reduce_language_throttle.cc",
+  "//brave/browser/brave_shields/reduce_language_throttle.h",
 ]
 
 brave_browser_brave_shields_deps = [

@@ -17,7 +17,7 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/brave_shields/reduce_language_navigation_throttle.h"
+#include "brave/browser/brave_shields/reduce_language_throttle.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -724,6 +724,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     const content::WebContents::Getter& wc_getter,
     content::NavigationUIData* navigation_ui_data,
     int frame_tree_node_id) {
+  LOG(ERROR) << request.url;
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id);
@@ -767,6 +768,13 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               base::ThreadTaskRunnerHandle::Get(), request, wc_getter)) {
         result.push_back(std::move(de_amp_throttle));
       }
+    }
+
+    if (auto reduce_language_throttle =
+            brave_shields::ReduceLanguageThrottle::MaybeCreateThrottleFor(
+                wc_getter, HostContentSettingsMapFactory::GetForProfile(
+                               Profile::FromBrowserContext(browser_context)))) {
+      result.push_back(std::move(reduce_language_throttle));
     }
   }
 
@@ -1002,13 +1010,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                   Profile::FromBrowserContext(context)),
               g_browser_process->GetApplicationLocale()))
     throttles.push_back(std::move(domain_block_navigation_throttle));
-
-  if (std::unique_ptr<content::NavigationThrottle>
-          reduce_language_navigation_throttle = brave_shields::
-              ReduceLanguageNavigationThrottle::MaybeCreateThrottleFor(
-                  handle, HostContentSettingsMapFactory::GetForProfile(
-                              Profile::FromBrowserContext(context))))
-    throttles.push_back(std::move(reduce_language_navigation_throttle));
 
   // Debounce
   if (auto debounce_throttle =
