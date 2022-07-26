@@ -66,7 +66,6 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       std::string("frame-src ") + kUntrustedNftURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
-  source->AddString("braveWalletBridgeUrl", kBraveUIWalletURL);
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
   content::URLDataSource::Add(profile,

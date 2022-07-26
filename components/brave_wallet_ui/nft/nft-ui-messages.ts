@@ -6,10 +6,9 @@
 import { loadTimeData } from '../../common/loadTimeData'
 import { BraveWallet, NFTMetadataReturnType } from '../constants/types'
 
-const walletOrigin = loadTimeData.getString('braveWalletBridgeUrl')
 const nftDisplayOrigin = loadTimeData.getString('braveWalletNftBridgeUrl')
 // remove trailing /
-export const braveWalletOrigin = walletOrigin.endsWith('/') ? walletOrigin.slice(0, -1) : walletOrigin
+export const braveWalletOrigin = 'chrome://wallet'
 export const braveNftDisplayOrigin = nftDisplayOrigin.endsWith('/') ? nftDisplayOrigin.slice(0, -1) : nftDisplayOrigin
 
 export const enum NftUiCommand {
