@@ -17,18 +17,9 @@ export const StyledWrapper = styled.div`
   width: 100%;
 
   & > label {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
-
+    display: block;
     margin-bottom: 8px;
+    color: ${(p) => p.theme.color.text03};
   }
 `
 export const InputWrapper = styled.div`
@@ -40,23 +31,37 @@ export const InputWrapper = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
 `
-export const Input = styled.input<StyleProps>`
+export const Input = styled.input<{ hasError: boolean }>`
   box-sizing: border-box;
   width: 100%;
-  outline: none;
+
   background-image: none;
-  background-color: ${(p) => p.hasError ? p.theme.color.errorBackground : p.theme.color.background02};
   box-shadow: none;
-  border: ${(p) => p.hasError ? `4px solid ${p.theme.color.errorBorder}` : `1px solid ${p.theme.color.interactive08}`};
+  
+  background-color: ${(p) => p.hasError
+    ? p.theme.color.errorBackground
+    : p.theme.color.background02
+  };
+
+  border: ${(p) => p.hasError
+    ? `4px solid ${p.theme.color.errorBorder}`
+    : `1px solid ${p.theme.color.interactive08}`
+  };
+
+  padding: ${(p) => p.hasError
+    ? 7
+    : 10
+  }px;
+  
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  padding: 10px 10px 10px 10px;
   margin: 0px;
   color: ${(p) => p.theme.color.text01};
+
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
@@ -65,16 +70,19 @@ export const Input = styled.input<StyleProps>`
     color: ${(p) => p.theme.color.text03};
     font-weight: normal;
   }
+
   :focus {
-      outline: none;
+    outline: none;
   }
+
   ::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
+  
   ::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
 `
 
@@ -128,5 +136,5 @@ export const ToggleVisibilityIcon = styled.div<Partial<StyleProps>>`
   background-color: ${(p) => p.theme.color.text02};
   -webkit-mask-image: url(${(p) => p.showPassword ? EyeOffIcon : EyeOnIcon});
   mask-image: url(${(p) => p.showPassword ? EyeOffIcon : EyeOnIcon});
-  mask-size: cover;
+  mask-size: contain;
 `
