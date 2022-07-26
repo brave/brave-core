@@ -20,6 +20,9 @@ public class BraveClassAdapter {
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveCustomizationProviderDelegateImplClassAdapter(chain);
+        chain = new BraveDropdownItemViewInfoListManagerClassAdapter(chain);
+        chain = new BraveDropdownItemViewInfoListBuilderClassAdapter(chain);
+        chain = new BraveAutocompleteCoordinatorClassAdapter(chain);
         chain = new BraveDefaultBrowserPromoUtilsClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);

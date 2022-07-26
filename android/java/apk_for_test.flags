@@ -457,6 +457,24 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
+    *** mDropdownHeight;
+    *** mPriorityOrderedSuggestionProcessors;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListManager {
+    public <init>(...);
+    *** removeSuggestionsForGroup(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListManager {
+    public <init>(...);
+}
 -keep class org.chromium.chrome.browser.ui.default_browser_promo.BraveDefaultBrowserPromoUtils {
     *** prepareLaunchPromoIfNeeded(...);
 }

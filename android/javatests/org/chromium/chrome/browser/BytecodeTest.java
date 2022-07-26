@@ -245,6 +245,10 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));
     }
 
     @Test
@@ -373,6 +377,12 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "updateTilePlaceholderVisibility", true, void.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                "createViewProvider", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator",
+                "createViewProvider", false, null));
     }
 
     @Test
@@ -572,6 +582,23 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
                 "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator",
+                ViewGroup.class, AutocompleteDelegate.class,
+                OmniboxSuggestionsDropdownEmbedder.class, UrlBarEditingTextStateProvider.class,
+                Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
+                ObservableSupplier.class, Callback.class, Supplier.class, BookmarkState.class,
+                JankTracker.class, ExploreIconProvider.class, OmniboxPedalDelegate.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
+                Supplier.class, BookmarkState.class, ExploreIconProvider.class,
+                OmniboxPedalDelegate.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
+                ModelList.class, Context.class));
     }
 
     @Test
@@ -724,10 +751,22 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mNativeInitialized", true, boolean.class));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                        "mDropdownViewInfoListManager"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                "mDropdown"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "mDropdownHeight"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "mPriorityOrderedSuggestionProcessors"));
     }
 
     @Test
