@@ -1161,7 +1161,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
                                captchaId:(const std::string&)captcha_id {
-  // Adaptive captcha not supported on iOS
+  [self.captchaHandler
+      handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
+                              captchaId:base::SysUTF8ToNSString(captcha_id)];
 }
 
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
