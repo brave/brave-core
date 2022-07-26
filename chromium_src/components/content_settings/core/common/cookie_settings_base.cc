@@ -25,6 +25,8 @@ namespace {
 
 constexpr char kWp[] = "https://[*.]wp.com/*";
 constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
+constexpr char kOrigin[] = "https://[*.]origin.com/*";
+constexpr char kEA[] = "https://[*.]ea.com/*";
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
@@ -35,7 +37,9 @@ bool BraveIsAllowedThirdParty(const GURL& url,
       entity_list({{ContentSettingsPattern::FromString(kWp),
                     ContentSettingsPattern::FromString(kWordpress)},
                    {ContentSettingsPattern::FromString(kWordpress),
-                    ContentSettingsPattern::FromString(kWp)}});
+                    ContentSettingsPattern::FromString(kWp)},
+                   {ContentSettingsPattern::FromString(kEA),
+                    ContentSettingsPattern::FromString(kOrigin)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
