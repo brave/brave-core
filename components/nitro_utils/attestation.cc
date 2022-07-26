@@ -87,12 +87,15 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
                << "or is not 32 bytes";
     return false;
   }
-  if (memcmp(net::X509Certificate::CalculateFingerprint256(
-                 server_cert->cert_buffer())
-                 .data,
-             user_data_it->second.GetBytestring().data(), 32) != 0) {
+  net::SHA256HashValue server_cert_fp =
+      net::X509Certificate::CalculateFingerprint256(server_cert->cert_buffer());
+  if (memcmp(server_cert_fp.data, user_data_it->second.GetBytestring().data(),
+             32) != 0) {
     LOG(ERROR)
-        << "Nitro verification: server cert fp does not match user data fp";
+        << "Nitro verification: server cert fp does not match user data fp, "
+        << "user data = "
+        << base::HexEncode(user_data_it->second.GetBytestring())
+        << ", server cert fp = " << base::HexEncode(server_cert_fp.data);
     return false;
   }
   return true;

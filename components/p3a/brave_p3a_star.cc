@@ -34,12 +34,14 @@ BraveP3AStar::BraveP3AStar(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     StarMessageCallback message_callback,
-    BraveP3AStarRandomness::RandomnessServerInfoCallback info_callback,
+    BraveP3AStarRandomnessMeta::RandomnessServerInfoCallback info_callback,
     BraveP3AConfig* config)
-    : randomness_manager_(
-          local_state,
+    : rand_meta_manager_(local_state,
+                         url_loader_factory,
+                         info_callback,
+                         config),
+      rand_points_manager_(
           url_loader_factory,
-          info_callback,
           base::BindRepeating(&BraveP3AStar::HandleRandomnessData,
                               base::Unretained(this)),
           config),
@@ -51,16 +53,16 @@ BraveP3AStar::BraveP3AStar(
 BraveP3AStar::~BraveP3AStar() {}
 
 void BraveP3AStar::RegisterPrefs(PrefRegistrySimple* registry) {
-  BraveP3AStarRandomness::RegisterPrefs(registry);
+  BraveP3AStarRandomnessMeta::RegisterPrefs(registry);
 }
 
 void BraveP3AStar::UpdateRandomnessServerInfo() {
-  randomness_manager_.RequestServerInfo();
+  rand_meta_manager_.RequestServerInfo();
 }
 
 bool BraveP3AStar::StartMessagePreparation(std::string histogram_name,
                                            std::string serialized_log) {
-  auto* rnd_server_info = randomness_manager_.GetCachedRandomnessServerInfo();
+  auto* rnd_server_info = rand_meta_manager_.GetCachedRandomnessServerInfo();
   if (rnd_server_info == nullptr) {
     LOG(ERROR) << "BraveP3AStar: measurement preparation failed due to "
                   "unavailable server info";
@@ -82,9 +84,9 @@ bool BraveP3AStar::StartMessagePreparation(std::string histogram_name,
 
   auto req = nested_star::construct_randomness_request(*prepare_res.state);
 
-  randomness_manager_.SendRandomnessRequest(histogram_name,
-                                            rnd_server_info->current_epoch,
-                                            std::move(prepare_res.state), req);
+  rand_points_manager_.SendRandomnessRequest(
+      histogram_name, &rand_meta_manager_, rnd_server_info->current_epoch,
+      std::move(prepare_res.state), req);
 
   return true;
 }
@@ -123,7 +125,7 @@ bool BraveP3AStar::ConstructFinalMessage(
     const rust::Vec<nested_star::VecU8>& resp_points,
     const rust::Vec<nested_star::VecU8>& resp_proofs,
     std::string* output) {
-  auto* rnd_server_info = randomness_manager_.GetCachedRandomnessServerInfo();
+  auto* rnd_server_info = rand_meta_manager_.GetCachedRandomnessServerInfo();
   DCHECK(rnd_server_info);
   auto msg_res = nested_star::construct_message(
       resp_points, resp_proofs, *randomness_request_state,
