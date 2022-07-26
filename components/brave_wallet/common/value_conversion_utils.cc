@@ -11,6 +11,20 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "net/base/url_util.h"
+
+namespace {
+
+// Allow only HTTPS or localhost HTTP URLs in params of AddEthereumChain dApp
+// requests.
+bool IsValidURL(const std::string& url_string) {
+  GURL url(url_string);
+  return url.is_valid() &&
+         (url.SchemeIs(url::kHttpsScheme) ||
+          (net::IsLocalhost(url) && url.SchemeIs(url::kHttpScheme)));
+}
+
+}  // namespace
 
 namespace brave_wallet {
 
@@ -26,7 +40,8 @@ absl::optional<std::string> ExtractChainIdFromValue(
   return *chain_id;
 }
 
-mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
+mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
+                                            bool check_url) {
   mojom::NetworkInfo chain;
   const base::Value::Dict* params_dict = value.GetIfDict();
   if (!params_dict)
@@ -46,20 +61,26 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
-    for (const auto& entry : *explorerUrlsListValue)
-      chain.block_explorer_urls.push_back(entry.GetString());
+    for (const auto& entry : *explorerUrlsListValue) {
+      if (!check_url || IsValidURL(entry.GetString()))
+        chain.block_explorer_urls.push_back(entry.GetString());
+    }
   }
 
   const auto* iconUrlsValue = params_dict->FindList("iconUrls");
   if (iconUrlsValue) {
-    for (const auto& entry : *iconUrlsValue)
-      chain.icon_urls.push_back(entry.GetString());
+    for (const auto& entry : *iconUrlsValue) {
+      if (!check_url || IsValidURL(entry.GetString()))
+        chain.icon_urls.push_back(entry.GetString());
+    }
   }
 
   const auto* rpcUrlsValue = params_dict->FindList("rpcUrls");
   if (rpcUrlsValue) {
-    for (const auto& entry : *rpcUrlsValue)
-      chain.rpc_urls.push_back(entry.GetString());
+    for (const auto& entry : *rpcUrlsValue) {
+      if (!check_url || IsValidURL(entry.GetString()))
+        chain.rpc_urls.push_back(entry.GetString());
+    }
   }
   const auto* nativeCurrencyValue = params_dict->FindDict("nativeCurrency");
   chain.decimals = 0;
