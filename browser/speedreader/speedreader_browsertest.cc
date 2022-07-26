@@ -388,7 +388,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
         document.documentElement.getAttribute('data-theme')
       )js";
 
-  EXPECT_EQ(speedreader::Theme::kDefault, speedreader_service()->GetTheme());
+  EXPECT_EQ(speedreader::Theme::kNone, speedreader_service()->GetTheme());
 
   EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kGetTheme,
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,

@@ -86,7 +86,7 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);
   registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);
   registry->RegisterIntegerPref(kSpeedreaderPrefTheme,
-                                static_cast<int>(Theme::kDefault));
+                                static_cast<int>(Theme::kNone));
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
@@ -139,7 +139,8 @@ Theme SpeedreaderService::GetTheme() const {
 
 std::string SpeedreaderService::GetThemeName() const {
   switch (GetTheme()) {
-    case Theme::kDefault:
+    default:
+    case Theme::kNone:
       return {};
     case Theme::kLight:
       return "light";
@@ -148,8 +149,6 @@ std::string SpeedreaderService::GetThemeName() const {
     case Theme::kDark:
       return "dark";
   }
-  NOTREACHED();
-  return {};
 }
 
 }  // namespace speedreader

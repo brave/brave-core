@@ -90,7 +90,6 @@ class SpeedreaderTabHelper
 
   void SetTheme(Theme theme);
   Theme GetTheme();
-  std::string GetThemeName();
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;

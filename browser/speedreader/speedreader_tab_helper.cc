@@ -291,7 +291,7 @@ void SpeedreaderTabHelper::SetTheme(Theme theme) {
 Theme SpeedreaderTabHelper::GetTheme() {
   const Theme theme =
       SpeedreaderServiceFactory::GetForProfile(GetProfile())->GetTheme();
-  if (theme == Theme::kDefault) {
+  if (theme == Theme::kNone) {
     switch (dark_mode::GetActiveBraveDarkModeType()) {
       case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK:
         return Theme::kDark;

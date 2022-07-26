@@ -13,7 +13,7 @@ namespace speedreader {
 
 // Enum is used in prefs. Be careful when changing or extending.
 enum class Theme {
-  kDefault = 0,  // Use browser's theme
+  kNone = 0,  // User doesn't select anything.
   kLight = 1,
   kSepia = 2,
   kDark = 3,
