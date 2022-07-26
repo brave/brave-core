@@ -58,7 +58,8 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   untrusted_source->AddResourcePath("load_time_data.js",
                                     IDR_WEBUI_JS_LOAD_TIME_DATA_JS);
   untrusted_source->UseStringsJs();
-  untrusted_source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
+  untrusted_source->AddString("braveWalletTrezorBridgeUrl",
+                              kUntrustedTrezorURL);
   untrusted_source->AddString("braveWalletMarketUiBridgeUrl",
                               kUntrustedMarketURL);
   untrusted_source->AddString("braveWalletBridgeUrl", kBraveUIWalletURL);
