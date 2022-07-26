@@ -75,7 +75,10 @@ base::Value::Dict AdContentInfo::ToValue() const {
 }
 
 bool AdContentInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindString("type")) {
+  if (const auto* value = root.FindString("adType")) {
+    type = AdType(*value);
+  } else if (const auto* value = root.FindString("type")) {
+    // Migrate legacy
     type = AdType(*value);
   } else {
     type = AdType::kNotificationAd;
@@ -85,19 +88,31 @@ bool AdContentInfo::FromValue(const base::Value::Dict& root) {
     placement_id = *value;
   }
 
-  if (const auto* value = root.FindString("creative_instance_id")) {
+  if (const auto* value = root.FindString("creativeInstanceId")) {
+    creative_instance_id = *value;
+  } else if (const auto* value = root.FindString("creative_instance_id")) {
+    // Migrate legacy
     creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString("creative_set_id")) {
+  if (const auto* value = root.FindString("creativeSetId")) {
+    creative_set_id = *value;
+  } else if (const auto* value = root.FindString("creative_set_id")) {
+    // Migrate legacy
     creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString("campaign_id")) {
+  if (const auto* value = root.FindString("campaignId")) {
+    campaign_id = *value;
+  } else if (const auto* value = root.FindString("campaign_id")) {
+    // Migrate legacy
     campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString("advertiser_id")) {
+  if (const auto* value = root.FindString("advertiserId")) {
+    advertiser_id = *value;
+  } else if (const auto* value = root.FindString("advertiser_id")) {
+    // Migrate legacy
     advertiser_id = *value;
   }
 
@@ -105,31 +120,52 @@ bool AdContentInfo::FromValue(const base::Value::Dict& root) {
     brand = *value;
   }
 
-  if (const auto* value = root.FindString("brand_info")) {
+  if (const auto* value = root.FindString("brandInfo")) {
+    brand_info = *value;
+  } else if (const auto* value = root.FindString("brand_info")) {
+    // Migrate legacy
     brand_info = *value;
   }
 
-  if (const auto* value = root.FindString("brand_display_url")) {
+  if (const auto* value = root.FindString("brandDisplayUrl")) {
+    brand_display_url = *value;
+  } else if (const auto* value = root.FindString("brand_display_url")) {
+    // Migrate legacy
     brand_display_url = *value;
   }
 
-  if (const auto* value = root.FindString("brand_url")) {
+  if (const auto* value = root.FindString("brandUrl")) {
+    brand_url = GURL(*value);
+  } else if (const auto* value = root.FindString("brand_url")) {
+    // Migrate legacy
     brand_url = GURL(*value);
   }
 
-  if (const auto value = root.FindInt("like_action")) {
+  if (const auto value = root.FindInt("likeAction")) {
+    like_action_type = static_cast<AdContentLikeActionType>(*value);
+  } else if (const auto value = root.FindInt("like_action")) {
+    // Migrate legacy
     like_action_type = static_cast<AdContentLikeActionType>(*value);
   }
 
-  if (const auto* value = root.FindString("ad_action")) {
+  if (const auto* value = root.FindString("adAction")) {
+    confirmation_type = ConfirmationType(*value);
+  } else if (const auto* value = root.FindString("ad_action")) {
+    // Migrate legacy
     confirmation_type = ConfirmationType(*value);
   }
 
-  if (const auto value = root.FindBool("saved_ad")) {
+  if (const auto value = root.FindBool("savedAd")) {
+    is_saved = *value;
+  } else if (const auto value = root.FindBool("saved_ad")) {
+    // Migrate legacy
     is_saved = *value;
   }
 
-  if (const auto value = root.FindBool("flagged_ad")) {
+  if (const auto value = root.FindBool("flaggedAd")) {
+    is_flagged = *value;
+  } else if (const auto value = root.FindBool("flagged_ad")) {
+    // Migrate legacy
     is_flagged = *value;
   }
 
