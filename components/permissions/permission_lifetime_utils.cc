@@ -91,11 +91,11 @@ bool ShouldShowLifetimeOptions(PermissionPrompt::Delegate* delegate) {
 }
 
 void SetRequestsLifetime(const std::vector<PermissionLifetimeOption>& options,
-                         int index,
+                         size_t index,
                          PermissionPrompt::Delegate* delegate) {
   DCHECK(base::FeatureList::IsEnabled(features::kPermissionLifetime));
   DCHECK(!options.empty());
-  DCHECK(index >= 0 && static_cast<size_t>(index) < options.size());
+  DCHECK(index < options.size());
   const auto& lifetime = options[index].lifetime;
   DLOG(INFO) << "Set permission lifetime "
              << (lifetime ? lifetime->InSeconds() : -1);

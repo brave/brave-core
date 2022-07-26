@@ -186,15 +186,16 @@ class PermissionLifetimeCombobox : public views::Combobox,
       delete;
 
   // ui::ComboboxModel:
-  int GetItemCount() const override { return lifetime_options_.size(); }
+  size_t GetItemCount() const override { return lifetime_options_.size(); }
 
-  std::u16string GetItemAt(int index) const override {
+  std::u16string GetItemAt(size_t index) const override {
     return lifetime_options_[index].label;
   }
 
  private:
   void OnItemSelected() {
-    SetRequestsLifetime(lifetime_options_, GetSelectedIndex(), delegate_);
+    SetRequestsLifetime(lifetime_options_, GetSelectedIndex().value(),
+                        delegate_);
   }
 
   permissions::PermissionPrompt::Delegate* const delegate_;
