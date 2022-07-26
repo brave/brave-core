@@ -62,7 +62,7 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
                               kUntrustedTrezorURL);
   untrusted_source->AddString("braveWalletMarketUiBridgeUrl",
                               kUntrustedMarketURL);
-  untrusted_source->AddString("braveWalletBridgeUrl", kBraveUIWalletURL);
+
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
   content::WebUIDataSource::Add(browser_context, untrusted_source);
 }

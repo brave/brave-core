@@ -56,13 +56,8 @@ export const MarketView = () => {
     if (event.origin !== braveMarketUiOrigin) return
 
     const message = event.data
-    switch (message.command) {
-      case MarketUiCommand.SelectCoinMarket: {
-        const { payload } = message as SelectCoinMarketMessage
-        onSelectCoinMarket(payload)
-        break
-      }
-    }
+    const { payload } = message as SelectCoinMarketMessage
+    onSelectCoinMarket(payload)
   }, [])
 
   React.useEffect(() => {

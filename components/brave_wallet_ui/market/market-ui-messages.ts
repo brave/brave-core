@@ -10,12 +10,11 @@
 import { loadTimeData } from '../../common/loadTimeData'
 import { BraveWallet } from '../constants/types'
 
-const walletOrigin = loadTimeData.getString('braveWalletBridgeUrl')
 const marketUiOrigin = loadTimeData.getString('braveWalletMarketUiBridgeUrl')
 
 // remove trailing /
-export const braveWalletOrigin = walletOrigin.endsWith('/') ? walletOrigin.slice(0, -1) : walletOrigin
 export const braveMarketUiOrigin = marketUiOrigin.endsWith('/') ? marketUiOrigin.slice(0, -1) : marketUiOrigin
+export const braveWalletOrigin = 'chrome://wallet'
 
 export const enum MarketUiCommand {
   UpdateCoinMarkets = 'update-coin-markets',
