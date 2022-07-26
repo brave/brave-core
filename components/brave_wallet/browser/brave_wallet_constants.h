@@ -721,6 +721,7 @@ constexpr char kSolanaPrefKey[] = "solana";
 const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
+const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 
 }  // namespace brave_wallet

@@ -120,6 +120,8 @@ void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
     buy_tokens = &GetWyreBuyTokens();
   else if (provider == mojom::OnRampProvider::kRamp)
     buy_tokens = &GetRampBuyTokens();
+  else if (provider == mojom::OnRampProvider::kSardine)
+    buy_tokens = &GetSardineBuyTokens();
 
   if (buy_tokens == nullptr) {
     std::move(callback).Run(std::move(blockchain_buy_tokens));
