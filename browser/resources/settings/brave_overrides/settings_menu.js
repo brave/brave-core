@@ -126,10 +126,6 @@ RegisterStyleOverride(
         height: 24px;
       }
 
-      a[href].iron-selected iron-icon:host svg {
-        fill: pink !important;
-      }
-
       a[href].iron-selected::before {
         content: "";
         position: absolute;
@@ -145,10 +141,6 @@ RegisterStyleOverride(
       @media (prefers-color-scheme: dark) {
         a[href].iron-selected {
           color: #FB5930;
-        }
-
-        a[href].iron-selected iron-icon {
-          color: transparent;
         }
 
         a:hover, iron-icon:hover {
@@ -207,7 +199,7 @@ RegisterStyleOverride(
   `
 )
 
--RegisterStyleOverride('iron-icon', html`
+RegisterStyleOverride('iron-icon', html`
  <style>
     :host svg {
       fill: url(#selectedGradient);
