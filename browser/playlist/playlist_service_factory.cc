@@ -32,6 +32,7 @@ PlaylistServiceFactory* PlaylistServiceFactory::GetInstance() {
 // static
 PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
+  DCHECK(context);
   if (IsPlaylistEnabled(context)) {
     GetInstance()->PrepareMediaDetectorComponentManager();
 

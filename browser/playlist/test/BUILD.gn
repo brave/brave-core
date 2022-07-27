@@ -19,10 +19,16 @@ source_set("browser_tests") {
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
-    "//chrome/test:test_support_ui",
+    "//chrome/test:test_support",
     "//components/network_session_configurator/common",
     "//content/test:test_support",
     "//net",
     "//net:test_support",
   ]
+
+  if (is_android) {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
 }

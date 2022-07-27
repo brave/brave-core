@@ -19,14 +19,19 @@
 #include "brave/components/playlist/playlist_service_observer.h"
 #include "brave/components/playlist/playlist_types.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
 
 namespace playlist {
 
@@ -51,7 +56,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 }  // namespace
 
-class PlaylistBrowserTest : public InProcessBrowserTest,
+class PlaylistBrowserTest : public PlatformBrowserTest,
                             public PlaylistServiceObserver {
  public:
   PlaylistBrowserTest() : weak_factory_(this) {
@@ -59,9 +64,9 @@ class PlaylistBrowserTest : public InProcessBrowserTest,
   }
   ~PlaylistBrowserTest() override {}
 
-  // InProcessBrowserTest overrides:
+  // PlatformBrowserTest overrides:
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
@@ -80,22 +85,22 @@ class PlaylistBrowserTest : public InProcessBrowserTest,
 
   void TearDownOnMainThread() override {
     GetPlaylistService()->RemoveObserver(this);
-    InProcessBrowserTest::TearDownOnMainThread();
+    PlatformBrowserTest::TearDownOnMainThread();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   // PlaylistServiceObserver overrides:
@@ -124,7 +129,7 @@ class PlaylistBrowserTest : public InProcessBrowserTest,
 
   PlaylistService* GetPlaylistService() {
     return PlaylistServiceFactory::GetInstance()->GetForBrowserContext(
-        browser()->profile());
+        chrome_test_utils::GetProfile(this));
   }
 
   void ResetStatus() {
