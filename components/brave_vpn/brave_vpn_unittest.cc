@@ -525,21 +525,6 @@ TEST(BraveVPNFeatureTest, FeatureTest) {
 #endif
 }
 
-TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
-  // Give invalid json data as a server response and check sanitized(empty
-  // string) result is returned.
-  SetInterceptorResponse("{'a':'b',}");
-  base::RunLoop loop;
-  service_->GetAllServerRegions(base::BindOnce(
-      [](base::OnceClosure callback, const std::string& region_list,
-         bool success) {
-        EXPECT_TRUE(region_list.empty());
-        std::move(callback).Run();
-      },
-      loop.QuitClosure()));
-  loop.Run();
-}
-
 #if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveVPNServiceTest, RegionDataTest) {
   // Test invalid region data.

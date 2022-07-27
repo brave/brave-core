@@ -75,7 +75,7 @@ class VpnReceiptBrowserTest : public PlatformBrowserTest {
   std::unique_ptr<content::URLLoaderInterceptor> url_loader_interceptor_;
 };
 
-IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, Receipt) {
+IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, DISABLED_Receipt) {
   std::string test_token = "test";
   profile()->GetPrefs()->SetString(prefs::kBraveVPNPurchaseTokenAndroid,
                                    test_token);
@@ -98,7 +98,7 @@ IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, Receipt) {
   })"));
 }
 
-IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, Redirect) {
+IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, DISABLED_Redirect) {
   std::string test_token = "test";
   profile()->GetPrefs()->SetString(prefs::kBraveVPNPurchaseTokenAndroid,
                                    test_token);

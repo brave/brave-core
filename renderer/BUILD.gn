@@ -24,7 +24,6 @@ source_set("renderer") {
     "//v8",
   ]
 
-
   if (enable_brave_vpn && is_android) {
     deps += [ "//brave/components/brave_vpn/renderer/android" ]
   }

@@ -823,7 +823,6 @@ if (!is_android) {
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/common",
       "//brave/components/tor",
-      "//brave/renderer/brave_vpn:browser_tests",
       "//brave/renderer/skus:browser_tests",
       "//brave/renderer/test:browser_tests",
       "//brave/third_party/blink/renderer:renderer",
@@ -1185,7 +1184,6 @@ if (!is_android) {
       "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
       "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
     ]
-
     if (enable_brave_vpn) {
       deps += [ "//brave/components/brave_vpn" ]
     }

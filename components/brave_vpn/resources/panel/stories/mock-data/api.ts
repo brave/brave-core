@@ -39,6 +39,14 @@ BraveVPN.setPanelBrowserApiForTesting({
       success: true,
       response: 'OK'
     }),
-    resetConnectionState: doNothing
+    resetConnectionState: doNothing,
+    getPurchaseToken: () => Promise.resolve({
+      token: btoa(JSON.stringify({
+        type: 'android',
+        raw_receipt: 'test',
+        package: 'com.brave.browser',
+        subscription_id: 'brave-firewall-vpn-premium'
+      }))
+    })
   }
 })

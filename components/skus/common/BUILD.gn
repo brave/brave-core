@@ -9,13 +9,16 @@ static_library("common") {
   sources = [
     "features.cc",
     "features.h",
-    "skus_utils.cc",
-    "skus_utils.h",
   ]
-  deps = [
-    "//base",
-    "//third_party/blink/public:blink",
-  ]
+  deps = [ "//base" ]
+
+  if (!is_ios) {
+    sources += [
+      "skus_utils.cc",
+      "skus_utils.h",
+    ]
+    deps += [ "//third_party/blink/public:blink" ]
+  }
 }
 
 mojom("mojom") {
@@ -24,16 +27,18 @@ mojom("mojom") {
   deps = [ "//mojo/public/mojom/base" ]
 }
 
-source_set("unit_tests") {
-  testonly = true
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
 
-  sources = [ "skus_utils_unittest.cc" ]
+    sources = [ "skus_utils_unittest.cc" ]
 
-  deps = [
-    "//base",
-    "//brave/components/skus/common",
-    "//services/network:test_support",
-    "//testing/gtest",
-    "//third_party/blink/public:blink",
-  ]
+    deps = [
+      "//base",
+      "//brave/components/skus/common",
+      "//services/network:test_support",
+      "//testing/gtest",
+      "//third_party/blink/public:blink",
+    ]
+  }
 }
