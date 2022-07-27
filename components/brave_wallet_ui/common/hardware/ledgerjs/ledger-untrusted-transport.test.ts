@@ -20,7 +20,3 @@ test('constructor', async () => {
   )
   expect(untrustedTransport.handlers.size).toEqual(3)
 })
-
-// test('handleUnlock', async () => { })
-// test('handleGetAccount', async () => { })
-// test('handleSignTransaction', async () => { })

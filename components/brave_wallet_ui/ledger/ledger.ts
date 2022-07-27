@@ -4,10 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { LedgerCommand, LEDGER_BRIDGE_URL } from '../common/hardware/ledgerjs/ledger-messages'
-import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
+import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 
 const setUpAuthorizeButtonListner = (targetUrl: string) => {
-  const untrustedMessagingTransport = new LedgerUntrustedMessagingTransport(window.parent, targetUrl)
+  const untrustedMessagingTransport = new SolanaLedgerUntrustedMessagingTransport(window.parent, targetUrl)
   window.addEventListener('DOMContentLoaded', (event) => {
     const authorizeBtn = document.getElementById('authorize')
     if (authorizeBtn) {
