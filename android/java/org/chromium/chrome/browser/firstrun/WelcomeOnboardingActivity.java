@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.lang.Math;
+import java.util.Locale;
 
 public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
@@ -149,7 +150,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void nextOnboardingStep() {
         mCurrentStep++;
-
         if (mCurrentStep == 0) {
             int margin = mIsTablet ? 100 : 0;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
@@ -180,6 +180,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mTvWelcome.setVisibility(View.GONE);
             mLayoutCard.setVisibility(View.VISIBLE);
             mIvArrowDown.setVisibility(View.VISIBLE);
+
+            String countryCode = Locale.getDefault().getCountry();
+            if (countryCode.equals("IN")) {
+                mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
+                mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
+            }
 
         } else if (mCurrentStep == 2) {
             int margin = mIsTablet ? 250 : 60;
