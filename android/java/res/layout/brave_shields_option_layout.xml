@@ -86,8 +86,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:textColor="@color/shield_text_color"
-            android:checked="true"/>
+            android:textColor="@color/shield_text_color"/>
 
         <RadioButton
             android:id="@+id/option3"
