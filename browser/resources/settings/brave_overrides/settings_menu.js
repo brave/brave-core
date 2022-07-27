@@ -74,7 +74,10 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: url(#selectedGradient) !important;
+        --selected-gradient-color1: #FA7250;
+        --selected-gradient-color2: #FF1893;
+        --selected-gradient-color3: #A78AFF;
+
         color: var(--cr-link-color) !important;
         background: transparent !important;
       }
@@ -99,7 +102,7 @@ RegisterStyleOverride(
         padding-bottom: 0 !important;
         padding-top: 0 !important;
         padding-inline-start: 0 !important;
-        position: relative; !important;
+        position: relative !important;
       }
 
       a[href]:focus-visible {
@@ -114,7 +117,6 @@ RegisterStyleOverride(
       }
 
       a:hover, iron-icon:hover {
-        --iron-icon-fill-color: #444DD0;
         color: #444DD0 !important;
       }
 
@@ -150,7 +152,6 @@ RegisterStyleOverride(
         }
 
         a:hover, iron-icon:hover {
-          --iron-icon-fill-color: #A6ABE9 !important;
           color: #A6ABE9 !important;
         }
       }
@@ -208,14 +209,13 @@ RegisterStyleOverride(
 
 -RegisterStyleOverride('iron-icon', html`
  <style>
-   :host svg {
-     fill: var(--iron-icon-fill-color);
-   }
+    :host svg {
+      fill: url(#selectedGradient);
+    }
  </style>`)
 
 RegisterPolymerTemplateModifications({
   'settings-menu': (templateContent) => {
-
     // Add title
     const titleEl = document.createElement('h1')
     titleEl.id = 'settingsHeader'
