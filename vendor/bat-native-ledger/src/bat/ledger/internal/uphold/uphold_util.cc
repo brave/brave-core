@@ -13,8 +13,6 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/buildflags.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "crypto/random.h"
@@ -130,37 +128,6 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   wallet->activity_url = GetActivityUrl(wallet->address);
 
   return wallet;
-}
-
-template <typename T, typename... Ts>
-bool one_of(T&& t, Ts&&... ts) {
-  bool match = false;
-
-  static_cast<void>(std::initializer_list<bool>{
-      (match = match || std::forward<T>(t) == std::forward<Ts>(ts))...});
-
-  return match;
-}
-
-void OnWalletStatusChange(LedgerImpl* ledger,
-                          absl::optional<type::WalletStatus> from,
-                          type::WalletStatus to) {
-  DCHECK(ledger);
-  DCHECK(!from ||
-         one_of(*from, type::WalletStatus::NOT_CONNECTED,
-                type::WalletStatus::DISCONNECTED_VERIFIED,
-                type::WalletStatus::PENDING, type::WalletStatus::VERIFIED));
-  DCHECK(one_of(to, type::WalletStatus::NOT_CONNECTED,
-                type::WalletStatus::DISCONNECTED_VERIFIED,
-                type::WalletStatus::PENDING, type::WalletStatus::VERIFIED));
-
-  std::ostringstream oss{};
-  if (from) {
-    oss << *from << ' ';
-  }
-  oss << "==> " << to;
-
-  ledger->database()->SaveEventLog(log::kWalletStatusChange, oss.str());
 }
 
 void CheckWalletState(const type::ExternalWallet* wallet) {

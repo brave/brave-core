@@ -15,8 +15,10 @@
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "crypto/sha2.h"
 
+using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -236,19 +238,19 @@ void GeminiAuthorization::OnClaimWallet(
       }
   }
 
+  const auto from = wallet_ptr->status;
+  const auto to = wallet_ptr->status = type::WalletStatus::VERIFIED;
   wallet_ptr->address = recipient_id;
 
-  switch (wallet_ptr->status) {
-    case type::WalletStatus::NOT_CONNECTED:
-    case type::WalletStatus::DISCONNECTED_NOT_VERIFIED:
-    case type::WalletStatus::DISCONNECTED_VERIFIED:
-      wallet_ptr->status = type::WalletStatus::VERIFIED;
-      break;
-    default:
-      break;
+  if (!ledger_->gemini()->SetWallet(std::move(wallet_ptr))) {
+    BLOG(0, "Unable to set Gemini wallet!");
+    return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  ledger_->gemini()->SetWallet(std::move(wallet_ptr));
+  OnWalletStatusChange(ledger_, from, to);
+  ledger_->database()->SaveEventLog(
+      log::kWalletVerified,
+      constant::kWalletGemini + std::string("/") + recipient_id.substr(0, 5));
   callback(type::Result::LEDGER_OK, {});
 }
 

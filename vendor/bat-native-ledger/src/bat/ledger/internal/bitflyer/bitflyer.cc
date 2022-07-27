@@ -23,6 +23,7 @@
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "brave_base/random.h"
 
+using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -165,15 +166,16 @@ void Bitflyer::DisconnectWallet(const bool manual) {
   }
 
   BLOG(1, "Disconnecting wallet");
-  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
-                                    std::string(constant::kWalletBitflyer) +
-                                        (!wallet->address.empty() ? "/" : "") +
-                                        wallet->address.substr(0, 5));
+  const std::string wallet_address = wallet->address;
 
-  wallet = ::ledger::wallet::ResetWallet(std::move(wallet));
+  const auto from = wallet->status;
+  wallet = ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
+  const auto to = wallet->status;
+
+  OnWalletStatusChange(ledger_, from, to);
 
   const bool shutting_down = ledger_->IsShuttingDown();
 
@@ -182,11 +184,16 @@ void Bitflyer::DisconnectWallet(const bool manual) {
         ledger::notifications::kWalletDisconnected, {}, [](type::Result) {});
   }
 
-  SetWallet(wallet->Clone());
+  SetWallet(std::move(wallet));
 
   if (!shutting_down) {
     ledger_->ledger_client()->WalletDisconnected(constant::kWalletBitflyer);
   }
+
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(constant::kWalletBitflyer) +
+                                        (!wallet_address.empty() ? "/" : "") +
+                                        wallet_address.substr(0, 5));
 }
 
 void Bitflyer::SaveTransferFee(const std::string& contribution_id,
