@@ -7,14 +7,12 @@ const pushL10n = (options) => {
   const runOptions = { cwd: config.srcDir }
   const cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
+  const extraScriptOptions =
+    options.with_translations ? '--with_translations' :
+      options.with_missing_translations ? '--with_missing_translations' : ''
   if (options.extension) {
     const extensionPath = options.extension_path
-    if (options.extension === 'ethereum-remote-client') {
-      l10nUtil.getEthereumRemoteClientPaths(extensionPath).forEach((sourceStringPath) => {
-        util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
-      })
-      return
-    } else if (options.extension === 'greaselion') {
+    if (options.extension === 'greaselion') {
       l10nUtil.getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
         util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
       })
@@ -30,7 +28,7 @@ const pushL10n = (options) => {
     util.run('git', args, runOptions)
     l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
       if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path))
-        util.run('python3', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
+        util.run('python3', ['script/push-l10n.py', '--source_string_path', sourceStringPath, extraScriptOptions], cmdOptions)
     })
   }
 }

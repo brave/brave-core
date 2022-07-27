@@ -15,11 +15,14 @@ import lxml.etree  # pylint: disable=import-error
 
 from lib.l10n.grd_utils import (get_grd_languages,
                                 get_grd_strings,
-                                get_original_grd)
+                                get_original_grd,
+                                get_xtb_files,
+                                textify)
 from lib.l10n.transifex.common import (get_acceptable_json_lang_codes,
                                        get_api_wrapper,
                                        get_strings_dict_from_xml_content,
-                                       transifex_name_from_filename)
+                                       transifex_name_from_filename,
+                                       xtb_lang_to_transifex_lang)
 
 
 # This module contains functionality specific to pushing translations up
@@ -98,12 +101,16 @@ def upload_source_strings_desc(source_file_path, filename):
                                    string_name, string_desc)
 
 
-def upload_missing_json_translations_to_transifex(source_string_path):
+def upload_json_translations_to_transifex(source_string_path, missing_only):
+    resource_name = transifex_name_from_filename(source_string_path, '')
+    missing = 'missing' if missing_only else ''
+    print(f'Uploading {missing} translations for {source_string_path} ' \
+          f'(resource: {resource_name})', flush=True)
     source_strings = get_json_strings(source_string_path)
     langs_dir_path = os.path.dirname(os.path.dirname(source_string_path))
     lang_codes = get_acceptable_json_lang_codes(langs_dir_path)
-    filename = transifex_name_from_filename(source_string_path, '')
     for lang_code in lang_codes:
+        print(f'Processing language {lang_code}')
         l10n_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
         l10n_strings = get_json_strings(l10n_path)
         l10n_dict = {string_name: string_value for (
@@ -121,10 +128,40 @@ def upload_missing_json_translations_to_transifex(source_string_path):
                                  .replace("\"", "\\\"")
                                  .replace("\r", "\\r")
                                  .replace("\n", "\\n"))
-            upload_missing_translation_to_transifex(source_string_path,
-                                                    lang_code, filename,
-                                                    string_name.split(".")[0],
-                                                    translation_value)
+            upload_translation_to_transifex(source_string_path, lang_code,
+                                            resource_name,
+                                            string_name.split(".")[0],
+                                            translation_value, missing_only)
+
+
+def upload_grd_translations_to_transifex(source_string_path, filename,
+                                         missing_only, is_override = False):
+    resource_name = transifex_name_from_filename(source_string_path, filename)
+    missing = 'missing' if missing_only else ''
+    print(f'Uploading {missing} translations for {source_string_path} ' \
+          f'(resource: {resource_name})', flush=True)
+    source_base_path = os.path.dirname(source_string_path)
+    grd_strings = get_grd_strings(source_string_path, False)
+    grd_xtbs = get_xtb_files(source_string_path)
+    for (lang, path) in grd_xtbs:
+        transifex_lang = xtb_lang_to_transifex_lang(lang)
+        xtb_full_path = os.path.join(source_base_path, path).replace('\\', '/')
+        if is_override:
+            xtb_full_path = xtb_full_path.replace('_override', '')
+        print(f'Processing language {transifex_lang} ({lang})')
+        xtb_tree = lxml.etree.parse(xtb_full_path)
+        xtb_strings = xtb_tree.xpath('//translation')
+        for xtb_string in xtb_strings:
+            string_fp = xtb_string.attrib['id']
+            matches = [tup for tup in grd_strings if tup[2] == string_fp]
+            # XTB files may have translations for string that are no longer in
+            # the GRD, so only upload those that are needed for the GRD.
+            if len(matches):
+                value = textify(xtb_string)
+                upload_translation_to_transifex(source_string_path,
+                                                transifex_lang, resource_name,
+                                                matches[0][0], value,
+                                                missing_only)
 
 
 # Helper functions
@@ -201,12 +238,7 @@ def get_json_strings(json_file_path):
         data = json.load(f)
     strings = []
     for key in data:
-        # Our json (brave_extension and rewards_extension) resources somehow
-        # ended up on Transifex with keys having a '.message' suffix.
-        # Adding the same files to a new projects doesn't result in the suffix
-        # being added, so perhaps this is some old quirk of Transifex that's
-        # been grandfathered for the brave project.
-        string_name = key + '.message'
+        string_name = key
         string_value = data[key]["message"]
         string_desc = data[key]["description"] if "description" \
             in data[key] else ""
@@ -230,16 +262,16 @@ def get_transifex_string_hash(string_name):
     return str(md5(':'.join([string_name, '']).encode('utf-8')).hexdigest())
 
 
-def upload_missing_translation_to_transifex(source_string_path, lang_code,
-                                            filename, string_name,
-                                            translated_value):
+def upload_translation_to_transifex(source_string_path, lang_code, filename,
+                                    string_name, translated_value,
+                                    missing_only):
     """Uploads the specified string to the specified language code."""
     resource_name = transifex_name_from_filename(source_string_path, filename)
     string_hash = get_transifex_string_hash(string_name)
     translated_value = braveify(translated_value)
-    get_api_wrapper().transifex_upload_string_l10n(resource_name, string_hash,
-                                                   lang_code, translated_value)
-    print(f'Uploaded {lang_code} string: {string_name}...')
+    get_api_wrapper().transifex_upload_string_l10n(
+        resource_name, string_name, string_hash, lang_code, translated_value,
+        missing_only)
 
 
 def braveify(string_value):
@@ -260,4 +292,5 @@ def braveify(string_value):
             .replace('Brave Cloud', 'Google Cloud')
             .replace('Brave Pay', 'Google Pay')
             .replace('Brave Photos', 'Google Photos')
-            .replace('Brave Projects', 'Chromium Projects'))
+            .replace('Brave Projects', 'Chromium Projects')
+            .replace('Brave Widevine', 'Google Widevine'))

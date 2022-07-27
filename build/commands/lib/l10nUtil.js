@@ -205,19 +205,6 @@ const l10nUtil = {
     return l10nUtil.getAllBravePaths().filter((x) => ['grd', 'json'].includes(x.split('.').pop()))
   },
 
-// Helper function to retrieve ethereum-remote-client paths relative
-// to the Brave paths
-  getEthereumRemoteClientPaths: (extensionPath) => {
-    let basePath = extensionPath
-    if (!basePath) {
-      basePath = '../../../ethereum-remote-client'
-    }
-
-    return [
-      `${basePath}/app/_locales/en/messages.json`
-    ]
-  },
-
 // Helper function to retrieve Greaselion script paths relative to the
 // Brave paths.
 //

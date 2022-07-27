@@ -13,7 +13,8 @@ from lib.l10n.transifex.common import should_use_transifex_for_file
 from lib.l10n.transifex.push import (
     check_for_chromium_upgrade,
     check_missing_source_grd_strings_to_transifex,
-    upload_missing_json_translations_to_transifex,
+    upload_grd_translations_to_transifex,
+    upload_json_translations_to_transifex,
     upload_source_files_to_transifex,
     upload_source_strings_desc)
 from lib.l10n.grd_utils import get_override_file_path
@@ -26,6 +27,19 @@ SOURCE_ROOT = os.path.dirname(BRAVE_SOURCE_ROOT)
 def parse_args():
     parser = argparse.ArgumentParser(description='Push strings to Transifex')
     parser.add_argument('--source_string_path', nargs=1)
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--with_translations',
+                       dest='with_translations',
+                       action='store_true',
+                       help='Uploads translations from the local .xtb and ' \
+                            '.json files to Transifex. WARNING: This will ' \
+                            'overwrite the Transifex translations with the ' \
+                            'local values')
+    group.add_argument('--with_missing_translations',
+                       dest='with_missing_translations', action='store_true',
+                       help='Uploads translations from the local .xtb and ' \
+                            '.json files to Transifex, but only for strings '\
+                            'that are not translated in Transifex.')
     return parser.parse_args()
 
 
@@ -50,6 +64,11 @@ def main():
               f'{override_string_path} filename: {filename}')
         upload_source_files_to_transifex(override_string_path, filename)
         upload_source_strings_desc(override_string_path, filename)
+        # Upload local translations if requested
+        if args.with_translations or args.with_missing_translations:
+            upload_grd_translations_to_transifex(override_string_path,
+                filename, missing_only = args.with_missing_translations,
+                is_override = True)
         return
 
     print(f'[Transifex]: {source_string_path}')
@@ -59,9 +78,16 @@ def main():
         check_for_chromium_upgrade(SOURCE_ROOT, source_string_path)
         check_missing_source_grd_strings_to_transifex(source_string_path)
     upload_source_strings_desc(source_string_path, filename)
-    if ('ethereum-remote-client' in source_string_path or
-            'brave-site-specific-scripts' in source_string_path):
-        upload_missing_json_translations_to_transifex(source_string_path)
+
+    # Upload local translations if requested
+    if ('brave-site-specific-scripts' in source_string_path or
+           args.with_translations or args.with_missing_translations):
+        if ext == '.grd':
+            upload_grd_translations_to_transifex(source_string_path, filename,
+                missing_only = args.with_missing_translations)
+        else:
+            upload_json_translations_to_transifex(source_string_path,
+                missing_only = args.with_missing_translations)
 
 
 if __name__ == '__main__':

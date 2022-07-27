@@ -12,7 +12,7 @@ import lxml.etree  # pylint: disable=import-error
 
 from lib.l10n.grd_utils import textify
 
-brave_project_name = 'brave'
+brave_project_name = 'brave_en'
 
 # Transifex API v2 will be deprecated on April 7, 2022
 use_api_v3 = True
@@ -47,6 +47,7 @@ def should_use_transifex_for_file(source_string_path, filename):
     return slug in transifex_handled_slugs or slug.startswith('greaselion_')
 
 
+# pylint: disable=inconsistent-return-statements
 def transifex_name_from_filename(source_file_path, filename):
     ext = os.path.splitext(source_file_path)[1]
     if 'brave_components_strings' in source_file_path:
@@ -59,11 +60,9 @@ def transifex_name_from_filename(source_file_path, filename):
         return 'brave_extension'
     if 'brave_rewards' in source_file_path:
         return 'rewards_extension'
-    if 'ethereum-remote-client/app' in source_file_path:
-        return 'ethereum_remote_client_extension'
     assert False, ('JSON files should be mapped explicitly, this '
                    f'one is not: {source_file_path}')
-
+# pylint: enable=inconsistent-return-statements
 
 def transifex_name_from_greaselion_script_name(script_name):
     match = re.search(('brave-site-specific-scripts/scripts/(.*)/_locales/' +
@@ -72,6 +71,16 @@ def transifex_name_from_greaselion_script_name(script_name):
         return ('greaselion_' +
             match.group(1).replace('-', '_').replace('/', '_'))
     return ''
+
+
+def xtb_lang_to_transifex_lang(lang):
+    """Reformats language code from XTB format to Transifex format"""
+    lang = lang.replace('-', '_')
+    # The lang code "iw" is the old code for Hebrew, Transifex and GRDs use
+    # "he", but Chromium still uses "iw" inside the XTBs.
+    lang = lang.replace('iw', 'he')
+    lang = lang.replace('sr_Latn', 'sr_BA@latin')
+    return lang
 
 
 def get_strings_dict_from_xml_content(xml_content):
@@ -104,18 +113,10 @@ def get_acceptable_json_lang_codes(langs_dir_path):
     # Source language for Brave locales
     lang_codes.discard('en_US')
 
-    # Source language for ethereum-remote-client
-    lang_codes.discard('en')
-
     # Files that are not locales
     lang_codes.discard('.DS_Store')
     lang_codes.discard('index.json')
 
-    # ethereum-remote-client has these unsupported locales
-    lang_codes.discard('tml')
-    lang_codes.discard('hn')
-    lang_codes.discard('ph')
-    lang_codes.discard('ht')
     return sorted(lang_codes)
 
 

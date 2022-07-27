@@ -139,8 +139,10 @@ class TransifexAPIV2Wrapper:
             f'Aborting. Status code {r.status_code}: {r.content}'
 
 
-    def transifex_upload_string_l10n(self, resource_name, string_hash,
-                                     lang_code, translated_value):
+    def transifex_upload_string_l10n(self, resource_name,
+                                     string_name, # pylint: disable=unused-argument
+                                     string_hash, lang_code, translated_value,
+                                     missing_only): # pylint: disable=unused-argument
         """Uploads the localized string in the given language for the string
            with the given hash."""
         url_part = (f'project/{self.project_name}/resource/{resource_name}'

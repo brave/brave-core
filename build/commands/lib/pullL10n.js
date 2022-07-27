@@ -8,12 +8,7 @@ const pullL10n = (options) => {
   cmdOptions.cwd = config.braveCoreDir
   if (options.extension) {
     const extensionPath = options.extension_path
-    if (options.extension === 'ethereum-remote-client') {
-      l10nUtil.getEthereumRemoteClientPaths(extensionPath).forEach((sourceStringPath) => {
-        util.run('python', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
-      })
-      return
-    } else if (options.extension === 'greaselion') {
+    if (options.extension === 'greaselion') {
       l10nUtil.getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
         util.run('python', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
       })
