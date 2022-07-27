@@ -6,7 +6,7 @@
 import { getLocale } from '../../../../common/locale'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
 import {
-  LedgerErrorsCodes,
+  LedgerBridgeErrorCodes,
   LedgerFrameCommand,
   LedgerFrameResponse
 } from './ledger-messages'
@@ -90,7 +90,7 @@ test('unlock unauthorized error', async () => {
 
 test('unlock bridge error', async () => {
   const keyring = createKeyring()
-  keyring.transport.addSendCommandResponse(LedgerErrorsCodes.BridgeNotReady)
+  keyring.transport.addSendCommandResponse(LedgerBridgeErrorCodes.BridgeNotReady)
   let result: HardwareOperationResult = await keyring.unlock()
   let expectedResult: HardwareOperationResult = {
     success: false,
@@ -99,7 +99,7 @@ test('unlock bridge error', async () => {
   }
   expect(result).toEqual(expectedResult)
 
-  keyring.transport.addSendCommandResponse(LedgerErrorsCodes.CommandInProgress)
+  keyring.transport.addSendCommandResponse(LedgerBridgeErrorCodes.CommandInProgress)
   result = await keyring.unlock()
   expectedResult = {
     success: false,

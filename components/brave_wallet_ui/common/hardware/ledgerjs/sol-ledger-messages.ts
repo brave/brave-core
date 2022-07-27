@@ -34,3 +34,6 @@ export type SolSignTransactionCommand = CommandMessage & {
   path: string
   rawTxBytes: Buffer
 }
+
+export type SolLedgerFrameCommand = SolGetAccountCommand | SolSignTransactionCommand
+export type SolLedgerFrameResponse =  SolGetAccountResponse | SolSignTransactionResponse

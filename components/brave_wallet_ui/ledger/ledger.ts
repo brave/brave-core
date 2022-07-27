@@ -3,11 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { BraveWallet } from '../constants/types'
 import { LedgerCommand, LEDGER_BRIDGE_URL } from '../common/hardware/ledgerjs/ledger-messages'
-import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 
-const setUpAuthorizeButtonListner = (targetUrl: string) => {
-  const untrustedMessagingTransport = new SolanaLedgerUntrustedMessagingTransport(window.parent, targetUrl)
+import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
+import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
+import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
+
+const setUpAuthorizeButtonListner = (targetUrl: string, coinType: BraveWallet.CoinType) => {
+  const untrustedMessagingTransport = getUntrustedMessagingTransport(coinType, targetUrl)
   window.addEventListener('DOMContentLoaded', (event) => {
     const authorizeBtn = document.getElementById('authorize')
     if (authorizeBtn) {
@@ -24,7 +28,20 @@ const setUpAuthorizeButtonListner = (targetUrl: string) => {
   })
 }
 
-const targetUrl = new URLSearchParams(window.location.search).get('targetUrl')
-if (targetUrl) {
-  setUpAuthorizeButtonListner(targetUrl)
+const getUntrustedMessagingTransport = (coinType: BraveWallet.CoinType, targetUrl: string): LedgerUntrustedMessagingTransport => {
+  switch(coinType) {
+    case BraveWallet.CoinType.SOL:
+      return new SolanaLedgerUntrustedMessagingTransport(window.parent, targetUrl)
+    case BraveWallet.CoinType.ETH:
+      return new EthereumLedgerUntrustedMessagingTransport(window.parent, targetUrl)
+    default:
+      throw new Error('Invalid coinType.')
+  }
+}
+
+const params = new URLSearchParams(window.location.search)
+const targetUrl = params.get('targetUrl')
+const coinType = Number(params.get('coinType'))
+if (targetUrl && coinType) {
+  setUpAuthorizeButtonListner(targetUrl, coinType)
 }

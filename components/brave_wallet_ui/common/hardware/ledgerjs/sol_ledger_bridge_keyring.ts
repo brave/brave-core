@@ -11,7 +11,7 @@ import {
 } from '../types'
 import {
   LedgerCommand,
-  LedgerErrorsCodes,
+  LedgerBridgeErrorCodes,
   LedgerError
 } from './ledger-messages'
 import {
@@ -64,8 +64,8 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
       rawTxBytes: rawTxBytes,
       origin: window.origin
     })
-    if (data === LedgerErrorsCodes.BridgeNotReady ||
-        data === LedgerErrorsCodes.CommandInProgress) {
+    if (data === LedgerBridgeErrorCodes.BridgeNotReady ||
+        data === LedgerBridgeErrorCodes.CommandInProgress) {
       return this.createErrorFromCode(data)
     }
     if (!data.payload.success) {
@@ -90,8 +90,8 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
         path: path,
         origin: window.origin
       })
-      if (data === LedgerErrorsCodes.BridgeNotReady ||
-          data === LedgerErrorsCodes.CommandInProgress) {
+      if (data === LedgerBridgeErrorCodes.BridgeNotReady ||
+          data === LedgerBridgeErrorCodes.CommandInProgress) {
         return this.createErrorFromCode(data)
       }
 

@@ -5,11 +5,13 @@
 
 import { loadTimeData } from '../../../../common/loadTimeData'
 import type {
-  SolGetAccountResponse,
-  SolGetAccountCommand,
-  SolSignTransactionResponse,
-  SolSignTransactionCommand
+  SolLedgerFrameCommand,
+  SolLedgerFrameResponse
 } from './sol-ledger-messages'
+import type {
+  EthLedgerFrameCommand,
+  EthLedgerFrameResponse
+} from './eth-ledger-messages'
 
 export const LEDGER_BRIDGE_URL = loadTimeData.getString('braveWalletLedgerBridgeUrl').slice(0, -1) // Strip off trailing '/' in URL
 
@@ -17,11 +19,15 @@ export enum LedgerCommand {
   Unlock = 'ledger-unlock',
   GetAccount = 'ledger-get-accounts',
   SignTransaction = 'ledger-sign-transaction',
+  SignPersonalMessage = 'ledger-sign-personal-message',
+  SignEip712Message = 'ledger-sign-eip-712-message',
   AuthorizationRequired = 'authorization-required', // Sent by the frame to the parent context
   AuthorizationSuccess = 'authorization-success' // Sent by the frame to the parent context
 }
 
-export enum LedgerErrorsCodes {
+// LedgerBrigeErrorCodes are errors related to the configuring 
+// and running of postMessages between window objects
+export enum LedgerBridgeErrorCodes {
   BridgeNotReady = 0,
   CommandInProgress = 1
 }
@@ -31,7 +37,6 @@ export type CommandMessage = {
   id: string
   origin: string
 }
-// TODO should we also pass the CoinType?
 
 export type LedgerResponsePayload = {
   success: boolean
@@ -67,8 +72,8 @@ export type AuthorizationSuccessCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationSuccess
 }
 
-export type LedgerFrameCommand = UnlockCommand | SolGetAccountCommand | SolSignTransactionCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand
-export type LedgerFrameResponse = UnlockResponse| SolGetAccountResponse| SolSignTransactionResponse
+export type LedgerFrameCommand = UnlockCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand | SolLedgerFrameCommand | EthLedgerFrameCommand
+export type LedgerFrameResponse = UnlockResponse | SolLedgerFrameResponse | EthLedgerFrameResponse
 
 type LedgerCommandHandler <T>= ((command: LedgerFrameCommand) => Promise<T>)
 type LedgerCommandResponseHandler <T>= ((response: T) => void)

@@ -6,7 +6,7 @@
 import { LedgerMessagingTransport } from './ledger-messaging-transport'
 import {
   LedgerCommand,
-  LedgerErrorsCodes
+  LedgerBridgeErrorCodes
 } from './ledger-messages'
 
 const createTransport = (targetUrl: string = 'chrome-untrusted://ledger-bridge'): LedgerMessagingTransport => {
@@ -59,7 +59,7 @@ test('sendCommand returns CommandInProgress if response handler already exists',
   transport.targetWindow.postMessage = (eventData) => {
     // Sending a second message before the first is replied to should result in CommandInProgress
     transport.sendCommand(sendEvent).then((inflightResponse) => {
-      expect(inflightResponse).toEqual(LedgerErrorsCodes.CommandInProgress)
+      expect(inflightResponse).toEqual(LedgerBridgeErrorCodes.CommandInProgress)
     })
   }
   transport.sendCommand(sendEvent) // Send the message

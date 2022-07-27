@@ -5,6 +5,7 @@
 
 import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { BraveWallet } from '../../../constants/types'
+// import { HardwareKeyring } from '../interfaces'
 import { getLocale } from '../../../../common/locale'
 import { HardwareVendor } from '../../api/hardware_keyrings'
 import {
@@ -15,7 +16,7 @@ import {
   LedgerCommand,
   UnlockResponse,
   LedgerFrameCommand,
-  LedgerErrorsCodes
+  LedgerBridgeErrorCodes
 } from './ledger-messages'
 import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
 
@@ -36,6 +37,10 @@ export default class LedgerBridgeKeyring {
     this.frameId = randomUUID()
   }
 
+  coin = (): BraveWallet.CoinType => {
+    throw new Error('Unimplemented.')
+  }
+
   type = (): HardwareVendor => {
     return LEDGER_HARDWARE_VENDOR
   }
@@ -47,20 +52,20 @@ export default class LedgerBridgeKeyring {
       command: LedgerCommand.Unlock
     })
 
-    if (data === LedgerErrorsCodes.BridgeNotReady ||
-        data === LedgerErrorsCodes.CommandInProgress) {
+    if (data === LedgerBridgeErrorCodes.BridgeNotReady ||
+        data === LedgerBridgeErrorCodes.CommandInProgress) {
       return this.createErrorFromCode(data)
     }
 
     return data.payload
   }
 
-  sendCommand = async <T> (command: LedgerFrameCommand): Promise<T | LedgerErrorsCodes > => {
+  sendCommand = async <T> (command: LedgerFrameCommand): Promise<T | LedgerBridgeErrorCodes > => {
     if (!this.bridge && !this.hasBridgeCreated()) {
       this.bridge = await this.createBridge(LEDGER_BRIDGE_URL)
     }
     if (!this.bridge || !this.bridge.contentWindow) {
-      return LedgerErrorsCodes.BridgeNotReady
+      return LedgerBridgeErrorCodes.BridgeNotReady
     }
     if (!this.transport) {
       this.transport = new LedgerTrustedMessagingTransport(
@@ -78,7 +83,7 @@ export default class LedgerBridgeKeyring {
     return new Promise<HTMLIFrameElement>((resolve) => {
       const element = document.createElement('iframe')
       element.id = this.frameId
-      element.src = (new URL(targetUrl)).origin + `?targetUrl=${encodeURIComponent(window.origin)}`
+      element.src = (new URL(targetUrl)).origin + `?targetUrl=${encodeURIComponent(window.origin)}` + '&coinType=' + this.coin()
       element.style.display = 'none'
       element.allow = 'hid'
       element.onload = () => {
@@ -89,11 +94,11 @@ export default class LedgerBridgeKeyring {
     })
   }
 
-  protected readonly createErrorFromCode = (code: LedgerErrorsCodes): HardwareOperationResult => {
+  protected readonly createErrorFromCode = (code: LedgerBridgeErrorCodes): HardwareOperationResult => {
     switch (code) {
-      case LedgerErrorsCodes.BridgeNotReady:
+      case LedgerBridgeErrorCodes.BridgeNotReady:
         return { success: false, error: getLocale('braveWalletBridgeNotReady'), code: code }
-      case LedgerErrorsCodes.CommandInProgress:
+      case LedgerBridgeErrorCodes.CommandInProgress:
         return { success: false, error: getLocale('braveWalletBridgeCommandInProgress'), code: code }
     }
   }
