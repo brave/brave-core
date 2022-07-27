@@ -1,0 +1,18 @@
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "//brave/browser/ui/views/tabs/brave_tab_hover_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui",
+    "//chrome:resources",
+    "//chrome:strings",
+    "//chrome/browser",
+    "//chrome/common",
+    "//chrome/test",
+    "//chrome/test:test_support",
+    "//components/prefs",
+  ]
+}

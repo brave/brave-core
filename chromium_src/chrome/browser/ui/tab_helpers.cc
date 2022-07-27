@@ -7,8 +7,7 @@
 #include "chrome/browser/font_prewarmer_tab_helper.h"
 #include "chrome/browser/net/net_error_tab_helper.h"
 
-#define BRAVE_TAB_HELPERS \
-  brave::AttachTabHelpers(web_contents);
+#define BRAVE_TAB_HELPERS brave::AttachTabHelpers(web_contents);
 
 // Dummy class for avoiding some TabHelpers from being added to the WebContents.
 class NoTabHelper {

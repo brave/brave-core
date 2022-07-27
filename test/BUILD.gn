@@ -777,6 +777,7 @@ if (!is_android) {
       "//brave/browser/ui/brave_ads",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/tabs/test:browser_tests",
+      "//brave/browser/ui/views/tabs:browser_tests",
       "//brave/browser/widevine:browser_tests",
       "//brave/common",
       "//brave/components/brave_ads/browser",
