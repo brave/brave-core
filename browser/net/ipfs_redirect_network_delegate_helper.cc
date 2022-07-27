@@ -51,6 +51,15 @@ int OnBeforeURLRequest_IPFSRedirectWork(
                : net::OK;
   }
 
+  if (has_ipfs_scheme && IsIpfsResolveMethodAsk(prefs)) {
+    ctx->blocked_by = brave::kOtherBlocked;
+    // Only net::OK navigation will be actually blocked without commit.
+    // Show proper error for mainframe navigation.
+    return ctx->resource_type == blink::mojom::ResourceType::kMainFrame
+               ? net::ERR_IPFS_RESOLVE_METHOD_NOT_SELECTED
+               : net::OK;
+  }
+
   GURL new_url;
   if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url, ctx->ipfs_gateway_url,
                              false)) {

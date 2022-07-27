@@ -99,10 +99,7 @@ content::NavigationThrottle::ThrottleCheckResult
 IpfsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
 
-  bool should_ask =
-      pref_service_->FindPreference(kIPFSResolveMethod) &&
-      pref_service_->GetInteger(kIPFSResolveMethod) ==
-          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
+  bool should_ask = IsIpfsResolveMethodAsk(pref_service_);
 
   if (IsIPFSScheme(url) && should_ask) {
     return ShowIPFSOnboardingInterstitial();
@@ -132,6 +129,16 @@ IpfsNavigationThrottle::WillStartRequest() {
     return content::NavigationThrottle::DEFER;
   }
 
+  return content::NavigationThrottle::PROCEED;
+}
+
+content::NavigationThrottle::ThrottleCheckResult
+IpfsNavigationThrottle::WillFailRequest() {
+  auto* handle = navigation_handle();
+  if (handle &&
+      handle->GetNetErrorCode() == net::ERR_IPFS_RESOLVE_METHOD_NOT_SELECTED) {
+    return ShowIPFSOnboardingInterstitial();
+  }
   return content::NavigationThrottle::PROCEED;
 }
 

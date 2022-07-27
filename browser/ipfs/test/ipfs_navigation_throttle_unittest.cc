@@ -24,6 +24,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
@@ -41,6 +42,12 @@ using content::NavigationThrottle;
 namespace {
 
 constexpr char kTestProfileName[] = "TestProfile";
+
+const GURL& GetIPFSSchemeURL() {
+  static const GURL ipfs_url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/");
+  return ipfs_url;
+}
 
 const GURL& GetIPFSURL() {
   static const GURL ipfs_url(
@@ -354,6 +361,45 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
+}
+
+TEST_F(IpfsNavigationThrottleUnitTest, ShowInterstitial) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
+
+  content::MockNavigationHandle test_handle(web_contents());
+  test_handle.set_url(GetIPFSSchemeURL());
+
+  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &test_handle, ipfs_service(profile()), profile()->GetPrefs(), locale());
+  ASSERT_TRUE(throttle != nullptr);
+  EXPECT_EQ(NavigationThrottle::CANCEL, throttle->WillStartRequest().action());
+
+  ASSERT_TRUE(
+      security_interstitials::SecurityInterstitialTabHelper::FromWebContents(
+          web_contents())
+          ->IsInterstitialPendingForNavigation(test_handle.GetNavigationId()));
+}
+
+TEST_F(IpfsNavigationThrottleUnitTest, ShowInterstitialAfterNavigationFails) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
+
+  content::MockNavigationHandle test_handle(web_contents());
+  test_handle.set_url(GetNonIPFSURL());
+
+  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &test_handle, ipfs_service(profile()), profile()->GetPrefs(), locale());
+  ASSERT_TRUE(throttle != nullptr);
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+      << GetIPFSURL();
+
+  test_handle.set_net_error_code(net::ERR_IPFS_RESOLVE_METHOD_NOT_SELECTED);
+  EXPECT_EQ(NavigationThrottle::CANCEL, throttle->WillFailRequest().action());
+  ASSERT_TRUE(
+      security_interstitials::SecurityInterstitialTabHelper::FromWebContents(
+          web_contents())
+          ->IsInterstitialPendingForNavigation(test_handle.GetNavigationId()));
 }
 
 TEST_F(IpfsNavigationThrottleUnitTest, ProceedForNonLocalGatewayURL) {

@@ -99,7 +99,7 @@ IN_PROC_BROWSER_TEST_F(IpfsRedirectNetworkDelegateHelperBrowserTest,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
 
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
-  EXPECT_EQ(web_contents()->GetURL(), gateway_url());
+  EXPECT_EQ(web_contents()->GetURL(), ipfs_url());
 
   auto* wc = browser()->tab_strip_model()->GetActiveWebContents();
 
