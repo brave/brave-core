@@ -210,7 +210,7 @@ class BraveTabHoverTestWithChromeFlag : public BraveTabHoverTest {
 #define MAYBE_ChromeFeatureForcesPreviews ChromeFeatureForcesPreviews
 #endif
 IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
-                       ChromeFeatureForcesPreviews) {
+                       MAYBE_ChromeFeatureForcesPreviews) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(features::kTabHoverCardImages));
 
   // In Card mode, the widget should become visible and because the
