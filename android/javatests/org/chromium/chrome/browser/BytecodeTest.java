@@ -780,6 +780,9 @@ public class BytecodeTest {
         Assert.assertTrue(checkSuperName(
                 "org/chromium/components/browser_ui/site_settings/SiteSettings",
                 "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase"));
+        Assert.assertTrue(
+                checkSuperName("org/chromium/chrome/browser/infobar/TranslateCompactInfoBar",
+                        "org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase"));
     }
 
     private boolean classExists(String className) {
