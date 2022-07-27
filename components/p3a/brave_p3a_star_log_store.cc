@@ -56,6 +56,7 @@ void BraveP3AStarLogStore::UpdateMessage(const std::string& histogram_name,
   if (current_epoch_ != epoch) {
     LogKey key(epoch, histogram_name);
     log_[key] = msg;
+    unsent_entries_.insert(key);
   }
 }
 
@@ -130,7 +131,7 @@ void BraveP3AStarLogStore::StageNextLog() {
   staged_log_ = log_.at(*staged_entry_key_);
 
   VLOG(2) << "BraveP3AStarLogStore::StageNextLog: staged epoch = "
-          << staged_entry_key_->epoch
+          << static_cast<int>(staged_entry_key_->epoch)
           << ", histogram_name = " << staged_entry_key_->histogram_name;
 }
 

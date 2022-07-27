@@ -1,5 +1,6 @@
 import("//brave/components/p3a/buildflags.gni")
 import("//build/buildflag_header.gni")
+import("//testing/test.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -71,5 +72,18 @@ static_library("p3a") {
     "//services/network/public/mojom",
     "//third_party/protobuf:protobuf_lite",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "brave_p3a_metric_log_store_unittest.cc",
+    "brave_p3a_star_log_store_unittest.cc",
+  ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/p3a",
+    "//testing/gtest",
   ]
 }
