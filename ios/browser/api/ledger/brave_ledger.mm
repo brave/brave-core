@@ -1055,8 +1055,8 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   ledger->AttestPromotion(
       base::SysNSStringToUTF8(promotionId),
       base::SysNSStringToUTF8(solution.JSONPayload),
-      ^(const ledger::type::Result result,
-        ledger::type::PromotionPtr promotion) {
+      base::BindOnce(^(ledger::type::Result result,
+                       ledger::type::PromotionPtr promotion) {
         if (promotion.get() == nullptr) {
           if (completion) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1086,7 +1086,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
             }
           }
         });
-      });
+      }));
 }
 
 #pragma mark - History

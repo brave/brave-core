@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_
 
 #include <string>
 
@@ -48,9 +48,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using GetSignedCredsCallback = std::function<void(
-    const type::Result result,
-    type::CredsBatchPtr batch)>;
+using GetSignedCredsCallback =
+    base::OnceCallback<void(type::Result, type::CredsBatchPtr)>;
 
 class GetSignedCreds {
  public:
@@ -73,9 +72,8 @@ class GetSignedCreds {
       const std::string& body,
       type::CredsBatch* batch);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetSignedCredsCallback callback);
+  void OnRequest(GetSignedCredsCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -84,4 +82,4 @@ class GetSignedCreds {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_

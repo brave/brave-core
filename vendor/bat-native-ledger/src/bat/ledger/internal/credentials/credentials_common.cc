@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "base/guid.h"
@@ -11,10 +12,6 @@
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace ledger {
 namespace credential {
@@ -27,12 +24,12 @@ CredentialsCommon::CredentialsCommon(LedgerImpl *ledger) :
 CredentialsCommon::~CredentialsCommon() = default;
 
 void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
-                                        ledger::LegacyResultCallback callback) {
+                                        ledger::ResultCallback callback) {
   const auto creds = GenerateCreds(trigger.size);
 
   if (creds.empty()) {
     BLOG(0, "Creds are empty");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -41,7 +38,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
 
   if (blinded_creds.empty()) {
     BLOG(0, "Blinded creds are empty");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -56,24 +53,26 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
   creds_batch->trigger_type = trigger.type;
   creds_batch->status = type::CredsBatchStatus::BLINDED;
 
-  auto save_callback = std::bind(&CredentialsCommon::BlindedCredsSaved,
-      this,
-      _1,
-      callback);
+  auto save_callback =
+      base::BindOnce(&CredentialsCommon::BlindedCredsSaved,
+                     base::Unretained(this), std::move(callback));
 
-  ledger_->database()->SaveCredsBatch(std::move(creds_batch), save_callback);
+  ledger_->database()->SaveCredsBatch(
+      std::move(creds_batch),
+      [callback =
+           std::make_shared<decltype(save_callback)>(std::move(save_callback))](
+          type::Result result) { std::move(*callback).Run(result); });
 }
 
-void CredentialsCommon::BlindedCredsSaved(
-    type::Result result,
-    ledger::LegacyResultCallback callback) {
+void CredentialsCommon::BlindedCredsSaved(ledger::ResultCallback callback,
+                                          type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Creds batch save failed");
-    callback(type::Result::RETRY);
+    std::move(callback).Run(type::Result::RETRY);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
 void CredentialsCommon::SaveUnblindedCreds(
@@ -82,7 +81,7 @@ void CredentialsCommon::SaveUnblindedCreds(
     const type::CredsBatch& creds,
     const std::vector<std::string>& unblinded_encoded_creds,
     const CredentialsTrigger& trigger,
-    ledger::LegacyResultCallback callback) {
+    ledger::ResultCallback callback) {
   type::UnblindedTokenList list;
   type::UnblindedTokenPtr unblinded;
   for (auto & cred : unblinded_encoded_creds) {
@@ -95,30 +94,30 @@ void CredentialsCommon::SaveUnblindedCreds(
     list.push_back(std::move(unblinded));
   }
 
-  auto save_callback = std::bind(&CredentialsCommon::OnSaveUnblindedCreds,
-      this,
-      _1,
-      trigger,
-      callback);
+  auto save_callback =
+      base::BindOnce(&CredentialsCommon::OnSaveUnblindedCreds,
+                     base::Unretained(this), std::move(callback), trigger);
 
-  ledger_->database()->SaveUnblindedTokenList(std::move(list), save_callback);
+  ledger_->database()->SaveUnblindedTokenList(
+      std::move(list), [callback = std::make_shared<decltype(save_callback)>(
+                            std::move(save_callback))](type::Result result) {
+        std::move(*callback).Run(result);
+      });
 }
 
-void CredentialsCommon::OnSaveUnblindedCreds(
-    type::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::LegacyResultCallback callback) {
+void CredentialsCommon::OnSaveUnblindedCreds(ledger::ResultCallback callback,
+                                             const CredentialsTrigger& trigger,
+                                             type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Token list not saved");
-    callback(type::Result::RETRY);
+    std::move(callback).Run(type::Result::RETRY);
     return;
   }
 
   ledger_->database()->UpdateCredsBatchStatus(
-      trigger.id,
-      trigger.type,
-      type::CredsBatchStatus::FINISHED,
-      callback);
+      trigger.id, trigger.type, type::CredsBatchStatus::FINISHED,
+      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
+          type::Result result) { std::move(*callback).Run(result); });
 }
 
 }  // namespace credential

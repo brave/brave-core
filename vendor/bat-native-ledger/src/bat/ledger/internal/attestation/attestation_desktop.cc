@@ -10,10 +10,6 @@
 #include "bat/ledger/internal/attestation/attestation_desktop.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace ledger {
 namespace attestation {
 
@@ -123,32 +119,27 @@ void AttestationDesktop::Confirm(
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse solution");
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
-  auto url_callback = std::bind(&AttestationDesktop::OnConfirm,
-      this,
-      _1,
-      callback);
+  auto url_callback =
+      base::BindOnce(&AttestationDesktop::OnConfirm, base::Unretained(this),
+                     std::move(callback));
 
-  promotion_server_->put_captcha()->Request(
-      x,
-      y,
-      captcha_id,
-      url_callback);
+  promotion_server_->put_captcha()->Request(x, y, captcha_id,
+                                            std::move(url_callback));
 }
 
-void AttestationDesktop::OnConfirm(
-    const type::Result result,
-    ConfirmCallback callback) {
+void AttestationDesktop::OnConfirm(ConfirmCallback callback,
+                                   type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
 }  // namespace attestation

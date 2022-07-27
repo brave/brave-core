@@ -25,8 +25,6 @@
 #include "wrapper.hpp"  // NOLINT
 
 using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 using challenge_bypass_ristretto::BatchDLEQProof;
 using challenge_bypass_ristretto::BlindedToken;
@@ -256,7 +254,7 @@ void Promotion::LegacyClaimedSaved(
     return;
   }
 
-  GetCredentials(std::move(*shared_promotion), [](const type::Result _){});
+  GetCredentials(base::DoNothing(), std::move(*shared_promotion));
 }
 
 void Promotion::Claim(
@@ -318,134 +316,130 @@ void Promotion::Attest(
     const std::string& promotion_id,
     const std::string& solution,
     ledger::AttestPromotionCallback callback) {
-  auto promotion_callback = std::bind(&Promotion::OnAttestPromotion,
-      this,
-      _1,
-      solution,
-      callback);
+  auto promotion_callback =
+      base::BindOnce(&Promotion::OnAttestPromotion, base::Unretained(this),
+                     std::move(callback), solution);
 
-  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
+  ledger_->database()->GetPromotion(
+      promotion_id,
+      [callback = std::make_shared<decltype(promotion_callback)>(
+           std::move(promotion_callback))](type::PromotionPtr promotion) {
+        std::move(*callback).Run(std::move(promotion));
+      });
 }
 
-void Promotion::OnAttestPromotion(
-    type::PromotionPtr promotion,
-    const std::string& solution,
-    ledger::AttestPromotionCallback callback) {
+void Promotion::OnAttestPromotion(ledger::AttestPromotionCallback callback,
+                                  const std::string& solution,
+                                  type::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(1, "Promotion is null");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
   if (promotion->status != type::PromotionStatus::ACTIVE) {
     BLOG(1, "Promotion already in progress");
-    callback(type::Result::IN_PROGRESS, nullptr);
+    std::move(callback).Run(type::Result::IN_PROGRESS, nullptr);
     return;
   }
 
-  auto confirm_callback = std::bind(&Promotion::OnAttestedPromotion,
-      this,
-      _1,
-      promotion->id,
-      callback);
-  attestation_->Confirm(solution, confirm_callback);
+  auto confirm_callback =
+      base::BindOnce(&Promotion::OnAttestedPromotion, base::Unretained(this),
+                     std::move(callback), promotion->id);
+  attestation_->Confirm(solution, std::move(confirm_callback));
 }
 
-void Promotion::OnAttestedPromotion(
-    const type::Result result,
-    const std::string& promotion_id,
-    ledger::AttestPromotionCallback callback) {
+void Promotion::OnAttestedPromotion(ledger::AttestPromotionCallback callback,
+                                    const std::string& promotion_id,
+                                    type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Attestation failed " << result);
-    callback(result, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
-  auto promotion_callback = std::bind(&Promotion::OnCompletedAttestation,
-      this,
-      _1,
-      callback);
+  auto promotion_callback =
+      base::BindOnce(&Promotion::OnCompletedAttestation, base::Unretained(this),
+                     std::move(callback));
 
-  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
+  ledger_->database()->GetPromotion(
+      promotion_id,
+      [callback = std::make_shared<decltype(promotion_callback)>(
+           std::move(promotion_callback))](type::PromotionPtr promotion) {
+        std::move(*callback).Run(std::move(promotion));
+      });
 }
 
-void Promotion::OnCompletedAttestation(
-    type::PromotionPtr promotion,
-    ledger::AttestPromotionCallback callback) {
+void Promotion::OnCompletedAttestation(ledger::AttestPromotionCallback callback,
+                                       type::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion does not exist");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
   if (promotion->status == type::PromotionStatus::FINISHED) {
     BLOG(0, "Promotions already claimed");
-    callback(type::Result::GRANT_ALREADY_CLAIMED, nullptr);
+    std::move(callback).Run(type::Result::GRANT_ALREADY_CLAIMED, nullptr);
     return;
   }
 
   promotion->status = type::PromotionStatus::ATTESTED;
 
-  auto save_callback = std::bind(&Promotion::AttestedSaved,
-      this,
-      _1,
-      std::make_shared<type::PromotionPtr>(promotion->Clone()),
-      callback);
+  auto save_callback =
+      base::BindOnce(&Promotion::AttestedSaved, base::Unretained(this),
+                     std::move(callback), promotion->Clone());
 
-  ledger_->database()->SavePromotion(promotion->Clone(), save_callback);
+  ledger_->database()->SavePromotion(
+      std::move(promotion),
+      [callback =
+           std::make_shared<decltype(save_callback)>(std::move(save_callback))](
+          type::Result result) { std::move(*callback).Run(result); });
 }
 
-void Promotion::AttestedSaved(
-    const type::Result result,
-    std::shared_ptr<type::PromotionPtr> shared_promotion,
-    ledger::AttestPromotionCallback callback) {
+void Promotion::AttestedSaved(ledger::AttestPromotionCallback callback,
+                              type::PromotionPtr promotion,
+                              type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Save failed ");
-    callback(result, nullptr);
-    return;
-  }
-  if (!shared_promotion) {
-    BLOG(1, "Promotion is null");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
-  auto claim_callback = std::bind(&Promotion::Complete,
-      this,
-      _1,
-      (*shared_promotion)->id,
-      callback);
+  auto claim_callback =
+      base::BindOnce(&Promotion::Complete, base::Unretained(this),
+                     std::move(callback), promotion->id);
 
-  GetCredentials((*shared_promotion)->Clone(), claim_callback);
+  GetCredentials(std::move(claim_callback), std::move(promotion));
 }
 
-void Promotion::Complete(
-    const type::Result result,
-    const std::string& promotion_id,
-    ledger::AttestPromotionCallback callback) {
-  auto promotion_callback = std::bind(&Promotion::OnComplete,
-      this,
-      _1,
-      result,
-      callback);
-  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
+void Promotion::Complete(ledger::AttestPromotionCallback callback,
+                         const std::string& promotion_id,
+                         type::Result result) {
+  auto promotion_callback =
+      base::BindOnce(&Promotion::OnComplete, base::Unretained(this),
+                     std::move(callback), result);
+
+  ledger_->database()->GetPromotion(
+      promotion_id,
+      [callback = std::make_shared<decltype(promotion_callback)>(
+           std::move(promotion_callback))](type::PromotionPtr promotion) {
+        std::move(*callback).Run(std::move(promotion));
+      });
 }
 
-void Promotion::OnComplete(
-    type::PromotionPtr promotion,
-    const type::Result result,
-    ledger::AttestPromotionCallback callback) {
-    BLOG(1, "Promotion completed with result " << result);
+void Promotion::OnComplete(ledger::AttestPromotionCallback callback,
+                           type::Result result,
+                           type::PromotionPtr promotion) {
+  BLOG(1, "Promotion completed with result " << result);
   if (promotion && result == type::Result::LEDGER_OK) {
     ledger_->database()->SaveBalanceReportInfoItem(
-        util::GetCurrentMonth(),
-        util::GetCurrentYear(),
+        util::GetCurrentMonth(), util::GetCurrentYear(),
         ConvertPromotionTypeToReportType(promotion->type),
-        promotion->approximate_value,
-        [](const type::Result){});
+        promotion->approximate_value, [](type::Result) {});
   }
 
-  callback(result, std::move(promotion));
+  std::move(callback).Run(result, std::move(promotion));
 }
 
 void Promotion::ProcessFetchedPromotions(
@@ -461,11 +455,11 @@ void Promotion::ProcessFetchedPromotions(
   std::move(callback).Run(result, std::move(promotions));
 }
 
-void Promotion::GetCredentials(type::PromotionPtr promotion,
-                               ledger::LegacyResultCallback callback) {
+void Promotion::GetCredentials(ledger::ResultCallback callback,
+                               type::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion is null");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -474,44 +468,42 @@ void Promotion::GetCredentials(type::PromotionPtr promotion,
   trigger.size = promotion->suggestions;
   trigger.type = type::CredsBatchType::PROMOTION;
 
-  auto creds_callback = std::bind(&Promotion::CredentialsProcessed,
-      this,
-      _1,
-      promotion->id,
-      callback);
+  auto creds_callback =
+      base::BindOnce(&Promotion::CredentialsProcessed, base::Unretained(this),
+                     std::move(callback), promotion->id);
 
-  credentials_->Start(trigger, creds_callback);
+  credentials_->Start(trigger, std::move(creds_callback));
 }
 
-void Promotion::CredentialsProcessed(type::Result result,
+void Promotion::CredentialsProcessed(ledger::ResultCallback callback,
                                      const std::string& promotion_id,
-                                     ledger::LegacyResultCallback callback) {
+                                     type::Result result) {
   if (result == type::Result::RETRY) {
     retry_timer_.Start(FROM_HERE, base::Seconds(5),
                        base::BindOnce(&Promotion::OnRetryTimerElapsed,
                                       base::Unretained(this)));
-    callback(type::Result::LEDGER_OK);
+    std::move(callback).Run(type::Result::LEDGER_OK);
     return;
   }
 
   if (result == type::Result::NOT_FOUND) {
     ledger_->database()->UpdatePromotionStatus(
-      promotion_id,
-      type::PromotionStatus::OVER,
-      callback);
+        promotion_id, type::PromotionStatus::OVER,
+        [callback = std::make_shared<decltype(callback)>(std::move(callback))](
+            type::Result result) { std::move(*callback).Run(result); });
     return;
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Credentials process not succeeded " << result);
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
   ledger_->database()->UpdatePromotionStatus(
-      promotion_id,
-      type::PromotionStatus::FINISHED,
-      callback);
+      promotion_id, type::PromotionStatus::FINISHED,
+      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
+          type::Result result) { std::move(*callback).Run(result); });
 }
 
 void Promotion::Retry(type::PromotionMap promotions) {
@@ -524,9 +516,7 @@ void Promotion::Retry(type::PromotionMap promotions) {
 
     switch (promotion.second->status) {
       case type::PromotionStatus::ATTESTED: {
-        GetCredentials(
-            std::move(promotion.second),
-            [](const type::Result _){});
+        GetCredentials(base::DoNothing(), std::move(promotion.second));
         break;
       }
       case type::PromotionStatus::ACTIVE:

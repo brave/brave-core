@@ -17,8 +17,6 @@
 #include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace {
 
@@ -82,29 +80,29 @@ CredentialsSKU::CredentialsSKU(LedgerImpl* ledger) :
 CredentialsSKU::~CredentialsSKU() = default;
 
 void CredentialsSKU::Start(const CredentialsTrigger& trigger,
-                           ledger::LegacyResultCallback callback) {
+                           ledger::ResultCallback callback) {
   DCHECK_EQ(trigger.data.size(), 2ul);
   if (trigger.data.empty()) {
     BLOG(0, "Trigger data is missing");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto get_callback = std::bind(&CredentialsSKU::OnStart,
-      this,
-      _1,
-      trigger,
-      callback);
+  auto get_callback =
+      base::BindOnce(&CredentialsSKU::OnStart, base::Unretained(this),
+                     std::move(callback), trigger);
 
   ledger_->database()->GetCredsBatchByTrigger(
-      trigger.id,
-      trigger.type,
-      get_callback);
+      trigger.id, trigger.type,
+      [callback = std::make_shared<decltype(get_callback)>(
+           std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+        std::move(*callback).Run(std::move(creds_batch));
+      });
 }
 
-void CredentialsSKU::OnStart(type::CredsBatchPtr creds,
+void CredentialsSKU::OnStart(ledger::ResultCallback callback,
                              const CredentialsTrigger& trigger,
-                             ledger::LegacyResultCallback callback) {
+                             type::CredsBatchPtr creds) {
   type::CredsBatchStatus status = type::CredsBatchStatus::NONE;
   if (creds) {
     status = creds->status;
@@ -112,96 +110,96 @@ void CredentialsSKU::OnStart(type::CredsBatchPtr creds,
 
   switch (status) {
     case type::CredsBatchStatus::NONE: {
-      Blind(trigger, callback);
+      Blind(std::move(callback), trigger);
       break;
     }
     case type::CredsBatchStatus::BLINDED: {
-      auto get_callback = std::bind(&CredentialsSKU::Claim,
-          this,
-          _1,
-          trigger,
-          callback);
+      auto get_callback =
+          base::BindOnce(&CredentialsSKU::Claim, base::Unretained(this),
+                         std::move(callback), trigger);
+
       ledger_->database()->GetCredsBatchByTrigger(
-          trigger.id,
-          trigger.type,
-          get_callback);
+          trigger.id, trigger.type,
+          [callback = std::make_shared<decltype(get_callback)>(
+               std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+            std::move(*callback).Run(std::move(creds_batch));
+          });
       break;
     }
     case type::CredsBatchStatus::CLAIMED: {
-      FetchSignedCreds(trigger, callback);
+      FetchSignedCreds(std::move(callback), trigger);
       break;
     }
     case type::CredsBatchStatus::SIGNED: {
-      auto get_callback = std::bind(&CredentialsSKU::Unblind,
-          this,
-          _1,
-          trigger,
-          callback);
+      auto get_callback =
+          base::BindOnce(&CredentialsSKU::Unblind, base::Unretained(this),
+                         std::move(callback), trigger);
+
       ledger_->database()->GetCredsBatchByTrigger(
-          trigger.id,
-          trigger.type,
-          get_callback);
+          trigger.id, trigger.type,
+          [callback = std::make_shared<decltype(get_callback)>(
+               std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+            std::move(*callback).Run(std::move(creds_batch));
+          });
       break;
     }
     case type::CredsBatchStatus::FINISHED: {
-      callback(type::Result::LEDGER_OK);
+      std::move(callback).Run(type::Result::LEDGER_OK);
       break;
     }
     case type::CredsBatchStatus::CORRUPTED: {
-      callback(type::Result::LEDGER_ERROR);
+      std::move(callback).Run(type::Result::LEDGER_ERROR);
       break;
     }
   }
 }
 
-void CredentialsSKU::Blind(const CredentialsTrigger& trigger,
-                           ledger::LegacyResultCallback callback) {
-  auto blinded_callback = std::bind(&CredentialsSKU::OnBlind,
-      this,
-      _1,
-      trigger,
-      callback);
-  common_->GetBlindedCreds(trigger, blinded_callback);
+void CredentialsSKU::Blind(ledger::ResultCallback callback,
+                           const CredentialsTrigger& trigger) {
+  auto blinded_callback =
+      base::BindOnce(&CredentialsSKU::OnBlind, base::Unretained(this),
+                     std::move(callback), trigger);
+  common_->GetBlindedCreds(trigger, std::move(blinded_callback));
 }
 
-void CredentialsSKU::OnBlind(type::Result result,
+void CredentialsSKU::OnBlind(ledger::ResultCallback callback,
                              const CredentialsTrigger& trigger,
-                             ledger::LegacyResultCallback callback) {
+                             type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Claim failed");
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
-  auto get_callback = std::bind(&CredentialsSKU::Claim,
-      this,
-      _1,
-      trigger,
-      callback);
+  auto get_callback =
+      base::BindOnce(&CredentialsSKU::Claim, base::Unretained(this),
+                     std::move(callback), trigger);
+
   ledger_->database()->GetCredsBatchByTrigger(
-      trigger.id,
-      trigger.type,
-      get_callback);
+      trigger.id, trigger.type,
+      [callback = std::make_shared<decltype(get_callback)>(
+           std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+        std::move(*callback).Run(std::move(creds_batch));
+      });
 }
 
-void CredentialsSKU::RetryPreviousStepSaved(
-    type::Result result,
-    ledger::LegacyResultCallback callback) {
+void CredentialsSKU::RetryPreviousStepSaved(ledger::ResultCallback callback,
+                                            type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Previous step not saved");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(type::Result::RETRY);
+  std::move(callback).Run(type::Result::RETRY);
 }
 
-void CredentialsSKU::Claim(type::CredsBatchPtr creds,
+void CredentialsSKU::Claim(ledger::ResultCallback callback,
                            const CredentialsTrigger& trigger,
-                           ledger::LegacyResultCallback callback) {
+                           type::CredsBatchPtr creds) {
   if (!creds) {
     BLOG(0, "Creds not found");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -210,135 +208,128 @@ void CredentialsSKU::Claim(type::CredsBatchPtr creds,
   if (!blinded_creds || blinded_creds->empty()) {
     BLOG(0, "Blinded creds are corrupted, we will try to blind again");
     auto save_callback =
-        std::bind(&CredentialsSKU::RetryPreviousStepSaved,
-            this,
-            _1,
-            callback);
+        base::BindOnce(&CredentialsSKU::RetryPreviousStepSaved,
+                       base::Unretained(this), std::move(callback));
 
     ledger_->database()->UpdateCredsBatchStatus(
-        trigger.id,
-        trigger.type,
-        type::CredsBatchStatus::NONE,
-        save_callback);
+        trigger.id, trigger.type, type::CredsBatchStatus::NONE,
+        [callback = std::make_shared<decltype(save_callback)>(
+             std::move(save_callback))](type::Result result) {
+          std::move(*callback).Run(result);
+        });
     return;
   }
 
-  auto url_callback = std::bind(&CredentialsSKU::OnClaim,
-      this,
-      _1,
-      trigger,
-      callback);
-
+  auto url_callback =
+      base::BindOnce(&CredentialsSKU::OnClaim, base::Unretained(this),
+                     std::move(callback), trigger);
 
   DCHECK_EQ(trigger.data.size(), 2ul);
   DCHECK(blinded_creds.has_value());
   payment_server_->post_credentials()->Request(
       trigger.id, trigger.data[0], ConvertItemTypeToString(trigger.data[1]),
-      std::move(blinded_creds.value()), url_callback);
+      std::move(blinded_creds.value()), std::move(url_callback));
 }
 
-void CredentialsSKU::OnClaim(type::Result result,
+void CredentialsSKU::OnClaim(ledger::ResultCallback callback,
                              const CredentialsTrigger& trigger,
-                             ledger::LegacyResultCallback callback) {
+                             type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to claim SKU creds");
-    callback(type::Result::RETRY);
+    std::move(callback).Run(type::Result::RETRY);
     return;
   }
 
-  auto save_callback = std::bind(&CredentialsSKU::ClaimStatusSaved,
-      this,
-      _1,
-      trigger,
-      callback);
+  auto save_callback =
+      base::BindOnce(&CredentialsSKU::ClaimStatusSaved, base::Unretained(this),
+                     std::move(callback), trigger);
 
   ledger_->database()->UpdateCredsBatchStatus(
-      trigger.id,
-      trigger.type,
-      type::CredsBatchStatus::CLAIMED,
-      save_callback);
+      trigger.id, trigger.type, type::CredsBatchStatus::CLAIMED,
+      [callback =
+           std::make_shared<decltype(save_callback)>(std::move(save_callback))](
+          type::Result result) { std::move(*callback).Run(result); });
 }
 
-void CredentialsSKU::ClaimStatusSaved(type::Result result,
+void CredentialsSKU::ClaimStatusSaved(ledger::ResultCallback callback,
                                       const CredentialsTrigger& trigger,
-                                      ledger::LegacyResultCallback callback) {
+                                      type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Claim status not saved: " << result);
-    callback(type::Result::RETRY);
+    std::move(callback).Run(type::Result::RETRY);
     return;
   }
 
-  FetchSignedCreds(trigger, callback);
+  FetchSignedCreds(std::move(callback), trigger);
 }
 
-void CredentialsSKU::FetchSignedCreds(const CredentialsTrigger& trigger,
-                                      ledger::LegacyResultCallback callback) {
-  auto url_callback = std::bind(&CredentialsSKU::OnFetchSignedCreds,
-      this,
-      _1,
-      _2,
-      trigger,
-      callback);
+void CredentialsSKU::FetchSignedCreds(ledger::ResultCallback callback,
+                                      const CredentialsTrigger& trigger) {
+  auto url_callback =
+      base::BindOnce(&CredentialsSKU::OnFetchSignedCreds,
+                     base::Unretained(this), std::move(callback), trigger);
 
-  payment_server_->get_credentials()->Request(
-      trigger.id,
-      trigger.data[0],
-      url_callback);
+  payment_server_->get_credentials()->Request(trigger.id, trigger.data[0],
+                                              std::move(url_callback));
 }
 
-void CredentialsSKU::OnFetchSignedCreds(type::Result result,
-                                        type::CredsBatchPtr batch,
+void CredentialsSKU::OnFetchSignedCreds(ledger::ResultCallback callback,
                                         const CredentialsTrigger& trigger,
-                                        ledger::LegacyResultCallback callback) {
+                                        type::Result result,
+                                        type::CredsBatchPtr batch) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't fetch credentials: " << result);
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
   batch->trigger_id = trigger.id;
   batch->trigger_type = trigger.type;
 
-  auto get_callback = std::bind(&CredentialsSKU::SignedCredsSaved,
-      this,
-      _1,
-      trigger,
-      callback);
-  ledger_->database()->SaveSignedCreds(std::move(batch), get_callback);
+  auto get_callback =
+      base::BindOnce(&CredentialsSKU::SignedCredsSaved, base::Unretained(this),
+                     std::move(callback), trigger);
+
+  ledger_->database()->SaveSignedCreds(
+      std::move(batch), [callback = std::make_shared<decltype(get_callback)>(
+                             std::move(get_callback))](type::Result result) {
+        std::move(*callback).Run(result);
+      });
 }
 
-void CredentialsSKU::SignedCredsSaved(type::Result result,
+void CredentialsSKU::SignedCredsSaved(ledger::ResultCallback callback,
                                       const CredentialsTrigger& trigger,
-                                      ledger::LegacyResultCallback callback) {
+                                      type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Signed creds were not saved");
-    callback(type::Result::RETRY);
+    std::move(callback).Run(type::Result::RETRY);
     return;
   }
 
-  auto get_callback = std::bind(&CredentialsSKU::Unblind,
-      this,
-      _1,
-      trigger,
-      callback);
+  auto get_callback =
+      base::BindOnce(&CredentialsSKU::Unblind, base::Unretained(this),
+                     std::move(callback), trigger);
+
   ledger_->database()->GetCredsBatchByTrigger(
-      trigger.id,
-      trigger.type,
-      get_callback);
+      trigger.id, trigger.type,
+      [callback = std::make_shared<decltype(get_callback)>(
+           std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+        std::move(*callback).Run(std::move(creds_batch));
+      });
 }
 
-void CredentialsSKU::Unblind(type::CredsBatchPtr creds,
+void CredentialsSKU::Unblind(ledger::ResultCallback callback,
                              const CredentialsTrigger& trigger,
-                             ledger::LegacyResultCallback callback) {
+                             type::CredsBatchPtr creds) {
   if (!creds) {
     BLOG(0, "Corrupted data");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (!IsPublicKeyValid(creds->public_key)) {
     BLOG(0, "Public key is not valid");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -353,38 +344,32 @@ void CredentialsSKU::Unblind(type::CredsBatchPtr creds,
 
   if (!result) {
     BLOG(0, "UnBlindTokens: " << error);
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto save_callback = std::bind(&CredentialsSKU::Completed,
-      this,
-      _1,
-      trigger,
-      callback);
+  auto save_callback =
+      base::BindOnce(&CredentialsSKU::Completed, base::Unretained(this),
+                     std::move(callback), trigger);
 
   const uint64_t expires_at = 0ul;
 
-  common_->SaveUnblindedCreds(
-      expires_at,
-      constant::kVotePrice,
-      *creds,
-      unblinded_encoded_creds,
-      trigger,
-      save_callback);
+  common_->SaveUnblindedCreds(expires_at, constant::kVotePrice, *creds,
+                              unblinded_encoded_creds, trigger,
+                              std::move(save_callback));
 }
 
-void CredentialsSKU::Completed(type::Result result,
+void CredentialsSKU::Completed(ledger::ResultCallback callback,
                                const CredentialsTrigger& trigger,
-                               ledger::LegacyResultCallback callback) {
+                               type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Unblinded token save failed");
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
   ledger_->ledger_client()->UnblindedTokensReady();
-  callback(result);
+  std::move(callback).Run(result);
 }
 
 void CredentialsSKU::RedeemTokens(const CredentialsRedeem& redeem,

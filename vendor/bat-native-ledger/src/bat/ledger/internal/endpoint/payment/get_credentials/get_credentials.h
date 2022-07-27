@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_
-#define BRAVELEDGER_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_
 
 #include <memory>
 #include <string>
@@ -49,9 +49,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace payment {
 
-using GetCredentialsCallback = std::function<void(
-    const type::Result result,
-    type::CredsBatchPtr batch)>;
+using GetCredentialsCallback =
+    base::OnceCallback<void(type::Result, type::CredsBatchPtr)>;
 
 class GetCredentials {
  public:
@@ -74,9 +73,8 @@ class GetCredentials {
       const std::string& body,
       type::CredsBatch* batch);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetCredentialsCallback callback);
+  void OnRequest(GetCredentialsCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -85,4 +83,4 @@ class GetCredentials {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_

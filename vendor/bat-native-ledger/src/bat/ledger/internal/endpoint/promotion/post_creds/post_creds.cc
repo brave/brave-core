@@ -14,8 +14,6 @@
 #include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -120,7 +118,7 @@ void PostCreds::Request(const std::string& promotion_id,
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -132,10 +130,8 @@ void PostCreds::Request(const std::string& promotion_id,
       wallet->payment_id,
       wallet->recovery_seed);
 
-  auto url_callback = std::bind(&PostCreds::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PostCreds::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(promotion_id);
@@ -143,24 +139,23 @@ void PostCreds::Request(const std::string& promotion_id,
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostCreds::OnRequest(
-    const type::UrlResponse& response,
-    PostCredsCallback callback) {
+void PostCreds::OnRequest(PostCredsCallback callback,
+                          const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string claim_id;
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, claim_id);
+    std::move(callback).Run(result, claim_id);
     return;
   }
 
   result = ParseBody(response.body, &claim_id);
-  callback(result, claim_id);
+  std::move(callback).Run(result, claim_id);
 }
 
 }  // namespace promotion

@@ -69,12 +69,11 @@ TEST_F(PostCredsTest, ServerOK) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      std::move(creds),
-      [](const type::Result result, const std::string& claim_id) {
+      "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
+      base::BindOnce([](type::Result result, const std::string& claim_id) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(claim_id, "53714048-9675-419e-baa3-369d85a2facb");
-      });
+      }));
 }
 
 TEST_F(PostCredsTest, ServerError400) {
@@ -92,11 +91,10 @@ TEST_F(PostCredsTest, ServerError400) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      std::move(creds),
-      [](const type::Result result, const std::string& claim_id) {
+      "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
+      base::BindOnce([](type::Result result, const std::string& claim_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 TEST_F(PostCredsTest, ServerError403) {
@@ -114,11 +112,10 @@ TEST_F(PostCredsTest, ServerError403) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      std::move(creds),
-      [](const type::Result result, const std::string& claim_id) {
+      "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
+      base::BindOnce([](type::Result result, const std::string& claim_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 TEST_F(PostCredsTest, ServerError409) {
@@ -136,11 +133,10 @@ TEST_F(PostCredsTest, ServerError409) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      std::move(creds),
-      [](const type::Result result, const std::string& claim_id) {
+      "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
+      base::BindOnce([](type::Result result, const std::string& claim_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 TEST_F(PostCredsTest, ServerError410) {
@@ -158,11 +154,10 @@ TEST_F(PostCredsTest, ServerError410) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      std::move(creds),
-      [](const type::Result result, const std::string& claim_id) {
+      "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
+      base::BindOnce([](type::Result result, const std::string& claim_id) {
         EXPECT_EQ(result, type::Result::NOT_FOUND);
-      });
+      }));
 }
 
 TEST_F(PostCredsTest, ServerError500) {
@@ -180,11 +175,10 @@ TEST_F(PostCredsTest, ServerError500) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      std::move(creds),
-      [](const type::Result result, const std::string& claim_id) {
+      "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
+      base::BindOnce([](type::Result result, const std::string& claim_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 TEST_F(PostCredsTest, ServerErrorRandom) {
@@ -202,11 +196,10 @@ TEST_F(PostCredsTest, ServerErrorRandom) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      std::move(creds),
-      [](const type::Result result, const std::string& claim_id) {
+      "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
+      base::BindOnce([](type::Result result, const std::string& claim_id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 }  // namespace promotion

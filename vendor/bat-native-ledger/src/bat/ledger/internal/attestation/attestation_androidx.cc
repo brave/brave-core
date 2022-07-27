@@ -11,10 +11,6 @@
 #include "bat/ledger/internal/attestation/attestation_androidx.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace ledger {
 namespace attestation {
 
@@ -87,24 +83,23 @@ void AttestationAndroid::Confirm(
   std::string nonce;
   ParseClaimSolution(solution, &token, &nonce);
 
-  auto url_callback = std::bind(&AttestationAndroid::OnConfirm,
-      this,
-      _1,
-      callback);
+  auto url_callback =
+      base::BindOnce(&AttestationAndroid::OnConfirm, base::Unretained(this),
+                     std::move(callback));
 
-  promotion_server_->put_safetynet()->Request(token, nonce, url_callback);
+  promotion_server_->put_safetynet()->Request(token, nonce,
+                                              std::move(url_callback));
 }
 
-void AttestationAndroid::OnConfirm(
-    const type::Result result,
-    ConfirmCallback callback) {
+void AttestationAndroid::OnConfirm(ConfirmCallback callback,
+                                   type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
 }  // namespace attestation

@@ -199,7 +199,10 @@ void ContributionSKU::OnGetOrder(type::SKUOrderPtr order,
   credential::CredentialsTrigger trigger;
   GetCredentialTrigger(order->Clone(), &trigger);
 
-  credentials_->Start(trigger, callback);
+  credentials_->Start(
+      trigger, base::BindOnce([](ledger::LegacyResultCallback callback,
+                                 type::Result result) { callback(result); },
+                              std::move(callback)));
 }
 
 void ContributionSKU::Completed(type::Result result,

@@ -12,8 +12,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -70,24 +68,21 @@ void PutSafetynet::Request(
       const std::string& token,
       const std::string& nonce,
       PutSafetynetCallback callback) {
-  auto url_callback = std::bind(&PutSafetynet::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PutSafetynet::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(nonce);
   request->content = GeneratePayload(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PutSafetynet::OnRequest(
-    const type::UrlResponse& response,
-    PutSafetynetCallback callback) {
+void PutSafetynet::OnRequest(PutSafetynetCallback callback,
+                             const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
 }  // namespace promotion

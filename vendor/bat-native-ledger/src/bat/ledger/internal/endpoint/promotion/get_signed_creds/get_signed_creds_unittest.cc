@@ -65,9 +65,8 @@ TEST_F(GetSignedCredsTest, ServerOK) {
           }));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         type::CredsBatch expected_batch;
         expected_batch.batch_proof = "zx0cdJhaB/OdYcUtnyXdi+lsoniN2KNgFU";
         expected_batch.public_key =
@@ -77,7 +76,7 @@ TEST_F(GetSignedCredsTest, ServerOK) {
 
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_TRUE(expected_batch.Equals(*batch));
-      });
+      }));
 }
 
 TEST_F(GetSignedCredsTest, ServerError202) {
@@ -92,12 +91,11 @@ TEST_F(GetSignedCredsTest, ServerError202) {
           }));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::RETRY_SHORT);
         EXPECT_TRUE(!batch);
-      });
+      }));
 }
 
 TEST_F(GetSignedCredsTest, ServerError400) {
@@ -112,12 +110,11 @@ TEST_F(GetSignedCredsTest, ServerError400) {
           }));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!batch);
-      });
+      }));
 }
 
 TEST_F(GetSignedCredsTest, ServerError404) {
@@ -132,12 +129,11 @@ TEST_F(GetSignedCredsTest, ServerError404) {
           }));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::NOT_FOUND);
         EXPECT_TRUE(!batch);
-      });
+      }));
 }
 
 TEST_F(GetSignedCredsTest, ServerError500) {
@@ -152,12 +148,11 @@ TEST_F(GetSignedCredsTest, ServerError500) {
           }));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!batch);
-      });
+      }));
 }
 
 TEST_F(GetSignedCredsTest, ServerErrorRandom) {
@@ -172,12 +167,11 @@ TEST_F(GetSignedCredsTest, ServerErrorRandom) {
           }));
 
   creds_->Request(
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!batch);
-      });
+      }));
 }
 
 }  // namespace promotion

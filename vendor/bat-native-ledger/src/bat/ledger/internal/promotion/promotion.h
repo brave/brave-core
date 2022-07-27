@@ -76,46 +76,40 @@ class Promotion {
                                  const std::string& payload,
                                  type::Result result);
 
-  void OnAttestPromotion(
-      type::PromotionPtr promotion,
-      const std::string& solution,
-      ledger::AttestPromotionCallback callback);
+  void OnAttestPromotion(ledger::AttestPromotionCallback callback,
+                         const std::string& solution,
+                         type::PromotionPtr promotion);
 
-  void OnAttestedPromotion(
-      const type::Result result,
-      const std::string& promotion_id,
-      ledger::AttestPromotionCallback callback);
+  void OnAttestedPromotion(ledger::AttestPromotionCallback callback,
+                           const std::string& promotion_id,
+                           type::Result result);
 
-  void OnCompletedAttestation(
-      type::PromotionPtr promotion,
-      ledger::AttestPromotionCallback callback);
+  void OnCompletedAttestation(ledger::AttestPromotionCallback callback,
+                              type::PromotionPtr promotion);
 
-  void AttestedSaved(
-      const type::Result result,
-      std::shared_ptr<type::PromotionPtr> shared_promotion,
-      ledger::AttestPromotionCallback callback);
+  void AttestedSaved(ledger::AttestPromotionCallback callback,
+                     type::PromotionPtr promotion,
+                     type::Result result);
 
-  void Complete(
-      const type::Result result,
-      const std::string& promotion_string,
-      ledger::AttestPromotionCallback callback);
+  void Complete(ledger::AttestPromotionCallback callback,
+                const std::string& promotion_string,
+                type::Result result);
 
-  void OnComplete(
-      type::PromotionPtr promotion,
-      const type::Result result,
-      ledger::AttestPromotionCallback callback);
+  void OnComplete(ledger::AttestPromotionCallback callback,
+                  type::Result result,
+                  type::PromotionPtr promotion);
 
   void ProcessFetchedPromotions(
       const type::Result result,
       type::PromotionList promotions,
       ledger::FetchPromotionCallback callback);
 
-  void GetCredentials(type::PromotionPtr promotion,
-                      ledger::LegacyResultCallback callback);
+  void GetCredentials(ledger::ResultCallback callback,
+                      type::PromotionPtr promotion);
 
-  void CredentialsProcessed(type::Result result,
+  void CredentialsProcessed(ledger::ResultCallback callback,
                             const std::string& promotion_id,
-                            ledger::LegacyResultCallback callback);
+                            type::Result result);
 
   void Retry(type::PromotionMap promotions);
 

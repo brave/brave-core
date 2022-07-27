@@ -11,10 +11,6 @@
 #include "bat/ledger/internal/attestation/attestation_iosx.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace ledger {
 namespace attestation {
 
@@ -124,32 +120,25 @@ void AttestationIOS::Confirm(
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse solution");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto url_callback = std::bind(&AttestationIOS::OnConfirm,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &AttestationIOS::OnConfirm, base::Unretained(this), std::move(callback));
 
-  promotion_server_->put_devicecheck()->Request(
-      blob,
-      signature,
-      nonce,
-      url_callback);
+  promotion_server_->put_devicecheck()->Request(blob, signature, nonce,
+                                                std::move(url_callback));
 }
 
-void AttestationIOS::OnConfirm(
-    const type::Result result,
-    ConfirmCallback callback) {
+void AttestationIOS::OnConfirm(ConfirmCallback callback, type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
 }  // namespace attestation

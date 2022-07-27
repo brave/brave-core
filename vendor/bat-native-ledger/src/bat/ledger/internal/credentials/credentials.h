@@ -21,26 +21,26 @@ class Credentials {
   virtual ~Credentials() = default;
 
   virtual void Start(const CredentialsTrigger& trigger,
-                     ledger::LegacyResultCallback callback) = 0;
+                     ledger::ResultCallback callback) = 0;
 
   virtual void RedeemTokens(const CredentialsRedeem& redeem,
                             ledger::LegacyResultCallback callback) = 0;
 
  protected:
-  virtual void Blind(const CredentialsTrigger& trigger,
-                     ledger::LegacyResultCallback callback) = 0;
+  virtual void Blind(ledger::ResultCallback callback,
+                     const CredentialsTrigger& trigger) = 0;
 
-  virtual void Claim(type::CredsBatchPtr creds,
+  virtual void Claim(ledger::ResultCallback callback,
                      const CredentialsTrigger& trigger,
-                     ledger::LegacyResultCallback callback) = 0;
+                     type::CredsBatchPtr creds) = 0;
 
-  virtual void Unblind(type::CredsBatchPtr creds,
+  virtual void Unblind(ledger::ResultCallback callback,
                        const CredentialsTrigger& trigger,
-                       ledger::LegacyResultCallback callback) = 0;
+                       type::CredsBatchPtr creds) = 0;
 
-  virtual void Completed(type::Result result,
+  virtual void Completed(ledger::ResultCallback callback,
                          const CredentialsTrigger& trigger,
-                         ledger::LegacyResultCallback callback) = 0;
+                         type::Result result) = 0;
 };
 
 }  // namespace credential

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_
 
 #include <string>
 
@@ -41,7 +41,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PutDevicecheckCallback = std::function<void(const type::Result result)>;
+using PutDevicecheckCallback = base::OnceCallback<void(type::Result)>;
 
 class PutDevicecheck {
  public:
@@ -63,9 +63,8 @@ class PutDevicecheck {
 
   type::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PutDevicecheckCallback callback);
+  void OnRequest(PutDevicecheckCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -74,4 +73,4 @@ class PutDevicecheck {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_

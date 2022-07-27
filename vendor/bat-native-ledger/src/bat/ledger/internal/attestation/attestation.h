@@ -19,8 +19,7 @@ namespace attestation {
 using StartCallback =
     base::OnceCallback<void(type::Result, const std::string&)>;
 
-using ConfirmCallback =
-    std::function<void(const type::Result)>;
+using ConfirmCallback = base::OnceCallback<void(type::Result)>;
 
 class Attestation {
  public:

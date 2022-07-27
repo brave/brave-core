@@ -55,7 +55,7 @@ using RewardsInternalsInfoCallback =
     std::function<void(type::RewardsInternalsInfoPtr)>;
 
 using AttestPromotionCallback =
-    std::function<void(type::Result, type::PromotionPtr)>;
+    base::OnceCallback<void(type::Result, type::PromotionPtr)>;
 
 using GetBalanceReportCallback =
     std::function<void(type::Result, type::BalanceReportInfoPtr)>;
