@@ -68,6 +68,7 @@ export function useAssets () {
 
   const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [rampAssetOptions, setRampAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [sardineAssetOptions, setSardineAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
 
   React.useEffect(() => {
     // Prevent calling getBuyAssets if the selectedNetwork is
@@ -77,13 +78,20 @@ export function useAssets () {
     }
 
     const fetchTokens = async () => {
-      const wyreRegistryTokens = await getBuyAssets(BraveWallet.OnRampProvider.kWyre, selectedNetwork.chainId)
-      const rampRegistryTokens = await getBuyAssets(BraveWallet.OnRampProvider.kRamp, selectedNetwork.chainId)
-      const wyreAssetOptions = assetsLogo(wyreRegistryTokens)
-      const rampAssetOptions = assetsLogo(rampRegistryTokens)
+      const registryTokens = await Promise.all([
+        getBuyAssets(BraveWallet.OnRampProvider.kWyre, selectedNetwork.chainId),
+        getBuyAssets(BraveWallet.OnRampProvider.kRamp, selectedNetwork.chainId),
+        getBuyAssets(BraveWallet.OnRampProvider.kSardine, selectedNetwork.chainId)
+      ])
+
+      const wyreAssetOptions = assetsLogo(registryTokens[0])
+      const rampAssetOptions = assetsLogo(registryTokens[1])
+      const sardineAssetOptions = assetsLogo(registryTokens[2])
+
       if (isMounted) {
         setWyreAssetOptions(wyreAssetOptions)
         setRampAssetOptions(rampAssetOptions)
+        setSardineAssetOptions(sardineAssetOptions)
       }
     }
 
@@ -114,14 +122,15 @@ export function useAssets () {
   }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
 
   const buyAssetOptions = React.useMemo(() => {
-    return [...rampAssetOptions, ...wyreAssetOptions].filter(asset => asset.chainId === selectedNetwork.chainId)
-  }, [rampAssetOptions, wyreAssetOptions, selectedNetwork])
+    return [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions].filter(asset => asset.chainId === selectedNetwork.chainId)
+  }, [rampAssetOptions, wyreAssetOptions, sardineAssetOptions, selectedNetwork])
 
   return {
     sendAssetOptions: assetsByNetwork,
     buyAssetOptions,
     rampAssetOptions,
     wyreAssetOptions,
+    sardineAssetOptions,
     panelUserAssetList: assetsByValueAndNetwork
   }
 }

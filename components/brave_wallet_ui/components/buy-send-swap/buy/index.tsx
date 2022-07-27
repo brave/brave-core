@@ -45,7 +45,7 @@ function Buy (props: Props) {
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // Custom Hooks
-  const { wyreAssetOptions, rampAssetOptions } = useAssets()
+  const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions } = useAssets()
   const { getBuyAssetUrl } = useLib()
 
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
@@ -71,19 +71,16 @@ function Buy (props: Props) {
   }, [getBuyAssetUrl, selectedNetwork, selectedAccount, buyAmount, selectedAsset])
 
   React.useEffect(() => {
-    const supportingBuyOptions = BuyOptions.filter(buyOption => {
-      if (buyOption.id === BraveWallet.OnRampProvider.kWyre) {
-        return isSelectedAssetInAssetOptions(selectedAsset, wyreAssetOptions)
-      }
-
-      if (buyOption.id === BraveWallet.OnRampProvider.kRamp) {
-        return isSelectedAssetInAssetOptions(selectedAsset, rampAssetOptions)
-      }
-
-      return false
-    })
-    setBuyOptions(supportingBuyOptions)
-  }, [selectedAsset, wyreAssetOptions, rampAssetOptions])
+    const providerAsset = {
+      [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
+      [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
+      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions,
+    }
+    
+    const supportedBuyOptions = BuyOptions
+      .filter(buyOption => isSelectedAssetInAssetOptions(selectedAsset, providerAsset[buyOption.id]))
+    setBuyOptions(supportedBuyOptions)
+  }, [selectedAsset, wyreAssetOptions, rampAssetOptions, sardineAssetOptions])
 
   const onShowAssets = React.useCallback(() => {
     onChangeBuyView('assets', 'from')
