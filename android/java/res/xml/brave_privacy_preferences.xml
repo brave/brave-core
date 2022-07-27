@@ -34,8 +34,8 @@
             android:defaultValue="true" />
             <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="tt_tt2"
-            android:title="testing"
-            android:summary="testing_summary"
+            android:title="testing2"
+            android:summary="testing2_summary"
             android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="scripts_block"
@@ -44,8 +44,8 @@
             android:defaultValue="false" />
             <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="tt_tt3"
-            android:title="testing"
-            android:summary="testing_summary"
+            android:title="testing3"
+            android:summary="testing3_summary"
             android:defaultValue="true" />
         <org.chromium.chrome.browser.settings.BraveDialogPreference
             android:key="block_cross_site_cookies"
@@ -56,8 +56,8 @@
             app:dialog_default_index="1" />
             <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="tt_tt4"
-            android:title="testing"
-            android:summary="testing_summary"
+            android:title="testing4"
+            android:summary="testing4_summary"
             android:defaultValue="true" />
         <org.chromium.chrome.browser.settings.BraveDialogPreference
             android:key="fingerprinting_protection"
@@ -68,8 +68,8 @@
             app:dialog_default_index="1" />
             <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="tt_tt5"
-            android:title="testing"
-            android:summary="testing_summary"
+            android:title="testing2"
+            android:summary="testing2_summary"
             android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="de_amp"
