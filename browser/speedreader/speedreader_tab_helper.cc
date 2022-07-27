@@ -261,7 +261,12 @@ void SpeedreaderTabHelper::OnShowOriginalPage() {
 }
 
 void SpeedreaderTabHelper::SetTheme(Theme theme) {
-  if (GetTheme() == theme)
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (!speedreader_service)
+    return;
+
+  if (speedreader_service->GetTheme() == theme)
     return;
 
   constexpr const char16_t kSetTheme[] =
@@ -276,15 +281,13 @@ void SpeedreaderTabHelper::SetTheme(Theme theme) {
     })();
   )js";
 
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
   speedreader_service->SetTheme(theme);
 
   const auto script = base::ReplaceStringPlaceholders(
       kSetTheme, base::UTF8ToUTF16(speedreader_service->GetThemeName()),
       nullptr);
 
-  web_contents()->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       script, base::DoNothing(), kIsolatedWorldId);
 }
 
