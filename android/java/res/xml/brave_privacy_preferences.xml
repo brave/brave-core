@@ -24,8 +24,8 @@
             />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="finger_print_language"
-            android:title="testing"
-            android:summary="testing_summary"
+            android:title="@string/fingerprint_language_switch"
+            android:summary="@string/fingerprint_language_switch_summary"
             android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="httpse"
