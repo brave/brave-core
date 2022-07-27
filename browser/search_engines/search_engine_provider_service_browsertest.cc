@@ -71,6 +71,13 @@ TemplateURLData CreateTestSearchEngine() {
   return result;
 }
 
+std::string GetBraveSearchProviderSyncGUID(PrefService* prefs) {
+  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      prefs, TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  DCHECK(data);
+  return data->sync_guid;
+}
+
 }  // namespace
 
 // Set alternative search provider prefs and check it's cleared on next
@@ -111,7 +118,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
 
-  EXPECT_EQ(service->GetDefaultSearchProvider()->sync_guid(),
+  EXPECT_EQ(GetBraveSearchProviderSyncGUID(profile->GetPrefs()),
             profile->GetPrefs()->GetString(
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
 }
@@ -142,8 +149,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
       service->GetDefaultSearchProvider()->prepopulate_id();
   const int initial_private_provider_id =
       incognito_service->GetDefaultSearchProvider()->prepopulate_id();
-  // Check both profile has same initial provider by default.
-  EXPECT_EQ(initial_normal_provider_id, initial_private_provider_id);
+  // Check Brave Search is default provider for private window.
+  EXPECT_EQ(static_cast<int>(
+                TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE),
+            initial_private_provider_id);
 
   // Check changing normal provider doesn't affect private provider.
   TemplateURLData test_data = CreateTestSearchEngine();
@@ -177,10 +186,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                                  "invalid_id");
   brave::SetDefaultPrivateSearchProvider(profile);
-  EXPECT_EQ(service->GetDefaultSearchProvider()->sync_guid(),
+  EXPECT_EQ(GetBraveSearchProviderSyncGUID(profile->GetPrefs()),
             profile->GetPrefs()->GetString(
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
-  EXPECT_EQ(initial_normal_provider_id,
+  EXPECT_EQ(initial_private_provider_id,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
 #if BUILDFLAG(ENABLE_TOR)
