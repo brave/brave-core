@@ -289,7 +289,7 @@ void BraveSearchConversionPromotionView::SetTypeAndInput(
 
   UpdateState();
 
-  brave_search_conversion::p3a::RecordOmniboxPromoShown(local_state_, type);
+  brave_search_conversion::p3a::RecordPromoShown(local_state_, type);
 }
 
 void BraveSearchConversionPromotionView::OnSelectionStateChanged(
@@ -307,7 +307,7 @@ void BraveSearchConversionPromotionView::UpdateState() {
 }
 
 void BraveSearchConversionPromotionView::OpenMatch() {
-  brave_search_conversion::p3a::RecordOmniboxPromoTrigger(local_state_, type_);
+  brave_search_conversion::p3a::RecordPromoTrigger(local_state_, type_);
   result_view_->OpenMatch();
 }
 

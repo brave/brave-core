@@ -27,7 +27,10 @@ const ConversionTypeInfo type_infos[] = {
         .type = ConversionType::kButton,
         .histogram_name = kSearchPromoButtonHistogramName,
     },
-};
+    {
+        .type = ConversionType::kNTP,
+        .histogram_name = kSearchPromoNTPHistogramName,
+    }};
 
 class BraveSearchConversionP3ATest : public testing::Test {
  protected:
@@ -50,21 +53,21 @@ TEST_F(BraveSearchConversionP3ATest, TestOmniboxTriggerAndDefaultEngine) {
 
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 0);
 
-    RecordOmniboxPromoShown(GetPrefs(), type_info.type);
+    RecordPromoShown(GetPrefs(), type_info.type);
 
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 1);
     histogram_tester_.ExpectBucketCount(type_info.histogram_name, 0, 1);
 
-    RecordOmniboxPromoShown(GetPrefs(), type_info.type);
+    RecordPromoShown(GetPrefs(), type_info.type);
 
     // Should not record twice
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 1);
 
-    RecordOmniboxPromoTrigger(GetPrefs(), type_info.type);
+    RecordPromoTrigger(GetPrefs(), type_info.type);
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 2);
     histogram_tester_.ExpectBucketCount(type_info.histogram_name, 1, 1);
 
-    RecordOmniboxPromoTrigger(GetPrefs(), type_info.type);
+    RecordPromoTrigger(GetPrefs(), type_info.type);
 
     // Also should not record twice
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 2);
@@ -82,12 +85,12 @@ TEST_F(BraveSearchConversionP3ATest, TestOmniboxShownAndDefaultEngine) {
 
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 0);
 
-    RecordOmniboxPromoShown(GetPrefs(), type_info.type);
+    RecordPromoShown(GetPrefs(), type_info.type);
 
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 1);
     histogram_tester_.ExpectBucketCount(type_info.histogram_name, 0, 1);
 
-    RecordOmniboxPromoShown(GetPrefs(), type_info.type);
+    RecordPromoShown(GetPrefs(), type_info.type);
 
     // Should not record twice
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 1);
