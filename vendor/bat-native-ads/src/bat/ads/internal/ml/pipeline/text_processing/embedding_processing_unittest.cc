@@ -65,27 +65,27 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, SanitizeTextHtml) {
   for (auto const& sample : samples) {
     std::string sanitized =
         embedding_processing.SanitizeText(sample.first, true);  // Act
-    ASSERT_EQ(sanitized, sample.second);                        // Assert
+    ASSERT_EQ(sample.second, sanitized);                        // Assert
   }
 }
 
 TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   // Arrange
   pipeline::EmbeddingProcessing embedding_processing;
-  pipeline::PipelineEmbeddingInfo embedding_pipeline;
+  pipeline::PipelineEmbeddingInfo pipeline_embedding;
 
   const std::map<std::string, VectorData> embeddings = {
       {"this", VectorData({1.0, 0.5, 0.7})},
       {"unittest", VectorData({-0.2, 0.8, 1.0})},
       {"simple", VectorData({0.7, -0.1, 1.3})}};
 
-  embedding_pipeline.version = 1;
-  embedding_pipeline.timestamp = "2022-01-01 01:01:01";
-  embedding_pipeline.locale = "en";
-  embedding_pipeline.embeddings_dim = 3;
-  embedding_pipeline.embeddings = embeddings;
+  pipeline_embedding.version = 1;
+  pipeline_embedding.timestamp = "2022-01-01 01:01:01";
+  pipeline_embedding.locale = "en";
+  pipeline_embedding.dim = 3;
+  pipeline_embedding.embeddings = embeddings;
 
-  embedding_processing.SetEmbeddingPipeline(embedding_pipeline);
+  embedding_processing.SetEmbeddingPipeline(pipeline_embedding);
   embedding_processing.SetIsInitialized(true);
 
   const std::map<std::string, VectorData> samples = {
@@ -98,8 +98,8 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   for (auto const& sample : samples) {
     pipeline::TextEmbeddingData embedding_data =
         embedding_processing.EmbedText(sample.first);  // Act
-    EXPECT_EQ(embedding_data.embedding.GetValuesForTesting(),
-              sample.second.GetValuesForTesting());  // Assert
+    EXPECT_EQ(sample.second.GetValuesForTesting(),
+              embedding_data.embedding.GetValuesForTesting());  // Assert
   }
 }
 

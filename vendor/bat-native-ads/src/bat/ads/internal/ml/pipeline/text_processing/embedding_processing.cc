@@ -60,7 +60,7 @@ void EmbeddingProcessing::SetEmbeddingPipeline(
   embedding_pipeline_.version = info.version;
   embedding_pipeline_.timestamp = info.timestamp;
   embedding_pipeline_.locale = info.locale;
-  embedding_pipeline_.embeddings_dim = info.embeddings_dim;
+  embedding_pipeline_.dim = info.dim;
   embedding_pipeline_.embeddings = info.embeddings;
 }
 
@@ -92,7 +92,7 @@ std::string EmbeddingProcessing::SanitizeText(const std::string& text,
 
 TextEmbeddingData EmbeddingProcessing::EmbedText(
     const std::string& text) const {
-  std::vector<float> embedding_initialize(embedding_pipeline_.embeddings_dim,
+  std::vector<float> embedding_initialize(embedding_pipeline_.dim,
                                           0.0f);
   VectorData embedding_vector = VectorData(embedding_initialize);
   TextEmbeddingData embedding_data;

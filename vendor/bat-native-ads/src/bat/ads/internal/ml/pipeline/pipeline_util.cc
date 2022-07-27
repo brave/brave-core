@@ -255,7 +255,7 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(
   if (!embeddings_value) {
     return absl::nullopt;
   }
-  int embeddings_dim = 1;
+  int dim = 1;
   std::map<std::string, VectorData> embeddings;
   for (const auto item : embeddings_value->GetDict()) {
     const auto vector = std::move(item.second.GetList());
@@ -266,11 +266,11 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(
       embedding.push_back(v);
     }
     embeddings[item.first] = VectorData(std::move(embedding));
-    embeddings_dim = embeddings[item.first].GetDimensionCount();
+    dim = embeddings[item.first].GetDimensionCount();
   }
 
   absl::optional<PipelineEmbeddingInfo> pipeline_embedding =
-      PipelineEmbeddingInfo(version, timestamp, locale, embeddings_dim,
+      PipelineEmbeddingInfo(version, timestamp, locale, dim,
                             embeddings);
 
   return pipeline_embedding;

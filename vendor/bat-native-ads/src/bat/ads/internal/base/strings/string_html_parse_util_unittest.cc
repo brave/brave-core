@@ -23,10 +23,10 @@ class BatAdsStringHtmlUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsStringHtmlUtilTest, ParseTagAttributeSimple) {
   // Arrange
-  std::string html_1 =
+  const std::string html_1 =
       "<meta property=\"og:title\" description=\"a detailed summary\" "
       "content=\"this is info \">";
-  std::string html_2 =
+  const std::string html_2 =
       "<div href=\"brave.com\" description=\"this is12 34 info\">";
   const std::vector<std::vector<std::string>> samples = {
       {html_1, "og:title", "content", "this is info "},
@@ -40,10 +40,10 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseTagAttributeSimple) {
       {html_2, "href", "description", "this is12 34 info"},
       {html_2, "div", "href", "brave.com"}};
 
-  for (auto const& sample : samples) {
+  for (const auto& sample : samples) {
     std::string parsed =
         ParseTagAttribute(sample[0], sample[1], sample[2]);  // Act
-    ASSERT_EQ(parsed, sample[3]);                            // Assert
+    ASSERT_EQ(sample[3], parsed);                            // Assert
   }
 }
 

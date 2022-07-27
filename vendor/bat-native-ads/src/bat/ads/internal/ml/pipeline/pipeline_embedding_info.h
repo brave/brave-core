@@ -24,13 +24,13 @@ struct PipelineEmbeddingInfo final {
   PipelineEmbeddingInfo(const int version,
                         const std::string& timestamp,
                         const std::string& locale,
-                        const int embeddings_dim,
+                        const int dim,
                         const std::map<std::string, VectorData>& embeddings);
 
   int version;
   std::string timestamp;
   std::string locale;
-  int embeddings_dim;
+  int dim;
   std::map<std::string, VectorData> embeddings;
 };
 
