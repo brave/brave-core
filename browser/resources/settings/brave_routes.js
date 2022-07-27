@@ -41,7 +41,7 @@ export default function addBraveRoutes(r) {
     r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks');
   }
 
-  r.BRAVE_HELP_TIPS = r.ADVANCED.createSection('/braveHelpTips', 'braveHelpTips')
+  r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')

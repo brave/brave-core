@@ -7,7 +7,7 @@ import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 
 import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
-import '../brave_help_tips_page/brave_help_tips_page.js'
+import '../brave_help_tips_page/brave_help_tips_page.m.js'
 import '../brave_ipfs_page/brave_ipfs_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
 import '../brave_rewards_page/brave_rewards_page.js'
