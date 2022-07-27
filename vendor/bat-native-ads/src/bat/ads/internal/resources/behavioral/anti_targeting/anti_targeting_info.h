@@ -20,7 +20,6 @@ namespace ads {
 namespace resource {
 
 struct AntiTargetingInfo final {
- public:
   AntiTargetingInfo();
   AntiTargetingInfo(const AntiTargetingInfo& info);
   AntiTargetingInfo& operator=(const AntiTargetingInfo& info);

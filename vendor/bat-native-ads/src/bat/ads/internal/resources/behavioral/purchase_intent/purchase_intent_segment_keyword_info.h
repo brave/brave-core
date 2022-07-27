@@ -14,7 +14,6 @@ namespace ads {
 namespace targeting {
 
 struct PurchaseIntentSegmentKeywordInfo final {
- public:
   PurchaseIntentSegmentKeywordInfo();
   PurchaseIntentSegmentKeywordInfo(const SegmentList& segments,
                                    const std::string& keywords);

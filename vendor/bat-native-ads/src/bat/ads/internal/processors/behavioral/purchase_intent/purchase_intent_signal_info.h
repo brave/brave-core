@@ -15,7 +15,6 @@ namespace ads {
 namespace targeting {
 
 struct PurchaseIntentSignalInfo final {
- public:
   PurchaseIntentSignalInfo();
   PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo& info);
   PurchaseIntentSignalInfo& operator=(const PurchaseIntentSignalInfo& info);

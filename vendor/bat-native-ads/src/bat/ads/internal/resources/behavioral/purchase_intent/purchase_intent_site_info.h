@@ -15,7 +15,6 @@ namespace ads {
 namespace targeting {
 
 struct PurchaseIntentSiteInfo final {
- public:
   PurchaseIntentSiteInfo();
   PurchaseIntentSiteInfo(const SegmentList& segments,
                          const GURL& url_netloc,

@@ -23,7 +23,6 @@ namespace ads {
 namespace targeting {
 
 struct PurchaseIntentInfo final {
- public:
   PurchaseIntentInfo();
   ~PurchaseIntentInfo();
 

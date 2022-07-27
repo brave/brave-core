@@ -19,7 +19,6 @@ namespace ads {
 namespace resource {
 
 struct ConversionsInfo final {
- public:
   ConversionsInfo();
   ~ConversionsInfo();
 
