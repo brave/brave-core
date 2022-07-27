@@ -41,7 +41,10 @@ void CategoryContentInfo::FromValue(const base::Value::Dict& root) {
     category = *value;
   }
 
-  if (const auto value = root.FindInt("opt_action")) {
+  if (const auto value = root.FindInt("optAction")) {
+    opt_action_type = static_cast<CategoryContentOptActionType>(*value);
+  } else if (const auto value = root.FindInt("opt_action")) {
+    // Migrate legacy
     opt_action_type = static_cast<CategoryContentOptActionType>(*value);
   }
 }
