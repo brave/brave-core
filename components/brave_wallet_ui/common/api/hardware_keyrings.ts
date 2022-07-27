@@ -5,13 +5,13 @@
 
 import { assert } from 'chrome://resources/js/assert.m.js'
 import { BraveWallet } from '../../constants/types'
-import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
+import EthereumLedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
 import * as HWInterfaces from '../hardware/interfaces'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 
-export type HardwareKeyring = LedgerBridgeKeyring | TrezorBridgeKeyring | SolanaLedgerBridgeKeyring
+export type HardwareKeyring = HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.LedgerFilecoinKeyring | HWInterfaces.LedgerSolanaKeyring
 
 export function getCoinName (coin: BraveWallet.CoinType) {
   switch (coin) {
@@ -30,7 +30,7 @@ const VendorTypes = [
 export type HardwareVendor = typeof VendorTypes[number]
 
 // Lazy instances for keyrings
-let ethereumHardwareKeyring: LedgerBridgeKeyring
+let ethereumHardwareKeyring: EthereumLedgerBridgeKeyring
 let filecoinHardwareKeyring: FilecoinLedgerKeyring
 let solanaHardwareKeyring: SolanaLedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
@@ -48,10 +48,10 @@ export function getHardwareKeyring (
   type: HardwareVendor,
   coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH,
   onAuthorized?: () => void
-): LedgerBridgeKeyring | HWInterfaces.TrezorKeyring | FilecoinLedgerKeyring | SolanaLedgerBridgeKeyring {
+): EthereumLedgerBridgeKeyring | HWInterfaces.TrezorKeyring | FilecoinLedgerKeyring | SolanaLedgerBridgeKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     if (coin === BraveWallet.CoinType.ETH) {
-      return getLedgerEthereumHardwareKeyring()
+      return getLedgerEthereumHardwareKeyring(onAuthorized)
     } else if (coin === BraveWallet.CoinType.FIL) {
       return getLedgerFilecoinHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.SOL) {
@@ -64,9 +64,9 @@ export function getHardwareKeyring (
   return trezorKeyring
 }
 
-export function getLedgerEthereumHardwareKeyring (): LedgerBridgeKeyring {
+export function getLedgerEthereumHardwareKeyring (onAuthorized?: () => void): EthereumLedgerBridgeKeyring {
   if (!ethereumHardwareKeyring) {
-    ethereumHardwareKeyring = new LedgerBridgeKeyring()
+    ethereumHardwareKeyring = new EthereumLedgerBridgeKeyring(onAuthorized)
   }
   return ethereumHardwareKeyring
 }
