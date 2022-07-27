@@ -625,6 +625,27 @@ public class Utils {
             return value;
     }
 
+    public static long toDecimalLamport(String amount, int decimals) {
+        try {
+            amount = removeHexPrefix(amount);
+            BigDecimal value = new BigDecimal(amount);
+
+            return value.multiply(new BigDecimal(getDecimalsDepNumber(decimals)))
+                    .round(MathContext.UNLIMITED)
+                    .longValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String removeHexPrefix(String value) {
+        if (value.startsWith("0x")) {
+            return value.substring(2);
+        }
+        return value;
+    }
+
     public static TxData getTxData(
             String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
         TxData res = new TxData();
