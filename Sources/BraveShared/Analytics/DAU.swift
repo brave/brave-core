@@ -41,7 +41,8 @@ public class DAU {
   static let dateFormatter = { () -> DateFormatter in
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
-    formatter.calendar = Calendar(identifier: .gregorian)
+    formatter.calendar = DAU.calendar
+    formatter.timeZone = TimeZone(abbreviation: "GMT")!
     return formatter
   }()
 
