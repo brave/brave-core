@@ -82,8 +82,7 @@ void MigrateSearchEngineProviderPrefs(Profile* profile) {
 }
 
 void SetDefaultPrivateSearchProvider(Profile* profile) {
-  // Set normal profile's default provider to a private profile's
-  // default provider by default.
+  // If current provider's guid is not valid, set Brave as a default provider.
   auto* preference = profile->GetPrefs()->FindPreference(
       prefs::kSyncedDefaultPrivateSearchProviderGUID);
 
@@ -93,16 +92,20 @@ void SetDefaultPrivateSearchProvider(Profile* profile) {
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
   DCHECK(service->loaded());
 
-  // If current provider's guid is not valid, set default provider.
   const std::string private_provider_guid = profile->GetPrefs()->GetString(
       prefs::kSyncedDefaultPrivateSearchProviderGUID);
 
   if (service->GetTemplateURLForGUID(private_provider_guid))
     return;
 
-  profile->GetPrefs()->SetString(
-      prefs::kSyncedDefaultPrivateSearchProviderGUID,
-      service->GetDefaultSearchProvider()->sync_guid());
+  // If current provider's guid is not valid, It means private search is not set
+  // yet or current provider was deleted from the default list.
+  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      profile->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  DCHECK(data);
+  profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                                 data->sync_guid);
 }
 
 void ClearDefaultPrivateSearchProvider(Profile* profile) {
