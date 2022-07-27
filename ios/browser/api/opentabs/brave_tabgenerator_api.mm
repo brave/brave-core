@@ -3,29 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/opentabs/brave_tab.h"
+#include "brave/ios/browser/api/opentabs/brave_tabgenerator_api.h"
 
 #include <WebKit/WebKit.h>
 #include <memory>
 
-#include "base/time/time.h"
 #include "base/strings/sys_string_conversions.h"
 
-#include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/main/browser.h"
-#include "ios/chrome/browser/main/browser_impl.h"
-#include "ios/chrome/browser/main/browser_list.h"
-#include "ios/chrome/browser/main/browser_list_factory.h"
 #include "ios/chrome/browser/sessions/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/tabs/synced_window_delegate_browser_agent.h"
-#include "ios/chrome/browser/ui/commands/command_dispatcher.h"
 #include "ios/chrome/browser/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/web_state_list/web_state_opener.h"
+
+#include "ios/web/public/thread/web_thread.h"
 #include "ios/web/public/web_state_observer.h"
-#include "ios/web/navigation/navigation_manager_delegate.h"
-#include "ios/web/navigation/navigation_manager_impl.h"
 #include "ios/web/web_state/web_state_impl.h"
 #include "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"
 
@@ -213,8 +206,13 @@ private:
   std::unique_ptr<Observer> web_state_observer_;
 };
 
-BraveNativeTab::BraveNativeTab(Browser* browser) : browser_(browser), session_id_(SessionID::InvalidValue()), navigation_delegate_(nullptr), web_state_(nullptr), web_state_observer_(nullptr) {
-  
+BraveNativeTab::BraveNativeTab(
+    Browser* browser) 
+    : browser_(browser), 
+    session_id_(SessionID::InvalidValue()), 
+    navigation_delegate_(nullptr), 
+    web_state_(nullptr), 
+    web_state_observer_(nullptr) {
   // First setup SessionID for the tab
   session_id_ = SyncedWindowDelegateBrowserAgent::FromBrowser(browser_)->GetSessionId();
   
@@ -298,7 +296,7 @@ void BraveNativeTab::SetURL(const GURL& url) {
     navigation_manager->CommitPendingItem();
     static_cast<web::WebStateImpl*>(web_state_)->OnPageLoaded(url, true);
   } else {
-    VLOG(1) << "Invalid WebState for Tab!!!";
+    VLOG(1) << "Invalid WebState while setting up the tab url!";
   }
 }
 
@@ -322,35 +320,18 @@ void BraveNativeTab::Observer::WebStateDestroyed(
   web_state->RemoveObserver(this);
 }
 
-#pragma mark - BraveTab
+#pragma mark - BraveSyncTab
 
-@interface BraveTab() {
+@interface BraveSyncTab() {
   std::unique_ptr<BraveNativeTab> native_tab_;
 }
 @end
 
-@implementation BraveTab
-static std::unique_ptr<Browser> browser_;
+@implementation BraveSyncTab
 
-- (instancetype)init {
+- (instancetype)initWithBrowser:(Browser*)browser {
   if ((self = [super init])) {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      // TODO: Move AND CLEANUP!
-      ios::ChromeBrowserStateManager* browser_state_manager =
-          GetApplicationContext()->GetChromeBrowserStateManager();
-      CHECK(browser_state_manager);
-
-      ChromeBrowserState* browser_state =
-          browser_state_manager->GetLastUsedBrowserState();
-      CHECK(browser_state);
-      
-      BrowserList* browser_list = BrowserListFactory::GetForBrowserState(browser_state);
-      browser_ = Browser::Create(browser_state);
-      browser_list->AddBrowser(browser_.get());
-    });
-
-    native_tab_ = std::make_unique<BraveNativeTab>(browser_.get());
+    native_tab_ = std::make_unique<BraveNativeTab>(browser);
   }
   return self;
 }
@@ -368,12 +349,32 @@ static std::unique_ptr<Browser> browser_;
   DCHECK(native_tab_);
   native_tab_->SetURL(net::GURLWithNSURL(url));
 }
+@end
 
-+ (void)cleanup {
-  BrowserList* browser_list = BrowserListFactory::GetForBrowserState(browser_->GetBrowserState());
-  [browser_->GetCommandDispatcher() prepareForShutdown];
-  browser_list->RemoveBrowser(browser_.get());
-  browser_->GetWebStateList()->CloseAllWebStates(WebStateList::CLOSE_NO_FLAGS);
-  browser_.reset();
+#pragma mark - BraveTabGeneratorAPI
+
+@interface BraveTabGeneratorAPI () {
+  Browser* browser_; 
 }
+@end
+
+@implementation BraveTabGeneratorAPI
+
+- (instancetype)initWithBrowser:(Browser*)browser {
+  if ((self = [super init])) {
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    DCHECK(browser);
+    browser_ = browser;
+  }
+  return self;
+}
+
+- (BraveSyncTab*)createBraveSyncTab {
+  return [[BraveSyncTab alloc] initWithBrowser:browser_];
+}
+
+- (void)dealloc {
+  browser_ = nil;
+}
+
 @end

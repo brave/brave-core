@@ -29,6 +29,7 @@
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
+#include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
@@ -55,12 +56,17 @@
 #include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
+#include "ios/chrome/browser/main/browser.h"
+#include "ios/chrome/browser/main/browser_list.h"
+#include "ios/chrome/browser/main/browser_list_factory.h"
 #include "ios/chrome/browser/passwords/ios_chrome_password_store_factory.h"
 #include "ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.h"
 #include "ios/chrome/browser/sync/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
+#include "ios/chrome/browser/ui/commands/command_dispatcher.h"
 #include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
+#include "ios/chrome/browser/web_state_list/web_state_list.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
@@ -89,6 +95,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
   std::unique_ptr<web::WebMain> _webMain;
+  std::unique_ptr<Browser> _browser;
+  BrowserList* _browserList; 
   ChromeBrowserState* _mainBrowserState;
   NSMutableDictionary<NSNumber* /* BraveWalletCoinType */, NSString*>*
       _providerScripts;
@@ -101,6 +109,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSendTabAPI* sendTabAPI;
 @property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
+@property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @end
 
 @implementation BraveCoreMain
@@ -184,6 +193,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     ChromeBrowserState* chromeBrowserState =
         browserStateManager->GetLastUsedBrowserState();
     _mainBrowserState = chromeBrowserState;
+
+    _browserList = BrowserListFactory::GetForBrowserState(_mainBrowserState);
+    _browser = Browser::Create(_mainBrowserState);
+    _browserList->AddBrowser(_browser.get());
   }
   return self;
 }
@@ -222,6 +235,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _sendTabAPI = nil;
   _syncProfileService = nil;
   _syncAPI = nil;
+  _tabGeneratorAPI = nil;
+
+  _browserList = BrowserListFactory::GetForBrowserState(_browser->GetBrowserState());
+  [_browser->GetCommandDispatcher() prepareForShutdown];
+  _browserList->RemoveBrowser(_browser.get());
+  _browser->GetWebStateList()->CloseAllWebStates(WebStateList::CLOSE_NO_FLAGS);
+  _browser.reset();
 
   _mainBrowserState = nullptr;
   _webMain.reset();
@@ -357,6 +377,13 @@ static bool CustomLogHandler(int severity,
         initWithProfileSyncService:sync_service_];
   }
   return _syncProfileService;
+}
+
+- (BraveTabGeneratorAPI*)tabGeneratorAPI {
+  if (!_tabGeneratorAPI) {
+    _tabGeneratorAPI = [[BraveTabGeneratorAPI alloc] initWithBrowser:_browser.get()];
+  }
+  return _tabGeneratorAPI;
 }
 
 + (id<BraveWalletBlockchainRegistry>)blockchainRegistry {

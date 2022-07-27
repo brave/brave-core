@@ -17,6 +17,7 @@
 @class BraveSyncProfileServiceIOS;
 @class BraveStats;
 @class AdblockService;
+@class BraveTabGeneratorAPI;
 
 @protocol BraveWalletBlockchainRegistry;
 @protocol BraveWalletEthereumProvider;
@@ -71,6 +72,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly) BraveSyncAPI* syncAPI;
 
 @property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
+
+@property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
