@@ -9,15 +9,13 @@
 #include <functional>
 #include <string>
 
-namespace base {
-class Value;
-}  // namespace base
+#include "base/values.h"
 
 namespace ads {
 namespace user_data {
 namespace builder {
 
-using BuildConversionCallback = std::function<void(base::Value)>;
+using BuildConversionCallback = std::function<void(base::Value::Dict)>;
 
 void BuildConversion(const std::string& creative_instance_id,
                      BuildConversionCallback callback);

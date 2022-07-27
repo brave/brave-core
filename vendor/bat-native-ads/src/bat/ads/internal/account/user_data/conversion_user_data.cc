@@ -20,12 +20,12 @@ void GetConversion(const std::string& creative_instance_id,
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
 
   if (confirmation_type != ConfirmationType::kConversion) {
-    callback(base::DictionaryValue());
+    callback(base::Value::Dict());
     return;
   }
 
   builder::BuildConversion(creative_instance_id,
-                           [callback](const base::Value& user_data) {
+                           [callback](const base::Value::Dict& user_data) {
                              callback(user_data.Clone());
                            });
 }

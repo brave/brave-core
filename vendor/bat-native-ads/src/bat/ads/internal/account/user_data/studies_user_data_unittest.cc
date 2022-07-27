@@ -21,7 +21,7 @@ namespace user_data {
 namespace {
 
 std::string GetStudiesAsJson() {
-  const base::DictionaryValue user_data = GetStudies();
+  const base::Value::Dict user_data = GetStudies();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

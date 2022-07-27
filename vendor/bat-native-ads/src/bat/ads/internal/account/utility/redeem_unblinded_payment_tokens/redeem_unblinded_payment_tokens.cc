@@ -92,7 +92,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
-  user_data_builder.Build([=](const base::Value& user_data) {
+  user_data_builder.Build([=](const base::Value::Dict& user_data) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet_, unblinded_payment_tokens, user_data);
     mojom::UrlRequestPtr url_request = url_request_builder.Build();

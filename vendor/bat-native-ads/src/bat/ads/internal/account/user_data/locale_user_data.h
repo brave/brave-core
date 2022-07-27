@@ -6,14 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_LOCALE_USER_DATA_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_LOCALE_USER_DATA_H_
 
-namespace base {
-class DictionaryValue;
-}  // namespace base
+#include "base/values.h"
 
 namespace ads {
 namespace user_data {
 
-base::DictionaryValue GetLocale();
+base::Value::Dict GetLocale();
 
 }  // namespace user_data
 }  // namespace ads

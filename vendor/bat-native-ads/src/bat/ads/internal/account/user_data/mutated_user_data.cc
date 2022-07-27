@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/values.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 
@@ -18,12 +17,12 @@ namespace {
 constexpr char kMutatedKey[] = "mutated";
 }  // namespace
 
-base::DictionaryValue GetMutated() {
-  base::DictionaryValue user_data;
+base::Value::Dict GetMutated() {
+  base::Value::Dict user_data;
 
   if (ConfirmationStateManager::GetInstance()->is_mutated() ||
       ClientStateManager::GetInstance()->is_mutated()) {
-    user_data.SetBoolKey(kMutatedKey, true);
+    user_data.Set(kMutatedKey, true);
   }
 
   return user_data;

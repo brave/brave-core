@@ -10,13 +10,13 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/base/timer/backoff_timer.h"
 
 namespace base {
 class Time;
-class Value;
 }  // namespace base
 
 namespace ads {
@@ -54,7 +54,7 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
                                       const std::string& creative_instance_id,
                                       const ConfirmationType& confirmation_type,
                                       const AdType& ad_type,
-                                      const base::Value& user_data) const;
+                                      const base::Value::Dict& user_data) const;
 
   void Retry();
   void OnRetry();

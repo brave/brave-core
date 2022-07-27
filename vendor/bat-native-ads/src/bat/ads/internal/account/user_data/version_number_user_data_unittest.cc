@@ -21,7 +21,7 @@ namespace user_data {
 namespace {
 
 std::string GetVersionNumberAsJson() {
-  const base::DictionaryValue user_data = GetVersionNumber();
+  const base::Value::Dict user_data = GetVersionNumber();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

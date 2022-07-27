@@ -8,11 +8,8 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace ads {
 namespace security {
@@ -20,14 +17,14 @@ namespace security {
 struct VerifiableConversionEnvelopeInfo;
 
 absl::optional<security::VerifiableConversionEnvelopeInfo>
-GetVerifiableConversionEnvelopeForUserData(const base::Value& user_data);
+GetVerifiableConversionEnvelopeForUserData(const base::Value::Dict& user_data);
 
 absl::optional<std::string> OpenEnvelope(
     const VerifiableConversionEnvelopeInfo verifiable_conversion_envelope,
     const std::string& advertiser_secret_key_base64);
 
 absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(
-    const base::Value& user_data,
+    const base::Value::Dict& user_data,
     const std::string& advertiser_secret_key);
 
 }  // namespace security

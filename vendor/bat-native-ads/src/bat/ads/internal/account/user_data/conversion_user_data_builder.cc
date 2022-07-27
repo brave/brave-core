@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/values.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
@@ -29,7 +28,7 @@ constexpr char kNonceKey[] = "nonce";
 constexpr char kConversionEnvelopeKey[] = "conversionEnvelope";
 
 void ReportConversionDoesNotExist(BuildConversionCallback callback) {
-  callback(base::DictionaryValue());
+  callback(base::Value::Dict());
 }
 
 }  // namespace
@@ -66,19 +65,18 @@ void BuildConversion(const std::string& creative_instance_id,
             verifiable_conversion_envelope =
                 verifiable_conversion_envelope_optional.value();
 
-        base::DictionaryValue conversion_envelope;
-        conversion_envelope.SetStringKey(kAlgorithmKey, kAlgorithm);
-        conversion_envelope.SetStringKey(
-            kCipherTextKey, verifiable_conversion_envelope.ciphertext);
-        conversion_envelope.SetStringKey(
+        base::Value::Dict conversion_envelope;
+        conversion_envelope.Set(kAlgorithmKey, kAlgorithm);
+        conversion_envelope.Set(kCipherTextKey,
+                                verifiable_conversion_envelope.ciphertext);
+        conversion_envelope.Set(
             kEphemeralPublicKeyKey,
             verifiable_conversion_envelope.ephemeral_public_key);
-        conversion_envelope.SetStringKey(kNonceKey,
-                                         verifiable_conversion_envelope.nonce);
+        conversion_envelope.Set(kNonceKey,
+                                verifiable_conversion_envelope.nonce);
 
-        base::DictionaryValue user_data;
-        user_data.SetKey(kConversionEnvelopeKey,
-                         std::move(conversion_envelope));
+        base::Value::Dict user_data;
+        user_data.Set(kConversionEnvelopeKey, std::move(conversion_envelope));
 
         callback(std::move(user_data));
       });

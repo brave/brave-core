@@ -62,7 +62,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   // Assert
   ConfirmationsUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
                                                  ConfirmationType::kViewed);
-  user_data_builder.Build([](const base::Value& user_data) {
+  user_data_builder.Build([](const base::Value::Dict& user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 
@@ -95,7 +95,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   // Assert
   ConfirmationsUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
                                                  ConfirmationType::kConversion);
-  user_data_builder.Build([](const base::Value& user_data) {
+  user_data_builder.Build([](const base::Value::Dict& user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 

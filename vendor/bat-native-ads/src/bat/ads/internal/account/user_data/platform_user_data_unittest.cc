@@ -20,7 +20,7 @@ namespace user_data {
 namespace {
 
 std::string GetPlatformAsJson() {
-  const base::DictionaryValue user_data = GetPlatform();
+  const base::Value::Dict user_data = GetPlatform();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

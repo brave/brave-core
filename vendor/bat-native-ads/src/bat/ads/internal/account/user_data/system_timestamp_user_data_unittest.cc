@@ -21,7 +21,7 @@ namespace user_data {
 namespace {
 
 std::string GetSystemTimestampAsJson() {
-  const base::DictionaryValue user_data = GetSystemTimestamp();
+  const base::Value::Dict user_data = GetSystemTimestamp();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

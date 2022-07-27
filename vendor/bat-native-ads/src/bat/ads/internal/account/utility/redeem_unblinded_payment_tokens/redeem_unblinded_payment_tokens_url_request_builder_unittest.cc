@@ -99,7 +99,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
 
   // Act
   user_data_builder.Build([&wallet, &unblinded_payment_tokens](
-                              const base::Value& user_data) {
+                              const base::Value::Dict& user_data) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet, unblinded_payment_tokens, user_data);
 
@@ -142,7 +142,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
 
   // Act
   user_data_builder.Build([&wallet, &unblinded_payment_tokens](
-                              const base::Value& user_data) {
+                              const base::Value::Dict& user_data) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet, unblinded_payment_tokens, user_data);
 

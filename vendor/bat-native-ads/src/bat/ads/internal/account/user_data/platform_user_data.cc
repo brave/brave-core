@@ -17,12 +17,12 @@ namespace {
 constexpr char kPlatformKey[] = "platform";
 }  // namespace
 
-base::DictionaryValue GetPlatform() {
-  base::DictionaryValue user_data;
+base::Value::Dict GetPlatform() {
+  base::Value::Dict user_data;
 
   const std::string platform_name = PlatformHelper::GetInstance()->GetName();
   if (!platform_name.empty()) {
-    user_data.SetStringKey(kPlatformKey, platform_name);
+    user_data.Set(kPlatformKey, platform_name);
   }
 
   return user_data;

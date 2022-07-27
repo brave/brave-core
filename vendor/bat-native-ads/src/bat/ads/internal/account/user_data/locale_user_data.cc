@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/privacy/locale/country_code_util.h"
@@ -23,8 +22,8 @@ constexpr char kOtherCountryCode[] = "??";
 
 }  // namespace
 
-base::DictionaryValue GetLocale() {
-  base::DictionaryValue user_data;
+base::Value::Dict GetLocale() {
+  base::Value::Dict user_data;
 
   if (!BuildChannel().is_release) {
     return user_data;
@@ -34,10 +33,10 @@ base::DictionaryValue GetLocale() {
 
   if (privacy::locale::IsMemberOfAnonymitySet(locale)) {
     const std::string country_code = brave_l10n::GetCountryCode(locale);
-    user_data.SetStringKey(kCountryCodeKey, country_code);
+    user_data.Set(kCountryCodeKey, country_code);
   } else {
     if (privacy::locale::ShouldClassifyAsOther(locale)) {
-      user_data.SetStringKey(kCountryCodeKey, kOtherCountryCode);
+      user_data.Set(kCountryCodeKey, kOtherCountryCode);
     }
   }
 

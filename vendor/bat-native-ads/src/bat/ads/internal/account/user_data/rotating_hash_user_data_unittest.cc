@@ -24,7 +24,7 @@ namespace {
 constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
 
 std::string GetRotatingHashAsJson() {
-  const base::DictionaryValue user_data = GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data = GetRotatingHash(kCreativeInstanceId);
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

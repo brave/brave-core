@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/values.h"
 #include "bat/ads/internal/studies/studies_util.h"
 
 namespace ads {
@@ -21,21 +20,21 @@ constexpr char kGroupKey[] = "group";
 
 }  // namespace
 
-base::DictionaryValue GetStudies() {
-  base::ListValue list;
+base::Value::Dict GetStudies() {
+  base::Value::List list;
 
   base::FieldTrial::ActiveGroups studies = GetActiveStudies();
   for (const auto& study : studies) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::Value::Dict dict;
 
-    dictionary.SetStringKey(kNameKey, study.trial_name);
-    dictionary.SetStringKey(kGroupKey, study.group_name);
+    dict.Set(kNameKey, study.trial_name);
+    dict.Set(kGroupKey, study.group_name);
 
-    list.Append(std::move(dictionary));
+    list.Append(std::move(dict));
   }
 
-  base::DictionaryValue user_data;
-  user_data.SetKey(kStudiesKey, std::move(list));
+  base::Value::Dict user_data;
+  user_data.Set(kStudiesKey, std::move(list));
 
   return user_data;
 }

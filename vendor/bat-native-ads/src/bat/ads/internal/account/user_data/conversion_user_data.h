@@ -9,9 +9,7 @@
 #include <functional>
 #include <string>
 
-namespace base {
-class Value;
-}  // namespace base
+#include "base/values.h"
 
 namespace ads {
 
@@ -19,7 +17,7 @@ class ConfirmationType;
 
 namespace user_data {
 
-using ConversionCallback = std::function<void(base::Value)>;
+using ConversionCallback = std::function<void(base::Value::Dict)>;
 
 void GetConversion(const std::string& creative_instance_id,
                    const ConfirmationType& confirmation_type,

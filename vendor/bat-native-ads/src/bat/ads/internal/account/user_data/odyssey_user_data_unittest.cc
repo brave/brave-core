@@ -20,7 +20,7 @@ namespace user_data {
 namespace {
 
 std::string GetOdysseyAsJson() {
-  const base::DictionaryValue user_data = GetOdyssey();
+  const base::Value::Dict user_data = GetOdyssey();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

@@ -22,7 +22,7 @@ namespace {
 constexpr char kCatalogId[] = "04a13086-8fd8-4dce-a44f-afe86f14a662";
 
 std::string GetCatalogAsJson() {
-  const base::DictionaryValue user_data = GetCatalog();
+  const base::Value::Dict user_data = GetCatalog();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);
