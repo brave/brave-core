@@ -1185,6 +1185,10 @@ if (!is_android) {
       "$root_out_dir/browser_tests.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
     ]
+
+    if (enable_playlist) {
+      deps += [ "//brave/browser/playlist/test:browser_tests" ]
+    }
   }
 
   jinja_template("brave_browser_tests_manifest") {
