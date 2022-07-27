@@ -10,6 +10,7 @@
 #include <string>
 
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
 namespace ads {
 
@@ -21,7 +22,7 @@ void LogTextEmbeddingHtmlEvent(const std::string embedding_formatted,
                                const std::string hashed_key,
                                TextEmbeddingHtmlEventCallback callback);
 void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
-void GetTextEmbeddingEventsFromDatabase();
+void GetTextEmbeddingEventsFromDatabase(database::table::GetTextEmbeddingHtmlEventsCallback callback);
 
 }  // namespace ads
 

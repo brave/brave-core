@@ -12,7 +12,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/instance_id_util.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
 namespace ads {
@@ -40,20 +40,18 @@ void PurgeStaleTextEmbeddingHtmlEvents(
       [callback](const bool success) { callback(success); });
 }
 
-void GetTextEmbeddingEventsFromDatabase() {
+void GetTextEmbeddingEventsFromDatabase(
+  database::table::GetTextEmbeddingHtmlEventsCallback callback) {
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(
       [=](const bool success,
           const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         if (!success) {
           BLOG(1, "Failed to get embeddings");
+          callback(success, {});
           return;
         }
-
-        for (const auto& text_embedding_html_event :
-             text_embedding_html_events) {
-          BLOG(7, "Stored embedding: " << text_embedding_html_event.embedding);
-        }
+        callback(success, text_embedding_html_events);
       });
 }
 

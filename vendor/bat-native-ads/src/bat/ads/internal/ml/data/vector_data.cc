@@ -139,7 +139,7 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   return dot_product;
 }
 
-void VectorData::VectorAddElementWise(const VectorData& v_add) {
+void VectorData::AddElementWise(const VectorData& v_add) {
   if (!storage_->DimensionCount() || !v_add.storage_->DimensionCount()) {
     return;
   }
@@ -168,7 +168,7 @@ void VectorData::VectorAddElementWise(const VectorData& v_add) {
   }
 }
 
-void VectorData::VectorDivideByScalar(float scalar) {
+void VectorData::DivideByScalar(float scalar) {
   if (!storage_->DimensionCount()) {
     return;
   }

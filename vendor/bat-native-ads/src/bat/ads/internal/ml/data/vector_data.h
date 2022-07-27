@@ -39,8 +39,8 @@ class VectorData final : public Data {
 
   // Mathematical vector operations
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
-  void VectorAddElementWise(const VectorData& v_add);
-  void VectorDivideByScalar(float scalar);
+  void AddElementWise(const VectorData& v_add);
+  void DivideByScalar(float scalar);
   void Normalize();
 
   int GetDimensionCount() const;

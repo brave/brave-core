@@ -153,7 +153,7 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
               std::isnan(wrong_sd) && std::isnan(wrong_ds));
 }
 
-TEST_F(BatAdsVectorDataTest, AddElementWise) {
+TEST_F(BatAdsVectorDataTest, Add) {
   // Arrange
   VectorData v1 = VectorData({0.3, 0.5, 0.8});
   VectorData v1_b = VectorData({0.3, 0.5, 0.8});
@@ -166,9 +166,9 @@ TEST_F(BatAdsVectorDataTest, AddElementWise) {
   std::vector<float> v34({0.7, 0.2, -0.35});
 
   // Act
-  v1.VectorAddElementWise(v2);
-  v2.VectorAddElementWise(v1_b);
-  v3.VectorAddElementWise(v4);
+  v1.AddElementWise(v2);
+  v2.AddElementWise(v1_b);
+  v3.AddElementWise(v4);
 
   // Assert
   for (int i = 0; i < 3; i++) {
@@ -178,7 +178,7 @@ TEST_F(BatAdsVectorDataTest, AddElementWise) {
   }
 }
 
-TEST_F(BatAdsVectorDataTest, DivideByScalar) {
+TEST_F(BatAdsVectorDataTest, ScalarDivide) {
   // Arrange
   VectorData v1 = VectorData({0.4, 0.3, 0.8});
   VectorData v2 = VectorData({1.9, -0.75, 0.0});
@@ -191,10 +191,10 @@ TEST_F(BatAdsVectorDataTest, DivideByScalar) {
   std::vector<float> v4d({-3.2, -0.8, 1.4});
 
   // Act
-  v1.VectorDivideByScalar(0.05);
-  v2.VectorDivideByScalar(1.0);
-  v3.VectorDivideByScalar(2.3);
-  v4.VectorDivideByScalar(-0.25);
+  v1.DivideByScalar(0.05);
+  v2.DivideByScalar(1.0);
+  v3.DivideByScalar(2.3);
+  v4.DivideByScalar(-0.25);
 
   // Assert
   for (int i = 0; i < 3; i++) {

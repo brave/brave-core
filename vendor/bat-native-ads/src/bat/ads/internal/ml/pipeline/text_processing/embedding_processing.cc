@@ -106,29 +106,30 @@ TextEmbeddingData EmbeddingProcessing::EmbedText(
       text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   std::vector<std::string> in_vocab_tokens;
-  float n_tokens = 0.0f;
+  int n_tokens = 0;
   for (const auto& token : tokens) {
     const auto iter = embedding_pipeline_.embeddings.find(token);
     if (iter != embedding_pipeline_.embeddings.end()) {
       BLOG(3, token << " - token found");
-      embedding_data.embedding.VectorAddElementWise(iter->second);
+      embedding_data.embedding.AddElementWise(iter->second);
       in_vocab_tokens.push_back(token);
-      n_tokens += 1.0;
+      n_tokens += 1;
     } else {
       BLOG(3, token);
     }
   }
 
-  if (n_tokens == 0.0) {
+  if (n_tokens == 0) {
     return embedding_data;
   }
 
   std::string in_vocab_text = base::JoinString(in_vocab_tokens, " ");
-  const std::vector<uint8_t> hash_vector = security::Sha256(in_vocab_text);
-  const std::string hashed_text = base::Base64Encode(hash_vector);
+  const std::vector<uint8_t> sha256_hash = security::Sha256(in_vocab_text);
+  const std::string hashed_text = base::Base64Encode(sha256_hash);
   embedding_data.text_hashed = hashed_text;
 
-  embedding_data.embedding.VectorDivideByScalar(n_tokens);
+  float scalar = static_cast<float>(n_tokens);
+  embedding_data.embedding.DivideByScalar(scalar);
   return embedding_data;
 }
 

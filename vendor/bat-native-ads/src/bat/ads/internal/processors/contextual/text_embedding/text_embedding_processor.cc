@@ -81,7 +81,15 @@ void TextEmbedding::Process(const std::string& text) {
           }
         });
 
-        GetTextEmbeddingEventsFromDatabase();
+        GetTextEmbeddingEventsFromDatabase(
+          [=](const bool success,
+            const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+            for (const auto& text_embedding_html_event :
+                text_embedding_html_events) {
+              BLOG(7, "Stored embedding: " << text_embedding_html_event.embedding);
+            }
+          });
+
       });
 }
 
