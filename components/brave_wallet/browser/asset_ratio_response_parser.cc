@@ -41,8 +41,8 @@ absl::optional<std::string> ParseSardineAuthToken(const std::string& json) {
   if (!auth_token) {
     return absl::nullopt;
   }
-
-  return *auth_token;
+  *auth_token = *client_token;
+  return true;
 }
 
 bool ParseAssetPrice(const std::string& json,
