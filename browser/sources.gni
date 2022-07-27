@@ -206,6 +206,7 @@ brave_chrome_browser_deps = [
   "//net",
   "//services/metrics/public/cpp:metrics_cpp",
   "//services/network/public/cpp",
+  "//third_party/abseil-cpp:absl",
   "//third_party/blink/public/mojom:mojom_platform_headers",
   "//third_party/widevine/cdm:buildflags",
   "//ui/base",
@@ -336,9 +337,12 @@ if (enable_brave_translate_go || enable_brave_translate_extension) {
 
 if (is_win) {
   brave_chrome_browser_sources += [
+    "//brave/browser/brave_shell_integration_win.cc",
+    "//brave/browser/brave_shell_integration_win.h",
     "//brave/browser/default_protocol_handler_utils_win.cc",
     "//brave/browser/default_protocol_handler_utils_win.h",
   ]
+
   brave_chrome_browser_deps += [
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
