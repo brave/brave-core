@@ -305,7 +305,7 @@ public class BravePrefServiceBridge {
         void setFingerprintingControlType(String type);
         String getFingerprintingControlType();
         
-        void setFingerprintingForLanguageControlType(boolean type) {
+        void setFingerprintingForLanguageControlType(boolean type);
 
         void setNoScriptControlType(String type);
         String getNoScriptControlType();
