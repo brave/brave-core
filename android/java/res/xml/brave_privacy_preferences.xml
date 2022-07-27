@@ -51,6 +51,11 @@
             android:title="@string/de_amp_switch"
             android:summary="@string/de_amp_summary"
             android:defaultValue="true" />
+      <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="tt_tt"
+            android:title="testing"
+            android:summary="testing_summary"
+            android:defaultValue="true" />
 
     <PreferenceCategory
         android:key="clear_data_section"
