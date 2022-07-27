@@ -86,7 +86,7 @@
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
     Always show bookmarks on new tab page
   </message>
-  <message name="IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS" desc="The label for a setting to show full URLs on omnibox">
+  <message name="IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS" desc="The label for the settings switch controller whether full urls are always shown">
     Always show full URLs
   </message>
   <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
