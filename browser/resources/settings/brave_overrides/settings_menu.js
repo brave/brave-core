@@ -74,7 +74,7 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: var(--cr-link-color) !important;
+        --iron-icon-fill-color: url(#selectedGradient) !important;
         color: var(--cr-link-color) !important;
         background: transparent !important;
       }
@@ -206,33 +206,14 @@ RegisterStyleOverride(
   `
 )
 
-RegisterStyleOverride('iron-icon', html`
-  <style>
-    :host svg {
-      fill: var(--iron-icon-fill-color);
-    }
-
-    :host .gradients {
-      width: 0px;
-      height: 0px;
-    }
-  </style>
-`)
+-RegisterStyleOverride('iron-icon', html`
+ <style>
+   :host svg {
+     fill: var(--iron-icon-fill-color);
+   }
+ </style>`)
 
 RegisterPolymerTemplateModifications({
-  'iron-icon': templateContent => {
-    const svg = document.createElement('svg');
-    svg.setAttribute('class', 'gradients');
-    svg.innerHTML = `<defs>
-      <linearGradient id="grad" x2="1" y2="1">
-      <stop offset="0%" stop-color="#447799" />
-      <stop offset="50%" stop-color="#224488" />
-      <stop offset="100%" stop-color="#112266" />
-      </linearGradient>
-    </defs>`;
-
-    templateContent.prepend(svg);
-  },
   'settings-menu': (templateContent) => {
 
     // Add title
