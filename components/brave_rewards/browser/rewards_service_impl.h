@@ -206,7 +206,6 @@ class RewardsServiceImpl : public RewardsService,
       GetRewardsInternalsInfoCallback callback) override;
 
   void HandleFlags(const RewardsFlags& flags);
-  void HandleFlagsForTesting(const std::string& input);
   void SetEnvironment(ledger::type::Environment environment);
   void GetEnvironment(GetEnvironmentCallback callback);
   void SetDebug(bool debug);
