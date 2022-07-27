@@ -40,8 +40,10 @@ export default function addBraveRoutes(r) {
     r.BRAVE_WALLET = r.BASIC.createSection('/wallet', 'wallet')
     r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks');
   }
-  if (!isGuest) {
+  if (r.ADVANCED) {
     r.BRAVE_HELP_TIPS = r.ADVANCED.createSection('/braveHelpTips', 'braveHelpTips')
+  } else if (!isGuest) {
+    console.error('[Brave Settings Overrides] Could not find ADVANCED page', r)
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
   if (r.SITE_SETTINGS) {
