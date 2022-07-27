@@ -34,14 +34,7 @@ template <typename T>
 bool RemoveValueFromList(base::Value::List* root, const T& value_to_remove) {
   DCHECK(root);
   return root->EraseIf([&value_to_remove](const auto& value) {
-    // TODO(cdesouza): From cr104 onwards the equality operator for
-    // base::Value/base::Value::Dict is included upstream, and this snippet
-    // should be updated accordingly when possible.
-    if constexpr (std::is_same_v<T, base::Value::Dict>) {
-      return value == base::Value(value_to_remove.Clone());
-    } else {
-      return value == value_to_remove;
-    }
+    return value == value_to_remove;
   });
 }
 
