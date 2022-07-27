@@ -96,7 +96,7 @@ class TransactionParserTests: XCTestCase {
           fromFiat: "$0.12",
           gasFee: .init(
             fee: "0.000031",
-            fiat: "$0.00"
+            fiat: "$0.000031"
           )
         )
       )
@@ -186,7 +186,7 @@ class TransactionParserTests: XCTestCase {
           fromFiat: "$0.86",
           gasFee: .init(
             fee: "0.000078",
-            fiat: "$0.00"
+            fiat: "$0.000078"
           )
         )
       )
@@ -271,7 +271,7 @@ class TransactionParserTests: XCTestCase {
           minBuyAmountFiat: "$13.32",
           gasFee: .init(
             fee: "0.000466",
-            fiat: "$0.00"
+            fiat: "$0.000466"
           )
         )
       )
@@ -356,7 +356,7 @@ class TransactionParserTests: XCTestCase {
           minBuyAmountFiat: "$0.25",
           gasFee: .init(
             fee: "0.000466",
-            fiat: "$0.00"
+            fiat: "$0.000466"
           )
         )
       )
@@ -432,8 +432,8 @@ class TransactionParserTests: XCTestCase {
           approvalAmount: "0.01",
           isUnlimited: false,
           gasFee: .init(
-            fee: "0.0000610",
-            fiat: "$0.00"
+            fee: "0.000061",
+            fiat: "$0.000061"
           )
         )
       )
@@ -509,8 +509,8 @@ class TransactionParserTests: XCTestCase {
           approvalAmount: "Unlimited",
           isUnlimited: true,
           gasFee: .init(
-            fee: "0.0000610",
-            fiat: "$0.00"
+            fee: "0.000061",
+            fiat: "$0.000061"
           )
         )
       )
@@ -659,7 +659,10 @@ class TransactionParserTests: XCTestCase {
           fromValue: "100000000",
           fromAmount: "0.1",
           fromFiat: "$2.00",
-          gasFee: .init(fee: "0.00123", fiat: "$0.02")
+          gasFee: .init(
+            fee: "0.00123",
+            fiat: "$0.0246"
+          )
         )
       )
     )
@@ -743,7 +746,10 @@ class TransactionParserTests: XCTestCase {
           fromValue: "43210000",
           fromAmount: "43.21",
           fromFiat: "$648.15",
-          gasFee: .init(fee: "0.0123", fiat: "$0.25")
+          gasFee: .init(
+            fee: "0.0123",
+            fiat: "$0.246"
+          )
         )
       )
     )

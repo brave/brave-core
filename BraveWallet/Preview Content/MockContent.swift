@@ -71,7 +71,7 @@ extension BraveWallet.BlockchainToken {
   
   static let mockSpdToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "0x1111111111222222222233333333334444444444",
-    name: "",
+    name: "Solpad",
     logo: "",
     isErc20: false,
     isErc721: false,
