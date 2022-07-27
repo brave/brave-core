@@ -72,6 +72,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
+import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
@@ -99,6 +100,7 @@ import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
@@ -227,6 +229,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
     private JsonRpcService mJsonRpcService;
+    private SwapService mSwapService;
     private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
     private TxService mTxService;
@@ -1334,18 +1337,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         mWalletModel.resetServices(
-                getApplicationContext(), null, null, null, null, null, null, null, null);
+                getApplicationContext(), null, null, null, null, null, null, null, null, null);
     }
 
     private void setupWalletModel() {
         if (mWalletModel == null) {
             mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
                     mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService);
+                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
         } else {
             mWalletModel.resetServices(getApplicationContext(), mKeyringService,
                     mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService);
+                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
         }
         setupObservers();
     }
@@ -1682,6 +1685,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
+    private void initSwapService() {
+        if (mSwapService != null) {
+            return;
+        }
+        mSwapService = SwapServiceFactory.getInstance().getSwapService(this);
+    }
+
     private void initNativeServices() {
         InitBlockchainRegistry();
         InitTxService();
@@ -1691,6 +1701,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         InitBraveWalletService();
         InitKeyringService();
         InitJsonRpcService();
+        initSwapService();
         setupWalletModel();
     }
 

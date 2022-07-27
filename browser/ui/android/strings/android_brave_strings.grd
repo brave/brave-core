@@ -1910,9 +1910,6 @@ Are you sure you want to do this?
     <message name="IDS_BINANCE" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Binance Smart Chain Mainnet
     </message>
-    <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Localhost
-    </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
     </message>
@@ -3034,6 +3031,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype">
       Solana
+    </message>
+    <message name="IDS_INVALID_SOL_ADDRESS" desc="Message to indicate invalid Solana address">
+      Not a valid SOL address
     </message>
   </messages>
   </release>

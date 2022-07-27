@@ -11,6 +11,7 @@ import android.util.Pair;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
@@ -245,11 +246,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         final ParsedTransactionFees feeDetails = ParsedTransactionFees.parseTransactionFees(
                 txInfo, selectedNetwork, networkSpotPrice, solFeeEstimatesFee);
-
         TxDataUnion txDataUnion = txInfo.txDataUnion;
-        TxData1559 txData = txDataUnion.getEthTxData1559();
-        SolanaTxData solTxData = null; // TODO: add with SOL
-        FilTxData filTxData = null; // TODO: add with FIL
+        // TxDataUnion has some unnecessary assertion in getter methods that crashes the app
+        TxData1559 txData = TransactionUtils.safeEthTxData1559(txDataUnion);
+        SolanaTxData solTxData = TransactionUtils.safeSolTxData1559(txDataUnion);
+        FilTxData filTxData = TransactionUtils.safeFilTxData1559(txDataUnion);
 
         final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction = txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER

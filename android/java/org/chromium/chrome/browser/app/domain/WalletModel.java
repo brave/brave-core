@@ -15,6 +15,7 @@ import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
+import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 
 // Under development, some parts not tested so use with caution
@@ -28,6 +29,7 @@ public class WalletModel {
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
+    private SwapService mSwapService;
     private final CryptoModel mCryptoModel;
     private final DappsModel mDappsModel;
     private final KeyringModel mKeyringModel;
@@ -38,7 +40,7 @@ public class WalletModel {
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
             TxService txService, EthTxManagerProxy ethTxManagerProxy,
             SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
-            BraveWalletService braveWalletService) {
+            BraveWalletService braveWalletService, SwapService swapService) {
         mContext = context;
         mKeyringService = keyringService;
         mBlockchainRegistry = blockchainRegistry;
@@ -48,10 +50,12 @@ public class WalletModel {
         mSolanaTxManagerProxy = solanaTxManagerProxy;
         mAssetRatioService = assetRatioService;
         mBraveWalletService = braveWalletService;
+        mSwapService = swapService;
+        // Do not change the object initialisation order without discussion
         mCryptoActions = new CryptoActions();
         mCryptoModel = new CryptoModel(mContext, mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
-                mAssetRatioService, mCryptoActions);
+                mAssetRatioService, mCryptoActions, mSwapService);
         mDappsModel = new DappsModel(
                 mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
         mKeyringModel = new KeyringModel(
@@ -65,7 +69,7 @@ public class WalletModel {
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
             TxService txService, EthTxManagerProxy ethTxManagerProxy,
             SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
-            BraveWalletService braveWalletService) {
+            BraveWalletService braveWalletService, SwapService swapService) {
         mContext = context;
         setKeyringService(keyringService);
         setBlockchainRegistry(blockchainRegistry);
@@ -75,6 +79,7 @@ public class WalletModel {
         setSolanaTxManagerProxy(solanaTxManagerProxy);
         setAssetRatioService(assetRatioService);
         setBraveWalletService(braveWalletService);
+        mSwapService = swapService;
         mCryptoModel.resetServices(mContext, mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService);
@@ -184,14 +189,13 @@ public class WalletModel {
          * The network, coin, and account needs to be update whenever any of the other two are
          * changed
          *
-         * @param chainId of selected chain
-         * @param coin    of current account and network, SOL, ETH etc.
+         * @param coin of current account and network, SOL, ETH etc.
          */
         @Override
         public void updateCoinAccountNetworkInfo(@CoinType.EnumType int coin) {
             // update coin
             mBraveWalletService.setSelectedCoin(coin);
-            mCryptoModel.updateCoinType(isCoinUpdated -> {
+            mCryptoModel.updateCoinType(coin, isCoinUpdated -> {
                 // update account per selected coin
                 mKeyringModel.update();
                 // update network per selected coin
