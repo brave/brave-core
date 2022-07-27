@@ -9,7 +9,6 @@
 
 #include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/values.h"
 #include "bat/ads/confirmation_type.h"
 
 namespace ads {
@@ -24,14 +23,15 @@ constexpr char kCreatedAtKey[] = "timestamp_in_seconds";
 constexpr char kValueKey[] = "estimated_redemption_value";
 constexpr char kConfirmationTypeKey[] = "confirmation_type";
 
-absl::optional<TransactionInfo> ParseTransaction(const base::Value& value) {
+absl::optional<TransactionInfo> ParseTransaction(
+    const base::Value::Dict& value) {
   TransactionInfo transaction;
 
   // Id
   transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Created at
-  const std::string* created_at = value.FindStringKey(kCreatedAtKey);
+  const std::string* created_at = value.FindString(kCreatedAtKey);
   if (!created_at) {
     return absl::nullopt;
   }
@@ -43,15 +43,14 @@ absl::optional<TransactionInfo> ParseTransaction(const base::Value& value) {
   transaction.created_at = base::Time::FromDoubleT(created_at_as_double);
 
   // Value
-  const absl::optional<double> value_optional = value.FindDoubleKey(kValueKey);
+  const absl::optional<double> value_optional = value.FindDouble(kValueKey);
   if (!value_optional) {
     return absl::nullopt;
   }
   transaction.value = value_optional.value();
 
   // Confirmation type
-  const std::string* confirmation_type =
-      value.FindStringKey(kConfirmationTypeKey);
+  const std::string* confirmation_type = value.FindString(kConfirmationTypeKey);
   if (!confirmation_type) {
     return absl::nullopt;
   }
@@ -61,20 +60,16 @@ absl::optional<TransactionInfo> ParseTransaction(const base::Value& value) {
 }
 
 absl::optional<TransactionList> GetTransactionsFromList(
-    const base::Value& value) {
-  if (!value.is_list()) {
-    return absl::nullopt;
-  }
-
+    const base::Value::List& value) {
   TransactionList transactions;
 
-  for (const auto& transaction_value : value.GetList()) {
+  for (const auto& transaction_value : value) {
     if (!transaction_value.is_dict()) {
       return absl::nullopt;
     }
 
     const absl::optional<TransactionInfo>& transaction_optional =
-        ParseTransaction(transaction_value);
+        ParseTransaction(transaction_value.GetDict());
     if (!transaction_optional) {
       return absl::nullopt;
     }
@@ -89,15 +84,15 @@ absl::optional<TransactionList> GetTransactionsFromList(
 }  // namespace
 
 absl::optional<TransactionList> ParseTransactionHistory(
-    const base::Value& value) {
-  const base::Value* const transaction_history_value =
-      value.FindDictKey(kTransactionHistoryKey);
+    const base::Value::Dict& value) {
+  const base::Value::Dict* transaction_history_value =
+      value.FindDict(kTransactionHistoryKey);
   if (!transaction_history_value) {
     return absl::nullopt;
   }
 
-  const base::Value* const transaction_value =
-      transaction_history_value->FindListKey(kTransactionListKey);
+  const base::Value::List* transaction_value =
+      transaction_history_value->FindList(kTransactionListKey);
   if (!transaction_value) {
     return absl::nullopt;
   }
