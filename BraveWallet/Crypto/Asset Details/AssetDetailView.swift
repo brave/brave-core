@@ -17,7 +17,7 @@ struct AssetDetailView: View {
 
   @State private var tableInset: CGFloat = -16.0
   @State private var isShowingAddAccount: Bool = false
-  @State private var transactionDetails: BraveWallet.TransactionInfo?
+  @State private var transactionDetails: TransactionDetailsStore?
 
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
@@ -84,7 +84,9 @@ struct AssetDetailView: View {
             .font(.footnote)
         } else {
           ForEach(assetDetailStore.transactionSummaries) { txSummary in
-            Button(action: { self.transactionDetails = txSummary.txInfo }) {
+            Button(action: {
+              self.transactionDetails = assetDetailStore.transactionDetailsStore(for: txSummary.txInfo)
+            }) {
               TransactionSummaryView(summary: txSummary, displayAccountCreator: true)
             }
             .contextMenu {
@@ -135,16 +137,18 @@ struct AssetDetailView: View {
     )
     .background(
       Color.clear
-        .sheet(item: $transactionDetails) { tx in
-          TransactionDetailsView(
-            info: tx,
-            networkStore: networkStore,
-            keyringStore: keyringStore,
-            visibleTokens: [assetDetailStore.token],
-            allTokens: [], // AssetDetailView is specific to a single token
-            assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue],
-            currencyCode: assetDetailStore.currencyCode
+        .sheet(
+          isPresented: Binding(
+            get: { self.transactionDetails != nil },
+            set: { if !$0 { self.transactionDetails = nil } }
           )
+        ) {
+          if let transactionDetailsStore = transactionDetails {
+            TransactionDetailsView(
+              transactionDetailsStore: transactionDetailsStore,
+              networkStore: networkStore
+            )
+          }
         }
     )
   }

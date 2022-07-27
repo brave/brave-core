@@ -15,28 +15,38 @@ enum TransactionParser {
     solEstimatedTxFee: UInt64? = nil,
     currencyFormatter: NumberFormatter
   ) -> GasFee? {
+    var gasFee: GasFee?
+    let existingMinimumFractionDigits = currencyFormatter.minimumFractionDigits
+    let existingMaximumFractionDigits = currencyFormatter.maximumFractionDigits
+    // Show additional decimal places for gas fee calculations (Solana has low tx fees).
+    currencyFormatter.minimumFractionDigits = 2
+    currencyFormatter.maximumFractionDigits = 10
     switch network.coin {
     case .eth:
       let isEIP1559Transaction = transaction.isEIP1559Transaction
       let limit = transaction.ethTxGasLimit
       let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: limit.removingHexPrefix, radix: .hex))
       let hexFee = isEIP1559Transaction ? (transaction.txDataUnion.ethTxData1559?.maxFeePerGas ?? "") : transaction.ethTxGasPrice
-      if let value = formatter.decimalString(for: hexFee.removingHexPrefix, radix: .hex, decimals: Int(network.decimals)) {
-        if let doubleValue = Double(value), let assetRatio = assetRatios[network.symbol.lowercased()] {
-          return .init(fee: value, fiat: currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00")
+      if let value = formatter.decimalString(for: hexFee.removingHexPrefix, radix: .hex, decimals: Int(network.decimals))?.trimmingTrailingZeros {
+        if let doubleValue = Double(value),
+            let assetRatio = assetRatios[network.symbol.lowercased()],
+            let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) {
+          gasFee = .init(fee: value, fiat: fiat)
         } else {
-          return .init(fee: value, fiat: "$0.00")
+          gasFee = .init(fee: value, fiat: "$0.00")
         }
       }
     case .sol:
       guard let solEstimatedTxFee = solEstimatedTxFee else { return nil }
-      let gasFee = "\(solEstimatedTxFee)"
+      let estimatedTxFee = "\(solEstimatedTxFee)"
       let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(network.decimals)))
-      if let value = formatter.decimalString(for: gasFee, radix: .decimal, decimals: Int(network.decimals))?.trimmingTrailingZeros {
-        if let doubleValue = Double(value), let assetRatio = assetRatios[network.symbol.lowercased()] {
-          return .init(fee: value, fiat: currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00")
+      if let value = formatter.decimalString(for: estimatedTxFee, radix: .decimal, decimals: Int(network.decimals))?.trimmingTrailingZeros {
+        if let doubleValue = Double(value),
+            let assetRatio = assetRatios[network.symbol.lowercased()],
+            let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) {
+          gasFee = .init(fee: value, fiat: fiat)
         } else {
-          return .init(fee: value, fiat: "$0.00")
+          gasFee = .init(fee: value, fiat: "$0.00")
         }
       }
     case .fil:
@@ -44,7 +54,10 @@ enum TransactionParser {
     @unknown default:
       break
     }
-    return nil
+    // Restore previous fraction digits
+    currencyFormatter.minimumFractionDigits = existingMinimumFractionDigits
+    currencyFormatter.maximumFractionDigits = existingMaximumFractionDigits
+    return gasFee
   }
   
   static func token(

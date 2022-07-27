@@ -222,6 +222,18 @@ class AssetDetailStore: ObservableObject {
         )
       }
   }
+  
+  func transactionDetailsStore(for transaction: BraveWallet.TransactionInfo) -> TransactionDetailsStore {
+    TransactionDetailsStore(
+      transaction: transaction,
+      keyringService: keyringService,
+      walletService: walletService,
+      rpcService: rpcService,
+      assetRatioService: assetRatioService,
+      blockchainRegistry: blockchainRegistry,
+      solanaTxManagerProxy: solTxManagerProxy
+    )
+  }
 }
 
 extension AssetDetailStore: BraveWalletKeyringServiceObserver {

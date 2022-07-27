@@ -15,7 +15,7 @@ struct AccountActivityView: View {
   @ObservedObject var networkStore: NetworkStore
 
   @State private var detailsPresentation: DetailsPresentation?
-  @State private var transactionDetails: BraveWallet.TransactionInfo?
+  @State private var transactionDetails: TransactionDetailsStore?
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
@@ -45,9 +45,6 @@ struct AccountActivityView: View {
   }
 
   var body: some View {
-    let assetRatios = activityStore.assets.reduce(into: [String: Double](), {
-      $0[$1.token.symbol.lowercased()] = Double($1.price)
-    })
     List {
       Section {
         AccountActivityHeaderView(account: accountInfo) { editMode in
@@ -83,7 +80,9 @@ struct AccountActivityView: View {
           emptyTextView(Strings.Wallet.noTransactions)
         } else {
           ForEach(activityStore.transactionSummaries) { txSummary in
-            Button(action: { self.transactionDetails = txSummary.txInfo }) {
+            Button(action: {
+              self.transactionDetails = activityStore.transactionDetailsStore(for: txSummary.txInfo)
+            }) {
               TransactionSummaryView(summary: txSummary)
             }
             .contextMenu {
@@ -116,16 +115,18 @@ struct AccountActivityView: View {
     )
     .background(
       Color.clear
-        .sheet(item: $transactionDetails) { tx in
-          TransactionDetailsView(
-            info: tx,
-            networkStore: networkStore,
-            keyringStore: keyringStore,
-            visibleTokens: activityStore.assets.map(\.token),
-            allTokens: activityStore.allTokens,
-            assetRatios: assetRatios,
-            currencyCode: activityStore.currencyCode
+        .sheet(
+          isPresented: Binding(
+            get: { self.transactionDetails != nil },
+            set: { if !$0 { self.transactionDetails = nil } }
           )
+        ) {
+          if let transactionDetailsStore = transactionDetails {
+            TransactionDetailsView(
+              transactionDetailsStore: transactionDetailsStore,
+              networkStore: networkStore
+            )
+          }
         }
     )
     .onReceive(keyringStore.$allKeyrings) { allKeyrings in
