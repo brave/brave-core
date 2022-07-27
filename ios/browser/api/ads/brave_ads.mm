@@ -233,13 +233,17 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 + (AdsSysInfo*)sysInfo {
   auto sys_info = [[AdsSysInfo alloc] init];
+  sys_info.deviceId = base::SysUTF8ToNSString(ads::SysInfo().device_id);
+  sys_info.didOverrideCommandLineArgsFlag =
+      ads::SysInfo().did_override_command_line_args_flag;
   sys_info.isUncertainFuture = ads::SysInfo().is_uncertain_future;
-
   return sys_info;
 }
 
 + (void)setSysInfo:(AdsSysInfo*)sysInfo {
-  ads::SysInfo().did_override_command_line_args_flag = false;
+  ads::SysInfo().device_id = base::SysNSStringToUTF8(sysInfo.deviceId);
+  ads::SysInfo().did_override_command_line_args_flag =
+      sysInfo.didOverrideCommandLineArgsFlag;
   ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
