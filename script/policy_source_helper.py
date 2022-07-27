@@ -16,7 +16,9 @@ def AddBravePolicies(template_file_contents):
             'name': 'TorDisabled',
             'type': 'main',
             'schema': {'type': 'boolean'},
-            'supported_on': ['chrome.win:78-', 'chrome.mac:93-', 'chrome.linux:93-'],
+            'supported_on': ['chrome.win:78-',
+                             'chrome.mac:93-',
+                             'chrome.linux:93-'],
             'features': {
                 'dynamic_refresh': False,
                 'per_profile': False,
@@ -27,14 +29,15 @@ def AddBravePolicies(template_file_contents):
             'id': 0,
             'caption': '''Disables the tor feature.''',
             'tags': [],
-            'desc': '''This policy allows an admin to specify that tor feature must be disabled
-                    at startup.''',
+            'desc': ('''This policy allows an admin to specify that tor '''
+                     '''must be disabled at startup.'''),
         },
         {
             'name': 'IPFSEnabled',
             'type': 'main',
             'schema': {'type': 'boolean'},
             'supported_on': ['chrome.*:87-'],
+            'future_on': ['android'],
             'features': {
                 'dynamic_refresh': False,
                 'per_profile': True,
@@ -45,8 +48,8 @@ def AddBravePolicies(template_file_contents):
             'id': 1,
             'caption': '''Enable IPFS feature''',
             'tags': [],
-            'desc': '''This policy allows an admin to specify whether IPFS feature can be
-                    enabled.''',
+            'desc': ('''This policy allows an admin to specify whether IPFS '''
+                     '''feature can be enabled.'''),
         }
     ]
 
