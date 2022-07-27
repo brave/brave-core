@@ -1,0 +1,35 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("opentabs") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_opentabs_api+private.h",
+    "brave_opentabs_api.h",
+    "brave_opentabs_api.mm",
+    # "brave_opentabs_observer.h",
+    # "opentabs_session_service_listener_ios.h",
+    # "opentabs_session_service_listener_ios.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/ios:ios",
+    "//ios/chrome/browser",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/sessions",
+    "//ios/chrome/browser/ui/recent_tabs:synced_sessions",
+    "//ios/web/public/thread",
+    "//net",
+    "//ui/base",
+    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

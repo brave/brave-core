@@ -25,6 +25,7 @@ source_set("browser") {
     "api/certificate",
     "api/favicon",
     "api/history",
+    "api/opentabs",
     "api/password",
     "api/sync",
     "api/url",

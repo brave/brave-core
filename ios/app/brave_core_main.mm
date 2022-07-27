@@ -27,6 +27,7 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
+#include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
@@ -91,6 +92,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BravePasswordAPI* passwordAPI;
+@property(nonatomic) BraveOpenTabsAPI* openTabsAPI;
 @property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @end
@@ -294,13 +296,6 @@ static bool CustomLogHandler(int severity,
   return _historyAPI;
 }
 
-- (BraveSyncAPI*)syncAPI {
-  if (!_syncAPI) {
-    _syncAPI = [[BraveSyncAPI alloc] initWithBrowserState:_mainBrowserState];
-  }
-  return _syncAPI;
-}
-
 - (BravePasswordAPI*)passwordAPI {
   if (!_passwordAPI) {
     scoped_refptr<password_manager::PasswordStoreInterface> password_store_ =
@@ -312,6 +307,21 @@ static bool CustomLogHandler(int severity,
         [[BravePasswordAPI alloc] initWithPasswordStore:password_store_];
   }
   return _passwordAPI;
+}
+
+- (BraveSyncAPI*)syncAPI {
+  if (!_syncAPI) {
+    _syncAPI = [[BraveSyncAPI alloc] initWithBrowserState:_mainBrowserState];
+  }
+  return _syncAPI;
+}
+
+- (BraveOpenTabsAPI*)openTabsAPI {
+  if (!_openTabsAPI) {
+    _openTabsAPI = 
+        [[BraveOpenTabsAPI alloc] initWithBrowserState:_mainBrowserState];
+  }
+  return _openTabsAPI;
 }
 
 - (BraveSyncProfileServiceIOS*)syncProfileService {
