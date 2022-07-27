@@ -270,8 +270,7 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(
   }
 
   absl::optional<PipelineEmbeddingInfo> pipeline_embedding =
-      PipelineEmbeddingInfo(version, timestamp, locale, dim,
-                            embeddings);
+      PipelineEmbeddingInfo(version, timestamp, locale, dim, embeddings);
 
   return pipeline_embedding;
 }

@@ -92,8 +92,7 @@ std::string EmbeddingProcessing::SanitizeText(const std::string& text,
 
 TextEmbeddingData EmbeddingProcessing::EmbedText(
     const std::string& text) const {
-  std::vector<float> embedding_initialize(embedding_pipeline_.dim,
-                                          0.0f);
+  std::vector<float> embedding_initialize(embedding_pipeline_.dim, 0.0f);
   VectorData embedding_vector = VectorData(embedding_initialize);
   TextEmbeddingData embedding_data;
   embedding_data.embedding = embedding_vector;
