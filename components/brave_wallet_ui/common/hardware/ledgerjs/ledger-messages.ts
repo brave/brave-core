@@ -4,6 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from '../../../../common/loadTimeData'
+import type {
+  SolGetAccountResponse,
+  SolGetAccountCommand,
+  SolSignTransactionResponse,
+  SolSignTransactionCommand
+} from './sol-ledger-messages'
 
 export const LEDGER_BRIDGE_URL = loadTimeData.getString('braveWalletLedgerBridgeUrl').slice(0, -1) // Strip off trailing '/' in URL
 
@@ -25,6 +31,7 @@ export type CommandMessage = {
   id: string
   origin: string
 }
+// TODO should we also pass the CoinType?
 
 export type LedgerResponsePayload = {
   success: boolean
@@ -49,31 +56,6 @@ export type UnlockCommand = CommandMessage & {
   command: LedgerCommand.Unlock
 }
 
-// GetAccounts command
-export type GetAccountResponsePayload = LedgerResponsePayload & {
-  address: Buffer
-}
-export type GetAccountResponse = CommandMessage & {
-  payload: GetAccountResponsePayload | LedgerError
-}
-export type GetAccountCommand = CommandMessage & {
-  command: LedgerCommand.GetAccount
-  path: string
-}
-
-// SignTransaction command
-export type SignTransactionResponsePayload = LedgerResponsePayload & {
-  signature: Buffer
-}
-export type SignTransactionResponse= CommandMessage & {
-  payload: SignTransactionResponsePayload | LedgerError
-}
-export type SignTransactionCommand = CommandMessage & {
-  command: LedgerCommand.SignTransaction
-  path: string
-  rawTxBytes: Buffer
-}
-
 // AuthorizationRequired command
 export type AuthorizationRequiredCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationRequired
@@ -85,8 +67,8 @@ export type AuthorizationSuccessCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationSuccess
 }
 
-export type LedgerFrameCommand = UnlockCommand | GetAccountCommand | SignTransactionCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand
-export type LedgerFrameResponse = UnlockResponse| GetAccountResponse| SignTransactionResponse
+export type LedgerFrameCommand = UnlockCommand | SolGetAccountCommand | SolSignTransactionCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand
+export type LedgerFrameResponse = UnlockResponse| SolGetAccountResponse| SolSignTransactionResponse
 
 type LedgerCommandHandler <T>= ((command: LedgerFrameCommand) => Promise<T>)
 type LedgerCommandResponseHandler <T>= ((response: T) => void)

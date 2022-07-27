@@ -7,14 +7,16 @@ import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Sol from '@ledgerhq/hw-app-solana'
 import {
   LedgerCommand,
-  UnlockResponse,
-  GetAccountCommand,
-  GetAccountResponse,
-  GetAccountResponsePayload,
-  SignTransactionCommand,
-  SignTransactionResponsePayload,
-  SignTransactionResponse
+  UnlockResponse
 } from './ledger-messages'
+import {
+  SolGetAccountCommand,
+  SolGetAccountResponse,
+  SolGetAccountResponsePayload,
+  SolSignTransactionCommand,
+  SolSignTransactionResponsePayload,
+  SolSignTransactionResponse
+} from './sol-ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
 // SolanaLedgerUntrustedMessagingTransport makes calls to the Solana app on a Ledger device
@@ -22,20 +24,20 @@ export class SolanaLedgerUntrustedMessagingTransport extends LedgerUntrustedMess
   constructor (targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
     this.addCommandHandler<UnlockResponse>(LedgerCommand.Unlock, this.handleUnlock)
-    this.addCommandHandler<GetAccountResponse>(LedgerCommand.GetAccount, this.handleGetAccount)
-    this.addCommandHandler<SignTransactionResponse>(LedgerCommand.SignTransaction, this.handleSignTransaction)
+    this.addCommandHandler<SolGetAccountResponse>(LedgerCommand.GetAccount, this.handleGetAccount)
+    this.addCommandHandler<SolSignTransactionResponse>(LedgerCommand.SignTransaction, this.handleSignTransaction)
   }
 
-  private handleGetAccount = async (command: GetAccountCommand): Promise<GetAccountResponse> => {
+  private handleGetAccount = async (command: SolGetAccountCommand): Promise<SolGetAccountResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Sol(transport)
     try {
       const result = await app.getAddress(command.path)
-      const getAccountResponsePayload: GetAccountResponsePayload = {
+      const getAccountResponsePayload: SolGetAccountResponsePayload = {
         success: true,
         address: result.address
       }
-      const response: GetAccountResponse = {
+      const response: SolGetAccountResponse = {
         id: command.id,
         command: command.command,
         payload: getAccountResponsePayload,
@@ -43,7 +45,7 @@ export class SolanaLedgerUntrustedMessagingTransport extends LedgerUntrustedMess
       }
       return response
     } catch (error) {
-      const response: GetAccountResponse = {
+      const response: SolGetAccountResponse = {
         id: command.id,
         command: command.command,
         payload: error,
@@ -55,16 +57,16 @@ export class SolanaLedgerUntrustedMessagingTransport extends LedgerUntrustedMess
     }
   }
 
-  private handleSignTransaction = async (command: SignTransactionCommand): Promise<SignTransactionResponse> => {
+  private handleSignTransaction = async (command: SolSignTransactionCommand): Promise<SolSignTransactionResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Sol(transport)
     try {
       const result = await app.signTransaction(command.path, Buffer.from(command.rawTxBytes))
-      const signTransactionResponsePayload: SignTransactionResponsePayload = {
+      const signTransactionResponsePayload: SolSignTransactionResponsePayload = {
         success: true,
         signature: result.signature
       }
-      const response: SignTransactionResponse = {
+      const response: SolSignTransactionResponse = {
         id: command.id,
         command: command.command,
         payload: signTransactionResponsePayload,
@@ -72,7 +74,7 @@ export class SolanaLedgerUntrustedMessagingTransport extends LedgerUntrustedMess
       }
       return response
     } catch (error) {
-      const response: SignTransactionResponse = {
+      const response: SolSignTransactionResponse = {
         id: command.id,
         command: command.command,
         payload: error,

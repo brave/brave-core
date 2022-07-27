@@ -11,13 +11,16 @@ import {
 } from '../types'
 import {
   LedgerCommand,
-  GetAccountResponse,
-  GetAccountResponsePayload,
-  SignTransactionResponse,
-  SignTransactionResponsePayload,
   LedgerErrorsCodes,
   LedgerError
 } from './ledger-messages'
+import {
+  SolGetAccountResponse,
+  SolGetAccountResponsePayload,
+  SolSignTransactionResponse,
+  SolSignTransactionResponsePayload
+} from './sol-ledger-messages'
+
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
 
@@ -54,7 +57,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
       return result
     }
 
-    const data = await this.sendCommand<SignTransactionResponse>({
+    const data = await this.sendCommand<SolSignTransactionResponse>({
       command: LedgerCommand.SignTransaction,
       id: LedgerCommand.SignTransaction,
       path: path,
@@ -73,7 +76,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
       const ledgerError = data.payload as LedgerError
       return { success: false, error: ledgerError.message, code: ledgerError.statusCode }
     }
-    const responsePayload = data.payload as SignTransactionResponsePayload
+    const responsePayload = data.payload as SolSignTransactionResponsePayload
     return { success: true, payload: responsePayload.signature }
   }
 
@@ -81,7 +84,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     let accounts = []
     const zeroPath = this.getPathForIndex(0)
     for (const path of paths) {
-      const data = await this.sendCommand<GetAccountResponse>({
+      const data = await this.sendCommand<SolGetAccountResponse>({
         command: LedgerCommand.GetAccount,
         id: LedgerCommand.GetAccount,
         path: path,
@@ -96,7 +99,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
         const ledgerError = data.payload as LedgerError
         return { success: false, error: ledgerError, code: ledgerError.statusCode }
       }
-      const responsePayload = data.payload as GetAccountResponsePayload
+      const responsePayload = data.payload as SolGetAccountResponsePayload
 
       if (path === zeroPath) {
         this.deviceId = await hardwareDeviceIdFromAddress(responsePayload.address)
