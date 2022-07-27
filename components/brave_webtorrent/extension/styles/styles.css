@@ -2,104 +2,107 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-a {
-  text-decoration: none;
-  color: #fb542b;
-}
+ :global {
+  a {
+    text-decoration: none;
+    color: #fb542b;
+  }
 
-.headerContainer {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 0 18px;
-}
+  .headerContainer {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 18px;
+  }
 
-.headerContainer .__column {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
+  .headerContainer .__column {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
 
-.headerContainer .__torrentTitle {
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 36px;
-}
+  .headerContainer .__torrentTitle {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 36px;
+  }
 
-.headerContainer .__button {
-  white-space: nowrap;
-  margin: 12px;
-}
+  .headerContainer .__button {
+    white-space: nowrap;
+    margin: 12px;
+  }
 
-.torrentSubhead {
-  border-top: solid 1px #c8c8d5;
-  margin: 16px 0;
-}
+  .torrentSubhead {
+    border-top: solid 1px #c8c8d5;
+    margin: 16px 0;
+  }
 
-.starterText {
-  font-size: 20px;
-  margin: 32px 0;
-}
+  .starterText {
+    font-size: 20px;
+    margin: 32px 0;
+  }
 
-.torrentHeading {
-  font-size: 20px;
-  margin: 32px 0 16px 0;
-  font-weight: 500;
-  color: #fb542b;
-}
+  .torrentHeading {
+    font-size: 20px;
+    margin: 32px 0 16px 0;
+    font-weight: 500;
+    color: #fb542b;
+  }
 
-.torrentStatus {
-  font-size: 16px;
-}
+  .torrentStatus {
+    font-size: 16px;
+  }
 
-.torrentStat, .torrentStatDivider {
-  margin-right: 15px;
-}
+  .torrentStat, .torrentStatDivider {
+    margin-right: 15px;
+  }
 
-.footerNotice {
-  padding: 18px 0;
-  border-top: solid 1px #c8c8d5;
-  color: #8b8b9f;
-  line-height: 18px;
-}
+  .footerNotice {
+    padding: 18px 0;
+    border-top: solid 1px #c8c8d5;
+    color: #8b8b9f;
+    line-height: 18px;
+  }
 
-#webTorrentCredit {
-  color: #8b8b9f;
-}
+  #webTorrentCredit {
+    color: #8b8b9f;
+  }
 
-.loadingContainer {
-  display: flex;
-  flex-direction: column;
-}
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+  }
 
-.loadingContainer .__icon {
-  height: 32px;
-  margin: 0 0 18px;
-}
+  .loadingContainer .__icon {
+    height: 32px;
+    margin: 0 0 18px;
+  }
 
-#video, #audio, #image, #object, #iframe {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  max-height: 100%;
-  max-width: 100%;
-  margin: auto;
-}
+  #video, #audio, #image, #object, #iframe {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+  }
 
-#object, #iframe {
-  width: 100%;
-  height: 100%;
-}
+  #object, #iframe {
+    width: 100%;
+    height: 100%;
+  }
 
-#iframe {
-  border: 0;
-}
+  #iframe {
+    border: 0;
+  }
 
-a.inactive {
-  color: gray;
-}
+  a.inactive {
+    color: gray;
+  }
 
-a.inactive:hover {
-  cursor: default;
+  a.inactive:hover {
+    cursor: default;
+  }
+
 }
