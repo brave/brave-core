@@ -61,36 +61,38 @@ void DailyStorage::FilterToDay() {
 
 void DailyStorage::Load() {
   DCHECK(daily_values_.empty());
-  const base::Value* list = prefs_->GetList(pref_name_);
-  if (!list) {
-    return;
-  }
+  // TODO(cdesouza): From cr105, this function return a reference rather than a
+  // pointer. Leaving a dereference here for now, but once this breaks on 105,
+  // please remove this comment and the dereferencing bellow.
+  const base::Value::List& list = *prefs_->GetValueList(pref_name_);
   base::Time min = clock_->Now() - base::Days(1);
-  for (const auto& it : list->GetList()) {
-    const base::Value* day = it.FindKey("day");
-    const base::Value* value = it.FindKey("value");
+  for (const auto& it : list) {
+    DCHECK(it.is_dict());
+    const base::Value::Dict& dict = it.GetDict();
+    auto day = dict.FindDouble("day");
+    auto value = dict.FindDouble("value");
     // Validate correct data format
-    if (!day || !value || !day->is_double() || !value->is_double()) {
+    if (!day || !value) {
       continue;
     }
     // Disregard if old value
-    auto time = base::Time::FromDoubleT(day->GetDouble());
+    auto time = base::Time::FromDoubleT(*day);
     if (time <= min) {
       continue;
     }
-    daily_values_.push_back({time, static_cast<uint64_t>(value->GetDouble())});
+    daily_values_.push_back({time, static_cast<uint64_t>(*value)});
   }
 }
 
 void DailyStorage::Save() {
   FilterToDay();
   ListPrefUpdate update(prefs_, pref_name_);
-  base::Value* list = update.Get();
-  list->ClearList();
+  base::Value::List& list = update.Get()->GetList();
+  list.clear();
   for (const auto& u : daily_values_) {
-    base::DictionaryValue value;
-    value.SetKey("day", base::Value(u.time.ToDoubleT()));
-    value.SetDoubleKey("value", u.value);
-    list->Append(std::move(value));
+    base::Value::Dict value;
+    value.Set("day", u.time.ToDoubleT());
+    value.Set("value", static_cast<double>(u.value));
+    list.Append(std::move(value));
   }
 }
