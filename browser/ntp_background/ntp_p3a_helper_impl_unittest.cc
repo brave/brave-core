@@ -10,6 +10,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -35,6 +36,7 @@ class NTPP3AHelperImplTest : public testing::Test {
   void SetUp() override {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
 
+    brave::RegisterPrefsForBraveReferralsService(local_state_.registry());
     brave::BraveP3AService::RegisterPrefs(local_state_.registry(),
                                           /*first_run*/ false);
     NTPP3AHelperImpl::RegisterLocalStatePrefs(local_state_.registry());
@@ -65,25 +67,28 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
 
   const std::string histogram_name = GetExpectedHistogramName(kViewsEventType);
 
-  ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 
   histogram_tester_->ExpectTotalCount(histogram_name, 0);
 
   // Mock a P3A rotation to trigger just-in-time collection of metrics
-  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true);
+  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true, /*is_star*/ false);
 
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
 
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
-  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true);
+  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true, /*is_star*/ false);
 
   histogram_tester_->ExpectBucketCount(histogram_name, 2, 1);
-  ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 
-  ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
 
   histogram_tester_->ExpectTotalCount(histogram_name, 2);
-  ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_FALSE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 }
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
@@ -92,26 +97,29 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
 
   const std::string histogram_name = GetExpectedHistogramName(kClicksEventType);
 
-  ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 
   histogram_tester_->ExpectTotalCount(histogram_name, 0);
 
-  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true);
+  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true, /*is_star*/ false);
 
   histogram_tester_->ExpectBucketCount(histogram_name, 2, 1);
 
   // Recorded a click while recorded count is "in-flight"
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
-  ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
 
-  ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 
-  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true);
+  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true, /*is_star*/ false);
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
 
-  ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
 
-  ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_FALSE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   histogram_tester_->ExpectTotalCount(histogram_name, 2);
 }
 
@@ -120,7 +128,8 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
 
   const std::string histogram_name = GetExpectedHistogramName(kLandsEventType);
 
-  ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_FALSE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 
   ntp_p3a_helper_->SetLastTabURL(GURL("https://adexample.com/page1"));
 
@@ -134,8 +143,9 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
 
   histogram_tester_->ExpectTotalCount(histogram_name, 0);
 
-  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true);
-  ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true, /*is_star*/ false);
+  ASSERT_TRUE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
 
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
@@ -150,12 +160,14 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
 
   task_environment_.FastForwardBy(base::Seconds(5));
 
-  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true);
+  ntp_p3a_helper_->OnP3ARotation(/*is_express*/ true, /*is_star*/ false);
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 2);
 
-  ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
-  ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
-  ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
+  ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
+  ASSERT_FALSE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 }
 
 }  // namespace ntp_background_images

@@ -1,6 +1,7 @@
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/p3a/buildflags.gni")
 import("//build/buildflag_header.gni")
+import("//testing/test.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -90,7 +91,9 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "brave_p2a_protocols_unittest.cc",
+    "brave_p3a_metric_log_store_unittest.cc",
     "brave_p3a_service_unittest.cc",
+    "brave_p3a_star_log_store_unittest.cc",
     "metric_names_unittest.cc",
   ]
   deps = [
