@@ -103,3 +103,9 @@ a.inactive {
 a.inactive:hover {
   cursor: default;
 }
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(30, 32, 41);
+    color: #F4F4F4 !important;
+  }
+}
