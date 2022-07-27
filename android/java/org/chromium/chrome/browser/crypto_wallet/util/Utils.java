@@ -239,18 +239,18 @@ public class Utils {
         openBuySendSwapActivity(activity, activityType, null);
     }
 
-    public static void openAssetDetailsActivity(Activity activity, String chainId,
-            String assetSymbol, String assetName, String assetId, String contractAddress,
-            String assetLogo, int assetDecimals) {
+    public static void openAssetDetailsActivity(
+            Activity activity, String chainId, BlockchainToken asset) {
         assert activity != null;
         Intent assetDetailIntent = new Intent(activity, AssetDetailActivity.class);
         assetDetailIntent.putExtra(CHAIN_ID, chainId);
-        assetDetailIntent.putExtra(ASSET_SYMBOL, assetSymbol);
-        assetDetailIntent.putExtra(ASSET_NAME, assetName);
-        assetDetailIntent.putExtra(ASSET_ID, assetId);
-        assetDetailIntent.putExtra(ASSET_LOGO, assetLogo);
-        assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, contractAddress);
-        assetDetailIntent.putExtra(ASSET_DECIMALS, assetDecimals);
+        assetDetailIntent.putExtra(ASSET_SYMBOL, asset.symbol);
+        assetDetailIntent.putExtra(ASSET_NAME, asset.name);
+        assetDetailIntent.putExtra(ASSET_ID, asset.tokenId);
+        assetDetailIntent.putExtra(ASSET_LOGO, asset.logo);
+        assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, asset.contractAddress);
+        assetDetailIntent.putExtra(ASSET_DECIMALS, asset.decimals);
+        assetDetailIntent.putExtra(COIN_TYPE, asset.coin);
         activity.startActivity(assetDetailIntent);
     }
 
@@ -273,7 +273,7 @@ public class Utils {
 
     public static void isCustomNetwork(JsonRpcService jsonRpcService, int coinType, String chainId,
             Callbacks.Callback1<Boolean> callback) {
-        if (jsonRpcService == null) {
+        if (coinType != CoinType.ETH || jsonRpcService == null) {
             callback.call(false);
             return;
         }
@@ -703,10 +703,11 @@ public class Utils {
         }
         executor.execute(() -> {
             Uri logoFileUri = Uri.parse(iconPath);
-            int resizeFactor = 110;
+            int resizeFactorTemp = 110;
             if (textView != null) {
-                resizeFactor = 70;
+                resizeFactorTemp = 70;
             }
+            final int resizeFactor = resizeFactorTemp;
             try (InputStream inputStream =
                             context.getContentResolver().openInputStream(logoFileUri)) {
                 final Bitmap bitmap =
@@ -725,11 +726,29 @@ public class Utils {
                 });
             } catch (Exception exc) {
                 org.chromium.base.Log.e("Utils", exc.getMessage());
-                handler.post(() -> {
-                    if (iconImg != null) {
-                        iconImg.setImageResource(iconId);
-                    }
-                });
+                if (textView != null) {
+                    Drawable iconDrawable =
+                            ApiCompatibilityUtils.getDrawable(context.getResources(), iconId);
+                    Bitmap bitmap = Bitmap.createBitmap(iconDrawable.getIntrinsicWidth(),
+                            iconDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    iconDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    iconDrawable.draw(canvas);
+                    Bitmap icon = Utils.resizeBitmap(bitmap, resizeFactor);
+                    Drawable carat = ApiCompatibilityUtils.getDrawable(
+                            context.getResources(), R.drawable.ic_carat_down);
+                    handler.post(() -> {
+                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                new BitmapDrawable(context.getResources(), icon), null,
+                                drawCaratDown ? carat : null, null);
+                    });
+                } else {
+                    handler.post(() -> {
+                        if (iconImg != null) {
+                            iconImg.setImageResource(iconId);
+                        }
+                    });
+                }
             }
         });
     }
@@ -1523,5 +1542,25 @@ public class Utils {
         }
 
         return drawableId;
+    }
+
+    public static String getKeyringForCoinType(int coinType) {
+        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+        switch (coinType) {
+            case CoinType.ETH:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+            case CoinType.SOL:
+                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
+                break;
+            case CoinType.FIL:
+                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
+                break;
+            default:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+        }
+
+        return keyring;
     }
 }

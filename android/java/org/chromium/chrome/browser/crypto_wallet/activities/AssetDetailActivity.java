@@ -79,6 +79,7 @@ public class AssetDetailActivity
     private String mContractAddress;
     private String mAssetLogo;
     private int mAssetDecimals;
+    private int mCoinType;
     private BlockchainToken mAsset;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -103,6 +104,7 @@ public class AssetDetailActivity
             mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
             mAssetDecimals =
                     getIntent().getIntExtra(Utils.ASSET_DECIMALS, Utils.ETH_DEFAULT_DECIMALS);
+            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
 
             getBlockchainToken(() -> {});
 
@@ -123,8 +125,8 @@ public class AssetDetailActivity
             String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
             String iconPath =
                     mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
-            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
-                    assetTitleText, false);
+            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath,
+                    Utils.getCoinIcon(mCoinType), null, assetTitleText, false);
         } else {
             Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, mContractAddress,
                     mAssetSymbol, getResources().getDisplayMetrics().density, assetTitleText, this,
@@ -240,10 +242,10 @@ public class AssetDetailActivity
         KeyringService keyringService = getKeyringService();
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (keyringService != null && jsonRpcService != null) {
-            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+            keyringService.getKeyringInfo(Utils.getKeyringForCoinType(mCoinType), keyringInfo -> {
                 if (keyringInfo == null) return;
                 accountInfos = keyringInfo.accountInfos;
-                jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+                jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
                     WalletListItemModel thisAssetItemModel = new WalletListItemModel(
                             R.drawable.ic_eth, mAsset.name, mAsset.symbol, mAsset.tokenId, "", "");
                     Utils.getTxExtraInfo(this, selectedNetwork, accountInfos, mAsset, false,
@@ -279,10 +281,12 @@ public class AssetDetailActivity
                                             String.format(Locale.getDefault(), "%.4f %s",
                                                     thisAccountBalance, mAsset.symbol);
 
-                                    walletListItemModelList.add(new WalletListItemModel(
+                                    WalletListItemModel model = new WalletListItemModel(
                                             R.drawable.ic_eth, accountInfo.name,
                                             accountInfo.address, fiatBalanceString,
-                                            cryptoBalanceString, accountInfo.isImported));
+                                            cryptoBalanceString, accountInfo.isImported);
+                                    model.setAccountInfo(accountInfo);
+                                    walletListItemModelList.add(model);
 
                                     if (walletCoinAdapter != null) {
                                         walletCoinAdapter.setWalletListItemModelList(
@@ -308,7 +312,7 @@ public class AssetDetailActivity
             return;
         }
 
-        getJsonRpcService().getNetwork(CoinType.ETH, selectedNetwork -> {
+        getJsonRpcService().getNetwork(mCoinType, selectedNetwork -> {
             TokenUtils.getExactUserAsset(getBraveWalletService(), selectedNetwork,
                     selectedNetwork.coin, mAssetSymbol, mAssetName, mAssetId, mContractAddress,
                     mAssetDecimals, new Callback<BlockchainToken>() {
@@ -340,6 +344,10 @@ public class AssetDetailActivity
         accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
         accountDetailActivityIntent.putExtra(
                 Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
+        if (walletListItemModel.getAccountInfo() != null) {
+            accountDetailActivityIntent.putExtra(
+                    Utils.COIN_TYPE, walletListItemModel.getAccountInfo().coin);
+        }
         startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
     }
 
@@ -376,7 +384,7 @@ public class AssetDetailActivity
     }
 
     private void adjustButtonsVisibilities() {
-        Utils.isCustomNetwork(getJsonRpcService(), CoinType.ETH, mChainId, isCustomNetwork -> {
+        Utils.isCustomNetwork(getJsonRpcService(), mCoinType, mChainId, isCustomNetwork -> {
             if (!isCustomNetwork) {
                 mBtnBuy.setVisibility(View.VISIBLE);
                 mBtnSwap.setVisibility(View.VISIBLE);

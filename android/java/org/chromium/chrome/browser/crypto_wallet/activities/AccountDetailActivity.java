@@ -146,8 +146,7 @@ public class AccountDetailActivity
 
     private void fetchAccountInfo(NetworkInfo selectedNetwork) {
         assert mKeyringService != null;
-        // TODO(sergz): replace for a correct keyring
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+        mKeyringService.getKeyringInfo(Utils.getKeyringForCoinType(mCoinType), keyringInfo -> {
             if (keyringInfo == null) {
                 return;
             }
@@ -204,8 +203,7 @@ public class AccountDetailActivity
     public void onAssetClick(BlockchainToken asset) {
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(mCoinType, chainId -> {
-            Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset.symbol,
-                    asset.name, asset.tokenId, asset.contractAddress, asset.logo, asset.decimals);
+            Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset);
         });
     }
 
