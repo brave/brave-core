@@ -23,7 +23,7 @@
             app:dialog_default_index="1"
             />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="tt_tt"
+            android:key="finger_print_language"
             android:title="testing"
             android:summary="testing_summary"
             android:defaultValue="true" />
