@@ -22,36 +22,32 @@
 namespace ads {
 
 std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
-  base::Value dto(base::Value::Type::DICTIONARY);
+  base::Value::Dict dto;
 
-  dto.SetStringKey("creativeInstanceId", confirmation.creative_instance_id);
+  dto.Set("creativeInstanceId", confirmation.creative_instance_id);
+  dto.Set("payload", base::Value::Dict());
 
-  dto.SetKey("payload", base::Value(base::Value::Type::DICTIONARY));
-
-  base::Value blinded_payment_tokens(base::Value::Type::LIST);
+  base::Value::List blinded_payment_tokens;
   const absl::optional<std::string> blinded_payment_token_base64_optional =
       confirmation.blinded_payment_token.EncodeBase64();
   if (blinded_payment_token_base64_optional) {
     blinded_payment_tokens.Append(
         blinded_payment_token_base64_optional.value());
   }
-  dto.SetKey("blindedPaymentTokens", std::move(blinded_payment_tokens));
+  dto.Set("blindedPaymentTokens", std::move(blinded_payment_tokens));
 
-  dto.SetStringKey("type", confirmation.type.ToString());
+  dto.Set("type", confirmation.type.ToString());
 
   const absl::optional<std::string> public_key_base64_optional =
       confirmation.unblinded_token.public_key.EncodeBase64();
   if (public_key_base64_optional) {
-    dto.SetStringKey("publicKey", public_key_base64_optional.value());
+    dto.Set("publicKey", public_key_base64_optional.value());
   }
 
   absl::optional<base::Value> user_data =
       base::JSONReader::Read(confirmation.user_data);
   if (user_data && user_data->is_dict()) {
-    base::DictionaryValue* user_data_dictionary = nullptr;
-    if (user_data->GetAsDictionary(&user_data_dictionary)) {
-      dto.MergeDictionary(user_data_dictionary);
-    }
+    dto.Merge(std::move(user_data->GetDict()));
   }
 
   std::string json;
@@ -105,15 +101,14 @@ std::string CreateCredential(const privacy::UnblindedTokenInfo& unblinded_token,
     return "";
   }
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::Value::Dict dict;
 
-  dictionary.SetStringKey("payload", payload);
-  dictionary.SetStringKey("signature",
-                          verification_signature_base64_optional.value());
-  dictionary.SetStringKey("t", token_preimage_base64_optional.value());
+  dict.Set("payload", payload);
+  dict.Set("signature", verification_signature_base64_optional.value());
+  dict.Set("t", token_preimage_base64_optional.value());
 
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
+  base::JSONWriter::Write(dict, &json);
 
   std::string credential_base64url;
   base::Base64UrlEncode(json, base::Base64UrlEncodePolicy::INCLUDE_PADDING,
