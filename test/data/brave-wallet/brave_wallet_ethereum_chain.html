@@ -16,8 +16,10 @@
                          decimals: 18
                      },
                      rpcUrls: [rpc ? decodeURIComponent(rpc) : 'https://bsc-dataseed.binance.org/'],
-                     iconUrls: [],
-                     blockExplorerUrls: ['https://bscscan.com/'],
+                     iconUrls: ['https://test.com/icon.png', 'http://bar/',
+                                'http://localhost/', 'ftp://localhost/'],
+                     blockExplorerUrls: ['https://bscscan.com/', 'http://bar/',
+                                'http://localhost/', 'ftp://localhost/']
                  }]
   window.ethereum.request(
       { method: 'wallet_addEthereumChain', params:data }).then(result => {

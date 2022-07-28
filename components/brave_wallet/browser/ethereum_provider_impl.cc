@@ -159,7 +159,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
-  auto chain = brave_wallet::ValueToEthNetworkInfo(*list.begin());
+  auto chain = brave_wallet::ValueToEthNetworkInfo(*list.begin(), true);
   if (!chain) {
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,

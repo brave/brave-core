@@ -922,35 +922,36 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChain) {
       "0x111", mojom::ProviderError::kUserRejectedRequest, "test");
   run_loop.Run();
 
+  // Test missing valid rpc URLs.
+  base::RunLoop run_loop2;
   provider()->AddEthereumChain(
       R"({"params": [{
-        "chainId": "0x111",
-        "chainName": "Binance1 Smart Chain",
-        "rpcUrls": ["https://bsc-dataseed.binance.org/"],
+        "chainId": "0x222",
+        "chainName": "Bad Chain",
+        "rpcUrls": ["ftp://bar"],
       },]})",
       base::BindLambdaForTesting(
-          [&run_loop](base::Value id, base::Value formed_response,
-                      const bool reject,
-                      const std::string& first_allowed_account,
-                      const bool update_bind_js_properties) {
+          [&run_loop2](base::Value id, base::Value formed_response,
+                       const bool reject,
+                       const std::string& first_allowed_account,
+                       const bool update_bind_js_properties) {
             mojom::ProviderError error;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-            EXPECT_EQ(error_message, "response");
-            run_loop.Quit();
+            EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+            EXPECT_EQ(error_message,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+            run_loop2.Quit();
           }),
       base::Value());
-  provider()->OnAddEthereumChain(
-      "0x111", mojom::ProviderError::kUserRejectedRequest, "response");
+  run_loop2.Run();
 }
 
 TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChainRequestCompletedError) {
   GURL url("https://brave.com");
   Navigate(url);
   base::RunLoop run_loop;
-  size_t callback_called = 0;
   provider()->AddEthereumChain(
       R"({"params": [{
         "chainId": "0x111",
@@ -967,14 +968,12 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChainRequestCompletedError) {
                                 &error_message);
             EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
             EXPECT_EQ(error_message, "test message");
-            ++callback_called;
             run_loop.Quit();
           }),
       base::Value());
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
   run_loop.Run();
-  EXPECT_EQ(callback_called, 1u);
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
