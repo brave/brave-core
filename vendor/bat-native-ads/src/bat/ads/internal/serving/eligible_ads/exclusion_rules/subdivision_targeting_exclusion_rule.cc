@@ -13,7 +13,6 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/base/locale/subdivision_code_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/locale/locale_manager.h"
 
 namespace ads {
 
@@ -83,8 +82,7 @@ std::string SubdivisionTargetingExclusionRule::GetLastMessage() const {
 
 bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) {
-  const std::string locale = LocaleManager::GetInstance()->GetLocale();
-  if (!subdivision_targeting_->ShouldAllowForLocale(locale)) {
+  if (!subdivision_targeting_->ShouldAllow()) {
     return !DoesAdTargetSubdivision(creative_ad);
   }
 
