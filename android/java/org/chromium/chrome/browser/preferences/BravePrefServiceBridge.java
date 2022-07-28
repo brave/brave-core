@@ -112,6 +112,13 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getFingerprintingControlType();
     }
 
+    /**
+     * @param whether the Fingerprinting for language enabled
+     */
+    public void setFingerprintingForLanguageControlEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setFingerprintingForLanguageControlEnabled(enabled);
+    }
+
     public void setCosmeticFilteringControlType(int type) {
         BravePrefServiceBridgeJni.get().setCosmeticFilteringControlType(type);
     }
@@ -297,6 +304,8 @@ public class BravePrefServiceBridge {
 
         void setFingerprintingControlType(String type);
         String getFingerprintingControlType();
+
+        void setFingerprintingForLanguageControlEnabled(boolean enabled);
 
         void setNoScriptControlType(String type);
         String getNoScriptControlType();

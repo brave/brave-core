@@ -257,6 +257,13 @@ JNI_BravePrefServiceBridge_GetFingerprintingControlType(JNIEnv* env) {
       env, brave_shields::ControlTypeToString(control_type));
 }
 
+void JNI_BravePrefServiceBridge_SetFingerprintingForLanguageControlEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kBraveReduceLanguage, enabled);
+}
+
 void JNI_BravePrefServiceBridge_SetNoScriptControlType(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type) {
