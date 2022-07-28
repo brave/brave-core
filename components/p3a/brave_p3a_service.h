@@ -86,6 +86,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   absl::optional<MetricLogType> GetDynamicMetricLogType(
       const std::string& histogram_name) const override;
 
+  void DisableStarAttestationForTesting();
+
  private:
   friend class base::RefCountedThreadSafe<BraveP3AService>;
   ~BraveP3AService() override;
@@ -94,8 +96,6 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   void LoadDynamicMetrics();
 
-  // Invoked by callbacks registered by our service. Since these callbacks
-  // can fire on any thread, this method reposts everything to UI thread.
   void OnHistogramChangedOnUI(const char* histogram_name,
                               base::HistogramBase::Sample sample,
                               size_t bucket);
