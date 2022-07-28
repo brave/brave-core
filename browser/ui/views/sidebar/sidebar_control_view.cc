@@ -39,7 +39,7 @@ class ControlViewMenuModel : public ui::SimpleMenuModel {
   ControlViewMenuModel& operator=(const ControlViewMenuModel&) = delete;
 
   // ui::SimpleMenuModel overrides:
-  const gfx::FontList* GetLabelFontListAt(int index) const override {
+  const gfx::FontList* GetLabelFontListAt(size_t index) const override {
     if (index == 0) {
       return &ui::ResourceBundle::GetSharedInstance().GetFontList(
           ui::ResourceBundle::BoldFont);
