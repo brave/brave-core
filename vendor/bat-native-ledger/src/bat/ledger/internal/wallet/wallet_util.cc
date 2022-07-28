@@ -44,87 +44,77 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
     return nullptr;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Parsing of " + wallet_type + " wallet failed");
-    return nullptr;
-  }
-
+  const base::Value::Dict& dict = value->GetDict();
   auto wallet = ledger::type::ExternalWallet::New();
   wallet->type = wallet_type;
 
-  auto* token = dictionary->FindStringKey("token");
+  const auto* token = dict.FindString("token");
   if (token) {
     wallet->token = *token;
   }
 
-  auto* address = dictionary->FindStringKey("address");
+  const auto* address = dict.FindString("address");
   if (address) {
     wallet->address = *address;
   }
 
-  auto* one_time_string = dictionary->FindStringKey("one_time_string");
+  const auto* one_time_string = dict.FindString("one_time_string");
   if (one_time_string) {
     wallet->one_time_string = *one_time_string;
   }
 
-  auto* code_verifier = dictionary->FindStringKey("code_verifier");
+  const auto* code_verifier = dict.FindString("code_verifier");
   if (code_verifier) {
     wallet->code_verifier = *code_verifier;
   }
 
-  auto status = dictionary->FindIntKey("status");
+  auto status = dict.FindInt("status");
   if (status) {
     wallet->status = static_cast<ledger::type::WalletStatus>(*status);
   }
 
-  auto* user_name = dictionary->FindStringKey("user_name");
+  const auto* user_name = dict.FindString("user_name");
   if (user_name) {
     wallet->user_name = *user_name;
   }
 
-  auto* member_id = dictionary->FindStringKey("member_id");
+  const auto* member_id = dict.FindString("member_id");
   if (member_id) {
     wallet->member_id = *member_id;
   }
 
-  auto* add_url = dictionary->FindStringKey("add_url");
+  const auto* add_url = dict.FindString("add_url");
   if (add_url) {
     wallet->add_url = *add_url;
   }
 
-  auto* withdraw_url = dictionary->FindStringKey("withdraw_url");
+  const auto* withdraw_url = dict.FindString("withdraw_url");
   if (withdraw_url) {
     wallet->withdraw_url = *withdraw_url;
   }
 
-  auto* account_url = dictionary->FindStringKey("account_url");
+  const auto* account_url = dict.FindString("account_url");
   if (account_url) {
     wallet->account_url = *account_url;
   }
 
-  auto* login_url = dictionary->FindStringKey("login_url");
+  auto* login_url = dict.FindString("login_url");
   if (login_url) {
     wallet->login_url = *login_url;
   }
 
-  auto* activity_url = dictionary->FindStringKey("activity_url");
+  const auto* activity_url = dict.FindString("activity_url");
   if (activity_url) {
     wallet->activity_url = *activity_url;
   }
 
-  auto* fees = dictionary->FindDictKey("fees");
-  if (fees) {
-    base::DictionaryValue* fees_dictionary;
-    if (fees->GetAsDictionary(&fees_dictionary)) {
-      for (base::DictionaryValue::Iterator it(*fees_dictionary); !it.IsAtEnd();
-           it.Advance()) {
-        if (!it.value().is_double()) {
-          continue;
-        }
-
-        wallet->fees.insert(std::make_pair(it.key(), it.value().GetDouble()));
+  if (const auto* fees = dict.FindDict("fees")) {
+    for (const auto [key, value] : *fees) {
+      if (!value.is_double()) {
+        continue;
       }
+
+      wallet->fees.insert(std::make_pair(key, value.GetDouble()));
     }
   }
 
@@ -152,25 +142,25 @@ bool SetWallet(LedgerImpl* ledger,
     return false;
   }
 
-  base::Value fees(base::Value::Type::DICTIONARY);
+  base::Value::Dict fees;
   for (const auto& fee : wallet->fees) {
-    fees.SetDoubleKey(fee.first, fee.second);
+    fees.Set(fee.first, fee.second);
   }
 
-  base::Value new_wallet(base::Value::Type::DICTIONARY);
-  new_wallet.SetStringKey("token", wallet->token);
-  new_wallet.SetStringKey("address", wallet->address);
-  new_wallet.SetIntKey("status", static_cast<int>(wallet->status));
-  new_wallet.SetStringKey("one_time_string", wallet->one_time_string);
-  new_wallet.SetStringKey("code_verifier", wallet->code_verifier);
-  new_wallet.SetStringKey("user_name", wallet->user_name);
-  new_wallet.SetStringKey("member_id", wallet->member_id);
-  new_wallet.SetStringKey("add_url", wallet->add_url);
-  new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
-  new_wallet.SetStringKey("account_url", wallet->account_url);
-  new_wallet.SetStringKey("login_url", wallet->login_url);
-  new_wallet.SetStringKey("activity_url", wallet->activity_url);
-  new_wallet.SetKey("fees", std::move(fees));
+  base::Value::Dict new_wallet;
+  new_wallet.Set("token", wallet->token);
+  new_wallet.Set("address", wallet->address);
+  new_wallet.Set("status", static_cast<int>(wallet->status));
+  new_wallet.Set("one_time_string", wallet->one_time_string);
+  new_wallet.Set("code_verifier", wallet->code_verifier);
+  new_wallet.Set("user_name", wallet->user_name);
+  new_wallet.Set("member_id", wallet->member_id);
+  new_wallet.Set("add_url", wallet->add_url);
+  new_wallet.Set("withdraw_url", wallet->withdraw_url);
+  new_wallet.Set("account_url", wallet->account_url);
+  new_wallet.Set("login_url", wallet->login_url);
+  new_wallet.Set("activity_url", wallet->activity_url);
+  new_wallet.Set("fees", std::move(fees));
 
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
