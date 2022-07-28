@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -6,27 +6,47 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_H_
 
+#include <memory>
+
+#include "base/memory/weak_ptr.h"
+
+class Profile;
+
+namespace base {
+template <typename Type>
+struct DefaultSingletonTraits;
+}  // namespace base
+
 namespace brave_ads {
 
-class NotificationHelper {
- public:
-  NotificationHelper(const NotificationHelper&) = delete;
-  NotificationHelper& operator=(const NotificationHelper&) = delete;
-  virtual ~NotificationHelper();
+class NotificationHelperImpl;
 
+class NotificationHelper final {
+ public:
   static NotificationHelper* GetInstance();
 
-  virtual bool CanShowNativeNotifications();
-  virtual bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
+  void InitForProfile(Profile* profile);
 
-  virtual bool ShowOnboardingNotification();
+  bool CanShowNotifications();
+  bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const;
 
- protected:
-  friend class NotificationHelperHolder;
+  bool ShowOnboardingNotification();
+
+  bool DoesSupportSystemNotifications() const;
+
+ private:
+  friend struct base::DefaultSingletonTraits<NotificationHelper>;
 
   NotificationHelper();
+  ~NotificationHelper();
 
-  static NotificationHelper* GetInstanceImpl();
+  void OnSystemNotificationPlatformBridgeReady(bool success);
+
+  bool does_support_system_notifications_ = true;
+
+  std::unique_ptr<NotificationHelperImpl> impl_;
+
+  base::WeakPtrFactory<NotificationHelper> weak_factory_{this};
 };
 
 }  // namespace brave_ads

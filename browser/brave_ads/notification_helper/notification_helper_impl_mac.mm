@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/notification_helper/notification_helper_mac.h"
+#include "brave/browser/brave_ads/notification_helper/notification_helper_impl_mac.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -35,7 +35,7 @@ bool IsAuthorized() {
   // #else
   //   // TODO(https://openradar.appspot.com/27768556): We must mock this
   //   function
-  //   // using NotificationHelperMock as a workaround to
+  //   // using NotificationHelperImplMock as a workaround to
   //   UNUserNotificationCenter
   //   // throwing an exception during tests
 
@@ -89,7 +89,7 @@ bool IsEnabled() {
   // #else
   //   // TODO(https://openradar.appspot.com/27768556): We must mock this
   //   function
-  //   // using NotificationHelperMock as a workaround to
+  //   // using NotificationHelperImplMock as a workaround to
   //   UNUserNotificationCenter
   //   // throwing an exception during tests
 
@@ -148,11 +148,11 @@ bool IsEnabled() {
 
 }  // namespace
 
-NotificationHelperMac::NotificationHelperMac() = default;
+NotificationHelperImplMac::NotificationHelperImplMac() = default;
 
-NotificationHelperMac::~NotificationHelperMac() = default;
+NotificationHelperImplMac::~NotificationHelperImplMac() = default;
 
-bool NotificationHelperMac::CanShowNativeNotifications() {
+bool NotificationHelperImplMac::CanShowNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notifications feature is disabled";
     return false;
@@ -175,12 +175,12 @@ bool NotificationHelperMac::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperMac::
-    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
+bool NotificationHelperImplMac::
+    CanShowSystemNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperMac::ShowOnboardingNotification() {
+bool NotificationHelperImplMac::ShowOnboardingNotification() {
   return false;
 }
 

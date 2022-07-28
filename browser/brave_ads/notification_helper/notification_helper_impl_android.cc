@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/notification_helper/notification_helper_android.h"
+#include "brave/browser/brave_ads/notification_helper/notification_helper_impl_android.h"
 
 #include "base/android/jni_string.h"
 #include "base/system/sys_info.h"
@@ -57,11 +57,11 @@ bool IsBraveAdsNotificationChannelEnabled(const bool is_foreground) {
 
 }  // namespace
 
-NotificationHelperAndroid::NotificationHelperAndroid() = default;
+NotificationHelperImplAndroid::NotificationHelperImplAndroid() = default;
 
-NotificationHelperAndroid::~NotificationHelperAndroid() = default;
+NotificationHelperImplAndroid::~NotificationHelperImplAndroid() = default;
 
-bool NotificationHelperAndroid::CanShowNativeNotifications() {
+bool NotificationHelperImplAndroid::CanShowNotifications() {
   JNIEnv* env = base::android::AttachCurrentThread();
   const int status =
       Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
@@ -81,19 +81,19 @@ bool NotificationHelperAndroid::CanShowNativeNotifications() {
   if (!is_foreground) {
     can_show_native_notifications =
         can_show_native_notifications &&
-        CanShowNativeNotificationsWhileBrowserIsBackgrounded();
+        CanShowSystemNotificationsWhileBrowserIsBackgrounded();
   }
 
   return can_show_native_notifications;
 }
 
-bool NotificationHelperAndroid::
-    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
+bool NotificationHelperImplAndroid::
+    CanShowSystemNotificationsWhileBrowserIsBackgrounded() const {
   JNIEnv* env = base::android::AttachCurrentThread();
   return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }
 
-bool NotificationHelperAndroid::ShowOnboardingNotification() {
+bool NotificationHelperImplAndroid::ShowOnboardingNotification() {
   const bool should_show_custom_notifications =
       features::IsCustomNotificationAdsEnabled();
 
