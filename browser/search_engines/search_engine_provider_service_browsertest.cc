@@ -289,11 +289,12 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
   UnloadExtension(extension->id());
   EXPECT_EQ(default_provider, url_service->GetDefaultSearchProvider());
 
-  // After unloading extension, private window's search provider is same
-  // with normal window. It's default value.
+  // Check Brave Search is back to as a default provider for private window
+  // after unloading extension.
   current_incognito_dse = incognito_url_service->GetDefaultSearchProvider();
-  EXPECT_EQ(current_incognito_dse->short_name(),
-            default_provider->short_name());
+  EXPECT_EQ(static_cast<int>(
+                TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE),
+            current_incognito_dse->prepopulate_id());
   EXPECT_EQ(TemplateURL::NORMAL, current_incognito_dse->type());
 }
 #endif
