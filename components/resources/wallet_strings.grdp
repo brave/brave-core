@@ -498,7 +498,9 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID" desc="Name of Solana instruction 'programID' param">Program ID:</message>  
   <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">Max Retries:</message>  
   <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">Preflight Commitment:</message>  
-  <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>  
+  <message name="IDS_BRAVE_WALLET_SELECT_CURRENCY" desc="Currency selector title">Select currency</message>
+  <message name="IDS_BRAVE_WALLET_SEARCH_CURRENCY" desc="Search placeholder for coin search input">Search currencies</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help Center link label">Help Center</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER_TEXT" desc="Help Center text description below buy-send-swap">Need help? See</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR" desc="Error message of unsupported hardware wallet operation">This hardware wallet does not support this operation.</message>

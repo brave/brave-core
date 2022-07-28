@@ -135,7 +135,8 @@ void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
   }
   std::move(callback).Run(std::move(blockchain_buy_tokens));
 }
-
+// TODO(muliswilliam) - Remove this function when iOS and Android no longer
+// depend on it https://github.com/brave/brave-browser/issues/23503
 void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
                                    const std::string& chain_id,
                                    const std::string& address,
@@ -143,17 +144,53 @@ void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
                                    const std::string& amount,
                                    GetBuyUrlCallback callback) {
   std::string url;
+  const std::string default_currency = "USD";
   if (provider == mojom::OnRampProvider::kWyre) {
-    url = base::StringPrintf(kWyreBuyUrl, address.c_str(), symbol.c_str(),
+    url = base::StringPrintf(kWyreBuyUrl, address.c_str(),
+                             default_currency.c_str(), symbol.c_str(),
                              amount.c_str(), kWyreID);
     std::move(callback).Run(std::move(url), absl::nullopt);
   } else if (provider == mojom::OnRampProvider::kRamp) {
     url = base::StringPrintf(kRampBuyUrl, address.c_str(), symbol.c_str(),
-                             amount.c_str(), kRampID);
+                             amount.c_str(), default_currency.c_str(), kRampID);
     std::move(callback).Run(std::move(url), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
+}
+
+void BlockchainRegistry::GetBuyUrlV1(mojom::OnRampProvider provider,
+                                     const std::string& chain_id,
+                                     const std::string& address,
+                                     const std::string& symbol,
+                                     const std::string& amount,
+                                     const std::string& currency_code,
+                                     GetBuyUrlV1Callback callback) {
+  std::string url;
+  if (provider == mojom::OnRampProvider::kWyre) {
+    url =
+        base::StringPrintf(kWyreBuyUrl, address.c_str(), currency_code.c_str(),
+                           symbol.c_str(), amount.c_str(), kWyreID);
+    std::move(callback).Run(std::move(url), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kRamp) {
+    url = base::StringPrintf(kRampBuyUrl, address.c_str(), symbol.c_str(),
+                             amount.c_str(), currency_code.c_str(), kRampID);
+    std::move(callback).Run(std::move(url), absl::nullopt);
+  } else {
+    std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
+  }
+}
+
+void BlockchainRegistry::GetOnRampCurrencies(
+    GetOnRampCurrenciesCallback callback) {
+  std::vector<brave_wallet::mojom::OnRampCurrencyPtr> currencies;
+  const std::vector<mojom::OnRampCurrency>* onRampCurrencies =
+      &GetOnRampCurrenciesList();
+
+  for (const auto& currency : *onRampCurrencies) {
+    currencies.push_back(brave_wallet::mojom::OnRampCurrency::New(currency));
+  }
+  std::move(callback).Run(std::move(currencies));
 }
 
 std::vector<mojom::NetworkInfoPtr>
