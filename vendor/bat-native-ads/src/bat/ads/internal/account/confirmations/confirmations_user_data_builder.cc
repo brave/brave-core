@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_user_data_builder.h"
 
+#include <utility>
+
 #include "base/check_op.h"
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
 #include "bat/ads/internal/account/user_data/catalog_user_data.h"

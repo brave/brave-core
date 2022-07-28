@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 
+#include <utility>
+
 #include "base/values.h"
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 #include "bat/ads/internal/account/user_data/platform_user_data.h"

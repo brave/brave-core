@@ -1770,12 +1770,17 @@ void AdsServiceImpl::RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
 
 void AdsServiceImpl::RecordP2AEvent(const std::string& name,
                                     const std::string& value) {
-  absl::optional<base::Value> list = base::JSONReader::Read(value);
-  if (!list || !list->is_list()) {
+  absl::optional<base::Value> parsed_json = base::JSONReader::Read(value);
+  if (!parsed_json) {
     return;
   }
 
-  for (auto& item : list->GetList()) {
+  base::Value::List* list = parsed_json->GetIfList();
+  if (!list) {
+    return;
+  }
+
+  for (auto& item : *list) {
     DCHECK(item.is_string());
     RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
                                                    item.GetString());
