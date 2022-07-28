@@ -75,7 +75,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return httpifyIpfsUrl(tokenImageURL)
+        return `chrome://image?${httpifyIpfsUrl(tokenImageURL)}`
       }
       return ''
     }, [tokenImageURL])
