@@ -60,6 +60,8 @@ export const MarketView = () => {
     onSelectCoinMarket(payload)
   }, [])
 
+  const onMarketDataFrameLoad = React.useCallback(() => setIframeLoaded(true), [])
+
   React.useEffect(() => {
     if (allCoins.length === 0) {
       dispatch(WalletActions.getCoinMarkets({
@@ -94,12 +96,11 @@ export const MarketView = () => {
     <StyledWrapper>
       {isLoadingCoinMarketData
         ? <LoadIconWrapper>
-          <div onClick={() => onSelectCoinMarket}></div>
           <LoadIcon />
         </LoadIconWrapper>
         : <MarketDataIframe
           ref={marketDataIframeRef}
-          onLoad={() => setIframeLoaded(true)}
+          onLoad={onMarketDataFrameLoad}
           src="chrome-untrusted://market-display"
           sandbox="allow-scripts allow-same-origin"
         />

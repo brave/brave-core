@@ -54,19 +54,21 @@ export interface Props {
 export const Table = (props: Props) => {
   const { id, headers, rows, children, stickyHeaders, onSort } = props
 
-  const onHeaderClick = React.useCallback((headerId: string, currentSortOrder: SortOrder) => {
+  const onHeaderClick = React.useCallback((header: Header) => () => {
+    if (!header.sortable) return
+    const currentSortOrder = header.sortOrder ?? 'desc'
     const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc'
 
     if (onSort) {
-      onSort(headerId, newSortOrder)
+      onSort(header.id, newSortOrder)
     }
   }, [onSort])
 
-  const onRowClick = (row: Row) => {
+  const onRowClick = React.useCallback((row: Row) => () => {
     if (row.onClick) {
       row.onClick(row.data)
     }
-  }
+  }, [])
 
   return (
     <StyledWrapper id={id}>
@@ -83,7 +85,7 @@ export const Table = (props: Props) => {
                       style={header.customStyle}
                       sortable={header.sortable}
                       sortOrder={header.sortOrder}
-                      onClick={() => header.sortable && onHeaderClick(header.id, header.sortOrder ?? 'desc')}
+                      onClick={onHeaderClick(header)}
                       stickyHeaders={stickyHeaders}
                     >
                       {header.sortable &&
@@ -105,9 +107,9 @@ export const Table = (props: Props) => {
                 rows.map((row: Row, i: number) =>
                   <tr
                     id={row.id}
-                    key={i}
+                    key={`tr-${row.id}-${i}`}
                     style={row.customStyle}
-                    onClick={() => onRowClick(row)}
+                    onClick={onRowClick(row)}
                   >
                     {
                       row.content.map((cell: Cell, j: number) =>
