@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc b/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc
-index 9cc06e23967f82337639941c6b19e940a43a7344..927266b583cdbed83cb091bed8d0c373c0f123f9 100644
+index c105c0547445480f645d99fd6c10210bdf7564fb..5e7b86c708f5f8e9ed7da94927dc8c17813ec1b1 100644
 --- a/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc
 +++ b/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc
 @@ -344,7 +344,7 @@ void OmniboxPopupContentsView::UpdatePopupAppearance() {

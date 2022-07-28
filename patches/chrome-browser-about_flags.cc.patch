@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index fba3bfae90393bb66ee7a093d9aee3e2f5090fb7..f280e6d59ef9cf399336283352a939b007244fe9 100644
+index ed4edc4e32dbfe6e39d4d3c2734d5eefec8eef88..52232392082c1a390199cc91fb6051bc65870928 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3200,6 +3200,7 @@ const FeatureEntry::FeatureVariation
+@@ -3269,6 +3269,7 @@ const FeatureEntry::FeatureVariation
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

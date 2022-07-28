@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/cookie_settings.cc b/components/content_settings/core/browser/cookie_settings.cc
-index 2709ffadd60250d73d1f2561521286a242ad1246..8cb1c54d5da404db0fae5d81c63e99cb302d44a3 100644
+index ccb986759151b48f871b8c1c48f163b78c2a0868..6d287391431a62045ed1b64798a548415dd97123 100644
 --- a/components/content_settings/core/browser/cookie_settings.cc
 +++ b/components/content_settings/core/browser/cookie_settings.cc
-@@ -189,6 +189,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
+@@ -191,6 +191,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
    DCHECK(value.is_int());
    ContentSetting setting = ValueToContentSetting(value);
    bool block = block_third && is_third_party_request;

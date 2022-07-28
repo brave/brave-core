@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index 559c2233b39f585bfa1b498e0de74b759cc878e3..418444b493f518f4c353dc4065df75fd5e053248 100644
+index 483defefa69d971e6c8f369263c445ac248297f5..d9cd2023dfc8f468dfff82d66b4a3aa7f18c9fdb 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
 @@ -394,7 +394,7 @@ ts_library("library") {

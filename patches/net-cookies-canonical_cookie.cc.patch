@@ -1,8 +1,8 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index 1bfe2046782df8b322b659d66a5bccebe839bba4..fc434d261bc0fe89ed63c3d45af992406589499c 100644
+index e52fd779617f48a641eab8ded49f58c4a77fbe9d..afedcd789e76b959daff44bf45456dba2d587ccd 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -645,6 +645,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
+@@ -660,6 +660,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
    // Get the port, this will get a default value if a port isn't provided.
    int source_port = ValidateAndAdjustSourcePort(url.EffectiveIntPort());
  

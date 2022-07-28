@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tools/build_webui.gni b/chrome/browser/resources/tools/build_webui.gni
-index dd8ed8d4b7c768a9d2a0d05f977828957c32d8b6..b63f37c3c72725756aecd33e4a8a94e454376cb3 100644
+index 3f5bee5aff4d4f7abadd6c31f98294670944dfa7..0bfd335629bd0f1c05820ff89aa8a8c94fca7373 100644
 --- a/chrome/browser/resources/tools/build_webui.gni
 +++ b/chrome/browser/resources/tools/build_webui.gni
-@@ -197,6 +197,7 @@ template("build_webui") {
+@@ -200,6 +200,7 @@ template("build_webui") {
        }
        extra_deps += [ ":copy_mojo" ]
      }
@@ -10,7 +10,7 @@ index dd8ed8d4b7c768a9d2a0d05f977828957c32d8b6..b63f37c3c72725756aecd33e4a8a94e4
    }
  
    if (optimize) {
-@@ -240,6 +241,7 @@ template("build_webui") {
+@@ -243,6 +244,7 @@ template("build_webui") {
        deps += invoker.extra_grdp_deps
        grdp_files = invoker.extra_grdp_files
      }
