@@ -293,6 +293,8 @@ export const PortfolioAsset = () => {
     setHideBalances(prevHideBalances => !prevHideBalances)
   }, [])
 
+  const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
+
   // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
@@ -425,7 +427,7 @@ export const PortfolioAsset = () => {
       }
 
       <NftDetails
-        onLoad={() => setNftIframeLoaded(true)}
+        onLoad={onNftDetailsLoad}
         visible={selectedAsset?.isErc721}
         ref={nftDetailsRef}
         sandbox="allow-scripts allow-popups allow-same-origin"
