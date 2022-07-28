@@ -53,28 +53,22 @@ type::Result GetMe::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* name = dictionary->FindStringKey("firstName");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* name = dict.FindString("firstName");
   if (name) {
     user->name = *name;
   }
 
-  if (const auto* id = dictionary->FindStringKey("id")) {
+  if (const auto* id = dict.FindString("id")) {
     user->member_id = *id;
   }
 
-  const auto* currencies = dictionary->FindListKey("currencies");
+  const auto* currencies = dict.FindList("currencies");
   if (currencies) {
     const std::string currency = "BAT";
-    auto bat_in_list =
-        std::find(currencies->GetList().begin(), currencies->GetList().end(),
-                  base::Value(currency));
-    user->bat_not_allowed = bat_in_list == currencies->GetList().end();
+    auto bat_in_list = std::find(currencies->begin(), currencies->end(),
+                                 base::Value(currency));
+    user->bat_not_allowed = bat_in_list == currencies->end();
   }
 
   return type::Result::LEDGER_OK;
