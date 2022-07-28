@@ -8,5 +8,9 @@ import * as React from 'react'
 import { ApiProxyContext } from '../context/api-proxy.context'
 
 export const useApiProxy = () => {
-  return React.useContext(ApiProxyContext)
+  const context = React.useContext(ApiProxyContext)
+  if (context === undefined) {
+    throw new Error('useApiProxy must be used within a ApiProxyContext.Provider')
+  }
+  return context
 }
