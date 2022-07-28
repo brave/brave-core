@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
@@ -42,11 +43,12 @@ class BatAdsSubdivisionTargetingExclusionRuleTest : public UnitTestBase {
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kAutoDetectedSubdivisionTargetingCode, "US-FL");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "AUTO");
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -62,8 +64,12 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedForMultipleGeoTargets) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "US-FL");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -80,11 +86,12 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kAutoDetectedSubdivisionTargetingCode, "US-FL");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "AUTO");
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -100,8 +107,12 @@ TEST_F(
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelected) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "US-FL");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -118,8 +129,12 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "US-FL");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -133,14 +148,8 @@ TEST_F(
 }
 
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
-       DoNotAllowAdIfSubdivisionTargetingIsSupportedAndNotInitialized) {
+       DoNotAllowAdIfSubdivisionTargetingIsNotSupportedOrNotInitialized) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kAutoDetectedSubdivisionTargetingCode, "");
-
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "AUTO");
-
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {"US-FL"};
@@ -155,8 +164,12 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "US-FL");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -173,11 +186,16 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
-  MockLocaleHelper(locale_helper_mock_, "en-XX");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {"XX-DEV"};
+  creative_ad.geo_targets = {"GB-DEV"};
 
   // Act
   const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
@@ -189,7 +207,12 @@ TEST_F(
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
-  MockLocaleHelper(locale_helper_mock_, "en-XX");
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"XX", "region":"NO REGION"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -208,6 +231,13 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kSubdivisionTargetingCode, "DISABLED");
 
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {"US-FL"};
@@ -224,6 +254,13 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kSubdivisionTargetingCode, "DISABLED");
+
+  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+            {"country":"US", "region":"FL"}
+          )"}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  subdivision_targeting_->MaybeFetch();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

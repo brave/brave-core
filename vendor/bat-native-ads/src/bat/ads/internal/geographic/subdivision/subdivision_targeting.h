@@ -22,11 +22,11 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
                                    public PrefManagerObserver {
  public:
   SubdivisionTargeting();
-  ~SubdivisionTargeting() override;
   SubdivisionTargeting(const SubdivisionTargeting&) = delete;
   SubdivisionTargeting& operator=(const SubdivisionTargeting&) = delete;
+  ~SubdivisionTargeting() override;
 
-  bool ShouldAllowForLocale(const std::string& locale) const;
+  bool ShouldAllow() const;
 
   bool IsDisabled() const;
 
@@ -42,6 +42,7 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   std::string GetLazySubdivisionCode() const;
 
   bool IsSupportedLocale(const std::string& locale) const;
+  void MaybeAllowForLocale(const std::string& locale) const;
 
   bool ShouldAutoDetect() const;
 
