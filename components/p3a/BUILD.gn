@@ -12,8 +12,6 @@ static_library("p3a") {
     "brave_p2a_protocols.h",
     "brave_p3a_log_store.cc",
     "brave_p3a_log_store.h",
-    "brave_p3a_new_uploader.cc",
-    "brave_p3a_new_uploader.h",
     "brave_p3a_scheduler.cc",
     "brave_p3a_scheduler.h",
     "brave_p3a_service.cc",

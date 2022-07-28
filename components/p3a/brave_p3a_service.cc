@@ -27,7 +27,6 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
-#include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
@@ -53,11 +52,8 @@ constexpr uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
-constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
-constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
-
-constexpr char kP3AJsonServerUrl[] = "https://p3a-json.brave.com/";
-constexpr char kP2AJsonServerUrl[] = "https://p2a-json.brave.com/";
+constexpr char kP3AServerUrl[] = "https://p3a-json.brave.com/";
+constexpr char kP2AServerUrl[] = "https://p2a-json.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
@@ -167,10 +163,7 @@ void BraveP3AService::Init(
 
   // Init other components.
   uploader_ = std::make_unique<BraveP3AUploader>(
-      url_loader_factory, upload_server_url_, GURL(kP2AServerUrl));
-
-  new_uploader_ = std::make_unique<BraveP3ANewUploader>(
-      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl),
+      url_loader_factory, GURL(kP3AServerUrl), GURL(kP2AServerUrl),
       base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this));
 
   upload_scheduler_ = std::make_unique<BraveP3AScheduler>(
@@ -304,12 +297,7 @@ void BraveP3AService::StartScheduledUpload() {
     const std::string log_type = log_store_->staged_log_type();
     VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes "
             << "of type " << log_type;
-    uploader_->UploadLog(log, log_type);
-
-    // We duplicate the uploads to test that the new approach works as fine
-    // as the legacy one. Once we are ready, we will remove the old
-    // uploader.
-    new_uploader_->UploadLog(log_store_->staged_json_log(), log_type);
+    uploader_->UploadLog(log_store_->staged_json_log(), log_type);
   }
 }
 
