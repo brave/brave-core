@@ -19,12 +19,11 @@ static_library("nitro_utils") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [
-    "cose_unittest.cc",
-  ]
+  sources = [ "cose_unittest.cc" ]
   deps = [
     "//base/test:test_support",
     "//brave/components/nitro_utils",
+    "//components/cbor",
     "//testing/gtest",
   ]
 }

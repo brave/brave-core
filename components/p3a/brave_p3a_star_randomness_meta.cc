@@ -36,9 +36,8 @@ const int kRndInfoRetryMaxBackoffMinutes = 60;
 ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> DecodeServerPublicKey(
     const std::string* pk_base64) {
   if (pk_base64 == nullptr || pk_base64->empty()) {
-    LOG(ERROR)
-        << "BraveP3AStarRandomnessMeta: no pk available, will not validate "
-           "randomness";
+    VLOG(2) << "BraveP3AStarRandomnessMeta: no pk available, will not validate "
+               "randomness";
     return nested_star::get_ppoprf_null_public_key();
   }
   absl::optional<std::vector<uint8_t>> dec_pk = base::Base64Decode(*pk_base64);
@@ -272,7 +271,7 @@ void BraveP3AStarRandomnessMeta::HandleServerInfoResponse(
   rnd_server_info_.reset(new RandomnessServerInfo(
       static_cast<uint8_t>(*epoch), next_epoch_time, std::move(pk)));
   current_backoff_time_ = base::TimeDelta();
-  LOG(ERROR) << "BraveP3AStarRandomnessMeta: server info retrieved";
+  VLOG(2) << "BraveP3AStarRandomnessMeta: server info retrieved";
   info_callback_.Run(rnd_server_info_.get());
 }
 

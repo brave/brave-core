@@ -6,6 +6,7 @@
 #include "brave/components/p3a/brave_p3a_metric_log_store.h"
 
 #include <memory>
+#include <set>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_names.h"
@@ -14,7 +15,8 @@
 
 namespace brave {
 
-class P3AMetricLogStoreTest : public testing::Test,public BraveP3AMetricLogStore::Delegate {
+class P3AMetricLogStoreTest : public testing::Test,
+                              public BraveP3AMetricLogStore::Delegate {
  public:
   P3AMetricLogStoreTest() {}
   ~P3AMetricLogStoreTest() override {}
@@ -22,8 +24,8 @@ class P3AMetricLogStoreTest : public testing::Test,public BraveP3AMetricLogStore
   std::string SerializeLog(base::StringPiece histogram_name,
                            uint64_t value,
                            bool is_star) override {
-    return std::string(histogram_name) + "_" + base::NumberToString(value) + "_"
-        + base::NumberToString(is_star);
+    return std::string(histogram_name) + "_" + base::NumberToString(value) +
+           "_" + base::NumberToString(is_star);
   }
 
  protected:
@@ -39,7 +41,8 @@ class P3AMetricLogStoreTest : public testing::Test,public BraveP3AMetricLogStore
   void UpdateSomeValues(size_t message_count) {
     auto* histogram_it = p3a::kCollectedHistograms.begin();
     for (size_t i = 1;
-      i <= message_count && histogram_it != p3a::kCollectedHistograms.end(); i++) {
+         i <= message_count && histogram_it != p3a::kCollectedHistograms.end();
+         i++) {
       log_store->UpdateValue(std::string(*histogram_it), 2);
       histogram_it++;
     }
@@ -54,10 +57,9 @@ class P3AMetricLogStoreTest : public testing::Test,public BraveP3AMetricLogStore
       log_store->StageNextLog();
       ASSERT_TRUE(log_store->has_staged_log());
 
-      std::string combined_log = log_store->staged_log_key()
-        + log_store->staged_log();
-      ASSERT_EQ(consumed_log_set.find(combined_log),
-        consumed_log_set.end());
+      std::string combined_log =
+          log_store->staged_log_key() + log_store->staged_log();
+      ASSERT_EQ(consumed_log_set.find(combined_log), consumed_log_set.end());
       consumed_log_set.insert(combined_log);
 
       log_store->DiscardStagedLog();

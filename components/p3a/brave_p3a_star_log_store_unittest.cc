@@ -6,6 +6,7 @@
 #include "brave/components/p3a/brave_p3a_star_log_store.h"
 
 #include <memory>
+#include <set>
 
 #include "base/strings/string_number_conversions.h"
 #include "components/prefs/testing_pref_service.h"
@@ -26,7 +27,8 @@ class P3AStarLogStoreTest : public testing::Test {
  protected:
   void SetUp() override {
     BraveP3AStarLogStore::RegisterPrefs(local_state.registry());
-    log_store.reset(new BraveP3AStarLogStore(&local_state, kTestKeepEpochCount));
+    log_store.reset(
+        new BraveP3AStarLogStore(&local_state, kTestKeepEpochCount));
   }
 
   std::string GenerateMockStarMessage() {
@@ -34,9 +36,11 @@ class P3AStarLogStoreTest : public testing::Test {
   }
 
   void UpdateSomeMessages(uint8_t epoch, size_t message_count) {
-    log_store->UpdateMessage("Brave.Test.Metric1", epoch, "should be overwritten");
+    log_store->UpdateMessage("Brave.Test.Metric1", epoch,
+                             "should be overwritten");
     for (uint64_t i = 1; i <= message_count; i++) {
-      std::string histogram_name = "Brave.Test.Metric" + base::NumberToString(i);
+      std::string histogram_name =
+          "Brave.Test.Metric" + base::NumberToString(i);
       std::string content = GenerateMockStarMessage();
       log_store->UpdateMessage(histogram_name, epoch, content);
     }
@@ -52,7 +56,7 @@ class P3AStarLogStoreTest : public testing::Test {
       ASSERT_TRUE(log_store->has_staged_log());
 
       ASSERT_EQ(consumed_log_set.find(log_store->staged_log()),
-        consumed_log_set.end());
+                consumed_log_set.end());
       consumed_log_set.insert(log_store->staged_log());
 
       log_store->MarkStagedLogAsSent();

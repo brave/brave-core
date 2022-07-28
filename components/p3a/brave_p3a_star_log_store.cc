@@ -5,7 +5,7 @@
 
 #include "brave/components/p3a/brave_p3a_star_log_store.h"
 
-#include <tuple>
+#include <set>
 
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"

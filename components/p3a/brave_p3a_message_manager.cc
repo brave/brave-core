@@ -216,7 +216,7 @@ void BraveP3AMessageManager::StartScheduledStarPrep() {
   }
   VLOG(2) << "BraveP3AMessageManager::StartScheduledStarPrep - starting";
   if (!star_prep_log_store_->has_unsent_logs()) {
-    star_upload_scheduler_->UploadFinished(true);
+    star_prep_scheduler_->UploadFinished(true);
     VLOG(2)
         << "BraveP3AMessageManager::StartScheduledStarPrep - Nothing to stage.";
     return;

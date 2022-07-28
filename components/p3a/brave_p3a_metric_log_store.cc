@@ -5,6 +5,8 @@
 
 #include "brave/components/p3a/brave_p3a_metric_log_store.h"
 
+#include <set>
+
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/rand_util.h"
