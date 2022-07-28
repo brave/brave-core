@@ -56,6 +56,8 @@ const char kChromeHelpViaMenuURL[] =
 const char kChromeHelpViaWebUIURL[] =
     "https://support.brave.com/";
 
+const char kIsolatedAppScheme[] = "isolated-app";
+
 const char kChromeNativeScheme[] = "chrome-native";
 
 const char kChromeSearchLocalNtpHost[] = "local-ntp";
