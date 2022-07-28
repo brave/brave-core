@@ -24,6 +24,7 @@ import {
   NameAndSymbol,
   AssetSymbol
 } from './style'
+import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 export interface Props {
   onSelectAsset: (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => void
@@ -57,8 +58,8 @@ const AssetWatchlistItem = (props: Props) => {
   }
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-  }, [])
+    return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+  }, [token])
 
   const tokensNetwork = React.useMemo(() => {
     if (!token) {

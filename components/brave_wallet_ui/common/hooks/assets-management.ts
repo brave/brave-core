@@ -17,7 +17,7 @@ const onlyInLeft = (left: BraveWallet.BlockchainToken[], right: BraveWallet.Bloc
   left.filter(leftValue =>
     !right.some(rightValue =>
       leftValue.contractAddress.toLowerCase() === rightValue.contractAddress.toLowerCase() &&
-      leftValue.chainId === rightValue.chainId))
+      leftValue.chainId === rightValue.chainId && leftValue.tokenId === rightValue.tokenId))
 
 export default function useAssetManagement () {
   // redux

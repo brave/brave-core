@@ -18,12 +18,24 @@ import usePricing from './pricing'
 import useBalance from './balance'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
+import { httpifyIpfsUrl } from '../../utils/string-utils'
 
 const assetsLogo = (assets: BraveWallet.BlockchainToken[]) => {
-  return assets.map(token => ({
-    ...token,
-    logo: `chrome://erc-token-images/${token.logo}`
-  }) as BraveWallet.BlockchainToken)
+  return assets.map(token => {
+    let logo = token.logo
+    if (token.logo?.startsWith('ipfs://')) {
+      logo = httpifyIpfsUrl(token.logo)
+    } else if (token.logo?.startsWith('data:image/')) {
+      logo = token.logo
+    } else {
+      logo = `chrome://erc-token-images/${token.logo}`
+    }
+
+    return {
+      ...token,
+      logo
+    } as BraveWallet.BlockchainToken
+  })
 }
 
 export function useAssets () {

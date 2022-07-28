@@ -35,6 +35,7 @@ import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
 import { AllNetworksOption } from '../../options/network-filter-options'
+import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -219,8 +220,9 @@ export const createWalletReducer = (initialState: WalletState) => {
     accounts.forEach((account, accountIndex) => {
       payload.balances[accountIndex]?.forEach((info, tokenIndex) => {
         if (info.error === BraveWallet.ProviderError.kSuccess) {
-          const contractAddress = visibleTokens[tokenIndex].contractAddress.toLowerCase()
-          accounts[accountIndex].tokenBalanceRegistry[contractAddress] = Amount.normalize(info.balance)
+          const token = visibleTokens[tokenIndex]
+          const registryKey = createTokenBalanceRegistryKey(token)
+          accounts[accountIndex].tokenBalanceRegistry[registryKey] = Amount.normalize(info.balance)
         }
       })
     })

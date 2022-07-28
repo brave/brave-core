@@ -30,6 +30,7 @@ import { getTokensNetwork } from '../../../utils/network-utils'
 // Hooks
 import { usePricing } from '../../../common/hooks'
 import { unbiasedRandom } from '../../../utils/random-utils'
+import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 interface Props {
   spotPrices: BraveWallet.AssetPrice[]
@@ -57,8 +58,8 @@ const PortfolioAssetItem = (props: Props) => {
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-  }, [])
+    return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+  }, [token])
 
   const formattedAssetBalance = token.isErc721
     ? new Amount(assetBalance)
@@ -78,8 +79,8 @@ const PortfolioAssetItem = (props: Props) => {
   }, [fiatBalance])
 
   const isLoading = React.useMemo(() => {
-    return formattedAssetBalance === ''
-  }, [formattedAssetBalance])
+    return formattedAssetBalance === '' && !token.isErc721
+  }, [formattedAssetBalance, token])
 
   const tokensNetwork = React.useMemo(() => {
     return getTokensNetwork(networks, token)
@@ -111,7 +112,7 @@ const PortfolioAssetItem = (props: Props) => {
       {token.visible &&
         // Selecting an erc721 token is temp disabled until UI is ready for viewing NFTs
         // or when showing loading skeleton
-        <StyledWrapper disabled={token.isErc721 || isLoading} onClick={action}>
+        <StyledWrapper disabled={isLoading} onClick={action}>
           <NameAndIcon>
             <IconsWrapper>
               {!token.logo

@@ -1,0 +1,29 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//chrome/common/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/grit/repack.gni")
+
+transpile_web_ui("nft_display_ui") {
+  entry_points = [ [
+        "nft",
+        rebase_path("nft.tsx"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "nft_display"
+  deps = [
+    "//brave/components/brave_wallet/common:mojom_js",
+    "//brave/components/brave_wallet/common:preprocess_mojo",
+  ]
+}
+
+pack_web_resources("nft_display_generated") {
+  resource_name = "nft_display"
+  output_dir = "$root_gen_dir/brave/components/nft_display/resources"
+  deps = [ ":nft_display_ui" ]
+}

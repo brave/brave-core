@@ -60,10 +60,11 @@ export const AssetBalanceText = styled.span`
 // support with custom AssetIconFactory.
 //
 // Ref: https://styled-components.com/docs/advanced#style-objects
-export const AssetIcon = AssetIconFactory<AssetIconProps>({
+const assetIconProps = {
   width: '40px',
   height: 'auto'
-})
+}
+export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
 
 export const IconsWrapper = styled.div`
   display: flex;

@@ -302,7 +302,16 @@ handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
 })
 
 handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: BraveWallet.BlockchainToken) => {
-  const { braveWalletService } = getAPIProxy()
+  const { braveWalletService, jsonRpcService } = getAPIProxy()
+  if (payload.isErc721) {
+    // Get NFTMetadata
+    const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
+    if (!result.error) {
+      const response = JSON.parse(result.response)
+      payload.logo = response.image || payload.logo
+    }
+  }
+
   const result = await braveWalletService.addUserAsset(payload)
   store.dispatch(WalletActions.addUserAssetError(!result.success))
 })

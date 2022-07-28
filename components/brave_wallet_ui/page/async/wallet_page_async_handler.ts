@@ -9,6 +9,7 @@ import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,
+  NFTMetadataReturnType,
   UpdateAccountNamePayloadType,
   WalletState
 } from '../../constants/types'
@@ -31,6 +32,8 @@ import {
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
+import { getTokensNetwork } from '../../utils/network-utils'
+import { httpifyIpfsUrl } from '../../utils/string-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -86,6 +89,10 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload
     const defaultPrices = await assetRatioService.getPrice([getTokenParam(selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
     const priceHistory = await assetRatioService.getPriceHistory(getTokenParam(selectedAsset), defaultFiat, payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
+
+    if (payload.asset.isErc721) {
+      store.dispatch(WalletPageActions.getNFTMetadata(payload.asset))
+    }
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))
   }
@@ -216,6 +223,38 @@ handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
+})
+
+handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: BraveWallet.BlockchainToken) => {
+  store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(true))
+  const jsonRpcService = getWalletPageApiProxy().jsonRpcService
+  const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
+
+  if (!result.error) {
+    const response = JSON.parse(result.response)
+    const tokenNetwork = getTokensNetwork(getWalletState(store).networkList, payload)
+    const nftMetadata: NFTMetadataReturnType = {
+      chainName: tokenNetwork.chainName,
+      tokenType: 'ERC721', // getNFTMetadata currently supports only ERC721 standard. When other standards are supported, this value should be dynamic
+      tokenID: payload.tokenId,
+      imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
+      floorFiatPrice: '',
+      floorCryptoPrice: '',
+      contractInformation: {
+        address: payload.contractAddress,
+        name: response.name,
+        description: response.description,
+        website: '',
+        twitter: '',
+        facebook: '',
+        logo: ''
+      }
+    }
+    store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
+  } else {
+    console.error(result.errorMessage)
+  }
+  store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
 })
 
 handler.on(WalletPageActions.onOnboardingShown.getType(), async (store: Store) => {
