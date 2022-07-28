@@ -29,6 +29,11 @@ extension BraveLedger {
     }
     return now >= deadlineDate
   }
+  
+  // TODO: Remove Fake transferrableAmount function while changing legacy wallet transfer
+  public func transferrableAmount(_ completion: @escaping (Int) -> Void) {
+    completion(0)
+  }
 
   public func listAutoContributePublishers(_ completion: @escaping (_ publishers: [Ledger.PublisherInfo]) -> Void) {
     let filter: Ledger.ActivityInfoFilter = {

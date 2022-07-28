@@ -11,6 +11,7 @@
 		0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */; };
 		0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */; };
 		270ECFC82838210F0089B8B7 /* Brave in Frameworks */ = {isa = PBXBuildFile; productRef = 270ECFC72838210F0089B8B7 /* Brave */; };
+		27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */ = {isa = PBXBuildFile; productRef = 27466BB0288EDB9C00584C90 /* RuntimeWarnings */; };
 		279A9BC22823370100F40FC6 /* ObjcExceptionBridging in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BC12823370100F40FC6 /* ObjcExceptionBridging */; };
 		279A9BC42823370100F40FC6 /* XCGLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BC32823370100F40FC6 /* XCGLogger */; };
 		279A9BCC2823370100F40FC6 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BCB2823370100F40FC6 /* SwiftKeychainWrapper */; };
@@ -363,6 +364,7 @@
 				27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */,
 				279A9BC22823370100F40FC6 /* ObjcExceptionBridging in Frameworks */,
 				0A1DF486244A2ECB00541FE4 /* NetworkExtension.framework in Frameworks */,
+				27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,6 +771,7 @@
 				27FA21882837FB0100FA2C45 /* Shared */,
 				27FA218A2837FB0100FA2C45 /* Storage */,
 				270ECFC72838210F0089B8B7 /* Brave */,
+				27466BB0288EDB9C00584C90 /* RuntimeWarnings */,
 			);
 			productName = Client;
 			productReference = F84B21BE1A090F8100AAB793 /* Client.app */;
@@ -2878,6 +2881,10 @@
 		270ECFC72838210F0089B8B7 /* Brave */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Brave;
+		};
+		27466BB0288EDB9C00584C90 /* RuntimeWarnings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RuntimeWarnings;
 		};
 		279A9BC12823370100F40FC6 /* ObjcExceptionBridging */ = {
 			isa = XCSwiftPackageProductDependency;

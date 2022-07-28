@@ -100,7 +100,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func setDefaultWallet(_ defaultWallet: BraveWallet.DefaultWallet) {
   }
 
-  func notifySignMessageRequestProcessed(_ approved: Bool, id: Int32) {
+  func notifySignMessageRequestProcessed(_ approved: Bool, id: Int32, signature: BraveWallet.ByteArrayStringUnion?, error: String?) {
   }
 
   func notifySignMessageHardwareRequestProcessed(_ approved: Bool, id: Int32, signature: String, error: String) {
@@ -178,13 +178,14 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion([])
   }
   
-  func notifySignTransactionRequestProcessed(_ approved: Bool, id: Int32) {
+  func notifySignTransactionRequestProcessed(_ approved: Bool, id: Int32, signature: BraveWallet.ByteArrayStringUnion?, error: String?) {
   }
   
-  func notifySignAllTransactionsRequestProcessed(_ approved: Bool, id: Int32) {
+  func notifySignAllTransactionsRequestProcessed(_ approved: Bool, id: Int32, signatures: [BraveWallet.ByteArrayStringUnion]?, error: String?) {
   }
   
   func base58Encode(_ addresses: [[NSNumber]], completion: @escaping ([String]) -> Void) {
+    completion([])
   }
 }
 #endif

@@ -46,4 +46,8 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   func buyUrl(_ provider: BraveWallet.OnRampProvider, chainId: String, address: String, symbol: String, amount: String, completion: @escaping (String, String?) -> Void) {
     completion("", nil)
   }
+  
+  func searchNetworks(_ chainIdFilter: String?, chainNameFilter: String?, completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
+    completion([])
+  }
 }

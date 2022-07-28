@@ -16,8 +16,6 @@ extension BraveCoreSwitch {
       return "Component Updater"
     case .syncURL:
       return "Sync URL"
-    case .skusEnvironment:
-      return "SKUs Environment"
     default:
       return ""
     }
@@ -206,11 +204,6 @@ struct BraveCoreDebugSwitchesView: View {
             .keyboardType(.URL)
         } label: {
           SwitchContainer(.syncURL)
-        }
-        NavigationLink {
-          BasicPickerInputView(coreSwitch: .skusEnvironment, options: SkusEnvironment.allCases.map(\.rawValue))
-        } label: {
-          SwitchContainer(.skusEnvironment)
         }
         NavigationLink {
           BasicStringInputView(coreSwitch: .componentUpdater, hint: "Should match the format: url-source={url}")

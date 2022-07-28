@@ -19,6 +19,11 @@ import BraveCore
 import Combine
 import Brave
 import BraveVPN
+import RuntimeWarnings
+
+#if DEBUG
+import os
+#endif
 
 private let log = Logger.browserLogger
 
@@ -87,25 +92,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Brave Core Initialization
     BraveCoreMain.setLogHandler { severity, file, line, messageStartIndex, message in
-      if !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-        let level: XCGLogger.Level = {
-          switch -severity {
-          case 0: return .error
-          case 1: return .info
-          case 2..<7: return .debug
-          default: return .verbose
-          }
-        }()
-
-        Logger.braveCoreLogger.logln(
-          level,
-          fileName: file,
-          lineNumber: Int(line),
-          // Only print the actual message content, and drop the final character which is
-          // a new line as it will be handled by logln
-          closure: { message.dropFirst(messageStartIndex).dropLast() }
-        )
+      let message = String(message.dropFirst(messageStartIndex).dropLast())
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+      if message.isEmpty {
+        // Nothing to print
+        return true
       }
+      
+      if severity == .fatal {
+        let filename = URL(fileURLWithPath: file).lastPathComponent
+#if DEBUG
+        // Prints a special runtime warning instead of crashing.
+        os_log(
+          .fault,
+          dso: os_rw.dso,
+          log: os_rw.log(category: "BraveCore"),
+          "[%@:%ld] > %@", filename, line, message
+        )
+        return true
+#else
+        fatalError("Fatal BraveCore Error at \(filename):\(line).\n\(message)")
+#endif
+      }
+
+      let level: XCGLogger.Level = {
+        switch severity {
+        case .fatal: return .severe
+        case .error: return .error
+        case .warning: return .warning
+        case .info: return .info
+        default: return .debug
+        }
+      }()
+
+      Logger.braveCoreLogger.logln(
+        level,
+        fileName: file,
+        lineNumber: Int(line),
+        // Only print the actual message content, and drop the final character which is
+        // a new line as it will be handled by logln
+        closure: { message }
+      )
       return true
     }
 
