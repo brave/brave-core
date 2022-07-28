@@ -43,37 +43,31 @@ type::Result PostAccount::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  base::Value* account = dictionary->FindDictKey("account");
+  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict* account = dict.FindDict("account");
   if (!account) {
     BLOG(0, "Missing account info");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* linking_information = account->FindStringKey("verificationToken");
+  const auto* linking_information = account->FindString("verificationToken");
   if (!linking_info) {
     BLOG(0, "Missing linking info");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* users = dictionary->FindListKey("users");
+  const auto* users = dict.FindList("users");
   if (!users) {
     BLOG(0, "Missing users");
     return type::Result::LEDGER_ERROR;
   }
 
-  const base::Value::List& user_list = users->GetList();
-  if (user_list.size() == 0) {
+  if (users->size() == 0) {
     BLOG(0, "No users associated with this token");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* name = user_list[0].FindStringKey("name");
+  const auto* name = (*users)[0].GetDict().FindString("name");
   if (!name) {
     BLOG(0, "Missing user name");
     return type::Result::LEDGER_ERROR;

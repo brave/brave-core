@@ -34,11 +34,11 @@ std::string PostTransaction::GetUrl() {
 
 std::string PostTransaction::GeneratePayload(
     const ::ledger::gemini::Transaction& transaction) {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("tx_ref", base::GenerateGUID());
-  payload.SetStringKey("amount", base::StringPrintf("%f", transaction.amount));
-  payload.SetStringKey("currency", "BAT");
-  payload.SetStringKey("destination", transaction.address);
+  base::Value::Dict payload;
+  payload.Set("tx_ref", base::GenerateGUID());
+  payload.Set("amount", base::StringPrintf("%f", transaction.amount));
+  payload.Set("currency", "BAT");
+  payload.Set("destination", transaction.address);
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -60,19 +60,14 @@ type::Result PostTransaction::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* transfer_id_str = dictionary->FindStringKey("tx_ref");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* transfer_id_str = dict.FindString("tx_ref");
   if (!transfer_id_str || transfer_id_str->empty()) {
     BLOG(0, "Missing transfer id");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* transfer_status_str = dictionary->FindStringKey("status");
+  const auto* transfer_status_str = dict.FindString("status");
   if (!transfer_status_str) {
     BLOG(0, "Missing transfer status");
     return type::Result::LEDGER_ERROR;

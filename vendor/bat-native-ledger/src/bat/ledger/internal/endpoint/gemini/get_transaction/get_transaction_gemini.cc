@@ -41,13 +41,8 @@ type::Result GetTransaction::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* tx_status = dictionary->FindStringKey("status");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* tx_status = dict.FindString("status");
   if (!tx_status || tx_status->empty()) {
     BLOG(0, "Missing transfer status");
     return type::Result::LEDGER_ERROR;
