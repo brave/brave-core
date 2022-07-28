@@ -11,6 +11,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
