@@ -82,7 +82,7 @@ void ContentSettingsRegistry::BraveInit() {
            brave_shields::kFingerprintingV2, CONTENT_SETTING_DEFAULT,
            WebsiteSettingsInfo::SYNCABLE, AllowlistedSchemes(),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
-           WebsiteSettingsInfo::COOKIES_SCOPE,
+           WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,

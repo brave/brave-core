@@ -23,20 +23,11 @@ ContentSetting GetBraveFPContentSettingFromRules(
   for (const auto& rule : fp_rules) {
     if (rule.primary_pattern != ContentSettingsPattern::Wildcard() &&
         rule.primary_pattern.Matches(primary_url)) {
-      if (rule.secondary_pattern ==
-          ContentSettingsPattern::FromString("https://balanced")) {
-        return CONTENT_SETTING_DEFAULT;
-      }
       if (rule.secondary_pattern == ContentSettingsPattern::Wildcard())
         return rule.GetContentSetting();
     }
 
     if (rule.primary_pattern == ContentSettingsPattern::Wildcard()) {
-      if (rule.secondary_pattern ==
-          ContentSettingsPattern::FromString("https://balanced")) {
-        DCHECK(!global_fp_rule);
-        global_fp_balanced_rule = rule;
-      }
       if (rule.secondary_pattern == ContentSettingsPattern::Wildcard()) {
         DCHECK(!global_fp_balanced_rule);
         global_fp_rule = rule;

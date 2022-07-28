@@ -523,34 +523,22 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
     return;
 
   ControlType prev_setting = GetFingerprintingControlType(map, url);
-  content_settings::SettingInfo setting_info;
-  base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL("https://balanced/*"),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
-  bool was_default =
-      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
   // Clear previous value to have only one rule for one pattern.
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::FromString("https://balanced/*"),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, CONTENT_SETTING_DEFAULT);
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, CONTENT_SETTING_DEFAULT);
 
-  auto content_setting = CONTENT_SETTING_BLOCK;
-  auto secondary_pattern =
-      ContentSettingsPattern::FromString("https://balanced/*");
-
-  if (type != ControlType::DEFAULT) {
+  ContentSetting content_setting;
+  if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
+    content_setting = CONTENT_SETTING_DEFAULT;
+  } else {
     content_setting = GetDefaultBlockFromControlType(type);
-    secondary_pattern = ContentSettingsPattern::Wildcard();
   }
 
   map->SetContentSettingCustomScope(
-      primary_pattern, secondary_pattern,
+      primary_pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
-
   if (!map->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
     RecordShieldsSettingChanged(local_state);
@@ -563,8 +551,7 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
       // If domain specific setting changed, recalculate counts
       ControlType global_setting = GetFingerprintingControlType(map, GURL());
       RecordShieldsDomainSettingCountsWithChange(
-          profile_state, true, global_setting,
-          was_default ? nullptr : &prev_setting, type);
+          profile_state, true, global_setting, &prev_setting, type);
     }
   }
 }
