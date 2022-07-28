@@ -123,6 +123,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSCTAuditing,
     &features::kSignedExchangeSubresourcePrefetch,
+    &features::kSignedHTTPExchange,
     &features::kSubresourceWebBundles,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kTrustSafetySentimentSurvey,
