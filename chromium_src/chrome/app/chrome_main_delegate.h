@@ -12,9 +12,9 @@
 
 #define ChromeContentClient BraveContentClient
 
-#define BasicStartupComplete                         \
-  BasicStartupComplete_ChromiumImpl(int* exit_code); \
-  bool BasicStartupComplete
+#define BasicStartupComplete           \
+  BasicStartupComplete_ChromiumImpl(); \
+  absl::optional<int> BasicStartupComplete
 
 #include "src/chrome/app/chrome_main_delegate.h"
 
