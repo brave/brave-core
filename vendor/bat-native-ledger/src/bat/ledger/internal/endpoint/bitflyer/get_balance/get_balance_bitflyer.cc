@@ -55,25 +55,25 @@ type::Result GetBalance::ParseBody(const std::string& body, double* available) {
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* inventory = dictionary->FindListKey("inventory");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* inventory = dict.FindList("inventory");
   if (!inventory) {
     BLOG(0, "Missing inventory");
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& item : inventory->GetList()) {
-    const auto* currency_code = item.FindStringKey("currency_code");
+  for (const auto& item : *inventory) {
+    const auto* value = item.GetIfDict();
+    if (!value) {
+      continue;
+    }
+
+    const auto* currency_code = value->FindString("currency_code");
     if (!currency_code || *currency_code != "BAT") {
       continue;
     }
 
-    const auto available_value = item.FindDoubleKey("available");
+    const auto available_value = value->FindDouble("available");
     if (!available_value) {
       BLOG(0, "Missing available");
       return type::Result::LEDGER_ERROR;
