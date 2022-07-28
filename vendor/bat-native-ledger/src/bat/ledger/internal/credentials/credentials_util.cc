@@ -207,45 +207,33 @@ std::string ConvertRewardTypeToString(const type::RewardsType type) {
   }
 }
 
-void GenerateCredentials(
+base::Value::List GenerateCredentials(
     const std::vector<type::UnblindedToken>& token_list,
-    const std::string& body,
-    base::Value* credentials) {
-  DCHECK(credentials);
-
+    const std::string& body) {
+  base::Value::List credentials;
   for (auto& item : token_list) {
-    base::Value token(base::Value::Type::DICTIONARY);
-    bool success;
+    absl::optional<base::Value::Dict> token;
     if (ledger::is_testing) {
-      success = GenerateSuggestionMock(
-          item.token_value,
-          item.public_key,
-          body,
-          &token);
+      token = GenerateSuggestionMock(item.token_value, item.public_key, body);
     } else {
-      success = GenerateSuggestion(
-          item.token_value,
-          item.public_key,
-          body,
-          &token);
+      token = GenerateSuggestion(item.token_value, item.public_key, body);
     }
 
-    if (!success) {
+    if (!token) {
       continue;
     }
 
-    credentials->Append(std::move(token));
+    credentials.Append(std::move(*token));
   }
+  return credentials;
 }
 
-bool GenerateSuggestion(
+absl::optional<base::Value::Dict> GenerateSuggestion(
     const std::string& token_value,
     const std::string& public_key,
-    const std::string& body,
-    base::Value* result) {
-  DCHECK(result);
+    const std::string& body) {
   if (token_value.empty() || public_key.empty() || body.empty()) {
-    return false;
+    return absl::nullopt;
   }
 
   UnblindedToken unblinded = UnblindedToken::decode_base64(token_value);
@@ -256,25 +244,24 @@ bool GenerateSuggestion(
   if (challenge_bypass_ristretto::exception_occurred()) {
     challenge_bypass_ristretto::TokenException e =
         challenge_bypass_ristretto::get_last_exception();
-    return false;
+    return absl::nullopt;
   }
 
-  result->SetStringKey("t", pre_image);
-  result->SetStringKey("publicKey", public_key);
-  result->SetStringKey("signature", signature.encode_base64());
-  return true;
+  base::Value::Dict dict;
+  dict.Set("t", pre_image);
+  dict.Set("publicKey", public_key);
+  dict.Set("signature", signature.encode_base64());
+  return dict;
 }
 
-bool GenerateSuggestionMock(
-    const std::string& token_value,
-    const std::string& public_key,
-    const std::string& body,
-    base::Value* result) {
-  DCHECK(result);
-  result->SetStringKey("t", token_value);
-  result->SetStringKey("publicKey", public_key);
-  result->SetStringKey("signature", token_value);
-  return true;
+base::Value::Dict GenerateSuggestionMock(const std::string& token_value,
+                                         const std::string& public_key,
+                                         const std::string& body) {
+  base::Value::Dict dict;
+  dict.Set("t", token_value);
+  dict.Set("publicKey", public_key);
+  dict.Set("signature", token_value);
+  return dict;
 }
 
 }  // namespace credential

@@ -34,29 +34,24 @@ std::string PostVotes::GetUrl() {
 
 std::string PostVotes::GeneratePayload(
     const credential::CredentialsRedeem& redeem) {
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetStringKey(
-      "type",
-      credential::ConvertRewardTypeToString(redeem.type));
+  base::Value::Dict data;
+  data.Set("type", credential::ConvertRewardTypeToString(redeem.type));
   if (!redeem.order_id.empty()) {
-    data.SetStringKey("orderId", redeem.order_id);
+    data.Set("orderId", redeem.order_id);
   }
-  data.SetStringKey("channel", redeem.publisher_key);
+  data.Set("channel", redeem.publisher_key);
 
   std::string data_json;
   base::JSONWriter::Write(data, &data_json);
   std::string data_encoded;
   base::Base64Encode(data_json, &data_encoded);
 
-  base::Value credentials(base::Value::Type::LIST);
-  credential::GenerateCredentials(
-      redeem.token_list,
-      data_encoded,
-      &credentials);
+  base::Value::List credentials =
+      credential::GenerateCredentials(redeem.token_list, data_encoded);
 
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("vote", data_encoded);
-  payload.SetKey("credentials", std::move(credentials));
+  base::Value::Dict payload;
+  payload.Set("vote", data_encoded);
+  payload.Set("credentials", std::move(credentials));
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
