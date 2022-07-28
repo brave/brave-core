@@ -589,9 +589,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="Menu item and title for Brave Rewards Settings. [CHAR-LIMIT=27]">
         Brave Rewards
       </message>
-      <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="Your wallet title">
-        Your Brave Rewards
-      </message>
       <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
         Brave VPN
       </message>
@@ -600,9 +597,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
-      </message>
-      <message name="IDS_BRAVE_UI_USD_TEXT" desc="Text for USD value">
-        USD
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="Add Funds button text">
         Add Funds
@@ -615,23 +609,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER" desc="A message that a particular publisher is not verified">
         Unverified Creator
-      </message>
-      <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER_DESCRIPTION" desc="A message that appear when a particular publisher is not verified">
-        This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
-        Any tips you send will remain in your wallet until they complete this process.
-      </message>
-      <message name="IDS_BRAVE_UI_DONATE_NOW" desc="Send a tip button text">
-        Send a tip...
-      </message>
-      <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="A message that appears when no activity was done yet related to payments">
-        No activities yet this
-month...
-      </message>
-      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="A message about one-time tips">
-        One-time Tips
-      </message>
-      <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="A message about monthly tips">
-        Monthly Tips
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="A message about user's attantion on a particular website">
         Attention
