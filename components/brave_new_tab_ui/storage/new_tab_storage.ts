@@ -15,6 +15,7 @@ export const defaultState: NewTab.State = {
   featureFlagBraveNTPSponsoredImagesWallpaper: loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
   featureFlagBraveNewsEnabled: loadTimeData.getBoolean('featureFlagBraveNewsEnabled'),
   featureFlagBraveNewsPromptEnabled: loadTimeData.getBoolean('featureFlagBraveNewsPromptEnabled'),
+  featureFlagBraveNewsSubscribeButtonEnabled: loadTimeData.getBoolean('featureFlagBraveNewsSubscribeButtonEnabled'),
   featureCustomBackgroundEnabled: loadTimeData.getBoolean('featureCustomBackgroundEnabled'),
   searchPromotionEnabled: false,
   showBackgroundImage: false,

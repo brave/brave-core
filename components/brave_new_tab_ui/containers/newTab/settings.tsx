@@ -48,6 +48,7 @@ export interface Props {
   showSettingsMenu: boolean
   featureFlagBraveNewsEnabled: boolean
   featureCustomBackgroundEnabled: boolean
+  featureFlagBraveNewsSubscribeButtonEnabled: boolean
   onClose: () => void
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
@@ -385,6 +386,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     showToday={this.props.showToday}
                     toggleShowToday={this.props.toggleShowToday}
                     showBraveNewsButton={this.props.showBraveNewsButton}
+                    featureFlagBraveNewsSubscribeButtonEnabled={this.props.featureFlagBraveNewsSubscribeButtonEnabled}
                     toggleShowBraveNewsButton={this.props.toggleShowBraveNewsButton}
                   />
                 ) : null
