@@ -217,7 +217,40 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->request_identifier = 1;
   request_info->resource_type = blink::mojom::ResourceType::kScript;
+  request_info->initiator_url = GURL("https://bravesoftware.com");
+
+  EXPECT_TRUE(CheckRequest(request_info));
+  EXPECT_EQ(request_info->blocked_by, brave::kAdBlocked);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+  // It's unclear whether or not this is a Tor request, so no DNS queries are
+  // made (`browser_context` is `nullptr`).
+  EXPECT_EQ(0ULL, host_resolver_->num_resolve());
+}
+
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
+  ResetAdblockInstance("||brave.com/test.txt", "");
+
+  const GURL url("https://brave.com/test.txt");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->request_identifier = 1;
+  request_info->resource_type = blink::mojom::ResourceType::kScript;
   request_info->initiator_url = GURL("https://brave.com");
+
+  EXPECT_TRUE(CheckRequest(request_info));
+  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(0ULL, host_resolver_->num_resolve());
+}
+
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, AggressiveNo1pException) {
+  ResetAdblockInstance("||brave.com/test.txt", "");
+
+  const GURL url("https://brave.com/test.txt");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->request_identifier = 1;
+  request_info->resource_type = blink::mojom::ResourceType::kScript;
+  request_info->initiator_url = GURL("https://brave.com");
+  request_info->aggressive_blocking = true;
 
   EXPECT_TRUE(CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by, brave::kAdBlocked);

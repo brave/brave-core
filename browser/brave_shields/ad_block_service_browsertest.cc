@@ -92,6 +92,11 @@ AdBlockServiceTest::~AdBlockServiceTest() {}
 void AdBlockServiceTest::SetUpOnMainThread() {
   ExtensionBrowserTest::SetUpOnMainThread();
   host_resolver()->AddRule("*", "127.0.0.1");
+  // Most tests are written for aggressive mode. Individual tests should reset
+  // this using `DisableAggressiveMode` if they are testing standard mode
+  // behavior.
+  brave_shields::SetCosmeticFilteringControlType(
+      content_settings(), brave_shields::ControlType::BLOCK, GURL());
 }
 
 void AdBlockServiceTest::SetUp() {
@@ -316,6 +321,12 @@ void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
 
 void AdBlockServiceTest::ShieldsDown(const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
+}
+
+void AdBlockServiceTest::DisableAggressiveMode() {
+  brave_shields::SetCosmeticFilteringControlType(
+      content_settings(), brave_shields::ControlType::BLOCK_THIRD_PARTY,
+      GURL());
 }
 
 // Load a page with an ad image, and make sure it is blocked.
@@ -1497,6 +1508,7 @@ class Default1pBlockingFlagDisabledTest : public AdBlockServiceTest {
 // blocked while the first-party one is allowed.
 IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Default1pBlocking) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateAdBlockInstanceWithRules("^ad_banner.png");
 
@@ -1523,8 +1535,6 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest,
                        Aggressive1pBlocking) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-  brave_shields::SetCosmeticFilteringControlType(
-      content_settings(), brave_shields::ControlType::BLOCK, GURL());
   UpdateAdBlockInstanceWithRules("^ad_banner.png");
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -1548,6 +1558,7 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest,
 // blocked.
 IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateCustomAdBlockInstanceWithRules("^ad_banner.png");
   WaitForAdBlockServiceThreads();
@@ -1908,6 +1919,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringChildFramesFlagEnabledTest,
 // Test cosmetic filtering ignores content determined to be 1st party
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
   UpdateAdBlockInstanceWithRules(
       "appspot.com##.fpsponsored\n"
       "appspot.com##.fpsponsored1\n"
@@ -1939,11 +1951,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
                          "checkSelector('#another-etld', 'display', 'none')"));
 }
 
-// Test cosmetic filtering bypasses 1st party checks when toggled
+// Test cosmetic filtering bypasses 1st party checks in Aggressive mode
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  brave_shields::SetCosmeticFilteringControlType(
-      content_settings(), brave_shields::ControlType::BLOCK, GURL());
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
   GURL tab_url =
