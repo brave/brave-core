@@ -4,7 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { getRampNetworkPrefix, getWyreNetworkPrefix, httpifyIpfsUrl } from './string-utils'
+import {
+  getRampNetworkPrefix,
+  getWyreNetworkPrefix,
+  httpifyIpfsUrl
+} from './string-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
