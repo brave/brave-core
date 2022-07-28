@@ -13,7 +13,6 @@
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/pref_names.h"
@@ -564,14 +563,6 @@ void JNI_BravePrefServiceBridge_SetShowNews(JNIEnv* env, jboolean value) {
 jboolean JNI_BravePrefServiceBridge_GetShowNews(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_news::prefs::kNewTabPageShowToday);
-}
-
-void JNI_BravePrefServiceBridge_SetPurchaseTokenAndroid(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& purchase_token) {
-  GetOriginalProfile()->GetPrefs()->SetString(
-      brave_vpn::prefs::kBraveVPNPurchaseTokenAndroid,
-      ConvertJavaStringToUTF8(env, purchase_token));
 }
 
 }  // namespace android
