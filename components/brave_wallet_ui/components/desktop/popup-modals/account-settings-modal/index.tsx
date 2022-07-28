@@ -248,7 +248,7 @@ export const AccountSettingsModal = ({
                   <WarningWrapper>
                     <WarningText>
                       {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                        <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
+                        <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL} rel='noopener noreferrer'>
                           {filPrivateKeyFormatDescriptionTextParts.duringTag}
                         </a>
                         {filPrivateKeyFormatDescriptionTextParts.afterTag}
