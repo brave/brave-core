@@ -18,6 +18,33 @@
 
 namespace brave_wallet {
 
+absl::optional<std::string> ParseSardineAuthToken(const std::string& json) {
+  // Parses results like this:
+  // {
+  //   "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
+  //   "expiresAt":"2022-07-25T19:59:57Z"
+  //   "name": "brave-core",
+  // }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v || !records_v->is_dict()) {
+    VLOG(0) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return absl::nullopt;
+  }
+
+  const std::string* auth_token =
+      records_v->GetDict().FindString("clientToken");
+  if (!auth_token) {
+    return absl::nullopt;
+  }
+
+  return *auth_token;
+}
+
 bool ParseAssetPrice(const std::string& json,
                      const std::vector<std::string>& from_assets,
                      const std::vector<std::string>& to_assets,

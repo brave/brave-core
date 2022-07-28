@@ -87,6 +87,8 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const Config = function () {
+  this.sardineClientId = getNPMConfig(['sardine_client_id']) || ''
+  this.sardineClientSecret = getNPMConfig(['sardine_client_secret']) || ''
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
@@ -243,6 +245,8 @@ Config.prototype.buildArgs = function () {
   const chrome_version_parts = this.chromeVersion.split('.')
 
   let args = {
+    sardine_client_id: this.sardineClientId,
+    sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
@@ -607,6 +611,14 @@ Config.prototype.getProjectRef = function (projectName) {
 }
 
 Config.prototype.update = function (options) {
+  if (options.sardine_client_secret) {
+    this.sardineClientSecret = options.sardine_client_secret
+  }
+
+  if (options.sardine_client_id) {
+    this.sardineClientId = options.sardine_client_id
+  }
+
   if (options.universal) {
     this.targetArch = 'arm64'
     this.isUniversalBinary = true

@@ -15,6 +15,8 @@
 
 namespace brave_wallet {
 
+absl::optional<std::string> ParseSardineAuthToken(const std::string& json);
+
 bool ParseAssetPrice(const std::string& json,
                      const std::vector<std::string>& from_assets,
                      const std::vector<std::string>& to_assets,

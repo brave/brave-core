@@ -63,6 +63,8 @@ class AssetRatioServiceUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
+          std::string header;
+          request.headers.GetHeader("Authorization", &header);
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
   }
@@ -88,6 +90,27 @@ class AssetRatioServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetBuyUrlV1(mojom::OnRampProvider on_ramp_provider,
+                       const std::string& chain_id,
+                       const std::string& address,
+                       const std::string& symbol,
+                       const std::string& amount,
+                       const std::string& currency_code,
+                       const std::string& expected_url,
+                       absl::optional<std::string> expected_error) {
+    base::RunLoop run_loop;
+    asset_ratio_service_->GetBuyUrlV1(
+        on_ramp_provider, chain_id, address, symbol, amount, currency_code,
+        base::BindLambdaForTesting(
+            [&](const std::string& url,
+                const absl::optional<std::string>& error) {
+              EXPECT_EQ(url, expected_url);
+              EXPECT_EQ(error, expected_error);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
  protected:
   std::unique_ptr<AssetRatioService> asset_ratio_service_;
 
@@ -97,6 +120,51 @@ class AssetRatioServiceUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
+
+TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Wyre) {
+  TestGetBuyUrlV1(
+      mojom::OnRampProvider::kWyre, mojom::kMainnetChainId, "0xdeadbeef",
+      "USDC", "99.99", "USD",
+      "https://pay.sendwyre.com/"
+      "?dest=ethereum%3A0xdeadbeef&sourceCurrency=USD&destCurrency=USDC&amount="
+      "99.99&accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card",
+      absl::nullopt);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
+  TestGetBuyUrlV1(mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD",
+                  "https://buy.ramp.network/"
+                  "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
+                  "&fiatCurrency=USD&hostApiKey="
+                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
+                  absl::nullopt);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
+  SetInterceptor(R"({
+     "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
+     "expiresAt":"2022-07-25T19:59:57Z"
+    })");
+  TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, "ethereum", "0xdeadbeef",
+                  "USDC", "55000000", "USD",
+                  "https://crypto.sardine.ai/"
+                  "?address=0xdeadbeef&network=ethereum&asset_type=USDC&fiat_"
+                  "amount=55000000&fiat_currency=USD&client_token=74618e17-"
+                  "a537-4f5d-ab4d-9916739560b1",
+                  absl::nullopt);
+
+  // Timeout yields error
+  std::string error = "error";
+  SetErrorInterceptor(error);
+  TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, "ethereum", "0xdeadbeef",
+                  "USDC", "55000000", "USD", "", "INTERNAL_SERVICE_ERROR");
+
+  // Unexpected JSON response (empty body) yields error
+  SetInterceptor(R"({})");
+  TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, "ethereum", "0xdeadbeef",
+                  "USDC", "55000000", "USD", "", "INTERNAL_SERVICE_ERROR");
+}
 
 TEST_F(AssetRatioServiceUnitTest, GetPrice) {
   SetInterceptor(R"(

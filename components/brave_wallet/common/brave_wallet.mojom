@@ -504,6 +504,7 @@ interface KeyringServiceObserver {
 enum OnRampProvider {
   kWyre = 0,
   kRamp = 1,
+  kSardine = 2,
 };
 
 // List of tokens and coins that are supported.
@@ -524,9 +525,6 @@ interface BlockchainRegistry {
   // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
 
- // Obtains the URL for buying assets specifying currency
-  GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
-  
   // Get currencies list
   GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
   
@@ -659,6 +657,9 @@ interface KeyringService {
 
 // Used for cryptocurrency prices over time.
 interface AssetRatioService {
+  // Obtains the URL for buying assets specifying currency
+  GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
+
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
   // change as well.

@@ -9,11 +9,14 @@
 #include <memory>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/environment.h"
+#include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
+#include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -126,6 +129,22 @@ void AssetRatioService::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }
 
+GURL AssetRatioService::GetSardineBuyURL(const std::string network,
+                                         const std::string address,
+                                         const std::string symbol,
+                                         const std::string amount,
+                                         const std::string currency_code,
+                                         const std::string auth_token) {
+  GURL url = GURL(kSardineStorefrontBaseURL);
+  url = net::AppendQueryParameter(url, "address", address);
+  url = net::AppendQueryParameter(url, "network", network);
+  url = net::AppendQueryParameter(url, "asset_type", symbol);
+  url = net::AppendQueryParameter(url, "fiat_amount", amount);
+  url = net::AppendQueryParameter(url, "fiat_currency", currency_code);
+  url = net::AppendQueryParameter(url, "client_token", auth_token);
+  return url;
+}
+
 // static
 GURL AssetRatioService::GetPriceURL(
     const std::vector<std::string>& from_assets,
@@ -154,6 +173,63 @@ GURL AssetRatioService::GetPriceHistoryURL(
   return GURL(spec);
 }
 
+void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
+                                    const std::string& chain_id,
+                                    const std::string& address,
+                                    const std::string& symbol,
+                                    const std::string& amount,
+                                    const std::string& currency_code,
+                                    GetBuyUrlV1Callback callback) {
+  std::string url;
+  if (provider == mojom::OnRampProvider::kWyre) {
+    GURL url = GURL(kWyreBaseUrl);
+    url = net::AppendQueryParameter(url, "dest", "ethereum:" + address);
+    url = net::AppendQueryParameter(url, "sourceCurrency", currency_code);
+    url = net::AppendQueryParameter(url, "destCurrency", symbol);
+    url = net::AppendQueryParameter(url, "amount", amount);
+    url = net::AppendQueryParameter(url, "accountId", kWyreID);
+    url = net::AppendQueryParameter(url, "paymentMethod", "debit-card");
+    std::move(callback).Run(std::move(url.spec()), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kRamp) {
+    GURL url = GURL(kRampBaseUrl);
+    url = net::AppendQueryParameter(url, "userAddress", address);
+    url = net::AppendQueryParameter(url, "swapAsset", symbol);
+    url = net::AppendQueryParameter(url, "fiatValue", amount);
+    url = net::AppendQueryParameter(url, "fiatCurrency", currency_code);
+    url = net::AppendQueryParameter(url, "hostApiKey", kRampID);
+    std::move(callback).Run(std::move(url.spec()), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kSardine) {
+    auto internal_callback =
+        base::BindOnce(&AssetRatioService::OnGetSardineAuthToken,
+                       weak_ptr_factory_.GetWeakPtr(), chain_id, address,
+                       symbol, amount,  // Passing chainId as network
+                       currency_code, std::move(callback));
+    GURL sardine_token_url = GURL(kSardineClientTokensURL);
+    const std::string sardine_client_id(SARDINE_CLIENT_ID);
+    const std::string sardine_client_secret(SARDINE_CLIENT_SECRET);
+
+    base::Value payload_value(base::Value::Type::DICTIONARY);
+    payload_value.SetKey("clientId", base::Value(sardine_client_id));
+    payload_value.SetKey("clientSecret", base::Value(sardine_client_id));
+    std::string payload;
+    base::JSONWriter::Write(payload_value, &payload);
+    base::flat_map<std::string, std::string> request_headers;
+    std::string base64_credentials;
+    std::string credentials = base::StringPrintf(
+        "%s:%s", sardine_client_id.c_str(),  // username:password
+        sardine_client_secret.c_str());
+    base::Base64Encode(credentials, &base64_credentials);
+    std::string header =
+        base::StringPrintf("Basic %s", base64_credentials.c_str());
+    request_headers["Authorization"] = std::move(header);
+    api_request_helper_->Request("POST", sardine_token_url, payload,
+                                 "application/json", true,
+                                 std::move(internal_callback), request_headers);
+  } else {
+    std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
+  }
+}
+
 void AssetRatioService::GetPrice(
     const std::vector<std::string>& from_assets,
     const std::vector<std::string>& to_assets,
@@ -176,6 +252,32 @@ void AssetRatioService::GetPrice(
   api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
       true, std::move(internal_callback), request_headers);
+}
+
+void AssetRatioService::OnGetSardineAuthToken(
+    const std::string& network,
+    const std::string& address,
+    const std::string& symbol,
+    const std::string& amount,
+    const std::string& currency_code,
+    GetBuyUrlV1Callback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
+    return;
+  }
+
+  auto auth_token = ParseSardineAuthToken(body);
+  if (!auth_token) {
+    std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
+    return;
+  }
+
+  GURL sardine_buy_url = GetSardineBuyURL(network, address, symbol, amount,
+                                          currency_code, *auth_token);
+  std::move(callback).Run(std::move(sardine_buy_url.spec()), absl::nullopt);
 }
 
 void AssetRatioService::OnGetPrice(

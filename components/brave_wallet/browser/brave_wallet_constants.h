@@ -29,14 +29,12 @@ constexpr int32_t kAutoLockMinutesMax = 10080;
 constexpr char kWalletBaseDirectory[] = "BraveWallet";
 constexpr char kImageSourceHost[] = "erc-token-images";
 constexpr char kWyreID[] = "AC_MGNVBGHPA9T";
-constexpr char kWyreBuyUrl[] =
-    "https://pay.sendwyre.com/?dest=ethereum:%s"
-    "&sourceCurrency=%s&destCurrency=%s&amount=%s&accountId=%s&paymentMethod="
-    "debit-card";
-constexpr char kRampBuyUrl[] =
-    "https://buy.ramp.network/"
-    "?userAddress=%s&swapAsset=%s&fiatValue=%s&fiatCurrency=%s&hostApiKey=%s";
+constexpr char kWyreBaseUrl[] = "https://pay.sendwyre.com";
+constexpr char kRampBaseUrl[] = "https://buy.ramp.network";
 constexpr char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
+constexpr char kSardineStorefrontBaseURL[] = "https://crypto.sardine.ai";
+constexpr char kSardineClientTokensURL[] =
+    "https://api.sardine.ai/v1/auth/client-tokens";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
