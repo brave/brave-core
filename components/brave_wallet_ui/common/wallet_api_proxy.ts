@@ -8,7 +8,7 @@ import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
 import { BraveWallet } from '../constants/types'
 
-export default class WalletApiProxy {
+export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
   jsonRpcService = new BraveWallet.JsonRpcServiceRemote()
   swapService = new BraveWallet.SwapServiceRemote()
@@ -109,3 +109,5 @@ export default class WalletApiProxy {
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 }
+
+export default WalletApiProxy

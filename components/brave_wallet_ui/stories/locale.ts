@@ -133,6 +133,7 @@ provideStrings({
   braveWalletConfirmPasswordError: 'Passwords do not match',
 
   // Lock Screen
+  braveWalletEnterYourPassword: 'Enter your Brave Wallet password',
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',
   braveWalletLockScreenButton: 'Unlock',
   braveWalletLockScreenError: 'Incorrect password',

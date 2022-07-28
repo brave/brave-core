@@ -14,8 +14,8 @@ class WalletPageApiProxy extends WalletApiProxy {
   constructor () {
     super()
 
-    const factory = BraveWallet.PageHandlerFactory.getRemote()
-    factory.createPageHandler(
+    const factory = BraveWallet?.PageHandlerFactory?.getRemote?.()
+    factory?.createPageHandler?.(
       this.callbackRouter.$.bindNewPipeAndPassRemote(),
       this.pageHandler.$.bindNewPipeAndPassReceiver(),
       this.walletHandler.$.bindNewPipeAndPassReceiver(),

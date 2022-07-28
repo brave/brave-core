@@ -48,6 +48,18 @@ export const Input = styled.input`
     margin: 0;
   }
 `
+export const InputLabelText = styled.label`
+  /* font-family: Poppins;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em; */
+  display: block;
+  margin-bottom: 8px;
+  color: ${(p) => p.theme.color.text03};
+  text-align: left;
+  width: 100%;
+`
 
 export const QRCodeWrapper = styled.img`
   display: flex;

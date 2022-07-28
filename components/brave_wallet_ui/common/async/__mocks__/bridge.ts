@@ -68,6 +68,10 @@ export class MockedWalletApiProxy {
     })
   }
 
+  keyringService = {
+    validatePassword: async () => ({ result: true })
+  }
+
   ethTxManagerProxy = {
     getGasEstimation1559: async () => {
       return {
@@ -93,6 +97,12 @@ export class MockedWalletApiProxy {
   }
 }
 
-export default function getAPIProxy (): Partial<WalletApiProxy> {
+export function getAPIProxy (): Partial<WalletApiProxy> {
   return new MockedWalletApiProxy() as unknown as Partial<WalletApiProxy> & MockedWalletApiProxy
 }
+
+export function getMockedAPIProxy (): WalletApiProxy {
+  return new MockedWalletApiProxy() as unknown as WalletApiProxy
+}
+
+export default getAPIProxy

@@ -17,14 +17,17 @@ const middlewares = [
   walletPageAsyncHandler
 ]
 
-const store = createStore(
-    reducers,
-    applyMiddleware(...middlewares)
+export const store = createStore(
+  reducers,
+  applyMiddleware(...middlewares)
 )
 
-getWalletPageApiProxy().addJsonRpcServiceObserver(store)
-getWalletPageApiProxy().addKeyringServiceObserver(store)
-getWalletPageApiProxy().addTxServiceObserver(store)
-getWalletPageApiProxy().addBraveWalletServiceObserver(store)
+const proxy = getWalletPageApiProxy()
+proxy.addJsonRpcServiceObserver(store)
+proxy.addKeyringServiceObserver(store)
+proxy.addTxServiceObserver(store)
+proxy.addBraveWalletServiceObserver(store)
+
+export const walletPageApiProxy = proxy
 
 export default store

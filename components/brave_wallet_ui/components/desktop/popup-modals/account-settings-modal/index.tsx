@@ -1,5 +1,19 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import * as qr from 'qr-image'
+
+// utils
+import { reduceAddress } from '../../../../utils/reduce-address'
+import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+
+// constants
+import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
+
+// types
 import {
   AccountSettingsNavTypes,
   BraveWallet,
@@ -7,21 +21,21 @@ import {
   UpdateAccountNamePayloadType,
   TopTabNavObjectType
 } from '../../../../constants/types'
-import {
-  PopupModal,
-  TopTabNav
-} from '../..'
+
+// options
 import {
   AccountSettingsNavOptions,
   HardwareAccountSettingsNavOptions
 } from '../../../../options/account-settings-nav-options'
-import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
-import { reduceAddress } from '../../../../utils/reduce-address'
+
+// components
 import { NavButton } from '../../../extension'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
-import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+import TopTabNav from '../../top-tab-nav/index'
+import PopupModal from '../../popup-modals/index'
+import PasswordInput from '../../../shared/password-input/index'
 
-// Styled Components
+// style
 import {
   Input,
   StyledWrapper,
@@ -34,10 +48,12 @@ import {
   WarningWrapper,
   PrivateKeyBubble,
   ButtonWrapper,
-  ErrorText
+  ErrorText,
+  InputLabelText
 } from './style'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
-export interface Props {
+interface Props {
   onClose: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onChangeTab: (id: AccountSettingsNavTypes) => void
@@ -52,28 +68,32 @@ export interface Props {
   account: WalletAccountType
 }
 
-const AddAccountModal = (props: Props) => {
-  const {
-    title,
-    account,
-    tab,
-    hideNav,
-    privateKey,
-    onClose,
-    onToggleNav,
-    onUpdateAccountName,
-    onChangeTab,
-    onRemoveAccount,
-    onViewPrivateKey,
-    onDoneViewingPrivateKey
-  } = props
+export const AccountSettingsModal = ({
+  title,
+  account,
+  tab,
+  hideNav,
+  privateKey,
+  onClose,
+  onToggleNav,
+  onUpdateAccountName,
+  onChangeTab,
+  onRemoveAccount,
+  onViewPrivateKey,
+  onDoneViewingPrivateKey
+}: Props) => {
+  // state
   const [accountName, setAccountName] = React.useState<string>(account.name)
   const [showPrivateKey, setShowPrivateKey] = React.useState<boolean>(false)
   const [updateError, setUpdateError] = React.useState<boolean>(false)
+  const [password, setPassword] = React.useState<string>('')
+  const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
   const [qrCode, setQRCode] = React.useState<string>('')
 
   // custom hooks
+  const { keyringService } = useApiProxy()
 
+  // methods
   const handleAccountNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value)
     setUpdateError(false)
@@ -99,10 +119,6 @@ const AddAccountModal = (props: Props) => {
       })
   }
 
-  React.useEffect(() => {
-    generateQRData()
-  })
-
   const onSelectTab = (id: AccountSettingsNavTypes) => {
     onChangeTab(id)
   }
@@ -113,7 +129,25 @@ const AddAccountModal = (props: Props) => {
     onClose()
   }
 
-  const onShowPrivateKey = () => {
+  const onShowPrivateKey = async () => {
+    if (!password) { // require password to view key
+      return
+    }
+
+    // entered password must be correct
+    const {
+      result: isPasswordValid
+    } = await keyringService.validatePassword(password)
+
+    if (!isPasswordValid) {
+      setIsCorrectPassword(isPasswordValid) // set or clear error
+      return // need valid password to continue
+    }
+
+    // clear entered password & error
+    setPassword('')
+    setIsCorrectPassword(true)
+
     if (onViewPrivateKey) {
       const isDefault = account?.accountType === 'Primary'
       onViewPrivateKey(account?.address ?? '', isDefault, account?.coin)
@@ -138,6 +172,12 @@ const AddAccountModal = (props: Props) => {
     }
   }
 
+  const onPasswordChange = (value: string): void => {
+    setIsCorrectPassword(true) // clear error
+    setPassword(value)
+  }
+
+  // memos / computed
   const tabList = React.useMemo((): TopTabNavObjectType[] => {
     return account.accountType === 'Trezor' ||
       account.accountType === 'Ledger'
@@ -145,9 +185,16 @@ const AddAccountModal = (props: Props) => {
       : AccountSettingsNavOptions()
   }, [account])
 
-  const filPrivateKeyFormatDescriptionTextParts =
-      getLocaleWithTag('braveWalletFilExportPrivateKeyFormatDescription')
+  const filPrivateKeyFormatDescriptionTextParts = getLocaleWithTag(
+    'braveWalletFilExportPrivateKeyFormatDescription'
+  )
 
+  // effects
+  React.useEffect(() => {
+    generateQRData()
+  })
+
+  // render
   return (
     <PopupModal title={title} onClose={onClickClose}>
       {!hideNav &&
@@ -195,27 +242,45 @@ const AddAccountModal = (props: Props) => {
             <WarningWrapper>
               <WarningText>{getLocale('braveWalletAccountSettingsDisclaimer')}</WarningText>
             </WarningWrapper>
-            {showPrivateKey && account.coin === BraveWallet.CoinType.FIL &&
-            <WarningWrapper>
-               <WarningText>
-                 {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                  <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
-                    {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                  </a>
-                  {filPrivateKeyFormatDescriptionTextParts.afterTag}
-                </WarningText>
-            </WarningWrapper>
-            }
-            {showPrivateKey &&
-              <CopyTooltip text={privateKey}>
-                <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
-              </CopyTooltip>
+            {showPrivateKey
+              ? <>
+                {account.coin === BraveWallet.CoinType.FIL &&
+                  <WarningWrapper>
+                    <WarningText>
+                      {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+                        <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
+                          {filPrivateKeyFormatDescriptionTextParts.duringTag}
+                        </a>
+                        {filPrivateKeyFormatDescriptionTextParts.afterTag}
+                      </WarningText>
+                  </WarningWrapper>
+                }
+                <CopyTooltip text={privateKey}>
+                  <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
+                </CopyTooltip>
+              </>
+              : <>
+                <InputLabelText>{getLocale('braveWalletEnterYourPassword')}</InputLabelText>
+                <PasswordInput
+                  placeholder={getLocale('braveWalletCreatePasswordInput')}
+                  onChange={onPasswordChange}
+                  hasError={!!password && !isCorrectPassword}
+                  error={getLocale('braveWalletLockScreenError')}
+                  autoFocus={false}
+                  value={password}
+                />
+              </>
             }
             <ButtonWrapper>
               <NavButton
                 onSubmit={!showPrivateKey ? onShowPrivateKey : onHidePrivateKey}
                 text={!showPrivateKey ? getLocale('braveWalletAccountSettingsShowKey') : getLocale('braveWalletAccountSettingsHideKey')}
                 buttonType='primary'
+                disabled={
+                  showPrivateKey
+                    ? false
+                    : password ? !isCorrectPassword : true
+                }
               />
             </ButtonWrapper>
           </PrivateKeyWrapper>
@@ -225,4 +290,4 @@ const AddAccountModal = (props: Props) => {
   )
 }
 
-export default AddAccountModal
+export default AccountSettingsModal
