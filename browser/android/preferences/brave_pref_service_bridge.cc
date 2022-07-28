@@ -6,6 +6,7 @@
 #include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 
 #include "base/android/jni_string.h"
+#include <android/log.h>
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -256,6 +257,16 @@ JNI_BravePrefServiceBridge_GetFingerprintingControlType(JNIEnv* env) {
   return base::android::ConvertUTF8ToJavaString(
       env, brave_shields::ControlTypeToString(control_type));
 }
+
+void JNI_BravePrefServiceBridge_SetFingerprintingForLanguageControlType(
+    JNIEnv* env,
+    jboolean enabled) {
+  __android_log_write(ANDROID_LOG_ERROR, "sujitsujit", "loglog");
+//   GetOriginalProfile()->GetPrefs()->SetBoolean(kGoogleLoginControlType,
+//                                                enabled);
+}
+
+
 
 void JNI_BravePrefServiceBridge_SetNoScriptControlType(
     JNIEnv* env,
