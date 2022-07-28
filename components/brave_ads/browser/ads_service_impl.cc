@@ -335,6 +335,8 @@ AdsServiceImpl::AdsServiceImpl(
 
   MigratePrefs();
 
+  InitNotificationsForProfile();
+
   MigrateConfirmationState();
 }
 
@@ -359,6 +361,10 @@ bool AdsServiceImpl::IsBatAdsServiceBound() const {
 
 bool AdsServiceImpl::IsBatAdsBound() const {
   return bat_ads_.is_bound() && !g_browser_process->IsShuttingDown();
+}
+
+void AdsServiceImpl::InitNotificationsForProfile() {
+  NotificationHelper::GetInstance()->InitForProfile(profile_);
 }
 
 void AdsServiceImpl::MigrateConfirmationState() {
@@ -909,7 +915,7 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
 bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
   const bool can_show_native_notifications =
-      NotificationHelper::GetInstance()->CanShowNativeNotifications();
+      NotificationHelper::GetInstance()->CanShowNotifications();
 
   bool can_fallback_to_custom_notification_ads =
       features::CanFallbackToCustomNotificationAds();
@@ -1495,7 +1501,7 @@ bool AdsServiceImpl::CanShowNotificationAds() {
     return false;
   }
 
-  if (!NotificationHelper::GetInstance()->CanShowNativeNotifications()) {
+  if (!NotificationHelper::GetInstance()->CanShowNotifications()) {
     return ShouldShowCustomNotificationAds();
   }
 
@@ -1504,7 +1510,7 @@ bool AdsServiceImpl::CanShowNotificationAds() {
 
 bool AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded() const {
   return NotificationHelper::GetInstance()
-      ->CanShowNativeNotificationsWhileBrowserIsBackgrounded();
+      ->CanShowSystemNotificationsWhileBrowserIsBackgrounded();
 }
 
 void AdsServiceImpl::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
@@ -1577,6 +1583,17 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
         placement_id, url);
 #endif
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS, placement_id);
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    // AdsServiceImpl::OnNotificationAdClosed() is not called when the system
+    // notification is closed without the user's participation, so we need to
+    // trigger the timed-out event from here.
+    if (NotificationHelper::GetInstance()->DoesSupportSystemNotifications() &&
+        IsBatAdsBound()) {
+      bat_ads_->TriggerNotificationAdEvent(
+          placement_id, ads::mojom::NotificationAdEventType::kTimedOut);
+    }
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   }
 }
 
