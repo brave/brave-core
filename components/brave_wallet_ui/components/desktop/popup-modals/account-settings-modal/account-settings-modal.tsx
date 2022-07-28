@@ -122,6 +122,7 @@ export const AccountSettingsModal = ({
   }
 
   const onSelectTab = (id: AccountSettingsNavTypes) => {
+    setShowPrivateKey(false)
     onChangeTab(id)
   }
 
