@@ -19,7 +19,6 @@ import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-t
 import {
   ToggleVisibilityButton,
   LinkText,
-  DownloadButton,
   CopyButton,
   HorizontalSpace
 } from '../../../../components/shared/style'
@@ -43,18 +42,12 @@ import { CopiedToClipboardConfirmation } from '../../../../components/desktop/co
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { NavButton } from '../../../../components/extension'
 
-// storybook compiler thinks `randomUUID` doesnt exist
-const randomUUID = () => (
-  window.crypto as Crypto & { randomUUID: () => string }
-).randomUUID()
-
 export const OnboardingBackupRecoveryPhrase = () => {
   // redux
-  const { mnemonic } = useSelector(({ page }: { page: PageState }) => page)
+  const mnemonic = useSelector(({ page }: { page: PageState }) => page.mnemonic)
 
   // state
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
-  const [fileGUID, setFileGUID] = React.useState(randomUUID())
 
   // custom hooks
   const {
@@ -67,29 +60,18 @@ export const OnboardingBackupRecoveryPhrase = () => {
     setIsPhraseShown(true)
   }, [])
 
-  const toggleShowPhrase = React.useCallback(() => {
+  const toggleShowPhrase = () => {
     setIsPhraseShown(prev => !prev)
-  }, [])
+  }
 
-  const onCopyPhrase = React.useCallback(async () => {
+  const onCopyPhrase = async () => {
     await temporaryCopyToClipboard(mnemonic || '')
-  }, [temporaryCopyToClipboard, mnemonic])
-
-  const onDownloadPhraseFile = React.useCallback(() => {
-    setFileGUID(randomUUID())
-  }, [])
+  }
 
   // memos
   const recoveryPhrase = React.useMemo(() => {
     return (mnemonic || '').split(' ')
   }, [mnemonic])
-
-  const phraseDownloadUri = React.useMemo(
-    () => `data:text/plain;charset=utf-8,${
-      encodeURI(recoveryPhrase.join(' '))
-    }`,
-    [recoveryPhrase]
-  )
 
   // render
   return (
@@ -136,14 +118,6 @@ export const OnboardingBackupRecoveryPhrase = () => {
             <PhraseCardBottomRow>
 
               <CopyButton onClick={onCopyPhrase} />
-
-              <a
-                href={phraseDownloadUri}
-                download={`brave-wallet-private-key-${fileGUID}.txt`}
-                onClick={onDownloadPhraseFile}
-              >
-                <DownloadButton />
-              </a>
 
               {isCopied &&
                 <>
