@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#include "base/memory/raw_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -45,7 +46,7 @@ class BraveFaviconLoader : public KeyedService {
   base::WeakPtr<BraveFaviconLoader> AsWeakPtr();
 
  private:
-  favicon::FaviconService* favicon_service_;
+  base::raw_ptr<favicon::FaviconService> favicon_service_;
 
   // Tracks tasks sent to HistoryService.
   base::CancelableTaskTracker cancelable_task_tracker_;

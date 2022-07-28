@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/favicon/favicon_loader.h"
+#include <memory>
+
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader.h"
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
@@ -14,8 +17,6 @@
 #include "ios/chrome/common/ui/favicon/favicon_attributes.h"
 #import "ios/chrome/common/ui/favicon/favicon_constants.h"
 #import "net/base/mac/url_conversions.h"
-
-#include <memory>
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -38,7 +39,7 @@ BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLargest =
 // MARK: - Implementation
 
 @interface BraveFaviconLoader () {
-  brave_favicon::BraveFaviconLoader* brave_favicon_loader_;
+  base::raw_ptr<brave_favicon::BraveFaviconLoader> brave_favicon_loader_;
 }
 @end
 
