@@ -32,8 +32,11 @@ import {
 import { NavButton } from '../../../extension'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import TopTabNav from '../../top-tab-nav/index'
-import PopupModal from '../../popup-modals/index'
+import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
+
+// hooks
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // style
 import {
@@ -50,8 +53,7 @@ import {
   ButtonWrapper,
   ErrorText,
   InputLabelText
-} from './style'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+} from './account-settings-modal.style'
 
 interface Props {
   onClose: () => void
@@ -177,6 +179,12 @@ export const AccountSettingsModal = ({
     setPassword(value)
   }
 
+  const handlePasswordKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onShowPrivateKey()
+    }
+  }
+
   // memos / computed
   const tabList = React.useMemo((): TopTabNavObjectType[] => {
     return account.accountType === 'Trezor' ||
@@ -268,6 +276,7 @@ export const AccountSettingsModal = ({
                   error={getLocale('braveWalletLockScreenError')}
                   autoFocus={false}
                   value={password}
+                  onKeyDown={handlePasswordKeyDown}
                 />
               </>
             }
@@ -289,5 +298,3 @@ export const AccountSettingsModal = ({
     </PopupModal>
   )
 }
-
-export default AccountSettingsModal
