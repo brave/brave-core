@@ -152,10 +152,7 @@ void TimePeriodStorage::FilterToPeriod() {
 
 void TimePeriodStorage::Load() {
   DCHECK(daily_values_.empty());
-  // TODO(cdesouza): From cr105, this function return a reference rather than a
-  // pointer. Leaving a dereference here for now, but once this breaks on 105,
-  // please remove this comment and the dereferencing bellow.
-  const base::Value::List& list = *prefs_->GetValueList(pref_name_);
+  const base::Value::List& list = prefs_->GetValueList(pref_name_);
   for (const auto& it : list) {
     DCHECK(it.is_dict());
     const base::Value::Dict& dict = it.GetDict();

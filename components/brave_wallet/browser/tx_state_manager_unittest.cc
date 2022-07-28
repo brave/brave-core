@@ -115,7 +115,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   tx_state_manager_->AddOrUpdateTx(meta);
   EXPECT_TRUE(prefs_.HasPrefPath(kBraveWalletTransactions));
   {
-    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    const auto& dict = prefs_.GetValueDict(kBraveWalletTransactions);
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -134,7 +134,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   // Update
   tx_state_manager_->AddOrUpdateTx(meta);
   {
-    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    const auto& dict = prefs_.GetValueDict(kBraveWalletTransactions);
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -154,7 +154,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   // Add another one
   tx_state_manager_->AddOrUpdateTx(meta);
   {
-    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    const auto& dict = prefs_.GetValueDict(kBraveWalletTransactions);
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -184,7 +184,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   // Delete
   tx_state_manager_->DeleteTx("001");
   {
-    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    const auto& dict = prefs_.GetValueDict(kBraveWalletTransactions);
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -294,7 +294,7 @@ TEST_F(TxStateManagerUnitTest, SwitchNetwork) {
   EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+  const auto& dict = prefs_.GetValueDict(kBraveWalletTransactions);
   EXPECT_EQ(dict.size(), 1u);
   const auto* ethereum_dict = dict.FindDict("ethereum");
   ASSERT_TRUE(ethereum_dict);
