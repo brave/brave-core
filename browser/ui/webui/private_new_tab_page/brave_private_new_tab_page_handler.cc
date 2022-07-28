@@ -8,9 +8,12 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -21,6 +24,10 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_launcher_factory.h"
 #endif
+
+namespace {
+constexpr const auto kStuckPeriod = base::Seconds(15);
+}
 
 BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(
     Profile* profile,
@@ -109,11 +116,48 @@ void BravePrivateNewTabPageHandler::GoToBraveSearch(const std::string& input,
       ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT, false));
 }
 
+void BravePrivateNewTabPageHandler::GoToBraveSupport() {
+  Profile* profile = profile_;
+  if (profile_->IsTor()) {
+    profile = profile_->GetOriginalProfile();
+  }
+
+  content::WebContents* web_contents = nullptr;
+
+  Browser* browser = chrome::FindBrowserWithProfile(profile);
+  if (browser && browser->tab_strip_model()) {
+    web_contents = browser->tab_strip_model()->GetActiveWebContents();
+  }
+
+  if (!web_contents)
+    web_contents = web_contents_;
+
+  web_contents->OpenURL(content::OpenURLParams(
+      GURL("https://support.brave.com/"), content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PageTransition::PAGE_TRANSITION_LINK, false));
+}
+
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {
-  page_.get()->OnTorCircuitEstablished(result);
+  stuck_timer_.Stop();
+  if (page_) {
+    page_.get()->OnTorCircuitGetStuck(!result);    
+    page_.get()->OnTorCircuitEstablished(result);
+  }
 }
 
 void BravePrivateNewTabPageHandler::OnTorInitializing(
-    const std::string& percentage) {
-  page_.get()->OnTorInitializing(percentage);
+    const std::string& percentage,
+    const std::string& message) {
+  stuck_timer_.Start(FROM_HERE, kStuckPeriod, this,
+                     &BravePrivateNewTabPageHandler::OnTorCircuitGetStuck);
+  if (page_) {
+    page_.get()->OnTorInitializing(percentage, message);
+  }
+}
+
+void BravePrivateNewTabPageHandler::OnTorCircuitGetStuck() {
+  if (page_) {
+    page_.get()->OnTorCircuitGetStuck(true);
+  }
 }

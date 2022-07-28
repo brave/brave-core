@@ -25,6 +25,7 @@ constexpr char kTorProxyScheme[] = "socks5://";
 // tor::TorControlEvent::STATUS_CLIENT response
 constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
 constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
+constexpr char kStatusSummary[] = "SUMMARY=";
 constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
 constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
 }  // namespace
@@ -375,8 +376,16 @@ void TorLauncherFactory::OnTorEvent(
       const std::string percentage = initial.substr(
           progress_start + strlen(kStatusClientBootstrapProgress),
           progress_length - strlen(kStatusClientBootstrapProgress));
+
+      std::string message;
+      size_t summary_start = initial.find(kStatusSummary);
+      if (summary_start != std::string::npos) {
+        summary_start += strlen(kStatusSummary) + 1;
+        const size_t summary_end = initial.find("\"", summary_start);
+        message = initial.substr(summary_start, summary_end - summary_start);
+      }
       for (auto& observer : observers_)
-        observer.OnTorInitializing(percentage);
+        observer.OnTorInitializing(percentage, message);
     } else if (initial.find(kStatusClientCircuitEstablished) !=
                std::string::npos) {
       for (auto& observer : observers_)

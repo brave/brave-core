@@ -28,9 +28,13 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED},  // NOLINT
     {"torStatusInitializing",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING},  // NOLINT
+    {"torStatusConnectionFailed",
+     IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED},
     {"torHelpConnecting", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING},
-    {"torHelpDisconnected",
-     IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED},  // NOLINT
+    {"torHelpDisconnectedReenable",
+     IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE},  // NOLINT
+    {"torHelpDisconnectedBridges",
+     IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES},  // NOLINT
     {"torHelpContactSupport",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT},  // NOLINT
 };

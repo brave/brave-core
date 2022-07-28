@@ -370,9 +370,11 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS" desc="">Tor Status</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Tor connected successfully</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED" desc="">Disconnected</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED" desc="">Tor connection failed</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">Tor is connecting... [[percentage]]%</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING" desc="">Having problems connecting? Try <ph name="BEGIN_LINK">$1</ph>turning off<ph name="END_LINK">$2</ph> Private Window with Tor and back on again in settings.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED" desc="">Having trouble connecting? Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable. Still having trouble?</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE" desc="">Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES" desc=""><ph name="BEGIN_BOLD">$1</ph>Still having trouble?<ph name="END_BOLD">$2</ph> Try using <ph name="BEGIN_BRIDGES_LINK">$3</ph>bridges<ph name="END_BRIDGES_LINK">$4</ph> or <ph name="BEGIN_SUPPORT_LINK">$5</ph>contact support<ph name="END_SUPPORT_LINK">$6</ph>.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT" desc="">Contact support.</message>
 
       <!-- WebUI adblock resources -->

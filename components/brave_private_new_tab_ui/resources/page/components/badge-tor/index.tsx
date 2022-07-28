@@ -2,26 +2,22 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { getLocale } from '$web-common/locale'
+import getPageHandlerInstance from '../../api/brave_page_handler'
 
 interface BoxProps {
   isConnected?: boolean
   isLoading?: boolean
 }
-
 const Box = styled.div<BoxProps>`
   --bg-color: #BD1531;
 
   display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
   background: var(--bg-color);
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
   border-radius: 4px;
   padding: 8px 16px;
+  max-width: 284px;
 
   ${p => p.isLoading && css`
     --bg-color: rgba(255, 255, 255, 0.15);
@@ -31,34 +27,118 @@ const Box = styled.div<BoxProps>`
     --bg-color: #12A378;
   `}
 
+`
+
+const Row = styled.div`
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+
   span {
     width: 22px;
     height: 22px;
+    min-width: 22px;
   }
+
+`
+
+interface HelpProps {
+  isVisible?: boolean
+}
+
+const Help = styled.div<HelpProps>`
+  --display: none;
+
+  ${p => p.isVisible && css`
+    --display: inline-flex;
+  `}
+  
+  display: var(--display);
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  font-weight: 400;
+  font-size: 12px;
+
+  span {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+  }
+
+  a {
+    color: white;
+    cursor: pointer;
+    text-decoration-line: underline;
+  }
+
 `
 
 interface Props {
   isConnected: boolean
   isLoading: boolean
   progress: string
+  message: string
+  connectionFailed: boolean
 }
 
-function BadgeTor (props: Props) {
+function splitMessage (key: string) {
+  return getLocale(key).split(/\$\d+/g)
+}
+
+function contactSupport() {
+  getPageHandlerInstance().pageHandler.goToBraveSupport()
+}
+
+function BadgeTor(props: Props) {
   let textElement = getLocale('torStatusDisconnected')
+  let helpElement = undefined;
   let iconElement = (
     <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-      <path fillRule="evenodd" clipRule="evenodd" d="M10.02 18.181V16.97a6.97 6.97 0 0 0 0-13.938V1.818a8.181 8.181 0 0 1 0 16.363Zm0-4.243a3.94 3.94 0 0 0 0-7.877V4.85a5.15 5.15 0 0 1 0 10.301v-1.212Zm0-6.058a2.12 2.12 0 0 1 0 4.24V7.88ZM0 10c0 5.523 4.477 10 10 10s10-4.477 10-10S15.523 0 10 0 0 4.477 0 10Z" fill="#fff"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M10.02 18.181V16.97a6.97 6.97 0 0 0 0-13.938V1.818a8.181 8.181 0 0 1 0 16.363Zm0-4.243a3.94 3.94 0 0 0 0-7.877V4.85a5.15 5.15 0 0 1 0 10.301v-1.212Zm0-6.058a2.12 2.12 0 0 1 0 4.24V7.88ZM0 10c0 5.523 4.477 10 10 10s10-4.477 10-10S15.523 0 10 0 0 4.477 0 10Z" fill="#fff" />
     </svg>
   )
 
-  const isLoading = Boolean(props.isLoading && props.progress)
+  const isLoading = Boolean(props.isLoading && props.progress && !props.connectionFailed)
 
   if (props.isConnected) {
     textElement = getLocale('torStatusConnected')
-  }
+  } else if (props.connectionFailed) {
+    textElement = getLocale('torStatusConnectionFailed')
 
-  if (isLoading) {
+    const [
+      open,
+      settings,
+      reenable
+    ] = splitMessage('torHelpDisconnectedReenable')
+
+    const [
+      before,
+      having_trouble,
+      try_using,
+      bridges,
+      or,
+      contact_support,
+      rest
+    ] = splitMessage('torHelpDisconnectedBridges')
+
+    helpElement = (<p>
+      {open}<a href="chrome://settings/privacy">{settings}</a>{reenable}
+      <br></br> <br></br>
+      {before}<strong>{having_trouble}</strong>
+      {try_using}<a href="chrome://settings/privacy">{bridges}</a>
+      {or}
+      <a onClick={contactSupport}>{contact_support}</a>
+      {rest}
+    </p>)
+  } else if (isLoading) {
     textElement = getLocale('torStatusInitializing', { percentage: props.progress })
+    helpElement = props.message
     iconElement = <LoaderIcon />
   }
 
@@ -67,8 +147,14 @@ function BadgeTor (props: Props) {
       isLoading={isLoading}
       isConnected={props.isConnected}
     >
-      <span>{iconElement}</span>
-      {textElement}
+      <Row>
+        <span>{iconElement}</span>
+        {textElement}
+      </Row>
+      <Help isVisible={helpElement !== undefined}>
+        <span></span>
+        {helpElement}
+      </Help>
     </Box>
   )
 }

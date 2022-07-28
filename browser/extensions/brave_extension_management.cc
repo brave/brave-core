@@ -54,6 +54,11 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
       tor::prefs::kTorDisabled,
       base::BindRepeating(&BraveExtensionManagement::OnTorDisabledChanged,
                           base::Unretained(this)));
+  local_state_pref_change_registrar_.Add(
+      tor::prefs::kBridgesConfig,
+      base::BindRepeating(
+          &BraveExtensionManagement::OnTorPluggableTransportChanged,
+          base::Unretained(this)));
 #endif
   // Make IsInstallationExplicitlyAllowed to be true
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -92,8 +97,14 @@ void BraveExtensionManagement::OnTorDisabledChanged() {
     if (g_brave_browser_process->tor_pluggable_transport_updater()) {
       g_brave_browser_process->tor_pluggable_transport_updater()->Cleanup();
     }
-  } else if (TorProfileServiceFactory::GetTorBridgesConfig().use_bridges ==
-             tor::BridgesConfig::Usage::kNotUsed) {
+  }
+#endif
+}
+
+void BraveExtensionManagement::OnTorPluggableTransportChanged() {
+#if BUILDFLAG(ENABLE_TOR)
+  if (TorProfileServiceFactory::GetTorBridgesConfig().use_bridges ==
+      tor::BridgesConfig::Usage::kNotUsed) {
     if (g_brave_browser_process->tor_pluggable_transport_updater()) {
       g_brave_browser_process->tor_pluggable_transport_updater()->Cleanup();
     }
@@ -105,6 +116,7 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
   // BrowserPolicyConnector enforce policy earlier than this constructor so we
   // have to manully cleanup tor executable when tor is disabled by gpo
   OnTorDisabledChanged();
+  OnTorPluggableTransportChanged();
 
 #if BUILDFLAG(ENABLE_IPFS)
   // Remove ipfs executable if it is disabled by GPO.

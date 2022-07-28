@@ -246,15 +246,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2 },
         { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON },
 
-        // Private Tab - Private Window - Tor Status
-        { "torStatus", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS },
-        { "torStatusConnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED },         // NOLINT
-        { "torStatusDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED },   // NOLINT
-        { "torStatusInitializing", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING },   // NOLINT
-        { "torHelpConnecting", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING},
-        { "torHelpDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED},        // NOLINT
-        { "torHelpContactSupport", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT},   // NOLINT
-
         // Brave Talk prompt
         { "braveTalkPromptTitle", IDS_BRAVE_TALK_PROMPT_TITLE },
         { "braveTalkPromptDescription", IDS_BRAVE_TALK_PROMPT_DESCRIPTION },
