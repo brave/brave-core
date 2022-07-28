@@ -1,16 +1,16 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index 15b4119c8f443a6eb0dc29c9dac9469e4c902469..570a71c413349320148673897b2150b14c7a9fb7 100644
+index f6a85f48e5743e42788c7d244dd1d7a91174c0c9..1c0c28e851fda8a107faa2180bc7b125c06f3a4f 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
-@@ -313,6 +313,7 @@ AutocompleteController::AutocompleteController(
-   if (provider_types & AutocompleteProvider::TYPE_SEARCH) {
-     search_provider_ = new SearchProvider(provider_client_.get(), this);
-     providers_.push_back(search_provider_.get());
-+    BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
-   }
-   // It's important that the HistoryURLProvider gets added after SearchProvider:
-   // AutocompleteController::Start() calls each providers' Start() function
-@@ -887,6 +888,8 @@ void AutocompleteController::UpdateResult(
+@@ -355,6 +355,7 @@ AutocompleteController::AutocompleteController(
+     if (provider_types & AutocompleteProvider::TYPE_SEARCH) {
+       search_provider_ = new SearchProvider(provider_client_.get(), this);
+       providers_.push_back(search_provider_.get());
++      BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
+     }
+     // Providers run in the order they're added.  Add `HistoryURLProvider` after
+     // `SearchProvider` because:
+@@ -933,6 +934,8 @@ void AutocompleteController::UpdateResult(
    metrics_.OnUpdateResult(last_result_for_logging,
                            result_.GetMatchDedupComparators());
  
