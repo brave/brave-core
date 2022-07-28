@@ -29,12 +29,8 @@ bool VerifyConfirmation(const ConfirmationInfo& confirmation) {
     return false;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return false;
-  }
-
-  const std::string* signature = dictionary->FindStringKey("signature");
+  const base::Value::Dict& dict = value->GetDict();
+  const std::string* signature = dict.FindString("signature");
   if (!signature) {
     return false;
   }
