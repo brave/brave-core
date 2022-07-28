@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/notreached.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
@@ -140,6 +139,7 @@ Theme SpeedreaderService::GetTheme() const {
 std::string SpeedreaderService::GetThemeName() const {
   switch (GetTheme()) {
     default:
+      return {};
     case Theme::kNone:
       return {};
     case Theme::kLight:
