@@ -94,6 +94,7 @@ extension BraveWallet.SignMessageRequest {
       isEip712: false,
       domainHash: "",
       primaryHash: "",
+      messageBytes: [],
       coin: .eth
     )
   }

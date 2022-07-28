@@ -646,7 +646,7 @@ public class FeedDataSource {
       category: \.content.offersCategory
     )
 
-    rewards?.ads.purgeOrphanedAdEvents(.inlineContentAd)
+    rewards?.ads.purgeOrphanedAdEvents(.inlineContentAd) { _ in }
     var contentAdsQueryFailed = false
 
     let rules: [FeedSequenceElement] = [

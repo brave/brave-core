@@ -47,16 +47,16 @@ class MockTxService: BraveWalletTxService {
   func reset() {
   }
 
+  func transactionMessage(toSign coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (BraveWallet.MessageToSignUnion?) -> Void) {
+    completion(BraveWallet.MessageToSignUnion(messageStr: "Mock transaction message"))
+  }
+  
   func transactionMessage(toSign coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (String?) -> Void) {
     completion("Mock transaction message")
   }
 
   func approveTransaction(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (Bool, BraveWallet.ProviderErrorUnion, String) -> Void) {
     completion(false, .init(providerError: .internalError), "Error Message")
-  }
-  
-  func transactionMessage(toSign coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (BraveWallet.MessageToSignUnion?) -> Void) {
-    completion(.none)
   }
 }
 

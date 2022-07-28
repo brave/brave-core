@@ -25,6 +25,7 @@ let package = Package(
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
     .library(name: "BraveVPN", targets: ["BraveVPN"]),
+    .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "CurrentBundleGenPlugin", targets: ["CurrentBundleGenPlugin"]),
   ],
@@ -348,6 +349,7 @@ let package = Package(
       ]
     ),
     .target(name: "Strings", path: "App/l10n", exclude: ["tools", "Resources/Info.plist", "README.md"]),
+    .target(name: "RuntimeWarnings"),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "CurrentBundleGenPlugin", capability: .buildTool()),
   ],

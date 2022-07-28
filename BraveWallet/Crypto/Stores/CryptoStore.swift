@@ -349,7 +349,7 @@ public class CryptoStore: ObservableObject {
     case let .addSuggestedToken(approved, contractAddresses):
       walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: contractAddresses)
     case let .signMessage(approved, id):
-      walletService.notifySignMessageRequestProcessed(approved, id: id)
+      walletService.notifySignMessageRequestProcessed(approved, id: id, signature: nil, error: nil)
     case let .getEncryptionPublicKey(approved, originInfo):
       walletService.notifyGetPublicKeyRequestProcessed(approved, origin: originInfo.origin)
     case let .decrypt(approved, originInfo):

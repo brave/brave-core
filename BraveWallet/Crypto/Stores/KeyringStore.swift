@@ -313,14 +313,8 @@ public class KeyringStore: ObservableObject {
   }
 
   func privateKey(for account: BraveWallet.AccountInfo, completion: @escaping (String?) -> Void) {
-    if account.isPrimary {
-      keyringService.privateKey(forKeyringAccount: account.address, coin: account.coin) { success, key in
-        completion(success ? key : nil)
-      }
-    } else {
-      keyringService.privateKey(forImportedAccount: account.address, coin: account.coin) { success, key in
-        completion(success ? key : nil)
-      }
+    keyringService.privateKey(forKeyringAccount: account.address, coin: account.coin) { success, key in
+      completion(success ? key : nil)
     }
   }
 
