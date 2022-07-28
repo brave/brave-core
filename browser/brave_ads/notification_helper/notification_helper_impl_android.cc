@@ -61,7 +61,7 @@ NotificationHelperImplAndroid::NotificationHelperImplAndroid() = default;
 
 NotificationHelperImplAndroid::~NotificationHelperImplAndroid() = default;
 
-bool NotificationHelperImplAndroid::CanShowNativeNotifications() {
+bool NotificationHelperImplAndroid::CanShowNotifications() {
   JNIEnv* env = base::android::AttachCurrentThread();
   const int status =
       Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
@@ -81,14 +81,14 @@ bool NotificationHelperImplAndroid::CanShowNativeNotifications() {
   if (!is_foreground) {
     can_show_native_notifications =
         can_show_native_notifications &&
-        CanShowNativeNotificationsWhileBrowserIsBackgrounded();
+        CanShowSystemNotificationsWhileBrowserIsBackgrounded();
   }
 
   return can_show_native_notifications;
 }
 
 bool NotificationHelperImplAndroid::
-    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
+    CanShowSystemNotificationsWhileBrowserIsBackgrounded() const {
   JNIEnv* env = base::android::AttachCurrentThread();
   return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }

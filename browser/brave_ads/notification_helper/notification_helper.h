@@ -27,12 +27,12 @@ class NotificationHelper final {
 
   void InitForProfile(Profile* profile);
 
-  bool CanShowNativeNotifications();
-  bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
+  bool CanShowNotifications();
+  bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const;
 
   bool ShowOnboardingNotification();
 
-  bool SystemNotificationsSupported() const;
+  bool DoesSupportSystemNotifications() const;
 
  private:
   friend struct base::DefaultSingletonTraits<NotificationHelper>;
@@ -42,7 +42,7 @@ class NotificationHelper final {
 
   void OnSystemNotificationPlatformBridgeReady(bool success);
 
-  bool system_notifications_supported_ = true;
+  bool does_support_system_notifications_ = true;
 
   std::unique_ptr<NotificationHelperImpl> impl_;
 

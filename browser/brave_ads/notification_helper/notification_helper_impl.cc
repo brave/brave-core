@@ -11,12 +11,12 @@ NotificationHelperImpl::NotificationHelperImpl() = default;
 
 NotificationHelperImpl::~NotificationHelperImpl() = default;
 
-bool NotificationHelperImpl::CanShowNativeNotifications() {
+bool NotificationHelperImpl::CanShowNotifications() {
   return true;
 }
 
 bool NotificationHelperImpl::
-    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
+    CanShowSystemNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 

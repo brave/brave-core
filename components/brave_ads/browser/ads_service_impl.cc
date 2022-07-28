@@ -915,7 +915,7 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
 bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
   const bool can_show_native_notifications =
-      NotificationHelper::GetInstance()->CanShowNativeNotifications();
+      NotificationHelper::GetInstance()->CanShowNotifications();
 
   bool can_fallback_to_custom_notification_ads =
       features::CanFallbackToCustomNotificationAds();
@@ -1501,7 +1501,7 @@ bool AdsServiceImpl::CanShowNotificationAds() {
     return false;
   }
 
-  if (!NotificationHelper::GetInstance()->CanShowNativeNotifications()) {
+  if (!NotificationHelper::GetInstance()->CanShowNotifications()) {
     return ShouldShowCustomNotificationAds();
   }
 
@@ -1510,7 +1510,7 @@ bool AdsServiceImpl::CanShowNotificationAds() {
 
 bool AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded() const {
   return NotificationHelper::GetInstance()
-      ->CanShowNativeNotificationsWhileBrowserIsBackgrounded();
+      ->CanShowSystemNotificationsWhileBrowserIsBackgrounded();
 }
 
 void AdsServiceImpl::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
@@ -1588,7 +1588,7 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
     // AdsServiceImpl::OnNotificationAdClosed() is not called when the system
     // notification is closed without the user's participation, so we need to
     // trigger the timed-out event from here.
-    if (NotificationHelper::GetInstance()->SystemNotificationsSupported() &&
+    if (NotificationHelper::GetInstance()->DoesSupportSystemNotifications() &&
         IsBatAdsBound()) {
       bat_ads_->TriggerNotificationAdEvent(
           placement_id, ads::mojom::NotificationAdEventType::kTimedOut);

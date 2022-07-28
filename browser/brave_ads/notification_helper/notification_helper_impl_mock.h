@@ -19,8 +19,8 @@ class NotificationHelperImplMock : public NotificationHelperImpl {
       delete;
   ~NotificationHelperImplMock() override;
 
-  MOCK_METHOD0(CanShowNativeNotifications, bool());
-  MOCK_CONST_METHOD0(CanShowNativeNotificationsWhileBrowserIsBackgrounded,
+  MOCK_METHOD0(CanShowNotifications, bool());
+  MOCK_CONST_METHOD0(CanShowSystemNotificationsWhileBrowserIsBackgrounded,
                      bool());
 
   MOCK_METHOD0(ShowOnboardingNotification, bool());

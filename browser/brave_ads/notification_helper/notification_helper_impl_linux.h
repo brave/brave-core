@@ -27,8 +27,8 @@ class NotificationHelperImplLinux
 
  private:
   // NotificationHelperImpl:
-  bool CanShowNativeNotifications() override;
-  bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const override;
+  bool CanShowNotifications() override;
+  bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const override;
 
   bool ShowOnboardingNotification() override;
 };

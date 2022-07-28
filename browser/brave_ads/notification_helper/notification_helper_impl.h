@@ -14,8 +14,8 @@ class NotificationHelperImpl {
   NotificationHelperImpl& operator=(const NotificationHelperImpl&) = delete;
   virtual ~NotificationHelperImpl();
 
-  virtual bool CanShowNativeNotifications();
-  virtual bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
+  virtual bool CanShowNotifications();
+  virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const;
 
   virtual bool ShowOnboardingNotification();
 

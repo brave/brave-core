@@ -62,7 +62,7 @@ NotificationHelperImplWin::NotificationHelperImplWin() = default;
 
 NotificationHelperImplWin::~NotificationHelperImplWin() = default;
 
-bool NotificationHelperImplWin::CanShowNativeNotifications() {
+bool NotificationHelperImplWin::CanShowNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notifications feature is disabled";
     return false;
@@ -91,7 +91,7 @@ bool NotificationHelperImplWin::CanShowNativeNotifications() {
 }
 
 bool NotificationHelperImplWin::
-    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
+    CanShowSystemNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 

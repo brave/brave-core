@@ -99,7 +99,7 @@ void NotificationHelper::InitForProfile(Profile* profile) {
   NotificationPlatformBridge* system_bridge =
       GetSystemNotificationPlatformBridge(profile);
   if (!system_bridge) {
-    system_notifications_supported_ = false;
+    does_support_system_notifications_ = false;
     return;
   }
 
@@ -108,25 +108,28 @@ void NotificationHelper::InitForProfile(Profile* profile) {
       weak_factory_.GetWeakPtr()));
 }
 
-bool NotificationHelper::CanShowNativeNotifications() {
-  return impl_->CanShowNativeNotifications();
+bool NotificationHelper::CanShowNotifications() {
+  return impl_->CanShowNotifications();
 }
 
-bool NotificationHelper::CanShowNativeNotificationsWhileBrowserIsBackgrounded()
+bool NotificationHelper::CanShowSystemNotificationsWhileBrowserIsBackgrounded()
     const {
-  return impl_->CanShowNativeNotificationsWhileBrowserIsBackgrounded();
+  if (!does_support_system_notifications_) {
+    return false;
+  }
+  return impl_->CanShowSystemNotificationsWhileBrowserIsBackgrounded();
 }
 
 bool NotificationHelper::ShowOnboardingNotification() {
   return impl_->ShowOnboardingNotification();
 }
 
-bool NotificationHelper::SystemNotificationsSupported() const {
-  return system_notifications_supported_;
+bool NotificationHelper::DoesSupportSystemNotifications() const {
+  return does_support_system_notifications_;
 }
 
 void NotificationHelper::OnSystemNotificationPlatformBridgeReady(bool success) {
-  system_notifications_supported_ = success;
+  does_support_system_notifications_ = success;
 }
 
 }  // namespace brave_ads
