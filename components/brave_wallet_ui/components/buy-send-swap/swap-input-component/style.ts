@@ -70,6 +70,7 @@ export const AssetTicker = styled.span`
   font-weight: 600;
   margin-right: 4px;
   color: ${(p) => p.theme.color.text01};
+  cursor: pointer;
 `
 
 export const CaratDownIcon = styled(CaratStrongDownIcon)`
@@ -313,4 +314,8 @@ export const WarningRow = styled.div<Partial<StyleProps>>`
   align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
+`
+
+export const Spacer = styled.div`
+  padding-right: 8px;
 `

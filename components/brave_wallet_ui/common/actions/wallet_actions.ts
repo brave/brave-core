@@ -132,3 +132,6 @@ export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDe
 export const setShowTestNetworks = createAction<boolean>('setShowTestNetworks')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')
 export const addFilecoinAccount = createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount')
+export const getOnRampCurrencies = createAction('getOnRampCurrencies')
+export const setOnRampCurrencies = createAction<BraveWallet.OnRampCurrency[]>('setOnRampCurrencies')
+export const selectCurrency = createAction<BraveWallet.OnRampCurrency>('selectCurrency')

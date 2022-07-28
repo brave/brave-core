@@ -102,6 +102,7 @@ async function refreshWalletInfo (store: Store) {
 
   await store.dispatch(refreshTransactionHistory())
   await store.dispatch(refreshSitePermissions())
+  store.dispatch(WalletActions.getOnRampCurrencies())
 }
 
 async function updateAccountInfo (store: Store) {
@@ -656,6 +657,12 @@ handler.on(WalletActions.addFilecoinAccount.getType(), async (_store: Store, pay
   const { keyringService } = getAPIProxy()
   const result = await keyringService.addFilecoinAccount(payload.accountName, payload.network)
   return result.success
+})
+
+handler.on(WalletActions.getOnRampCurrencies.getType(), async (store: Store) => {
+  const { blockchainRegistry } = getAPIProxy()
+  const currencies = (await blockchainRegistry.getOnRampCurrencies()).currencies
+  await store.dispatch(WalletActions.setOnRampCurrencies(currencies))
 })
 
 export default handler.middleware
