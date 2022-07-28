@@ -24,12 +24,9 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/net/proxy_service_factory.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/proxy_config/pref_proxy_config_tracker.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
@@ -39,9 +36,6 @@
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/dns/public/dns_query_type.h"
-#include "net/proxy_resolution/proxy_config.h"
-#include "net/proxy_resolution/proxy_config_service.h"
-#include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "services/network/host_resolver.h"
 #include "services/network/network_context.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -255,59 +249,6 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
   }
 }
 
-// If only particular types of network traffic are being proxied, or if no
-// proxy is configured, it should be safe to continue making unproxied DNS
-// queries. However, in SingleProxy mode all types of network traffic should go
-// through the proxy, so additional DNS queries should be avoided. Also, in the
-// case of per-scheme proxy configurations, a fallback for any non-matching
-// request can be configured, in which case additional DNS queries should be
-// avoided as well.
-//
-// For some reason, when DoH is enabled alongside a system HTTPS proxy, the
-// CNAME queries here are also not proxied. So uncloaking is disabled in that
-// case as well.
-bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context,
-                                  bool doh_enabled) {
-  DCHECK(browser_context);
-
-  bool can_uncloak = true;
-
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-
-  std::unique_ptr<PrefProxyConfigTracker> config_tracker =
-      ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(
-          profile->GetPrefs(), nullptr);
-  std::unique_ptr<net::ProxyConfigService> proxy_config_service =
-      ProxyServiceFactory::CreateProxyConfigService(config_tracker.get(),
-                                                    profile);
-
-  net::ProxyConfigWithAnnotation config;
-  net::ProxyConfigService::ConfigAvailability availability =
-      proxy_config_service->GetLatestProxyConfig(&config);
-
-  if (availability ==
-      net::ProxyConfigService::ConfigAvailability::CONFIG_VALID) {
-    // PROXY_LIST corresponds to SingleProxy mode.
-    if (config.value().proxy_rules().type ==
-            net::ProxyConfig::ProxyRules::Type::PROXY_LIST ||
-        (config.value().proxy_rules().type ==
-             net::ProxyConfig::ProxyRules::Type::PROXY_LIST_PER_SCHEME &&
-         !config.value().proxy_rules().fallback_proxies.IsEmpty())) {
-      can_uncloak = false;
-    }
-
-    if (config.value().proxy_rules().type ==
-            net::ProxyConfig::ProxyRules::Type::PROXY_LIST_PER_SCHEME &&
-        !config.value().proxy_rules().proxies_for_https.IsEmpty()) {
-      can_uncloak = false;
-    }
-  }
-
-  config_tracker->DetachFromPrefService();
-
-  return can_uncloak;
-}
-
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
                                  std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -318,20 +259,8 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
-  SecureDnsConfig secure_dns_config =
-      SystemNetworkContextManager::GetStubResolverConfigReader()
-          ->GetSecureDnsConfiguration(false);
-
-  bool doh_enabled = (secure_dns_config.mode() == net::SecureDnsMode::kSecure);
-
-  // DoH or standard DNS queries won't be routed through Tor, so we need to
-  // skip it.
-  // Also, skip CNAME uncloaking if there is currently a configured proxy.
-  bool should_check_uncloaked =
-      base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveAdblockCnameUncloaking) &&
-      ctx->browser_context && !ctx->browser_context->IsTor() &&
-      ProxySettingsAllowUncloaking(ctx->browser_context, doh_enabled);
+  bool should_check_uncloaked = base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveAdblockCnameUncloaking);
 
   // When default 1p blocking is disabled, first-party requests should not be
   // CNAME uncloaked unless using aggressive blocking mode.
