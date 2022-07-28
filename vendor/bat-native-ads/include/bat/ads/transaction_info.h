@@ -14,11 +14,6 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/export.h"
 
-namespace base {
-class DictionaryValue;
-class Value;
-}  // namespace base
-
 namespace ads {
 
 struct ADS_EXPORT TransactionInfo final {
