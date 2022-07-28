@@ -165,10 +165,10 @@ const Config = function () {
   this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
-  this.p3aJsonUploadUrl = getNPMConfig(['p3a_json_upload_url']) || ''
-  this.p2aJsonUploadUrl = getNPMConfig(['p2a_json_upload_url']) || ''
-  this.p3aStarUploadUrl = getNPMConfig(['p3a_star_upload_url']) || ''
-  this.p2aStarUploadUrl = getNPMConfig(['p2a_star_upload_url']) || ''
+  this.p3aJsonUploadUrl = getNPMConfig(['p3a_json_upload_url']) || 'https://p3a-json.brave.com/'
+  this.p2aJsonUploadUrl = getNPMConfig(['p2a_json_upload_url']) || 'https://p2a-json.brave.com/'
+  this.p3aStarUploadUrl = getNPMConfig(['p3a_star_upload_url']) || 'https://p3a-star.brave.com/'
+  this.p2aStarUploadUrl = getNPMConfig(['p2a_star_upload_url']) || 'https://p2a-star.brave.com/'
   this.starRandomnessHost = getNPMConfig(['star_randomness_host']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true

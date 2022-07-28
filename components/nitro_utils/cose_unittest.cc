@@ -5,6 +5,8 @@
 
 #include "brave/components/nitro_utils/cose.h"
 
+#include <algorithm>
+
 #include "base/base64.h"
 #include "components/cbor/reader.h"
 #include "components/cbor/writer.h"

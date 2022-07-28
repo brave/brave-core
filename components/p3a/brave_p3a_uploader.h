@@ -31,7 +31,6 @@ constexpr char kP3ACreativeUploadType[] = "p3a_creative";
 
 struct BraveP3AConfig;
 
-// Handle uploading logged metrics to the correct endpoints.
 class BraveP3AUploader {
  public:
   using UploadCompleteCallback =

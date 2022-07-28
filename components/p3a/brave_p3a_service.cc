@@ -288,4 +288,8 @@ void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,
   message_manager_->UpdateMetricValue(std::string(histogram_name), bucket);
 }
 
+void BraveP3AService::DisableStarAttestationForTesting() {
+  config_->disable_star_attestation = true;
+}
+
 }  // namespace brave

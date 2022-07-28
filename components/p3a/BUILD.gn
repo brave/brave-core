@@ -91,14 +91,19 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "brave_p2a_protocols_unittest.cc",
+    "brave_p3a_message_manager_unittest.cc",
     "brave_p3a_metric_log_store_unittest.cc",
     "brave_p3a_service_unittest.cc",
     "brave_p3a_star_log_store_unittest.cc",
+    "brave_p3a_star_unittest.cc",
     "metric_names_unittest.cc",
+    "star_randomness_test_util.cc",
+    "star_randomness_test_util.h",
   ]
   deps = [
     "//base/test:test_support",
     "//brave/components/brave_referrals/browser",
+    "//brave/components/nested_star:cxx",
     "//brave/components/p3a",
     "//components/prefs:test_support",
     "//net:net",

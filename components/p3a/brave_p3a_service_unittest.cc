@@ -15,6 +15,7 @@
 #include "base/test/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -57,7 +58,9 @@ class P3AServiceTest : public testing::Test {
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
 
-          EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
+          if (request.method != net::HttpRequestHeaders::kPostMethod) {
+            return;
+          }
 
           StoreJsonMetricInMap(request, request.url);
           url_loader_factory_.AddResponse(request.url.spec(), "{}");
@@ -66,6 +69,7 @@ class P3AServiceTest : public testing::Test {
     p3a_service_ = scoped_refptr(
         new BraveP3AService(&local_state_, "release", "2049-01-01"));
 
+    p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);
 
     task_environment_.RunUntilIdle();
@@ -127,14 +131,14 @@ class P3AServiceTest : public testing::Test {
     std::string metric_name = *parsed_log.FindStringKey("metric_name");
 
     std::set<std::string>* metrics_set;
-    if (url == GURL("https://p3a-json.brave.com/")) {
+    if (url == GURL(BUILDFLAG(P3A_JSON_UPLOAD_URL))) {
       metrics_set = &p3a_json_sent_metrics_;
-    } else if (url == GURL("https://p2a-json.brave.com/")) {
+    } else if (url == GURL(BUILDFLAG(P2A_JSON_UPLOAD_URL))) {
       metrics_set = &p2a_json_sent_metrics_;
-    } else if (url == GURL("https://p3a-creative.brave.com/")) {
+    } else if (url == GURL(BUILDFLAG(P3A_CREATIVE_UPLOAD_URL))) {
       metrics_set = &p3a_creative_sent_metrics_;
     } else {
-      FAIL();
+      return;
     }
 
     ASSERT_EQ(metrics_set->find(metric_name), metrics_set->end());
@@ -243,8 +247,11 @@ TEST_F(P3AServiceTest, MetricSentCallback) {
   std::vector<std::string> sent_histograms;
 
   base::CallbackListSubscription sub =
-      p3a_service_->RegisterMetricSentCallback(base::BindLambdaForTesting(
-          [&sent_histograms](const std::string& histogram_name) {
+      p3a_service_->RegisterMetricCycledCallback(base::BindLambdaForTesting(
+          [&sent_histograms](const std::string& histogram_name, bool is_star) {
+            if (is_star) {
+              return;
+            }
             sent_histograms.push_back(histogram_name);
           }));
 
