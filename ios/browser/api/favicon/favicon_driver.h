@@ -17,6 +17,7 @@ NS_SWIFT_NAME(FaviconLoader.Driver)
 @interface BraveFaviconDriver : NSObject
 - (instancetype)initWithPrivateBrowsingMode:(bool)privateMode;
 
+- (void)setMaximumFaviconImageSize:(NSUInteger)maxImageSize;
 - (void)webView:(WKWebView*)webView
     onFaviconURLsUpdated:(WKScriptMessage*)scriptMessage;
 @end
