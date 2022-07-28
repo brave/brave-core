@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/time/time.h"
+
 namespace ads {
 namespace ml {
 namespace pipeline {
@@ -23,7 +25,7 @@ PipelineEmbeddingInfo::~PipelineEmbeddingInfo() = default;
 
 PipelineEmbeddingInfo::PipelineEmbeddingInfo(
     const int version,
-    const std::string& timestamp,
+    const base::Time timestamp,
     const std::string& locale,
     const int dim,
     const std::map<std::string, VectorData>& embeddings)

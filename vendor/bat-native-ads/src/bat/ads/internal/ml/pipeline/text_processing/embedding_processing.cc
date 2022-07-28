@@ -109,12 +109,12 @@ TextEmbeddingData EmbeddingProcessing::EmbedText(
   for (const auto& token : tokens) {
     const auto iter = embedding_pipeline_.embeddings.find(token);
     if (iter != embedding_pipeline_.embeddings.end()) {
-      BLOG(3, token << " - token found");
+      BLOG(9, token << " - token found");
       embedding_data.embedding.AddElementWise(iter->second);
       in_vocab_tokens.push_back(token);
       n_tokens += 1;
     } else {
-      BLOG(3, token);
+      BLOG(9, token);
     }
   }
 

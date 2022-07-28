@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_alias.h"
@@ -243,7 +244,11 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(
   if (!timestamp_value) {
     return absl::nullopt;
   }
-  std::string timestamp = *timestamp_value;
+  base::Time timestamp;
+  bool success = base::Time::FromUTCString((*timestamp_value).c_str(), &timestamp);
+  if (!success) {
+    return absl::nullopt;
+  }
 
   std::string* locale_value = resource_value.FindStringKey("locale");
   if (!locale_value) {

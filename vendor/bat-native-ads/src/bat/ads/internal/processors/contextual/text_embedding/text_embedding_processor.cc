@@ -66,7 +66,7 @@ void TextEmbedding::Process(const std::string& text) {
 
   const std::string embedding_formatted =
       embedding_data.embedding.GetVectorAsString();
-  BLOG(3, "Embedding: " << embedding_formatted);
+  BLOG(9, "Embedding: " << embedding_formatted);
   LogTextEmbeddingHtmlEvent(
       embedding_formatted, embedding_data.text_hashed, [](const bool success) {
         if (!success) {
@@ -80,16 +80,6 @@ void TextEmbedding::Process(const std::string& text) {
             return;
           }
         });
-
-        GetTextEmbeddingEventsFromDatabase(
-            [=](const bool success,
-                const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-              for (const auto& text_embedding_html_event :
-                   text_embedding_html_events) {
-                BLOG(7, "Stored embedding: "
-                            << text_embedding_html_event.embedding);
-              }
-            });
       });
 }
 

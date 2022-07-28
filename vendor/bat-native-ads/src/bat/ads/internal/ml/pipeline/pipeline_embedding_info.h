@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+#include "base/time/time.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
 namespace ads {
@@ -22,13 +23,13 @@ struct PipelineEmbeddingInfo final {
   ~PipelineEmbeddingInfo();
 
   PipelineEmbeddingInfo(const int version,
-                        const std::string& timestamp,
+                        const base::Time timestamp,
                         const std::string& locale,
                         const int dim,
                         const std::map<std::string, VectorData>& embeddings);
 
   int version;
-  std::string timestamp;
+  base::Time timestamp;
   std::string locale;
   int dim;
   std::map<std::string, VectorData> embeddings;

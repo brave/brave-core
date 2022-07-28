@@ -12,6 +12,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/time/time.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -80,7 +81,7 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
       {"simple", VectorData({0.7, -0.1, 1.3})}};
 
   pipeline_embedding.version = 1;
-  pipeline_embedding.timestamp = "2022-01-01 01:01:01";
+  pipeline_embedding.timestamp = base::Time::Now();
   pipeline_embedding.locale = "en";
   pipeline_embedding.dim = 3;
   pipeline_embedding.embeddings = embeddings;
