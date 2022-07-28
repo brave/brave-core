@@ -32,7 +32,6 @@ import {
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
-import getAPIProxy from '../../common/async/bridge'
 import { getTokensNetwork } from '../../utils/network-utils'
 import { httpifyIpfsUrl } from '../../utils/string-utils'
 
@@ -228,7 +227,7 @@ handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
 
 handler.on(WalletPageActions.getNFTMetadata.getType(), async (store, payload: BraveWallet.BlockchainToken) => {
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(true))
-  const { jsonRpcService } = getAPIProxy()
+  const jsonRpcService = getWalletPageApiProxy().jsonRpcService
   const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
 
   if (!result.error) {
