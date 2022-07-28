@@ -13,8 +13,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace payment {
@@ -78,24 +76,21 @@ void PostCredentials::Request(const std::string& order_id,
                               const std::string& type,
                               base::Value::List&& blinded_creds,
                               PostCredentialsCallback callback) {
-  auto url_callback = std::bind(&PostCredentials::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PostCredentials::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(order_id);
   request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostCredentials::OnRequest(
-    const type::UrlResponse& response,
-    PostCredentialsCallback callback) {
+void PostCredentials::OnRequest(PostCredentialsCallback callback,
+                                const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
 }  // namespace payment

@@ -12,8 +12,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -74,24 +72,21 @@ void PutCaptcha::Request(
       const int y,
       const std::string& captcha_id,
       PutCaptchaCallback callback) {
-  auto url_callback = std::bind(&PutCaptcha::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PutCaptcha::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(captcha_id);
   request->content = GeneratePayload(x, y);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PutCaptcha::OnRequest(
-    const type::UrlResponse& response,
-    PutCaptchaCallback callback) {
+void PutCaptcha::OnRequest(PutCaptchaCallback callback,
+                           const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
 }  // namespace promotion

@@ -67,7 +67,7 @@ TEST_F(GetCredentialsTest, ServerOK) {
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         type::CredsBatch expected_batch;
         expected_batch.batch_proof = "zx0cdJhaB/OdYcUtnyXdi+lsoniN2KNgFU";
         expected_batch.public_key =
@@ -77,7 +77,7 @@ TEST_F(GetCredentialsTest, ServerOK) {
 
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_TRUE(expected_batch.Equals(*batch));
-      });
+      }));
 }
 
 TEST_F(GetCredentialsTest, ServerError202) {
@@ -94,9 +94,9 @@ TEST_F(GetCredentialsTest, ServerError202) {
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::RETRY_SHORT);
-      });
+      }));
 }
 
 TEST_F(GetCredentialsTest, ServerError400) {
@@ -113,9 +113,9 @@ TEST_F(GetCredentialsTest, ServerError400) {
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::RETRY);
-      });
+      }));
 }
 
 TEST_F(GetCredentialsTest, ServerError404) {
@@ -132,9 +132,9 @@ TEST_F(GetCredentialsTest, ServerError404) {
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::RETRY);
-      });
+      }));
 }
 
 TEST_F(GetCredentialsTest, ServerError500) {
@@ -151,9 +151,9 @@ TEST_F(GetCredentialsTest, ServerError500) {
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::RETRY);
-      });
+      }));
 }
 
 TEST_F(GetCredentialsTest, ServerErrorRandom) {
@@ -170,9 +170,9 @@ TEST_F(GetCredentialsTest, ServerErrorRandom) {
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, type::CredsBatchPtr batch) {
+      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
         EXPECT_EQ(result, type::Result::RETRY);
-      });
+      }));
 }
 
 }  // namespace payment

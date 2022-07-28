@@ -56,14 +56,11 @@ TEST_F(PostCredentialsTest, ServerOK) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request(
-      "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "single-use",
-      std::move(blinded),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                  std::move(blinded), base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_OK);
+                  }));
 }
 
 TEST_F(PostCredentialsTest, ServerError400) {
@@ -80,14 +77,11 @@ TEST_F(PostCredentialsTest, ServerError400) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request(
-      "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "single-use",
-      std::move(blinded),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                  std::move(blinded), base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostCredentialsTest, ServerError409) {
@@ -104,14 +98,11 @@ TEST_F(PostCredentialsTest, ServerError409) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request(
-      "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "single-use",
-      std::move(blinded),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                  std::move(blinded), base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostCredentialsTest, ServerError500) {
@@ -128,14 +119,11 @@ TEST_F(PostCredentialsTest, ServerError500) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request(
-      "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "single-use",
-      std::move(blinded),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                  std::move(blinded), base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostCredentialsTest, ServerErrorRandom) {
@@ -152,14 +140,11 @@ TEST_F(PostCredentialsTest, ServerErrorRandom) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request(
-      "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-      "ff50981d-47de-4210-848d-995e186901a1",
-      "single-use",
-      std::move(blinded),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                  std::move(blinded), base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 }  // namespace payment

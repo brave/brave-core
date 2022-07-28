@@ -13,8 +13,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -111,31 +109,28 @@ void GetSignedCreds::Request(
     const std::string& promotion_id,
     const std::string& claim_id,
     GetSignedCredsCallback callback) {
-  auto url_callback = std::bind(&GetSignedCreds::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &GetSignedCreds::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(promotion_id, claim_id);
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetSignedCreds::OnRequest(
-    const type::UrlResponse& response,
-    GetSignedCredsCallback callback) {
+void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
+                               const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
   type::CredsBatch batch;
   result = ParseBody(response.body, &batch);
-  callback(result, type::CredsBatch::New(batch));
+  std::move(callback).Run(result, type::CredsBatch::New(batch));
 }
 
 }  // namespace promotion

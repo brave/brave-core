@@ -54,12 +54,10 @@ TEST_F(PutSafetynetTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  safetynet_->Request(
-      "sdfsdf32d323d23d",
-      "dfasdfasdpflsadfplf2r23re2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
+                      base::BindOnce([](type::Result result) {
+                        EXPECT_EQ(result, type::Result::LEDGER_OK);
+                      }));
 }
 
 TEST_F(PutSafetynetTest, ServerError400) {
@@ -73,12 +71,10 @@ TEST_F(PutSafetynetTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  safetynet_->Request(
-      "sdfsdf32d323d23d",
-      "dfasdfasdpflsadfplf2r23re2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
-      });
+  safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
+                      base::BindOnce([](type::Result result) {
+                        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                      }));
 }
 
 TEST_F(PutSafetynetTest, ServerError401) {
@@ -92,12 +88,10 @@ TEST_F(PutSafetynetTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  safetynet_->Request(
-      "sdfsdf32d323d23d",
-      "dfasdfasdpflsadfplf2r23re2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
-      });
+  safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
+                      base::BindOnce([](type::Result result) {
+                        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                      }));
 }
 
 TEST_F(PutSafetynetTest, ServerError500) {
@@ -111,12 +105,10 @@ TEST_F(PutSafetynetTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  safetynet_->Request(
-      "sdfsdf32d323d23d",
-      "dfasdfasdpflsadfplf2r23re2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
+                      base::BindOnce([](type::Result result) {
+                        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                      }));
 }
 
 }  // namespace promotion

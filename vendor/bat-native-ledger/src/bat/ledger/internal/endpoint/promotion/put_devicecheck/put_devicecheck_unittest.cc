@@ -54,13 +54,10 @@ TEST_F(PutDevicecheckTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
-      "dsfqwf4f901a1",
-      "asdfasdf",
-      "fsadfasdfff4901a1",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
+                        base::BindOnce([](type::Result result) {
+                          EXPECT_EQ(result, type::Result::LEDGER_OK);
+                        }));
 }
 
 TEST_F(PutDevicecheckTest, ServerError400) {
@@ -74,13 +71,10 @@ TEST_F(PutDevicecheckTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
-      "dsfqwf4f901a1",
-      "asdfasdf",
-      "fsadfasdfff4901a1",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
-      });
+  devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
+                        base::BindOnce([](type::Result result) {
+                          EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                        }));
 }
 
 TEST_F(PutDevicecheckTest, ServerError401) {
@@ -94,13 +88,10 @@ TEST_F(PutDevicecheckTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
-      "dsfqwf4f901a1",
-      "asdfasdf",
-      "fsadfasdfff4901a1",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
-      });
+  devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
+                        base::BindOnce([](type::Result result) {
+                          EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                        }));
 }
 
 TEST_F(PutDevicecheckTest, ServerError500) {
@@ -114,13 +105,10 @@ TEST_F(PutDevicecheckTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
-      "dsfqwf4f901a1",
-      "asdfasdf",
-      "fsadfasdfff4901a1",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
+                        base::BindOnce([](type::Result result) {
+                          EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                        }));
 }
 
 }  // namespace promotion

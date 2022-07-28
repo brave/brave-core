@@ -543,9 +543,10 @@ void LedgerImpl::ClaimPromotion(const std::string& promotion_id,
 void LedgerImpl::AttestPromotion(const std::string& promotion_id,
                                  const std::string& solution,
                                  AttestPromotionCallback callback) {
-  WhenReady([this, promotion_id, solution, callback]() {
-    promotion()->Attest(promotion_id, solution, callback);
-  });
+  WhenReady(
+      [this, promotion_id, solution, callback = std::move(callback)]() mutable {
+        promotion()->Attest(promotion_id, solution, std::move(callback));
+      });
 }
 
 void LedgerImpl::GetBalanceReport(type::ActivityMonth month,

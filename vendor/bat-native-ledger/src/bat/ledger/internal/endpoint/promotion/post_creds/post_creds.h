@@ -44,9 +44,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostCredsCallback = std::function<void(
-    const type::Result result,
-    const std::string& claim_id)>;
+using PostCredsCallback =
+    base::OnceCallback<void(type::Result result, const std::string& claim_id)>;
 
 class PostCreds {
  public:
@@ -68,9 +67,7 @@ class PostCreds {
       const std::string& body,
       std::string* claim_id);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostCredsCallback callback);
+  void OnRequest(PostCredsCallback callback, const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

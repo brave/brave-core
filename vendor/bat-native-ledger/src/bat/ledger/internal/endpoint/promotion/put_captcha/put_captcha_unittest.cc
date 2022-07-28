@@ -54,13 +54,10 @@ TEST_F(PutCaptchaTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
-      10,
-      20,
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  captcha_->Request(10, 20, "83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                    base::BindOnce([](type::Result result) {
+                      EXPECT_EQ(result, type::Result::LEDGER_OK);
+                    }));
 }
 
 TEST_F(PutCaptchaTest, ServerError400) {
@@ -74,13 +71,10 @@ TEST_F(PutCaptchaTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
-      10,
-      20,
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
-      });
+  captcha_->Request(10, 20, "83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                    base::BindOnce([](type::Result result) {
+                      EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                    }));
 }
 
 TEST_F(PutCaptchaTest, ServerError401) {
@@ -94,13 +88,10 @@ TEST_F(PutCaptchaTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
-      10,
-      20,
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
-      });
+  captcha_->Request(10, 20, "83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                    base::BindOnce([](type::Result result) {
+                      EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                    }));
 }
 
 TEST_F(PutCaptchaTest, ServerError500) {
@@ -114,13 +105,10 @@ TEST_F(PutCaptchaTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
-      10,
-      20,
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  captcha_->Request(10, 20, "83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                    base::BindOnce([](type::Result result) {
+                      EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                    }));
 }
 
 TEST_F(PutCaptchaTest, ServerErrorRandom) {
@@ -134,13 +122,10 @@ TEST_F(PutCaptchaTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
-      10,
-      20,
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  captcha_->Request(10, 20, "83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                    base::BindOnce([](type::Result result) {
+                      EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                    }));
 }
 
 }  // namespace promotion

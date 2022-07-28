@@ -39,7 +39,7 @@ void AttestationImpl::Start(
 void AttestationImpl::Confirm(
     const std::string& solution,
     ConfirmCallback callback) {
-  platform_instance_->Confirm(solution, callback);
+  platform_instance_->Confirm(solution, std::move(callback));
 }
 
 }  // namespace attestation

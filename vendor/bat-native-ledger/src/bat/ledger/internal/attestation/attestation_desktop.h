@@ -47,9 +47,7 @@ class AttestationDesktop : public Attestation {
                               type::Result result,
                               const std::string& image);
 
-  void OnConfirm(
-      const type::Result result,
-      ConfirmCallback callback);
+  void OnConfirm(ConfirmCallback callback, type::Result result);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
