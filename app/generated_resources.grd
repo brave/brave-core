@@ -463,14 +463,14 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HISTORY_OPEN_TABS_MENU_ITEM" desc="Label displayed in history sidebar button to display synced tabs from other devices.">
         Tabs from other devices
       </message>
-      <message name="IDS_HISTORY_SIGN_IN_BUTTON" desc="Label displayed on a button to let user sign in to Brave to get synced tab history.">
-        Sign in to Brave
+      <message name="IDS_HISTORY_TURN_ON_SYNC_BUTTON" desc="Label displayed on a button to let user turn on sync or sign in to Brave to get synced tab history.">
+        Turn on sync
       </message>
-      <message name="IDS_HISTORY_SIGN_IN_PROMO" desc="Text of the sign-in promo. This will show up if a user is not logged in and has no synced tabs.">
+      <message name="IDS_HISTORY_TURN_ON_SYNC_PROMO" desc="Text of the turn on sync/sign-in promo. This will show up if a user is not logged in and has no synced tabs.">
         Continue from another device
       </message>
-      <message name="IDS_HISTORY_SIGN_IN_PROMO_DESC" desc="Description of the sign-in promo. Further tells users to sign in to Brave to see synced tabs from other devices.">
-        To get your tabs from your other devices, sign in to Brave.
+      <message name="IDS_HISTORY_TURN_ON_SYNC_PROMO_DESC" desc="Description of the turn on sync/sign-in promo. Further tells users to turn o sync/sign in to Brave to see synced tabs from other devices.">
+        To get your tabs from your other devices, turn on sync
       </message>
 
       <!-- Generic terms -->
@@ -3019,6 +3019,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ABUSIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave because the site is known to employ dark patterns to trick users into accepting the permission.">
         This site may be trying to trick you into allowing intrusive notifications
       </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_DISRUPTIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's loud notifications permission requests was automatically blocked by Brave because the site may engage in disruptive notification permission usage practices.">
+        Notifications from this site may be disruptive
+      </message>
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
         Notifications were automatically blocked because you usually don't allow them
       </message>
@@ -3193,7 +3196,7 @@ are declared in tools/grit/grit_rule.gni.
           Certificate Signature Value
         </message>
         <message name="IDS_CERT_DETAILS_EXPORT_CERTIFICATE" desc="The label of the button to export the selected certificate">
-          E&amp;xport...
+          E&amp;xport selected certificate...
         </message>
 
         <message translateable="false" name="IDS_CERT_OID_AVA_COMMON_NAME" desc="">
@@ -6760,7 +6763,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_COMBO_BOX_GOOGLE_LENS_LABEL" desc="The name of the Google Lens in the side panel combo box">
         Google Lens
       </message>
-      
+
       <!-- Read Anything strings -->
       <!-- TODO(crbug.com/1266555): Add final strings and make them translateable. -->
       <message name="IDS_READ_ANYTHING_TITLE" desc="Title of the Read Anything feature, which gives users an accessible reading experience." translateable="false">
@@ -8664,8 +8667,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
        <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES_LINK" desc="Text with a link to a page where the user can manage the devices they can share a tab to.">
         <ph name="BEGIN_LINK">$1</ph>Your devices<ph name="END_LINK">$2</ph> · <ph name="EMAIL">$3<ex>foo@gmail.com</ex></ph>
       </message>
-      <message name="IDS_SEND_TAB_TO_SELF_PROMO_LABEL" desc="Text in UI promoting send tab to self. Signed out users see this text and a sign-in button. Signed in users with no valid target device see just the text.">
-        You can send tabs between devices that are signed in with the same Brave sync chain
+      <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_LABEL" desc="Text when a signed out user attempts to use send-tab-to-self, then sees a sign-in promo.">
+        To send this tab to another device, sign in to Brave on both devices
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_LABEL" desc="Text shown when a user with no available target devices attempts to use send-tab-to-self.">
+        To send this tab to another device, sign in to Brave there
       </message>
 
       <!-- Share via QR Code strings -->
@@ -10109,6 +10115,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_ABUSIVE_MESSAGE" desc="Description for the expanded infobar that informs the user that notifications are automatically blocked because the site is known to employ dark patterns to trick users into accepting the permission.">
           This site may be trying to trick you into allowing intrusive notifications.
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_DISRUPTIVE_MESSAGE" desc="Description for the expanded infobar that informs the user that loud notification prompts are  blocked because the site may engage in disruptive notification practices.">
+          Notifications from this site may be disruptive
         </message>
       </if>
 
@@ -11727,18 +11736,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Framebust / Blocked Redirection intervention message -->
-    <if expr="not is_android">
-      <!-- Android strings are declared in android_chrome_strings.grd. -->
-      <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
-        Redirect blocked:
-      </message>
-      <message name="IDS_REDIRECT_BLOCKED_TITLE" desc="The short message stating that a redirect (noun) was blocked on this page. Same as IDS_REDIRECT_BLOCKED_SHORT_MESSAGE but without the period.">
-         Redirect blocked
-      </message>
-      <message name="IDS_REDIRECT_BLOCKED_TOOLTIP" desc="Tooltip text that appears when the user hovers over the &quot;Redirect blocked&quot; icon in the address bar. It means that a redirect (noun) was blocked by Brave on this page.">
-         Redirect blocked on this page.
-      </message>
-    </if>
+    <!-- Android strings are declared in android_chrome_strings.grd. -->
+    <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
+      Redirect blocked:
+    </message>
+    <message name="IDS_REDIRECT_BLOCKED_TITLE" desc="The short message stating that a redirect (noun) was blocked on this page. Same as IDS_REDIRECT_BLOCKED_SHORT_MESSAGE but without the period.">
+        Redirect blocked
+    </message>
+    <message name="IDS_REDIRECT_BLOCKED_TOOLTIP" desc="Tooltip text that appears when the user hovers over the &quot;Redirect blocked&quot; icon in the address bar. It means that a redirect (noun) was blocked by Brave on this page.">
+        Redirect blocked on this page.
+    </message>
+    <message name="IDS_ALWAYS_ALLOW_REDIRECTS" desc="The message button text allowing a user to always allow redirects (noun) after they were blocked on this page.">
+      Always allow
+    </message>
+    <message name="IDS_OPEN_REDIRECT" desc="Dropdown menu button that allows a user to go to the redirected page once, but continue blocking subsequent attempts on the site.">
+      Open Anyway
+    </message>
 
     <!-- Windows 10 toast strings -->
     <if expr="is_win">
@@ -12518,6 +12531,27 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_OPEN_NOW_BUTTON" desc="The text on the open now button in tab modal dialog when deep scanning times out.">
       Open now
+    </message>
+
+    <!-- Tailored security dialog for consented primary accounts -->
+    <message name="IDS_TAILORED_SECURITY_ENABLED_DIALOG_TITLE" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      Enhanced Safe Browsing is on
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DISABLED_DIALOG_TITLE" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      Enhanced Safe Browsing is off
+    </message>
+
+    <message name="IDS_TAILORED_SECURITY_ENABLED_DIALOG_MAIN_TEXT" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      You have Brave's strongest security against dangerous websites, downloads and extensions
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DISABLED_DIALOG_MAIN_TEXT" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      You're getting standard security protection. To get more protection against dangerous websites, downloads, and extensions, turn on Enhanced Safe Browsing in Brave settings.
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DISABLED_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in the tab modal dialog when the account tailored security setting is disabled for a consented primary account">
+      Got it
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DIALOG_SETTINGS_BUTTON" desc="The text on the cancel button in the tab dialog when the account tailored security setting changes for a consented primary account">
+      Brave settings
     </message>
 
     <!-- Tailored security dialog for unconsented primary accounts -->

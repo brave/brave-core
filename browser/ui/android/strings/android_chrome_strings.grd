@@ -588,7 +588,7 @@ CHAR_LIMIT guidelines:
           other {<ph name="CONTACT_PREVIEW">%1$s<ex>Jerry, 438-123-1922</ex></ph>\u2026 and <ph name="NUMBER_OF_ADDITIONAL_CONTACTS">%2$s<ex>2</ex></ph> more}}
       </message>
 
-      <!-- Password Settings -->
+      <!-- Password Manager -->
       <message name="IDS_PASSWORD_SETTINGS_TITLE" desc="Title for the settings screen with saved passwords and the header for the list of saved passwords in that screen. [CHAR_LIMIT=32]">
         Passwords
       </message>
@@ -738,6 +738,12 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_PASSWORD_SETTINGS_EXPORT_ERROR_DETAILS" desc="A short prefix to introduce a technical error message passed to the user from Android after exporting passwords through a temporary file fails. Both the prefix and the error message are shown in the body of an alert dialog.">
         Details: <ph name="ERROR_DESCRIPTION">%1$s<ex>IOException: No space left on device</ex></ph>
+      </message>
+      <message name="IDS_UPM_ERROR_NOTIFICATION_TITLE" translateable="false" desc="The title of the UI surface telling the user that the new password manager backend has encountered an error.">
+        Unified password manager error
+      </message>
+      <message name="IDS_UPM_ERROR_NOTIFICATION_CONTENTS" translateable="false" desc="The contents of the UI surface shown when the new password manager backend encounters an error, prompting the user to file a bug.">
+        The unified password manager was automatically disabled. Please submit an issue via the bug app!
       </message>
 
       <!-- Lock Screen Fragment -->
@@ -1083,8 +1089,8 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
       <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_TITLE" desc="CONTEXT: there are updates to the Brave browser each month. Just after the user accepts the latest update, this message will appear. The title of the page. * “Help us” is intended to convey a sense of collaboration. Privacy Sandbox is an ongoing multi-year effort. There are sites participating to help us and we also need users to agree to these trials so that we can measure the effectiveness of the features we're building. * “build” is intended to convey that this is a process. The user is agreeing to an effort rather than a stable set of features. Something like “make” doesn't have the same nuance. * See www.privacysandbox.com for more context.">
         Help us build a better web
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_DESCRIPTION" desc="* “During the trials”: The trials happen in addition to today’s current system (which is based on third-party cookies). In other words, even by agreeing to or remaining in a trial, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”).">
-        During trials, Brave is exploring ways to limit spam, fraud, and sharing between sites. Brave also <ph name="BEGIN_LINK">&lt;link&gt;</ph>estimates your interests<ph name="END_LINK">&lt;/link&gt;</ph> that sites can use to show you ads. You can manage your interests in settings.
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_DESCRIPTION" desc="* “ad spam”: Spam related to web advertising. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”).">
+        Brave is exploring ways to limit ad spam, fraud, and sharing between sites. Brave also <ph name="BEGIN_LINK">&lt;link&gt;</ph>estimates your interests<ph name="END_LINK">&lt;/link&gt;</ph> that sites can use to show you ads. You can manage your interests in settings.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1247,22 +1253,22 @@ Your Brave account may have other forms of browsing history like searches and ac
         Privacy guide
       </message>
       <message name="IDS_PREFS_PRIVACY_REVIEW_SUMMARY" desc="The summary of the privacy menu item.">
-        Review privacy and security settings
+        Review key privacy and security controls
       </message>
       <message name="IDS_PRIVACY_REVIEW_WELCOME_TITLE" desc="Title on the welcome page of the privacy review.">
-        The most important privacy and security controls in one place
+        A guide of your privacy choices
       </message>
       <message name="IDS_PRIVACY_REVIEW_WELCOME_DESCRIPTION" desc="Description on the welcome page of the privacy review.">
-        Brave provides reasonable defaults, but you can customize it to best fit your browsing habit
+        Take a guided tour of key privacy and security controls. For more options, go to individual settings.
       </message>
       <message name="IDS_PRIVACY_REVIEW_START_BUTTON" desc="Text on the privacy review start button on the welcome screen.">
         Let’s go
       </message>
-      <message name="IDS_PRIVACY_REVIEW_WHAT_YOU_GET" desc="Section header text describing what the user gets out of the feature.">
-        What you get
+      <message name="IDS_PRIVACY_REVIEW_WHEN_ON" desc="Header of a description text that describes the behavior of a particular feature. This description is shown to users alongside the feature itself." meaning="Privacy Guide - feature benefits">
+        When on
       </message>
-      <message name="IDS_PRIVACY_REVIEW_WHAT_YOU_SHARE" desc="Section header text describing what data the user shares when using the feature.">
-        What you share with Brave
+      <message name="IDS_PRIVACY_REVIEW_THINGS_TO_CONSIDER" desc="Header of a text column that describes things users should consider about a feature. This description is shown to users alongside the feature itself." meaning="Privacy Guide - feature considerations">
+        Things to consider
       </message>
       <message name="IDS_PRIVACY_REVIEW_MSBB_ITEM_ONE" desc="First bullet point that describes the details of the MSBB toggle.">
         You’ll browse faster because content is proactively loaded based on your current webpage visit
@@ -1271,7 +1277,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         You’ll get improved suggestions in the address bar
       </message>
       <message name="IDS_PRIVACY_REVIEW_MSBB_ITEM_THREE" desc="Third bullet point that describes the details of the MSBB toggle.">
-        URLs you visit are sent to Brave
+        URLs you visit are sent to Brave to predict what sites you might visit next
       </message>
       <message name="IDS_PRIVACY_REVIEW_MSBB_ITEM_FOUR" desc="Fourth bullet point that describes the details of the MSBB toggle.">
         If you also share Brave usage reports, those reports include the URLs you visit
@@ -1280,13 +1286,13 @@ Your Brave account may have other forms of browsing history like searches and ac
         History sync
       </message>
       <message name="IDS_PRIVACY_REVIEW_SYNC_ITEM_ONE" desc="First bullet point that describes the details of the history sync toggle.">
-        You’ll have your history on all your synced devices, so you can continue what you were doing
+        You’ll have your history on all your synced devices so you can continue what you were doing
       </message>
       <message name="IDS_PRIVACY_REVIEW_SYNC_ITEM_TWO" desc="Second bullet point that describes the details of the history sync toggle.">
         If Brave is also your default search engine, you’ll see better, contextually relevant suggestions
       </message>
       <message name="IDS_PRIVACY_REVIEW_SYNC_ITEM_THREE" desc="Third bullet point that describes the details of the history sync toggle.">
-        The URLs you visit are saved to your Brave account
+        The URLs you visit are saved to your Brave sync chain
       </message>
       <message name="IDS_PRIVACY_REVIEW_COOKIES_INTRO" desc="Text introducing the cookies control.">
         Choose when to block third-party cookies
@@ -1361,22 +1367,22 @@ Your Brave account may have other forms of browsing history like searches and ac
         If a site tries to steal your password, or when you download a harmful file, Brave may send URLs including bits of page content to Safe Browsing
       </message>
       <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_ONE" desc="First bullet point that describes the details of the Safe Browsing control.">
-        Warns you about dangerous events before they happen
+        Predicts and warns you about dangerous events before they happen
       </message>
       <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_TWO" desc="Second bullet point that describes the details of the Safe Browsing control.">
         Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in
       </message>
       <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_THREE" desc="Third bullet point that describes the details of the Safe Browsing control.">
-        Warns you if passwords are exposed in a data breach
+        Improves security for you and everyone on the web
       </message>
       <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_FOUR" desc="Fourth bullet point that describes the details of the Safe Browsing control.">
-        Improves security for you and everyone on the web
+        Warns you if passwords are exposed in a data breach
       </message>
       <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_FIVE" desc="Fifth bullet point that describes the details of the Safe Browsing control.">
         Sends URLs to Safe Browsing to check them
       </message>
       <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_SIX" desc="Sixth bullet point that describes the details of the Safe Browsing control.">
-        Sends a small sample of pages, downloads, extension activity, and system information to help discover new threats
+        Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats
       </message>
       <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_SEVEN" desc="Seventh bullet point that describes the details of the Safe Browsing control.">
         Temporarily links this data to your Brave sync chain when you’re signed in, to protect you across Brave apps
@@ -1438,6 +1444,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT" desc="Text to display when the password check hits the daily quota limit.">
         Brave couldn’t check all passwords
+      </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_UPDATE_PLAY_SERVICES" desc="Text to display when the password check is unable to run because Google Play services version is not supported.">
+        Update Google Play services to check your passwords
       </message>
       <message name="IDS_SAFETY_CHECK_UPDATES_UPDATED" desc="Text to display when the updates check confirms that the latest version is already installed.">
         Brave is up to date
@@ -2774,6 +2783,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
        See other tabs
      </message>
 
+     <!-- Private reauthentication promo card -->
+     <message name="IDS_INCOGNITO_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card.">
+       Lock Private tabs when you leave Brave
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card.">
+       Use screen lock to see open Private tabs
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Brave level Private lock setting after a re-authentication.">
+       Turn on Private lock
+     </message>
+
       <!-- Autofill/Wallet integration prompt -->
       <message name="IDS_CARD_UNMASK_INPUT_HINT" desc="Hint text for an input field containing the user's credit card CVC (card verification code).">
         CVC
@@ -2904,7 +2924,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Sign in to this site and Brave with your Brave sync chain.
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_SEND_TAB_TO_SELF" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the button 'Continue as John Doe' is clicked, when send-tab-to-self triggered the UI.">
-        You can send tabs between devices that are signed in with the same Brave sync chain
+        To send this tab to another device, sign in to Brave on both devices
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SIGNIN_TITLE" desc="The title of the account picker bottom sheet tells that the user is in the process of signing in with their Brave sync chain">
         Signing in...
@@ -3665,7 +3685,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Try again
       </message>
       <message name="IDS_IPH_PRICE_TRACKING_MENU_ITEM" desc="In-product-help text that describes that a user can track the price of a product in the overflow menu.">
-        Track price here
+        Track price
       </message>
       <message name="IDS_IPH_PRICE_TRACKING_MENU_ITEM_ACCESSIBILITY" is_accessibility_with_no_ui="true" desc="In-product-help accessibility text that describes that a user can track the price of a product in the overflow menu.">
         Track price from the More options button
@@ -4614,6 +4634,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_WHEN_SIGNED_IN_UNAVAILABLE" desc="Instructions for the user to enable the feature when it's currently unavailable.">
         You can send tabs between devices that are signed in with the same Brave sync chain
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_ANDROID_NO_TARGET_DEVICE_LABEL" desc="Text shown when a user with no available target devices attempts to use send-tab-to-self.">
+        To send this tab to another device, sign in to Brave there
       </message>
 
 
