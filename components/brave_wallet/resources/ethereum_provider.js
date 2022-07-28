@@ -28,7 +28,7 @@
     },
     isMetaMask: {
       value: true,
-      writable: true
+      writable: true // https://github.com/brave/brave-browser/issues/22213
     },
     isBraveWallet: {
       value: true,

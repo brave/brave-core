@@ -110,8 +110,9 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
       gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
   if (provider.IsEmpty())
     return;
+  v8::Local<v8::Value> provider_value = provider.ToV8();
 
-  SetProviderNonWritable(context, global, provider.ToV8(),
+  SetProviderNonWritable(context, global, provider_value,
                          gin::StringToV8(isolate, "braveSolana"), true);
 
   // This is to prevent window._brave_solana from being defined and set
@@ -127,12 +128,11 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
            .ToLocal(&solana_value) ||
       !solana_value->IsObject()) {
     if (!allow_overwrite_window_solana) {
-      SetProviderNonWritable(context, global, provider.ToV8(),
+      SetProviderNonWritable(context, global, provider_value,
                              gin::StringToV8(isolate, "solana"), true);
     } else {
       global
-          ->Set(context, gin::StringToSymbol(isolate, "solana"),
-                provider.ToV8())
+          ->Set(context, gin::StringToSymbol(isolate, "solana"), provider_value)
           .Check();
     }
   } else {
@@ -140,6 +140,42 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
                                  "Brave Wallet will not insert window.solana "
                                  "because it already exists!"));
+  }
+
+  // window.phantom.solana is the latest Phantom provider object used in
+  // wallet-adapter, we have to use it because not every sites using
+  // wallet-dapter list us by including BraveWalletAdapter.
+  v8::Local<v8::Value> phantom_value;
+  if (!global->Get(context, gin::StringToV8(isolate, "phantom"))
+           .ToLocal(&phantom_value) ||
+      !phantom_value->IsObject()) {
+    v8::Local<v8::Object> phantom_obj = v8::Object::New(isolate);
+    if (!allow_overwrite_window_solana) {
+      SetProviderNonWritable(context, phantom_obj, provider_value,
+                             gin::StringToV8(isolate, "solana"), true);
+      SetProviderNonWritable(context, global, phantom_obj,
+                             gin::StringToV8(isolate, "phantom"), true);
+    } else {
+      phantom_obj
+          ->Set(context, gin::StringToSymbol(isolate, "solana"), provider_value)
+          .Check();
+      global->Set(context, gin::StringToSymbol(isolate, "phantom"), phantom_obj)
+          .Check();
+    }
+  } else {
+    render_frame->GetWebFrame()->AddMessageToConsole(
+        blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
+                                 "Brave Wallet will not insert window.phantom "
+                                 "because it already exists!"));
+  }
+
+  // Non-function properties are readonly guaranteed by gin::Wrappable
+  for (const std::string& method :
+       {"connect", "disconnect", "signAndSendTransaction", "signMessage",
+        "request", "signTransaction", "signAllTransactions"}) {
+    SetOwnPropertyNonWritable(
+        context, provider_value->ToObject(context).ToLocalChecked(),
+        gin::StringToV8(isolate, method));
   }
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
