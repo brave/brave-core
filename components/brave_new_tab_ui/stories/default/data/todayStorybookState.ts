@@ -42,6 +42,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'My Custom Feed 1',
         categoryName: 'User feeds',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.DIRECT_SOURCE,
         isEnabled: true,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -51,6 +52,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'My Custom Feed 2',
         categoryName: 'User feeds',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.DIRECT_SOURCE,
         isEnabled: true,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -60,6 +62,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 1',
         categoryName: 'Tech',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -69,6 +72,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 2',
         categoryName: 'Top News',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -78,6 +82,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 3',
         categoryName: 'Tech 2',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -87,6 +92,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 4',
         categoryName: 'Top News 1',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -96,6 +102,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 5 has A very very very very very very very very very very very very very very very very very very very very long publisher name',
         categoryName: 'Tech 2',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -105,6 +112,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 6',
         categoryName: 'Top News 2',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -114,6 +122,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 7',
         categoryName: 'Top News 3',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -123,6 +132,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 8',
         categoryName: 'Tech 3',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
@@ -132,6 +142,7 @@ export default function getTodayState (): BraveTodayState {
         publisherName: 'Test Publisher 9',
         categoryName: 'Top News 4',
         feedSource: { url: 'http://www.example.com/feed' },
+        siteUrl: { url: 'https://www.example.com' },
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED

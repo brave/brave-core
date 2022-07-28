@@ -64,6 +64,7 @@ export const Regular = () => {
       saveShowBackgroundImage={doNothing}
       saveShowStats={doNothing}
       saveShowToday={doNothing}
+      saveShowBraveNewsButton={doNothing}
       saveShowRewards={doNothing}
       saveShowBinance={doNothing}
       saveShowBraveTalk={doNothing}
