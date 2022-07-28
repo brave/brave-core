@@ -78,11 +78,7 @@
   if ((self = [super init])) {
     self.cancelled = false;
 
-    // Create worker thread in which importer runs.
-    // In Chromium, this is created with `base::Thread("import_thread")`
-    import_thread_ = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    import_thread_ = web::GetIOThreadTaskRunner({});
   }
   return self;
 }
@@ -196,9 +192,9 @@
 
   // Import into the Profile/ChromeBrowserState on the main-thread.
   __weak BraveBookmarksImporter* weakSelf = self;
-  web::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(start_import, weakSelf, bookmarks,
-                                top_level_folder_name, listener));
+  import_thread_->PostTask(FROM_HERE,
+                           base::BindOnce(start_import, weakSelf, bookmarks,
+                                          top_level_folder_name, listener));
 }
 
 // MARK: - Private
