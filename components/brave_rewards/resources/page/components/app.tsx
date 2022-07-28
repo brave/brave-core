@@ -3,53 +3,35 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { bindActionCreators, Dispatch } from 'redux'
-import { connect } from 'react-redux'
 
-// Components
-import SettingsPage from './settingsPage'
+import { LayoutManager } from './layout_manager'
+import { useActions, useRewardsData } from '../lib/redux_hooks'
+import { Settings } from './settings'
 
-// Utils
-import * as rewardsActions from '../actions/rewards_actions'
+export function App () {
+  const actions = useActions()
+  const rewardsData = useRewardsData((data) => ({
+    initializing: data.initializing,
+    adsData: data.adsData,
+    enabledAdsMigrated: data.enabledAdsMigrated
+  }))
 
-interface Props extends Rewards.ComponentProps {
-}
+  React.useEffect(() => {
+    actions.isInitialized()
 
-export class App extends React.Component<Props> {
-  componentDidMount () {
-    this.actions.isInitialized()
-
-    if (!this.props.rewardsData.enabledAdsMigrated) {
-      const { adsEnabled, adsIsSupported } = this.props.rewardsData.adsData
-
+    if (!rewardsData.enabledAdsMigrated) {
+      const { adsEnabled, adsIsSupported } = rewardsData.adsData
       if (adsIsSupported) {
-        this.props.actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
+        actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
       }
     }
-  }
+  }, [])
 
-  get actions () {
-    return this.props.actions
-  }
-
-  render () {
-    return (
+  return (
+    <LayoutManager>
       <div id='rewardsPage'>
-        <SettingsPage />
+        {!rewardsData.initializing && <Settings />}
       </div>
-    )
-  }
+    </LayoutManager>
+  )
 }
-
-export const mapStateToProps = (state: Rewards.ApplicationState) => ({
-  rewardsData: state.rewardsData
-})
-
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(rewardsActions, dispatch)
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)

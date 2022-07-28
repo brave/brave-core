@@ -20,3 +20,15 @@ export function getPublisherPlatformName (platform: PublisherPlatform) {
     case 'github': return 'GitHub'
   }
 }
+
+export function lookupPublisherPlatformName (platform: string) {
+  switch (platform) {
+    case 'twitter': return 'Twitter'
+    case 'youtube': return 'YouTube'
+    case 'twitch': return 'Twitch'
+    case 'reddit': return 'Reddit'
+    case 'vimeo': return 'Vimeo'
+    case 'github': return 'GitHub'
+    default: return ''
+  }
+}

@@ -8,9 +8,12 @@ import warningCircleImage from '../../shared/assets/warning_circle.svg'
 import greenCheckIcon from '../assets/green_check.svg'
 
 export const root = styled.div`
+  position: relative;
   font-family: var(--brave-font-heading);
-  width: 880px;
+  max-width: 880px;
+  min-width: 820px;
   min-height: 545px;
+  margin: 0 10px;
   background: var(--brave-palette-white);
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.2);
   border-radius: 8px;
@@ -21,17 +24,43 @@ export const root = styled.div`
     color: var(--brave-color-brandBat);
     text-decoration: none;
   }
+
+  .layout-narrow & {
+    display: block;
+    max-width: 400px;
+    min-width: unset;
+    min-height: unset;
+  }
+`
+
+export const close = styled.div`
+  position: absolute;
+  top: 32px;
+  right: 46px;
+
+  .layout-narrow & {
+    top: 28px;
+    right: 28px;
+  }
 `
 
 export const leftPanel = styled.div`
   flex: 0 1 448px;
   padding: 70px 28px 31px 80px;
+
+  .layout-narrow & {
+    padding: 60px 32px 32px;
+  }
 `
 
 export const rightPanel = styled.div`
   flex: 1 1 auto;
-  padding: 32px 42px;
+  padding: 64px 42px 32px;
   background: var(--brave-palette-neutral000);
+
+  .layout-narrow & {
+    padding: 0;
+  }
 `
 
 export const panelHeader = styled.div`
@@ -112,6 +141,10 @@ export const connectGraphic = styled.div`
   text-align: center;
   margin: 86px auto 0;
   width: 250px;
+
+  .layout-narrow & {
+    display: none;
+  }
 `
 
 export const minimumBalanceWarning = styled.div`
@@ -131,14 +164,27 @@ export const minimumBalanceWarning = styled.div`
     margin-top: 8px;
     font-weight: 600;
   }
+
+  .layout-narrow & {
+    font-size: 12px;
+    line-height: 16px;
+  }
 `
 
 export const selectWalletLeftPanel = styled.div`
   margin-top: 30px;
+
+  .layout-narrow & {
+    margin-top: 0;
+  }
 `
 
 export const selectWalletContent = styled.div`
   min-height: 236px;
+
+  .layout-narrow & {
+    min-height: unset;
+  }
 `
 
 export const selectWalletNote = styled.div`
@@ -146,6 +192,10 @@ export const selectWalletNote = styled.div`
   font-size: 12px;
   line-height: 18px;
   color: var(--brave-palette-neutral600);
+
+  .layout-narrow & {
+    display: none;
+  }
 `
 
 export const providerButtons = styled.div`
@@ -177,6 +227,14 @@ export const providerButtons = styled.div`
 
     &.selected {
       border-color: var(--brave-color-brandBat);
+    }
+  }
+
+  .layout-narrow & {
+    padding: 32px;
+
+    button {
+      margin-left: 0;
     }
   }
 `

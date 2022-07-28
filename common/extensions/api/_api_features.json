@@ -123,7 +123,6 @@
       "contexts": ["webui"],
       "matches": [
         "chrome://newtab/*",
-        "chrome://rewards/*",
         "chrome://rewards-panel.top-chrome/*",
         "chrome://settings/*"
       ]

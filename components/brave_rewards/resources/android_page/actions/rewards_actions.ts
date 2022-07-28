@@ -38,22 +38,8 @@ export const claimPromotion = (promotionId: string) => action(types.CLAIM_PROMOT
   promotionId
 })
 
-export const onClaimPromotion = (properties: Rewards.Captcha) => action(types.ON_CLAIM_PROMOTION, {
-  properties
-})
-
-export const attestPromotion = (promotionId: string, x: number, y: number) => action(types.ATTEST_PROMOTION, {
-  promotionId,
-  x,
-  y
-})
-
 export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
   properties
-})
-
-export const resetPromotion = (promotionId: string) => action(types.RESET_PROMOTION, {
-  promotionId
 })
 
 export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {

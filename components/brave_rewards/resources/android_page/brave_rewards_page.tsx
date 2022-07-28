@@ -66,10 +66,6 @@ function promotions (properties: Rewards.PromotionResponse) {
   getActions().onPromotions(properties)
 }
 
-function claimPromotion (properties: Rewards.Captcha) {
-  getActions().onClaimPromotion(properties)
-}
-
 function recoverWalletData (result: number) {
   getActions().onRecoverWalletData(result)
 }
@@ -283,7 +279,6 @@ function onPrefChanged (key: string) {
 window.brave_rewards = {
   rewardsParameters,
   promotions,
-  claimPromotion,
   recoverWalletData,
   promotionFinish,
   reconcileStamp,

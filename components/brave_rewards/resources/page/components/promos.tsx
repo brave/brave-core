@@ -3,10 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import geminiBg from './assets/gemini_bg.svg'
-import tapBg from './assets/tap_bg.svg'
-import upholdCardBg from './assets/uphold_card_bg.png'
-import upholdEquitiesBg from './assets/uphold_equities_bg.svg'
+
+import geminiBg from '../assets/gemini_bg.svg'
+import tapBg from '../assets/tap_bg.svg'
+import upholdCardBg from '../assets/uphold_card_bg.png'
+import upholdEquitiesBg from '../assets/uphold_equities_bg.svg'
+
 import { StyledInfo } from '../../ui/components/sidebarPromo/style'
 import { getLocale } from '../../../../common/locale'
 
@@ -16,18 +18,20 @@ export interface Promo {
   title: string
   imagePath: string
   link: string
-  copy: JSX.Element
+  copy: React.ReactNode
   disclaimer?: string
   supportedLocales: string[]
 }
 
-export const getActivePromos = (rewardsData: Rewards.State, isMobile: boolean = false) => {
-  if (!rewardsData || !rewardsData.externalWallet) {
-    return []
-  }
+export function getActivePromos (
+  wallet: Rewards.ExternalWallet|undefined,
+  isMobile: boolean = false
+) {
+  const promos: PromoType[] = []
 
-  const wallet = rewardsData.externalWallet
-  let promos = []
+  if (!wallet) {
+    return promos
+  }
 
   if (isMobile) {
     if (wallet.type === 'bitflyer') {
@@ -77,10 +81,11 @@ const getRootImagePath = (path: string) => {
   return `/${path}`
 }
 
-export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
+export function getPromo (type: PromoType): Promo|null {
   switch (type) {
     case 'bitflyer-verification':
       return {
+        imagePath: '',
         link: getLink(type),
         copy: getLocale('bitflyerVerificationPromoInfo'),
         supportedLocales: ['JP'],

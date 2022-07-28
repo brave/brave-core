@@ -4,17 +4,19 @@
 
 import { combineReducers } from 'redux'
 
-// Utils
+import { defaultState } from './default_state'
+import { loadState, saveState } from './state_cache'
+
 import rewardsReducer from './rewards_reducer'
 import walletReducer from './wallet_reducer'
 import promotionReducer from './promotion_reducer'
 import publishersReducer from './publishers_reducer'
-import * as storage from '../storage'
 
-const mergeReducers = (state: Rewards.State | undefined, action: any) => {
-  if (state === undefined) {
-    state = storage.load()
+function mergeReducers (state: Rewards.State|undefined, action: any) {
+  if (!state) {
+    state = loadState()
   }
+
   const startingState = state
 
   state = rewardsReducer(state, action)
@@ -23,16 +25,18 @@ const mergeReducers = (state: Rewards.State | undefined, action: any) => {
   state = publishersReducer(state, action)
 
   if (!state) {
-    state = storage.defaultState
+    state = defaultState
   }
 
   if (state !== startingState) {
-    storage.debouncedSave(state)
+    saveState(state)
   }
 
   return state
 }
 
-export default combineReducers<Rewards.ApplicationState>({
-  rewardsData: mergeReducers
-})
+export function createReducer () {
+  return combineReducers<Rewards.ApplicationState>({
+    rewardsData: mergeReducers
+  })
+}

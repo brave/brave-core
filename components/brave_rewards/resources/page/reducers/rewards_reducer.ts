@@ -5,10 +5,8 @@
 import { Reducer } from 'redux'
 
 import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
-
-// Constant
-import { types } from '../constants/rewards_types'
-import { defaultState } from '../storage'
+import { types } from '../actions/rewards_types'
+import { defaultState } from './default_state'
 
 const onboardingCompletedStore = new OnboardingCompletedStore()
 
