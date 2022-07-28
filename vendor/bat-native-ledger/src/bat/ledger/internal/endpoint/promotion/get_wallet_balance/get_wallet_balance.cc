@@ -75,13 +75,8 @@ type::Result GetWalletBalance::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto confirmed = dictionary->FindDoubleKey("confirmed");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto confirmed = dict.FindDouble("confirmed");
   if (confirmed) {
     balance->total = *confirmed;
   }

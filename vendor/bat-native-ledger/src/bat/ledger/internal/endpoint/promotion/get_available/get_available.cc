@@ -85,35 +85,35 @@ type::Result GetAvailable::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  auto* promotions = dictionary->FindListKey("promotions");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* promotions = dict.FindList("promotions");
   if (!promotions) {
     return type::Result::LEDGER_OK;
   }
 
-  const auto promotion_size = promotions->GetList().size();
-  for (auto& item : promotions->GetList()) {
+  const auto promotion_size = promotions->size();
+  for (const auto& value : *promotions) {
     type::PromotionPtr promotion = type::Promotion::New();
 
-    const auto* id = item.FindStringKey("id");
+    const auto* item = value.GetIfDict();
+    if (!item) {
+      continue;
+    }
+
+    const auto* id = item->FindString("id");
     if (!id) {
       continue;
     }
     promotion->id = *id;
 
-    const auto version = item.FindIntKey("version");
+    const auto version = item->FindInt("version");
     if (!version) {
       corrupted_promotions->push_back(promotion->id);
       continue;
     }
     promotion->version = *version;
 
-    const auto* type = item.FindStringKey("type");
+    const auto* type = item->FindString("type");
     if (!type) {
       corrupted_promotions->push_back(promotion->id);
       continue;
@@ -121,14 +121,14 @@ type::Result GetAvailable::ParseBody(
     promotion->type =
         ::ledger::promotion::ConvertStringToPromotionType(*type);
 
-    const auto suggestions = item.FindIntKey("suggestionsPerGrant");
+    const auto suggestions = item->FindInt("suggestionsPerGrant");
     if (!suggestions) {
       corrupted_promotions->push_back(promotion->id);
       continue;
     }
     promotion->suggestions = *suggestions;
 
-    const auto* approximate_value = item.FindStringKey("approximateValue");
+    const auto* approximate_value = item->FindString("approximateValue");
     if (!approximate_value) {
       corrupted_promotions->push_back(promotion->id);
       continue;
@@ -140,7 +140,7 @@ type::Result GetAvailable::ParseBody(
       promotion->approximate_value = 0.0;
     }
 
-    const auto available = item.FindBoolKey("available");
+    const auto available = item->FindBool("available");
     if (!available) {
       corrupted_promotions->push_back(promotion->id);
       continue;
@@ -153,14 +153,14 @@ type::Result GetAvailable::ParseBody(
     }
 
     promotion->created_at = base::Time::Now().ToDoubleT();
-    if (auto* created_at = item.FindStringKey("createdAt")) {
+    if (auto* created_at = item->FindString("createdAt")) {
       base::Time time;
       if (base::Time::FromUTCString(created_at->c_str(), &time)) {
         promotion->created_at = time.ToDoubleT();
       }
     }
 
-    auto* expires_at = item.FindStringKey("expiresAt");
+    auto* expires_at = item->FindString("expiresAt");
     if (!expires_at) {
       corrupted_promotions->push_back(promotion->id);
       continue;
@@ -172,7 +172,7 @@ type::Result GetAvailable::ParseBody(
       promotion->expires_at = time.ToDoubleT();
     }
 
-    auto* claimable_until = item.FindStringKey("claimableUntil");
+    auto* claimable_until = item->FindString("claimableUntil");
     if (claimable_until) {
       base::Time time;
       if (base::Time::FromUTCString(claimable_until->c_str(), &time)) {
@@ -180,8 +180,8 @@ type::Result GetAvailable::ParseBody(
       }
     }
 
-    auto* public_keys = item.FindListKey("publicKeys");
-    if (!public_keys || public_keys->GetList().empty()) {
+    auto* public_keys = item->FindList("publicKeys");
+    if (!public_keys || public_keys->empty()) {
       corrupted_promotions->push_back(promotion->id);
       continue;
     }
@@ -190,7 +190,7 @@ type::Result GetAvailable::ParseBody(
     base::JSONWriter::Write(*public_keys, &keys_json);
     promotion->public_keys = keys_json;
 
-    auto legacy_claimed = item.FindBoolKey("legacyClaimed");
+    auto legacy_claimed = item->FindBool("legacyClaimed");
     promotion->legacy_claimed = legacy_claimed.value_or(false);
 
     list->push_back(std::move(promotion));
