@@ -6,15 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CREATED_AT_TIMESTAMP_USER_DATA_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CREATED_AT_TIMESTAMP_USER_DATA_H_
 
+#include "base/values.h"
+
 namespace base {
-class DictionaryValue;
 class Time;
 }  // namespace base
 
 namespace ads {
 namespace user_data {
 
-base::DictionaryValue GetCreatedAtTimestamp(const base::Time time);
+base::Value::Dict GetCreatedAtTimestamp(const base::Time time);
 
 }  // namespace user_data
 }  // namespace ads

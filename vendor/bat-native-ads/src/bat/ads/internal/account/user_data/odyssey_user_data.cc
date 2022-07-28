@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/ads.h"
 
 namespace ads {
@@ -21,11 +20,11 @@ constexpr char kHost[] = "host";
 
 }  // namespace
 
-base::DictionaryValue GetOdyssey() {
-  base::DictionaryValue user_data;
+base::Value::Dict GetOdyssey() {
+  base::Value::Dict user_data;
 
   const std::string type = SysInfo().is_uncertain_future ? kGuest : kHost;
-  user_data.SetStringKey(kOdysseyKey, type);
+  user_data.Set(kOdysseyKey, type);
 
   return user_data;
 }

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/values.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {
@@ -20,15 +19,15 @@ constexpr char kIdKey[] = "id";
 
 }  // namespace
 
-base::DictionaryValue GetCatalog() {
-  base::ListValue list;
+base::Value::Dict GetCatalog() {
+  base::Value::List list;
 
-  base::DictionaryValue dictionary;
-  dictionary.SetStringKey(kIdKey, GetCatalogId());
-  list.Append(std::move(dictionary));
+  base::Value::Dict dict;
+  dict.Set(kIdKey, GetCatalogId());
+  list.Append(std::move(dict));
 
-  base::DictionaryValue user_data;
-  user_data.SetKey(kCatalogKey, std::move(list));
+  base::Value::Dict user_data;
+  user_data.Set(kCatalogKey, std::move(list));
 
   return user_data;
 }

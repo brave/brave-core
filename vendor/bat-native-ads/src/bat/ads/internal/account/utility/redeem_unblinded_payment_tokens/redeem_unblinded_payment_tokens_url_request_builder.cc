@@ -25,7 +25,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
         const WalletInfo& wallet,
         const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-        const base::Value& user_data)
+        const base::Value::Dict& user_data)
     : wallet_(wallet),
       unblinded_payment_tokens_(unblinded_payment_tokens),
       user_data_(user_data.Clone()) {
@@ -76,17 +76,17 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
-  base::DictionaryValue dictionary;
+  base::Value::Dict dict;
 
   base::Value payment_request_dto = CreatePaymentRequestDTO(payload);
-  dictionary.SetKey("paymentCredentials", std::move(payment_request_dto));
-
-  dictionary.SetStringKey("payload", payload);
-
-  dictionary.MergeDictionary(&user_data_);
+  dict.Set("paymentCredentials", std::move(payment_request_dto));
+  dict.Set("payload", payload);
+  // TODO(cdesouza): See if guarantees can be provided that this function is
+  // called only once for an instance, so this extra deep copy might be avoided.
+  dict.Merge(user_data_.Clone());
 
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
+  base::JSONWriter::Write(dict, &json);
 
   return json;
 }

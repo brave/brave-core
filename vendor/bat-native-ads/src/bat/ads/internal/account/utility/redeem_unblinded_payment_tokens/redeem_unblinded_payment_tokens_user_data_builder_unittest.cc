@@ -39,7 +39,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
       unblinded_payment_tokens);
 
   // Act
-  user_data_builder.Build([](const base::Value& user_data) {
+  user_data_builder.Build([](const base::Value::Dict& user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 

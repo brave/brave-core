@@ -6,15 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_MUTATED_USER_DATA_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_MUTATED_USER_DATA_H_
 
-namespace base {
-class DictionaryValue;
-}  // namespace base
+#include "base/values.h"
 
 namespace ads {
 namespace user_data {
 
 // Anything that causes a mutation (a change in the DNA of a cell).
-base::DictionaryValue GetMutated();
+base::Value::Dict GetMutated();
 
 }  // namespace user_data
 }  // namespace ads

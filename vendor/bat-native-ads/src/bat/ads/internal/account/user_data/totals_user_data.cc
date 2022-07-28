@@ -22,30 +22,30 @@ constexpr char kAdFormatKey[] = "ad_format";
 
 }  // namespace
 
-base::DictionaryValue GetTotals(
+base::Value::Dict GetTotals(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);
 
-  base::ListValue list;
+  base::Value::List list;
   for (const auto& bucket : buckets) {
-    base::DictionaryValue total;
+    base::Value::Dict total;
 
     const std::string& ad_format = bucket.first;
-    total.SetStringKey(kAdFormatKey, ad_format);
+    total.Set(kAdFormatKey, ad_format);
 
     const ConfirmationTypeBucketMap& confirmations = bucket.second;
     for (const auto& confirmation : confirmations) {
       const std::string& confirmation_type = confirmation.first;
       const std::string count = base::NumberToString(confirmation.second);
 
-      total.SetStringKey(confirmation_type, count);
+      total.Set(confirmation_type, count);
     }
 
     list.Append(std::move(total));
   }
 
-  base::DictionaryValue user_data;
-  user_data.SetKey(kTotalsKey, std::move(list));
+  base::Value::Dict user_data;
+  user_data.Set(kTotalsKey, std::move(list));
   return user_data;
 }
 

@@ -21,7 +21,7 @@ absl::optional<TransactionList> ReadTransactionHistory(
   }
 
   const absl::optional<TransactionList>& transaction_history_optional =
-      ParseTransactionHistory(*value);
+      ParseTransactionHistory(value->GetDict());
   if (!transaction_history_optional) {
     return absl::nullopt;
   }

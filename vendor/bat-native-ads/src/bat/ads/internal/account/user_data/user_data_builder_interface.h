@@ -8,13 +8,11 @@
 
 #include <functional>
 
-namespace base {
-class Value;
-}  // namespace base
+#include "base/values.h"
 
 namespace ads {
 
-using UserDataBuilderCallback = std::function<void(const base::Value&)>;
+using UserDataBuilderCallback = std::function<void(const base::Value::Dict&)>;
 
 class UserDataBuilderInterface {
  public:

@@ -8,14 +8,12 @@
 
 #include <string>
 
-namespace base {
-class DictionaryValue;
-}  // namespace base
+#include "base/values.h"
 
 namespace ads {
 namespace user_data {
 
-base::DictionaryValue GetRotatingHash(const std::string& creative_instance_id);
+base::Value::Dict GetRotatingHash(const std::string& creative_instance_id);
 
 }  // namespace user_data
 }  // namespace ads

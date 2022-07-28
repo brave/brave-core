@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
 
 #include "base/check.h"
-#include "base/values.h"
 #include "bat/ads/ads.h"
 
 namespace ads {
@@ -16,11 +15,11 @@ namespace {
 constexpr char kBuildChannelKey[] = "buildChannel";
 }  // namespace
 
-base::DictionaryValue GetBuildChannel() {
-  base::DictionaryValue user_data;
+base::Value::Dict GetBuildChannel() {
+  base::Value::Dict user_data;
 
   DCHECK(!BuildChannel().name.empty());
-  user_data.SetStringKey(kBuildChannelKey, BuildChannel().name);
+  user_data.Set(kBuildChannelKey, BuildChannel().name);
   return user_data;
 }
 

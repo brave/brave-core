@@ -50,7 +50,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  BuildConversion(kCreativeInstanceId, [](base::Value user_data) {
+  BuildConversion(kCreativeInstanceId, [](base::Value::Dict user_data) {
     const absl::optional<std::string> message_optional =
         security::OpenEvenlopeForUserDataAndAdvertiserSecretKey(
             user_data, kAdvertiserSecretKey);
@@ -71,7 +71,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  BuildConversion(kMissingCreativeInstanceId, [](base::Value user_data) {
+  BuildConversion(kMissingCreativeInstanceId, [](base::Value::Dict user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 
@@ -90,7 +90,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
                                   kEmptyAdvertiserPublicKey);
 
   // Act
-  BuildConversion(kCreativeInstanceId, [](base::Value user_data) {
+  BuildConversion(kCreativeInstanceId, [](base::Value::Dict user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 

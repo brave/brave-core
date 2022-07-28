@@ -25,7 +25,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const WalletInfo& wallet,
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-      const base::Value& user_data);
+      const base::Value::Dict& user_data);
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
@@ -51,7 +51,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
 
   WalletInfo wallet_;
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
-  base::Value user_data_;
+  base::Value::Dict user_data_;
 };
 
 }  // namespace ads

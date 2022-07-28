@@ -39,9 +39,6 @@ struct ADS_EXPORT TransactionInfo final {
   AdType ad_type = AdType::kUndefined;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
   base::Time reconciled_at;
-
-  void ToDictionary(base::Value* dictionary) const;
-  void FromDictionary(base::DictionaryValue* dictionary);
 };
 
 using TransactionList = std::vector<TransactionInfo>;

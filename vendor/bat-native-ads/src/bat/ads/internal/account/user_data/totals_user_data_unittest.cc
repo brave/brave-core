@@ -21,7 +21,7 @@ namespace {
 
 std::string GetTotalsAsJson(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  const base::DictionaryValue user_data = GetTotals(unblinded_payment_tokens);
+  const base::Value::Dict user_data = GetTotals(unblinded_payment_tokens);
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

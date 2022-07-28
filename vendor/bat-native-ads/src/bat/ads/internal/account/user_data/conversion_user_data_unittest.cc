@@ -42,7 +42,7 @@ TEST_F(BatAdsConversionUserDataTest, GetForConversionConfirmationType) {
   // Act
   GetConversion(
       kCreativeInstanceId, ConfirmationType::kConversion,
-      [](base::Value user_data) {
+      [](base::Value::Dict user_data) {
         const absl::optional<security::VerifiableConversionEnvelopeInfo>&
             verifiable_conversion_envelope_optional =
                 security::GetVerifiableConversionEnvelopeForUserData(user_data);
@@ -59,7 +59,7 @@ TEST_F(BatAdsConversionUserDataTest, DoNotGetForNonConversionConfirmationType) {
   // Act
   GetConversion(
       kCreativeInstanceId, ConfirmationType::kViewed,
-      [](base::Value user_data) {
+      [](base::Value::Dict user_data) {
         const absl::optional<security::VerifiableConversionEnvelopeInfo>&
             verifiable_conversion_envelope_optional =
                 security::GetVerifiableConversionEnvelopeForUserData(user_data);

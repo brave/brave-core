@@ -9,7 +9,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/ads.h"
 
 namespace ads {
@@ -19,8 +18,8 @@ namespace {
 constexpr char kRotatingHashKey[] = "rotating_hash";
 }  // namespace
 
-base::DictionaryValue GetRotatingHash(const std::string& creative_instance_id) {
-  base::DictionaryValue user_data;
+base::Value::Dict GetRotatingHash(const std::string& creative_instance_id) {
+  base::Value::Dict user_data;
 
   const std::string& device_id = SysInfo().device_id;
   if (device_id.empty()) {
@@ -34,7 +33,7 @@ base::DictionaryValue GetRotatingHash(const std::string& creative_instance_id) {
 
   const std::string rotating_hash = base::NumberToString(
       base::Hash(base::StrCat({device_id, creative_instance_id, timestamp})));
-  user_data.SetStringKey(kRotatingHashKey, rotating_hash);
+  user_data.Set(kRotatingHashKey, rotating_hash);
 
   return user_data;
 }

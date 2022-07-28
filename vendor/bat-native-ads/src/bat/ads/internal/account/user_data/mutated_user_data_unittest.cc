@@ -22,7 +22,7 @@ namespace user_data {
 namespace {
 
 std::string GetMutatedAsJson() {
-  const base::DictionaryValue user_data = GetMutated();
+  const base::Value::Dict user_data = GetMutated();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

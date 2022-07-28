@@ -12,7 +12,6 @@
 #include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -64,7 +63,7 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
 
   const ConfirmationsUserDataBuilder user_data_builder(
       now, transaction.creative_instance_id, transaction.confirmation_type);
-  user_data_builder.Build([=](const base::Value& user_data) {
+  user_data_builder.Build([=](const base::Value::Dict& user_data) {
     const ConfirmationInfo& confirmation = CreateConfirmation(
         now, transaction.id, transaction.creative_instance_id,
         transaction.confirmation_type, transaction.ad_type, user_data);
@@ -124,7 +123,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
-    const base::Value& user_data) const {
+    const base::Value::Dict& user_data) const {
   DCHECK(!transaction_id.empty());
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
@@ -188,7 +187,7 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
   const ConfirmationsUserDataBuilder user_data_builder(
       confirmation.created_at, confirmation.creative_instance_id,
       confirmation.type);
-  user_data_builder.Build([=](const base::Value& user_data) {
+  user_data_builder.Build([=](const base::Value::Dict& user_data) {
     const ConfirmationInfo& new_confirmation =
         CreateConfirmation(confirmation.created_at, confirmation.transaction_id,
                            confirmation.creative_instance_id, confirmation.type,

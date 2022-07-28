@@ -20,7 +20,7 @@ namespace user_data {
 namespace {
 
 std::string GetLocaleAsJson() {
-  const base::DictionaryValue user_data = GetLocale();
+  const base::Value::Dict user_data = GetLocale();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);

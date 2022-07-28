@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/values.h"
 #include "bat/ads/internal/base/crypto/crypto_unittest_util.h"
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
@@ -23,30 +22,30 @@ constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
 }  // namespace
 
 absl::optional<VerifiableConversionEnvelopeInfo>
-GetVerifiableConversionEnvelopeForUserData(const base::Value& user_data) {
-  const base::Value* value = user_data.FindDictKey("conversionEnvelope");
-  if (!value || !value->is_dict()) {
+GetVerifiableConversionEnvelopeForUserData(const base::Value::Dict& user_data) {
+  const base::Value::Dict* value = user_data.FindDict("conversionEnvelope");
+  if (!value) {
     return absl::nullopt;
   }
 
   VerifiableConversionEnvelopeInfo verifiable_conversion_envelope;
 
-  const std::string* algorithm = value->FindStringKey("alg");
+  const std::string* algorithm = value->FindString("alg");
   if (algorithm) {
     verifiable_conversion_envelope.algorithm = *algorithm;
   }
 
-  const std::string* ciphertext = value->FindStringKey("ciphertext");
+  const std::string* ciphertext = value->FindString("ciphertext");
   if (ciphertext) {
     verifiable_conversion_envelope.ciphertext = *ciphertext;
   }
 
-  const std::string* ephemeral_public_key = value->FindStringKey("epk");
+  const std::string* ephemeral_public_key = value->FindString("epk");
   if (ephemeral_public_key) {
     verifiable_conversion_envelope.ephemeral_public_key = *ephemeral_public_key;
   }
 
-  const std::string* nonce = value->FindStringKey("nonce");
+  const std::string* nonce = value->FindString("nonce");
   if (nonce) {
     verifiable_conversion_envelope.nonce = *nonce;
   }
@@ -107,7 +106,7 @@ absl::optional<std::string> OpenEnvelope(
 }
 
 absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(
-    const base::Value& user_data,
+    const base::Value::Dict& user_data,
     const std::string& advertiser_secret_key) {
   const absl::optional<VerifiableConversionEnvelopeInfo>&
       verifiable_conversion_envelope_optional =
