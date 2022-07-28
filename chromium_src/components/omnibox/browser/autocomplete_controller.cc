@@ -15,6 +15,7 @@
 #include "brave/components/omnibox/browser/topsites_provider.h"
 #include "components/omnibox/browser/clipboard_provider.h"
 #include "components/omnibox/browser/history_cluster_provider.h"
+#include "components/omnibox/browser/history_fuzzy_provider.h"
 
 using brave_search_conversion::IsBraveSearchConversionFetureEnabled;
 
