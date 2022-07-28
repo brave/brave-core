@@ -11,7 +11,7 @@
 #include "brave/ios/browser/api/certificate/models/brave_certificate_enums.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
-#include "net/cert/internal/parsed_certificate.h"
+#include "net/cert/pki/parsed_certificate.h"
 #include "net/der/input.h"
 #include "net/der/parse_values.h"
 
