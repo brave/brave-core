@@ -32,24 +32,20 @@ type::Result AttestationDesktop::ParseClaimSolution(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* id = dictionary->FindStringKey("captchaId");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* id = dict.FindString("captchaId");
   if (!id) {
     BLOG(0, "Captcha id is wrong");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto x_parse = dictionary->FindIntKey("x");
+  const auto x_parse = dict.FindInt("x");
   if (!x_parse) {
     BLOG(0, "X is wrong");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto y_parse = dictionary->FindIntKey("y");
+  const auto y_parse = dict.FindInt("y");
   if (!y_parse) {
     BLOG(0, "Y is wrong");
     return type::Result::LEDGER_ERROR;
@@ -98,13 +94,13 @@ void AttestationDesktop::OnDownloadCaptchaImage(StartCallback callback,
     return;
   }
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetStringKey("hint", hint);
-  dictionary.SetStringKey("captchaId", captcha_id);
-  dictionary.SetStringKey("captchaImage", image);
+  base::Value::Dict dict;
+  dict.Set("hint", hint);
+  dict.Set("captchaId", captcha_id);
+  dict.Set("captchaImage", image);
 
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
+  base::JSONWriter::Write(dict, &json);
   std::move(callback).Run(type::Result::LEDGER_OK, json);
 }
 
