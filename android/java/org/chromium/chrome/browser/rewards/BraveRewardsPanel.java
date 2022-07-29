@@ -1231,7 +1231,7 @@ public class BraveRewardsPanel
             case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
             case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
                 leftDrawable = getWalletIcon(walletType);
-                textId = R.string.brave_ui_wallet_button_disconnected;
+                textId = R.string.brave_ui_wallet_button_logged_out;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
                 btnVerifyWallet.setBackgroundDrawable(ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),

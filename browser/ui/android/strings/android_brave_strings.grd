@@ -1000,8 +1000,8 @@ Are you sure you want to do this?
       <message name="IDS_PREFS_USE_CUSTOM_TABS" desc="Title for closing all tabs closes brave in controls section">
         Open tabs in Custom Tabs
       </message>
-      <message name="IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED" desc="">
-        Disconnected
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_LOGGED_OUT" desc="Brave rewards panel logged out state text">
+        Logged out
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">
         Unverified
