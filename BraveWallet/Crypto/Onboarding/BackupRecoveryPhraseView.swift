@@ -59,7 +59,7 @@ struct BackupRecoveryPhraseView: View {
           .padding(.vertical)
         RecoveryPhraseGrid(data: recoveryWords, id: \.self) { word in
           Text(verbatim: "\(word.index + 1). \(word.value)")
-            .noCapture()
+            .customPrivacySensitive()
             .font(.footnote.bold())
             .padding(8)
             .frame(maxWidth: .infinity)
