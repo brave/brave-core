@@ -228,7 +228,8 @@ public class CryptoStore: ObservableObject {
       blockchainRegistry: blockchainRegistry,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
-      keyringService: keyringService
+      keyringService: keyringService,
+      solTxManagerProxy: solTxManagerProxy
     )
     confirmationStore = store
     return store
@@ -264,46 +265,9 @@ public class CryptoStore: ObservableObject {
 
   @MainActor
   func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
-    var allKeyrings: [BraveWallet.KeyringInfo] = []
-    allKeyrings = await withTaskGroup(
-      of: BraveWallet.KeyringInfo.self,
-      returning: [BraveWallet.KeyringInfo].self,
-      body: { @MainActor [weak keyringService] group in
-        guard let keyringService = keyringService else { return [] }
-        for coin in WalletConstants.supportedCoinTypes {
-          group.addTask { @MainActor in
-            await keyringService.keyringInfo(coin.keyringId)
-          }
-        }
-        var allKeyrings: [BraveWallet.KeyringInfo] = []
-        for await keyring in group {
-          allKeyrings.append(keyring)
-        }
-        return allKeyrings
-      }
-    )
+    let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
 
-    var pendingTransactions: [BraveWallet.TransactionInfo] = []
-    pendingTransactions = await withTaskGroup(
-      of: [BraveWallet.TransactionInfo].self,
-      body: { @MainActor [weak txService] group in
-        guard let txService = txService else { return [] }
-        for keyring in allKeyrings {
-          for info in keyring.accountInfos {
-            group.addTask { @MainActor in
-              await txService.allTransactionInfo(info.coin, from: info.address)
-            }
-          }
-        }
-        var allPendingTx: [BraveWallet.TransactionInfo] = []
-        for await transactions in group {
-          allPendingTx.append(contentsOf: transactions.filter { $0.txStatus == .unapproved })
-        }
-        return allPendingTx
-      }
-    )
-
-    return pendingTransactions
+    return await txService.pendingTransactions(for: allKeyrings)
   }
 
   @MainActor

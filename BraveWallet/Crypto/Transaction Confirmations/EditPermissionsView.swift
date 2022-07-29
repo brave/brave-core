@@ -31,8 +31,8 @@ struct EditPermissionsView: View {
     }
     
     var decimals: Int = 18
-    if let contractAddress = activeTransaction.txDataUnion.ethTxData1559?.baseData.to, let token = confirmationStore.token(for: contractAddress, in: networkStore.selectedChain) {
-      decimals = Int(token.decimals)
+    if case .ethErc20Approve(let details) = confirmationStore.activeParsedTransaction.details {
+      decimals = Int(details.token.decimals)
     }
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: decimals))
     let customAllowanceInWei = weiFormatter.weiString(from: customAllowance, radix: .hex, decimals: decimals) ?? "0"
@@ -68,7 +68,7 @@ struct EditPermissionsView: View {
           Text(Strings.Wallet.editPermissionsProposedAllowanceHeader)
             .foregroundColor(Color(.bravePrimary))
             .fontWeight(.semibold)
-          Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol)")
+          Text("\(confirmationStore.value) \(confirmationStore.symbol)")
             .foregroundColor(Color(.secondaryBraveLabel))
         }
         .font(.footnote)
@@ -84,7 +84,7 @@ struct EditPermissionsView: View {
       ) {
         HStack {
           TextField(
-            "0.0 \(confirmationStore.state.symbol)",
+            "0.0 \(confirmationStore.symbol)",
             text: $customAllowance,
             onEditingChanged: { value in
               if value, customAllowance == Strings.Wallet.editPermissionsApproveUnlimited {

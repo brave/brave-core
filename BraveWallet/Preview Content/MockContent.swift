@@ -192,6 +192,68 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init()
     )
   }
+  /// Solana System Transfer
+  static var previewConfirmedSolSystemTransfer: BraveWallet.TransactionInfo {
+    BraveWallet.TransactionInfo(
+      id: "3d3c7715-f5f2-4f70-ab97-7fb8d3b2a3cd",
+      fromAddress: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+      txHash: "",
+      txDataUnion: .init(
+        solanaTxData: .init(
+          recentBlockhash: "",
+          lastValidBlockHeight: 0,
+          feePayer: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+          toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
+          splTokenMintAddress: "",
+          lamports: UInt64(100000000),
+          amount: UInt64(0),
+          txType: .solanaSystemTransfer,
+          instructions: [.init()],
+          send: nil,
+          signTransactionParam: nil
+        )
+      ),
+      txStatus: .confirmed,
+      txType: .solanaSystemTransfer,
+      txParams: [],
+      txArgs: [],
+      createdTime: Date(timeIntervalSince1970: 1636399671),
+      submittedTime: Date(timeIntervalSince1970: 1636399673),
+      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      originInfo: .init()
+    )
+  }
+  /// Solana Token Transfer
+  static var previewConfirmedSolTokenTransfer: BraveWallet.TransactionInfo {
+    BraveWallet.TransactionInfo(
+      id: "3d3c7715-f5f2-4f70-ab97-7fb8d3b2a3cd",
+      fromAddress: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+      txHash: "",
+      txDataUnion: .init(
+        solanaTxData: .init(
+          recentBlockhash: "",
+          lastValidBlockHeight: 0,
+          feePayer: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+          toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
+          splTokenMintAddress: "0x1111111111222222222233333333334444444444",
+          lamports: UInt64(0),
+          amount: UInt64(100000000),
+          txType: .solanaSplTokenTransfer,
+          instructions: [.init()],
+          send: nil,
+          signTransactionParam: nil
+        )
+      ),
+      txStatus: .confirmed,
+      txType: .solanaSplTokenTransfer,
+      txParams: [],
+      txArgs: [],
+      createdTime: Date(timeIntervalSince1970: 1636399671),
+      submittedTime: Date(timeIntervalSince1970: 1636399673),
+      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      originInfo: .init()
+    )
+  }
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {
     guard let data = Data(base64Encoded: base64String) else { return [] }
     return Array(data).map(NSNumber.init(value:))

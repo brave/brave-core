@@ -8,7 +8,7 @@ import XCTest
 import BraveCore
 @testable import BraveWallet
 
-class TransactionConfirmationStoreTests: XCTestCase {
+@MainActor class TransactionConfirmationStoreTests: XCTestCase {
   
   private var cancellables: Set<AnyCancellable> = .init()
   
@@ -22,12 +22,13 @@ class TransactionConfirmationStoreTests: XCTestCase {
     setDataForUnapprovedTransactionSuccess: Bool = true
   ) -> TransactionConfirmationStore {
     let mockEthAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23")
+    let mockSolAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "sol", toAsset: "usd", price: "39.57", assetTimeframeChange: "-57.23")
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: 18) ?? ""
     // setup test services
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
-      completion(true, [mockEthAssetPrice])
+      completion(true, [mockEthAssetPrice, mockSolAssetPrice])
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._chainId = { $1(network.chainId) }
@@ -74,6 +75,10 @@ class TransactionConfirmationStoreTests: XCTestCase {
         accountInfos: accountInfos)
       completion(keyring)
     }
+    
+    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
+    solTxManagerProxy._estimatedTxFee = { $1(0, .success, "") }
+    
     return TransactionConfirmationStore(
       assetRatioService: assetRatioService,
       rpcService: rpcService,
@@ -81,12 +86,133 @@ class TransactionConfirmationStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
-      keyringService: keyringService
+      keyringService: keyringService,
+      solTxManagerProxy: solTxManagerProxy
     )
   }
   
-  /// Test `prepare()` will fetch all tokens, and update `state` data for symbol, value, isUnlimitedApprovalRequested.
-  func testPrepareERC20Approve() {
+  /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
+  func testPrepareSolSystemTransfer() async {
+    let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockSolToken, .mockSpdToken]
+    let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedSolSystemTransfer
+    let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
+      tx.txStatus = .unapproved
+      return tx
+    }
+    let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
+    let store = setupStore(
+      network: .mockSolana,
+      accountInfos: [.mockSolAccount],
+      allTokens: mockAllTokens,
+      transactions: mockTransactions,
+      gasEstimation: mockGasEstimation
+    )
+    let prepareExpectation = expectation(description: "prepare")
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    
+    store.$gasValue
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "0")
+      }
+      .store(in: &cancellables)
+    
+    store.$gasSymbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockSolToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$symbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockSolToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$value
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "0.1")
+      }
+      .store(in: &cancellables)
+    store.$isUnlimitedApprovalRequested
+      .dropFirst()
+      .sink { value in
+        XCTAssertFalse(value) // .mockSpdToken has 6 decimals
+      }
+      .store(in: &cancellables)
+
+    wait(for: [prepareExpectation], timeout: 1)
+  }
+  
+  /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
+  func testPrepareSolTokenTransfer() async {
+    let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockSolToken, .mockSpdToken]
+    let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedSolTokenTransfer
+    let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
+      tx.txStatus = .unapproved
+      return tx
+    }
+    let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
+    let store = setupStore(
+      network: .mockSolana,
+      accountInfos: [.mockSolAccount],
+      allTokens: mockAllTokens,
+      transactions: mockTransactions,
+      gasEstimation: mockGasEstimation
+    )
+    let prepareExpectation = expectation(description: "prepare")
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    
+    store.$gasValue
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "0")
+      }
+      .store(in: &cancellables)
+    
+    store.$gasSymbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockSolToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$symbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockSpdToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$value
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "100") // .mockSpdToken has 6 decimals
+      }
+      .store(in: &cancellables)
+    store.$isUnlimitedApprovalRequested
+      .dropFirst()
+      .sink { value in
+        XCTAssertFalse(value) // .mockSpdToken has 6 decimals
+      }
+      .store(in: &cancellables)
+    
+    wait(for: [prepareExpectation], timeout: 1)
+  }
+  
+  /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
+  func testPrepareERC20Approve() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -100,49 +226,54 @@ class TransactionConfirmationStoreTests: XCTestCase {
       transactions: mockTransactions,
       gasEstimation: mockGasEstimation
     )
-    let allTokensExpectation = expectation(description: "allTokens")
-    store.$allTokens
-      .dropFirst()
-      .first()
-      .sink { allTokens in
-        defer { allTokensExpectation.fulfill() }
-        XCTAssertEqual(allTokens, mockAllTokens)
-      }
-      .store(in: &cancellables)
-    
-    let stateExpectation = expectation(description: "state")
-    store.$state
-      .dropFirst()
-      .collect(8) // collect until isUnlimitedApprovalRequested is set
-      .first()
-      .sink { state in
-        defer { stateExpectation.fulfill() }
-        guard let lastState = state.last else {
-          XCTFail("state not updated")
-          return
-        }
-        XCTAssertEqual(lastState.gasSymbol, BraveWallet.BlockchainToken.previewToken.symbol)
-        XCTAssertEqual(lastState.symbol, BraveWallet.BlockchainToken.daiToken.symbol)
-        XCTAssertEqual(lastState.value, "Unlimited")
-        XCTAssertEqual(lastState.currentAllowance, "0.1000")
-        XCTAssertTrue(lastState.isUnlimitedApprovalRequested)
-      }
-      .store(in: &cancellables)
-    
     let prepareExpectation = expectation(description: "prepare")
-    store.prepare() {
-      defer { prepareExpectation.fulfill() }
-      XCTAssertEqual(store.activeTransactionId, mockTransaction.id)
-      XCTAssertEqual(store.gasEstimation1559, mockGasEstimation)
-    }
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    store.$gasSymbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.previewToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$symbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.daiToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$value
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "Unlimited")
+      }
+      .store(in: &cancellables)
+    store.$isUnlimitedApprovalRequested
+      .dropFirst()
+      .collect(2)
+      .sink { values in
+        XCTAssertNotNil(values.last)
+        XCTAssertTrue(values.last!)
+      }
+      .store(in: &cancellables)
+    store.$currentAllowance
+      .dropFirst()
+      .collect(3)
+      .sink { values in
+        XCTAssertNotNil(values.last)
+        XCTAssertEqual(values.last!, "0.1000")
+      }
+      .store(in: &cancellables)
     
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    wait(for: [prepareExpectation], timeout: 1)
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to make ERC20 approve data with `BraveWalletEthTxManagerProxy`
-  func testEditAllowanceFailMakeERC20ApproveData() {
+  func testEditAllowanceFailMakeERC20ApproveData() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -159,10 +290,14 @@ class TransactionConfirmationStoreTests: XCTestCase {
     )
     
     let prepareExpectation = expectation(description: "prepare")
-    store.prepare {
-      prepareExpectation.fulfill()
-    }
-    waitForExpectations(timeout: 1) { error in
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    await waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
     
@@ -177,13 +312,13 @@ class TransactionConfirmationStoreTests: XCTestCase {
         }
       }
     )
-    waitForExpectations(timeout: 1) { error in
+    await waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to set new ERC20 Approve data with `BraveWalletEthTxManagerProxy`
-  func testEditAllowanceFailSetData() {
+  func testEditAllowanceFailSetData() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -201,10 +336,14 @@ class TransactionConfirmationStoreTests: XCTestCase {
     )
     
     let prepareExpectation = expectation(description: "prepare")
-    store.prepare {
-      prepareExpectation.fulfill()
-    }
-    waitForExpectations(timeout: 1) { error in
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    await waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
     
@@ -219,13 +358,13 @@ class TransactionConfirmationStoreTests: XCTestCase {
         }
       }
     )
-    waitForExpectations(timeout: 1) { error in
+    await waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return true if we suceed in creating and setting ERC20 Approve data with `BraveWalletEthTxManagerProxy`
-  func testEditAllowanceSuccess() {
+  func testEditAllowanceSuccess() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -243,10 +382,14 @@ class TransactionConfirmationStoreTests: XCTestCase {
     )
     
     let prepareExpectation = expectation(description: "prepare")
-    store.prepare {
-      prepareExpectation.fulfill()
-    }
-    waitForExpectations(timeout: 1) { error in
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    await waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
     
@@ -261,7 +404,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
         }
       }
     )
-    waitForExpectations(timeout: 1) { error in
+    await waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
