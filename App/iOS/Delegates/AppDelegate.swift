@@ -36,6 +36,7 @@ extension AppDelegate {
   }
 }
 
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   lazy var braveCore: BraveCoreMain = {
