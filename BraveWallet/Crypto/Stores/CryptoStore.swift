@@ -268,10 +268,10 @@ public class CryptoStore: ObservableObject {
     allKeyrings = await withTaskGroup(
       of: BraveWallet.KeyringInfo.self,
       returning: [BraveWallet.KeyringInfo].self,
-      body: { [weak keyringService] group in
+      body: { @MainActor [weak keyringService] group in
         guard let keyringService = keyringService else { return [] }
         for coin in WalletConstants.supportedCoinTypes {
-          group.addTask {
+          group.addTask { @MainActor in
             await keyringService.keyringInfo(coin.keyringId)
           }
         }
@@ -286,11 +286,11 @@ public class CryptoStore: ObservableObject {
     var pendingTransactions: [BraveWallet.TransactionInfo] = []
     pendingTransactions = await withTaskGroup(
       of: [BraveWallet.TransactionInfo].self,
-      body: { [weak txService] group in
+      body: { @MainActor [weak txService] group in
         guard let txService = txService else { return [] }
         for keyring in allKeyrings {
           for info in keyring.accountInfos {
-            group.addTask {
+            group.addTask { @MainActor in
               await txService.allTransactionInfo(info.coin, from: info.address)
             }
           }

@@ -143,9 +143,9 @@ class AssetDetailStore: ObservableObject {
     var accountAssetViewModels = accountAssetViewModels
     isLoadingAccountBalances = true
     typealias AccountBalance = (account: BraveWallet.AccountInfo, balance: Double?)
-    let tokenBalances = await withTaskGroup(of: [AccountBalance].self) { group -> [AccountBalance] in
+    let tokenBalances = await withTaskGroup(of: [AccountBalance].self) { @MainActor group -> [AccountBalance] in
       for account in keyring.accountInfos {
-        group.addTask {
+        group.addTask { @MainActor in
           let balance = await self.rpcService.balance(for: self.token, in: account)
           return [AccountBalance(account, balance)]
         }
@@ -171,9 +171,9 @@ class AssetDetailStore: ObservableObject {
     let network = await rpcService.network(coin)
     let userVisibleAssets = await walletService.userAssets(network.chainId, coin: coin)
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin)
-    let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { group -> [BraveWallet.TransactionInfo] in
+    let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
       for account in keyring.accountInfos {
-        group.addTask {
+        group.addTask { @MainActor in
           await self.txService.allTransactionInfo(coin, from: account.address)
         }
       }

@@ -100,9 +100,9 @@ class AccountActivityStore: ObservableObject {
     }
     // fetch balance for each asset
     typealias TokenBalance = (token: BraveWallet.BlockchainToken, balance: Double?)
-    let tokenBalances = await withTaskGroup(of: [TokenBalance].self) { group -> [TokenBalance] in
+    let tokenBalances = await withTaskGroup(of: [TokenBalance].self) { @MainActor group -> [TokenBalance] in
       for token in userVisibleTokens {
-        group.addTask {
+        group.addTask { @MainActor in
           let balance = await self.rpcService.balance(for: token, in: self.account)
           return [TokenBalance(token, balance)]
         }

@@ -11,7 +11,7 @@ extension BraveWalletAssetRatioService {
   
   /// Fetch the price for a list of assets to a list of assets over a given timeframe.
   /// If the main call for all asset prices fails, will fetch the price for each asset individually, so one failure will not result in a failure to fetch all assets.
-  func priceWithIndividualRetry(
+  @MainActor func priceWithIndividualRetry(
     _ fromAssets: [String],
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
@@ -24,14 +24,14 @@ extension BraveWalletAssetRatioService {
   }
   
   /// Fetch the price for each asset in `fromAssets` individually, so one failure will not result in a failure to fetch all assets.
-  private func priceIndividually(
+  @MainActor private func priceIndividually(
     _ fromAssets: [String],
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> PricesResult {
-    await withTaskGroup(of: PricesResult.self) { group -> PricesResult in
+    await withTaskGroup(of: PricesResult.self) { @MainActor group -> PricesResult in
       fromAssets.forEach { asset in
-        group.addTask {
+        group.addTask { @MainActor in
           let (success, prices) = await self.price([asset], toAssets: toAssets, timeframe: timeframe)
           return PricesResult(prices, success ? 0 : 1)
         }
