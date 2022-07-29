@@ -73,6 +73,7 @@
   [headerLabel setFont:[NSFont systemFontOfSize:16.0
                                          weight:NSFontWeightSemibold]];
   [headerLabel sizeToFit];
+  [headerLabel setLineBreakMode:NSLineBreakByWordWrapping];
   int defaultHeight = NSHeight(headerLabel.frame);
   int numOfLines =
       static_cast<int>(NSWidth(headerLabel.frame)) / contentsWidth + 1;
@@ -87,6 +88,7 @@
   [contentsLabel setFont:[NSFont systemFontOfSize:15.0
                                            weight:NSFontWeightRegular]];
   [contentsLabel sizeToFit];
+  [contentsLabel setLineBreakMode:NSLineBreakByWordWrapping];
   defaultHeight = NSHeight(contentsLabel.frame);
   numOfLines =
       static_cast<int>(NSWidth(contentsLabel.frame)) / contentsWidth + 1;
