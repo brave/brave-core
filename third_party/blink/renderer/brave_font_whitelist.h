@@ -10,18 +10,19 @@
 
 #include "base/containers/flat_set.h"
 #include "base/strings/string_piece.h"
+#include "third_party/blink/public/platform/web_common.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave {
 
-bool CanRestrictFontFamiliesOnThisPlatform();
-const base::flat_set<base::StringPiece>& GetAllowedFontFamilies();
+BLINK_EXPORT bool CanRestrictFontFamiliesOnThisPlatform();
+BLINK_EXPORT const base::flat_set<base::StringPiece>& GetAllowedFontFamilies();
 
 // This takes a 2-character language code.
-const base::flat_set<base::StringPiece>&
+BLINK_EXPORT const base::flat_set<base::StringPiece>&
 GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language);
 
-void set_allowed_font_families_for_testing(
+BLINK_EXPORT void set_allowed_font_families_for_testing(
     bool can_restrict_fonts,
     const base::flat_set<base::StringPiece>& allowed_font_families);
 

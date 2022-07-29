@@ -12,6 +12,7 @@ if (!is_android) {
     sources = [
       "brave_dark_mode_fingerprint_protection_browsertest.cc",
       "brave_enumeratedevices_farbling_browsertest.cc",
+      "brave_font_whitelist_browsertest.cc",
       "brave_navigator_devicememory_farbling_browsertest.cc",
       "brave_navigator_hardwareconcurrency_farbling_browsertest.cc",
       "brave_navigator_keyboard_api_browsertest.cc",
