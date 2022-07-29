@@ -31,7 +31,6 @@ static_library("p3a") {
 
   deps = [
     "//base",
-    "//brave/components/brave_prochlo:prochlo_proto",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
@@ -43,8 +42,6 @@ static_library("p3a") {
     "//content/public/browser",
     "//content/public/common",
     "//services/network/public/cpp",
-    "//services/network/public/mojom",
-    "//third_party/protobuf:protobuf_lite",
     "//url",
   ]
 }

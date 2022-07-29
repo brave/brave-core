@@ -11,7 +11,6 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "crypto/sha2.h"
 
 namespace brave {
