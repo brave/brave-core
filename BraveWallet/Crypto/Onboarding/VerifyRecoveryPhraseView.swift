@@ -56,7 +56,7 @@ struct VerifyRecoveryPhraseView: View {
             tappedWord(word)
           }) {
             Text(verbatim: word.value)
-              .noCapture()
+              .customPrivacySensitive()
               .font(.footnote.bold())
               .foregroundColor(.primary)
               .fixedSize(horizontal: false, vertical: true)
@@ -176,7 +176,7 @@ private struct SelectedWordsBox: View {
       case .word(let word, let index, let isCorrect):
         Button(action: { tappedWord(atIndex: index) }) {
           Text(verbatim: "\(index + 1). \(word)")
-            .noCapture()
+            .customPrivacySensitive()
             .padding(8)
             .frame(maxWidth: .infinity)
             .fixedSize(horizontal: false, vertical: true)
