@@ -79,7 +79,6 @@ public class NetworkSelectorActivity
                              Toast.LENGTH_SHORT)
                         .show();
                 networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
-                Log.e(TAG, "Could not set network");
             }
             finish();
         });

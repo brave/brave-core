@@ -100,7 +100,9 @@ public class ParsedTransactionFees {
     public static ParsedTransactionFees parseTransactionFees(TransactionInfo txInfo,
             NetworkInfo selectedNetwork, Double networkSpotPrice, BigInteger solFeeEstimatesFee) {
         TxDataUnion txDataUnion = txInfo.txDataUnion;
-        TxData1559 txData = txDataUnion.getEthTxData1559();
+        TxData1559 txData = txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                ? txDataUnion.getEthTxData1559()
+                : null;
         FilTxData filTxData = null; // TODO: add with FIL
         final int networkDecimals = selectedNetwork.decimals;
         final boolean isSolTransaction = txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER

@@ -11,6 +11,7 @@ import android.util.Pair;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
@@ -245,11 +246,18 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         final ParsedTransactionFees feeDetails = ParsedTransactionFees.parseTransactionFees(
                 txInfo, selectedNetwork, networkSpotPrice, solFeeEstimatesFee);
-
         TxDataUnion txDataUnion = txInfo.txDataUnion;
-        TxData1559 txData = txDataUnion.getEthTxData1559();
-        SolanaTxData solTxData = null; // TODO: add with SOL
-        FilTxData filTxData = null; // TODO: add with FIL
+        TxData1559 txData = txInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                ? txInfo.txDataUnion.getEthTxData1559()
+                : null;
+        SolanaTxData solTxData = txInfo.txDataUnion.which() == TxDataUnion.Tag.SolanaTxData
+                ? txInfo.txDataUnion.getSolanaTxData()
+                : null;
+        ;
+        FilTxData filTxData = txInfo.txDataUnion.which() == TxDataUnion.Tag.FilTxData
+                ? txInfo.txDataUnion.getFilTxData()
+                : null;
+        ;
 
         final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction = txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER

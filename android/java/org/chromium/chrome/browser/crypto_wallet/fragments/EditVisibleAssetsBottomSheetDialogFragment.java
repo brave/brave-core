@@ -48,6 +48,8 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
@@ -73,6 +75,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private DismissListener mDismissListener;
     private Boolean mIsAssetsListChanged;
     private static final String TAG = "EditVisibleAssetsBottomSheetDialogFragment";
+    private WalletModel mWalletModel;
 
     public interface DismissListener {
         void onDismiss(Boolean isAssetsListChanged);
@@ -167,6 +170,10 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -385,7 +392,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     break;
                 }
             }
-            if (!contractAddress.startsWith("0x") || checked) {
+            if (checked) {
                 return;
             }
 
