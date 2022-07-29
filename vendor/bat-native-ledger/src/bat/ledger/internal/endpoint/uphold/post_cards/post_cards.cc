@@ -30,9 +30,9 @@ std::string PostCards::GetUrl() {
 }
 
 std::string PostCards::GeneratePayload() {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("label", ::ledger::uphold::kCardName);
-  payload.SetStringKey("currency", "BAT");
+  base::Value::Dict payload;
+  payload.Set("label", ::ledger::uphold::kCardName);
+  payload.Set("currency", "BAT");
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -64,13 +64,8 @@ type::Result PostCards::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* id_str = dictionary->FindStringKey("id");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* id_str = dict.FindString("id");
   if (!id_str) {
     BLOG(0, "Missing id");
     return type::Result::LEDGER_ERROR;

@@ -35,7 +35,8 @@ std::unique_ptr<AntiTargetingInfo> AntiTargetingInfo::CreateFromValue(
     return {};
   }
 
-  if (absl::optional<int> version = resource_value.FindIntPath("version")) {
+  base::Value::Dict& resource = resource_value.GetDict();
+  if (absl::optional<int> version = resource.FindInt("version")) {
     if (features::GetAntiTargetingResourceVersion() != *version) {
       *error_message = "Failed to load from JSON, version missing";
       return {};
@@ -44,36 +45,24 @@ std::unique_ptr<AntiTargetingInfo> AntiTargetingInfo::CreateFromValue(
     anti_targeting->version = *version;
   }
 
-  base::Value* site_lists_value = resource_value.FindDictPath("sites");
-  if (!site_lists_value) {
+  const base::Value::Dict* site_lists = resource.FindDict("sites");
+  if (!site_lists) {
     *error_message = "Failed to load from JSON, sites missing";
     return {};
   }
 
-  if (!site_lists_value->is_dict()) {
-    *error_message = "Failed to load from JSON, sites not of type dict";
-    return {};
-  }
-
-  base::DictionaryValue* dict;
-  if (!site_lists_value->GetAsDictionary(&dict)) {
-    *error_message = "Failed to load from JSON, get sites as dict";
-    return {};
-  }
-
-  for (base::DictionaryValue::Iterator iter(*dict); !iter.IsAtEnd();
-       iter.Advance()) {
-    if (!iter.value().is_list()) {
+  for (const auto [key, value] : *site_lists) {
+    if (!value.is_list()) {
       *error_message = "Failed to load from JSON, sites not of type list";
       return {};
     }
 
     std::set<GURL> sites;
-    for (const auto& site : iter.value().GetList()) {
+    for (const auto& site : value.GetList()) {
       sites.insert(GURL(site.GetString()));
     }
 
-    anti_targeting->sites.insert({iter.key(), sites});
+    anti_targeting->sites.insert({key, sites});
   }
 
   return anti_targeting;

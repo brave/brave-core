@@ -230,17 +230,13 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
     return false;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return false;
-  }
-
-  const std::string* country = dictionary->FindStringKey("country");
+  const base::Value::Dict& dict = value->GetDict();
+  const std::string* country = dict.FindString("country");
   if (!country || country->empty()) {
     return false;
   }
 
-  const std::string* region = dictionary->FindStringKey("region");
+  const std::string* region = dict.FindString("region");
   if (!region || region->empty()) {
     return false;
   }

@@ -53,13 +53,13 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds,
     return "";
   }
 
-  base::Value denomination(base::Value::Type::DICTIONARY);
-  denomination.SetStringKey("amount", base::NumberToString(user_funds));
-  denomination.SetStringKey("currency", "BAT");
+  base::Value::Dict denomination;
+  denomination.Set("amount", base::NumberToString(user_funds));
+  denomination.Set("currency", "BAT");
 
-  base::Value octets(base::Value::Type::DICTIONARY);
-  octets.SetKey("denomination", std::move(denomination));
-  octets.SetStringKey("destination", address);
+  base::Value::Dict octets;
+  octets.Set("denomination", std::move(denomination));
+  octets.Set("destination", address);
   std::string octets_json;
   base::JSONWriter::Write(octets, &octets_json);
 
@@ -71,14 +71,14 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds,
   const std::string header_signature =
       util::Security::Sign(headers, "primary", rewards_wallet->recovery_seed);
 
-  base::Value signed_request(base::Value::Type::DICTIONARY);
-  signed_request.SetStringKey("octets", octets_json);
-  signed_request.SetKey("body", std::move(octets));
+  base::Value::Dict signed_request;
+  signed_request.Set("octets", octets_json);
+  signed_request.Set("body", std::move(octets));
 
-  base::Value headers_dict(base::Value::Type::DICTIONARY);
-  headers_dict.SetStringKey("digest", header_digest);
-  headers_dict.SetStringKey("signature", header_signature);
-  signed_request.SetKey("headers", std::move(headers_dict));
+  base::Value::Dict headers_dict;
+  headers_dict.Set("digest", header_digest);
+  headers_dict.Set("signature", header_signature);
+  signed_request.Set("headers", std::move(headers_dict));
 
   std::string signed_request_json;
   base::JSONWriter::Write(signed_request, &signed_request_json);
@@ -86,8 +86,8 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds,
   std::string signed_request_base64;
   base::Base64Encode(signed_request_json, &signed_request_base64);
 
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("signedLinkingRequest", signed_request_base64);
+  base::Value::Dict payload;
+  payload.Set("signedLinkingRequest", signed_request_base64);
   std::string json;
   base::JSONWriter::Write(payload, &json);
 
@@ -152,15 +152,14 @@ type::Result PostClaimUphold::ProcessResponse(
 }
 
 type::Result PostClaimUphold::ParseBody(const std::string& body) const {
-  base::DictionaryValue* root = nullptr;
   auto value = base::JSONReader::Read(body);
-  if (!value || !value->GetAsDictionary(&root)) {
+  if (!value || !value->is_dict()) {
     BLOG(0, "Invalid body!");
     return type::Result::LEDGER_ERROR;
   }
-  DCHECK(root);
 
-  auto* message = root->FindStringKey("message");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* message = dict.FindString("message");
   if (!message) {
     BLOG(0, "message is missing!");
     return type::Result::LEDGER_ERROR;

@@ -39,13 +39,12 @@ std::string PostSuggestionsClaim::GeneratePayload(
     return "";
   }
 
-  base::Value credentials(base::Value::Type::LIST);
-  credential::GenerateCredentials(redeem.token_list, wallet->payment_id,
-                                  &credentials);
+  base::Value::List credentials =
+      credential::GenerateCredentials(redeem.token_list, wallet->payment_id);
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("paymentId", wallet->payment_id);
-  body.SetKey("credentials", std::move(credentials));
+  base::Value::Dict body;
+  body.Set("paymentId", wallet->payment_id);
+  body.Set("credentials", std::move(credentials));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
@@ -118,14 +117,8 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
     return;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  auto* drain_id = dictionary->FindStringKey("drainId");
+  const base::Value::Dict& dict = value->GetDict();
+  auto* drain_id = dict.FindString("drainId");
   if (!drain_id) {
     BLOG(0, "Missing drain id");
     std::move(callback).Run(type::Result::LEDGER_ERROR, "");

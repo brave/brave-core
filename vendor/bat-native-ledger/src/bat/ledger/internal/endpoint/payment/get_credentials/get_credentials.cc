@@ -74,25 +74,20 @@ type::Result GetCredentials::ParseBody(
     return type::Result::RETRY;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::RETRY;
-  }
-
-  auto* batch_proof = dictionary->FindStringKey("batchProof");
+  const base::Value::Dict& dict = value->GetDict();
+  auto* batch_proof = dict.FindString("batchProof");
   if (!batch_proof) {
     BLOG(0, "Missing batch proof");
     return type::Result::RETRY;
   }
 
-  auto* signed_creds = dictionary->FindListKey("signedCreds");
+  auto* signed_creds = dict.FindList("signedCreds");
   if (!signed_creds) {
     BLOG(0, "Missing signed creds");
     return type::Result::RETRY;
   }
 
-  auto* public_key = dictionary->FindStringKey("publicKey");
+  auto* public_key = dict.FindString("publicKey");
   if (!public_key) {
     BLOG(0, "Missing public key");
     return type::Result::RETRY;

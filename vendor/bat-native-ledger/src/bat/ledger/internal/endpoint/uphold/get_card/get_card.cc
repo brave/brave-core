@@ -59,13 +59,8 @@ type::Result GetCard::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* available_str = dictionary->FindStringKey("available");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* available_str = dict.FindString("available");
   if (!available_str) {
     BLOG(0, "Missing available");
     return type::Result::LEDGER_ERROR;

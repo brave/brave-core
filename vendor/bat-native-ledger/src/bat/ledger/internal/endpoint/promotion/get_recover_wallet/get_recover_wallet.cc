@@ -64,20 +64,14 @@ type::Result GetRecoverWallet::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* payment_id_string = dictionary->FindStringKey("paymentId");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* payment_id_string = dict.FindString("paymentId");
   if (!payment_id_string || payment_id_string->empty()) {
     BLOG(0, "Payment id is missing");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* wallet_name =
-      dictionary->FindStringPath("walletProvider.name");
+  const auto* wallet_name = dict.FindStringByDottedPath("walletProvider.name");
   if (!wallet_name) {
     BLOG(0, "Wallet name is missing");
     return type::Result::LEDGER_ERROR;

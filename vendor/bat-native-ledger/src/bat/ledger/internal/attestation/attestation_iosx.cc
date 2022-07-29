@@ -28,12 +28,8 @@ std::string AttestationIOS::ParseStartPayload(
     return "";
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return "";
-  }
-
-  const auto* key = dictionary->FindStringKey("publicKey");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* key = dict.FindString("publicKey");
   if (!key) {
     BLOG(0, "Public key is wrong");
     return "";
@@ -52,24 +48,20 @@ type::Result AttestationIOS::ParseClaimSolution(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* nonce_parsed = dictionary->FindStringKey("nonce");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* nonce_parsed = dict.FindString("nonce");
   if (!nonce_parsed) {
     BLOG(0, "Nonce is wrong");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* blob_parsed = dictionary->FindStringKey("blob");
+  const auto* blob_parsed = dict.FindString("blob");
   if (!blob_parsed) {
     BLOG(0, "Blob is wrong");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* signature_parsed = dictionary->FindStringKey("signature");
+  const auto* signature_parsed = dict.FindString("signature");
   if (!signature_parsed) {
     BLOG(0, "Signature is wrong");
     return type::Result::LEDGER_ERROR;

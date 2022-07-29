@@ -50,8 +50,8 @@ std::string PostClaimBitflyer::GetUrl() {
 
 std::string PostClaimBitflyer::GeneratePayload(
     const std::string& linking_info) {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("linkingInfo", linking_info);
+  base::Value::Dict payload;
+  payload.Set("linkingInfo", linking_info);
   std::string json;
   base::JSONWriter::Write(payload, &json);
 
@@ -96,15 +96,14 @@ type::Result PostClaimBitflyer::ProcessResponse(
 }
 
 type::Result PostClaimBitflyer::ParseBody(const std::string& body) const {
-  base::DictionaryValue* root = nullptr;
   auto value = base::JSONReader::Read(body);
-  if (!value || !value->GetAsDictionary(&root)) {
+  if (!value || !value->is_dict()) {
     BLOG(0, "Invalid body!");
     return type::Result::LEDGER_ERROR;
   }
-  DCHECK(root);
 
-  auto* message = root->FindStringKey("message");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* message = dict.FindString("message");
   if (!message) {
     BLOG(0, "message is missing!");
     return type::Result::LEDGER_ERROR;

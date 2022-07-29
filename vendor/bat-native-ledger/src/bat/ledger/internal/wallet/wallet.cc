@@ -264,23 +264,17 @@ type::BraveWalletPtr Wallet::GetWallet(bool* corrupted) {
     return nullptr;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Parsing of brave wallet failed");
-    *corrupted = true;
-    return nullptr;
-  }
-
   auto wallet = ledger::type::BraveWallet::New();
 
-  auto* payment_id = dictionary->FindStringKey("payment_id");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* payment_id = dict.FindString("payment_id");
   if (!payment_id) {
     *corrupted = true;
     return nullptr;
   }
   wallet->payment_id = *payment_id;
 
-  auto* seed = dictionary->FindStringKey("recovery_seed");
+  const auto* seed = dict.FindString("recovery_seed");
   if (!seed) {
     *corrupted = true;
     return nullptr;
@@ -317,9 +311,9 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
         std::to_string(wallet->recovery_seed[0] + wallet->recovery_seed[1]);
   }
 
-  base::Value new_wallet(base::Value::Type::DICTIONARY);
-  new_wallet.SetStringKey("payment_id", wallet->payment_id);
-  new_wallet.SetStringKey("recovery_seed", seed_string);
+  base::Value::Dict new_wallet;
+  new_wallet.Set("payment_id", wallet->payment_id);
+  new_wallet.Set("recovery_seed", seed_string);
 
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);

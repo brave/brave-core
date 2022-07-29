@@ -34,18 +34,18 @@ std::string PostTransaction::GetUrl() {
 std::string PostTransaction::GeneratePayload(
     const ::ledger::bitflyer::Transaction& transaction,
     const bool dry_run) {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("currency_code", "BAT");
-  payload.SetStringKey("amount", base::StringPrintf("%f", transaction.amount));
-  payload.SetBoolKey("dry_run", dry_run);
-  payload.SetStringKey("deposit_id", transaction.address);
-  payload.SetStringKey("transfer_id", base::GenerateGUID());
+  base::Value::Dict payload;
+  payload.Set("currency_code", "BAT");
+  payload.Set("amount", base::StringPrintf("%f", transaction.amount));
+  payload.Set("dry_run", dry_run);
+  payload.Set("deposit_id", transaction.address);
+  payload.Set("transfer_id", base::GenerateGUID());
   if (dry_run) {
-    base::Value dry_run_option(base::Value::Type::DICTIONARY);
-    dry_run_option.SetStringKey("request_api_transfer_status", "SUCCESS");
-    dry_run_option.SetIntKey("process_time_sec", 5);
-    dry_run_option.SetStringKey("status_api_transfer_status", "SUCCESS");
-    payload.SetKey("dry_run_option", std::move(dry_run_option));
+    base::Value::Dict dry_run_option;
+    dry_run_option.Set("request_api_transfer_status", "SUCCESS");
+    dry_run_option.Set("process_time_sec", 5);
+    dry_run_option.Set("status_api_transfer_status", "SUCCESS");
+    payload.Set("dry_run_option", std::move(dry_run_option));
   }
 
   std::string json;
@@ -91,26 +91,20 @@ type::Result PostTransaction::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* transfer_id_str = dictionary->FindStringKey("transfer_id");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* transfer_id_str = dict.FindString("transfer_id");
   if (!transfer_id_str) {
     BLOG(0, "Missing transfer id");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* transfer_status_str =
-      dictionary->FindStringKey("transfer_status");
+  const auto* transfer_status_str = dict.FindString("transfer_status");
   if (!transfer_status_str) {
     BLOG(0, "Missing transfer status");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* message_str = dictionary->FindStringKey("message");
+  const auto* message_str = dict.FindString("message");
 
   *transfer_id = *transfer_id_str;
   *transfer_status = *transfer_status_str;

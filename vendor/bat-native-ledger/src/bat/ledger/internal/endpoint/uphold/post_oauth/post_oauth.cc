@@ -61,13 +61,8 @@ type::Result PostOauth::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* access_token = dictionary->FindStringKey("access_token");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
     BLOG(0, "Missing access token");
     return type::Result::LEDGER_ERROR;

@@ -74,21 +74,15 @@ void GetDrain::OnRequest(const type::UrlResponse& response,
     return;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
-    return;
-  }
-
-  auto* drain_id = dictionary->FindStringKey("drainId");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* drain_id = dict.FindString("drainId");
   if (!drain_id) {
     BLOG(0, "Missing key drain id");
     callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
     return;
   }
 
-  auto* status = dictionary->FindStringKey("status");
+  auto* status = dict.FindString("status");
   if (!status) {
     BLOG(0, "Missing key status");
     callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);

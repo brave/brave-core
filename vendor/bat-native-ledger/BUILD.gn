@@ -475,7 +475,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/legacy/publisher_state.h",
     "src/bat/ledger/internal/legacy/report_balance_properties.cc",
     "src/bat/ledger/internal/legacy/report_balance_properties.h",
-    "src/bat/ledger/internal/legacy/state_reader.h",
     "src/bat/ledger/internal/legacy/state_writer.h",
     "src/bat/ledger/internal/legacy/static_values.h",
     "src/bat/ledger/internal/legacy/wallet_info_properties.cc",

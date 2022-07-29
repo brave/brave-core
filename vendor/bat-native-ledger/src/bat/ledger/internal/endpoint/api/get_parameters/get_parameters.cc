@@ -67,13 +67,8 @@ type::Result GetParameters::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto rate = dictionary->FindDoubleKey("batRate");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto rate = dict.FindDouble("batRate");
   if (!rate) {
     BLOG(0, "Missing BAT rate");
     return type::Result::LEDGER_ERROR;
@@ -81,33 +76,33 @@ type::Result GetParameters::ParseBody(
   parameters->rate = *rate;
 
   const auto ac_choice =
-      dictionary->FindDoublePath("autocontribute.defaultChoice");
+      dict.FindDoubleByDottedPath("autocontribute.defaultChoice");
   if (!ac_choice) {
     BLOG(0, "Invalid auto-contribute default choice");
     return type::Result::LEDGER_ERROR;
   }
   parameters->auto_contribute_choice = *ac_choice;
 
-  auto* ac_choices = dictionary->FindListPath("autocontribute.choices");
-  if (!ac_choices || ac_choices->GetList().empty()) {
+  auto* ac_choices = dict.FindListByDottedPath("autocontribute.choices");
+  if (!ac_choices || ac_choices->empty()) {
     BLOG(0, "Missing auto-contribute choices");
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& choice : ac_choices->GetList()) {
+  for (const auto& choice : *ac_choices) {
     if (!choice.is_double() && !choice.is_int()) {
       continue;
     }
     parameters->auto_contribute_choices.push_back(choice.GetDouble());
   }
 
-  auto* tip_choices = dictionary->FindListPath("tips.defaultTipChoices");
-  if (!tip_choices || tip_choices->GetList().empty()) {
+  auto* tip_choices = dict.FindListByDottedPath("tips.defaultTipChoices");
+  if (!tip_choices || tip_choices->empty()) {
     BLOG(0, "Missing default tip choices");
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& choice : tip_choices->GetList()) {
+  for (const auto& choice : *tip_choices) {
     if (!choice.is_double() && !choice.is_int()) {
       continue;
     }
@@ -115,20 +110,20 @@ type::Result GetParameters::ParseBody(
   }
 
   auto* monthly_tip_choices =
-      dictionary->FindListPath("tips.defaultMonthlyChoices");
-  if (!monthly_tip_choices || monthly_tip_choices->GetList().empty()) {
+      dict.FindListByDottedPath("tips.defaultMonthlyChoices");
+  if (!monthly_tip_choices || monthly_tip_choices->empty()) {
     BLOG(0, "Missing tips default monthly choices");
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& choice : monthly_tip_choices->GetList()) {
+  for (const auto& choice : *monthly_tip_choices) {
     if (!choice.is_double() && !choice.is_int()) {
       continue;
     }
     parameters->monthly_tip_choices.push_back(choice.GetDouble());
   }
 
-  const auto* payout_status_dict = value->GetDict().FindDict("payoutStatus");
+  const auto* payout_status_dict = dict.FindDict("payoutStatus");
   if (!payout_status_dict) {
     BLOG(0, "Missing payout status");
     return type::Result::LEDGER_ERROR;

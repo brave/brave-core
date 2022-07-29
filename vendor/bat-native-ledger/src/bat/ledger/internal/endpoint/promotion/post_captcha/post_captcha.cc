@@ -72,19 +72,14 @@ type::Result PostCaptcha::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* captcha_id_parse = dictionary->FindStringKey("captchaId");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* captcha_id_parse = dict.FindString("captchaId");
   if (!captcha_id_parse) {
     BLOG(0, "Captcha id is wrong");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* hint_parse = dictionary->FindStringKey("hint");
+  const auto* hint_parse = dict.FindString("hint");
   if (!hint_parse) {
     BLOG(0, "Hint is wrong");
     return type::Result::LEDGER_ERROR;

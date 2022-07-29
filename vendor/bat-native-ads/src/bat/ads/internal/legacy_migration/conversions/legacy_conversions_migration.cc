@@ -46,11 +46,9 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 }
 
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
-    const base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
+    const base::Value::Dict& dict) {
   // Timestamp
-  const std::string* timestamp_value = dictionary->FindStringKey(kTimestampKey);
+  const std::string* timestamp_value = dict.FindString(kTimestampKey);
   if (!timestamp_value) {
     return absl::nullopt;
   }
@@ -61,15 +59,14 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   }
 
   // Creative set id
-  const std::string* creative_set_id_value =
-      dictionary->FindStringKey(kCreativeSetIdKey);
+  const std::string* creative_set_id_value = dict.FindString(kCreativeSetIdKey);
   if (!creative_set_id_value) {
     return absl::nullopt;
   }
 
   // Creative instance id
   const auto* creative_instance_id_value =
-      dictionary->FindStringKey(kCreativeInstanceIdKey);
+      dict.FindString(kCreativeInstanceIdKey);
   if (!creative_instance_id_value) {
     return absl::nullopt;
   }
@@ -82,25 +79,18 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   return conversion_queue_item;
 }
 
-absl::optional<ConversionQueueItemList> GetFromList(const base::Value* list) {
-  DCHECK(list);
-  DCHECK(list->is_list());
-
+absl::optional<ConversionQueueItemList> GetFromList(
+    const base::Value::List& list) {
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& value : list->GetList()) {
+  for (const auto& value : list) {
     if (!value.is_dict()) {
       return absl::nullopt;
     }
 
-    const base::DictionaryValue* dictionary = nullptr;
-    value.GetAsDictionary(&dictionary);
-    if (!dictionary) {
-      return absl::nullopt;
-    }
-
+    const base::Value::Dict& dict = value.GetDict();
     const absl::optional<ConversionQueueItemInfo> conversion_queue_item =
-        GetFromDictionary(dictionary);
+        GetFromDictionary(dict);
     if (!conversion_queue_item) {
       return absl::nullopt;
     }
@@ -117,17 +107,13 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
     return absl::nullopt;
   }
 
-  const base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return absl::nullopt;
-  }
-
-  const base::Value* list = dictionary->FindListKey(kListKey);
+  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::List* list = dict.FindList(kListKey);
   if (!list) {
     return absl::nullopt;
   }
 
-  return GetFromList(list);
+  return GetFromList(*list);
 }
 
 }  // namespace

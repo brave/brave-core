@@ -50,9 +50,9 @@ std::string PostClaimGemini::GetUrl() {
 
 std::string PostClaimGemini::GeneratePayload(const std::string& linking_info,
                                              const std::string& recipient_id) {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("linking_info", linking_info);
-  payload.SetStringKey("recipient_id", recipient_id);
+  base::Value::Dict payload;
+  payload.Set("linking_info", linking_info);
+  payload.Set("recipient_id", recipient_id);
   std::string json;
   base::JSONWriter::Write(payload, &json);
 
@@ -97,15 +97,14 @@ type::Result PostClaimGemini::ProcessResponse(
 }
 
 type::Result PostClaimGemini::ParseBody(const std::string& body) const {
-  base::DictionaryValue* root = nullptr;
   auto value = base::JSONReader::Read(body);
-  if (!value || !value->GetAsDictionary(&root)) {
+  if (!value || !value->is_dict()) {
     BLOG(0, "Invalid body!");
     return type::Result::LEDGER_ERROR;
   }
-  DCHECK(root);
 
-  auto* message = root->FindStringKey("message");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* message = dict.FindString("message");
   if (!message) {
     BLOG(0, "message is missing!");
     return type::Result::LEDGER_ERROR;

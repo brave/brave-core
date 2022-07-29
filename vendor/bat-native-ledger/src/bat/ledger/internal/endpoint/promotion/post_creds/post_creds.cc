@@ -40,9 +40,9 @@ std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
     return "";
   }
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("paymentId", wallet->payment_id);
-  body.SetKey("blindedCreds", base::Value(std::move(blinded_creds)));
+  base::Value::Dict body;
+  body.Set("paymentId", wallet->payment_id);
+  body.Set("blindedCreds", base::Value(std::move(blinded_creds)));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
@@ -95,13 +95,8 @@ type::Result PostCreds::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  auto* id = dictionary->FindStringKey("claimId");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* id = dict.FindString("claimId");
   if (!id || id->empty()) {
     BLOG(0, "Claim id is missing");
     return type::Result::LEDGER_ERROR;

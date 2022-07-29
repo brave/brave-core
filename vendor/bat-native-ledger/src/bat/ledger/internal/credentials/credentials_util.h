@@ -46,22 +46,18 @@ bool UnBlindCredsMock(
 
 std::string ConvertRewardTypeToString(const type::RewardsType type);
 
-void GenerateCredentials(
+base::Value::List GenerateCredentials(
     const std::vector<type::UnblindedToken>& token_list,
-    const std::string& body,
-    base::Value* credentials);
+    const std::string& body);
 
-bool GenerateSuggestion(
+absl::optional<base::Value::Dict> GenerateSuggestion(
     const std::string& token_value,
     const std::string& public_key,
-    const std::string& suggestion_encoded,
-    base::Value* result);
+    const std::string& suggestion_encoded);
 
-bool GenerateSuggestionMock(
-    const std::string& token_value,
-    const std::string& public_key,
-    const std::string& suggestion_encoded,
-    base::Value* result);
+base::Value::Dict GenerateSuggestionMock(const std::string& token_value,
+                                         const std::string& public_key,
+                                         const std::string& suggestion_encoded);
 
 }  // namespace credential
 }  // namespace ledger

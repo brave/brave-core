@@ -33,19 +33,14 @@ void AttestationAndroid::ParseClaimSolution(
     return;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Parsing of solution failed");
-    return;
-  }
-
-  const auto* nonce_string = dictionary->FindStringKey("nonce");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* nonce_string = dict.FindString("nonce");
   if (!nonce_string) {
     BLOG(0, "Nonce is missing");
     return;
   }
 
-  const auto* token_string = dictionary->FindStringKey("token");
+  const auto* token_string = dict.FindString("token");
   if (!token_string) {
     BLOG(0, "Token is missing");
     return;
