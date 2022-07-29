@@ -511,13 +511,6 @@ void AdsServiceImpl::StartBatAdsService() {
         base::BindOnce(&AdsServiceImpl::MaybeStartOrStop, AsWeakPtr(),
                        /* should_restart */ true));
   }
-
-  SetSysInfo();
-  SetEnvironment();
-  SetBuildChannel();
-  SetDebug();
-
-  ParseCommandLineSwitches();
 }
 
 base::TimeDelta AdsServiceImpl::GetBatAdsServiceRestartDelay() {
@@ -643,6 +636,13 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
     VLOG(0) << "Failed to create base directory";
     return;
   }
+
+  SetSysInfo();
+  SetEnvironment();
+  SetBuildChannel();
+  SetDebug();
+
+  ParseCommandLineSwitches();
 
   CreateBatAdsService(number_of_start);
 
