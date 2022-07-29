@@ -519,6 +519,8 @@ public class BravePrivacySettings extends PrivacySettings {
         mSearchSuggestions.setEnabled(autocompleteEnabled);
         mAutocompleteTopSites.setEnabled(autocompleteEnabled);
         mAutocompleteBraveSuggestedSites.setEnabled(autocompleteEnabled);
+        mFingerprntLanguagePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                                   .getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
     }
 
     private void removePreferenceIfPresent(String key) {
