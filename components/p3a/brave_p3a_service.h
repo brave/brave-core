@@ -56,9 +56,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   // BraveP3ALogStore::Delegate
-  BraveP3ALogStore::LogForJsonMigration Serialize(
-      base::StringPiece histogram_name,
-      uint64_t value) override;
+  std::string Serialize(base::StringPiece histogram_name,
+                        uint64_t value) override;
 
   // May be accessed from multiple threads, so this is thread-safe.
   bool IsActualMetric(base::StringPiece histogram_name) const override;
