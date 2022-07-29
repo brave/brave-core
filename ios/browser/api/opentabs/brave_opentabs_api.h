@@ -10,16 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, SyncDeviceType) {
-  SyncDeviceTypeUnset = 0,
-  SyncDeviceTypeWin,
-  SyncDeviceTypeMac,
-  SyncDeviceTypeLinux,
-  SyncDeviceTypeCros,
-  SyncDeviceTypeOther,
-  SyncDeviceTypePhone,
-  SyncDeviceTypeTablet
-};
+typedef NSInteger SyncDeviceType NS_TYPED_ENUM;
+
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypeUnset;
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypeWin;
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypeMac;
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypeLinux;
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypeCros;
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypeOther;
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypePhone;
+OBJC_EXPORT SyncDeviceType const SyncDeviceTypeTablet;
 
 @protocol OpenTabsSessionStateObserver;
 @protocol OpenTabsSessionStateListener;

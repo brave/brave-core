@@ -17,53 +17,22 @@
 #error "This file requires ARC support."
 #endif
 
-namespace brave {
-namespace ios {
-sync_pb::SyncEnums::DeviceType SyncDeviceTypeFromSyncEnumsDeviceType(
-    SyncDeviceType deviceType) {
-  switch (deviceType) {
-    case SyncDeviceTypeUnset:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET;
-    case SyncDeviceTypeWin:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN;
-    case SyncDeviceTypeMac:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC;
-    case SyncDeviceTypeLinux:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX;
-    case SyncDeviceTypeCros:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS;
-    case SyncDeviceTypeOther:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER;
-    case SyncDeviceTypePhone:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE;
-    default:
-      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET;
-  }
-}
-
-SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
-    sync_pb::SyncEnums::DeviceType deviceType) {
-  switch (deviceType) {
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET:
-      return SyncDeviceTypeUnset;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN:
-      return SyncDeviceTypeWin;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC:
-      return SyncDeviceTypeMac;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX:
-      return SyncDeviceTypeLinux;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS:
-      return SyncDeviceTypeCros;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER:
-      return SyncDeviceTypeOther;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE:
-      return SyncDeviceTypePhone;
-    default:
-      return SyncDeviceTypeUnset;
-  }
-}
-}  // namespace ios
-}  // namespace brave
+SyncDeviceType const SyncDeviceTypeUnset =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET);
+SyncDeviceType const SyncDeviceTypeWin =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN);
+SyncDeviceType const SyncDeviceTypeMac =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC);
+SyncDeviceType const SyncDeviceTypeLinux =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX);
+SyncDeviceType const SyncDeviceTypeCros =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS);
+SyncDeviceType const SyncDeviceTypeOther =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER);
+SyncDeviceType const SyncDeviceTypePhone =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE);
+SyncDeviceType const SyncDeviceTypeTablet =
+    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_TABLET);
 
 #pragma mark - IOSOpenDistantTab
 
@@ -209,8 +178,7 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
         initWithName:base::SysUTF8ToNSString(session->name)
           sessionTag:base::SysUTF8ToNSString(session->tag)
          dateCreated:session->modified_time.ToNSDate()
-          deviceType:brave::ios::SyncEnumsDeviceTypeFromSyncDeviceType(
-                         session->device_type)
+          deviceType:static_cast<SyncDeviceType>(session->device_type)
                 tabs:distantTabs];
     [distantSessionList addObject:distantSession];
   }
