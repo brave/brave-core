@@ -48,7 +48,7 @@ struct MockTorLauncherObserver : public TorLauncherObserver {
   MOCK_METHOD(void, OnTorCircuitEstablished, (bool result), (override));
   MOCK_METHOD(void,
               OnTorInitializing,
-              (const std::string& percentage),
+              (const std::string& percentage, const std::string& message),
               (override));
   MOCK_METHOD(void, OnTorControlEvent, (const std::string& event), (override));
   MOCK_METHOD(void, OnTorLogUpdated, (), (override));
