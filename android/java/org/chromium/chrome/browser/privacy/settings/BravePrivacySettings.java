@@ -189,7 +189,8 @@ public class BravePrivacySettings extends PrivacySettings {
                 (BraveDialogPreference) findPreference(PREF_FINGERPRINTING_PROTECTION);
         mFingerprintingProtectionPref.setOnPreferenceChangeListener(this);
 
-        mFingerprntLanguagePref = (ChromeSwitchPreference) findPreference(PREF_FINGERPRINT_LANGUAGE);
+        mFingerprntLanguagePref =
+                (ChromeSwitchPreference) findPreference(PREF_FINGERPRINT_LANGUAGE);
         mFingerprntLanguagePref.setOnPreferenceChangeListener(this);
 
         mCloseTabsOnExitPref = (ChromeSwitchPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
