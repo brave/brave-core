@@ -292,10 +292,13 @@ provideStrings({
   braveWalletBuyContinueButton: 'Select purchase method',
   braveWalletBuyRampNetworkName: 'Ramp.Network',
   braveWalletBuyWyreName: 'Wyre',
+  braveWalletBuySardineName: 'Sardine',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
+  braveWalletBuySardineDescription: 'Instant buy with your bank account. Lower fees.',
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
+  braveWalletBuyWithSardine: 'Buy with Sardine',
 
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',

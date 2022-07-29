@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../shared/style'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -65,4 +66,10 @@ export const ButtonText = styled.span`
   font-weight: 600;
   color: ${p => p.theme.color.interactive07};
   text-align: center;
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.interactive08};
+  height: 13px;
+  width: 13px;
 `

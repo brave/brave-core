@@ -15,15 +15,17 @@ import {
   Name,
   Description,
   StyledButton,
-  ButtonText
+  ButtonText,
+  LoadIcon
 } from './buy-option-item-styles'
 
 interface Props {
   option: BuyOption
+  selectedOption: BraveWallet.OnRampProvider | undefined
   onSelect: (option: BraveWallet.OnRampProvider) => void
 }
 export const BuyOptionItem = (props: Props) => {
-  const { option, onSelect } = props
+  const { option, selectedOption, onSelect } = props
   const { id, icon, name, description, actionText } = option
 
   const onClick = React.useCallback(() => {
@@ -37,6 +39,12 @@ export const BuyOptionItem = (props: Props) => {
         <Name>{name}</Name>
         <Description>{description}</Description>
         <StyledButton onClick={onClick}>
+          {selectedOption === id &&
+            <>
+              <LoadIcon />
+              &nbsp;
+            </>
+          }
           <ButtonText>{actionText}</ButtonText>
         </StyledButton>
       </Content>

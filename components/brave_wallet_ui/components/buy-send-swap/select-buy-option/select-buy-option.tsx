@@ -19,11 +19,12 @@ import {
 
 interface Props {
   buyOptions: BuyOption[]
+  selectedOption: BraveWallet.OnRampProvider | undefined
   onSelect: (optionId: BraveWallet.OnRampProvider) => void
   onBack: () => void
 }
 
-export const SelectBuyOption = ({ buyOptions, onSelect, onBack }: Props) => {
+export const SelectBuyOption = ({ buyOptions, selectedOption, onSelect, onBack }: Props) => {
   return (
     <StyledWrapper>
       <BackButton onSubmit={onBack} />
@@ -33,6 +34,7 @@ export const SelectBuyOption = ({ buyOptions, onSelect, onBack }: Props) => {
         >
           <BuyOptionItem
             option={option}
+            selectedOption={selectedOption}
             onSelect={onSelect}
           />
           {index !== buyOptions.length - 1 && <SubDivider/>}
