@@ -37,6 +37,12 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     }
 
     static public void updateActiveDSE(boolean isPrivate) {
+        // For the regular tab, trust the native Chromium's TemplateUrlService and
+        // don't overwrite with our value to make sync work
+        if (isPrivate == false) {
+            return;
+        }
+
         TemplateUrl templateUrl = getTemplateUrlByShortName(getDSEShortName(isPrivate));
         if (templateUrl == null) {
             return;
@@ -50,6 +56,12 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         TemplateUrl dseTemplateUrl =
                 TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
         if (dseTemplateUrl != null) defaultSearchEngineName = dseTemplateUrl.getShortName();
+
+        if (isPrivate == false) {
+            // For the regular tab, rely on the value from the native Chromium's
+            // TemplateUrlService to make sync work
+            return defaultSearchEngineName;
+        }
 
         // TODO(sergz): A check, do we need to fetch a default SE from native and avoid
         // overwrite.
