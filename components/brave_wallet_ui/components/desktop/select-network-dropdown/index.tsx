@@ -8,9 +8,10 @@ import {
   NetworkButton,
   DropDownIcon
 } from './style'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
   showNetworkDropDown: boolean
   onClick: () => void
   onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
@@ -21,7 +22,7 @@ function SelectNetworkDropdown (props: Props) {
 
   return (
     <StyledWrapper>
-      <NetworkButton onClick={onClick}>{selectedNetwork.chainName} <DropDownIcon /></NetworkButton>
+      <NetworkButton onClick={onClick}>{selectedNetwork?.chainName || getLocale('braveWalletSelectNetwork')} <DropDownIcon /></NetworkButton>
       {showNetworkDropDown &&
         <DropDown>
           <SelectNetwork
