@@ -48,22 +48,9 @@ SubdivisionTargeting::~SubdivisionTargeting() {
   PrefManager::GetInstance()->RemoveObserver(this);
 }
 
-bool SubdivisionTargeting::ShouldAllowForLocale(
-    const std::string& locale) const {
-  if (!IsSupportedLocale(locale)) {
-    return false;
-  }
-
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-  const SupportedSubdivisionCodesSet subdivision_codes =
-      kSupportedSubdivisionCodes.at(country_code);
-
-  const std::string subdivision_code = GetSubdivisionCode();
-  if (subdivision_codes.find(subdivision_code) == subdivision_codes.end()) {
-    return false;
-  }
-
-  return true;
+bool SubdivisionTargeting::ShouldAllow() const {
+  return AdsClientHelper::GetInstance()->GetBooleanPref(
+      prefs::kShouldAllowSubdivisionTargeting);
 }
 
 bool SubdivisionTargeting::IsDisabled() const {
@@ -130,6 +117,29 @@ bool SubdivisionTargeting::IsSupportedLocale(const std::string& locale) const {
   }
 
   return true;
+}
+
+void SubdivisionTargeting::MaybeAllowForLocale(
+    const std::string& locale) const {
+  if (!IsSupportedLocale(locale)) {
+    AdsClientHelper::GetInstance()->SetBooleanPref(
+        prefs::kShouldAllowSubdivisionTargeting, false);
+    return;
+  }
+
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
+  const SupportedSubdivisionCodesSet subdivision_codes =
+      kSupportedSubdivisionCodes.at(country_code);
+
+  const std::string subdivision_code = GetSubdivisionCode();
+  if (subdivision_codes.find(subdivision_code) == subdivision_codes.end()) {
+    AdsClientHelper::GetInstance()->SetBooleanPref(
+        prefs::kShouldAllowSubdivisionTargeting, false);
+    return;
+  }
+
+  AdsClientHelper::GetInstance()->SetBooleanPref(
+      prefs::kShouldAllowSubdivisionTargeting, true);
 }
 
 bool SubdivisionTargeting::ShouldAutoDetect() const {
@@ -208,6 +218,9 @@ void SubdivisionTargeting::OnFetch(const mojom::UrlResponse& url_response) {
 
   retry_timer_.Stop();
 
+  const std::string locale = LocaleManager::GetInstance()->GetLocale();
+  MaybeAllowForLocale(locale);
+
   FetchAfterDelay();
 }
 
@@ -262,7 +275,7 @@ void SubdivisionTargeting::FetchAfterDelay() {
 }
 
 void SubdivisionTargeting::OnLocaleDidChange(const std::string& locale) {
-  MaybeFetchForLocale(locale);
+  MaybeAllowForLocale(locale);
 }
 
 void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
