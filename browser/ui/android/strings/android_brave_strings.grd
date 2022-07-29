@@ -875,7 +875,7 @@ until they verify, or until 90 days have passed.
         Reset Brave Rewards
       </message>
       <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Rewards.">
-        This will delete your Brave wallet and reset all of your Brave Rewards data
+        This will delete your Brave Rewards and reset all of your Brave Rewards data
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BOOKMARK" desc="Content description for the bookmark button.">
         Create a bookmark
@@ -1007,7 +1007,7 @@ Are you sure you want to do this?
         Unverified
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">
-        Wallet Verified
+        Verified
       </message>
       <message name="IDS_VERIFY_WALLET_HEADER">
         Verifying your wallet is optional
