@@ -27,11 +27,15 @@ export const NftContent = (props: Props) => {
     imageUrl
   } = props
 
+  const url = React.useMemo(() => {
+    return imageUrl?.replace('chrome://image?', '')
+  }, [imageUrl])
+
   return (
     <>
       {imageUrl
         ? <Image
-          src={imageUrl}
+          src={url}
         />
         : <>
           {isLoading &&
