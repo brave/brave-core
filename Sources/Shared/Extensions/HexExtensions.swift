@@ -8,16 +8,7 @@ private let HexDigits: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", 
 
 extension Data {
   public var hexEncodedString: String {
-    var result = String()
-    result.reserveCapacity(count * 2)
-    withUnsafeBytes {
-      for i in 0..<count {
-        result.append(HexDigits[Int(($0[i] & 0xf0) >> 4)])
-        result.append(HexDigits[Int($0[i] & 0x0f)])
-      }
-    }
-
-    return String(result)
+    self.map { String(format: "%02hhx", $0) }.joined()
   }
 }
 
