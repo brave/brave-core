@@ -38,9 +38,10 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
                        SetBuildChannelCallback callback) override;
 
  private:
+  bool is_initialized_ = false;
+
   mojo::Receiver<mojom::BatAdsService> receiver_;
   mojo::UniqueAssociatedReceiverSet<mojom::BatAds> associated_receivers_;
-  bool is_initialized_ = false;
 };
 
 }  // namespace bat_ads

@@ -78,6 +78,10 @@ void MockGetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
 void MockSetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
 void MockGetTimePref(const std::unique_ptr<AdsClientMock>& mock);
 void MockSetTimePref(const std::unique_ptr<AdsClientMock>& mock);
+void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock);
+void MockSetDictPref(const std::unique_ptr<AdsClientMock>& mock);
+void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock);
+void MockSetListPref(const std::unique_ptr<AdsClientMock>& mock);
 void MockClearPref(const std::unique_ptr<AdsClientMock>& mock);
 void MockHasPrefPath(const std::unique_ptr<AdsClientMock>& mock);
 

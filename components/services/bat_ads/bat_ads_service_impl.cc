@@ -15,8 +15,7 @@ namespace bat_ads {
 
 BatAdsServiceImpl::BatAdsServiceImpl(
     mojo::PendingReceiver<mojom::BatAdsService> receiver)
-    : receiver_(this, std::move(receiver)),
-      is_initialized_(false) {}
+    : receiver_(this, std::move(receiver)) {}
 
 BatAdsServiceImpl::~BatAdsServiceImpl() = default;
 
@@ -24,11 +23,12 @@ void BatAdsServiceImpl::Create(
     mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
     mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
     CreateCallback callback) {
-
   associated_receivers_.Add(
       std::make_unique<BatAdsImpl>(std::move(client_info)),
       std::move(bat_ads));
+
   is_initialized_ = true;
+
   std::move(callback).Run();
 }
 

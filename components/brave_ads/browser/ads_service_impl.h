@@ -34,6 +34,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/idle/idle.h"
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
@@ -425,21 +426,30 @@ class AdsServiceImpl : public AdsService,
                                training_instance) override;
 
   bool GetBooleanPref(const std::string& path) const override;
-  void SetBooleanPref(const std::string& path, const bool value) override;
   int GetIntegerPref(const std::string& path) const override;
-  void SetIntegerPref(const std::string& path, const int value) override;
   double GetDoublePref(const std::string& path) const override;
-  void SetDoublePref(const std::string& path, const double value) override;
   std::string GetStringPref(const std::string& path) const override;
+  int64_t GetInt64Pref(const std::string& path) const override;
+  uint64_t GetUint64Pref(const std::string& path) const override;
+  base::Time GetTimePref(const std::string& path) const override;
+  absl::optional<base::Value::Dict> GetDictPref(
+      const std::string& path) const override;
+  absl::optional<base::Value::List> GetListPref(
+      const std::string& path) const override;
+
+  void SetBooleanPref(const std::string& path, const bool value) override;
+  void SetIntegerPref(const std::string& path, const int value) override;
+  void SetDoublePref(const std::string& path, const double value) override;
   void SetStringPref(const std::string& path,
                      const std::string& value) override;
-  int64_t GetInt64Pref(const std::string& path) const override;
   void SetInt64Pref(const std::string& path, const int64_t value) override;
-  uint64_t GetUint64Pref(const std::string& path) const override;
   void SetUint64Pref(const std::string& path, const uint64_t value) override;
-  base::Time GetTimePref(const std::string& path) const override;
   void SetTimePref(const std::string& path, const base::Time value) override;
+  void SetDictPref(const std::string& path, base::Value::Dict value) override;
+  void SetListPref(const std::string& path, base::Value::List value) override;
+
   void ClearPref(const std::string& path) override;
+
   bool HasPrefPath(const std::string& path) const override;
 
   void Log(const char* file,

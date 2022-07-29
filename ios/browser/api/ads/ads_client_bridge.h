@@ -69,6 +69,10 @@
 - (uint64_t)getUint64Pref:(const std::string&)path;
 - (void)setTimePref:(const std::string&)path value:(const base::Time)value;
 - (base::Time)getTimePref:(const std::string&)path;
+- (void)setDictPref:(const std::string&)path value:(base::Value::Dict)value;
+- (absl::optional<base::Value::Dict>)getDictPref:(const std::string&)path;
+- (void)setListPref:(const std::string&)path value:(base::Value::List)value;
+- (absl::optional<base::Value::List>)getListPref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
 - (void)recordP2AEvent:(const std::string&)name value:(const std::string&)value;

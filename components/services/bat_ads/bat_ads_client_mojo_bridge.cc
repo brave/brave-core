@@ -9,8 +9,10 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/notification_ad_info.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace bat_ads {
 
@@ -457,6 +459,46 @@ void BatAdsClientMojoBridge::SetTimePref(const std::string& path,
   }
 
   bat_ads_client_->SetTimePref(path, value);
+}
+
+absl::optional<base::Value::Dict> BatAdsClientMojoBridge::GetDictPref(
+    const std::string& path) const {
+  if (!connected()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value::Dict> value;
+  bat_ads_client_->GetDictPref(path, &value);
+  return value;
+}
+
+void BatAdsClientMojoBridge::SetDictPref(const std::string& path,
+                                         base::Value::Dict value) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->SetDictPref(path, std::move(value));
+}
+
+absl::optional<base::Value::List> BatAdsClientMojoBridge::GetListPref(
+    const std::string& path) const {
+  if (!connected()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value::List> value;
+  bat_ads_client_->GetListPref(path, &value);
+  return value;
+}
+
+void BatAdsClientMojoBridge::SetListPref(const std::string& path,
+                                         base::Value::List value) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->SetListPref(path, std::move(value));
 }
 
 void BatAdsClientMojoBridge::ClearPref(

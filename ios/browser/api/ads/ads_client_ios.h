@@ -76,6 +76,12 @@ class AdsClientIOS : public ads::AdsClient {
   uint64_t GetUint64Pref(const std::string& path) const override;
   void SetTimePref(const std::string& path, const base::Time value) override;
   base::Time GetTimePref(const std::string& path) const override;
+  void SetDictPref(const std::string& path, base::Value::Dict value) override;
+  absl::optional<base::Value::Dict> GetDictPref(
+      const std::string& path) const override;
+  void SetListPref(const std::string& path, base::Value::List value) override;
+  absl::optional<base::Value::List> GetListPref(
+      const std::string& path) const override;
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
   void RecordP2AEvent(const std::string& name,

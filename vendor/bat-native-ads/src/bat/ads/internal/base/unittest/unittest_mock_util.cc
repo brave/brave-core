@@ -15,11 +15,14 @@
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
@@ -497,6 +500,58 @@ void MockSetTimePref(const std::unique_ptr<AdsClientMock>& mock) {
         const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
         GetPrefs()[pref_path] = base::NumberToString(
             value.ToDeltaSinceWindowsEpoch().InMicroseconds());
+      }));
+}
+
+void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, GetDictPref(_))
+      .WillByDefault(Invoke(
+          [](const std::string& path) -> absl::optional<base::Value::Dict> {
+            const std::string pref_path =
+                GetUuidForCurrentTestSuiteAndName(path);
+            const std::string& json = GetPrefs()[pref_path];
+            const absl::optional<base::Value> value =
+                base::JSONReader::Read(json);
+            const base::Value::Dict* dict = value->GetIfDict();
+            CHECK(dict);
+            return dict->Clone();
+          }));
+}
+
+void MockSetDictPref(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, SetDictPref(_, _))
+      .WillByDefault(Invoke([](const std::string& path,
+                               base::Value::Dict value) {
+        const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
+        std::string json;
+        CHECK(base::JSONWriter::Write(value, &json));
+        GetPrefs()[pref_path] = json;
+      }));
+}
+
+void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, GetListPref(_))
+      .WillByDefault(Invoke(
+          [](const std::string& path) -> absl::optional<base::Value::List> {
+            const std::string pref_path =
+                GetUuidForCurrentTestSuiteAndName(path);
+            const std::string& json = GetPrefs()[pref_path];
+            const absl::optional<base::Value> value =
+                base::JSONReader::Read(json);
+            const base::Value::List* list = value->GetIfList();
+            CHECK(list);
+            return list->Clone();
+          }));
+}
+
+void MockSetListPref(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, SetListPref(_, _))
+      .WillByDefault(Invoke([](const std::string& path,
+                               base::Value::List value) {
+        const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
+        std::string json;
+        CHECK(base::JSONWriter::Write(value, &json));
+        GetPrefs()[pref_path] = json;
       }));
 }
 

@@ -18,6 +18,7 @@
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 

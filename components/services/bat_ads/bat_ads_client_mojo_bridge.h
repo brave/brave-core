@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -108,6 +109,12 @@ class BatAdsClientMojoBridge
       const uint64_t value) override;
   base::Time GetTimePref(const std::string& path) const override;
   void SetTimePref(const std::string& path, const base::Time value) override;
+  absl::optional<base::Value::Dict> GetDictPref(
+      const std::string& path) const override;
+  void SetDictPref(const std::string& path, base::Value::Dict value) override;
+  absl::optional<base::Value::List> GetListPref(
+      const std::string& path) const override;
+  void SetListPref(const std::string& path, base::Value::List value) override;
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
 

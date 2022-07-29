@@ -373,6 +373,28 @@ void AdsClientMojoBridge::SetTimePref(const std::string& path,
   ads_client_->SetTimePref(path, value);
 }
 
+void AdsClientMojoBridge::GetDictPref(const std::string& path,
+                                      GetDictPrefCallback callback) {
+  absl::optional<base::Value::Dict> value = ads_client_->GetDictPref(path);
+  std::move(callback).Run(std::move(value));
+}
+
+void AdsClientMojoBridge::SetDictPref(const std::string& path,
+                                      base::Value::Dict value) {
+  ads_client_->SetDictPref(path, std::move(value));
+}
+
+void AdsClientMojoBridge::GetListPref(const std::string& path,
+                                      GetListPrefCallback callback) {
+  absl::optional<base::Value::List> value = ads_client_->GetListPref(path);
+  std::move(callback).Run(std::move(value));
+}
+
+void AdsClientMojoBridge::SetListPref(const std::string& path,
+                                      base::Value::List value) {
+  ads_client_->SetListPref(path, std::move(value));
+}
+
 void AdsClientMojoBridge::ClearPref(
     const std::string& path) {
   ads_client_->ClearPref(path);
