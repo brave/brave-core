@@ -335,19 +335,6 @@
     "message": "Atkārtoti izveidot savienojumu",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Jūsu Brave Rewards ir verificētas!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Jūsu Brave Rewards tika veiksmīgi verificētas $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Ir pieejams marķiera piešķīrums!",
     "description": ""

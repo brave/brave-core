@@ -335,19 +335,6 @@
     "message": "Ponovno poveži",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Vaše Nagrade Brave potvrđene!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Vaše Nagrade Brave uspješno potvrđene putem $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Dostupna je dodjela tokena!",
     "description": ""

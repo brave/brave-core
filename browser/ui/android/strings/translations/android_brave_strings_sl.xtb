@@ -261,6 +261,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="3097089005389027085">To bo delilo vaše podatke Brave, vključno z morebitnimi gesli, z napravo, ki je ustvarila te kodne besede.
 Še enkrat preverite, ali je te kodne besede ustvarila naprava, ki je v vaši lasti.
 Ali ste prepričani, da želite to storiti?</translation>
+<translation id="4550208292810542331">Uporaba kamere ni bila dovoljena</translation>
 <translation id="597993392929850353">Licenca Brave</translation>
 <translation id="6336451774241870485">Novi zavihek brez beleženja zgodovine</translation>
 <translation id="6199596294742117349">To je zavihek brez beleženja zgodovine</translation>
@@ -549,8 +550,9 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6366007539108097840">3 m</translation>
 <translation id="6977728312178289892">1 leto</translation>
 <translation id="6895566650974550243">VSE</translation>
-<translation id="5071303414930953888">Račun <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Račun <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Dodaj račun</translation>
+<translation id="318334680413773318">Dodaj/uvozi račun</translation>
 <translation id="3448492834076427715">Posodobite račun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Omogoči odklepanje s prstnim odtisom?</translation>
@@ -859,12 +861,14 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4804818685124855865">Prekini povezavo</translation>
 <translation id="8009571545960303544">Zahtevan je bil vaš podpis</translation>
 <translation id="3484981968509595506">Aplikacija DApp zahteva vaš javni šifrirni ključ</translation>
+<translation id="2300240008330189182"><ph name="URL"/> zahteva javni šifrirni ključ vaše denarnice. Če se strinjate s posredovanjem tega ključa, vam bo spletno mesto lahko pripravilo šifrirana sporočila.</translation>
 <translation id="3340247553212049934">Zagotovite</translation>
 <translation id="1982257600591932657">Ime omrežja</translation>
 <translation id="5052727830821470769">URL omrežja</translation>
 <translation id="4822132585477111396">ID verige</translation>
 <translation id="7131971375297699539">Simbol valute</translation>
 <translation id="7982789257301363584">Omrežje</translation>
+<translation id="6936860995365507185">To bo omogočilo uporabo tega omrežja v denarnici Brave. <ph name="CLICK_START"/>Več o tem<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Ali dovolite temu mestu, da doda omrežje?</translation>
 <translation id="4857321293515555666">Ta aplikacija želi prebrati to sporočilo, da bi izpolnila vašo zahtevo.</translation>
 <translation id="714506544401754321">Dešifriraj sporočilo</translation>
@@ -889,4 +893,14 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="5334952096674914470">\n\nMobilni operater\n</translation>
 <translation id="5393042357629679588">\n\nDruga težava\n</translation>
 <translation id="8095666712177294104">\n\nPlatforma\n</translation>
+<translation id="7080614857771109950">Podpira sredstva, ki so združljiva z EVM na blokovni verigi Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Podpira sredstva, združljiva s SPL, na blokovni verigi Solana</translation>
+<translation id="6575120282593094155">Nimate še računa <ph name="ACCOUNT_TYPE"/>. Ga želite ustvariti zdaj?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Izvzete aplikacije</translation>
+<translation id="8463269357637177759">Dovoljene redne aplikacije</translation>
+<translation id="4554726425645556940">Dovoljene sistemske aplikacije</translation>
+<translation id="9023148942866814328">Prikaži sistemske aplikacije</translation>
+<translation id="5472400694702418949">Dodajte aplikacije, ki jih želite izvzeti iz prometa VPN.</translation>
+<translation id="7002577172732106572">Razdeljeno tuneliranje</translation>
 </translationbundle>

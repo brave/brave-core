@@ -335,19 +335,6 @@
     "message": "Kết nối lại",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Phần thưởng Brave của bạn đã được xác thực!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Phần thưởng Brave đã được xác thực thành công với $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Khoản thưởng token đang khả dụng!",
     "description": ""

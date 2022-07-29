@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">ลอง Brave Search</translation>
 <translation id="5026874946691314267">ไม่ต้องแสดงสิ่งนี้อีก</translation>
 <translation id="5234764350956374838">ปิด</translation>
-<translation id="214744058941501853">"&gt;
-          ปิดคอนเวอร์ชันเครื่องมือค้นหา Brave และกด Enter เพื่อลบคำแนะนำนี้</translation>
+<translation id="5100490448228945668">ยกเลิกคอนเวอร์ชันการค้นหา Brave กด Enter เพื่อลบคำแนะนำนี้</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
 <translation id="6040143037577758943">ปิด</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">บุ๊กมาร์ก</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="1811404036171336214">แสดงบุ๊กมาร์คบนหน้าแท็บใหม่</translation>
+<translation id="3416468988018290825">แสดง URL แบบเต็มเสมอ</translation>
 <translation id="5529693968082667490">แสดงปุ่มค้นหาแท็บ</translation>
 <translation id="1643029991199044105">ย้อนกลับไปแท็บที่ใช้ไปล่าสุดด้วย Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -393,7 +393,8 @@
 <translation id="5249433283143453448">ใช้องค์ประกอบการจัดการสิทธิ์ทางดิจิทัล Widevine (DRM) เพื่อดูสตรีมมิ่งวิดีโอที่มีการป้องกันและเนื้อหาอื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="8137559199583651773">จัดการส่วนขยาย</translation>
 <translation id="7013485839273047434">รับส่วนขยายเพิ่มเติม</translation>
-<translation id="9131889008937672866">วอลเล็ตสกุลเงินคริปโตหลัก</translation>
+<translation id="4954512758656527938">วอลเล็ต Ethereum เริ่มต้น</translation>
+<translation id="7701023802820268122">วอลเล็ต Solana เริ่มต้น</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
@@ -418,6 +419,8 @@
 <translation id="8205945804087322170">เพิ่มเครือข่ายใหม่</translation>
 <translation id="1330032157352961756">ID ของ Chain ใหม่</translation>
 <translation id="3423620355610881890">เลขทศนิยมฐานสิบ</translation>
+<translation id="8110465398315041268">ค้นหาเครือข่าย</translation>
+<translation id="3579705520805744214">Chain ID หรือชื่อ</translation>
 <translation id="726121047592132939">ชื่อ Chain ใหม่</translation>
 <translation id="1034112277864078119">ระบุชื่อ Chain</translation>
 <translation id="4672314527143443556">ชื่อสกุลเงินของ Chain</translation>
@@ -489,6 +492,7 @@
 <translation id="3411013544209536575">เคล็ดลับช่วยเหลือ</translation>
 <translation id="2775956301559569472">แสดงพร้อมท์ Wayback Machine ในหน้า 404</translation>
 <translation id="3095201688102519917">เตือนฉันก่อนปิดหน้าต่างที่มีหลายแท็บ</translation>
+<translation id="7120553802660696133">ปิดหน้าต่างเมื่อปิดแท็บสุดท้าย</translation>
 <translation id="6624718837376802990">อวทาร์ Edgy Rewards</translation>
 <translation id="6617313057407561765">อวทาร์ Edgy Brave</translation>
 <translation id="6754445808455578019">อวทาร์ Edgy Ocean</translation>

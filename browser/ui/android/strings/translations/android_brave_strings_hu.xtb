@@ -260,6 +260,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3097089005389027085">Ezzel megosztja Brave adatait – beleértve akár a jelszavait – az ezeket a kódszavakat generáló eszközzel.
 Ellenőrizze, hogy ezeket a kódszavakat egy az Ön tulajdonában lévő eszköz generálta.
 Biztosan végrehajtja a műveletet?</translation>
+<translation id="4550208292810542331">A kameraengedély nem lett megadva</translation>
 <translation id="597993392929850353">Brave engedély</translation>
 <translation id="6336451774241870485">Új privát ablak</translation>
 <translation id="6199596294742117349">Ez egy bizalmas ablak</translation>
@@ -548,8 +549,9 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="6366007539108097840">3HÓ</translation>
 <translation id="6977728312178289892">1É</translation>
 <translation id="6895566650974550243">ÖSSZES</translation>
-<translation id="5071303414930953888">Fiók: <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NUMBER"/>. <ph name="ACCOUNT_NAME"/> fiók</translation>
 <translation id="7665369617277396874">Fiók hozzáadása</translation>
+<translation id="318334680413773318">Fiók hozzáadása/importálása</translation>
 <translation id="3448492834076427715">Fiók frissítése</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Engedélyezed az ujjlenyomatos feloldást?</translation>
@@ -858,12 +860,14 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4804818685124855865">Kapcsolat bontása</translation>
 <translation id="8009571545960303544">Szükség van az aláírására</translation>
 <translation id="3484981968509595506">Egy DApp az Ön nyilvános titkosítási kulcsát kéri</translation>
+<translation id="2300240008330189182"><ph name="URL"/> a pénztárcája nyilvános titkosítási kulcsát kéri. Ha hozzájárul a kulcs megadásához, a webhely képes lesz titkosított üzeneteket létrehozni Önnek.</translation>
 <translation id="3340247553212049934">Megadás</translation>
 <translation id="1982257600591932657">Hálózat neve</translation>
 <translation id="5052727830821470769">Hálózat URL-je</translation>
 <translation id="4822132585477111396">Lánc azonosítója</translation>
 <translation id="7131971375297699539">Valuta szimbóluma</translation>
 <translation id="7982789257301363584">Hálózat</translation>
+<translation id="6936860995365507185">Ezzel engedélyezve lesz a hálózat használata a Brave pénztárcán belül. <ph name="CLICK_START"/>További információ<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Engedélyezi, hogy ez az oldal hálózatot adjon hozzá?</translation>
 <translation id="4857321293515555666">Ez a DApp el szeretné olvasni az üzenetet a kérelem befejezéséhez.</translation>
 <translation id="714506544401754321">Üzenet visszafejtése</translation>
@@ -888,4 +892,14 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5334952096674914470">\n\nMobilszolgáltató\n</translation>
 <translation id="5393042357629679588">\n\nEgyéb probléma\n</translation>
 <translation id="8095666712177294104">\n\nFelület\n</translation>
+<translation id="7080614857771109950">Támogatja az Ethereum blokklánc EVM-kompatibilis eszközeit (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Támogatja a Solana blokklánc SPL-kompatibilis eszközeit</translation>
+<translation id="6575120282593094155">Még nincs <ph name="ACCOUNT_TYPE"/> fiókja. Létrehoz most egyet?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Kizárt alkalmazások</translation>
+<translation id="8463269357637177759">Engedélyezett normál alkalmazások</translation>
+<translation id="4554726425645556940">Engedélyezett rendszeralkalmazások</translation>
+<translation id="9023148942866814328">Rendszeralkalmazások megjelenítése</translation>
+<translation id="5472400694702418949">A VPN-forgalomból kizárandó alkalmazások hozzáadása.</translation>
+<translation id="7002577172732106572">Osztott alagút mód (Split Tunneling)</translation>
 </translationbundle>

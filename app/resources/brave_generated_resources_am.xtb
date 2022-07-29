@@ -117,8 +117,7 @@
 <translation id="5240031343741051161">ብሬቭ ፍለጋን ይሞክሩ</translation>
 <translation id="5026874946691314267">ይህንን እንደገና አታሳይ</translation>
 <translation id="5234764350956374838">አሰናብት</translation>
-<translation id="214744058941501853">"&gt;
-          የብሬቭ የፍለጋ ልወጣን አሰናብት፣ ይህን ጥቆማ ለማስወገድ ኢንተርን ይጫኑ</translation>
+<translation id="5100490448228945668">የ Brave ፍለጋ ልወጣን አሰናብት፣ ይህን ጥቆማ ለማስወገድ Enter የሚለውን ተጫን</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
@@ -224,6 +223,7 @@
 <translation id="8820817407110198400">ዕልባቶች</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="1811404036171336214">ምንጊዜም በአዲስ የ ትር ገጽ ላይ አዳዲስ ዕልባቶችን አሳይ</translation>
+<translation id="3416468988018290825">ሁልጊዜ ሙሉ URLs አሳይ</translation>
 <translation id="5529693968082667490">የትር ፍለጋ አዝራርን አሳይ</translation>
 <translation id="1643029991199044105">የ Ctrl-Tab ትር በመጠቀም በጣም በቅርብ ጊዜ በተጠቀሙባቸው ትሮች ውስጥ ይቃኙ</translation>
 <translation id="1013121820689882118">የፍጥነት አንባቢን</translation>
@@ -393,7 +393,8 @@
 <translation id="5249433283143453448">በአሳሹ ውስጥ ያለ ጥበቃ የተደረገለት የቀጥታ ቪዲዮን እና ሌላ ይዘት ን ለመመልከት የ Widevine ዲጂታል መብቶች መተዳደሪያ (DRM) ክፍሉን ይጠቀሙ።</translation>
 <translation id="8137559199583651773">ቅጥያዎችን ያስተዳድሩ</translation>
 <translation id="7013485839273047434">ተጨማሪ ቅጥያዎችን ያግኙ</translation>
-<translation id="9131889008937672866">ነባር የክሪፕቶከረንሲ ዋሌት</translation>
+<translation id="4954512758656527938">ነባር የ Ethereum ዋሌት</translation>
+<translation id="7701023802820268122">ነባር የ Solana ዋሌት</translation>
 <translation id="8488282162676695335">የBrave ዋሌት</translation>
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="7701040980221191251">ምንም</translation>
@@ -418,6 +419,8 @@
 <translation id="8205945804087322170">አዲስ አውታረ መረብ ያክሉ</translation>
 <translation id="1330032157352961756">የአዲስ ሰንሰለት መታወቂያ</translation>
 <translation id="3423620355610881890">አወንታዊ የአስርዮሽ ቁጥር</translation>
+<translation id="8110465398315041268">የፍለጋ አውታረ መረብ</translation>
+<translation id="3579705520805744214">የሰንሰለት መታወቂያ ወይም ስም</translation>
 <translation id="726121047592132939">የአዲሱ ሰንሰለት ስም</translation>
 <translation id="1034112277864078119">የሰንሰለት ስም አስገባ</translation>
 <translation id="4672314527143443556">የሰንሰለት መገበያያ ገንዘብ ስም</translation>
@@ -489,6 +492,7 @@
 <translation id="3411013544209536575">የእገዛ ምክሮች</translation>
 <translation id="2775956301559569472">የ Wayback ማሽን ስንዱን 404 ገጾች ላይ አሳይ</translation>
 <translation id="3095201688102519917">በርካታ ትሮች ያሉት መስኮት ከመዝጋቱ በፊት አስጠንቅቀኝ</translation>
+<translation id="7120553802660696133">የመጨረሻውን ትር ሲዘጋ መስኮቱን ይዝጉ</translation>
 <translation id="6624718837376802990">የ Avatar Edgy ሽልማቶች</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

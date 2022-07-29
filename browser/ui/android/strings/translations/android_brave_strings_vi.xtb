@@ -260,6 +260,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3097089005389027085">Điều này sẽ chia sẻ dữ liệu Brave của bạn, bao gồm khả năng là mật khẩu của bạn, với thiết bị đã tạo ra những từ mã này.
 Vui lòng kiểm tra kỹ rằng những từ mã này được tạo ra bởi một thiết bị mà bạn sở hữu.
 Bạn có chắc chắn muốn thực hiện điều này không?</translation>
+<translation id="4550208292810542331">Chưa cấp quyền truy cập máy ảnh</translation>
 <translation id="597993392929850353">Giấy phép Brave</translation>
 <translation id="6336451774241870485">Tab riêng tư mới</translation>
 <translation id="6199596294742117349">Đây là Tab riêng tư</translation>
@@ -548,8 +549,9 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">TẤT CẢ</translation>
-<translation id="5071303414930953888">Tài khoản <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Tài khoản <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Thêm tài khoản</translation>
+<translation id="318334680413773318">Thêm/Nhập khẩu tài khoản</translation>
 <translation id="3448492834076427715">Cập nhật tài khoản</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Bật tính năng mở khóa bằng vân tay?</translation>
@@ -858,12 +860,14 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4804818685124855865">Ngắt kết nối</translation>
 <translation id="8009571545960303544">Chữ ký của bạn đang được yêu cầu</translation>
 <translation id="3484981968509595506">DApp đang yêu cầu khóa mã hóa công khai của bạn</translation>
+<translation id="2300240008330189182"><ph name="URL"/> đang yêu cầu khóa mã hóa công khai của ví của bạn. Nếu bạn đồng ý cung cấp khóa này, trang web sẽ có thể soạn tin nhắn được mã hóa cho bạn.</translation>
 <translation id="3340247553212049934">Cung cấp</translation>
 <translation id="1982257600591932657">Tên mạng</translation>
 <translation id="5052727830821470769">URL mạng</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Ký hiệu tiền tệ</translation>
 <translation id="7982789257301363584">Mạng</translation>
+<translation id="6936860995365507185">Điều này sẽ cho phép mạng này được sử dụng trong Ví Brave. <ph name="CLICK_START"/>Tìm hiểu thêm<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Cho phép trang web này thêm mạng?</translation>
 <translation id="4857321293515555666">DApp muốn đọc thông báo này để hoàn thành yêu cầu của bạn.</translation>
 <translation id="714506544401754321">Giải mã tin nhắn</translation>
@@ -888,4 +892,14 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5334952096674914470">\n\nNhà mạng di động\n</translation>
 <translation id="5393042357629679588">\n\nVấn đề khác\n</translation>
 <translation id="8095666712177294104">\n\nNền tảng\n</translation>
+<translation id="7080614857771109950">Hỗ trợ các tài sản tương thích EVM trên blockchain Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Hỗ trợ các tài sản tương thích SPL trên blockchain Solana</translation>
+<translation id="6575120282593094155">Bạn vẫn chưa có tài khoản <ph name="ACCOUNT_TYPE"/>. Tạo tài khoản ngay?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Ứng dụng loại trừ</translation>
+<translation id="8463269357637177759">Ứng dụng phổ biến được phép</translation>
+<translation id="4554726425645556940">Ứng dụng hệ thống được phép</translation>
+<translation id="9023148942866814328">Hiển thị ứng dụng hệ thống</translation>
+<translation id="5472400694702418949">Thêm ứng dụng loại trừ khỏi lưu lượng VPN.</translation>
+<translation id="7002577172732106572">Chia nhỏ đường hầm</translation>
 </translationbundle>

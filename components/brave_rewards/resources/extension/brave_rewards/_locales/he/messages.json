@@ -335,19 +335,6 @@
     "message": "התחבר מחדש",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "שלך Brave Rewards מאומת!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "ה-Brave Rewards שלך אומת בהצלחה עם$provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "מענק סמלי זמין!",
     "description": ""

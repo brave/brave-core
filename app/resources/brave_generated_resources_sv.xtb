@@ -114,8 +114,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5240031343741051161">Prova Brave-sökning</translation>
 <translation id="5026874946691314267">Visa inte detta igen</translation>
 <translation id="5234764350956374838">Ta bort permanent</translation>
-<translation id="214744058941501853">"&gt;
-          Avfärda konvertering för Brave-sökningar, tryck på Enter för att ta bort förslaget</translation>
+<translation id="5100490448228945668">Avvisa Brave-sökkonvertering, tryck på Retur för att ta bort detta förslag</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
 <translation id="6040143037577758943">Stäng</translation>
@@ -221,6 +220,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8820817407110198400">Bokmärkesfältet</translation>
 <translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
 <translation id="1811404036171336214">Visa alltid bokmärken på en ny fliksida</translation>
+<translation id="3416468988018290825">Visa alltid fullständiga URL:er</translation>
 <translation id="5529693968082667490">Visa knappen fliksök</translation>
 <translation id="1643029991199044105">Bläddra igenom de senast använda flikarna med Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -393,7 +393,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5249433283143453448">Använd komponenten Widevine digital rights management (DRM) för att se skyddad strömmande video och annat innehåll i webbläsaren.</translation>
 <translation id="8137559199583651773">Hantera tillägg</translation>
 <translation id="7013485839273047434">Skaffa fler tillägg</translation>
-<translation id="9131889008937672866">Standardplånbok för kryptovaluta</translation>
+<translation id="4954512758656527938">Standardplånbok för Ethereum</translation>
+<translation id="7701023802820268122">Standardplånbok för Solana</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="7701040980221191251">Inget</translation>
@@ -418,6 +419,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8205945804087322170">Lägg till nytt nätverk</translation>
 <translation id="1330032157352961756">En ny kedjas ID</translation>
 <translation id="3423620355610881890">Ett positivt decimaltal</translation>
+<translation id="8110465398315041268">Sök nätverk</translation>
+<translation id="3579705520805744214">Kedje-id eller namn</translation>
 <translation id="726121047592132939">Namnet på en ny kedja</translation>
 <translation id="1034112277864078119">Ange kedjenamn</translation>
 <translation id="4672314527143443556">Kedjans valutanamn</translation>
@@ -489,6 +492,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3411013544209536575">Hjälpdricks</translation>
 <translation id="2775956301559569472">Visa  Wayback Machine-prompt på 404-sidor</translation>
 <translation id="3095201688102519917">Varna mig innan fönster med flera flikar stängs</translation>
+<translation id="7120553802660696133">Stäng fönstret när du stänger den sista fliken</translation>
 <translation id="6624718837376802990">Avataren Vassa belöningar</translation>
 <translation id="6617313057407561765">Avataren Vasst modig</translation>
 <translation id="6754445808455578019">Avataren Vass ocean</translation>

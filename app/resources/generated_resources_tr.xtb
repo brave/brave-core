@@ -11,6 +11,7 @@
 <translation id="1008186147501209563">Yer işaretlerini dışa aktar</translation>
 <translation id="1008557486741366299">Şimdi Değil</translation>
 <translation id="1009476156254802388"><ph name="WEB_DRIVE"/> Konumu</translation>
+<translation id="1009663062402466586">Oyun denetimleri artık kullanılabilir</translation>
 <translation id="1010498023906173788">Bu sekme bir seri bağlantı noktasına bağlıdır.</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Sayfa Yanıt Vermiyor}other{Sayfalar Yanıt Vermiyor}}</translation>
 <translation id="1011355516189274711">Metin okuma ses düzeyi</translation>
@@ -25,6 +26,7 @@
 <translation id="6221946066118097974"><ph name="BEGIN_LINK"/>Brave Hesabınızdaki<ph name="END_LINK"/> şifreler gösteriliyor</translation>
 <translation id="1026655690966755180">Bağlantı Noktası Ekle</translation>
 <translation id="1026822031284433028">Resim Yükle</translation>
+<translation id="1028700151766901954">Neden: Eski Tarayıcı Desteği varsayılan olarak <ph name="DEFAULT_OPEN_BROWSER"/> içinde kalır.</translation>
 <translation id="1029317248976101138">Yakınlaştır</translation>
 <translation id="1031362278801463162">Önizleme yükleniyor</translation>
 <translation id="1032605640136438169">Lütfen yeni şartları inceleyin</translation>
@@ -53,6 +55,7 @@
 <translation id="1054153489933238809">Orijinal &amp;Resmi Yeni Sekmede Aç</translation>
 <translation id="1055274863771110134">{NUM_WEEKS,plural, =1{<ph name="DEVICE_TYPE"/> cihazı, 1 hafta içinde güncelleyin}other{<ph name="DEVICE_TYPE"/> cihazı, {NUM_WEEKS} hafta içinde güncelleyin}}</translation>
 <translation id="1056898198331236512">Uyarı</translation>
+<translation id="105822690353767994">Bu mesajı tekrar görmek istemiyorsanız uzantının bu sitede çalıştırılmasına her zaman izin verin.</translation>
 <translation id="1058262162121953039">PUK</translation>
 <translation id="1059065096897445832">{MIN_PIN_LENGTH,plural, =1{Yeni PIN'inizi girin. PIN en az bir karakter uzunluğunda olmalıdır ve harflerle rakamların yanı sıra diğer karakterleri içerebilir.}other{Yeni PIN'inizi girin. PIN en az # karakter uzunluğunda olmalıdır ve harflerle rakamların yanı sıra diğer karakterleri içerebilir.}}</translation>
 <translation id="1059484610606223931">HyperText Aktarım Protokolü (HTTPS)</translation>
@@ -72,11 +75,6 @@
 <translation id="1071917609930274619">Veri Şifreleme</translation>
 <translation id="1072700771426194907">USB cihaz algılandı</translation>
 <translation id="107278043869924952">Şifrenin yanı sıra PIN kullan</translation>
-<translation id="1073264809281558926"><ph name="BEGIN_PARAGRAPH1"/>ChromeOS cihazların otomatik raporlar göndermesine izin vererek ChromeOS ile ilgili düzeltme ve iyileştirme çalışmalarımızda nelere öncelik verileceğini belirlememize yardımcı olursunuz. Kullanılan özellikler, genellikle kullanılan bellek miktarı ve Android uygulamalarının teşhis ile kullanım verileri gibi bilgiler bu raporlarda yer alabilir. Bazı birleştirilmiş veriler, Brave uygulamalarına ve iş ortaklarına da (ör. Android geliştiricileri) yardımcı olur.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>Çocuğunuzun ChromeOS cihaz ayarlarından istediğiniz zaman bu raporlara izin verebilir veya izni iptal edebilirsiniz. Alan adı yöneticisiyseniz bu ayarı yönetici konsolunda değiştirebilirsiniz.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>Bu özelliğin kapatılması, bu cihazın sistem güncellemeleri ve güvenlik gibi önemli hizmetler için gereken bilgileri gönderme özelliğini etkilemez.<ph name="END_PARAGRAPH3"/>
-    <ph name="BEGIN_PARAGRAPH4"/>Çocuğunuzun Brave Hesabında Web ve Uygulama Etkinliği ayarı açıksa çocuğunuzun verileri Brave Hesabına kaydedilebilir. Bu ayarlar hakkında daha fazla bilgiyi ve nasıl düzenleneceklerini families.google.com sayfasında bulabilirsiniz.<ph name="END_PARAGRAPH4"/>
-    <ph name="BEGIN_PARAGRAPH4"/>Cihaz sahibi "Kullanım ve teşhis verilerini gönder" seçeneğini etkinleştirirse kilitlenme raporları da Brave'a yüklenebilir.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="1076176485976385390">Sayfalarda metin imleciyle gezin</translation>
 <translation id="1076382954055048850">Yayın yapan diğer cihazları göster</translation>
 <translation id="1076698951459398590">Temayı Etkinleştir</translation>
@@ -182,6 +180,7 @@
 <translation id="1166583374608765787">Ad güncellemesini inceleyin</translation>
 <translation id="1166596238782048887"><ph name="TAB_TITLE"/> sekmesi, <ph name="DESK_TITLE"/> masasına ait</translation>
 <translation id="1168020859489941584"><ph name="TIME_REMAINING"/> içinde açılacak...</translation>
+<translation id="1169266963600477608">Oyun denetimleri</translation>
 <translation id="1169435433292653700"><ph name="FILE_NAME"/> adlı dosya, hassas veya tehlikeli veriler içeriyor. Yöneticinizin mesajı: "<ph name="CUSTOM_MESSAGE"/>"</translation>
 <translation id="1171135284592304528">Değiştiğinde nesneyi klavye odağıyla vurgula</translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> bir HID cihazına bağlanmak istiyor</translation>
@@ -189,6 +188,7 @@
 <translation id="1173894706177603556">Yeniden adlandır</translation>
 <translation id="1174073918202301297">Kısayol eklendi</translation>
 <translation id="4720923867206970346">Brave size aksini söylemedikçe bağlantınız her zaman güvenlidir</translation>
+<translation id="1174391930667737831">Gizlilik Merkezi</translation>
 <translation id="7425564871384359440">Tarama verilerini senkronize edilmiş tüm cihazlarınızdan ve Brave Hesabınızdan temizlemek için <ph name="BEGIN_LINK"/>senkronizasyon ayarlarına gidin<ph name="END_LINK"/>.</translation>
 <translation id="1175364870820465910">Ya&amp;zdır...</translation>
 <translation id="1176471985365269981">Cihazınızdaki dosyaları veya klasörleri düzenlemesine izin verilmeyen siteler</translation>
@@ -203,6 +203,7 @@
 <translation id="1188807932851744811">Günlük yüklenmedi.</translation>
 <translation id="11901918071949011">{NUM_FILES,plural, =1{Bilgisayarınızda depolanan bir dosyaya erişim}other{Bilgisayarınızda depolanan # dosyaya erişim}}</translation>
 <translation id="6072162090264941173">Tarama verilerini yalnızca bu cihazdan temizleyip Brave Hesabınızda tutmak için <ph name="BEGIN_LINK"/>oturumu kapatın<ph name="END_LINK"/>.</translation>
+<translation id="1191353342579061195">İhtiyaçlarınıza uygun temayı seçin. Temanızı, duvar kağıdınızı, ekran koruyucunuzu ve diğer özellikleri değiştirmek için masaüstünü sağ tıklayın.</translation>
 <translation id="1192706927100816598">{0,plural, =1{Oturumunuz # saniye sonra otomatik olarak kapatılacak.
 <ph name="DOMAIN"/>, akıllı kartınızın takılı kalmasını gerektiriyor.}other{Oturumunuz # saniye sonra otomatik olarak kapatılacak.
 <ph name="DOMAIN"/>, akıllı kartınızın takılı kalmasını gerektiriyor.}}</translation>
@@ -335,7 +336,6 @@
 <translation id="1327794256477341646">Konumunuza erişilmesini gerektiren özellikler çalışmaz</translation>
 <translation id="1329191040029425999">Lütfen cihazınızın güncel olduğundan emin olup tekrar deneyin</translation>
 <translation id="1330145147221172764">Ekran klavyesini etkinleştir</translation>
-<translation id="1331625853030156663"><ph name="APP_NAME"/> uygulamasını açmak için "Uykudan uyanırken kilit ekranını göster"i etkinleştirin</translation>
 <translation id="1331977651797684645">Bu kişi bendim.</translation>
 <translation id="1333489022424033687">Diğer sitelerin cihazınızda depoladığı veriler temizlenmeden, bazı <ph name="ORIGIN"/> özellikleri düzgün bir şekilde çalışmayabilir</translation>
 <translation id="1333965224356556482">Sitelerin konumumu görmesine izin verme</translation>
@@ -371,6 +371,7 @@
 <translation id="1362865166188278099">Mekanik sorun. Yazıcıyı kontrol edin</translation>
 <translation id="1363585519747660921">USB yazıcının yapılandırılması gerekiyor</translation>
 <translation id="1367951781824006909">Dosya seç</translation>
+<translation id="1368603372088757436">Linux, <ph name="DEVICE_TYPE"/> cihazınızda desteklenmiyor. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="1369149969991017342">Anahtar Erişimi (bilgisayarı yalnızca bir veya iki anahtarla kontrol edin)</translation>
 <translation id="1372841398847029212">Hesabınızla senkronize edin</translation>
 <translation id="1373176046406139583">Görünürlük ayarınız, ekranınızın kilidi açıkken kimlerin sizinle içerik paylaşabileceğini denetlemenizi sağlar. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
@@ -407,6 +408,7 @@
 <translation id="1403222014593521787">Proxy'ye bağlanılamıyor</translation>
 <translation id="1405779994569073824">Yüklenemedi.</translation>
 <translation id="1406500794671479665">Doğrulanıyor...</translation>
+<translation id="1407069428457324124">Koyu tema</translation>
 <translation id="1407135791313364759">Tümünü aç</translation>
 <translation id="140723521119632973">Hücresel Etkinleştirme</translation>
 <translation id="1407489512183974736">Ortala ve Kırp</translation>
@@ -422,6 +424,7 @@
 <translation id="1414648216875402825"><ph name="PRODUCT_NAME"/> ürününün kararsız bir sürümüne güncelleme yapıyorsunuz. Bu sürüm geliştirilmekte olan özellikler içerir. Kilitlenmeler ve beklenmeyen hatalar olacaktır. Lütfen dikkatle ilerleyin.</translation>
 <translation id="1415708812149920388">Pano okuma erişimi reddedildi</translation>
 <translation id="1415990189994829608"><ph name="EXTENSION_NAME"/> (uzantı kimliği: "<ph name="EXTENSION_ID"/>") bu tür bir oturum için izinli değil.</translation>
+<translation id="1417428793154876133">{NUM_APPS,plural, =1{Uygulamayı kaldır}other{Uygulamaları kaldır}}</translation>
 <translation id="1418552618736477642">Bildirimler ve uygulamalar</translation>
 <translation id="1418882096915998312">Kurumsal kayıt devam ediyor</translation>
 <translation id="1418954524306642206">Yazıcı PPD'nizi belirtmek için göz atın</translation>
@@ -512,13 +515,12 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1494349716233667318">Siteler, cihazımda yüklü yazı tiplerini kullanmak isteyebilir</translation>
 <translation id="1495677929897281669">Sekmeye dön</translation>
 <translation id="1500297251995790841">Bilinmeyen cihaz [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
-<translation id="1316157493143268086">Desteklenmeyen Brave Uygulamaları hakkında daha fazla bilgi edinin</translation>
+<translation id="6440894523770886280">Desteklenmeyen Brave uygulamaları hakkında daha fazla bilgi edinin</translation>
 <translation id="150411034776756821"><ph name="SITE"/> sitesini kaldır</translation>
 <translation id="1504551620756424144">Paylaşılan klasörleri Windows'da <ph name="BASE_DIR"/> adresinde bulabilirsiniz.</translation>
 <translation id="1506061864768559482">Arama motoru</translation>
 <translation id="1507170440449692343">Bu sayfanın kameranıza erişimi engellenmiştir.</translation>
 <translation id="1507246803636407672">&amp;Sil</translation>
-<translation id="1507884455975553832">Mesajlaşma uygulamalarını oynat</translation>
 <translation id="1509163368529404530">&amp;Grubu geri yükle</translation>
 <translation id="1509281256533087115">USB üzerinden herhangi bir <ph name="DEVICE_NAME_AND_VENDOR"/> cihazına erişme</translation>
 <translation id="1510238584712386396">Başlatıcı</translation>
@@ -636,6 +638,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1611432201750675208">Cihazınız kilitlendi</translation>
 <translation id="1612019740169791082">Kapsayıcınız, disk yeniden boyutlandırmalarını desteklemek üzere yapılandırılmamış. Linux için ayrılan yer miktarını düzenlemek üzere uygulamayı yedekleyip yeni bir kapsayıcıya geri yükleyin.</translation>
 <translation id="1613019471223620622"><ph name="USERNAME"/> adlı kullanıcı için <ph name="DOMAIN"/> alanındaki şifreyi göster</translation>
+<translation id="2811168643228573149">Brave uygulamalarının eski sürümleri Aralık 2022'den sonra açılmayacaktır. Yeni bir sürümün olup olmadığını kontrol edebilirsiniz.</translation>
 <translation id="1614511179807650956">Mobil veri kullanım hakkınızı doldurmuş olabilirsiniz. Daha fazla veri satın almak için <ph name="NAME"/> etkinleştirme portalını ziyaret edin.</translation>
 <translation id="161460670679785907">Telefonunuz algılanamadı</translation>
 <translation id="1248231170668005982">Brave Hesabınızda (<ph name="EMAIL"/>) kaydedin</translation>
@@ -711,6 +714,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1668979692599483141">Öneriler hakkında bilgi edinin</translation>
 <translation id="1670399744444387456">Temel</translation>
 <translation id="1673137583248014546"><ph name="URL"/>, Güvenlik Anahtarınızın markasını ve modelini görmek istiyor</translation>
+<translation id="1676902103953506022"><ph name="USERNAME"/> adlı kullanıcı için <ph name="DOMAIN"/> alanındaki kimlik bilgisi ayrıntıları</translation>
 <translation id="1677306805708094828"><ph name="EXTENSION_TYPE_PARAMETER"/> eklenemiyor</translation>
 <translation id="1677472565718498478">Kalan süre: <ph name="TIME"/></translation>
 <translation id="1679068421605151609">Geliştirici Araçları</translation>
@@ -827,14 +831,15 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1784707308176068866">Birlikte çalışan yerel bir uygulama tarafından istendiğinde arka planda çalış</translation>
 <translation id="1784849162047402014">Cihazda disk alanı az</translation>
 <translation id="1787350673646245458">Kullanıcı resmi</translation>
-<translation id="5770135830298799888"><ph name="ACCOUNT_EMAIL"/> hesabından Brave tarayıcı öğelerinize erişin</translation>
 <translation id="1790976235243700817">Erişimi kaldır</translation>
 <translation id="1791662854739702043">Yüklendi</translation>
 <translation id="1792619191750875668">Genişletilmiş ekran</translation>
 <translation id="1794051631868188691"><ph name="MERCHANT"/> adlı satıcıyı asla gösterme</translation>
 <translation id="1794791083288629568">Bu sorunu düzeltmemize yardımcı olmak için geri bildirim gönderin.</translation>
 <translation id="1795214765651529549">Klasik Temayı Kullan</translation>
+<translation id="1796105431091975902">Eklenecek bir Ansible başucu kitabı seçme</translation>
 <translation id="1796588414813960292">Ses kullanılmasını gerektiren özellikler çalışmaz</translation>
+<translation id="1797117170091578105">Chromebook klavyenizi kullanarak oynayın. Tuşları, belirli işlemler için özelleştirebilirsiniz.</translation>
 <translation id="1800502858278951817">Hiçbir uzantı <ph name="SITE_NAME"/> sitesini okuyup değiştirmek istemedi</translation>
 <translation id="1802624026913571222">Kapak kapatıldığında uyku moduna geç</translation>
 <translation id="1802687198411089702">Sayfa yanıt vermiyor. Sayfanın yanıt vermesini bekleyebilir veya sayfadan çıkabilirsiniz.</translation>
@@ -994,12 +999,14 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1940546824932169984">Bağlı cihazlar</translation>
 <translation id="1941410638996203291">Başlangıç zamanı: <ph name="TIME"/></translation>
 <translation id="1941553344801134989">Sürüm: <ph name="APP_VERSION"/></translation>
+<translation id="1941995177877935582">Tuş eşlemeyi göster</translation>
 <translation id="1942128823046546853">Web sitelerindeki tüm verilerinizi okuma ve değiştirme</translation>
 <translation id="1942600407708803723">Kapak kapatıldığında gücü kapat</translation>
 <translation id="1944528062465413897">Bluetooth eşleme kodu:</translation>
 <translation id="1944921356641260203">Güncelleme bulundu</translation>
 <translation id="1947136734041527201">Bir kimlik hizmetindeki hesabınızı kullanarak web sitelerinde oturum açmanızı sağlar</translation>
 <translation id="1949584741547056205">Hızlı Yanıtlar</translation>
+<translation id="1949849604471335579">Duvar kağıdı, ekran koruyucu, vurgu rengi ve diğer özellikleri kişiselleştirin</translation>
 <translation id="1951012854035635156">Asistan</translation>
 <translation id="1954597385941141174">Siteler USB cihazlara bağlanmak isteyebilir</translation>
 <translation id="1954813140452229842">Paylaşım eklenirken hata oluştu. Lütfen kimlik bilgilerinizi kontrol edin ve tekrar deneyin.</translation>
@@ -1031,6 +1038,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1981434377190976112">Web sitelerindeki tüm verilerinizi okuma</translation>
 <translation id="1984417487208496350">Koruma yok (önerilmez)</translation>
 <translation id="1987317783729300807">Hesaplar</translation>
+<translation id="1987574314042117472">Popüler uygulamaları seçip yükleyin</translation>
 <translation id="1988259784461813694">Şartlar</translation>
 <translation id="1989112275319619282">Göz at</translation>
 <translation id="1989903373608997757">Her zaman kullan</translation>
@@ -1096,6 +1104,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2048554637254265991">Kapsayıcı yöneticisi başlatılırken hata oluştu. Lütfen tekrar deneyin.</translation>
 <translation id="2048653237708779538">İşlem kullanılamıyor</translation>
 <translation id="2050339315714019657">Dikey</translation>
+<translation id="2052572566310583903">Diğer cihazlarınızda yüklü</translation>
 <translation id="2053312383184521053">Boşta Kalma Durumu Verileri</translation>
 <translation id="2054240652864153171"><ph name="PARTITION_SITE_NAME"/> adresinde bölünmüş <ph name="SITE_NAME"/> site verileri temizlensin mi?</translation>
 <translation id="2055585478631012616">Açık sekmeler dahil olmak üzere bu sitelerdeki oturumunuzu kapatacaksınız</translation>
@@ -1255,6 +1264,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2191754378957563929">Açık</translation>
 <translation id="2192505247865591433">Nereden:</translation>
 <translation id="2193365732679659387">Güven ayarları</translation>
+<translation id="455201019595825479">Brave, denemeler sırasında spam, sahtekarlık ve siteler arası paylaşımı kısıtlamanın yollarını arar. Brave ayrıca sitelerin size reklam göstermek için kullanabileceği <ph name="ESTIMATE_INTERESTS_LINK"/>. İlgi alanlarınızı ayarlardan yönetebilirsiniz.</translation>
 <translation id="2194856509914051091">Dikkate alınması gereken noktalar</translation>
 <translation id="2195331105963583686">Bundan sonra <ph name="DEVICE_TYPE"/> cihazını hâlâ kullanabileceksiniz ancak cihaz artık otomatik yazılım ve güvenlik güncellemelerini almayacak</translation>
 <translation id="2195729137168608510">E-posta Koruması</translation>
@@ -1277,6 +1287,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2950533317914339731">Favori Brave Uygulamalarınıza yer işaretleri ekleyin</translation>
 <translation id="2220529011494928058">Sorun bildir</translation>
 <translation id="2220572644011485463">PIN veya şifre</translation>
+<translation id="222115440608612541">Gün doğunca ve gün batınca tema değiştirin</translation>
 <translation id="2221261048068091179"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/></translation>
 <translation id="222201875806112242">Adsız medya kaynağı</translation>
 <translation id="2224444042887712269">Bu ayar <ph name="OWNER_EMAIL"/> kullanıcısına aittir.</translation>
@@ -1393,7 +1404,6 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
     Daha sonra Voice Match'in çocuğunuza uygun olmadığına karar verirseniz bunu Asistan Ayarları'ndan kaldırabilirsiniz. Voice Match kurulumu sırasında çocuğunuzun kaydettiği ses kliplerini görüntülemek veya silmek için çocuğunuzun hesabından <ph name="VOICE_MATCH_SETTINGS_URL"/> adresine gidin.
     <ph name="BR"/>
     <ph name="FOOTER_MESSAGE"/></translation>
-<translation id="2307630946657910723"><ph name="VISUAL_SEARCH_PROVIDER"/> ile sayfanın bir kısmında arama yap</translation>
 <translation id="2309620859903500144">Bu sitenin, hareket veya ışık sensörlerinize erişimi engellenmiştir.</translation>
 <translation id="2311721625890389967">↓</translation>
 <translation id="2312219318583366810">Sayfa URL'si</translation>
@@ -1415,10 +1425,6 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2327920026543055248"><ph name="TOTAL"/> karakter içinden <ph name="CHARACTER"/>. karakteri girin</translation>
 <translation id="2328561734797404498"><ph name="APP_NAME"/> uygulamasını kullanmak için lütfen cihazınızı yeniden başlatın.</translation>
 <translation id="2329597144923131178">Yer işaretlerinize, geçmişinize ve diğer ayarlarınıza tüm cihazlarınızdan erişmek için oturum açın.</translation>
-<translation id="2330878972945412956"><ph name="BEGIN_PARAGRAPH1"/>ChromeOS cihazların otomatik raporlar göndermesine izin vererek ChromeOS ile ilgili düzeltme ve iyileştirme çalışmalarımızda nelere öncelik verileceğini belirlememize yardımcı olursunuz. Kullandığınız özellikler, Android uygulamalarının teşhis ve kullanım verileri, genellikle kullandığınız bellek miktarı ve hatalar bu raporlarda yer alabilir. Bazı birleştirilmiş veriler, Brave uygulamalarına ve iş ortaklarına da (ör. Android geliştiricileri) yardımcı olur.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>İstediğiniz zaman ChromeOS cihaz ayarlarınızda bu raporlara izin verebilir veya izni iptal edebilirsiniz. Alan yöneticisiyseniz bu ayarı yönetici konsolunda değiştirebilirsiniz.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>Brave Hesabınızda Web ve Uygulama Etkinliği ayarı açıksa Android verileriniz Brave Hesabınıza kaydedilebilir. account.google.com adresinde verilerinizi görebilir, silebilir ve hesap ayarlarınızı değiştirebilirsiniz.<ph name="END_PARAGRAPH3"/>
-    <ph name="BEGIN_PARAGRAPH4"/>Cihaz sahibi "Kullanım ve teşhis verilerini gönder" seçeneğini etkinleştirirse kilitlenme raporları da Brave'a yüklenebilir.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="2332131598580221120">Mağazada görüntüle</translation>
 <translation id="2332192922827071008">Tercihleri Aç</translation>
 <translation id="2332515770639153015">Gelişmiş Güvenli Tarama açık</translation>
@@ -1436,6 +1442,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2342740338116612727">Yer işaretleri eklendi</translation>
 <translation id="2343747224442182863">Bu Sekmeyi Odakla</translation>
 <translation id="2344032937402519675">Sunucuyla bağlantı kurulamadı. Ağ bağlantınızı kontrol edip tekrar deneyin. Sorun devam ederse Chromebook'unuzu yeniden başlatmayı deneyin.</translation>
+<translation id="6055117817387598516">Brave Uygulamalarının eski sürümleri Aralık 2022'den sonra açılmayacaktır. Yeni sürüme güncellemek veya bu uygulamayı kaldırmak için yöneticinizle iletişime geçin.</translation>
 <translation id="2345723121311404059"><ph name="PRINTER_NAME"/> adlı yazıcıya 1 sayfa</translation>
 <translation id="23463457491630512">Örneğin, maraton ayakkabısı satın almak için ziyaret ettiğiniz bir site, maraton koşmayı ilgi alanınız olarak tanımlayabilir. Daha sonra bir yarışa kaydolmak için farklı bir siteyi ziyaret ettiğinizde o site ilgi alanlarınıza dayalı olarak size koşu ayakkabısı reklamı gösterebilir.</translation>
 <translation id="2348176352564285430">Uygulama: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1504,6 +1511,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="241082044617551207">Bilinmeyen eklenti</translation>
 <translation id="2412753904894530585">Kerberos</translation>
 <translation id="2416435988630956212">Klavye işlev tuşları</translation>
+<translation id="2418307627282545839">Arayüzünüz parlak ve canlı olsun</translation>
 <translation id="2419131370336513030">Yüklenen uygulamaları görüntüle</translation>
 <translation id="2419706071571366386">Bilgisayarınızı kullanmadığınız zamanlarda güvenlik için çıkış yapın.</translation>
 <translation id="2422125132043002186">Linux geri yükleme işlemi iptal edildi</translation>
@@ -1665,6 +1673,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2553340429761841190"><ph name="PRODUCT_NAME"/>, <ph name="NETWORK_ID"/> ağına bağlanamadı. Lütfen başka bir ağ seçin veya tekrar deneyin.</translation>
 <translation id="2553440850688409052">Bu Eklentiyi Gizle</translation>
 <translation id="2554553592469060349">Seçili dosya çok büyük (maks. boyut: 3 MB).</translation>
+<translation id="25568951186001797">Kısıtlanmış Çerçeve: <ph name="FENCEDFRAME_SITE"/></translation>
 <translation id="2558569818338050235">Tarama geçmişiniz, gördüğünüz reklamları etkiler</translation>
 <translation id="2558896001721082624">Sistem menüsünde erişilebilirlik seçeneklerini her zaman göster</translation>
 <translation id="2559889124253841528">Cihaza Kaydet</translation>
@@ -1693,10 +1702,10 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="25899519884572181">Okuyucu modundan çık</translation>
 <translation id="2593499352046705383">Başlamadan önce verilerinizi yedeklemeyi unutmayın. <ph name="DEVICE_OS"/> yüklenirken sabit diskinizin üzerine yazılır. Daha fazla bilgiyi g.co/flex/InstallGuide sayfasında bulabilirsiniz.</translation>
 <translation id="2129873093718581193">Brave'da arayın veya URL'yi yazın</translation>
+<translation id="2599048253926156421">Kullanıcı adı panoya kopyalandı</translation>
 <translation id="2602501489742255173">Başlamak için yukarı doğru kaydırın</translation>
 <translation id="2603115962224169880">Bilgisayarı temizleme</translation>
 <translation id="2603355571917519942">Voice Match hazır</translation>
-<translation id="2604138917550693049">Google Lens ile görsel ara</translation>
 <translation id="2604255671529671813">Ağ bağlantısı hatası</translation>
 <translation id="2605668923777146443">Better Together seçeneklerinizi görmek için <ph name="LINK_BEGIN"/>Ayarlar<ph name="LINK_END"/>'a gidin.</translation>
 <translation id="2606246518223360146">Verileri Bağla</translation>
@@ -1775,7 +1784,6 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2673135533890720193">Göz atma geçmişinizi okuma</translation>
 <translation id="2674764818721168631">Kapalı</translation>
 <translation id="2678063897982469759">Tekrar etkinleştir</translation>
-<translation id="267978143066552517">{NUM_APPS,plural, =1{Desteklenmeyen 1 uygulamayı sil}other{Desteklenmeyen # uygulamayı sil}}</translation>
 <translation id="268053382412112343">Geç&amp;miş</translation>
 <translation id="2681124317993121768">Misafir profilleri desteklenmiyor</translation>
 <translation id="2682498795777673382">Ebeveyniniz güncelleme yaptı</translation>
@@ -1822,6 +1830,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2724841811573117416">WebRTC günlükleri</translation>
 <translation id="272488616838512378">Birim Dönüştürme</translation>
 <translation id="2725200716980197196">Ağ bağlantısı geri yüklendi</translation>
+<translation id="272741954544380994">Resmi <ph name="VISUAL_SEARCH_PROVIDER"/> ile ara</translation>
 <translation id="2727633948226935816">Bir daha hatırlatma</translation>
 <translation id="2727712005121231835">Gerçek Boyut</translation>
 <translation id="8988766505821653206">Ayrıca tarama verilerini (<ph name="URL"/>) temizle. Bu işlem Brave.com oturumunuzu kapatabilir. <ph name="LEARN_MORE"/></translation>
@@ -1856,6 +1865,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2749836841884031656">SIM</translation>
 <translation id="2749881179542288782">Dilbilgisini Yazım ile Denetle</translation>
 <translation id="2753677631968972007">Site izinlerini manuel olarak kontrol edin.</translation>
+<translation id="2754825024506485820">Üretkenlikten eğlenceye kadar ihtiyacınız olan uygulamaları Google Play Store'da bulun. İstediğiniz zaman uygulama yükleyebilirsiniz.</translation>
 <translation id="2755349111255270002">Bu <ph name="DEVICE_TYPE"/> cihazını sıfırla</translation>
 <translation id="2755367719610958252">Erişilebilirlik özelliklerini yönet</translation>
 <translation id="275662540872599901">ekran kapalı</translation>
@@ -1878,6 +1888,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2773288106548584039">Eski Tarayıcı Desteği</translation>
 <translation id="2773802008104670137">Bu dosya türü bilgisayarınıza zarar verebilir.</translation>
 <translation id="2775104091073479743">Parmak İzlerini Düzenle</translation>
+<translation id="2775858145769350417">{NUM_APPS,plural, =1{Desteklenmeyen 1 uygulamayı kaldırın}other{Desteklenmeyen # uygulamayı kaldırın}}</translation>
 <translation id="2776560192867872731"><ph name="DEVICE_NAME"/> cihazının cihaz adını değiştir</translation>
 <translation id="2777251078198759550">Bu kapsayıcıyı sil</translation>
 <translation id="2781692009645368755">Google Pay</translation>
@@ -1932,6 +1943,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2815693974042551705">Yer işareti klasörü</translation>
 <translation id="2576226373705473566">Şifreleri Brave Hesabınıza kaydetmek için senkronizasyonu açın.</translation>
 <translation id="2816628817680324566">Bu sitenin güvenlik anahtarınızı tanımlamasına izin verilsin mi?</translation>
+<translation id="2817435998497102771">Duvar kağıdı ve stilinizi ayarlayın</translation>
 <translation id="2818476747334107629">Yazıcı ayrıntıları</translation>
 <translation id="2819167288942847344">Uygulamanın beklenmeyen davranışlar sergilemesini önlemek için telefon, tablet veya yeniden boyutlandırılabilir pencerelerde hazır ayarlar kullanın</translation>
 <translation id="2820957248982571256">Taranıyor...</translation>
@@ -2012,7 +2024,6 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="2894757982205307093">Grupta yeni sekme</translation>
 <translation id="289695669188700754">Anahtar Kimliği: <ph name="KEY_ID"/></translation>
 <translation id="2897878306272793870"><ph name="TAB_COUNT"/> sekmeyi açmak istediğinizden emin misiniz?</translation>
-<translation id="2900477968385519153">Ekranınızı <ph name="VISUAL_SEARCH_PROVIDER"/> ile arayın</translation>
 <translation id="290105521672621980">Dosyada desteklenmeyen özellikler kullanılıyor</translation>
 <translation id="2901348420151309559">Son fotoğraflar ve uygulamalar</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> bu yazıcıyla iletişim kuramadı. Yazıcının fişinin takılı olduğundan emin olun ve tekrar deneyin.</translation>
@@ -2044,6 +2055,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <ph name="DOMAIN"/>, akıllı kartınızın takılı kalmasını gerektiriyor.</translation>
 <translation id="2923234477033317484">Bu hesabı kaldır</translation>
 <translation id="2923644930701689793">Telefonunuzun film rulosuna erişin</translation>
+<translation id="2925658782192398150">Tarama tamamlandı, sorun bulunmadı</translation>
 <translation id="2926085873880284723">Varsayılan kısayolları geri yükle</translation>
 <translation id="2926620265753325858"><ph name="DEVICE_NAME"/> desteklenmiyor.</translation>
 <translation id="2927017729816812676">Önbellek Depolama Alanı</translation>
@@ -2221,6 +2233,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3101126716313987672">Loş ışık</translation>
 <translation id="3101709781009526431">Tarih ve saat</translation>
 <translation id="3103451787721578293">Lütfen bu verileri yükleme nedeninizi girin:</translation>
+<translation id="3105339775057145050">Son Başarısız Güncelleme</translation>
 <translation id="4566550081126272435">Brave’a geri dönmek ister misiniz?</translation>
 <translation id="310671807099593501">Site, Bluetooth bağlantısını kullanıyor</translation>
 <translation id="3108931485517391283">Alınamıyor.</translation>
@@ -2255,6 +2268,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3134393957315651797"><ph name="EXPERIMENT_NAME"/> denemesi için deneme durumu seçin. Deneme açıklaması: <ph name="EXPERIMENT_DESCRIPTION"/></translation>
 <translation id="313963229645891001">İndiriliyor, <ph name="STATUS"/></translation>
 <translation id="3139925690611372679">Varsayılan sarı avatar</translation>
+<translation id="3141093262818886744">Yine de aç</translation>
 <translation id="3141318088920353606">Dinleniyor...</translation>
 <translation id="3141917231319778873">Belirtilen istek şu cihazda desteklenmiyor: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3142562627629111859">Yeni Grup</translation>
@@ -2443,6 +2457,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3348038390189153836">Kaldırılabilir cihaz algılandı</translation>
 <translation id="3348131053948466246">Emoji önerildi. Aralarında gezinmek için yukarı veya aşağı, eklemek için Enter'a basın.</translation>
 <translation id="3349933790966648062">Kullanılan Bellek Miktarı</translation>
+<translation id="3353786022389205125">"Uykudan uyanırken kilit ekranını göster" ayarını etkinleştirip tekrar deneyin</translation>
 <translation id="3354972872297836698"><ph name="DEVICE_NAME"/> cihazıyla eşlenemedi; Tekrar denemek için cihaz seçin</translation>
 <translation id="3355936511340229503">Bağlantı hatası</translation>
 <translation id="3356469410714175391">(Sanal kart etkin)</translation>
@@ -2463,7 +2478,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3378627645871606983">Steam'e verilen izinler tüm Steam oyunları ve uygulamaları için geçerlidir.</translation>
 <translation id="337920581046691015"><ph name="PRODUCT_NAME"/> yüklenecek.</translation>
 <translation id="3380365263193509176">Bilinmeyen hata</translation>
-<translation id="3380850890226973980">Bir dahaki sefer sor</translation>
 <translation id="3382073616108123819">Hata! Sistem, bu cihaz için cihaz tanıtıcılarını belirleyemedi.</translation>
 <translation id="3382200254148930874">Gözetim durduruluyor...</translation>
 <translation id="338323348408199233">VPN dışı trafiği engelle</translation>
@@ -2522,6 +2536,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3433621910545056227">Hata! Sistem, cihaz yükleme zamanı özellikleri kilidini oluşturamadı.</translation>
 <translation id="3434107140712555581">%<ph name="BATTERY_PERCENTAGE"/></translation>
 <translation id="3434272557872943250">Çocuğunuz için ek Web ve Uygulama Etkinliği açıksa bu veriler çocuğunuzun Brave Hesabına kaydedilebilir. Bu ayarlar hakkında daha fazla bilgiyi ve nasıl düzenleneceklerini families.google.com sayfasında bulabilirsiniz.</translation>
+<translation id="3434475275396485144">Bu ayar, telefon yöneticiniz tarafından yönetilir</translation>
 <translation id="3434512374684753970">Ses ve Video</translation>
 <translation id="3435688026795609344">"<ph name="EXTENSION_NAME"/>" uzantısı sizden <ph name="CODE_TYPE"/> istiyor.</translation>
 <translation id="3435738964857648380">Güvenlik</translation>
@@ -2586,6 +2601,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3482719661246593752"><ph name="ORIGIN"/> şu dosyaları görüntüleyebilir:</translation>
 <translation id="3484273680291419129">Zararlı yazılım kaldırılıyor...</translation>
 <translation id="3484869148456018791">Yeni sertifika al</translation>
+<translation id="3486950712960783074">Geziniz</translation>
 <translation id="3487007233252413104">anonim işlev</translation>
 <translation id="3490695139702884919">İndiriliyor... %<ph name="PERCENT"/></translation>
 <translation id="3491669675709357988">Çocuğunuzun hesabında Family Link ebeveyn denetimleri kurulu değil. Kurulumu tamamladıktan sonra ebeveyn denetimlerini ekleyebilirsiniz. Ebeveyn denetimleri hakkında bilgileri Keşfet uygulamasında bulabilirsiniz.</translation>
@@ -2746,10 +2762,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3651488188562686558">Kablosuz bağlantıyı kes</translation>
 <translation id="3652817283076144888">Başlatılıyor</translation>
 <translation id="3653160965917900914">Ağ dosya paylaşımları</translation>
-<translation id="3653411319514369774"><ph name="BEGIN_PARAGRAPH1"/>ChromeOS cihazların otomatik raporlar göndermesine izin vererek ChromeOS ile ilgili düzeltme ve iyileştirme çalışmalarımızda nelere öncelik verileceğini belirlememize yardımcı olursunuz. Bu raporlarda hangi özelliklerin ne zaman kullanıldığı ve genel olarak ne kadar bellek kullanıldığı gibi bilgiler yer alabilir.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>Çocuğunuzun ChromeOS cihaz ayarlarından istediğiniz zaman bu raporlara izin verebilir veya izni iptal edebilirsiniz. Alan adı yöneticisiyseniz bu ayarı yönetici konsolunda değiştirebilirsiniz.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>Bu özelliğin kapatılması, bu cihazın sistem güncellemeleri ve güvenlik gibi önemli hizmetler için gereken bilgileri gönderme özelliğini etkilemez.<ph name="END_PARAGRAPH3"/>
-    <ph name="BEGIN_PARAGRAPH4"/>Cihaz sahibi "Kullanım ve teşhis verilerini gönder" seçeneğini etkinleştirirse kilitlenme raporları da Brave'a yüklenebilir.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="3653999333232393305">Mikrofonuma <ph name="HOST"/> tarafından erişilmesine izin vermeye devam et</translation>
 <translation id="3654045516529121250">Erişilebilirlik ayarlarınızı okuma</translation>
 <translation id="3655712721956801464">{NUM_FILES,plural, =1{Bir dosyaya kalıcı erişimi vardır.}other{# dosyaya kalıcı erişimi vardır.}}</translation>
@@ -2819,6 +2831,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3727144509609414201">Kullanılabilir kablosuz ağlar</translation>
 <translation id="3727187387656390258">Pop-up'ı incele</translation>
 <translation id="372722114124766626">Sadece Bir Defa</translation>
+<translation id="3727332897090187514">Eklenmiş not yok</translation>
 <translation id="3727473233247516571">Geri/İleri Önbelleğe Alınmış Alt Çerçeve: <ph name="BACK_FORWARD_CACHE_PAGE_URL"/></translation>
 <translation id="3728188878314831180">Telefonunuzdan bildirimleri yansıtır</translation>
 <translation id="3728681439294129328">Ağ adreslerini yapılandır</translation>
@@ -2877,7 +2890,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3778740492972734840">&amp;Geliştirici araçları</translation>
 <translation id="3778868487658107119">Sorular sorun. Bir şeyler yapmasını isteyin. Bu cihaz sizin kendi Brave'ınızdır ve her zaman yardıma hazırdır.</translation>
 <translation id="3781742599892759500">Linux mikrofon erişimi</translation>
-<translation id="378312418865624974">Bu bilgisayara ilişkin benzersiz bir tanıtıcıyı okuma</translation>
 <translation id="3784472333786002075">Çerezler, web siteleri tarafından oluşturulan dosyalardır. İki tür çerez vardır: Birinci taraf çerezleri ziyaret ettiğiniz site tarafından oluşturulur. Site, adres çubuğunda gösterilir. Üçüncü taraf çerezleri diğer siteler tarafından oluşturulur. Bu siteler, ziyaret ettiğiniz web sitesinde gördüğünüz reklam veya resim gibi içeriğin bir kısmına sahiptir.</translation>
 <translation id="3785308913036335955">Uygulamalar Kısayolunu Göster</translation>
 <translation id="3785727820640310185">Bu site için kaydedilen şifreler</translation>
@@ -2894,7 +2906,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> cihazınız, <ph name="END_LINK"/> kuruluşunuz tarafından yönetilmektedir</translation>
 <translation id="3797900183766075808">"<ph name="SEARCH_TERMS"/>" İçin <ph name="SEARCH_ENGINE"/> &amp;Üzerinde Arama Yap</translation>
 <translation id="3798449238516105146">Sürüm</translation>
-<translation id="379850776451304458">Otomatik mod</translation>
+<translation id="3798632811625902122"><ph name="DEVICE"/> adlı Bluetooth cihaz eşleme izni istiyor.</translation>
 <translation id="3799128412641261490">Anahtar erişimi ayarları</translation>
 <translation id="3800806661949714323">Tümünü göster (önerilen)</translation>
 <translation id="3800828618615365228">Brave ve ChromeOS Ek Şartları</translation>
@@ -2939,7 +2951,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3834728400518755610">Mikrofon ayarlarında yapılan değişiklik, Linux'un kapatılmasını gerektirir. Devam etmek için Linux'u kapatın.</translation>
 <translation id="3834775135533257713">"<ph name="TO_INSTALL_APP_NAME"/>" uygulaması, zaten yüklenmiş olan "<ph name="INSTALLED_APP_NAME"/>" uygulamasıyla çakıştığından eklenemedi.</translation>
 <translation id="3835904559946595746">Linux yedeklemesi geri yüklenemedi</translation>
-<translation id="87441292053582963">Yöneticinizin yüklediği Brave Uygulaması "<ph name="EXTENSION_NAME"/>" artık desteklenmiyor. Uygulamayı kaldırması için yöneticinizle iletişime geçin.</translation>
 <translation id="383669374481694771">Buradaki bilgiler (ör. pil seviyesi, sistem ve uygulama etkinliği, hatalar), bu cihazla ve cihazın nasıl kullanıldığıyla ilgili genel bilgilerdir. Bu veriler Android'i iyileştirmek için kullanılır. Toplu hale getirilen bazı bilgiler, Brave uygulamalarının ve Android geliştiricileri gibi iş ortaklarına ait uygulama ve ürünlerin iyileştirilmesine de yardımcı olur.</translation>
 <translation id="3838085852053358637">Uzantı yüklenemedi</translation>
 <translation id="3838486795898716504">Diğer <ph name="PAGE_TITLE"/></translation>
@@ -3010,6 +3021,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="389901847090970821">Klavye seçin</translation>
 <translation id="3900966090527141178">Şifreleri dışa aktarın</translation>
 <translation id="3903187154317825986">Yerleşik klavye</translation>
+<translation id="3903191712482985591">Başucu kitabı ekleyin</translation>
 <translation id="3904326018476041253">Konum Hizmetleri</translation>
 <translation id="3905761538810670789">Uygulamayı onar</translation>
 <translation id="3908393983276948098"><ph name="PLUGIN_NAME"/> güncel değil</translation>
@@ -3074,7 +3086,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="3955321697524543127">Sitelerin USB cihazlara bağlanmasına izin verme</translation>
 <translation id="3955896417885489542">Kurulumun ardından Google Play seçeneklerini incele</translation>
 <translation id="3957079323242030166">Yedekleme verileri Drive depolama alanı kotanızdan düşülmez.</translation>
-<translation id="3957149833646341246">{NUM_APPS,plural, =1{Uygulamalarınızdan 1 tanesi artık desteklenmiyor.}other{Uygulamalarınızdan # tanesi artık desteklenmiyor.}}</translation>
 <translation id="3957844511978444971">Bu Brave hizmetleri ayarlarına ait seçiminizi onaylamak için "Kabul et" seçeneğine dokunun.</translation>
 <translation id="3958088479270651626">Yer işaretlerini ve ayarları içe aktar</translation>
 <translation id="3960566196862329469">ONC</translation>
@@ -3145,10 +3156,10 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4028467762035011525">Giriş yöntemleri ekle</translation>
 <translation id="4029556917477724407"><ph name="PAGE_TITLE"/> sayfasından geri dön</translation>
 <translation id="4031179711345676612">Mikrofona izin verildi</translation>
-<translation id="3973183426568080640">Bu işlem, tarama verilerini bu cihazdan kalıcı olarak silecektir. Bu profildeki Brave Hesapları, Chromebook'unuzdaki diğer uygulamalar tarafından kullanılabilir. Bu hesapları <ph name="BEGIN_LINK"/><ph name="SETTING_SECTION"/> &gt; <ph name="ACCOUNTS_SECTION"/><ph name="END_LINK"/> bölümüne giderek kaldırabilirsiniz.</translation>
 <translation id="4031527940632463547">Sensörler engellendi</translation>
 <translation id="4033415645631238123">Smart Lock ile artık oturum açılamıyor. Ancak Smart Lock ile kilit açmaya devam edebilirsiniz.</translation>
 <translation id="4033471457476425443">Yeni klasör ekle</translation>
+<translation id="5267915042712078903">Bu işlem, tarama verilerini bu cihazdan kalıcı olarak silecektir. Bu profildeki Brave Hesapları, <ph name="DEVICE_TYPE"/> cihazınızdaki diğer uygulamalar tarafından kullanılabilir. Bu hesapları <ph name="BEGIN_LINK"/><ph name="SETTING_SECTION"/> &gt; <ph name="ACCOUNTS_SECTION"/><ph name="END_LINK"/> bölümüne giderek kaldırabilirsiniz.</translation>
 <translation id="4033963223187371752">Güvenli siteler, güvenli olmayan resimler ve web çerçeveleri gibi içerikler yerleştirebilir</translation>
 <translation id="4034824040120875894">Yazıcı</translation>
 <translation id="4035758313003622889">&amp;Görev yöneticisi</translation>
@@ -3237,8 +3248,8 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
         Ayarları kart menüsünden yönetebilir veya Brave'u Özelleştir bölümünden daha fazla seçeneğe erişebilirsiniz.</translation>
 <translation id="4115002065223188701">Ağ, kapsama alanı dışında</translation>
 <translation id="4115378294792113321">Macenta</translation>
+<translation id="4116663294526079822">Bu sitede her zaman izin ver</translation>
 <translation id="4116704186509653070">Tekrar aç</translation>
-<translation id="4117637339509843559">Koyu mod</translation>
 <translation id="4117714603282104018">Dokunmatik alan dokunsal geribildirim</translation>
 <translation id="4118579674665737931">Lütfen cihazı yeniden başlatın ve tekrar deneyin.</translation>
 <translation id="412022815379960229">Oturum açıp Brave Fotoğraflar'daki anılarınızı keşfetmeye başlayın.</translation>
@@ -3274,7 +3285,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4150201353443180367">Ekran</translation>
 <translation id="4150569944729499860">Ekran bağlamı</translation>
 <translation id="4152670763139331043">{NUM_TABS,plural, =1{1 sekme}other{# sekme}}</translation>
-<translation id="4154406342347435125">Güneş doğunca açık mod, güneş batınca koyu mod. Modlar sizin için otomatik olarak değişir.</translation>
 <translation id="4154664944169082762">Parmak izleri</translation>
 <translation id="4157869833395312646">Microsoft Sunucu Geçitli Şifreleme</translation>
 <translation id="4158364720893025815">Başarılı</translation>
@@ -3318,6 +3328,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4209092469652827314">Büyük</translation>
 <translation id="4209251085232852247">Kapatıldı</translation>
 <translation id="4210048056321123003">Sanal makine indiriliyor</translation>
+<translation id="4210380525132844778">Neden: "<ph name="LIST_NAME"/>" listesinde <ph name="RULE"/> bulundu.</translation>
 <translation id="4211851069413100178">Kullanım ve teşhis verilerini gönder. Teşhis, cihaz ve uygulama kullanımı verilerini otomatik olarak Brave'a göndererek Android deneyiminizin iyileştirilmesine yardımcı olun. Bu veriler, sistem ve uygulama kararlılığı ile diğer özellikleri iyileştirmeye yardımcı olur. Bazı birleştirilmiş veriler, Brave uygulamalarına ve iş ortaklarına da (ör. Android geliştiricileri) yardımcı olur. Bu <ph name="BEGIN_LINK1"/>ayar<ph name="END_LINK1"/>, cihazın sahibi tarafından zorunlu kılınmıştır. Cihazın sahibi bu cihazın teşhis ve kullanım verilerini Brave'a göndermeyi seçebilir. Ek Web ve Uygulama Etkinliği açıksa bu veriler Brave hesabınıza kaydedilebilir. <ph name="BEGIN_LINK2"/>Daha Fazla Bilgi<ph name="END_LINK2"/></translation>
 <translation id="4211904048067111541">Android uygulamalarıyla kullanmayı bırak</translation>
 <translation id="42126664696688958">Dışa Aktar</translation>
@@ -3331,6 +3342,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4227605727325220318">Yeni bir Android telefon ekle</translation>
 <translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{Bu uzantıya izin verilmiyor}other{Bazı uzantılara izin verilmiyor}}</translation>
 <translation id="4231095370974836764"><ph name="DEVICE_TYPE"/> cihazınıza Google Play'den uygulama ve oyunlar yükleyin. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
+<translation id="4231141543165771749">Oyun kontrollerini kapat</translation>
 <translation id="4232375817808480934">Kerberos'u yapılandırın</translation>
 <translation id="4235965441080806197">Oturum açmayı iptal et</translation>
 <translation id="4236163961381003811">Daha fazla uzantı keşfedin</translation>
@@ -3414,6 +3426,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4307992518367153382">Temel Bilgiler</translation>
 <translation id="4309165024397827958">Konum izinleri olan Android uygulama ve hizmetlerinin cihazınızın konumunu kullanmasına izin verin. Brave, konum verilerini düzenli olarak toplayabilir ve konum doğruluğu ile konuma dayalı hizmetleri iyileştirmek için bu verileri anonim bir şekilde kullanabilir.</translation>
 <translation id="4309420042698375243"><ph name="NUM_KILOBYTES"/>K (<ph name="NUM_KILOBYTES_LIVE"/>K aktif)</translation>
+<translation id="4310132194679586591">Bu bağlantıyı açmak için cihazınızdan bir uygulama seçin</translation>
 <translation id="4310139701823742692">Dosya yanlış biçimde. PPD dosyasını kontrol edip tekrar deneyin.</translation>
 <translation id="431076611119798497">&amp;Ayrıntılar</translation>
 <translation id="3047737257561987312">{COUNT,plural, =1{1 Brave Hesabı}other{<ph name="EXTRA_ACCOUNTS"/> Brave Hesabı}}</translation>
@@ -3422,6 +3435,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4314815835985389558">Senkronizasyonu yönetin</translation>
 <translation id="4315933848520197627">Hesabın Bağlantısını Kaldırın</translation>
 <translation id="4316850752623536204">Geliştirici Web Sitesi</translation>
+<translation id="4317733381297736564">Uygulama içi satın alma işlemleri</translation>
 <translation id="4317820549299924617">Doğrulama yapılamadı</translation>
 <translation id="4320177379694898372">İnternet bağlantısı yok</translation>
 <translation id="4322394346347055525">Diğer Sekmeleri Kapat</translation>
@@ -3521,7 +3535,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4415748029120993980">SECG eliptik eğri secp384r1 (önceki adı NIST P-384)</translation>
 <translation id="4416450511678320850">Bu içerik için kullanılabilen uygulama yok</translation>
 <translation id="4416582610654027550">Geçerli bir URL yazın</translation>
-<translation id="4417162649853416189">Görselleri <ph name="VISUAL_SEARCH_PROVIDER"/> ile aramak için üzerine sürükleyin</translation>
 <translation id="4419409365248380979"><ph name="HOST"/> ana makinesinin her zaman çerezleri ayarlamasına izin ver</translation>
 <translation id="4421932782753506458">Mırnav</translation>
 <translation id="4423376891418188461">Ayarları Geri Yükle</translation>
@@ -3592,6 +3605,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="449232563137139956">Siteler genellikle görsel içerik sağlayabilmek için online mağazaların veya haber makalelerinin fotoğrafları gibi resimler gösterir</translation>
 <translation id="4492698018379445570">Alışveriş sepetlerine eklediklerinizi görün ve hazır olduğunuzda ödeme yapın</translation>
 <translation id="4493468155686877504">Önerilen (<ph name="INSTALL_SIZE"/>)</translation>
+<translation id="4495002167047709180"><ph name="SITE"/> sitesinde bu uzantıya izin verilsin mi?</translation>
 <translation id="4495419450179050807">Bu sayfada gösterme</translation>
 <translation id="4497145443434063861">PC ve Chromecast farklı kablosuz ağlar üzerinde (ör. 2,4 GHz ile 5 GHz)</translation>
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> eklentisi kilitlendi</translation>
@@ -3611,6 +3625,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4510479820467554003">Ebeveyn hesap listesi</translation>
 <translation id="451102079304155829">alışveriş sepetleri</translation>
 <translation id="4513872120116766993">Tahmine dayalı yazım</translation>
+<translation id="4513909579793564731">Başucu kitabını uygula</translation>
 <translation id="4513946894732546136">Geri Bildirim</translation>
 <translation id="451407183922382411"><ph name="COMPANY_NAME"/> tarafından destekleniyor</translation>
 <translation id="4514610446763173167">Oynatmak veya duraklatmak için videoyu aç/kapat</translation>
@@ -3658,7 +3673,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4550926046134589611">Bazı desteklenen uygulamalar <ph name="APP_NAME"/> uygulamasında açılmaya devam eder.</translation>
 <translation id="4551763574344810652">Geri Almak için <ph name="MODIFIER_KEY_DESCRIPTION"/> kısayoluna basın</translation>
 <translation id="4553526521109675518">Cihaz dilini değiştirmek için Chromebook'unuzu yeniden başlatmanız gerekir. <ph name="BEGIN_LINK_LEARN_MORE"/>Daha fazla bilgi<ph name="END_LINK_LEARN_MORE"/></translation>
-<translation id="4554491709904933912">Görselleri <ph name="VISUAL_SEARCH_PROVIDER"/> ile aramak için üzerine sürükleyin</translation>
 <translation id="4554591392113183336">Harici uzantı, mevcut bir uzantıyla aynı veya daha eski sürümde.</translation>
 <translation id="4555769855065597957">Gölge</translation>
 <translation id="4808253054156608144">Şifreleri Brave Hesabınıza kaydetmek için oturum açın ve senkronizasyonu etkinleştirin.</translation>
@@ -3903,6 +3917,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4808667324955055115">Engellenen pop-up'lar:</translation>
 <translation id="4809079943450490359">Cihaz yöneticinizden talimatlar:</translation>
 <translation id="480990236307250886">Ana sayfayı aç</translation>
+<translation id="4809927044794281115">Açık tema</translation>
 <translation id="4811212958317149293">Anahtar erişimi klavye otomatik taraması</translation>
 <translation id="4811503964269049987">Seçilen Sekmeleri Grupla</translation>
 <translation id="4813136279048157860">Görsellerim</translation>
@@ -3921,6 +3936,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4536267179863600153">Brave tarayıcı için gelişmiş yazım denetimi (metin, yazım önerileri için Brave'a gönderilir)</translation>
 <translation id="4827904420700932487">Bu resim için QR Kodu oluştur</translation>
 <translation id="4827970183019354123">URL Denetleyicisi</translation>
+<translation id="4828567746430452681">"<ph name="EXTENSION_NAME"/>" artık desteklenmiyor</translation>
 <translation id="482952334869563894"><ph name="VENDOR_ID"/> tarafından sağlanan USB cihazlar</translation>
 <translation id="4829768588131278040">PIN ayarla</translation>
 <translation id="4830026649400230050">Tüm uygun indirmeler, kuruluşunuzun <ph name="WEB_DRIVE"/> hesabına yönlendirilir.</translation>
@@ -3938,7 +3954,9 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4841741146571978176">Gerekli bir sanal makine mevcut değil. Lütfen devam etmek için <ph name="VM_TYPE"/> sanal makinesini kurmayı deneyin.</translation>
 <translation id="4842976633412754305">Bu sayfa kimliği doğrulanmamış kaynaklardan komut dosyaları yüklemeye çalışıyor.</translation>
 <translation id="4844333629810439236">Diğer klavyeler</translation>
+<translation id="484462545196658690">Auto</translation>
 <translation id="6195403640086187022">Ek güvenlik için, Brave Şifre Yöneticisi'ne kaydedilmeden önce şifrelerinizi cihazınızda şifreleyin</translation>
+<translation id="4846628405149428620">Bu sitenin, değişiklikleri nereye kaydedebileceğini seçin</translation>
 <translation id="4846680374085650406">Bu ayar için yöneticinin önerisini uyguluyorsunuz.</translation>
 <translation id="4847902821209177679"><ph name="TOPIC_SOURCE"/> <ph name="TOPIC_SOURCE_DESC"/> seçildi, <ph name="TOPIC_SOURCE"/> albümlerini seçmek için Enter tuşuna basın</translation>
 <translation id="9059376008425695864">Brave Asistan "Ok Brave"</translation>
@@ -3999,20 +4017,19 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4893522937062257019">Kilit ekranında</translation>
 <translation id="4897496410259333978">Daha fazla bilgi edinmek için yöneticinizle iletişim kurun.</translation>
 <translation id="4898011734382862273">"<ph name="CERTIFICATE_NAME"/>" sertifikası bir Sertifika Yetkilisi'ni temsil ediyor.</translation>
+<translation id="4899696330053002588">Reklam içerir</translation>
 <translation id="489985760463306091">Zararlı yazılımları kaldırma işlemini tamamlamak için bilgisayarınızı yeniden başlatın</translation>
 <translation id="4900392736118574277">Başlangıç sayfanız <ph name="URL"/> olarak değiştirildi.</translation>
 <translation id="490051679772058907"><ph name="REFRESH_RATE"/> Hz - birbirine geçmiş</translation>
 <translation id="4900652253009739885">"Seç"e atanmış tek anahtar kaldırılamaz. <ph name="RESPONSE"/> için herhangi bir tuşa basın.</translation>
 <translation id="4901309472892185668"><ph name="EXPERIMENT_NAME"/> denemesi için deneme durumu seçin.</translation>
 <translation id="49027928311173603">Sunucudan indirilen politika geçersiz: <ph name="VALIDATION_ERROR"/>.</translation>
-<translation id="4904511036057277323">Teşhis ve kullanım verilerini otomatik olarak Brave'a göndererek Brave ve Chrome OS özellikleri ile performansını iyileştirmeye yardımcı olun. Bazı birleştirilmiş veriler, Android uygulamalarına ve Brave iş ortaklarına da yardımcı olur. Çocuğunuzun Brave Hesabında Web ve Uygulama Etkinliği ayarı açıksa çocuğunuzun Android verileri Brave Hesabına kaydedilebilir.</translation>
 <translation id="4906490889887219338">Ağ dosya paylaşımlarını kurun veya yönetin. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="4907129260985716018">Bu uzantının site verilerinizi ne zaman okuyup değiştirebileceğini seçin</translation>
 <translation id="4907161631261076876">Bu uygulama çok indirilen bir uygulama değil ve tehlikeli olabilir.</translation>
 <translation id="4907306957610201395">İzin Kategorisi</translation>
 <translation id="4908811072292128752">İki siteye aynı anda göz atmak için yeni bir sekme açın</translation>
 <translation id="5186604830258964546">Bu hesap <ph name="DOMAIN"/> tarafından yönetildiğinden, yer işaretleri, geçmişi, şifreler ve diğer ayarlarınız bu cihazdan silinir. Ancak verileriniz Brave Hesabınızda kalmaya devam eder ve <ph name="BEGIN_LINK"/>Brave Hesap Özeti<ph name="END_LINK"/>'nde yönetilebilir.</translation>
-<translation id="4912265719039610598">Uygulama aktarma telefonunuzun yöneticisi tarafından devre dışı bırakıldı.</translation>
 <translation id="4912643508233590958">Boşta Kalma Uyanmaları</translation>
 <translation id="4915961947098019832">Resim göstermesine izin verilen siteler</translation>
 <translation id="4916542008280060967">Siteye <ph name="FILE_NAME"/> dosyasını düzenleme izni verilsin mi?</translation>
@@ -4135,7 +4152,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="5051836348807686060">Yazım denetimi, seçtiğiniz diller için desteklenmiyor</translation>
 <translation id="5052499409147950210">Siteyi düzenle</translation>
 <translation id="505347685865235222">Adsız grup - <ph name="GROUP_CONTENT_STRING"/></translation>
-<translation id="5053962746715621840">Google Lens ile görsel ara</translation>
 <translation id="4245364511330109980"><ph name="BEGIN_LINK"/>Brave'u Özelleştir<ph name="END_LINK"/> bölümündeki tüm kart seçeneklerini görün</translation>
 <translation id="5056950756634735043">Kapsayıcıya bağlanıyor</translation>
 <translation id="5057110919553308744">Uzantıyı tıkladığınızda</translation>
@@ -4265,7 +4281,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="5185500136143151980">İnternet bağlantısı yok</translation>
 <translation id="5187826826541650604"><ph name="KEY_NAME"/> (<ph name="DEVICE"/>)</translation>
 <translation id="5190187232518914472">En sevdiğiniz anılarınızı yeniden yaşayın. <ph name="LINK_BEGIN"/>Brave Fotoğraflar<ph name="LINK_END"/>'a giderek istediğiniz albümleri ekleyin veya düzenleyin.</translation>
-<translation id="5190316321948122159">{NUM_APPS,plural, =1{Uygulamayı hemen sil}other{Uygulamaları hemen sil}}</translation>
 <translation id="5190926251776387065">Bağlantı noktasını etkinleştir</translation>
 <translation id="5191094172448199359">Girdiğiniz PIN'ler eşleşmiyor</translation>
 <translation id="5191251636205085390">Üçüncü taraf çerezlerin yerini alması amaçlanan yeni teknolojileri öğrenip kontrol edin</translation>
@@ -4284,6 +4299,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="520568280985468584">Ağ başarıyla eklendi. Hücresel ağınızın etkinleşmesi birkaç dakika sürebilir.</translation>
 <translation id="5206215183583316675">"<ph name="CERTIFICATE_NAME"/>" adlı sertifika silinsin mi?</translation>
 <translation id="520621735928254154">Sertifika İçe Aktarma Hatası</translation>
+<translation id="5206562235913517859">Perakendeci mağaza kimliği, ABC-1234 biçimindedir</translation>
 <translation id="7485307793427476822">{COUNT,plural, =1{Güvenliği ihlal edilmiş şifre değiştirildi. Güvenliği ihlal edilmiş # şifreniz daha var. Brave, bu şifreyi hemen kontrol etmenizi öneriyor.}other{Güvenliği ihlal edilmiş şifre değiştirildi. Güvenliği ihlal edilmiş # şifreniz daha var. Brave, bu şifreleri hemen kontrol etmenizi öneriyor.}}</translation>
 <translation id="5207949376430453814">Metin imlecini vurgula</translation>
 <translation id="520840839826327499"><ph name="SERVICE_NAME"/> uygun bir ChromeOS cihazı kullanıp kullanmadığınızı kontrol etmek istiyor.</translation>
@@ -4368,6 +4384,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="52912272896845572">Özel anahtar dosyası geçersiz.</translation>
 <translation id="2986818636564877939">Brave tarayıcıda medya için otomatik olarak altyazı oluşturur (şu anda yalnızca İngilizce olarak kullanılabilir). Tüm ses ve altyazılar yerel olarak işlenir ve cihazınızdan hiçbir zaman dışarı çıkmaz.</translation>
 <translation id="529175790091471945">Bu cihazı biçimlendir</translation>
+<translation id="5292862864186939732">"<ph name="EXTENSION_NAME"/>" uzantısının <ph name="ORIGIN"/> adresinde çalıştırılmasına her zaman izin verilsin mi?</translation>
 <translation id="529296195492126134">Geçici mod desteklenmiyor. Lütfen yöneticinizle iletişime geçin</translation>
 <translation id="5293170712604732402">Ayarları orijinal varsayılan değerlerine geri yükleyin</translation>
 <translation id="5294097441441645251">Küçük harf veya alt çizgi ile başlamalıdır</translation>
@@ -4423,7 +4440,6 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="5345916423802287046">Oturum açtığımda uygulamayı başlat</translation>
 <translation id="5305142070289640735">Brave Asistan'ı kapat</translation>
 <translation id="535123479159372765">Metin diğer cihazdan kopyalandı</translation>
-<translation id="5351654190191249261"><ph name="EXTENSION_NAME"/> adlı uygulamanın güncellenmesi gerekiyor</translation>
 <translation id="5352033265844765294">Zaman Damgası</translation>
 <translation id="6368144843345980623">Şifreleri Brave'dan Aktar</translation>
 <translation id="5355099869024327351">Asistan'ın bildirimleri göstermesini sağlayın</translation>
@@ -4494,7 +4510,6 @@ Bu işleme birden fazla anahtar atayabilirsiniz.</translation>
 <translation id="5427459444770871191">Saat &amp;Yönünde Döndür</translation>
 <translation id="542750953150239272">Devam ederek bu cihazın Brave'dan, operatörünüzden ve cihazınızın üreticisinden (muhtemelen hücresel veri kullanarak) gönderilen güncelleme ve uygulamaları otomatik olarak indirip yükleyebileceğini kabul etmiş olursunuz. Bu uygulamalardan bazıları uygulama içi satın alma seçenekleri sunabilir.</translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Güncelleme mevcut)</translation>
-<translation id="5429373054983029602">Ekranınızı <ph name="VISUAL_SEARCH_PROVIDER"/> ile arayın</translation>
 <translation id="542948651837270806">Güvenilir Platform Modülü donanım yazılımı için bir güncellemenin yüklenmesi gerekiyor. <ph name="TPM_FIRMWARE_UPDATE_LINK"/> ürününe göz atın</translation>
 <translation id="5430931332414098647">Anında Tethering</translation>
 <translation id="5431318178759467895">Renk</translation>
@@ -4518,6 +4533,7 @@ Bu işleme birden fazla anahtar atayabilirsiniz.</translation>
 <translation id="5449716055534515760">Pencereyi &amp;Kapat</translation>
 <translation id="5452976525201205853"><ph name="LANGUAGE"/> (çevrimdışı çalışır)</translation>
 <translation id="5454166040603940656"><ph name="PROVIDER"/> ile</translation>
+<translation id="545484289444831485">Daha fazla arama sonucu göster</translation>
 <translation id="5455603387986949153">ChromeOS Flex cihaz ve bileşen seri numaralarını okuma.</translation>
 <translation id="5457113250005438886">Geçersiz</translation>
 <translation id="5457459357461771897">Bilgisayarınızdaki fotoğrafları, müzikleri ve diğer medyaları okuma ve silme</translation>
@@ -4567,7 +4583,6 @@ Bu işleme birden fazla anahtar atayabilirsiniz.</translation>
 <translation id="5494920125229734069">Tümünü seç</translation>
 <translation id="5495466433285976480">Bu işlem, cihazı tekrar başlattığınızda tüm yerel kullanıcıları, dosyaları, verileri ve diğer ayarları kaldıracak. Tüm kullanıcıların yeniden oturum açması gerekecek.</translation>
 <translation id="5495597166260341369">Ekranı açık tut</translation>
-<translation id="549580971452855947">Görselleri <ph name="VISUAL_SEARCH_PROVIDER"/> ile aramak için sürükleyin</translation>
 <translation id="5496587651328244253">Düzenle</translation>
 <translation id="5496730470963166430">Pop-up'lar göndermesine veya yönlendirmeler kullanmasına izin verilmeyen siteler</translation>
 <translation id="5497251278400702716">Bu dosya</translation>
@@ -4615,7 +4630,6 @@ Bu işleme birden fazla anahtar atayabilirsiniz.</translation>
 <translation id="5539221284352502426">Girdiğiniz şifre, sunucu tarafından reddedildi. Bu durumun olası nedenleri şunlardır: Şifre çok kısadır. Şifre, sayılar veya semboller içermelidir. Şifre, önceki şifrelerden farklı olmalıdır.</translation>
 <translation id="5541694225089836610">İşlem, yöneticiniz tarafından devre dışı bırakıldı</translation>
 <translation id="5542132724887566711">Profil</translation>
-<translation id="4987607652212163034">Hesabınız <ph name="MANAGER_NAME"/> tarafından yönetiliyor. Yöneticiniz bu Brave tarayıcı profilini ve verilerini görüntüleyip düzenleyebilir. Verileriniz arasında yer işaretleri, geçmiş ve şifreler yer alır.</translation>
 <translation id="5542750926112347543"><ph name="DOMAIN"/> tarafından gönderilen çerezler engellendi</translation>
 <translation id="5542949973455282971"><ph name="CARRIER_NAME"/> operatörüne bağlanılıyor</translation>
 <translation id="5543983818738093899">Durum kontrol ediliyor...</translation>
@@ -4629,9 +4643,11 @@ Bu işleme birden fazla anahtar atayabilirsiniz.</translation>
 <translation id="554903022911579950">Kerberos</translation>
 <translation id="5551573675707792127">Klavye ve metin girişi</translation>
 <translation id="5553089923092577885">Sertifika Politikası Eşlemeleri</translation>
+<translation id="5554240068773209752">Kontrolleri özelleştirmek için burayı tıklayın</translation>
 <translation id="5554403733534868102">Bundan sonra güncelleme için beklemek yok</translation>
 <translation id="5554489410841842733">Bu simge, uzantı mevcut sayfayı etkileyebildiğinde görünür.</translation>
 <translation id="5554720593229208774">E-posta Sertifika Yetkilisi</translation>
+<translation id="5554866693883022680">Bu bağlantıyı açmak için <ph name="DEVICE_TYPE"/> cihazınızdan bir uygulama seçin</translation>
 <translation id="5555363196923735206">Kamerayı çevir</translation>
 <translation id="5555525474779371165">Güvenli Tarama korumanızı seçin</translation>
 <translation id="5556459405103347317">Yeniden Yükle</translation>
@@ -4798,6 +4814,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5729712731028706266">&amp;Görüntüle</translation>
 <translation id="5731247495086897348">Ya&amp;pıştır ve Git</translation>
 <translation id="5732392974455271431">Ebeveynleriniz engellemeyi kaldırabilir</translation>
+<translation id="5733866499231170760">Geçersiz kimlik. Girdiğiniz biçim yanlış. Lütfen size gönderilen talimatlara göz atarak kimliği doğru biçimde girdiğinizden emin olun. Bu sorunu çözemiyorsanız lütfen alanı boş bırakıp kuruluma devam edin.</translation>
 <translation id="5734362860645681824">İletişim</translation>
 <translation id="5734697361979786483">Dosya paylaşımı ekle</translation>
 <translation id="5736796278325406685">Lütfen geçerli bir kullanıcı adı girin</translation>
@@ -4855,6 +4872,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5792295754950501287"><ph name="CARD_DESCRIPTION"/> ile ilgili diğer işlemler</translation>
 <translation id="5792728279623964091">Lütfen cihazınızın güç düğmesine dokunun</translation>
 <translation id="5793339252089865437">Güncellemeyi mobil ağ bağlantınız üzerinden indirirseniz limit aşımı ücretleriyle karşılaşabilirsiniz.</translation>
+<translation id="5793420564274426163">Eşleme Onayı</translation>
 <translation id="5794034487966529952"><ph name="DESK_TITLE"/> masasında <ph name="NUM_BROWSERS"/> tarayıcı penceresi açık</translation>
 <translation id="5794414402486823030">Daima sistem görüntüleyici ile açın</translation>
 <translation id="5794700615121138172">Linux paylaşılan klasörler</translation>
@@ -4877,7 +4895,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5816434091619127343">Yazıcıda yapılması istenen değişiklikler yazıcıyı kullanılamaz hale getirecekti.</translation>
 <translation id="8750665647536322704">Şifreler bu cihazdan Brave Hesabınıza taşınsın mı?</translation>
 <translation id="5817918615728894473">Eşle</translation>
-<translation id="581840385858998009">Duvar kağıdı, avatar, ekran koruyucu ve daha fazlasını özelleştirin</translation>
 <translation id="5821565227679781414">Kısayol Oluştur</translation>
 <translation id="5825412242012995131">Açık (Önerilen)</translation>
 <translation id="5826395379250998812"><ph name="DEVICE_TYPE"/> cihazınızı telefonunuza bağlayın. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
@@ -4885,6 +4902,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5827266244928330802">Safari</translation>
 <translation id="5827733057563115968">Sonraki kelime tahmini</translation>
 <translation id="5828633471261496623">Yazdırılıyor...</translation>
+<translation id="5830205393314753525"><ph name="APP_NAME"/> açılamıyor</translation>
 <translation id="5830720307094128296">Sayfayı &amp;Farklı Kaydet...</translation>
 <translation id="583281660410589416">Bilinmiyor</translation>
 <translation id="5832970156002835240">Tüm sitelerde izin ver</translation>
@@ -4950,6 +4968,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5891688036610113830">Tercih edilen kablosuz ağlar</translation>
 <translation id="5895138241574237353">Yeniden başlat</translation>
 <translation id="5895335062901455404">Brave Hesabınızla oturum açtığınızda kayıtlı tercihleriniz herhangi bir ChromeOS Flex cihazda hazır olur. Neyin senkronize edileceğini Ayarlar'dan seçebilirsiniz.</translation>
+<translation id="589541317545606110">Sayfada <ph name="VISUAL_SEARCH_PROVIDER"/> ile Arama Yap</translation>
 <translation id="5896436821193322561">İzin Verme</translation>
 <translation id="5900186025777217044">Smart Lock değişti</translation>
 <translation id="8907706281008466056">Brave Profil fotoğrafı</translation>
@@ -5000,6 +5019,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="594048410531370124">Tuş tanınamadı. <ph name="RESPONSE"/> için herhangi bir tuşa basın.</translation>
 <translation id="5941343993301164315">Lütfen şurada oturum açın: <ph name="TOKEN_NAME"/>.</translation>
 <translation id="5941711191222866238">Küçült</translation>
+<translation id="594221546068848596">Sayfada <ph name="VISUAL_SEARCH_PROVIDER"/> ile arama yap</translation>
 <translation id="5942779427914696408">Cihaz görünürlüğü</translation>
 <translation id="5943127421590245687">Doğrulama işleminiz başarıyla tamamlandı. Kilidini açıp yerel verilerinizi geri yüklemek için lütfen eski <ph name="DEVICE_TYPE"/> cihazınızın şifresini girin.</translation>
 <translation id="5945002094477276055"><ph name="FILE_NAME"/> tehlikeli olabilir. Taranmak üzere Brave Güvenli Tarama'ya gönderilsin mi?</translation>
@@ -5007,7 +5027,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5946591249682680882">Rapor kimliği <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="5948536763493709626">Klavye veya fare bağlayın ya da kuruluma dokunmatik ekranınızı kullanarak devam edin. Bluetooth cihazları kullanıyorsanız cihazlarınızın eşlemeye hazır olduğundan emin olun.</translation>
 <translation id="5949544233750246342">Dosya ayrıştırılamıyor</translation>
-<translation id="5950039854561387265">Bir Dahaki Sefer Sor</translation>
 <translation id="8299982816935941068">Brave, bilgisayarınızda zararlı yazılım bulamadı • Dün kontrol edildi</translation>
 <translation id="5951303645598168883"><ph name="ORIGIN"/> sitesi yerel fontları kullanmak istiyor</translation>
 <translation id="5951624318208955736">Monitör</translation>
@@ -5022,7 +5041,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5957987129450536192">Profil resminizin yakınındaki Seç ve Dinle simgesine dokunun, ardından dinlemek istediğiniz içeriği seçin.</translation>
 <translation id="5959471481388474538">Ağ kullanılamıyor</translation>
 <translation id="595959584676692139">Bu uzantıyı kullanmak için sayfayı yeniden yükleyin</translation>
-<translation id="5960410286721553511">Telefonunuzdaki son fotoğrafları ve medya içeriklerini görün</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (en yüksek <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="5964113968897211042">{COUNT,plural, =0{Tümünü &amp;yeni pencerede aç}=1{&amp;Yeni pencerede aç}other{Tümünü ({COUNT}) &amp;yeni pencerede aç}}</translation>
 <translation id="5965661248935608907">Ayrıca Ana Sayfa düğmesini tıkladığınızda veya Çok Amaçlı Adres Çubuğu'ndan arama yaptığınızda gösterilecek sayfayı da denetler.</translation>
@@ -5076,6 +5094,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6019169947004469866">Kırp</translation>
 <translation id="6019851026059441029">Çok iyi-HD</translation>
 <translation id="6020431688553761150">Sunucu, bu kaynağa erişmeniz için yetki vermedi.</translation>
+<translation id="6021293122504240352"><ph name="APPS"/> uygulama artık desteklenmiyor</translation>
 <translation id="6022526133015258832">Tam Ekranı Aç</translation>
 <translation id="296137235951584143">Brave'u kendinize uyarlayın</translation>
 <translation id="6023643151125006053">Bu cihaz (SN: <ph name="SERIAL_NUMBER"/>) <ph name="SAML_DOMAIN"/> yöneticisi tarafından kilitlendi.</translation>
@@ -5114,6 +5133,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6054961935262556546">Görünürlüğü değiştir</translation>
 <translation id="6055171183283175969">Girdiğiniz şifre yanlış.</translation>
 <translation id="6055392876709372977">PKCS #1 RSA Şifrelemeli SHA-256</translation>
+<translation id="6055544610007596637"><ph name="DEVICE_TYPE"/> cihazınız için Google Play Store'dan uygulama yükleyin</translation>
 <translation id="6056710589053485679">Normal Yeniden Yükle</translation>
 <translation id="6057312498756061228">Bu dosya güvenlik kontrolü için çok büyük. 50 MB'a kadar olan dosyaları açabilirsiniz.</translation>
 <translation id="6057381398996433816">Bu sitenin hareket ve ışık sensörlerini kullanması engellendi.</translation>
@@ -5122,6 +5142,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6063284707309177505">QR kodu oluştur</translation>
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Not:<ph name="END_BOLD"/> Benzer bir sese veya ses kayıtlarına sahip olan kişiler de <ph name="SUPERVISED_USER_NAME"/> kullanıcısının kişisel sonuçlarına erişebilir. Pilden tasarruf etmek için <ph name="SUPERVISED_USER_NAME"/> kullanıcısının Asistan ayarlarından "Ok Brave" ifadesinin yalnızca bu cihaz güç kaynağına bağlıyken açık olmasını seçebilirsiniz.</translation>
 <translation id="6064217302520318294">Ekran kilidi</translation>
+<translation id="6065145031947216733">Tarama etkinliğiniz ayrılsın mı?</translation>
 <translation id="6065289257230303064">Sertifika Konusu Dizin Öznitelikleri</translation>
 <translation id="6066794465984119824">Görüntü karması ayarlanmamış</translation>
 <translation id="6069464830445383022">Brave Hesabınızla Chromebook'unuzda oturum açarsınız</translation>
@@ -5200,6 +5221,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6129953537138746214">Boşluk</translation>
 <translation id="6130692320435119637">Kablosuz ağ ekle</translation>
 <translation id="6130887916931372608">Klavye tuşu</translation>
+<translation id="6135823405800500595">Telefonunuzun yakında bulunduğundan, kilidinin ve Bluetooth ile kablosuz bağlantının da açık olduğundan emin olun</translation>
 <translation id="6136114942382973861">İndirme çubuğunu kapat</translation>
 <translation id="6136287496450963112">Güvenlik anahtarınız PIN ile korunmuyor. Parmak izlerini yönetmek için önce PIN oluşturun.</translation>
 <translation id="6138680304137685902">SHA-384 ile X9.62 ECDSA İmzası</translation>
@@ -5272,7 +5294,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6218058416316985984"><ph name="DEVICE_TYPE"/> çevrimdışı. İnternete bağlanıp tekrar deneyin.</translation>
 <translation id="6220413761270491930">Uzantı Yükleme Hatası</translation>
 <translation id="6223447490656896591">Özel Resim:</translation>
-<translation id="62236885217374510">{NUM_APPS,plural, =1{Uygulamayı Hemen Sil}other{Uygulamaları Hemen Sil}}</translation>
 <translation id="6224481128663248237">Biçimlendirme başarıyla tamamlandı!</translation>
 <translation id="622537739776246443">Profil silinecek</translation>
 <translation id="6225475702458870625"><ph name="PHONE_NAME"/> telefonunuzdan veri bağlantısı yapılabilir</translation>
@@ -5331,7 +5352,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6270391203985052864">Siteler bildirim gönderme izni isteyebilir</translation>
 <translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>Sistem ve uygulama bilgilerini<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>metrikleri<ph name="END_LINK2"/> gönder</translation>
 <translation id="6271348838875430303">düzeltme geri alındı</translation>
-<translation id="6271780480930459892">En güncel sürüm için yöneticinizle iletişime geçin.</translation>
 <translation id="6272643420381259437">Eklenti indirilirken bir hata (<ph name="ERROR"/>) oluştu</translation>
 <translation id="6273677812470008672">Kalite</translation>
 <translation id="6274202259872570803">Ekran video kaydı</translation>
@@ -5419,6 +5439,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="635609604405270300">Cihazı kapatmayın</translation>
 <translation id="4817583816512767754">Yalnızca parolanızı bilen biri, şifrelenmiş verilerinizi okuyabilir. Parola Brave'a gönderilmez veya Brave tarafından saklanmaz. Parolanızı unutursanız veya bu ayarı değiştirmek isterseniz <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlamanız<ph name="END_LINK"/> gerekir.</translation>
 <translation id="6357305427698525450">Bazı desteklenen bağlantılar <ph name="APP_NAME"/> veya <ph name="APP_NAME_2"/> uygulamalarında açılmaya devam eder.</translation>
+<translation id="6357794994761110294">Hiçbir uzantının <ph name="SITE_NAME"/> sitesini okuyup değiştirmesine izin verilmez</translation>
 <translation id="6358884629796491903">Ejderha</translation>
 <translation id="6361850914223837199">Hata ayrıntıları:</translation>
 <translation id="6362853299801475928">&amp;Sorun bildir...</translation>
@@ -5444,10 +5465,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="63849924261838903">{NUM_TABS,plural, =1{Adsız grup - 1 sekme}other{Adsız grup - # sekme}}</translation>
 <translation id="6385149369087767061">İnternete bağlanıp tekrar deneyin</translation>
 <translation id="6385543213911723544">Siteler çerez verilerini kaydedebilir ve okuyabilir</translation>
-<translation id="6385599849914981574"><ph name="BEGIN_PARAGRAPH1"/>ChromeOS cihazların otomatik raporlar göndermesine izin vererek ChromeOS ile ilgili düzeltme ve iyileştirme çalışmalarımızda nelere öncelik verileceğini belirlememize yardımcı olursunuz. Kullandığınız özellikler ve genellikle kullandığınız bellek miktarı gibi bilgiler bu raporlarda yer alabilir.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>İstediğiniz zaman Brave cihaz ayarlarınızda bu raporlara izin verebilir veya izni iptal edebilirsiniz. Alan yöneticisiyseniz bu ayarı yönetici konsolunda değiştirebilirsiniz.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>Bu özelliğin kapatılması cihazınızın sistem güncellemeleri ve güvenlik gibi önemli hizmetler için gereken bilgileri gönderme özelliğini etkilemez.<ph name="END_PARAGRAPH3"/>
-    <ph name="BEGIN_PARAGRAPH4"/>Cihaz sahibi "Kullanım ve teşhis verilerini gönder" seçeneğini etkinleştirirse kilitlenme raporları da Brave'a yüklenebilir.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="6385994920693662133">Uyarı: Ayrıntılı günlük kaydı etkin. Aşağıdaki günlüklerde URL'ler veya diğer hassas bilgiler bulunabilir. Lütfen bu bilgileri inceleyin ve göndermenizde sakınca olmadığından emin olun.</translation>
 <translation id="6387674443318562538">Dikey Böl</translation>
 <translation id="6388429472088318283">Dil ara</translation>
@@ -5471,7 +5488,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6410328738210026208">Kanal değiştir ve Powerwash işlemini yap</translation>
 <translation id="6410390304316730527">Güvenli Tarama, sizi yanıltarak kötü amaçlı yazılım yüklemek veya kişisel bilgilerinizi (örneğin, şifreler, telefon numaraları veya kredi kartları) ifşa etmek gibi tehlikeli bir şey yapmanıza neden olabilecek saldırganlara karşı korur. Bu özelliği kapatırsanız tanıdık olmayan veya saygınlığı şüpheli sitelere göz atarken dikkatli olun.</translation>
 <translation id="6410668567036790476">Arama motoru ekleyin</translation>
-<translation id="6412293788397766100">Son bir nokta...</translation>
 <translation id="641469293210305670">Güncellemeleri ve Uygulamaları Yükle</translation>
 <translation id="6414878884710400018">Sistem Tercihleri'ni aç</translation>
 <translation id="6414888972213066896">Ebeveyninize bu siteyi ziyaret etmenizin uygun olup olmadığını sordunuz</translation>
@@ -5567,7 +5583,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6504601948739128893">Cihazınızda yüklü yazı tiplerini kullanmasına izin verilmeyen siteler</translation>
 <translation id="6504611359718185067">Yazıcı eklemek için İnternet'e bağlanın</translation>
 <translation id="6506374932220792071">SHA-256 ile X9.62 ECDSA İmzası</translation>
-<translation id="6507936476364432879">Teşhis ve kullanım verilerini otomatik olarak Brave'a göndererek Brave ve Chrome OS özellikleri ile performansını iyileştirmeye yardımcı olun.</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> ile ilgili</translation>
 <translation id="6508261954199872201">Uygulama: <ph name="APP_NAME"/></translation>
 <translation id="6509207748479174212">Medya lisansı</translation>
@@ -5639,6 +5654,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="6568283005472142698">Sekme Araması</translation>
 <translation id="65711204837946324">İndirme için izin gerekiyor</translation>
 <translation id="6571772921213691236">Oturum açma verilerini düzenleyin</translation>
+<translation id="6573096386450695060">Her zaman izin ver</translation>
 <translation id="6573497332121198392">Kısayol kaldırılamıyor</translation>
 <translation id="657402800789773160">Bu &amp;Sayfayı Tekrar Yükle</translation>
 <translation id="6577284282025554716">İndirme işlemi iptal edildi: <ph name="FILE_NAME"/></translation>
@@ -5668,7 +5684,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şifreyi hemen kontrol etmenizi öneriyor.}other{Güvenliği ihlal edilmiş şifre değiştirildi.
 
 Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şifreleri hemen kontrol etmenizi öneriyor.}}</translation>
-<translation id="6595792813574514527">Görselleri <ph name="VISUAL_SEARCH_PROVIDER"/> ile aramak için sürükleyin</translation>
 <translation id="6596325263575161958">Şifreleme seçenekleri</translation>
 <translation id="6596816719288285829">IP Adresi</translation>
 <translation id="6597017209724497268">Örnek Sayısı</translation>
@@ -5884,6 +5899,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> kök olarak çalıştırılamaz.</translation>
 <translation id="6812841287760418429">Değişiklikleri koru</translation>
 <translation id="6813907279658683733">Tüm Ekran</translation>
+<translation id="6815376457351236663">Yine de Aç</translation>
 <translation id="6817174620439930047">Bir site MIDI cihazlarına erişmek için sisteme özgü mesajları kullanmak istediğinde sor (önerilen)</translation>
 <translation id="6818198425579322765">Çevrilecek Sayfanın Dili</translation>
 <translation id="6818547713623251698">Telefonunuzdaki fotoğrafları, medya içeriklerini, bildirimleri ve uygulamaları görün</translation>
@@ -5964,6 +5980,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="8282772389915299166">Bu temizleme işlemi sırasında bilgisayarımda bulunan zararlı yazılımlar, sistem ayarları ve işlemlerle ilgili ayrıntıları Brave'a bildir</translation>
 <translation id="6896758677409633944">Kopyala</translation>
 <translation id="6897363604023044284">Temizlenecek siteleri seçin</translation>
+<translation id="6897688156970667447">Düşük ışıkta faydalıdır ve pilden tasarruf eder</translation>
 <translation id="6898440773573063262">Kiosk uygulamaları artık bu cihazda otomatik olarak başlatılacak şekilde yapılandırılabilir.</translation>
 <translation id="6900284862687837908">Arka Plan Uygulaması: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="6900532703269623216">Gelişmiş koruma</translation>
@@ -6080,6 +6097,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7002055706763150362">Brave'ın, Chromebook için Smart Lock özelliğini kurmak amacıyla, bunu talep eden kullanıcının siz olduğunuzdan emin olması gerekir. Başlamak için şifrenizi girin.</translation>
 <translation id="7003339318920871147">Web veritabanları</translation>
 <translation id="7003454175711353260">{COUNT,plural, =1{{COUNT} dosya}other{{COUNT} dosya}}</translation>
+<translation id="7003705861991657723">Alfa</translation>
 <translation id="7003723821785740825">Cihazınızın kilidini açmak için daha hızlı bir yöntem ayarlayın</translation>
 <translation id="7003844668372540529"><ph name="VENDOR_NAME"/> tarafından sağlanan <ph name="PRODUCT_ID"/> ürün kimliğine sahip bilinmeyen ürün</translation>
 <translation id="7004402701596653846">Sitede MIDI işlevi kullanılabilir</translation>
@@ -6096,6 +6114,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7008815993384338777">Şu anda dolaşımda değil</translation>
 <translation id="7009709314043432820"><ph name="APP_NAME"/>, kameranızı kullanıyor.</translation>
 <translation id="701080569351381435">Kaynağı Görüntüle</translation>
+<translation id="7011797924920577670">ilgi alanlarınızı tahmin eder</translation>
 <translation id="7014174261166285193">Yükleme işlemi başarısız oldu.</translation>
 <translation id="7014480873681694324">Vurgulamayı Kaldır</translation>
 <translation id="7017004637493394352">Tekrar "Ok Brave" deyin</translation>
@@ -6161,6 +6180,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7082568314107259011"><ph name="NETWORK_NAME"/>, yöneticiniz tarafından yönetiliyor</translation>
 <translation id="1439926347196400598">Brave'un ses kaydetmesine izin verilsin mi?</translation>
 <translation id="708550780726587276">(yapılandırılmamış)</translation>
+<translation id="7086531709814430567">Bu uzantıların <ph name="ORIGIN"/> adresinde çalıştırılmasına her zaman izin verilsin mi?</translation>
 <translation id="7086672505018440886">Brave günlük dosyalarını arşive dahil et.</translation>
 <translation id="7088434364990739311">Güncelleme denetimi başlatılamadı (hata kodu <ph name="ERROR"/>).</translation>
 <translation id="7088674813905715446">Bu cihaz, yönetici tarafından "sağlanmıyor" durumuna alınmış. Kayıt için tekrar etkinleştirmek üzere lütfen yöneticinizden cihazı bekleme durumuna almasını isteyin.</translation>
@@ -6171,6 +6191,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7093866338626856921"><ph name="HOSTNAMES"/> adlı cihazlarla veri alışverişi</translation>
 <translation id="7098389117866926363">USB-C cihaz (arkadaki sol bağlantı noktası)</translation>
 <translation id="7098447629416471489">Diğer kayıtlı arama motorları burada görünür</translation>
+<translation id="7098936390718461001">{NUM_APPS,plural, =1{Uygulamayı kaldır}other{Uygulamaları kaldır}}</translation>
 <translation id="7099337801055912064">Büyük PPD yüklenemiyor. Maksimum boyut 250 kB'tır.</translation>
 <translation id="7102687220333134671">Otomatik güncellemeler açık</translation>
 <translation id="7102832101143475489">İstek zaman aşımına uğradı</translation>
@@ -6258,7 +6279,6 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{Sayfadan çık}other{Sayfalardan çık}}</translation>
 <translation id="7207457272187520234">Kullanım ve teşhis verilerini gönder. Bu cihaz şu anda teşhis, cihaz ve uygulama kullanımı verilerini otomatik olarak Brave'a gönderiyor. Bu veriler, sistem ve uygulama kararlılığı ile diğer özellikleri iyileştirmeye yardımcı olur. Bazı birleştirilmiş veriler, Brave uygulamalarına ve iş ortaklarına da (ör. Android geliştiricileri) yardımcı olur. Bu ayar, cihazın sahibi tarafından zorunlu kılınmıştır. Ek Web ve Uygulama Etkinliği açıksa bu veriler Brave Hesabınıza kaydedilebilir.</translation>
 <translation id="7207631048330366454">Uygulamalarda ara</translation>
-<translation id="720808544705441386">Uygulama açılamıyor</translation>
 <translation id="7210499381659830293">Uzantı yazıcılar</translation>
 <translation id="7211783048245131419">Henüz atanmış anahtar yok</translation>
 <translation id="7212097698621322584">Değiştirmek için geçerli PIN'inizi girin. PIN'inizi bilmiyorsanız güvenlik anahtarınızı sıfırlayarak yeni bir PIN oluşturmanız gerekir.</translation>
@@ -6318,6 +6338,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7264695323040866038">Desteklenen web bağlantılarını açmak için her zaman <ph name="APP"/> uygulaması kullanılsın mı?</translation>
 <translation id="7267044199012331848">Sanal makine yüklenemedi. Lütfen tekrar deneyin veya yöneticinizle iletişime geçin. Hata kodu: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7267875682732693301">Parmak izinizin tüm farklı noktalarını eklemek için parmağınızı kaldırıp dokundurmaya devam edin</translation>
+<translation id="7267898843336437186">Bu sitenin görüntüleyebileceği bir klasör seçin</translation>
 <translation id="7268127947535186412">Bu ayar, cihazın sahibi tarafından yönetilir.</translation>
 <translation id="7269736181983384521">Yakındakilerle Paylaş veri kullanımı</translation>
 <translation id="7272674038937250585">Açıklama sağlanmadı</translation>
@@ -6601,7 +6622,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7559719679815339381">Lütfen bekleyin....Kiosk uygulaması güncelleniyor. USB çubuğunu çıkarmayın.</translation>
 <translation id="7560756177962144929"><ph name="DEVICE_TYPE"/> cihazınızı senkronize edin</translation>
 <translation id="7561196759112975576">Her zaman</translation>
-<translation id="7562099761826673163">Cihazınızı kişiselleştirme</translation>
+<translation id="7561982940498449837">Menüyü kapat</translation>
 <translation id="756445078718366910">Tarayıcı Penceresini Aç</translation>
 <translation id="7564847347806291057">İşlemi bitir</translation>
 <translation id="756503097602602175">Oturum açılmış Brave Hesaplarınızı <ph name="LINK_BEGIN"/>Ayarlar<ph name="LINK_END"/>'dan yönetebilirsiniz. Web sitelerine ve uygulamalara verdiğiniz izinler, tüm hesaplar için geçerli olabilir. Sitelerin veya uygulamaların hesap bilgilerinize erişmesini istemiyorsanız <ph name="DEVICE_TYPE"/> cihazınızda misafir olarak oturum açabilir ya da internette gezinmek için <ph name="LINK_2_BEGIN"/>Gizli pencere<ph name="LINK_2_END"/> kullanabilirsiniz.</translation>
@@ -6625,6 +6646,7 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7582582252461552277">Bu ağı tercih et</translation>
 <translation id="7582844466922312471">Mobil Veriler</translation>
 <translation id="7583948862126372804">Sayı</translation>
+<translation id="7585106857920830898">Kuruluşunuzun güvenlik politikalarıyla uyumlu olup olmadığı kontrol ediliyor...</translation>
 <translation id="8201192017531062522">Brave, Brave Uygulamaları açık olduğu sürece çalışmaya devam edecektir.</translation>
 <translation id="758895749110326677">Chromebook'larda oyun deneyimini iyileştirmemize yardımcı olun</translation>
 <translation id="7589461650300748890">Aman, dikkatli olun.</translation>
@@ -6663,7 +6685,6 @@ Güvenliği ihlal edilmiş # şifreniz daha var. Brave Şifre Yöneticisi bu şi
 <translation id="7624337243375417909">caps lock kapalı</translation>
 <translation id="7625568159987162309">İzinleri ve sitelerde depolanan verileri göster</translation>
 <translation id="7625823789272218216">Sola Yeni Sekme</translation>
-<translation id="7207456302801184289">Brave'a Hoş Geldiniz</translation>
 <translation id="7628201176665550262">Yenileme Hızı</translation>
 <translation id="7629827748548208700">Sekme: <ph name="TAB_NAME"/></translation>
 <translation id="7630426712700473382">Bu cihaz, <ph name="MANAGER"/> tarafından yönetilmekte olup her defasında oturum açmanızı gerektirmektedir.</translation>
@@ -6815,7 +6836,6 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7758450972308449809">Ekranınızın sınırlarını ayarlayın</translation>
 <translation id="7760004034676677601">Bu beklediğiniz başlangıç sayfası mı?</translation>
 <translation id="7762024824096060040">Bu hesap kullanılamıyor</translation>
-<translation id="7762463735017901568">Bildirim senkronizasyonu telefonunuzun yöneticisi tarafından devre dışı bırakıldı</translation>
 <translation id="7764225426217299476">Adres ekle</translation>
 <translation id="7764256770584298012"><ph name="DOWNLOAD_DOMAIN"/> alan adından <ph name="DOWNLOAD_RECEIVED"/></translation>
 <translation id="7765158879357617694">Taşı</translation>
@@ -6830,7 +6850,6 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7768784765476638775">Seç ve Dinle</translation>
 <translation id="7770406201819593386">ChromeOS Flex teşhis testlerini çalıştırma.</translation>
 <translation id="7770450735129978837">Sağ fare tıklaması</translation>
-<translation id="7770566005197683248">Arayüzünüz aydınlık ve canlı olsun.</translation>
 <translation id="7770612696274572992">Resim diğer cihazdan kopyalandı</translation>
 <translation id="7771452384635174008">Düzen</translation>
 <translation id="7772032839648071052">Parolayı onayla</translation>
@@ -6865,7 +6884,6 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7797571222998226653">Kapalı</translation>
 <translation id="7798844538707273832"><ph name="PERMISSION"/> izni otomatik olarak engellendi</translation>
 <translation id="7799299114731150374">Duvar kağıdı başarıyla ayarlandı</translation>
-<translation id="7799817062559422778">Açık mod</translation>
 <translation id="7800518121066352902">Saat Yönünün &amp;Tersine Döndür</translation>
 <translation id="1040069800786635119">Burada yaptığınız değişiklikler yalnızca Lacros Brave Tarayıcı'ya uygulanır. Brave Tarayıcı ayarlarınızda değişiklik yapmak için Brave Tarayıcı'yı açıp ayarlara gidin.</translation>
 <translation id="780301667611848630">Hayır, teşekkürler</translation>
@@ -6876,7 +6894,6 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7807711621188256451">Kameranıza <ph name="HOST"/> tarafından erişilmesine her zaman izin verin</translation>
 <translation id="7810202088502699111">Bu sayfadaki pop-up'lar engellendi.</translation>
 <translation id="781167124805380294"><ph name="FILE_NAME"/> dosyasını yayınlayın</translation>
-<translation id="7811886112806886172">Teşhis ve kullanım verilerini otomatik olarak Brave'a göndererek Brave ve Chrome OS özellikleri ile performansını iyileştirmeye yardımcı olun. Bazı birleştirilmiş veriler, Android uygulamalarına ve Brave iş ortaklarına da yardımcı olur. Brave Hesabınızda Web ve Uygulama Etkinliği ayarı açıksa Android verileriniz Brave Hesabınıza kaydedilebilir.</translation>
 <translation id="7814458197256864873">K&amp;opyala</translation>
 <translation id="7815680994978050279">Tehlikeli indirme işlemi engellendi</translation>
 <translation id="7817361223956157679">Dokunmatik klavye henüz Linux uygulamalarında çalışmıyor</translation>
@@ -6888,6 +6905,7 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7824864914877854148">Bir hata nedeniyle yedekleme işlemi tamamlanamadı</translation>
 <translation id="782590969421016895">Mevcut sayfaları kullan</translation>
 <translation id="7826174860695147464">Eski Tarayıcı Desteği (LBS) - Internals</translation>
+<translation id="7826190688224781865">Perakendeci mağaza kimliği kodu</translation>
 <translation id="7826249772873145665">ADB hata ayıklama işlevi devre dışı</translation>
 <translation id="7826254698725248775">Çakışan cihaz tanımlayıcısı.</translation>
 <translation id="7828731929332799387">Bu, üçüncü taraf bağlamında mevcut tüm çerezleri ve site verilerini siler. Devam etmek istiyor musunuz?</translation>
@@ -6903,6 +6921,7 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7839051173341654115">Medyayı görüntüle/yedekle</translation>
 <translation id="7839192898639727867">Sertifika Konusu Anahtar Kimliği</translation>
 <translation id="7842692330619197998">Yeni bir hesap oluşturmanız gerekiyorsa g.co/BraveEnterpriseAccount adresini ziyaret edin.</translation>
+<translation id="78427265591841839"><ph name="VISUAL_SEARCH_PROVIDER"/> ile sayfanın bir kısmında arama yap</translation>
 <translation id="784273751836026224">Linux'u kaldır</translation>
 <translation id="7843786652787044762"><ph name="WEB_DRIVE"/> cihazında oturum aç</translation>
 <translation id="7844992432319478437">Fark güncelleniyor</translation>
@@ -6910,6 +6929,7 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7847212883280406910"><ph name="IDS_SHORT_PRODUCT_OS_NAME"/> ürününe geçmek için Ctrl + Alt + S tuşlarına basın.</translation>
 <translation id="7849264908733290972">&amp;Resmi Yeni Sekmede Aç</translation>
 <translation id="784934925303690534">Zaman aralığı</translation>
+<translation id="7850353716413205957"><ph name="VISUAL_SEARCH_PROVIDER"/> ile Sayfanın Bir Kısmında Arama Yap</translation>
 <translation id="7850717413915978159"><ph name="BEGIN_PARAGRAPH1"/>ChromeOS cihazların otomatik raporlar göndermesine izin vererek ChromeOS ile ilgili düzeltme ve iyileştirme çalışmalarımızda nelere öncelik verileceğini belirlememize yardımcı olursunuz. Chrome OS kilitlenme zamanları, kullandığınız özellikler, genellikle kullandığınız bellek miktarı ve Android uygulamalarının teşhis ile kullanım verileri gibi bilgiler bu raporlarda yer alabilir. Bazı birleştirilmiş veriler, Brave uygulamalarına ve iş ortaklarına da (ör. Android geliştiricileri) yardımcı olur.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>İstediğiniz zaman ChromeOS cihaz ayarlarınızda bu raporlara izin verebilir veya izni iptal edebilirsiniz. Alan yöneticisiyseniz bu ayarı yönetici konsolunda değiştirebilirsiniz.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>Brave Hesabınızda Web ve Uygulama Etkinliği ayarı açıksa Android verileriniz Brave Hesabınıza kaydedilebilir. account.google.com adresinde verilerinizi görebilir, silebilir ve hesap ayarlarınızı değiştirebilirsiniz.<ph name="END_PARAGRAPH3"/></translation>
@@ -6940,7 +6960,6 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7876027585589532670">Kısayol düzenlenemiyor</translation>
 <translation id="7877451762676714207">Bilinmeyen sunucu hatası. Lütfen tekrar deneyin veya sunucu yöneticinize başvurun.</translation>
 <translation id="7879631849810108578">Kısayol ayarlandı: <ph name="IDS_SHORT_SET_COMMAND"/></translation>
-<translation id="6384359666082467439">Brave'a hoş geldiniz <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6922111016435971292">Brave, açıkken ve etkin durumdayken dahil olduğunuz bir grubu veya "kohortu" belirlemek için 7 günden eski tarama geçmişinizi kullanır. Reklamverenler, grup için reklam seçebilirler. Tarama geçmişiniz cihazınızda gizli tutulur. Bu deneme yalnızca <ph name="BEGIN_LINK"/>bazı bölgelerde<ph name="END_LINK"/> etkindir.</translation>
 <translation id="7880823633812189969">Yeniden başlattığınızda yerel veriler silinir</translation>
 <translation id="7881066108824108340">DNS</translation>
@@ -6964,6 +6983,7 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7901405293566323524">Phone Hub</translation>
 <translation id="7903290522161827520">Tarayıcı bileşenlerini mi arıyorsunuz? Şu adresi ziyaret edin:</translation>
 <translation id="7903345046358933331">Sayfa yanıt vermiyor. Yanıt vermesini bekleyebilir veya kapatabilirsiniz.</translation>
+<translation id="7903429136755645827">Oyun denetimlerinizi özelleştirmek için tıklayın</translation>
 <translation id="7903742244674067440">Dosyada şu sertifika yetkililerini tanımlayan sertifikalarınız var</translation>
 <translation id="7903925330883316394">Yardımcı Program: <ph name="UTILITY_TYPE"/></translation>
 <translation id="7904526211178107182">Linux bağlantı noktalarını ağınızdaki diğer cihazların kullanımına sunun.</translation>
@@ -7012,6 +7032,7 @@ Atamayı kaldırmak için atanmış bir anahtara veya tuşa basın.</translation
 <translation id="7947962633355574091">Video Adresini K&amp;opyala</translation>
 <translation id="7947964080535614577">Siteler genellikle içerik veya hizmetlerini ücretsiz olarak sunabilmek için reklam gösterirler. Ancak araya giren veya yanıltıcı reklamlar gösterdiği bilinen bazı siteler vardır.</translation>
 <translation id="7948407723851303488"><ph name="DOMAIN_NAME"/> alanının tüm sayfaları</translation>
+<translation id="7950629216186736592">Neden: Eski Tarayıcı Desteği yalnızca http://, https:// ve file:// URL'lerini destekler.</translation>
 <translation id="6504904675770402423">Google Pay ödeme yöntemi eklemek veya yönetmek için <ph name="BEGIN_LINK"/>Brave Hesabınıza<ph name="END_LINK"/> gidin</translation>
 <translation id="795130320946928025">Sanal kartı devre dışı bırak</translation>
 <translation id="7952708427581814389">Siteler panonuzdaki metin ve görselleri görmek isteyebilir</translation>
@@ -7162,6 +7183,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="80866457114322936">{NUM_FILES,plural, =1{Bu dosya şifrelenmiş. Dosyanın sahibinden şifreyi çözmesini isteyin.}other{Bu dosyaların bazıları şifrelenmiş. Dosyaların sahibinden şifreleri çözmesini isteyin.}}</translation>
 <translation id="808894953321890993">Şifreyi değiştir</translation>
 <translation id="8090234456044969073">En sık ziyaret ettiğiniz web sitelerinin listesini okuma</translation>
+<translation id="8090513782447872344">İstediğiniz zaman geri gelerek tekrar göz atabilirsiniz</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> yanıt vermiyor</translation>
 <translation id="8095105960962832018"><ph name="BEGIN_PARAGRAPH1"/>Google Drive'a yedekleyin. Verilerinizi istediğiniz zaman kolayca geri yükleyin veya cihazlar arasında geçiş yapın. Yedekleme işleminiz uygulama verilerini içerir.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Yedek verileriniz Brave'a yüklenir ve Brave Hesabınızın şifresi kullanılarak şifrelenir.<ph name="END_PARAGRAPH2"/>
@@ -7182,7 +7204,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8102139037507939978">Kimliği Tanımlayabilecek Bilgiler'i system_logs.txt dosyasından çıkar.</translation>
 <translation id="8104088837833760645">eSIM profili indir</translation>
 <translation id="8105368624971345109">Kapat</translation>
-<translation id="8105541061909542455">{NUM_APPS,plural, =1{Ddesteklenmeyen Uygulama}other{Desteklenmeyen Uygulamalar}}</translation>
 <translation id="8107015733319732394">Google Play Store <ph name="DEVICE_TYPE"/> cihazınıza yükleniyor. Bu işlem birkaç dakika sürebilir.</translation>
 <translation id="810728361871746125">Ekran çözünürlüğü</translation>
 <translation id="8108526232944491552">{COUNT,plural, =0{Üçüncü taraf çerez yok}=1{1 üçüncü taraf çerez engellendi}other{# üçüncü taraf çerez engellendi}}</translation>
@@ -7266,7 +7287,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8184318863960255706">Daha fazla bilgi</translation>
 <translation id="8184472985242519288">Tek tip</translation>
 <translation id="8186609076106987817">Sunucu dosyayı bulamadı.</translation>
-<translation id="8186704951085064172"><ph name="VISUAL_SEARCH_PROVIDER"/> ile Sayfanın Bir Kısmında Arama Yap</translation>
 <translation id="8188389033983459049">Cihaz ayarlarınızı kontrol edin ve devam etmek için açın</translation>
 <translation id="8188742492803591566">Ekranınızdaki içeriği yayınlamaya başlamak için Chromecast veya televizyonda gösterilen erişim kodunu girin.</translation>
 <translation id="8189306097519446565">Okul hesapları</translation>
@@ -7320,6 +7340,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8242426110754782860">Devam et</translation>
 <translation id="8243948765190375130">Medya kalitesi düşebilir</translation>
 <translation id="8244514732452879619">Uyku vakti yaklaşıyor</translation>
+<translation id="8245361042748627813">Bu kısayol değişti. Sistem iletişim kutusunu kullanarak yazdırmak için lütfen <ph name="NEW_SHORTCUT_KEY"/> kullanın.</translation>
 <translation id="8246776524656196770">Güvenlik anahtarınızı PIN (Kişisel Kimlik Numarası) ile koruyun</translation>
 <translation id="8248050856337841185">&amp;Yapıştır</translation>
 <translation id="8248381369318572865">Mikrofonunuza erişme ve konuşmanızı analiz etme</translation>
@@ -7364,6 +7385,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8275080796245127762">Cihazımdan Ara</translation>
 <translation id="2055831507440293816">Oturum açtığınız her yerden güvenli bir şekilde erişmek için şifrenizi Brave hesabınıza taşıyın</translation>
 <translation id="8276560076771292512">Önbelleği Boşalt ve Tam Yeniden Yükle</translation>
+<translation id="2835355653189864472">Brave tarayıcı senkronizasyonu açılsın mı?</translation>
 <translation id="8281886186245836920">Atla</translation>
 <translation id="8283475148136688298">"<ph name="DEVICE_NAME"/>" cihazına bağlanırken kimlik doğrulaması kodu reddedildi.</translation>
 <translation id="8284279544186306258">tüm <ph name="WEBSITE_1"/> siteleri</translation>
@@ -7382,7 +7404,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8303616404642252802">{COUNT,plural, =1{Adres}other{# adres}}</translation>
 <translation id="8304383784961451596">Bu cihazı kullanmak için yetkili değilsiniz. Oturum açma izni için lütfen yöneticinize danışın veya Family Link gözetimindeki bir Brave hesabı ile oturum açın.</translation>
 <translation id="8306885873692337975">En son özellikleri ve güvenlik iyileştirmelerini edinin.</translation>
-<translation id="8307094075368387939">Kişiselleştirme Merkezi'nde programı düzenleyebilir, duvar kağıdı ve ekran koruyucu ayarlayabilir, sistem renklerini özelleştirebilirsiniz.</translation>
 <translation id="8308016398665340540">Bu ağı, bu cihazın diğer kullanıcılarıyla paylaşıyorsunuz</translation>
 <translation id="8308179586020895837"><ph name="HOST"/> sitesi kamerama erişmek isterse sor</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -7432,6 +7453,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8358685469073206162">Sayfalar geri yüklensin mi?</translation>
 <translation id="8358912028636606457">Sekme sesinin yayınlanması bu cihazda desteklenmiyor.</translation>
 <translation id="2921493528667739769">Brave Hesabınızda kaydedin</translation>
+<translation id="8360140320636871023">Ekran temanızı kişiselleştirme</translation>
 <translation id="8363095875018065315">kararlı</translation>
 <translation id="8363142353806532503">Mikrofon engellendi</translation>
 <translation id="8366396658833131068">Ağ bağlantınız geri yüklendi. Lütfen farklı bir ağ seçin veya kiosk uygulamanızı başlatmak için "Devam Et" düğmesine basın.</translation>
@@ -7448,6 +7470,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8379156816349755485">Oturum açıldığında benzersiz bir kimlik doğrulama jetonu saklanıp gelecekteki tüm uygun indirmeler için kullanılır.</translation>
 <translation id="8379878387931047019">Bu cihaz, bu web sitesi tarafından istenen türde güvenlik anahtarını desteklemiyor</translation>
 <translation id="8379991678458444070">Bu sekmeye yer işareti koyarak buraya hızlıca geri dönün</translation>
+<translation id="8380266723152870797">Pencere adı</translation>
 <translation id="8380941800586852976">Tehlikeli</translation>
 <translation id="8382715499079447151">Görüntüleme koruması</translation>
 <translation id="8382913212082956454">E-posta &amp;adresini kopyala</translation>
@@ -7532,7 +7555,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="846374874681391779">İndirilenler çubuğu</translation>
 <translation id="8463955938112983119"><ph name="PLUGIN_NAME"/> devre dışı.</translation>
 <translation id="8464132254133862871">Bu kullanıcı hesabı hizmet için uygun değil.</translation>
-<translation id="8464735509712879725">Işığın yeterli olmadığı odalar için. Pil ömrü için de optimize edilmiştir.</translation>
 <translation id="8465252176946159372">Geçerli değil</translation>
 <translation id="8465444703385715657"><ph name="PLUGIN_NAME"/> eklentisinin çalışması için izniniz gerekiyor</translation>
 <translation id="8466417995783206254">Bu sekmede bir video pencere içinde pencere modunda oynatılıyor.</translation>
@@ -7550,6 +7572,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8480869669560681089"><ph name="VENDOR_NAME"/> firmasından bilinmeyen cihaz</translation>
 <translation id="8481187309597259238">USB İznini Onaylayın</translation>
 <translation id="8481980314595922412">Deneme özellikleri açık</translation>
+<translation id="8486666913807228950">Neden: "Şurada açmaya zorlayın" listesinde <ph name="REVERT_RULE"/> ters kuralı bulundu.</translation>
 <translation id="848666842773560761">Bir uygulama kameraya erişmeye çalışıyor. Erişime izin vermek için kamera gizliliğini kapatın.</translation>
 <translation id="8487678622945914333">Yakınlaştır</translation>
 <translation id="8489156414266187072">Kişisel öneriler yalnızca hesabınızda gösterilir</translation>
@@ -7617,6 +7640,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8561565784790166472">Dikkatli bir şekilde ilerleyin</translation>
 <translation id="8561853412914299728"><ph name="TAB_TITLE"/> <ph name="EMOJI_PLAYING"/></translation>
 <translation id="8565650234829130278">Uygulamanın eski sürümüne geçilmeye çalışıldı.</translation>
+<translation id="8569673829373920831"><ph name="APP_NAME"/> hakkında daha fazla bilgi</translation>
 <translation id="8569682776816196752">Hiçbir hedef bulunamadı</translation>
 <translation id="8571213806525832805">Son 4 hafta</translation>
 <translation id="8571687764447439720">Kerberos bileti ekle</translation>
@@ -7895,6 +7919,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8838770651474809439">Hamburger</translation>
 <translation id="8838778928843281408">Telefonları yönetme</translation>
 <translation id="8841843049738266382">İzin verilenler listesindeki kullanıcıları okuyup değiştirme</translation>
+<translation id="8842059467121215385">"<ph name="EXTENSION_NAME"/>" uzantısını kullanmak için sayfayı yenileyin</translation>
 <translation id="8842594465773264717">Bu parmak izini sil</translation>
 <translation id="8845001906332463065">Yardım alın</translation>
 <translation id="8846132060409673887">Bu bilgisayarın üreticisini ve modelini okuma</translation>
@@ -8047,6 +8072,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7113572760575285642">Kendi Brave'unuz, Her Yerde</translation>
 <translation id="899676909165543803">Parmak izi sensörü, klavyenizin sağ altındaki tuştur. Herhangi bir parmağınızla bu tuşa hafifçe dokunun.</translation>
 <translation id="8999560016882908256">Bölüm söz dizimi hatası: <ph name="ERROR_LINE"/></translation>
+<translation id="9003185744423389627">Cihaz Yönetim Paneli sunucu bağlantısı <ph name="FAILURE_TIME"/> tarihinde "<ph name="STATUS_TEXT"/>" durumunu göstererek başarısız oldu</translation>
 <translation id="9003647077635673607">Tüm web sitelerinde izin ver</translation>
 <translation id="9003677638446136377">Tekrar kontrol et</translation>
 <translation id="9004754973617721124"><ph name="SITE_NAME"/> sitesi, buna bağlı tüm siteler ve yüklü uygulamasındaki site verileri ile izinler temizlensin mi?</translation>
@@ -8134,6 +8160,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="9078316009970372699">Hızlı Tethering'i devre dışı bırak</translation>
 <translation id="9078842827190780028">Yan panelde daha fazla arama sonucu görün</translation>
 <translation id="9079267182985899251">Yakında bu seçenek artık desteklenmeyecek. Bir sekmeyi sunmak için <ph name="GOOGLE_MEET"/> ürününü kullanın.</translation>
+<translation id="2512721839479084080">ilgi alanlarınızı tahmin eder - Brave, ilgi alanlarınızı tahmin edebilir</translation>
 <translation id="9084064520949870008">Pencere Olarak Aç</translation>
 <translation id="9085256200913095638">Seçili Sekmeyi Kopyala</translation>
 <translation id="9085776959277692427"><ph name="LANGUAGE"/> seçili değil. Seçmek için Arama'ya ve Boşluk çubuğuna basın.</translation>
@@ -8263,6 +8290,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="9215742531438648683">Google Play Store'u kaldır</translation>
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="9218842937876577955"><ph name="APP_NAME"/> (desteklenmeyen uygulama)</translation>
+<translation id="9219582468404818260">Daha iyi bir web inşa etmemize yardımcı olun</translation>
 <translation id="9220525904950070496">Hesabı kaldır</translation>
 <translation id="9220820413868316583">Kaldırın, ardından tekrar deneyin.</translation>
 <translation id="923467487918828349">Tümünü Göster</translation>
@@ -8301,6 +8329,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="957960681186851048">Bu site birden fazla dosyayı otomatik olarak indirmeye çalıştı</translation>
 <translation id="960987915827980018">Yaklaşık 1 saat kaldı</translation>
 <translation id="962802172452141067">Yer işareti klasör ağacı</translation>
+<translation id="963000966785016697">Resmi <ph name="VISUAL_SEARCH_PROVIDER"/> ile ara</translation>
 <translation id="964286338916298286">BT yöneticiniz cihazınızda Brave Ekstraları'nı devre dışı bırakmış.</translation>
 <translation id="964439421054175458">{NUM_APLLICATIONS,plural, =1{Uygulama}other{Uygulamalar}}</translation>
 <translation id="964790508619473209">Ekran düzenlemesi</translation>
@@ -8333,6 +8362,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="987897973846887088">Resim yok</translation>
 <translation id="988320949174893488">Ara Sıra Takılıyor</translation>
 <translation id="988978206646512040">Boş parolaya izin verilmez</translation>
+<translation id="991097196715779457">Perakendeci mağaza kimliği kodu (isteğe bağlı)</translation>
 <translation id="992032470292211616">Uzantılar, uygulamalar ve temalar cihazınıza zarar verebilir. Devam etmek istediğinizden emin misiniz?</translation>
 <translation id="992256792861109788">Pembe</translation>
 <translation id="992592832486024913">BraveVox'u (sesli geri bildirim) devre dışı bırak</translation>
@@ -8361,6 +8391,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1799432502220762862">Kişisel Alt Çerçeve: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="6666022817001893507">Gizli Geri/İleri Önbelleğe Alınmış Alt Çerçeve: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="3193187622878830588">Gizli Portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1389212885096774902">Kişisel Sınırlı Çerçeve: <ph name="FENCEDFRAME_SITE"/></translation>
 <translation id="5097649414558628673">Araç: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">İnternet Mağazası</translation>
 <translation id="8261378640211443080">Bu uzantı <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> altında listelenmiyor ve bilginiz dışında eklenmiş olabilir.</translation>

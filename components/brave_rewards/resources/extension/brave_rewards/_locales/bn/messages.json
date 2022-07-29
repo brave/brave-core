@@ -335,19 +335,6 @@
     "message": "পুনঃসংযোগ করুন",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "আপনার Brave রিওয়ার্ডস যাচাই করা হয়েছে!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "আপনার Brave রিওয়ার্ডস $provider$-এর মাধ্যমে যাচাই করা হয়েছে।",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "একটি টোকেন গ্র্যান্ট উপলব্ধ রয়েছে!",
     "description": ""

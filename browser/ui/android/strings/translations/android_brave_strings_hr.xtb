@@ -262,6 +262,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="3097089005389027085">Time se dijele vaši podatci preglednika Brave uključujući potencijalno vaše lozinke s uređajem kojim su se generirale te šifre.
 Dvaput provjerite jesu li se te šifre generirale uređajem koji imate.
 Sigurno želite to napraviti?</translation>
+<translation id="4550208292810542331">Odobrenje kamere nije dano</translation>
 <translation id="597993392929850353">Licenca Brave</translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="6199596294742117349">Ovo je privatna kartica</translation>
@@ -550,8 +551,11 @@ Sigurno želite to napraviti?</translation>
 <translation id="6366007539108097840">3 m</translation>
 <translation id="6977728312178289892">1 g</translation>
 <translation id="6895566650974550243">SVE</translation>
-<translation id="5071303414930953888">Račun <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>
+Račun
+<ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Dodaj račun</translation>
+<translation id="318334680413773318">Dodaj/uvezi račun</translation>
 <translation id="3448492834076427715">Ažuriraj račun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Omogućiti otključavanje otiskom prsta?</translation>
@@ -860,12 +864,15 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="4804818685124855865">Prekini vezu</translation>
 <translation id="8009571545960303544">Vaš se potpis zahtijeva</translation>
 <translation id="3484981968509595506">Decentralizirana aplikacija traži vaš javni ključ za šifriranje</translation>
+<translation id="2300240008330189182"><ph name="URL"/> traži javni ključ za šifriranje vašeg novčanika. Ako pristanete dati ključ, mrežno mjesto vam može slati šifrirane poruke.</translation>
 <translation id="3340247553212049934">Pružiti</translation>
 <translation id="1982257600591932657">Naziv mreže</translation>
 <translation id="5052727830821470769">URL mreže</translation>
 <translation id="4822132585477111396">Identifikacijska oznaka bloka</translation>
 <translation id="7131971375297699539">Simbol valute</translation>
 <translation id="7982789257301363584">Mreža</translation>
+<translation id="6936860995365507185">To omogućava upotrebu te mreže u okviru Novčanika Brave.<ph name="CLICK_START"/>Saznajte više na
+<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Dopustiti ovom mrežnom mjestu dodavanje mreže?</translation>
 <translation id="4857321293515555666">Decentralizirana aplikacija želi pročitati ovu poruku za ispunjavanje vašeg zahtjeva.</translation>
 <translation id="714506544401754321">Dešifriraj poruku</translation>
@@ -890,4 +897,16 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="5334952096674914470">\n\nMobilni operater\n</translation>
 <translation id="5393042357629679588">\n\nOstali problemi\n</translation>
 <translation id="8095666712177294104">\n\nPlatforma\n</translation>
+<translation id="7080614857771109950">Podržava imovinu kompatibilnu s EVM-om na lancu podatkovnih blokova platforme Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Podržava imovinu kompatibilnu s SLP-om na lancu podatkovnih blokova platforme Solana</translation>
+<translation id="6575120282593094155">Još uvijek nemate
+<ph name="ACCOUNT_TYPE"/>
+račun. Želite li ga sada napraviti?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Isključene aplikacije</translation>
+<translation id="8463269357637177759">Dopuštene redovite aplikacije</translation>
+<translation id="4554726425645556940">Dopuštene aplikacije sustava</translation>
+<translation id="9023148942866814328">Prikaži aplikacije sustava</translation>
+<translation id="5472400694702418949">Dodaj aplikacije koje će biti isključene iz promtea VPN.</translation>
+<translation id="7002577172732106572">Podijeljeno tuneliranje</translation>
 </translationbundle>

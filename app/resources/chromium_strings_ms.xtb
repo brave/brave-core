@@ -50,6 +50,7 @@
 <translation id="7291143854620707672">Sebarang data Brave yang dijana semasa penggunaan profil ini (seperti pembuatan penanda halaman, sejarah, kata laluan dan tetapan lain) boleh dialih keluar oleh pentadbir profil kerja. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Ralat sistem pengendalian berlaku semasa pemasangan. Sila muat turun Brave semula.</translation>
 <translation id="2648689842065142443">Jika anda berkongsi peranti, rakan dan keluarga boleh menyemak imbas secara terpisah dan menyediakan Brave sebagaimana yang mereka ingini</translation>
+<translation id="6384359666082467439">Selamat datang ke Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Untuk keselamatan tambahan, Brave akan menyulitkan data anda.</translation>
 <translation id="2770231113462710648">Tukar penyemak imbas lalai kepada:</translation>
@@ -94,6 +95,7 @@
 <translation id="4061445349373849749">Untuk melindungi privasi anda, kami memadamkan minat anda yang disimpan melebihi 4 minggu secara automatik. Semasa anda terus menyemak imbas, minat itu mungkin muncul semula dalam senarai. Anda juga boleh mengalih keluar minat yang anda tidak mahu dipertimbangkan oleh Brave.</translation>
 <translation id="691208314680168371">Sejarah penyemakan imbas anda, rekod laman yang anda lawati menggunakan Brave pada peranti ini.</translation>
 <translation id="1384923383737428730">Terdapat perisian yang berbahaya pada komputer anda. Brave boleh mengalih keluar perisian tersebut, memulihkan tetapan anda dan melumpuhkan sambungan supaya penyemak imbas anda dapat berfungsi seperti biasa semula.</translation>
+<translation id="1073077513148817424">Akaun lain sudah log masuk. Untuk menjadikan penyemakan imbas anda terpisah, Brave boleh membuat profil anda sendiri untuk anda.</translation>
 <translation id="7029305463989165490">Untuk menghantar nombor daripada <ph name="ORIGIN"/> ke telefon Android anda, log masuk ke Brave pada kedua-dua peranti.</translation>
 <translation id="4304059894777924102">Brave tidak dapat menyemak kata laluan anda. Cuba periksa sambungan Internet anda.</translation>
 <translation id="2100587595569959771">Ketahui lebih lanjut tentang pemeribadian iklan dalam Brave</translation>
@@ -103,9 +105,11 @@
 <translation id="2401189691232800402">Sistem Chrome OS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">Dapatkan bantuan berkenaan Chrome OS</translation>
+<translation id="6009720635797285369">Dapatkan bahan penyemak imbas Brave anda daripada <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="6315734375101223238">Sesuaikan dan kawal Brave. Perhatian anda diperlukan - klik untuk mendapatkan butiran.</translation>
 <translation id="7130675370997202556">Klik nama anda untuk membuka Brave dan mula menyemak imbas.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> telah pun dilog masuk ke profil Brave ini. Untuk menjadikan penyemakan imbas anda terpisah, Brave boleh membuat profil anda sendiri untuk anda.</translation>
+<translation id="2337217774418822704">Akaun anda diurus oleh <ph name="MANAGER_NAME"/>. Pentadbir anda boleh melihat dan mengedit profil penyemak imbas Brave ini dan datanya seperti penanda halaman, sejarah dan kata laluan.</translation>
 <translation id="8090497651549769448">Brave cuba menyalin kata laluan. Taip kata laluan Windows anda untuk membenarkan penyalinan.</translation>
 <translation id="7133557675784723900">Brave mengesyorkan pengimbasan fail ini kerana fail ini mungkin berbahaya</translation>
 <translation id="1152920704813762236">Perihal Chrome OS</translation>
@@ -167,6 +171,7 @@
 <translation id="1744365871163268756">Sila tunggu sementara Brave memasang kemas kini sistem terkini.</translation>
 <translation id="3861679447659630159">Brave cuba mengedit kata laluan. Taip kata laluan Windows anda untuk membenarkan tindakan ini.</translation>
 <translation id="232381795826373334">Buka PDF dalam Brave</translation>
+<translation id="5381032481466106256">Apabila dihidupkan, anda juga akan dilog keluar daripada Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Kemas kini Brave tersedia}=1{Kemas kini Brave tersedia}other{Kemas kini Brave telah tersedia selama # hari}}</translation>
 <translation id="95624393026532554">Brave memerlukan Windows 7 atau lebih tinggi.</translation>
 <translation id="5646769069113654257">Sila mulakan semula Brave sekarang</translation>
@@ -288,7 +293,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7963515534397191222">Brave tidak dapat mengemas kini kepada versi terkini, maka anda terlepas ciri baharu dan penyelesaian keselamatan.</translation>
 <translation id="7872446069773932638">Memuat turun... <ph name="SECONDS"/> saat lagi</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cara anda boleh mengurus data anda:<ph name="END_BOLD"/> Untuk melindungi privasi anda, kami memadamkan minat anda yang disimpan melebihi 4 minggu secara automatik. Semasa anda terus menyemak imbas, minat itu mungkin muncul semula dalam senarai. Anda juga boleh mengalih keluar minat yang anda tidak mahu dipertimbangkan Brave.</translation>
-<translation id="437139750042419257">Akaun berikut tersedia untuk profil Brave ini</translation>
 <translation id="2925193881330501265">Anda telah log masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sila gunakan akaun yang sama untuk log masuk lagi.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan kedua Brave dan tidak boleh dijadikan penyemak imbas lalai anda.</translation>
 <translation id="1975057837349076194">Jika tetapan tidak ditunjukkan pada halaman ini, lihat dalam <ph name="LINK_BEGIN"/>
@@ -334,6 +338,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="6389268239133412586">Tidak dapat mengemas kini Brave</translation>
 <translation id="7731184591599776500">Logo Brave Enterprise</translation>
 <translation id="8986207147630327271">Anda menambahkan profil kerja pada penyemak imbas ini dan memberi pentadbir anda kawalan terhadap profil kerja sahaja.</translation>
+<translation id="82609232232243542">Log masuk ke Brave</translation>
 <translation id="5173820533850252773">Brave sudah usang</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave akan dilancarkan semula dalam masa sejam}other{Brave akan dilancarkan semula dalam masa # jam}}</translation>
 <translation id="7863882214613921971">Buka Pautan dalam &amp;tab Brave Baharu</translation>

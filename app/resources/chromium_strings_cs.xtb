@@ -52,6 +52,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="7291143854620707672">Veškerá data prohlížeče Brave vygenerovaná během používání tohoto profilu (jako je vytvoření záložek, historie, hesel a další nastavení) může administrátor pracovního profilu odstranit. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Během instalace došlo k chybě operačního systému. Stáhněte prosím Brave znovu.</translation>
 <translation id="2648689842065142443">Pokud zařízení sdílíte s přáteli a členy rodiny, každý může procházet internet samostatně a nastavit si Brave tak, jak potřebuje</translation>
+<translation id="6384359666082467439">Vítejte v prohlížeči Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Karta prohlížeče Brave</translation>
 <translation id="8372880274820509128">V zájmu lepšího zabezpečení bude Brave šifrovat vaše data.</translation>
 <translation id="2770231113462710648">Změnit výchozí prohlížeč na:</translation>
@@ -96,6 +97,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="4061445349373849749">Abychom chránili vaše soukromí, vaše zájmy starší než 4 měsíce automaticky mažeme. Jak budete pracovat s internetem, zájmy se mohou na seznamu znovu objevit. Pokud se zájmy nemají zohledňovat, můžete je z Chromia odstranit.</translation>
 <translation id="691208314680168371">Vaši historii prohlížení, což je seznam webů, které jste navštívili v Chromiu na tomto zařízení.</translation>
 <translation id="1384923383737428730">Máte v počítači škodlivý software. Brave ho může odstranit, obnovit vaše nastavení a zakázat rozšíření, aby prohlížeč opět fungoval jako obvykle.</translation>
+<translation id="1073077513148817424">Už je přihlášen jiný účet. Pokud chcete své prohlížení oddělit, Brave vám může vytvořit vlastní profil.</translation>
 <translation id="7029305463989165490">Chcete-li poslat číslo z webu <ph name="ORIGIN"/> na svůj telefon Android, v obou zařízeních se přihlaste do prohlížeče Brave.</translation>
 <translation id="4304059894777924102">Brave nemůže zkontrolovat hesla. Zkuste zkontrolovat připojení k internetu.</translation>
 <translation id="2100587595569959771">Další informace o personalizaci reklam v prohlížeči Brave</translation>
@@ -105,9 +107,11 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="2401189691232800402">Systém ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="3744202345691150878">Pomoc se systémem ChromeOS</translation>
+<translation id="6009720635797285369">Získejte obsah prohlížeče Brave z účtu <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="6315734375101223238">Přizpůsobte si prohlížeč Brave a ovládejte jej. Něco vyžaduje vaši pozornost – podrobnosti zobrazíte kliknutím.</translation>
 <translation id="7130675370997202556">Chcete-li otevřít Brave a začít procházet Internet, klikněte na svoje jméno.</translation>
 <translation id="4920958997042285125">Uživatel <ph name="EXISTING_USER"/> už je k tomuto profilu Brave přihlášen. Chcete-li své procházení oddělit, Brave vám může vytvořit vlastní profil.</translation>
+<translation id="2337217774418822704">Váš účet je spravován doménou <ph name="MANAGER_NAME"/>. Tento profil prohlížeče Brave a jeho data, jako jsou záložky, historie a hesla, může zobrazit a upravovat váš administrátor.</translation>
 <translation id="8090497651549769448">Brave se pokouší zkopírovat hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
 <translation id="7133557675784723900">Brave doporučuje zkontrolovat tento soubor, protože může být nebezpečný</translation>
 <translation id="1152920704813762236">O systému ChromeOS</translation>
@@ -169,6 +173,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="1744365871163268756">Počkejte prosím, než Brave nainstaluje nejnovější aktualizace systému.</translation>
 <translation id="3861679447659630159">Brave se pokouší upravit hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
 <translation id="232381795826373334">Otevírat soubory PDF v Chromiu</translation>
+<translation id="5381032481466106256">Když zapnete tuto možnost, budete také odhlášeni z Chromia</translation>
 <translation id="1026406809507858026">{0,plural, =0{Je k dispozici aktualizace prohlížeče Brave}=1{Je k dispozici aktualizace prohlížeče Brave}few{Již # dny je k dispozici aktualizace prohlížeče Brave}many{Již # dne je k dispozici aktualizace prohlížeče Brave}other{Již # dní je k dispozici aktualizace prohlížeče Brave}}</translation>
 <translation id="95624393026532554">Brave vyžaduje systém Windows 7 nebo vyšší.</translation>
 <translation id="5646769069113654257">Restartujte Brave</translation>
@@ -290,7 +295,6 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="7963515534397191222">Brave nebylo možné aktualizovat na nejnovější verzi. Nemáte proto k dispozici nové funkce a opravy zabezpečení.</translation>
 <translation id="7872446069773932638">Stahování… Zbývající čas: <ph name="SECONDS"/> s</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Jak můžete své údaje spravovat:<ph name="END_BOLD"/> Abychom chránili vaše soukromí, vaše zájmy starší než 4 měsíce automaticky mažeme. Jak budete pracovat s internetem, zájmy se mohou na seznamu znovu objevit. Pokud se zájmy nemají zohledňovat, můžete je z Chromia odstranit.</translation>
-<translation id="437139750042419257">Pro tento profil Brave jsou k dispozici následující účty</translation>
 <translation id="2925193881330501265">K prohlížeči Brave jste byli přihlášeni s účtem <ph name="USER_EMAIL_ADDRESS"/>. Přihlaste se prosím znovu pomocí stejného účtu.</translation>
 <translation id="6915252145142862992">Toto je druhá instalace prohlížeče Brave. Tuto instalaci nelze nastavit jako výchozí prohlížeč.</translation>
 <translation id="1975057837349076194">Pokud některé nastavení na této stránce není zobrazeno, podívejte se do <ph name="LINK_BEGIN"/>nastavení systému ChromeOS<ph name="LINK_END"/></translation>
@@ -335,6 +339,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="6389268239133412586">Brave nelze aktualizovat</translation>
 <translation id="7731184591599776500">Logo Brave Enterprise</translation>
 <translation id="8986207147630327271">Přidáváte do tohoto prohlížeče pracovní profil a povolujete administrátorovi ovládat pouze pracovní profil.</translation>
+<translation id="82609232232243542">Přihlásit se do prohlížeče Brave</translation>
 <translation id="5173820533850252773">Prohlížeč Brave je zastaralý</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave se za hodinu restartuje}few{Brave se za # hodiny restartuje}many{Brave se za # hodiny restartuje}other{Brave se za # hodin restartuje}}</translation>
 <translation id="7863882214613921971">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>

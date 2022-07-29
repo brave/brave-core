@@ -114,7 +114,7 @@
 <translation id="5240031343741051161">Опитайте Brave Търсене</translation>
 <translation id="5026874946691314267">Не показвайте това отново</translation>
 <translation id="5234764350956374838">Отхвърляне</translation>
-<translation id="214744058941501853">Отхвълете преминаването към Brave Търсене, натиснете Enter, за да премахнете това предпожение.</translation>
+<translation id="5100490448228945668">Отхвълете преминаването към Brave Търсене, натиснете Enter, за да премахнете това предпожение.</translation>
 <translation id="2515126961943087659">Услуга за BAT реклами</translation>
 <translation id="7924918279836988121">Услуга "Bat Ledger"</translation>
 <translation id="6040143037577758943">Затваряне</translation>
@@ -220,6 +220,7 @@
 <translation id="8820817407110198400">Лента на отметките</translation>
 <translation id="6333347122924254968">Показване на иконата с Brave награди в адресната лента</translation>
 <translation id="1811404036171336214">Винаги показвайте отметките на страницата с нов раздел</translation>
+<translation id="3416468988018290825">Винаги показвай пълните URL адреси</translation>
 <translation id="5529693968082667490">Показване на бутона за търсене на раздел</translation>
 <translation id="1643029991199044105">Преминете през най-скоро използваните раздели с Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -392,7 +393,8 @@
 <translation id="5249433283143453448">Използвайте компонента за управление на цифрови права Widevine (DRM), за да гледате защитено поточно видео и друго съдържание в браузъра.</translation>
 <translation id="8137559199583651773">Управление на разширенията</translation>
 <translation id="7013485839273047434">Вземете още разширения</translation>
-<translation id="9131889008937672866">Портфейл с криптовалути по подразбиране</translation>
+<translation id="4954512758656527938">Ethereum портфейл по подразбиране</translation>
+<translation id="7701023802820268122">Solana портфейл по подразбиране</translation>
 <translation id="8488282162676695335">Портфейл в Brave</translation>
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="7701040980221191251">Няма</translation>
@@ -417,6 +419,8 @@
 <translation id="8205945804087322170">Добавяне на нова мрежа</translation>
 <translation id="1330032157352961756">Идентификаторът на нова верига</translation>
 <translation id="3423620355610881890">Положително десетично число</translation>
+<translation id="8110465398315041268">Търсене в мрежа</translation>
+<translation id="3579705520805744214">Идентификатор или име на веригата</translation>
 <translation id="726121047592132939">Името на новата верига</translation>
 <translation id="1034112277864078119">Въведете име на верига</translation>
 <translation id="4672314527143443556">Име на валутата на веригата</translation>
@@ -488,6 +492,7 @@
 <translation id="3411013544209536575">Съвети за помощ</translation>
 <translation id="2775956301559569472">Показване на подкана Wayback Machine на страници 404</translation>
 <translation id="3095201688102519917">Предупреди ме, преди затваряне на прозорец с няколко раздела</translation>
+<translation id="7120553802660696133">Затвори прозореца при затваряне на последния раздел</translation>
 <translation id="6624718837376802990">Аватар Edgy Rewards</translation>
 <translation id="6617313057407561765">Аватар Edgy Brave</translation>
 <translation id="6754445808455578019">Аватар Edgy Ocean</translation>

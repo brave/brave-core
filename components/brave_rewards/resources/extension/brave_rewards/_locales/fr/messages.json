@@ -104,7 +104,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextUGP": {
-    "message": "Votre subvention symbolique est en route.\n",
+    "message": "Votre subvention symbolique est en route.",
     "description": ""
   },
   "grantCaptchaAmountUGP": {
@@ -334,19 +334,6 @@
   "notificationWalletDisconnectedAction": {
     "message": "Reconnecter",
     "description": ""
-  },
-  "notificationWalletVerifiedTitle": {
-    "message": "Vos récompenses Brave sont validées !",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Vos récompenses Brave ont bien été validées avec $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
   },
   "notificationTokenGrantTitle": {
     "message": "Un don de jeton est disponible !",

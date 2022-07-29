@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">Brave Search 이용하기</translation>
 <translation id="5026874946691314267">다시 표시하지 않음</translation>
 <translation id="5234764350956374838">숨기기</translation>
-<translation id="214744058941501853">"&gt;
-          Brave 검색 전환을 닫습니다. 이 추천을 제거하려면 Enter를 누르세요</translation>
+<translation id="5100490448228945668">Brave 검색 전환을 닫고 Enter를 누르면 이 추천 항목을 제거합니다.</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
 <translation id="6040143037577758943">닫기</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">북마크</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
 <translation id="1811404036171336214">새 탭 페이지에 책갈피 항상 표시</translation>
+<translation id="3416468988018290825">항상 URL 풀로 표시</translation>
 <translation id="5529693968082667490">탭 검색 버튼 표시</translation>
 <translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -392,7 +392,8 @@
 <translation id="5249433283143453448">Widevine 디지털 권리 관리(DRM) 구성 요소 사용으로 브라우저에서 보호된 스트리밍 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
 <translation id="8137559199583651773">확장 프로그램 관리</translation>
 <translation id="7013485839273047434">더 많은 확장 프로그램 받기</translation>
-<translation id="9131889008937672866">기본 암호화폐 월렛</translation>
+<translation id="4954512758656527938">기본 이더리움 월렛</translation>
+<translation id="7701023802820268122">기본 Solana 월렛</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="7701040980221191251">없음</translation>
@@ -417,6 +418,8 @@
 <translation id="8205945804087322170">새 네트워크 추가</translation>
 <translation id="1330032157352961756">새 체인의 ID</translation>
 <translation id="3423620355610881890">양의 십진수</translation>
+<translation id="8110465398315041268">네트워크 검색</translation>
+<translation id="3579705520805744214">체인 ID 또는 이름</translation>
 <translation id="726121047592132939">새 체인의 이름</translation>
 <translation id="1034112277864078119">체인 이름 입력</translation>
 <translation id="4672314527143443556">체인의 통화 이름</translation>
@@ -488,6 +491,7 @@
 <translation id="3411013544209536575">도움말 팁</translation>
 <translation id="2775956301559569472">404 페이지에 Wayback Machine 프롬프트 표시</translation>
 <translation id="3095201688102519917">탭 여러 개가 있는 창을 닫기 전에 경고</translation>
+<translation id="7120553802660696133">마지막 탭을 닫으면 창 닫기</translation>
 <translation id="6624718837376802990">아바타 에지 리워드</translation>
 <translation id="6617313057407561765">아바타 에지 브레이브</translation>
 <translation id="6754445808455578019">아바타 에지 오션</translation>

@@ -335,19 +335,6 @@
     "message": "Prisijungti iš naujo",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Jūsų „Brave Rewards“ patvirtintas!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Jūsų „Brave Rewards“ sėkmingai patikrinti su $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Galima gauti simbolinę dotaciją!",
     "description": ""
