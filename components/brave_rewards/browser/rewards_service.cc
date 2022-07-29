@@ -10,7 +10,6 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_rewards {
@@ -48,9 +47,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterUint64Pref(prefs::kServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kUpholdAnonAddress, "");
   registry->RegisterStringPref(prefs::kBadgeText, "1");
-#if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
-#endif
   registry->RegisterStringPref(prefs::kExternalWalletType, "");
   registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
   registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);

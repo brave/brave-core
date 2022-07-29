@@ -2,7 +2,8 @@
 
 ## API
 
-Public facing API documentation can be found in `ads.h` and `ads_client.h`
+Public facing API documentation can be found in `ads_service.h`, `ads.h` and
+`ads_client.h`
 
 ## Command-line Switches
 

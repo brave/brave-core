@@ -32,23 +32,11 @@ void BatAdsServiceImpl::Create(
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetEnvironment(
-    const ads::mojom::Environment environment,
-    SetEnvironmentCallback callback) {
-  DCHECK(!is_initialized_);
-  ads::g_environment = environment;
-  std::move(callback).Run();
-}
-
 void BatAdsServiceImpl::SetSysInfo(ads::mojom::SysInfoPtr sys_info,
                                    SetSysInfoCallback callback) {
   DCHECK(!is_initialized_);
 
   ads::SysInfo().device_id = sys_info->device_id;
-
-  ads::SysInfo().did_override_command_line_args_flag =
-      sys_info->did_override_command_line_args_flag;
-
   ads::SysInfo().is_uncertain_future = sys_info->is_uncertain_future;
 
   std::move(callback).Run();
@@ -58,16 +46,10 @@ void BatAdsServiceImpl::SetBuildChannel(
     ads::mojom::BuildChannelPtr build_channel,
     SetBuildChannelCallback callback) {
   DCHECK(!is_initialized_);
+
   ads::BuildChannel().is_release = build_channel->is_release;
   ads::BuildChannel().name = build_channel->name;
-  std::move(callback).Run();
-}
 
-void BatAdsServiceImpl::SetDebug(
-    const bool is_debug,
-    SetDebugCallback callback) {
-  DCHECK(!is_initialized_);
-  ads::g_is_debug = is_debug;
   std::move(callback).Run();
 }
 

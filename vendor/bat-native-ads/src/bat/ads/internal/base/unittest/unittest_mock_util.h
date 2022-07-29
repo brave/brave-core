@@ -21,8 +21,6 @@ namespace ads {
 
 class Database;
 
-void MockEnvironment(const mojom::Environment environment);
-
 void MockBuildChannel(const BuildChannelType type);
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,

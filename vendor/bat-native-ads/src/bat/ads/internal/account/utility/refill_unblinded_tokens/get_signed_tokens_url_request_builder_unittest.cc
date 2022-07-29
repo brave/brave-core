@@ -6,14 +6,21 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
+class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {
+ protected:
+  BatAdsGetSignedTokensUrlRequestBuilderTest() = default;
+
+  ~BatAdsGetSignedTokensUrlRequestBuilderTest() override = default;
+};
+
+TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";

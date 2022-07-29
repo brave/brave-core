@@ -22,6 +22,7 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
@@ -40,30 +41,42 @@ class TimeDelta;
 
 namespace ads {
 
-constexpr char kDatabaseFilename[] = "database.sqlite";
-
-constexpr char kDefaultLocale[] = "en-US";
-
 class Database;
+
+// The only time you should derive from UnitTestBase is when defining a test
+// fixture to be used in a TEST_F. For example:
+//
+//   class FooTest : public UnitTestBase {
+//    protected:
+//     void SetUp() override { ... }
+//     void SetUpMocks() override { ... }
+//     void TearDown() override { ... }
+//     ...
+//   };
+//
+//   TEST_F(FooTest, Bar) { ... }
+//   TEST_F(FooTest, Baz) { ... }
+//
+// UnitTestBase is not copyable.
 
 class UnitTestBase : public testing::Test {
  public:
-  UnitTestBase();
-  ~UnitTestBase() override;
-
   UnitTestBase(const UnitTestBase&) = delete;
   UnitTestBase& operator=(const UnitTestBase&) = delete;
+
+ protected:
+  UnitTestBase();
+  ~UnitTestBase() override;
 
   // testing::Test:
   void SetUp() override;
   void TearDown() override;
 
- protected:
-  // Override |SetUp| and set |is_integration_test| to |true| to test
-  // functionality and performance under product-like circumstances with data to
-  // replicate live settings to simulate what a real user scenario looks like
-  // from start to finish. You can mock AdsClient and copy mock files and
-  // directories before initialization in |SetUpMocks|.
+  // Override |SetUp| and call |SetUpForTesting| with |is_integration_test| set
+  // to |true| to test functionality and performance under product-like
+  // circumstances with data to replicate live settings to simulate what a real
+  // user scenario looks like from start to finish. You should mock AdsClient
+  // and copy mock files and directories before initialization in |SetUpMocks|.
   void SetUpForTesting(const bool is_integration_test);
 
   // Override |SetUpMocks| to mock AdsClient and to copy mock files and
@@ -161,6 +174,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<CovariateManager> covariate_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
+  std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
   std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
   std::unique_ptr<LocaleManager> locale_manager_;

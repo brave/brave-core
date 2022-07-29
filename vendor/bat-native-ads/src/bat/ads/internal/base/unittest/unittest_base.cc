@@ -9,11 +9,13 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "bat/ads/database.h"
+#include "bat/ads/internal/base/unittest/unittest_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 
 using ::testing::NiceMock;
 
@@ -42,12 +44,16 @@ void UnitTestBase::SetUp() {
 
 void UnitTestBase::TearDown() {
   teardown_called_ = true;
+
+  brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
 }
 
 void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
   setup_called_ = true;
 
   is_integration_test_ = is_integration_test;
+
+  brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
 
   Initialize();
 }
@@ -157,14 +163,10 @@ void UnitTestBase::Initialize() {
 
   SetDefaultPrefs();
 
-  if (is_integration_test_) {
-    SetUpMocks();
-    SetUpIntegrationTest();
-    return;
+  if (!is_integration_test_) {
+    ads_client_helper_ =
+        std::make_unique<AdsClientHelper>(ads_client_mock_.get());
   }
-
-  ads_client_helper_ =
-      std::make_unique<AdsClientHelper>(ads_client_mock_.get());
 
   SetUpMocks();
 
@@ -191,6 +193,8 @@ void UnitTestBase::Initialize() {
 
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
 
+  flag_manager_ = std::make_unique<FlagManager>();
+
   history_manager_ = std::make_unique<HistoryManager>();
 
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
@@ -215,8 +219,6 @@ void UnitTestBase::Initialize() {
 }
 
 void UnitTestBase::SetDefaultMocks() {
-  MockEnvironment(mojom::Environment::kStaging);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, kDefaultLocale);

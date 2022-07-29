@@ -55,10 +55,6 @@ PrefMap& GetPrefs() {
 
 }  // namespace
 
-void MockEnvironment(const mojom::Environment environment) {
-  g_environment = environment;
-}
-
 void MockBuildChannel(const BuildChannelType type) {
   switch (type) {
     case BuildChannelType::kNightly: {
@@ -361,9 +357,12 @@ void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
 void MockGetBooleanPref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetBooleanPref(_))
       .WillByDefault(Invoke([](const std::string& path) -> bool {
-        int value;
+        int value = 0;
         const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
-        CHECK(base::StringToInt(GetPrefs()[pref_path], &value));
+        const std::string& value_as_string = GetPrefs()[pref_path];
+        if (!value_as_string.empty()) {
+          CHECK(base::StringToInt(value_as_string, &value));
+        }
         return static_cast<bool>(value);
       }));
 }
@@ -379,9 +378,12 @@ void MockSetBooleanPref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockGetIntegerPref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetIntegerPref(_))
       .WillByDefault(Invoke([](const std::string& path) -> int {
-        int value;
+        int value = 0;
         const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
-        CHECK(base::StringToInt(GetPrefs()[pref_path], &value));
+        const std::string& value_as_string = GetPrefs()[pref_path];
+        if (!value_as_string.empty()) {
+          CHECK(base::StringToInt(value_as_string, &value));
+        }
         return value;
       }));
 }
@@ -397,9 +399,12 @@ void MockSetIntegerPref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockGetDoublePref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetDoublePref(_))
       .WillByDefault(Invoke([](const std::string& path) -> double {
-        double value;
+        double value = 0.0;
         const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
-        CHECK(base::StringToDouble(GetPrefs()[pref_path], &value));
+        const std::string& value_as_string = GetPrefs()[pref_path];
+        if (!value_as_string.empty()) {
+          CHECK(base::StringToDouble(value_as_string, &value));
+        }
         return value;
       }));
 }
@@ -432,9 +437,12 @@ void MockSetStringPref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockGetInt64Pref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetInt64Pref(_))
       .WillByDefault(Invoke([](const std::string& path) -> int64_t {
-        int64_t value;
+        int64_t value = 0;
         const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
-        CHECK(base::StringToInt64(GetPrefs()[pref_path], &value));
+        const std::string& value_as_string = GetPrefs()[pref_path];
+        if (!value_as_string.empty()) {
+          CHECK(base::StringToInt64(value_as_string, &value));
+        }
         return value;
       }));
 }
@@ -450,9 +458,12 @@ void MockSetInt64Pref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockGetUint64Pref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetUint64Pref(_))
       .WillByDefault(Invoke([](const std::string& path) -> uint64_t {
-        uint64_t value;
+        uint64_t value = 0;
         const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
-        CHECK(base::StringToUint64(GetPrefs()[pref_path], &value));
+        const std::string& value_as_string = GetPrefs()[pref_path];
+        if (!value_as_string.empty()) {
+          CHECK(base::StringToUint64(value_as_string, &value));
+        }
         return value;
       }));
 }
@@ -468,9 +479,12 @@ void MockSetUint64Pref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockGetTimePref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetTimePref(_))
       .WillByDefault(Invoke([](const std::string& path) -> base::Time {
-        int64_t value;
+        int64_t value = 0;
         const std::string pref_path = GetUuidForCurrentTestSuiteAndName(path);
-        CHECK(base::StringToInt64(GetPrefs()[pref_path], &value));
+        const std::string& value_as_string = GetPrefs()[pref_path];
+        if (!value_as_string.empty()) {
+          CHECK(base::StringToInt64(value_as_string, &value));
+        }
         return base::Time::FromDeltaSinceWindowsEpoch(
             base::Microseconds(value));
       }));

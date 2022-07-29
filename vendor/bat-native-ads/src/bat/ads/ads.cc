@@ -20,14 +20,10 @@ mojom::SysInfo& SysInfo() {
   return *sys_info;
 }
 
-mojom::Environment g_environment = mojom::Environment::kStaging;
-
 mojom::BuildChannel& BuildChannel() {
   static base::NoDestructor<mojom::BuildChannel> build_channel;
   return *build_channel;
 }
-
-bool g_is_debug = false;
 
 const char g_catalog_json_schema_data_resource_name[] = "catalog-schema.json";
 

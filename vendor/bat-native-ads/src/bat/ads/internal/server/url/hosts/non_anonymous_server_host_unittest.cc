@@ -5,18 +5,25 @@
 
 #include "bat/ads/internal/server/url/hosts/non_anonymous_server_host.h"
 
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/server/url/hosts/server_host_types.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/environment/environment_types.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsNonAnonymousServerHostTest, GetProductionHost) {
+class BatAdsNonAnonymousServerHostTest : public UnitTestBase {
+ protected:
+  BatAdsNonAnonymousServerHostTest() = default;
+
+  ~BatAdsNonAnonymousServerHostTest() override = default;
+};
+
+TEST_F(BatAdsNonAnonymousServerHostTest, GetProductionHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
   // Act
   const std::string host = server::GetNonAnonymousHost();
@@ -26,9 +33,9 @@ TEST(BatAdsNonAnonymousServerHostTest, GetProductionHost) {
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsNonAnonymousServerHostTest, GetStagingHost) {
+TEST_F(BatAdsNonAnonymousServerHostTest, GetStagingHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kStaging);
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   // Act
   const std::string host = server::GetNonAnonymousHost();

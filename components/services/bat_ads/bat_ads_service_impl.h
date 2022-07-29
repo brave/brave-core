@@ -34,15 +34,8 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
   void SetSysInfo(ads::mojom::SysInfoPtr sys_info,
                   SetSysInfoCallback callback) override;
 
-  void SetEnvironment(const ads::mojom::Environment environment,
-                      SetEnvironmentCallback callback) override;
-
   void SetBuildChannel(ads::mojom::BuildChannelPtr build_channel,
                        SetBuildChannelCallback callback) override;
-
-  void SetDebug(
-      const bool is_debug,
-      SetDebugCallback callback) override;
 
  private:
   mojo::Receiver<mojom::BatAdsService> receiver_;

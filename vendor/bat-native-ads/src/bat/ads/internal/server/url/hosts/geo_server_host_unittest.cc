@@ -5,18 +5,25 @@
 
 #include "bat/ads/internal/server/url/hosts/geo_server_host.h"
 
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/server/url/hosts/server_host_types.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/environment/environment_types.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsGeoServerHostTest, GetProductionHost) {
+class BatAdsGeoServerHostTest : public UnitTestBase {
+ protected:
+  BatAdsGeoServerHostTest() = default;
+
+  ~BatAdsGeoServerHostTest() override = default;
+};
+
+TEST_F(BatAdsGeoServerHostTest, GetProductionHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
   // Act
   const std::string host = server::GetGeoHost();
@@ -26,9 +33,9 @@ TEST(BatAdsGeoServerHostTest, GetProductionHost) {
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsGeoServerHostTest, GetStagingHost) {
+TEST_F(BatAdsGeoServerHostTest, GetStagingHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kStaging);
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   // Act
   const std::string host = server::GetGeoHost();
