@@ -245,7 +245,8 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(
     return absl::nullopt;
   }
   base::Time timestamp;
-  bool success = base::Time::FromUTCString((*timestamp_value).c_str(), &timestamp);
+  bool success =
+      base::Time::FromUTCString((*timestamp_value).c_str(), &timestamp);
   if (!success) {
     return absl::nullopt;
   }

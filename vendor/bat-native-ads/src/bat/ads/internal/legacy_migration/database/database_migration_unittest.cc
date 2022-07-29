@@ -41,7 +41,8 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   const CreativeAdInfo& creative_ad = BuildCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
-  const TextEmbeddingEventInfo& text_embedding_event = BuildTextEmbeddingEvent();
+  const TextEmbeddingEventInfo& text_embedding_event =
+      BuildTextEmbeddingEvent();
 
   // Act
   LogAdEvent(ad_event, [=](const bool success) {
@@ -50,23 +51,27 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
                          << database::kVersion;
   });
   LogTextEmbeddingHtmlEvent(
-      text_embedding_event.embedding, text_embedding_event.hashed_key, [=](const bool success) {
-        EXPECT_TRUE(success) << "Failed to migrate database from schema version "
-                         << GetSchemaVersion() << " to schema version "
-                         << database::kVersion;
+      text_embedding_event.embedding, text_embedding_event.hashed_key,
+      [=](const bool success) {
+        EXPECT_TRUE(success)
+            << "Failed to migrate database from schema version "
+            << GetSchemaVersion() << " to schema version "
+            << database::kVersion;
         if (success) {
           GetTextEmbeddingEventsFromDatabase(
-            [=](const bool success,
-                const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-              EXPECT_TRUE(success) << "Failed to migrate database from schema version "
-                         << GetSchemaVersion() << " to schema version "
-                         << database::kVersion;
-              // Assert
-              ASSERT_EQ(1ul, text_embedding_html_events.size());
-              ASSERT_EQ(text_embedding_event.hashed_key, text_embedding_html_events[0].hashed_key);
-            });
+              [=](const bool success, const TextEmbeddingHtmlEventList&
+                                          text_embedding_html_events) {
+                EXPECT_TRUE(success)
+                    << "Failed to migrate database from schema version "
+                    << GetSchemaVersion() << " to schema version "
+                    << database::kVersion;
+                // Assert
+                ASSERT_EQ(1ul, text_embedding_html_events.size());
+                ASSERT_EQ(text_embedding_event.hashed_key,
+                          text_embedding_html_events[0].hashed_key);
+              });
         }
-  });
+      });
 }
 
 std::string TestParamToString(::testing::TestParamInfo<int> param_info) {

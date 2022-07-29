@@ -12,9 +12,9 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/time/time.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/base/logging_util.h"

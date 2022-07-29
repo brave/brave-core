@@ -15,7 +15,8 @@ TextEmbeddingEventInfo BuildTextEmbeddingEvent() {
   text_embedding_event.created_at = base::Time::Now();
   text_embedding_event.version = "";
   text_embedding_event.locale = "";
-  text_embedding_event.hashed_key = base::GUID::GenerateRandomV4().AsLowercaseString();
+  text_embedding_event.hashed_key =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
   text_embedding_event.embedding = "0.0853 -0.1789 0.4221";
 
   return text_embedding_event;
