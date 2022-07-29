@@ -91,13 +91,13 @@ function splitMessage (key: string) {
   return getLocale(key).split(/\$\d+/g)
 }
 
-function contactSupport() {
+function contactBraveSupport () {
   getPageHandlerInstance().pageHandler.goToBraveSupport()
 }
 
-function BadgeTor(props: Props) {
+function BadgeTor (props: Props) {
   let textElement = getLocale('torStatusDisconnected')
-  let helpElement = undefined;
+  let helpElement
   let iconElement = (
     <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
       <path fillRule="evenodd" clipRule="evenodd" d="M10.02 18.181V16.97a6.97 6.97 0 0 0 0-13.938V1.818a8.181 8.181 0 0 1 0 16.363Zm0-4.243a3.94 3.94 0 0 0 0-7.877V4.85a5.15 5.15 0 0 1 0 10.301v-1.212Zm0-6.058a2.12 2.12 0 0 1 0 4.24V7.88ZM0 10c0 5.523 4.477 10 10 10s10-4.477 10-10S15.523 0 10 0 0 4.477 0 10Z" fill="#fff" />
@@ -119,21 +119,21 @@ function BadgeTor(props: Props) {
 
     const [
       before,
-      having_trouble,
-      try_using,
+      havingTrouble,
+      tryUsing,
       bridges,
       or,
-      contact_support,
+      contactSupport,
       rest
     ] = splitMessage('torHelpDisconnectedBridges')
 
     helpElement = (<p>
       {open}<a href="chrome://settings/privacy">{settings}</a>{reenable}
       <br></br> <br></br>
-      {before}<strong>{having_trouble}</strong>
-      {try_using}<a href="chrome://settings/privacy">{bridges}</a>
+      {before}<strong>{havingTrouble}</strong>
+      {tryUsing}<a href="chrome://settings/privacy">{bridges}</a>
       {or}
-      <a onClick={contactSupport}>{contact_support}</a>
+      <a onClick={contactBraveSupport}>{contactSupport}</a>
       {rest}
     </p>)
   } else if (isLoading) {

@@ -141,7 +141,7 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {
   stuck_timer_.Stop();
   if (page_) {
-    page_.get()->OnTorCircuitGetStuck(!result);    
+    page_.get()->OnTorCircuitGetStuck(!result);
     page_.get()->OnTorCircuitEstablished(result);
   }
 }

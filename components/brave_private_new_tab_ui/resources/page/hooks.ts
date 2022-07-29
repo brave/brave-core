@@ -29,7 +29,7 @@ export function useTorObserver () {
     isLoading,
     progress,
     message,
-    connectionFailed,
+    connectionFailed
   }
 }
 
