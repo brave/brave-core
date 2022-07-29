@@ -524,11 +524,6 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 
   ControlType prev_setting = GetFingerprintingControlType(map, url);
 
-  // Clear previous value to have only one rule for one pattern.
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, CONTENT_SETTING_DEFAULT);
-
   ContentSetting content_setting;
   if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
     content_setting = CONTENT_SETTING_DEFAULT;
