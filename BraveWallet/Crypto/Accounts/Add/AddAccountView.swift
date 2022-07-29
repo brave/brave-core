@@ -104,7 +104,7 @@ struct AddAccountView: View {
           title: Text(Strings.Wallet.coinTypeSelectionHeader)
         )
       ) {
-        ForEach(WalletConstants.supportedCoinTypes) { coin in
+        ForEach(Array(WalletConstants.supportedCoinTypes)) { coin in
           NavigationLink(
             tag: coin,
             selection: $selectedCoin) {

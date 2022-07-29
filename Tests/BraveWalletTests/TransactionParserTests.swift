@@ -431,6 +431,7 @@ class TransactionParserTests: XCTestCase {
           approvalValue: "0x2386f26fc10000",
           approvalAmount: "0.01",
           isUnlimited: false,
+          spenderAddress: "",
           gasFee: .init(
             fee: "0.000061",
             fiat: "$0.000061"
@@ -508,6 +509,7 @@ class TransactionParserTests: XCTestCase {
           approvalValue: "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
           approvalAmount: "Unlimited",
           isUnlimited: true,
+          spenderAddress: "",
           gasFee: .init(
             fee: "0.000061",
             fiat: "$0.000061"

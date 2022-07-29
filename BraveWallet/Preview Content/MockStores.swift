@@ -166,7 +166,8 @@ extension TransactionConfirmationStore {
         let service = MockKeyringService()
         service.createWallet("password") { _  in }
         return service
-      }()
+      }(),
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy
     )
   }
 }

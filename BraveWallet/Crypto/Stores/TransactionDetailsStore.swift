@@ -130,6 +130,8 @@ class TransactionDetailsStore: ObservableObject {
         } else {
           self.value = details.fromAmount
         }
+      case .other:
+        break
       }
       if let gasFee = parsedTransaction.gasFee {
         self.gasFee = String(format: "%@ %@\n%@", gasFee.fee, parsedTransaction.networkSymbol, gasFee.fiat)

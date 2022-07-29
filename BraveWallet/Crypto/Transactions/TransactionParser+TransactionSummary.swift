@@ -147,6 +147,8 @@ extension TransactionParser {
         gasFee: details.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
+    case .other:
+      return .init(txInfo: .init(), namedFromAddress: "", namedToAddress: "", title: "", gasFee: nil, networkSymbol: "")
     }
   }
 }

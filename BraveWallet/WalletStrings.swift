@@ -1107,6 +1107,13 @@ extension Strings {
       value: "Unlimited approval requested",
       comment: "The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited."
     )
+    public static let confirmationViewSolSplTokenAccountCreationWarning = NSLocalizedString(
+      "wallet.confirmationViewSolSplTokenAccountCreationWarning",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.",
+      comment: "The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account."
+    )
     public static let confirmationViewCurrentAllowance = NSLocalizedString(
       "wallet.confirmationViewCurrentAllowance",
       tableName: "BraveWallet",
@@ -1120,6 +1127,13 @@ extension Strings {
       bundle: .strings,
       value: "Gas Fee",
       comment: "A title displayed beside a number describing the cost of the transaction in ETH which is called Gas"
+    )
+    public static let transactionFee = NSLocalizedString(
+      "wallet.transactionFee",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Transaction Fee",
+      comment: "A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction"
     )
     public static let editGasFeeButtonTitle = NSLocalizedString(
       "wallet.editGasFeeButtonTitle",
@@ -1142,12 +1156,26 @@ extension Strings {
       value: "Amount + Gas",
       comment: "A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\""
     )
+    public static let amountAndFee = NSLocalizedString(
+      "wallet.amountAndFee",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Amount + Fee",
+      comment: "A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\""
+    )
     public static let inputDataPlaceholder = NSLocalizedString(
       "wallet.inputDataPlaceholder",
       tableName: "BraveWallet",
       bundle: .strings,
       value: "No data.",
       comment: "A label shown inside of a box when there is no input data for a given transaction"
+    )
+    public static let inputDataPlaceholderSolana = NSLocalizedString(
+      "wallet.inputDataPlaceholderSolana",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Function Type: %d",
+      comment: "A label shown inside of a box when there is no input data for a given Solana transaction"
     )
     public static let rejectAllTransactions = NSLocalizedString(
       "wallet.rejectAllTransactions",
