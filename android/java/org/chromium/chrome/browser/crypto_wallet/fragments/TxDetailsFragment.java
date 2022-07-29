@@ -22,8 +22,8 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
+import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class TxDetailsFragment extends Fragment {
@@ -36,7 +36,9 @@ public class TxDetailsFragment extends Fragment {
 
     private TxDetailsFragment(TransactionInfo txInfo) {
         mTxInfo = txInfo;
-        mTxData1559 = TransactionUtils.safeEthTxData1559(mTxInfo.txDataUnion);
+        mTxData1559 = mTxInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                ? mTxInfo.txDataUnion.getEthTxData1559()
+                : null;
     }
 
     @Nullable

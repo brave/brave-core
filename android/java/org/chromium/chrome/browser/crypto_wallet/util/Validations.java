@@ -50,10 +50,9 @@ public class Validations {
                 if (coinType == CoinType.SOL) {
                     braveWalletService.isBase58EncodedSolanaPubkey(
                             senderAccountAddress, success -> {
-                                String responseMsg =
-                                        resources.getString(R.string.invalid_sol_address);
-                                if (success) {
-                                    responseMsg = "";
+                                String responseMsg = "";
+                                if (!success) {
+                                    responseMsg = resources.getString(R.string.invalid_sol_address);
                                 }
                                 callback.call(responseMsg, success);
                             });

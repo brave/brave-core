@@ -140,7 +140,7 @@ public class CryptoModel {
                 mPendingTxHelper.setAccountInfos(accountInfos);
             });
 
-            // filter out a separate list of unapproved transactions
+            // Filter out a separate list of unapproved transactions
             mPendingTransactions =
                     Transformations.map(mPendingTxHelper.mTransactionInfoLd, transactionInfos -> {
                         List<TransactionInfo> pendingTransactionInfo = new ArrayList<>();
@@ -288,7 +288,7 @@ public class CryptoModel {
         return mNetworkModel;
     }
 
-    public SendModel creteSendModel() {
+    public SendModel createSendModel() {
         if (mSendModel != null) return mSendModel;
         mSendModel =
                 new SendModel(mTxService, mKeyringService, mBlockchainRegistry, mJsonRpcService,
@@ -335,7 +335,7 @@ public class CryptoModel {
         mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
     }
 
-    // clear buy send swap model
+    // Clear buy send swap model
     public void clearBSS() {
         mSendModel = null;
     }

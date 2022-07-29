@@ -89,7 +89,6 @@ public class PendingTxHelper implements TxServiceObserver {
             mTxService.getAllTransactionInfo(accountInfo.coin, accountInfo.address, allTxContext);
         }
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
-            int i = 0;
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
                 ArrayList<TransactionInfo> newValue = new ArrayList<TransactionInfo>();
                 for (TransactionInfo txInfo : allTxContext.txInfos) {

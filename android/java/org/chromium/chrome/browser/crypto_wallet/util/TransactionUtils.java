@@ -20,31 +20,4 @@ public class TransactionUtils {
         else
             return CoinType.ETH;
     }
-
-    public static TxData1559 safeEthTxData1559(TxDataUnion txDataUnion) {
-        try {
-            return txDataUnion.getEthTxData1559();
-        } catch (AssertionError e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static SolanaTxData safeSolTxData1559(TxDataUnion txDataUnion) {
-        try {
-            return txDataUnion.getSolanaTxData();
-        } catch (AssertionError e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static FilTxData safeFilTxData1559(TxDataUnion txDataUnion) {
-        try {
-            return txDataUnion.getFilTxData();
-        } catch (AssertionError e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

@@ -247,10 +247,17 @@ public class ParsedTransaction extends ParsedTransactionFees {
         final ParsedTransactionFees feeDetails = ParsedTransactionFees.parseTransactionFees(
                 txInfo, selectedNetwork, networkSpotPrice, solFeeEstimatesFee);
         TxDataUnion txDataUnion = txInfo.txDataUnion;
-        // TxDataUnion has some unnecessary assertion in getter methods that crashes the app
-        TxData1559 txData = TransactionUtils.safeEthTxData1559(txDataUnion);
-        SolanaTxData solTxData = TransactionUtils.safeSolTxData1559(txDataUnion);
-        FilTxData filTxData = TransactionUtils.safeFilTxData1559(txDataUnion);
+        TxData1559 txData = txInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                ? txInfo.txDataUnion.getEthTxData1559()
+                : null;
+        SolanaTxData solTxData = txInfo.txDataUnion.which() == TxDataUnion.Tag.SolanaTxData
+                ? txInfo.txDataUnion.getSolanaTxData()
+                : null;
+        ;
+        FilTxData filTxData = txInfo.txDataUnion.which() == TxDataUnion.Tag.FilTxData
+                ? txInfo.txDataUnion.getFilTxData()
+                : null;
+        ;
 
         final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction = txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER

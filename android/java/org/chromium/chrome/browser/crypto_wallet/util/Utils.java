@@ -630,9 +630,13 @@ public class Utils {
             amount = removeHexPrefix(amount);
             BigDecimal value = new BigDecimal(amount);
 
-            return value.multiply(new BigDecimal(getDecimalsDepNumber(decimals)))
-                    .round(MathContext.UNLIMITED)
-                    .longValue();
+            String resStr =
+                    value.multiply(new BigDecimal(getDecimalsDepNumber(decimals))).toPlainString();
+            int integerPlaces = resStr.indexOf('.');
+            if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+                resStr = resStr.substring(0, integerPlaces + 9);
+            }
+            return Long.parseLong(resStr);
         } catch (Exception e) {
             e.printStackTrace();
         }

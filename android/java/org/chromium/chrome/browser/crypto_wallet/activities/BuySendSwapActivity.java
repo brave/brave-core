@@ -230,7 +230,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             mWalletModel = activity.getWalletModel();
-            mSendModel = mWalletModel.getCryptoModel().creteSendModel();
+            mSendModel = mWalletModel.getCryptoModel().createSendModel();
         }
 
         mNetworkSpinner = findViewById(R.id.network_spinner);
@@ -303,17 +303,13 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
             NetworkInfo networkInfo = mNetworkAdapter.getNetwork(position);
             if (networkInfo != null) {
-                if (mActivityType == ActivityType.BUY) {
-                    adjustTestFaucetControls(getPerNetworkUiInfo(networkInfo));
-                }
-
                 // Shall be fine regardless of activity type
                 mFromValueText.setText("");
                 mFromValueText.setHint("0");
 
                 mWalletModel.getCryptoModel().getNetworkModel().setNetwork(networkInfo, success -> {
                     if (!success) {
-                        Log.e(TAG, "Could not set network");
+                        return;
                     }
                     mSelectedNetwork = networkInfo;
                 });
@@ -1252,8 +1248,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mValidator = new Validations.SendToAccountAddress();
         }
 
-        void setCoinType() {}
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String fromAccountAddress = mCustomAccountAdapter.getAccountAddressAtPosition(
@@ -1562,6 +1556,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     if (mSelectedAccount != null
                             && mSelectedAccount.coin == mSelectedNetwork.coin) {
                         resetSwapFromToAssets();
+                    }
+                    if (mActivityType == ActivityType.BUY) {
+                        adjustTestFaucetControls(getPerNetworkUiInfo(mSelectedNetwork));
                     }
                 });
         mWalletModel.getKeyringModel().mAccountAllAccountsPair.observe(

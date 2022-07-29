@@ -186,7 +186,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         super.onDismiss(dialog);
         if (mApprovedTxObserver != null) {
             if (mRejected || mApproved) {
-                // TODO(pav): 28/07/22 rename to callback, it's not an observer
+                // TODO(pav): 28/07/22 rename to callback or delegate, it's not an observer
                 mApprovedTxObserver.onTxApprovedRejected(mApproved, mAccountName, mTxInfo.id);
             } else {
                 mApprovedTxObserver.onTxPending(mAccountName, mTxInfo.id);
@@ -208,10 +208,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         JsonRpcService jsonRpcService = getJsonRpcService();
         KeyringService keyringService = getKeyringService();
-        assert jsonRpcService != null
-                && keyringService
-                        != null : "json is null=" + (jsonRpcService == null) + "keyring"
-                                  + (keyringService != null);
+        assert jsonRpcService != null && keyringService != null;
 
         TextView networkName = view.findViewById(R.id.network_name);
         TextView txType = view.findViewById(R.id.tx_type);
@@ -371,7 +368,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         txService.approveTransaction(mCoinType, mTxInfo.id, (success, error, errorMessage) -> {
             assert success : "tx is not approved";
             if (!success) {
-                // error.getProviderError() seems to be cause an unnecessary assertion crash if
+                // error.getProviderError() seems to be cause an assertion crash if
                 // there is no error
                 Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
                         "approveTransaction", error.getProviderError(), errorMessage);
