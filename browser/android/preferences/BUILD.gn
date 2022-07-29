@@ -36,6 +36,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/constants/pref_names.cc",
     "//brave/components/ntp_background_images/common/pref_names.cc",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
+    "//brave/components/brave_shields/common/pref_names.cc",
   ]
 
   template =

@@ -1193,6 +1193,12 @@ Are you sure you want to do this?
       <message name="IDS_SHIELDS_SUMMARY" desc="Title for shields option.">
         These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.
       </message>
+      <message name="IDS_FINGERPRINT_LANGUAGE_SWITCH" desc="Title for fingerprint language switch">
+        Prevent fingerprinting via language settings
+      </message>
+      <message name="IDS_FINGERPRINT_LANGUAGE_SWITCH_SUMMARY" desc="Title for shields option fingerprint language">
+        Reduces how much websites can learn about you based on your browser's language settings.
+      </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents browser from recognizing your device
       </message>
