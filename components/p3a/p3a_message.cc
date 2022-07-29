@@ -11,60 +11,12 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "crypto/sha2.h"
 
 namespace brave {
 
 MessageMetainfo::MessageMetainfo() = default;
 MessageMetainfo::~MessageMetainfo() = default;
-
-void GenerateP3AMessage(uint64_t metric_hash,
-                        uint64_t metric_value,
-                        const MessageMetainfo& meta,
-                        brave_pyxis::RawP3AValue* p3a_message) {
-  // TODO(iefremov): - create patch for adding `brave_p3a`
-  // to src/base/trace_event/builtin_categories.h
-  // TRACE_EVENT0("brave_p3a", "GenerateP3AMessage");
-  constexpr size_t kDataLength = 64;
-  uint8_t data[kDataLength] = {0};
-
-  // First byte contains the 4 booleans.
-  const char daily = 1;
-  const char weekly = 0;
-  const char monthly = 2;
-  const char first = 0;
-  data[0] = daily | weekly | monthly | first;
-  uint8_t* ptr = data;
-  ptr++;
-
-  // Find out years of install and survey.
-  base::Time::Exploded exploded;
-  meta.date_of_survey.LocalExplode(&exploded);
-  DCHECK_GE(exploded.year, 999);
-  const std::string yos = base::NumberToString(exploded.year).substr(2, 4);
-  meta.date_of_install.LocalExplode(&exploded);
-  DCHECK_GE(exploded.year, 999);
-  const std::string yoi = base::NumberToString(exploded.year).substr(2, 4);
-
-  const std::string metastring =
-      "," + meta.country_code + "," + meta.platform + "," + meta.version + "," +
-      meta.channel + "," + yoi + base::NumberToString(meta.woi) + "," + yos +
-      base::NumberToString(meta.wos) + "," + meta.refcode + ",";
-
-  const std::string metric_value_str = base::NumberToString(metric_value);
-
-  // TODO(iefremov): replace with 'if'?
-  CHECK_LE(metastring.size() + metric_value_str.size(), kDataLength - 1);
-
-  memcpy(ptr, metastring.data(), metastring.size());
-  ptr += metastring.size();
-  memcpy(ptr, metric_value_str.data(), metric_value_str.size());
-
-  // Init the message.
-  p3a_message->set_metric_id(metric_hash);
-  p3a_message->set_p3a_info(data, kDataLength);
-}
 
 base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
                                    uint64_t metric_value,

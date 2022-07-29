@@ -14,7 +14,6 @@
 #include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/histogram_samples.h"
-#include "base/metrics/metrics_hashes.h"
 #include "base/metrics/sample_vector.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/no_destructor.h"
@@ -22,12 +21,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
-#include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
@@ -53,11 +50,8 @@ constexpr uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
-constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
-constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
-
-constexpr char kP3AJsonServerUrl[] = "https://p3a-json.brave.com/";
-constexpr char kP2AJsonServerUrl[] = "https://p2a-json.brave.com/";
+constexpr char kP3AServerUrl[] = "https://p3a-json.brave.com/";
+constexpr char kP2AServerUrl[] = "https://p2a-json.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
@@ -167,10 +161,7 @@ void BraveP3AService::Init(
 
   // Init other components.
   uploader_ = std::make_unique<BraveP3AUploader>(
-      url_loader_factory, upload_server_url_, GURL(kP2AServerUrl));
-
-  new_uploader_ = std::make_unique<BraveP3ANewUploader>(
-      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl),
+      url_loader_factory, GURL(kP3AServerUrl), GURL(kP2AServerUrl),
       base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this));
 
   upload_scheduler_ = std::make_unique<BraveP3AScheduler>(
@@ -187,27 +178,21 @@ void BraveP3AService::Init(
   }
 }
 
-BraveP3ALogStore::LogForJsonMigration BraveP3AService::Serialize(
-    base::StringPiece histogram_name,
-    uint64_t value) {
+std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
+                                       uint64_t value) {
   // TRACE_EVENT0("brave_p3a", "SerializeMessage");
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because
   // the serialized value can be obtained from persisted log storage at the
   // point when the actual histogram is not ready yet.
-  const uint64_t histogram_name_hash = base::HashMetricName(histogram_name);
-
   UpdateMessageMeta();
-  brave_pyxis::RawP3AValue message;
-  GenerateP3AMessage(histogram_name_hash, value, message_meta_, &message);
-
   base::Value p3a_json_value =
       GenerateP3AMessageDict(histogram_name, value, message_meta_);
   std::string p3a_json_message;
   const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
   DCHECK(ok);
 
-  return {message.SerializeAsString(), p3a_json_message};
+  return p3a_json_message;
 }
 
 bool
@@ -304,12 +289,7 @@ void BraveP3AService::StartScheduledUpload() {
     const std::string log_type = log_store_->staged_log_type();
     VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes "
             << "of type " << log_type;
-    uploader_->UploadLog(log, log_type);
-
-    // We duplicate the uploads to test that the new approach works as fine
-    // as the legacy one. Once we are ready, we will remove the old
-    // uploader.
-    new_uploader_->UploadLog(log_store_->staged_json_log(), log_type);
+    uploader_->UploadLog(log_store_->staged_log(), log_type);
   }
 }
 

@@ -119,15 +119,7 @@ const std::string& BraveP3ALogStore::staged_log() const {
   auto iter = log_.find(staged_entry_key_);
   DCHECK(iter != log_.end());
 
-  return staged_log_.legacy_log;
-}
-
-const std::string& BraveP3ALogStore::staged_json_log() const {
-  DCHECK(!staged_entry_key_.empty());
-  auto iter = log_.find(staged_entry_key_);
-  DCHECK(iter != log_.end());
-
-  return staged_log_.json_log;
+  return staged_log_;
 }
 
 std::string BraveP3ALogStore::staged_log_type() const {

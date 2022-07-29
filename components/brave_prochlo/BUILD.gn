@@ -1,9 +1,0 @@
-import("//third_party/protobuf/proto_library.gni")
-
-# This component is a leftover that we will cleanup after transition
-# to the new p3a ping format.
-# https://github.com/brave/brave-browser/issues/15967
-proto_library("prochlo_proto") {
-  sources = [ "prochlo_message.proto" ]
-  proto_in_dir = "."
-}

@@ -30,7 +30,6 @@ namespace brave {
 
 class BraveP3AScheduler;
 class BraveP3AUploader;
-class BraveP3ANewUploader;
 
 // Core class for Brave Privacy-Preserving Product Analytics machinery.
 // Works on UI thread. Refcounted to receive histogram updating callbacks
@@ -57,9 +56,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   // BraveP3ALogStore::Delegate
-  BraveP3ALogStore::LogForJsonMigration Serialize(
-      base::StringPiece histogram_name,
-      uint64_t value) override;
+  std::string Serialize(base::StringPiece histogram_name,
+                        uint64_t value) override;
 
   // May be accessed from multiple threads, so this is thread-safe.
   bool IsActualMetric(base::StringPiece histogram_name) const override;
@@ -116,8 +114,6 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // Components:
   std::unique_ptr<BraveP3ALogStore> log_store_;
   std::unique_ptr<BraveP3AUploader> uploader_;
-  // See `brave_p3a_new_uploader.h`
-  std::unique_ptr<BraveP3ANewUploader> new_uploader_;
   std::unique_ptr<BraveP3AScheduler> upload_scheduler_;
 
   // Used to store histogram values that are produced between constructing
