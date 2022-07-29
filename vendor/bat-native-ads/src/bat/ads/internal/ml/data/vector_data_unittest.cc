@@ -31,7 +31,7 @@ TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
 
   // Assert
   EXPECT_EQ(static_cast<int>(v_5.size()),
-            dense_data_vector_5.GetDimensionCountForTesting());
+            dense_data_vector_5.GetDimensionCount());
 }
 
 TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
@@ -43,8 +43,7 @@ TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   // Act
 
   // Assert
-  EXPECT_EQ(kDimensionCount,
-            sparse_data_vector_6.GetDimensionCountForTesting());
+  EXPECT_EQ(kDimensionCount, sparse_data_vector_6.GetDimensionCount());
 }
 
 TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
@@ -152,6 +151,58 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
   // Assert
   EXPECT_TRUE(std::isnan(wrong_dd) && std::isnan(wrong_ss) &&
               std::isnan(wrong_sd) && std::isnan(wrong_ds));
+}
+
+TEST_F(BatAdsVectorDataTest, Add) {
+  // Arrange
+  VectorData v1 = VectorData({0.3, 0.5, 0.8});
+  VectorData v1_b = VectorData({0.3, 0.5, 0.8});
+  VectorData v2 = VectorData({1.0, -0.6, 0.0});
+  VectorData v3 = VectorData({0.0, 0.0, 0.0});
+  VectorData v4 = VectorData({0.7, 0.2, -0.35});
+
+  std::vector<float> v12({1.3, -0.1, 0.8});
+  std::vector<float> v21({1.3, -0.1, 0.8});
+  std::vector<float> v34({0.7, 0.2, -0.35});
+
+  // Act
+  v1.AddElementWise(v2);
+  v2.AddElementWise(v1_b);
+  v3.AddElementWise(v4);
+
+  // Assert
+  for (int i = 0; i < 3; i++) {
+    EXPECT_NEAR(v12[i], v1.GetValuesForTesting()[i], 0.001f);
+    EXPECT_NEAR(v21[i], v2.GetValuesForTesting()[i], 0.001f);
+    EXPECT_NEAR(v34[i], v3.GetValuesForTesting()[i], 0.001f);
+  }
+}
+
+TEST_F(BatAdsVectorDataTest, ScalarDivide) {
+  // Arrange
+  VectorData v1 = VectorData({0.4, 0.3, 0.8});
+  VectorData v2 = VectorData({1.9, -0.75, 0.0});
+  VectorData v3 = VectorData({0.0, 0.0, 0.0});
+  VectorData v4 = VectorData({0.8, 0.2, -0.35});
+
+  std::vector<float> v1d({8.0, 6.0, 16.0});
+  std::vector<float> v2d({1.9, -0.75, 0.0});
+  std::vector<float> v3d({0.0, 0.0, 0.0});
+  std::vector<float> v4d({-3.2, -0.8, 1.4});
+
+  // Act
+  v1.DivideByScalar(0.05);
+  v2.DivideByScalar(1.0);
+  v3.DivideByScalar(2.3);
+  v4.DivideByScalar(-0.25);
+
+  // Assert
+  for (int i = 0; i < 3; i++) {
+    EXPECT_NEAR(v1d[i], v1.GetValuesForTesting()[i], 0.001f);
+    EXPECT_NEAR(v2d[i], v2.GetValuesForTesting()[i], 0.001f);
+    EXPECT_NEAR(v3d[i], v3.GetValuesForTesting()[i], 0.001f);
+    EXPECT_NEAR(v4d[i], v4.GetValuesForTesting()[i], 0.001f);
+  }
 }
 
 TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {

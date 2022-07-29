@@ -21,7 +21,6 @@ const int kDefaultPageProbabilitiesHistorySize = 5;
 
 constexpr char kFieldTrialParameterResourceVersion[] =
     "text_classification_resource_version";
-
 constexpr int kDefaultResourceVersion = 1;
 
 }  // namespace

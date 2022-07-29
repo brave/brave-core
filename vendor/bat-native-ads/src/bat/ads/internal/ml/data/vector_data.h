@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "bat/ads/internal/ml/data/data.h"
@@ -36,12 +37,16 @@ class VectorData final : public Data {
   VectorData& operator=(const VectorData& vector_data);
   VectorData& operator=(VectorData&& vector_data) noexcept;
 
+  // Mathematical vector operations
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
-
+  void AddElementWise(const VectorData& v_add);
+  void DivideByScalar(float scalar);
   void Normalize();
 
-  int GetDimensionCountForTesting() const;
+  int GetDimensionCount() const;
+  int GetNonZeroElementsCount() const;
 
+  const std::string GetVectorAsString() const;
   const std::vector<float>& GetValuesForTesting() const;
 
  private:

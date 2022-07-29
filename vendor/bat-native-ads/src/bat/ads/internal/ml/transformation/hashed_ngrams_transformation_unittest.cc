@@ -41,8 +41,7 @@ TEST_F(BatAdsHashedNGramsTest, HashingTest) {
 
   // Assert
   // 10000 is the default size
-  ASSERT_EQ(kDefaultBucketCount,
-            hashed_vect_data->GetDimensionCountForTesting());
+  ASSERT_EQ(kDefaultBucketCount, hashed_vect_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
   EXPECT_EQ(kExpectedElementCount,
@@ -68,7 +67,7 @@ TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
-  ASSERT_EQ(kHashBucketCount, hashed_vect_data->GetDimensionCountForTesting());
+  ASSERT_EQ(kHashBucketCount, hashed_vect_data->GetDimensionCount());
   EXPECT_EQ(kHashBucketCount,
             static_cast<int>(hashed_vect_data->GetValuesForTesting().size()));
 }
