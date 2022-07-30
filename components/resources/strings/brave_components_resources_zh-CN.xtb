@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
+<translation id="6073289164268847023">钱包创建时间：</translation>
+<translation id="1979114396925139279">外部钱包信息</translation>
+<translation id="2326487656644542536">钱包信息</translation>
+<translation id="3506182299017414175">钱包尚未创建</translation>
+<translation id="8559420016582377654">钱包付款 ID：</translation>
+<translation id="438586487791444158">钱包的状态：</translation>
+<translation id="7580329715937096918">用 <ph name="PROVIDER"/> 进行验证时出现临时性问题。您的 Brave Rewards 会继续处于“待处理” 状态并会自动重试，但您也可以稍后再试。</translation>
+<translation id="6291765462876399333">硬件钱包需要在 <ph name="DEVICE_NAME"/> 设备上确认</translation>
 </translationbundle>

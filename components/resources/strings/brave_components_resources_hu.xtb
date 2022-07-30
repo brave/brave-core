@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="6073289164268847023">Pénztárca létrehozva:</translation>
+<translation id="1979114396925139279">Külső pénztárca adatai</translation>
+<translation id="2326487656644542536">Pénztárcaadatok</translation>
+<translation id="3506182299017414175">A pénztárca</translation>
+<translation id="8559420016582377654">Pénztárca fizetési azonosítója:</translation>
+<translation id="438586487791444158">Pénztárca állapota:</translation>
+<translation id="7580329715937096918">Átmeneti hiba lépett fel a következő ellenőrzésénél: <ph name="PROVIDER"/>. Brave Jutalmai függő állapotban maradnak, ezek feldolgozását a rendszer automatikusan ismét megpróbálja majd, de Ön is újrapróbálhatja később.</translation>
+<translation id="6291765462876399333">A hardware pénztárcához visszaigazolás szükséges a(z) <ph name="DEVICE_NAME"/> eszközön</translation>
 </translationbundle>

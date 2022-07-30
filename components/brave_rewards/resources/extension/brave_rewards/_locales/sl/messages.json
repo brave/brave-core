@@ -335,6 +335,19 @@
     "message": "Ponovna povezava",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Vaše nagrade Brave Rewards so verificirane!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Vaše Brave Rewards so bile uspešno verificirane s pomočjo $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Na voljo je donacija za žeton!",
     "description": ""

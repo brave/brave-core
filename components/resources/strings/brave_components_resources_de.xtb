@@ -1376,4 +1376,12 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="6073289164268847023">Wallet erstellt:</translation>
+<translation id="1979114396925139279">Externe Wallet-Info</translation>
+<translation id="2326487656644542536">Wallet-Info</translation>
+<translation id="3506182299017414175">Wallet wurde noch nicht erstellt</translation>
+<translation id="8559420016582377654">Wallet-Zahlungsnr.:</translation>
+<translation id="438586487791444158">Wallet-Status:</translation>
+<translation id="7580329715937096918">Beim Verifizieren mit <ph name="PROVIDER"/> ist ein vorübergehendes Problem aufgetreten. Ihre Brave Belohnungen bleiben im Status „Ausstehend“ und wir versuchen es automatisch erneut, aber Sie können es auch später selbst noch einmal versuchen.</translation>
+<translation id="6291765462876399333">Für die Hardware-Wallet ist eine Bestätigung auf dem Gerät <ph name="DEVICE_NAME"/> erforderlich.</translation>
 </translationbundle>

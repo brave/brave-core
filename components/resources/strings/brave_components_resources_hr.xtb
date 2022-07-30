@@ -1386,4 +1386,12 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="6073289164268847023">Stvoreni novčanik:</translation>
+<translation id="1979114396925139279">Informacije o vanjskom novčaniku</translation>
+<translation id="2326487656644542536">Informacije o novčaniku</translation>
+<translation id="3506182299017414175">Novčanik još nije stvoren</translation>
+<translation id="8559420016582377654">Identifikacijska oznaka plaćanja novčanikom:</translation>
+<translation id="438586487791444158">Status novčanika:</translation>
+<translation id="7580329715937096918">Nastao je privremeni problem pri provjeravanju autentičnosti s pružateljem usluge <ph name="PROVIDER"/>. Vaše Nagrade Brave ostaju u stanju čekanja i automatski se vraćaju, no također možete pokušati ponovno kasnije.</translation>
+<translation id="6291765462876399333">Za novčanik hardvera potrebna je potvrda na uređaju <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

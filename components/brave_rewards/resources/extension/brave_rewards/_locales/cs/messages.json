@@ -335,6 +335,19 @@
     "message": "Znovu připojit",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Vaše odměny Brave jsou ověřeny!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Vaše odměny Brave byly úspěšně ověřeny u $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "K dispozici je udělení tokenu!",
     "description": ""

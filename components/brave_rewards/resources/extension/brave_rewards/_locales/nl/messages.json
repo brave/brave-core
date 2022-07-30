@@ -335,6 +335,19 @@
     "message": "Opnieuw verbinding maken",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Brave Beloningen is geverifieerd!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Brave Beloningen is geverifieerd met $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Er is een tokentoewijzing beschikbaar!",
     "description": ""

@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="6073289164268847023">Lompakko luotu:</translation>
+<translation id="1979114396925139279">Ulkopuoliset lompakkotiedot</translation>
+<translation id="2326487656644542536">Lompakon tiedot</translation>
+<translation id="3506182299017414175">Lompakkoa ei vielä luotu</translation>
+<translation id="8559420016582377654">Lompakon maksutunniste:</translation>
+<translation id="438586487791444158">Lompakon tila:</translation>
+<translation id="7580329715937096918">Väliaikainen ongelma vahvistamisessa palveluntarjoajan <ph name="PROVIDER"/> kanssa. Brave-palkintosi pysyvät Odottavassa tilassa, ja ne yritetään vahvistaa uudelleen automaattisesti, mutta voit myös itse yrittää myöhemmin uudelleen.</translation>
+<translation id="6291765462876399333">Laitelompakko vaatii vahvistuksen laitteella <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

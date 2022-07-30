@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="6073289164268847023">錢包建立：</translation>
+<translation id="1979114396925139279">外部錢包資訊</translation>
+<translation id="2326487656644542536">錢包資訊</translation>
+<translation id="3506182299017414175">尚未建立錢包</translation>
+<translation id="8559420016582377654">錢包付款 ID：</translation>
+<translation id="438586487791444158">錢包狀態：</translation>
+<translation id="7580329715937096918">驗證 <ph name="PROVIDER"/> 時發生暫時性問題。您的 Brave 獎勵會處於「待處理」狀態，並將自動重試，不過您也可以稍後再試。</translation>
+<translation id="6291765462876399333">硬體錢包要求在裝置 <ph name="DEVICE_NAME"/> 上確認</translation>
 </translationbundle>

@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="6073289164268847023">Cartera creada:</translation>
+<translation id="1979114396925139279">Informació de la cartera externa</translation>
+<translation id="2326487656644542536">Informació del Moneder</translation>
+<translation id="3506182299017414175">La Cartera encara no s'ha creat</translation>
+<translation id="8559420016582377654">Identificador de pagament de cartera:</translation>
+<translation id="438586487791444158">Estat de la cartera:</translation>
+<translation id="7580329715937096918">Hi ha un problema temporal amb la verificació de <ph name="PROVIDER"/>. Els teus Premis de Brave es mantindran en l'estat Pendent i es tornarà a provar automàticament, però també pots provar-ho manualment més tard.</translation>
+<translation id="6291765462876399333">La moneder de maquinari requereix confirmació al dispositiu <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

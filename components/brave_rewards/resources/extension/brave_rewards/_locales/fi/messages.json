@@ -335,6 +335,19 @@
     "message": "Yhdistä uudelleen",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Brave-palkintosi on vahvistettu!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Palveluntarjoaja $provider$ vahvisti Brave-palkintosi.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Tokenilahjoitus on saatavilla!",
     "description": ""

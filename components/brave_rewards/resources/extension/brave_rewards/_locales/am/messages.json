@@ -335,6 +335,19 @@
     "message": "በድጋሚ ያገናኙ",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "የብሬቭ ሽልማቶችዎ ተረጋግጠዋል!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "የብሬቭ ሽልማቶችዎ በተሳካ ሁኔታ በ$provider$ተረጋግጧል።",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "የቶክን ሽልማት አለ!",
     "description": ""

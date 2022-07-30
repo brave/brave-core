@@ -1376,4 +1376,12 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="6073289164268847023">Billetera creada:</translation>
+<translation id="1979114396925139279">Información de billetera externa</translation>
+<translation id="2326487656644542536">Información de la billetera</translation>
+<translation id="3506182299017414175">Aún no se ha creado la billetera</translation>
+<translation id="8559420016582377654">Id. de pago de billetera:</translation>
+<translation id="438586487791444158">Estado de la billetera:</translation>
+<translation id="7580329715937096918">Se produce un problema temporal al realizar la verificación con <ph name="PROVIDER"/>. Tu perfil de Recompensas de Brave se mantendrá en estado "Pendiente" y volverá a intentarlo automáticamente, aunque también puedes dejarlo para más adelante.</translation>
+<translation id="6291765462876399333">La billetera física requiere confirmación en el dispositivo <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

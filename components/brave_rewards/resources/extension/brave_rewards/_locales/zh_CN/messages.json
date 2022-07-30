@@ -335,6 +335,19 @@
     "message": "重新连接",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "您的 Brave 奖励已验证！",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "您的 Brave 奖励已成功向 $provider$ 验证。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "有可用的代币津贴。",
     "description": ""

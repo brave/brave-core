@@ -1376,4 +1376,12 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="6073289164268847023">Portafoglio creato:</translation>
+<translation id="1979114396925139279">Info Portafogli Esterno</translation>
+<translation id="2326487656644542536">Informazioni portafoglio</translation>
+<translation id="3506182299017414175">Il portafoglio non è ancora stato creato</translation>
+<translation id="8559420016582377654">ID acconto portafoglio</translation>
+<translation id="438586487791444158">Stato portafoglio:</translation>
+<translation id="7580329715937096918">C’è un problema temporaneo con <ph name="PROVIDER"/>. L’account che hai creato per le Ricompense di Brave resterà in sospeso. Riproveremo automaticamente ma poi, se vuoi, puoi riprovare anche tu.</translation>
+<translation id="6291765462876399333">Per il portafoglio hardware serve la conferma sul dispositivo <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

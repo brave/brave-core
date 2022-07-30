@@ -335,6 +335,19 @@
     "message": "Tilkoble på nytt",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Brave Rewards er bekreftet!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Brave Rewards ble bekreftet hos $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "En tokenopptjening er tilgjengelig!",
     "description": ""

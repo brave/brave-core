@@ -335,6 +335,19 @@
     "message": "Znova pripojiť",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Vaše Brave Rewards sú overené!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Vaše Brave Rewards boli úspešne overené $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Je dostupná nová dotácia tokenov. ",
     "description": ""

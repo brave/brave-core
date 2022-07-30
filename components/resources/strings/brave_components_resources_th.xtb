@@ -1377,4 +1377,12 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="6073289164268847023">สร้างวอลเล็ตเมื่อ:</translation>
+<translation id="1979114396925139279">ข้อมูลวอลเล็ตภายนอก</translation>
+<translation id="2326487656644542536">ข้อมูลกระเป๋าเงิน</translation>
+<translation id="3506182299017414175">ยังไม่มีการสร้างกระเป๋าสตางค์</translation>
+<translation id="8559420016582377654">ID ชำระเงินด้วยวอลเล็ต:</translation>
+<translation id="438586487791444158">สถานะวอลเล็ต:</translation>
+<translation id="7580329715937096918">เกิดปัญหาชั่วคราวในการยืนยันด้วย <ph name="PROVIDER"/> Brave Rewards ของคุณจะคงสถานะรอดำเนินการและลองอีกครั้งโดยอัตโนมัติ แต่คุณสามารถลองอีกครั้งในภายหลังได้</translation>
+<translation id="6291765462876399333">ต้องยืนยันวอลเล็ตฮาร์ดแวร์บนอุปกรณ์ <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

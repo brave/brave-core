@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Nu afișați soldurile</translation>
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
+<translation id="6073289164268847023">Portofelul a fost creat:</translation>
+<translation id="1979114396925139279">Informații despre portofelul extern</translation>
+<translation id="2326487656644542536">Informații portofel</translation>
+<translation id="3506182299017414175">Portofelul nu a fost creat încă</translation>
+<translation id="8559420016582377654">ID-ul plății din portofel:</translation>
+<translation id="438586487791444158">Starea portofelului:</translation>
+<translation id="7580329715937096918"><ph name="PROVIDER"/> nu poate fi momentan confirmat, din cauza unei probleme. Recompensele Brave vor rămâne În așteptare și se va reîncerca confirmarea automată, însă puteți încerca și dvs. mai târziu.</translation>
+<translation id="6291765462876399333">Portofelul hardware necesită confirmare pe dispozitivul <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

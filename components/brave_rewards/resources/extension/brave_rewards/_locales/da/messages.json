@@ -335,6 +335,19 @@
     "message": "Genopret forbindelsen",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Din Brave Belønninger er bekræftet!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Din Brave Belønninger blev bekræftet via $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "En poletbevilling er tilgængelig!",
     "description": ""

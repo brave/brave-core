@@ -335,6 +335,19 @@
     "message": "Επανάληψη σύνδεσης",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Οι Ανταμοιβές Brave σας επαληθεύτηκαν!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Οι Ανταμοιβές Brave σας επαληθεύτηκαν επιτυχώς μέσω $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Είναι διαθέσιμη μια επιβράβευση σε token!",
     "description": ""

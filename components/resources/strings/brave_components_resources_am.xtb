@@ -1395,4 +1395,12 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="6073289164268847023">ቦርሳ ተፈጥሯል።</translation>
+<translation id="1979114396925139279">ውጫዊ የቦርሳ መረጃ</translation>
+<translation id="2326487656644542536">የዋሌት መረጃ</translation>
+<translation id="3506182299017414175">ዋሌት እስካሁን አልተፈጠረም</translation>
+<translation id="8559420016582377654">የቦርሳ የክፍያ መታወቂያ:</translation>
+<translation id="438586487791444158">የቦርሳ ሁኔታ፡</translation>
+<translation id="7580329715937096918">በ <ph name="PROVIDER"/>ማረጋገጥ ላይ ጊዜያዊ ችግር አለ። የ Brave ሽልማቶችዎ በመጠባበቅ ላይ እንዳሉ ይቆያሉ፣ እና በራስ-ሰር እንደገና ይሞክሩ ፣ ግን ቆይተው እንደገና መሞከር ይችላሉ።</translation>
+<translation id="6291765462876399333">የሃርድዌር ዋሌት በመሳሪያው ላይ ማረጋገጫ ያስፈልገዋል <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

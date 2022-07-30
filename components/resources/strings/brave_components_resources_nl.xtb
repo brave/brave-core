@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
+<translation id="6073289164268847023">Portemonnee aangemaakt:</translation>
+<translation id="1979114396925139279">Externe portemonneegegevens</translation>
+<translation id="2326487656644542536">Portemonnee-info</translation>
+<translation id="3506182299017414175">Wallet is nog niet aangemaakt</translation>
+<translation id="8559420016582377654">Betaal-ID portemonnee:</translation>
+<translation id="438586487791444158">Portemonneestatus:</translation>
+<translation id="7580329715937096918">Er is een tijdelijk probleem opgetreden bij het verifiëren met <ph name="PROVIDER"/>. Uw Brave-beloningen houden de status In behandeling. We proberen het automatisch opnieuw, maar u kunt het later ook zelf opnieuw proberen.</translation>
+<translation id="6291765462876399333">Hardwarewallet vereist bevestiging op apparaat <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

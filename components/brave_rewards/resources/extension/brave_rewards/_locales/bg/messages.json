@@ -335,6 +335,19 @@
     "message": "Повторно свързване",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Вашите Brave награди са потвърдени!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Вашите Brave награди са потвърдени успешно с $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Наличен е безвъзмезден токен!",
     "description": ""

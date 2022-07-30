@@ -335,6 +335,19 @@
     "message": "Reconectați-vă",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Recompensele dvs. Brave sunt confirmate!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Recompensele dvs. Brave au fost confirmate cu succes de $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Este disponibilă o subvenție token!",
     "description": ""

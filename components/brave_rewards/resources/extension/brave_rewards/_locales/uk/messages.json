@@ -335,6 +335,19 @@
     "message": "Відновити з’єднання",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Ваш профіль Brave Rewards перевірено!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Ваш профіль Brave Rewards підтверджено за допомогою $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Доступне пожертвування з токенів!",
     "description": ""

@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="6073289164268847023">Cüzdan oluşturuldu:</translation>
+<translation id="1979114396925139279">Harici cüzdan bilgisi</translation>
+<translation id="2326487656644542536">Cüzdan bilgisi</translation>
+<translation id="3506182299017414175">Henüz cüzdan yaratılmadı</translation>
+<translation id="8559420016582377654">Cüzdan ödeme kimliği:</translation>
+<translation id="438586487791444158">Cüzdan durumu:</translation>
+<translation id="7580329715937096918"><ph name="PROVIDER"/> doğrulamasında geçici bir sorun var. Brave Ödülleriniz Beklemede durumunda kalacak ve otomatik olarak tekrar denenecek fakat siz de daha sonra tekrar deneyebilirsiniz.</translation>
+<translation id="6291765462876399333">Cihaz cüzdanı, cihaz <ph name="DEVICE_NAME"/> üzerinden doğrulama gerektiriyor</translation>
 </translationbundle>

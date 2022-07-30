@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Skryť vaše zostatky na displeji</translation>
 <translation id="4548946945059463969">Ukázať vaše zostatky na obrazovke</translation>
 <translation id="242959166945779492">Na svojom účte nemáte žiadne zostatky. Navštívte FTX a niektoré si zakúpte.</translation>
+<translation id="6073289164268847023">Peňaženka vytvorená:</translation>
+<translation id="1979114396925139279">Informácie o externej peňaženke</translation>
+<translation id="2326487656644542536">Informácie o peňaženke</translation>
+<translation id="3506182299017414175">Peňaženka ešte nebola vytvorená</translation>
+<translation id="8559420016582377654">ID platby v Peňaženke:</translation>
+<translation id="438586487791444158">Stav peňaženky:</translation>
+<translation id="7580329715937096918">Objavil sa dočasný problém s overením pomocou <ph name="PROVIDER"/>. Vaše Brave Reward ostanú v stave Čakajúce a opätovný pokus sa opakuje automaticky, ale môžete to skúsiť neskôr znova.</translation>
+<translation id="6291765462876399333">Hardvérová peňaženka vyžaduje potvrdenie na zariadení <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

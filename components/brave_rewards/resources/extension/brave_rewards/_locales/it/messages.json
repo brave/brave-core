@@ -335,6 +335,19 @@
     "message": "Ricollegati",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Il tuo profilo Ricompense Brave è verificato!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Il tuo profilo Ricompense Brave è stato verificato correttamente con $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "È disponibile una concessione di token!",
     "description": ""

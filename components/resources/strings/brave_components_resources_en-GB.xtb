@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="6073289164268847023">Wallet created:</translation>
+<translation id="1979114396925139279">External wallet info</translation>
+<translation id="2326487656644542536">Wallet info</translation>
+<translation id="3506182299017414175">Wallet was not yet created</translation>
+<translation id="8559420016582377654">Wallet payment ID:</translation>
+<translation id="438586487791444158">Wallet status:</translation>
+<translation id="7580329715937096918">There is a temporary problem verifying with <ph name="PROVIDER"/>. Your Brave Rewards will remain in a pending state and retry automatically, but you can also try again later.</translation>
+<translation id="6291765462876399333">Hardware wallet requires confirmation on device <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

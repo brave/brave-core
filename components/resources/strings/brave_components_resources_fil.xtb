@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
+<translation id="6073289164268847023">Nagawa ang wallet:</translation>
+<translation id="1979114396925139279">Impormasyon ng external na wallet</translation>
+<translation id="2326487656644542536">Impormasyon ng Wallet</translation>
+<translation id="3506182299017414175">Hindi pa nagawa ang wallet</translation>
+<translation id="8559420016582377654">ID sa pagbabayad sa wallet:</translation>
+<translation id="438586487791444158">Status ng wallet:</translation>
+<translation id="7580329715937096918">Pansamantalang nagkaproblema sa pag-verify sa <ph name="PROVIDER"/>. Mananatiing Pending ang status ng iyong Brave Rewards at awtomatiko itong magre-retry, pero puwede mo ring subukan ulit sa ibang pagkakataon.</translation>
+<translation id="6291765462876399333">Kailangan ng hardware wallet ng kumpirmasyon sa device <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="6073289164268847023">Wallet oprettet:</translation>
+<translation id="1979114396925139279">Eksterne wallet-oplysninger</translation>
+<translation id="2326487656644542536">Oplysninger om tegnebog</translation>
+<translation id="3506182299017414175">Pung er ikke oprettet endnu</translation>
+<translation id="8559420016582377654">Wallet-betalingsidentifikation:</translation>
+<translation id="438586487791444158">Wallet-status:</translation>
+<translation id="7580329715937096918">Der er et midlertidigt problem med verifikation med <ph name="PROVIDER"/>, Dine Brave Rewards forbliver i Ventende status, og verifikationsforsøget gentages automatisk, men du kan også prøve igen senere.</translation>
+<translation id="6291765462876399333">Hardware Wallet kræver bekræftelse på enheden <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

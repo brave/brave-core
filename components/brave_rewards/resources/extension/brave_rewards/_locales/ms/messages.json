@@ -335,6 +335,19 @@
     "message": "Sambung semula",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Brave Rewards anda sudah disahkan!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Brave Rewards anda berjaya disahkan dengan $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Geran token sudah tersedia!",
     "description": ""

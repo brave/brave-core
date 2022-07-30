@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Masquer vos soldes</translation>
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
+<translation id="6073289164268847023">Portefeuille créé :</translation>
+<translation id="1979114396925139279">Informations du portefeuille extérieur</translation>
+<translation id="2326487656644542536">Informations sur le portefeuille</translation>
+<translation id="3506182299017414175">Le portefeuille n'a pas encore été créé</translation>
+<translation id="8559420016582377654">Identifiant de paiement du portefeuille :</translation>
+<translation id="438586487791444158">Statut du portefeuille :</translation>
+<translation id="7580329715937096918">Un problème temporaire est survenu lors de la vérification avec <ph name="PROVIDER"/>. Vos Récompenses Brave resteront en attente, mais de nouvelles tentatives seront effectuées automatiquement. Vous pourrez également réessayer plus tard.</translation>
+<translation id="6291765462876399333">Le portefeuille physique nécessite une confirmation sur l'appareil <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

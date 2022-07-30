@@ -335,6 +335,19 @@
     "message": "Torna't a connectar",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "El teu compte de Recompenses de Brave està verificat!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "El teu compte de Recompenses de Brave s'ha vertificat correctament amb $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Hi ha disponible una fitxa de recompensa!",
     "description": ""

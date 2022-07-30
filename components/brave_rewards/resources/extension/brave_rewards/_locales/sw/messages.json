@@ -335,6 +335,19 @@
     "message": "Unganisha upya",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Zawadi zako za Brave zimethibitishwa!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Zawadi zako za Brave zimethibitishwa kwa ufanisi na $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Ruzuku ya tokeni inapatikana!",
     "description": ""

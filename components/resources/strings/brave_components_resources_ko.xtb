@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="6073289164268847023">지갑 생성됨:</translation>
+<translation id="1979114396925139279">외부 지갑 정보</translation>
+<translation id="2326487656644542536">지갑 정보</translation>
+<translation id="3506182299017414175">지갑이 아직 생성되지 않음</translation>
+<translation id="8559420016582377654">지갑 결제 ID:</translation>
+<translation id="438586487791444158">지갑 상태:</translation>
+<translation id="7580329715937096918"><ph name="PROVIDER"/>를 이용한 검증에 일시적인 문제가 발생했습니다. Brave Rewards가 보류 중 상태로 유지되며 자동으로 다시 시도합니다. 나중에 직접 다시 시도하셔도 됩니다.</translation>
+<translation id="6291765462876399333">하드웨어 월렛이 기기 <ph name="DEVICE_NAME"/>에서의 확인을 요구함</translation>
 </translationbundle>

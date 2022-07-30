@@ -335,6 +335,19 @@
     "message": "Połącz ponownie",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "Twoje nagrody Brave zostały zweryfikowane!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Twoje nagrody Brave zostały pomyślnie zweryfikowane przez $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "Dostępna jest subwencja tokenów!",
     "description": ""

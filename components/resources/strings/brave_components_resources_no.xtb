@@ -1375,4 +1375,12 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="6073289164268847023">Lommebok opprettet:</translation>
+<translation id="1979114396925139279">Info om ekstern lommebok</translation>
+<translation id="2326487656644542536">Lommebokinformasjon</translation>
+<translation id="3506182299017414175">Lommeboken er ikke opprettet enda</translation>
+<translation id="8559420016582377654">Lommebok-betalings-ID:</translation>
+<translation id="438586487791444158">Status for lommebok:</translation>
+<translation id="7580329715937096918">Det har oppstått et midlertidig problem med verifisering via <ph name="PROVIDER"/>. Brave-belønningene dine får statusen Venter, og vi prøver igjen automatisk. Du kan også prøve igjen senere.</translation>
+<translation id="6291765462876399333">Maskinvarelommeboken krever bekreftelse på enheten <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

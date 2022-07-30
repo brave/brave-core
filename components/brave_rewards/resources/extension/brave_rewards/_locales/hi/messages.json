@@ -335,6 +335,19 @@
     "message": "रिकनेक्ट",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "आपका Brave Rewards वेरीफ़ाई किया गया है!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "आपके Brave Rewards को $provider$ द्वारा सफ़लतापूर्वक वेरीफ़ाई किया गया है.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "टोकन ग्रांट्स उपलब्ध है!",
     "description": ""

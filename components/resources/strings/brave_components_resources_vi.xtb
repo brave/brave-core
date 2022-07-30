@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="6073289164268847023">Ví đã tạo:</translation>
+<translation id="1979114396925139279">Thông tin về ví ngoài</translation>
+<translation id="2326487656644542536">Thông tin ví</translation>
+<translation id="3506182299017414175">Ví chưa được tạo</translation>
+<translation id="8559420016582377654">Mã thanh toán của ví:</translation>
+<translation id="438586487791444158">Trạng thái ví:</translation>
+<translation id="7580329715937096918">Đã xảy ra lỗi tạm thời khi xác minh với <ph name="PROVIDER"/>. Phần thưởng Brave của bạn sẽ vẫn ở trạng thái Đang chờ xử lý và tự động thử lại, nhưng bạn cũng có thể thử lại sau.</translation>
+<translation id="6291765462876399333">Ví phần cứng yêu cầu xác nhận trên thiết bị <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

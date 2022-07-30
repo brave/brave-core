@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Não mostrar os seus saldos no ecrã</translation>
 <translation id="4548946945059463969">Mostrar os seus saldos no ecrã</translation>
 <translation id="242959166945779492">Não tem saldos na sua conta. Visite FTX para comprar.</translation>
+<translation id="6073289164268847023">Carteira criada:</translation>
+<translation id="1979114396925139279">Informação da carteira externa</translation>
+<translation id="2326487656644542536">Informações da Wallet</translation>
+<translation id="3506182299017414175">A Carteira ainda não foi criada</translation>
+<translation id="8559420016582377654">ID da Carteira de pagamento:</translation>
+<translation id="438586487791444158">Estado da carteira:</translation>
+<translation id="7580329715937096918">Existe um problema temporário ao realizar a verificação em <ph name="PROVIDER"/>. As suas Recompensas Brave permanecerão no estado pendente e será realizada uma nova tentativa automaticamente. Também pode tentar novamente mais tarde.</translation>
+<translation id="6291765462876399333">A carteira de hardware exige confirmação no dispositivo <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

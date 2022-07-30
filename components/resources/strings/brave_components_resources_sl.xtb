@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Skrijte svoje stanje pred prikazom</translation>
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
+<translation id="6073289164268847023">Denarnica je ustvarjena:</translation>
+<translation id="1979114396925139279">Informacije o zunanji denarnici</translation>
+<translation id="2326487656644542536">Informacije o denarnici</translation>
+<translation id="3506182299017414175">Denarnica še ni bila ustvarjena</translation>
+<translation id="8559420016582377654">Plačilni ID denarnice:</translation>
+<translation id="438586487791444158">Stanje denarnice:</translation>
+<translation id="7580329715937096918">Nastala je začasna težava pri preverjanju z <ph name="PROVIDER"/>. Nagrade Brave bodo ostale v stanju Čakajoče in bodo samodejno ponovile poskus, lahko pa poskusite tudi pozneje.</translation>
+<translation id="6291765462876399333">Strojna denarnica zahteva potrditev v napravi <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

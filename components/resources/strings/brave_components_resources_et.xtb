@@ -1376,4 +1376,12 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="6073289164268847023">Rahakott on loodud:</translation>
+<translation id="1979114396925139279">Välise rahakoti andmed</translation>
+<translation id="2326487656644542536">Rahakoti andmed</translation>
+<translation id="3506182299017414175">Rahakotti pole veel loodud</translation>
+<translation id="8559420016582377654">Rahakotimakse ID:</translation>
+<translation id="438586487791444158">Rahakoti olek:</translation>
+<translation id="7580329715937096918">Teenusepakkuja <ph name="PROVIDER"/> kaudu kinnitamisel ilmnes ajutine probleem. Brave'i Preemiad jäävad ootel olekusse ja proovitakse automaatselt uuesti, aga võite ka ise hiljem uuesti proovida.</translation>
+<translation id="6291765462876399333">Riistvararahakott nõuab kinnitust seadmes <ph name="DEVICE_NAME"/></translation>
 </translationbundle>

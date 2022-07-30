@@ -1378,4 +1378,12 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="6073289164268847023">ウォレットが作成されました：</translation>
+<translation id="1979114396925139279">外部ウォレット情報</translation>
+<translation id="2326487656644542536">ウォレットの情報</translation>
+<translation id="3506182299017414175">ウォレットはまだ作成されていません</translation>
+<translation id="8559420016582377654">ウォレット支払いID：</translation>
+<translation id="438586487791444158">ウォレットのステータス：</translation>
+<translation id="7580329715937096918">一時的に、<ph name="PROVIDER"/> の認証に問題が発生しています。Braveリワードのステータスは保留中となり、自動的に再試行されます。後ほどもう一度お試しいただくことも可能です。</translation>
+<translation id="6291765462876399333">ハードウェアウォレットが、デバイスでの確認を要求しています<ph name="DEVICE_NAME"/></translation>
 </translationbundle>

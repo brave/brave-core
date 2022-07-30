@@ -335,6 +335,19 @@
     "message": "Reconnect",
     "description": ""
   },
+  "notificationWalletVerifiedTitle": {
+    "message": "U Brave-belonings is geverifieer!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "notificationTokenGrantTitle": {
     "message": "A token grant is available!",
     "description": ""
