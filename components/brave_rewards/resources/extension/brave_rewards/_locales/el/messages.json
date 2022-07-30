@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "OK",
+    "message": "Εντάξει",
     "description": ""
   },
   "set": {
@@ -204,7 +204,7 @@
     "description": ""
   },
   "walletAutoContribute": {
-    "message": "Auto-Contribute",
+    "message": "Αυτόματη Συνεισφορά",
     "description": ""
   },
   "walletDisconnected": {
@@ -299,7 +299,7 @@
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
-    "message": "Auto-Contribute",
+    "message": "Αυτόματη Συνεισφορά",
     "description": ""
   },
   "notificationAutoContributeCompletedText": {
@@ -334,19 +334,6 @@
   "notificationWalletDisconnectedAction": {
     "message": "Επανάληψη σύνδεσης",
     "description": ""
-  },
-  "notificationWalletVerifiedTitle": {
-    "message": "Οι Ανταμοιβές Brave σας επαληθεύτηκαν!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Οι Ανταμοιβές Brave σας επαληθεύτηκαν επιτυχώς μέσω $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
   },
   "notificationTokenGrantTitle": {
     "message": "Είναι διαθέσιμη μια επιβράβευση σε token!",
@@ -498,7 +485,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeHeader": {
-    "message": "Καλώς ήρθατε στο Brave Rewards!\n",
+    "message": "Καλώς ήρθατε στο Brave Rewards!",
     "description": ""
   },
   "onboardingPanelWelcomeText": {

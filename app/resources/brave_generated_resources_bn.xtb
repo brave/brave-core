@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">Brave সার্চ ব্যবহার করুন</translation>
 <translation id="5026874946691314267">এটি আবার দেখাবেন না</translation>
 <translation id="5234764350956374838">খারিজ</translation>
-<translation id="214744058941501853">"&gt;
-          Brave সার্চ রূপান্তর বাতিল করুন, এই পরামর্শটি সরাতে এন্টার টিপুন</translation>
+<translation id="5100490448228945668">Brave অনুসন্ধান রূপান্তর বাতিল করুন, এই পরামর্শটি সরাতে এন্টার টিপুন</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
 <translation id="6040143037577758943">বন্ধ</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">বুকমার্ক বার</translation>
 <translation id="6333347122924254968">ঠিকানা বারে Brave পুরস্কারসমূহ দেখান</translation>
 <translation id="1811404036171336214">বুকমার্কগুলি সবর্দা নতুন ট্যাব পৃষ্ঠাতে দেখান</translation>
+<translation id="3416468988018290825">সর্বদা সম্পূর্ণ URL গুলি দেখান৷</translation>
 <translation id="5529693968082667490">ট্যাব সার্চ বাটন দেখান</translation>
 <translation id="1643029991199044105">Ctrl-Tab দিয়ে অতি সম্প্রতি ব্যবহৃত ট্যাবগুলিতে ঘুরে বেরান</translation>
 <translation id="1013121820689882118">স্পীডরিডার</translation>
@@ -393,7 +393,8 @@
 <translation id="5249433283143453448">ব্রাউজারে সুরক্ষিত ভিডিও স্ট্রিমিং এবং অন্যান্য সামগ্রী দেখতে ওয়াইডওয়াইন ডিজিটাল রাইটস ম্যানেজমেন্ট (ডিআরএম) উপাদান ব্যবহার করুন।</translation>
 <translation id="8137559199583651773">এক্সটেনশনগুলি পরিচালনা করুন</translation>
 <translation id="7013485839273047434">আরও এক্সটেনশনগুলি পান</translation>
-<translation id="9131889008937672866">ডিফল্ট ক্রিপ্টোকারেন্সি ওয়ালেট</translation>
+<translation id="4954512758656527938">ডিফল্ট ইথেরিয়াম ওয়ালেট</translation>
+<translation id="7701023802820268122">ডিফল্ট সোলানা ওয়ালেট</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="7701040980221191251">কিছুই নয়</translation>
@@ -418,6 +419,8 @@
 <translation id="8205945804087322170">নতুন নেটওয়ার্ক যোগ করুন</translation>
 <translation id="1330032157352961756">নতুন চেইনের id</translation>
 <translation id="3423620355610881890">একটি ইতিবাচক দশমিক সংখ্যা</translation>
+<translation id="8110465398315041268">সার্চ নেটওয়ার্ক</translation>
+<translation id="3579705520805744214">চেইন আইডি বা নাম</translation>
 <translation id="726121047592132939">নতুন চেইনের নাম</translation>
 <translation id="1034112277864078119">চেইনের নাম এন্টার করুন</translation>
 <translation id="4672314527143443556">চেইনের মুদ্রার নাম</translation>
@@ -489,6 +492,7 @@
 <translation id="3411013544209536575">সহায়ক পরামর্শসমূহ</translation>
 <translation id="2775956301559569472">404 পৃষ্ঠায় ওয়েব্যাক মেশিন প্রম্পট দেখান</translation>
 <translation id="3095201688102519917">বিবিধ ট্যাব সহ কোনও উইন্ডো বন্ধ করার আগে আমাকে জানান</translation>
+<translation id="7120553802660696133">শেষ ট্যাব বন্ধ করার সময় উইন্ডো বন্ধ করুন</translation>
 <translation id="6624718837376802990">অবতার এজি পুরস্কারসমূহ</translation>
 <translation id="6617313057407561765">অবতার এজি ব্রেভ</translation>
 <translation id="6754445808455578019">অবতার এজি ওসান</translation>

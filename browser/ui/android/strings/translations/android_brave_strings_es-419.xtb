@@ -191,6 +191,7 @@ mes...</translation>
 todavía no se han registrado para recibir contribuciones. Tu navegador seguirá intentando contribuir
 hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 días.</translation>
 <translation id="3101693828171454453">no son suficientes <ph name="TOKEN"/>s</translation>
+<translation id="6940273954212603510">Por favor</translation>
 <translation id="1036277985068412734">agregar fondos</translation>
 <translation id="3492491948683276944">Configurar propina mensual</translation>
 <translation id="8038539967102225446">Los anuncios de Brave ya están aquí</translation>
@@ -261,6 +262,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado este código QR.
 <translation id="3097089005389027085">Esta acción compartirá sus datos de Brave con el dispositivo que ha generado estas palabras clave. Es posible que, entre los datos compartidos, estén también sus contraseñas.
 Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clave.
 ¿Confirma que quiere hacerlo?</translation>
+<translation id="4550208292810542331">No se ha permitido el acceso a la cámara</translation>
 <translation id="597993392929850353">Licencia de Brave</translation>
 <translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
 <translation id="6199596294742117349">Esta es una Pestaña Privada</translation>
@@ -549,8 +551,9 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="6366007539108097840">3 M</translation>
 <translation id="6977728312178289892">1 A</translation>
 <translation id="6895566650974550243">TODO</translation>
-<translation id="5071303414930953888">Cuenta <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Cuenta de <ph name="ACCOUNT_NAME"/>  <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Agregar cuenta</translation>
+<translation id="318334680413773318">Agregar/importar cuenta</translation>
 <translation id="3448492834076427715">Actualizar cuenta</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">¿Habilitar desbloqueo mediante huella digital?</translation>
@@ -859,12 +862,14 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="4804818685124855865">Desconectar</translation>
 <translation id="8009571545960303544">Su firma se está procesando</translation>
 <translation id="3484981968509595506">Hay una dApp que solicita tu clave de cifrado público</translation>
+<translation id="2300240008330189182"><ph name="URL"/> solicita la clave de cifrado público de tu billetera. Si das tu consentimiento para facilitar esta clave, el sitio podrá enviarte mensajes cifrados.</translation>
 <translation id="3340247553212049934">Proporcionar</translation>
 <translation id="1982257600591932657">Nombre de la red</translation>
 <translation id="5052727830821470769">URL de la red</translation>
 <translation id="4822132585477111396">ID de cadena</translation>
 <translation id="7131971375297699539">Símbolo de la moneda</translation>
 <translation id="7982789257301363584">Red</translation>
+<translation id="6936860995365507185">Esto permitirá usar esta red en la billetera de Brave. <ph name="CLICK_START"/>Más información<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">¿Permitir que este sitio agregue una red?</translation>
 <translation id="4857321293515555666">Esta dApp quiere leer este mensaje para responder a tu solicitud.</translation>
 <translation id="714506544401754321">Descifrar el mensaje</translation>
@@ -889,4 +894,14 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="5334952096674914470">\n\nProveedor de red celular\n</translation>
 <translation id="5393042357629679588">\n\nOtro problema\n</translation>
 <translation id="8095666712177294104">\n\nPlataforma\n</translation>
+<translation id="7080614857771109950">Admite activos compatibles con EVM en la cadena de bloques de Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Admite activos compatibles con SPL en la cadena de bloques de Solana</translation>
+<translation id="6575120282593094155">Aún no tienes una cuenta de <ph name="ACCOUNT_TYPE"/>. ¿Quieres crear una?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Aplicaciones excluidas</translation>
+<translation id="8463269357637177759">Aplicaciones habituales permitidas</translation>
+<translation id="4554726425645556940">Aplicaciones del sistema permitidas</translation>
+<translation id="9023148942866814328">Mostrar aplicaciones del sistema</translation>
+<translation id="5472400694702418949">Agregar aplicaciones que deben excluirse del tráfico de VPN.</translation>
+<translation id="7002577172732106572">Túnel dividido</translation>
 </translationbundle>

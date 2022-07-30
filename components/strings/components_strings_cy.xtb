@@ -12,12 +12,6 @@
 <translation id="1024111578869940408">Mae ymosodwyr yn dynwared gwefannau weithiau, gan wneud newidiadau sy'n anodd eu gweld yn y cyfeiriad gwe.</translation>
 <translation id="1028781062521375153">Gweld y manylion</translation>
 <translation id="1030706264415084469">Mae <ph name="URL"/> eisiau storio data mawr ar eich dyfais yn barhaol</translation>
-<translation id="7653199919907357627">Nid yw'r modd Anhysbys yn eich gwneud yn anweledig ar-lein:
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Gall gwefannau a'r gwasanaethau y maent yn eu defnyddio weld ymweliadau<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>Gall cyflogwyr neu ysgolion olrhain gweithgarwch pori<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>Gall darparwyr gwasanaeth rhyngrwyd fonitro traffig ar y we<ph name="END_LIST_ITEM"/>
-        <ph name="END_LIST"/></translation>
 <translation id="1036348656032585052">Diffodd</translation>
 <translation id="1036982837258183574">Pwyswch |<ph name="ACCELERATOR"/>| i adael y modd sgrîn lawn</translation>
 <translation id="1038106730571050514">Dangos awgrymiadau</translation>
@@ -26,6 +20,7 @@
 <translation id="1043382569739532657">Grantiau, ysgoloriaethau a chymorth ariannol</translation>
 <translation id="1048785276086539861">Pan fyddwch yn golygu anodiadau, bydd y ddogfen hon yn dychwelyd i'r wedd un dudalen</translation>
 <translation id="1050038467049342496">Caewch apiau eraill</translation>
+<translation id="1053959602163383901">Gwnaethoch ddewis dilysu gyda dyfais ddilysu ar wefannau sy'n eu defnyddio <ph name="PROVIDER_ORIGIN"/>. Mae'n bosib bod y darparwr hwn wedi storio gwybodaeth am eich dull talu, y gallwch <ph name="LINK_TEXT"/>.</translation>
 <translation id="1055184225775184556">&amp;Dadwneud Ychwanegu</translation>
 <translation id="1056663316309890343">Meddalwedd lluniau</translation>
 <translation id="1056898198331236512">Rhybudd</translation>
@@ -57,7 +52,6 @@
 <translation id="112840717907525620">Mae'r storfa polisïau yn iawn</translation>
 <translation id="3186248837008742887">Botwm cyfieithu tudalen, pwyswch Enter i gyfieithu'r dudalen hon gyda Brave Translate</translation>
 <translation id="1131264053432022307">Llun y gwnaethoch ei gopïo</translation>
-<translation id="9153679102508470540">Rhwystro cwcis gan drydydd parti yn y Modd Anhysbys</translation>
 <translation id="1147769322402934017">Orielau lluniau ar-lein</translation>
 <translation id="1150979032973867961">Ni allai'r gweinydd hwn brofi ei fod yn <ph name="DOMAIN"/>; nid yw system weithredu eich cyfrifiadur yn ymddiried yn ei dystysgrif ddiogelwch. Gall hyn gael ei achosi gan gamffurfweddiad neu ymosodwr yn rhyng-gipio'ch cysylltiad.</translation>
 <translation id="1151972924205500581">Mae angen cyfrinair</translation>
@@ -118,6 +112,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="1270502636509132238">Dull Casglu</translation>
 <translation id="1281476433249504884">Pentyrrwr 1</translation>
 <translation id="1285320974508926690">Peidio byth â chyfieithu'r wefan hon</translation>
+<translation id="1288548991597756084">Cadw cerdyn yn ddiogel</translation>
 <translation id="1292571435393770077">Hambwrdd 16</translation>
 <translation id="1209478311331937175">"Mae meddalwedd ar eich cyfrifiadur yn atal Brave rhag cysylltu'n ddiogel â'r we" (cyfrifiaduron Windows yn unig)</translation>
 <translation id="1294154142200295408">Amrywiadau llinell orchymyn</translation>
@@ -155,7 +150,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="1355754231781595724">Diogelwch cerbydau a thraffig</translation>
 <translation id="1357195169723583938">Pwy sydd wedi defnyddio'r ddyfais yn ddiweddar a phryd</translation>
 <translation id="1358187717814494928">Creu dalen</translation>
-<translation id="5497977785983089120">Agorwch ffenestr Anhysbys newydd i bori'n breifat</translation>
 <translation id="1363819917331173092">Peidiwch â chynnig cyfieithu tudalennau yn <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1364822246244961190">Mae'r polisi hwn wedi'i rwystro, bydd ei werth yn cael ei anwybyddu.</translation>
 <translation id="1368318639262510626">Gêm Dino. Mae deinosor picsel yn osgoi cacti a pterodactyliaid wrth iddo redeg ar draws tirwedd anghyfannedd. Pan fyddwch yn clywed ciw sain, pwyswch Space i neidio dros rwystrau.</translation>
@@ -216,6 +210,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
     &lt;p&gt;Er mwyn datrys y gwall, cliciwch &lt;strong&gt;Cysylltu&lt;/strong&gt; ar y dudalen rydych yn ceisio ei hagor.&lt;/p&gt;</translation>
 <translation id="1507780850870535225">Dylunio tirwedd</translation>
 <translation id="1513706915089223971">Rhestr o gofnodion hanes</translation>
+<translation id="1516097932025103760">Bydd yn cael ei amgryptio, ei gadw'n ddiogel ac nid yw'r CVC byth yn cael ei storio.</translation>
 <translation id="1517433312004943670">Angen rhif ffôn</translation>
 <translation id="1519264250979466059">Dyddiad y datblygiad</translation>
 <translation id="1521159554480556801">Celfyddydau ffibr a thecstilau</translation>
@@ -281,6 +276,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="1662550410081243962">Cadw a llenwi dulliau talu</translation>
 <translation id="1838576226863399477">Daw cardiau a chyfeiriadau o Brave. Gallwch eu rheoli yn y <ph name="BEGIN_LINK"/>Gosodiadau<ph name="END_LINK"/>.</translation>
 <translation id="1671391448414634642">Bydd tudalennau yn <ph name="SOURCE_LANGUAGE"/> yn cael eu cyfieithu i <ph name="TARGET_LANGUAGE"/> o hyn ymlaen.</translation>
+<translation id="1673886523110456987">Talwch gyda <ph name="CARD_DETAIL"/> i ddefnyddio'r cynnig</translation>
 <translation id="1674504678466460478"><ph name="SOURCE_LANGUAGE"/> i <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="1682696192498422849">Ymyl fer yn gyntaf</translation>
 <translation id="168693727862418163">Gwnaeth y gwerth polisi hwn fethu â dilysu yn erbyn ei sgema a bydd yn cael ei anwybyddu.</translation>
@@ -352,7 +348,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="1839551713262164453">Mae dilysu gwerthoedd polisi wedi methu gyda gwallau</translation>
 <translation id="1842969606798536927">Talu</translation>
 <translation id="1855370856221982654">Bocsio</translation>
-<translation id="137199123615682137">Yr hyn nad yw'r modd Anhysbys yn ei wneud</translation>
 <translation id="1863257867908022953">Hambwrdd 12</translation>
 <translation id="1864927262126810325">O <ph name="SOURCE_NAME"/></translation>
 <translation id="1871208020102129563">Disgwylir i'r dirprwy weinydd ddefnyddio dirprwy weinyddion sefydlog, nid URL sgript .pac.</translation>
@@ -413,9 +408,8 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="3163988908275223348">Mewngofnodwch i ddefnyddio cyfrineiriau a gedwir yn eich Cyfrif Brave</translation>
 <translation id="205212645995975601">Barbeciw a grilio</translation>
 <translation id="2053111141626950936">Ni fydd tudalennau yn <ph name="LANGUAGE"/> yn cael eu cyfieithu.</translation>
-<translation id="7948746210201997548">{NUM_DAYS,plural, =0{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob dydd.}=1{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob dydd.}two{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} ddiwrnod.}few{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} diwrnod.}many{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} diwrnod.}other{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} diwrnod.}}</translation>
-<translation id="2053553514270667976">Cod ZIP</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 awgrym}zero{# awgrym}two{# awgrym}few{# awgrym}many{# awgrym}other{# awgrym}}</translation>
+<translation id="2066915425250589881">ofyn am gael ei dileu</translation>
 <translation id="2068528718802935086">Babanod a phlant bach</translation>
 <translation id="2071156619270205202">Nid yw'r cerdyn hwn yn gymwys i gael rhif cerdyn rhithwir.</translation>
 <translation id="2071692954027939183">Cafodd hysbysiadau eu rhwystro'n awtomatig oherwydd nid ydych fel arfer yn eu caniatáu</translation>
@@ -427,7 +421,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7333248841044450790">Botwm rheoli cysoni, pwyswch Enter i reoli pa wybodaeth rydych yn ei chysoni yng ngosodiadau Brave</translation>
 <translation id="2091887806945687916">Sain</translation>
 <translation id="2094505752054353250">Camgymhariad parth</translation>
-<translation id="2096368010154057602">Adran</translation>
 <translation id="2099652385553570808">Tair stapl ar y chwith</translation>
 <translation id="2101225219012730419">Fersiwn:</translation>
 <translation id="2102134110707549001">Awgrymu Cyfrinair Cryf…</translation>
@@ -475,6 +468,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="2215963164070968490">Cŵn</translation>
 <translation id="2218879909401188352">Gallai ymosodwyr ar <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> ar hyn o bryd osod apiau peryglus sy'n niweidio'ch dyfais, ychwanegu taliadau cudd at eich bil symudol, neu ddwyn eich gwybodaeth bersonol. <ph name="BEGIN_LEARN_MORE_LINK"/>Dysgu rhagor<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2219658597883514593">Ailddechrau'r tiwtorial</translation>
+<translation id="2219735899272417925">Mae angen oilosod y ddyfais</translation>
 <translation id="2224337661447660594">Dim rhyngrwyd</translation>
 <translation id="2230458221926704099">Trwsiwch eich cysylltiad gan ddefnyddio'r <ph name="BEGIN_LINK"/>ap diagnosteg<ph name="END_LINK"/></translation>
 <translation id="2239100178324503013">Anfon nawr</translation>
@@ -572,17 +566,17 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="2512101340618156538">Ni chaniateir (diofyn)</translation>
 <translation id="3233967599412104589">Gosod Brave fel botwm porwr diofyn, pwyso Enter i osod Brave fel porwr diofyn y system yng ngosodiadau iOS</translation>
 <translation id="2515629240566999685">Wrthi'n gwirio'r signal yn eich ardal</translation>
+<translation id="2515761554693942801">Gwnaethoch ddewis dilysu gyda Touch ID ar wefannau sy'n defnyddio <ph name="PROVIDER_ORIGIN"/>. Mae'n bosib bod y darparwr hwn wedi storio gwybodaeth am eich dull talu, y gallwch <ph name="LINK_TEXT"/>.</translation>
 <translation id="2521385132275182522">Stapl ar y dde isaf</translation>
 <translation id="2521736961081452453">Creu ffurflen</translation>
 <translation id="2523886232349826891">Cedwir ar y ddyfais hon yn unig</translation>
 <translation id="2524461107774643265">Ychwanegu Rhagor o Wybodaeth</translation>
 <translation id="2529899080962247600">Ni ddylai'r maes hwn gynnwys mwy na <ph name="MAX_ITEMS_LIMIT"/> o gofnodion. Bydd pob cofnod arall yn cael ei anwybyddu.</translation>
-<translation id="40442660395682483">Agor tab Anhysbys newydd i bori'n breifat</translation>
+<translation id="253493526287553278">Gweld manylion y cod hyrwyddo</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{ac 1 arall}zero{a # arall}two{a # arall}few{a # arall}many{a # arall}other{a # arall}}</translation>
 <translation id="2536110899380797252">Ychwanegu Cyfeiriad</translation>
 <translation id="2539524384386349900">Canfod</translation>
 <translation id="2540701853218677861">Hanes mewngofnodi/allgofnodi'r ddyfais, gan gynnwys stampiau amser a cheisiadau aflwyddiannus</translation>
-<translation id="375424491626359494">Nid yw tudalennau rydych yn edrych arnynt mewn tabiau Anhysbys yn aros yn hanes eich porwr, eich siop cwcis na'ch hanes chwilio ar ôl i chi gau pob un o'ch tabiau Anhysbys. Bydd unrhyw ffeiliau rydych yn eu lawrlwytho neu nodau tudalen rydych yn eu creu yn cael eu cadw.</translation>
 <translation id="2542106216580219892">Syrffio</translation>
 <translation id="2544546346215446551">Ailgychwynnodd eich gweinyddwr eich dyfais</translation>
 <translation id="2544644783021658368">Dogfen sengl</translation>
@@ -686,10 +680,8 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="2854764410992194509">Darparwyr gwasanaethau rhyngrwyd (ISP)</translation>
 <translation id="2856444702002559011">Mae'n bosib bod ymosodwyr yn ceisio dwyn eich gwybodaeth o <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (er enghraifft, cyfrineiriau, negeseuon, neu gardiau credyd). <ph name="BEGIN_LEARN_MORE_LINK"/>Dysgu rhagor<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2859806420264540918">Mae'r wefan hon yn dangos hysbysebion ymwthiol neu gamarweiniol.</translation>
-<translation id="286512204874376891">Mae cerdyn rhithwir yn cuddio eich cerdyn go iawn i helpu eich amddiffyn rhag twyll posib. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="287596039013813457">Cyfeillgar</translation>
 <translation id="28761159517501904">Ffilmiau</translation>
-<translation id="6934396344327597525">Wrthi'n gadael y modd Anhysbys i dalu drwy ap allanol. Parhau?</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i reoli eich Pori'n Ddiogel a rhagor yng ngosodiadau Brave</translation>
 <translation id="2878197950673342043">Plyg poster</translation>
 <translation id="2878424575911748999">A1</translation>
@@ -720,7 +712,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="2948083400971632585">Gallwch analluogi unrhyw ddirprwy weinyddion sydd wedi'u ffurfweddu ar gyfer cysylltiad o'r dudalen gosodiadau.</translation>
 <translation id="3955566820843143766">Anwybyddwyd oherwydd nad yw'r peiriant wedi'i gofrestru â Rheoli Cwmwl Porwr Brave.</translation>
 <translation id="2951588413176968965">Fy mlwch post</translation>
-<translation id="4920329334239571966">Cau pob ffenestr anhysbys</translation>
 <translation id="295526156371527179">Rhybudd: Ni chyfunwyd y polisi hwn fel geiriadur fel y nodwyd gan bolisi oherwydd nad yw'n eiriadur.</translation>
 <translation id="2955913368246107853">Cau'r bar chwilio</translation>
 <translation id="2958544468932521864">Criced</translation>
@@ -729,7 +720,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="2972581237482394796">&amp;Ailwneud</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, dewiswyd ar hyn o bryd. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Opera</translation>
-<translation id="1536541482996273580">Agor Tab Anhysbys</translation>
 <translation id="2985398929374701810">Rhowch gyfeiriad dilys</translation>
 <translation id="2986368408720340940">Nid yw'r dull casglu hwn ar gael. Rhowch gynnig ar ddull gwahanol.</translation>
 <translation id="2987034854559945715">Nid oes unrhyw nodweddion sy'n cyfateb</translation>
@@ -785,7 +775,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="3158539265159265653">Disc</translation>
 <translation id="3162559335345991374">Mae'n bosib y bydd y Wi-Fi rydych yn ei ddefnyddio yn gofyn i chi fynd i'w dudalen fewngofnodi.</translation>
 <translation id="3169472444629675720">Darganfod</translation>
-<translation id="3174168572213147020">Ynys</translation>
 <translation id="3176929007561373547">Gwiriwch eich gosodiadau dirprwyol neu cysylltwch â'ch gweinyddwr rhwydwaith i
       sicrhau bod y dirprwy weinydd yn gweithio. Os nad ydych yn credu y dylech
       fod yn defnyddio dirprwy weinydd:
@@ -864,9 +853,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="3369192424181595722">Gwall cloc</translation>
 <translation id="3369459162151165748">Rhannau ac ategolion cerbydau</translation>
 <translation id="2273851479262317744">Gosod Brave fel porwr diofyn</translation>
-<translation id="3371076217486966826">Mae <ph name="URL"/> eisiau:
-      • Creu map 3D o'ch amgylchoedd ac olrhain safle'r camera
-      • Defnyddio'ch camera</translation>
 <translation id="337363190475750230">Wedi'i ddad-ddarparu</translation>
 <translation id="7740652748540081864">Rhedeg gwiriad diogelwch Brave</translation>
 <translation id="3377144306166885718">Gwnaeth y gweinydd ddefnyddio fersiwn o TLS sydd wedi darfod.</translation>
@@ -911,9 +897,9 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="346601286295919445">Cemeg</translation>
 <translation id="3467763166455606212">Angen enw deiliad y cerdyn</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, ar agor ar hyn o bryd, pwyswch Tab yna Enter i newid i'r tab sydd ar agor</translation>
-<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Pwyswch Tab yna Enter i gau pob ffenestr Anhysbys sydd ar agor ar hyn o bryd</translation>
 <translation id="3477679029130949506">Rhestrau ffilmiau ac amserau sioe theatr</translation>
 <translation id="3479552764303398839">Nid nawr</translation>
+<translation id="3484861421501147767">Nodyn atgoffa: Cod hyrwyddo wedi'i gadw ar gael</translation>
 <translation id="3487845404393360112">Hambwrdd 4</translation>
 <translation id="3495081129428749620">Chwilio'r Dudalen
     <ph name="PAGE_TITLE"/></translation>
@@ -981,7 +967,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="3676592649209844519">Dull Adnabod Dyfais:</translation>
 <translation id="3677008721441257057">Oeddech chi'n meddwl &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Doedd dim modd llofnodi'r cais</translation>
-<translation id="2388886110302389394">Agor tudalen mewn ffenestr anhysbys newydd (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Gwybodaeth am y dystysgrif</translation>
 <translation id="3701427423622901115">Mae'r ailosod wedi'i gydnabod.</translation>
 <translation id="3704162925118123524">Mae'n bosib y bydd y rhwydwaith rydych yn ei ddefnyddio yn gofyn i chi fynd i'w dudalen fewngofnodi.</translation>
@@ -1052,7 +1037,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="3875783148670536197">Dangoswch i Fi Sut</translation>
 <translation id="3881478300875776315">Dangos llai o linellau</translation>
 <translation id="3884278016824448484">Dynodwr dyfais anghyson</translation>
-<translation id="3885155851504623709">Plwyf</translation>
 <translation id="388632593194507180">Canfuwyd Monitro</translation>
 <translation id="3886948180919384617">Pentyrrwr 3</translation>
 <translation id="3890664840433101773">Ychwanegwch e-bost</translation>
@@ -1086,6 +1070,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="3986705137476756801">Diffodd Capsiynau Byw am y tro</translation>
 <translation id="3987940399970879459">Llai nag 1 MB</translation>
 <translation id="3990250421422698716">Gwrthbwyso loncian</translation>
+<translation id="3992684624889376114">Ynghylch y dudalen hon</translation>
 <translation id="3996311196211510766">Mae'r wefan <ph name="ORIGIN"/> wedi gofyn bod polisi tarddiad
     yn berthnasol i bob cais iddo, ond ar hyn o bryd ni ellir cymhwyso'r polisi hwn.</translation>
 <translation id="4006465311664329701">Dulliau Talu, Cynigion a Chyfeiriadau sy'n defnyddio Google Pay</translation>
@@ -1165,23 +1150,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4215751373031079683">7x9 (Amlen)</translation>
 <translation id="4220128509585149162">Toriadau</translation>
 <translation id="422022731706691852">Mae'n bosib y bydd ymosodwyr ar <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> yn ceisio eich twyllo i osod rhaglenni sy'n niweidio'ch profiad pori (er enghraifft, drwy newid eich tudalen hafan neu ddangos hysbysebion ychwanegol ar wefannau rydych yn ymweld â nhw). <ph name="BEGIN_LEARN_MORE_LINK"/>Dysgu rhagor<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="1426112902089905810">&lt;h4&gt;Cam 1: Mewngofnodwch i'r porth&lt;/h4&gt;
-    &lt;p&gt;Mae angen i fewngofnodi i rwydweithiau Wi-Fi mewn lleoedd megis caffis neu feysydd awyr. I weld y dudalen mewngofnodi, ewch i dudalen sy'n defnyddio &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;Ewch i unrhyw wefan sy'n dechrau gyda &lt;code&gt;http://&lt;/code&gt;, megis &lt;a href="http://enghraifft.com" target="_blank"&gt;http://enghraifft.com&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Ar y dudalen mewngofnodi sy'n agor, mewngofnodwch i ddefnyddio'r rhyngrwyd.&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;Cam 2: Agorwch y dudalen yn y Modd Anhysbys (cyfrifiadur yn unig)&lt;/h4&gt;
-    &lt;p&gt;Agorwch y dudalen yr oeddech yn ymweld â hi mewn ffenestr Anhysbys.&lt;/p&gt;
-    &lt;p&gt;Os yw'r dudalen yn agor, nid yw estyniad Brave yn gweithio'n iawn. I drwsio'r gwall, diffoddwch yr estyniad.&lt;/p&gt;
-    &lt;h4&gt;Cam 3: Diweddarwch eich system weithredu&lt;/h4&gt;
-    &lt;p&gt;Gwnewch yn siŵr bod eich dyfais yn gyfoes.&lt;/p&gt;
-    &lt;h4&gt;Cam 4: Diffoddwch eich meddalwedd gwrthfeirysau dros dro&lt;/h4&gt;
-    &lt;p&gt;Byddwch yn gweld y gwall hwn os oes gennych feddalwedd gwrthfeirysau sy'n darparu "amddiffyniad HTTPS" neu "sganio HTTPS." Mae'r feddalwedd gwrthfeirysau'n atal Brave rhag darparu diogelwch.&lt;/p&gt;
-    &lt;p&gt;I drwsio'r broblem, diffoddwch eich meddalwedd gwrthfeirysau. Os yw'r dudalen yn gweithio ar ôl diffodd y feddalwedd, diffoddwch y feddalwedd hon pan fyddwch yn defnyddio gwefannau diogel.&lt;/p&gt;
-    &lt;p&gt;Cofiwch droi eich rhaglen gwrthfeirysau ymlaen eto pan fyddwch wedi gorffen.&lt;/p&gt;
-    &lt;h4&gt;Cam 5: Cael cymorth ychwanegol&lt;/h4&gt;
-    &lt;p&gt;Os ydych yn parhau i weld y gwall, cysylltwch â pherchennog y wefan.&lt;/p&gt;</translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Rhowch gynnig ar redeg Diagnosteg Rhwydwaith<ph name="END_LINK"/>.</translation>
 <translation id="4230204356098880324">Yn gallu gofyn am ddefnyddio a symud eich camera</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Parhau i <ph name="SITE"/><ph name="END_LINK"/></translation>
@@ -1259,6 +1227,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4435702339979719576">Cerdyn post)</translation>
 <translation id="443673843213245140">Mae'r defnydd o ddirprwy weinydd wedi'i ddiffodd, ond mae ffurfweddiad dirprwyol penodol wedi'i nodi.</translation>
 <translation id="4441832193888514600">Anwybyddwyd oherwydd dim ond fel polisi defnyddiwr cwmwl y gellir gosod y polisi.</translation>
+<translation id="7607452725660354169">Tabiau Brave</translation>
 <translation id="4450893287417543264">Peidio â dangos eto</translation>
 <translation id="4451135742916150903">Yn gallu gofyn am gysylltu â dyfeisiau HID</translation>
 <translation id="8416018650396907203">Canfuwyd y cyfrinair rydych newydd ei ddefnyddio mewn achos o dor data. Er mwyn diogelu'ch cyfrifon, mae Rheolwr Cyfrineiriau Brave yn argymell gwirio'ch cyfrineiriau sydd wedi'u cadw.</translation>
@@ -1269,7 +1238,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4476953670630786061">Nid yw'r ffurflen hon yn ddiogel. Mae awtolenwi wedi'i ddiffodd.</translation>
 <translation id="4477350412780666475">Trac Nesaf</translation>
 <translation id="4477949251180341057">Diogelwch rhwydwaith</translation>
-<translation id="3683567996395248272">Yr hyn mae'r modd Anhysbys yn ei wneud</translation>
 <translation id="4482953324121162758">Ni fydd y wefan hon yn cael ei chyfieithu.</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">Amgryptio cyfrineiriau sydd wedi'u cysoni gyda'ch Cyfrif Brave</translation>
@@ -1291,7 +1259,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4522570452068850558">Manylion</translation>
 <translation id="4524138615196389145">Byddwch yn gallu cadarnhau eich cardiau yn gyflymach drwy ddefnyddio WebAuthn o hyn ymlaen</translation>
 <translation id="4524805452350978254">Rheoli cardiau</translation>
-<translation id="2446780203663220049">Pobl a chymdeithas</translation>
 <translation id="4530347922939905757">Neges destun</translation>
 <translation id="4541810033354695636">realiti estynedig</translation>
 <translation id="4542971377163063093">Hambwrdd 6</translation>
@@ -1314,7 +1281,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7265018635737406618">Botwm gweld awgrymiadau Brave, pwyswch Enter i ddysgu am nodweddion Brave</translation>
 <translation id="8338928872956435647">Gweld awgrymiadau Brave</translation>
 <translation id="4617273035598175554">Meddalwedd graffeg ac animeiddio</translation>
-<translation id="4627165777145349100">Rhagor am y dudalen hon</translation>
 <translation id="6398431831028858802">Ni ellir gosod y polisi hwn ar lefel proffil Brave a bydd yn cael ei anwybyddu.</translation>
 <translation id="4628948037717959914">Llun</translation>
 <translation id="4631649115723685955">Mae arian yn ôl wedi'i gysylltu</translation>
@@ -1325,7 +1291,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4652266463001779298">Ni chaniateir</translation>
 <translation id="4653167719759882810">Cyfuniadau a chaffaeliadau</translation>
 <translation id="4658638640878098064">Stapl ar y chwith uchaf</translation>
-<translation id="3812568169637430422">Nawr gallwch bori'n breifat, a ni fydd pobl eraill sy'n defnyddio'r ddyfais hon yn gweld eich gweithgarwch. Fodd bynnag, bydd lawrlwythiadau, nodau tudalen ac eitemau'r rhestr ddarllen yn cael eu cadw.</translation>
 <translation id="4660567771874403130">Ynni a chyfleustodau</translation>
 <translation id="4666114623408286498">Cynhyrchion fferyllol a biodechnoleg</translation>
 <translation id="4668929960204016307">,</translation>
@@ -1360,7 +1325,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4742407542027196863">Rheoli cyfrineiriau…</translation>
 <translation id="4744514002166662487">Creu cyflwyniad</translation>
 <translation id="4744603770635761495">Llwybr Gweithredadwy</translation>
-<translation id="6417973700199526943">Rydych wedi mynd yn Anhysbys</translation>
 <translation id="4750917950439032686">Mae eich gwybodaeth (er enghraifft, cyfrineiriau neu rifau cardiau credyd) yn breifat pan fydd yn cael ei hanfon i'r wefan hon.</translation>
 <translation id="4751476147751820511">Synwyryddion ystumiau/goleuadau</translation>
 <translation id="4754461935447132332">Ni chaniateir ar gyfer gwefannau nad ydynt yn ddiogel</translation>
@@ -1394,6 +1358,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="483241715238664915">Troi rhybuddion ymlaen</translation>
 <translation id="4834250788637067901">Dulliau talu, cynigion a chyfeiriadau sy'n defnyddio Google Pay</translation>
 <translation id="4838327282952368871">Breuddwydiol</translation>
+<translation id="1923748633297576468">Gallwch dalu'n gyflymach y tro nesaf a diogelu'ch cerdyn gyda diogelwch sy'n arwain y diwydiant Brave.</translation>
 <translation id="246176083348620700">Gweld eich hanes Brave</translation>
 <translation id="484462545196658690">Awtomatig</translation>
 <translation id="484671803914931257">Cael gostyngiad ar <ph name="MERCHANT_NAME"/> a rhagor</translation>
@@ -1414,7 +1379,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4881695831933465202">Agor</translation>
 <translation id="4885256590493466218">Talu gyda <ph name="CARD_DETAIL"/> wrth y ddesg dalu</translation>
 <translation id="4888600795924685526">Astudio iaith dramor</translation>
-<translation id="2418728264526266844">Botwm agor Ffenestr Anhysbys, pwyswch Enter i agor ffenestr Anhysbys newydd i bori'n breifat.</translation>
 <translation id="4892518386797173871">Cefn</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4896809202198625921">Gemau Olympaidd</translation>
@@ -1430,7 +1394,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i chwilio</translation>
 <translation id="4930153903256238152">Capasiti mawr</translation>
 <translation id="4936675324097895694">Cyllid</translation>
-<translation id="6085043210649933880">Modd Anhysbys yn Brave</translation>
 <translation id="4943872375798546930">Dim canlyniadau</translation>
 <translation id="4943933359574417591">Tecstio a negeseua gwib</translation>
 <translation id="4950898438188848926">Botwm newid tab, pwyswch Enter i newid i'r tab sydd ar agor, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
@@ -1476,6 +1439,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="5051305769747448211">Comedi byw</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{I anfon y ffeil hon drwy ddefnyddio Rhannu Gerllaw, crëwch ragor o le (<ph name="DISK_SPACE_SIZE"/>) ar eich dyfais}zero{I anfon y ffeiliau hyn drwy ddefnyddio Rhannu Gerllaw, crëwch ragor o le (<ph name="DISK_SPACE_SIZE"/>) ar eich dyfais}two{I anfon y ffeiliau hyn drwy ddefnyddio Rhannu Gerllaw, crëwch ragor o le (<ph name="DISK_SPACE_SIZE"/>) ar eich dyfais}few{I anfon y ffeiliau hyn drwy ddefnyddio Rhannu Gerllaw, crëwch ragor o le (<ph name="DISK_SPACE_SIZE"/>) ar eich dyfais}many{I anfon y ffeiliau hyn drwy ddefnyddio Rhannu Gerllaw, crëwch ragor o le (<ph name="DISK_SPACE_SIZE"/>) ar eich dyfais}other{I anfon y ffeiliau hyn drwy ddefnyddio Rhannu Gerllaw, crëwch ragor o le (<ph name="DISK_SPACE_SIZE"/>) ar eich dyfais}}</translation>
 <translation id="5056549851600133418">Erthyglau i chi</translation>
+<translation id="5060483733937416656">Gwnaethoch ddewis dilysu gyda Windows Hello ar wefannau sy'n defnyddio <ph name="PROVIDER_ORIGIN"/>. Mae'n bosib bod y darparwr hwn wedi storio gwybodaeth am eich dull talu, y gallwch <ph name="LINK_TEXT"/>.</translation>
 <translation id="5061227663725596739">A oeddech chi'n golygu <ph name="LOOKALIKE_DOMAIN"/>?</translation>
 <translation id="5066056036849835175">Hanes argraffu</translation>
 <translation id="5068234115460527047">Cronfeydd rhagfantoli</translation>
@@ -1489,10 +1453,8 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="5087286274860437796">Nid yw tystysgrif y gweinydd yn ddilys ar hyn o bryd.</translation>
 <translation id="5087580092889165836">Ychwanegu cerdyn</translation>
 <translation id="5088142053160410913">Neges i'r gweithredwr</translation>
-<translation id="5089810972385038852">Talaith</translation>
 <translation id="5093232627742069661">Plyg Z</translation>
 <translation id="4906192414477726331">Ni allai'r gweinydd hwn brofi ei fod yn <ph name="DOMAIN"/>; nid yw Brave yn ymddiried yn ei dystysgrif ddiogelwch. Gall hyn gael ei achosi gan gamffurfweddiad neu ymosodwr yn rhyng-gipio'ch cysylltiad.</translation>
-<translation id="5095208057601539847">Talaith</translation>
 <translation id="5097099694988056070">Ystadegau'r ddyfais megis defnydd o CPU/RAM</translation>
 <translation id="5097501891273180634">A2</translation>
 <translation id="5108881358339761672">Nid yw'r gwefan yn ddiogel</translation>
@@ -1521,7 +1483,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="515292512908731282">C4 (Amlen)</translation>
 <translation id="5153314898060540200">Roc caled a blaengar</translation>
 <translation id="5158275234811857234">Clawr</translation>
-<translation id="4075123085690634698">Agorwch y dudalen mewn ffenestr Anhysbys newydd (⇧⌘N)</translation>
 <translation id="5161334686036120870">Pwnc:</translation>
 <translation id="5161506081086828129">Pentyrrwr 9</translation>
 <translation id="5164798890604758545">Nodir y testun</translation>
@@ -1530,6 +1491,7 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="5171045022955879922">Chwiliwch neu teipiwch URL</translation>
 <translation id="5171689220826475070">Ffanffold-Ewropeaidd</translation>
 <translation id="5172758083709347301">Peiriant</translation>
+<translation id="5177076414499237632">Dysgu am ffynhonnell a phwnc y dudalen hon</translation>
 <translation id="5179510805599951267">Ddim yn <ph name="ORIGINAL_LANGUAGE"/>? Rhoi gwybod am y gwall hwn</translation>
 <translation id="518639307526414276">Bwyd anifeiliaid anwes a chyflenwadau gofal anifeiliaid anwes</translation>
 <translation id="51918995459521422">Mae <ph name="ORIGIN"/> am lawrlwytho sawl ffeil</translation>
@@ -1665,7 +1627,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="5556459405103347317">Ail-lwytho</translation>
 <translation id="5560088892362098740">Dyddiad Darfod</translation>
 <translation id="55635442646131152">Amlinelliad y ddogfen</translation>
-<translation id="5395368798429603306">Agor tab Anhysbys</translation>
 <translation id="5565735124758917034">Gweithredol</translation>
 <translation id="5565871407246142825">Cardiau credyd</translation>
 <translation id="5570825185877910964">Diogelu'r cyfrif</translation>
@@ -1846,7 +1807,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="6061154937977953833">Reslo</translation>
 <translation id="6064217302520318294">Clo sgrîn</translation>
 <translation id="6064602040258638498">Cwponau a chynigion disgownt</translation>
-<translation id="6078813287646374487">Dangos rhagor o wybodaeth am y dudalen hon</translation>
 <translation id="6080696365213338172">Rydych wedi cyrchu cynnwys gan ddefnyddio tystysgrif a ddarperir gan weinyddwr. Gall eich gweinyddwr ryng-gipio data rydych yn eu darparu i <ph name="DOMAIN"/>.</translation>
 <translation id="6087312102907839798">Chwiliadau perthnasol</translation>
 <translation id="6094273045989040137">Anodi</translation>
@@ -1860,7 +1820,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="6120179357481664955">Cofio eich rhif adnabod UPI?</translation>
 <translation id="5972135347314259717">Brave Enterprise Connectors</translation>
 <translation id="6127379762771434464">Tynnwyd eitem</translation>
-<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Dysgu rhagor am y Modd Anhysbys yn Brave<ph name="END_LINK"/></translation>
 <translation id="6146055958333702838">Gwiriwch unrhyw geblau ac ailgychwynnwch unrhyw lwybryddion, modemau, neu ddyfeisiau
     rhwydwaith eraill rydych yn eu defnyddio.</translation>
 <translation id="614940544461990577">Rhowch gynnig ar:</translation>
@@ -1871,7 +1830,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="6157877588268064908">I weld dulliau anfon a gofynion, dewiswch gyfeiriad</translation>
 <translation id="6165508094623778733">Dysgu rhagor</translation>
 <translation id="6167577165590485365">Ceisiwyd nôl ddiwethaf:</translation>
-<translation id="5673623523506565506">Nawr gallwch bori'n breifat, a ni fydd pobl eraill sy'n defnyddio'r ddyfais hon yn gweld eich gweithgarwch. Fodd bynnag, bydd lawrlwythiadau a nodau tudalen yn cael eu cadw.</translation>
 <translation id="6176716740821145453">Cymerwch eiliad i ystyried cywirdeb</translation>
 <translation id="6177128806592000436">Nid yw eich cysylltiad â'r wefan hon yn ddiogel</translation>
 <translation id="6180316780098470077">Ysbaid rhoi cynnig arall arni</translation>
@@ -1904,7 +1862,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7954557091400543500">I dalu'n gyflymach y tro nesaf, cadwch eich cerdyn a'ch cyfeiriad bilio i'ch Cyfrif Brave.</translation>
 <translation id="6279183038361895380">Pwyswch |<ph name="ACCELERATOR"/>| i ddangos eich cyrchwr</translation>
 <translation id="6280223929691119688">Methu ag anfon i'r cyfeiriad hwn. Dewiswch gyfeiriad gwahanol.</translation>
-<translation id="6282194474023008486">Côd Post</translation>
 <translation id="9069724554626063339">Botwm rheoli lawrlwythiadau yn Brave, pwyswch Enter i reoli ffeiliau rydych wedi'u lawrlwytho yn Brave</translation>
 <translation id="6289939620939689042">Lliw'r Dudalen</translation>
 <translation id="6290238015253830360">Mae'r erthyglau a awgrymir gennych yn ymddangos yma</translation>
@@ -2084,7 +2041,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="6828866289116430505">Geneteg</translation>
 <translation id="6831043979455480757">Cyfieithu</translation>
 <translation id="2427219270600431645">Cadw eich cerdyn a gwybodaeth bilio i'ch Cyfrif Brave er mwyn talu'n gyflymach ac yn ddiogel</translation>
-<translation id="6839929833149231406">Ardal</translation>
 <translation id="6846340164947227603">Defnyddio rhif cerdyn rhithwir...</translation>
 <translation id="6852204201400771460">Ail-lwytho'r ap?</translation>
 <translation id="6857776781123259569">Rheoli Cyfrineiriau...</translation>
@@ -2136,7 +2092,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="6965978654500191972">Dyfais</translation>
 <translation id="696703987787944103">Canfyddiadol</translation>
 <translation id="6968269510885595029">Defnyddio'ch Allwedd Ddiogelwch</translation>
-<translation id="6970216967273061347">Ardal</translation>
 <translation id="8485851762575764192">Creu cyflwyniad Brave newydd yn Slides yn gyflym</translation>
 <translation id="6972629891077993081">Dyfeisiau HID</translation>
 <translation id="6973656660372572881">Nodir gweinyddwyr dirprwy sefydlog ac URL sgript .pac.</translation>
@@ -2175,7 +2130,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7081308185095828845">Nid yw'r nodwedd hon ar gael ar eich dyfais</translation>
 <translation id="7083258188081898530">Hambwrdd 9</translation>
 <translation id="7086090958708083563">Mae defnyddiwr wedi gofyn i uwchlwytho</translation>
-<translation id="7087282848513945231">Sir</translation>
 <translation id="1313878436434241688"><ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i reoli caniatadau a data sydd wedi'u storio ar draws gwefannau yng ngosodiadau Brave</translation>
 <translation id="7096937462164235847">Nid yw hunaniaeth y wefan hon wedi'i dilysu.</translation>
 <translation id="7101893872976785596">Ffilmiau arswyd</translation>
@@ -2187,17 +2141,11 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7111012039238467737">(Dilys)</translation>
 <translation id="7118618213916969306">Chwilio am URL clipfwrdd, <ph name="SHORT_URL"/></translation>
 <translation id="7119414471315195487">Cau tabiau neu raglenni eraill</translation>
-<translation id="8817208096236092047">Pan fyddwch yn cau pob tab Anhysbys Brave, mae eich gweithgarwch yn y tabiau hynny yn cael ei glirio o'r ddyfais hon:
-          <ph name="BEGIN_LIST"/>
-            <ph name="LIST_ITEM"/>Gweithgarwch pori<ph name="END_LIST_ITEM"/>
-            <ph name="LIST_ITEM"/>Hanes chwilio<ph name="END_LIST_ITEM"/>
-            <ph name="LIST_ITEM"/>Gwybodaeth a roddir mewn ffurflenni<ph name="END_LIST_ITEM"/>
-          <ph name="END_LIST"/></translation>
 <translation id="7129409597930077180">Methu ag anfon i'r cyfeiriad hwn. Dewiswch gyfeiriad gwahanol.</translation>
+<translation id="7129809579943936035"><ph name="VALUE_PROP"/> <ph name="DETAILS"/></translation>
 <translation id="7132939140423847331">Mae eich gweinyddwr wedi gwahardd y data hyn rhag cael eu copïo.</translation>
 <translation id="7135130955892390533">Dangos statws</translation>
 <translation id="7138472120740807366">Dull cyflwyno</translation>
-<translation id="7139724024395191329">Emiriaeth</translation>
 <translation id="7139892792842608322">Prif Hambwrdd</translation>
 <translation id="714064300541049402">Ochr 2 llun X sifft</translation>
 <translation id="7152423860607593928">Rhif-14 (Amlen)</translation>
@@ -2209,7 +2157,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> ac <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}two{<ph name="SHIPPING_OPTION_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}few{<ph name="SHIPPING_OPTION_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}many{<ph name="SHIPPING_OPTION_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}other{<ph name="SHIPPING_OPTION_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}}</translation>
 <translation id="7179323680825933600">Cadw a Llenwi Dulliau Talu</translation>
 <translation id="7180611975245234373">Ail-lwytho</translation>
-<translation id="5549245478906381817">Agor ffenestr anhysbys</translation>
 <translation id="7182878459783632708">Nid oes unrhyw bolisïau wedi'u gosod</translation>
 <translation id="7186367841673660872">Mae'r dudalen hon wedi'i chyfieithu o<ph name="ORIGINAL_LANGUAGE"/>i<ph name="LANGUAGE_LANGUAGE"/></translation>
 <translation id="718872491229180389">Codi hwyl</translation>
@@ -2217,7 +2164,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7193661028827781021">Cyfeiriad</translation>
 <translation id="719464814642662924">Visa</translation>
 <translation id="7201591969684833065">Gall eich gweinyddwr weld:</translation>
-<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i agor tab Anhysbys newydd i bori'n breifat</translation>
 <translation id="7202346780273620635">Llythyren-Ychwanegol</translation>
 <translation id="7210863904660874423">Nid yw <ph name="HOST_NAME"/> yn cadw at safonau diogelwch.</translation>
 <translation id="7210993021468939304">Gweithgarwch Linux o fewn y cynhwysydd, a gall osod a rhedeg apiau Linux yn y cynhwysydd</translation>
@@ -2226,7 +2172,6 @@ Fel arall, bydd eich gosodiadau preifatrwydd yn rhwystro hyn. Bydd hyn yn caniat
 <translation id="7219179957768738017">Mae'r cysylltiad yn defnyddio <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Yn prosesu</translation>
 <translation id="7221855153210829124">Dangos hysbysiadau</translation>
-<translation id="8326104954595890674">Tab Anhysbys Newydd</translation>
 <translation id="7233592378249864828">Taflen gadarnhau argraffu</translation>
 <translation id="7234638337680728591">Prisiau tanwydd a llenwi cerbydau â thanwydd</translation>
 <translation id="7237492777898608035">Peidio â dangos y neges hon eto ar gyfer y wefan hon</translation>
@@ -2272,7 +2217,6 @@ Manylion ychwanegol:
 <translation id="7354880545102894991">Teithio cost isel a munud olaf</translation>
 <translation id="7359588939039777303">Rhwystrwyd hysbysebion.</translation>
 <translation id="7308957539693927108">Pan fydd Brave yn dod o hyd i ostyngiadau sydd ar gael, byddant yn dangos wrth i chi dalu</translation>
-<translation id="8794378783472961468">Fodd bynnag, nid ydych yn anweledig. Nid yw defnyddio'r modd Anhysbys yn cuddio'ch pori oddi wrth eich cyflogwr, eich darparwr gwasanaeth rhyngrwyd, na'r gwefannau rydych yn ymweld â nhw.</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i ychwanegu a rheoli cyfeiriadau yng ngosodiadau Brave</translation>
 <translation id="7365849542400970216">Gwybod eich defnydd dyfais?</translation>
 <translation id="7366362069757178916">Trinyddion taliadau</translation>
@@ -2406,7 +2350,6 @@ Manylion ychwanegol:
 <translation id="7659878911471462949">Dagrau Llawenydd</translation>
 <translation id="7662298039739062396">Rheolir y gosodiad gan estyniad</translation>
 <translation id="7663736086183791259">Tystysgrif <ph name="CERTIFICATE_VALIDITY"/></translation>
-<translation id="1090109565956608696">Ni chaniateir yn anhysbys</translation>
 <translation id="7667346355482952095">Mae'r tocyn polisi a ddychwelwyd yn wag neu nid yw'n cyfateb i'r tocyn presennol</translation>
 <translation id="7668654391829183341">Dyfais Anhysbys</translation>
 <translation id="7669271284792375604">Mae'n bosib y bydd ymosodwyr yn ceisio eich twyllo i osod rhaglenni sy'n niweidio'ch profiad pori (er enghraifft, drwy newid eich tudalen hafan neu ddangos hysbysebion ychwanegol ar wefannau rydych yn ymweld â nhw).</translation>
@@ -2455,7 +2398,6 @@ Manylion ychwanegol:
 <translation id="7766518757692125295">Sgert</translation>
 <translation id="7770259615151589601">Dynodedig-Hir</translation>
 <translation id="7773005668374414287">Yr un drefn wyneb i fyny</translation>
-<translation id="777702478322588152">Rhaglawiaeth</translation>
 <translation id="7791011319128895129">Heb ei ryddhau</translation>
 <translation id="7791196057686275387">Bwndelu</translation>
 <translation id="7791543448312431591">Ychwanegu</translation>
@@ -2522,7 +2464,6 @@ Manylion ychwanegol:
 <translation id="799149739215780103">Rhwymo</translation>
 <translation id="7992044431894087211">Wedi parhau i rannu sgrîn â <ph name="APPLICATION_TITLE"/></translation>
 <translation id="7995512525968007366">Heb ei Nodi</translation>
-<translation id="3711639027736550870">Botwm agor tab Anhysbys, pwyswch Enter i agor tab Anhysbys newydd i bori'n breifat</translation>
 <translation id="800218591365569300">Rhowch gynnig ar gau tabiau neu raglenni eraill i leihau'r defnydd cof.</translation>
 <translation id="8003046808285812021">“<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="8004582292198964060">Porwr</translation>
@@ -2546,12 +2487,12 @@ Manylion ychwanegol:
 <translation id="8055534648776115597">Addysg alwedigaethol a pharhaus</translation>
 <translation id="8057711352706143257">Nid yw "<ph name="SOFTWARE_NAME"/>" wedi'i ffurfweddu'n gywir. Gallwch ddatrys y broblem fel arfer drwy ddadosod "<ph name="SOFTWARE_NAME"/>". <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="8058009102480785916">Cynhyrchu bwyd</translation>
-<translation id="8066955247577885446">Mae'n ddrwg gennym, aeth rhywbeth o'i le.</translation>
 <translation id="5442778523450464826">Rydych newydd roi'ch cyfrinair ar wefan dwyllodrus. Gall Brave helpu. I newid eich cyfrinair ac i hysbysu Brave y gallai eich cyfrif fod mewn perygl, cliciwch ar Diogelu Cyfrif.</translation>
 <translation id="8070439594494267500">Eicon ap</translation>
 <translation id="8074253406171541171">10x13 (Amlen)</translation>
 <translation id="7738019368151747786">Creu Brave Sheet yn gyflym</translation>
 <translation id="8075898834294118863">Rheoli gosodiadau gwefan</translation>
+<translation id="8076492880354921740">Tabiau</translation>
 <translation id="8078141288243656252">Ni all ei anodi pan fydd yn cylchdroi</translation>
 <translation id="8079031581361219619">Ail-lwytho'r dudalen?</translation>
 <translation id="8081087320434522107">Ceir sedan</translation>
@@ -2597,7 +2538,6 @@ Manylion ychwanegol:
 <translation id="8217748145574471584">Adnoddau dynol</translation>
 <translation id="8218327578424803826">Lleoliad a Aseiniwyd:</translation>
 <translation id="8220146938470311105">C7/C6 (Amlen)</translation>
-<translation id="8362995731815961365">Mae'r person a osododd y cyfrifiadur hwn wedi dewis rhwystro'r wefan hon.</translation>
 <translation id="8228419419708659934">Gwedd ddwy dudalen</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8231564988424805352">Gemau chwaraeon</translation>
@@ -2605,7 +2545,6 @@ Manylion ychwanegol:
 <translation id="8233773197406738106">Wrthi'n paratoi ffeil</translation>
 <translation id="8235754723616617175">Canu gwlad</translation>
 <translation id="8237519162179154808">Hobïau a hamdden</translation>
-<translation id="6957624206566198865">Agor tudalen mewn Tab Anhysbys newydd</translation>
 <translation id="8241707690549784388">Gwnaeth y dudalen rydych yn chwilio amdani ddefnyddio gwybodaeth y gwnaethoch ei rhoi. Mae'n bosib y bydd dychwelyd i'r dudalen honno achosi i unrhyw gamau a gymerwyd gennych gael eu hailadrodd. Ydych chi am barhau?</translation>
 <translation id="8241712895048303527">Rhwystro ar y wefan hon</translation>
 <translation id="8242426110754782860">Parhau</translation>
@@ -2763,19 +2702,18 @@ Manylion ychwanegol:
 <translation id="8730621377337864115">Wedi gorffen</translation>
 <translation id="1769647018144434441">Botwm rheoli cyfrineiriau, pwyswch Enter i weld a rheoli'ch cyfrineiriau yn Gosodiadau Brave</translation>
 <translation id="8734529307927223492">Mae <ph name="MANAGER"/> yn rheoli'ch <ph name="DEVICE_TYPE"/></translation>
-<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i agor ffenestr Anhysbys newydd i bori'n breifat</translation>
 <translation id="8737685506611670901">Agor dolenni <ph name="PROTOCOL"/> yn lle <ph name="REPLACED_HANDLER_TITLE"/></translation>
 <translation id="6326805297893828864">Er mwyn gosod cysylltiad diogel, mae angen gosod eich cloc yn gywir. Mae hyn oherwydd bod y tystysgrifau y mae gwefannau yn eu defnyddio i adnabod eu hunain yn ddilys am gyfnodau penodol yn unig. Gan fod cloc eich dyfais yn anghywir, ni all Brave ddilysu'r tystysgrifau hyn.</translation>
 <translation id="8740359287975076522">Ni ellid dod o hyd i &lt;abbr id="dnsDefinition"&gt;gyfeiriad DNS&lt;/abbr&gt; <ph name="HOST_NAME"/>. Wrthi'n diagnosio'r broblem.</translation>
 <translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> yw eich cod ar gyfer <ph name="ORIGIN"/></translation>
 <translation id="874918643257405732">Creu nod tudalen ar gyfer y tab hwn</translation>
 <translation id="8751426954251315517">Rhowch gynnig arall arni y tro nesaf</translation>
+<translation id="8757526089434340176">Mae cynnig Google Pay ar gael</translation>
 <translation id="8758885506338294482">Chwarae gemau fideo cystadleuol</translation>
 <translation id="8759274551635299824">Mae'r cerdyn hwn wedi darfod</translation>
 <translation id="87601671197631245">Mae'r wefan hon yn defnyddio hen ffurfweddiad diogelwch, a allai ddatgelu'ch gwybodaeth (er enghraifft, cyfrineiriau, negeseuon, neu gardiau credyd) pan fydd yn cael ei hanfon i'r wefan hon.</translation>
 <translation id="8761567432415473239">Mae Pori'n Ddiogel gyda Brave wedi <ph name="BEGIN_LINK"/>dod o hyd i raglenni niweidiol<ph name="END_LINK"/> yn ddiweddar ar <ph name="SITE"/>.</translation>
 <translation id="8763927697961133303">Dyfais USB</translation>
-<translation id="7736544743887840328">Cau pob ffenestr anhysbys sydd ar agor ar hyn o bryd</translation>
 <translation id="8766943070169463815">Mae'r daflen ddilysu manylion talu ddiogel ar agor</translation>
 <translation id="8767765348545497220">Cau'r swigen help</translation>
 <translation id="877985182522063539">A4</translation>
@@ -2793,7 +2731,6 @@ Manylion ychwanegol:
 <translation id="8813277370772331957">Atgoffa fi yn nes ymlaen</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i ddiweddaru Brave o'ch gosodiadau Brave</translation>
 <translation id="882338992931677877">Slot Pwrpasol</translation>
-<translation id="1723247378009489676">Botwm cau ffenestri anhysbys, pwyswch Enter i gau pob ffenestr anhysbys sydd ar agor ar hyn o bryd</translation>
 <translation id="883848425547221593">Nodau Tudalen Eraill</translation>
 <translation id="884264119367021077">Cyfeiriad anfon</translation>
 <translation id="884923133447025588">Ni chanfuwyd mecanwaith dirymu.</translation>
@@ -2969,6 +2906,7 @@ Manylion ychwanegol:
 <translation id="988159990683914416">Fersiwn Datblygwyr</translation>
 <translation id="989988560359834682">Golygu'r Cyfeiriad</translation>
 <translation id="991413375315957741">synwyryddion symudiad neu oleuadau</translation>
+<translation id="992110854164447044">Mae cerdyn rhithwir yn cuddio eich cerdyn go iawn i helpu i'ch amddiffyn rhag twyll posib. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="992256792861109788">Pinc</translation>
 <translation id="992432478773561401">Ni osodwyd "<ph name="SOFTWARE_NAME"/>" yn iawn ar eich cyfrifiadur na'r rhwydwaith:
     &lt;ul&gt;
@@ -2978,4 +2916,65 @@ Manylion ychwanegol:
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="997986563973421916">O Google Pay</translation>
 <translation id="8820817407110198400">Llyfrnodau</translation>
+<translation id="8362995731815961365">Mae'r person a osododd y cyfrifiadur hwn wedi dewis rhwystro'r wefan hon.</translation>
+<translation id="4075123085690634698">Agorwch y dudalen mewn ffenestr Anhysbys newydd (⇧⌘N)</translation>
+<translation id="2388886110302389394">Agor tudalen mewn ffenestr anhysbys newydd (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Agor tudalen mewn Tab Anhysbys newydd</translation>
+<translation id="8326104954595890674">Tab Anhysbys Newydd</translation>
+<translation id="6417973700199526943">Rydych wedi mynd yn Anhysbys</translation>
+<translation id="375424491626359494">Nid yw tudalennau rydych yn edrych arnynt mewn tabiau Anhysbys yn aros yn hanes eich porwr, eich siop cwcis na'ch hanes chwilio ar ôl i chi gau pob un o'ch tabiau Anhysbys. Bydd unrhyw ffeiliau rydych yn eu lawrlwytho neu nodau tudalen rydych yn eu creu yn cael eu cadw.</translation>
+<translation id="8794378783472961468">Fodd bynnag, nid ydych yn anweledig. Nid yw defnyddio'r modd Anhysbys yn cuddio'ch pori oddi wrth eich cyflogwr, eich darparwr gwasanaeth rhyngrwyd, na'r gwefannau rydych yn ymweld â nhw.</translation>
+<translation id="5673623523506565506">Nawr gallwch bori'n breifat, a ni fydd pobl eraill sy'n defnyddio'r ddyfais hon yn gweld eich gweithgarwch. Fodd bynnag, bydd lawrlwythiadau a nodau tudalen yn cael eu cadw.</translation>
+<translation id="3812568169637430422">Nawr gallwch bori'n breifat, a ni fydd pobl eraill sy'n defnyddio'r ddyfais hon yn gweld eich gweithgarwch. Fodd bynnag, bydd lawrlwythiadau, nodau tudalen ac eitemau'r rhestr ddarllen yn cael eu cadw.</translation>
+<translation id="6085043210649933880">Modd Anhysbys yn Brave</translation>
+<translation id="3683567996395248272">Yr hyn mae'r modd Anhysbys yn ei wneud</translation>
+<translation id="8817208096236092047">Pan fyddwch yn cau pob tab Anhysbys Brave, mae eich gweithgarwch yn y tabiau hynny yn cael ei glirio o'r ddyfais hon:
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>Gweithgarwch pori<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Hanes chwilio<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Gwybodaeth a roddir mewn ffurflenni<ph name="END_LIST_ITEM"/>
+          <ph name="END_LIST"/></translation>
+<translation id="137199123615682137">Yr hyn nad yw'r modd Anhysbys yn ei wneud</translation>
+<translation id="7653199919907357627">Nid yw'r modd Anhysbys yn eich gwneud yn anweledig ar-lein:
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Gall gwefannau a'r gwasanaethau y maent yn eu defnyddio weld ymweliadau<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>Gall cyflogwyr neu ysgolion olrhain gweithgarwch pori<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>Gall darparwyr gwasanaeth rhyngrwyd fonitro traffig ar y we<ph name="END_LIST_ITEM"/>
+        <ph name="END_LIST"/></translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Dysgu rhagor am y Modd Anhysbys yn Brave<ph name="END_LINK"/></translation>
+<translation id="9153679102508470540">Rhwystro cwcis gan drydydd parti yn y Modd Anhysbys</translation>
+<translation id="5395368798429603306">Agor tab Anhysbys</translation>
+<translation id="40442660395682483">Agor tab Anhysbys newydd i bori'n breifat</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i agor tab Anhysbys newydd i bori'n breifat</translation>
+<translation id="3711639027736550870">Botwm agor tab Anhysbys, pwyswch Enter i agor tab Anhysbys newydd i bori'n breifat</translation>
+<translation id="1536541482996273580">Agor Tab Anhysbys</translation>
+<translation id="5549245478906381817">Agor ffenestr anhysbys</translation>
+<translation id="5497977785983089120">Agorwch ffenestr Anhysbys newydd i bori'n breifat</translation>
+<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pwyswch Tab yna Enter i agor ffenestr Anhysbys newydd i bori'n breifat</translation>
+<translation id="2418728264526266844">Botwm agor Ffenestr Anhysbys, pwyswch Enter i agor ffenestr Anhysbys newydd i bori'n breifat.</translation>
+<translation id="4920329334239571966">Cau pob ffenestr anhysbys</translation>
+<translation id="7736544743887840328">Cau pob ffenestr anhysbys sydd ar agor ar hyn o bryd</translation>
+<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Pwyswch Tab yna Enter i gau pob ffenestr Anhysbys sydd ar agor ar hyn o bryd</translation>
+<translation id="1723247378009489676">Botwm cau ffenestri anhysbys, pwyswch Enter i gau pob ffenestr anhysbys sydd ar agor ar hyn o bryd</translation>
+<translation id="1090109565956608696">Ni chaniateir yn anhysbys</translation>
+<translation id="6934396344327597525">Wrthi'n gadael y modd Anhysbys i dalu drwy ap allanol. Parhau?</translation>
+<translation id="7948746210201997548">{NUM_DAYS,plural, =0{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob dydd.}=1{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob dydd.}two{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} ddiwrnod.}few{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} diwrnod.}many{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} diwrnod.}other{Pan fydd y rheolaeth hon ymlaen a'r statws yn weithredol, mae Brave yn penderfynu pa grŵp mawr o bobl, neu "garfan," y mae eich gweithgarwch pori diweddar yn fwyaf tebyg iddynt. Gall hysbysebwyr ddewis hysbysebion ar gyfer y grŵp a chedwir eich gweithgarwch pori yn breifat ar eich dyfais. Mae'ch grŵp yn cael ei ddiweddaru bob {NUM_DAYS} diwrnod.}}</translation>
+<translation id="2446780203663220049">Pobl a chymdeithas</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Cam 1: Mewngofnodwch i'r porth&lt;/h4&gt;
+    &lt;p&gt;Mae angen i fewngofnodi i rwydweithiau Wi-Fi mewn lleoedd megis caffis neu feysydd awyr. I weld y dudalen mewngofnodi, ewch i dudalen sy'n defnyddio &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Ewch i unrhyw wefan sy'n dechrau gyda &lt;code&gt;http://&lt;/code&gt;, megis &lt;a href="http://enghraifft.com" target="_blank"&gt;http://enghraifft.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Ar y dudalen mewngofnodi sy'n agor, mewngofnodwch i ddefnyddio'r rhyngrwyd.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Cam 2: Agorwch y dudalen yn y Modd Anhysbys (cyfrifiadur yn unig)&lt;/h4&gt;
+    &lt;p&gt;Agorwch y dudalen yr oeddech yn ymweld â hi mewn ffenestr Anhysbys.&lt;/p&gt;
+    &lt;p&gt;Os yw'r dudalen yn agor, nid yw estyniad Brave yn gweithio'n iawn. I drwsio'r gwall, diffoddwch yr estyniad.&lt;/p&gt;
+    &lt;h4&gt;Cam 3: Diweddarwch eich system weithredu&lt;/h4&gt;
+    &lt;p&gt;Gwnewch yn siŵr bod eich dyfais yn gyfoes.&lt;/p&gt;
+    &lt;h4&gt;Cam 4: Diffoddwch eich meddalwedd gwrthfeirysau dros dro&lt;/h4&gt;
+    &lt;p&gt;Byddwch yn gweld y gwall hwn os oes gennych feddalwedd gwrthfeirysau sy'n darparu "amddiffyniad HTTPS" neu "sganio HTTPS." Mae'r feddalwedd gwrthfeirysau'n atal Brave rhag darparu diogelwch.&lt;/p&gt;
+    &lt;p&gt;I drwsio'r broblem, diffoddwch eich meddalwedd gwrthfeirysau. Os yw'r dudalen yn gweithio ar ôl diffodd y feddalwedd, diffoddwch y feddalwedd hon pan fyddwch yn defnyddio gwefannau diogel.&lt;/p&gt;
+    &lt;p&gt;Cofiwch droi eich rhaglen gwrthfeirysau ymlaen eto pan fyddwch wedi gorffen.&lt;/p&gt;
+    &lt;h4&gt;Cam 5: Cael cymorth ychwanegol&lt;/h4&gt;
+    &lt;p&gt;Os ydych yn parhau i weld y gwall, cysylltwch â pherchennog y wefan.&lt;/p&gt;</translation>
 </translationbundle>

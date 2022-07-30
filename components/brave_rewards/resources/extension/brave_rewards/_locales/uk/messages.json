@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "OK",
+    "message": "ОК",
     "description": ""
   },
   "set": {
@@ -335,19 +335,6 @@
     "message": "Відновити з’єднання",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Ваш профіль Brave Rewards перевірено!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Ваш профіль Brave Rewards підтверджено за допомогою $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Доступне пожертвування з токенів!",
     "description": ""
@@ -486,7 +473,7 @@
     "description": ""
   },
   "onboardingTourDone": {
-    "message": "Готово\n",
+    "message": "Готово",
     "description": ""
   },
   "onboardingTourSkip": {

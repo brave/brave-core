@@ -335,19 +335,6 @@
     "message": "በድጋሚ ያገናኙ",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "የብሬቭ ሽልማቶችዎ ተረጋግጠዋል!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "የብሬቭ ሽልማቶችዎ በተሳካ ሁኔታ በ$provider$ተረጋግጧል።",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "የቶክን ሽልማት አለ!",
     "description": ""
@@ -383,7 +370,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "\nበቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ መርሃ ግብር ለራስ-አስተዋፅዖ እና ለወርሃዊ ምክሮች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም. በ 30 ቀኖች ውስጥ እንደገና እንሞክራለን::",
+    "message": "በቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ መርሃ ግብር ለራስ-አስተዋፅዖ እና ለወርሃዊ ምክሮች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም. በ 30 ቀኖች ውስጥ እንደገና እንሞክራለን::",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {

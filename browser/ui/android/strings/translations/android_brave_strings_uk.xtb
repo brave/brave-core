@@ -259,6 +259,7 @@
 <translation id="3097089005389027085">Ця дія призведе до повідомлення ваших даних Brave, зокрема паролів (потенційно), пристрою, який згенерував ці кодові слова.
 Пересвідчіться, що ці кодові слова було згенеровано пристроєм, який належить вам.
 Ви дійсно хочете це зробити?</translation>
+<translation id="4550208292810542331">Дозвіл на доступ до камери не надано</translation>
 <translation id="597993392929850353">Ліцензія Brave</translation>
 <translation id="6336451774241870485">Нова приватна вкладка</translation>
 <translation id="6199596294742117349">Це — Приватна вкладка</translation>
@@ -547,8 +548,9 @@
 <translation id="6366007539108097840">3 місяці</translation>
 <translation id="6977728312178289892">1 рік</translation>
 <translation id="6895566650974550243">УСЕ</translation>
-<translation id="5071303414930953888">Обліковий запис <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Рахунок <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Додати обліковий запис</translation>
+<translation id="318334680413773318">Додати / імпортувати обліковий запис</translation>
 <translation id="3448492834076427715">Оновити обліковий запис</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Увімкнути розблокування відбитком пальця?</translation>
@@ -857,12 +859,14 @@
 <translation id="4804818685124855865">Від'єднатись</translation>
 <translation id="8009571545960303544">Надійшов запит вашого підпису</translation>
 <translation id="3484981968509595506">DApp запитує ваш відкритий ключ шифрування</translation>
+<translation id="2300240008330189182"><ph name="URL"/> хоче отримати відкритий ключ шифрування вашого гаманця. Якщо ви погодитеся надати цей ключ, вебсайт зможе створювати зашифровані повідомлення для вас.</translation>
 <translation id="3340247553212049934">Надати</translation>
 <translation id="1982257600591932657">Назва мережі</translation>
 <translation id="5052727830821470769">URL-адреса мережі</translation>
 <translation id="4822132585477111396">ID мережі</translation>
 <translation id="7131971375297699539">Символ валюти</translation>
 <translation id="7982789257301363584">Мережа</translation>
+<translation id="6936860995365507185">Це дасть змогу використовувати цю мережу в гаманці Brave. <ph name="CLICK_START"/>Дізнатися більше<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Дозволити цьому сайту додати мережу?</translation>
 <translation id="4857321293515555666">Децентралізований додаток запитує доступ на читання цього повідомлення, щоб завершити ваш запит.</translation>
 <translation id="714506544401754321">Розшифрувати повідомлення</translation>
@@ -887,4 +891,14 @@
 <translation id="5334952096674914470">\n\nОператор мобільного зв’язку\n</translation>
 <translation id="5393042357629679588">\n\nІнша проблема\n</translation>
 <translation id="8095666712177294104">\n\nПлатформа\n</translation>
+<translation id="7080614857771109950">Підтримує сумісні з EVM активи в блокчейні Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Підтримує сумісні з SPL активи в блокчейні Solana</translation>
+<translation id="6575120282593094155">У вас ще немає облікового запису <ph name="ACCOUNT_TYPE"/>. Створити зараз?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Виключені додатки</translation>
+<translation id="8463269357637177759">Дозволені звичайні додатки</translation>
+<translation id="4554726425645556940">Дозволені системні додатки</translation>
+<translation id="9023148942866814328">Показати системні додатки</translation>
+<translation id="5472400694702418949">Укажіть додатки, які потрібно виключити з трафіку VPN.</translation>
+<translation id="7002577172732106572">Розділене тунелювання</translation>
 </translationbundle>

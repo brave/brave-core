@@ -50,6 +50,7 @@
 <translation id="7291143854620707672">Data Brave yang dibuat selama penggunaan profil ini (seperti pembuatan bookmark, histori, sandi, dan setelan lain) dapat dihapus oleh administrator profil kerja. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Terjadi kesalahan pada sistem operasi saat pemasangan berlangsung. Download Brave lagi.</translation>
 <translation id="2648689842065142443">Jika Anda berbagi perangkat, teman dan keluarga dapat menjelajah secara terpisah dan menyiapkan Brave sesuai keinginannya</translation>
+<translation id="6384359666082467439">Selamat Datang di Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Untuk keamanan tambahan, Brave akan mengenkripsi data Anda.</translation>
 <translation id="2770231113462710648">Ubah browser default ke:</translation>
@@ -94,6 +95,7 @@
 <translation id="4061445349373849749">Untuk melindungi privasi Anda, kami otomatis menghapus minat Anda yang tersimpan lebih dari 4 minggu. Saat Anda terus menjelajah, minat dapat kembali muncul di daftar. Atau Anda dapat menghapus minat yang tidak perlu dipertimbangkan oleh Brave.</translation>
 <translation id="691208314680168371">Histori penjelajahan Anda, catatan situs yang telah Anda buka menggunakan Brave di perangkat ini.</translation>
 <translation id="1384923383737428730">Ada software berbahaya di komputer Anda. Brave dapat menghapusnya, memulihkan setelan Anda, dan menonaktifkan ekstensi agar browser berfungsi kembali secara normal.</translation>
+<translation id="1073077513148817424">Akun lain sudah login. Agar penjelajahan Anda tetap terpisah, Brave dapat membuat profil tersendiri untuk Anda.</translation>
 <translation id="7029305463989165490">Untuk mengirimkan nomor dari <ph name="ORIGIN"/> ke ponsel Android Anda, login ke Brave di kedua perangkat.</translation>
 <translation id="4304059894777924102">Brave tidak dapat memeriksa sandi Anda. Coba periksa koneksi internet Anda.</translation>
 <translation id="2100587595569959771">Pelajari lebih lanjut personalisasi iklan di Brave</translation>
@@ -103,9 +105,11 @@
 <translation id="2401189691232800402">Sistem ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">Dapatkan bantuan ChromeOS</translation>
+<translation id="6009720635797285369">Dapatkan data browser Brave Anda dari <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="6315734375101223238">Sesuaikan dan kontrol Brave. Ada sesuatu yang memerlukan perhatian Anda - klik untuk melihat detailnya.</translation>
 <translation id="7130675370997202556">Klik nama Anda untuk membuka Brave dan mulai menjelajah.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> telah login ke profil Brave ini. Agar penjelajahan Anda tetap terpisah, Brave dapat membuat profil tersendiri untuk Anda.</translation>
+<translation id="2337217774418822704">Akun Anda dikelola oleh <ph name="MANAGER_NAME"/>. Administrator dapat melihat dan mengedit profil browser Brave ini beserta datanya seperti bookmark, histori, dan sandi.</translation>
 <translation id="8090497651549769448">Brave mencoba menyalin sandi. Ketik sandi Windows Anda untuk mengizinkannya.</translation>
 <translation id="7133557675784723900">Brave merekomendasikan pemindaian file ini karena file mungkin berbahaya</translation>
 <translation id="1152920704813762236">Tentang ChromeOS</translation>
@@ -167,6 +171,7 @@
 <translation id="1744365871163268756">Harap tunggu selagi Brave memasang pembaruan sistem terkini.</translation>
 <translation id="3861679447659630159">Brave mencoba mengedit sandi. Ketik sandi Windows Anda untuk mengizinkannya.</translation>
 <translation id="232381795826373334">Buka PDF di Brave</translation>
+<translation id="5381032481466106256">Jika aktif, Anda juga akan logout dari Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Update Brave tersedia}=1{Update Brave tersedia}other{Update Brave telah tersedia selama # hari}}</translation>
 <translation id="95624393026532554">Brave memerlukan Windows 7 atau lebih tinggi.</translation>
 <translation id="5646769069113654257">Mulai ulang Brave sekarang</translation>
@@ -288,7 +293,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="7963515534397191222">Brave tidak dapat diupdate ke versi terbaru, sehingga Anda tidak mendapatkan perbaikan keamanan dan fitur baru.</translation>
 <translation id="7872446069773932638">Mendownload ... <ph name="SECONDS"/> detik lagi</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cara Anda dapat mengelola data Anda:<ph name="END_BOLD"/> Untuk melindungi privasi Anda, kami otomatis menghapus minat yang tersimpan lebih dari 4 minggu. Saat Anda terus menjelajah, minat dapat kembali muncul di daftar. Atau Anda dapat menghapus minat yang tidak perlu dipertimbangkan oleh Brave.</translation>
-<translation id="437139750042419257">Akun berikut tersedia untuk profil Brave ini</translation>
 <translation id="2925193881330501265">Anda telah masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Gunakan akun yang sama untuk masuk kembali.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
 <translation id="1975057837349076194">Jika setelan tidak muncul di halaman ini, buka <ph name="LINK_BEGIN"/>
@@ -334,6 +338,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="6389268239133412586">Tidak dapat mengupdate Brave</translation>
 <translation id="7731184591599776500">Logo Brave Enterprise</translation>
 <translation id="8986207147630327271">Anda menambahkan profil kerja ke browser ini dan memberikan kontrol kepada administrator hanya untuk profil kerja.</translation>
+<translation id="82609232232243542">Login ke Brave</translation>
 <translation id="5173820533850252773">Brave terlalu lawas</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave akan diluncurkan ulang dalam 1 jam}other{Brave akan diluncurkan ulang dalam # jam}}</translation>
 <translation id="7863882214613921971">Buka Link di &amp;tab Brave Baru</translation>

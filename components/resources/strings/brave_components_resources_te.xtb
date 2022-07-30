@@ -47,8 +47,6 @@
 <translation id="4309915981827077375">సాధారణ సమాచారం</translation>
 <translation id="3368922792935385530">కనెక్ట్ అయింది</translation>
 <translation id="8874184842967597500">కనెక్ట్ చేయబడలేదు</translation>
-<translation id="8281886186245836920">దాటవేయి</translation>
-<translation id="6518133107902771759">ధృవీకరించు</translation>
 <translation id="3587482841069643663">మొత్తం</translation>
 <translation id="2631006050119455616">సేవ్ చేయబడింది</translation>
 <translation id="3819257035322786455">బ్యాకప్</translation>
@@ -62,6 +60,7 @@
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
 <translation id="1963227389609234879">అన్నీ తొలగించు</translation>
 <translation id="923467487918828349">అన్నీ చూపించు</translation>
+<translation id="6518133107902771759">ధృవీకరించు</translation>
 <translation id="4804818685124855865">డిస్‌కనెక్ట్ చెయ్యి</translation>
 <translation id="8151638057146502721">కాన్ఫిగర్ చేయి</translation>
 <translation id="5308380583665731573">కనెక్ట్ చేయండి</translation>
@@ -81,6 +80,9 @@
 <translation id="1974060860693918893">ఆధునిక</translation>
 <translation id="3340978935015468852">సెట్టింగ్‌లు</translation>
 <translation id="572392919096807438">నా నిర్ణయాన్ని గుర్తుంచుకో</translation>
+<translation id="6965382102122355670">సరే</translation>
+<translation id="5234764350956374838">తొలగించు</translation>
+<translation id="8281886186245836920">దాటవేయి</translation>
 <translation id="2805756323405976993">యాప్స్</translation>
 <translation id="1987317783729300807">ఖాతాలు</translation>
 <translation id="629730747756840877">ఖాతా</translation>
@@ -90,7 +92,6 @@
 <translation id="6657585470893396449">పాస్‌వర్డ్</translation>
 <translation id="9111102763498581341">అన్‌లాక్ చెయ్యి</translation>
 <translation id="5045550434625856497">సరికాని పాస్‌వర్డ్</translation>
-<translation id="5234764350956374838">తొలగించు</translation>
 <translation id="7525067979554623046">సృష్టించు</translation>
 <translation id="7978412674231730200">వ్యక్తిగత కీ</translation>
 <translation id="4378551569595875038">కనెక్ట్ అవుతోంది...</translation>
@@ -100,8 +101,10 @@
 <translation id="9065203028668620118">సవరించు</translation>
 <translation id="6452181791372256707">తిరస్కరించు</translation>
 <translation id="8030852056903932865">ఆమోదించు</translation>
-<translation id="1165039591588034296">ఎర్రర్</translation>
 <translation id="7982789257301363584">నెట్‌వర్క్</translation>
+<translation id="2391762656119864333">ఉపసంహరించు</translation>
+<translation id="5677928146339483299">బ్లాక్ చేయబడింది</translation>
+<translation id="1165039591588034296">ఎర్రర్</translation>
 <translation id="3380365263193509176">తెలియని లోపం</translation>
 <translation id="5657156137487675418">అన్ని కుక్కీలను అనుమతించు</translation>
 <translation id="5747552184818312860">గడువు ముగింపు</translation>

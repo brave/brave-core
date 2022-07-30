@@ -335,19 +335,6 @@
     "message": "إعادة الاتصال",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "تم التحقق من مكافآت Brave الخاصة بك!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "تم التحقق بنجاح من مكافآت Brave الخاصة بك عن طريق $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "منحة الرموز المميزة متاحة!",
     "description": ""

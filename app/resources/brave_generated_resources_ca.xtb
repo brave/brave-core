@@ -114,8 +114,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5240031343741051161">Prova la Cerca de Brave</translation>
 <translation id="5026874946691314267">No mostris això una altra vegada</translation>
 <translation id="5234764350956374838">Omet</translation>
-<translation id="214744058941501853">"&gt;
-          Descarta la conversió de la Cerca de Brave, premeu Retorn per eliminar aquest suggeriment</translation>
+<translation id="5100490448228945668">Descarta la conversió de la cerca en format Brave, premeu Retorn per eliminar aquest suggeriment</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
 <translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="6040143037577758943">Tanca</translation>
@@ -221,6 +220,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8820817407110198400">Adreces d'interès</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
 <translation id="1811404036171336214">Mostrar sempre els marcadors a la nova pestanya</translation>
+<translation id="3416468988018290825">Mostra sempre les URL completes</translation>
 <translation id="5529693968082667490">Mostra el botó de cerca de pestanyes</translation>
 <translation id="1643029991199044105">Cerqueu per les pestanyes més utilitzades recentment amb Ctrl-Tab</translation>
 <translation id="1013121820689882118">Lector de velocitat</translation>
@@ -393,7 +393,8 @@ Segur que vols continuar?</translation>
 <translation id="5249433283143453448">Utilitza el component Widevine de gestió de drets digitals (DRM) per visualitzar vídeo en streaming protegit i altres continguts al navegador.</translation>
 <translation id="8137559199583651773">Gestiona les extensions</translation>
 <translation id="7013485839273047434">Obteniu més extensions</translation>
-<translation id="9131889008937672866">Cartera de criptomoneda predeterminada</translation>
+<translation id="4954512758656527938">Cartera Ethereum predeterminada</translation>
+<translation id="7701023802820268122">Cartera Solana predeterminada</translation>
 <translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="7701040980221191251">Cap</translation>
@@ -418,6 +419,8 @@ Segur que vols continuar?</translation>
 <translation id="8205945804087322170">Afegir nova xarxa</translation>
 <translation id="1330032157352961756">La ID de la nova cadena</translation>
 <translation id="3423620355610881890">Un número decimal positiu</translation>
+<translation id="8110465398315041268">Cerca una xarxa</translation>
+<translation id="3579705520805744214">ID o nom de la cadena</translation>
 <translation id="726121047592132939">El nom de la nova cadena</translation>
 <translation id="1034112277864078119">Introdueix el nom de la cadena</translation>
 <translation id="4672314527143443556">Nom de la moneda de la cadena</translation>
@@ -489,6 +492,7 @@ Segur que vols continuar?</translation>
 <translation id="3411013544209536575">Consells d'ajuda</translation>
 <translation id="2775956301559569472">Mostra el missatge de la Wayback Machine a 404 pàgines</translation>
 <translation id="3095201688102519917">Avisa abans de tancar una finestra amb múltiples pestanyes</translation>
+<translation id="7120553802660696133">Tanca la finestra en tancar l'última pestanya</translation>
 <translation id="6624718837376802990">Avatar Provocador Recompenses</translation>
 <translation id="6617313057407561765">Avatar Provocador Brave</translation>
 <translation id="6754445808455578019">Avatar Provocador Oceà</translation>

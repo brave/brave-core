@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">Brave ಹುಡುಕಾಟ ಪ್ರಯತ್ನಿಸಿ ನೋಡಿ</translation>
 <translation id="5026874946691314267">ಇದನ್ನು ಮತ್ತೆ ತೋರಿಸಬೇಡಿ</translation>
 <translation id="5234764350956374838">ವಜಾಗೊಳಿಸಿ</translation>
-<translation id="214744058941501853">"&gt;
-          Brave ಹುಡುಕಾಟ ಪರಿವರ್ತನೆಯನ್ನು ವಜಾಗೊಳಿಸಿ, ಈ ಸಲಹೆಯನ್ನು ತೆಗೆದುಹಾಕುವುದಕ್ಕಾಗಿ ಎಂಟರ್ ಒತ್ತಿ</translation>
+<translation id="5100490448228945668">Brave ಹುಡುಕಾಟ ಪರಿವರ್ತನೆಯನ್ನು ವಜಾಗೊಳಿಸಿ, ಈ ಸಲಹೆಯನ್ನು ತೆಗೆದುಹಾಕಲು Enter ಒತ್ತಿ</translation>
 <translation id="2515126961943087659">Bat ಜಾಹೀರಾತುಗಳ ಸೇವೆ</translation>
 <translation id="7924918279836988121">Bat Ledger ಸೇವೆ</translation>
 <translation id="6040143037577758943">ಮುಚ್ಚಿ</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು</translation>
 <translation id="6333347122924254968">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಪುರಸ್ಕಾರಗಳ ಐಕಾನ್ ತೋರಿಸಿ</translation>
 <translation id="1811404036171336214">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಬಾರ್ ಅನ್ನು ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ತೋರಿಸಿ</translation>
+<translation id="3416468988018290825">ಯಾವಾಗಲೂ ಪೂರ್ಣ URL ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="5529693968082667490">ಟ್ಯಾಬ್ ಹುಡುಕಾಟ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="1643029991199044105">Ctrl-Tab ಮೂಲಕ ಹೆಚ್ಚು ಇತ್ತೀಚಿಗೆ ಬಳಸಲಾದ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಆವರ್ತನಗೊಳಿಸಿ</translation>
 <translation id="1013121820689882118">ಸ್ಪೀಡ್‌ರೀಡರ್</translation>
@@ -393,7 +393,8 @@
 <translation id="5249433283143453448">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ರಕ್ಷಿಸಲಾದ ಸ್ಟ್ರೀಮಿಂಗ್ ವೀಡಿಯೊ ಮತ್ತು ಇತರ ವಿಷಯವನ್ನು ವೀಕ್ಷಿಸಲು Widevine ಡಿಜಿಟಲ್ ಹಕ್ಕುಗಳ ನಿರ್ವಹಣೆ (DRM) ಅಂಶವನ್ನು ಬಳಸಿ</translation>
 <translation id="8137559199583651773">ವಿಸ್ತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="7013485839273047434">ಇನ್ನಷ್ಟು ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
-<translation id="9131889008937672866">ಡೀಫಾಲ್ಟ್ ಕ್ರಿಪ್ಟೋಕರೆನ್ಸಿ ವ್ಯಾಲೆಟ್</translation>
+<translation id="4954512758656527938">ಡೀಫಾಲ್ಟ್ ಈಥೇರಿಯಮ್ ವ್ಯಾಲೆಟ್</translation>
+<translation id="7701023802820268122">ಡೀಫಾಲ್ಟ್ ಸೊಲಾನಾ ವ್ಯಾಲೆಟ್</translation>
 <translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
 <translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="7701040980221191251">ಯಾವುದೂ ಇಲ್ಲ</translation>
@@ -418,6 +419,8 @@
 <translation id="8205945804087322170">ಹೊಸ ನೆಟ್‌ವರ್ಕ್ ಸೇರಿಸಿ</translation>
 <translation id="1330032157352961756">ಹೊಸ ಚೈನ್‌ನ ಐಡಿ</translation>
 <translation id="3423620355610881890">ಧನಾತ್ಮಕ ದಶಮಾಂಶ ಸಂಖ್ಯೆ</translation>
+<translation id="8110465398315041268">ನೆಟ್‌ವರ್ಕ್ ಹುಡುಕಿ</translation>
+<translation id="3579705520805744214">ಚೈನ್ ಐಡಿ ಅಥವಾ ಹೆಸರು</translation>
 <translation id="726121047592132939">ಹೊಸ ಚೈನ್‌ನ ಹೆಸರು</translation>
 <translation id="1034112277864078119">ಚೈನ್ ಹೆಸರು ಹೆಸರು</translation>
 <translation id="4672314527143443556">ಚೈನ್‌ನ ಕರೆನ್ಸಿ ಹೆಸರು</translation>
@@ -489,6 +492,7 @@
 <translation id="3411013544209536575">ಸಹಾಯ ಸಲಹೆಗಳು</translation>
 <translation id="2775956301559569472">404 ಪುಟಗಳಲ್ಲಿ ವೇಬ್ಯಾಕ್ ಯಂತ್ರ ಪ್ರಾಂಪ್ಟ್ ತೋರಿಸಿ</translation>
 <translation id="3095201688102519917">ಬಹು ಟ್ಯಾಬ್‌ಗಳೊಂದಿಗೆ ವಿಂಡೋವನ್ನು ಮುಚ್ಚುವ ಮೊದಲು ನನಗೆ ಎಚ್ಚರಿಕೆ ನೀಡಿ</translation>
+<translation id="7120553802660696133">ಕೊನೆಯ ಟ್ಯಾಬ್ ಅನ್ನು ಮುಚ್ಚುವಾಗ ವಿಂಡೋವನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="6624718837376802990">ಅವತಾರ್ ಎಡ್ಜಿ ರಿವಾರ್ಡ್‌ಗಳು</translation>
 <translation id="6617313057407561765">ಅವತಾರ್ ಎಡ್ಜಿ Brave</translation>
 <translation id="6754445808455578019">ಅವತಾರ್ ಎಡ್ಜಿ ಓಷಿಯನ್</translation>

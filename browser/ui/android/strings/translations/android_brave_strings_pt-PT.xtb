@@ -262,6 +262,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="3097089005389027085">Esta ação irá partilhar os dados do Brave, incluindo potencialmente as palavras-passe, com o dispositivo que criou as palavras do código.
 Deve verificar com cuidado se as palavras do código foram criadas por um dispositivo do qual é proprietário.
 Tem a certeza de que pretende continuar?</translation>
+<translation id="4550208292810542331">A permissão de acesso à câmara não foi concedida</translation>
 <translation id="597993392929850353">Licença Brave</translation>
 <translation id="6336451774241870485">Novo separador privado</translation>
 <translation id="6199596294742117349">Este é um separador privado</translation>
@@ -550,8 +551,9 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1A</translation>
 <translation id="6895566650974550243">TUDO</translation>
-<translation id="5071303414930953888">Conta <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Conta: <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Adicionar conta</translation>
+<translation id="318334680413773318">Adicionar/Importar conta</translation>
 <translation id="3448492834076427715">Atualizar conta</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Ativar o desbloqueio por impressão digital?</translation>
@@ -860,12 +862,14 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="4804818685124855865">Desligar</translation>
 <translation id="8009571545960303544">A sua assinatura é necessária</translation>
 <translation id="3484981968509595506">Uma DApp requer a sua chave de encriptação pública</translation>
+<translation id="2300240008330189182"><ph name="URL"/> está a solicitar a chave de encriptação pública da sua carteira. Se autorizar o fornecimento dessa chave, o site poderá escrever mensagens encriptadas para si.</translation>
 <translation id="3340247553212049934">Providenciar</translation>
 <translation id="1982257600591932657">Nome da rede</translation>
 <translation id="5052727830821470769">URL da rede</translation>
 <translation id="4822132585477111396">ID da Chain</translation>
 <translation id="7131971375297699539">Símbolo da moeda</translation>
 <translation id="7982789257301363584">Rede</translation>
+<translation id="6936860995365507185">Isto permite utilizar esta rede na Carteira Brave. <ph name="CLICK_START"/>Saber mais<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Permitir que este site adicione uma rede?</translation>
 <translation id="4857321293515555666">Este DApp deseja ler esta mensagem para concluir sua solicitação.</translation>
 <translation id="714506544401754321">Descodificar mensagem</translation>
@@ -890,4 +894,14 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="5334952096674914470">\n\nOperadora de celular\n</translation>
 <translation id="5393042357629679588">\n\nOutro problema\n</translation>
 <translation id="8095666712177294104">\n\nPlataforma\n</translation>
+<translation id="7080614857771109950">Suporta ativos compatíveis EVM no blockchain Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Suporta ativos compatíveis com SPL no blockchain Solana</translation>
+<translation id="6575120282593094155">Ainda não tem uma conta <ph name="ACCOUNT_TYPE"/>. Pretende criar uma agora?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Aplicações excluídas</translation>
+<translation id="8463269357637177759">Aplicações comuns permitidas</translation>
+<translation id="4554726425645556940">Aplicações do sistema permitidas</translation>
+<translation id="9023148942866814328">Mostrar aplicações do sistema</translation>
+<translation id="5472400694702418949">Adicione as aplicações a excluir do tráfego da VPN.</translation>
+<translation id="7002577172732106572">Túnel dividido</translation>
 </translationbundle>

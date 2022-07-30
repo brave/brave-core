@@ -335,19 +335,6 @@
     "message": "Hubungkan kembali",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Brave Rewards Anda terverifikasi",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Brave Rewards Anda telah berhasil diverifikasi dengan $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Hibah token tersedia!",
     "description": ""
@@ -424,7 +411,7 @@
     "description": ""
   },
   "onboardingEarnHeader": {
-    "message": "Dapatkan Token & Berikan Balik\n",
+    "message": "Dapatkan Token & Berikan Balik",
     "description": ""
   },
   "onboardingEarnText": {

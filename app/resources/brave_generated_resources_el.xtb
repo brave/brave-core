@@ -11,7 +11,7 @@
 <translation id="2666990579225592931">Άνοιγμα παραθύρου περιήγησης επισκέπτη</translation>
 <translation id="4986483413015198747">Άνοιγμα παραθύρου επισκέπτη</translation>
 <translation id="8275068909952022340">Περισσότερα…</translation>
-<translation id="1990886731975529483">Εγκατάσταση και εκτέλεση του Widevine</translation>
+<translation id="1990886731975529483">Εγκατάσταση και εκτέλεση του Google Widevine</translation>
 <translation id="8926389886865778422">Να μην ερωτηθώ ξανά</translation>
 <translation id="4900351245762303149">Εγκατάσταση του Google Widevine</translation>
 <translation id="2313383941300459392">Κάντε επανεκκίνηση του προγράμματος περιήγησης για να ενεργοποιήσετε το Google Widevine</translation>
@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">Δοκιμάστε την Αναζήτηση Brave</translation>
 <translation id="5026874946691314267">Να μην εμφανιστεί αυτό ξανά</translation>
 <translation id="5234764350956374838">Παράβλεψη</translation>
-<translation id="214744058941501853">"&gt;
-          Απόρριψη της μεταστροφής σε Αναζήτηση Βrave, πατήστε Enter για να αφαιρεθεί αυτή η πρόταση</translation>
+<translation id="5100490448228945668">Παράβλεψη μετατροπής Brave αναζήτησης, πατήστε Enter για να καταργήσετε αυτήν την πρόταση</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
 <translation id="6040143037577758943">Κλείσιμο</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">Γραμμή σελιδοδεικτών</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
 <translation id="1811404036171336214">Να εμφανίζονται πάντα οι σελιδοδείκτες στη νέα καρτέλα σελίδας</translation>
+<translation id="3416468988018290825">Να εμφανίζονται πάντα οι πλήρεις διευθύνσεις URL</translation>
 <translation id="5529693968082667490">Εμφάνιση κουμπιού αναζήτησης καρτελών</translation>
 <translation id="1643029991199044105">Μεταβείτε διαδοχικά στις καρτέλες που χρησιμοποιήσατε πιο πρόσφατα με Ctrl-Tab</translation>
 <translation id="1013121820689882118">Γρήγορο γράψιμο</translation>
@@ -394,7 +394,8 @@
 <translation id="5249433283143453448">Χρησιμοποιήστε το στοιχείο Widevine διαχείριση ψηφιακών δικαιωμάτων (DRM) για να προβάλετε προστατευμένη ροή βίντεο και άλλο περιεχόμενο στο πρόγραμμα περιήγησης.</translation>
 <translation id="8137559199583651773">Διαχείριση επεκτάσεων</translation>
 <translation id="7013485839273047434">Λάβετε περισσότερες επεκτάσεις</translation>
-<translation id="9131889008937672866">Προεπιλεγμένο πορτοφόλι κρυπτονομισμάτων</translation>
+<translation id="4954512758656527938">Προεπιλεγμένο πορτοφόλι Ethereum</translation>
+<translation id="7701023802820268122">Προεπιλεγμένο πορτοφόλι Solana</translation>
 <translation id="8488282162676695335">Πορτοφόλι Brave</translation>
 <translation id="2356070529366658676">Να γίνεται ερώτηση</translation>
 <translation id="7701040980221191251">Καμία</translation>
@@ -419,6 +420,8 @@
 <translation id="8205945804087322170">Προσθήκη νέου δικτύου</translation>
 <translation id="1330032157352961756">Το αναγνωριστικό της νέας αλυσίδας</translation>
 <translation id="3423620355610881890">Θετικός δεκαδικός αριθμός</translation>
+<translation id="8110465398315041268">Αναζήτηση δικτύου</translation>
+<translation id="3579705520805744214">Αναγνωριστικό ή όνομα αλυσίδας</translation>
 <translation id="726121047592132939">Όνομα της νέας αλυσίδας</translation>
 <translation id="1034112277864078119">Καταχωρήστε το όνομα της αλυσίδας</translation>
 <translation id="4672314527143443556">Όνομα νομίσματος αλυσίδας</translation>
@@ -490,6 +493,7 @@
 <translation id="3411013544209536575">Βοηθητικές συμβουλές</translation>
 <translation id="2775956301559569472">Εμφάνιση προτροπής Wayback Machine σε σελίδες 404</translation>
 <translation id="3095201688102519917">Προειδοποιήστε με πριν κλείσω το παράθυρο με πολλές καρτέλες</translation>
+<translation id="7120553802660696133">Κλείστε το παράθυρο όταν κλείνετε την τελευταία καρτέλα</translation>
 <translation id="6624718837376802990">Άβαταρ Αιχμής Ανταμοιβές</translation>
 <translation id="6617313057407561765">Άβαταρ Αιχμής Brave</translation>
 <translation id="6754445808455578019">Άβαταρ Αιχμής Ωκεανός</translation>

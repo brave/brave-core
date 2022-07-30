@@ -52,6 +52,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7291143854620707672">Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">An operating system error occurred during installation. Please download Brave again.</translation>
 <translation id="2648689842065142443">If you share a device, friends and family can browse separately and set up Brave just the way they want</translation>
+<translation id="6384359666082467439">Welcome to Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Brave Tab</translation>
 <translation id="8372880274820509128">For added security, Brave will encrypt your data.</translation>
 <translation id="2770231113462710648">Change default browser to:</translation>
@@ -96,6 +97,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4061445349373849749">To protect your privacy, we auto-delete your interests that are older than four weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests you don't want Brave to consider.</translation>
 <translation id="691208314680168371">Your browsing history, a record of sites that you've visited using Brave on this device.</translation>
 <translation id="1384923383737428730">There's harmful software on your computer. Brave can remove it, restore your settings and disable extensions to make your browser work normally again.</translation>
+<translation id="1073077513148817424">Another account is already signed in. To keep your browsing separate, Brave can create your own profile for you.</translation>
 <translation id="7029305463989165490">To send a number from <ph name="ORIGIN"/> to your Android phone, sign in to Brave on both devices.</translation>
 <translation id="4304059894777924102">Brave can't check your passwords. Try checking your Internet connection.</translation>
 <translation id="2100587595569959771">Learn more about ad personalisation in Brave</translation>
@@ -105,9 +107,11 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2401189691232800402">Chrome OS system</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">Get help with Chrome OS</translation>
+<translation id="6009720635797285369">Get your Brave browser stuff from <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="6315734375101223238">Customise and control Brave. Something needs your attention – click for details.</translation>
 <translation id="7130675370997202556">Click your name to open Brave and start browsing.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> is already signed in to this Brave profile. To keep your browsing separate, Brave can create your own profile for you.</translation>
+<translation id="2337217774418822704">Your account is managed by <ph name="MANAGER_NAME"/>. Your administrator can see and edit this Brave browser profile and its data like bookmarks, history and passwords.</translation>
 <translation id="8090497651549769448">Brave is trying to copy passwords. Type your Windows password to allow this.</translation>
 <translation id="7133557675784723900">Brave recommends scanning this file because it may be dangerous</translation>
 <translation id="1152920704813762236">About Chrome OS</translation>
@@ -169,6 +173,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="1744365871163268756">Please wait while Brave installs the latest system updates.</translation>
 <translation id="3861679447659630159">Brave is trying to edit passwords. Type your Windows password to allow this.</translation>
 <translation id="232381795826373334">Open PDFs in Brave</translation>
+<translation id="5381032481466106256">When on, you'll also be signed out of Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{A Brave update is available}=1{A Brave update is available}other{A Brave update has been available for # days}}</translation>
 <translation id="95624393026532554">Brave requires Windows 7 or higher.</translation>
 <translation id="5646769069113654257">Please restart Brave now</translation>
@@ -289,7 +294,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="7963515534397191222">Brave couldn't update to the latest version, so you're missing out on new features and security fixes.</translation>
 <translation id="7872446069773932638">Downloading… <ph name="SECONDS"/> second(s) remaining</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>How you can manage your data:<ph name="END_BOLD"/> To protect your privacy, we auto-delete your interests that are older than four weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests that you don’t want Brave to consider.</translation>
-<translation id="437139750042419257">The following accounts are available for this Brave profile</translation>
 <translation id="2925193881330501265">You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS"/>. Please use the same account to sign in again.</translation>
 <translation id="6915252145142862992">This is a secondary installation of Brave, and cannot be made your default browser.</translation>
 <translation id="1975057837349076194">If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN"/>
@@ -335,6 +339,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="6389268239133412586">Can't update Brave</translation>
 <translation id="7731184591599776500">Brave Enterprise logo</translation>
 <translation id="8986207147630327271">You are adding a work profile to this browser and giving your administrator control over just the work profile.</translation>
+<translation id="82609232232243542">Sign in to Brave</translation>
 <translation id="5173820533850252773">Brave is out of date</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave will relaunch in an hour}other{Brave will relaunch in # hours}}</translation>
 <translation id="7863882214613921971">Open Link in New Brave &amp;tab</translation>
