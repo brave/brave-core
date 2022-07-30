@@ -262,6 +262,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3097089005389027085">Ibabahagi nito ang iyong data sa Brave, kabilang ang iyong mga potensyal na password, sa device na nag-generate ng mga salitang code na ito.
 Paki-double check kung na-generate ang QR code ng device na pagmamay-ari mo.
 Sigurado ka bang gusto mo itong gawin?</translation>
+<translation id="4550208292810542331">Hindi nabigyan ng pahintulot sa camera</translation>
 <translation id="597993392929850353">Lisensya ng Brave</translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="6199596294742117349">Pribadong Tab ito.</translation>
@@ -550,8 +551,9 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">LAHAT</translation>
-<translation id="5071303414930953888">Account <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Magdagdag ng account</translation>
+<translation id="318334680413773318">Magdagdag/Mag-import ng account</translation>
 <translation id="3448492834076427715">I-update ang account</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">I-enable ang pag-unlock gamit ang fingerprint?</translation>
@@ -860,12 +862,14 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4804818685124855865">I-disconnect</translation>
 <translation id="8009571545960303544">Hinihiling ang iyong signature</translation>
 <translation id="3484981968509595506">Hinihingi ng DApp ang iyong public encryption key</translation>
+<translation id="2300240008330189182">Hinihiling ng <ph name="URL"/> ang pampublikong encryption key ng iyong wallet. Kung papayag kang ibigay ang key na ito, makakabuo ang site ng mga naka-encrypt na mensahe para sa iyo.</translation>
 <translation id="3340247553212049934">Magbigay ng</translation>
 <translation id="1982257600591932657">Pangalan ng network</translation>
 <translation id="5052727830821470769">URL ng Network</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Simbolo ng pera</translation>
 <translation id="7982789257301363584">Network</translation>
+<translation id="6936860995365507185">Bibigyang-daan nito ang network na ito na magamit sa loob ng Brave Wallet. <ph name="CLICK_START"/>Matuto pa<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Pahintulutan ang site na ito na magdagdag ng network?</translation>
 <translation id="4857321293515555666">Gusto ng DApp na ito na basahin ang mensaheng ito para kumpletuhin ang iyong kahilingan.</translation>
 <translation id="714506544401754321">I-decrypt ang mensahe</translation>
@@ -890,4 +894,14 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="5334952096674914470">\n\nCellular Carrier\n</translation>
 <translation id="5393042357629679588">\n\nIba Pang Isyu\n</translation>
 <translation id="8095666712177294104">\n\nPlatform\n</translation>
+<translation id="7080614857771109950">Kayang magsuporta ng magkatugmang EVM na mga asset sa Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Sinusuportahan ang mga asset na compatible sa SPL sa Solana blockchain</translation>
+<translation id="6575120282593094155">Wala ka pang <ph name="ACCOUNT_TYPE"/> account. Gumawa na ng isa ngayon?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Mga Hindi Kasamang App</translation>
+<translation id="8463269357637177759">Mga Pinapayagang Regular App</translation>
+<translation id="4554726425645556940">Mga Pinapayagang System App</translation>
+<translation id="9023148942866814328">Ipakita ang Mga System App</translation>
+<translation id="5472400694702418949">Magdagdag ng mga app na hindi isasama sa trapiko ng VPN.</translation>
+<translation id="7002577172732106572">Split Tunneling</translation>
 </translationbundle>

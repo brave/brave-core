@@ -335,19 +335,6 @@
     "message": "Verbindung wiederherstellen",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Ihre Brave Belohnungen sind verifiziert!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Ihre Brave Belohnungen wurden erfolgreich mit $provider$ verifiziert.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Kostenlose Token sind verfügbar!",
     "description": ""

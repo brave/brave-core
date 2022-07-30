@@ -109,6 +109,7 @@ Si eliminas tu historial de navegación (entero o de un sitio en concreto), tamb
 <translation id="1513352483775369820">Historial web y marcadores</translation>
 <translation id="1513814250881909472">Sincroniza para recibir las pestañas de tus demás dispositivos</translation>
 <translation id="1513858653616922153">Eliminar contraseña</translation>
+<translation id="1514552811327923157">Mensaje de Privacy Sandbox abierto a altura completa</translation>
 <translation id="1518421282666914498">GIF de emoción <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="1521774566618522728">Activo hoy</translation>
 <translation id="1538801903729528855">Consigue una mejor experiencia por voz en la Web</translation>
@@ -181,7 +182,6 @@ Si eliminas tu historial de navegación (entero o de un sitio en concreto), tamb
 <translation id="1995884366040846621">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá tu nombre, dirección de correo electrónico e imagen de perfil con este sitio. Consulta la <ph name="BEGIN_LINK1"/>política de privacidad<ph name="END_LINK1"/> de este sitio.</translation>
 <translation id="2000419248597011803">Envía algunas cookies y búsquedas desde la barra de direcciones y el cuadro de búsqueda a tu buscador predeterminado</translation>
 <translation id="6968892567705775281">¿Incluir texto cercano en las búsquedas de Brave?</translation>
-<translation id="469737985790683149">Sincroniza para recibir el contenido más relevante de Brave</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# archivo}other{# archivos}}</translation>
 <translation id="2020309681647789787">Tendrás tu historial en todos tus dispositivos sincronizados y podrás continuar con lo que estabas haciendo</translation>
 <translation id="2021896219286479412">Controles de pantalla completa</translation>
@@ -265,7 +265,6 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="2461822463642141190">Actual</translation>
 <translation id="2542068854151299295">Inicia sesión para sacarle el máximo partido a Brave</translation>
 <translation id="247737702124049222">Las descripciones de imágenes están activadas</translation>
-<translation id="2481251096908459228">Consulta contenido personalizado</translation>
 <translation id="2482878487686419369">Notificaciones</translation>
 <translation id="2485422356828889247">Desinstalar</translation>
 <translation id="6361779936989026201">Asistente de Brave</translation>
@@ -305,7 +304,7 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{# archivo de audio}other{# archivos de audio}}</translation>
 <translation id="265156376773362237">Precarga estándar</translation>
 <translation id="2656405586795711023">Aplicaciones web</translation>
-<translation id="2700802943130197326">Sincroniza para recibir tus contraseñas, marcadores y más en todos tus demás dispositivos</translation>
+<translation id="2669454659051515572">Cualquier persona que use este dispositivo puede ver los archivos descargados</translation>
 <translation id="2702516483241149200">Nuevo: Comparte un enlace que vaya directamente a este texto</translation>
 <translation id="2704606927547763573">Copiado</translation>
 <translation id="2707726405694321444">Actualizar página</translation>
@@ -313,6 +312,7 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="2711073837061989559">Pruebas</translation>
 <translation id="2718352093833049315">Solo en Wi-Fi</translation>
 <translation id="2718846868787000099">Para mostrar contenido en los idiomas que has seleccionado, los sitios que visites pueden ver tus preferencias</translation>
+<translation id="2722945394406572875">Se ha cerrado el mensaje de Privacy Sandbox</translation>
 <translation id="2723001399770238859">audio</translation>
 <translation id="2732063072010454421">Mejora tu experiencia con la voz</translation>
 <translation id="2739256783402597439">2G</translation>
@@ -337,6 +337,7 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="2842985007712546952">Carpeta principal</translation>
 <translation id="2856503607207334158">No se ha podido iniciar sesión</translation>
 <translation id="2860954141821109167">Comprueba que se haya habilitado una aplicación de teléfono en este dispositivo</translation>
+<translation id="6518254564747115579">Algunas funciones de Brave dejarán de estar disponibles</translation>
 <translation id="2870560284913253234">Sitio</translation>
 <translation id="2871733351037274014">Precargar páginas</translation>
 <translation id="8541922081612557424">Información de Brave</translation>
@@ -358,7 +359,6 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="2951071800649516099">Añade páginas a tu lista de lectura para más tarde</translation>
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> página no leída}other{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> páginas no leídas}}</translation>
 <translation id="2961210776189273067">Título</translation>
-<translation id="2979448359891869301">No se puede ampliar la captura de pantalla. Vuelve a intentarlo cuando tu teléfono no esté realizando otras tareas.</translation>
 <translation id="2979639724566107830">Abrir en una ventana nueva</translation>
 <translation id="2981364137500752533">Puedes tener hasta 5 ventanas.</translation>
 <translation id="5948666439178419683">Incluir texto cercano en las búsquedas de Brave</translation>
@@ -478,7 +478,6 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="3602290021589620013">Vista previa</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="3622349720008044802">Gestionar ventanas</translation>
-<translation id="3624977496395967031">Haz clic para abrir las opciones de orden</translation>
 <translation id="3631987586758005671">Compartiendo con <ph name="DEVICE_NAME"/></translation>
 <translation id="363596933471559332">Permite iniciar sesión automáticamente en sitios web con credenciales almacenadas. Si esta función está desactivada, se solicitará la verificación cada vez que se intente iniciar sesión en un sitio web.</translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
@@ -486,6 +485,7 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="3687645719033307815">Estás viendo una vista previa de esta página</translation>
 <translation id="3690369331356918524">Te avisa si tus contraseñas se ven expuestas en una quiebra de seguridad de datos</translation>
 <translation id="3692944402865947621">No se ha podido descargar <ph name="FILE_NAME"/> porque no se puede acceder a la ubicación del almacenamiento.</translation>
+<translation id="3697705478071004188">Ordenar por sitio</translation>
 <translation id="3699022356773522638">¿Descargar archivo?</translation>
 <translation id="371230970611282515">Predice y te advierte de eventos peligrosos antes de que se produzcan.</translation>
 <translation id="3714981814255182093">Abre la barra de búsqueda</translation>
@@ -546,6 +546,7 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="4095146165863963773">¿Eliminar datos de la aplicación?</translation>
 <translation id="4096227151372679484">Flujo para guardar marcador abierto a media altura</translation>
 <translation id="673197144963363525">Ayudar a mejorar Brave enviando estadísticas de uso e informes sobre fallos.</translation>
+<translation id="4101475238162928417">Sincroniza para recibir tus contraseñas, marcadores y más en tus otros dispositivos</translation>
 <translation id="410351446219883937">Reproducción automática</translation>
 <translation id="8112581848375017126">Brave está explorando nuevas funciones que permitan a los sitios ofrecer la misma experiencia de navegación usando menos información tuya.</translation>
 <translation id="4108314971463891922">Seguir</translation>
@@ -565,8 +566,11 @@ Mantén pulsada cualquier palabra para buscarla. Para acotar la búsqueda, selec
 <translation id="6003646045106347985">Para obtener contenido personalizado sugerido por Brave, activa la sincronización</translation>
 <translation id="1675646381334855139">Si permites las cookies, es posible que Brave las use para la precarga.</translation>
 <translation id="4225895483398857530">Acceso directo en la barra de herramientas</translation>
+<translation id="4227318652298512614">Sigue todos los sitios que quieras</translation>
 <translation id="4242533952199664413">Abrir Configuración</translation>
 <translation id="4248098802131000011">Mantén tus contraseñas protegidas frente a quiebras de seguridad de datos y otros problemas de seguridad.</translation>
+<translation id="7445061995866044926">¿Quieres cerrar sesión en Brave?</translation>
+<translation id="4249955472157341256">Ordenar por más recientes</translation>
 <translation id="4250229828105606438">Captura de pantalla</translation>
 <translation id="4256782883801055595">Licencias de software libre</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Qué datos se usan:<ph name="END_BOLD"/> tu historial de navegación, un registro de los sitios que has visitado usando Brave en este dispositivo.</translation>
@@ -631,7 +635,6 @@ Es posible que tu cuenta de Brave tenga otros tipos de historial de navegación,
 <translation id="4594952190837476234">Esta página sin conexión se creó el <ph name="CREATION_TIME"/> y puede ser distinta de la versión online.</translation>
 <translation id="4616150815774728855">Abrir <ph name="WEBAPK_NAME"/></translation>
 <translation id="4619564267100705184">Verificar mi identidad</translation>
-<translation id="4627165777145349100">Más sobre esta página</translation>
 <translation id="4634124774493850572">Utilizar contraseña</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{1 contraseña vulnerada}other{# contraseñas vulneradas}}</translation>
 <translation id="4650364565596261010">Predeterminado del sistema</translation>
@@ -678,6 +681,7 @@ Para cambiar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<
 <translation id="4842515939542199281">Para buscar con la voz, toca el micrófono</translation>
 <translation id="6195403640086187022">Para mayor seguridad, cifra las contraseñas en tu dispositivo antes de que se guarden en el gestor de contraseñas de Brave</translation>
 <translation id="4850886885716139402">Ver</translation>
+<translation id="4852014461738377247">Iniciando sesión\u2026</translation>
 <translation id="4860895144060829044">Llamar</translation>
 <translation id="4864369630010738180">Iniciando sesión...</translation>
 <translation id="5131234170665854056">No se puede instalar <ph name="MODULE"/> para Brave</translation>
@@ -862,11 +866,13 @@ Para cambiar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<
 <translation id="5869522115854928033">Contraseñas guardadas</translation>
 <translation id="5869789175361934029">Continúa donde lo dejaste en otro dispositivo</translation>
 <translation id="5604589745019948682">Para seguir un sitio, visítalo, abre el menú de Brave y toca Seguir.</translation>
+<translation id="5879072387416556377">Recibe mejores sugerencias</translation>
 <translation id="5880748256563468367">Ir al feed</translation>
 <translation id="9037412730408024068">Para ayudarte a completar tareas, Brave recibirá las URL y los contenidos de los sitios en los que uses el Asistente, así como la información que envíes a través del Asistente.</translation>
 <translation id="1985257319311245640">Conocer las URLs de los sitios permite al Asistente de Brave ayudarte a hacer tareas. Puedes desactivar el Asistente en la configuración de Brave.</translation>
 <translation id="5916664084637901428">Activado</translation>
 <translation id="5919204609460789179">Actualiza <ph name="PRODUCT_NAME"/> para iniciar la sincronización</translation>
+<translation id="2810071132154985518">Durante las pruebas, Brave explora formas de limitar el spam, el fraude y lo que se comparte entre sitios. Brave también <ph name="BEGIN_LINK"/>estima tus intereses<ph name="END_LINK"/>, que después pueden usar los sitios para mostrarte anuncios. Puedes gestionar tus intereses en la configuración.</translation>
 <translation id="5938820472109305350">Añadir <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Brave se ha establecido como motor de búsqueda predeterminado</translation>
 <translation id="5945035219773565305">Recomendación actual: <ph name="RECOMMENDATION"/></translation>
@@ -875,7 +881,6 @@ Para cambiar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<
 <translation id="5957442310066583693">Para ver tus sitios favoritos, toca el botón de inicio</translation>
 <translation id="5958275228015807058">Encuentra tus archivos y páginas en la sección Descargas</translation>
 <translation id="5962718611393537961">Toca para ocultar</translation>
-<translation id="7760665516427405230">Para compartir esta página con otro dispositivo, activa la sincronización en los ajustes de Brave.</translation>
 <translation id="5964869237734432770">Detener descripciones de imágenes</translation>
 <translation id="5979084224081478209">Comprobar contraseñas</translation>
 <translation id="5995726099713306770">¿Volver a descargar esta página?</translation>
@@ -1043,6 +1048,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="6824899148643461612">Pestaña <ph name="TAB_TITLE"/> seleccionada</translation>
 <translation id="6828070228333235514">Dejar de seguir precio</translation>
 <translation id="6833996806551876956">Demostración del entorno aislado de privacidad</translation>
+<translation id="6836206421467243968">Restaurar grupo de pestañas <ph name="TITLE_OF_GROUP"/> como nuevo grupo de pestañas en segundo plano.</translation>
 <translation id="6846298663435243399">Cargando…</translation>
 <translation id="6850409657436465440">Tu descarga sigue en curso</translation>
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> pestañas cerradas</translation>
@@ -1102,6 +1108,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="8355565210555500987">Te protege en Brave y puede usarse para mejorar tu seguridad en otras aplicaciones de Brave cuando has iniciado sesión.</translation>
 <translation id="7191430249889272776">Pestaña abierta en segundo plano.</translation>
 <translation id="7196215469483532480">Explicación de la guía de privacidad abierta a altura completa</translation>
+<translation id="7207760545532569765">Restaurar <ph name="TAB_COUNT"/> pestañas como nuevas pestañas en segundo plano.</translation>
 <translation id="7208109991155904980">Reacción movida</translation>
 <translation id="7222235798733126207">Limitación de lo que se comparte entre sitios</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 descarga pendiente}other{# descargas pendientes}}</translation>
@@ -1119,6 +1126,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="1382596880054356475">Sin conexión. Brave no puede comprobar tus contraseñas.</translation>
 <translation id="7313188324932846546">Toca para configurar la sincronización</translation>
 <translation id="7332075081379534664">Se ha iniciado sesión correctamente</translation>
+<translation id="8716243540027092298">Activa la sincronización para recibir el contenido más relevante de Brave</translation>
 <translation id="7339898014177206373">Nueva ventana</translation>
 <translation id="7340958967809483333">Opciones de Discover</translation>
 <translation id="7352339641508007922">Arrastra para hacer una captura de página completa</translation>
@@ -1152,6 +1160,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="749294055653435199">Google Lens no está disponible en este dispositivo</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (actualizada el <ph name="TIME_SINCE_UPDATE"/>)</translation>
 <translation id="7498271377022651285">Espera…</translation>
+<translation id="8156131600798538460">Para cerrar sesión con tu cuenta de Brave en todos los sitios web, <ph name="BEGIN_LINK1"/>cierra la sesión de Brave<ph name="END_LINK1"/>.</translation>
 <translation id="750228856503700085">Actualizaciones no disponibles</translation>
 <translation id="7507207699631365376">Consulta la <ph name="BEGIN_LINK"/>política de privacidad<ph name="END_LINK"/> de este proveedor</translation>
 <translation id="7514365320538308">Descargar</translation>
@@ -1191,6 +1200,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="770741401784017797">Creando GIF</translation>
 <translation id="7707922173985738739">Se utilizarán datos móviles</translation>
 <translation id="7709094866268987903">Los intereses que hayas quitado aparecerán aquí</translation>
+<translation id="7709918231054955894">Accede a todas tus pestañas</translation>
 <translation id="7725024127233776428">Las páginas que añadas a marcadores aparecerán aquí</translation>
 <translation id="7757787379047923882">Texto compartido desde <ph name="DEVICE_NAME"/></translation>
 <translation id="7761849928583394409">Elegir fecha y hora</translation>
@@ -1269,6 +1279,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="1501443023467711714">Inicia sesión para personalizar Brave a tu gusto</translation>
 <translation id="3249150807062904185">Si continúas, aceptas los <ph name="BEGIN_TOS_LINK"/>Términos del Servicio<ph name="END_TOS_LINK"/>.\nPara ayudar a mejorar la aplicación, Brave envía datos de uso y de fallos a Brave. <ph name="BEGIN_UMA_LINK"/>Gestionar<ph name="END_UMA_LINK"/></translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
+<translation id="8107530384992929318">Cerrar opciones para ordenar</translation>
 <translation id="8109613176066109935">Activa la sincronización para ver tus marcadores en todos tus dispositivos</translation>
 <translation id="2919733817273403520">Ayudar a mejorar las funciones y el rendimiento de Brave</translation>
 <translation id="4565206163201411670">¿Mostrar tu actividad de Brave en Bienestar digital?</translation>
@@ -1342,6 +1353,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="8489271220582375723">Abre la página Historial</translation>
 <translation id="8493948351860045254">Liberar espacio</translation>
+<translation id="8497242791509864205">Abrir opciones para ordenar</translation>
 <translation id="8497480609928300907">Explicación de la guía de privacidad</translation>
 <translation id="8497726226069778601">Aún no tienes contenido</translation>
 <translation id="230699814587342492">Contraseñas de Brave</translation>
@@ -1379,6 +1391,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="6482272021231898750">Inicia sesión en este sitio web y en Brave con tu cuenta de Brave Puedes activar la sincronización más tarde.</translation>
 <translation id="6464188276370426100">Cómo buscar con Brave</translation>
 <translation id="8662811608048051533">Cierra tu sesión en la mayoría de los sitios.</translation>
+<translation id="7436978557885042606">Usa Brave a tu manera</translation>
 <translation id="8664979001105139458">El nombre del archivo ya existe</translation>
 <translation id="8666759526542103597">Acerca de la personalización de anuncios basada en el navegador</translation>
 <translation id="8667760277771450375">Estamos explorando formas de restringir el seguimiento entre sitios, así como que los sitios puedan detener el spam publicitario y el fraude.</translation>
@@ -1408,6 +1421,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="8835786707922974220">Asegúrate de que siempre puedas acceder a tus contraseñas guardadas</translation>
 <translation id="883806473910249246">No se ha podido descargar el contenido.</translation>
 <translation id="8840953339110955557">Esta página puede ser distinta de la versión online.</translation>
+<translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">Oculto</translation>
 <translation id="8853345339104747198">Pestaña <ph name="TAB_TITLE"/></translation>
 <translation id="8854223127042600341">Ver tus archivos sin conexión</translation>
@@ -1461,11 +1475,12 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="9106148373857059373">Flujo para guardar marcador cerrado</translation>
 <translation id="9108312223223904744">Teléfono como llave de seguridad compatible</translation>
 <translation id="9108808586816295166">Es posible que no haya un DNS seguro disponible de forma ininterrumpida</translation>
+<translation id="9128984223251192329">Mensaje de Privacy Sandbox abierto a media altura</translation>
 <translation id="9133397713400217035">Explorar sin conexión</translation>
 <translation id="9137013805542155359">Mostrar original</translation>
 <translation id="9148126808321036104">Volver a iniciar sesión</translation>
-<translation id="9155898266292537608">También puedes tocar rápidamente una palabra para hacer búsquedas</translation>
 <translation id="9158770349521403363">Compartir solo contenido</translation>
+<translation id="9159716826369098114">Restaurar grupo de <ph name="TAB_COUNT"/> pestañas como nuevo grupo de pestañas en segundo plano.</translation>
 <translation id="1725592710034997413">Las URLs que visitas se guardan en tu cuenta de Brave</translation>
 <translation id="9169507124922466868">El historial de navegación está medio abierto</translation>
 <translation id="9187955620966010988">Reacción ajustada</translation>
@@ -1476,6 +1491,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="9209888181064652401">No se pueden hacer llamadas</translation>
 <translation id="9212845824145208577">No se puede ir más abajo. Intenta empezar desde más abajo de la página.</translation>
 <translation id="9219103736887031265">Imágenes</translation>
+<translation id="9219582468404818260">Ayúdanos a crear una Web mejor</translation>
 <translation id="6946179564366058239">Cuando un sitio te pregunta si quieres precargar de forma privada los enlaces de su página, Brave cifra y precarga las páginas mediante los servidores de Brave sin cookies. De esta manera, se oculta tu identidad en el sitio precargado.</translation>
 <translation id="4596514158372210596">Eliminar tu actividad de Brave de Bienestar digital</translation>
 <translation id="2830145431802238213">Usa el modo básico en Brave</translation>
@@ -1488,6 +1504,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="96681097142096641">¿Ver página simplificada?</translation>
 <translation id="968900484120156207">Las páginas que visites aparecerán aquí.</translation>
 <translation id="970715775301869095">Quedan <ph name="MINUTES"/> minutos</translation>
+<translation id="978443947993957527">Recibe contenido personalizado</translation>
 <translation id="981121421437150478">Sin conexión</translation>
 <translation id="983192555821071799">Cerrar todas las pestañas</translation>
 <translation id="987264212798334818">General</translation>
@@ -1509,7 +1526,6 @@ En función de la actividad que suelas desempeñar en un sitio, como iniciar ses
 Los Trust Tokens mejoran el nivel de privacidad en internet y no desvelan tu identidad.</translation>
 <translation id="7721367250891727403">Bloquear mientras se usa el modo privado</translation>
 <translation id="4785410057733147746">Mientras estás en modo privado, los sitios web no pueden usar tus cookies para ver tu actividad de navegación en otros sitios web con el objetivo de, por ejemplo, personalizar tus anuncios. Es posible que las funciones de algunos sitios web no se ejecuten correctamente.</translation>
-<translation id="4495453361692585539">Cualquiera que use este dispositivo puede ver los archivos que descargas en modo privado</translation>
 <translation id="2633278372998075009">Pestañas privadas</translation>
 <translation id="8737444348664175738">Se ha cambiado a pestañas privadas</translation>
 <translation id="8810805383611013660">Abrir en pestaña privada</translation>

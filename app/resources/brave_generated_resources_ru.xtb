@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">Попробовать Brave Поиск</translation>
 <translation id="5026874946691314267">Больше не показывать</translation>
 <translation id="5234764350956374838">Dismiss</translation>
-<translation id="214744058941501853">"&gt;
-          Отклонить переход на Brave Поиск. Нажмите Ввод, чтобы удалить это предложение.</translation>
+<translation id="5100490448228945668">Отменить конверсию в Brave Поиске. Чтобы убрать эту подсказку, нажмите Enter.</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
 <translation id="6040143037577758943">Близко</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="6333347122924254968">Показывать значок сервиса «Brave Награды» в адресной строке</translation>
 <translation id="1811404036171336214">Всегда отображать закладки на странице новой вкладки</translation>
+<translation id="3416468988018290825">Всегда показывать полные URL-адреса</translation>
 <translation id="5529693968082667490">Показать кнопку «Поиск по вкладкам»</translation>
 <translation id="1643029991199044105">Циклически просматривайте последние использованные вкладки, нажимая Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -392,7 +392,8 @@
 <translation id="5249433283143453448">Использоывть компонент управления цифровыми правами (DRM) Widevine  для просмотра защищенной видео трансляции и другого контента в браузере.</translation>
 <translation id="8137559199583651773">Управление расширениями</translation>
 <translation id="7013485839273047434">Получить больше расширений</translation>
-<translation id="9131889008937672866">Кошелек для криптовалюты по умолчанию</translation>
+<translation id="4954512758656527938">Кошелек Ethereum по умолчанию</translation>
+<translation id="7701023802820268122">Кошелек Solana по умолчанию</translation>
 <translation id="8488282162676695335">Кошелек Brave</translation>
 <translation id="2356070529366658676">Спрашивать</translation>
 <translation id="7701040980221191251">Нет</translation>
@@ -417,6 +418,8 @@
 <translation id="8205945804087322170">Добавление сети</translation>
 <translation id="1330032157352961756">Идентификатор новой цепи</translation>
 <translation id="3423620355610881890">Положительное десятичное число</translation>
+<translation id="8110465398315041268">Поиск сети</translation>
+<translation id="3579705520805744214">Цепочка ID или название</translation>
 <translation id="726121047592132939">Название новой цепи</translation>
 <translation id="1034112277864078119">Введите название цепи</translation>
 <translation id="4672314527143443556">Название валюты цепи</translation>
@@ -488,6 +491,7 @@
 <translation id="3411013544209536575">Полезные советы</translation>
 <translation id="2775956301559569472">Показывать окно Wayback Machine на страницах с ошибкой 404</translation>
 <translation id="3095201688102519917">Предупреждать перед закрытием окна с несколькими вкладками</translation>
+<translation id="7120553802660696133">Закрывать окно при закрытии последней вкладки</translation>
 <translation id="6624718837376802990">Аватар резкие награды</translation>
 <translation id="6617313057407561765">Аватар резкий Brave</translation>
 <translation id="6754445808455578019">Аватар резкий океан</translation>

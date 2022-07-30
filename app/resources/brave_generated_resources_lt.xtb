@@ -114,8 +114,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="5240031343741051161">Išbandykite „Brave“ paiešką</translation>
 <translation id="5026874946691314267">Daugiau to nerodykite</translation>
 <translation id="5234764350956374838">Atsisakyti</translation>
-<translation id="214744058941501853">"&gt;
-          Atsisakykite „Brave“ paieškos konversijos, paspauskite „Enter“ šiam pasiūlymui pašalinti</translation>
+<translation id="5100490448228945668">Atmesti „Brave“ paieškos konversiją; paspauskite „Enter“, kad šis pasiūlymas būtų pašalintas</translation>
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7924918279836988121">BAT žurnalo paslauga</translation>
 <translation id="6040143037577758943">Uždaryti</translation>
@@ -221,6 +220,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8820817407110198400">Žymių juosta</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
 <translation id="1811404036171336214">Visada rodyti žymes naujos kortelės puslapyje</translation>
+<translation id="3416468988018290825">Visada rodyti visą URL adresą</translation>
 <translation id="5529693968082667490">Rodyti skirtuko paieškos mygtuką</translation>
 <translation id="1643029991199044105">Paskiausiai naudotas korteles perjunkite klavišais Ctrl + Tab</translation>
 <translation id="1013121820689882118">Spartusis skaitlys</translation>
@@ -393,7 +393,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5249433283143453448">Naudokite „Widevine“ skaitmeninių teisių valdymo (DRM) komponentą, jei norite naršyklėje peržiūrėti apsaugotus transliuojamus vaizdo įrašus ir kitą turinį.</translation>
 <translation id="8137559199583651773">Tvarkyti plėtinius</translation>
 <translation id="7013485839273047434">Gauti daugiau plėtinių</translation>
-<translation id="9131889008937672866">Numatytoji kriptovaliutos piniginė</translation>
+<translation id="4954512758656527938">Numatytoji „Ethereum“ piniginė</translation>
+<translation id="7701023802820268122">Numatytoji „Solana“ piniginė</translation>
 <translation id="8488282162676695335">„Brave“ piniginė</translation>
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="7701040980221191251">Nieko</translation>
@@ -418,6 +419,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8205945804087322170">Pridėti naują tinklą</translation>
 <translation id="1330032157352961756">Naujos grandinės ID</translation>
 <translation id="3423620355610881890">Teigiamas dešimtainis skaičius</translation>
+<translation id="8110465398315041268">Ieškoti tinklo</translation>
+<translation id="3579705520805744214">Grandinės ID arba pavadinimas</translation>
 <translation id="726121047592132939">Naujos grandinės pavadinimas</translation>
 <translation id="1034112277864078119">Įveskite grandinės pavadinimą</translation>
 <translation id="4672314527143443556">Grandinės valiutos pavadinimas</translation>
@@ -489,6 +492,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="3411013544209536575">Žinyno patarimai</translation>
 <translation id="2775956301559569472">Rodyti „Wayback Machine“ raginimus 404 puslapiuose</translation>
 <translation id="3095201688102519917">Įspėti prieš uždarant langą su keliais skirtukais</translation>
+<translation id="7120553802660696133">Užverti langą užveriant paskutinę kortelę</translation>
 <translation id="6624718837376802990">Avataras „Edgy Rewards“</translation>
 <translation id="6617313057407561765">Avataras „Edgy Brave“</translation>
 <translation id="6754445808455578019">Avataras „Edgy Ocean“</translation>

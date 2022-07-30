@@ -335,19 +335,6 @@
     "message": "เชื่อมต่ออีกครั้ง",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Brave Rewards ของคุณได้รับการยืนยันแล้ว!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Brave Rewards ผ่านการยืนยันสำเร็จกับ $provider$",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "มีโทเค็นพร้อมมอบให้!",
     "description": ""
@@ -546,7 +533,7 @@
     "description": ""
   },
   "onboardingPanelSetupHeader": {
-    "message": "สุดท้ายนี้ มาเริ่มการตั้งค่าพื้นฐานกัน\n",
+    "message": "สุดท้ายนี้ มาเริ่มการตั้งค่าพื้นฐานกัน",
     "description": ""
   },
   "onboardingPanelSetupText": {

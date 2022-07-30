@@ -335,19 +335,6 @@
     "message": "Återanslut",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Din Brave Rewards är verifierad!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Dina Brave Rewards har verifierats med $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "En \"token grant\" är tillgänglig!",
     "description": ""

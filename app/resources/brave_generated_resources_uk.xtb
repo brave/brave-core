@@ -114,7 +114,7 @@
 <translation id="5240031343741051161">Спробувати пошук Brave</translation>
 <translation id="5026874946691314267">Не показувати це знову</translation>
 <translation id="5234764350956374838">Відхилити</translation>
-<translation id="214744058941501853">Пропустити обмін у пошуку Brave. Натисніть Enter, щоб видалити цю рекомендацію</translation>
+<translation id="5100490448228945668">Відхиліть обмін пошуку Brave, натисніть Enter, щоб вилучити цю пропозицію</translation>
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
 <translation id="6040143037577758943">Закрити</translation>
@@ -220,6 +220,7 @@
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="6333347122924254968">Показувати значок Brave Rewards в адресному рядку</translation>
 <translation id="1811404036171336214">Завжди показувати закладки на сторінці нової вкладки</translation>
+<translation id="3416468988018290825">Завжди показувати URL-адреси повністю</translation>
 <translation id="5529693968082667490">Показувати кнопку пошуку вкладок</translation>
 <translation id="1643029991199044105">Переходьте між вкладками, які використовувались зовсім недавно за допомогою Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -392,7 +393,8 @@
 <translation id="5249433283143453448">Використовуйте компонент управління цифровими правами Widevine (DRM) для перегляду захищеного потокового відео та іншого вмісту в браузері.</translation>
 <translation id="8137559199583651773">Керувати розширеннями</translation>
 <translation id="7013485839273047434">Отримайте більше розширень</translation>
-<translation id="9131889008937672866">Гаманець криптовалюти за замовчуванням</translation>
+<translation id="4954512758656527938">Гаманець Ethereum за замовчуванням</translation>
+<translation id="7701023802820268122">Гаманець Solana за замовчуванням</translation>
 <translation id="8488282162676695335">Гаманець Brave</translation>
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="7701040980221191251">Немає</translation>
@@ -417,6 +419,8 @@
 <translation id="8205945804087322170">Додавання нової мережі</translation>
 <translation id="1330032157352961756">Ідентифікатор нового ланцюга</translation>
 <translation id="3423620355610881890">Додатне десяткове число</translation>
+<translation id="8110465398315041268">Пошук мережі</translation>
+<translation id="3579705520805744214">ID або назва мережі</translation>
 <translation id="726121047592132939">Назва нового ланцюга</translation>
 <translation id="1034112277864078119">Уведіть назву ланцюга</translation>
 <translation id="4672314527143443556">Назва валюти ланцюга</translation>
@@ -488,6 +492,7 @@
 <translation id="3411013544209536575">Підказки</translation>
 <translation id="2775956301559569472">Показати запит на пошук збереженої копії, якщо сторінку не знайдено</translation>
 <translation id="3095201688102519917">Попереджувати перед закриттям вікна з декількома вкладками</translation>
+<translation id="7120553802660696133">Закривати вікно після закриття останньої вкладки</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

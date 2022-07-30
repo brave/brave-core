@@ -114,8 +114,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="5240031343741051161">Prueba Brave Search</translation>
 <translation id="5026874946691314267">No volver a mostrar esto de nuevo.</translation>
 <translation id="5234764350956374838">Descartar</translation>
-<translation id="214744058941501853">"&gt;
-          Descartar el cambio a Búsqueda de Brave; pulsa Intro para eliminar esta sugerencia</translation>
+<translation id="5100490448228945668">Descartar la conversión de la búsqueda de Brave, pulse Intro para eliminar esta sugerencia</translation>
 <translation id="2515126961943087659">Servicio de Anuncios Bat</translation>
 <translation id="7924918279836988121">Servicio Bat Ledger</translation>
 <translation id="6040143037577758943">Cerrar</translation>
@@ -221,6 +220,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="8820817407110198400">Marcadores</translation>
 <translation id="6333347122924254968">Mostrar el icono de Recompensas de Brave en la barra de direcciones</translation>
 <translation id="1811404036171336214">Mostrar siempre los marcadores en la página de la nueva pestaña</translation>
+<translation id="3416468988018290825">Mostrar siempre las URL completas</translation>
 <translation id="5529693968082667490">Mostrar el botón de búsqueda de pestañas</translation>
 <translation id="1643029991199044105">Recorrer las pestañas más recientes con Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -393,7 +393,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="5249433283143453448">Usa el componente de gestión de derechos digitales (DRM) Widevine para ver transmisiones de vídeo y otros contenidos protegidos en el navegador.</translation>
 <translation id="8137559199583651773">Administrar extensiones</translation>
 <translation id="7013485839273047434">Obtener más extensiones</translation>
-<translation id="9131889008937672866">Monedero de criptomonedas predeterminado</translation>
+<translation id="4954512758656527938">Cartera predeterminada de Ethereum</translation>
+<translation id="7701023802820268122">Cartera predeterminada de Solana</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="7701040980221191251">Ninguno</translation>
@@ -418,6 +419,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="8205945804087322170">Añadir nueva red</translation>
 <translation id="1330032157352961756">El ID de la nueva cadena</translation>
 <translation id="3423620355610881890">Un número decimal positivo</translation>
+<translation id="8110465398315041268">Buscar una red</translation>
+<translation id="3579705520805744214">Identificador o nombre de la cadena</translation>
 <translation id="726121047592132939">El nombre de la nueva cadena</translation>
 <translation id="1034112277864078119">Introduce el nombre de la cadena</translation>
 <translation id="4672314527143443556">Nombre de la divisa de la cadena</translation>
@@ -489,6 +492,7 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="3411013544209536575">Consejos de ayuda</translation>
 <translation id="2775956301559569472">Mostrar el mensaje de Wayback Machine en las páginas con error 404</translation>
 <translation id="3095201688102519917">Avisarme antes de cerrar una ventana con varias pestañas</translation>
+<translation id="7120553802660696133">Cerrar la ventana al cerrar la última pestaña</translation>
 <translation id="6624718837376802990">Avatar Rewards</translation>
 <translation id="6617313057407561765">Avatar Brave</translation>
 <translation id="6754445808455578019">Avatar Océano</translation>

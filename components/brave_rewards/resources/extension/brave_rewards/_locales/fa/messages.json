@@ -335,19 +335,6 @@
     "message": "اتصال مجدد",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "پاداش Brave شما تأیید شد!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "پاداش‌های Brave شما با موفقیت با $provider$ تأیید شدند.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "امتیار توکن در دسترس است!",
     "description": ""

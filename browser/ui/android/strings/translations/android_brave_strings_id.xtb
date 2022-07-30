@@ -261,6 +261,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3097089005389027085">Ini akan menyebarkan data Brave Anda, termasuk kemungkinan kata sandi Anda, dengan menggunakan perangkat yang menghasilkan kata kode ini.
 Harap lakukan pemeriksaan ulang bahwa kata kode ini dihasilkan oleh perangkat yang Anda miliki.
 Anda yakin ingin melakukan hal ini?</translation>
+<translation id="4550208292810542331">Izin kamera tidak diberikan</translation>
 <translation id="597993392929850353">Lisensi Brave</translation>
 <translation id="6336451774241870485">Tab pribadi baru</translation>
 <translation id="6199596294742117349">Ini adalah Tab Pribadi</translation>
@@ -549,8 +550,9 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6366007539108097840">3B</translation>
 <translation id="6977728312178289892">1T</translation>
 <translation id="6895566650974550243">SEMUA</translation>
-<translation id="5071303414930953888">Akun <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Akun<ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Tambahkan akun</translation>
+<translation id="318334680413773318">Tambahkan/Impor akun</translation>
 <translation id="3448492834076427715">Perbarui akun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktifkan buka kunci sidik jari?</translation>
@@ -859,12 +861,14 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4804818685124855865">Putuskan</translation>
 <translation id="8009571545960303544">Tanda tangan Anda sedang diminta</translation>
 <translation id="3484981968509595506">Ada DApp yang meminta kunci enkripsi publik Anda</translation>
+<translation id="2300240008330189182"><ph name="URL"/> meminta kunci enkripsi publik dompet Anda. Jika Anda mengizinkan pemberian kunci ini, situs ini akan dapat menyusun pesan terenkripsi bagi Anda.</translation>
 <translation id="3340247553212049934">Sediakan</translation>
 <translation id="1982257600591932657">Nama jaringan</translation>
 <translation id="5052727830821470769">URL jaringan</translation>
 <translation id="4822132585477111396">ID Rantai</translation>
 <translation id="7131971375297699539">Simbol mata uang</translation>
 <translation id="7982789257301363584">Jaringan</translation>
+<translation id="6936860995365507185">Ini memungkinkan jaringan ini untuk digunakan dalam Dompet Brave. <ph name="CLICK_START"/>Pelajari lebih lanjut<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Izinkan situs ini untuk menambah jaringan?</translation>
 <translation id="4857321293515555666">DApp ini ingin membaca pesan ini untuk melengkapi permintaan Anda.</translation>
 <translation id="714506544401754321">Dekripsi pesan</translation>
@@ -889,4 +893,14 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="5334952096674914470">\n\nOperator Ponsel\n</translation>
 <translation id="5393042357629679588">\n\nMasalah Lain\n</translation>
 <translation id="8095666712177294104">\n\nPlatform\n</translation>
+<translation id="7080614857771109950">Mendukung aset EVM yang kompatibel pada rantai blok Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Mendukung aset kompatibel SPL pada rantai blok Solana</translation>
+<translation id="6575120282593094155">Anda belum memiliki akun <ph name="ACCOUNT_TYPE"/>. Ingin membuatnya sekarang?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Aplikasi yang Dikecualikan</translation>
+<translation id="8463269357637177759">Aplikasi Reguler yang Diizinkan</translation>
+<translation id="4554726425645556940">Aplikasi Sistem yang Diizinkan</translation>
+<translation id="9023148942866814328">Tampilkan Aplikasi Sistem</translation>
+<translation id="5472400694702418949">Tambahkan aplikasi untuk dikecualikan dari lalu lintas VPN.</translation>
+<translation id="7002577172732106572">Pembagian Perlintasan</translation>
 </translationbundle>

@@ -50,6 +50,7 @@
 <translation id="7291143854620707672">‏המנהל של פרופיל העבודה יכול להסיר נתוני Brave שמופקים בזמן השימוש בפרופיל (כמו יצירת סימניות, היסטוריה, סיסמאות והגדרות נוספות). <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">‏במהלך ההתקנה ארעה שגיאה של מערכת ההפעלה. יש להוריד שוב את Brave.</translation>
 <translation id="2648689842065142443">‏אם משתפים מכשיר, חברים ובני משפחה יכולים לגלוש בנפרד ולהגדיר את Brave בדיוק כפי שהם רוצים</translation>
+<translation id="6384359666082467439">‏ברוך בואך אל Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">‏כרטיסייה של Brave</translation>
 <translation id="8372880274820509128">‏לשיפור האבטחה, Brave יצפין את הנתונים.</translation>
 <translation id="2770231113462710648">שינוי דפדפן ברירת המחדל ל:</translation>
@@ -92,6 +93,7 @@
 <translation id="4061445349373849749">‏כדי להגן על הפרטיות שלך, תחומי עניין שהוגדרו לפני יותר מ-4 שבועות נמחקים אוטומטית. עם המשך הגלישה, תחום עניין כלשהו עשוי להופיע שוב ברשימה. יש גם אפשרות להסיר תחומי עניין מ-Brave כדי שלא יילקחו בחשבון.</translation>
 <translation id="691208314680168371">‏היסטוריית הגלישה – תיעוד האתרים שביקרת בהם באמצעות Brave במכשיר הזה.</translation>
 <translation id="1384923383737428730">‏יש במחשב שלך תוכנה מזיקה. Brave יכול להסיר אותה, לשחזר את ההגדרות שלך ולהשבית תוספים כדי שהדפדפן יחזור שוב לפעולה רגילה.</translation>
+<translation id="1073077513148817424">‏כבר מחובר חשבון אחר. כדי להפריד בין פעילויות גלישה, Brave יכול ליצור עבורך פרופיל משלך.</translation>
 <translation id="7029305463989165490">‏כדי לשלוח מספר מ-<ph name="ORIGIN"/> לטלפון Android שלך, צריך להיכנס אל Brave בשני המכשירים.</translation>
 <translation id="4304059894777924102">‏Brave לא יכול לבדוק את הסיסמאות שלך. יש לבדוק את החיבור לאינטרנט.</translation>
 <translation id="2100587595569959771">‏מידע נוסף על ההתאמה האישית של המודעות ב-Brave</translation>
@@ -101,9 +103,11 @@
 <translation id="2401189691232800402">‏מערכת ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">‏קבלת עזרה בנושא ChromeOS</translation>
+<translation id="6009720635797285369">‏אפשר לקבל את הנתונים של <ph name="ACCOUNT_EMAIL"/> ולשמור אותם בדפדפן Brave</translation>
 <translation id="6315734375101223238">‏התאמה אישית וניהול של Brave נחוצה פעולה שלך - יש ללחוץ לקבלת פרטים נוספים.</translation>
 <translation id="7130675370997202556">‏יש ללחוץ על השם שלך כדי לפתוח את Brave ולהתחיל לגלוש.</translation>
 <translation id="4920958997042285125">‏המשתמש <ph name="EXISTING_USER"/> כבר מחובר לפרופיל Brave הזה. כדי להפריד בין פעילויות גלישה, Brave יכול ליצור עבורך פרופיל משלך.</translation>
+<translation id="2337217774418822704">‏החשבון שלך מנוהל על ידי <ph name="MANAGER_NAME"/>. האדמין שלך יכול לראות ולערוך את הפרופיל הזה של דפדפן Brave ואת הנתונים שלו, כמו סימניות, היסטוריה וסיסמאות.</translation>
 <translation id="8090497651549769448">‏Brave מנסה להעתיק את הסיסמאות. כדי לאפשר למערכת לעשות זאת, יש להזין את הסיסמה שלך ל-Windows.</translation>
 <translation id="7133557675784723900">‏ההמלצה של Brave היא לסרוק את הקובץ הזה כי הוא עלול להיות מסוכן</translation>
 <translation id="1152920704813762236">‏מידע על ChromeOS</translation>
@@ -165,6 +169,7 @@
 <translation id="1744365871163268756">‏יש להמתין בזמן ש-Brave מתקין את עדכוני המערכת האחרונים.</translation>
 <translation id="3861679447659630159">‏Brave מנסה לערוך את הסיסמאות. כדי לאפשר זאת, יש להזין את הסיסמה שלך ל-Windows.</translation>
 <translation id="232381795826373334">‏פתיחה של קובצי PDF ב-Brave</translation>
+<translation id="5381032481466106256">‏כשההגדרה מופעלת, תתבצע יציאה גם מ-Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{‏יש עדכון ל-Brave}=1{‏יש עדכון ל-Brave}two{‏עדכון של Brave זמין כבר # ימים}many{‏עדכון של Brave זמין כבר # ימים}other{‏עדכון של Brave זמין כבר # ימים}}</translation>
 <translation id="95624393026532554">‏כדי להשתמש ב-Brave יש צורך ב-Windows מגרסה 7 ואילך.</translation>
 <translation id="5646769069113654257">‏יש להפעיל מחדש את Brave</translation>
@@ -286,7 +291,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7963515534397191222">‏עדכון Brave לגרסה האחרונה לא הצליח, ולכן אין לך גישה אל תכונות חדשות ותיקוני אבטחה.</translation>
 <translation id="7872446069773932638">מתבצעת הורדה… יש עוד <ph name="SECONDS"/> שנ'</translation>
 <translation id="1977195831772110829">‏<ph name="BEGIN_BOLD"/>איך ניתן לנהל את הנתונים שלך:<ph name="END_BOLD"/> כדי להגן על הפרטיות שלך, תחומי עניין שהוגדרו לפני יותר מ-4 שבועות נמחקים אוטומטית. עם המשך הגלישה, תחום עניין כלשהו עשוי להופיע שוב ברשימה. יש גם אפשרות להסיר תחומי עניין מ-Brave כדי שלא יילקחו בחשבון.</translation>
-<translation id="437139750042419257">‏החשבונות הבאים זמינים לפרופיל הזה של Brave</translation>
 <translation id="2925193881330501265">‏נכנסת ל-Brave כ-<ph name="USER_EMAIL_ADDRESS"/>. יש להשתמש באותו חשבון כדי להיכנס שוב.</translation>
 <translation id="6915252145142862992">‏זוהי התקנה משנית של Brave, ולא ניתן להפוך אותו לדפדפן ברירת המחדל שלך.</translation>
 <translation id="1975057837349076194">‏אם הגדרה מסוימת לא מופיעה בדף הזה, אפשר לחפש אותה <ph name="LINK_BEGIN"/>
@@ -332,6 +336,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="6389268239133412586">‏לא ניתן לעדכן את Brave</translation>
 <translation id="7731184591599776500">‏הלוגו של Brave Enterprise</translation>
 <translation id="8986207147630327271">בחרת להוסיף פרופיל עבודה לדפדפן זה ולתת למנהל המערכת שליטה רק על פרופיל העבודה.</translation>
+<translation id="82609232232243542">‏כניסה אל Brave</translation>
 <translation id="5173820533850252773">‏Brave אינו מעודכן</translation>
 <translation id="310518206836658214">{0,plural, =1{‏Brave יופעל מחדש בעוד שעה}two{‏Brave יופעל מחדש בעוד # שעות}many{‏Brave יופעל מחדש בעוד # שעות}other{‏Brave יופעל מחדש בעוד # שעות}}</translation>
 <translation id="7863882214613921971">‏פתיחת הקישור &amp;בכרטיסיית Brave חדשה</translation>
