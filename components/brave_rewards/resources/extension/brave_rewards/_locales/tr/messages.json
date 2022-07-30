@@ -335,19 +335,6 @@
     "message": "Tekrar bağlan",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Brave Ödülleriniz doğrulandı!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Brave Ödülleriniz $provider$ ile başarıyla doğrulandı.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Bir token yardımı kullanılabilir!",
     "description": ""
@@ -618,7 +605,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "Dismiss",
+    "message": "Kapat",
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {

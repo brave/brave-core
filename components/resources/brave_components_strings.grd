@@ -123,6 +123,7 @@
     <file path="strings/brave_components_resources_fil.xtb" lang="fil" />
     <file path="strings/brave_components_resources_fr.xtb" lang="fr" />
     <file path="strings/brave_components_resources_fr-CA.xtb" lang="fr-CA" />
+    <file path="strings/brave_components_resources_gl.xtb" lang="gl" />
     <file path="strings/brave_components_resources_gu.xtb" lang="gu" />
     <file path="strings/brave_components_resources_hi.xtb" lang="hi" />
     <file path="strings/brave_components_resources_hr.xtb" lang="hr" />

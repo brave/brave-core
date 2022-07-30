@@ -335,19 +335,6 @@
     "message": "Переподключиться",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Ваш профиль Brave Наград подтвержден!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Вы подтвердили профиль Brave Наград с помощью провайдера $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Вы можете получить токены бесплатно!",
     "description": ""

@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "OK",
+    "message": "Rendben",
     "description": ""
   },
   "set": {
@@ -334,19 +334,6 @@
   "notificationWalletDisconnectedAction": {
     "message": "Újracsatlakozás",
     "description": ""
-  },
-  "notificationWalletVerifiedTitle": {
-    "message": "A Brave Jutalmak ellenőrzése sikeresen megtörtént!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "A Brave Jutalmak ellenőrzése sikeresen megtörtént a következővel: $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
   },
   "notificationTokenGrantTitle": {
     "message": "Tokenadomány elérhető!",

@@ -258,6 +258,7 @@
 क्या आप वाकई यह करना चाहते हैं?</translation>
 <translation id="3097089005389027085">इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें कोड शब्द बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
 कृपया यह एक बार फिर से जाँच लें कि ये कोड शब्द आपकी ही किसी डिवाइस से बनाए गए हैं. क्या आप वाकई यह करना चाहते हैं?</translation>
+<translation id="4550208292810542331">कैमरे के इस्तेमाल की इजाज़त नहीं दी गई थी</translation>
 <translation id="597993392929850353">Brave लाइसेंस</translation>
 <translation id="6336451774241870485">नया निजी टैब</translation>
 <translation id="6199596294742117349">यह एक निजी टैब है</translation>
@@ -546,8 +547,9 @@
 <translation id="6366007539108097840">3 महीने</translation>
 <translation id="6977728312178289892">1 साल</translation>
 <translation id="6895566650974550243">सब</translation>
-<translation id="5071303414930953888">अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">खाता जोड़ें</translation>
+<translation id="318334680413773318">अकाउंट जोड़ें/इंपोर्ट करें</translation>
 <translation id="3448492834076427715">अकाउंट अपडेट करें</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">फ़िंगरप्रिंट अनलॉक चालू करें</translation>
@@ -856,12 +858,14 @@
 <translation id="4804818685124855865">डिस्कनेक्ट</translation>
 <translation id="8009571545960303544">आपके हस्ताक्षर का अनुरोध किया जा रहा है</translation>
 <translation id="3484981968509595506">एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है</translation>
+<translation id="2300240008330189182"><ph name="URL"/> की ओर से आपके वॉलेट की पब्लिक एनक्रिप्शन की का अनुरोध किया जा रहा है. अगर आप यह की देने के लिए सहमति देते हैं, तो यह साइट आपको एनक्रिप्ट किए हुए मैसेज भेज पाएगी.</translation>
 <translation id="3340247553212049934">प्रदान करें</translation>
 <translation id="1982257600591932657">नेटवर्क का नाम</translation>
 <translation id="5052727830821470769">नेटवर्क URL</translation>
 <translation id="4822132585477111396">चेन आई.डी.</translation>
 <translation id="7131971375297699539">करेंसी का चिन्ह</translation>
 <translation id="7982789257301363584">नेटवर्क</translation>
+<translation id="6936860995365507185">इसके ज़रिए इस नेटवर्क को Brave वॉलेट में इस्तेमाल किया जा सकेगा. <ph name="CLICK_START"/>ज़्यादा जानें<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">इस साइट को एक नेटवर्क जोड़ने की अनुमति दें?</translation>
 <translation id="4857321293515555666">आपके अनुरोध को पूरा करने के लिए DApp इस मैसेज को पढ़ना चाहेगा.</translation>
 <translation id="714506544401754321">संदेश को डिक्रिप्ट करें</translation>
@@ -886,4 +890,14 @@
 <translation id="5334952096674914470">\n\nसेल्युलर सेवा देने वाली कंपनी\n</translation>
 <translation id="5393042357629679588">\n\nकोई और समस्या\n</translation>
 <translation id="8095666712177294104">\n\nप्लैटफ़ॉर्म\n</translation>
+<translation id="7080614857771109950">Ethereum ब्लॉकचेन (ERC-20, ERC-721, ERC-1551, ERC-1155) पर EVM कम्पैटिबल असेट को सपोर्ट करता</translation>
+<translation id="6577166808959668729">Solana ब्लॉकचेन पर SLP कम्पैटिबल असेट को सपोर्ट करता</translation>
+<translation id="6575120282593094155">आपके पास अभी तक <ph name="ACCOUNT_TYPE"/> अकाउंट नहीं है. क्या आप यह बनाना चाहते हैं?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">शामिल नहीं किए गए ऐप</translation>
+<translation id="8463269357637177759">शामिल किए गए नियमित ऐप</translation>
+<translation id="4554726425645556940">शामिल किए गए सिस्टम ऐप</translation>
+<translation id="9023148942866814328">सिस्टम ऐप दिखाएँ</translation>
+<translation id="5472400694702418949">वे ऐप जोड़ें जिन्हें VPN ट्रैफ़िक से बाहर रखना है.</translation>
+<translation id="7002577172732106572">स्प्लिट टनलिंग</translation>
 </translationbundle>

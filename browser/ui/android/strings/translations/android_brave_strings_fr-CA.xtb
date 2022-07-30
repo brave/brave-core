@@ -262,6 +262,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="3097089005389027085">Cette action partagera vos données Brave, et potentiellement vos mots de passe, avec l'appareil qui a généré ces mots de code.
 Veuillez vérifier que ces mots de code ont été générés par un appareil dont vous êtes le propriétaire.
 Voulez-vous vraiment continuer?</translation>
+<translation id="4550208292810542331">L'autorisation d'accès à l'appareil photo n'a pas été accordée</translation>
 <translation id="597993392929850353">Licence Brave</translation>
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
 <translation id="6199596294742117349">Ceci est un onglet privé</translation>
@@ -550,8 +551,9 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="6366007539108097840">3 mois</translation>
 <translation id="6977728312178289892">1 an</translation>
 <translation id="6895566650974550243">TOUS</translation>
-<translation id="5071303414930953888">Compte <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Compte <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Ajouter un compte</translation>
+<translation id="318334680413773318">Ajouter/importer un compte</translation>
 <translation id="3448492834076427715">Mettre à jour le compte</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Activer le déverrouillage par empreinte digitale?</translation>
@@ -860,12 +862,14 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4804818685124855865">Déconnecter</translation>
 <translation id="8009571545960303544">Votre signature est demandée</translation>
 <translation id="3484981968509595506">Une DApp demande votre clé de chiffrement publique</translation>
+<translation id="2300240008330189182"><ph name="URL"/> demande la clé de chiffrement publique de votre portefeuille. Si vous acceptez de la lui donner, le site pourra composer des messages chiffrés pour vous.</translation>
 <translation id="3340247553212049934">Fournir</translation>
 <translation id="1982257600591932657">Nom du réseau</translation>
 <translation id="5052727830821470769">URL de réseau</translation>
 <translation id="4822132585477111396">Identification de la chaîne</translation>
 <translation id="7131971375297699539">Symbole de devise</translation>
 <translation id="7982789257301363584">Réseau</translation>
+<translation id="6936860995365507185">Ce réseau pourra ainsi être utilisé dans le Portefeuille Brave. <ph name="CLICK_START"/>En savoir plus<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Autoriser ce site à ajouter un réseau?</translation>
 <translation id="4857321293515555666">Cette application décentralisée souhaite lire ce message pour traiter votre demande.</translation>
 <translation id="714506544401754321">Déchiffrer le message</translation>
@@ -890,4 +894,14 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="5334952096674914470">\n\nOpérateur cellulaire\n</translation>
 <translation id="5393042357629679588">\n\nAutre problème\n</translation>
 <translation id="8095666712177294104">\n\nPlateforme\n</translation>
+<translation id="7080614857771109950">Prend en charge les actifs compatibles avec EVM sur la chaîne de blocs Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Prend en charge les actifs compatibles avec SPL sur la chaîne de blocs Solana</translation>
+<translation id="6575120282593094155">Vous n'avez pas encore de compte <ph name="ACCOUNT_TYPE"/>. Voulez-vous en créer un?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Applications exclues</translation>
+<translation id="8463269357637177759">Applications classiques autorisées</translation>
+<translation id="4554726425645556940">Applications système autorisées</translation>
+<translation id="9023148942866814328">Afficher les applications système</translation>
+<translation id="5472400694702418949">Ajoutez des applications à exclure du trafic VPN.</translation>
+<translation id="7002577172732106572">Tunnel fractionné</translation>
 </translationbundle>

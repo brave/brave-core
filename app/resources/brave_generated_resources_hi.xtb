@@ -115,8 +115,7 @@
 <translation id="5240031343741051161">Brave सर्च को आज़माएँ</translation>
 <translation id="5026874946691314267">इसे फिर से न दिखाएँँ</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
-<translation id="214744058941501853">"&gt;
-          Brave सर्च में न बदलें, इस सुझाव को हटाने के लिए Enter दबाएँ</translation>
+<translation id="5100490448228945668">Brave सर्च में होने वाले कन्वर्ज़न को नामंज़ूर करें, इस सुझाव को हटाने के लिए इन्टर दबाएँ</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="6040143037577758943">बंद करें</translation>
@@ -255,6 +254,7 @@ Binance
 <translation id="8820817407110198400">बुकमार्क बार</translation>
 <translation id="6333347122924254968">एड्रेस बार में  Brave Rewards आइकॉन दिखाएं</translation>
 <translation id="1811404036171336214">हमेशा नए टैब पेज पर बुकमार्क दिखाएं</translation>
+<translation id="3416468988018290825">हमेशा पूरे URL दिखाएँ</translation>
 <translation id="5529693968082667490">टैब सर्च बटन दिखाएं</translation>
 <translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
 <translation id="1013121820689882118">स्पीडरीडर</translation>
@@ -427,7 +427,8 @@ Binance
 <translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
 <translation id="8137559199583651773">एक्सटेंशन प्रबंधित करें</translation>
 <translation id="7013485839273047434">और एक्सटेंशन प्राप्त करें</translation>
-<translation id="9131889008937672866">डिफ़ॉल्ट क्रिप्टोक्यूरेंसी वॉलेट</translation>
+<translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
+<translation id="7701023802820268122">डिफ़ॉल्ट Solana वॉलेट</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="7701040980221191251">कुछ नहीं</translation>
@@ -452,6 +453,8 @@ Binance
 <translation id="8205945804087322170">नया नेटवर्क जोड़ें</translation>
 <translation id="1330032157352961756">नई चेन की आईडी</translation>
 <translation id="3423620355610881890">एक धनात्मक दशमलव नंबर</translation>
+<translation id="8110465398315041268">नेटवर्क खोजें</translation>
+<translation id="3579705520805744214">चेन आईडी या नाम</translation>
 <translation id="726121047592132939">चेन का नया नाम</translation>
 <translation id="1034112277864078119">चेन का नाम डालें</translation>
 <translation id="4672314527143443556">चेन की करेंसी का नाम</translation>
@@ -523,6 +526,7 @@ Binance
 <translation id="3411013544209536575">सहायक सुझाव</translation>
 <translation id="2775956301559569472">404 पेजों पर वेबैक मशीन शीघ्र दिखाएं</translation>
 <translation id="3095201688102519917">कई सारे टैब वाली विंडो बंद करने से पहले मुझे बताएँ</translation>
+<translation id="7120553802660696133">आखिरी टैब को बंद करते समय विंडो को भी बंद करें</translation>
 <translation id="6624718837376802990">अवतार ईडी रिवार्ड्स</translation>
 <translation id="6617313057407561765">अवतार ईडी ब्रेव</translation>
 <translation id="6754445808455578019">अवतार ईडी ओसियन</translation>

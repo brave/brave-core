@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">Brave Searchを試してみる</translation>
 <translation id="5026874946691314267">再度表示しない</translation>
 <translation id="5234764350956374838">閉じる</translation>
-<translation id="214744058941501853">"&gt;
-          Brave Searchへの切り替えを行いません。Enterキーを押してこの提案を非表示にできます</translation>
+<translation id="5100490448228945668">Brave 検索変換を無効にし、[Enter] キーを押してこの案を削除します。</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="6040143037577758943">近い</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="1811404036171336214">常に新しいタブページにブックマークを表示</translation>
+<translation id="3416468988018290825">常に完全な URL を表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
 <translation id="1643029991199044105">Ctrl-Tabを使用し、最近使用したタブを繰り替えす</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -394,7 +394,8 @@
 <translation id="5249433283143453448">Widevineデジタル著作権管理 (DRM) コンポーネントを使用して、保護されたストリーミング動画と他のコンテンツをブラウザで表示しましょう。</translation>
 <translation id="8137559199583651773">拡張機能を管理</translation>
 <translation id="7013485839273047434">機能拡張をさらに取得</translation>
-<translation id="9131889008937672866">デフォルトの暗号資産ウォレット</translation>
+<translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
+<translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="7701040980221191251">なし</translation>
@@ -419,6 +420,8 @@
 <translation id="8205945804087322170">新しいネットワークを追加</translation>
 <translation id="1330032157352961756">新規チェーンID</translation>
 <translation id="3423620355610881890">正の10進数</translation>
+<translation id="8110465398315041268">ネットワークを検索</translation>
+<translation id="3579705520805744214">チェーン ID または氏名</translation>
 <translation id="726121047592132939">新規チェーン名</translation>
 <translation id="1034112277864078119">チェーン名を入力</translation>
 <translation id="4672314527143443556">チェーンの通貨名</translation>
@@ -490,6 +493,7 @@
 <translation id="3411013544209536575">ヘルプのヒント</translation>
 <translation id="2775956301559569472">404ページ上に「Wayback Machine (ウェイバックマシン)」プロンプトを表示する</translation>
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
+<translation id="7120553802660696133">最後のタブを閉じる際にウィンドウを閉じる</translation>
 <translation id="6624718837376802990">アバター「エッジ・リワード」</translation>
 <translation id="6617313057407561765">アバター「エッジ・ブレイブ」</translation>
 <translation id="6754445808455578019">アバター「エッジ・オーシャン」</translation>
