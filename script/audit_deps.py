@@ -18,6 +18,7 @@ import sys
 from deps_config import RUST_DEPS_PACKAGE_VERSION
 
 def get_remote_audit_config(url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json", retry = 3):
+    """Fetch additional audit configuration"""
     for i in range(retry):
         try:
             return json.loads(requests.get(url).text)
@@ -26,6 +27,8 @@ def get_remote_audit_config(url = "https://raw.githubusercontent.com/brave/audit
                 raise
 
 REMOTE_AUDIT_CONFIG = get_remote_audit_config()
+IGNORED_CARGO_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["cargo"]
+IGNORED_NPM_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["npm"]
 
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = [
@@ -33,16 +36,10 @@ NPM_EXCLUDE_PATHS = [
     os.path.join('node_modules')
 ]
 
-# Ignore these rust advisories
-IGNORED_CARGO_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["cargo"]
-
 # Use only these (sub)paths for cargo audit.
 CARGO_INCLUDE_PATHS = [
     os.path.join('build', 'rust'),
 ]
-
-# Ping security team before adding to ignored_npm_advisories
-IGNORED_NPM_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["npm"]
 
 
 def main():
