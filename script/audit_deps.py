@@ -11,10 +11,21 @@ repo."""
 import argparse
 import json
 import os
+import requests
 import subprocess
 import sys
 
 from deps_config import RUST_DEPS_PACKAGE_VERSION
+
+def get_remote_audit_config(url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json", retry = 3):
+    for i in range(retry):
+        try:
+            return json.loads(requests.get(url).text)
+        except Exception:
+            if i >= retry - 1:
+                raise
+
+REMOTE_AUDIT_CONFIG = get_remote_audit_config()
 
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = [
@@ -22,15 +33,8 @@ NPM_EXCLUDE_PATHS = [
     os.path.join('node_modules')
 ]
 
-# Tag @sec-team before adding any advisory to this list
 # Ignore these rust advisories
-IGNORED_CARGO_ADVISORIES = [
-    # Remove when:
-    # https://github.com/chronotope/chrono/issues/602 is resolved
-    # Tracking issue: https://github.com/brave/brave-browser/issues/20568
-    'RUSTSEC-2020-0071',
-    'RUSTSEC-2020-0159'
-]
+IGNORED_CARGO_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["cargo"]
 
 # Use only these (sub)paths for cargo audit.
 CARGO_INCLUDE_PATHS = [
@@ -38,18 +42,7 @@ CARGO_INCLUDE_PATHS = [
 ]
 
 # Ping security team before adding to ignored_npm_advisories
-IGNORED_NPM_ADVISORIES = [
-    # Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
-    'https://github.com/advisories/GHSA-566m-qj78-rww5',  # rxdos
-    'https://github.com/advisories/GHSA-93q8-gq69-wqmw',  # rxdos
-    'https://github.com/advisories/GHSA-w5p7-h5w8-2hfq',  # rxdos
-    'https://github.com/advisories/GHSA-w8qv-6jwh-64r5',  # rxdos
-    'https://github.com/advisories/GHSA-whgm-jr23-g3j9',  # rxdos
-    'https://github.com/advisories/GHSA-ww39-953v-wcq6',  # rxdos
-    'https://github.com/advisories/GHSA-cj88-88mr-972w',  # rxdos
-    'https://github.com/advisories/GHSA-4wf5-vphf-c2xc',  # rxdos
-    'https://github.com/advisories/GHSA-mhxj-85r3-2x55'
-]
+IGNORED_NPM_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["npm"]
 
 
 def main():
