@@ -67,7 +67,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void GetEventLogs(const base::Value::List& args);
   void OnGetEventLogs(ledger::type::EventLogs logs);
   void GetAdDiagnostics(const base::Value::List& args);
-  void OnGetAdDiagnostics(const bool success, const std::string& json);
+  void OnGetAdDiagnostics(absl::optional<base::Value::List> diagnostics);
 
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
       nullptr;                                            // NOT OWNED
@@ -434,23 +434,18 @@ void RewardsInternalsDOMHandler::GetAdDiagnostics(
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
-                                                    const std::string& json) {
+void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
+    absl::optional<base::Value::List> diagnostics) {
+  DCHECK(diagnostics);
+  DCHECK(diagnostics.has_value());
+
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value::List diagnostics;
-  if (success && !json.empty()) {
-    absl::optional<base::Value> serialized_json = base::JSONReader::Read(json);
-    if (serialized_json && serialized_json->is_list() &&
-        !serialized_json->GetList().empty()) {
-      diagnostics = std::move(*serialized_json->GetIfList());
-    }
-  }
-
 #if DCHECK_IS_ON()
-  for (const auto& entry : diagnostics) {
+  // TODO(tmancey): Do we need this as it either works or does not work...?
+  for (const auto& entry : diagnostics.value()) {
     DCHECK(entry.is_dict()) << "Diagnostic entry must be a dictionary";
     DCHECK(entry.GetDict().Find("name"))
         << "Diagnostic entry missing 'name' key";
@@ -460,7 +455,7 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
 #endif  // DCHECK_IS_ON()
 
   CallJavascriptFunction("brave_rewards_internals.adDiagnostics",
-                         base::Value(std::move(diagnostics)));
+                         base::Value(std::move(diagnostics.value())));
 }
 
 }  // namespace

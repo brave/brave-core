@@ -69,7 +69,7 @@ void BatAdsClientMojoBridge::ShowNotificationAd(
     return;
   }
 
-  bat_ads_client_->ShowNotificationAd(info.ToJson());
+  bat_ads_client_->ShowNotificationAd(info.ToValue());
 }
 
 bool BatAdsClientMojoBridge::CanShowNotificationAds() {

@@ -129,7 +129,7 @@ void BatAdsImpl::GetNotificationAd(const std::string& placement_id,
                                    GetNotificationAdCallback callback) {
   ads::NotificationAdInfo notification_ad;
   ads_->GetNotificationAd(placement_id, &notification_ad);
-  std::move(callback).Run(notification_ad.ToJson());
+  std::move(callback).Run(notification_ad.ToValue());
 }
 
 void BatAdsImpl::TriggerNotificationAdEvent(
@@ -249,7 +249,7 @@ void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   auto* holder = new CallbackHolder<GetDiagnosticsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetDiagnostics(std::bind(BatAdsImpl::OnGetDiagnostics, holder, _1, _2));
+  ads_->GetDiagnostics(std::bind(BatAdsImpl::OnGetDiagnostics, holder, _1));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(const std::string& json,
@@ -402,12 +402,11 @@ void BatAdsImpl::OnGetStatementOfAccounts(
 // static
 void BatAdsImpl::OnGetDiagnostics(
     CallbackHolder<GetDiagnosticsCallback>* holder,
-    const bool success,
-    const std::string& json) {
+    absl::optional<base::Value::List> value) {
   DCHECK(holder);
 
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, json);
+    std::move(holder->get()).Run(std::move(value));
   }
 
   delete holder;

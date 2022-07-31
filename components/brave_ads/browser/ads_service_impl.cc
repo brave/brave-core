@@ -857,12 +857,12 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 
   bat_ads_->GetNotificationAd(
       placement_id,
-      base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnGetNotificationAd, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
+void AdsServiceImpl::OnGetNotificationAd(base::Value::Dict dict) {
   ads::NotificationAdInfo notification;
-  notification.FromJson(json);
+  notification.FromValue(dict);
 
   OpenNewTabWithUrl(notification.target_url);
 }
@@ -1086,7 +1086,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, "");
+    std::move(callback).Run(absl::nullopt);
     return;
   }
 
@@ -2033,9 +2033,8 @@ void AdsServiceImpl::OnGetStatementOfAccounts(
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,
-                                      const bool success,
-                                      const std::string& json) {
-  std::move(callback).Run(success, json);
+                                      absl::optional<base::Value::List> value) {
+  std::move(callback).Run(std::move(value));
 }
 
 void AdsServiceImpl::OnToggleAdThumbUp(ToggleAdThumbUpCallback callback,

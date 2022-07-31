@@ -5,10 +5,6 @@
 
 #include "bat/ads/notification_ad_info.h"
 
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "bat/ads/confirmation_type.h"
-
 namespace ads {
 
 NotificationAdInfo::NotificationAdInfo() = default;
@@ -90,24 +86,6 @@ bool NotificationAdInfo::FromValue(const base::Value::Dict& root) {
   }
 
   return true;
-}
-
-std::string NotificationAdInfo::ToJson() const {
-  std::string json;
-  CHECK(base::JSONWriter::Write(ToValue(), &json));
-  return json;
-}
-
-bool NotificationAdInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> document =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!document.has_value() || !document->is_dict()) {
-    return false;
-  }
-
-  return FromValue(document->GetDict());
 }
 
 }  // namespace ads

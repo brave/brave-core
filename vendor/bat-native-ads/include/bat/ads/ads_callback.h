@@ -9,6 +9,8 @@
 #include <functional>
 #include <string>
 
+#include "absl/types/optional.h"
+#include "base/values.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -37,7 +39,7 @@ using GetStatementOfAccountsCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
 using GetDiagnosticsCallback =
-    std::function<void(const bool, const std::string&)>;
+    std::function<void(absl::optional<base::Value::List> value)>;
 
 using PurgeOrphanedAdEventsForTypeCallback = std::function<void(const bool)>;
 

@@ -194,7 +194,7 @@ class AdsServiceImpl : public AdsService,
   void OpenNewTabWithUrl(const GURL& url);
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnOpenNewTabWithAd(const std::string& json);
+  void OnGetNotificationAd(base::Value::Dict dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   bool IsUpgradingFromPreBraveAdsBuild();
@@ -224,8 +224,7 @@ class AdsServiceImpl : public AdsService,
                           const std::string& message);
 
   void OnGetDiagnostics(GetDiagnosticsCallback callback,
-                        const bool success,
-                        const std::string& json);
+                        absl::optional<base::Value::List> value);
 
   void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
                                 const bool success,

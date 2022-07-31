@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/callback.h"
 #include "base/values.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
@@ -19,7 +20,7 @@ struct NewTabPageAdInfo;
 namespace brave_ads {
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(const bool, const std::string&)>;
+    base::OnceCallback<void(absl::optional<base::Value::List> value)>;
 
 using GetStatementOfAccountsCallback = base::OnceCallback<
     void(const bool, const double, const int, const double, const double)>;
