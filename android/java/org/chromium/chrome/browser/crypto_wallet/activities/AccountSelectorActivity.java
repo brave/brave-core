@@ -43,35 +43,13 @@ public class AccountSelectorActivity
         onInitialLayoutInflationComplete();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void init() {
         mRVNetworkSelector = findViewById(R.id.rv_account_selector_activity);
         mWalletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.SELECT_ACCOUNTS_LIST);
         mRVNetworkSelector.setAdapter(mWalletCoinAdapter);
         mWalletCoinAdapter.setOnWalletListItemClick(this);
-        mWalletCoinAdapter.setOnWalletListItemClick(this);
-        mKeyringModel.getAccounts(accountInfos -> {
-            mAccountInfos = accountInfos;
-            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-            for (AccountInfo accountInfo : mAccountInfos) {
-                if (!accountInfo.isImported) {
-                    walletListItemModelList.add(
-                            new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
-                                    accountInfo.address, null, null, accountInfo.isImported));
-                }
-            }
-
-            mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-            mWalletCoinAdapter.notifyDataSetChanged();
-
-            mKeyringModel.mSelectedAccount.observe(this, selectedAccountInfo -> {
-                if (selectedAccountInfo != null) {
-                    mWalletCoinAdapter.updateSelectedNetwork(
-                            selectedAccountInfo.name, selectedAccountInfo.address);
-                }
-            });
-        });
+        initAccounts();
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -91,5 +69,40 @@ public class AccountSelectorActivity
                 finish();
             }
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void initAccounts() {
+        mKeyringModel.mSelectedAccount.observe(this, selectedAccountInfo -> {
+            if (selectedAccountInfo == null) return;
+
+            boolean callDataSetChanged = true;
+            if (mAccountInfos != null) {
+                for (AccountInfo accountInfo : mAccountInfos) {
+                    if (selectedAccountInfo.address.equals(accountInfo.address)) {
+                        callDataSetChanged = false;
+                        break;
+                    }
+                }
+            }
+            if (!callDataSetChanged) return;
+
+            mKeyringModel.getAccounts(accountInfos -> {
+                mAccountInfos = accountInfos;
+                List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+                for (AccountInfo accountInfo : mAccountInfos) {
+                    if (!accountInfo.isImported) {
+                        walletListItemModelList.add(
+                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
+                                        accountInfo.address, null, null, accountInfo.isImported));
+                    }
+                }
+
+                mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+                mWalletCoinAdapter.notifyDataSetChanged();
+                mWalletCoinAdapter.updateSelectedNetwork(
+                        selectedAccountInfo.name, selectedAccountInfo.address);
+            });
+        });
     }
 }
