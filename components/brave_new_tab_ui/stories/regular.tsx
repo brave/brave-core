@@ -62,7 +62,6 @@ export const Regular = () => {
       gridSitesData={gridSitesData}
       actions={getActions()}
       saveShowBackgroundImage={doNothing}
-      saveShowStats={doNothing}
       saveShowToday={doNothing}
       saveShowBraveNewsButton={doNothing}
       saveShowRewards={doNothing}
