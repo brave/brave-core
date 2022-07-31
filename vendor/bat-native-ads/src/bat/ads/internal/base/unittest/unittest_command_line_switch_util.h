@@ -12,6 +12,9 @@
 
 namespace ads {
 
+void InitializeCommandLineSwitches();
+void CleanupCommandLineSwitches();
+
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches);
 

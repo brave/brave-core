@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "url/gurl.h"
 
@@ -23,6 +24,8 @@ class BatAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {
 
 TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =

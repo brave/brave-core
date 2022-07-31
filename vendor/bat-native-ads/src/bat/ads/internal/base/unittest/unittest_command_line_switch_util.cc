@@ -10,6 +10,7 @@
 #include "base/strings/strcat.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/base/unittest/unittest_string_util.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 
 namespace ads {
 
@@ -34,6 +35,14 @@ std::string SanitizeCommandLineSwitchFromString(
 }
 
 }  // namespace
+
+void InitializeCommandLineSwitches() {
+  brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
+}
+
+void CleanupCommandLineSwitches() {
+  brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
+}
 
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches) {

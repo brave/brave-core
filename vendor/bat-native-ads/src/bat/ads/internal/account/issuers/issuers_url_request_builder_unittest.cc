@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -21,6 +22,8 @@ class BatAdsIssuersUrlRequestBuilderTest : public UnitTestBase {
 
 TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   // Arrange
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   IssuersUrlRequestBuilder url_request_builder;
 
   // Act

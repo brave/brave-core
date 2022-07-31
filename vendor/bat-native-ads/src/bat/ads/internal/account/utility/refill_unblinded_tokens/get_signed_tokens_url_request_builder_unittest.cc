@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -22,6 +23,8 @@ class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {
 
 TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
   wallet.secret_key =

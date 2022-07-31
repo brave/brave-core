@@ -9,6 +9,7 @@
 #include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "url/gurl.h"
 
@@ -35,6 +36,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryForRPill) {
   // Arrange
   SysInfo().is_uncertain_future = true;
+
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -71,6 +74,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -105,6 +110,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryForRPill) {
   // Arrange
   SysInfo().is_uncertain_future = true;
+
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -141,6 +148,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -175,6 +184,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryAndNonReleaseBuildChannelForRPill) {
   // Arrange
   SysInfo().is_uncertain_future = true;
+
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -211,6 +222,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -245,6 +258,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryForBPill) {
   // Arrange
   SysInfo().is_uncertain_future = false;
+
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -281,6 +296,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -315,6 +332,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryForBPill) {
   // Arrange
   SysInfo().is_uncertain_future = false;
+
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -351,6 +370,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -386,6 +407,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -420,6 +443,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryAndNonReleaseBuildChannelForBPill) {
   // Arrange
   SysInfo().is_uncertain_future = false;
+
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 

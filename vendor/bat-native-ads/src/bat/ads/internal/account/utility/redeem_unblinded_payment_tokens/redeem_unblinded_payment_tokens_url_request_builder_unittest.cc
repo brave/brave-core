@@ -11,6 +11,7 @@
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "url/gurl.h"
@@ -85,6 +86,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
 
   SysInfo().is_uncertain_future = true;
 
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
   wallet.secret_key =
@@ -127,6 +130,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   SysInfo().is_uncertain_future = false;
+
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";

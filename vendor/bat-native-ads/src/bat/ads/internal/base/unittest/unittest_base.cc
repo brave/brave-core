@@ -9,13 +9,13 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "bat/ads/database.h"
+#include "bat/ads/internal/base/unittest/unittest_command_line_switch_util.h"
 #include "bat/ads/internal/base/unittest/unittest_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
 
 using ::testing::NiceMock;
 
@@ -45,15 +45,13 @@ void UnitTestBase::SetUp() {
 void UnitTestBase::TearDown() {
   teardown_called_ = true;
 
-  brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
+  CleanupCommandLineSwitches();
 }
 
 void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
   setup_called_ = true;
 
   is_integration_test_ = is_integration_test;
-
-  brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
 
   Initialize();
 }
@@ -159,6 +157,8 @@ void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
+  InitializeCommandLineSwitches();
+
   SetDefaultMocks();
 
   SetDefaultPrefs();
