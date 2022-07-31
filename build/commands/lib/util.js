@@ -397,6 +397,8 @@ const util = {
         androidIconSet = 'res_brave_nightly'
       }
 
+      const androidTranslateResSource = path.join(config.braveCoreDir, 'components', 'translate','content' , 'android', 'java', 'res')
+      const androidTranslateResDest = path.join(config.srcDir, 'components', 'translate','content' , 'android', 'java', 'res')
       const androidIconSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet)
       const androidIconDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium')
       const androidIconBaseSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet + '_base')
@@ -420,6 +422,7 @@ const util = {
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
+        [androidTranslateResSource]: [androidTranslateResDest],
         [androidIconSource]: [androidIconDest],
         [androidIconBaseSource]: [androidIconBaseDest],
         [androidResSource]: [androidResDest],
