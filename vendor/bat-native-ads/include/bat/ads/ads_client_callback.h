@@ -23,7 +23,7 @@ namespace ads {
 
 using ResultCallback = std::function<void(const bool)>;
 
-using LoadCallback = std::function<void(const bool, const std::string&)>;
+using LoadCallback = base::OnceCallback<void(const bool, const std::string&)>;
 
 using LoadFileCallback = base::OnceCallback<void(base::File)>;
 

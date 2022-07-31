@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
@@ -40,39 +41,43 @@ void Migrate(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
   AdsClientHelper::GetInstance()->Load(
-      kClientStateFilename, [=](const bool success, const std::string& json) {
-        if (!success) {
-          // Client state does not exist
-          SuccessfullyMigrated(callback);
-          return;
-        }
-
-        ClientInfo client;
-        if (!client.FromJson(json)) {
-          BLOG(0, "Failed to load client state");
-          FailedToMigrate(callback);
-          return;
-        }
-
-        BLOG(3, "Successfully loaded client state");
-
-        BLOG(1, "Migrating client state");
-
-        const std::string migrated_json = client.ToJson();
-        SetHashForJson(migrated_json);
-
-        AdsClientHelper::GetInstance()->Save(
-            kClientStateFilename, migrated_json, [=](const bool success) {
-              if (!success) {
-                BLOG(0, "Failed to save client state");
-                FailedToMigrate(callback);
-                return;
-              }
-
-              BLOG(3, "Successfully migrated client state");
+      kClientStateFilename,
+      base::BindOnce(
+          [](InitializeCallback callback, const bool success,
+             const std::string& json) {
+            if (!success) {
+              // Client state does not exist
               SuccessfullyMigrated(callback);
-            });
-      });
+              return;
+            }
+
+            ClientInfo client;
+            if (!client.FromJson(json)) {
+              BLOG(0, "Failed to load client state");
+              FailedToMigrate(callback);
+              return;
+            }
+
+            BLOG(3, "Successfully loaded client state");
+
+            BLOG(1, "Migrating client state");
+
+            const std::string migrated_json = client.ToJson();
+            SetHashForJson(migrated_json);
+
+            AdsClientHelper::GetInstance()->Save(
+                kClientStateFilename, migrated_json, [=](const bool success) {
+                  if (!success) {
+                    BLOG(0, "Failed to save client state");
+                    FailedToMigrate(callback);
+                    return;
+                  }
+
+                  BLOG(3, "Successfully migrated client state");
+                  SuccessfullyMigrated(callback);
+                });
+          },
+          callback));
 }
 
 }  // namespace client

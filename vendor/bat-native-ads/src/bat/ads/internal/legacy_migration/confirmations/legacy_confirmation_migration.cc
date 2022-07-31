@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
@@ -41,39 +42,43 @@ void Migrate(InitializeCallback callback) {
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
-      [=](const bool success, const std::string& json) {
-        if (!success) {
-          // Confirmation state does not exist
-          SuccessfullyMigrated(callback);
-          return;
-        }
-
-        if (!ConfirmationStateManager::GetInstance()->FromJson(json)) {
-          BLOG(0, "Failed to load confirmation state");
-          FailedToMigrate(callback);
-          return;
-        }
-
-        BLOG(3, "Successfully loaded confirmation state");
-
-        BLOG(1, "Migrating confirmation state");
-
-        const std::string migrated_json =
-            ConfirmationStateManager::GetInstance()->ToJson();
-        SetHashForJson(migrated_json);
-
-        AdsClientHelper::GetInstance()->Save(
-            kConfirmationStateFilename, migrated_json, [=](const bool success) {
-              if (!success) {
-                BLOG(0, "Failed to save confirmation state");
-                FailedToMigrate(callback);
-                return;
-              }
-
-              BLOG(3, "Successfully migrated confirmation state");
+      base::BindOnce(
+          [](InitializeCallback callback, const bool success,
+             const std::string& json) {
+            if (!success) {
+              // Confirmation state does not exist
               SuccessfullyMigrated(callback);
-            });
-      });
+              return;
+            }
+
+            if (!ConfirmationStateManager::GetInstance()->FromJson(json)) {
+              BLOG(0, "Failed to load confirmation state");
+              FailedToMigrate(callback);
+              return;
+            }
+
+            BLOG(3, "Successfully loaded confirmation state");
+
+            BLOG(1, "Migrating confirmation state");
+
+            const std::string migrated_json =
+                ConfirmationStateManager::GetInstance()->ToJson();
+            SetHashForJson(migrated_json);
+
+            AdsClientHelper::GetInstance()->Save(
+                kConfirmationStateFilename, migrated_json,
+                [=](const bool success) {
+                  if (!success) {
+                    BLOG(0, "Failed to save confirmation state");
+                    FailedToMigrate(callback);
+                    return;
+                  }
+
+                  BLOG(3, "Successfully migrated confirmation state");
+                  SuccessfullyMigrated(callback);
+                });
+          },
+          callback));
 }
 
 }  // namespace confirmations

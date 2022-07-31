@@ -2058,16 +2058,16 @@ void AdsServiceImpl::OnToggleFlaggedAd(ToggleFlaggedAdCallback callback,
   std::move(callback).Run(json);
 }
 
-void AdsServiceImpl::OnLoad(const ads::LoadCallback& callback,
+void AdsServiceImpl::OnLoad(ads::LoadCallback callback,
                             const std::string& value) {
   if (!IsBatAdsBound()) {
     return;
   }
 
   if (value.empty())
-    callback(/* success */ false, value);
+    std::move(callback).Run(/* success */ false, value);
   else
-    callback(/* success */ true, value);
+    std::move(callback).Run(/* success */ true, value);
 }
 
 void AdsServiceImpl::OnLoadFileResource(

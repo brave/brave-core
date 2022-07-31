@@ -397,9 +397,9 @@ void NotificationAdManager::OnSaved(const bool success) {
 void NotificationAdManager::Load() {
   BLOG(3, "Loading notification ads state");
 
-  auto callback = std::bind(&NotificationAdManager::OnLoaded, this,
-                            std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::GetInstance()->Load(kNotificationsFilename, callback);
+  AdsClientHelper::GetInstance()->Load(
+      kNotificationsFilename,
+      base::BindOnce(&NotificationAdManager::OnLoaded, base::Unretained(this)));
 }
 
 void NotificationAdManager::OnLoaded(const bool success,

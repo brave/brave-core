@@ -90,7 +90,7 @@ void AdsClientIOS::GetBrowsingHistory(
 }
 
 void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {
-  [bridge_ load:name callback:callback];
+  [bridge_ load:name callback:std::move(callback)];
 }
 
 std::string AdsClientIOS::LoadDataResource(const std::string& name) {
