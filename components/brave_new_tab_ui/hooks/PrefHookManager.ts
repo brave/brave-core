@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 export type PrefListener<OnType, KeyType extends keyof OnType> = (name: KeyType, newValue: OnType[KeyType], oldValue?: OnType[KeyType]) => void
 
-type Updater<T> = <K extends keyof T>(key: K, value: T[K]) => void;
+type Updater<T> = <K extends keyof T>(key: K, value: T[K]) => void
 
 /**
  * A class to help wrapping mojom pref access in a React hook.
@@ -13,31 +13,31 @@ export class PrefHookManager<T> {
     #savePref: Updater<T>
 
     /**
-     * 
+     *
      * @param getInitialValue A function for triggering an initial get of the prefs this manager is responsible for. This function will be invoked when the |PrefHookManager| is constructed.
      * @param savePref A function for saving a single pref and it's value.
      * @param addListener A function allowing the |PrefHookManager| to subscribe to updates.
      */
-    constructor(getInitialValue: () => Promise<T>, savePref: Updater<T>, addListener: (listener: (prefs: T) => void) => void) {
+    constructor (getInitialValue: () => Promise<T>, savePref: Updater<T>, addListener: (listener: (prefs: T) => void) => void) {
         this.#savePref = savePref
-
-        const notifyListeners = (prefs: T) => {
-            const oldPrefs = this.#lastValue ?? {} as Partial<T>
-            this.#lastValue = prefs
-
-            for (const [pref, listeners] of this.#listeners.entries()) {
-                const newValue = prefs[pref]
-                const oldValue = oldPrefs[pref]
-                if (newValue === oldValue) continue
-
-                for (const listener of listeners) listener(pref, newValue, oldValue)
-            }
-        }
 
         // Subscribe to all changes in the prefs, and notify individual pref
         // listeners when the value they're interested in has changed.
-        addListener(notifyListeners)
-        getInitialValue().then(notifyListeners)
+        addListener(this.notifyListeners)
+        getInitialValue().then(this.notifyListeners)
+    }
+
+    notifyListeners (prefs: T) {
+        const oldPrefs = this.#lastValue ?? {} as Partial<T>
+        this.#lastValue = prefs
+
+        for (const [pref, listeners] of this.#listeners.entries()) {
+            const newValue = prefs[pref]
+            const oldValue = oldPrefs[pref]
+            if (newValue === oldValue) continue
+
+            for (const listener of listeners) listener(pref, newValue, oldValue)
+        }
     }
 
     /**
@@ -100,7 +100,7 @@ export class PrefHookManager<T> {
  * @returns A hook which can be used to subscribe to and update prefs managed by
  * |prefManager|.
  */
-export function createPrefsHook<OnType>(prefManager: PrefHookManager<OnType>) {
+export function createPrefsHook<OnType> (prefManager: PrefHookManager<OnType>) {
     return <PrefType extends keyof OnType>(pref: PrefType) => {
         const [value, setValue] = useState(prefManager.getPref(pref))
         const setPref = useCallback((value: OnType[PrefType]) => prefManager.savePref(pref, value), [prefManager, pref])
@@ -108,7 +108,7 @@ export function createPrefsHook<OnType>(prefManager: PrefHookManager<OnType>) {
             // Update the value here - the value could have been updated between
             // the hook being created and getting mounted (triggering the
             // useEffect).
-            setValue(prefManager.getPref(pref));
+            setValue(prefManager.getPref(pref))
 
             const handler: PrefListener<OnType, PrefType> = (_, newValue) => {
                 setValue(newValue as typeof value)
