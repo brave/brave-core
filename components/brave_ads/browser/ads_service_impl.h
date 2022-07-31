@@ -252,7 +252,7 @@ class AdsServiceImpl : public AdsService,
                     const std::unique_ptr<std::string> response_body);
 
   void OnSave(const ads::ResultCallback& callback, const bool success);
-  void OnLoad(const ads::LoadCallback& callback, const std::string& value);
+  void OnLoad(ads::LoadCallback callback, const std::string& value);
   void OnLoadFileResource(
       ads::LoadFileCallback callback,
       std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);

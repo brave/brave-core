@@ -63,9 +63,6 @@ class AdsClientMojoBridge
 
   static void OnSave(CallbackHolder<SaveCallback>* callback_holder,
                      const bool success);
-  static void OnLoad(CallbackHolder<LoadCallback>* callback_holder,
-                     const bool success,
-                     const std::string& value);
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* callback_holder,

@@ -89,35 +89,39 @@ void ConfirmationStateManager::Load() {
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
-      [=](const bool success, const std::string& json) {
-        if (!success) {
-          BLOG(3, "Confirmations state does not exist, creating default state");
+      base::BindOnce(&ConfirmationStateManager::OnLoaded,
+                     base::Unretained(this)));
+}
 
-          is_initialized_ = true;
+void ConfirmationStateManager::OnLoaded(const bool success,
+                                        const std::string& json) {
+  if (!success) {
+    BLOG(3, "Confirmations state does not exist, creating default state");
 
-          Save();
-        } else {
-          if (!FromJson(json)) {
-            BLOG(0, "Failed to load confirmations state");
+    is_initialized_ = true;
 
-            BLOG(3, "Failed to parse confirmations state: " << json);
+    Save();
+  } else {
+    if (!FromJson(json)) {
+      BLOG(0, "Failed to load confirmations state");
 
-            callback_(/* success */ false);
-            return;
-          }
+      BLOG(3, "Failed to parse confirmations state: " << json);
 
-          BLOG(3, "Successfully loaded confirmations state");
+      callback_(/* success */ false);
+      return;
+    }
 
-          is_initialized_ = true;
-        }
+    BLOG(3, "Successfully loaded confirmations state");
 
-        is_mutated_ = IsMutated(ToJson());
-        if (is_mutated_) {
-          BLOG(9, "Confirmation state is mutated");
-        }
+    is_initialized_ = true;
+  }
 
-        callback_(/* success */ true);
-      });
+  is_mutated_ = IsMutated(ToJson());
+  if (is_mutated_) {
+    BLOG(9, "Confirmation state is mutated");
+  }
+
+  callback_(/* success */ true);
 }
 
 void ConfirmationStateManager::Save() {

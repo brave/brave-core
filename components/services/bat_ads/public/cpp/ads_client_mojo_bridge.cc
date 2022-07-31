@@ -70,19 +70,6 @@ void AdsClientMojoBridge::OnSave(CallbackHolder<SaveCallback>* callback_holder,
 }
 
 // static
-void AdsClientMojoBridge::OnLoad(CallbackHolder<LoadCallback>* callback_holder,
-                                 const bool success,
-                                 const std::string& value) {
-  DCHECK(callback_holder);
-
-  if (callback_holder->is_valid()) {
-    std::move(callback_holder->get()).Run(success, std::move(value));
-  }
-
-  delete callback_holder;
-}
-
-// static
 void AdsClientMojoBridge::OnRunDBTransaction(
     CallbackHolder<RunDBTransactionCallback>* callback_holder,
     ads::mojom::DBCommandResponseInfoPtr response) {
@@ -228,11 +215,7 @@ void AdsClientMojoBridge::Save(
 }
 
 void AdsClientMojoBridge::Load(const std::string& name, LoadCallback callback) {
-  // Callback holder will be deleted in |OnLoad|.
-  auto* callback_holder =
-      new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->Load(
-      name, std::bind(AdsClientMojoBridge::OnLoad, callback_holder, _1, _2));
+  ads_client_->Load(name, std::move(callback));
 }
 
 void AdsClientMojoBridge::LoadFileResource(const std::string& id,

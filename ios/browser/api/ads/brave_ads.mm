@@ -1173,9 +1173,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    callback(/* success */ false, "");
+    std::move(callback).Run(/* success */ false, "");
   } else {
-    callback(/* success */ true, contents);
+    std::move(callback).Run(/* success */ true, contents);
   }
 }
 

@@ -306,11 +306,11 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              callback(/* success */ false, value);
+              std::move(callback).Run(/* success */ false, value);
               return;
             }
 
-            callback(/* success */ true, value);
+            std::move(callback).Run(/* success */ true, value);
           }));
 }
 

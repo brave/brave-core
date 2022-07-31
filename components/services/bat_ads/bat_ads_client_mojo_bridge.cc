@@ -221,21 +221,15 @@ void BatAdsClientMojoBridge::LogTrainingInstance(
   bat_ads_client_->LogTrainingInstance(std::move(training_instance));
 }
 
-void OnLoad(const ads::LoadCallback& callback,
-            const bool success,
-            const std::string& value) {
-  callback(success, value);
-}
-
 void BatAdsClientMojoBridge::Load(
     const std::string& name,
     ads::LoadCallback callback) {
   if (!connected()) {
-    callback(/* success */ false, "");
+    std::move(callback).Run(/* success */ false, "");
     return;
   }
 
-  bat_ads_client_->Load(name, base::BindOnce(&OnLoad, std::move(callback)));
+  bat_ads_client_->Load(name, std::move(callback));
 }
 
 std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
