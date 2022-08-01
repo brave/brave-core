@@ -7,8 +7,8 @@
 
 #include <string>
 
-#include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/version_info/version_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -18,33 +18,22 @@
 namespace ads {
 namespace user_data {
 
-namespace {
-
-std::string GetVersionNumberAsJson() {
-  const base::Value::Dict user_data = GetVersionNumber();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
-}  // namespace
-
 TEST(BatAdsVersionNumberUserDataTest, GetVersionNumber) {
   // Arrange
 
   // Act
-  const std::string json = GetVersionNumberAsJson();
+  const base::Value::Dict user_data = GetVersionNumber();
 
   // Assert
   const std::string expected_version_number =
       version_info::GetBraveChromiumVersionNumber();
-
   const std::string expected_json = base::StringPrintf(
       R"({"versionNumber":"%s"})", expected_version_number.c_str());
 
-  EXPECT_EQ(expected_json, json);
+  const base::Value expected_user_data = base::test::ParseJson(expected_json);
+  ASSERT_TRUE(expected_user_data.is_dict());
+
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

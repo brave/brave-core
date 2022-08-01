@@ -29,13 +29,14 @@ bool HistoryItemInfo::operator!=(const HistoryItemInfo& rhs) const {
 }
 
 base::Value::Dict HistoryItemInfo::ToValue() const {
-  base::Value::Dict dictionary;
+  base::Value::Dict dict;
 
-  dictionary.Set("timestamp_in_seconds",
-                 base::NumberToString(created_at.ToDoubleT()));
-  dictionary.Set("ad_content", ad_content.ToValue());
-  dictionary.Set("category_content", category_content.ToValue());
-  return dictionary;
+  dict.Set("timestamp_in_seconds",
+           base::NumberToString(created_at.ToDoubleT()));
+  dict.Set("ad_content", ad_content.ToValue());
+  dict.Set("category_content", category_content.ToValue());
+
+  return dict;
 }
 
 bool HistoryItemInfo::FromValue(const base::Value::Dict& root) {

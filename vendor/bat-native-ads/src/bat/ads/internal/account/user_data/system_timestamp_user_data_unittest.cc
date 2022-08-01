@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/system_timestamp_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -17,19 +15,6 @@
 
 namespace ads {
 namespace user_data {
-
-namespace {
-
-std::string GetSystemTimestampAsJson() {
-  const base::Value::Dict user_data = GetSystemTimestamp();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
-}  // namespace
 
 class BatAdsSystemTimestampUserDataTest : public UnitTestBase {
  protected:
@@ -45,13 +30,14 @@ TEST_F(BatAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
   AdvanceClockTo(time);
 
   // Act
-  const std::string json = GetSystemTimestampAsJson();
+  const base::Value::Dict user_data = GetSystemTimestamp();
 
   // Assert
-  const std::string expected_json =
-      R"({"systemTimestamp":"2020-11-18T12:00:00.000Z"})";
+  const base::Value expected_user_data = base::test::ParseJson(
+      R"({"systemTimestamp":"2020-11-18T12:00:00.000Z"})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

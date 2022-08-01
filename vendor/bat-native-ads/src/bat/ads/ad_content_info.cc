@@ -54,24 +54,24 @@ AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
 }
 
 base::Value::Dict AdContentInfo::ToValue() const {
-  base::Value::Dict dictionary;
+  base::Value::Dict dict;
 
-  dictionary.Set("adType", static_cast<int>(type.value()));
-  dictionary.Set("uuid", placement_id);
-  dictionary.Set("creativeInstanceId", creative_instance_id);
-  dictionary.Set("creativeSetId", creative_set_id);
-  dictionary.Set("campaignId", campaign_id);
-  dictionary.Set("advertiserId", advertiser_id);
-  dictionary.Set("brand", brand);
-  dictionary.Set("brandInfo", brand_info);
-  dictionary.Set("brandDisplayUrl", brand_display_url);
-  dictionary.Set("brandUrl", brand_url.spec());
-  dictionary.Set("likeAction", static_cast<int>(like_action_type));
-  dictionary.Set("adAction", confirmation_type.ToString());
-  dictionary.Set("savedAd", is_saved);
-  dictionary.Set("flaggedAd", is_flagged);
+  dict.Set("adType", static_cast<int>(type.value()));
+  dict.Set("uuid", placement_id);
+  dict.Set("creativeInstanceId", creative_instance_id);
+  dict.Set("creativeSetId", creative_set_id);
+  dict.Set("campaignId", campaign_id);
+  dict.Set("advertiserId", advertiser_id);
+  dict.Set("brand", brand);
+  dict.Set("brandInfo", brand_info);
+  dict.Set("brandDisplayUrl", brand_display_url);
+  dict.Set("brandUrl", brand_url.spec());
+  dict.Set("likeAction", static_cast<int>(like_action_type));
+  dict.Set("adAction", confirmation_type.ToString());
+  dict.Set("savedAd", is_saved);
+  dict.Set("flaggedAd", is_flagged);
 
-  return dictionary;
+  return dict;
 }
 
 bool AdContentInfo::FromValue(const base::Value::Dict& root) {

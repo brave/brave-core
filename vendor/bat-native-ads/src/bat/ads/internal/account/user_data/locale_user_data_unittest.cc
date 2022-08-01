@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/locale_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
@@ -16,19 +14,6 @@
 
 namespace ads {
 namespace user_data {
-
-namespace {
-
-std::string GetLocaleAsJson() {
-  const base::Value::Dict user_data = GetLocale();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
-}  // namespace
 
 class BatAdsLocaleUserDataTest : public UnitTestBase {
  protected:
@@ -43,12 +28,13 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
   // Act
-  const std::string json = GetLocaleAsJson();
+  const base::Value::Dict user_data = GetLocale();
 
   // Assert
-  const std::string expected_json = "{}";
+  const base::Value expected_user_data = base::test::ParseJson("{}");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
@@ -57,12 +43,14 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
   // Act
-  const std::string json = GetLocaleAsJson();
+  const base::Value::Dict user_data = GetLocale();
 
   // Assert
-  const std::string expected_json = R"({"countryCode":"US"})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"countryCode":"US"})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
@@ -71,12 +59,13 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
   MockLocaleHelper(locale_helper_mock_, "en-MC");
 
   // Act
-  const std::string json = GetLocaleAsJson();
+  const base::Value::Dict user_data = GetLocale();
 
   // Assert
-  const std::string expected_json = "{}";
+  const base::Value expected_user_data = base::test::ParseJson("{}");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST_F(BatAdsLocaleUserDataTest,
@@ -86,12 +75,14 @@ TEST_F(BatAdsLocaleUserDataTest,
   MockLocaleHelper(locale_helper_mock_, "en-CX");
 
   // Act
-  const std::string json = GetLocaleAsJson();
+  const base::Value::Dict user_data = GetLocale();
 
   // Assert
-  const std::string expected_json = R"({"countryCode":"??"})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"countryCode":"??"})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

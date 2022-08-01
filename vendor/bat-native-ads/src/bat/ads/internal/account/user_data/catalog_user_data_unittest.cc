@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/catalog_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
@@ -18,18 +16,7 @@ namespace ads {
 namespace user_data {
 
 namespace {
-
 constexpr char kCatalogId[] = "04a13086-8fd8-4dce-a44f-afe86f14a662";
-
-std::string GetCatalogAsJson() {
-  const base::Value::Dict user_data = GetCatalog();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
 }  // namespace
 
 class BatAdsConfirmationCatalogDtoUserDataTest : public UnitTestBase {
@@ -44,13 +31,14 @@ TEST_F(BatAdsConfirmationCatalogDtoUserDataTest, GetCatalog) {
   SetCatalogId(kCatalogId);
 
   // Act
-  const std::string json = GetCatalogAsJson();
+  const base::Value::Dict user_data = GetCatalog();
 
   // Assert
-  const std::string expected_json =
-      R"({"catalog":[{"id":"04a13086-8fd8-4dce-a44f-afe86f14a662"}]})";
+  const base::Value expected_user_data = base::test::ParseJson(
+      R"({"catalog":[{"id":"04a13086-8fd8-4dce-a44f-afe86f14a662"}]})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/totals_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -17,31 +15,19 @@
 namespace ads {
 namespace user_data {
 
-namespace {
-
-std::string GetTotalsAsJson(
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  const base::Value::Dict user_data = GetTotals(unblinded_payment_tokens);
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
-}  // namespace
-
 TEST(BatAdsTotalsUserDataTest, GetTotalsForNoUnblindedPaymentTokens) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
   // Act
-  const std::string json = GetTotalsAsJson(unblinded_payment_tokens);
+  const base::Value::Dict user_data = GetTotals(unblinded_payment_tokens);
 
   // Assert
-  const std::string expected_json = R"({"totals":[]})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"totals":[]})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST(BatAdsTotalsUserDataTest, GetTotals) {
@@ -69,13 +55,14 @@ TEST(BatAdsTotalsUserDataTest, GetTotals) {
   unblinded_payment_tokens.push_back(unblinded_payment_token_4);
 
   // Act
-  const std::string json = GetTotalsAsJson(unblinded_payment_tokens);
+  const base::Value::Dict user_data = GetTotals(unblinded_payment_tokens);
 
   // Assert
-  const std::string expected_json =
-      R"({"totals":[{"ad_format":"ad_notification","click":"1","view":"2"},{"ad_format":"inline_content_ad","view":"1"}]})";
+  const base::Value expected_user_data = base::test::ParseJson(
+      R"({"totals":[{"ad_format":"ad_notification","click":"1","view":"2"},{"ad_format":"inline_content_ad","view":"1"}]})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data
