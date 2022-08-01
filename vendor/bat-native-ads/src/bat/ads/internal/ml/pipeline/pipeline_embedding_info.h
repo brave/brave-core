@@ -10,19 +10,21 @@
 #include <string>
 
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ml {
 namespace pipeline {
 
-struct PipelineEmbeddingInfo final {
-  PipelineEmbeddingInfo();
-  PipelineEmbeddingInfo(PipelineEmbeddingInfo&& info) noexcept;
-  PipelineEmbeddingInfo& operator=(PipelineEmbeddingInfo&& info) noexcept;
-  ~PipelineEmbeddingInfo();
+struct EmbeddingPipelineInfo final {
+  EmbeddingPipelineInfo();
+  EmbeddingPipelineInfo(EmbeddingPipelineInfo&& info) noexcept;
+  EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& info) noexcept;
+  ~EmbeddingPipelineInfo();
 
-  PipelineEmbeddingInfo(const int version,
+  EmbeddingPipelineInfo(const int version,
                         const base::Time timestamp,
                         const std::string& locale,
                         const int dim,
@@ -34,6 +36,9 @@ struct PipelineEmbeddingInfo final {
   int dim;
   std::map<std::string, VectorData> embeddings;
 };
+
+absl::optional<EmbeddingPipelineInfo> ParseEmbeddingPipeline(
+    base::Value resource_value);
 
 }  // namespace pipeline
 }  // namespace ml

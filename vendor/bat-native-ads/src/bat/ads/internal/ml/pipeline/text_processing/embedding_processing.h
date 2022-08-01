@@ -20,7 +20,7 @@ namespace ads {
 namespace ml {
 namespace pipeline {
 
-struct PipelineEmbeddingInfo;
+struct EmbeddingPipelineInfo;
 
 class EmbeddingProcessing final {
  public:
@@ -37,17 +37,15 @@ class EmbeddingProcessing final {
 
   void SetIsInitialized(bool is_initialized);
 
-  void SetEmbeddingPipeline(const PipelineEmbeddingInfo& info);
-
-  bool FromValue(base::Value resource_value);
-
-  std::string SanitizeText(const std::string& text, bool is_html);
+  void SetEmbeddingPipeline(const EmbeddingPipelineInfo& info);
+  bool SetEmbeddingPipeline(base::Value resource_value);
 
   TextEmbeddingData EmbedText(const std::string& text) const;
 
  private:
   bool is_initialized_ = false;
-  struct PipelineEmbeddingInfo embedding_pipeline_;
+
+  struct EmbeddingPipelineInfo embedding_pipeline_;
 };
 
 }  // namespace pipeline

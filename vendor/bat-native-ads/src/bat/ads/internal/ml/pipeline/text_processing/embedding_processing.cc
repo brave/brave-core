@@ -16,11 +16,8 @@
 #include "base/values.h"
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/strings/string_html_parse_util.h"
-#include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
-#include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -35,7 +32,7 @@ std::unique_ptr<EmbeddingProcessing> EmbeddingProcessing::CreateFromValue(
   DCHECK(error_message);
 
   auto text_processing = std::make_unique<EmbeddingProcessing>();
-  if (!text_processing->FromValue(std::move(resource_value))) {
+  if (!text_processing->SetEmbeddingPipeline(std::move(resource_value))) {
     *error_message = "Failed to parse text embedding pipeline JSON";
     return {};
   }
@@ -56,7 +53,7 @@ void EmbeddingProcessing::SetIsInitialized(bool is_initialized) {
 }
 
 void EmbeddingProcessing::SetEmbeddingPipeline(
-    const PipelineEmbeddingInfo& info) {
+    const EmbeddingPipelineInfo& info) {
   embedding_pipeline_.version = info.version;
   embedding_pipeline_.timestamp = info.timestamp;
   embedding_pipeline_.locale = info.locale;
@@ -64,9 +61,9 @@ void EmbeddingProcessing::SetEmbeddingPipeline(
   embedding_pipeline_.embeddings = info.embeddings;
 }
 
-bool EmbeddingProcessing::FromValue(base::Value resource_value) {
-  absl::optional<PipelineEmbeddingInfo> pipeline_embedding =
-      ParsePipelineEmbedding(std::move(resource_value));
+bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
+  absl::optional<EmbeddingPipelineInfo> pipeline_embedding =
+      ParseEmbeddingPipeline(std::move(resource_value));
 
   if (pipeline_embedding.has_value()) {
     SetEmbeddingPipeline(pipeline_embedding.value());
@@ -76,18 +73,6 @@ bool EmbeddingProcessing::FromValue(base::Value resource_value) {
   }
 
   return is_initialized_;
-}
-
-std::string EmbeddingProcessing::SanitizeText(const std::string& text,
-                                              bool is_html) {
-  std::string cleaned_text = text;
-  if (is_html) {
-    cleaned_text = ParseTagAttribute(cleaned_text, "og:title", "content");
-  }
-  cleaned_text = StripNonAlphaCharacters(cleaned_text);
-  std::transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(),
-                 ::tolower);
-  return cleaned_text;
 }
 
 TextEmbeddingData EmbeddingProcessing::EmbedText(
