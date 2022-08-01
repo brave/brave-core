@@ -39,24 +39,24 @@ TEST_F(BatAdsFlagManagerUtilTest, ShouldNotDebug) {
   EXPECT_FALSE(ShouldDebug());
 }
 
-TEST_F(BatAdsFlagManagerUtilTest, DidOverrideVariationsCommandLineSwitches) {
+TEST_F(BatAdsFlagManagerUtilTest, DidOverrideFromCommandLine) {
   // Arrange
 
   // Act
-  SetDidOverrideVariationsCommandLineSwitchesForTesting(true);
+  SetDidOverrideFromCommandLineForTesting(true);
 
   // Assert
-  EXPECT_TRUE(DidOverrideVariationsCommandLineSwitches());
+  EXPECT_TRUE(DidOverrideFromCommandLine());
 }
 
-TEST_F(BatAdsFlagManagerUtilTest, DidNotOverrideVariationsCommandLineSwitches) {
+TEST_F(BatAdsFlagManagerUtilTest, DidNotOverrideFromCommandLine) {
   // Arrange
 
   // Act
-  SetDidOverrideVariationsCommandLineSwitchesForTesting(false);
+  SetDidOverrideFromCommandLineForTesting(false);
 
   // Assert
-  EXPECT_FALSE(DidOverrideVariationsCommandLineSwitches());
+  EXPECT_FALSE(DidOverrideFromCommandLine());
 }
 
 TEST_F(BatAdsFlagManagerUtilTest, GetEnvironmentType) {

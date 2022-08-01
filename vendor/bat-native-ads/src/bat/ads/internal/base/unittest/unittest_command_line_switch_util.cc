@@ -17,7 +17,7 @@ namespace ads {
 namespace {
 
 constexpr char kNoCommandLineSwitchKey[] = "WithNoCommandLineSwitch";
-constexpr char kNoCommandLineSwitchValue[] = "EmptyValue";
+constexpr char kNoCommandLineSwitchValue[] = "WithEmptyValue";
 
 std::string CommandLineSwitchToString(
     const CommandLineSwitchInfo& command_line_switch) {

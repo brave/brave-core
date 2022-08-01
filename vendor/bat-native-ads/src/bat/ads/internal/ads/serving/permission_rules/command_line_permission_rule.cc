@@ -27,7 +27,7 @@ std::string CommandLinePermissionRule::GetLastMessage() const {
 }
 
 bool CommandLinePermissionRule::DoesRespectCap() {
-  if (IsProductionEnvironment() && DidOverrideVariationsCommandLineSwitches()) {
+  if (IsProductionEnvironment() && DidOverrideFromCommandLine()) {
     return false;
   }
 

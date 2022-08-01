@@ -26,71 +26,71 @@ namespace ads {
 
 namespace {
 
+constexpr char kRewardsSwitch[] = "rewards";
+
 struct ParamInfo final {
   bool should_force_staging_environment;
   CommandLineSwitchList command_line_switches;
   bool expected_should_debug;
-  bool expected_did_override_variations_command_line_switches;
+  bool expected_did_override_command_line_switches;
   EnvironmentType expected_environment_type;
-};
-
-constexpr char kRewardsSwitch[] = "rewards";
-
-const ParamInfo kTests[] = {
+} kTests[] = {
     // Should debug
     {/* should_force_staging_environment */ false,
-     {{kRewardsSwitch, "debug=true"}},
+     /* command_line_switches */ {{kRewardsSwitch, "debug=true"}},
      /* expected_should_debug */ true,
-     /* expected_did_override_variations_command_line_switches */ false,
+     /* expected_did_override_command_line_switches */ false,
      kDefaultEnvironmentType},
 
     // Should not debug
     {/* should_force_staging_environment */ false,
-     {{kRewardsSwitch, "debug=false"}},
+     /* command_line_switches */ {{kRewardsSwitch, "debug=false"}},
      /* expected_should_debug */ false,
-     /* expected_did_override_variations_command_line_switches */ false,
+     /* expected_did_override_command_line_switches */ false,
      kDefaultEnvironmentType},
 
     // Override variations command-line switches
     {/* should_force_staging_environment */ false,
+     /* command_line_switches */
      {{variations::switches::kFakeVariationsChannel, "foobar"}},
      /* expected_should_debug */ false,
-     /* expected_did_override_variations_command_line_switches */ true,
+     /* expected_did_override_command_line_switches */ true,
      kDefaultEnvironmentType},
 
     // Do not override variations command-line switches
     {/* should_force_staging_environment */ false,
+     /* command_line_switches */
      {{variations::switches::kFakeVariationsChannel, ""}},
      /* expected_should_debug */ false,
-     /* expected_did_override_variations_command_line_switches */ false,
+     /* expected_did_override_command_line_switches */ false,
      kDefaultEnvironmentType},
 
     // Force staging environment from command-line switch
     {/* should_force_staging_environment */ false,
-     {{kRewardsSwitch, "staging=true"}},
+     /* command_line_switches */ {{kRewardsSwitch, "staging=true"}},
      /* expected_should_debug */ false,
-     /* expected_did_override_variations_command_line_switches */ false,
+     /* expected_did_override_command_line_switches */ false,
      EnvironmentType::kStaging},
 
     // Force production environment from command-line switch
     {/* should_force_staging_environment */ false,
-     {{kRewardsSwitch, "staging=false"}},
+     /* command_line_switches */ {{kRewardsSwitch, "staging=false"}},
      /* expected_should_debug */ false,
-     /* expected_did_override_variations_command_line_switches */ false,
+     /* expected_did_override_command_line_switches */ false,
      EnvironmentType::kProduction},
 
     // Force staging environment
     {/* should_force_staging_environment */ true,
-     {{kRewardsSwitch, "staging=false"}},
+     /* command_line_switches */ {{kRewardsSwitch, "staging=false"}},
      /* expected_should_debug */ false,
-     /* expected_did_override_variations_command_line_switches */ false,
+     /* expected_did_override_command_line_switches */ false,
      EnvironmentType::kStaging},
 
     // Use default environment
     {/* should_force_staging_environment */ false,
-     {},
+     /* command_line_switches */ {},
      /* expected_should_debug */ false,
-     /* expected_did_override_variations_command_line_switches */ false,
+     /* expected_did_override_command_line_switches */ false,
      kDefaultEnvironmentType}};
 
 }  // namespace
@@ -130,8 +130,8 @@ TEST_P(BatAdsFlagManagerTest, Initialize) {
 
   // Assert
   EXPECT_EQ(param.expected_should_debug, ShouldDebug());
-  EXPECT_EQ(param.expected_did_override_variations_command_line_switches,
-            DidOverrideVariationsCommandLineSwitches());
+  EXPECT_EQ(param.expected_did_override_command_line_switches,
+            DidOverrideFromCommandLine());
   EXPECT_EQ(param.expected_environment_type, GetEnvironmentType());
 }
 
@@ -150,8 +150,8 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
     flags.push_back("ShouldDebug");
   }
 
-  if (test_param.param.expected_did_override_variations_command_line_switches) {
-    flags.push_back("DidOverrideVariations");
+  if (test_param.param.expected_did_override_command_line_switches) {
+    flags.push_back("DidOverride");
   }
 
   std::string when;
