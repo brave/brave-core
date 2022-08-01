@@ -79,6 +79,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   // redux
   const dispatch = useDispatch()
   const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+  const defaultNetworks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultNetworks)
   const savedAccounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
 
   // state
@@ -220,6 +221,10 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
     )
   }, [savedAccounts])
 
+  const selectedAccountTypesDefaultNetwork: BraveWallet.NetworkInfo = React.useMemo(() => {
+    return defaultNetworks.find((network: BraveWallet.NetworkInfo) => network.coin === selectedAccountType.coin) ?? selectedNetwork
+  }, [defaultNetworks, selectedAccountType, selectedNetwork])
+
   // render
   if (showAuthorizeDevice) {
     return (
@@ -232,7 +237,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
             </DisclaimerText>
           </HardwareInfoColumn>
         </HardwareInfoRow>
-        <AuthorizeHardwareDeviceIFrame/>
+        <AuthorizeHardwareDeviceIFrame />
       </>
     )
   }
@@ -250,7 +255,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
         setSelectedDerivationScheme={onChangeDerivationScheme}
         onAddAccounts={onAddAccounts}
         getBalance={getBalance}
-        selectedNetwork={selectedNetwork}
+        selectedNetwork={selectedAccountTypesDefaultNetwork}
         filecoinNetwork={filecoinNetwork}
         onChangeFilecoinNetwork={onFilecoinNetworkChanged}
         selectedAccountType={selectedAccountType}
