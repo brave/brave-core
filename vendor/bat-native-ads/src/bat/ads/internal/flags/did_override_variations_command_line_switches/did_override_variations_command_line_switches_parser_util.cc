@@ -31,7 +31,7 @@ bool ParseVariationsCommandLineSwitches() {
       HasSwitchWithValue(variations::switches::kVariationsOverrideCountry)) {
     return true;
   } else {
-    constexpr const char* kCommandLineSwitches[] = {
+    const char* kCommandLineSwitches[] = {
         switches::kEnableFeatures,
         variations::switches::kForceFieldTrialParams};
 

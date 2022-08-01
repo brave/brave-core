@@ -194,21 +194,20 @@ void DatabasePromotion::GetAllRecords(
   transaction->commands.push_back(std::move(command));
 
   auto transaction_callback =
-      std::bind(&DatabasePromotion::OnGetAllRecords,
-          this,
-          _1,
-          callback);
+      base::BindOnce(&DatabasePromotion::OnGetAllRecords,
+                     base::Unretained(this), std::move(callback));
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction),
+                            std::move(transaction_callback));
 }
 
 void DatabasePromotion::OnGetAllRecords(
-    type::DBCommandResponsePtr response,
-    ledger::GetAllPromotionsCallback callback) {
+    ledger::GetAllPromotionsCallback callback,
+    type::DBCommandResponsePtr response) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -236,7 +235,7 @@ void DatabasePromotion::OnGetAllRecords(
     map.insert(std::make_pair(info->id, std::move(info)));
   }
 
-  callback(std::move(map));
+  std::move(callback).Run(std::move(map));
 }
 
 void DatabasePromotion::SaveClaimId(const std::string& promotion_id,

@@ -859,7 +859,9 @@ void LedgerImpl::DisconnectWallet(const std::string& wallet_type,
 }
 
 void LedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  WhenReady([this, callback]() { database()->GetAllPromotions(callback); });
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    database()->GetAllPromotions(std::move(callback));
+  });
 }
 
 void LedgerImpl::GetAnonWalletStatus(LegacyResultCallback callback) {

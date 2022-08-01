@@ -379,7 +379,7 @@ void Database::GetPromotion(
 }
 
 void Database::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
-  promotion_->GetAllRecords(callback);
+  promotion_->GetAllRecords(std::move(callback));
 }
 
 void Database::SavePromotionClaimId(const std::string& promotion_id,

@@ -82,7 +82,9 @@ using GetContributionReportCallback =
 using GetTransactionReportCallback =
     std::function<void(type::TransactionReportInfoList)>;
 
-using GetAllPromotionsCallback = std::function<void(type::PromotionMap)>;
+using LegacyGetAllPromotionsCallback = std::function<void(type::PromotionMap)>;
+
+using GetAllPromotionsCallback = base::OnceCallback<void(type::PromotionMap)>;
 
 using LegacyResultCallback = std::function<void(type::Result)>;
 

@@ -72,7 +72,10 @@ void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
     _1,
     callback);
 
-  ledger_->database()->GetAllPromotions(get_callback);
+  ledger_->database()->GetAllPromotions(base::BindOnce(
+      [](LegacyGetAllPromotionsCallback callback,
+         type::PromotionMap promotions) { callback(std::move(promotions)); },
+      std::move(get_callback)));
 }
 
 void EmptyBalance::OnPromotions(

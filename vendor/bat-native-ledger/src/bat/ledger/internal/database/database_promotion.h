@@ -59,9 +59,8 @@ class DatabasePromotion: public DatabaseTable {
       type::DBCommandResponsePtr response,
       GetPromotionCallback callback);
 
-  void OnGetAllRecords(
-      type::DBCommandResponsePtr response,
-      ledger::GetAllPromotionsCallback callback);
+  void OnGetAllRecords(ledger::GetAllPromotionsCallback callback,
+                       type::DBCommandResponsePtr response);
 
   void OnGetRecords(
       type::DBCommandResponsePtr response,

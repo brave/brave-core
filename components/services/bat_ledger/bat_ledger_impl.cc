@@ -29,7 +29,9 @@ BatLedgerImpl::BatLedgerImpl(
       ledger::Ledger::CreateInstance(bat_ledger_client_mojo_bridge_.get())) {
 }
 
-BatLedgerImpl::~BatLedgerImpl() = default;
+BatLedgerImpl::~BatLedgerImpl() {
+  bat_ledger_client_mojo_bridge_->disconnect();
+}
 
 void BatLedgerImpl::OnInitialize(
     CallbackHolder<InitializeCallback>* holder,
@@ -941,26 +943,8 @@ void BatLedgerImpl::GetAllMonthlyReportIds(
           _1));
 }
 
-// static
-void BatLedgerImpl::OnGetAllPromotions(
-    CallbackHolder<GetAllPromotionsCallback>* holder,
-    ledger::type::PromotionMap items) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(items));
-  }
-
-  delete holder;
-}
-
 void BatLedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  auto* holder = new CallbackHolder<GetAllPromotionsCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->GetAllPromotions(
-      std::bind(BatLedgerImpl::OnGetAllPromotions,
-          holder,
-          _1));
+  ledger_->GetAllPromotions(std::move(callback));
 }
 
 // static

@@ -24,7 +24,9 @@ BatLedgerServiceImpl::BatLedgerServiceImpl(
     : receiver_(this, std::move(receiver)),
     initialized_(false) {}
 
-BatLedgerServiceImpl::~BatLedgerServiceImpl() = default;
+BatLedgerServiceImpl::~BatLedgerServiceImpl() {
+  receiver_.reset();
+}
 
 void BatLedgerServiceImpl::Create(
     mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info,

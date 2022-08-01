@@ -399,10 +399,6 @@ class BatLedgerImpl :
       CallbackHolder<GetAllMonthlyReportIdsCallback>* holder,
       const std::vector<std::string>& ids);
 
-  static void OnGetAllPromotions(
-      CallbackHolder<GetAllPromotionsCallback>* holder,
-      ledger::type::PromotionMap items);
-
   static void OnShutdown(
       CallbackHolder<ShutdownCallback>* holder,
       const ledger::type::Result result);

@@ -123,6 +123,8 @@ class BatLedgerClientMojoBridge :
 
   absl::optional<std::string> DecryptString(const std::string& name) override;
 
+  void disconnect() { bat_ledger_client_.reset(); }
+
  private:
   bool Connected() const;
 

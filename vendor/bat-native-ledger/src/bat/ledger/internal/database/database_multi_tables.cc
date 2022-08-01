@@ -34,7 +34,10 @@ void DatabaseMultiTables::GetTransactionReport(
       month,
       year,
       callback);
-  ledger_->database()->GetAllPromotions(promotion_callback);
+  ledger_->database()->GetAllPromotions(base::BindOnce(
+      [](LegacyGetAllPromotionsCallback callback,
+         type::PromotionMap promotions) { callback(std::move(promotions)); },
+      std::move(promotion_callback)));
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(

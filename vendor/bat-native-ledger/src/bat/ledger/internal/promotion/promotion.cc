@@ -94,14 +94,20 @@ void Promotion::Initialize() {
         this,
         _1);
 
-    ledger_->database()->GetAllPromotions(check_callback);
+    ledger_->database()->GetAllPromotions(base::BindOnce(
+        [](LegacyGetAllPromotionsCallback callback,
+           type::PromotionMap promotions) { callback(std::move(promotions)); },
+        std::move(check_callback)));
   }
 
   auto retry_callback = std::bind(&Promotion::Retry,
       this,
       _1);
 
-  ledger_->database()->GetAllPromotions(retry_callback);
+  ledger_->database()->GetAllPromotions(base::BindOnce(
+      [](LegacyGetAllPromotionsCallback callback,
+         type::PromotionMap promotions) { callback(std::move(promotions)); },
+      std::move(retry_callback)));
 }
 
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
@@ -116,11 +122,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
           base::BindOnce(&Promotion::OnGetAllPromotionsFromDatabase,
                          base::Unretained(this), std::move(callback));
 
-      ledger_->database()->GetAllPromotions(
-          [callback = std::make_shared<decltype(all_callback)>(
-               std::move(all_callback))](type::PromotionMap promotions) {
-            std::move(*callback).Run(std::move(promotions));
-          });
+      ledger_->database()->GetAllPromotions(std::move(all_callback));
       return;
     }
   }
@@ -161,11 +163,7 @@ void Promotion::OnFetch(ledger::FetchPromotionCallback callback,
       base::BindOnce(&Promotion::OnGetAllPromotions, base::Unretained(this),
                      std::move(callback), std::move(list));
 
-  ledger_->database()->GetAllPromotions(
-      [callback = std::make_shared<decltype(all_callback)>(
-           std::move(all_callback))](type::PromotionMap promotions) {
-        std::move(*callback).Run(std::move(promotions));
-      });
+  ledger_->database()->GetAllPromotions(std::move(all_callback));
 }
 
 void Promotion::OnGetAllPromotions(ledger::FetchPromotionCallback callback,
@@ -737,7 +735,10 @@ void Promotion::ErrorCredsStatusSaved(const type::Result result) {
     this,
     _1);
 
-  ledger_->database()->GetAllPromotions(retry_callback);
+  ledger_->database()->GetAllPromotions(base::BindOnce(
+      [](LegacyGetAllPromotionsCallback callback,
+         type::PromotionMap promotions) { callback(std::move(promotions)); },
+      std::move(retry_callback)));
 }
 
 void Promotion::TransferTokens(ledger::PostSuggestionsClaimCallback callback) {
@@ -745,7 +746,10 @@ void Promotion::TransferTokens(ledger::PostSuggestionsClaimCallback callback) {
 }
 
 void Promotion::OnRetryTimerElapsed() {
-  ledger_->database()->GetAllPromotions(std::bind(&Promotion::Retry, this, _1));
+  ledger_->database()->GetAllPromotions(base::BindOnce(
+      [](LegacyGetAllPromotionsCallback callback,
+         type::PromotionMap promotions) { callback(std::move(promotions)); },
+      std::bind(&Promotion::Retry, this, _1)));
 }
 
 void Promotion::OnLastCheckTimerElapsed() {
