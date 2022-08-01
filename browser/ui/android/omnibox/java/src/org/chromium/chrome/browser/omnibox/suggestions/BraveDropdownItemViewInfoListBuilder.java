@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -80,54 +81,26 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         mBraveSearchBannerProcessor.onNativeInitialized();
     }
 
-    @Override
-    int getVisibleSuggestionsCount(AutocompleteResult autocompleteResult) {
-        // For cases where we don't know how many suggestions can fit in the visile screen area,
-        // make an assumption regarding the group size.
-        if (mDropdownHeight == DROPDOWN_HEIGHT_UNKNOWN) {
-            return Math.min(
-                    autocompleteResult.getSuggestionsList().size(), DEFAULT_SIZE_OF_VISIBLE_GROUP);
-        }
-
+    private void calculateSuggestionsHeight(
+            AutocompleteResult autocompleteResult, int visibleSuggestionsCount) {
         final List<AutocompleteMatch> suggestions = autocompleteResult.getSuggestionsList();
 
         @Px
         int calculatedSuggestionsHeight = 0;
         int lastVisibleIndex;
-        for (lastVisibleIndex = 0; lastVisibleIndex < suggestions.size(); lastVisibleIndex++) {
-            if (calculatedSuggestionsHeight >= mDropdownHeight) break;
-
+        for (lastVisibleIndex = 0; lastVisibleIndex < visibleSuggestionsCount; lastVisibleIndex++) {
             final AutocompleteMatch suggestion = suggestions.get(lastVisibleIndex);
-            // We do not include suggestions with headers in partial grouping, so terminate early.
-            if (suggestion.getGroupId() != AutocompleteMatch.INVALID_GROUP) {
-                break;
-            }
 
             final SuggestionProcessor processor =
-                    getProcessorForSuggestion(suggestion, lastVisibleIndex);
+                    (SuggestionProcessor) BraveReflectionUtil.InvokeMethod(
+                            DropdownItemViewInfoListBuilder.class, this,
+                            "getProcessorForSuggestion", AutocompleteMatch.class, suggestion,
+                            int.class, lastVisibleIndex);
 
             calculatedSuggestionsHeight += processor.getMinimumViewHeight();
         }
 
         mCalculatedSuggestionsHeight = calculatedSuggestionsHeight;
-
-        return lastVisibleIndex;
-    }
-
-    /**
-     * Search for Processor that will handle the supplied suggestion at specific position.
-     *
-     * @param suggestion The suggestion to be processed.
-     * @param position Position of the suggestion in the list.
-     */
-    private SuggestionProcessor getProcessorForSuggestion(
-            AutocompleteMatch suggestion, int position) {
-        for (int index = 0; index < mPriorityOrderedSuggestionProcessors.size(); index++) {
-            SuggestionProcessor processor = mPriorityOrderedSuggestionProcessors.get(index);
-            if (processor.doesProcessSuggestion(suggestion, position)) return processor;
-        }
-        assert false : "No default handler for suggestions";
-        return null;
     }
 
     @Override
@@ -136,6 +109,13 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         mBraveSearchBannerProcessor.onSuggestionsReceived();
         List<DropdownItemViewInfo> viewInfoList =
                 super.buildDropdownViewInfoList(autocompleteResult);
+        if (mDropdownHeight != DROPDOWN_HEIGHT_UNKNOWN) {
+            int visibleSuggestionsCount = (int) BraveReflectionUtil.InvokeMethod(
+                    DropdownItemViewInfoListBuilder.class, this, "getVisibleSuggestionsCount",
+                    AutocompleteResult.class, autocompleteResult);
+
+            calculateSuggestionsHeight(autocompleteResult, visibleSuggestionsCount);
+        }
 
         if (isBraveSearchPromoBanner()) {
             mCalculatedSuggestionsHeight += mBraveSearchBannerProcessor.getMinimumViewHeight();

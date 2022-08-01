@@ -448,6 +448,19 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator {
+    *** createViewProvider(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteCoordinator {
+    *** createViewProvider(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
+    *** getVisibleSuggestionsCount(...);
+    *** getProcessorForSuggestion(...);
+}
+
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mNativeInitialized;
     public <init>(...);

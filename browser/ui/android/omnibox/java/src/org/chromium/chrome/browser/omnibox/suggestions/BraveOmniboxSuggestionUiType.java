@@ -12,10 +12,8 @@ import androidx.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@IntDef({BraveOmniboxSuggestionUiType.HEADER,
-        BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER})
+@IntDef({BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER})
 @Retention(RetentionPolicy.SOURCE)
 public @interface BraveOmniboxSuggestionUiType {
-    int HEADER = 7;
     int BRAVE_SEARCH_PROMO_BANNER = 10;
 }

@@ -56,6 +56,7 @@ import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
+import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
@@ -97,10 +98,14 @@ import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.omnibox.AutocompleteMatch;
+import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modelutil.MVCListAdapter;
+import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.lang.reflect.Constructor;
@@ -249,6 +254,14 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager"));
     }
 
     @Test
@@ -380,9 +393,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "createViewProvider", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator",
-                "createViewProvider", false, null));
     }
 
     @Test
@@ -390,6 +400,14 @@ public class BytecodeTest {
     public void testMethodsForInvocationExist() throws Exception {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
+
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "getVisibleSuggestionsCount", true, int.class, AutocompleteResult.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "getProcessorForSuggestion", true, SuggestionProcessor.class,
+                AutocompleteMatch.class, int.class));
 
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
@@ -583,14 +601,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
                 "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
         Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
-                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator",
-                ViewGroup.class, AutocompleteDelegate.class,
-                OmniboxSuggestionsDropdownEmbedder.class, UrlBarEditingTextStateProvider.class,
-                Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
-                ObservableSupplier.class, Callback.class, Supplier.class, BookmarkState.class,
-                JankTracker.class, ExploreIconProvider.class, OmniboxPedalDelegate.class));
-        Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
                 Supplier.class, BookmarkState.class, ExploreIconProvider.class,
@@ -598,7 +608,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
-                ModelList.class, Context.class));
+                MVCListAdapter.ModelList.class, Context.class));
     }
 
     @Test
@@ -759,9 +769,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
-                "mDropdown"));
-        Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "mDropdownHeight"));
         Assert.assertTrue(fieldExists(
@@ -822,6 +829,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName("org/chromium/chrome/browser/infobar/TranslateCompactInfoBar",
                         "org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));
     }
 
     private boolean classExists(String className) {

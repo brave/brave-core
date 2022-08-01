@@ -17,13 +17,8 @@ public class BraveAutocompleteCoordinatorClassAdapter extends BraveClassVisitor 
     public BraveAutocompleteCoordinatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sAutocompleteCoordinator, sBraveAutocompleteCoordinator);
-
-        makePublicMethod(sAutocompleteCoordinator, "createViewProvider");
-        addMethodAnnotation(
-                sBraveAutocompleteCoordinator, "createViewProvider", "Ljava/lang/Override;");
-
-        deleteField(sBraveAutocompleteCoordinator, "mDropdown");
-        makeProtectedField(sAutocompleteCoordinator, "mDropdown");
+        changeSuperName(sAutocompleteCoordinator, sBraveAutocompleteCoordinator);
+        changeMethodOwner(
+                sAutocompleteCoordinator, "createViewProvider", sBraveAutocompleteCoordinator);
     }
 }
