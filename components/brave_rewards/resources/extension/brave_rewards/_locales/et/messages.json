@@ -335,19 +335,6 @@
     "message": "Ühenda uuesti",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Teie Brave'i Preemiad on kinnitatud!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Teie Brave'i Preemiate kinnitamine teenusepakkuja $provider$ juures õnnestus.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Tokenivõimalus on saadaval!",
     "description": ""

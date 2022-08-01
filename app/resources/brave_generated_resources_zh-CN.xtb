@@ -113,8 +113,7 @@
 <translation id="5240031343741051161">尝试Brave搜索</translation>
 <translation id="5026874946691314267">别再给我看这个了</translation>
 <translation id="5234764350956374838">关闭</translation>
-<translation id="214744058941501853">"&gt;
-          关闭 Brave 的搜索转换。按 Enter 删除此建议</translation>
+<translation id="5100490448228945668">解除 Brave 搜索转换，按回车键删除此建议</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
 <translation id="6040143037577758943">关闭</translation>
@@ -220,6 +219,7 @@
 <translation id="8820817407110198400">书签栏</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="1811404036171336214">总是显示新标签页上的书签</translation>
+<translation id="3416468988018290825">始终显示完整的URL</translation>
 <translation id="5529693968082667490">显示标签页搜索按钮</translation>
 <translation id="1643029991199044105">通过 Ctrl-Tab 循环浏览最近使用的标签页</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -392,7 +392,8 @@
 <translation id="5249433283143453448">使用 Widevine 数字版权管理（DRM）组件在浏览器中查看受保护的流视频和其他内容。</translation>
 <translation id="8137559199583651773">管理扩展程序</translation>
 <translation id="7013485839273047434">获取更多扩展程序</translation>
-<translation id="9131889008937672866">默认的加密货币钱包</translation>
+<translation id="4954512758656527938">默认以太坊钱包</translation>
+<translation id="7701023802820268122">默认 Solana 钱包</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="2356070529366658676">询问</translation>
 <translation id="7701040980221191251">无</translation>
@@ -417,6 +418,8 @@
 <translation id="8205945804087322170">添加新网络</translation>
 <translation id="1330032157352961756">新链 ID</translation>
 <translation id="3423620355610881890">正的十进制数</translation>
+<translation id="8110465398315041268">搜索网络</translation>
+<translation id="3579705520805744214">区块链 ID 或名称</translation>
 <translation id="726121047592132939">新链名称</translation>
 <translation id="1034112277864078119">输入链名称</translation>
 <translation id="4672314527143443556">链的货币名</translation>
@@ -488,6 +491,7 @@
 <translation id="3411013544209536575">支助赏金</translation>
 <translation id="2775956301559569472">显示 404 页上的 Wayback Machine 提示</translation>
 <translation id="3095201688102519917">关闭已开启多个标签页的视窗前显示警告消息</translation>
+<translation id="7120553802660696133">关闭最后一个选项卡时关闭窗口</translation>
 <translation id="6624718837376802990">前卫 Rewards 的头像</translation>
 <translation id="6617313057407561765">前卫 Brave 的头像</translation>
 <translation id="6754445808455578019">前卫 Ocean  的头像</translation>

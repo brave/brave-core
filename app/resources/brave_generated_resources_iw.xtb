@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">שווה לנסות את Brave Search</translation>
 <translation id="5026874946691314267">אל תציג זאת שוב</translation>
 <translation id="5234764350956374838">סגור</translation>
-<translation id="214744058941501853">"&gt;
-סגירת ההמרה של Brave Search, יש ללחוץ על אנטר כדי להסיר אפשרות זו</translation>
+<translation id="5100490448228945668">בטל את המרת חיפוש Brave, לחץ על Enter כדי להסיר הצעה זו</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="6040143037577758943">סגירה</translation>
@@ -220,6 +219,7 @@
 <translation id="8820817407110198400">סרגל הסימניות</translation>
 <translation id="6333347122924254968">הצגו את סמליל תגמולי Brave בשורת הכתובת</translation>
 <translation id="1811404036171336214">הצג סימניות תמיד בדף לשונית חדשה</translation>
+<translation id="3416468988018290825">הצג תמיד כתובות אתרים מלאות</translation>
 <translation id="5529693968082667490">הצג לחצן חיפוש כרטיסייה</translation>
 <translation id="1643029991199044105">עברו על הלשוניות שנעשה בהן שימוש לאחרונה באמצעות Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -392,7 +392,8 @@
 <translation id="5249433283143453448">השתמש/י ברכיב ניהול זכויות דיגיטלית (DRM) Widevine כדי לצפות בסרטון מוגן ובתכנים אחרים בדפדפן.</translation>
 <translation id="8137559199583651773">נהל תוספים</translation>
 <translation id="7013485839273047434">קבל/י הרחבות נוספות</translation>
-<translation id="9131889008937672866">ארנק ברירת מחדל לקריפטו</translation>
+<translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>
+<translation id="7701023802820268122">ארנק ברירת המחדל של Solana</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="2356070529366658676">שאל</translation>
 <translation id="7701040980221191251">ללא</translation>
@@ -417,6 +418,8 @@
 <translation id="8205945804087322170">הוסף רשת חדשה</translation>
 <translation id="1330032157352961756">המזהה לשרשרת חדשה</translation>
 <translation id="3423620355610881890">מספר עשרוני חיובי</translation>
+<translation id="8110465398315041268">חפש רשת</translation>
+<translation id="3579705520805744214">מזהה או שם השרשרת</translation>
 <translation id="726121047592132939">שמה של שרשרת חדשה</translation>
 <translation id="1034112277864078119">הזן שרשרת חדשה</translation>
 <translation id="4672314527143443556">שמו של מטבע השרשרת</translation>
@@ -488,6 +491,7 @@
 <translation id="3411013544209536575">טיפים לעזרה</translation>
 <translation id="2775956301559569472">הצג הודעת Wayback Machine בדפי 404</translation>
 <translation id="3095201688102519917">הזהר אותי לפני סגירת חלון שבו מספר כרטיסיות</translation>
+<translation id="7120553802660696133">סגור חלון בסגירת הכרטיסייה האחרונה</translation>
 <translation id="6624718837376802990">תגמולי אווטאר Edgy</translation>
 <translation id="6617313057407561765">אווטאר Edgy Brave</translation>
 <translation id="6754445808455578019">אווטאר Edgy אוקיינוס</translation>

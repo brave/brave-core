@@ -124,7 +124,7 @@
     "description": ""
   },
   "grantCaptchaExpiration": {
-    "message": "Datum isteka odobrenja\n",
+    "message": "Datum isteka odobrenja",
     "description": ""
   },
   "grantCaptchaErrorTitle": {
@@ -334,19 +334,6 @@
   "notificationWalletDisconnectedAction": {
     "message": "Ponovo uspostavi vezu",
     "description": ""
-  },
-  "notificationWalletVerifiedTitle": {
-    "message": "Vaše Brave nagrade su verifikovane!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Vaše Brave nagrade je uspešno verifikovao $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
   },
   "notificationTokenGrantTitle": {
     "message": "Dodela tokena je dostupna!",

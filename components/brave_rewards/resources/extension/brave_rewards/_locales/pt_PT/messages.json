@@ -335,19 +335,6 @@
     "message": "Reconectar",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "As suas Recompensas Brave estão verificadas.",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "As suas Recompensas Brave foram verificadas com êxito com $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "Está disponível uma concessão de tokens.",
     "description": ""

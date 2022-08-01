@@ -104,6 +104,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
     <file lang="fil" path="translations/android_brave_strings_fil.xtb" />
     <file lang="fr" path="translations/android_brave_strings_fr.xtb" />
     <file lang="fr-CA" path="translations/android_brave_strings_fr-CA.xtb" />
+    <file lang="gl" path="translations/android_brave_strings_gl.xtb" />
     <file lang="gu" path="translations/android_brave_strings_gu.xtb" />
     <file lang="hi" path="translations/android_brave_strings_hi.xtb" />
     <file lang="hr" path="translations/android_brave_strings_hr.xtb" />

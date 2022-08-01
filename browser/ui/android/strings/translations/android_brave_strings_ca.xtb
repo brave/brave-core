@@ -262,6 +262,7 @@ Segur que vols continuar?</translation>
 <translation id="3097089005389027085">Amb això es compartiran les teves dades de Brave, incloses possiblement les teves contrasenyes, amb el dispositiu que ha generat aquestes paraules de codi.
 Si us plau, revisa que aquestes paraules de codi s'hagin generat en un dels teus dispositius.
 Segur que vols continuar?</translation>
+<translation id="4550208292810542331">No s'ha concedit el permís de la càmera</translation>
 <translation id="597993392929850353">Llicència de Brave</translation>
 <translation id="6336451774241870485">Pestanya d'incògnit nova</translation>
 <translation id="6199596294742117349">Això és una pestanya privada</translation>
@@ -551,8 +552,9 @@ Segur que vols continuar?</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">TOT</translation>
-<translation id="5071303414930953888">Compte <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Compte <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Afegeix un compte</translation>
+<translation id="318334680413773318">Afegeix/Importa un compte</translation>
 <translation id="3448492834076427715">Actualitza el compte</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Voleu permetre el desbloqueig de la identificació per empremta dactilar?</translation>
@@ -861,12 +863,14 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="4804818685124855865">Desconnectar</translation>
 <translation id="8009571545960303544">Es necessita la teva firma</translation>
 <translation id="3484981968509595506">Una DApp està sol·licitant la vostra clau pública de xifratge</translation>
+<translation id="2300240008330189182"><ph name="URL"/> sol·licita la clau de xifratge pública de la vostra cartera. Si accediu a proporcionar aquesta clau, el lloc podrà compondre missatges xifrats per a vós.</translation>
 <translation id="3340247553212049934">Proporcionar</translation>
 <translation id="1982257600591932657">Nom de la xarxa</translation>
 <translation id="5052727830821470769">URL de la xarxa</translation>
 <translation id="4822132585477111396">Cadena ID</translation>
 <translation id="7131971375297699539">Símbol de moneda</translation>
 <translation id="7982789257301363584">Xarxa</translation>
+<translation id="6936860995365507185">Això permetrà utilitzar aquesta xarxa dins de la cartera de Brave. <ph name="CLICK_START"/>Més informació<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Voleu permetre que aquest lloc afegeixi una xarxa?</translation>
 <translation id="4857321293515555666">Aquesta DApp voldria llegir aquest missatge per a completar la seva acció</translation>
 <translation id="714506544401754321">Desencriptar el missatge</translation>
@@ -891,4 +895,14 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="5334952096674914470">\n\nOperador mòbil\n</translation>
 <translation id="5393042357629679588">\n\nUn altre problema\n</translation>
 <translation id="8095666712177294104">\n\nPlataforma\n</translation>
+<translation id="7080614857771109950">Permet actius compatibles amb l'EVM a la cadena de blocs Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Admet els actius compatibles amb SPL a la cadena de blocs Solana</translation>
+<translation id="6575120282593094155">Encara no teniu un compte <ph name="ACCOUNT_TYPE"/>. Voleu crear-ne un ara?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Aplicacions excloses</translation>
+<translation id="8463269357637177759">Aplicacions habituals permeses</translation>
+<translation id="4554726425645556940">Aplicacions de sistema permeses</translation>
+<translation id="9023148942866814328">Mostra les aplicacions del sistema</translation>
+<translation id="5472400694702418949">Afegiu aplicacions per a ser excloses del trànsit VPN.</translation>
+<translation id="7002577172732106572">Divideix la connexió</translation>
 </translationbundle>

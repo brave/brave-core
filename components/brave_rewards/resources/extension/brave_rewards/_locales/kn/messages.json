@@ -335,19 +335,6 @@
     "message": "ಮರುಸಂಪರ್ಕಿಸಿ",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಗಳನ್ನು ಈ ಮೂಲಕ ಯಶಸ್ವಿಯಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "ಟೋಕನ್ ಅನುದಾನ ಲಭ್ಯವಿದೆ!",
     "description": ""

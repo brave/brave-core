@@ -204,7 +204,7 @@
     "description": ""
   },
   "walletAutoContribute": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Bijdrage ",
     "description": ""
   },
   "walletDisconnected": {
@@ -299,7 +299,7 @@
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Bijdrage ",
     "description": ""
   },
   "notificationAutoContributeCompletedText": {
@@ -334,19 +334,6 @@
   "notificationWalletDisconnectedAction": {
     "message": "Opnieuw verbinding maken",
     "description": ""
-  },
-  "notificationWalletVerifiedTitle": {
-    "message": "Brave Beloningen is geverifieerd!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Brave Beloningen is geverifieerd met $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
   },
   "notificationTokenGrantTitle": {
     "message": "Er is een tokentoewijzing beschikbaar!",
@@ -618,7 +605,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "Dismiss",
+    "message": "Sluiten",
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {

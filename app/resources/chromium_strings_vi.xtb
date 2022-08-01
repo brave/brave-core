@@ -50,6 +50,7 @@
 <translation id="7291143854620707672">Quản trị viên hồ sơ công việc có thể xóa mọi dữ liệu trên Brave được tạo trong quá trình sử dụng hồ sơ này (chẳng hạn như hoạt động tạo dấu trang, các trang web đã truy cập, mật khẩu và các tùy chọn cài đặt khác). <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Đã xảy ra lỗi hệ điều hành khi cài đặt. Hãy tải xuống Brave lại lần nữa.</translation>
 <translation id="2648689842065142443">Nếu các bạn dùng chung một thiết bị, thì bạn bè và gia đình có thể duyệt web một cách riêng biệt cũng như thiết lập Brave theo ý muốn</translation>
+<translation id="6384359666082467439">Chào mừng <ph name="ACCOUNT_FIRST_NAME"/> đến với Brave!</translation>
 <translation id="6791166902140255175">Thẻ Brave</translation>
 <translation id="8372880274820509128">Để bảo mật hơn, Brave sẽ mã hóa dữ liệu của bạn.</translation>
 <translation id="2770231113462710648">Thay đổi trình duyệt mặc định thành:</translation>
@@ -94,6 +95,7 @@
 <translation id="4061445349373849749">Để bảo vệ quyền riêng tư của bạn, chúng tôi tự động xoá các mối quan tâm không được làm mới sau 4 tuần. Trong quá trình bạn duyệt web, các mối quan tâm có thể xuất hiện lại trong danh sách. Bạn cũng có thể xoá các mối quan tâm mà bạn không muốn Brave xem xét.</translation>
 <translation id="691208314680168371">Nhật ký duyệt web của bạn, một bản ghi các trang web bạn từng truy cập bằng Brave trên thiết bị này.</translation>
 <translation id="1384923383737428730">Máy tính của bạn có phần mềm độc hại. Brave có thể xóa phần mềm này, khôi phục các tùy chọn cài đặt của bạn và tắt tiện ích để giúp trình duyệt hoạt động lại bình thường.</translation>
+<translation id="1073077513148817424">Có một tài khoản khác đã đăng nhập. Để tách biệt hoạt động duyệt web của bạn, Brave có thể tạo hồ sơ riêng cho bạn.</translation>
 <translation id="7029305463989165490">Để gửi số điện thoại từ <ph name="ORIGIN"/> đến điện thoại Android của bạn, hãy đăng nhập vào Brave trên cả hai thiết bị.</translation>
 <translation id="4304059894777924102">Brave không thể kiểm tra mật khẩu của bạn. Hãy thử kiểm tra kết nối Internet.</translation>
 <translation id="2100587595569959771">Tìm hiểu thêm về chế độ cá nhân hoá quảng cáo trong Brave</translation>
@@ -103,9 +105,11 @@
 <translation id="2401189691232800402">Hệ thống ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">Nhận trợ giúp về ChromeOS</translation>
+<translation id="6009720635797285369">Lấy dữ liệu trình duyệt Brave từ <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="6315734375101223238">Tùy chỉnh và kiểm soát Brave. Bạn cần lưu ý - nhấp để xem thông tin chi tiết.</translation>
 <translation id="7130675370997202556">Nhấp vào tên của bạn để mở Brave và bắt đầu duyệt web.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> đã đăng nhập vào hồ sơ này trên Brave. Để tách biệt hoạt động duyệt web của bạn, Brave có thể tạo hồ sơ riêng cho bạn.</translation>
+<translation id="2337217774418822704">Tài khoản của bạn do <ph name="MANAGER_NAME"/> quản lý. Quản trị viên của bạn có thể xem và chỉnh sửa hồ sơ trình duyệt Brave này cũng như dữ liệu trong đó, chẳng hạn như dấu trang, lịch sử và mật khẩu.</translation>
 <translation id="8090497651549769448">Brave đang cố gắng sao chép mật khẩu. Hãy nhập mật khẩu Windows của bạn để cho phép việc này.</translation>
 <translation id="7133557675784723900">Brave đề xuất quét tệp này vì tệp này có thể nguy hiểm</translation>
 <translation id="1152920704813762236">Giới thiệu về ChromeOS</translation>
@@ -167,6 +171,7 @@
 <translation id="1744365871163268756">Vui lòng đợi khi Brave cài đặt các bản cập nhật hệ thống mới nhất.</translation>
 <translation id="3861679447659630159">Brave đang cố gắng chỉnh sửa mật khẩu. Hãy nhập mật khẩu Windows của bạn để cho phép việc này.</translation>
 <translation id="232381795826373334">Mở tệp PDF trong Brave</translation>
+<translation id="5381032481466106256">Khi bật, bạn cũng sẽ đăng xuất khỏi Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Đã có bản cập nhật Brave}=1{Đã có bản cập nhật Brave}other{Đã có bản cập nhật Brave từ # ngày trước}}</translation>
 <translation id="95624393026532554">Brave yêu cầu Windows 7 trở lên.</translation>
 <translation id="5646769069113654257">Vui lòng khởi động lại Brave ngay bây giờ</translation>
@@ -288,7 +293,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="7963515534397191222">Brave không thể cập nhật lên phiên bản mới nhất nên bạn đang bỏ lỡ các tính năng và bản vá bảo mật mới.</translation>
 <translation id="7872446069773932638">Đang tải xuống... Còn <ph name="SECONDS"/> giây</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cách bạn có thể quản lý dữ liệu của mình:<ph name="END_BOLD"/> Để bảo vệ quyền riêng tư của bạn, chúng tôi tự động xoá các mối quan tâm không được làm mới sau 4 tuần. Trong quá trình bạn duyệt web, các mối quan tâm có thể xuất hiện lại trong danh sách. Bạn cũng có thể xoá những mối quan tâm mà bạn không muốn Brave xem xét.</translation>
-<translation id="437139750042419257">Bạn có thể dùng các tài khoản sau đây cho hồ sơ này trên Brave</translation>
 <translation id="2925193881330501265">Bạn đã đăng nhập vào Brave là <ph name="USER_EMAIL_ADDRESS"/>. Vui lòng sử dụng cùng tài khoản để đăng nhập lại.</translation>
 <translation id="6915252145142862992">Đây là cài đặt thứ cấp của Brave và không thể trở thành trình duyệt mặc định của bạn.</translation>
 <translation id="1975057837349076194">Nếu một chế độ cài đặt nào đó không xuất hiện trên trang này, hãy tìm trong phần <ph name="LINK_BEGIN"/>
@@ -334,6 +338,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="6389268239133412586">Không thể cập nhật Brave</translation>
 <translation id="7731184591599776500">Biểu tượng Brave Enterprise</translation>
 <translation id="8986207147630327271">Bạn đang thêm một hồ sơ công việc vào trình duyệt này và chỉ quản trị viên của bạn mới có quyền kiểm soát hồ sơ công việc này.</translation>
+<translation id="82609232232243542">Đăng nhập vào Brave</translation>
 <translation id="5173820533850252773">Brave đã lỗi thời</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave sẽ khởi động lại sau một giờ}other{Brave sẽ khởi động lại sau # giờ}}</translation>
 <translation id="7863882214613921971">Mở đường liên kết trong thẻ mới của Brave</translation>
