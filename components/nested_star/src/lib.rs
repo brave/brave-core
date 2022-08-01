@@ -106,8 +106,13 @@ pub fn prepare_measurement(
 }
 
 pub fn construct_randomness_request(rrs: &RandomnessRequestStateWrapper) -> Vec<VecU8> {
-    let res = client::construct_randomness_request(&rrs.0.as_ref().unwrap());
-    res.into_iter().map(|v| VecU8 { data: v }).collect()
+    match rrs.0.as_ref() {
+        Some(rrs) => {
+            let res = client::construct_randomness_request(rrs);
+            res.into_iter().map(|v| VecU8 { data: v }).collect()
+        }
+        None => Vec::new(),
+    }
 }
 
 pub fn construct_message(
@@ -118,19 +123,29 @@ pub fn construct_message(
     aux_bytes: &CxxVector<u8>,
     threshold: u32,
 ) -> ByteDataResult {
-    let rand_points_vec: Vec<&[u8]> = rand_points.iter().map(|v| v.data.as_slice()).collect();
-    let rand_proofs_vec: Vec<&[u8]> = rand_proofs.iter().map(|v| v.data.as_slice()).collect();
-    let res = client::construct_message(
-        &rand_points_vec,
-        if !rand_proofs.is_empty() { Some(&rand_proofs_vec) } else { None },
-        rrs.0.as_ref().unwrap(),
-        &verification_key.0,
-        aux_bytes.as_slice(),
-        threshold,
-    );
-    match res {
-        Ok(data) => ByteDataResult { data, error: String::new() },
-        Err(e) => ByteDataResult { data: Vec::new(), error: e.to_string() },
+    match rrs.0.as_ref() {
+        Some(rrs) => {
+            let rand_points_vec: Vec<&[u8]> =
+                rand_points.iter().map(|v| v.data.as_slice()).collect();
+            let rand_proofs_vec: Vec<&[u8]> =
+                rand_proofs.iter().map(|v| v.data.as_slice()).collect();
+            let res = client::construct_message(
+                &rand_points_vec,
+                if !rand_proofs.is_empty() { Some(&rand_proofs_vec) } else { None },
+                rrs,
+                &verification_key.0,
+                aux_bytes.as_slice(),
+                threshold,
+            );
+            match res {
+                Ok(data) => ByteDataResult { data, error: String::new() },
+                Err(e) => ByteDataResult { data: Vec::new(), error: e.to_string() },
+            }
+        }
+        None => ByteDataResult {
+            data: Vec::new(),
+            error: "Randomness request state is not present".to_string(),
+        },
     }
 }
 
