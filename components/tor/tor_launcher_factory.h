@@ -49,7 +49,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   virtual std::string GetTorVersion() const;
   virtual void GetTorLog(GetLogCallback);
   virtual void SetupPluggableTransport(const base::FilePath& snowflake,
-                                       const base::FilePath& obsf4);
+                                       const base::FilePath& obfs4);
   virtual void SetupBridges(tor::BridgesConfig bridges_config);
 
   void AddObserver(TorLauncherObserver* observer);

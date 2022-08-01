@@ -21,7 +21,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/browser/tor//tor_profile_service_factory.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_utils.h"
@@ -90,6 +90,12 @@ constexpr const char16_t kParseBridgesScript[] =
 constexpr int kIsolatedWorldId = content::ISOLATED_WORLD_ID_CONTENT_END + 1;
 }  // namespace
 
+// This class is designed for making request to the Tor bridge web site.
+// It creates WebContents and loads kTorBridgesUrl. When the load complete
+// queries for captcha image and post it to CaptchaCallback.
+// When user resolves captcha BridgeRequest paste it into the loaded WebContents
+// and sumbit a form. Tor bridges site returns list of bridges which parsed and
+// posted to the BridgesCallback.
 class BridgeRequest : public content::WebContentsObserver {
  public:
   using CaptchaCallback = base::OnceCallback<void(const base::Value& image)>;
