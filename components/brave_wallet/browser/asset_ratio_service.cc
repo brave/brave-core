@@ -129,15 +129,16 @@ void AssetRatioService::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }
 
-GURL AssetRatioService::GetSardineBuyURL(const std::string network,
+GURL AssetRatioService::GetSardineBuyURL(const std::string chain_id,
                                          const std::string address,
                                          const std::string symbol,
                                          const std::string amount,
                                          const std::string currency_code,
                                          const std::string auth_token) {
+  const std::string sardine_network_name = GetSardineNetworkName(chain_id);
   GURL url = GURL(kSardineStorefrontBaseURL);
   url = net::AppendQueryParameter(url, "address", address);
-  url = net::AppendQueryParameter(url, "network", network);
+  url = net::AppendQueryParameter(url, "network", sardine_network_name);
   url = net::AppendQueryParameter(url, "asset_type", symbol);
   url = net::AppendQueryParameter(url, "fiat_amount", amount);
   url = net::AppendQueryParameter(url, "fiat_currency", currency_code);
@@ -202,8 +203,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     auto internal_callback =
         base::BindOnce(&AssetRatioService::OnGetSardineAuthToken,
                        weak_ptr_factory_.GetWeakPtr(), chain_id, address,
-                       symbol, amount,  // Passing chainId as network
-                       currency_code, std::move(callback));
+                       symbol, amount, currency_code, std::move(callback));
     GURL sardine_token_url = GURL(kSardineClientTokensURL);
     const std::string sardine_client_id(SARDINE_CLIENT_ID);
     const std::string sardine_client_secret(SARDINE_CLIENT_SECRET);
@@ -255,7 +255,7 @@ void AssetRatioService::GetPrice(
 }
 
 void AssetRatioService::OnGetSardineAuthToken(
-    const std::string& network,
+    const std::string& chain_id,
     const std::string& address,
     const std::string& symbol,
     const std::string& amount,
@@ -275,7 +275,7 @@ void AssetRatioService::OnGetSardineAuthToken(
     return;
   }
 
-  GURL sardine_buy_url = GetSardineBuyURL(network, address, symbol, amount,
+  GURL sardine_buy_url = GetSardineBuyURL(chain_id, address, symbol, amount,
                                           currency_code, *auth_token);
   std::move(callback).Run(std::move(sardine_buy_url.spec()), absl::nullopt);
 }
