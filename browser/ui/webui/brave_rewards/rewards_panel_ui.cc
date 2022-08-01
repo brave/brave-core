@@ -233,7 +233,9 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
   // frames can be loaded from the adaptive captcha server URL.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      "frame-src 'self' " + brave_adaptive_captcha::GetServerUrl("/") + ";");
+      "frame-src 'self' " +
+          brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl("/") +
+          ";");
 
   content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),
                                 source);

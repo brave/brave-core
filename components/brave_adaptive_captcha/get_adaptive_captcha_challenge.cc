@@ -21,8 +21,8 @@
 namespace brave_adaptive_captcha {
 
 GetAdaptiveCaptchaChallenge::GetAdaptiveCaptchaChallenge(
-    std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper)
-    : api_request_helper_(std::move(api_request_helper)) {
+    api_request_helper::APIRequestHelper* api_request_helper)
+    : api_request_helper_(api_request_helper) {
   DCHECK(api_request_helper_);
 }
 
@@ -31,8 +31,7 @@ GetAdaptiveCaptchaChallenge::~GetAdaptiveCaptchaChallenge() = default;
 std::string GetAdaptiveCaptchaChallenge::GetUrl(const std::string& payment_id) {
   const std::string path =
       base::StringPrintf("/v3/captcha/challenge/%s", payment_id.c_str());
-
-  return GetServerUrl(path);
+  return ServerUtil::GetInstance()->GetServerUrl(path);
 }
 
 bool GetAdaptiveCaptchaChallenge::CheckStatusCode(int status_code) {

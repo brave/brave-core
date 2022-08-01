@@ -11,6 +11,7 @@
 
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 
 // GET /v3/captcha/challenge/{payment_id}
 //
@@ -38,7 +39,7 @@ using OnGetAdaptiveCaptchaChallenge =
 class GetAdaptiveCaptchaChallenge {
  public:
   explicit GetAdaptiveCaptchaChallenge(
-      std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper);
+      api_request_helper::APIRequestHelper* api_request_helper);
   ~GetAdaptiveCaptchaChallenge();
 
   void Request(const std::string& payment_id,
@@ -57,7 +58,7 @@ class GetAdaptiveCaptchaChallenge {
       const std::string& response_body,
       const base::flat_map<std::string, std::string>& response_headers);
 
-  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 };
 
 }  // namespace brave_adaptive_captcha
