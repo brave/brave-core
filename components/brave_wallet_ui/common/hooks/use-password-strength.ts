@@ -17,6 +17,8 @@ export const usePasswordStrength = () => {
   // methods
   const checkIsStrongPassword = React.useCallback((pass: string) => {
     // is at least 8 characters
+    // to align with NIST 800-63b R3 section 5.1.1.1
+    // which is where NIST defines password requirements
     const isLongEnough = pass.length >= 8
 
     // granular results of password strength check
