@@ -105,6 +105,7 @@ source_set("unit_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/nested_star:cxx",
     "//brave/components/p3a",
+    "//brave/components/p3a:buildflags",
     "//components/prefs:test_support",
     "//net:net",
     "//services/network:test_support",

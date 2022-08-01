@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/enterprise/connectors/device_trust/key_management/installer/key_rotation_manager_impl.cc b/chrome/browser/enterprise/connectors/device_trust/key_management/installer/key_rotation_manager_impl.cc
+index 9f7a67788141d9a2ddc8095826d0e51b631f6a58..a762b3136c655056a7461b542b1e3762b4db9922 100644
+--- a/chrome/browser/enterprise/connectors/device_trust/key_management/installer/key_rotation_manager_impl.cc
++++ b/chrome/browser/enterprise/connectors/device_trust/key_management/installer/key_rotation_manager_impl.cc
+@@ -41,6 +41,7 @@ BPKUR::KeyType AlgorithmToType(
+     case crypto::SignatureVerifier::RSA_PSS_SHA256:
+       return BPKUR::RSA_KEY;
+     case crypto::SignatureVerifier::ECDSA_SHA256:
++    case crypto::SignatureVerifier::ECDSA_SHA384:
+       return BPKUR::EC_KEY;
+   }
+ }

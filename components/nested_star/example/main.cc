@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
     return 3;
   }
 
+  rand_resp.proofs.clear();
+
   auto msg_res = construct_message(rand_resp.points, rand_resp.proofs,
                                    *rrs_res.state, *public_key, {}, 50);
   if (msg_res.error.size() > 0) {
