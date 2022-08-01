@@ -36,7 +36,7 @@ import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
 
 // hooks
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 
 // style
 import {
@@ -93,7 +93,7 @@ export const AccountSettingsModal = ({
   const [qrCode, setQRCode] = React.useState<string>('')
 
   // custom hooks
-  const { keyringService } = useApiProxy()
+  const { attemptPasswordEntry } = usePasswordAttempts({ maxAttempts: 3 })
 
   // methods
   const handleAccountNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,9 +138,7 @@ export const AccountSettingsModal = ({
     }
 
     // entered password must be correct
-    const {
-      result: isPasswordValid
-    } = await keyringService.validatePassword(password)
+    const isPasswordValid = await attemptPasswordEntry(password)
 
     if (!isPasswordValid) {
       setIsCorrectPassword(isPasswordValid) // set or clear error
@@ -284,7 +282,10 @@ export const AccountSettingsModal = ({
             <ButtonWrapper>
               <NavButton
                 onSubmit={!showPrivateKey ? onShowPrivateKey : onHidePrivateKey}
-                text={!showPrivateKey ? getLocale('braveWalletAccountSettingsShowKey') : getLocale('braveWalletAccountSettingsHideKey')}
+                text={getLocale(!showPrivateKey
+                  ? 'braveWalletAccountSettingsShowKey'
+                  : 'braveWalletAccountSettingsHideKey'
+                )}
                 buttonType='primary'
                 disabled={
                   showPrivateKey

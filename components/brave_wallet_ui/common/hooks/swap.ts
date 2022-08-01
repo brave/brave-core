@@ -300,7 +300,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       full
     } = payload
 
-    const swapParams = {
+    const swapParams: BraveWallet.SwapParams = {
       takerAddress: accountAddress,
       sellAmount: fromAssetAmount || '',
       buyAmount: toAssetAmount || '',

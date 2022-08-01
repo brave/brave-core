@@ -239,6 +239,7 @@ export interface WalletState {
   defaultAccounts: BraveWallet.AccountInfo[]
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
+  passwordAttempts: number
 }
 
 export interface PanelState {

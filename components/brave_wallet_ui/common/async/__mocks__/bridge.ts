@@ -1,5 +1,4 @@
 import { BraveWallet } from '../../../constants/types'
-import { SwapParamsPayloadType } from '../../constants/action_types'
 import WalletApiProxy from '../../wallet_api_proxy'
 export class MockedWalletApiProxy {
   mockQuote = {
@@ -42,37 +41,41 @@ export class MockedWalletApiProxy {
     buyTokenToEthRate: '1'
   }
 
-  swapService = {
+  swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> = {
     getTransactionPayload: async ({
-      fromAsset,
-      toAsset,
-      fromAssetAmount,
-      toAssetAmount
-    }: SwapParamsPayloadType): Promise<{ success: boolean, errorResponse: any, response: BraveWallet.SwapResponse }> => ({
+      buyAmount,
+      buyToken,
+      sellAmount,
+      sellToken
+    }: BraveWallet.SwapParams): Promise<{
+      success: boolean
+      errorResponse: any
+      response: BraveWallet.SwapResponse
+    }> => ({
       success: true,
       errorResponse: {},
       response: {
         ...this.mockQuote,
-        buyTokenAddress: toAsset.contractAddress,
-        sellTokenAddress: fromAsset.contractAddress,
-        buyAmount: toAssetAmount || '',
-        sellAmount: fromAssetAmount || '',
+        buyTokenAddress: buyToken,
+        sellTokenAddress: sellToken,
+        buyAmount: buyAmount || '',
+        sellAmount: sellAmount || '',
         price: '1'
       }
-      // as BraveWallet.SwapResponse
     }),
     getPriceQuote: async () => ({
       success: true,
-      errorResponse: {},
+      errorResponse: null,
       response: this.mockTransaction
     })
   }
 
-  keyringService = {
-    validatePassword: async () => ({ result: true })
+  keyringService: Partial<InstanceType<typeof BraveWallet.KeyringServiceInterface>> = {
+    validatePassword: async (password: string) => ({ result: password === 'password' }),
+    lock: () => alert('wallet locked')
   }
 
-  ethTxManagerProxy = {
+  ethTxManagerProxy: Partial<InstanceType<typeof BraveWallet.EthTxManagerProxyInterface>> = {
     getGasEstimation1559: async () => {
       return {
         estimation: {
