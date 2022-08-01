@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/time/time.h"
 
@@ -82,13 +83,8 @@ absl::optional<EmbeddingPipelineInfo> ParseEmbeddingPipeline(
   }
 
   absl::optional<EmbeddingPipelineInfo> pipeline_embedding =
-    EmbeddingPipelineInfo(
-      version_value.value(), 
-      timestamp, 
-      *locale_value, 
-      dim, 
-      embeddings
-    );
+      EmbeddingPipelineInfo(version_value.value(), timestamp, *locale_value,
+                            dim, embeddings);
 
   return pipeline_embedding;
 }

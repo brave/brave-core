@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 #include "base/time/time.h"

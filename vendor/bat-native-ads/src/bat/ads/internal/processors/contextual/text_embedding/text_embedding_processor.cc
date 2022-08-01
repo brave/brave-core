@@ -67,7 +67,8 @@ void TextEmbedding::Process(const std::string& text) {
       text_embedding_data.embedding.GetVectorAsString();
   BLOG(9, "Embedding: " << embedding_formatted);
   LogTextEmbeddingHtmlEvent(
-      embedding_formatted, text_embedding_data.text_hashed, [](const bool success) {
+      embedding_formatted, text_embedding_data.text_hashed,
+      [](const bool success) {
         if (!success) {
           BLOG(1, "Failed to log text embedding html event");
           return;

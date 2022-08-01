@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 
-#include <string>
 #include <map>
+#include <string>
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"

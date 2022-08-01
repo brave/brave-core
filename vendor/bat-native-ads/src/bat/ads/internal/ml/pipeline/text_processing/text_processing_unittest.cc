@@ -182,7 +182,8 @@ TEST_F(BatAdsTextProcessingPipelineTest, MissingModelTest) {
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act
-  bool loaded_successfully = text_processing_pipeline.SetPipeline(base::Value());
+  bool loaded_successfully =
+      text_processing_pipeline.SetPipeline(base::Value());
 
   // Assert
   EXPECT_FALSE(loaded_successfully);
