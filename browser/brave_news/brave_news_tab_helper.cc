@@ -13,6 +13,8 @@
 
 #include "base/bind.h"
 #include "base/callback_forward.h"
+#include "base/containers/contains.h"
+#include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
@@ -45,22 +47,21 @@ const std::vector<BraveNewsTabHelper::FeedDetails>
 BraveNewsTabHelper::GetAvailableFeeds() {
   std::vector<FeedDetails> feeds;
 
-  std::unordered_set<std::string> seen_feeds;
+  base::flat_set<GURL> seen_feeds;
   auto default_publisher =
       controller_->publisher_controller()->GetPublisherForSite(
           GetWebContents().GetLastCommittedURL());
   if (default_publisher) {
-    seen_feeds.insert(default_publisher->feed_source.spec());
-    feeds.insert(feeds.begin(), {default_publisher->feed_source,
-                                 default_publisher->publisher_name});
+    seen_feeds.insert(default_publisher->feed_source);
+    feeds.push_back(
+        {default_publisher->feed_source, default_publisher->publisher_name});
   }
 
   for (const auto& rss_feed : rss_page_feeds_) {
-    auto url = rss_feed.feed_url.spec();
-    if (seen_feeds.find(url) != seen_feeds.end())
+    if (base::Contains(seen_feeds, rss_feed.feed_url))
       continue;
 
-    seen_feeds.insert(url);
+    seen_feeds.insert(rss_feed.feed_url);
     feeds.push_back(rss_feed);
   }
 

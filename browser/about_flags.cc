@@ -434,22 +434,22 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
      FEATURE_VALUE_TYPE(                                                       \
       brave_wallet::features::kBraveWalletDappsSupportFeature)},
 
-#define BRAVE_NEWS_FEATURE_ENTRIES                                         \
-    {"brave-news",                                                         \
-     flag_descriptions::kBraveNewsName,                                    \
-     flag_descriptions::kBraveNewsDescription,                             \
-     kOsDesktop | kOsAndroid,                                              \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},        \
-    {"brave-news-peek",                                                    \
-     flag_descriptions::kBraveNewsCardPeekFeatureName,                     \
-     flag_descriptions::kBraveNewsCardPeekFeatureDescription,              \
-     kOsDesktop,                                                           \
+#define BRAVE_NEWS_FEATURE_ENTRIES                                          \
+    {"brave-news",                                                          \
+     flag_descriptions::kBraveNewsName,                                     \
+     flag_descriptions::kBraveNewsDescription,                              \
+     kOsDesktop | kOsAndroid,                                               \
+     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},         \
+    {"brave-news-peek",                                                     \
+     flag_descriptions::kBraveNewsCardPeekFeatureName,                      \
+     flag_descriptions::kBraveNewsCardPeekFeatureDescription,               \
+     kOsDesktop,                                                            \
      FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)}, \
-     {"brave-news-subscribe-button", \
-      flag_descriptions::kBraveNewsSubscribeButtonName, \
-      flag_descriptions::kBraveNewsSubscribeButtonDescription, \
-      kOsLinux | kOsMac | kOsWin, \
-      FEATURE_VALUE_TYPE( \
+    {"brave-news-subscribe-button",                                         \
+     flag_descriptions::kBraveNewsSubscribeButtonName,                      \
+     flag_descriptions::kBraveNewsSubscribeButtonDescription,               \
+     kOsLinux | kOsMac | kOsWin,                                            \
+     FEATURE_VALUE_TYPE(                                                    \
       brave_today::features::kBraveNewsSubscribeButtonFeature)},
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                 \

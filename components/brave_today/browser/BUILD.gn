@@ -39,7 +39,6 @@ static_library("browser") {
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//components/feed:buildflags",
-    "//components/feed/content/renderer:feed_renderer",
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",

@@ -30,7 +30,9 @@
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
 
+namespace {
 class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  public:
   explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper)
@@ -49,6 +51,12 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  private:
   void OnAvailableFeedsChanged(
       const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override {
+    // There can be multiple OnAvailableFeedsChanged events, as we navigate
+    // (first to clear, then again to populate). This class is waiting for
+    // feeds, so expect to receive some.
+    if (feeds.size() == 0)
+      return;
+
     last_feeds_ = feeds;
     loop_.Quit();
   }
@@ -62,6 +70,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
                           BraveNewsTabHelper::PageFeedsObserver>
       news_observer_{this};
 };
+}  // namespace
 
 class BraveNewsTabHelperTest : public InProcessBrowserTest {
  public:
@@ -158,13 +167,12 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExists) {
   GURL rss_page_url = https_server()->GetURL("/page_with_rss.html");
 
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
-  content::TestNavigationObserver observer(
-      contents(), content::MessageLoopRunner::QuitMode::DEFERRED);
-  NavigateParams params(browser(), rss_page_url, ui::PAGE_TRANSITION_LINK);
-  ui_test_utils::NavigateToURL(&params);
-
   WaitForFeedsChanged waiter(tab_helper);
-  observer.WaitForNavigationFinished();
+
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
   auto result = waiter.WaitForChange();
 
   ASSERT_EQ(1u, result.size());

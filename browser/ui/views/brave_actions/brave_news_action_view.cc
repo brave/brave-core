@@ -105,7 +105,7 @@ void BraveNewsActionView::Update() {
   auto* contents = tab_strip_->GetActiveWebContents();
   bool subscribed = false;
   bool has_feeds = false;
-  absl::optional<BraveNewsTabHelper::FeedDetails> feed = absl::nullopt;
+  absl::optional<BraveNewsTabHelper::FeedDetails> feed;
 
   if (contents) {
     auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
