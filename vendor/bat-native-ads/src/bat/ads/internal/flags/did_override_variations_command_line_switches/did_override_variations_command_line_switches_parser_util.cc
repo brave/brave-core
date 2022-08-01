@@ -31,7 +31,7 @@ bool ParseVariationsCommandLineSwitches() {
       HasSwitchWithValue(variations::switches::kVariationsOverrideCountry)) {
     return true;
   } else {
-    constexpr const char* kCommandLineSwitches[] = {
+    const char* const kCommandLineSwitches[] = {
         switches::kEnableFeatures,
         variations::switches::kForceFieldTrialParams};
 
@@ -47,7 +47,7 @@ bool ParseVariationsCommandLineSwitches() {
       }
     }
 
-    constexpr const char* kFeatureNames[] = {
+    constexpr const char* const kFeatureNames[] = {
         "AdRewards",        "AdServing",        "AntiTargeting",
         "Conversions",      "EligibleAds",      "EpsilonGreedyBandit",
         "FrequencyCapping", "InlineContentAds", "NewTabPageAds",
