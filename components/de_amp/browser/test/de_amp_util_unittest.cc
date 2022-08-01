@@ -175,7 +175,7 @@ TEST(DeAmpUtilUnitTest, NoQuotes) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link href=https://abc.com rel=canonical>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithHref) {
@@ -185,7 +185,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithHref) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link rel=canonical href=https://abc.com/>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceSlashAngleBracket) {
@@ -195,7 +195,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceSlashAngleBracket) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link rel=canonical href=https://abc.com />"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithAngleBracket) {
@@ -205,7 +205,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithAngleBracket) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link rel=canonical href=https://abc.com>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceAngleBracket) {
@@ -215,7 +215,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceAngleBracket) {
       "<head>\n<link rel=canonical href=https://abc.com ><link rel=author "
       "href=https://xyz.com/>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, CanonicalLinkMissingScheme) {
