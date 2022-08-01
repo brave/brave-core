@@ -1,6 +1,6 @@
 {
   "summary": {
-    "message": "सारांश\n",
+    "message": "सारांश",
     "description": ""
   },
   "tip": {
@@ -448,7 +448,7 @@
     "description": ""
   },
   "onboardingStartUsingRewards": {
-    "message": "ब्रेव रिवार्ड्स का उपयोग करना शुरू करें\n",
+    "message": "ब्रेव रिवार्ड्स का उपयोग करना शुरू करें",
     "description": ""
   },
   "onboardingTakeTour": {
@@ -522,7 +522,7 @@
     "description": ""
   },
   "onboardingPanelAcHeader": {
-    "message": "वापस देना सरल बना दिया गया है\n",
+    "message": "वापस देना सरल बना दिया गया है",
     "description": ""
   },
   "onboardingPanelAcText": {
@@ -538,7 +538,7 @@
     "description": ""
   },
   "onboardingPanelRedeemHeader": {
-    "message": "आप टोकन के साथ क्या कर सकते हैं?\n",
+    "message": "आप टोकन के साथ क्या कर सकते हैं?",
     "description": ""
   },
   "onboardingPanelRedeemText": {

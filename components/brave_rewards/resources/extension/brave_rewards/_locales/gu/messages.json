@@ -312,11 +312,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "બૅકઅપ વૉલેટ",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "કૃપયા કરીને તમારા બૅકઅપ વૉલેટનું બૅકઅપ લો.",
     "description": ""
   },
   "notificationBackupWalletAction": {

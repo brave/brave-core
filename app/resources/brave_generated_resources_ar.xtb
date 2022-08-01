@@ -114,8 +114,7 @@
 <translation id="5240031343741051161">تجربة البحث في Brave</translation>
 <translation id="5026874946691314267">لا تظهر هذا مرة أخرى</translation>
 <translation id="5234764350956374838">رفض</translation>
-<translation id="214744058941501853">"&gt;
-          رفض تحويل البحث في brave، اضغط (إدخال) لإزالة هذا الاقتراح</translation>
+<translation id="5100490448228945668">قم برفض تحويل البحث في Brave، اضغط على Enter لإزالة هذا الاقتراح</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="6040143037577758943">إغلاق</translation>
@@ -221,6 +220,7 @@
 <translation id="8820817407110198400">إشارات</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
 <translation id="1811404036171336214">اظهر دائماً الإشارات المرجعية على صفحة علامة تبويب جديدة</translation>
+<translation id="3416468988018290825">أظهِر عناوين URLs كاملة دائمًا</translation>
 <translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
 <translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="1013121820689882118">قارئ السرعة</translation>
@@ -393,7 +393,8 @@
 <translation id="5249433283143453448">استخدم مكون Widevine لإدارة الحقوق الرقمية (DRM) لعرض دفق الفيديو المحمي والمحتويات الأخرى في المستعرض.</translation>
 <translation id="8137559199583651773">إدارة الإضافات</translation>
 <translation id="7013485839273047434">احصل على المزيد من الإضافات</translation>
-<translation id="9131889008937672866">المحفظة الافتراضية للعملات المشفرة</translation>
+<translation id="4954512758656527938">محفظة Ethereum الافتراضية</translation>
+<translation id="7701023802820268122">محفظة Solana الافتراضية</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="7701040980221191251">بلا</translation>
@@ -418,6 +419,8 @@
 <translation id="8205945804087322170">أضف شبكة جديدة</translation>
 <translation id="1330032157352961756">مُعرّف السلسلة الجديدة</translation>
 <translation id="3423620355610881890">رقم عشري موجب</translation>
+<translation id="8110465398315041268">ابحث عن شبكة</translation>
+<translation id="3579705520805744214">مُعرف السلسلة أو اسمها</translation>
 <translation id="726121047592132939">اسم السلسلة الجديدة</translation>
 <translation id="1034112277864078119">قم بإدخال اسم السلسلة</translation>
 <translation id="4672314527143443556">اسم عملة السلسلة</translation>
@@ -490,6 +493,7 @@
 <translation id="3411013544209536575">نصائح للمساعدة</translation>
 <translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
+<translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
 <translation id="6624718837376802990">الصورة الرمزية للمكافآت الهائجة</translation>
 <translation id="6617313057407561765">الصورة الرمزية للشجاع الهائج</translation>
 <translation id="6754445808455578019">الصورة الرمزية للمحيط الهائج</translation>

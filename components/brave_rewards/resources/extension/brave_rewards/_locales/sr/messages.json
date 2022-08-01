@@ -124,7 +124,7 @@
     "description": ""
   },
   "grantCaptchaExpiration": {
-    "message": "Datum isteka odobrenja\n",
+    "message": "Datum isteka odobrenja",
     "description": ""
   },
   "grantCaptchaErrorTitle": {

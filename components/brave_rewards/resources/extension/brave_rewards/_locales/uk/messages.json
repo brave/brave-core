@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "OK",
+    "message": "ОК",
     "description": ""
   },
   "set": {
@@ -486,7 +486,7 @@
     "description": ""
   },
   "onboardingTourDone": {
-    "message": "Готово\n",
+    "message": "Готово",
     "description": ""
   },
   "onboardingTourSkip": {

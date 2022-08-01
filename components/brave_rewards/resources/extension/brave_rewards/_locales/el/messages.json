@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "OK",
+    "message": "Εντάξει",
     "description": ""
   },
   "set": {
@@ -204,7 +204,7 @@
     "description": ""
   },
   "walletAutoContribute": {
-    "message": "Auto-Contribute",
+    "message": "Αυτόματη Συνεισφορά",
     "description": ""
   },
   "walletDisconnected": {
@@ -299,7 +299,7 @@
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
-    "message": "Auto-Contribute",
+    "message": "Αυτόματη Συνεισφορά",
     "description": ""
   },
   "notificationAutoContributeCompletedText": {
@@ -498,7 +498,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeHeader": {
-    "message": "Καλώς ήρθατε στο Brave Rewards!\n",
+    "message": "Καλώς ήρθατε στο Brave Rewards!",
     "description": ""
   },
   "onboardingPanelWelcomeText": {

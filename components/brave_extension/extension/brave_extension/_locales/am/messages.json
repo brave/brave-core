@@ -100,11 +100,11 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "የጣት አሻራ ታግ (ል (መደበኛ)\n ",
+    "message": "የጣት አሻራ ታግ (ል (መደበኛ)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "የጣት አሻራ ታግ (ል (ጥብቅ ፣ ጣቢያዎችን ሊሰብር ይችላል)\n ",
+    "message": "የጣት አሻራ ታግ (ል (ጥብቅ ፣ ጣቢያዎችን ሊሰብር ይችላል)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
@@ -124,7 +124,7 @@
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "\nየተፈቀደላቸው ስክሪፕቶች",
+    "message": "የተፈቀደላቸው ስክሪፕቶች",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
@@ -160,7 +160,7 @@
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "\nወደ ኋላ ተመለስ",
+    "message": "ወደ ኋላ ተመለስ",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {

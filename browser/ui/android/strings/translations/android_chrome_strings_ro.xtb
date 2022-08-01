@@ -109,6 +109,7 @@ Când ștergi istoricul de navigare (în întregime sau pentru un anumit site), 
 <translation id="1513352483775369820">Marcaje și istoric web</translation>
 <translation id="1513814250881909472">Sincronizează pentru a accesa filele de pe celelalte dispozitive</translation>
 <translation id="1513858653616922153">Șterge parola</translation>
+<translation id="1514552811327923157">Solicitarea Privacy Sandbox s-a deschis la înălțime completă</translation>
 <translation id="1518421282666914498">GIF emoție <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="1521774566618522728">Activ astăzi</translation>
 <translation id="1538801903729528855">Bucură-te de o experiență vocală mai bună pe web</translation>
@@ -181,7 +182,6 @@ Când ștergi istoricul de navigare (în întregime sau pentru un anumit site), 
 <translation id="1995884366040846621">Pentru a continua, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> va permite accesul site-ului la numele, adresa de e-mail și fotografia ta de profil. Consultă <ph name="BEGIN_LINK1"/>politica de confidențialitate<ph name="END_LINK1"/> a site-ului.</translation>
 <translation id="2000419248597011803">Trimite anumite cookie-uri și căutări din bara de adrese și din caseta de căutare în motorul de căutare prestabilit</translation>
 <translation id="6968892567705775281">Incluzi text din jur în căutările de pe Brave?</translation>
-<translation id="469737985790683149">Sincronizează pentru a primi cel mai relevant conținut de pe Brave</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{Un fișier}few{# fișiere}other{# de fișiere}}</translation>
 <translation id="2020309681647789787">Istoricul apare pe toate dispozitivele tale sincronizate. Astfel, poți continua ceea ce făceai</translation>
 <translation id="2021896219286479412">Comenzi site în ecran complet</translation>
@@ -265,7 +265,6 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="2461822463642141190">Actual</translation>
 <translation id="2542068854151299295">Conectează-te pentru a profita din plin de Brave</translation>
 <translation id="247737702124049222">Descrierile imaginilor sunt activate</translation>
-<translation id="2481251096908459228">Vezi subiecte pentru tine</translation>
 <translation id="2482878487686419369">Notificări</translation>
 <translation id="2485422356828889247">Dezinstalează</translation>
 <translation id="6361779936989026201">Asistentul Brave în Brave</translation>
@@ -305,7 +304,7 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{Un fișier audio}few{# fișiere audio}other{# de fișiere audio}}</translation>
 <translation id="265156376773362237">Preîncărcare standard</translation>
 <translation id="2656405586795711023">Aplicații web</translation>
-<translation id="2700802943130197326">Sincronizează pentru a accesa parolele, marcajele și altele de pe toate celelalte dispozitive.</translation>
+<translation id="2669454659051515572">Oricine folosește acest dispozitiv poate să vadă fișierele descărcate</translation>
 <translation id="2702516483241149200">Nou: distribuie un link care derulează la acest text</translation>
 <translation id="2704606927547763573">Copiat</translation>
 <translation id="2707726405694321444">Actualizează pagina</translation>
@@ -313,6 +312,7 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="2711073837061989559">Versiuni de încercare</translation>
 <translation id="2718352093833049315">Numai prin Wi-Fi</translation>
 <translation id="2718846868787000099">Site-urile pe care le accesezi îți pot vedea preferințele pentru a afișa conținut în limbile tale preferate</translation>
+<translation id="2722945394406572875">Solicitarea privind Privacy Sandbox a fost închisă</translation>
 <translation id="2723001399770238859">audio</translation>
 <translation id="2732063072010454421">Beneficiază de o experiență vocală mai bună</translation>
 <translation id="2739256783402597439">2G</translation>
@@ -337,6 +337,7 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="2842985007712546952">Dosar părinte</translation>
 <translation id="2856503607207334158">Nu te-ai conectat</translation>
 <translation id="2860954141821109167">Verifică dacă pe dispozitiv este activată o aplicație de telefon</translation>
+<translation id="6518254564747115579">Unele funcții Brave nu vor mai fi disponibile</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2871733351037274014">Preîncarcă paginile</translation>
 <translation id="8541922081612557424">Despre Brave</translation>
@@ -358,7 +359,6 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="2951071800649516099">Adaugă pagini la lista de lecturi pentru mai târziu</translation>
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> pagină necitită}few{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> pagini necitite}other{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> de pagini necitite}}</translation>
 <translation id="2961210776189273067">Titlu</translation>
-<translation id="2979448359891869301">Nu se poate extinde captura de ecran. Încearcă din nou atunci când telefonul nu este ocupat cu alte operațiuni.</translation>
 <translation id="2979639724566107830">Deschide într-o fereastră nouă</translation>
 <translation id="2981364137500752533">Poți deschide maximum cinci ferestre.</translation>
 <translation id="5948666439178419683">Include text din jur în căutările de pe Brave</translation>
@@ -478,7 +478,6 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="3602290021589620013">Previzualizare</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="3622349720008044802">Gestionează ferestrele</translation>
-<translation id="3624977496395967031">Dă clic pentru a deschide opțiunile de sortare</translation>
 <translation id="3631987586758005671">Se trimite la <ph name="DEVICE_NAME"/></translation>
 <translation id="363596933471559332">Te conectezi automat la site-uri folosind datele de conectare stocate. Când funcția este dezactivată, ți se va solicita verificarea de fiecare dată înainte de a te conecta la un site.</translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
@@ -486,6 +485,7 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="3687645719033307815">Este afișată o previzualizare a acestei pagini</translation>
 <translation id="3690369331356918524">Te avertizează dacă parolele au fost expuse în urma încălcării securității datelor</translation>
 <translation id="3692944402865947621">Descărcarea fișierului <ph name="FILE_NAME"/> nu a reușit, deoarece nu se poate contacta locația de stocare.</translation>
+<translation id="3697705478071004188">Sortează după site</translation>
 <translation id="3699022356773522638">Descarci fișierul?</translation>
 <translation id="371230970611282515">Anticipează și te avertizează cu privire la evenimente periculoase înainte să aibă loc.</translation>
 <translation id="3714981814255182093">Deschide Bara de căutare</translation>
@@ -546,6 +546,7 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="4095146165863963773">Ștergi datele aplicației?</translation>
 <translation id="4096227151372679484">Fluxul de salvare a marcajului deschis la jumătate din înălțime</translation>
 <translation id="673197144963363525">Contribuie la îmbunătățirea Brave trimițând statistici de utilizare și rapoarte de blocare la Brave.</translation>
+<translation id="4101475238162928417">Sincronizează pentru a accesa parolele, marcajele și altele pe celelalte dispozitive</translation>
 <translation id="410351446219883937">Redare automată</translation>
 <translation id="8112581848375017126">Brave explorează noi funcții care le dau site-urilor posibilitatea să ofere aceeași experiență de navigare, folosind mai puține informații despre tine</translation>
 <translation id="4108314971463891922">Urmărește</translation>
@@ -565,8 +566,11 @@ Atinge lung orice cuvânt pentru a-l căuta. Pentru a rafina căutarea, selectea
 <translation id="6003646045106347985">Pentru a obține sugestii de conținut personalizat de la Brave, activează sincronizarea</translation>
 <translation id="1675646381334855139">Dacă permiți cookie-uri, Brave le va folosi probabil pentru preîncărcare.</translation>
 <translation id="4225895483398857530">Comanda rapidă spre bara de instrumente</translation>
+<translation id="4227318652298512614">Urmărește orice site-uri dorești</translation>
 <translation id="4242533952199664413">Deschide setările</translation>
 <translation id="4248098802131000011">Protejează-ți parolele împotriva încălcării securității datelor și a altor probleme de securitate</translation>
+<translation id="7445061995866044926">Te deconectezi de la Brave?</translation>
+<translation id="4249955472157341256">Sortează după cele mai recente</translation>
 <translation id="4250229828105606438">Captură de ecran</translation>
 <translation id="4256782883801055595">Licențe open source</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Ce date sunt folosite:<ph name="END_BOLD"/> istoricul tău de navigare, o evidență a site-urilor pe care le-ai accesat folosind Brave pe acest dispozitiv.</translation>
@@ -631,7 +635,6 @@ Contul Brave poate să ofere alte forme ale istoricului de navigare, cum ar fi c
 <translation id="4594952190837476234">Această pagină offline este din data de <ph name="CREATION_TIME"/> și poate fi diferită de versiunea online.</translation>
 <translation id="4616150815774728855">Deschide <ph name="WEBAPK_NAME"/></translation>
 <translation id="4619564267100705184">Confirmă-ți identitatea</translation>
-<translation id="4627165777145349100">Mai multe despre această pagină</translation>
 <translation id="4634124774493850572">Folosește parola</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{O parolă compromisă}few{# parole compromise}other{# de parole compromise}}</translation>
 <translation id="4650364565596261010">Setare prestabilită a sistemului</translation>
@@ -678,6 +681,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="4842515939542199281">Atinge microfonul pentru a căuta cu ajutorul vocii</translation>
 <translation id="6195403640086187022">Pentru siguranță suplimentară, criptează parolele pe dispozitiv înainte să se salveze în Managerul de parole Brave</translation>
 <translation id="4850886885716139402">Afișează</translation>
+<translation id="4852014461738377247">Se conectează\u2026</translation>
 <translation id="4860895144060829044">Apelează</translation>
 <translation id="4864369630010738180">Se conectează...</translation>
 <translation id="5131234170665854056">Nu se poate instala <ph name="MODULE"/> pentru Brave</translation>
@@ -862,11 +866,13 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="5869522115854928033">Parole salvate</translation>
 <translation id="5869789175361934029">Continuă pe alt dispozitiv</translation>
 <translation id="5604589745019948682">Pentru a urmări un site, accesează site-ul, deschide meniul Brave și atinge Urmărește.</translation>
+<translation id="5879072387416556377">Primește sugestii mai bune</translation>
 <translation id="5880748256563468367">Accesează feedul</translation>
 <translation id="9037412730408024068">Pentru a te ajuta să finalizezi sarcini, Brave va primi adresele URL și conținutul site-urilor în care folosești Asistentul, precum și informațiile pe care le trimiți cu ajutorul Asistentului</translation>
 <translation id="1985257319311245640">Dacă știe adresele URL ale site-urilor, Asistentul Brave te poate ajuta să finalizezi activități. Poți să dezactivezi Asistentul din setările Brave.</translation>
 <translation id="5916664084637901428">Activat</translation>
 <translation id="5919204609460789179">Actualizează <ph name="PRODUCT_NAME"/> pentru a începe sincronizarea</translation>
+<translation id="2810071132154985518">În perioadele de încercare, Brave explorează moduri de a limita spamul, frauda și transferul între site-uri. Brave îți <ph name="BEGIN_LINK"/>estimează interesele<ph name="END_LINK"/> pe care le pot folosi site-urile pentru a-ți afișa anunțuri. Îți poți gestiona interesele din setări.</translation>
 <translation id="5938820472109305350">Adaugă <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Pentru căutare se folosește Brave</translation>
 <translation id="5945035219773565305">Recomandare actuală:  <ph name="RECOMMENDATION"/></translation>
@@ -875,7 +881,6 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="5957442310066583693">Pentru a vedea principalele site-uri, atinge butonul ecran de pornire</translation>
 <translation id="5958275228015807058">Găsește fișierele și paginile în Descărcări</translation>
 <translation id="5962718611393537961">Atinge pentru a restrânge</translation>
-<translation id="7760665516427405230">Ca să trimiți această pagină pe alt dispozitiv, activează sincronizarea în setările Brave</translation>
 <translation id="5964869237734432770">Nu genera descrieri imagine</translation>
 <translation id="5979084224081478209">Verifică parolele</translation>
 <translation id="5995726099713306770">Descarci pagina din nou?</translation>
@@ -1043,6 +1048,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, filă, selectată</translation>
 <translation id="6828070228333235514">Nu mai urmări prețul</translation>
 <translation id="6833996806551876956">Perioada de încercare a Mediului de testare securizat pentru confidențialitate</translation>
+<translation id="6836206421467243968">Restabilește grupul de file <ph name="TITLE_OF_GROUP"/> ca pe un nou grup de file din fundal.</translation>
 <translation id="6846298663435243399">Se încarcă…</translation>
 <translation id="6850409657436465440">Descărcarea este încă în desfășurare</translation>
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> file închise</translation>
@@ -1102,6 +1108,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="8355565210555500987">Te protejează în Brave și poate fi folosită pentru a spori securitatea în alte aplicații Brave dacă te-ai conectat.</translation>
 <translation id="7191430249889272776">A fost deschisă o filă în fundal.</translation>
 <translation id="7196215469483532480">Prezentare a Ghidului privind confidențialitatea, deschisă la înălțimea completă</translation>
+<translation id="7207760545532569765">Restabilește <ph name="TAB_COUNT"/> file ca noi file din fundal.</translation>
 <translation id="7208109991155904980">Reacția a fost mutată</translation>
 <translation id="7222235798733126207">Transfer limitat între site-uri</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{O descărcare în așteptare}few{# descărcări în așteptare}other{# de descărcări în așteptare}}</translation>
@@ -1119,6 +1126,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="1382596880054356475">Offline. Brave nu îți poate verifica parolele.</translation>
 <translation id="7313188324932846546">Atinge pentru a configura sincronizarea</translation>
 <translation id="7332075081379534664">Te-ai conectat</translation>
+<translation id="8716243540027092298">Sincronizează pentru a primi cel mai relevant conținut de la Brave</translation>
 <translation id="7339898014177206373">Fereastră nouă</translation>
 <translation id="7340958967809483333">Opțiuni pentru Discover</translation>
 <translation id="7352339641508007922">Trage pentru a face o captură de ecran lungă</translation>
@@ -1152,6 +1160,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="749294055653435199">Google Lens nu este disponibil pe acest dispozitiv</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (Actualizată la <ph name="TIME_SINCE_UPDATE"/>)</translation>
 <translation id="7498271377022651285">Așteaptă...</translation>
+<translation id="8156131600798538460">Pentru a te deconecta de la Contul Brave pe toate site-urile, <ph name="BEGIN_LINK1"/>deconectează-te de la Brave<ph name="END_LINK1"/>.</translation>
 <translation id="750228856503700085">Nu sunt disponibile actualizări</translation>
 <translation id="7507207699631365376">Consultă <ph name="BEGIN_LINK"/>politica de confidențialitate<ph name="END_LINK"/> a furnizorului</translation>
 <translation id="7514365320538308">Descarcă</translation>
@@ -1191,6 +1200,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="770741401784017797">Se creează GIF-ul</translation>
 <translation id="7707922173985738739">va folosi datele mobile;</translation>
 <translation id="7709094866268987903">Interesele eliminate vor apărea aici</translation>
+<translation id="7709918231054955894">Accesează toate filele</translation>
 <translation id="7725024127233776428">Paginile pe care le marchezi apar aici</translation>
 <translation id="7757787379047923882">Text trimis de pe <ph name="DEVICE_NAME"/></translation>
 <translation id="7761849928583394409">Alege data și ora</translation>
@@ -1269,6 +1279,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="1501443023467711714">Conectează-te la Brave pentru a-l personaliza</translation>
 <translation id="3249150807062904185">Dacă alegi să continui, ești de acord cu <ph name="BEGIN_TOS_LINK"/>Termenii și condițiile<ph name="END_TOS_LINK"/>.\nPentru a contribui la îmbunătățirea aplicației, Brave trimite date de utilizare și despre erori la Brave. <ph name="BEGIN_UMA_LINK"/>Gestionează<ph name="END_UMA_LINK"/></translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
+<translation id="8107530384992929318">Închide opțiunile de sortare</translation>
 <translation id="8109613176066109935">Pentru a accesa marcajele pe toate dispozitivele, activează sincronizarea</translation>
 <translation id="2919733817273403520">Contribuie la îmbunătățirea funcțiilor și a performanței Brave</translation>
 <translation id="4565206163201411670">Afișezi activitatea din Brave în Bunăstare digitală?</translation>
@@ -1342,6 +1353,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="8489271220582375723">Deschide pagina Istoric</translation>
 <translation id="8493948351860045254">Eliberează spațiu</translation>
+<translation id="8497242791509864205">Deschide opțiunile de sortare</translation>
 <translation id="8497480609928300907">Prezentare a Ghidului privind confidențialitatea</translation>
 <translation id="8497726226069778601">Nu este nimic de văzut aici... deocamdată</translation>
 <translation id="230699814587342492">Parole Brave</translation>
@@ -1379,6 +1391,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="6482272021231898750">Conectează-te la acest site și la Brave cu Contul Brave. Poți activa sincronizarea mai târziu.</translation>
 <translation id="6464188276370426100">Cum să cauți folosind Brave</translation>
 <translation id="8662811608048051533">Te deconectează de pe majoritatea site-urilor.</translation>
+<translation id="7436978557885042606">Folosește Brave în stilul tău</translation>
 <translation id="8664979001105139458">Numele fișierului există deja</translation>
 <translation id="8666759526542103597">Despre Personalizarea anunțurilor bazată pe browser</translation>
 <translation id="8667760277771450375">Explorăm noi moduri de a restricționa urmărirea pe mai multe site-uri, permițând site-urilor să prevină spamul cu anunțuri și frauda.</translation>
@@ -1408,6 +1421,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="8835786707922974220">Asigură-te că ai în permanență acces la parolele salvate</translation>
 <translation id="883806473910249246">A apărut o eroare la descărcarea conținutului.</translation>
 <translation id="8840953339110955557">Această pagină poate fi diferită de versiunea online.</translation>
+<translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">Ascuns</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, filă</translation>
 <translation id="8854223127042600341">Vezi fișierele offline</translation>
@@ -1461,11 +1475,12 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="9106148373857059373">Fluxul de salvare a marcajului închis</translation>
 <translation id="9108312223223904744">Compatibilitatea folosirii telefonului ca pe o cheie de securitate</translation>
 <translation id="9108808586816295166">Este posibil să nu fie disponibil oricând un DNS securizat</translation>
+<translation id="9128984223251192329">Solicitarea Privacy Sandbox s-a deschis la jumătate din înălțime</translation>
 <translation id="9133397713400217035">Explorează offline</translation>
 <translation id="9137013805542155359">Afișează originalul</translation>
 <translation id="9148126808321036104">Conectează-te din nou</translation>
-<translation id="9155898266292537608">De asemenea, poți căuta atingând scurt un cuvânt</translation>
 <translation id="9158770349521403363">Trimite numai conținutul</translation>
+<translation id="9159716826369098114">Restabilește grupul de <ph name="TAB_COUNT"/> file ca pe un nou grup de file din fundal.</translation>
 <translation id="1725592710034997413">Adresele URL pe care le accesezi sunt salvate în Contul Brave</translation>
 <translation id="9169507124922466868">Istoricul de navigare este pe jumătate deschis</translation>
 <translation id="9187955620966010988">Reacția a fost ajustată</translation>
@@ -1476,6 +1491,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="9209888181064652401">Nu pot apela</translation>
 <translation id="9212845824145208577">Nu se poate selecta mai jos. Începe selecția în pagină de mai jos.</translation>
 <translation id="9219103736887031265">Imagini</translation>
+<translation id="9219582468404818260">Ajută-ne să creăm un web mai bun</translation>
 <translation id="6946179564366058239">Când un site îți solicită să preîncarci în mod privat linkuri pe pagină, Brave criptează și preîncarcă paginile prin serverele Brave fără cookie-uri. Astfel, identitatea ta este ascunsă pentru site-ul preîncărcat.</translation>
 <translation id="4596514158372210596">Elimină activitatea în Brave din Bunăstarea digitală</translation>
 <translation id="2830145431802238213">Folosește modul Lite în Brave</translation>
@@ -1488,6 +1504,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="96681097142096641">Vrei să afișezi pagina simplificată?</translation>
 <translation id="968900484120156207">Paginile pe care le accesezi apar aici</translation>
 <translation id="970715775301869095"><ph name="MINUTES"/> min. rămase</translation>
+<translation id="978443947993957527">Vezi conținut relevant pentru tine</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="983192555821071799">Închide toate filele</translation>
 <translation id="987264212798334818">General</translation>
@@ -1509,7 +1526,6 @@ Pe baza interacțiunii dvs. cu un site, precum autentificările dese într-un co
 Token-urile de încredere sporesc confidențialitatea pe web și nu pot fi utilizate pentru a vă identifica.</translation>
 <translation id="7721367250891727403">Blocați în timpul modului incognito</translation>
 <translation id="4785410057733147746">În modul incognito, site-urile nu pot folosi modulele cookie pentru a vedea activitatea dvs. de navigare de pe diferite site-uri, de exemplu, pentru a personaliza anunțurile. Este posibil ca anumite site-uri să nu funcționeze corect.</translation>
-<translation id="4495453361692585539">Oricine utilizează acest dispozitiv va vedea fișierele pe care le descărcați în modul Incognito</translation>
 <translation id="2633278372998075009">Pagini private</translation>
 <translation id="8737444348664175738">S-a făcut trecerea la filele incognito</translation>
 <translation id="8810805383611013660">Deschideți într-o filă incognito</translation>

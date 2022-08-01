@@ -260,6 +260,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3097089005389027085">Astfel, veți distribui datele dvs. Brave (posibil, inclusiv parolele) dispozitivului care a generat aceste cuvinte-cod.
 Verificați încă o dată dacă aceste cuvinte-cod au fost generate de un dispozitiv deținut de dvs.
 Sigur doriți să faceți acest lucru?</translation>
+<translation id="4550208292810542331">Nu s-a acordat permisiunea pentru cameră</translation>
 <translation id="597993392929850353">Licență Brave</translation>
 <translation id="6336451774241870485">Pagină nouă privată</translation>
 <translation id="6199596294742117349">Aceasta este o Filă privată</translation>
@@ -549,8 +550,9 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6366007539108097840">3 luni</translation>
 <translation id="6977728312178289892">1 an</translation>
 <translation id="6895566650974550243">TOATĂ PERIOADA</translation>
-<translation id="5071303414930953888">Contul <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Cont <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Adaugă un cont</translation>
+<translation id="318334680413773318">Adăugați/Importați un cont</translation>
 <translation id="3448492834076427715">Actualizează contul</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Activați deblocarea cu amprentă?</translation>
@@ -859,12 +861,14 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4804818685124855865">Deconectează-te</translation>
 <translation id="8009571545960303544">Semnătura dvs. este solicitată</translation>
 <translation id="3484981968509595506">A DApp vă solicită cheia publică de criptare</translation>
+<translation id="2300240008330189182"><ph name="URL"/> vă solicită cheia publică de criptare. Dacă sunteți de acord să furnizați această cheie, site-ul vă va putea trimite mesaje criptate.</translation>
 <translation id="3340247553212049934">Indicați</translation>
 <translation id="1982257600591932657">Numele rețelei</translation>
 <translation id="5052727830821470769">URL rețea</translation>
 <translation id="4822132585477111396">ID lanț</translation>
 <translation id="7131971375297699539">Simbolul monedei</translation>
 <translation id="7982789257301363584">Rețea</translation>
+<translation id="6936860995365507185">Acest lucru va permite utilizarea acestei rețele în portofelul Brave. <ph name="CLICK_START"/>Aflați mai multe<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Permiteți acestui site să adauge o rețea?</translation>
 <translation id="4857321293515555666">DApp dorește să citească acest mesaj pentru a finaliza solicitarea.</translation>
 <translation id="714506544401754321">Decriptați mesajul</translation>
@@ -889,4 +893,14 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5334952096674914470">\n\nFurnizor de date mobile\n</translation>
 <translation id="5393042357629679588">\n\nAltă problemă\n</translation>
 <translation id="8095666712177294104">\n\nPlatformă\n</translation>
+<translation id="7080614857771109950">Acceptă activele compatibile EVM pe blockchain-ul Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Acceptă activele compatibile SPL pe blockchain-ul Solana</translation>
+<translation id="6575120282593094155">Nu aveți încă un cont <ph name="ACCOUNT_TYPE"/>. Creați unul acum?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Aplicații excluse</translation>
+<translation id="8463269357637177759">Aplicații obișnuite permise</translation>
+<translation id="4554726425645556940">Aplicații de sistem permise</translation>
+<translation id="9023148942866814328">Afișați aplicațiile de sistem</translation>
+<translation id="5472400694702418949">Adăugați aplicațiile care urmează să fie excluse din traficul VPN.</translation>
+<translation id="7002577172732106572">Tunelare divizată</translation>
 </translationbundle>

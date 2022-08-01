@@ -204,7 +204,7 @@
     "description": ""
   },
   "walletAutoContribute": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Bijdrage ",
     "description": ""
   },
   "walletDisconnected": {
@@ -299,7 +299,7 @@
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Bijdrage ",
     "description": ""
   },
   "notificationAutoContributeCompletedText": {
@@ -618,7 +618,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "Dismiss",
+    "message": "Sluiten",
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {

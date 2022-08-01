@@ -204,7 +204,7 @@
     "description": ""
   },
   "walletAutoContribute": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Contribute ",
     "description": ""
   },
   "walletDisconnected": {
@@ -299,7 +299,7 @@
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Contribute ",
     "description": ""
   },
   "notificationAutoContributeCompletedText": {

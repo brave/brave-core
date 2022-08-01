@@ -112,7 +112,7 @@
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Upaya identifikasi pengguna (fingerprinting)\n",
+    "message": "Upaya identifikasi pengguna (fingerprinting)",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {

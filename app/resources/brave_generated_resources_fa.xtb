@@ -113,8 +113,7 @@
 <translation id="5240031343741051161">جستجوی Brave را امتحان کنید</translation>
 <translation id="5026874946691314267">این مورد دیگر نشان داده نشود</translation>
 <translation id="5234764350956374838">لغو کردن</translation>
-<translation id="214744058941501853">"&gt;
-          تبدیل جستجوی brave را نادیده بگیرید، برای حذف این پیشنهاد Enter را فشار دهید</translation>
+<translation id="5100490448228945668">تبدیل جستجوی Brave را ببندید، کلید Enter را فشار دهید تا این پیشنهاد حذف شود</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
 <translation id="6040143037577758943">بستن</translation>
@@ -220,6 +219,7 @@
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
 <translation id="1811404036171336214">نشانک‌ها همیشه در صفحه برگه جدید نمایش داده شود</translation>
+<translation id="3416468988018290825">همیشه آدرس وب کامل نشان داده شود</translation>
 <translation id="5529693968082667490">نمایش دکمه جستجوی زبانه‌ها</translation>
 <translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
 <translation id="1013121820689882118">تندخوان</translation>
@@ -391,7 +391,8 @@
 <translation id="5249433283143453448">از مؤلفه مدیریت حقوق دیجیتال (DRM) Widevine برای مشاهده ویدیوی محافظت‌شده در حال پخش جریانی و سایر محتواها در مرورگر استفاده کنید.</translation>
 <translation id="8137559199583651773">مدیریت افزونه‌ها</translation>
 <translation id="7013485839273047434">دریافت افزونه‌های بیشتر</translation>
-<translation id="9131889008937672866">کیف پول پیش‌فرض رمزارز</translation>
+<translation id="4954512758656527938">کیف پول پیش‌فرض اتریوم</translation>
+<translation id="7701023802820268122">کیف پول پیش‌فرض سولانا</translation>
 <translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="7701040980221191251">هیچ کدام</translation>
@@ -416,6 +417,8 @@
 <translation id="8205945804087322170">افزودن شبکه جدید</translation>
 <translation id="1330032157352961756">شناسه زنجیره جدید</translation>
 <translation id="3423620355610881890">یک عدد اعشاری مثبت</translation>
+<translation id="8110465398315041268">جستجوی شبکه</translation>
+<translation id="3579705520805744214">نام یا شناسه زنجیره</translation>
 <translation id="726121047592132939">نام زنجیره جدید</translation>
 <translation id="1034112277864078119">نام زنجیره را وارد کنید</translation>
 <translation id="4672314527143443556">نام ارز زنجیره</translation>
@@ -487,6 +490,7 @@
 <translation id="3411013544209536575">نکات راهنما</translation>
 <translation id="2775956301559569472">نشان دادن پیام‌واره Wayback Machine در صفحه‌های خطای 404</translation>
 <translation id="3095201688102519917">قبل از بستن پنجره‌ای با چندین زبانه، به من هشدار داده شود</translation>
+<translation id="7120553802660696133">هنگام بستن آخرین زبانه، پنجره بسته شود</translation>
 <translation id="6624718837376802990">آواتار پاداش‌های نوآورانه</translation>
 <translation id="6617313057407561765">آواتار نوآورانه Brave</translation>
 <translation id="6754445808455578019">آواتار نوآورانه اقیانوس</translation>

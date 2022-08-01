@@ -20,6 +20,7 @@
 <translation id="1043382569739532657">보조금, 장학금, 재정 지원</translation>
 <translation id="1048785276086539861">주석을 수정하면 문서가 단일 페이지 뷰로 돌아갑니다.</translation>
 <translation id="1050038467049342496">다른 앱 닫기</translation>
+<translation id="1053959602163383901"><ph name="PROVIDER_ORIGIN"/> 주소를 사용하는 웹사이트의 인증 방식으로 인증자 기기를 선택했습니다. 이 제공업체에서 내 결제 수단 정보를 저장했을 수 있으며 직접 <ph name="LINK_TEXT"/>할 수 있습니다.</translation>
 <translation id="1055184225775184556">추가 실행 취소(&amp;U)</translation>
 <translation id="1056663316309890343">사진 소프트웨어</translation>
 <translation id="1056898198331236512">경고</translation>
@@ -111,6 +112,7 @@
 <translation id="1270502636509132238">픽업 방법</translation>
 <translation id="1281476433249504884">스태커 1</translation>
 <translation id="1285320974508926690">이 사이트 번역 안함</translation>
+<translation id="1288548991597756084">카드 안전하게 저장하기</translation>
 <translation id="1292571435393770077">트레이 16</translation>
 <translation id="1209478311331937175">'컴퓨터의 소프트웨어로 인해 Brave이 안전하게 웹에 접속할 수 없습니다'(Windows 컴퓨터만 해당)</translation>
 <translation id="1294154142200295408">명령줄 변형</translation>
@@ -137,7 +139,7 @@
           <ph name="LIST_ITEM"/>고용주 또는 학교
           <ph name="LIST_ITEM"/>인터넷 서비스 제공업체
         <ph name="END_LIST"/></translation>
-<translation id="1337692097987160377">탭 공유</translation>
+<translation id="1337692097987160377">이 탭 공유</translation>
 <translation id="1339601241726513588">등록 도메인:</translation>
 <translation id="1340482604681802745">수령 주소</translation>
 <translation id="1346748346194534595">오른쪽</translation>
@@ -208,6 +210,7 @@
     &lt;p&gt;오류를 수정하려면 열려는 페이지에서 &lt;strong&gt;연결&lt;/strong&gt;을 클릭하세요.&lt;/p&gt;</translation>
 <translation id="1507780850870535225">조경 디자인</translation>
 <translation id="1513706915089223971">방문 기록 항목 목록</translation>
+<translation id="1516097932025103760">암호화되어 안전하게 저장되며 CVC는 저장되지 않습니다.</translation>
 <translation id="1517433312004943670">전화번호 필요</translation>
 <translation id="1519264250979466059">생성 날짜</translation>
 <translation id="1521159554480556801">섬유 및 직물 예술</translation>
@@ -244,7 +247,7 @@
 <translation id="1592005682883173041">로컬 데이터 액세스</translation>
 <translation id="1594030484168838125">선택</translation>
 <translation id="1596296697375291157">스릴러, 범죄 및 미스터리 영화</translation>
-<translation id="8523167061098356223">Brave 공룡 게임 플레이</translation>
+<translation id="8523167061098356223">Brave 공룡 달리기 게임 플레이</translation>
 <translation id="161042844686301425">청록색</translation>
 <translation id="1611101756749861742">2번째 롤</translation>
 <translation id="1615402009686901181">기밀 콘텐츠가 보일 때 관리자 정책에서 화면 캡처를 사용 중지합니다.</translation>
@@ -273,6 +276,7 @@
 <translation id="1662550410081243962">결제 수단 저장 및 자동 입력</translation>
 <translation id="1838576226863399477">카드와 주소는 Brave에서 가져왔습니다. 이 정보는 <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 관리할 수 있습니다.</translation>
 <translation id="1671391448414634642">지금부터 <ph name="SOURCE_LANGUAGE"/>로 된 페이지가 <ph name="TARGET_LANGUAGE"/>로 번역됩니다.</translation>
+<translation id="1673886523110456987">혜택을 사용하려면 <ph name="CARD_DETAIL"/>에서 결제하세요.</translation>
 <translation id="1674504678466460478">출발어: <ph name="SOURCE_LANGUAGE"/>, 도착어: <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="1682696192498422849">짧은 쪽 먼저</translation>
 <translation id="168693727862418163">이 정책 값은 스키마에 대해 유효성이 확인되지 않았으므로 무시됩니다.</translation>
@@ -400,8 +404,8 @@
 <translation id="3163988908275223348">Brave 계정에 저장된 비밀번호를 사용하여 로그인</translation>
 <translation id="205212645995975601">바비큐 및 그릴</translation>
 <translation id="2053111141626950936"><ph name="LANGUAGE"/>로 된 페이지를 번역하지 않습니다.</translation>
-<translation id="2053553514270667976">우편번호</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{제안 1개}other{제안 #개}}</translation>
+<translation id="2066915425250589881">삭제를 요청</translation>
 <translation id="2068528718802935086">영유아</translation>
 <translation id="2071156619270205202">이 카드로는 가상 카드 번호를 사용할 수 없습니다.</translation>
 <translation id="2071692954027939183">알림을 평소에 허용하지 않았기 때문에 알림이 자동으로 차단되었습니다.</translation>
@@ -413,7 +417,6 @@
 <translation id="7333248841044450790">동기화 관리 버튼, Enter를 눌러 Brave 설정에서 내가 동기화하는 정보 관리</translation>
 <translation id="2091887806945687916">소리</translation>
 <translation id="2094505752054353250">도메인이 일치하지 않음</translation>
-<translation id="2096368010154057602">부서</translation>
 <translation id="2099652385553570808">왼쪽 트리플 스테이플</translation>
 <translation id="2101225219012730419">버전:</translation>
 <translation id="2102134110707549001">강력한 비밀번호 추천...</translation>
@@ -461,6 +464,7 @@
 <translation id="2215963164070968490">개</translation>
 <translation id="2218879909401188352">현재 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>의 공격자가 기기를 손상시키거나, 모바일 요금에 몰래 추가 요금을 부과하거나, 개인정보를 도용하는 위험한 앱을 설치할 수도 있습니다. <ph name="BEGIN_LEARN_MORE_LINK"/>자세히 알아보기<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2219658597883514593">가이드 다시 시작</translation>
+<translation id="2219735899272417925">기기 재설정 필요</translation>
 <translation id="2224337661447660594">인터넷 연결 없음</translation>
 <translation id="2230458221926704099"><ph name="BEGIN_LINK"/>진단 앱<ph name="END_LINK"/>을 사용하여 연결 문제를 해결하세요.</translation>
 <translation id="2239100178324503013">지금 보내기</translation>
@@ -558,11 +562,13 @@
 <translation id="2512101340618156538">허용 안함(기본값)</translation>
 <translation id="3233967599412104589">Brave을 기본 브라우저로 설정하는 버튼, Enter 키를 눌러 iOS 설정에서 Brave을 시스템 기본 브라우저로 설정</translation>
 <translation id="2515629240566999685">현재 지역의 신호 확인</translation>
+<translation id="2515761554693942801"><ph name="PROVIDER_ORIGIN"/> 주소를 사용하는 웹사이트의 인증 방식으로 Touch ID를 선택했습니다. 이 제공업체에서 내 결제 수단 정보를 저장했을 수 있으며 직접 <ph name="LINK_TEXT"/>할 수 있습니다.</translation>
 <translation id="2521385132275182522">오른쪽 하단 스테이플</translation>
 <translation id="2521736961081452453">양식 만들기</translation>
 <translation id="2523886232349826891">이 기기에만 저장됨</translation>
 <translation id="2524461107774643265">자세한 정보 추가</translation>
 <translation id="2529899080962247600">입력란에 항목이 <ph name="MAX_ITEMS_LIMIT"/>개 넘게 있으면 안 됩니다. 이후 항목은 모두 무시됩니다.</translation>
+<translation id="253493526287553278">프로모션 코드 세부정보 보기</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{외 1개}other{외 #개}}</translation>
 <translation id="2536110899380797252">주소 추가</translation>
 <translation id="2539524384386349900">감지</translation>
@@ -582,7 +588,7 @@
 <translation id="2557417190997681027">비즈니스 여행</translation>
 <translation id="2562087035394240049">노하우, DIY 및 전문가 콘텐츠</translation>
 <translation id="2563042576090522782">신혼여행 및 로맨틱 휴가</translation>
-<translation id="2570734079541893434">설정 관리하기</translation>
+<translation id="2570734079541893434">설정 관리</translation>
 <translation id="2573834589046842510">인쇄 및 출판</translation>
 <translation id="257674075312929031">그룹화</translation>
 <translation id="1447512280692323528">보안 설정 관리 버튼, Brave 설정에서 세이프 브라우징 등의 기능을 관리하려면 Enter를 누르세요</translation>
@@ -670,7 +676,6 @@
 <translation id="2854764410992194509">인터넷 서비스 제공업체(ISP)</translation>
 <translation id="2856444702002559011">공격자가 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>에서 정보(예: 비밀번호, 메시지, 신용카드 등)를 도용하려고 시도 중일 수 있습니다. <ph name="BEGIN_LEARN_MORE_LINK"/>자세히 알아보기<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2859806420264540918">이 사이트에서는 방해가 되거나 사용자를 현혹하는 광고를 표시합니다.</translation>
-<translation id="286512204874376891">가상 카드는 실제 카드를 숨겨서 사기 위험을 줄여줍니다. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="287596039013813457">친근함</translation>
 <translation id="28761159517501904">영화</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave 설정에서 세이프 브라우징 등을 관리하려면 Tab과 Enter를 차례로 누르세요</translation>
@@ -766,7 +771,6 @@
 <translation id="3158539265159265653">디스크</translation>
 <translation id="3162559335345991374">사용 중인 Wi-Fi에서 로그인 페이지 방문을 요청할 수 있습니다.</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3174168572213147020">섬</translation>
 <translation id="3176929007561373547">프록시 설정을 확인하거나 네트워크 관리자에게 문의하여
       프록시 서버가 작동하는지 확인하세요. 프록시 서버를 사용하지 않으려면
       다음 단계를 따르세요.
@@ -845,9 +849,6 @@
 <translation id="3369192424181595722">시계 오류</translation>
 <translation id="3369459162151165748">자동차 부품 및 액세서리</translation>
 <translation id="2273851479262317744">Brave을 기본 브라우저로 설정</translation>
-<translation id="3371076217486966826"><ph name="URL"/>에서 다음 권한을 요청합니다.
-      • 주변의 3D 지도 만들기 및 카메라 위치 추적
-      • 카메라 사용</translation>
 <translation id="337363190475750230">사용 중단됨</translation>
 <translation id="7740652748540081864">Brave 안전 확인 실행</translation>
 <translation id="3377144306166885718">서버에서 지원 중단된 TLS 버전을 사용했습니다.</translation>
@@ -894,6 +895,7 @@
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, 현재 열려 있음, Tab을 누른 다음 Enter를 눌러 열린 탭으로 전환</translation>
 <translation id="3477679029130949506">영화 상영 시간표</translation>
 <translation id="3479552764303398839">나중에</translation>
+<translation id="3484861421501147767">알림: 저장된 프로모션 코드 사용 가능</translation>
 <translation id="3487845404393360112">트레이 4</translation>
 <translation id="3495081129428749620"><ph name="PAGE_TITLE"/>
 페이지에서 찾기</translation>
@@ -1031,7 +1033,6 @@
 <translation id="3875783148670536197">방법 보기</translation>
 <translation id="3881478300875776315">자막 접기</translation>
 <translation id="3884278016824448484">기기 식별자 충돌</translation>
-<translation id="3885155851504623709">교구</translation>
 <translation id="388632593194507180">모니터링 감지됨</translation>
 <translation id="3886948180919384617">스태커 3</translation>
 <translation id="3890664840433101773">이메일 추가</translation>
@@ -1065,6 +1066,7 @@
 <translation id="3986705137476756801">지금 실시간 자막 사용 중지하기</translation>
 <translation id="3987940399970879459">1MB 미만</translation>
 <translation id="3990250421422698716">조그 오프셋</translation>
+<translation id="3992684624889376114">이 페이지에 관한 정보</translation>
 <translation id="3996311196211510766">사이트 <ph name="ORIGIN"/>에서 모든 요청에 출처 정책을 적용하도록 요청했으나 이 정책은 현재 적용할 수 없습니다.</translation>
 <translation id="4006465311664329701">Google Pay에 사용되는 결제 수단, 쿠폰, 주소</translation>
 <translation id="4009243425692662128">인쇄하는 페이지의 콘텐츠가 분석을 위해 Google Cloud 또는 타사로 전송됩니다. 예를 들어, 민감한 정보를 찾기 위해 텍스트를 스캔할 수 있습니다.</translation>
@@ -1216,6 +1218,7 @@
 <translation id="4435702339979719576">엽서)</translation>
 <translation id="443673843213245140">프록시 사용은 중지되었지만 명시적 프록시 설정이 지정되어 있습니다.</translation>
 <translation id="4441832193888514600">클라우드 사용자 정책으로만 설정할 수 있는 정책이므로 무시되었습니다.</translation>
+<translation id="7607452725660354169">Brave 탭</translation>
 <translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="4451135742916150903">HID 기기에 연결하도록 요청할 수 있음</translation>
 <translation id="8416018650396907203">방금 사용한 비밀번호가 정보 유출로 인해 노출된 것으로 확인됩니다. 계정을 보호하기 위해 Brave 비밀번호 관리자에서 저장된 비밀번호를 확인하시기 바랍니다.</translation>
@@ -1269,7 +1272,6 @@
 <translation id="7265018635737406618">Brave 도움말 보기 버튼, Enter를 눌러 Brave 기능 자세히 알아보기</translation>
 <translation id="8338928872956435647">Brave 도움말 보기</translation>
 <translation id="4617273035598175554">그래픽 및 애니메이션 소프트웨어</translation>
-<translation id="4627165777145349100">이 페이지 자세히 알아보기</translation>
 <translation id="6398431831028858802">이 정책은 Brave 프로필 수준에서 설정할 수 없으며 무시됩니다.</translation>
 <translation id="4628948037717959914">사진</translation>
 <translation id="4631649115723685955">캐시백 연결됨</translation>
@@ -1347,6 +1349,7 @@
 <translation id="483241715238664915">경고 켜기</translation>
 <translation id="4834250788637067901">Google Pay에 사용되는 결제 수단, 쿠폰, 주소</translation>
 <translation id="4838327282952368871">꿈</translation>
+<translation id="1923748633297576468">다음에는 Brave의 선도적인 보안 기술로 더 빠르고 안전한 카드 결제를 이용해 보세요.</translation>
 <translation id="246176083348620700">Brave 방문 기록 보기</translation>
 <translation id="484462545196658690">자동</translation>
 <translation id="484671803914931257"><ph name="MERCHANT_NAME"/> 등에서 할인을 받으세요</translation>
@@ -1427,6 +1430,7 @@
 <translation id="5051305769747448211">라이브 코미디</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Nearby Share를 사용해 이 파일을 전송하려면 기기에서 여유 공간(<ph name="DISK_SPACE_SIZE"/>)을 확보하세요.}other{Nearby Share를 사용해 파일을 전송하려면 기기에서 여유 공간(<ph name="DISK_SPACE_SIZE"/>)을 확보하세요.}}</translation>
 <translation id="5056549851600133418">추천 기사</translation>
+<translation id="5060483733937416656"><ph name="PROVIDER_ORIGIN"/> 주소를 사용하는 웹사이트의 인증 방식으로 Windows Hello를 선택했습니다. 이 제공업체에서 내 결제 수단 정보를 저장했을 수 있으며 직접 <ph name="LINK_TEXT"/>할 수 있습니다.</translation>
 <translation id="5061227663725596739"><ph name="LOOKALIKE_DOMAIN"/>을(를) 찾으셨나요?</translation>
 <translation id="5066056036849835175">인쇄 기록</translation>
 <translation id="5068234115460527047">헤지 펀드</translation>
@@ -1440,10 +1444,8 @@
 <translation id="5087286274860437796">서버의 인증서가 현재 유효하지 않습니다.</translation>
 <translation id="5087580092889165836">카드 추가</translation>
 <translation id="5088142053160410913">운영자에게 보내는 메시지</translation>
-<translation id="5089810972385038852">시/도</translation>
 <translation id="5093232627742069661">Z 폴드</translation>
 <translation id="4906192414477726331">이 서버가 <ph name="DOMAIN"/>임을 입증할 수 없으며 Brave에서 신뢰하는 보안 인증서가 아닙니다. 서버를 잘못 설정했거나 불법 사용자가 연결을 가로채고 있기 때문일 수 있습니다.</translation>
-<translation id="5095208057601539847">주/도</translation>
 <translation id="5097099694988056070">CPU/RAM 사용 등의 기기 통계</translation>
 <translation id="5097501891273180634">A2</translation>
 <translation id="5108881358339761672">안전하지 않은 사이트</translation>
@@ -1480,6 +1482,7 @@
 <translation id="5171045022955879922">검색 또는 URL 입력</translation>
 <translation id="5171689220826475070">Fanfold-유럽</translation>
 <translation id="5172758083709347301">컴퓨터</translation>
+<translation id="5177076414499237632">이 페이지의 출처 및 주제에 대해 알아보기</translation>
 <translation id="5179510805599951267"><ph name="ORIGINAL_LANGUAGE"/>가 아닙니까? 오류 신고</translation>
 <translation id="518639307526414276">반려동물 사료 및 관리 용품</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/>에서 여러 파일을 다운로드하려고 합니다.</translation>
@@ -1795,7 +1798,6 @@
 <translation id="6061154937977953833">레슬링</translation>
 <translation id="6064217302520318294">화면 잠금</translation>
 <translation id="6064602040258638498">쿠폰 및 할인 혜택</translation>
-<translation id="6078813287646374487">이 페이지에 관한 추가 정보 보기</translation>
 <translation id="6080696365213338172">관리자 제공 인증서를 사용하여 콘텐츠에 액세스했습니다. 사용자가 <ph name="DOMAIN"/>에 제공한 데이터가 관리자에 의해 차단될 수 있습니다.</translation>
 <translation id="6087312102907839798">관련 검색어</translation>
 <translation id="6094273045989040137">주석 추가</translation>
@@ -1851,7 +1853,6 @@
 <translation id="7954557091400543500">다음번에 더 빠르게 결제할 수 있도록 Brave 계정에 카드와 청구서 수신 주소를 저장하세요.</translation>
 <translation id="6279183038361895380">|<ph name="ACCELERATOR"/>|을(를) 눌러 커서 표시</translation>
 <translation id="6280223929691119688">이 주소로 배달할 수 없습니다. 다른 주소를 선택하세요.</translation>
-<translation id="6282194474023008486">우편번호</translation>
 <translation id="9069724554626063339">Brave 다운로드 관리 버튼, Brave에서 다운로드한 파일을 관리하려면 Enter를 누르세요</translation>
 <translation id="6289939620939689042">페이지 색상</translation>
 <translation id="6290238015253830360">추천 콘텐츠가 여기에 표시됩니다.</translation>
@@ -2031,7 +2032,6 @@
 <translation id="6828866289116430505">유전학</translation>
 <translation id="6831043979455480757">번역</translation>
 <translation id="2427219270600431645">카드 및 결제 정보를 Brave 계정에 저장하여 더 빠르고 안전하게 결제하세요.</translation>
-<translation id="6839929833149231406">지구</translation>
 <translation id="6846340164947227603">가상 카드 번호 사용...</translation>
 <translation id="6852204201400771460">앱을 새로고침하시겠습니까?</translation>
 <translation id="6857776781123259569">비밀번호 관리...</translation>
@@ -2083,7 +2083,6 @@
 <translation id="6965978654500191972">기기</translation>
 <translation id="696703987787944103">가시 범위</translation>
 <translation id="6968269510885595029">보안 키 사용</translation>
-<translation id="6970216967273061347">주소</translation>
 <translation id="8485851762575764192">Slides에서 빠르게 새 Brave 프레젠테이션 만들기</translation>
 <translation id="6972629891077993081">HID 기기</translation>
 <translation id="6973656660372572881">고정 프록시 서버와 .pac 스크립트 URL이 모두 지정되어 있습니다.</translation>
@@ -2122,7 +2121,6 @@
 <translation id="7081308185095828845">이 기기에서 지원하지 않는 기능</translation>
 <translation id="7083258188081898530">트레이 9</translation>
 <translation id="7086090958708083563">사용자가 요청한 업로드</translation>
-<translation id="7087282848513945231">카운티</translation>
 <translation id="1313878436434241688"><ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab을 누른 다음 Enter를 눌러 Brave 설정에서 여러 사이트의 권한 및 저장된 데이터 관리</translation>
 <translation id="7096937462164235847">인증된 웹사이트가 아닙니다.</translation>
 <translation id="7101893872976785596">공포 영화</translation>
@@ -2135,10 +2133,10 @@
 <translation id="7118618213916969306">클립보드 URL <ph name="SHORT_URL"/> 검색</translation>
 <translation id="7119414471315195487">다른 탭 또는 프로그램 닫기</translation>
 <translation id="7129409597930077180">이 주소로 배송할 수 없습니다. 다른 주소를 선택하세요.</translation>
+<translation id="7129809579943936035"><ph name="VALUE_PROP"/> <ph name="DETAILS"/></translation>
 <translation id="7132939140423847331">관리자가 복사를 금지한 데이터입니다.</translation>
 <translation id="7135130955892390533">상태 보기</translation>
 <translation id="7138472120740807366">배달 방법</translation>
-<translation id="7139724024395191329">에미레이트</translation>
 <translation id="7139892792842608322">기본 트레이</translation>
 <translation id="714064300541049402">두 번째 면 이미지 X 시프트</translation>
 <translation id="7152423860607593928">Number-14(봉투)</translation>
@@ -2390,7 +2388,6 @@
 <translation id="7766518757692125295">스커트</translation>
 <translation id="7770259615151589601">Designated-Long</translation>
 <translation id="7773005668374414287">같은 순서로 인쇄면이 위를 향하게</translation>
-<translation id="777702478322588152">현</translation>
 <translation id="7791011319128895129">미공개</translation>
 <translation id="7791196057686275387">베일</translation>
 <translation id="7791543448312431591">추가</translation>
@@ -2480,12 +2477,12 @@
 <translation id="8055534648776115597">직업교육 및 평생교육</translation>
 <translation id="8057711352706143257">'<ph name="SOFTWARE_NAME"/>이(가) 올바르게 설정되지 않았습니다. 일반적으로 '<ph name="SOFTWARE_NAME"/>'을(를) 제거하면 문제가 해결됩니다. <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="8058009102480785916">식품 생산</translation>
-<translation id="8066955247577885446">문제 발생</translation>
 <translation id="5442778523450464826">사기성 사이트에 비밀번호를 입력했습니다. Brave이 계정 보호를 도와드립니다. 비밀번호를 변경하고 계정 보안 위험에 관해 Brave에 알리려면 계정 보호를 클릭하세요.</translation>
 <translation id="8070439594494267500">앱 아이콘</translation>
 <translation id="8074253406171541171">10x13(봉투)</translation>
 <translation id="7738019368151747786">빠르게 새 Brave 시트 만들기</translation>
 <translation id="8075898834294118863">사이트 설정 관리</translation>
+<translation id="8076492880354921740">탭</translation>
 <translation id="8078141288243656252">회전 시 주석을 달 수 없습니다.</translation>
 <translation id="8079031581361219619">사이트를 새로고침하시겠습니까?</translation>
 <translation id="8081087320434522107">세단</translation>
@@ -2701,6 +2698,7 @@
 <translation id="8742371904523228557"><ph name="ORIGIN"/> 코드는 <ph name="ONE_TIME_CODE"/>입니다.</translation>
 <translation id="874918643257405732">현재 탭을 북마크에 추가</translation>
 <translation id="8751426954251315517">나중에 다시 시도해 주세요.</translation>
+<translation id="8757526089434340176">Google Pay 쿠폰 이용 가능</translation>
 <translation id="8758885506338294482">e스포츠</translation>
 <translation id="8759274551635299824">만료된 카드입니다.</translation>
 <translation id="87601671197631245">이 사이트에서는 오래된 보안 설정을 사용하므로 개인정보(예: 비밀번호, 메시지 또는 신용카드)를 이 사이트로 전송할 경우 정보가 유출될 수도 있습니다.</translation>
@@ -2898,6 +2896,7 @@
 <translation id="988159990683914416">개발자 빌드</translation>
 <translation id="989988560359834682">주소 수정</translation>
 <translation id="991413375315957741">움직임 감지 또는 조도 센서</translation>
+<translation id="992110854164447044">가상 카드는 실제 카드를 숨겨서 사기당할 위험을 줄여줍니다. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="992115559265932548"><ph name="MICROSOFT_ACTIVE_DIRECTORY"/></translation>
 <translation id="992256792861109788">분홍색</translation>
 <translation id="992432478773561401">'<ph name="SOFTWARE_NAME"/>'이(가) 컴퓨터 또는 네트워크에 제대로 설치되지 않았습니다.

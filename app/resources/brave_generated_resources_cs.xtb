@@ -114,8 +114,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5240031343741051161">Vyzkoušejte vyhledávání Brave</translation>
 <translation id="5026874946691314267">Znovu nezobrazovat</translation>
 <translation id="5234764350956374838">Zavřít</translation>
-<translation id="214744058941501853">"&gt;
-          Pokud chcete odmítnout konverzi vyhledávání Brave, stisknutím klávesy Enter tento návrh odeberete</translation>
+<translation id="5100490448228945668">Odmítněte konverzi hledání Brave, odstraňte tento návrh stisknutím klávesy Enter</translation>
 <translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="7924918279836988121">Služba účetní knihy Bat</translation>
 <translation id="6040143037577758943">Zavřít</translation>
@@ -221,6 +220,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8820817407110198400">Záložky</translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
 <translation id="1811404036171336214">Vždy na nové kartě zobrazit záložky</translation>
+<translation id="3416468988018290825">Vždy zobrazuje úplné adresy URL</translation>
 <translation id="5529693968082667490">Tlačítko Zobrazit záložky pro vyhledávání</translation>
 <translation id="1643029991199044105">Přepínejte naposledy použité karty pomocí Ctrl+Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -379,7 +379,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="842628013524824194">Normální okno – vyhledávač používaný v adresním řádku</translation>
 <translation id="5324939009884545145">Soukromé okno – vyhledávač používaný v adresním řádku</translation>
-<translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Googlu</translation>
+<translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Google</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
 <translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>
 <translation id="5927916530277631319">Způsob řešení služby Unstoppable Domains</translation>
@@ -393,7 +393,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5249433283143453448">Používat k prohlížení chráněného streamovaného videa a dalšího obsahu v prohlížeči komponent Widevine pro správu digitálních práv (DRM).</translation>
 <translation id="8137559199583651773">Správa rozšíření</translation>
 <translation id="7013485839273047434">Získejte další rozšíření</translation>
-<translation id="9131889008937672866">Výchozí kryptopeněženka</translation>
+<translation id="4954512758656527938">Základní peněženka Ethereum</translation>
+<translation id="7701023802820268122">Základní peněženka Solana</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="7701040980221191251">Žádné</translation>
@@ -418,6 +419,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8205945804087322170">Přidat novou síť</translation>
 <translation id="1330032157352961756">ID nového řetězce</translation>
 <translation id="3423620355610881890">Kladné desetinné číslo</translation>
+<translation id="8110465398315041268">Vyhledejte síť</translation>
+<translation id="3579705520805744214">ID nebo název řetězu</translation>
 <translation id="726121047592132939">Název nového řetězce</translation>
 <translation id="1034112277864078119">Zadejte název řetězce</translation>
 <translation id="4672314527143443556">Název měny řetězce</translation>
@@ -489,6 +492,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3411013544209536575">Asistenční tipy</translation>
 <translation id="2775956301559569472">Zobrazit výzvu Wayback Machine na 404 stránkách</translation>
 <translation id="3095201688102519917">Upozornění před zavřením okna s více kartami</translation>
+<translation id="7120553802660696133">Při zavření posledního panelu zavřete okno</translation>
 <translation id="6624718837376802990">Profilový obrázek Edgy Rewards</translation>
 <translation id="6617313057407561765">Profilový obrázek Edgy Brave</translation>
 <translation id="6754445808455578019">Profilový obrázek Edgy Ocean</translation>

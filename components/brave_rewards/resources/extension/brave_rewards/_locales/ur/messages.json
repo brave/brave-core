@@ -136,7 +136,7 @@
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
-    "message": "$begin_bold$Log in to $provider$ $end_bold$to see your balance",
+    "message": "$begin_bold$Log in to $provider$$end_bold$ to see your balance",
     "description": "",
     "placeholders": {
       "begin_bold": {

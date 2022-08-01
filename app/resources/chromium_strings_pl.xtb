@@ -50,6 +50,7 @@
 <translation id="7291143854620707672">Wszystkie dane Brave wygenerowane podczas używania tego profilu (takie jak zakładki, historia, hasła i inne ustawienia) mogą zostać usunięte przez administratora profilu służbowego. <ph name="LEARN_MORE"/></translation>
 <translation id="7387051847644272380">Podczas instalacji wystąpił błąd systemu operacyjnego. Pobierz Brave ponownie.</translation>
 <translation id="2648689842065142443">Jeśli dzielisz urządzenie ze znajomymi lub rodziną, wszyscy możecie niezależnie przeglądać internet i skonfigurować Brave po swojemu</translation>
+<translation id="6384359666082467439">Witamy w Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Karta Brave</translation>
 <translation id="8372880274820509128">Dla większego bezpieczeństwa Brave szyfruje dane.</translation>
 <translation id="2770231113462710648">Zmień przeglądarkę domyślną na:</translation>
@@ -92,6 +93,7 @@
 <translation id="4061445349373849749">Aby chronić Twoją prywatność, automatycznie usuwamy Twoje zainteresowania, które są starsze niż 4 tygodnie. Podczas dalszego przeglądania zainteresowanie może się pojawić ponownie na liście. Możesz też usunąć zainteresowania, których Brave ma nie brać pod uwagę.</translation>
 <translation id="691208314680168371">Twoja historia przeglądania, czyli rejestr witryn, które odwiedzasz w Brave na tym urządzeniu.</translation>
 <translation id="1384923383737428730">Masz na komputerze szkodliwe oprogramowanie. Brave może je usunąć, przywrócić Twoje ustawienia i wyłączyć rozszerzenia, by przeglądarka znów działała normalnie.</translation>
+<translation id="1073077513148817424">Już jest zalogowane inne konto. Aby umożliwić Ci przeglądanie osobno, Brave może utworzyć dla Ciebie nowy profil.</translation>
 <translation id="7029305463989165490">Aby wysłać numer z <ph name="ORIGIN"/> na swój telefon z Androidem, zaloguj się w Brave na obu urządzeniach.</translation>
 <translation id="4304059894777924102">Brave nie może sprawdzić Twoich haseł. Sprawdź połączenie z internetem.</translation>
 <translation id="2100587595569959771">Więcej informacji o personalizacji reklam w Brave</translation>
@@ -101,9 +103,11 @@
 <translation id="2401189691232800402">System operacyjny Brave</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="3744202345691150878">Skorzystaj z pomocy dotyczącej Brave OS</translation>
+<translation id="6009720635797285369">Uzyskaj dostęp do danych z przeglądarki Brave z konta <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="6315734375101223238">Dostosuj i kontroluj Brave. Pewna kwestia wymaga Twojej uwagi – kliknij, by przejść do szczegółów.</translation>
 <translation id="7130675370997202556">Otwórz Brave, klikając swoją nazwę i rozpocznij przeglądanie.</translation>
 <translation id="4920958997042285125">W tym profilu Brave jest już zalogowany użytkownik <ph name="EXISTING_USER"/>. Aby umożliwić Ci przeglądanie osobno, Brave może utworzyć dla Ciebie nowy profil.</translation>
+<translation id="2337217774418822704">Tym kontem zarządza <ph name="MANAGER_NAME"/>. Administrator może przeglądać i edytować ten profil przeglądarki Brave i dane, które się na nim znajdują, w tym zakładki, historię i hasła.</translation>
 <translation id="8090497651549769448">Brave próbuje skopiować hasła. Aby na to zezwolić, podaj swoje hasło do Windows.</translation>
 <translation id="7133557675784723900">Brave zaleca przeskanowanie tego pliku, bo może on być niebezpieczny</translation>
 <translation id="1152920704813762236">System operacyjny Brave – informacje</translation>
@@ -165,6 +169,7 @@
 <translation id="1744365871163268756">Poczekaj, aż Brave zainstaluje najnowsze aktualizacje systemu.</translation>
 <translation id="3861679447659630159">Brave próbuje edytować hasła. Aby na to zezwolić, podaj swoje hasło do systemu Windows.</translation>
 <translation id="232381795826373334">Otwieranie plików PDF w Brave</translation>
+<translation id="5381032481466106256">Jeśli ta opcja jest włączona, zostaniesz też wylogowany(-a) z Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Dostępna jest aktualizacja Brave}=1{Dostępna jest aktualizacja Brave}few{Aktualizacja Brave jest dostępna od # dni}many{Aktualizacja Brave jest dostępna od # dni}other{Aktualizacja Brave jest dostępna od # dnia}}</translation>
 <translation id="95624393026532554">Brave wymaga systemu Windows 7 lub nowszego.</translation>
 <translation id="5646769069113654257">Uruchom Brave ponownie</translation>
@@ -285,7 +290,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="7963515534397191222">Aktualizacja Brave do najnowszej wersji nie udała się, więc nie masz dostępu do najnowszych funkcji i poprawek zabezpieczeń.</translation>
 <translation id="7872446069773932638">Pobieram… Pozostało: <ph name="SECONDS"/> s.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>W jaki sposób możesz zarządzać swoimi danymi:<ph name="END_BOLD"/> żeby chronić Twoją prywatność, automatycznie usuwamy Twoje zainteresowania, które są starsze niż 4 tygodnie. Podczas dalszego przeglądania zainteresowanie może się pojawić ponownie na liście. Możesz też usunąć zainteresowania, których Brave ma nie brać pod uwagę.</translation>
-<translation id="437139750042419257">W tym profilu Brave dostępne są te konta</translation>
 <translation id="2925193881330501265">Byłeś zalogowany w Brave jako <ph name="USER_EMAIL_ADDRESS"/>. Zaloguj się ponownie, korzystając z tego samego konta.</translation>
 <translation id="6915252145142862992">To jest druga instalacja Brave. Nie można ustawić jej jako przeglądarki domyślnej.</translation>
 <translation id="1975057837349076194">Jeśli ustawienia nie widać na tej stronie, zajrzyj do <ph name="LINK_BEGIN"/>ustawień systemu operacyjnego Brave<ph name="LINK_END"/></translation>
@@ -330,6 +334,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="6389268239133412586">Nie można zaktualizować Brave</translation>
 <translation id="7731184591599776500">Logo Brave Enterprise</translation>
 <translation id="8986207147630327271">Dodajesz profil służbowy w tej przeglądarce i dajesz swojemu administratorowi kontrolę tylko nad tym profilem.</translation>
+<translation id="82609232232243542">Zaloguj się w Brave</translation>
 <translation id="5173820533850252773">Brave jest nieaktualny</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave uruchomi się ponownie za godzinę}few{Brave uruchomi się ponownie za # godziny}many{Brave uruchomi się ponownie za # godzin}other{Brave uruchomi się ponownie za # godziny}}</translation>
 <translation id="7863882214613921971">O&amp;twórz link w nowej karcie Brave</translation>

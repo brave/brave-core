@@ -312,11 +312,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "பணப்பையைப் பிரதியெடு",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "உம் பிரேவ் பணப்பையைப் பிரதியெடுக்கவும்.",
     "description": ""
   },
   "notificationBackupWalletAction": {

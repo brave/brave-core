@@ -113,8 +113,7 @@
 <translation id="5240031343741051161">Izmēģiniet Brave meklēšanu</translation>
 <translation id="5026874946691314267">Vairs nerādīt</translation>
 <translation id="5234764350956374838">Noraidīt</translation>
-<translation id="214744058941501853">"&gt;
-Atmest Brave meklēšanas konversiju, nospiediet Enter, lai atceltu šo ieteikumu</translation>
+<translation id="5100490448228945668">Noraidīt Brave meklēšanas konvertāciju; nospiediet Ievadīt, lai noņemtu šo ieteikumu</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
@@ -220,6 +219,7 @@ Atmest Brave meklēšanas konversiju, nospiediet Enter, lai atceltu šo ieteikum
 <translation id="8820817407110198400">Grāmatzīmju josla</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
 <translation id="1811404036171336214">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
+<translation id="3416468988018290825">Vienmēr rādīt pilnus URL vietrāžus</translation>
 <translation id="5529693968082667490">Rādīt pogu "Meklēt cilnes"</translation>
 <translation id="1643029991199044105">Pārlūkojiet pēdējā laikā lietotās cilnes, izmantojot Ctrl-Tab</translation>
 <translation id="1013121820689882118">Ātrais lasītājs</translation>
@@ -392,7 +392,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5249433283143453448">Izmantojiet Widevine digitālā satura tiesību pārvaldības (DRM) komponentu, lai pārlūkā skatītu aizsargātu videostraumējumu un citu saturu.</translation>
 <translation id="8137559199583651773">Pārvaldīt paplašinājumus</translation>
 <translation id="7013485839273047434">Iegūt citus paplašinājumus</translation>
-<translation id="9131889008937672866">Noklusējuma kriptovalūtas maks</translation>
+<translation id="4954512758656527938">Noklusējuma Ethereum maks</translation>
+<translation id="7701023802820268122">Noklusējuma Solana maks</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
 <translation id="7701040980221191251">Neviens</translation>
@@ -417,6 +418,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8205945804087322170">Pievienot jaunu tīklu</translation>
 <translation id="1330032157352961756">Jaunās ķēdes ID</translation>
 <translation id="3423620355610881890">Pozitīvs decimālskaitlis</translation>
+<translation id="8110465398315041268">Meklēt tīklā</translation>
+<translation id="3579705520805744214">Ķēdes ID vai nosaukums</translation>
 <translation id="726121047592132939">Jaunas ķēdes nosaukums</translation>
 <translation id="1034112277864078119">Ievadīt ķēdes nosaukumu</translation>
 <translation id="4672314527143443556">Ķēdes valūtas nosaukums</translation>
@@ -488,6 +491,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3411013544209536575">Palīdzības padomi</translation>
 <translation id="2775956301559569472">Parādīt Wayback Machine uzvedni 404 lapās</translation>
 <translation id="3095201688102519917">Brīdināt, pirms tiek aizvērts logs ar vairākām cilnēm</translation>
+<translation id="7120553802660696133">Aizvērt logu, kad tiek aizvērta pēdējā cilne</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

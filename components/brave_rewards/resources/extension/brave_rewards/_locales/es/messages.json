@@ -191,7 +191,7 @@
     }
   },
   "walletAccountLink": {
-    "message": "Ir a mi cuenta de $provider$\n",
+    "message": "Ir a mi cuenta de $provider$",
     "description": "",
     "placeholders": {
       "provider": {
