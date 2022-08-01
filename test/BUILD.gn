@@ -1175,9 +1175,6 @@ if (!is_android) {
 
     if (enable_brave_vpn) {
       deps += [ "//brave/components/brave_vpn" ]
-      sources += [
-        "//brave/browser/brave_vpn/test/android/vpn_receipt_browsertest.cc",
-      ]
     }
 
     data = [
