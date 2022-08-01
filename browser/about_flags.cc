@@ -33,7 +33,7 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/features.h"
 #endif
 
@@ -356,12 +356,12 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
 // file so we turn it off for the macro sections.
 // clang-format off
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_FEATURE_ENTRIES                         \
     {kBraveVPNFeatureInternalName,                        \
      flag_descriptions::kBraveVPNName,                    \
      flag_descriptions::kBraveVPNDescription,             \
-     kOsMac | kOsWin,                                     \
+     kOsMac | kOsWin | kOsAndroid,                                     \
      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN)},
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES

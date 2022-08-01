@@ -161,14 +161,16 @@ std::string BraveVpnService::GetCurrentEnvironment() const {
   return profile_prefs_->GetString(prefs::kBraveVPNEEnvironment);
 }
 
-void BraveVpnService::ReloadPurchasedState() {
-  LoadPurchasedState(skus::GetDomain("vpn", GetCurrentEnvironment()));
-}
-
 void BraveVpnService::BindInterface(
     mojo::PendingReceiver<mojom::ServiceHandler> receiver) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   receivers_.Add(this, std::move(receiver));
+}
+
+void BraveVpnService::ReloadPurchasedState() {
+  LOG(ERROR) << "BraveVPN : "
+             << "ReloadPurchasedState";
+  LoadPurchasedState(skus::GetDomain("vpn", GetCurrentEnvironment()));
 }
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -943,11 +945,15 @@ void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
 }
 
 void BraveVpnService::LoadPurchasedState(const std::string& domain) {
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 1";
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto requested_env = skus::GetEnvironmentForDomain(domain);
   if (GetCurrentEnvironment() == requested_env &&
       purchased_state_ == PurchasedState::LOADING)
     return;
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 2";
 #if !BUILDFLAG(IS_ANDROID)
   if (!IsNetworkAvailable()) {
     VLOG(2) << __func__ << ": Network is not available, failed to connect";
@@ -955,8 +961,12 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     return;
   }
 #endif
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 3";
   if (!purchased_state_.has_value())
     SetPurchasedState(requested_env, PurchasedState::LOADING);
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 4";
 
 #if !BUILDFLAG(IS_ANDROID) && !defined(OFFICIAL_BUILD)
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -975,7 +985,8 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     return;
   }
 #endif  // !BUILDFLAG(IS_ANDROID) && !defined(OFFICIAL_BUILD)
-
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 5";
   EnsureMojoConnected();
   skus_service_->CredentialSummary(
       domain, base::BindOnce(&BraveVpnService::OnCredentialSummary,
@@ -984,10 +995,14 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
 
 void BraveVpnService::OnCredentialSummary(const std::string& domain,
                                           const std::string& summary_string) {
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 6";
   auto env = skus::GetEnvironmentForDomain(domain);
   std::string summary_string_trimmed;
   base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 7";
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
     VLOG(1) << __func__ << " : No credential found; user needs to login!";
@@ -995,14 +1010,23 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     return;
   }
 
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 8";
+
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 9";
 
   if (records_v && records_v->is_dict()) {
+    LOG(ERROR) << "BraveVPN : "
+               << "LoadPurchasedState 10";
     auto active = records_v->GetDict().FindBool("active").value_or(false);
     if (active) {
+      LOG(ERROR) << "BraveVPN : "
+                 << "LoadPurchasedState 11";
       VLOG(1) << __func__ << " : Active credential found!";
       // if a credential is ready, we can present it
       EnsureMojoConnected();
@@ -1011,10 +1035,14 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
           base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
                          base::Unretained(this), domain));
     } else {
+      LOG(ERROR) << "BraveVPN : "
+                 << "LoadPurchasedState 12";
       VLOG(1) << __func__ << " : Credential appears to be expired.";
       SetPurchasedState(env, PurchasedState::EXPIRED);
     }
   } else {
+    LOG(ERROR) << "BraveVPN : "
+               << "LoadPurchasedState 13";
     VLOG(1) << __func__ << " : Got invalid credential summary!";
     SetPurchasedState(env, PurchasedState::FAILED);
   }
@@ -1023,6 +1051,8 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
 void BraveVpnService::OnPrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& credential_as_cookie) {
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 14";
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto env = skus::GetEnvironmentForDomain(domain);
   // Credential is returned in cookie format.
@@ -1032,11 +1062,15 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   // should these failed states be considered NOT_PURCHASED?
   // or maybe it can be considered FAILED status?
   if (!credential_cookie.IsValid()) {
+    LOG(ERROR) << "BraveVPN : "
+               << "LoadPurchasedState 15";
     VLOG(1) << __func__ << " : FAILED credential_cookie.IsValid";
     SetPurchasedState(env, PurchasedState::FAILED);
     return;
   }
   if (!status.IsInclude()) {
+    LOG(ERROR) << "BraveVPN : "
+               << "LoadPurchasedState 16";
     VLOG(1) << __func__ << " : FAILED status.IsInclude";
     SetPurchasedState(env, PurchasedState::FAILED);
     return;
@@ -1051,11 +1085,17 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
       url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
   std::string credential;
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 17";
   if (credential.empty()) {
+    LOG(ERROR) << "BraveVPN : "
+               << "LoadPurchasedState 18";
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
   }
   if (GetCurrentEnvironment() != env) {
+    LOG(ERROR) << "BraveVPN : "
+               << "LoadPurchasedState 19";
     // Change environment because we have successfully authorized with new one.
     SetCurrentEnvironment(env);
   }
@@ -1063,6 +1103,8 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   skus_credential_ = credential;
 
 #if BUILDFLAG(IS_ANDROID)
+  LOG(ERROR) << "BraveVPN : "
+             << "LoadPurchasedState 20";
   SetPurchasedState(env, PurchasedState::PURCHASED);
 #else
   LoadCachedRegionData();

@@ -94,6 +94,8 @@ class BraveVpnNativeWorker {
   void ReportBackgroundP3A(JNIEnv* env,
                            jlong session_start_time_ms,
                            jlong session_end_time_ms);
+  void ReloadPurchasedState(JNIEnv* env);
+  jboolean IsPurchasedUser(JNIEnv* env);
 
  private:
   JavaObjectWeakGlobalRef weak_java_brave_vpn_native_worker_;

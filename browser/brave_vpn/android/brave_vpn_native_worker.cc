@@ -260,6 +260,27 @@ void BraveVpnNativeWorker::ReportBackgroundP3A(JNIEnv* env,
   if (brave_vpn_service) {
     brave_vpn_service->RecordAndroidBackgroundP3A(session_start_time_ms,
                                                   session_end_time_ms);
+}
+
+jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    LOG(ERROR) << "BraveVPN : "
+               << "Inside condition";
+    return brave_vpn_service->is_purchased_user();
+  }
+
+  return false;
+}
+
+void BraveVpnNativeWorker::ReloadPurchasedState(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  LOG(ERROR) << "BraveVPN : "
+             << "ReloadPurchasedState";
+  if (brave_vpn_service) {
+    LOG(ERROR) << "BraveVPN : "
+               << "ReloadPurchasedState 2";
+    brave_vpn_service->ReloadPurchasedState();
   }
 }
 
