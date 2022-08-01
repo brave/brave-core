@@ -551,6 +551,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TITLE" desc="">Error: Brave Rewards profile is flagged</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE" desc="">Error: You need a verified account to log in</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TEXT" desc="">Hmm, it looks like your Brave Rewards profile was already connected to a custodial account in another region. Please try connecting again with your previous custodial account, or update your custodial account's region to match your previous account.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE" desc="">Error: Different account region</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">Error: Different account</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT" desc="">Unfortunately, your Brave Rewards cannot be verified because your region is not supported for Brave Rewards verification at this time.</message>

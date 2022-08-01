@@ -178,6 +178,9 @@ type::Result PostClaimUphold::ParseBody(const std::string& body) const {
     return type::Result::FLAGGED_WALLET;
   } else if (message->find("region not supported") != std::string::npos) {
     return type::Result::REGION_NOT_SUPPORTED;
+  } else if (message->find("mismatched provider account regions") !=
+             std::string::npos) {
+    return type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS;
   } else {
     BLOG(0, "Unknown message!");
     return type::Result::LEDGER_ERROR;
