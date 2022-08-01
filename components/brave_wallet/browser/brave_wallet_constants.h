@@ -39,6 +39,7 @@ constexpr char kRampBuyUrl[] =
 constexpr char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
     {"braveWallet", IDS_BRAVE_WALLET},
     {"braveWalletDefiCategory", IDS_BRAVE_WALLET_DEFI_CATEGORY},
     {"braveWalletNftCategory", IDS_BRAVE_WALLET_NFT_CATEGORY},

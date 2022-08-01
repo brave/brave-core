@@ -1,4 +1,10 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
+
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
 import { WalletButton } from '../../../shared/style'
 
@@ -47,6 +53,13 @@ export const Input = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+`
+export const InputLabelText = styled.label`
+  display: block;
+  margin-bottom: 8px;
+  color: ${(p) => p.theme.color.text03};
+  text-align: left;
+  width: 100%;
 `
 
 export const QRCodeWrapper = styled.img`

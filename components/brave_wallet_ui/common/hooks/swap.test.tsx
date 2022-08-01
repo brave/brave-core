@@ -24,8 +24,6 @@ import { mockPageState } from '../../stories/mock-data/mock-page-state'
 import { LibContext } from '../context/lib.context'
 import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 
-jest.useFakeTimers()
-
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
   page: createPageReducer(mockPageState)
@@ -65,6 +63,14 @@ const mockQuote = {
 } as BraveWallet.SwapResponse
 
 describe('useSwap hook', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+  afterAll(() => {
+    jest.clearAllTimers()
+    jest.useRealTimers()
+  })
+
   it('should initialize From and To assets', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
 

@@ -22,11 +22,15 @@ import * as Lib from '../../common/async/__mocks__/lib'
 import { mockPageState } from '../mock-data/mock-page-state'
 import { mockWalletState } from '../mock-data/mock-wallet-state'
 import { mockSendCryptoState } from '../mock-data/send-crypto-state'
+import { ApiProxyContext } from '../../common/context/api-proxy.context'
+import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>
   pageStateOverride?: Partial<PageState>
 }
+
+const mockedProxy = getMockedAPIProxy()
 
 export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryProps>> = ({
   children,
@@ -56,9 +60,11 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
   return (
     <MemoryRouter initialEntries={['/']}>
       <Provider store={store}>
-        <LibContext.Provider value={Lib as any}>
-          {children}
-        </LibContext.Provider>
+        <ApiProxyContext.Provider value={mockedProxy}>
+          <LibContext.Provider value={Lib as any}>
+            {children}
+          </LibContext.Provider>
+        </ApiProxyContext.Provider>
       </Provider>
     </MemoryRouter>
   )

@@ -135,3 +135,4 @@ export const addFilecoinAccount = createAction<AddFilecoinAccountPayloadType>('a
 export const getOnRampCurrencies = createAction('getOnRampCurrencies')
 export const setOnRampCurrencies = createAction<BraveWallet.OnRampCurrency[]>('setOnRampCurrencies')
 export const selectCurrency = createAction<BraveWallet.OnRampCurrency>('selectCurrency')
+export const setPasswordAttempts = createAction<number>('setPasswordAttempts')

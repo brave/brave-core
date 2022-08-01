@@ -341,5 +341,6 @@ export const mockWalletState: WalletState = {
     }
   ],
   onRampCurrencies: mockCurrencies,
-  selectedCurrency: mockCurrency
+  selectedCurrency: mockCurrency,
+  passwordAttempts: 0
 }

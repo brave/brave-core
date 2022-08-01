@@ -103,7 +103,8 @@ const defaultState: WalletState = {
   selectedNetworkFilter: AllNetworksOption,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
-  selectedCurrency: undefined
+  selectedCurrency: undefined,
+  passwordAttempts: 0
 }
 
 const getAccountType = (info: AccountInfo) => {
@@ -551,6 +552,13 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       selectedCurrency: payload
+    }
+  })
+
+  reducer.on(WalletActions.setPasswordAttempts, (state: WalletState, payload: number): WalletState => {
+    return {
+      ...state,
+      passwordAttempts: payload
     }
   })
 
