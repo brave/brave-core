@@ -65,14 +65,14 @@ const ParamInfo kTests[] = {
      /* expected_did_override_variations_command_line_switches */ false,
      kDefaultEnvironmentType},
 
-    // Use staging environment
+    // Force staging environment from command-line switch
     {/* should_force_staging_environment */ false,
      {{kRewardsSwitch, "staging=true"}},
      /* expected_should_debug */ false,
      /* expected_did_override_variations_command_line_switches */ false,
      EnvironmentType::kStaging},
 
-    // Use production environment
+    // Force production environment from command-line switch
     {/* should_force_staging_environment */ false,
      {{kRewardsSwitch, "staging=false"}},
      /* expected_should_debug */ false,
@@ -87,7 +87,7 @@ const ParamInfo kTests[] = {
      EnvironmentType::kStaging},
 
     // Use default environment
-    {/* should_force_staging_environment */ true,
+    {/* should_force_staging_environment */ false,
      {},
      /* expected_should_debug */ false,
      /* expected_did_override_variations_command_line_switches */ false,
