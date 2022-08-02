@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.41.1](https://github.com/brave/brave-ios/releases/tag/v1.41.1)
+- Fixed usage ping from reporting week of install as Sunday instead of Monday. ([#5750](https://github.com/brave/brave-ios/issues/5750))
 
 ## [1.34.1](https://github.com/brave/brave-ios/releases/tag/v1.34.1)
 
