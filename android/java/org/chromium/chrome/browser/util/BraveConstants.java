@@ -25,4 +25,6 @@ public final class BraveConstants {
     public static final String BRAVE_REF_URL = "https://brave.com/r/";
     public static final String BRAVE_NEWS_LEARN_MORE_URL =
             "https://brave.com/privacy/browser/#brave-news";
+
+    public static final String INDIA_COUNTRY_CODE = "IN";
 }

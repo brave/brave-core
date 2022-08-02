@@ -16,8 +16,9 @@ import android.view.ViewGroup;
 import com.airbnb.lottie.LottieAnimationView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveDialogFragment;
 
-public class BraveVpnConfirmDialogFragment extends BraveVpnDialogFragment {
+public class BraveVpnConfirmDialogFragment extends BraveDialogFragment {
     private LottieAnimationView mAnimatedView;
 
     @Override

@@ -430,6 +430,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SHIELD_BIGTECH_TRACKER_BLOCKED" desc="Text for shield tracker big tech blocked tooltip onboarding">
         <ph name="BIG_TECH">%1$s<ex>google</ex></ph> and <ph name="TRACKER">%2$s<ex>1</ex></ph> other ads &amp; trackers blocked
       </message>
+      <message name="IDS_SHIELD_BIGTECH_TRACKER_ONLY_BLOCKED" desc="Text for shield tracker only big tech blocked tooltip onboarding">
+        <ph name="BIG_TECH">%1$s<ex>google</ex></ph> and other ads &amp; trackers blocked
+      </message>
       <message name="IDS_SHIELD_TRACKER_BLOCKED" desc="Text for shield tracker blocked tooltip onboarding">
         <ph name="TRACKER_COUNT">%1$s<ex>1</ex></ph> ads &amp; trackers blocked
       </message>
@@ -2026,6 +2029,24 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_TIME_LONG_MINS" desc="Use an unabbreviated word for minute(s). [ICU Syntax]">
       {MINUTES, plural, =1 {# minute} other {# minutes}}
+    </message>
+    <message name="IDS_AD_FREE_VIDEO" desc="ad free callout dialog title">
+      Stream videos. Ad free.
+    </message>
+    <message name="IDS_NO_ADS_BEFORE_VIDEO" desc="ad free callout dialog text for no ads before video">
+      No ads before your video
+    </message>
+    <message name="IDS_NO_ADS_DURING_VIDEO" desc="ad free callout dialog text for no ads during video">
+      No ads during your video
+    </message>
+    <message name="IDS_NO_ADS_ON_PAGE" desc="ad free callout dialog text for no ads on page">
+      No ads on the page
+    </message>
+    <message name="IDS_NO_INTERRUPTIONS" desc="ad free callout dialog text for no interruptions">
+      No interruptions
+    </message>
+    <message name="IDS_SEARCH_VIDEOS" desc="ad free callout dialog button text for youtube">
+      Search for videos
     </message>
     <message name="IDS_BRAVE_FIREWALL_VPN" desc="VPN title text">
       Brave Firewall + VPN

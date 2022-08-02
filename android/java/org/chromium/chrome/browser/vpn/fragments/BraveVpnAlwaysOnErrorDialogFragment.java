@@ -15,9 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveDialogFragment;
 
 public class BraveVpnAlwaysOnErrorDialogFragment
-        extends BraveVpnDialogFragment implements View.OnClickListener {
+        extends BraveDialogFragment implements View.OnClickListener {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

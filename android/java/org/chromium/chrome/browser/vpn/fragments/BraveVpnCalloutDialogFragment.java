@@ -15,13 +15,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveDialogFragment;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
 public class BraveVpnCalloutDialogFragment
-        extends BraveVpnDialogFragment implements View.OnClickListener {
+        extends BraveDialogFragment implements View.OnClickListener {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
