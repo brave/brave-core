@@ -40,7 +40,10 @@ class PortfolioStoreTests: XCTestCase {
       completion(keyring)
     }
     keyringService._addObserver = { _ in }
-    keyringService._isLocked = { $0(false) }
+    keyringService._isLocked = { completion in
+      // unlocked would cause `update()` from call in `init` to be called prior to test being setup.g
+      completion(true)
+    }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
     rpcService._chainId = { $1(chainId) }
@@ -75,13 +78,18 @@ class PortfolioStoreTests: XCTestCase {
     XCTAssertTrue(store.userVisibleAssets.isEmpty)  // Initial state
     store.$userVisibleAssets
       .dropFirst()
-      .first()
+      .collect(2)
       .sink { userVisibleAssets in
         defer { userVisibleAssetsException.fulfill() }
-        XCTAssertEqual(userVisibleAssets.count, 1)
-        XCTAssertEqual(userVisibleAssets[0].decimalBalance, mockDecimalBalance)
-        XCTAssertEqual(userVisibleAssets[0].price, mockEthAssetPrice.price)
-        XCTAssertEqual(userVisibleAssets[0].history, mockEthPriceHistory)
+        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 1)
+        XCTAssertEqual(lastUpdatedVisibleAssets[0].decimalBalance, mockDecimalBalance)
+        XCTAssertEqual(lastUpdatedVisibleAssets[0].price, mockEthAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[0].history, mockEthPriceHistory)
       }.store(in: &cancellables)
     // test that `update()` will assign new value to `balance` publisher
     let balanceException = expectation(description: "update-balance")
@@ -138,7 +146,10 @@ class PortfolioStoreTests: XCTestCase {
       completion(keyring)
     }
     keyringService._addObserver = { _ in }
-    keyringService._isLocked = { $0(false) }
+    keyringService._isLocked = { completion in
+      // unlocked would cause `update()` from call in `init` to be called prior to test being setup.
+      completion(true)
+    }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
     rpcService._chainId = { $1(chainId) }
@@ -173,13 +184,18 @@ class PortfolioStoreTests: XCTestCase {
     XCTAssertTrue(store.userVisibleAssets.isEmpty)  // Initial state
     store.$userVisibleAssets
       .dropFirst()
-      .first()
+      .collect(2)
       .sink { userVisibleAssets in
         defer { userVisibleAssetsException.fulfill() }
-        XCTAssertEqual(userVisibleAssets.count, 1)
-        XCTAssertEqual(userVisibleAssets[0].decimalBalance, mockDecimalBalance)
-        XCTAssertEqual(userVisibleAssets[0].price, mockSolAssetPrice.price)
-        XCTAssertEqual(userVisibleAssets[0].history, mockSolPriceHistory)
+        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 1)
+        XCTAssertEqual(lastUpdatedVisibleAssets[0].decimalBalance, mockDecimalBalance)
+        XCTAssertEqual(lastUpdatedVisibleAssets[0].price, mockSolAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[0].history, mockSolPriceHistory)
       }.store(in: &cancellables)
     // test that `update()` will assign new value to `balance` publisher
     let balanceException = expectation(description: "update-balance")

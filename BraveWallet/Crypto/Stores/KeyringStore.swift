@@ -83,7 +83,11 @@ public class KeyringStore: ObservableObject {
   /// The users selected account when buying/sending/swapping currencies
   @Published var selectedAccount: BraveWallet.AccountInfo = .init() {
     didSet {
-      if oldValue.address == selectedAccount.address { return }
+      guard oldValue.address != selectedAccount.address, // Same account
+            !oldValue.address.isEmpty // initializing `KeyringStore`
+      else {
+        return
+      }
       keyringService.setSelectedAccount(selectedAccount.address, coin: selectedAccount.coin) { _ in }
     }
   }
@@ -367,9 +371,13 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
 
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
     Task { @MainActor in
+      let previouslySelectedCoin = await walletService.selectedCoin()
       walletService.setSelectedCoin(coinType)
-      let network = await rpcService.network(coinType)
-      await rpcService.setNetwork(network.chainId, coin: coinType) // update network here in case NetworkStore is closed. p.s. Multiple network selection with the same network will not cause `chainChangedEvent` getting called multiple times.
+      if previouslySelectedCoin != coinType {
+        // update network here in case NetworkStore is closed.
+        let network = await rpcService.network(coinType)
+        await rpcService.setNetwork(network.chainId, coin: coinType)
+      }
       updateKeyringInfo()
     }
   }

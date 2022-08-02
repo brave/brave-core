@@ -45,7 +45,9 @@ public class NetworkStore: ObservableObject {
     Task { @MainActor in // fetch current selected network
       let selectedCoin = await walletService.selectedCoin()
       let chain = await rpcService.network(selectedCoin)
-      await setSelectedChain(chain)
+      // since we are fetch network from JsonRpcService,
+      // we don't need to call `setNetwork` on JsonRpcService
+      self.selectedChainId = chain.chainId
     }
   }
 
@@ -183,10 +185,9 @@ extension NetworkStore: BraveWalletJsonRpcServiceObserver {
   }
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     walletService.setSelectedCoin(coin)
-    Task { @MainActor in
-      guard let chain = allChains.first(where: { $0.chainId == chainId && $0.coin == coin }) else {  return }
-      await setSelectedChain(chain)
-    }
+    // since JsonRpcService notify us of change,
+    // we don't need to call `setNetwork` on JsonRpcService
+    selectedChainId = chainId
   }
 }
 
