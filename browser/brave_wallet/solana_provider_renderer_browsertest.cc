@@ -110,6 +110,7 @@ constexpr char OnAccountChangedScript[] =
 
 constexpr char CheckSolanaProviderScript[] =
     "window.domAutomationController.send(!!window.braveSolana)";
+constexpr char OverwriteScript[] = "window.solana = ['test'];window.solana[0]";
 
 std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
   std::string result;
@@ -593,41 +594,29 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, DefaultWallet) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
-  constexpr char OverwriteScript[] = "window.%s = ['test'];window.%s[0]";
-  for (const std::string& provider : {"solana", "phantom.solana"}) {
-    brave_wallet::SetDefaultSolanaWallet(
-        browser()->profile()->GetPrefs(),
-        brave_wallet::mojom::DefaultWallet::BraveWallet);
-    ReloadAndWaitForLoadStop(browser());
-    // can't be overwritten
-    EXPECT_EQ(
-        content::EvalJs(web_contents(browser()),
-                        base::StringPrintf(OverwriteScript, provider.c_str(),
-                                           provider.c_str()))
-            .error,
-        "");
-    ASSERT_TRUE(content::EvalJs(
-                    web_contents(browser()),
-                    base::StringPrintf("window.%s.isPhantom", provider.c_str()))
-                    .ExtractBool());
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWallet);
+  ReloadAndWaitForLoadStop(browser());
+  // can't be overwritten
+  EXPECT_EQ(content::EvalJs(web_contents(browser()), OverwriteScript).error,
+            "");
+  ASSERT_TRUE(
+      content::EvalJs(web_contents(browser()), "window.solana.isPhantom")
+          .ExtractBool());
 
-    brave_wallet::SetDefaultSolanaWallet(
-        browser()->profile()->GetPrefs(),
-        brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
-    ReloadAndWaitForLoadStop(browser());
-    // overwritten
-    EXPECT_EQ(
-        content::EvalJs(web_contents(browser()),
-                        base::StringPrintf(OverwriteScript, provider.c_str(),
-                                           provider.c_str()))
-            .ExtractString(),
-        "test");
-  }
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop(browser());
+  // overwritten
+  EXPECT_EQ(
+      content::EvalJs(web_contents(browser()), OverwriteScript).ExtractString(),
+      "test");
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
-  for (const std::string& provider :
-       {"braveSolana", "solana", "phantom.solana"}) {
+  for (const std::string& provider : {"braveSolana", "solana"}) {
     // window.braveSolana.* and window.solana.* (methods)
     for (const std::string& method :
          {"on", "off", "emit", "removeListener", "removeAllListeners",
@@ -665,28 +654,20 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsPhantomAndIsBraveWallet) {
-  for (const std::string& provider :
-       {"braveSolana", "solana", "phantom.solana"}) {
-    ASSERT_TRUE(ExecJs(web_contents(browser()),
-                       base::StringPrintf(R"(window.%s.isPhantom = 123;
-                                             window.%s.isBraveWallet = 456)",
-                                          provider.c_str(), provider.c_str())));
-    // Both are non-writable
-    auto result1 = EvalJs(
-        web_contents(browser()),
-        base::StringPrintf(
-            R"(window.domAutomationController.send(window.%s.isPhantom))",
-            provider.c_str()),
-        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-    EXPECT_EQ(base::Value(true), result1.value);
-    auto result2 = EvalJs(
-        web_contents(browser()),
-        base::StringPrintf(
-            R"(window.domAutomationController.send(window.%s.isBraveWallet))",
-            provider.c_str()),
-        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-    EXPECT_EQ(base::Value(true), result2.value);
-  }
+  ASSERT_TRUE(ExecJs(web_contents(browser()),
+                     "window.braveSolana.isPhantom = 123; "
+                     "window.braveSolana.isBraveWallet = 456"));
+  // Both are non-writable
+  auto result1 = EvalJs(
+      web_contents(browser()),
+      "window.domAutomationController.send(window.braveSolana.isPhantom)",
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result1.value);
+  auto result2 = EvalJs(
+      web_contents(browser()),
+      "window.domAutomationController.send(window.braveSolana.isBraveWallet)",
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
