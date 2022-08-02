@@ -11,13 +11,17 @@ repo."""
 import argparse
 import json
 import os
-import requests
 import subprocess
 import sys
 
+import requests
+
 from deps_config import RUST_DEPS_PACKAGE_VERSION
 
-def get_remote_audit_config(url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json", retry = 3):
+# pylint: disable=inconsistent-return-statements
+def get_remote_audit_config(
+        url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json",
+        retry = 3):
     """Fetch additional audit configuration"""
     for i in range(retry):
         try:
@@ -27,8 +31,8 @@ def get_remote_audit_config(url = "https://raw.githubusercontent.com/brave/audit
                 raise
 
 REMOTE_AUDIT_CONFIG = get_remote_audit_config()
-IGNORED_CARGO_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["cargo"]
-IGNORED_NPM_ADVISORIES = REMOTE_AUDIT_CONFIG["ignore"]["npm"]
+IGNORED_CARGO_ADVISORIES = [e["advisory"] for e in REMOTE_AUDIT_CONFIG["ignore"]["cargo"]]
+IGNORED_NPM_ADVISORIES = [e["advisory"] for e in REMOTE_AUDIT_CONFIG["ignore"]["npm"]]
 
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = [
@@ -97,7 +101,6 @@ def audit_path(path, args):
 
 def npm_audit_deps(path, args):
     """Run `npm audit' in the specified path."""
-    # pylint: disable=consider-using-with
 
     npm_cmd = 'npm'
     if sys.platform.startswith('win'):
