@@ -814,7 +814,6 @@ if (!is_android) {
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/common",
       "//brave/components/tor",
-      "//brave/renderer/brave_vpn:browser_tests",
       "//brave/renderer/skus:browser_tests",
       "//brave/renderer/test:browser_tests",
       "//brave/third_party/blink/renderer:renderer",
@@ -840,7 +839,9 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
-
+    if (enable_brave_vpn) {
+      deps += [ "//brave/renderer/brave_vpn:browser_tests" ]
+    }
     if (is_mac) {
       sources += [
         "//chrome/browser/ui/test/test_browser_dialog_mac.h",
