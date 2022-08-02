@@ -30,6 +30,8 @@ public class AccountSelectorActivity
     private RecyclerView mRVNetworkSelector;
     private WalletCoinAdapter mWalletCoinAdapter;
     private AccountInfo[] mAccountInfos;
+    private AccountInfo mSelectedAccountInfo;
+    private boolean mResumeFromAddAccount;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -56,8 +58,18 @@ public class AccountSelectorActivity
             BottomSheetDialogFragment sheetDialogFragment = new CreateAccountBottomSheetFragment();
             sheetDialogFragment.show(
                     getSupportFragmentManager(), CreateAccountBottomSheetFragment.TAG);
+            mResumeFromAddAccount = true;
             return true;
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mResumeFromAddAccount) {
+            mResumeFromAddAccount = false;
+            updateAccountsList();
+        }
     }
 
     @Override
@@ -71,15 +83,15 @@ public class AccountSelectorActivity
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void initAccounts() {
         mKeyringModel.mSelectedAccount.observe(this, selectedAccountInfo -> {
             if (selectedAccountInfo == null) return;
 
+            mSelectedAccountInfo = selectedAccountInfo;
             boolean callDataSetChanged = true;
             if (mAccountInfos != null) {
                 for (AccountInfo accountInfo : mAccountInfos) {
-                    if (selectedAccountInfo.address.equals(accountInfo.address)) {
+                    if (mSelectedAccountInfo.address.equals(accountInfo.address)) {
                         callDataSetChanged = false;
                         break;
                     }
@@ -87,22 +99,29 @@ public class AccountSelectorActivity
             }
             if (!callDataSetChanged) return;
 
-            mKeyringModel.getAccounts(accountInfos -> {
-                mAccountInfos = accountInfos;
-                List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-                for (AccountInfo accountInfo : mAccountInfos) {
-                    if (!accountInfo.isImported) {
-                        walletListItemModelList.add(
-                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
-                                        accountInfo.address, null, null, accountInfo.isImported));
-                    }
-                }
+            updateAccountsList();
+        });
+    }
 
-                mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-                mWalletCoinAdapter.notifyDataSetChanged();
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateAccountsList() {
+        mKeyringModel.getAccounts(accountInfos -> {
+            mAccountInfos = accountInfos;
+            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+            for (AccountInfo accountInfo : mAccountInfos) {
+                if (!accountInfo.isImported) {
+                    walletListItemModelList.add(
+                            new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
+                                    accountInfo.address, null, null, accountInfo.isImported));
+                }
+            }
+
+            mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+            mWalletCoinAdapter.notifyDataSetChanged();
+            if (mSelectedAccountInfo != null) {
                 mWalletCoinAdapter.updateSelectedNetwork(
-                        selectedAccountInfo.name, selectedAccountInfo.address);
-            });
+                        mSelectedAccountInfo.name, mSelectedAccountInfo.address);
+            }
         });
     }
 }
