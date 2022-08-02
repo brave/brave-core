@@ -43,7 +43,7 @@ import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 
 // Components
 import { BackButton } from '../../../shared'
-import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/index'
+import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 import { PortfolioTransactionItem } from '../../portfolio-transaction-item/index'
 import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
