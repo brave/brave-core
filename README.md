@@ -3,7 +3,7 @@
 Brave for iOS 🦁
 ===============
 
-Download on the [App Store](https://itunes.apple.com/app/brave-web-browser/id1052879175?mt=8).
+Download on the [App Store](https://apps.apple.com/app/brave-web-browser/id1052879175).
 
 This branch (development)
 -----------
