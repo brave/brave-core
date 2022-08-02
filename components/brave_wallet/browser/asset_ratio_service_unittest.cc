@@ -147,8 +147,8 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
      "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
      "expiresAt":"2022-07-25T19:59:57Z"
     })");
-  TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, mojom::kMainnetChainId, "0xdeadbeef",
-                  "USDC", "55000000", "USD",
+  TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD",
                   "https://crypto.sardine.ai/"
                   "?address=0xdeadbeef&network=ethereum&asset_type=USDC&fiat_"
                   "amount=55000000&fiat_currency=USD&client_token=74618e17-"
