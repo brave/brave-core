@@ -51,6 +51,10 @@ const TermsOfUseText: React.FC<{}> = () => {
       href='https://brave.com/terms-of-use/'
       target='_blank'
       rel='noopener noreferrer'
+      onClick={
+        // prevent checkbox toggle when clicking this link
+        (e) => e.stopPropagation()
+      }
     >
       {text.duringTag}
     </LinkText>
