@@ -22,6 +22,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
+import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -36,7 +37,9 @@ public class TxDetailsFragment extends Fragment {
 
     private TxDetailsFragment(TransactionInfo txInfo) {
         mTxInfo = txInfo;
-        mTxData1559 = TransactionUtils.safeEthTxData1559(mTxInfo.txDataUnion);
+        mTxData1559 = mTxInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                ? mTxInfo.txDataUnion.getEthTxData1559()
+                : null;
     }
 
     @Nullable
@@ -70,6 +73,18 @@ public class TxDetailsFragment extends Fragment {
             case TransactionType.ERC721_TRANSFER_FROM:
                 functionType = getResources().getString(
                         R.string.wallet_details_function_type_erc721transfer);
+                break;
+            case TransactionType.SOLANA_SYSTEM_TRANSFER:
+                functionType = getResources().getString(
+                        R.string.wallet_details_function_type_solana_system_transfer);
+                break;
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER:
+                functionType = getResources().getString(
+                        R.string.wallet_details_function_type_spl_token_transfer);
+                break;
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION:
+                functionType = getResources().getString(
+                        R.string.wallet_details_function_type_solana_spl_token_transfer_with_associated_token_account_creation);
                 break;
             default:
                 break;
