@@ -561,7 +561,8 @@ AdBlockSubscriptionServiceManager::UrlCosmeticResources(
           it->second->UrlCosmeticResources(url);
       if (first_value) {
         if (next_value) {
-          MergeResourcesInto(std::move(*next_value), &*first_value, false);
+          MergeResourcesInto(std::move(next_value->GetDict()),
+                             first_value->GetIfDict(), false);
         }
       } else {
         first_value = std::move(next_value);

@@ -291,13 +291,17 @@ absl::optional<base::Value> AdBlockRegionalServiceManager::UrlCosmeticResources(
   }
   absl::optional<base::Value> first_value =
       it->second->UrlCosmeticResources(url);
+  DCHECK(first_value->is_dict());
 
   for (; it != regional_services_.end(); it++) {
     absl::optional<base::Value> next_value =
         it->second->UrlCosmeticResources(url);
+    DCHECK(next_value->is_dict());
+
     if (first_value) {
       if (next_value) {
-        MergeResourcesInto(std::move(*next_value), &*first_value, false);
+        MergeResourcesInto(std::move(next_value->GetDict()),
+                           first_value->GetIfDict(), false);
       }
     } else {
       first_value = std::move(next_value);

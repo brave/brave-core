@@ -182,7 +182,8 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
       regional_service_manager()->UrlCosmeticResources(url);
 
   if (regional_resources && regional_resources->is_dict()) {
-    MergeResourcesInto(std::move(*regional_resources), &*resources,
+    MergeResourcesInto(std::move(regional_resources->GetDict()),
+                       resources->GetIfDict(),
                        /*force_hide=*/true);
   }
 
@@ -190,7 +191,8 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
       custom_filters_service()->UrlCosmeticResources(url);
 
   if (custom_resources && custom_resources->is_dict()) {
-    MergeResourcesInto(std::move(*custom_resources), &*resources,
+    MergeResourcesInto(std::move(custom_resources->GetDict()),
+                       resources->GetIfDict(),
                        /*force_hide=*/true);
   }
 
@@ -198,7 +200,8 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
       subscription_service_manager()->UrlCosmeticResources(url);
 
   if (subscription_resources && subscription_resources->is_dict()) {
-    MergeResourcesInto(std::move(*subscription_resources), &*resources,
+    MergeResourcesInto(std::move(subscription_resources->GetDict()),
+                       resources->GetIfDict(),
                        /*force_hide=*/true);
   }
 
