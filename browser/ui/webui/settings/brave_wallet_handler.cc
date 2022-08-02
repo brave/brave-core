@@ -33,11 +33,11 @@ BraveWalletHandler::~BraveWalletHandler() = default;
 
 namespace {
 
-base::Value MakeSelectValue(const std::u16string& name,
-                            ::brave_wallet::mojom::DefaultWallet value) {
-  base::Value item(base::Value::Type::DICTIONARY);
-  item.SetKey("value", base::Value(static_cast<int>(value)));
-  item.SetKey("name", base::Value(name));
+base::Value::Dict MakeSelectValue(const std::u16string& name,
+                                  ::brave_wallet::mojom::DefaultWallet value) {
+  base::Value::Dict item;
+  item.Set("value", static_cast<int>(value));
+  item.Set("name", name);
   return item;
 }
 
@@ -96,7 +96,7 @@ void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
 
 void BraveWalletHandler::GetSolanaProviderOptions(
     const base::Value::List& args) {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   list.Append(MakeSelectValue(
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
@@ -110,7 +110,7 @@ void BraveWalletHandler::GetSolanaProviderOptions(
                               ::brave_wallet::mojom::DefaultWallet::None));
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], list);
+  ResolveJavascriptCallback(args[0], base::Value(std::move(list)));
 }
 
 void BraveWalletHandler::RemoveEthereumChain(const base::Value::List& args) {
@@ -189,11 +189,11 @@ void BraveWalletHandler::OnAddEthereumChain(
     const std::string& chain_id,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
-  base::ListValue result;
-  result.Append(
-      base::Value(error == brave_wallet::mojom::ProviderError::kSuccess));
-  result.Append(base::Value(error_message));
-  ResolveJavascriptCallback(javascript_callback, std::move(result));
+  base::Value::List result;
+  result.Append(error == brave_wallet::mojom::ProviderError::kSuccess);
+  result.Append(error_message);
+  ResolveJavascriptCallback(javascript_callback,
+                            base::Value(std::move(result)));
   if (chain_callback_for_testing_)
     std::move(chain_callback_for_testing_).Run();
 }
@@ -209,11 +209,11 @@ void BraveWalletHandler::AddEthereumChain(const base::Value::List& args) {
       brave_wallet::ValueToEthNetworkInfo(args[1]);
 
   if (!chain || !json_rpc_service) {
-    base::ListValue result;
-    result.Append(base::Value(false));
-    result.Append(base::Value(l10n_util::GetStringUTF8(
-        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED)));
-    ResolveJavascriptCallback(args[0], std::move(result));
+    base::Value::List result;
+    result.Append(false);
+    result.Append(l10n_util::GetStringUTF8(
+        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED));
+    ResolveJavascriptCallback(args[0], base::Value(std::move(result)));
     return;
   }
 
