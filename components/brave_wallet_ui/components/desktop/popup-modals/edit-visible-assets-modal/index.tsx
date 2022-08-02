@@ -414,7 +414,6 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
   }
 
   const onClickDone = () => {
-    console.log('updated token list length after: ', updatedTokensList.length)
     onUpdateVisibleAssets(updatedTokensList)
     onCloseModal()
   }
