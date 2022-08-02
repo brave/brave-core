@@ -26,7 +26,7 @@ class TxMeta {
 
   static std::string GenerateMetaID();
 
-  virtual base::Value ToValue() const;
+  virtual base::Value::Dict ToValue() const;
   virtual mojom::TransactionInfoPtr ToTransactionInfo() const = 0;
 
   const std::string& id() const { return id_; }

@@ -31,7 +31,7 @@ class FilTxMeta : public TxMeta {
   ~FilTxMeta() override;
 
   // TxMeta
-  base::Value ToValue() const override;
+  base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
 
   FilTransaction* tx() const { return tx_.get(); }

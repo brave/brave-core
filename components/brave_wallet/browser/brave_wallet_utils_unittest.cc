@@ -652,7 +652,7 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
   tx_receipt.contract_address = "0xb60e8dd61c5d32be8058bb8eb970870f07233155";
   tx_receipt.status = true;
 
-  base::Value tx_receipt_value = TransactionReceiptToValue(tx_receipt);
+  base::Value::Dict tx_receipt_value = TransactionReceiptToValue(tx_receipt);
   auto tx_receipt_from_value = ValueToTransactionReceipt(tx_receipt_value);
   ASSERT_NE(tx_receipt_from_value, absl::nullopt);
   EXPECT_EQ(tx_receipt, *tx_receipt_from_value);

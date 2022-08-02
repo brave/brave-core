@@ -14,7 +14,7 @@
 namespace brave_wallet {
 
 // Converts a uint256_t value into a blob value type
-base::Value RLPUint256ToBlobValue(uint256_t input);
+base::Value::BlobStorage RLPUint256ToBlob(uint256_t input);
 
 // Recursive Length Prefix (RLP) encoding of base::Values consisting of string,
 // blob, or int data

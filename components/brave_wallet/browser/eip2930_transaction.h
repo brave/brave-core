@@ -40,10 +40,11 @@ class Eip2930Transaction : public EthTransaction {
   static absl::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
                                                        uint256_t chain_id,
                                                        bool strict = true);
-  static absl::optional<Eip2930Transaction> FromValue(const base::Value& value);
+  static absl::optional<Eip2930Transaction> FromValue(
+      const base::Value::Dict& value);
 
   static std::vector<base::Value> AccessListToValue(const AccessList&);
-  static absl::optional<AccessList> ValueToAccessList(const base::Value&);
+  static absl::optional<AccessList> ValueToAccessList(const base::Value::List&);
 
   uint256_t chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }
@@ -64,7 +65,7 @@ class Eip2930Transaction : public EthTransaction {
 
   bool IsSigned() const override;
 
-  base::Value ToValue() const override;
+  base::Value::Dict ToValue() const override;
 
   uint256_t GetDataFee() const override;
 

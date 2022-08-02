@@ -42,12 +42,13 @@ class EthTxStateManager : public TxStateManager {
       absl::optional<EthAddress> from);
 
   std::unique_ptr<EthTxMeta> GetEthTx(const std::string& id);
-  std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value& value);
+  std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value::Dict& value);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTxStateManagerUnitTest, GetTxPrefPathPrefix);
 
-  std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
+  std::unique_ptr<TxMeta> ValueToTxMeta(
+      const base::Value::Dict& value) override;
   std::string GetTxPrefPathPrefix() override;
 };
 

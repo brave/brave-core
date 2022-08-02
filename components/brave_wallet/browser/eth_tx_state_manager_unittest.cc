@@ -101,8 +101,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com")));
 
-  base::Value meta_value = meta.ToValue();
-  const std::string* from = meta_value.FindStringKey("from");
+  base::Value::Dict meta_value = meta.ToValue();
+  const std::string* from = meta_value.FindString("from");
   ASSERT_TRUE(from);
   EXPECT_EQ(*from, "0x2F015C60E0be116B1f0CD534704Db9c92118FB6A");
   auto meta_from_value = eth_tx_state_manager_->ValueToEthTxMeta(meta_value);
@@ -137,7 +137,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   access_list->push_back(item_a);
 
   EthTxMeta meta1(std::move(tx1));
-  base::Value value1 = meta1.ToValue();
+  base::Value::Dict value1 = meta1.ToValue();
   auto meta_from_value1 = eth_tx_state_manager_->ValueToEthTxMeta(value1);
   ASSERT_NE(meta_from_value1, nullptr);
   EXPECT_EQ(meta_from_value1->tx()->type(), 1);
@@ -162,7 +162,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
                   "0xb68a0aa00" /* Hex of 49 * 1e9 */,
                   "0xad8075b7a" /* Hex of 46574033786 */))));
   EthTxMeta meta2(std::move(tx2));
-  base::Value value2 = meta2.ToValue();
+  base::Value::Dict value2 = meta2.ToValue();
   auto meta_from_value2 = eth_tx_state_manager_->ValueToEthTxMeta(value2);
   ASSERT_NE(meta_from_value2, nullptr);
   EXPECT_EQ(meta_from_value2->tx()->type(), 2);

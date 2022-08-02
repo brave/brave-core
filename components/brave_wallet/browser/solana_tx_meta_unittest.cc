@@ -138,7 +138,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       "FmBV6UjKdiSZkQUW");
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
 
-  base::Value value = meta.ToValue();
+  base::Value::Dict value = meta.ToValue();
   auto expect_value = base::JSONReader::Read(R"(
     {
       "id": "meta_id",
