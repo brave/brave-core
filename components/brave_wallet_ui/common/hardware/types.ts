@@ -1,7 +1,7 @@
-import { EthereumSignedTx } from './trezor/trezor-connect-types'
 import { BraveWallet } from '../../constants/types'
 import { SignedLotusMessage } from '@glif/filecoin-message'
 import { LedgerError } from './ledgerjs/ledger-messages'
+import { EthereumSignedTx } from './ledgerjs/eth-ledger-messages'
 
 export const FilecoinNetworkTypes = [
   BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
