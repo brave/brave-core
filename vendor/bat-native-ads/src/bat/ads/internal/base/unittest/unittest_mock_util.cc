@@ -350,7 +350,7 @@ void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
           database->RunTransaction(std::move(transaction), response.get());
         }
 
-        callback(std::move(response));
+        std::move(callback).Run(std::move(response));
       }));
 }
 

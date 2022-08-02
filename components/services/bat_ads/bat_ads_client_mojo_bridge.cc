@@ -243,16 +243,11 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
   return value;
 }
 
-void OnRunDBTransaction(const ads::RunDBTransactionCallback& callback,
-                        ads::mojom::DBCommandResponseInfoPtr response) {
-  callback(std::move(response));
-}
-
 void BatAdsClientMojoBridge::RunDBTransaction(
     ads::mojom::DBTransactionInfoPtr transaction,
     ads::RunDBTransactionCallback callback) {
   bat_ads_client_->RunDBTransaction(std::move(transaction),
-      base::BindOnce(&OnRunDBTransaction, std::move(callback)));
+                                    std::move(callback));
 }
 
 void BatAdsClientMojoBridge::ClearScheduledCaptcha() {

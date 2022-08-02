@@ -193,8 +193,7 @@ void CreativePromotedContentAds::Save(
   }
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 void CreativePromotedContentAds::Delete(ResultCallback callback) {
@@ -203,8 +202,7 @@ void CreativePromotedContentAds::Delete(ResultCallback callback) {
   DeleteTable(transaction.get(), GetTableName());
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 void CreativePromotedContentAds::GetForCreativeInstanceId(
@@ -291,8 +289,8 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&CreativePromotedContentAds::OnGetForCreativeInstanceId, this,
-                std::placeholders::_1, creative_instance_id, callback));
+      base::BindOnce(&CreativePromotedContentAds::OnGetForCreativeInstanceId,
+                     base::Unretained(this), creative_instance_id, callback));
 }
 
 void CreativePromotedContentAds::GetForSegments(
@@ -388,8 +386,8 @@ void CreativePromotedContentAds::GetForSegments(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&CreativePromotedContentAds::OnGetForSegments, this,
-                std::placeholders::_1, segments, callback));
+      base::BindOnce(&CreativePromotedContentAds::OnGetForSegments,
+                     base::Unretained(this), segments, callback));
 }
 
 void CreativePromotedContentAds::GetAll(
@@ -469,8 +467,9 @@ void CreativePromotedContentAds::GetAll(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&CreativePromotedContentAds::OnGetAll,
-                                        this, std::placeholders::_1, callback));
+      std::move(transaction),
+      base::BindOnce(&CreativePromotedContentAds::OnGetAll,
+                     base::Unretained(this), callback));
 }
 
 std::string CreativePromotedContentAds::GetTableName() const {
@@ -530,9 +529,9 @@ std::string CreativePromotedContentAds::BuildInsertOrUpdateQuery(
 }
 
 void CreativePromotedContentAds::OnGetForCreativeInstanceId(
-    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
-    GetCreativePromotedContentAdCallback callback) {
+    GetCreativePromotedContentAdCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative promoted content ad");
@@ -555,9 +554,9 @@ void CreativePromotedContentAds::OnGetForCreativeInstanceId(
 }
 
 void CreativePromotedContentAds::OnGetForSegments(
-    mojom::DBCommandResponseInfoPtr response,
     const SegmentList& segments,
-    GetCreativePromotedContentAdsCallback callback) {
+    GetCreativePromotedContentAdsCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative promoted content ads");
@@ -572,8 +571,8 @@ void CreativePromotedContentAds::OnGetForSegments(
 }
 
 void CreativePromotedContentAds::OnGetAll(
-    mojom::DBCommandResponseInfoPtr response,
-    GetCreativePromotedContentAdsCallback callback) {
+    GetCreativePromotedContentAdsCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative new tab page ads");
