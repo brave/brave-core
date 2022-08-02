@@ -123,7 +123,8 @@ void AdsClientIOS::Log(const char* file,
 void AdsClientIOS::RunDBTransaction(
     ads::mojom::DBTransactionInfoPtr transaction,
     ads::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(transaction) callback:callback];
+  [bridge_ runDBTransaction:std::move(transaction)
+                   callback:std::move(callback)];
 }
 
 void AdsClientIOS::UpdateAdRewards() {

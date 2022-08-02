@@ -2491,7 +2491,7 @@ void AdsServiceImpl::OnLogTrainingInstance(bool success) {
 void AdsServiceImpl::OnRunDBTransaction(
     ads::RunDBTransactionCallback callback,
     ads::mojom::DBCommandResponseInfoPtr response) {
-  callback(std::move(response));
+  std::move(callback).Run(std::move(response));
 }
 
 void AdsServiceImpl::WriteDiagnosticLog(const std::string& file,

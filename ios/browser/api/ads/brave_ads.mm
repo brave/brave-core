@@ -1322,13 +1322,16 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
-      base::BindOnce(^(ads::mojom::DBCommandResponseInfoPtr response) {
-        const auto strongSelf = weakSelf;
-        if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
-          return;
-        }
-        callback(std::move(response));
-      }));
+      base::BindOnce(
+          ^(ads::RunDBTransactionCallback callback,
+            ads::mojom::DBCommandResponseInfoPtr response) {
+            const auto strongSelf = weakSelf;
+            if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+              return;
+            }
+            std::move(callback).Run(std::move(response));
+          },
+          std::move(callback)));
 }
 
 - (void)updateAdRewards {

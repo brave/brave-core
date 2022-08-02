@@ -64,10 +64,6 @@ class AdsClientMojoBridge
   static void OnSave(CallbackHolder<SaveCallback>* callback_holder,
                      const bool success);
 
-  static void OnRunDBTransaction(
-      CallbackHolder<RunDBTransactionCallback>* callback_holder,
-      ads::mojom::DBCommandResponseInfoPtr response);
-
   // BatAdsClient:
   bool IsNetworkConnectionAvailable(bool* out_value) override;
   void IsNetworkConnectionAvailable(

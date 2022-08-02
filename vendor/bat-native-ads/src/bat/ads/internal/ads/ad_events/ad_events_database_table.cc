@@ -76,8 +76,7 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
   InsertOrUpdate(transaction.get(), {ad_event});
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 void AdEvents::GetIf(const std::string& condition,
@@ -158,8 +157,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
@@ -183,8 +181,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 std::string AdEvents::GetTableName() const {
@@ -242,8 +239,8 @@ void AdEvents::RunTransaction(const std::string& query,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&AdEvents::OnGetAdEvents, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&AdEvents::OnGetAdEvents,
+                                             base::Unretained(this), callback));
 }
 
 void AdEvents::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -281,8 +278,8 @@ std::string AdEvents::BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
       BuildBindingParameterPlaceholders(8, count).c_str());
 }
 
-void AdEvents::OnGetAdEvents(mojom::DBCommandResponseInfoPtr response,
-                             GetAdEventsCallback callback) {
+void AdEvents::OnGetAdEvents(GetAdEventsCallback callback,
+                             mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");

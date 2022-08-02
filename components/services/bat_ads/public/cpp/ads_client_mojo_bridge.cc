@@ -66,17 +66,6 @@ void AdsClientMojoBridge::OnSave(CallbackHolder<SaveCallback>* callback_holder,
   delete callback_holder;
 }
 
-// static
-void AdsClientMojoBridge::OnRunDBTransaction(
-    CallbackHolder<RunDBTransactionCallback>* callback_holder,
-    ads::mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(callback_holder);
-  if (callback_holder->is_valid()) {
-    std::move(callback_holder->get()).Run(std::move(response));
-  }
-  delete callback_holder;
-}
-
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(bool* out_value) {
   DCHECK(out_value);
   *out_value = ads_client_->IsNetworkConnectionAvailable();
@@ -253,12 +242,7 @@ void AdsClientMojoBridge::ClearScheduledCaptcha() {
 void AdsClientMojoBridge::RunDBTransaction(
     ads::mojom::DBTransactionInfoPtr transaction,
     RunDBTransactionCallback callback) {
-  auto* callback_holder = new CallbackHolder<RunDBTransactionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->RunDBTransaction(
-      std::move(transaction),
-      std::bind(AdsClientMojoBridge::OnRunDBTransaction, callback_holder,
-                std::placeholders::_1));
+  ads_client_->RunDBTransaction(std::move(transaction), std::move(callback));
 }
 
 void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,

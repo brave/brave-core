@@ -30,7 +30,7 @@ using LoadFileCallback = base::OnceCallback<void(base::File)>;
 using UrlRequestCallback = std::function<void(const mojom::UrlResponseInfo&)>;
 
 using RunDBTransactionCallback =
-    std::function<void(mojom::DBCommandResponseInfoPtr)>;
+    base::OnceCallback<void(mojom::DBCommandResponseInfoPtr)>;
 
 using GetBrowsingHistoryCallback =
     std::function<void(const std::vector<GURL>&)>;
