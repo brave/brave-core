@@ -62,6 +62,8 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
       params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
     for (const auto& entry : *explorerUrlsListValue) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.block_explorer_urls.push_back(entry.GetString());
     }
@@ -70,6 +72,8 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
   const auto* iconUrlsValue = params_dict->FindList("iconUrls");
   if (iconUrlsValue) {
     for (const auto& entry : *iconUrlsValue) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.icon_urls.push_back(entry.GetString());
     }
@@ -78,6 +82,8 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
   const auto* rpcUrlsValue = params_dict->FindList("rpcUrls");
   if (rpcUrlsValue) {
     for (const auto& entry : *rpcUrlsValue) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.rpc_urls.push_back(entry.GetString());
     }
