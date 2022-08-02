@@ -25,10 +25,10 @@ FetchPaymentTokenUrlRequestBuilder::~FetchPaymentTokenUrlRequestBuilder() =
 
 // GET /v2/confirmation/{confirmation_id}/paymentToken
 
-mojom::UrlRequestPtr FetchPaymentTokenUrlRequestBuilder::Build() {
-  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
+mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
+  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
   url_request->url = BuildUrl();
-  url_request->method = mojom::UrlRequestMethod::kGet;
+  url_request->method = mojom::UrlRequestMethodType::kGet;
 
   return url_request;
 }

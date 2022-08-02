@@ -14,7 +14,7 @@ constexpr char kSegment[] = "keyword";
 }  // namespace
 
 SearchResultAdInfo BuildSearchResultAd(
-    const mojom::SearchResultAdPtr& ad_mojom) {
+    const mojom::SearchResultAdInfoPtr& ad_mojom) {
   SearchResultAdInfo ad;
 
   ad.type = AdType::kSearchResultAd;

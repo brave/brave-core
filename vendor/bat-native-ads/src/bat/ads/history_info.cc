@@ -9,7 +9,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -32,19 +32,18 @@ base::Value::Dict HistoryInfo::ToValue() const {
   return dict;
 }
 
-bool HistoryInfo::FromValue(const base::Value::Dict& root) {
+void HistoryInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindList("history")) {
     for (const auto& item : *value) {
-      if (!item.is_dict())
+      if (!item.is_dict()) {
         continue;
+      }
 
       HistoryItemInfo history_item;
       history_item.FromValue(item.GetDict());
       items.push_back(history_item);
     }
   }
-
-  return true;
 }
 
 std::string HistoryInfo::ToJson() const {
@@ -62,7 +61,9 @@ bool HistoryInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  FromValue(document->GetDict());
+
+  return true;
 }
 
 }  // namespace ads

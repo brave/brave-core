@@ -7,13 +7,13 @@
 
 #include <string>
 
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

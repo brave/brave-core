@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/values.h"
 #include "bat/ads/internal/account/user_data/totals_user_data_util.h"
 
 namespace ads {

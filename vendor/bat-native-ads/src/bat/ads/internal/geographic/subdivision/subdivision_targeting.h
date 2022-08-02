@@ -48,7 +48,7 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
 
   void MaybeFetchForLocale(const std::string& locale);
   void Fetch();
-  void OnFetch(const mojom::UrlResponse& url_response);
+  void OnFetch(const mojom::UrlResponseInfo& url_response);
   bool ParseJson(const std::string& json);
   void Retry();
   void FetchAfterDelay();

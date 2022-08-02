@@ -5,12 +5,13 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
+#include <utility>
+
 #include "base/time/time.h"
 #include "bat/ads/internal/account/statement/statement_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time/time_util.h"
-#include "bat/ads/statement_info.h"
 
 namespace ads {
 
@@ -23,22 +24,18 @@ void BuildStatement(BuildStatementCallback callback) {
       [=](const bool success, const TransactionList& transactions) {
         if (!success) {
           BLOG(0, "Failed to get transactions");
-          callback(/* success */ false, {});
+          callback(nullptr);
           return;
         }
 
-        StatementInfo statement;
-
-        statement.next_payment_date = GetNextPaymentDate(transactions);
-
-        statement.earnings_this_month = GetEarningsForThisMonth(transactions);
-
-        statement.earnings_last_month = GetEarningsForLastMonth(transactions);
-
-        statement.ads_received_this_month =
+        mojom::StatementInfoPtr statement = mojom::StatementInfo::New();
+        statement->earnings_last_month = GetEarningsForLastMonth(transactions);
+        statement->earnings_this_month = GetEarningsForThisMonth(transactions);
+        statement->next_payment_date = GetNextPaymentDate(transactions);
+        statement->ads_received_this_month =
             GetAdsReceivedThisMonth(transactions);
 
-        callback(/* success */ true, statement);
+        callback(std::move(statement));
       });
 }
 

@@ -16,6 +16,7 @@
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -33,14 +34,14 @@ RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
 
 // POST /v2/confirmation/token/{payment_id}
 
-mojom::UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
-  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
+mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
+  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
   url_request->url = BuildUrl();
   const std::string body = BuildBody();
   url_request->headers = BuildHeaders(body);
   url_request->content = body;
   url_request->content_type = "application/json";
-  url_request->method = mojom::UrlRequestMethod::kPost;
+  url_request->method = mojom::UrlRequestMethodType::kPost;
 
   return url_request;
 }

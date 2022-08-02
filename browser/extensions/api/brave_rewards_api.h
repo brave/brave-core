@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "extensions/browser/extension_function.h"
 
@@ -471,11 +472,7 @@ class BraveRewardsGetAdsAccountStatementFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetAdsAccountStatement(const bool success,
-                                const double next_payment_date,
-                                const int ads_received_this_month,
-                                const double earnings_this_month,
-                                const double earnings_last_month);
+  void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
 };
 
 class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {

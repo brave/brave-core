@@ -34,7 +34,7 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/statement_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
@@ -42,6 +42,7 @@
 #import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
 #import "notification_ad_ios.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -89,12 +90,13 @@ static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
 
-ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
-    ads::mojom::DBTransactionPtr transaction,
+ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
+    ads::mojom::DBTransactionInfoPtr transaction,
     ads::Database* database) {
-  auto response = ads::mojom::DBCommandResponse::New();
+  auto response = ads::mojom::DBCommandResponseInfo::New();
   if (!database) {
-    response->status = ads::mojom::DBCommandResponse::Status::RESPONSE_ERROR;
+    response->status =
+        ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), response.get());
   }
@@ -237,17 +239,17 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
-+ (AdsBuildChannel*)buildChannel {
-  auto build_channel = [[AdsBuildChannel alloc] init];
++ (AdsBuildChannelInfo*)buildChannelInfo {
+  auto build_channel = [[AdsBuildChannelInfo alloc] init];
   build_channel.isRelease = ads::BuildChannel().is_release;
   build_channel.name = base::SysUTF8ToNSString(ads::BuildChannel().name);
 
   return build_channel;
 }
 
-+ (void)setBuildChannel:(AdsBuildChannel*)buildChannel {
-  ads::BuildChannel().is_release = buildChannel.isRelease;
-  ads::BuildChannel().name = base::SysNSStringToUTF8(buildChannel.name);
++ (void)setBuildChannelInfo:(AdsBuildChannelInfo*)buildChannelInfo {
+  ads::BuildChannel().is_release = buildChannelInfo.isRelease;
+  ads::BuildChannel().name = base::SysNSStringToUTF8(buildChannelInfo.name);
 }
 
 #pragma mark - Initialization / Shutdown
@@ -607,20 +609,24 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
                             completion:
-                                (void (^)(BOOL success,
-                                          NSString* dimensions,
+                                (void (^)(NSString* dimensions,
                                           InlineContentAdIOS* ad))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->MaybeServeInlineContentAd(base::SysNSStringToUTF8(dimensions), ^(
-                                     const bool success,
-                                     const std::string& dimensions,
-                                     const ads::InlineContentAdInfo& ad) {
-    const auto inline_content_ad =
-        [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:ad];
-    completion(success, base::SysUTF8ToNSString(dimensions), inline_content_ad);
-  });
+  ads->MaybeServeInlineContentAd(
+      base::SysNSStringToUTF8(dimensions),
+      ^(const std::string& dimensions,
+        const absl::optional<ads::InlineContentAdInfo>& ad) {
+        if (!ad) {
+          completion(base::SysUTF8ToNSString(dimensions), nil);
+          return;
+        }
+
+        const auto inline_content_ad =
+            [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
+        completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
+      });
 }
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId
@@ -662,20 +668,20 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetStatementOfAccounts(^(const bool success,
-                                const ads::StatementInfo& list) {
-    if (!success) {
+  ads->GetStatementOfAccounts(^(ads::mojom::StatementInfoPtr statement) {
+    if (!statement) {
       completion(0, 0, nil);
       return;
     }
 
     NSDate* nextPaymentDate = nil;
-    if (!list.next_payment_date.is_null()) {
-      nextPaymentDate = [NSDate
-          dateWithTimeIntervalSince1970:list.next_payment_date.ToDoubleT()];
+    if (!statement->next_payment_date.is_null()) {
+      nextPaymentDate =
+          [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                    .ToDoubleT()];
     }
-    completion(list.ads_received_this_month, list.earnings_this_month,
-               nextPaymentDate);
+    completion(statement->ads_received_this_month,
+               statement->earnings_this_month, nextPaymentDate);
   });
 }
 
@@ -736,12 +742,12 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Network
 
-- (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
+- (void)UrlRequest:(ads::mojom::UrlRequestInfoPtr)url_request
           callback:(ads::UrlRequestCallback)callback {
-  std::map<ads::mojom::UrlRequestMethod, std::string> methodMap{
-      {ads::mojom::UrlRequestMethod::kGet, "GET"},
-      {ads::mojom::UrlRequestMethod::kPost, "POST"},
-      {ads::mojom::UrlRequestMethod::kPut, "PUT"}};
+  std::map<ads::mojom::UrlRequestMethodType, std::string> methodMap{
+      {ads::mojom::UrlRequestMethodType::kGet, "GET"},
+      {ads::mojom::UrlRequestMethodType::kPost, "POST"},
+      {ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
 
   const auto copiedURL = url_request->url;
 
@@ -760,7 +766,7 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
               if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
                 return;
               }
-              ads::mojom::UrlResponse url_response;
+              ads::mojom::UrlResponseInfo url_response;
               url_response.url = copiedURL;
               url_response.status_code = statusCode;
               url_response.body = response;
@@ -1224,11 +1230,14 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return nil;
   }
-  ads::NotificationAdInfo info;
-  if (ads->GetNotificationAd(identifier.UTF8String, &info)) {
-    return [[NotificationAdIOS alloc] initWithNotificationInfo:info];
+
+  const absl::optional<ads::NotificationAdInfo> ad =
+      ads->GetNotificationAd(identifier.UTF8String);
+  if (!ad) {
+    return nil;
   }
-  return nil;
+
+  return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
 }
 
 - (bool)canShowNotificationAds {
@@ -1306,14 +1315,14 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
                          encoding:[NSString defaultCStringEncoding]];
 }
 
-- (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction
+- (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback {
   __weak BraveAds* weakSelf = self;
   base::PostTaskAndReplyWithResult(
       databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
-      base::BindOnce(^(ads::mojom::DBCommandResponsePtr response) {
+      base::BindOnce(^(ads::mojom::DBCommandResponseInfoPtr response) {
         const auto strongSelf = weakSelf;
         if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
           return;
@@ -1924,7 +1933,7 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)logTrainingInstance:
-    (std::vector<brave_federated::mojom::CovariatePtr>)training_instance {
+    (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_instance {
   // Not needed on iOS
 }
 

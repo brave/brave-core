@@ -30,25 +30,27 @@ class ADS_EXPORT Database final {
   Database(const Database&) = delete;
   Database& operator=(const Database&) = delete;
 
-  void RunTransaction(mojom::DBTransactionPtr transaction,
-                      mojom::DBCommandResponse* command_response);
+  void RunTransaction(mojom::DBTransactionInfoPtr transaction,
+                      mojom::DBCommandResponseInfo* command_response);
 
  private:
-  mojom::DBCommandResponse::Status Initialize(
+  mojom::DBCommandResponseInfo::StatusType Initialize(
       const int32_t version,
       const int32_t compatible_version,
-      mojom::DBCommandResponse* command_response);
+      mojom::DBCommandResponseInfo* command_response);
 
-  mojom::DBCommandResponse::Status Execute(mojom::DBCommand* command);
+  mojom::DBCommandResponseInfo::StatusType Execute(
+      mojom::DBCommandInfo* command);
 
-  mojom::DBCommandResponse::Status Run(mojom::DBCommand* command);
+  mojom::DBCommandResponseInfo::StatusType Run(mojom::DBCommandInfo* command);
 
-  mojom::DBCommandResponse::Status Read(
-      mojom::DBCommand* command,
-      mojom::DBCommandResponse* command_response);
+  mojom::DBCommandResponseInfo::StatusType Read(
+      mojom::DBCommandInfo* command,
+      mojom::DBCommandResponseInfo* command_response);
 
-  mojom::DBCommandResponse::Status Migrate(const int32_t version,
-                                           const int32_t compatible_version);
+  mojom::DBCommandResponseInfo::StatusType Migrate(
+      const int32_t version,
+      const int32_t compatible_version);
 
   void OnErrorCallback(const int error, sql::Statement* statement);
 

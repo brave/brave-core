@@ -32,12 +32,10 @@
 #include "bat/ads/database.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
-#include "bat/ads/statement_info.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_browser_process.h"
@@ -65,17 +63,10 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/fullscreen.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_navigator.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
-#endif
-#include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/network_service_instance.h"
@@ -85,12 +76,19 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
 #include "url/gurl.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/fullscreen.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
@@ -135,17 +133,17 @@ int GetDataResourceId(const std::string& name) {
   return -1;
 }
 
-std::string URLMethodToRequestType(ads::mojom::UrlRequestMethod method) {
+std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
   switch (method) {
-    case ads::mojom::UrlRequestMethod::kGet: {
+    case ads::mojom::UrlRequestMethodType::kGet: {
       return "GET";
     }
 
-    case ads::mojom::UrlRequestMethod::kPost: {
+    case ads::mojom::UrlRequestMethodType::kPost: {
       return "POST";
     }
 
-    case ads::mojom::UrlRequestMethod::kPut: {
+    case ads::mojom::UrlRequestMethodType::kPut: {
       return "PUT";
     }
   }
@@ -256,15 +254,15 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
   return true;
 }
 
-ads::mojom::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
-    ads::mojom::DBTransactionPtr transaction,
+ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
+    ads::mojom::DBTransactionInfoPtr transaction,
     ads::Database* database) {
-  ads::mojom::DBCommandResponsePtr command_response =
-      ads::mojom::DBCommandResponse::New();
+  ads::mojom::DBCommandResponseInfoPtr command_response =
+      ads::mojom::DBCommandResponseInfo::New();
 
   if (!database) {
     command_response->status =
-        ads::mojom::DBCommandResponse::Status::RESPONSE_ERROR;
+        ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), command_response.get());
   }
@@ -421,7 +419,8 @@ void AdsServiceImpl::SetSysInfo() {
 void AdsServiceImpl::SetBuildChannel() {
   DCHECK(IsBatAdsServiceBound());
 
-  ads::mojom::BuildChannelPtr build_channel = ads::mojom::BuildChannel::New();
+  ads::mojom::BuildChannelInfoPtr build_channel =
+      ads::mojom::BuildChannelInfo::New();
   build_channel->name = brave::GetChannelName();
   build_channel->is_release = build_channel->name == "release" ? true : false;
 
@@ -857,12 +856,18 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 
   bat_ads_->GetNotificationAd(
       placement_id,
-      base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnGetNotificationAd, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
+void AdsServiceImpl::OnGetNotificationAd(
+    absl::optional<base::Value::Dict> dict) {
+  if (!dict) {
+    VLOG(0) << "Failed to get notification ad";
+    return;
+  }
+
   ads::NotificationAdInfo notification;
-  notification.FromJson(json);
+  notification.FromValue(*dict);
 
   OpenNewTabWithUrl(notification.target_url);
 }
@@ -1086,7 +1091,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, "");
+    std::move(callback).Run(absl::nullopt);
     return;
   }
 
@@ -1173,7 +1178,7 @@ void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, 0, 0, 0.0, 0.0);
+    std::move(callback).Run(nullptr);
     return;
   }
 
@@ -1186,7 +1191,7 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(false, "", base::Value::Dict());
+    std::move(callback).Run(dimensions, absl::nullopt);
     return;
   }
 
@@ -1253,7 +1258,7 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
-    ads::mojom::SearchResultAdPtr ad_mojom,
+    ads::mojom::SearchResultAdInfoPtr ad_mojom,
     const ads::mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
   if (!IsBatAdsBound()) {
@@ -1529,7 +1534,7 @@ void AdsServiceImpl::GetBrowsingHistory(
       &history_service_task_tracker_);
 }
 
-void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestPtr url_request,
+void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                                 ads::UrlRequestCallback callback) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = url_request->url;
@@ -1666,8 +1671,9 @@ void AdsServiceImpl::ClearScheduledCaptcha() {
 #endif
 }
 
-void AdsServiceImpl::RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
-                                      ads::RunDBTransactionCallback callback) {
+void AdsServiceImpl::RunDBTransaction(
+    ads::mojom::DBTransactionInfoPtr transaction,
+    ads::RunDBTransactionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
@@ -1696,7 +1702,7 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
 }
 
 void AdsServiceImpl::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
   if (!notification_ad_timing_data_store_) {
     return;
   }
@@ -1891,15 +1897,14 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
   }
 }
 
-void AdsServiceImpl::OnPrefetchNewTabPageAd(bool success,
-                                            const std::string& json) {
-  if (!success) {
+void AdsServiceImpl::OnPrefetchNewTabPageAd(
+    absl::optional<base::Value::Dict> dict) {
+  if (!dict) {
+    VLOG(0) << "Failed to prefetch new tab page ad";
     return;
   }
 
-  ads::NewTabPageAdInfo ad_info;
-  ad_info.FromJson(json);
-  prefetched_new_tab_page_ad_info_ = ad_info;
+  prefetched_new_tab_page_ad_info_->FromValue(*dict);
 }
 
 void AdsServiceImpl::OnURLRequest(
@@ -1944,7 +1949,7 @@ void AdsServiceImpl::OnURLRequest(
     }
   }
 
-  ads::mojom::UrlResponse url_response;
+  ads::mojom::UrlResponseInfo url_response;
   url_response.url = url_loader->GetFinalURL();
   url_response.status_code = response_code;
   url_response.body = response_body ? *response_body : "";
@@ -1955,18 +1960,9 @@ void AdsServiceImpl::OnURLRequest(
 
 void AdsServiceImpl::OnMaybeServeInlineContentAd(
     MaybeServeInlineContentAdCallback callback,
-    const bool success,
     const std::string& dimensions,
-    const std::string& json) {
-  base::Value::Dict dict;
-
-  if (success) {
-    ads::InlineContentAdInfo ad;
-    ad.FromJson(json);
-    dict = ad.ToValue();
-  }
-
-  std::move(callback).Run(success, dimensions, dict);
+    absl::optional<base::Value::Dict> dict) {
+  std::move(callback).Run(dimensions, std::move(dict));
 }
 
 void AdsServiceImpl::OnTriggerSearchResultAdEvent(
@@ -2016,26 +2012,18 @@ void AdsServiceImpl::OnGetHistory(GetHistoryCallback callback,
 
 void AdsServiceImpl::OnGetStatementOfAccounts(
     GetStatementOfAccountsCallback callback,
-    const bool success,
-    const std::string& json) {
-  if (!success) {
-    std::move(callback).Run(success, 0, 0, 0.0, 0.0);
+    ads::mojom::StatementInfoPtr statement) {
+  if (!statement) {
+    std::move(callback).Run(nullptr);
     return;
   }
 
-  ads::StatementInfo statement;
-  statement.FromJson(json);
-
-  std::move(callback).Run(success, statement.next_payment_date.ToDoubleT(),
-                          statement.ads_received_this_month,
-                          statement.earnings_this_month,
-                          statement.earnings_last_month);
+  std::move(callback).Run(statement.Clone());
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,
-                                      const bool success,
-                                      const std::string& json) {
-  std::move(callback).Run(success, json);
+                                      absl::optional<base::Value::List> value) {
+  std::move(callback).Run(std::move(value));
 }
 
 void AdsServiceImpl::OnToggleAdThumbUp(ToggleAdThumbUpCallback callback,
@@ -2502,7 +2490,7 @@ void AdsServiceImpl::OnLogTrainingInstance(bool success) {
 
 void AdsServiceImpl::OnRunDBTransaction(
     ads::RunDBTransactionCallback callback,
-    ads::mojom::DBCommandResponsePtr response) {
+    ads::mojom::DBCommandResponseInfoPtr response) {
   callback(std::move(response));
 }
 

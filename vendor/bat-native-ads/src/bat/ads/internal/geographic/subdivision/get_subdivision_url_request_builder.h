@@ -24,7 +24,7 @@ class GetSubdivisionUrlRequestBuilder final
   GetSubdivisionUrlRequestBuilder& operator=(
       const GetSubdivisionUrlRequestBuilder&) = delete;
 
-  mojom::UrlRequestPtr Build() override;
+  mojom::UrlRequestInfoPtr Build() override;
 
  private:
   GURL BuildUrl() const;

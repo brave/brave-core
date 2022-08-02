@@ -24,7 +24,7 @@ namespace {
 
 constexpr char kTableName[] = "campaigns";
 
-int BindParameters(mojom::DBCommand* command,
+int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -53,7 +53,7 @@ Campaigns::Campaigns() = default;
 Campaigns::~Campaigns() = default;
 
 void Campaigns::Delete(ResultCallback callback) {
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
 
@@ -62,7 +62,7 @@ void Campaigns::Delete(ResultCallback callback) {
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-void Campaigns::InsertOrUpdate(mojom::DBTransaction* transaction,
+void Campaigns::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -70,8 +70,8 @@ void Campaigns::InsertOrUpdate(mojom::DBTransaction* transaction,
     return;
   }
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
@@ -81,7 +81,7 @@ std::string Campaigns::GetTableName() const {
   return kTableName;
 }
 
-void Campaigns::Migrate(mojom::DBTransaction* transaction,
+void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
                         const int to_version) {
   DCHECK(transaction);
 
@@ -100,7 +100,7 @@ void Campaigns::Migrate(mojom::DBTransaction* transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string Campaigns::BuildInsertOrUpdateQuery(
-    mojom::DBCommand* command,
+    mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -119,7 +119,7 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Campaigns::MigrateToV24(mojom::DBTransaction* transaction) {
+void Campaigns::MigrateToV24(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
   DropTable(transaction, "campaigns");
@@ -134,8 +134,8 @@ void Campaigns::MigrateToV24(mojom::DBTransaction* transaction) {
       "priority INTEGER NOT NULL DEFAULT 0, "
       "ptr DOUBLE NOT NULL DEFAULT 1)";
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

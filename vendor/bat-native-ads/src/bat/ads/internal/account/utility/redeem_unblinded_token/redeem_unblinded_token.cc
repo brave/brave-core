@@ -13,7 +13,6 @@
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
-#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations_util.h"
@@ -72,7 +71,7 @@ void RedeemUnblindedToken::CreateConfirmation(
   BLOG(2, "POST /v2/confirmation/{confirmation_id}/{credential}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -82,7 +81,7 @@ void RedeemUnblindedToken::CreateConfirmation(
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
-    const mojom::UrlResponse& url_response,
+    const mojom::UrlResponseInfo& url_response,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "OnCreateConfirmation");
 
@@ -117,7 +116,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
   BLOG(2, "GET /v2/confirmation/{confirmation_id}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -127,7 +126,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
 }
 
 void RedeemUnblindedToken::OnFetchPaymentToken(
-    const mojom::UrlResponse& url_response,
+    const mojom::UrlResponseInfo& url_response,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "OnFetchPaymentToken");
 

@@ -60,8 +60,8 @@ OBJC_EXPORT
 
 /// System info
 @property(nonatomic, class) AdsSysInfo* sysInfo;
-/// The build channel that ads is configured for
-@property(nonatomic, class) AdsBuildChannel* buildChannel;
+/// The build channel info that ads is configured for
+@property(nonatomic, class) AdsBuildChannelInfo* buildChannelInfo;
 
 #pragma mark - Initialization / Shutdown
 
@@ -149,9 +149,9 @@ OBJC_EXPORT
 
 /// Get inline content ad for the given dimensions
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
-                            completion:(void (^)(BOOL success,
-                                                 NSString* dimensions,
-                                                 InlineContentAdIOS*))completion
+                            completion:(void (^)(NSString* dimensions,
+                                                 InlineContentAdIOS* _Nullable))
+                                           completion
     NS_SWIFT_NAME(inlineContentAds(dimensions:completion:));
 
 /// Report that an inline content ad event type was triggered for a given id

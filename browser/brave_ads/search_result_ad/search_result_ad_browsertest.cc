@@ -39,7 +39,7 @@ constexpr char kAllowedDomain[] = "search.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
 
 void CheckSampleSearchAdMetadata(
-    const ads::mojom::SearchResultAdPtr& search_result_ad,
+    const ads::mojom::SearchResultAdInfoPtr& search_result_ad,
     size_t ad_index) {
   const std::string index = base::StrCat({"-", base::NumberToString(ad_index)});
   EXPECT_EQ(search_result_ad->placement_id,
@@ -213,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, SampleSearchAdMetadata) {
   auto run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _))
       .WillOnce([&run_loop, &trigger_callback](
-                    ads::mojom::SearchResultAdPtr ad_mojom,
+                    ads::mojom::SearchResultAdInfoPtr ad_mojom,
                     const ads::mojom::SearchResultAdEventType event_type,
                     brave_ads::TriggerSearchResultAdEventCallback callback) {
         CheckSampleSearchAdMetadata(ad_mojom, 1);
@@ -231,7 +231,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, SampleSearchAdMetadata) {
   run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _))
       .WillOnce([&run_loop, &trigger_callback](
-                    ads::mojom::SearchResultAdPtr ad_mojom,
+                    ads::mojom::SearchResultAdInfoPtr ad_mojom,
                     const ads::mojom::SearchResultAdEventType event_type,
                     brave_ads::TriggerSearchResultAdEventCallback callback) {
         CheckSampleSearchAdMetadata(ad_mojom, 2);

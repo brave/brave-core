@@ -40,24 +40,24 @@ class AdEvents final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
   void RunTransaction(const std::string& query, GetAdEventsCallback callback);
 
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const AdEventList& ad_event);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const AdEventList& ad_events);
 
-  void OnGetAdEvents(mojom::DBCommandResponsePtr response,
+  void OnGetAdEvents(mojom::DBCommandResponseInfoPtr response,
                      GetAdEventsCallback callback);
 
-  void MigrateToV5(mojom::DBTransaction* transaction);
-  void MigrateToV13(mojom::DBTransaction* transaction);
-  void MigrateToV17(mojom::DBTransaction* transaction);
+  void MigrateToV5(mojom::DBTransactionInfo* transaction);
+  void MigrateToV13(mojom::DBTransactionInfo* transaction);
+  void MigrateToV17(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace table

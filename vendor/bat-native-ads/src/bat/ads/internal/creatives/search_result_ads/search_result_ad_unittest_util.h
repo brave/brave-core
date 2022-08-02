@@ -10,7 +10,7 @@
 
 namespace ads {
 
-mojom::SearchResultAdPtr BuildSearchResultAd();
+mojom::SearchResultAdInfoPtr BuildSearchResultAd();
 
 }  // namespace ads
 

@@ -116,7 +116,7 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
 
   if (ad.wallpapers.empty()) {
     BLOG(1, "Failed to serve new tab page ad due to missing wallpapers");
-    callback(/* success */ false, ad);
+    callback(absl::nullopt);
     return;
   }
 
@@ -142,13 +142,13 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
 
   NotifyDidServeNewTabPageAd(ad);
 
-  callback(/* success */ true, ad);
+  callback(ad);
 }
 
 void Serving::FailedToServeAd(MaybeServeNewTabPageAdCallback callback) {
   NotifyFailedToServeNewTabPageAd();
 
-  callback(/* success */ false, {});
+  callback(absl::nullopt);
 }
 
 void Serving::NotifyOpportunityAroseToServeNewTabPageAd(
