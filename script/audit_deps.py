@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=line-too-long
 
 """This script runs `npm audit' and `cargo audit' on relevant paths in the
 repo."""
@@ -25,7 +26,7 @@ def get_remote_audit_config(
     """Fetch additional audit configuration"""
     for i in range(retry):
         try:
-            return json.loads(requests.get(url).text)
+            return requests.get(url).json()
         except Exception:
             if i >= retry - 1:
                 raise
