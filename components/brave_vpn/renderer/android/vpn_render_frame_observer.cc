@@ -29,21 +29,6 @@ char kIntentParamValue[] = "connect-receipt";
 char kProductParamName[] = "product";
 char kProductParamValue[] = "vpn";
 
-bool ExtractQueryParamValue(base::StringPiece str,
-                            const std::string& name,
-                            std::string* result) {
-  url::Component query(0, static_cast<int>(str.length())), key, value;
-  while (url::ExtractQueryKeyValue(str.data(), &query, &key, &value)) {
-    base::StringPiece key_str = str.substr(key.begin, key.len);
-    if (key_str != name)
-      continue;
-
-    *result = std::string(str.substr(value.begin, value.len));
-    return true;
-  }
-  return false;
-}
-
 }  // namespace
 
 VpnRenderFrameObserver::VpnRenderFrameObserver(
@@ -96,6 +81,22 @@ void VpnRenderFrameObserver::OnGetPurchaseToken(
   }
 }
 
+std::string VpnRenderFrameObserver::ExtractParam(
+    const GURL& url,
+    const std::string& name) const {
+  url::Component query(0, static_cast<int>(url.query_piece().length())), key,
+      value;
+  while (url::ExtractQueryKeyValue(url.query_piece().data(), &query, &key,
+                                   &value)) {
+    base::StringPiece key_str = url.query_piece().substr(key.begin, key.len);
+    if (key_str != name)
+      continue;
+
+    return std::string(url.query_piece().substr(value.begin, value.len));
+  }
+  return std::string();
+}
+
 bool VpnRenderFrameObserver::IsAllowed() {
   DCHECK(brave_vpn::IsBraveVPNEnabled());
 
@@ -104,20 +105,8 @@ bool VpnRenderFrameObserver::IsAllowed() {
 
   GURL current_url(
       render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
-
-  std::string intent;
-  if (!ExtractQueryParamValue(current_url.query_piece(), kIntentParamName,
-                              &intent) ||
-      intent != kIntentParamValue) {
-    return false;
-  }
-  std::string product;
-  if (!ExtractQueryParamValue(current_url.query_piece(), kProductParamName,
-                              &product) ||
-      product != kProductParamValue) {
-    return false;
-  }
-  return true;
+  return ExtractParam(current_url, kIntentParamName) == kIntentParamValue &&
+         ExtractParam(current_url, kProductParamName) == kProductParamValue;
 }
 
 void VpnRenderFrameObserver::OnDestruct() {

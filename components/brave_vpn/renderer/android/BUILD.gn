@@ -28,3 +28,16 @@ source_set("android") {
     "//v8",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "vpn_render_frame_observer_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/renderer/android",
+    "//content/public/renderer",
+    "//testing/gtest",
+  ]
+}
