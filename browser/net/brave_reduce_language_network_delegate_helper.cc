@@ -32,7 +32,11 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   auto* pref_service = user_prefs::UserPrefs::Get(ctx->browser_context);
+  if (!pref_service)  // should never happen
+    return net::OK;
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
+  if (!profile)  // should never happen
+    return net::OK;
   auto* content_settings =
       HostContentSettingsMapFactory::GetForProfile(profile);
   if (!brave_shields::ShouldDoReduceLanguage(content_settings, ctx->tab_origin,
@@ -50,7 +54,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
 
   // If fingerprint blocking is default, compute Accept-Language header
   // based on user preferences.
-  if (fingerprinting_control_type != ControlType::BLOCK) {
+  if (fingerprinting_control_type == ControlType::DEFAULT) {
     std::string languages =
         pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
     accept_language_string = language::GetFirstLanguage(languages);
@@ -68,8 +72,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     brave::FarblingPRNG prng;
     if (g_brave_browser_process->brave_farbling_service()
             ->MakePseudoRandomGeneratorForURL(
-                ctx->tab_origin, profile && !profile->IsOffTheRecord(),
-                &prng)) {
+                ctx->tab_origin, profile && profile->IsOffTheRecord(), &prng)) {
       accept_language_string += q_values[prng() % q_values.size()];
     }
   }
