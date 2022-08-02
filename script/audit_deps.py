@@ -19,17 +19,13 @@ import requests
 
 from deps_config import RUST_DEPS_PACKAGE_VERSION
 
-# pylint: disable=inconsistent-return-statements
 def get_remote_audit_config(
         url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json",
         retry = 3):
     """Fetch additional audit configuration"""
-    for i in range(retry):
-        try:
-            return requests.get(url).json()
-        except Exception:
-            if i >= retry - 1:
-                raise
+    s = requests.Session()
+    s.mount(url, requests.adapters.HTTPAdapter(max_retries=retry))
+    return s.get(url).json()
 
 REMOTE_AUDIT_CONFIG = get_remote_audit_config()
 IGNORED_CARGO_ADVISORIES = [e["advisory"] for e in REMOTE_AUDIT_CONFIG["ignore"]["cargo"]]
