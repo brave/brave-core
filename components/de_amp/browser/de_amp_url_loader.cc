@@ -74,8 +74,8 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   if (!CheckBufferedBody(kReadBufferSize)) {
     return;
   }
-  bool redirected = MaybeRedirectToCanonicalLink();
-  bool found_amp_but_not_canonical_link = !redirected && found_amp_;
+  const bool redirected = MaybeRedirectToCanonicalLink();
+  const bool found_amp_but_not_canonical_link = !redirected && found_amp_;
 
   // If we were not redirected (navigation is cancelled) and we didn't find AMP,
   // or if we did find AMP previously and we've already read more bytes than
