@@ -18,16 +18,6 @@
 
 namespace {
 
-void OnGetBuyUrl(bool* callback_run,
-                 std::string expected_url,
-                 const absl::optional<std::string>& expected_error,
-                 const std::string& url,
-                 const absl::optional<std::string>& error) {
-  EXPECT_EQ(expected_url, url);
-  EXPECT_EQ(expected_error, error);
-  *callback_run = true;
-}
-
 void OnGetPrice(bool* callback_run,
                 bool expected_success,
                 std::vector<brave_wallet::mojom::AssetPricePtr> expected_values,
@@ -157,7 +147,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
      "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
      "expiresAt":"2022-07-25T19:59:57Z"
     })");
-  TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, "ethereum", "0xdeadbeef",
+  TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, mojom::kMainnetChainId, "0xdeadbeef",
                   "USDC", "55000000", "USD",
                   "https://crypto.sardine.ai/"
                   "?address=0xdeadbeef&network=ethereum&asset_type=USDC&fiat_"
