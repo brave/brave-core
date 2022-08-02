@@ -197,7 +197,15 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   isUsingBridgesChanged_(value) {
-    this.useBridges_ = value ? Usage.USE_BUILT_IN : Usage.NOT_USED
+    if (value) {
+      if (this.loadedConfig_.use_bridges != Usage.NOT_USED) {
+        this.useBridges_ = this.loadedConfig_.use_bridges
+      } else {
+        this.useBridges_ = Usage.USE_BUILT_IN
+      }
+    } else {
+      this.useBridges_ = Usage.NOT_USED
+    }
   }
 
   onBuiltInBridgesSelect_(event) {

@@ -178,9 +178,12 @@ void TorProfileServiceImpl::OnBridgesConfigChanged() {
     return;
 
   if (!tor_pluggable_transport_updater_->IsReady()) {
-    if (config.use_bridges != tor::BridgesConfig::Usage::kNotUsed)
+    if (config.use_bridges != tor::BridgesConfig::Usage::kNotUsed) {
       tor_pluggable_transport_updater_->Register();
-    return;
+      return;
+    } else {
+      tor_pluggable_transport_updater_->Unregister();
+    }
   }
   if (config.use_bridges == tor::BridgesConfig::Usage::kNotUsed) {
     tor_pluggable_transport_updater_->Unregister();

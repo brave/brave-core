@@ -26,7 +26,7 @@
 #endif
 
 namespace {
-constexpr const auto kStuckPeriod = base::Seconds(15);
+constexpr const auto kStuckPeriod = base::Seconds(30);
 }
 
 BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(
@@ -141,7 +141,7 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {
   stuck_timer_.Stop();
   if (page_) {
-    page_.get()->OnTorCircuitGetStuck(!result);
+    page_.get()->OnTorCircuitGetStuck(!result && stuck_timer_.IsRunning());
     page_.get()->OnTorCircuitEstablished(result);
   }
 }

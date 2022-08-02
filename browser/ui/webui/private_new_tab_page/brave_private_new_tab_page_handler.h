@@ -77,7 +77,7 @@ class BravePrivateNewTabPageHandler
   raw_ptr<TorLauncherFactory> tor_launcher_factory_ = nullptr;
 #endif
   // Timer for detecting a Tor connection failuer. It starts at each connection
-  // event and shots when the time between events exceeds 15 seconds.
+  // event and shots when the time between events exceeds kStuckPeriod seconds.
   base::OneShotTimer stuck_timer_;
 
   mojo::Receiver<brave_private_new_tab::mojom::PageHandler> receiver_;
