@@ -12,8 +12,8 @@ import {
   BuyOption,
   BuySendSwapViewTypes,
   ToOrFromType,
-  SupportedTestNetworks,
-  WalletState
+  WalletState,
+  SupportedTestNetworks
 } from '../../../constants/types'
 
 // utils
@@ -42,11 +42,13 @@ import {
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken
   onChangeBuyView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
+  onShowCurrencySelection: () => void
 }
 
 export const Buy = ({
   selectedAsset,
-  onChangeBuyView
+  onChangeBuyView,
+  onShowCurrencySelection
 }: Props) => {
   // state
   const [buyAmount, setBuyAmount] = React.useState('')
@@ -133,10 +135,6 @@ export const Buy = ({
   const onBack = React.useCallback(() => {
     setShowBuyOptions(false)
   }, [])
-
-  const onShowCurrencySelection = React.useCallback(() => {
-    onChangeBuyView('currencies', 'from')
-  }, [onChangeBuyView])
 
   // render
   return (

@@ -67,6 +67,7 @@ import { isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch, useSelector } from 'react-redux'
+import { SelectCurrency } from '../components/buy-send-swap/select-currency/select-currency'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -404,6 +405,18 @@ function Container () {
     dispatch(WalletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin }))
   }
 
+  const onBack = React.useCallback(() => {
+    dispatch(WalletPanelActions.navigateTo('buy'))
+  }, [])
+
+  const onShowCurrencySelection = React.useCallback(() => {
+    dispatch(WalletPanelActions.navigateTo('currencies'))
+  }, [])
+
+  const onSelectCurrency = React.useCallback(() => {
+    dispatch(WalletPanelActions.navigateTo('buy'))
+  }, [])
+
   React.useEffect(() => {
     if (needsAccount) {
       dispatch(WalletPanelActions.navigateTo('createAccount'))
@@ -735,6 +748,7 @@ function Container () {
               <Buy
                 onChangeBuyView={onChangeSendView}
                 selectedAsset={selectedBuyAsset}
+                onShowCurrencySelection={onShowCurrencySelection}
               />
             </SendWrapper>
           </Panel>
@@ -863,6 +877,27 @@ function Container () {
           />
         </LongWrapper>
       </WelcomePanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'currencies') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <ScrollContainer>
+              <SelectCurrency
+                onBack={onBack}
+                onSelectCurrency={onSelectCurrency}
+              />
+            </ScrollContainer>
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
     )
   }
 
