@@ -1307,8 +1307,8 @@ public class Utils {
         Spannable spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
-            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(context,
-                    R.color.brave_theme_color, (view) -> { onClickListener.onClick(view); });
+            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
+                    context, (view) -> { onClickListener.onClick(view); });
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
