@@ -265,6 +265,10 @@ void UnitTestBase::SetDefaultMocks() {
   MockSetUint64Pref(ads_client_mock_);
   MockGetTimePref(ads_client_mock_);
   MockSetTimePref(ads_client_mock_);
+  MockGetDictPref(ads_client_mock_);
+  MockSetDictPref(ads_client_mock_);
+  MockGetListPref(ads_client_mock_);
+  MockSetListPref(ads_client_mock_);
   MockClearPref(ads_client_mock_);
   MockHasPrefPath(ads_client_mock_);
 }

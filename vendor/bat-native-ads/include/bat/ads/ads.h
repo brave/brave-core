@@ -30,10 +30,13 @@ class AdsClient;
 struct HistoryInfo;
 struct NotificationAdInfo;
 
-// Returns system information.
+// Returns system information. |device_id| containing machine characteristics
+// which should not be stored to disk or transmitted. |is_uncertain_future|
+// containing |true| for guest operating systems otherwise |false|.
 mojom::SysInfo& SysInfo();
 
-// Returns the build channel.
+// Returns the build channel. |name| containg the build channel name.
+// |is_release| containing |true| if release build otherwise |false|.
 mojom::BuildChannel& BuildChannel();
 
 // Data resources

@@ -12,6 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
@@ -178,6 +179,12 @@ class AdsClientMojoBridge
   void GetTimePref(const std::string& path,
                    GetTimePrefCallback callback) override;
   void SetTimePref(const std::string& path, const base::Time value) override;
+  void GetDictPref(const std::string& path,
+                   GetDictPrefCallback callback) override;
+  void SetDictPref(const std::string& path, base::Value::Dict value) override;
+  void GetListPref(const std::string& path,
+                   GetListPrefCallback callback) override;
+  void SetListPref(const std::string& path, base::Value::List value) override;
   void ClearPref(
       const std::string& path) override;
   void HasPrefPath(const std::string& path,

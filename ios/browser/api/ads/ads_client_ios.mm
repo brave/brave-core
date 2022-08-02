@@ -188,6 +188,26 @@ base::Time AdsClientIOS::GetTimePref(const std::string& path) const {
   return [bridge_ getTimePref:path];
 }
 
+void AdsClientIOS::SetDictPref(const std::string& path,
+                               base::Value::Dict value) {
+  [bridge_ setDictPref:path value:std::move(value)];
+}
+
+absl::optional<base::Value::Dict> AdsClientIOS::GetDictPref(
+    const std::string& path) const {
+  return [bridge_ getDictPref:path];
+}
+
+void AdsClientIOS::SetListPref(const std::string& path,
+                               base::Value::List value) {
+  [bridge_ setListPref:path value:std::move(value)];
+}
+
+absl::optional<base::Value::List> AdsClientIOS::GetListPref(
+    const std::string& path) const {
+  return [bridge_ getListPref:path];
+}
+
 void AdsClientIOS::ClearPref(const std::string& path) {
   [bridge_ clearPref:path];
 }

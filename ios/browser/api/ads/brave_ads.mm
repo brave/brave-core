@@ -12,12 +12,15 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
@@ -1405,6 +1408,56 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 - (base::Time)getTimePref:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
   return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
+}
+
+- (void)setDictPref:(const std::string&)path value:(base::Value::Dict)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(path);
+    self.prefs[key] = base::SysUTF8ToNSString(json);
+    [self savePref:key];
+  }
+}
+
+- (absl::optional<base::Value::Dict>)getDictPref:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  const auto json = (NSString*)self.prefs[key];
+  if (!json) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value> value =
+      base::JSONReader::Read(base::SysNSStringToUTF8(json));
+  if (!value || !value->is_dict()) {
+    return absl::nullopt;
+  }
+
+  return value->GetDict().Clone();
+}
+
+- (void)setListPref:(const std::string&)path value:(base::Value::List)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(path);
+    self.prefs[key] = base::SysUTF8ToNSString(json);
+    [self savePref:key];
+  }
+}
+
+- (absl::optional<base::Value::List>)getListPref:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  const auto json = (NSString*)self.prefs[key];
+  if (!json) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value> value =
+      base::JSONReader::Read(base::SysNSStringToUTF8(json));
+  if (!value || !value->is_list()) {
+    return absl::nullopt;
+  }
+
+  return value->GetList().Clone();
 }
 
 - (void)clearPref:(const std::string&)path {

@@ -10,10 +10,12 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Time;
@@ -144,6 +146,10 @@ class ADS_EXPORT AdsClient {
   virtual int64_t GetInt64Pref(const std::string& path) const = 0;
   virtual uint64_t GetUint64Pref(const std::string& path) const = 0;
   virtual base::Time GetTimePref(const std::string& path) const = 0;
+  virtual absl::optional<base::Value::Dict> GetDictPref(
+      const std::string& path) const = 0;
+  virtual absl::optional<base::Value::List> GetListPref(
+      const std::string& path) const = 0;
 
   // Update the value for the specified preference |path|.
   virtual void SetBooleanPref(const std::string& path, const bool value) = 0;
@@ -154,6 +160,10 @@ class ADS_EXPORT AdsClient {
   virtual void SetInt64Pref(const std::string& path, const int64_t value) = 0;
   virtual void SetUint64Pref(const std::string& path, const uint64_t value) = 0;
   virtual void SetTimePref(const std::string& path, const base::Time value) = 0;
+  virtual void SetDictPref(const std::string& path,
+                           base::Value::Dict value) = 0;
+  virtual void SetListPref(const std::string& path,
+                           base::Value::List value) = 0;
 
   // Remove the preference from the specified |path|.
   virtual void ClearPref(const std::string& path) = 0;

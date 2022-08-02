@@ -101,6 +101,16 @@ class AdsClientMock : public AdsClient {
   MOCK_CONST_METHOD1(GetTimePref, base::Time(const std::string& path));
   MOCK_METHOD2(SetTimePref,
                void(const std::string& path, const base::Time value));
+  MOCK_CONST_METHOD1(
+      GetDictPref,
+      absl::optional<base::Value::Dict>(const std::string& path));
+  MOCK_METHOD2(SetDictPref,
+               void(const std::string& path, base::Value::Dict value));
+  MOCK_CONST_METHOD1(
+      GetListPref,
+      absl::optional<base::Value::List>(const std::string& path));
+  MOCK_METHOD2(SetListPref,
+               void(const std::string& path, base::Value::List value));
   MOCK_METHOD1(ClearPref, void(const std::string& path));
   MOCK_CONST_METHOD1(HasPrefPath, bool(const std::string& path));
 
