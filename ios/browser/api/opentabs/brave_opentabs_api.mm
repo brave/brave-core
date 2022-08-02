@@ -17,22 +17,22 @@
 #error "This file requires ARC support."
 #endif
 
-SyncDeviceType const SyncDeviceTypeUnset =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET);
-SyncDeviceType const SyncDeviceTypeWin =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN);
-SyncDeviceType const SyncDeviceTypeMac =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC);
-SyncDeviceType const SyncDeviceTypeLinux =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX);
-SyncDeviceType const SyncDeviceTypeCros =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS);
-SyncDeviceType const SyncDeviceTypeOther =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER);
-SyncDeviceType const SyncDeviceTypePhone =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE);
-SyncDeviceType const SyncDeviceTypeTablet =
-    static_cast<NSInteger>(sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_TABLET);
+SyncDeviceType const SyncDeviceTypeUnset = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET);
+SyncDeviceType const SyncDeviceTypeWin = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN);
+SyncDeviceType const SyncDeviceTypeMac = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC);
+SyncDeviceType const SyncDeviceTypeLinux = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX);
+SyncDeviceType const SyncDeviceTypeCros = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS);
+SyncDeviceType const SyncDeviceTypeOther = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER);
+SyncDeviceType const SyncDeviceTypePhone = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE);
+SyncDeviceType const SyncDeviceTypeTablet = static_cast<NSInteger>(
+    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_TABLET);
 
 #pragma mark - IOSOpenDistantTab
 
