@@ -28,12 +28,12 @@ bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
 }
 
 base::Value::Dict CategoryContentInfo::ToValue() const {
-  base::Value::Dict dictionary;
+  base::Value::Dict dict;
 
-  dictionary.Set("category", category);
-  dictionary.Set("optAction", static_cast<int>(opt_action_type));
+  dict.Set("category", category);
+  dict.Set("optAction", static_cast<int>(opt_action_type));
 
-  return dictionary;
+  return dict;
 }
 
 void CategoryContentInfo::FromValue(const base::Value::Dict& root) {
