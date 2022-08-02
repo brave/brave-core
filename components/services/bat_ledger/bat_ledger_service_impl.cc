@@ -21,8 +21,7 @@ namespace bat_ledger {
 
 BatLedgerServiceImpl::BatLedgerServiceImpl(
     mojo::PendingReceiver<mojom::BatLedgerService> receiver)
-    : receiver_(this, std::move(receiver)),
-    initialized_(false) {}
+    : receiver_(this, std::move(receiver)) {}
 
 BatLedgerServiceImpl::~BatLedgerServiceImpl() = default;
 
@@ -30,31 +29,29 @@ void BatLedgerServiceImpl::Create(
     mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info,
     mojo::PendingAssociatedReceiver<mojom::BatLedger> bat_ledger,
     CreateCallback callback) {
-  associated_receivers_.Add(
-      std::make_unique<BatLedgerImpl>(std::move(client_info)),
-      std::move(bat_ledger));
-  initialized_ = true;
+  bat_ledger_ = std::make_unique<BatLedgerImpl>(std::move(bat_ledger),
+                                                     std::move(client_info));
   std::move(callback).Run();
 }
 
 void BatLedgerServiceImpl::SetEnvironment(
     ledger::type::Environment environment) {
-  DCHECK(!initialized_ || testing());
+  DCHECK(!bat_ledger_ || testing());
   ledger::_environment = environment;
 }
 
 void BatLedgerServiceImpl::SetDebug(bool is_debug) {
-  DCHECK(!initialized_ || testing());
+  DCHECK(!bat_ledger_ || testing());
   ledger::is_debug = is_debug;
 }
 
 void BatLedgerServiceImpl::SetReconcileInterval(const int32_t interval) {
-  DCHECK(!initialized_ || testing());
+  DCHECK(!bat_ledger_ || testing());
   ledger::reconcile_interval = interval;
 }
 
 void BatLedgerServiceImpl::SetRetryInterval(int32_t interval) {
-  DCHECK(!initialized_ || testing());
+  DCHECK(!bat_ledger_ || testing());
   ledger::retry_interval = interval;
 }
 

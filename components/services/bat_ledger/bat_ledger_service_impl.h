@@ -14,7 +14,6 @@
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/unique_associated_receiver_set.h"
 
 namespace bat_ledger {
 
@@ -49,8 +48,7 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
 
  private:
   mojo::Receiver<mojom::BatLedgerService> receiver_;
-  bool initialized_;
-  mojo::UniqueAssociatedReceiverSet<mojom::BatLedger> associated_receivers_;
+  std::unique_ptr<mojom::BatLedger> bat_ledger_;
 };
 
 }  // namespace bat_ledger

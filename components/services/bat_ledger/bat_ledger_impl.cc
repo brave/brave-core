@@ -22,11 +22,16 @@ using std::placeholders::_3;
 namespace bat_ledger {
 
 BatLedgerImpl::BatLedgerImpl(
+    mojo::PendingAssociatedReceiver<mojom::BatLedger> receiver,
     mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info)
-  : bat_ledger_client_mojo_bridge_(
-      new BatLedgerClientMojoBridge(std::move(client_info))),
+    : receiver_(this, std::move(receiver)),
+      bat_ledger_client_mojo_bridge_(
+          std::make_unique<BatLedgerClientMojoBridge>(std::move(client_info))),
     ledger_(
       ledger::Ledger::CreateInstance(bat_ledger_client_mojo_bridge_.get())) {
+  receiver_.set_disconnect_handler(
+      base::BindOnce(&mojo::AssociatedReceiver<mojom::BatLedger>::reset,
+                     base::Unretained(&receiver_)));
 }
 
 BatLedgerImpl::~BatLedgerImpl() = default;

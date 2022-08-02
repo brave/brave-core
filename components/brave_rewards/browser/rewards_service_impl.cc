@@ -1433,6 +1433,9 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
 }
 
 void RewardsServiceImpl::Reset() {
+  bat_ledger_.reset();
+  bat_ledger_client_receiver_.reset();
+  bat_ledger_service_.reset();
   url_loaders_.clear();
 
   BitmapFetcherService* image_service =
@@ -1444,9 +1447,6 @@ void RewardsServiceImpl::Reset() {
   }
 
   current_media_fetchers_.clear();
-  bat_ledger_.reset();
-  bat_ledger_client_receiver_.reset();
-  bat_ledger_service_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
   ledger_database_.Reset();
   BLOG(1, "Successfully reset rewards service");
@@ -3090,6 +3090,20 @@ void RewardsServiceImpl::RunDBTransaction(
     ledger::type::DBTransactionPtr transaction,
     ledger::client::RunDBTransactionCallback callback) {
   DCHECK(ledger_database_);
+
+  if (!transaction->commands.empty() &&
+      transaction->commands[0]->command ==
+          "SELECT promotion_id, version, type, public_keys, suggestions, "
+          "approximate_value, status, created_at, claimable_until, expires_at, "
+          "claimed_at, claim_id, legacy FROM promotion") {
+    static std::vector<ledger::client::RunDBTransactionCallback> callbacks;
+    callbacks.push_back(std::move(callback));
+    if (callbacks.size() == 4) {
+      Reset();
+    }
+    return;
+  }
+
   ledger_database_.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
       .WithArgs(std::move(transaction))
       .Then(base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),

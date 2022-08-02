@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 
 namespace bat_ledger {
 
@@ -27,6 +28,7 @@ class BatLedgerImpl :
     public base::SupportsWeakPtr<BatLedgerImpl> {
  public:
   explicit BatLedgerImpl(
+      mojo::PendingAssociatedReceiver<mojom::BatLedger> receiver,
       mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info);
   ~BatLedgerImpl() override;
 
@@ -415,6 +417,7 @@ class BatLedgerImpl :
       CallbackHolder<GetBraveWalletCallback>* holder,
       ledger::type::BraveWalletPtr wallet);
 
+  mojo::AssociatedReceiver<mojom::BatLedger> receiver_;
   std::unique_ptr<BatLedgerClientMojoBridge> bat_ledger_client_mojo_bridge_;
   std::unique_ptr<ledger::Ledger> ledger_;
 };
