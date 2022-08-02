@@ -15,6 +15,8 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
+#include "brave/components/brave_wallet/renderer/v8_helper.h"
+
 namespace brave_wallet {
 
 BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
@@ -64,6 +66,7 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   if (render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
           render_frame()->GetWebFrame()->MainWorldScriptContext(),
           "ethereum")) {
+    InitSafeBuiltinsProtection(context);
     if (!js_ethereum_provider_) {
       js_ethereum_provider_.reset(new JSEthereumProvider(
           render_frame(), dynamic_params.brave_use_native_ethereum_wallet));
@@ -104,6 +107,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
       base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaProviderFeature) &&
       web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana")) {
+    InitSafeBuiltinsProtection(context);
     auto dynamic_params = get_dynamic_params_callback_.Run();
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());

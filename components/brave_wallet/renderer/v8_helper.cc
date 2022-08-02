@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/renderer/safe_builtins.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
@@ -15,6 +16,21 @@
 #include "v8/include/v8-object.h"
 
 namespace brave_wallet {
+
+namespace {
+
+void FreezeAndSetGlobally(const char* name,
+                          v8::Local<v8::Context> context,
+                          v8::Local<v8::Value> value) {
+  v8::Local<v8::Object> object = v8::Local<v8::Object>::Cast(value);
+  CHECK(value->IsObject()) << name;
+
+  object->SetIntegrityLevel(context, v8::IntegrityLevel::kFrozen);
+  SetProviderNonWritable(context, context->Global(), object,
+                         gin::StringToV8(context->GetIsolate(), name), false);
+}
+
+}  // namespace
 
 v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
                                       v8::Local<v8::Value> object,
@@ -114,8 +130,16 @@ void SetOwnPropertyNonWritable(v8::Local<v8::Context> context,
   v8::Local<v8::Value> property;
   if (!provider_object->Get(context, property_name).ToLocal(&property))
     return;
+
   v8::PropertyDescriptor desc(property, false);
   provider_object->DefineProperty(context, property_name, desc).Check();
+}
+
+void InitSafeBuiltinsProtection(v8::Local<v8::Context> context) {
+  SafeBuiltins safe_builtins(context);
+  // Object
+  v8::Local<v8::Value> object = safe_builtins.GetObjekt();
+  FreezeAndSetGlobally("$Object", context, object);
 }
 
 }  // namespace brave_wallet

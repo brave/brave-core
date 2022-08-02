@@ -6,6 +6,8 @@ source_set("renderer") {
     "js_solana_provider.h",
     "resource_helper.cc",
     "resource_helper.h",
+    "safe_builtins.cc",
+    "safe_builtins.h",
     "v8_helper.cc",
     "v8_helper.h",
   ]
