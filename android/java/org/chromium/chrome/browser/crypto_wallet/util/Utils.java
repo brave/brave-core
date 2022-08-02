@@ -1588,4 +1588,26 @@ public class Utils {
 
         return keyring;
     }
+
+    // TODO(sergz): Move getCoinIcon, getKeyringForCoinType, getBalanceForCoinType
+    // to some kind of a separate Utils file that is related to diff networks only
+    public static double getBalanceForCoinType(int coinType, int decimals, String balance) {
+        double result = 0.0d;
+        switch (coinType) {
+            case CoinType.ETH:
+                result = Utils.fromHexWei(balance, decimals);
+                break;
+            case CoinType.SOL:
+                result = Utils.fromWei(balance, decimals);
+                break;
+            case CoinType.FIL:
+                // TODO(sergz): Add FIL asset balance
+                break;
+            default:
+                result = Utils.fromHexWei(balance, decimals);
+                break;
+        }
+
+        return result;
+    }
 }
