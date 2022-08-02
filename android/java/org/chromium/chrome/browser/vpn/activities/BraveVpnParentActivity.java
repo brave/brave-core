@@ -136,6 +136,7 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
+        mBraveVpnPrefModel = new BraveVpnPrefModel();
         mBraveVpnPrefModel.setSubscriberCredential(subscriberCredential);
         BraveVpnApiResponseUtils.handleOnGetSubscriberCredential(
                 BraveVpnParentActivity.this, isSuccess);

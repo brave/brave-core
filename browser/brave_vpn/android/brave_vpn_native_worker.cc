@@ -208,10 +208,23 @@ void BraveVpnNativeWorker::GetSubscriberCredential(
   }
 }
 
+void BraveVpnNativeWorker::GetSubscriberCredentialV12(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    LOG(ERROR) << "BraveVPN : "
+               << "GetSubscriberCredentialV12";
+    brave_vpn_service->GetSubscriberCredentialV12(
+        base::BindOnce(&BraveVpnNativeWorker::OnGetSubscriberCredential,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
 void BraveVpnNativeWorker::OnGetSubscriberCredential(
     const std::string& subscriber_credential,
     bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
+  LOG(ERROR) << "BraveVPN : "
+             << "subscriber credential : " << subscriber_credential;
   Java_BraveVpnNativeWorker_onGetSubscriberCredential(
       env, weak_java_brave_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, subscriber_credential),

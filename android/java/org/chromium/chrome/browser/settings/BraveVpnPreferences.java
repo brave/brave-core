@@ -104,13 +104,21 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             getActivity(), getResources().getString(R.string.vpn_disconnect_text));
                     BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
                 } else {
-                    BraveVpnUtils.showProgressDialog(
-                            getActivity(), getResources().getString(R.string.vpn_connect_text));
-                    if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                        verifyPurchase(true);
+                    if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                        if (WireguardConfigUtils.isConfigExist(getActivity())) {
+                            BraveVpnProfileUtils.getInstance().startVpn(getActivity());
+                        } else {
+                            BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
+                        }
                     } else {
-                        BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
-                        BraveVpnUtils.dismissProgressDialog();
+                        BraveVpnUtils.showProgressDialog(
+                                getActivity(), getResources().getString(R.string.vpn_connect_text));
+                        if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
+                            verifyPurchase(true);
+                        } else {
+                            BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
+                            BraveVpnUtils.dismissProgressDialog();
+                        }
                     }
                 }
                 return false;

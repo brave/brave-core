@@ -160,9 +160,7 @@ class BraveVpnService :
                            const std::string& product_id,
                            const std::string& product_type,
                            const std::string& bundle_id);
-  void GetSubscriberCredentialV12(ResponseCallback callback,
-                                  const std::string& payments_environment,
-                                  const std::string& monthly_pass);
+  void GetSubscriberCredentialV12(ResponseCallback callback);
 
   // new_usage should be set to true if a new VPN connection was just
   // established.

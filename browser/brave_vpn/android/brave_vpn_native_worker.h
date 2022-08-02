@@ -78,6 +78,8 @@ class BraveVpnNativeWorker {
       const base::android::JavaParamRef<jstring>& purchase_token,
       const base::android::JavaParamRef<jstring>& bundle_id);
 
+  void GetSubscriberCredentialV12(JNIEnv* env);
+
   void OnGetSubscriberCredential(const std::string& subscriber_credential,
                                  bool success);
 

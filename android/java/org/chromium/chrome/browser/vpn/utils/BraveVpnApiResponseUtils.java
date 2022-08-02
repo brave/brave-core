@@ -38,8 +38,8 @@ public class BraveVpnApiResponseUtils {
 
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
         if (isSuccess) {
-            InAppPurchaseWrapper.getInstance().processPurchases(
-                    activity, InAppPurchaseWrapper.getInstance().queryPurchases());
+            // InAppPurchaseWrapper.getInstance().processPurchases(
+            //         activity, InAppPurchaseWrapper.getInstance().queryPurchases());
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_SHORT)

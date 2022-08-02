@@ -166,6 +166,10 @@ public class BraveVpnNativeWorker {
                 productType, productId, validationMethod, purchaseToken, packageName);
     }
 
+    public void getSubscriberCredentialV12() {
+        BraveVpnNativeWorkerJni.get().getSubscriberCredentialV12(mNativeBraveVpnNativeWorker);
+    }
+
     public void verifyPurchaseToken(
             String purchaseToken, String productId, String productType, String packageName) {
         BraveVpnNativeWorkerJni.get().verifyPurchaseToken(
@@ -205,6 +209,7 @@ public class BraveVpnNativeWorker {
         void getSubscriberCredential(long nativeBraveVpnNativeWorker, String productType,
                 String productId, String validationMethod, String purchaseToken,
                 String packageName);
+        void getSubscriberCredentialV12(long nativeBraveVpnNativeWorker);
         void verifyPurchaseToken(long nativeBraveVpnNativeWorker, String purchaseToken,
                 String productId, String productType, String packageName);
         void reportBackgroundP3A(
