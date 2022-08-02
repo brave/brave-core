@@ -213,7 +213,7 @@ struct TransactionConfirmationView: View {
         VStack {
           // Header
           HStack(alignment: .top) {
-            Text(confirmationStore.networkShortChainName)
+            Text(confirmationStore.networkChainName)
             Spacer()
             VStack(alignment: .trailing) {
               transactionsButton

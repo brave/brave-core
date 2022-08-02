@@ -15,8 +15,8 @@ public class TransactionConfirmationStore: ObservableObject {
   @Published var symbol: String = ""
   /// The fiat value of `value`
   @Published var fiat: String = ""
-  /// The network short name that this transaction is made on
-  @Published var networkShortChainName: String = ""
+  /// The network name that this transaction is made on
+  @Published var networkChainName: String = ""
   /// The gas value for this transaction
   @Published var gasValue: String = ""
   /// The symbol of the gas token for this transaction
@@ -274,7 +274,7 @@ public class TransactionConfirmationStore: ObservableObject {
   ) async {
     originInfo = activeParsedTransaction.transaction.originInfo
     transactionDetails = activeTransactionDetails
-    networkShortChainName = network.shortChainName
+    networkChainName = network.chainName
     
     switch activeParsedTransaction.details {
     case let .ethSend(details),
