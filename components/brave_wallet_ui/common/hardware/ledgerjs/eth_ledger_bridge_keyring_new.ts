@@ -55,7 +55,7 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     for (let i = from; i <= to; i++) {
       paths.push(this.getPathForIndex(i, scheme))
     }
-    return this.getAccountsFromDevice(paths, addZeroPath)
+    return this.getAccountsFromDevice(paths, addZeroPath, scheme)
   }
 
   signTransaction = async (path: string, rawTxHex: string): Promise<SignHardwareOperationResult> => {
@@ -159,9 +159,9 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     return signature
   }
  
-  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean): Promise<GetAccountsHardwareOperationResult> => {
+  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
     let accounts = []
-    const zeroPath = this.getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
+    const zeroPath = this.getPathForIndex(0, scheme)
     for (const path of paths) {
       const data = await this.sendCommand<EthGetAccountResponse>({
         command: LedgerCommand.GetAccount,

@@ -5,6 +5,7 @@
 
 import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
+import { BraveWallet } from '../../../constants/types'
 
 let uuid = 0
 window.crypto = {
@@ -24,6 +25,11 @@ const createKeyring = () => {
   return keyring
 }
 
+test('Check ledger bridge type', () => {
+  const keyring = createKeyring()
+  return expect(keyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
+})
+
 test('getAccounts unlock error', async () => {
   const keyring = createKeyring()
   const sendCommandResponse: GetAccountsHardwareOperationResult = {
@@ -40,17 +46,17 @@ test('getAccounts unlock error', async () => {
 
 test('getAccounts success', async () => {
   const keyring = createKeyring()
-  const unlockSuccessReponse: UnlockResponsePayload = {
+  const unlockSuccessResponse: UnlockResponsePayload = {
     payload: { success: true }
   }
-  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  keyring.transport.addSendCommandResponse(unlockSuccessResponse)
 
-  const getAccountsResponsePayload1: GetAccountsResponsePayload = {
+  const getAccountsResponsePayload1: SolGetAccountResponsePayload = {
     success: true,
     address: Buffer.from('address for 44\'/501\'/0\'/0\'')
   }
   keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload1 })
-  const getAccountsResponsePayload2: GetAccountsResponsePayload = {
+  const getAccountsResponsePayload2: SolGetAccountResponsePayload = {
     success: true,
     address: Buffer.from('address for 44\'/501\'/1\'/0\'')
   }
@@ -67,7 +73,7 @@ test('getAccounts success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: 501,
+        coin: BraveWallet.CoinType.SOL,
         network: undefined
       },
       {
@@ -77,7 +83,7 @@ test('getAccounts success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: 501,
+        coin: BraveWallet.CoinType.SOL,
         network: undefined
       }
     ]
@@ -91,7 +97,7 @@ test('getAccounts ledger error after successful unlock', async () => {
   }
   keyring.transport.addSendCommandResponse(unlockSuccessReponse)
 
-  const getAccountResponseLedgerError: GetAccountsResponsePayload = {
+  const getAccountResponseLedgerError: SolGetAccountResponsePayload = {
     payload: {
       message: 'LedgerError',
       statusCode: 101
@@ -128,7 +134,7 @@ test('signTransaction success', async () => {
     payload: { success: true }
   }
   keyring.transport.addSendCommandResponse(unlockSuccessReponse)
-  const signTransactionResponse: SignTransactionResponsePayload = {
+  const signTransactionResponse: SolSignTransactionResponsePayload = {
     payload: {
       success: true,
       signature: Buffer.from('signature')
@@ -153,7 +159,7 @@ test('signTransaction ledger error after successful unlock', async () => {
     payload: { success: true }
   }
   keyring.transport.addSendCommandResponse(unlockSuccessReponse)
-  const signTransactionResponseLedgerError: SignTransactionResponsePayload = {
+  const signTransactionResponseLedgerError: SolSignTransactionResponsePayload = {
     payload: {
       message: 'LedgerError',
       statusCode: 101

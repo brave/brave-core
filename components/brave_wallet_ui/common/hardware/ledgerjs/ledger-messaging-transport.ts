@@ -28,7 +28,6 @@ export abstract class LedgerMessagingTransport {
 
   // T is response type, e.g. GetAccountResponse
   sendCommand = <T> (command: LedgerFrameCommand): Promise<T | LedgerBridgeErrorCodes> => {
-    console.log(window.origin, 'sendCommand', command)
     return new Promise<T | LedgerBridgeErrorCodes>(async (resolve) => {
       // Set handler for the response by passing the resolve function to be run
       // when targetWindow responds using the same command.id.
@@ -74,7 +73,6 @@ export abstract class LedgerMessagingTransport {
   // itself is a response to a sendCommand, the command handler is then removed.
   // Otherwise, the response is posted back to the Window that sent the message.
   protected onMessageReceived = async (event: MessageEvent<LedgerFrameCommand>) => {
-    console.log(window.origin, 'onMessageReceived', event)
     if (event.type !== 'message' || (event.origin !== this.targetUrl) || !event.source) {
       return
     }

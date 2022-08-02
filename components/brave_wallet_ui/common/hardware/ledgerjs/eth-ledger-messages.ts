@@ -27,11 +27,12 @@ export type EthGetAccountCommand = CommandMessage & {
 }
 
 // SignTransaction command
-export type EthSignTransactionResponsePayload = LedgerResponsePayload & {
+export type EthereumSignedTx = {
   v: string
   r: string
   s: string
 }
+export type EthSignTransactionResponsePayload = LedgerResponsePayload & EthereumSignedTx
 
 export type EthSignTransactionResponse = CommandMessage & {
   payload: EthSignTransactionResponsePayload | LedgerError

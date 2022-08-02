@@ -18,5 +18,5 @@ test('constructor', async () => {
     targetWindow,
     targetWindow.origin
   )
-  expect(untrustedTransport.handlers.size).toEqual(3)
+  expect(untrustedTransport.handlers.size).toEqual(0)
 })
