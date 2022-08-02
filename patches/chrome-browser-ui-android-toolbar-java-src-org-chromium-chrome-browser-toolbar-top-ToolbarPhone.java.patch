@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 45f05e78f2e41b49c1194e64952c58958542750e..dbb8e40f0ed48338ca8f04ae251654c427b680c4 100644
+index d6390472cb94d56f2f86bc458be0ec1f68eb46f9..d3e20dffabe02606404e65c53774d34f4e448324 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -432,6 +432,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -25,8 +25,8 @@ index 45f05e78f2e41b49c1194e64952c58958542750e..dbb8e40f0ed48338ca8f04ae251654c4
 +        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
          if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
  
-         return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getWidth());
-@@ -998,6 +1001,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+         int toolbarButtonsContainerWidth = mToolbarButtonsContainer.getWidth();
+@@ -1007,6 +1010,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * New Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -34,7 +34,7 @@ index 45f05e78f2e41b49c1194e64952c58958542750e..dbb8e40f0ed48338ca8f04ae251654c4
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (mOptimizationsEnabled && isInTabSwitcherMode()) return;
  
-@@ -2138,6 +2142,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2147,6 +2151,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
