@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=line-too-long
 
 """This script runs `npm audit' and `cargo audit' on relevant paths in the
 repo."""
@@ -14,7 +15,21 @@ import os
 import subprocess
 import sys
 
+import requests
+
 from deps_config import RUST_DEPS_PACKAGE_VERSION
+
+def get_remote_audit_config(
+        url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json",
+        retry = 3):
+    """Fetch additional audit configuration"""
+    s = requests.Session()
+    s.mount(url, requests.adapters.HTTPAdapter(max_retries=retry))
+    return s.get(url).json()
+
+REMOTE_AUDIT_CONFIG = get_remote_audit_config()
+IGNORED_CARGO_ADVISORIES = [e["advisory"] for e in REMOTE_AUDIT_CONFIG["ignore"]["cargo"]]
+IGNORED_NPM_ADVISORIES = [e["advisory"] for e in REMOTE_AUDIT_CONFIG["ignore"]["npm"]]
 
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = [
@@ -22,33 +37,9 @@ NPM_EXCLUDE_PATHS = [
     os.path.join('node_modules')
 ]
 
-# Tag @sec-team before adding any advisory to this list
-# Ignore these rust advisories
-IGNORED_CARGO_ADVISORIES = [
-    # Remove when:
-    # https://github.com/chronotope/chrono/issues/602 is resolved
-    # Tracking issue: https://github.com/brave/brave-browser/issues/20568
-    'RUSTSEC-2020-0071',
-    'RUSTSEC-2020-0159'
-]
-
 # Use only these (sub)paths for cargo audit.
 CARGO_INCLUDE_PATHS = [
     os.path.join('build', 'rust'),
-]
-
-# Ping security team before adding to ignored_npm_advisories
-IGNORED_NPM_ADVISORIES = [
-    # Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
-    'https://github.com/advisories/GHSA-566m-qj78-rww5',  # rxdos
-    'https://github.com/advisories/GHSA-93q8-gq69-wqmw',  # rxdos
-    'https://github.com/advisories/GHSA-w5p7-h5w8-2hfq',  # rxdos
-    'https://github.com/advisories/GHSA-w8qv-6jwh-64r5',  # rxdos
-    'https://github.com/advisories/GHSA-whgm-jr23-g3j9',  # rxdos
-    'https://github.com/advisories/GHSA-ww39-953v-wcq6',  # rxdos
-    'https://github.com/advisories/GHSA-cj88-88mr-972w',  # rxdos
-    'https://github.com/advisories/GHSA-4wf5-vphf-c2xc',  # rxdos
-    'https://github.com/advisories/GHSA-mhxj-85r3-2x55'
 ]
 
 
@@ -107,7 +98,6 @@ def audit_path(path, args):
 
 def npm_audit_deps(path, args):
     """Run `npm audit' in the specified path."""
-    # pylint: disable=consider-using-with
 
     npm_cmd = 'npm'
     if sys.platform.startswith('win'):
