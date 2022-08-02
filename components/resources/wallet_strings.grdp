@@ -469,6 +469,10 @@
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION" desc="Ramp.Network description in buy options list">Buy crypto with Visa or Mastercard.</message>
   <message name="IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION" desc="Wyre description in buy options list">Buy crypto with Visa or Mastercard.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_ALL_ASSETS" desc="Aseet Filter Selector All Assets">All Assets</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_NFTS" desc="Aseet Filter Selector NFTs">NFTs</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Aseet Filter Selector Low to High">Balance ↑</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGHT_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary Networks</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR" desc="An eroor regarding an incorrect gas limit value">
     Gas limit must be an integer greater than 0

@@ -31,25 +31,26 @@ export const NftContent = (props: Props) => {
     return imageUrl?.replace('chrome://image?', '')
   }, [imageUrl])
 
+  if (isLoading) {
+    return (
+      <LoadingOverlay isLoading={isLoading}>
+        <LoadIcon />
+      </LoadingOverlay>
+    )
+  }
+
   return (
     <>
-      {imageUrl
-        ? <Image
+      {imageUrl &&
+        <Image
           src={url}
         />
-        : <>
-          {isLoading &&
-            <LoadingOverlay isLoading={isLoading}>
-              <LoadIcon />
-            </LoadingOverlay>
-          }
-          {selectedAsset &&
-            <NftDetails
-              {...props}
-              selectedAsset={selectedAsset}
-            />
-          }
-        </>
+      }
+      {selectedAsset &&
+        <NftDetails
+          {...props}
+          selectedAsset={selectedAsset}
+        />
       }
     </>
   )

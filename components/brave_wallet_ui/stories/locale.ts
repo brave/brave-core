@@ -519,6 +519,12 @@ provideStrings({
   braveWalletNetworkFilterAll: 'All Networks',
   braveWalletNetworkFilterSecondary: 'Secondary Networks',
 
+  // Asset Filter
+  braveWalletAssetFilterAllAssets: 'All Assets',
+  braveWalletAssetFilterNFTs: 'NFTs',
+  braveWalletAssetFilterLowToHigh: 'Balance ↑',
+  braveWalletAssetFilterHighToLow: 'Balance ↓',
+
   // Transaction post-confirmation
 
   // Submitted

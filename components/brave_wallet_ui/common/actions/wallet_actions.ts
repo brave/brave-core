@@ -41,7 +41,8 @@ import {
   DefaultCurrencies,
   GetPriceReturnInfo,
   SolFeeEstimates,
-  SPLTransferFromParams
+  SPLTransferFromParams,
+  AssetFilterOption
 } from '../../constants/types'
 
 import {
@@ -128,6 +129,7 @@ export const setTransactionProviderError = createAction<SetTransactionProviderEr
 export const setSelectedCoin = createAction<BraveWallet.CoinType>('setSelectedCoin')
 export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDefaultNetworks')
 export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter')
+export const setSelectedAssetFilterItem = createAction<AssetFilterOption>('setSelectedAssetFilterItem')
 export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDefaultAccounts')
 export const setShowTestNetworks = createAction<boolean>('setShowTestNetworks')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')

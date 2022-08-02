@@ -36,8 +36,7 @@ import {
   WithHideBalancePlaceholder
 } from '../../'
 
-// import NFTDetails from './components/nft-details'
-import TokenLists from './components/token-lists'
+import { TokenLists } from './components/token-lists/token-list'
 
 // Hooks
 import { useBalance, usePricing } from '../../../../common/hooks'
@@ -160,7 +159,6 @@ export const PortfolioOverview = () => {
   }, [portfolioPriceHistory, isZeroBalance])
 
   // state
-  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
 
@@ -169,7 +167,7 @@ export const PortfolioOverview = () => {
     dispatch(WalletActions.selectPortfolioTimeline(timeline))
   }, [])
 
-  const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => () => {
+  const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (asset.contractAddress === '') {
       history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
       return
@@ -193,11 +191,6 @@ export const PortfolioOverview = () => {
   const onToggleHideBalances = React.useCallback(() => {
     setHideBalances(!hideBalances)
   }, [hideBalances])
-
-  // effects
-  React.useEffect(() => {
-    setfilteredAssetList(userAssetList)
-  }, [userAssetList])
 
   React.useEffect(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
@@ -247,10 +240,8 @@ export const PortfolioOverview = () => {
       <TokenLists
         defaultCurrencies={defaultCurrencies}
         userAssetList={userAssetList}
-        filteredAssetList={filteredAssetList}
         tokenPrices={transactionSpotPrices}
         networks={networkList}
-        onSetFilteredAssetList={setfilteredAssetList}
         onSelectAsset={onSelectAsset}
         hideBalances={hideBalances}
       />

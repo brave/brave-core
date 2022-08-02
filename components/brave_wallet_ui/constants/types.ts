@@ -236,6 +236,7 @@ export interface WalletState {
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]
   selectedNetworkFilter: BraveWallet.NetworkInfo
+  selectedAssetFilter: AssetFilterOption
   defaultAccounts: BraveWallet.AccountInfo[]
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
@@ -694,4 +695,15 @@ export type BuyOption = {
 export type OriginInfo = {
   origin: string
   eTldPlusOne: string
+}
+
+export type AssetFilterOptionIds =
+  | 'allAssets'
+  | 'nfts'
+  | 'highToLow'
+  | 'lowToHigh'
+
+export interface AssetFilterOption {
+  name: string
+  id: AssetFilterOptionIds
 }

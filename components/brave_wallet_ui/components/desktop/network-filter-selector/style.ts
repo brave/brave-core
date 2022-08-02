@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 import { WalletButton } from '../../shared/style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
@@ -12,13 +17,15 @@ export const StyledWrapper = styled.div`
   position: relative;
 `
 
-export const DropDownButton = styled(WalletButton)`
+export const DropDownButton = styled(WalletButton) <{
+  buttonSize: 'big' | 'small'
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   background-color: ${(p) => p.theme.color.background02};
-  width: 175px;
+  width: ${(p) => p.buttonSize === 'big' ? '175px' : '125px'};
   cursor: pointer;
   outline: none;
   background: none;
