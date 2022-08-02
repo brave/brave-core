@@ -14,11 +14,12 @@ struct BuySendSwapView: View {
 
   init(
     network: BraveWallet.NetworkInfo,
+    isCustomNetwork: Bool,
     action: @escaping (BuySendSwapDestination) -> Void
   ) {
     self.network = network
     self.action = action
-    if network.isCustom || network.coin != .eth {
+    if isCustomNetwork || network.coin != .eth {
       destinations = [BuySendSwapDestination(kind: .send)]
     } else {
       destinations = [
@@ -60,7 +61,7 @@ struct BuySendSwapView: View {
 #if DEBUG
 struct BuySendSwapView_Previews: PreviewProvider {
   static var previews: some View {
-    BuySendSwapView(network: .init(), action: { _ in })
+    BuySendSwapView(network: .init(), isCustomNetwork: false, action: { _ in })
       .previewLayout(.sizeThatFits)
       //      .previewColorSchemes()
       .previewSizeCategories([.large, .accessibilityLarge])

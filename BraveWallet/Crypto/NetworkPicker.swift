@@ -56,7 +56,7 @@ struct NetworkPicker: View {
       }
       if let destination = buySendSwapDestination {
         if destination.kind != .send {
-          return !chain.isCustom
+          return !networkStore.isCustomChain(chain)
         }
       }
       return true

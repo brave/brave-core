@@ -39,6 +39,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
       let controller = FixedHeightHostingPanModalController(
         rootView: BuySendSwapView(
           network: store.networkStore.selectedChain,
+          isCustomNetwork: store.networkStore.isCustomChain(store.networkStore.selectedChain),
           action: { destination in
             self.dismiss(
               animated: true,

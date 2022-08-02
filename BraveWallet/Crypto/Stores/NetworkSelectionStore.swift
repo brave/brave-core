@@ -53,11 +53,15 @@ class NetworkSelectionStore: ObservableObject {
               Preferences.Wallet.showTestNetworks.value else {
         return []
       }
+      let isPrimaryOrTestnetChainId: (_ chainId: String) -> Bool = { chainId in
+        WalletConstants.primaryNetworkChainIds.contains(chainId)
+        || WalletConstants.supportedTestNetworkChainIds.contains(chainId)
+      }
       return networkStore.allChains.filter {
         $0.coin == network.coin
         && $0.symbol == network.symbol
-        && $0.chainId != BraveWallet.OptimismMainnetChainId
-        && !$0.isCustom
+        && !networkStore.isCustomChain($0)
+        && isPrimaryOrTestnetChainId($0.chainId)
       }
     }
     

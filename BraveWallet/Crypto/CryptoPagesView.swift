@@ -224,6 +224,7 @@ private class CryptoPagesViewController: TabbedPageViewController {
     let controller = FixedHeightHostingPanModalController(
       rootView: BuySendSwapView(
         network: cryptoStore.networkStore.selectedChain,
+        isCustomNetwork: cryptoStore.networkStore.isCustomChain(cryptoStore.networkStore.selectedChain),
         action: { [weak self] destination in
           self?.dismiss(
             animated: true,
