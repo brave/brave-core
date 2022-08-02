@@ -28,19 +28,6 @@ AdsClientMojoBridge::AdsClientMojoBridge(
 AdsClientMojoBridge::~AdsClientMojoBridge() = default;
 
 // static
-void AdsClientMojoBridge::OnGetBrowsingHistory(
-    CallbackHolder<GetBrowsingHistoryCallback>* callback_holder,
-    const std::vector<GURL>& history) {
-  DCHECK(callback_holder);
-
-  if (callback_holder->is_valid()) {
-    std::move(callback_holder->get()).Run(std::move(history));
-  }
-
-  delete callback_holder;
-}
-
-// static
 void AdsClientMojoBridge::OnURLRequest(
     CallbackHolder<UrlRequestCallback>* callback_holder,
     const ads::mojom::UrlResponseInfo& url_response) {
@@ -170,13 +157,7 @@ void AdsClientMojoBridge::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     GetBrowsingHistoryCallback callback) {
-  // Callback holder will be deleted in |OnGetBrowsingHistory|.
-  auto* callback_holder = new CallbackHolder<GetBrowsingHistoryCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->GetBrowsingHistory(
-      max_count, days_ago,
-      std::bind(AdsClientMojoBridge::OnGetBrowsingHistory, callback_holder,
-                std::placeholders::_1));
+  ads_client_->GetBrowsingHistory(max_count, days_ago, std::move(callback));
 }
 
 void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,

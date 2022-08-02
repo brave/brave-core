@@ -86,7 +86,9 @@ void AdsClientIOS::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
-  [bridge_ getBrowsingHistory:max_count forDays:days_ago callback:callback];
+  [bridge_ getBrowsingHistory:max_count
+                      forDays:days_ago
+                     callback:std::move(callback)];
 }
 
 void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {

@@ -1130,7 +1130,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    forDays:(const int)days_ago
                   callback:(ads::GetBrowsingHistoryCallback)callback {
   // To be implemented https://github.com/brave/brave-ios/issues/3499
-  callback({});
+  std::move(callback).Run({});
 }
 
 - (void)loadFileResource:(const std::string&)id

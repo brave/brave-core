@@ -185,23 +185,16 @@ void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
   bat_ads_client_->LoadFileResource(id, version, std::move(callback));
 }
 
-void OnGetBrowsingHistory(const ads::GetBrowsingHistoryCallback& callback,
-                          const std::vector<GURL>& history) {
-  callback(history);
-}
-
 void BatAdsClientMojoBridge::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
   if (!connected()) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
-  bat_ads_client_->GetBrowsingHistory(
-      max_count, days_ago,
-      base::BindOnce(&OnGetBrowsingHistory, std::move(callback)));
+  bat_ads_client_->GetBrowsingHistory(max_count, days_ago, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,

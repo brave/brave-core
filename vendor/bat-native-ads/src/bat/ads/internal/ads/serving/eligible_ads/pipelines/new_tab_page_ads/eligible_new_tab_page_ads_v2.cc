@@ -47,23 +47,29 @@ void EligibleAdsV2::GetForUserModel(
           return;
         }
 
-        const int max_count = features::GetBrowsingHistoryMaxCount();
-        const int days_ago = features::GetBrowsingHistoryDaysAgo();
-        AdsClientHelper::GetInstance()->GetBrowsingHistory(
-            max_count, days_ago,
-            [=](const BrowsingHistoryList& browsing_history) {
-              GetEligibleAds(user_model, ad_events, browsing_history, callback);
-            });
+        GetBrowsingHistory(user_model, ad_events, callback);
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void EligibleAdsV2::GetBrowsingHistory(
+    const targeting::UserModelInfo& user_model,
+    const AdEventList& ad_events,
+    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+  const int max_count = features::GetBrowsingHistoryMaxCount();
+  const int days_ago = features::GetBrowsingHistoryDaysAgo();
+  AdsClientHelper::GetInstance()->GetBrowsingHistory(
+      max_count, days_ago,
+      base::BindOnce(&EligibleAdsV2::GetEligibleAds, base::Unretained(this),
+                     user_model, ad_events, callback));
+}
+
 void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    const BrowsingHistoryList& browsing_history) {
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetAll([=](const bool success, const SegmentList& segments,
                             const CreativeNewTabPageAdList& creative_ads) {

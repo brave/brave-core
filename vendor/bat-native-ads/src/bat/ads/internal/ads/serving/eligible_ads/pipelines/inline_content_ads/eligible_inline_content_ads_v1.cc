@@ -48,25 +48,31 @@ void EligibleAdsV1::GetForUserModel(
           return;
         }
 
-        const int max_count = features::GetBrowsingHistoryMaxCount();
-        const int days_ago = features::GetBrowsingHistoryDaysAgo();
-        AdsClientHelper::GetInstance()->GetBrowsingHistory(
-            max_count, days_ago,
-            [=](const BrowsingHistoryList& browsing_history) {
-              GetEligibleAds(user_model, dimensions, ad_events,
-                             browsing_history, callback);
-            });
+        GetBrowsingHistory(user_model, dimensions, ad_events, callback);
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void EligibleAdsV1::GetBrowsingHistory(
+    const targeting::UserModelInfo& user_model,
+    const std::string& dimensions,
+    const AdEventList& ad_events,
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+  const int max_count = features::GetBrowsingHistoryMaxCount();
+  const int days_ago = features::GetBrowsingHistoryDaysAgo();
+  AdsClientHelper::GetInstance()->GetBrowsingHistory(
+      max_count, days_ago,
+      base::BindOnce(&EligibleAdsV1::GetEligibleAds, base::Unretained(this),
+                     user_model, dimensions, ad_events, callback));
+}
+
 void EligibleAdsV1::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const std::string& dimensions,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    const BrowsingHistoryList& browsing_history) {
   GetForChildSegments(user_model, dimensions, ad_events, browsing_history,
                       callback);
 }
