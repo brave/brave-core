@@ -13,9 +13,9 @@ namespace ads {
 bool ShouldDebug();
 void SetShouldDebugForTesting(const bool should_debug);
 
-bool DidOverrideVariationsCommandLineSwitches();
-void SetDidOverrideVariationsCommandLineSwitchesForTesting(
-    const bool did_override_variations_command_line_switches);
+bool DidOverrideFromCommandLine();
+void SetDidOverrideFromCommandLineForTesting(
+    const bool did_override_from_command_line);
 
 EnvironmentType GetEnvironmentType();
 bool IsProductionEnvironment();

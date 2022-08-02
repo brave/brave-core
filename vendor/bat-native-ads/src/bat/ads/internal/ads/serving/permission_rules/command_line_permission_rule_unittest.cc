@@ -25,7 +25,7 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Arrange
   SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
-  SetDidOverrideVariationsCommandLineSwitchesForTesting(false);
+  SetDidOverrideFromCommandLineForTesting(false);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -40,7 +40,7 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Arrange
   SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
-  SetDidOverrideVariationsCommandLineSwitchesForTesting(false);
+  SetDidOverrideFromCommandLineForTesting(false);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -55,7 +55,7 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Arrange
   SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
-  SetDidOverrideVariationsCommandLineSwitchesForTesting(true);
+  SetDidOverrideFromCommandLineForTesting(true);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -70,7 +70,7 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Arrange
   SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
-  SetDidOverrideVariationsCommandLineSwitchesForTesting(true);
+  SetDidOverrideFromCommandLineForTesting(true);
 
   // Act
   CommandLinePermissionRule permission_rule;

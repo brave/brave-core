@@ -26,20 +26,22 @@ constexpr char kDefaultConversionIdPattern[] =
 
 }  // namespace
 
-const base::Feature kFeature{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
+const base::Feature kConversions{kFeatureName,
+                                 base::FEATURE_ENABLED_BY_DEFAULT};
 
 bool IsConversionsEnabled() {
-  return base::FeatureList::IsEnabled(kFeature);
+  return base::FeatureList::IsEnabled(kConversions);
 }
 
 int GetConversionsResourceVersion() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kFeature, kFieldTrialParameterResourceVersion, kDefaultResourceVersion);
+  return GetFieldTrialParamByFeatureAsInt(kConversions,
+                                          kFieldTrialParameterResourceVersion,
+                                          kDefaultResourceVersion);
 }
 
 std::string GetDefaultConversionIdPattern() {
   return GetFieldTrialParamByFeatureAsString(
-      kFeature, kFieldTrialParameterDefaultConversionIdPattern,
+      kConversions, kFieldTrialParameterDefaultConversionIdPattern,
       kDefaultConversionIdPattern);
 }
 

@@ -26,13 +26,12 @@ class FlagManager final {
     should_debug_ = should_debug;
   }
 
-  bool DidOverrideVariationsCommandLineSwitches() const {
-    return did_override_variations_command_line_switches_;
+  bool DidOverrideFromCommandLine() const {
+    return did_override_from_command_line_;
   }
-  void SetDidOverrideVariationsCommandLineSwitchesForTesting(
-      const bool did_override_variations_command_line_switches) {
-    did_override_variations_command_line_switches_ =
-        did_override_variations_command_line_switches;
+  void SetDidOverrideFromCommandLineForTesting(
+      const bool did_override_from_command_line) {
+    did_override_from_command_line_ = did_override_from_command_line;
   }
 
   EnvironmentType GetEnvironmentType() const { return environment_type_; }
@@ -43,11 +42,9 @@ class FlagManager final {
  private:
   void Initialize();
 
-  EnvironmentType ChooseEnvironmentType() const;
-
   bool should_debug_ = false;
 
-  bool did_override_variations_command_line_switches_ = false;
+  bool did_override_from_command_line_ = false;
 
   EnvironmentType environment_type_ = EnvironmentType::kStaging;
 };

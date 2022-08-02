@@ -17,15 +17,14 @@ void SetShouldDebugForTesting(const bool should_debug) {
   FlagManager::GetInstance()->SetShouldDebugForTesting(should_debug);
 }
 
-bool DidOverrideVariationsCommandLineSwitches() {
-  return FlagManager::GetInstance()->DidOverrideVariationsCommandLineSwitches();
+bool DidOverrideFromCommandLine() {
+  return FlagManager::GetInstance()->DidOverrideFromCommandLine();
 }
 
-void SetDidOverrideVariationsCommandLineSwitchesForTesting(
-    const bool did_override_variations_command_line_switches) {
-  FlagManager::GetInstance()
-      ->SetDidOverrideVariationsCommandLineSwitchesForTesting(
-          did_override_variations_command_line_switches);
+void SetDidOverrideFromCommandLineForTesting(
+    const bool did_override_from_command_line) {
+  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(
+      did_override_from_command_line);
 }
 
 EnvironmentType GetEnvironmentType() {
