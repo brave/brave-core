@@ -26,6 +26,8 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
+using speedreader::mojom::Theme;
+
 namespace speedreader {
 
 namespace test {
