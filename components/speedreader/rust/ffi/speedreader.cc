@@ -80,6 +80,12 @@ void Rewriter::SetMinOutLength(int min_out_length) {
   rewriter_set_min_out_length(raw_, min_out_length);
 }
 
+void Rewriter::SetTheme(const std::string& theme) {
+  if (!theme.empty()) {
+    rewriter_set_theme(raw_, theme.c_str());
+  }
+}
+
 int Rewriter::Write(const char* chunk, size_t chunk_len) {
   if (!ended_ && !poisoned_) {
     int ret = rewriter_write(raw_, chunk, chunk_len);

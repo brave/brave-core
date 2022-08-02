@@ -708,7 +708,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Speedreader settings
         </message>
         <message name="IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">
-          Show original page
+          View original
         </message>
       </if>
 

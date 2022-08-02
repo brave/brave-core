@@ -18,16 +18,14 @@
 
 namespace speedreader {
 
-class SpeedreaderRewriterTest
-    : public ::testing::Test,
-      public ::testing::WithParamInterface<const char*> {
+class SpeedreaderRewriterTestBase : public ::testing::Test {
  public:
-  SpeedreaderRewriterTest() {
+  SpeedreaderRewriterTestBase() {
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     test_data_dir_ = test_data_dir_.AppendASCII("speedreader/rewriter");
   }
 
-  ~SpeedreaderRewriterTest() override = default;
+  ~SpeedreaderRewriterTestBase() override = default;
 
   std::string GetFileContent(const std::string& filename) {
     std::string result;
@@ -38,10 +36,12 @@ class SpeedreaderRewriterTest
     return result;
   }
 
-  std::string ProcessPage(const std::string& file_name) {
+  std::string ProcessPage(const std::string& file_name,
+                          const std::string& theme = {}) {
     auto rewriter = speedreader_.MakeRewriter(
         "https://test.com", RewriterType::RewriterReadability);
     rewriter->SetMinOutLength(100);
+    rewriter->SetTheme(theme);
     const auto file_content = GetFileContent(file_name);
     rewriter->Write(file_content.data(), file_content.size());
     rewriter->End();
@@ -57,6 +57,10 @@ class SpeedreaderRewriterTest
   SpeedReader speedreader_;
   base::FilePath test_data_dir_;
 };
+
+class SpeedreaderRewriterTest
+    : public SpeedreaderRewriterTestBase,
+      public ::testing::WithParamInterface<const char*> {};
 
 INSTANTIATE_TEST_SUITE_P(,
                          SpeedreaderRewriterTest,
@@ -74,6 +78,17 @@ TEST_P(SpeedreaderRewriterTest, Check) {
       std::string(GetParam()).append(".expected.html");
 
   const auto out = ProcessPage(input_file);
+  CheckContent(out, expected_file);
+}
+
+class SpeedreaderRewriterThemeTest : public SpeedreaderRewriterTestBase {};
+
+TEST_F(SpeedreaderRewriterThemeTest, SetTheme) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  const std::string input_file = "meta_name_shortest_desc.html";
+  const std::string expected_file = "meta_name_shortest_desc.themed.html";
+  const auto out = ProcessPage(input_file, "dark");
   CheckContent(out, expected_file);
 }
 

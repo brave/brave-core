@@ -27,6 +27,7 @@ namespace speedreader {
 
 class SpeedreaderResultDelegate;
 class SpeedreaderRewriterService;
+class SpeedreaderService;
 class SpeedReaderThrottle;
 
 // Loads the whole response body and tries to Speedreader-distill it.
@@ -65,7 +66,8 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
                base::WeakPtr<SpeedreaderResultDelegate> delegate,
                const GURL& response_url,
                scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-               SpeedreaderRewriterService* rewriter_service);
+               SpeedreaderRewriterService* rewriter_service,
+               SpeedreaderService* speedreader_service);
 
  private:
   SpeedReaderURLLoader(
@@ -75,7 +77,8 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
       mojo::PendingRemote<network::mojom::URLLoaderClient>
           destination_url_loader_client,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-      SpeedreaderRewriterService* rewriter_service);
+      SpeedreaderRewriterService* rewriter_service,
+      SpeedreaderService* speedreader_service);
 
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
@@ -86,6 +89,7 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   // Not Owned
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;
+  raw_ptr<SpeedreaderService> speedreader_service_ = nullptr;
 
   base::WeakPtrFactory<SpeedReaderURLLoader> weak_factory_{this};
 };

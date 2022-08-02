@@ -61,6 +61,8 @@ class SPEEDREADER_EXPORT Rewriter {
   /// Speedreader will show the original page.
   void SetMinOutLength(int min_out_length);
 
+  void SetTheme(const std::string& theme);
+
   /// Write a new chunk of data (byte array) to the rewriter instance. Does
   /// _not_ need to be a full document and can be called many times with ever
   /// new chunk of data available.

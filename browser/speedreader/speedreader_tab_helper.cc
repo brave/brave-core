@@ -10,8 +10,10 @@
 #include "base/bind.h"
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -256,6 +258,52 @@ void SpeedreaderTabHelper::HideBubble() {
 void SpeedreaderTabHelper::OnShowOriginalPage() {
   show_original_page_ = distill_state_ == DistillState::kSpeedreaderMode;
   ReloadContents();
+}
+
+void SpeedreaderTabHelper::SetTheme(Theme theme) {
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (!speedreader_service)
+    return;
+
+  if (speedreader_service->GetTheme() == theme)
+    return;
+
+  constexpr const char16_t kSetTheme[] =
+      uR"js(
+    (function() {
+      const theme = '$1'
+      if (theme == '') {
+        document.documentElement.removeAttribute('data-theme')
+      } else {
+        document.documentElement.setAttribute('data-theme', theme)
+      }
+    })();
+  )js";
+
+  speedreader_service->SetTheme(theme);
+
+  const auto script = base::ReplaceStringPlaceholders(
+      kSetTheme, base::UTF8ToUTF16(speedreader_service->GetThemeName()),
+      nullptr);
+
+  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      script, base::DoNothing(), kIsolatedWorldId);
+}
+
+Theme SpeedreaderTabHelper::GetTheme() {
+  const Theme theme =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile())->GetTheme();
+  if (theme == Theme::kNone) {
+    switch (dark_mode::GetActiveBraveDarkModeType()) {
+      case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK:
+        return Theme::kDark;
+      case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT:
+      case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT:
+        return Theme::kLight;
+    }
+  }
+  return theme;
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {

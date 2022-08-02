@@ -25,6 +25,7 @@ namespace speedreader {
 std::unique_ptr<SpeedReaderThrottle>
 SpeedReaderThrottle::MaybeCreateThrottleFor(
     SpeedreaderRewriterService* rewriter_service,
+    SpeedreaderService* speedreader_service,
     HostContentSettingsMap* content_settings,
     base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
     const GURL& url,
@@ -33,16 +34,18 @@ SpeedReaderThrottle::MaybeCreateThrottleFor(
   if (check_disabled_sites && !IsEnabledForSite(content_settings, url))
     return nullptr;
 
-  return std::make_unique<SpeedReaderThrottle>(rewriter_service,
-                                               result_delegate, task_runner);
+  return std::make_unique<SpeedReaderThrottle>(
+      rewriter_service, speedreader_service, result_delegate, task_runner);
 }
 
 SpeedReaderThrottle::SpeedReaderThrottle(
     SpeedreaderRewriterService* rewriter_service,
+    SpeedreaderService* speedreader_service,
     base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
     : task_runner_(task_runner),
       rewriter_service_(rewriter_service),
+      speedreader_service_(speedreader_service),
       result_delegate_(result_delegate) {}
 
 SpeedReaderThrottle::~SpeedReaderThrottle() = default;
@@ -61,9 +64,9 @@ void SpeedReaderThrottle::WillProcessResponse(
   raw_ptr<SpeedReaderURLLoader> speedreader_loader = nullptr;
   mojo::ScopedDataPipeConsumerHandle body;
   std::tie(new_remote, new_receiver, speedreader_loader) =
-      SpeedReaderURLLoader::CreateLoader(AsWeakPtr(), result_delegate_,
-                                         response_url, task_runner_,
-                                         rewriter_service_);
+      SpeedReaderURLLoader::CreateLoader(
+          AsWeakPtr(), result_delegate_, response_url, task_runner_,
+          rewriter_service_, speedreader_service_);
   BodySnifferThrottle::InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),
       std::move(new_remote), std::move(new_receiver), speedreader_loader);
