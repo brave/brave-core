@@ -105,6 +105,7 @@ public class CryptoStore: ObservableObject {
     
     self.keyringService.add(self)
     self.txService.add(self)
+    self.rpcService.add(self)
   }
   
   private var buyTokenStore: BuyTokenStore?
@@ -383,5 +384,17 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
   public func autoLockMinutesChanged() {
   }
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
+  }
+}
+
+extension CryptoStore: BraveWalletJsonRpcServiceObserver {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+    prepare()
+  }
+  
+  public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
+  }
+  
+  public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
 }
