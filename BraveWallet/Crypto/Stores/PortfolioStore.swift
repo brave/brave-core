@@ -49,6 +49,7 @@ public class PortfolioStore: ObservableObject {
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
+      guard oldValue != currencyCode else { return }
       update()
     }
   }
@@ -61,6 +62,9 @@ public class PortfolioStore: ObservableObject {
   )
   
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
+  
+  /// Cancellable for the last running `update()` Task.
+  private var updateTask: Task<(), Never>?
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -94,137 +98,142 @@ public class PortfolioStore: ObservableObject {
       self.currencyCode = currencyCode
     }
   }
-
-  /// Fetches the balances for a given list of tokens for each of the given accounts, giving a dictionary with a balance for each token symbol.
-  private func fetchBalances(for tokens: [BraveWallet.BlockchainToken], accounts: [BraveWallet.AccountInfo], completion: @escaping ([String: Double]) -> Void) {
-    var balances: [String: Double] = [:]
-    let group = DispatchGroup()
-    for account in accounts {
-      for token in tokens {
-        group.enter()
-        rpcService.balance(for: token, in: account) { balance in
-          defer { group.leave() }
-          guard let balance = balance else {
-            return
+  
+  func update() {
+    self.updateTask?.cancel()
+    self.updateTask = Task { @MainActor in
+      self.isLoadingBalances = true
+      let coin = await walletService.selectedCoin()
+      let network = await rpcService.network(coin)
+      let userAssets = await walletService.userAssets(network.chainId, coin: coin)
+      // if the task was cancelled, don't update the UI
+      guard !Task.isCancelled else { return }
+      // update userVisibleAssets on display immediately with empty values. Issue #5567
+      userVisibleAssets = userAssets.map { token in
+        AssetViewModel(
+          token: token,
+          decimalBalance: 0.0,
+          price: "",
+          history: []
+        )
+      }
+      
+      let keyring = await keyringService.keyringInfo(coin.keyringId)
+      guard !Task.isCancelled else { return } // limit network request(s) if cancelled
+      let balances = await fetchBalances(for: userAssets, accounts: keyring.accountInfos)
+      guard !Task.isCancelled else { return } // limit network request(s) if cancelled
+      let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
+      let priceHistories = await fetchPriceHistory(for: nonZeroBalanceTokens)
+      guard !Task.isCancelled else { return } // limit network request(s) if cancelled
+      let visibleTokenSymbols = userAssets.filter(\.visible).map { $0.symbol.lowercased() }
+      let prices = await fetchPrices(for: visibleTokenSymbols)
+      
+      // if the task was cancelled, don't update the UI
+      guard !Task.isCancelled else { return }
+      
+      // build our userVisibleAssets
+      userVisibleAssets = userAssets.map { token in
+        let symbol = token.symbol.lowercased()
+        return AssetViewModel(
+          token: token,
+          decimalBalance: balances[symbol] ?? 0.0,
+          price: prices[symbol] ?? "",
+          history: priceHistories[symbol] ?? []
+        )
+      }
+      // Compute balance based on current prices
+      let currentBalance = userVisibleAssets
+        .compactMap {
+          if let price = Double($0.price) {
+            return $0.decimalBalance * price
           }
-          let symbol = token.symbol.lowercased()
-          balances[symbol, default: 0] += balance
+          return nil
+        }
+        .reduce(0.0, +)
+      balance = currencyFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
+      // Compute historical balances based on historical prices and current balances
+      let assets = userVisibleAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
+      let minCount = assets.map(\.history.count).min() ?? 0  // Shortest array count
+      historicalBalances = (0..<minCount).map { index in
+        let value = assets.reduce(0.0, {
+          $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
+        })
+        return .init(
+          date: assets.map { $0.history[index].date }.max() ?? .init(),
+          price: value,
+          formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
+        )
+      }
+      isLoadingBalances = false
+    }
+  }
+  
+  /// Fetches the balances for a given list of tokens for each of the given accounts, giving a dictionary with a balance for each token symbol.
+  @MainActor func fetchBalances(
+    for tokens: [BraveWallet.BlockchainToken],
+    accounts: [BraveWallet.AccountInfo]
+  ) async -> [String: Double] {
+    let balances = await withTaskGroup(of: [String: Double].self) { @MainActor group -> [String: Double] in
+      for account in accounts {
+        for token in tokens {
+          group.addTask { @MainActor in
+            guard let balance = await self.rpcService.balance(for: token, in: account) else {
+              return [:]
+            }
+            let symbol = token.symbol.lowercased()
+            return [symbol: balance]
+          }
         }
       }
-    }
-    group.notify(
-      queue: .main,
-      execute: {
-        completion(balances)
+      return await group.reduce(into: [String: Double](), { partialResult, new in
+        for key in new.keys {
+          partialResult[key, default: 0] += new[key] ?? 0
+        }
       })
+    }
+    return balances
   }
-
+  
   /// Fetches the prices for a given list of symbols, giving a dictionary with the price for each symbol
-  private func fetchPrices(for symbols: [String], completion: @escaping ([String: String]) -> Void) {
-    assetRatioService.priceWithIndividualRetry(
+  @MainActor func fetchPrices(
+    for symbols: [String]
+  ) async -> [String: String] {
+    let priceResult = await assetRatioService.priceWithIndividualRetry(
       symbols.map { $0.lowercased() },
       toAssets: [currencyFormatter.currencyCode],
       timeframe: timeframe
-    ) { priceResult in
-      let prices = Dictionary(uniqueKeysWithValues: priceResult.assetPrices.map { ($0.fromAsset, $0.price) })
-      completion(prices)
-    }
+    )
+    let prices = Dictionary(uniqueKeysWithValues: priceResult.assetPrices.map { ($0.fromAsset, $0.price) })
+    return prices
   }
-
+  
   /// Fetches the price history for the given symbols, giving a dictionary with the price history for each symbol
-  private func fetchPriceHistory(for symbols: [String], completion: @escaping ([String: [BraveWallet.AssetTimePrice]]) -> Void) {
-    var priceHistories: [String: [BraveWallet.AssetTimePrice]] = [:]
-    let group = DispatchGroup()
-    for symbol in symbols {
-      let symbol = symbol.lowercased()
-      group.enter()
-      assetRatioService.priceHistory(
-        symbol,
-        vsAsset: currencyFormatter.currencyCode,
-        timeframe: timeframe
-      ) { success, history in
-        defer { group.leave() }
-        guard success else { return }
-        priceHistories[symbol] = history.sorted(by: { $0.date < $1.date })
-      }
-    }
-    group.notify(
-      queue: .main,
-      execute: {
-        completion(priceHistories)
-      })
-  }
-
-  func update() {
-    isLoadingBalances = true
-    walletService.selectedCoin { [self] coin in
-      rpcService.network(coin) { [self] network in
-        // Get user assets for the selected chain
-        self.walletService.userAssets(network.chainId, coin: network.coin) { [self] tokens in
-          let visibleTokens = tokens.filter(\.visible)
-          let dispatchGroup = DispatchGroup()
-          // fetch user balances, then fetch price history for tokens with non-zero balance
-          var balances: [String: Double] = [:]
-          var priceHistories: [String: [BraveWallet.AssetTimePrice]] = [:]
-          dispatchGroup.enter()
-          keyringService.keyringInfo(network.coin.keyringId) { [self] keyring in
-            fetchBalances(for: visibleTokens, accounts: keyring.accountInfos) { [self] fetchedBalances in
-              balances = fetchedBalances
-              let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
-              fetchPriceHistory(for: nonZeroBalanceTokens) { fetchedPriceHistories in
-                defer { dispatchGroup.leave() }
-                priceHistories = fetchedPriceHistories
-              }
-            }
-          }
-          // fetch prices
-          let visibleTokenSymbols = visibleTokens.map { $0.symbol.lowercased() }
-          var prices: [String: String] = [:]
-          dispatchGroup.enter()
-          fetchPrices(for: visibleTokenSymbols) { fetchedPrices in
-            defer { dispatchGroup.leave() }
-            prices = fetchedPrices
-          }
-          dispatchGroup.notify(queue: .main) { [self] in
-            // build our userVisibleAssets
-            userVisibleAssets = visibleTokens.map { token in
-              let symbol = token.symbol.lowercased()
-              return AssetViewModel(
-                token: token,
-                decimalBalance: balances[symbol] ?? 0.0,
-                price: prices[symbol] ?? "",
-                history: priceHistories[symbol] ?? []
-              )
-            }
-            // Compute balance based on current prices
-            let currentBalance =
-            userVisibleAssets
-              .compactMap {
-                if let price = Double($0.price) {
-                  return $0.decimalBalance * price
-                }
-                return nil
-              }
-              .reduce(0.0, +)
-            balance = currencyFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
-            // Compute historical balances based on historical prices and current balances
-            let assets = userVisibleAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
-            let minCount = assets.map(\.history.count).min() ?? 0  // Shortest array count
-            historicalBalances = (0..<minCount).map { index in
-              let value = assets.reduce(0.0, {
-                $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
-              })
-              return .init(
-                date: assets.map { $0.history[index].date }.max() ?? .init(),
-                price: value,
-                formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
-              )
-            }
-            isLoadingBalances = false
+  @MainActor func fetchPriceHistory(
+    for symbols: [String]
+  ) async -> [String: [BraveWallet.AssetTimePrice]] {
+    let priceHistories = await withTaskGroup(of: [String: [BraveWallet.AssetTimePrice]].self) { @MainActor group -> [String: [BraveWallet.AssetTimePrice]] in
+      for symbol in symbols {
+        let symbol = symbol.lowercased()
+        group.addTask { @MainActor in
+          let (success, history) = await self.assetRatioService.priceHistory(
+            symbol,
+            vsAsset: self.currencyFormatter.currencyCode,
+            timeframe: self.timeframe
+          )
+          if success {
+            return [symbol: history.sorted(by: { $0.date < $1.date })]
+          } else {
+            return [:]
           }
         }
       }
+      return await group.reduce(into: [String: [BraveWallet.AssetTimePrice]](), { partialResult, new in
+        for key in new.keys {
+          partialResult[key] = new[key]
+        }
+      })
     }
+    return priceHistories
   }
 }
 
