@@ -1495,7 +1495,7 @@ public class Utils {
     }
 
     public static void getTxExtraInfo(BraveWalletBaseActivity activity, NetworkInfo selectedNetwork,
-            AccountInfo[] accountInfos, BlockchainToken filterByToken, boolean userAssetsOnly,
+            AccountInfo[] accountInfos, BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
         BraveWalletService braveWalletService = activity.getBraveWalletService();
@@ -1510,11 +1510,11 @@ public class Utils {
                 selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL, userAssetsOnly,
                 tokens -> {
                     final BlockchainToken[] fullTokenList = tokens;
-                    if (filterByToken != null) {
+                    if (filterByTokens != null) {
                         if (userAssetsOnly)
                             Log.w("Utils",
-                                    "userAssetsOnly usually shouldn't be used with filterByToken");
-                        tokens = new BlockchainToken[] {filterByToken};
+                                    "userAssetsOnly usually shouldn't be used with filterByTokens");
+                        tokens = filterByTokens;
                     }
 
                     AsyncUtils.FetchPricesResponseContext fetchPricesContext =
