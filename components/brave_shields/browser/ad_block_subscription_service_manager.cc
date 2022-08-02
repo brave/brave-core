@@ -70,13 +70,10 @@ const base::TimeDelta kListRetryInterval = base::Hours(1);
 const base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
 
 SubscriptionInfo BuildInfoFromDict(const GURL& sub_url,
-                                   const base::Value* dict) {
-  DCHECK(dict);
-  DCHECK(dict->is_dict());
-
+                                   const base::Value::Dict& dict) {
   SubscriptionInfo info;
   base::JSONValueConverter<SubscriptionInfo> converter;
-  converter.Convert(*dict, &info);
+  converter.Convert(base::Value(dict.Clone()), &info);
 
   info.subscription_url = sub_url;
 
@@ -184,10 +181,11 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
   for (const auto it : subscriptions_) {
     const std::string key = it.first;
     SubscriptionInfo info;
-    const base::Value* list_subscription_dict = subscriptions_.Find(key);
-    if (list_subscription_dict && list_subscription_dict->is_dict()) {
+    const base::Value::Dict* list_subscription_dict =
+        subscriptions_.FindDict(key);
+    if (list_subscription_dict) {
       GURL sub_url(key);
-      info = BuildInfoFromDict(sub_url, list_subscription_dict);
+      info = BuildInfoFromDict(sub_url, *list_subscription_dict);
 
       base::TimeDelta until_next_refresh =
           kListUpdateInterval - (base::Time::Now() - info.last_update_attempt);
@@ -401,12 +399,12 @@ void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
 absl::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
     const base::Value::Dict& subscriptions,
     const GURL& sub_url) {
-  auto* list_subscription_dict = subscriptions.Find(sub_url.spec());
+  auto* list_subscription_dict = subscriptions.FindDict(sub_url.spec());
   if (!list_subscription_dict)
     return absl::nullopt;
 
   return absl::make_optional<SubscriptionInfo>(
-      BuildInfoFromDict(sub_url, list_subscription_dict));
+      BuildInfoFromDict(sub_url, *list_subscription_dict));
 }
 
 void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
@@ -423,10 +421,11 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
   for (const auto it : subscriptions_) {
     const std::string key = it.first;
     SubscriptionInfo info;
-    const base::Value* list_subscription_dict = subscriptions_.Find(key);
-    if (list_subscription_dict && list_subscription_dict->is_dict()) {
+    const base::Value::Dict* list_subscription_dict =
+        subscriptions_.FindDict(key);
+    if (list_subscription_dict) {
       GURL sub_url(key);
-      info = BuildInfoFromDict(sub_url, list_subscription_dict);
+      info = BuildInfoFromDict(sub_url, *list_subscription_dict);
 
       auto subscription_service =
           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
@@ -471,10 +470,10 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   subscription_dict.Set("last_successful_update_attempt",
                         base::TimeToValue(info.last_successful_update_attempt));
   if (info.homepage) {
-    subscription_dict.Set("homepage", base::Value(*info.homepage));
+    subscription_dict.Set("homepage", *info.homepage);
   }
   if (info.title) {
-    subscription_dict.Set("title", base::Value(*info.title));
+    subscription_dict.Set("title", *info.title);
   }
   subscriptions_dict->GetDict().Set(sub_url.spec(),
                                     std::move(subscription_dict));
@@ -493,12 +492,12 @@ void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
     return;
 
   DictionaryPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
-  base::Value* subscriptions_dict = update.Get();
-  subscriptions_dict->GetDict().Remove(sub_url.spec());
+  base::Value::Dict& subscriptions_dict = update.Get()->GetDict();
+  subscriptions_dict.Remove(sub_url.spec());
 
   // TODO(bridiver) - change to pref registrar
   base::AutoLock lock(subscription_services_lock_);
-  subscriptions_ = subscriptions_dict->GetDict().Clone();
+  subscriptions_ = subscriptions_dict.Clone();
 }
 
 bool AdBlockSubscriptionServiceManager::Start() {
@@ -573,22 +572,21 @@ AdBlockSubscriptionServiceManager::UrlCosmeticResources(
   return first_value;
 }
 
-base::Value AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
+base::Value::List AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  base::Value first_value(base::Value::Type::LIST);
+  base::Value::List first_value;
 
   base::AutoLock lock(subscription_services_lock_);
   for (auto it = subscription_services_.begin();
        it != subscription_services_.end(); it++) {
     auto info = GetInfo(subscriptions_, it->first);
     if (info && info->enabled) {
-      base::Value next_value =
+      base::Value::List next_value =
           it->second->HiddenClassIdSelectors(classes, ids, exceptions);
-      DCHECK(next_value.is_list());
 
-      for (auto& item : next_value.GetList()) {
+      for (auto& item : next_value) {
         first_value.Append(std::move(item));
       }
     }

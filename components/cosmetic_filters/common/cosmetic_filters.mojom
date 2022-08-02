@@ -5,7 +5,7 @@ import "mojo/public/mojom/base/values.mojom";
 interface CosmeticFiltersResources {
   // Receives an input string which is JSON object.
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
-      mojo_base.mojom.Value result);
+      mojo_base.mojom.DictionaryValue result);
 
   [Sync]
   UrlCosmeticResources(string url) => (mojo_base.mojom.Value result);
