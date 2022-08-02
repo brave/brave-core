@@ -54,10 +54,6 @@ class AdsClientMojoBridge
     T callback_;
   };
 
-  static void OnGetBrowsingHistory(
-      CallbackHolder<GetBrowsingHistoryCallback>* callback_holder,
-      const std::vector<GURL>& history);
-
   static void OnURLRequest(CallbackHolder<UrlRequestCallback>* callback_holder,
                            const ads::mojom::UrlResponseInfo& url_response);
 

@@ -33,7 +33,7 @@ using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponseInfoPtr)>;
 
 using GetBrowsingHistoryCallback =
-    std::function<void(const std::vector<GURL>&)>;
+    base::OnceCallback<void(const std::vector<GURL>&)>;
 
 using GetScheduledCaptchaCallback =
     base::OnceCallback<void(const std::string&)>;

@@ -264,7 +264,7 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
           history.push_back(GURL(spec));
         }
 
-        callback(history);
+        std::move(callback).Run(history);
       }));
 }
 

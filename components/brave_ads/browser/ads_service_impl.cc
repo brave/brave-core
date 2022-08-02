@@ -2484,7 +2484,7 @@ void AdsServiceImpl::OnBrowsingHistorySearchComplete(
   std::sort(history.begin(), history.end());
   history.erase(std::unique(history.begin(), history.end()), history.end());
 
-  callback(history);
+  std::move(callback).Run(history);
 }
 
 void AdsServiceImpl::OnLogTrainingInstance(bool success) {
