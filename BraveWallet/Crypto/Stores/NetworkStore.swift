@@ -20,6 +20,7 @@ public class NetworkStore: ObservableObject {
   }
   
   @Published private(set) var allChains: [BraveWallet.NetworkInfo] = []
+  @Published private(set) var customChains: [BraveWallet.NetworkInfo] = []
 
   @Published private(set) var selectedChainId: String = BraveWallet.MainnetChainId
   var selectedChain: BraveWallet.NetworkInfo {
@@ -69,7 +70,14 @@ public class NetworkStore: ObservableObject {
           lhs.coin == .sol && rhs.coin != .sol
         }
       }
+      
+      let customChainIds = await rpcService.customNetworks(.eth) // only support Ethereum custom chains
+      self.customChains = allChains.filter { customChainIds.contains($0.id) }
     }
+  }
+  
+  func isCustomChain(_ network: BraveWallet.NetworkInfo) -> Bool {
+    customChains.contains(where: { $0.coin == network.coin && $0.chainId == network.chainId })
   }
   
   @MainActor @discardableResult func setSelectedChain(_ network: BraveWallet.NetworkInfo) async -> SetSelectedChainError? {

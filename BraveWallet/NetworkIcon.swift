@@ -78,6 +78,8 @@ struct NetworkIcon: View {
       return ("fantom", false)
     case BraveWallet.OptimismMainnetChainId:
       return ("optimism", false)
+    case BraveWallet.AuroraMainnetChainId:
+      return ("aurora", false)
     default:
       return nil
     }

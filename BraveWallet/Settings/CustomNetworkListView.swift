@@ -28,7 +28,7 @@ struct CustomNetworkListView: View {
   }
   
   private var customNetworks: [BraveWallet.NetworkInfo] {
-    networkStore.allChains.filter { $0.isCustom }
+    networkStore.customChains
   }
   
   @ViewBuilder private var customNetworksList: some View {
@@ -81,7 +81,7 @@ struct CustomNetworkListView: View {
       }
     }
     .onDelete { indexSet in
-      let networksToRemove = indexSet.map({ customNetworks[$0] })
+      let networksToRemove = indexSet.map { customNetworks[$0] }
       withAnimation(.default) {
         for network in networksToRemove {
           removeNetwork(network)

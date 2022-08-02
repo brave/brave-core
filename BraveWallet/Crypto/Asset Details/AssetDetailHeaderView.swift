@@ -148,7 +148,7 @@ struct AssetDetailHeaderView: View {
         .padding(.bottom)
       HStack {
         if assetDetailStore.isBuySupported
-            && !networkStore.selectedChain.isCustom
+            && !networkStore.isCustomChain(networkStore.selectedChain)
             && networkStore.selectedChain.coin == .eth {
           Button(
             action: {
@@ -171,7 +171,7 @@ struct AssetDetailHeaderView: View {
         ) {
           Text(Strings.Wallet.send)
         }
-        if !networkStore.selectedChain.isCustom && networkStore.selectedChain.coin == .eth {
+        if !networkStore.isCustomChain(networkStore.selectedChain) && networkStore.selectedChain.coin == .eth {
           Button(
             action: {
               buySendSwapDestination = BuySendSwapDestination(
