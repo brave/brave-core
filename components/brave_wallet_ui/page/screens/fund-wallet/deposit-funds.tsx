@@ -61,6 +61,7 @@ import { CenteredPageLayout } from '../../../components/desktop/centered-page-la
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
 import SelectHeader from '../../../components/buy-send-swap/select-header/index'
+import { getBatTokensFromList } from '../../../utils/asset-utils'
 
 export const DepositFundsScreen = () => {
   // routing
@@ -106,21 +107,7 @@ export const DepositFundsScreen = () => {
 
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher in the list
-    const { bat, nonBat } = fullTokenList.reduce((acc, t) => {
-      if (
-        t.symbol.toLowerCase() === 'bat' ||
-        t.symbol.toLowerCase() === 'wbat' || // wormhole BAT
-        t.symbol.toLowerCase() === 'bat.e' // Avalanche C-Chain BAT
-      ) {
-        acc.bat.push(t)
-        return acc
-      }
-      acc.nonBat.push(t)
-      return acc
-    }, {
-      bat: [] as BraveWallet.BlockchainToken[],
-      nonBat: [] as BraveWallet.BlockchainToken[]
-    })
+    const { bat, nonBat } = getBatTokensFromList(fullTokenList)
     return [...mainnetNetworkAssetsList, ...bat, ...nonBat]
   }, [mainnetNetworkAssetsList, fullTokenList])
 

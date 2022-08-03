@@ -26,7 +26,7 @@ import * as WalletActions from '../actions/wallet_actions'
 import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
-import { addLogoToToken, getUniqueAssets } from '../../utils/asset-utils'
+import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -224,6 +224,7 @@ export const getAllBuyAssets = async (): Promise<{
     SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kWyre, chainId))
   )
 
+  // add token logos
   const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
     .flatMap(p => p.tokens)
     .map(addLogoToToken)
@@ -232,10 +233,40 @@ export const getAllBuyAssets = async (): Promise<{
     .flatMap(p => p.tokens)
     .map(addLogoToToken)
 
+  // seperate native assets from tokens
+  const {
+    tokens: rampTokenOptions,
+    nativeAssets: rampNativeAssetOptions
+  } = getNativeTokensFromList(rampAssetOptions)
+
+  const {
+    tokens: wyreTokenOptions,
+    nativeAssets: wyreNativeAssetOptions
+  } = getNativeTokensFromList(wyreAssetOptions)
+
+  // seperate BAT from other tokens
+  const {
+    bat: rampBatTokens,
+    nonBat: rampNonBatTokens
+  } = getBatTokensFromList(rampTokenOptions)
+
+  const {
+    bat: wyreBatTokens,
+    nonBat: wyreNonBatTokens
+  } = getBatTokensFromList(wyreTokenOptions)
+
+  // sort lists
+  // Move Gas coins and BAT to front of list
+  const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
+  const sortedWyreOptions = [...wyreNativeAssetOptions, ...wyreBatTokens, ...wyreNonBatTokens]
+
   const results = {
-    rampAssetOptions,
-    wyreAssetOptions,
-    allAssetOptions: getUniqueAssets([...rampAssetOptions, ...wyreAssetOptions])
+    rampAssetOptions: sortedRampOptions,
+    wyreAssetOptions: sortedWyreOptions,
+    allAssetOptions: getUniqueAssets([
+      ...sortedRampOptions,
+      ...sortedWyreOptions
+    ])
   }
 
   return results
