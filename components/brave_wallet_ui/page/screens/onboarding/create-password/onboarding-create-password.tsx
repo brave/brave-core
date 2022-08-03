@@ -5,13 +5,13 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes, WalletState } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -38,6 +38,7 @@ export const OnboardingCreatePassword = () => {
 
   // redux
   const dispatch = useDispatch()
+  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
@@ -47,7 +48,6 @@ export const OnboardingCreatePassword = () => {
   const nextStep = React.useCallback(() => {
     if (isValid) {
       dispatch(WalletPageActions.createWallet({ password }))
-      history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
     }
   }, [password, isValid])
 
@@ -55,6 +55,13 @@ export const OnboardingCreatePassword = () => {
     setPassword(password)
     setIsValid(isValid)
   }, [])
+
+  // effects
+  React.useEffect(() => {
+    if (isWalletCreated) {
+      history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+    }
+  }, [isWalletCreated])
 
   // render
   return (

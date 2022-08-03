@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useHistory } from 'react-router'
 
 // utils
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
@@ -47,6 +48,14 @@ const ImportantTextSegments = () => {
 }
 
 export const OnboardingRecoveryPhraseExplainer = () => {
+  // routing
+  const history = useHistory()
+
+  // methods
+  const skipToOnboardingSuccess = () => {
+    history.push(WalletRoutes.OnboardingComplete)
+  }
+
   // render
   return (
     <CenteredPageLayout>
@@ -54,8 +63,9 @@ export const OnboardingRecoveryPhraseExplainer = () => {
         <StyledWrapper>
 
           <OnboardingNewWalletStepsNavigation
-            goBackUrl={WalletRoutes.OnboardingCreatePassword}
+            preventGoBack
             currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
+            onSkip={skipToOnboardingSuccess}
           />
 
           <div>

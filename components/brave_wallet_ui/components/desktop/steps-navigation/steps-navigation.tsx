@@ -23,6 +23,7 @@ export interface StepsNavigationProps<T extends string> {
   goBackUrl?: WalletRoutes
   onSkip?: () => void
   preventSkipAhead?: boolean
+  preventGoBack?: boolean
   readonly steps: T[]
   skipButtonText?: React.ReactNode
 }
@@ -36,7 +37,8 @@ export const StepsNavigation: <T extends string>(
   onSkip,
   preventSkipAhead,
   steps,
-  skipButtonText
+  skipButtonText,
+  preventGoBack
 }) => {
   // routing
   const history = useHistory()
@@ -53,20 +55,34 @@ export const StepsNavigation: <T extends string>(
 
   return (
     <Wrapper>
-      <BackButton
-        as={buttonProps.as}
-        to={buttonProps.to}
-        onClick={buttonProps.onClick}
-      >
-        <BackIcon />
-        <span>{getLocale('braveWalletBack')}</span>
-      </BackButton>
+      {preventGoBack
+        ? <FlexBox />
+        : <BackButton
+            as={buttonProps.as}
+            to={buttonProps.to}
+            onClick={buttonProps.onClick}
+          >
+            <BackIcon />
+            <span>{getLocale('braveWalletBack')}</span>
+          </BackButton>
+      }
 
       <DotsWrapper>
         {steps.map((stepName, stepIndex) => {
-          const showLink = stepIndex > currentStepIndex
-            ? !preventSkipAhead
-            : true
+          const isCurrentStep = currentStep === stepName
+
+          const isAvailableNextStep =
+            !preventSkipAhead &&
+            stepIndex > currentStepIndex
+
+          const isAvailablePrevStep =
+            !preventGoBack &&
+            stepIndex < currentStepIndex
+
+          const showLink =
+            isCurrentStep ||
+            isAvailableNextStep ||
+            isAvailablePrevStep
 
           return showLink
             ? <NavLink
