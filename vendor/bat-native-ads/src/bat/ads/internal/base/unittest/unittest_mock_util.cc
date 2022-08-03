@@ -282,7 +282,7 @@ void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
               url_response = url_response_optional.value();
             }
 
-            callback(url_response);
+            std::move(callback).Run(url_response);
           }));
 }
 

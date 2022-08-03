@@ -125,13 +125,13 @@ void BatAdsClientMojoBridge::ResetAdEventHistoryForId(
   bat_ads_client_->ResetAdEventHistoryForId(id);
 }
 
-void OnUrlRequest(const ads::UrlRequestCallback& callback,
+void OnUrlRequest(ads::UrlRequestCallback callback,
                   const ads::mojom::UrlResponseInfoPtr url_response_ptr) {
   ads::mojom::UrlResponseInfo url_response;
 
   if (!url_response_ptr) {
     url_response.status_code = -1;
-    callback(url_response);
+    std::move(callback).Run(url_response);
     return;
   }
 
@@ -139,7 +139,7 @@ void OnUrlRequest(const ads::UrlRequestCallback& callback,
   url_response.status_code = url_response_ptr->status_code;
   url_response.body = url_response_ptr->body;
   url_response.headers = url_response_ptr->headers;
-  callback(url_response);
+  std::move(callback).Run(url_response);
 }
 
 void BatAdsClientMojoBridge::UrlRequest(
@@ -149,7 +149,7 @@ void BatAdsClientMojoBridge::UrlRequest(
     ads::mojom::UrlResponseInfo response;
     response.url = url_request->url;
     response.status_code = -1;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 

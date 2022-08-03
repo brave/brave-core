@@ -29,16 +29,9 @@ AdsClientMojoBridge::~AdsClientMojoBridge() = default;
 
 // static
 void AdsClientMojoBridge::OnURLRequest(
-    CallbackHolder<UrlRequestCallback>* callback_holder,
-    const ads::mojom::UrlResponseInfo& url_response) {
-  DCHECK(callback_holder);
-
-  if (callback_holder->is_valid()) {
-    std::move(callback_holder->get())
-        .Run(ads::mojom::UrlResponseInfo::New(url_response));
-  }
-
-  delete callback_holder;
+    UrlRequestCallback callback,
+    const ads::mojom::UrlResponse& url_response) {
+  std::move(callback).Run(ads::mojom::UrlResponseInfo::New(url_response));
 }
 
 // static
@@ -162,12 +155,9 @@ void AdsClientMojoBridge::GetBrowsingHistory(
 
 void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                                      UrlRequestCallback callback) {
-  // Callback holder gets deleted in |OnURLRequest|.
-  auto* callback_holder =
-      new CallbackHolder<UrlRequestCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->UrlRequest(std::move(url_request),
-                          std::bind(AdsClientMojoBridge::OnURLRequest,
-                                    callback_holder, std::placeholders::_1));
+  ads_client_->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&AdsClientMojoBridge::OnURLRequest, std::move(callback)));
 }
 
 void AdsClientMojoBridge::Save(

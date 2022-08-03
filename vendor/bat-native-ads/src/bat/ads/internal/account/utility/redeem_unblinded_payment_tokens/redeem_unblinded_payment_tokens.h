@@ -40,8 +40,8 @@ class RedeemUnblindedPaymentTokens final {
  private:
   void Redeem();
   void OnRedeem(
-      const mojom::UrlResponseInfo& url_response,
-      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
+      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+      const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyRedeemedUnblindedPaymentTokens(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
