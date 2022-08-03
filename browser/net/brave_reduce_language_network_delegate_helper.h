@@ -9,7 +9,11 @@
 #include <memory>
 
 #include "brave/browser/net/url_context.h"
+#include "url/gurl.h"
 
+class HostContentSettingsMap;
+class PrefService;
+class Profile;
 struct BraveRequestInfo;
 
 namespace net {
@@ -18,6 +22,12 @@ class URLRequest;
 }  // namespace net
 
 namespace brave {
+
+std::string FarbleAcceptLanguageHeader(
+    const GURL& tab_origin,
+    Profile* profile,
+    PrefService* pref_service,
+    HostContentSettingsMap* content_settings);
 
 int OnBeforeStartTransaction_ReduceLanguageWork(
     net::HttpRequestHeaders* headers,

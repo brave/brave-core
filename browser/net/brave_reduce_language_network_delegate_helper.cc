@@ -27,54 +27,76 @@ using brave_shields::ControlType;
 
 namespace brave {
 
+namespace {
+constexpr char kAcceptLanguageMax[] = "en-US,en;q=0.9";
+}
+
+std::string FarbleAcceptLanguageHeader(
+    const GURL& tab_origin,
+    Profile* profile,
+    PrefService* pref_service,
+    HostContentSettingsMap* content_settings) {
+  std::string languages =
+      pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
+  std::string accept_language_string = language::GetFirstLanguage(languages);
+  // If the first language is a multi-part code like "en-US" or "zh-HK",
+  // extract and append the base language code to |accept_language_string|.
+  const std::vector<std::string> tokens = base::SplitString(
+      accept_language_string, "-", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  if (!tokens.empty() && tokens[0] != accept_language_string) {
+    accept_language_string += "," + tokens[0];
+  }
+  // Add a fake q value after the language code.
+  std::vector<std::string> q_values = {";q=0.5", ";q=0.6", ";q=0.7", ";q=0.8",
+                                       ";q=0.9"};
+  brave::FarblingPRNG prng;
+  if (g_brave_browser_process->brave_farbling_service()
+          ->MakePseudoRandomGeneratorForURL(
+              tab_origin, profile && profile->IsOffTheRecord(), &prng)) {
+    accept_language_string += q_values[prng() % q_values.size()];
+  }
+  return accept_language_string;
+}
+
 int OnBeforeStartTransaction_ReduceLanguageWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  auto* pref_service = user_prefs::UserPrefs::Get(ctx->browser_context);
+  PrefService* pref_service = user_prefs::UserPrefs::Get(ctx->browser_context);
   if (!pref_service)  // should never happen
     return net::OK;
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
   if (!profile)  // should never happen
     return net::OK;
-  auto* content_settings =
+  HostContentSettingsMap* content_settings =
       HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!content_settings)  // should never happen
+    return net::OK;
   if (!brave_shields::ShouldDoReduceLanguage(content_settings, ctx->tab_origin,
                                              pref_service)) {
     return net::OK;
   }
 
-  ControlType fingerprinting_control_type =
-      brave_shields::GetFingerprintingControlType(content_settings,
-                                                  ctx->tab_origin);
-
-  // If fingerprint blocking is maximum, set Accept-Language header to
-  // static value regardless of other preferences.
-  std::string accept_language_string = "en-US,en;q=0.9";
-
-  // If fingerprint blocking is default, compute Accept-Language header
-  // based on user preferences.
-  if (fingerprinting_control_type == ControlType::DEFAULT) {
-    std::string languages =
-        pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
-    accept_language_string = language::GetFirstLanguage(languages);
-    // If the first language is a multi-part code like "en-US" or "zh-HK",
-    // extract and append the base language code to |accept_language_string|.
-    const std::vector<std::string> tokens =
-        base::SplitString(accept_language_string, "-", base::TRIM_WHITESPACE,
-                          base::SPLIT_WANT_ALL);
-    if (!tokens.empty() && tokens[0] != accept_language_string) {
-      accept_language_string += "," + tokens[0];
+  std::string accept_language_string;
+  switch (brave_shields::GetFingerprintingControlType(content_settings,
+                                                      ctx->tab_origin)) {
+    case ControlType::BLOCK: {
+      // If fingerprint blocking is maximum, set Accept-Language header to
+      // static value regardless of other preferences.
+      accept_language_string = kAcceptLanguageMax;
+      break;
     }
-    // Add a fake q value after the language code.
-    std::vector<std::string> q_values = {";q=0.5", ";q=0.6", ";q=0.7", ";q=0.8",
-                                         ";q=0.9"};
-    brave::FarblingPRNG prng;
-    if (g_brave_browser_process->brave_farbling_service()
-            ->MakePseudoRandomGeneratorForURL(
-                ctx->tab_origin, profile && profile->IsOffTheRecord(), &prng)) {
-      accept_language_string += q_values[prng() % q_values.size()];
+    case ControlType::DEFAULT: {
+      // If fingerprint blocking is default, compute Accept-Language header
+      // based on user preferences and some randomization.
+      accept_language_string = FarbleAcceptLanguageHeader(
+          ctx->tab_origin, profile, pref_service, content_settings);
+      break;
     }
+    default:
+      // Other cases are handled within ShouldDoReduceLanguage, so we should
+      // never reach here.
+      NOTREACHED();
   }
 
   headers->SetHeader(net::HttpRequestHeaders::kAcceptLanguage,
