@@ -1922,10 +1922,6 @@ void AdsServiceImpl::OnURLRequest(
   auto url_loader = std::move(*url_loader_iter);
   url_loaders_.erase(url_loader_iter);
 
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   int response_code = -1;
 
   base::flat_map<std::string, std::string> headers;
@@ -2068,10 +2064,6 @@ void AdsServiceImpl::OnToggleFlaggedAd(ToggleFlaggedAdCallback callback,
 
 void AdsServiceImpl::OnLoad(ads::LoadCallback callback,
                             const std::string& value) {
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   if (value.empty())
     std::move(callback).Run(/* success */ false, value);
   else
@@ -2082,18 +2074,10 @@ void AdsServiceImpl::OnLoadFileResource(
     ads::LoadFileCallback callback,
     std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file) {
   DCHECK(file);
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   std::move(callback).Run(std::move(*file));
 }
 
 void AdsServiceImpl::OnSave(ads::SaveCallback callback, const bool success) {
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   std::move(callback).Run(success);
 }
 
@@ -2471,10 +2455,6 @@ bool AdsServiceImpl::ShouldShowOnboardingNotification() {
 void AdsServiceImpl::OnBrowsingHistorySearchComplete(
     ads::GetBrowsingHistoryCallback callback,
     history::QueryResults results) {
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   std::vector<GURL> history;
   for (const auto& result : results) {
     history.push_back(result.url().GetWithEmptyPath());
