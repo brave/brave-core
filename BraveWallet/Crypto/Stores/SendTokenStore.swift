@@ -233,6 +233,8 @@ public class SendTokenStore: ObservableObject {
           addressError = .notSolAddress
         } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
           addressError = .sameAsFromAddress
+        } else {
+          addressError = nil
         }
       }
     }
