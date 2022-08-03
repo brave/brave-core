@@ -1907,77 +1907,11 @@ Are you sure you want to do this?
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Ethereum Mainnet
     </message>
-    <message name="IDS_RINKEBY" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Rinkeby Test Network
-    </message>
-    <message name="IDS_ROPSTEN" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Ropsten Test Network
-    </message>
-    <message name="IDS_GOERLI" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Goerli Test Network
-    </message>
-    <message name="IDS_KOVAN" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Kovan Test Network
-    </message>
-    <message name="IDS_POLYGON" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Polygon Mainnet
-    </message>
     <message name="IDS_BINANCE" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Binance Smart Chain Mainnet
     </message>
-    <message name="IDS_CELO" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Celo Mainnet
-    </message>
-    <message name="IDS_AVALANCHE" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Avalanche C-Chain
-    </message>
-    <message name="IDS_FANTOM" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Fantom Opera
-    </message>
-    <message name="IDS_OPTIMISM" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Optimism
-    </message>
-    <message name="IDS_AURORA" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Aurora Mainnet
-    </message>
     <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Localhost
-    </message>
-    <message name="IDS_MAINNET_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Mainnet
-    </message>
-    <message name="IDS_RINKEBY_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Rinkeby
-    </message>
-    <message name="IDS_ROPSTEN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Ropsten
-    </message>
-    <message name="IDS_GOERLI_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Goerli
-    </message>
-    <message name="IDS_KOVAN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Kovan
-    </message>
-    <message name="IDS_POLYGON_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Polygon
-    </message>
-    <message name="IDS_BINANCE_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Binance
-    </message>
-    <message name="IDS_CELO_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Celo
-    </message>
-    <message name="IDS_AVALANCHE_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Avalanche
-    </message>
-    <message name="IDS_FANTOM_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Fantom
-    </message>
-    <message name="IDS_OPTIMISM_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Optimism
-    </message>
-    <message name="IDS_AURORA_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
-      Aurora
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
@@ -2428,9 +2362,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET" desc="Amount Asset" translateable="false">
       <ph name="AMOUNT">%1$s<ex>0.0001</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph>
-    </message>
-    <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET_ERC721" desc="Amount Asset Text for ERC721" translateable="false">
-      <ph name="ASSET">%1$s<ex>CK</ex></ph> #<ph name="TOKEN_ID">%2$s<ex>1</ex></ph>
     </message>
     <message name="IDS_CRYPTO_WALLET_AMOUNT_FIAT" desc="$amount_fiat" translateable="false">
       $<ph name="AMOUNT">%1$s<ex>3.08</ex></ph>

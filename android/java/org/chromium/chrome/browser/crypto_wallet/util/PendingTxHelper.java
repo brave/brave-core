@@ -41,17 +41,13 @@ public class PendingTxHelper implements TxServiceObserver {
     public LiveData<TransactionInfo> mSelectedPendingRequest;
     public LiveData<Boolean> mHasNoPendingTxAfterProcessing;
 
-    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
-            String filterByContractAddress) {
+    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll) {
         assert txService != null;
         mTxService = txService;
         mAccountInfos = accountInfos;
-        mFilterByContractAddress = filterByContractAddress;
         mReturnAll = returnAll;
         mTxInfos = new HashMap<String, TransactionInfo[]>();
-        if (mFilterByContractAddress != null && !mFilterByContractAddress.isEmpty()) {
-            mRopstenContractAddress = Utils.getRopstenContractAddress(mFilterByContractAddress);
-        }
+
         mTransactionInfos = new ArrayList<>();
         mCacheTransactionInfos = new ArrayList<>();
         _mSelectedPendingRequest = new MutableLiveData<>();
@@ -63,8 +59,8 @@ public class PendingTxHelper implements TxServiceObserver {
     }
 
     public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
-            String filterByContractAddress, boolean shouldObserveTxUpdates) {
-        this(txService, accountInfos, returnAll, filterByContractAddress);
+            boolean shouldObserveTxUpdates) {
+        this(txService, accountInfos, returnAll);
         if (shouldObserveTxUpdates) {
             txService.addObserver(this);
         }
@@ -90,7 +86,7 @@ public class PendingTxHelper implements TxServiceObserver {
                     new AsyncUtils.GetAllTransactionInfoResponseContext(
                             allTxMultiResponse.singleResponseComplete, accountInfo.name);
             allTxContexts.add(allTxContext);
-            mTxService.getAllTransactionInfo(CoinType.ETH, accountInfo.address, allTxContext);
+            mTxService.getAllTransactionInfo(accountInfo.coin, accountInfo.address, allTxContext);
         }
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
@@ -100,27 +96,11 @@ public class PendingTxHelper implements TxServiceObserver {
                         if (mFilterByContractAddress == null) {
                             // Don't filter by contract
                             newValue.add(txInfo);
-                        } else if (!mFilterByContractAddress.isEmpty()) {
-                            if (mFilterByContractAddress.toLowerCase(Locale.getDefault())
-                                            .equals(txInfo.txDataUnion.getEthTxData1559()
-                                                            .baseData.to.toLowerCase(
-                                                                    Locale.getDefault()))) {
-                                newValue.add(txInfo);
-                            }
-                            if (mRopstenContractAddress != null
-                                    && !mRopstenContractAddress.isEmpty()
-                                    && mRopstenContractAddress.toLowerCase(Locale.getDefault())
-                                               .equals(txInfo.txDataUnion.getEthTxData1559()
-                                                               .baseData.to.toLowerCase(
-                                                                       Locale.getDefault()))) {
-                                newValue.add(txInfo);
-                            }
-
                         } else if (txInfo.txType != TransactionType.ERC20_APPROVE
                                 && txInfo.txType != TransactionType.ERC20_TRANSFER
                                 && txInfo.txType != TransactionType.ERC721_TRANSFER_FROM
                                 && txInfo.txType != TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-                            // Filter by ETH only
+                            // TODO: Filter by ETH only
                             newValue.add(txInfo);
                         }
                     }

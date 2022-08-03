@@ -119,10 +119,13 @@ public class BraveWalletNetworksPreference extends Preference
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
             mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                mAdapter.setDisplayedNetworks(chainId, Utils.getCustomNetworks(chains));
-                if (mRecyclerView.getAdapter() != mAdapter) {
-                    mRecyclerView.setAdapter(mAdapter);
-                }
+                mJsonRpcService.getCustomNetworks(CoinType.ETH, customNetworkIds -> {
+                    mAdapter.setDisplayedNetworks(
+                            chainId, Utils.getNetworkInfosByChainIds(customNetworkIds, chains));
+                    if (mRecyclerView.getAdapter() != mAdapter) {
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+                });
             });
         });
     }

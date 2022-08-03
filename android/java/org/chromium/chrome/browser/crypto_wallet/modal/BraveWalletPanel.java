@@ -33,6 +33,7 @@ import androidx.lifecycle.Observer;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -46,7 +47,8 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActiv
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -293,42 +295,30 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void getBalance(AccountInfo[] selectedAccount) {
-        if (selectedAccount.length == 0) {
+        if (selectedAccount.length != 1) {
             return;
         }
-        mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
-            mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
-                SingleTokenBalanceHelper singleTokenBalanceHelper = new SingleTokenBalanceHelper(
-                        mBraveWalletPanelServices.getAssetRatioService(),
-                        mBraveWalletPanelServices.getJsonRpcService());
-                String chainSymbol = "ETH";
-                int chainDecimals = 18;
-                for (NetworkInfo chain : chains) {
-                    if (chainId.equals(chain.chainId) && Utils.isCustomNetwork(chainId)) {
-                        chainSymbol = chain.symbol;
-                        chainDecimals = chain.decimals;
-                        break;
-                    }
-                }
-                final String chainSymbolFinal = chainSymbol;
-                singleTokenBalanceHelper.getPerAccountBalances(chainId, "",
-                        chainSymbol.toLowerCase(Locale.getDefault()), chainDecimals,
-                        selectedAccount, () -> {
-                            Double thisAccountFiatBalance = Utils.getOrDefault(
-                                    singleTokenBalanceHelper.getPerAccountFiatBalance(),
-                                    selectedAccount[0].address, 0.0d);
-                            String fiatBalanceString = String.format(
-                                    Locale.getDefault(), "$%,.2f", thisAccountFiatBalance);
-
-                            Double thisAccountCryptoBalance = Utils.getOrDefault(
-                                    singleTokenBalanceHelper.getPerAccountCryptoBalance(),
-                                    selectedAccount[0].address, 0.0d);
-                            String cryptoBalanceString = String.format(Locale.getDefault(),
-                                    "%.4f %s", thisAccountCryptoBalance, chainSymbolFinal);
-                            mAmountAsset.setText(cryptoBalanceString);
-                            mAmountFiat.setText(fiatBalanceString);
-                        });
-            });
+        mBraveWalletPanelServices.getJsonRpcService().getNetwork(CoinType.ETH, selectedNetwork -> {
+            BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
+            AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
+                    new BlockchainToken[] {asset}, assetPrices -> {
+                        BalanceHelper.getNativeAssetsBalances(
+                                mBraveWalletPanelServices.getJsonRpcService(), selectedNetwork,
+                                selectedAccount, nativeAssetsBalances -> {
+                                    double price = Utils.getOrDefault(assetPrices,
+                                            asset.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+                                    double balance = Utils.getOrDefault(nativeAssetsBalances,
+                                            selectedAccount[0].address.toLowerCase(
+                                                    Locale.getDefault()),
+                                            0.0d);
+                                    String fiatBalanceString = String.format(
+                                            Locale.getDefault(), "$%,.2f", balance * price);
+                                    String cryptoBalanceString = String.format(Locale.getDefault(),
+                                            "%.4f %s", balance, selectedNetwork.symbol);
+                                    mAmountAsset.setText(cryptoBalanceString);
+                                    mAmountFiat.setText(fiatBalanceString);
+                                });
+                    });
         });
     }
 

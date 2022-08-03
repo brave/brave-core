@@ -85,7 +85,7 @@ public class CryptoModel {
         this.mAssetRatioService = mAssetRatioService;
         mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
-        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, null, true);
+        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel =
                 new NetworkModel(mJsonRpcService, mSharedData, mCryptoSharedActions, context);
     }
