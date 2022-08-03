@@ -38,7 +38,7 @@
 
 namespace brave_news {
 
-bool IsPublisherEnabled(const mojom::PublisherPtr& publisher) {
+bool IsPublisherEnabled(const mojom::Publisher* publisher) {
   if (!publisher)
     return false;
   return (publisher->is_enabled &&

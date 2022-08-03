@@ -18,10 +18,6 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
-namespace content {
-class Page;
-}
-
 class BraveNewsTabHelper
     : public content::WebContentsUserData<BraveNewsTabHelper>,
       public content::WebContentsObserver,

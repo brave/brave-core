@@ -40,7 +40,7 @@ class HistoryService;
 
 namespace brave_news {
 
-bool IsPublisherEnabled(const mojom::PublisherPtr& publisher);
+bool IsPublisherEnabled(const mojom::Publisher* publisher);
 
 // Browser-side handler for Brave News mojom API, 1 per profile
 // Orchestrates FeedController and PublishersController for data, as well as

@@ -48,7 +48,7 @@ BraveNewsTabHelper::GetAvailableFeeds() {
   std::vector<FeedDetails> feeds;
 
   base::flat_set<GURL> seen_feeds;
-  auto default_publisher =
+  auto* default_publisher =
       controller_->publisher_controller()->GetPublisherForSite(
           GetWebContents().GetLastCommittedURL());
   if (default_publisher) {
@@ -69,7 +69,7 @@ BraveNewsTabHelper::GetAvailableFeeds() {
 }
 
 bool BraveNewsTabHelper::IsSubscribed(const FeedDetails& feed_details) {
-  auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
+  auto* publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
   return brave_news::IsPublisherEnabled(publisher);
 }
@@ -84,7 +84,7 @@ bool BraveNewsTabHelper::IsSubscribed() {
 
 void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
   bool subscribed = IsSubscribed(feed_details);
-  auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
+  auto* publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
   if (publisher) {
     controller_->SetPublisherPref(

@@ -37,9 +37,12 @@ class PublishersController {
     virtual void OnPublishersUpdated(PublishersController* controller) = 0;
   };
 
-  mojom::PublisherPtr GetPublisherForSite(const GURL& site_url);
-  mojom::PublisherPtr GetPublisherForFeed(const GURL& feed_url);
-  mojom::PublisherPtr GetPublisherById(const std::string& publisher_id);
+  // The following methods return a pointer to a |Publisher|. This pointer is
+  // not safe to hold onto, as the object it points to will be destroyed when
+  // the publishers are updated (which happens regularly). If you need it to
+  // live longer, take a clone.
+  mojom::Publisher* GetPublisherForSite(const GURL& site_url);
+  mojom::Publisher* GetPublisherForFeed(const GURL& feed_url);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
