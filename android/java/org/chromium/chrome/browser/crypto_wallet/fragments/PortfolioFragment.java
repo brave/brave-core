@@ -169,6 +169,7 @@ public class PortfolioFragment
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
                     mBtnChangeNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
+                    updatePortfolioGetPendingTx(true);
                 });
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
@@ -206,19 +207,6 @@ public class PortfolioFragment
                 });
     }
 
-    private void updateNetwork() {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
-        jsonRpcService.getNetwork(
-                CoinType.ETH, selectedNetwork -> { updatePortfolioGetPendingTx(true); });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateNetwork();
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -228,25 +216,28 @@ public class PortfolioFragment
         editVisibleAssets.setOnClickListener(v -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
-            jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
-                EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
-                        EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
+            NetworkInfo selectedNetwork =
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            if (selectedNetwork == null) {
+                return;
+            }
+            EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
+                    EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                            WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
 
-                bottomSheetDialogFragment.setSelectedNetwork(selectedNetwork);
-                bottomSheetDialogFragment.setDismissListener(
-                        new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
-                            @Override
-                            public void onDismiss(Boolean isAssetsListChanged) {
-                                if (isAssetsListChanged != null && isAssetsListChanged) {
-                                    updatePortfolioGetPendingTx(false);
-                                }
+            bottomSheetDialogFragment.setSelectedNetwork(selectedNetwork);
+            bottomSheetDialogFragment.setDismissListener(
+                    new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
+                        @Override
+                        public void onDismiss(Boolean isAssetsListChanged) {
+                            if (isAssetsListChanged != null && isAssetsListChanged) {
+                                updatePortfolioGetPendingTx(false);
                             }
-                        });
+                        }
+                    });
 
-                bottomSheetDialogFragment.show(getFragmentManager(),
-                        EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
-            });
+            bottomSheetDialogFragment.show(
+                    getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
         });
 
         RadioGroup radioGroup = view.findViewById(R.id.portfolio_duration_radio_group);
@@ -280,12 +271,12 @@ public class PortfolioFragment
 
     @Override
     public void onAssetClick(BlockchainToken asset) {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
-        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
-                    asset.tokenId, asset.contractAddress, asset.logo, asset.decimals);
-        });
+        NetworkInfo selectedNetwork =
+                mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+        if (selectedNetwork == null) {
+            return;
+        }
+        Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
     }
 
     private void openNetworkSelection() {
@@ -378,49 +369,49 @@ public class PortfolioFragment
 
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
         KeyringService keyringService = getKeyringService();
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert keyringService != null && jsonRpcService != null;
+        assert keyringService != null;
 
-        keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-            AccountInfo[] accountInfosTemp = new AccountInfo[] {};
-            if (keyringInfo != null) {
-                accountInfosTemp = keyringInfo.accountInfos;
-            }
-            final AccountInfo[] accountInfos = accountInfosTemp;
-            Activity activity = getActivity();
-            if (!(activity instanceof BraveWalletActivity)) return;
-            if (mPortfolioHelper == null) {
-                mPortfolioHelper =
-                        new PortfolioHelper((BraveWalletActivity) activity, accountInfos);
-            }
+        final NetworkInfo selectedNetwork =
+                mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+        if (selectedNetwork == null) {
+            return;
+        }
+        keyringService.getKeyringInfo(
+                Utils.getKeyringForCoinType(selectedNetwork.coin), keyringInfo -> {
+                    AccountInfo[] accountInfos = new AccountInfo[] {};
+                    if (keyringInfo != null) {
+                        accountInfos = keyringInfo.accountInfos;
+                    }
+                    Activity activity = getActivity();
+                    if (!(activity instanceof BraveWalletActivity)) return;
+                    mPortfolioHelper =
+                            new PortfolioHelper((BraveWalletActivity) activity, accountInfos);
 
-            jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
-                mPortfolioHelper.setSelectedNetwork(selectedNetwork);
-                mPortfolioHelper.calculateBalances(() -> {
-                    final String fiatSumString = String.format(
-                            Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
-                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                        mFiatSumString = fiatSumString;
-                        mBalance.setText(mFiatSumString);
-                        mBalance.invalidate();
+                    mPortfolioHelper.setSelectedNetwork(selectedNetwork);
+                    mPortfolioHelper.calculateBalances(() -> {
+                        final String fiatSumString = String.format(
+                                Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
+                        PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                            mFiatSumString = fiatSumString;
+                            mBalance.setText(mFiatSumString);
+                            mBalance.invalidate();
 
-                        setUpCoinList(mPortfolioHelper.getUserAssets(),
-                                mPortfolioHelper.getPerTokenCryptoSum(),
-                                mPortfolioHelper.getPerTokenFiatSum());
+                            setUpCoinList(mPortfolioHelper.getUserAssets(),
+                                    mPortfolioHelper.getPerTokenCryptoSum(),
+                                    mPortfolioHelper.getPerTokenFiatSum());
 
-                        updatePortfolioGraph();
+                            updatePortfolioGraph();
+                        });
                     });
+                    if (getPendingTx) {
+                        getPendingTx(accountInfos, () -> { updatePendingTxNotification(); });
+                    }
                 });
-                if (getPendingTx) {
-                    getPendingTx(accountInfos, () -> { updatePendingTxNotification(); });
-                }
-            });
-        });
     }
 
     @Override
     public void onTxPending(String accountName, String txId) {
-        updateNetwork();
+        updatePortfolioGetPendingTx(true);
     }
 
     @Override

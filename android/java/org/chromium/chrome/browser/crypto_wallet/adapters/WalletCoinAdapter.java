@@ -187,7 +187,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                         context.getResources().getDisplayMetrics().density, null, context, false,
                         (float) 0.9);
                 if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-                    holder.iconTrash.setVisibility(View.VISIBLE);
+                    onWalletListItemClick.onMaybeShowTrashButton(
+                            walletListItemModel, holder.iconTrash);
                     holder.iconTrash.setOnClickListener(
                             v -> { onWalletListItemClick.onTrashIconClick(walletListItemModel); });
                 }

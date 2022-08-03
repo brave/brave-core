@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.model;
 
 import android.graphics.Bitmap;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -22,6 +23,7 @@ public class WalletListItemModel {
     private String mText2;
     private String mId;
     private BlockchainToken mBlockchainToken;
+    private AccountInfo mAccountInfo;
     private boolean mIsAccount;
     private boolean mIsImportedAccount;
     private boolean mIsUserSelected;
@@ -129,6 +131,14 @@ public class WalletListItemModel {
 
     public BlockchainToken getBlockchainToken() {
         return mBlockchainToken;
+    }
+
+    public void setAccountInfo(AccountInfo accountInfo) {
+        mAccountInfo = accountInfo;
+    }
+
+    public AccountInfo getAccountInfo() {
+        return mAccountInfo;
     }
 
     public void setIsImportedAccount(boolean isImportedAccount) {
