@@ -18,6 +18,8 @@
 #include "base/observer_list_threadsafe.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/ens_resolver_task.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_base.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -39,12 +41,16 @@ class PrefService;
 
 namespace brave_wallet {
 
+class EnsGetEthAddrTask;
+
 namespace unstoppable_domains {
 template <class ResultType>
 class MultichainCalls;
 }  // namespace unstoppable_domains
 
-class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
+class JsonRpcService : public JsonRpcServiceBase,
+                       public KeyedService,
+                       public mojom::JsonRpcService {
  public:
   JsonRpcService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -65,10 +71,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  using RequestIntermediateCallback = base::OnceCallback<void(
-      int http_code,
-      const std::string& response,
-      const base::flat_map<std::string, std::string>& headers)>;
+
   using GetFeeHistoryCallback = base::OnceCallback<void(
       const std::vector<std::string>& base_fee_per_gas,
       const std::vector<double>& gas_used_ratio,
@@ -481,6 +484,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              mojom::ProviderError error,
                              const std::string& error_message);
 
+  void OnEnsResolverTaskDone(EnsGetEthAddrTask* task,
+                             std::vector<uint8_t> resolved_result,
+                             mojom::ProviderError error,
+                             std::string error_message) override;
+
   void OnEnsGetEthAddr(StringResultCallback callback,
                        int status,
                        const std::string& body,
@@ -519,7 +527,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const GURL& network_url,
       RequestIntermediateCallback callback,
       api_request_helper::APIRequestHelper::ResponseConversionCallback
-          conversion_callback);
+          conversion_callback) override;
   void OnEthChainIdValidatedForOrigin(
       const std::string& chain_id,
       const GURL& rpc_url,
@@ -623,6 +631,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::flat_map<mojom::CoinType, GURL> network_urls_;
   // <mojom::CoinType, chain_id>
@@ -641,6 +650,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       ud_resolve_dns_calls_;
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
+
+  std::map<EnsGetEthAddrTask*,
+           std::pair<std::unique_ptr<EnsGetEthAddrTask>,
+                     std::vector<EnsGetEthAddrCallback>>>
+      ens_get_eth_add_tasks_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;

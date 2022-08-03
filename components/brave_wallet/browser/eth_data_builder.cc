@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -235,6 +236,19 @@ bool SupportsInterface(const std::string& interface_id, std::string* data) {
   return ConcatHexStrings(function_hash, padded_interface_id, data);
 }
 
+std::string SupportsInterface(const std::string& interface_id) {
+  DCHECK(IsValidHexString(interface_id));
+  std::string padded_interface_id = interface_id + std::string(56, '0');
+
+  const std::string function_hash =
+      GetFunctionHash("supportsInterface(bytes4)");
+
+  std::string data;
+  ConcatHexStrings(function_hash, padded_interface_id, &data);
+  DCHECK(IsValidHexString(data));
+  return data;
+}
+
 }  // namespace erc165
 
 namespace unstoppable_domains {
@@ -249,7 +263,7 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
     return absl::nullopt;
   }
 
-  std::string tokenID = Namehash(domain);
+  std::string tokenID = ToHex(Namehash(domain));
 
   std::string encoded_keys;
   if (!EncodeStringArray(keys, &encoded_keys)) {
@@ -275,7 +289,7 @@ absl::optional<std::string> Get(const std::string& key,
     return absl::nullopt;
   }
 
-  std::string tokenID = Namehash(domain);
+  std::string tokenID = ToHex(Namehash(domain));
 
   std::string encoded_key;
   if (!EncodeString(key, &encoded_key)) {
@@ -297,23 +311,50 @@ namespace ens {
 
 bool Resolver(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("resolver(bytes32)");
-  std::string tokenID = Namehash(domain);
+  std::string tokenID = ToHex(Namehash(domain));
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }
 
+std::string Resolver(const std::string& domain) {
+  const std::string function_hash = GetFunctionHash("resolver(bytes32)");
+  std::string tokenID = ToHex(Namehash(domain));
+  std::vector<std::string> hex_strings = {function_hash, tokenID};
+  std::string data;
+  ConcatHexStrings(hex_strings, &data);
+  DCHECK(IsValidHexString(data));
+  return data;
+}
+
 bool ContentHash(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("contenthash(bytes32)");
-  std::string tokenID = Namehash(domain);
+  std::string tokenID = ToHex(Namehash(domain));
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }
 
 bool Addr(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("addr(bytes32)");
-  std::string tokenID = Namehash(domain);
+  std::string tokenID = ToHex(Namehash(domain));
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
+}
+
+absl::optional<std::string> DnsEncode(const std::string& dotted_name) {
+  std::string result = "." + dotted_name + ".";
+  size_t last_dot_pos = 0;
+  for (size_t i = 1; i < result.size(); ++i) {
+    if (result[i] == '.') {
+      size_t label_len = i - last_dot_pos - 1;
+      if (label_len == 0 || label_len > 63)
+        return absl::nullopt;
+      result[last_dot_pos] = static_cast<char>(label_len);
+      last_dot_pos = i;
+    }
+  }
+  DCHECK_EQ(last_dot_pos, result.size() - 1);
+  result.back() = 0;
+  return result;
 }
 
 }  // namespace ens

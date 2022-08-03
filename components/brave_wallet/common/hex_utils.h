@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
@@ -16,10 +17,13 @@ namespace brave_wallet {
 // Equivalent to web3.utils.toHex(string);
 std::string ToHex(const std::string& data);
 std::string ToHex(const std::vector<uint8_t>& data);
+std::string ToHex(base::span<const uint8_t> data);
+std::string ToHex(uint256_t input);
 
 // Returns a hex string representation of a binary buffer. The returned hex
 // string will be in lower case, without the 0x prefix.
 std::string HexEncodeLower(const void* bytes, size_t size);
+std::string HexEncodeLower(base::span<const uint8_t> bytes);
 
 // Determines if the passed in hex string is valid
 bool IsValidHexString(const std::string& hex_input);
@@ -28,10 +32,10 @@ bool IsValidHexString(const std::string& hex_input);
 // i.e. 64 hex characters.
 // Input must be prefixed with 0x
 bool PadHexEncodedParameter(const std::string& hex_input, std::string* out);
-// Takes 2 inputs prefixed by 0x and combines them into an output with a single
-// 0x. For example 0x1 and 0x2 would return 0x12.
-// Note thta this doesn't do any special casing like 0x and 0x will make 0x00
-// and not 0x.
+std::string PadHexEncodedParameter(const std::string& hex_input);
+// Takes 2 inputs prefixed by 0x and combines them into an output with a
+// single 0x. For example 0x1 and 0x2 would return 0x12. Note thta this
+// doesn't do any special casing like 0x and 0x will make 0x00 and not 0x.
 bool ConcatHexStrings(const std::string& hex_input1,
                       const std::string& hex_input2,
                       std::string* out);
@@ -54,6 +58,8 @@ std::string Uint256ValueToHex(uint256_t input);
 // It also clears the output buffer unlike base::HexStringToBytes
 bool PrefixedHexStringToBytes(const std::string& input,
                               std::vector<uint8_t>* bytes);
+absl::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
+    const std::string& input);
 
 }  // namespace brave_wallet
 

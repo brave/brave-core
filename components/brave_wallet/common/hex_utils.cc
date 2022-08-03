@@ -26,10 +26,24 @@ std::string ToHex(const std::vector<uint8_t>& data) {
   return "0x" + base::ToLowerASCII(base::HexEncode(data));
 }
 
+std::string ToHex(base::span<const uint8_t> data) {
+  if (data.empty())
+    return "0x0";
+  return "0x" + base::ToLowerASCII(base::HexEncode(data));
+}
+
+std::string ToHex(uint256_t input) {
+  return Uint256ValueToHex(input);
+}
+
 // Returns a hex string representation of a binary buffer. The returned hex
 // string will be in lower case, without the 0x prefix.
 std::string HexEncodeLower(const void* bytes, size_t size) {
   return base::ToLowerASCII(base::HexEncode(bytes, size));
+}
+
+std::string HexEncodeLower(base::span<const uint8_t> bytes) {
+  return base::ToLowerASCII(base::HexEncode(bytes));
 }
 
 // Determines if the passed in hex string is valid
@@ -40,7 +54,8 @@ bool IsValidHexString(const std::string& hex_input) {
   if (!base::StartsWith(hex_input, "0x")) {
     return false;
   }
-  for (const auto& c : hex_input.substr(2)) {
+
+  for (const auto& c : base::make_span(hex_input).subspan(2)) {
     if (!base::IsHexDigit(c)) {
       return false;
     }
@@ -67,6 +82,13 @@ bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
 
   *out = "0x" + padding + hex_substr;
   return true;
+}
+
+std::string PadHexEncodedParameter(const std::string& hex_input) {
+  std::string padded;
+  bool result = PadHexEncodedParameter(hex_input, &padded);
+  DCHECK(result && IsValidHexString(padded));
+  return padded;
 }
 
 // Takes 2 inputs prefixed by 0x and combines them into an output with a single
@@ -99,6 +121,7 @@ bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
   *out = hex_inputs[0];
   for (size_t i = 1; i < hex_inputs.size(); i++) {
     if (!IsValidHexString(hex_inputs[i])) {
+      out->clear();
       return false;
     }
     *out += hex_inputs[i].substr(2);
@@ -173,6 +196,15 @@ bool PrefixedHexStringToBytes(const std::string& input,
   if (!base::HexStringToBytes(hex_substr, bytes))
     return false;
   return true;
+}
+
+absl::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
+    const std::string& input) {
+  std::vector<uint8_t> result;
+  if (!PrefixedHexStringToBytes(input, &result))
+    return absl::nullopt;
+
+  return result;
 }
 
 }  // namespace brave_wallet

@@ -5,15 +5,18 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
+#include <iterator>
 #include <memory>
 #include <utility>
 
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/environment.h"
+#include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -30,8 +33,11 @@
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
+#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -49,6 +55,7 @@
 
 namespace {
 
+// TODO(apaymyshev): fix pattern
 // The domain name should be a-z | A-Z | 0-9 and hyphen(-).
 // The domain name should not start or end with hyphen (-).
 // The domain name can be a subdomain.
@@ -86,6 +93,29 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+// https://tools.ietf.org/html/rfc1035#section-3.1
+absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name) {
+  std::vector<uint8_t> result;
+  result.resize(dotted_name.size() + 2);
+  result.front() = '.';  // Placeholder for first label length.
+  base::ranges::copy(dotted_name, result.begin() + 1);
+  result.back() = '.';  // Placeholder for terminal zero byte.
+
+  size_t last_dot_pos = 0;
+  for (size_t i = 1; i < result.size(); ++i) {
+    if (result[i] == '.') {
+      size_t label_len = i - last_dot_pos - 1;
+      if (label_len == 0 || label_len > 63)
+        return absl::nullopt;
+      result[last_dot_pos] = static_cast<uint8_t>(label_len);
+      last_dot_pos = i;
+    }
+  }
+  DCHECK_EQ(last_dot_pos, result.size() - 1);
+  result.back() = 0;
+  return result;
+}
+
 namespace solana {
 // https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
 constexpr char kAccountNotCreatedError[] = "could not find account";
@@ -98,7 +128,8 @@ namespace brave_wallet {
 JsonRpcService::JsonRpcService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs)
-    : api_request_helper_(new api_request_helper::APIRequestHelper(
+    : url_loader_factory_(url_loader_factory),
+      api_request_helper_(new api_request_helper::APIRequestHelper(
           GetNetworkTrafficAnnotationTag(),
           url_loader_factory)),
       ud_get_eth_addr_calls_(
@@ -121,6 +152,7 @@ JsonRpcService::JsonRpcService(
 
 void JsonRpcService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  url_loader_factory_ = url_loader_factory;
   api_request_helper_.reset(new api_request_helper::APIRequestHelper(
       GetNetworkTrafficAnnotationTag(), url_loader_factory));
 }
@@ -1191,10 +1223,70 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
     return;
   }
 
+  if (base::FeatureList::IsEnabled(features::kBraveWalletENSL2Feature)) {
+    for (auto& [_, task_pair] : ens_get_eth_add_tasks_) {
+      if (task_pair.first->domain() == domain) {
+        task_pair.second.push_back(std::move(callback));
+        return;
+      }
+    }
+
+    auto dns_encoded_name = DnsEncode(domain);
+    GURL network_url = GetNetworkURL(
+        prefs_, brave_wallet::mojom::kMainnetChainId, mojom::CoinType::ETH);
+    if (!network_url.is_valid() || !dns_encoded_name) {
+      std::move(callback).Run(
+          "", mojom::ProviderError::kInvalidParams,
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+      return;
+    }
+
+    // addr(bytes32)
+    const uint8_t kAddrBytes32Hash[] = {0x3b, 0x3b, 0x57, 0xde};
+
+    auto ens_call =
+        EncodeCall(base::make_span(kAddrBytes32Hash), Namehash(domain));
+
+    auto task = std::make_unique<EnsGetEthAddrTask>(
+        this, url_loader_factory_, std::move(ens_call), domain,
+        *dns_encoded_name, network_url);
+    auto* task_ptr = task.get();
+    std::vector<EnsGetEthAddrCallback> callbacks;
+    callbacks.push_back(std::move(callback));
+    ens_get_eth_add_tasks_.emplace(
+        task_ptr, std::make_pair(std::move(task), std::move(callbacks)));
+    task_ptr->WorkOnTask();
+    return;
+  }
+
   auto internal_callback = base::BindOnce(
       &JsonRpcService::ContinueEnsGetEthAddr, weak_ptr_factory_.GetWeakPtr(),
       domain, std::move(callback));
   EnsRegistryGetResolver(domain, std::move(internal_callback));
+}
+
+void JsonRpcService::OnEnsResolverTaskDone(EnsGetEthAddrTask* task,
+                                           std::vector<uint8_t> resolved_result,
+                                           mojom::ProviderError error,
+                                           std::string error_message) {
+  auto item = ens_get_eth_add_tasks_.find(task);
+  if (item == ens_get_eth_add_tasks_.end()) {
+    return;
+  }
+
+  std::string address;
+  EthAddress eth_address = ExtractAddress(resolved_result);
+  if (eth_address.IsValid()) {
+    address = eth_address.ToHex();
+  } else {
+    error = mojom::ProviderError::kInvalidParams;
+    error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+  }
+
+  for (auto& cb : item->second.second) {
+    std::move(cb).Run(address, error, error_message);
+  }
+  ens_get_eth_add_tasks_.erase(item);
 }
 
 void JsonRpcService::ContinueEnsGetEthAddr(const std::string& domain,

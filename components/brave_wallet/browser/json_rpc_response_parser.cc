@@ -7,9 +7,11 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
+absl::optional<base::Value> ParseResultValue(const std::string& json);
 
 bool ParseSingleStringResult(const std::string& json, std::string* result) {
   DCHECK(result);
@@ -33,6 +35,19 @@ absl::optional<std::string> ParseSingleStringResult(const std::string& json) {
     return absl::nullopt;
 
   return result;
+}
+
+absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
+    const std::string& json) {
+  auto result_v = ParseResultValue(json);
+  if (!result_v)
+    return absl::nullopt;
+
+  const std::string* result_str = result_v->GetIfString();
+  if (!result_str)
+    return absl::nullopt;
+
+  return PrefixedHexStringToBytes(*result_str);
 }
 
 absl::optional<base::Value> ParseResultValue(const std::string& json) {

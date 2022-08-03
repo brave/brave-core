@@ -71,6 +71,7 @@ bool Uri(uint256_t token_id, std::string* data);
 namespace erc165 {
 
 bool SupportsInterface(const std::string& interface_id, std::string* data);
+std::string SupportsInterface(const std::string& interface_id);
 
 }  // namespace erc165
 
@@ -89,10 +90,13 @@ absl::optional<std::string> Get(const std::string& key,
 namespace ens {
 
 bool Resolver(const std::string& domain, std::string* data);
+std::string Resolver(const std::string& domain);
 bool ContentHash(const std::string& domain, std::string* data);
 
 // Get Ethereum address from an ENS name.
 bool Addr(const std::string& domain, std::string* data);
+
+absl::optional<std::string> DnsEncode(const std::string& dotted_name);
 
 }  // namespace ens
 

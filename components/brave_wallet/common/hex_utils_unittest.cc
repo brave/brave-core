@@ -21,6 +21,7 @@ TEST(HexUtilsUnitTest, ToHex) {
   const std::string str1("hello world");
   ASSERT_EQ(ToHex(std::vector<uint8_t>(str1.begin(), str1.end())),
             "0x68656c6c6f20776f726c64");
+  ASSERT_EQ(ToHex(uint256_t(3735928559)), "0xdeadbeef");
 }
 
 TEST(HexUtilsUnitTest, IsValidHexString) {

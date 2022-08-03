@@ -7,8 +7,9 @@
 
 #include <algorithm>
 
-#include "base/containers/adapters.h"
+#include "base/containers/span.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 
@@ -31,7 +32,7 @@ std::string GetFunctionHash(const std::string& input) {
   return result.substr(0, std::min(static_cast<size_t>(10), result.length()));
 }
 
-std::string Namehash(const std::string& name) {
+uint256_t Namehash(const std::string& name) {
   std::string hash(32, '\0');
   std::vector<std::string> labels =
       SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
@@ -41,7 +42,7 @@ std::string Namehash(const std::string& name) {
     hash = KeccakHash(hash + label_hash, false);
   }
 
-  return ToHex(hash);
+  return BytesToUint256(base::as_bytes(base::make_span(hash)));
 }
 
 }  // namespace brave_wallet
