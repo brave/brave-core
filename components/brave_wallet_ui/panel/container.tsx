@@ -406,11 +406,11 @@ function Container () {
   }
 
   const onBack = React.useCallback(() => {
-    dispatch(WalletPanelActions.navigateTo('buy'))
+    navigateTo('buy')
   }, [])
 
   const onShowCurrencySelection = React.useCallback(() => {
-    dispatch(WalletPanelActions.navigateTo('currencies'))
+    navigateTo('currencies')
   }, [])
 
   const onSelectCurrency = React.useCallback(() => {
