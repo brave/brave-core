@@ -137,6 +137,9 @@ public class BraveVpnPrefUtils {
         sharedPreferencesEditor.apply();
         UserPrefs.get(Profile.getLastUsedRegularProfile())
                 .setString(BravePref.BRAVE_VPN_PURCHASE_TOKEN_ANDROID, value);
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setString(BravePref.BRAVE_VPN_PACKAGE_ANDROID,
+                        ContextUtils.getApplicationContext().getPackageName());
     }
 
     public static String getPurchaseToken() {
