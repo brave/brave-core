@@ -17,7 +17,7 @@ private struct EditTokenView: View {
       assetStore.isVisible.toggle()
     }) {
       HStack(spacing: 8) {
-        AssetIconView(token: assetStore.token)
+        AssetIconView(token: assetStore.token, network: assetStore.network)
         VStack(alignment: .leading) {
           Text(assetStore.token.name)
             .fontWeight(.semibold)

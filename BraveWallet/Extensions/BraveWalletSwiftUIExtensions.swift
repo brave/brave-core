@@ -29,7 +29,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
     .init(
       contractAddress: "",
       name: symbolName,
-      logo: iconUrls.first ?? "",
+      logo: nativeTokenLogo ?? "",
       isErc20: false,
       isErc721: false,
       symbol: symbol,
@@ -40,6 +40,28 @@ extension BraveWallet.NetworkInfo: Identifiable {
       chainId: "",
       coin: coin
     )
+  }
+  
+  public var nativeTokenLogo: String? {
+    if symbol.caseInsensitiveCompare("ETH") == .orderedSame {
+      return "eth-asset-icon"
+    } else if symbol.caseInsensitiveCompare("SOL") == .orderedSame {
+      return "sol-asset-icon"
+    } else if symbol.caseInsensitiveCompare("FIL") == .orderedSame {
+      return "filecoin-asset-icon"
+    } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
+      return "matic"
+    } else if chainId.caseInsensitiveCompare(BraveWallet.BinanceSmartChainMainnetChainId) == .orderedSame {
+      return "bnb-asset-icon"
+    } else if chainId.caseInsensitiveCompare(BraveWallet.CeloMainnetChainId) == .orderedSame {
+      return "celo"
+    } else if chainId.caseInsensitiveCompare(BraveWallet.AvalancheMainnetChainId) == .orderedSame {
+      return "avax"
+    } else if chainId.caseInsensitiveCompare(BraveWallet.FantomMainnetChainId) == .orderedSame {
+      return "fantom"
+    } else {
+      return iconUrls.first
+    }
   }
   
   // Only Eth Mainnet or EVM has eip 1559

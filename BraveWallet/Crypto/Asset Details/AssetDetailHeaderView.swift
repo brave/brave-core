@@ -67,7 +67,7 @@ struct AssetDetailHeaderView: View {
               }
             }
             HStack {
-              AssetIconView(token: assetDetailStore.token)
+              AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
               Text(assetDetailStore.token.name)
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.title3.weight(.semibold))
@@ -76,7 +76,7 @@ struct AssetDetailHeaderView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         } else {
           HStack {
-            AssetIconView(token: assetDetailStore.token)
+            AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
             Text(assetDetailStore.token.name)
               .fixedSize(horizontal: false, vertical: true)
               .font(.title3.weight(.semibold))

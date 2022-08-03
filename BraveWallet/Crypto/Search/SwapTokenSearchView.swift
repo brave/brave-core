@@ -33,7 +33,7 @@ struct SwapTokenSearchView: View {
         }
         presentationMode.dismiss()
       }) {
-        TokenView(token: token)
+        TokenView(token: token, network: network)
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle)

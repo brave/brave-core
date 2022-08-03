@@ -17,6 +17,7 @@ import BraveCore
 ///
 struct AssetIconView: View {
   var token: BraveWallet.BlockchainToken
+  var network: BraveWallet.NetworkInfo
   @ScaledMetric var length: CGFloat = 40
 
   private var fallbackMonogram: some View {
@@ -37,6 +38,14 @@ struct AssetIconView: View {
         return Image(uiImage: image)
       }
     }
+    
+    if network.isNativeAsset(token), let logo = network.nativeTokenLogo {
+      // check bundled images
+      if let uiImage = UIImage(named: logo, in: .current, with: nil) {
+        return Image(uiImage: uiImage)
+      }
+    }
+    
     return nil
   }
 
@@ -66,7 +75,7 @@ struct AssetIconView: View {
 #if DEBUG
 struct AssetIconView_Previews: PreviewProvider {
   static var previews: some View {
-    AssetIconView(token: .previewToken)
+    AssetIconView(token: .previewToken, network: .mockMainnet)
       .previewLayout(.sizeThatFits)
       .padding()
       .previewSizeCategories()
@@ -84,7 +93,8 @@ struct AssetIconView_Previews: PreviewProvider {
         coingeckoId: "",
         chainId: "",
         coin: .eth
-      )
+      ),
+      network: .mockMainnet
     )
     .previewLayout(.sizeThatFits)
     .padding()

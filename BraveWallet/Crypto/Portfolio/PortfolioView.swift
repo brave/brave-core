@@ -78,7 +78,7 @@ struct PortfolioView: View {
             selectedToken = asset.token
           }) {
             PortfolioAssetView(
-              image: AssetIconView(token: asset.token),
+              image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
               title: asset.token.name,
               symbol: asset.token.symbol,
               amount: portfolioStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
