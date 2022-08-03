@@ -750,6 +750,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   const auto copiedURL = url_request->url;
 
+  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
   const auto __weak weakSelf = self;
   return [self.commonOps
       loadURLRequest:url_request->url.spec()
@@ -770,7 +771,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
               url_response.status_code = statusCode;
               url_response.body = response;
               url_response.headers = headers;
-              callback(url_response);
+              if (cb) {
+                std::move(*cb).Run(url_response);
+              }
             }];
 }
 

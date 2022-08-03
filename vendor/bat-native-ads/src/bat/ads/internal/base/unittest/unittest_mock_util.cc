@@ -278,11 +278,11 @@ void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
                 GetNextUrlResponseForRequest(url_request, url_responses);
             if (!url_response) {
               // URL request should not be mocked.
-              callback({});
+              std::move(callback).Run({});
               return;
             }
 
-            callback(*url_response);
+            std::move(callback).Run(*url_response);
           }));
 }
 

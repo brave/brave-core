@@ -35,15 +35,15 @@ class RedeemUnblindedToken final {
 
  private:
   void CreateConfirmation(const ConfirmationInfo& confirmation);
-  void OnCreateConfirmation(const mojom::UrlResponseInfo& url_response,
-                            const ConfirmationInfo& confirmation);
+  void OnCreateConfirmation(const ConfirmationInfo& confirmation,
+                            const mojom::UrlResponseInfo& url_response);
 
   void RequestIssuers(const ConfirmationInfo& confirmation);
   void OnRequestIssuers(const ConfirmationInfo& confirmation);
 
   void FetchPaymentToken(const ConfirmationInfo& confirmation);
-  void OnFetchPaymentToken(const mojom::UrlResponseInfo& url_response,
-                           const ConfirmationInfo& confirmation);
+  void OnFetchPaymentToken(const ConfirmationInfo& confirmation,
+                           const mojom::UrlResponseInfo& url_response);
 
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation);
   void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,

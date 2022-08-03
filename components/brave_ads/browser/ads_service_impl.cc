@@ -1582,7 +1582,7 @@ void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
           ->GetURLLoaderFactoryForBrowserProcess()
           .get(),
       base::BindOnce(&AdsServiceImpl::OnURLRequest, base::Unretained(this),
-                     url_loader_iter, callback));
+                     url_loader_iter, std::move(callback)));
 }
 
 void AdsServiceImpl::Save(const std::string& name,
@@ -1963,7 +1963,7 @@ void AdsServiceImpl::OnURLRequest(
   url_response.body = response_body ? *response_body : "";
   url_response.headers = headers;
 
-  callback(url_response);
+  std::move(callback).Run(url_response);
 }
 
 void AdsServiceImpl::OnMaybeServeInlineContentAd(

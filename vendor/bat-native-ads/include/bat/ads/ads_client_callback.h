@@ -27,7 +27,8 @@ using LoadCallback = base::OnceCallback<void(const bool, const std::string&)>;
 
 using LoadFileCallback = base::OnceCallback<void(base::File)>;
 
-using UrlRequestCallback = std::function<void(const mojom::UrlResponseInfo&)>;
+using UrlRequestCallback =
+    base::OnceCallback<void(const mojom::UrlResponseInfo&)>;
 
 using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponseInfoPtr)>;

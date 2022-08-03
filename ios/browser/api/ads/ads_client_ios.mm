@@ -67,7 +67,7 @@ void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
 
 void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                               ads::UrlRequestCallback callback) {
-  [bridge_ UrlRequest:std::move(url_request) callback:callback];
+  [bridge_ UrlRequest:std::move(url_request) callback:std::move(callback)];
 }
 
 void AdsClientIOS::Save(const std::string& name,
