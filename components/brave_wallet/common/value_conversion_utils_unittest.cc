@@ -43,7 +43,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
         "http://localhost/",
         "http://127.0.0.1/",
         "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
-        "https://second.infura.io/"
+        "https://second.infura.io/",
+        []
       ],
       "iconUrls": [
         "ftp://bar/",
@@ -52,7 +53,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
         "http://localhost/",
         "http://127.0.0.1/",
         "https://xdaichain.com/fake/example/url/xdai.svg",
-        "https://xdaichain.com/fake/example/url/xdai.png"
+        "https://xdaichain.com/fake/example/url/xdai.png",
+        {}
       ],
       "nativeCurrency": {
         "name": "Goerli ETH",
@@ -65,7 +67,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
         "http://bar/",
         "http://localhost/",
         "http://127.0.0.1/",
-        "https://goerli.etherscan.io"
+        "https://goerli.etherscan.io",
+        2
       ],
       "is_eip1559": true
     })")
