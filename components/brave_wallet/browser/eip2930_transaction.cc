@@ -114,19 +114,19 @@ absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
 }
 
 // static
-std::vector<base::Value> Eip2930Transaction::AccessListToValue(
+base::Value::List Eip2930Transaction::AccessListToValue(
     const AccessList& list) {
-  std::vector<base::Value> access_list;
+  base::Value::List access_list;
   for (const AccessListItem& item : list) {
-    std::vector<base::Value> access_list_item;
-    access_list_item.push_back(base::Value(item.address));
-    std::vector<base::Value> storage_keys;
+    base::Value::List access_list_item;
+    access_list_item.Append(base::Value(item.address));
+    base::Value::List storage_keys;
     for (const AccessedStorageKey& key : item.storage_keys) {
-      storage_keys.push_back(base::Value(key));
+      storage_keys.Append(base::Value(key));
     }
-    access_list_item.push_back(base::Value(storage_keys));
+    access_list_item.Append(std::move(storage_keys));
 
-    access_list.push_back(base::Value(access_list_item));
+    access_list.Append(std::move(access_list_item));
   }
   return access_list;
 }

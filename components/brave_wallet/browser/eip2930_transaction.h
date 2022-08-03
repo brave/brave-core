@@ -43,7 +43,7 @@ class Eip2930Transaction : public EthTransaction {
   static absl::optional<Eip2930Transaction> FromValue(
       const base::Value::Dict& value);
 
-  static std::vector<base::Value> AccessListToValue(const AccessList&);
+  static base::Value::List AccessListToValue(const AccessList&);
   static absl::optional<AccessList> ValueToAccessList(const base::Value::List&);
 
   uint256_t chain_id() const { return chain_id_; }

@@ -7,36 +7,38 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_REQUESTS_HELPER_H_
 
 #include <string>
+#include <utility>
+
 #include "base/values.h"
 
 // Helper functions for building out JSON RPC requests across all blockchains.
 namespace brave_wallet {
 
-base::Value GetJsonRpcDictionary(const std::string& method,
-                                 base::Value* params);
+namespace internal {
 
-std::string GetJSON(const base::Value& dictionary);
+base::Value::Dict ComposeRpcDict(base::StringPiece method);
 
-std::string GetJsonRpcNoParams(const std::string& method);
+}  // namespace internal
 
-std::string GetJsonRpc1Param(const std::string& method, const std::string& val);
+template <typename T>
+base::Value::Dict GetJsonRpcDictionary(base::StringPiece method, T&& params) {
+  auto dict = internal::ComposeRpcDict(method);
+  dict.Set("params", std::move(params));
+  return dict;
+}
 
-std::string GetJsonRpc2Params(const std::string& method,
-                              base::Value&& val1,
-                              base::Value&& val2);
+std::string GetJSON(base::ValueView dict);
 
-std::string GetJsonRpc2Params(const std::string& method,
-                              const std::string& val1,
-                              const std::string& val2);
+template <typename... Args>
+std::string GetJsonRpcString(base::StringPiece method, Args&&... args) {
+  base::Value::List params;
+  (params.Append(std::forward<Args&&>(args)), ...);
+  return GetJSON(GetJsonRpcDictionary(method, std::move(params)));
+}
 
-std::string GetJsonRpc3Params(const std::string& method,
-                              const std::string& val1,
-                              const std::string& val2,
-                              const std::string& val3);
-
-void AddKeyIfNotEmpty(base::Value* dict,
-                      const std::string& name,
-                      const std::string& val);
+void AddKeyIfNotEmpty(base::Value::Dict* dict,
+                      base::StringPiece name,
+                      base::StringPiece val);
 
 }  // namespace brave_wallet
 
