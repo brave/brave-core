@@ -97,3 +97,60 @@ export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
         : `chrome://erc-token-images/${token.logo}`
   }
 }
+
+export const getNativeTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) => {
+  // separate Native (gas) assets from other tokens
+  const { nativeAssets, tokens } = tokenList.reduce((acc, t) => {
+    if (
+      t.symbol.toLowerCase() === 'eth' && t.chainId === BraveWallet.MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'eth' && t.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'eth' && t.chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'matic' && t.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'ftm' && t.chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'celo' && t.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'bnb' && t.chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'sol' && t.chainId === BraveWallet.SOLANA_MAINNET ||
+      t.symbol.toLowerCase() === 'fil' && t.chainId === BraveWallet.FILECOIN_MAINNET ||
+      t.symbol.toLowerCase() === 'avax' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'avaxc' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
+    ) {
+      acc.nativeAssets.push(t)
+      return acc
+    }
+
+    acc.tokens.push(t)
+    return acc
+  }, {
+    nativeAssets: [] as BraveWallet.BlockchainToken[],
+    tokens: [] as BraveWallet.BlockchainToken[]
+  })
+
+  return {
+    nativeAssets,
+    tokens
+  }
+}
+
+export const getBatTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) => {
+  // separate BAT from other tokens in the list so they can be placed higher in the list
+  const { bat, nonBat } = tokenList.reduce((acc, t) => {
+    if (
+      t.symbol.toLowerCase() === 'bat' ||
+      t.symbol.toLowerCase() === 'wbat' || // wormhole BAT
+      t.symbol.toLowerCase() === 'bat.e' // Avalanche C-Chain BAT
+    ) {
+      acc.bat.push(t)
+      return acc
+    }
+    acc.nonBat.push(t)
+    return acc
+  }, {
+    bat: [] as BraveWallet.BlockchainToken[],
+    nonBat: [] as BraveWallet.BlockchainToken[]
+  })
+
+  return {
+    bat,
+    nonBat
+  }
+}
