@@ -43,7 +43,7 @@ struct PortfolioAssetView: View {
 struct PortfolioAssetView_Previews: PreviewProvider {
   static var previews: some View {
     PortfolioAssetView(
-      image: AssetIconView(token: .previewToken),
+      image: AssetIconView(token: .previewToken, network: .mockMainnet),
       title: "Basic Attention Token",
       symbol: "BAT",
       amount: "$10,402.22",

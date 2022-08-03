@@ -63,7 +63,7 @@ struct AccountActivityView: View {
         } else {
           ForEach(activityStore.assets) { asset in
             PortfolioAssetView(
-              image: AssetIconView(token: asset.token),
+              image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
               title: asset.token.name,
               symbol: asset.token.symbol,
               amount: activityStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",

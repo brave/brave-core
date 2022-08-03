@@ -24,20 +24,20 @@ public class AssetStore: ObservableObject, Equatable {
       }
     }
   }
+  var network: BraveWallet.NetworkInfo
 
   private let walletService: BraveWalletBraveWalletService
-  private var chainId: String
   private(set) var isCustomToken: Bool
 
   init(
     walletService: BraveWalletBraveWalletService,
-    chainId: String,
+    network: BraveWallet.NetworkInfo,
     token: BraveWallet.BlockchainToken,
     isCustomToken: Bool,
     isVisible: Bool
   ) {
     self.walletService = walletService
-    self.chainId = chainId
+    self.network = network
     self.token = token
     self.isCustomToken = isCustomToken
     self.isVisible = isVisible
@@ -82,7 +82,7 @@ public class UserAssetsStore: ObservableObject {
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
             walletService: walletService,
-            chainId: network.chainId,
+            network: network,
             token: token,
             isCustomToken: !allTokens.contains(where: {
               $0.contractAddress(in: network).caseInsensitiveCompare(token.contractAddress) == .orderedSame

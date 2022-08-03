@@ -29,7 +29,7 @@ struct AssetSearchView: View {
               cryptoStore.closeAssetDetailStore(for: token)
             }
         ) {
-          TokenView(token: token)
+          TokenView(token: token, network: cryptoStore.networkStore.selectedChain)
         }
       }
       .navigationTitle(Strings.Wallet.searchTitle.capitalized)

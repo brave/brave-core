@@ -64,7 +64,11 @@ struct SendTokenView: View {
           ) {
             HStack {
               if let token = sendTokenStore.selectedSendToken {
-                AssetIconView(token: token, length: 26)
+                AssetIconView(
+                  token: token,
+                  network: networkStore.selectedChain,
+                  length: 26
+                )
               }
               Text(sendTokenStore.selectedSendToken?.symbol ?? "")
                 .font(.title3.weight(.semibold))

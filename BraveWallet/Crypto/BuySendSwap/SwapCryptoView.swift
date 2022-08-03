@@ -235,7 +235,11 @@ struct SwapCryptoView: View {
       NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: networkStore.selectedChain)) {
         HStack {
           if let token = swapTokensStore.selectedFromToken {
-            AssetIconView(token: token, length: 26)
+            AssetIconView(
+              token: token,
+              network: networkStore.selectedChain,
+              length: 26
+            )
           }
           Text(swapTokensStore.selectedFromToken?.symbol ?? "")
             .font(.title3.weight(.semibold))
@@ -295,7 +299,11 @@ struct SwapCryptoView: View {
       ) {
         HStack {
           if let token = swapTokensStore.selectedToToken {
-            AssetIconView(token: token, length: 26)
+            AssetIconView(
+              token: token,
+              network: networkStore.selectedChain,
+              length: 26
+            )
           }
           Text(swapTokensStore.selectedToToken?.symbol ?? "")
             .font(.title3.weight(.semibold))

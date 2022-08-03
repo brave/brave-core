@@ -9,6 +9,7 @@ import Strings
 
 struct BuyTokenSearchView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore
+  var network: BraveWallet.NetworkInfo
 
   @Environment(\.presentationMode) @Binding private var presentationMode
 
@@ -18,7 +19,7 @@ struct BuyTokenSearchView: View {
         buyTokenStore.selectedBuyToken = token
         presentationMode.dismiss()
       }) {
-        TokenView(token: token)
+        TokenView(token: token, network: network)
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle.capitalized)

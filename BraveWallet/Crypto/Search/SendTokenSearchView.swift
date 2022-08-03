@@ -20,7 +20,7 @@ struct SendTokenSearchView: View {
         sendTokenStore.selectedSendToken = token
         presentationMode.dismiss()
       }) {
-        TokenView(token: token)
+        TokenView(token: token, network: network)
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle)
