@@ -532,7 +532,6 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
       *g_provider_internal_script = brave_wallet::LoadDataResource(
           IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS);
     }
-    ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
   }
 
   content::WebContents* web_contents(Browser* browser) const {
@@ -776,6 +775,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
+  ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string tx =
       base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
@@ -821,6 +821,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
+  ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string txs = base::StrCat(
       {"([window._brave_solana.createTransaction(new Uint8Array([",
@@ -882,6 +883,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
+  ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string send_options =
       R"({"maxRetries": 9007199254740991,
@@ -1267,4 +1269,37 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SecureContextOnly) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SafeBuiltins) {
+  // defineProperties
+  auto result = EvalJs(web_contents(browser()), R"(
+    async function test() {
+      Object.defineProperties = ()=>{}
+      $Object.defineProperties = ()=>{}
+      await window.braveSolana.connect()
+      window._brave_solana.createPublickey = ()=>'0x00'
+      window.domAutomationController.send(
+        window._brave_solana.createPublickey('5STiJLNtCLiNaeD6vwrEfvikNi9NbfVpEbxU7KrUv4uo').toString())
+    } test())",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value("5STiJLNtCLiNaeD6vwrEfvikNi9NbfVpEbxU7KrUv4uo"),
+            result.value);
+
+  ReloadAndWaitForLoadStop(browser());
+
+  // freeze
+  auto result2 = EvalJs(web_contents(browser()), R"(
+    async function test() {
+      Object.freeze = ()=>{}
+      $Object.freeze = ()=>{}
+      await window.braveSolana.connect()
+      window._brave_solana.abc = 123
+      if (window._brave_solana.abc === 123)
+        window.domAutomationController.send(false)
+      else
+        window.domAutomationController.send(true)
+    } test())",
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
 }
