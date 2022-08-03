@@ -17,6 +17,8 @@ import android.util.Pair;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.wireguard.config.Config;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +51,7 @@ public class BraveVpnUtils {
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
 
     public static boolean mIsServerLocationChanged;
+    public static boolean mUpdateProfileAfterSplitTunnel;
     public static String selectedServerRegion;
     private static ProgressDialog mProgressDialog;
 
@@ -221,6 +224,21 @@ public class BraveVpnUtils {
         BraveVpnPrefUtils.setHostnameDisplay("");
         BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         BraveVpnPrefUtils.setResetConfiguration(true);
+        dismissProgressDialog();
+    }
+
+    public static void updateProfileConfiguration(Activity activity) {
+        try {
+            Config existingConfig = WireguardConfigUtils.loadConfig(activity);
+            WireguardConfigUtils.deleteConfig(activity);
+            WireguardConfigUtils.createConfig(activity, existingConfig);
+        } catch (Exception ex) {
+            Log.e(TAG, "updateProfileConfiguration : " + ex.getMessage());
+        }
+        if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(activity)) {
+            BraveVpnProfileUtils.getInstance().stopVpn(activity);
+            BraveVpnProfileUtils.getInstance().startVpn(activity);
+        }
         dismissProgressDialog();
     }
 
