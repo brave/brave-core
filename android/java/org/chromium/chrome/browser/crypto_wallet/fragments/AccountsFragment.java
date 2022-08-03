@@ -103,9 +103,11 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
                         if (!accountInfo.isImported) {
-                            walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
+                            WalletListItemModel model = new WalletListItemModel(R.drawable.ic_eth,
                                     accountInfo.name, accountInfo.address, null, null,
-                                    accountInfo.isImported));
+                                    accountInfo.isImported);
+                            model.setAccountInfo(accountInfo);
+                            walletListItemModelList.add(model);
                         }
                     }
                     if (walletCoinAdapter != null) {
@@ -127,9 +129,11 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
                         if (accountInfo.isImported) {
-                            walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
+                            WalletListItemModel model = new WalletListItemModel(R.drawable.ic_eth,
                                     accountInfo.name, accountInfo.address, null, null,
-                                    accountInfo.isImported));
+                                    accountInfo.isImported);
+                            model.setAccountInfo(accountInfo);
+                            walletListItemModelList.add(model);
                         }
                     }
                     if (walletCoinAdapter != null) {
@@ -148,6 +152,10 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         Intent accountDetailActivityIntent = new Intent(getActivity(), AccountDetailActivity.class);
         accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
         accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
+        if (walletListItemModel.getAccountInfo() != null) {
+            accountDetailActivityIntent.putExtra(
+                    Utils.COIN_TYPE, walletListItemModel.getAccountInfo().coin);
+        }
         accountDetailActivityIntent.putExtra(
                 Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
         startActivity(accountDetailActivityIntent);
