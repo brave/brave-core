@@ -87,6 +87,11 @@ TestingBraveBrowserProcess::local_data_files_service() {
 tor::BraveTorClientUpdater* TestingBraveBrowserProcess::tor_client_updater() {
   return nullptr;
 }
+
+tor::BraveTorPluggableTransportUpdater*
+TestingBraveBrowserProcess::tor_pluggable_transport_updater() {
+  return nullptr;
+}
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)

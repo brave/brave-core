@@ -11,7 +11,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -53,10 +52,6 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void SetBraveWalletEnabled(const base::Value::List& args);
 #endif
-  void SetTorEnabled(const base::Value::List& args);
-  void IsTorEnabled(const base::Value::List& args);
-  void OnTorEnabledChanged();
-  void IsTorManaged(const base::Value::List& args);
   void SetWidevineEnabled(const base::Value::List& args);
   void IsWidevineEnabled(const base::Value::List& args);
   void OnWidevineEnabledChanged();
@@ -104,13 +99,11 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
+  PrefChangeRegistrar local_state_change_registrar_;
   bool was_widevine_enabled_ = false;
 #endif
   Profile* profile_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
-#if BUILDFLAG(ENABLE_TOR)
-  PrefChangeRegistrar local_state_change_registrar_;
-#endif
 #if BUILDFLAG(ENABLE_IPFS)
   base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
       ipfs_service_observer_{this};

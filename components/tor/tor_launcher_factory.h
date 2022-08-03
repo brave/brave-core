@@ -13,12 +13,14 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/files/file_path.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/sequence_checker.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/tor/tor_control.h"
+#include "brave/components/tor/tor_utils.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace base {
@@ -46,6 +48,9 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   virtual std::string GetTorProxyURI() const;
   virtual std::string GetTorVersion() const;
   virtual void GetTorLog(GetLogCallback);
+  virtual void SetupPluggableTransport(const base::FilePath& snowflake,
+                                       const base::FilePath& obfs4);
+  virtual void SetupBridges(tor::BridgesConfig bridges_config);
 
   void AddObserver(TorLauncherObserver* observer);
   void RemoveObserver(TorLauncherObserver* observer);

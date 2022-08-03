@@ -2,14 +2,12 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
 
 static_library("tor") {
-  public_deps = [ "//brave/components/tor/buildflags" ]
-
-  sources = [
-    "tor_constants.cc",
-    "tor_constants.h",
-    "tor_launcher_observer.h",
-    "tor_switches.h",
+  public_deps = [
+    ":common",
+    "//brave/components/tor/buildflags",
   ]
+
+  sources = [ "tor_launcher_observer.h" ]
 
   deps = [
     ":pref_names",
@@ -20,11 +18,12 @@ static_library("tor") {
     sources += [
       "brave_tor_client_updater.cc",
       "brave_tor_client_updater.h",
+      "brave_tor_pluggable_transport_updater.cc",
+      "brave_tor_pluggable_transport_updater.h",
       "onion_location_navigation_throttle.cc",
       "onion_location_navigation_throttle.h",
       "onion_location_tab_helper.cc",
       "onion_location_tab_helper.h",
-      "service_sandbox_type.h",
       "tor_control.cc",
       "tor_control.h",
       "tor_control_event.cc",
@@ -64,14 +63,16 @@ static_library("tor") {
   }
 }
 
-source_set("utils") {
+source_set("common") {
   sources = [
+    "tor_constants.cc",
+    "tor_constants.h",
+    "tor_switches.h",
     "tor_utils.cc",
     "tor_utils.h",
   ]
 
   deps = [
-    ":tor",
     "//base",
     "//chrome/common:constants",
     "//components/prefs",

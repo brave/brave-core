@@ -307,6 +307,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_TOR)
   (*s_brave_allowlist)[tor::prefs::kAutoOnionRedirect] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[tor::prefs::kBridgesConfig] =
+      settings_api::PrefType::PREF_TYPE_DICTIONARY;
 #endif
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::PREF_TYPE_STRING;

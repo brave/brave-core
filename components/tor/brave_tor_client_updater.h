@@ -19,25 +19,13 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "build/build_config.h"
 
-class BraveTorClientUpdaterTest;
 class PrefService;
 
 using brave_component_updater::BraveComponent;
 
 namespace tor {
 
-#if BUILDFLAG(IS_WIN)
-extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
-#elif BUILDFLAG(IS_MAC)
-extern const char kTorClientComponentName[];
-extern const char kTorClientComponentId[];
-extern const char kTorClientComponentBase64PublicKey[];
-#elif BUILDFLAG(IS_LINUX)
-extern const char kTorClientComponentName[];
-extern const char kTorClientComponentId[];
-extern const char kTorClientComponentBase64PublicKey[];
-#endif
 
 class BraveTorClientUpdater : public BraveComponent {
  public:
@@ -77,16 +65,8 @@ class BraveTorClientUpdater : public BraveComponent {
   bool IsTorDisabled();
 
  private:
-  friend class ::BraveTorClientUpdaterTest;
-
   void RemoveObsoleteFiles();
 
-  static std::string g_tor_client_component_name_;
-  static std::string g_tor_client_component_id_;
-  static std::string g_tor_client_component_base64_public_key_;
-  static void SetComponentIdAndBase64PublicKeyForTest(
-      const std::string& component_id,
-      const std::string& component_base64_public_key);
   // <tor executable, torrc>
   void SetTorPath(const std::pair<base::FilePath, base::FilePath>&);
 

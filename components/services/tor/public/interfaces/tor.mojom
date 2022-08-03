@@ -4,6 +4,7 @@
 module tor.mojom;
 
 import "mojo/public/mojom/base/file_path.mojom";
+import "sandbox/policy/mojom/sandbox.mojom";
 
 struct TorConfig {
   mojo_base.mojom.FilePath binary_path;
@@ -12,6 +13,7 @@ struct TorConfig {
   mojo_base.mojom.FilePath tor_watch_path;
 };
 
+[ServiceSandbox=sandbox.mojom.Sandbox.kNoSandbox]
 interface TorLauncher {
     Shutdown();
 

@@ -112,23 +112,6 @@
                               pref="{{prefs.brave.ens.resolve_method}}"
                               menu-options="[[ensResolveMethod_]]">
     </div>
-    <if expr="enable_tor">
-    <settings-toggle-button id="torEnabled"
-        class="cr-row"
-        pref="[[torEnabledPref_]]"
-        label="$i18n{torEnabledLabel}"
-        sub-label="$i18n{torEnabledDesc}"
-        disabled="[[disableTorOption_]]"
-        on-settings-boolean-control-change="onTorEnabledChange_">
-    </settings-toggle-button>
-    <settings-toggle-button
-        pref="{{prefs.tor.auto_onion_location}}"
-        class="cr-row"
-        label="$i18n{autoOnionLocationLabel}"
-        sub-label="$i18n{autoOnionLocationDesc}"
-        disabled="[[!torEnabledPref_.value]]">
-    </settings-toggle-button>
-    </if>
     <settings-toggle-button id="webTorrentEnabled"
         class="cr-row"
         pref="{{prefs.brave.webtorrent_enabled}}"

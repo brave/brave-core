@@ -55,6 +55,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
       override;
 #if BUILDFLAG(ENABLE_TOR)
   tor::BraveTorClientUpdater* tor_client_updater() override;
+  tor::BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater()
+      override;
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;

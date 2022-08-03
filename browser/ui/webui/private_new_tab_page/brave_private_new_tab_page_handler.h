@@ -12,6 +12,7 @@
 #include <string>
 
 #include "base/scoped_observation.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_launcher_observer.h"
@@ -54,11 +55,15 @@ class BravePrivateNewTabPageHandler
   void GetDisclaimerDismissed(GetDisclaimerDismissedCallback callback) override;
   void GetIsTorConnected(GetIsTorConnectedCallback callback) override;
   void GoToBraveSearch(const std::string& input, bool open_new_tab) override;
+  void GoToBraveSupport() override;
 
  private:
   // TorLauncherObserver overrides:
   void OnTorCircuitEstablished(bool result) override;
-  void OnTorInitializing(const std::string& percentage) override;
+  void OnTorInitializing(const std::string& percentage,
+                         const std::string& message) override;
+
+  void OnTorCircuitGetStuck();
 
   // Handle back to the page by which we can pass results.
   mojo::Remote<brave_private_new_tab::mojom::PrivateTabPage> page_;
@@ -71,6 +76,9 @@ class BravePrivateNewTabPageHandler
 #if BUILDFLAG(ENABLE_TOR)
   raw_ptr<TorLauncherFactory> tor_launcher_factory_ = nullptr;
 #endif
+  // Timer for detecting a Tor connection failuer. It starts at each connection
+  // event and shots when the time between events exceeds kStuckPeriod seconds.
+  base::OneShotTimer stuck_timer_;
 
   mojo::Receiver<brave_private_new_tab::mojom::PageHandler> receiver_;
 };

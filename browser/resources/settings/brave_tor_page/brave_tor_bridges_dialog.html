@@ -1,0 +1,54 @@
+<style include="settings-shared">
+  div[slot=body] {
+    overflow: hidden;
+  }
+
+  #status {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  #captcha {
+    display: flex;
+    justify-content: center;
+  }
+
+  #captchaImage {
+    min-width: 400px;
+    min-height: 125px;
+  }
+
+  #captchaInputBox {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    height: 32px;
+  }
+
+  #captchaResolve {
+    width: 80%;
+  }
+
+  #renew {
+    --cr-icon-button-size: 32px;
+    --cr-icon-image: url(chrome://resources/images/icon_refresh.svg);
+  }
+</style>
+<cr-dialog id="dialog" show-close-button show-on-attach>
+  <div slot="title">$i18n{torRequestBridgeDialogTitle}</div>
+  <div slot="body">
+    <div id="status">[[status_]]</div>
+    <div id="captcha">
+      <img id="captchaImage" alt="" src="[[captcha_]]" focus="[[!submitDisabled_]]">
+    </div>
+    <div id="captchaInputBox">
+      <cr-input id="captchaResolve" value="{{captchaResolve_}}"></cr-input>
+      <cr-icon-button id="renew" on-click="requestCaptcha_" disabled="[[renewDisabled_]]"></cr-icon-button>
+    </div>
+  </div>
+  <div slot="button-container">
+    <cr-button class="action-button" id="submit" on-click="submitClicked_" disabled="[[submitDisabled_]]">
+      $i18n{torSubmitDialogButton}</cr-button>
+    <cr-button class="cancel-button" id="cancel" on-click="cancelClicked_">$i18n{torCancelDialogButton}</cr-button>
+  </div>
+</cr-dialog>

@@ -13,9 +13,11 @@ interface PageHandler {
   GetDisclaimerDismissed() => (bool dismissed);
   GetIsTorConnected() => (bool is_connected);
   GoToBraveSearch(string input, bool open_new_tab);
+  GoToBraveSupport();
 };
 
 interface PrivateTabPage {
   OnTorCircuitEstablished(bool has_established);
-  OnTorInitializing(string percentage);
+  OnTorInitializing(string percentage, string message);
+  OnTorCircuitGetStuck(bool stuck);
 };

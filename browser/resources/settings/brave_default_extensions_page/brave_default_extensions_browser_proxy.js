@@ -14,9 +14,6 @@ cr.define('settings', function () {
      */
     setWebTorrentEnabled (value) {}
     setHangoutsEnabled (value) {}
-    setTorEnabled (value) {}
-    isTorEnabled () {}
-    isTorManaged () {}
     setWidevineEnabled() {}
     isWidevineEnabled() {}
     getRestartNeeded () {}
@@ -40,18 +37,6 @@ cr.define('settings', function () {
 
     setMediaRouterEnabled (value) {
       chrome.send('setMediaRouterEnabled', [value])
-    }
-
-    setTorEnabled (value) {
-      chrome.send('setTorEnabled', [value])
-    }
-
-    isTorEnabled () {
-      return cr.sendWithPromise('isTorEnabled')
-    }
-
-    isTorManaged () {
-      return cr.sendWithPromise('isTorManaged')
     }
 
     setWidevineEnabled (value) {

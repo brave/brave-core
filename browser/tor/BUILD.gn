@@ -92,7 +92,7 @@ source_set("browser_tests") {
       "//chrome//browser/net/profile_network_context_service_test_utils.cc",
       "//chrome//browser/net/profile_network_context_service_test_utils.h",
       "brave_local_state_browsertest.cc",
-      "brave_tor_client_updater_browsertest.cc",
+      "brave_tor_browsertest.cc",
       "onion_location_navigation_throttle_browsertest.cc",
       "tor_profile_manager_browsertest.cc",
     ]
@@ -105,6 +105,7 @@ source_set("browser_tests") {
       "//brave/browser/ui",
       "//brave/common",
       "//brave/components/brave_ads/browser",
+      "//brave/components/brave_component_updater/browser",
       "//brave/components/constants",
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/common",

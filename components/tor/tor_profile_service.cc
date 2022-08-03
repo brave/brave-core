@@ -21,6 +21,7 @@ TorProfileService::~TorProfileService() = default;
 // static
 void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kTorDisabled, false);
+  registry->RegisterDictionaryPref(prefs::kBridgesConfig);
 }
 
 // static

@@ -20,15 +20,11 @@ polymer_modulizer("brave_personalization_options") {
   js_file = "brave_personalization_options.js"
   html_file = "brave_personalization_options.html"
   html_type = "dom-module"
-  auto_imports = settings_auto_imports + [
-    "brave/browser/resources/settings/brave_privacy_page/brave_privacy_page_browser_proxy.html|BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl",
-  ]
+  auto_imports = settings_auto_imports + [ "brave/browser/resources/settings/brave_privacy_page/brave_privacy_page_browser_proxy.html|BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl" ]
   namespace_rewrites = settings_namespace_rewrites
 }
 
 js_modulizer("modules") {
-  input_files = [
-    "brave_privacy_page_browser_proxy.js",
-  ]
+  input_files = [ "brave_privacy_page_browser_proxy.js" ]
   namespace_rewrites = settings_namespace_rewrites
 }

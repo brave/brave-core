@@ -56,6 +56,7 @@ class NTPBackgroundImagesService;
 
 namespace tor {
 class BraveTorClientUpdater;
+class BraveTorPluggableTransportUpdater;
 }
 
 namespace ipfs {
@@ -91,6 +92,8 @@ class BraveBrowserProcess {
   local_data_files_service() = 0;
 #if BUILDFLAG(ENABLE_TOR)
   virtual tor::BraveTorClientUpdater* tor_client_updater() = 0;
+  virtual tor::BraveTorPluggableTransportUpdater*
+  tor_pluggable_transport_updater() = 0;
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
   virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;

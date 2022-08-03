@@ -68,15 +68,6 @@ std::pair<base::FilePath, base::FilePath> InitTorPath(
   return std::make_pair(executable_path, torrc_path);
 }
 
-void DeleteDir(const base::FilePath& path) {
-  base::DeletePathRecursively(path);
-}
-
-void DeleteFile(const base::FilePath& file) {
-  if (base::PathExists(file))
-    base::DeleteFile(file);
-}
-
 }  // namespace
 
 #if BUILDFLAG(IS_WIN)
@@ -114,11 +105,6 @@ const char kTorClientComponentBase64PublicKey[] =
     "2QIDAQAB";
 #endif
 
-std::string BraveTorClientUpdater::g_tor_client_component_id_(
-    kTorClientComponentId);
-std::string BraveTorClientUpdater::g_tor_client_component_base64_public_key_(
-    kTorClientComponentBase64PublicKey);
-
 BraveTorClientUpdater::BraveTorClientUpdater(
     BraveComponent::Delegate* component_delegate,
     PrefService* local_state,
@@ -144,8 +130,8 @@ void BraveTorClientUpdater::Register() {
     return;
   }
 
-  BraveComponent::Register(kTorClientComponentName, g_tor_client_component_id_,
-                           g_tor_client_component_base64_public_key_);
+  BraveComponent::Register(kTorClientComponentName, kTorClientComponentId,
+                           kTorClientComponentBase64PublicKey);
   registered_ = true;
 }
 
@@ -159,18 +145,18 @@ void BraveTorClientUpdater::Cleanup() {
   DCHECK(!user_data_dir_.empty());
   base::FilePath tor_component_dir =
       user_data_dir_.AppendASCII(kTorClientComponentId);
-  task_runner_->PostTask(FROM_HERE,
-                         base::BindOnce(&DeleteDir, tor_component_dir));
-  task_runner_->PostTask(FROM_HERE,
-                         base::BindOnce(&DeleteDir, GetTorDataPath()));
-  task_runner_->PostTask(FROM_HERE,
-                         base::BindOnce(&DeleteDir, GetTorWatchPath()));
+  task_runner_->PostTask(
+      FROM_HERE, base::GetDeletePathRecursivelyCallback(tor_component_dir));
+  task_runner_->PostTask(
+      FROM_HERE, base::GetDeletePathRecursivelyCallback(GetTorDataPath()));
+  task_runner_->PostTask(
+      FROM_HERE, base::GetDeletePathRecursivelyCallback(GetTorWatchPath()));
 }
 
 void BraveTorClientUpdater::RemoveObsoleteFiles() {
   // tor log
   base::FilePath tor_log = GetTorDataPath().AppendASCII("tor.log");
-  task_runner_->PostTask(FROM_HERE, base::BindOnce(&DeleteFile, tor_log));
+  task_runner_->PostTask(FROM_HERE, base::GetDeleteFileCallback(tor_log));
 }
 
 void BraveTorClientUpdater::SetTorPath(
@@ -223,14 +209,6 @@ void BraveTorClientUpdater::AddObserver(Observer* observer) {
 
 void BraveTorClientUpdater::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
-}
-
-// static
-void BraveTorClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  g_tor_client_component_id_ = component_id;
-  g_tor_client_component_base64_public_key_ = component_base64_public_key;
 }
 
 }  // namespace tor
