@@ -157,21 +157,15 @@ void BatAdsClientMojoBridge::UrlRequest(
       base::BindOnce(&OnUrlRequest, std::move(callback)));
 }
 
-void OnSave(const ads::ResultCallback& callback, const bool success) {
-  callback(success);
-}
-
-void BatAdsClientMojoBridge::Save(
-    const std::string& name,
-    const std::string& value,
-    ads::ResultCallback callback) {
+void BatAdsClientMojoBridge::Save(const std::string& name,
+                                  const std::string& value,
+                                  ads::SaveCallback callback) {
   if (!connected()) {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
     return;
   }
 
-  bat_ads_client_->Save(name, value, base::BindOnce(&OnSave,
-      std::move(callback)));
+  bat_ads_client_->Save(name, value, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,

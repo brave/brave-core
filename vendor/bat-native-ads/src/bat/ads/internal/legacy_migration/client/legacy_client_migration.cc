@@ -66,16 +66,19 @@ void Migrate(InitializeCallback callback) {
             SetHashForJson(migrated_json);
 
             AdsClientHelper::GetInstance()->Save(
-                kClientStateFilename, migrated_json, [=](const bool success) {
-                  if (!success) {
-                    BLOG(0, "Failed to save client state");
-                    FailedToMigrate(callback);
-                    return;
-                  }
+                kClientStateFilename, migrated_json,
+                base::BindOnce(
+                    [](InitializeCallback callback, const bool success) {
+                      if (!success) {
+                        BLOG(0, "Failed to save client state");
+                        FailedToMigrate(callback);
+                        return;
+                      }
 
-                  BLOG(3, "Successfully migrated client state");
-                  SuccessfullyMigrated(callback);
-                });
+                      BLOG(3, "Successfully migrated client state");
+                      SuccessfullyMigrated(callback);
+                    },
+                    callback));
           },
           callback));
 }

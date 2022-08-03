@@ -1206,11 +1206,11 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(ads::ResultCallback)callback {
+    callback:(ads::SaveCallback)callback {
   if ([self.commonOps saveContents:value name:name]) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
   } else {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
   }
 }
 

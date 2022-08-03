@@ -251,7 +251,7 @@ class AdsServiceImpl : public AdsService,
                     ads::UrlRequestCallback callback,
                     const std::unique_ptr<std::string> response_body);
 
-  void OnSave(const ads::ResultCallback& callback, const bool success);
+  void OnSave(ads::SaveCallback callback, const bool success);
   void OnLoad(ads::LoadCallback callback, const std::string& value);
   void OnLoadFileResource(
       ads::LoadFileCallback callback,
@@ -400,7 +400,7 @@ class AdsServiceImpl : public AdsService,
 
   void Save(const std::string& name,
             const std::string& value,
-            ads::ResultCallback callback) override;
+            ads::SaveCallback callback) override;
   void Load(const std::string& name, ads::LoadCallback callback) override;
   void LoadFileResource(const std::string& id,
                         const int version,

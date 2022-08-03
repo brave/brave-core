@@ -72,8 +72,8 @@ void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
 
 void AdsClientIOS::Save(const std::string& name,
                         const std::string& value,
-                        ads::ResultCallback callback) {
-  [bridge_ save:name value:value callback:callback];
+                        ads::SaveCallback callback) {
+  [bridge_ save:name value:value callback:std::move(callback)];
 }
 
 void AdsClientIOS::LoadFileResource(const std::string& id,

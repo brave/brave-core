@@ -960,6 +960,10 @@ void AdsServiceImpl::Shutdown() {
 
   is_bat_ads_initialized_ = false;
 
+  bat_ads_.reset();
+  bat_ads_client_.reset();
+  bat_ads_service_.reset();
+
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
   g_brave_browser_process->resource_component()->RemoveObserver(this);
@@ -967,10 +971,6 @@ void AdsServiceImpl::Shutdown() {
   url_loaders_.clear();
 
   idle_state_timer_.Stop();
-
-  bat_ads_.reset();
-  bat_ads_client_.reset();
-  bat_ads_service_.reset();
 
   const bool success =
       file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
@@ -1573,7 +1573,7 @@ void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
 
 void AdsServiceImpl::Save(const std::string& name,
                           const std::string& value,
-                          ads::ResultCallback callback) {
+                          ads::SaveCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
@@ -2069,9 +2069,8 @@ void AdsServiceImpl::OnLoadFileResource(
   std::move(callback).Run(std::move(*file));
 }
 
-void AdsServiceImpl::OnSave(const ads::ResultCallback& callback,
-                            const bool success) {
-  callback(success);
+void AdsServiceImpl::OnSave(ads::SaveCallback callback, const bool success) {
+  std::move(callback).Run(success);
 }
 
 void AdsServiceImpl::MigratePrefs() {
