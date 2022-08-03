@@ -7,11 +7,9 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_PUBLIC_CPP_ADS_CLIENT_MOJO_BRIDGE_H_
 
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -24,9 +22,7 @@ class Time;
 
 namespace bat_ads {
 
-class AdsClientMojoBridge
-    : public mojom::BatAdsClient,
-      public base::SupportsWeakPtr<AdsClientMojoBridge> {
+class AdsClientMojoBridge : public mojom::BatAdsClient {
  public:
   explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
   AdsClientMojoBridge(const AdsClientMojoBridge&) = delete;
@@ -34,31 +30,8 @@ class AdsClientMojoBridge
   ~AdsClientMojoBridge() override;
 
  private:
-  // TODO(https://github.com/brave/brave-browser/issues/20940) Workaround to
-  // pass |base::OnceCallback| into |std::bind| until we refactor Brave Ads
-  // |std::function| to |base::OnceCallback|.
-  template <typename T>
-  class CallbackHolder {
-   public:
-    CallbackHolder(base::WeakPtr<AdsClientMojoBridge> client, T callback)
-        : client_(client), callback_(std::move(callback)) {}
-
-    ~CallbackHolder() = default;
-
-    bool is_valid() { return !!client_.get(); }
-
-    T& get() { return callback_; }
-
-   private:
-    base::WeakPtr<AdsClientMojoBridge> client_;
-    T callback_;
-  };
-
   static void OnURLRequest(UrlRequestCallback callback,
                            const ads::mojom::UrlResponseInfo& url_response);
-
-  static void OnSave(CallbackHolder<SaveCallback>* callback_holder,
-                     const bool success);
 
   // BatAdsClient:
   bool IsNetworkConnectionAvailable(bool* out_value) override;

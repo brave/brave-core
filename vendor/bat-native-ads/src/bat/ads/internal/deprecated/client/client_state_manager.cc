@@ -542,9 +542,9 @@ void ClientStateManager::Save() {
     SetHash(json);
   }
 
-  auto callback =
-      std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(
+      kClientStateFilename, json,
+      base::BindOnce(&ClientStateManager::OnSaved, base::Unretained(this)));
 }
 
 void ClientStateManager::OnSaved(const bool success) {

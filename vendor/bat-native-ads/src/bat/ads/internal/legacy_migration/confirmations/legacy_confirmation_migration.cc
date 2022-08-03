@@ -67,16 +67,18 @@ void Migrate(InitializeCallback callback) {
 
             AdsClientHelper::GetInstance()->Save(
                 kConfirmationStateFilename, migrated_json,
-                [=](const bool success) {
-                  if (!success) {
-                    BLOG(0, "Failed to save confirmation state");
-                    FailedToMigrate(callback);
-                    return;
-                  }
+                base::BindOnce(
+                    [](InitializeCallback callback, const bool success) {
+                      if (!success) {
+                        BLOG(0, "Failed to save confirmation state");
+                        FailedToMigrate(callback);
+                        return;
+                      }
 
-                  BLOG(3, "Successfully migrated confirmation state");
-                  SuccessfullyMigrated(callback);
-                });
+                      BLOG(3, "Successfully migrated confirmation state");
+                      SuccessfullyMigrated(callback);
+                    },
+                    callback));
           },
           callback));
 }

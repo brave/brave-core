@@ -39,7 +39,7 @@
          message:(const std::string&)message;
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(ads::ResultCallback)callback;
+    callback:(ads::SaveCallback)callback;
 - (void)showNotificationAd:(const ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)recordAdEventForId:(const std::string&)id

@@ -5,20 +5,15 @@
 
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 
-#include <functional>
-#include <memory>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/callback.h"
-#include "base/containers/flat_map.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/notification_ad_info.h"
 #include "url/gurl.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace bat_ads {
 
@@ -35,18 +30,6 @@ void AdsClientMojoBridge::OnURLRequest(
     UrlRequestCallback callback,
     const ads::mojom::UrlResponseInfo& url_response) {
   std::move(callback).Run(ads::mojom::UrlResponseInfo::New(url_response));
-}
-
-// static
-void AdsClientMojoBridge::OnSave(CallbackHolder<SaveCallback>* callback_holder,
-                                 const bool success) {
-  DCHECK(callback_holder);
-
-  if (callback_holder->is_valid()) {
-    std::move(callback_holder->get()).Run(success);
-  }
-
-  delete callback_holder;
 }
 
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(bool* out_value) {
@@ -167,11 +150,7 @@ void AdsClientMojoBridge::Save(
     const std::string& name,
     const std::string& value,
     SaveCallback callback) {
-  // Callback holder will be deleted in |OnSave|.
-  auto* callback_holder =
-      new CallbackHolder<SaveCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->Save(
-      name, value, std::bind(AdsClientMojoBridge::OnSave, callback_holder, _1));
+  ads_client_->Save(name, value, std::move(callback));
 }
 
 void AdsClientMojoBridge::Load(const std::string& name, LoadCallback callback) {

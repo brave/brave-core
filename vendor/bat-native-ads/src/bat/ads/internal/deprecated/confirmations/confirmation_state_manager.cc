@@ -138,14 +138,14 @@ void ConfirmationStateManager::Save() {
   }
 
   AdsClientHelper::GetInstance()->Save(
-      kConfirmationStateFilename, json, [](const bool success) {
+      kConfirmationStateFilename, json, base::BindOnce([](const bool success) {
         if (!success) {
           BLOG(0, "Failed to save confirmations state");
           return;
         }
 
         BLOG(9, "Successfully saved confirmations state");
-      });
+      }));
 }
 
 const ConfirmationList& ConfirmationStateManager::GetFailedConfirmations()

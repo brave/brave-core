@@ -288,9 +288,11 @@ void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, Save(_, _, _))
-      .WillByDefault(Invoke(
-          [](const std::string& name, const std::string& value,
-             ResultCallback callback) { callback(/* success */ true); }));
+      .WillByDefault(
+          Invoke([](const std::string& name, const std::string& value,
+                    SaveCallback callback) {
+            std::move(callback).Run(/* success */ true);
+          }));
 }
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
