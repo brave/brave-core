@@ -101,6 +101,8 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldStartBatAds() const;
 
+  void InitNotificationsForProfile();
+
   void MigrateConfirmationState();
   void OnMigrateConfirmationState(const bool success);
 
