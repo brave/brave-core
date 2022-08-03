@@ -33,6 +33,7 @@ import java.util.List;
 
 public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
     private String mAddress;
+    private int mCoinType;
     private boolean mIsPrivateKeyShown;
 
     @Override
@@ -43,6 +44,7 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
 
         if (getIntent() != null) {
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
+            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -96,7 +98,7 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
 
         assert mKeyringService != null;
         mKeyringService.getPrivateKeyForKeyringAccount(
-                mAddress, CoinType.ETH, (result, privateKey) -> {
+                mAddress, mCoinType, (result, privateKey) -> {
                     if (result) {
                         EditText privateKeyText = findViewById(R.id.private_key_text);
                         privateKeyText.setText(privateKey);
