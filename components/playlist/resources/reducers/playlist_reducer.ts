@@ -12,14 +12,28 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/mojom/playlist.mojo
 const playlistReducer: Reducer<Playlist.State|undefined> =
     (state: Playlist.State|undefined, action) => {
       if (state === undefined) {
-        state = { lists: [] }
+        state = { lists: [], currentList: undefined }
       }
 
-      // TODO(sko) Handle each action properly.
       switch (action.type) {
         case types.PLAYLIST_LOADED:
-          state = { ...state, lists: [...action.payload as PlaylistMojo.Playlist[]] }
+          const playlists = action.payload
+          let currentList: PlaylistMojo.Playlist | undefined
+          if (state.currentList) {
+            currentList = playlists.find((list: PlaylistMojo.Playlist) => list.id === state?.currentList?.id)
+          }
+          if (!currentList) currentList = playlists[0]
+
+          if (playlists.length && !currentList) {
+            console.error('there\'s no selected playlist even though we have playlists')
+          }
+
+          state = { ...state, currentList, lists: [...playlists] }
           break
+
+        case types.PLAYLIST_SELECTED:
+          const playlist = action.payload
+          state = { ...state, currentList: playlist }
       }
       return state
     }

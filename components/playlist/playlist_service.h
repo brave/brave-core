@@ -18,6 +18,7 @@
 #include "brave/components/playlist/playlist_download_request_manager.h"
 #include "brave/components/playlist/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/playlist_thumbnail_downloader.h"
+#include "brave/components/playlist/playlist_types.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace base {
@@ -54,8 +55,7 @@ class MediaDetectorComponentManager;
 // You can see all notification type - PlaylistItemChangeParams::Type.
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
-                        public PlaylistThumbnailDownloader::Delegate,
-                        public PlaylistDownloadRequestManager::Delegate {
+                        public PlaylistThumbnailDownloader::Delegate {
  public:
   PlaylistService(content::BrowserContext* context,
                   MediaDetectorComponentManager* manager);
@@ -63,16 +63,23 @@ class PlaylistService : public KeyedService,
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
 
-  base::Value GetAllPlaylistItems();
-  base::Value GetPlaylistItem(const std::string& id);
-  void RecoverPlaylistItem(const std::string& id);
-  void DeletePlaylistItem(const std::string& id);
-  void DeleteAllPlaylistItems();
+  void CreatePlaylist(const PlaylistInfo& info);
+  void RemovePlaylist(const std::string& id);
+
+  std::vector<PlaylistItemInfo> GetAllPlaylistItems();
+  PlaylistItemInfo GetPlaylistItem(const std::string& id);
+
+  absl::optional<PlaylistInfo> GetPlaylist(const std::string& id);
+  std::vector<PlaylistInfo> GetAllPlaylists();
+
   void RequestDownloadMediaFilesFromPage(const std::string& playlist_id,
                                          const std::string& url);
+  void RecoverPlaylistItem(const std::string& id);
 
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id);
+  void DeletePlaylistItem(const std::string& id);
+  void DeleteAllPlaylistItems();
 
   void AddObserver(PlaylistServiceObserver* observer);
   void RemoveObserver(PlaylistServiceObserver* observer);
@@ -83,12 +90,11 @@ class PlaylistService : public KeyedService,
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylist);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest,
-                           CreatePlaylistWithSeparateAudio);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ThumbnailFailed);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, MediaDownloadFailed);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ApiFunctions);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylist);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylistItem);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, MediaDownloadFailed);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ThumbnailFailed);
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -105,10 +111,10 @@ class PlaylistService : public KeyedService,
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;
 
-  // PlaylistDownloadRequestManager::Delegate overrides:
-  // Called when meta data is ready. |params| have playlist item's audio/video
-  // media files url, thumbnail and title.
-  void OnPlaylistCreationParamsReady(const PlaylistItemInfo& params) override;
+  // Called when meta data is fetched from url.
+  void OnPlaylistCreationParamsReady(
+      const std::string& playlist_id,
+      const std::vector<PlaylistItemInfo>& params);
 
   void OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
                                 bool directory_ready);
@@ -123,10 +129,10 @@ class PlaylistService : public KeyedService,
   void CleanUp();
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
-  void NotifyPlaylistItemChanged(const PlaylistItemChangeParams& params);
+  void NotifyPlaylistChanged(const PlaylistChangeParams& params);
 
   void UpdatePlaylistItemValue(const std::string& id, base::Value value);
-  void RemovePlaylistItem(const std::string& id);
+  void RemovePlaylistItemValue(const std::string& id);
 
   bool HasPrefStorePlaylistItem(const std::string& id) const;
 
@@ -149,7 +155,9 @@ class PlaylistService : public KeyedService,
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;
   std::unique_ptr<PlaylistThumbnailDownloader> thumbnail_downloader_;
+
   std::unique_ptr<PlaylistDownloadRequestManager> download_request_manager_;
+
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
 

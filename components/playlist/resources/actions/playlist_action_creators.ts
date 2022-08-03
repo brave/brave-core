@@ -9,5 +9,8 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/mojom/playlist.mojo
 // Constants
 import { types } from '../constants/playlist_types'
 
-export const playlistLoaded = (playlist: PlaylistMojo.Playlist[]) =>
-    action(types.PLAYLIST_LOADED, playlist)
+export const playlistLoaded = (playlists: PlaylistMojo.Playlist[]) =>
+    action(types.PLAYLIST_LOADED, playlists)
+
+export const selectPlaylist = (playlist: PlaylistMojo.Playlist) =>
+    action(types.PLAYLIST_SELECTED, playlist)

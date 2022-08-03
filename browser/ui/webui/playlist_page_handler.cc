@@ -32,30 +32,16 @@ PlaylistPageHandler::~PlaylistPageHandler() = default;
 
 void PlaylistPageHandler::GetAllPlaylists(
     PlaylistPageHandler::GetAllPlaylistsCallback callback) {
-  auto value = GetPlaylistService(profile_)->GetAllPlaylistItems();
-  DCHECK(value.is_list());
-
   std::vector<mojo::StructPtr<playlist::mojom::Playlist>> playlists;
-  playlists.push_back(playlist::mojom::Playlist::New());
-  auto& playlist = playlists.back();
-  playlist->name = "default";
-  for (const auto& item : value.GetList()) {
-    auto* dict = item.GetIfDict();
-    DCHECK(dict);
-    DCHECK(dict->contains(playlist::kPlaylistItemIDKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemTitleKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemMediaFilePathKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemThumbnailPathKey));
-
-    playlist->items.push_back(playlist::mojom::PlaylistItem::New(
-        *dict->FindString(playlist::kPlaylistItemIDKey) /* = id */,
-        *dict->FindString(playlist::kPlaylistItemTitleKey) /* =  name */,
-        GURL(*dict->FindString(
-            playlist::kPlaylistItemMediaFilePathKey)) /* = media_path */,
-        GURL(*dict->FindString(
-            playlist::
-                kPlaylistItemThumbnailPathKey)) /* = ::GURL& thumbnail_path */,
-        *dict->FindBool(playlist::kPlaylistItemReadyKey) /* = ready */));
+  for (const auto& playlist : GetPlaylistService(profile_)->GetAllPlaylists()) {
+    std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
+    for (const auto& item : playlist.items) {
+      items.push_back(playlist::mojom::PlaylistItem::New(
+          item.id, item.title, GURL(item.media_file_path),
+          GURL(item.thumbnail_path), item.ready));
+    }
+    playlists.push_back(playlist::mojom::Playlist::New(
+        playlist.id, playlist.name, std::move(items)));
   }
 
   std::move(callback).Run(std::move(playlists));
@@ -64,31 +50,20 @@ void PlaylistPageHandler::GetAllPlaylists(
 void PlaylistPageHandler::GetPlaylist(
     const std::string& id,
     PlaylistPageHandler::GetPlaylistCallback callback) {
-  // TODO(sko) Get items for playlist with |id|.
-  auto value = GetPlaylistService(profile_)->GetAllPlaylistItems();
-  DCHECK(value.is_list());
-  playlist::mojom::Playlist playlist;
-  playlist.name = "default";
-  for (const auto& item : value.GetList()) {
-    auto* dict = item.GetIfDict();
-    DCHECK(dict);
-    DCHECK(dict->contains(playlist::kPlaylistItemIDKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemTitleKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemMediaFilePathKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemThumbnailPathKey));
-
-    playlist.items.push_back(playlist::mojom::PlaylistItem::New(
-        *dict->FindString(playlist::kPlaylistItemIDKey) /* = id */,
-        *dict->FindString(playlist::kPlaylistItemTitleKey) /* =  name */,
-        GURL(*dict->FindString(
-            playlist::kPlaylistItemMediaFilePathKey)) /* = media_path */,
-        GURL(*dict->FindString(
-            playlist::
-                kPlaylistItemThumbnailPathKey)) /* = ::GURL& thumbnail_path */,
-        *dict->FindBool(playlist::kPlaylistItemReadyKey) /* = ready */));
+  const auto& playlist = GetPlaylistService(profile_)->GetPlaylist(id);
+  if (!playlist.has_value()) {
+    std::move(callback).Run(nullptr);
+    return;
   }
 
-  std::move(callback).Run(playlist.Clone());
+  std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
+  for (const auto& item : playlist->items) {
+    items.push_back(playlist::mojom::PlaylistItem::New(
+        item.id, item.title, GURL(item.media_file_path),
+        GURL(item.thumbnail_path), item.ready));
+  }
+  std::move(callback).Run(playlist::mojom::Playlist::New(
+      playlist->id, playlist->name, std::move(items)));
 }
 
 void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
@@ -102,7 +77,18 @@ void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
   GetPlaylistService(profile_)->RemoveItemFromPlaylist(playlist_id, item_id);
 }
 
-void PlaylistPageHandler::OnPlaylistItemStatusChanged(
-    const playlist::PlaylistItemChangeParams& params) {
+void PlaylistPageHandler::CreatePlaylist(
+    playlist::mojom::PlaylistPtr playlist) {
+  playlist::PlaylistInfo info;
+  info.name = playlist->name;
+  GetPlaylistService(profile_)->CreatePlaylist(info);
+}
+
+void PlaylistPageHandler::RemovePlaylist(const std::string& playlist_id) {
+  GetPlaylistService(profile_)->RemovePlaylist(playlist_id);
+}
+
+void PlaylistPageHandler::OnPlaylistStatusChanged(
+    const playlist::PlaylistChangeParams& params) {
   page_->OnEvent(playlist::mojom::PlaylistEvent::kItemAdded);
 }

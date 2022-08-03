@@ -5,6 +5,8 @@
 
 #include "brave/components/playlist/playlist_download_request_manager.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
@@ -35,6 +37,14 @@ bool PlaylistJavaScriptWorldIdIsSet() {
 
 }  // namespace
 
+PlaylistDownloadRequestManager::Request::Request() = default;
+PlaylistDownloadRequestManager::Request&
+PlaylistDownloadRequestManager::Request::operator=(
+    PlaylistDownloadRequestManager::Request&&) noexcept = default;
+PlaylistDownloadRequestManager::Request::Request(
+    PlaylistDownloadRequestManager::Request&&) noexcept = default;
+PlaylistDownloadRequestManager::Request::~Request() = default;
+
 // static
 void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
     const int32_t id) {
@@ -47,11 +57,8 @@ void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
 
 PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
     content::BrowserContext* context,
-    Delegate* delegate,
     MediaDetectorComponentManager* manager)
-    : context_(context),
-      delegate_(delegate),
-      media_detector_component_manager_(manager) {
+    : context_(context), media_detector_component_manager_(manager) {
   observed_.Observe(media_detector_component_manager_);
 
   media_detector_script_ = media_detector_component_manager_->script();
@@ -60,58 +67,62 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents() {
-  if (web_contents_)
-    return;
-
-  // |web_contents_| is created on demand.
-  content::WebContents::CreateParams create_params(context_, nullptr);
-  web_contents_ = content::WebContents::Create(create_params);
+  if (!web_contents_) {
+    // |web_contents_| is created on demand.
+    content::WebContents::CreateParams create_params(context_, nullptr);
+    web_contents_ = content::WebContents::Create(create_params);
+  }
 
   Observe(web_contents_.get());
 }
 
-void PlaylistDownloadRequestManager::GetMediaFilesFromPage(
-    const std::string& url) {
+void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
   web_contents_destroy_timer_.reset();
 
   CreateWebContents();
   if (!ReadyToRunMediaDetectorScript()) {
-    pending_urls_.push_back(url);
-    media_detector_component_manager_->RegisterIfNeeded();
+    pending_requests_.push_back(std::move(request));
+    if (media_detector_script_.empty())
+      media_detector_component_manager_->RegisterIfNeeded();
     return;
   }
 
-  RunMediaDetector(url);
+  RunMediaDetector(std::move(request));
 }
 
 void PlaylistDownloadRequestManager::OnScriptReady(const std::string& script) {
   media_detector_script_ = script;
 
-  if (ReadyToRunMediaDetectorScript())
-    FetchPendingURL();
+  FetchPendingRequest();
 }
 
-void PlaylistDownloadRequestManager::FetchPendingURL() {
-  if (pending_urls_.empty())
+void PlaylistDownloadRequestManager::FetchPendingRequest() {
+  if (pending_requests_.empty() || !ReadyToRunMediaDetectorScript())
     return;
 
-  auto url = pending_urls_.front();
-  pending_urls_.pop_front();
-  RunMediaDetector(url);
+  auto request = std::move(pending_requests_.front());
+  pending_requests_.pop_front();
+  RunMediaDetector(std::move(request));
 }
 
-void PlaylistDownloadRequestManager::RunMediaDetector(const std::string& url) {
+void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
   DCHECK(PlaylistJavaScriptWorldIdIsSet());
 
   DCHECK_GE(in_progress_urls_count_, 0);
   in_progress_urls_count_++;
 
+  DCHECK(callback_for_current_request_.is_null());
+  callback_for_current_request_ = std::move(request.callback);
+  DCHECK(!callback_for_current_request_.is_null());
+
+  GURL url(request.url);
+  DCHECK(url.is_valid());
   web_contents_->GetController().LoadURLWithParams(
-      content::NavigationController::LoadURLParams(GURL(url)));
+      content::NavigationController::LoadURLParams(url));
 }
 
 bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
-  return !media_detector_script_.empty();
+  return !media_detector_script_.empty() && in_progress_urls_count_ == 0;
 }
 
 void PlaylistDownloadRequestManager::DidFinishNavigation(
@@ -142,7 +153,10 @@ void PlaylistDownloadRequestManager::DidFinishNavigation(
 void PlaylistDownloadRequestManager::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (in_progress_urls_count_ == 0)
+  if (render_frame_host != web_contents_->GetMainFrame())
+    return;
+
+  if (in_progress_urls_count_ == 0 || callback_for_current_request_.is_null())
     return;
 
   DCHECK(web_contents_->GetMainFrame());
@@ -180,6 +194,7 @@ void PlaylistDownloadRequestManager::OnGetMedia(base::Value value) {
 
   if (in_progress_urls_count_ == 0)
     ScheduleWebContentsDestroying();
+  Observe(nullptr);
 
   if (!value.is_list()) {
     LOG(ERROR) << __func__
@@ -188,12 +203,13 @@ void PlaylistDownloadRequestManager::OnGetMedia(base::Value value) {
     return;
   }
 
+  std::vector<PlaylistItemInfo> items;
   for (const auto& media : value.GetList()) {
     if (!media.is_dict()) {
       LOG(ERROR) << __func__
                  << " Got invalid value after running media detector script";
       print_value(media);
-      return;
+      continue;
     }
 
     auto* name = media.FindStringKey("name");
@@ -209,14 +225,18 @@ void PlaylistDownloadRequestManager::OnGetMedia(base::Value value) {
     DCHECK(src);
 
     PlaylistItemInfo info;
+    info.id = base::Token::CreateRandom().ToString();
     info.title = *name;
     if (thumbnail)
       info.thumbnail_path = *thumbnail;
     info.media_file_path = *src;
-    delegate_->OnPlaylistCreationParamsReady(info);
+    items.push_back(std::move(info));
   }
 
-  FetchPendingURL();
+  DCHECK(!callback_for_current_request_.is_null()) << " callback already ran";
+  std::move(callback_for_current_request_).Run(std::move(items));
+
+  FetchPendingRequest();
 }
 
 void PlaylistDownloadRequestManager::ScheduleWebContentsDestroying() {

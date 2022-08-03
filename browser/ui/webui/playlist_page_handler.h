@@ -37,10 +37,12 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
                                        const GURL& url) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id) override;
+  void CreatePlaylist(playlist::mojom::PlaylistPtr playlist) override;
+  void RemovePlaylist(const std::string& playlist_id) override;
 
   // playlist::PlaylistServiceObserver
-  void OnPlaylistItemStatusChanged(
-      const playlist::PlaylistItemChangeParams& params) override;
+  void OnPlaylistStatusChanged(
+      const playlist::PlaylistChangeParams& params) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;

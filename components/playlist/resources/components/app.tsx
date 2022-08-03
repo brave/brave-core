@@ -12,12 +12,14 @@ import { Playlist } from 'components/definitions/playlist'
 import { CloseCircleOIcon } from 'brave-ui/components/icons'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
 import PlaylistItem from './playlistItem'
+import PlaylistSelect from './playlistSelect'
 
 // Utils
 import * as playlistActions from '../actions/playlist_action_creators'
 import { getPlaylistAPI } from '../api/api'
 
 import * as PlaylistMojo from 'gen/brave/components/playlist/mojom/playlist.mojom.m.js'
+import { getAllActions } from '../api/getAllActions'
 
 interface Props {
   actions: any
@@ -41,8 +43,11 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   getCurrentPlaylist = () => {
-    // TODO(sko): get current playlist index from store
-    return this.props.playlistData.lists.at(0)
+    return this.props.playlistData.currentList
+  }
+
+  findPlaylistWithId = (playlistId: string) => {
+    return this.props.playlistData.lists.find(playlist => playlist.id === playlistId)
   }
 
   getImgSrc = (itemId: string) => {
@@ -100,7 +105,13 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   onClickRemoveItemButton = (playlistItemId: string) => {
-    getPlaylistAPI().removeItemFromPlaylist('', playlistItemId)
+    const currentList = this.getCurrentPlaylist()
+    if (!currentList) {
+      console.error('There\'s no selected playlist.')
+      return
+    }
+
+    getPlaylistAPI().removeItemFromPlaylist(currentList.id!, playlistItemId)
   }
 
   get pageHasDownloadableVideo () {
@@ -112,7 +123,9 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   onClickDownloadVideo = () => {
-    getPlaylistAPI().addMediaFilesFromPageToPlaylist('', this.state.experimentalUrl)
+    getPlaylistAPI().addMediaFilesFromPageToPlaylist(
+        this.props.playlistData.currentList?.id ?? '',
+        this.state.experimentalUrl)
   }
 
   onClickItem = (itemId: string) => {
@@ -127,9 +140,28 @@ export class PlaylistPage extends React.Component<Props, State> {
     document.getElementById('player')?.setAttribute('src', this.getMediaSrc(itemId))
   }
 
+  createPlaylist = (playlist: PlaylistMojo.Playlist) => {
+    getPlaylistAPI().createPlaylist(playlist)
+  }
+
+  selectPlaylist = (playlistId: string) => {
+    const playlist = this.findPlaylistWithId(playlistId)
+    if (!playlist) return
+    getAllActions().selectPlaylist(playlist)
+  }
+
+  removePlaylist = (playlistId: string) => {
+    getPlaylistAPI().removePlaylist(playlistId)
+  }
+
   render () {
     return (
       <div id='playlistPage'>
+        <PlaylistSelect playlists={this.props.playlistData.lists}
+            selectedPlaylist={this.getCurrentPlaylist()}
+            onCreatePlaylist= {this.createPlaylist}
+            onSelectPlaylist={this.selectPlaylist}
+            onRemovePlaylist={this.removePlaylist} />
         <div style={{ minHeight: '600px', width: '1200px' }}>
           <Table header={this.getPlaylistHeader()} rows={this.getPlaylistRows(this.getCurrentPlaylist())}>
             YOUR PLAYLIST IS EMPTY
