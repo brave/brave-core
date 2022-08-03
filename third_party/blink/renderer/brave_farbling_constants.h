@@ -8,6 +8,6 @@
 
 #include "third_party/blink/public/platform/web_common.h"
 
-enum BLINK_EXPORT BraveFarblingLevel { BALANCED = 0, OFF, MAXIMUM };
+enum BraveFarblingLevel { BALANCED = 0, OFF, MAXIMUM };
 
 #endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FARBLING_CONSTANTS_H_
