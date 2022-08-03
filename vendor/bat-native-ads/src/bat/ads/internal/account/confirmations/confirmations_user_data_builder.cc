@@ -24,10 +24,10 @@
 namespace ads {
 
 ConfirmationsUserDataBuilder::ConfirmationsUserDataBuilder(
-    const base::Time time,
+    const base::Time created_at,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type)
-    : time_(time),
+    : created_at_(created_at),
       creative_instance_id_(creative_instance_id),
       confirmation_type_(confirmation_type) {
   DCHECK(!creative_instance_id_.empty());
@@ -49,7 +49,7 @@ void ConfirmationsUserDataBuilder::Build(
         user_data.Merge(std::move(catalog_user_data));
 
         base::Value::Dict created_at_timestamp_user_data =
-            user_data::GetCreatedAtTimestamp(time_);
+            user_data::GetCreatedAtTimestamp(created_at_);
         user_data.Merge(std::move(created_at_timestamp_user_data));
 
         base::Value::Dict locale_user_data = user_data::GetLocale();

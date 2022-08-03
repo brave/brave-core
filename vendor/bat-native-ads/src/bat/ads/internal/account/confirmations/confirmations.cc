@@ -59,13 +59,14 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
                         << transaction.id << " and creative instance id "
                         << transaction.creative_instance_id);
 
-  const base::Time now = base::Time::Now();
+  const base::Time created_at = base::Time::Now();
 
   const ConfirmationsUserDataBuilder user_data_builder(
-      now, transaction.creative_instance_id, transaction.confirmation_type);
+      created_at, transaction.creative_instance_id,
+      transaction.confirmation_type);
   user_data_builder.Build([=](const base::Value::Dict& user_data) {
     const ConfirmationInfo& confirmation = CreateConfirmation(
-        now, transaction.id, transaction.creative_instance_id,
+        created_at, transaction.id, transaction.creative_instance_id,
         transaction.confirmation_type, transaction.ad_type, user_data);
 
     redeem_unblinded_token_->Redeem(confirmation);
@@ -118,7 +119,7 @@ void Confirmations::StopRetrying() {
 }
 
 ConfirmationInfo Confirmations::CreateConfirmation(
-    const base::Time time,
+    const base::Time created_at,
     const std::string& transaction_id,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
@@ -136,7 +137,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
   confirmation.ad_type = ad_type;
-  confirmation.created_at = time;
+  confirmation.created_at = created_at;
 
   if (ShouldRewardUser() && !ConfirmationStateManager::GetInstance()
                                  ->GetUnblindedTokens()
@@ -162,8 +163,10 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     base::JSONWriter::Write(user_data, &json);
     confirmation.user_data = json;
 
-    const std::string& payload = CreateConfirmationRequestDTO(confirmation);
-    confirmation.credential = CreateCredential(unblinded_token, payload);
+    const std::string confirmation_request_dto =
+        CreateConfirmationRequestDTO(confirmation);
+    confirmation.credential =
+        CreateCredential(unblinded_token, confirmation_request_dto);
 
     ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->RemoveToken(
         unblinded_token);

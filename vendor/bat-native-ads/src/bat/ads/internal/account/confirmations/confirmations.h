@@ -49,7 +49,7 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void ProcessRetryQueue();
 
  private:
-  ConfirmationInfo CreateConfirmation(const base::Time time,
+  ConfirmationInfo CreateConfirmation(const base::Time created_at,
                                       const std::string& transaction_id,
                                       const std::string& creative_instance_id,
                                       const ConfirmationType& confirmation_type,

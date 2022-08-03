@@ -25,6 +25,9 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   base::Value::Dict dto;
 
   dto.Set("creativeInstanceId", confirmation.creative_instance_id);
+
+  dto.Set("transactionId", confirmation.transaction_id);
+
   dto.Set("payload", base::Value::Dict());
 
   base::Value::List blinded_payment_tokens;

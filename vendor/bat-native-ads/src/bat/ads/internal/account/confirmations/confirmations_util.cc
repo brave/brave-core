@@ -53,9 +53,11 @@ bool VerifyConfirmation(const ConfirmationInfo& confirmation) {
   privacy::cbr::VerificationKey verification_key =
       verification_key_optional.value();
 
-  const std::string payload = CreateConfirmationRequestDTO(confirmation);
+  const std::string confirmation_request_dto =
+      CreateConfirmationRequestDTO(confirmation);
 
-  return verification_key.Verify(verification_signature, payload);
+  return verification_key.Verify(verification_signature,
+                                 confirmation_request_dto);
 }
 
 }  // namespace ads

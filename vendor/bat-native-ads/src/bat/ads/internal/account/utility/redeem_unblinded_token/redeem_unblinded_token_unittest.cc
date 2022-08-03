@@ -40,6 +40,14 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
         redeem_unblinded_token_delegate_mock_.get());
   }
 
+  ConfirmationInfo BuildConfirmation() {
+    return ::ads::BuildConfirmation(
+        /* id */ "d990ed8d-d739-49fb-811b-c2e02158fb60",
+        /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
+        /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+        ConfirmationType::kViewed, AdType::kNotificationAd);
+  }
+
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
   std::unique_ptr<RedeemUnblindedTokenDelegateMock>
       redeem_unblinded_token_delegate_mock_;
@@ -51,15 +59,15 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
 
   const URLEndpointMap& endpoints = {
       {// Create confirmation request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
             {
-              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
               "payload" : {},
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.717Z",
-              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520"
+              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
             }
           )"}}},
       {// Fetch payment token request
@@ -86,11 +94,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
@@ -122,15 +126,9 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
-  const ConfirmationInfo& expected_confirmation = confirmation;
-
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
@@ -143,7 +141,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(expected_confirmation,
+              OnFailedToRedeemUnblindedToken(confirmation,
                                              /* should_retry */ true,
                                              /* should_backoff */ true));
 
@@ -182,16 +180,13 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   privacy::SetUnblindedTokens(1);
 
-  ConfirmationInfo confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-  confirmation.was_created = true;
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
-  const ConfirmationInfo& expected_confirmation = confirmation;
+  ConfirmationInfo expected_confirmation = confirmation;
+  expected_confirmation.was_created = true;
 
+  // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
@@ -230,16 +225,9 @@ TEST_F(
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
-  ConfirmationInfo expected_confirmation = confirmation;
-  expected_confirmation.was_created = false;
-
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
@@ -252,7 +240,7 @@ TEST_F(
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(expected_confirmation,
+              OnFailedToRedeemUnblindedToken(confirmation,
                                              /* should_retry */ true,
                                              /* should_backoff */ false));
 
@@ -280,11 +268,7 @@ TEST_F(
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
@@ -330,11 +314,7 @@ TEST_F(
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
@@ -380,17 +360,11 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
           )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
-  const ConfirmationInfo& expected_confirmation = confirmation;
-
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnDidSendConfirmation(expected_confirmation));
+              OnDidSendConfirmation(confirmation));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToSendConfirmation(_, _))
@@ -420,20 +394,14 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
        {{net::HTTP_BAD_REQUEST, ""}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
-  const ConfirmationInfo& expected_confirmation = confirmation;
-
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(expected_confirmation, false));
+              OnFailedToSendConfirmation(confirmation, false));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -459,20 +427,14 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
        {{net::HTTP_CONFLICT, ""}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
-  const ConfirmationInfo& expected_confirmation = confirmation;
-
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(expected_confirmation, false));
+              OnFailedToSendConfirmation(confirmation, false));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -498,20 +460,14 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
        {{net::HTTP_INTERNAL_SERVER_ERROR, ""}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation();
 
   // Act
-  const ConfirmationInfo& expected_confirmation = confirmation;
-
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(expected_confirmation, true));
+              OnFailedToSendConfirmation(confirmation, true));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
