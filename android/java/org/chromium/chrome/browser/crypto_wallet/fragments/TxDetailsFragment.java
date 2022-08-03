@@ -22,11 +22,13 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
+import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class TxDetailsFragment extends Fragment {
     private TransactionInfo mTxInfo;
+    private TxData1559 mTxData1559;
 
     public static TxDetailsFragment newInstance(TransactionInfo txInfo) {
         return new TxDetailsFragment(txInfo);
@@ -34,6 +36,9 @@ public class TxDetailsFragment extends Fragment {
 
     private TxDetailsFragment(TransactionInfo txInfo) {
         mTxInfo = txInfo;
+        mTxData1559 = mTxInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                ? mTxInfo.txDataUnion.getEthTxData1559()
+                : null;
     }
 
     @Nullable
@@ -49,8 +54,8 @@ public class TxDetailsFragment extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     public void setupView(View view) {
-        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0)
-                && mTxInfo.txDataUnion.getEthTxData1559().baseData.data.length == 0) {
+        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0) && mTxData1559 != null
+                && mTxData1559.baseData.data.length == 0) {
             return;
         }
         assert mTxInfo.txParams.length == mTxInfo.txArgs.length;
@@ -97,10 +102,9 @@ public class TxDetailsFragment extends Fragment {
             detailsParam3Widget.setText(detailsParam3);
         }
 
-        if (mTxInfo.txParams.length == 0
-                && mTxInfo.txDataUnion.getEthTxData1559().baseData.data.length != 0) {
-            String detailsParam1 =
-                    Utils.numberArrayToHexStr(mTxInfo.txDataUnion.getEthTxData1559().baseData.data);
+        if (mTxInfo.txParams.length == 0 && mTxData1559 != null
+                && mTxData1559.baseData.data.length != 0) {
+            String detailsParam1 = Utils.numberArrayToHexStr(mTxData1559.baseData.data);
             TextView detailsParam1Widget = view.findViewById(R.id.tx_details_param_1);
             detailsParam1Widget.setVisibility(View.VISIBLE);
             detailsParam1Widget.setText(detailsParam1);

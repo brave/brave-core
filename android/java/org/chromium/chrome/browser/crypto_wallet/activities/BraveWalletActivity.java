@@ -10,20 +10,15 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FI
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -32,22 +27,9 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
-import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.BlockchainRegistry;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
@@ -60,16 +42,13 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -91,6 +70,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
+    private WalletModel mWalletModel;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,17 +119,26 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             mSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
         }
 
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
+
         mSwapButton.setOnClickListener(v -> {
             assert mJsonRpcService != null;
-            mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
-                Utils.isCustomNetwork(mJsonRpcService, CoinType.ETH, chainId, isCustomNetwork -> {
-                    SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
-                            SwapBottomSheetDialogFragment.newInstance();
-                    swapBottomSheetDialogFragment.setIsCustomNetwork(isCustomNetwork);
-                    swapBottomSheetDialogFragment.show(getSupportFragmentManager(),
-                            SwapBottomSheetDialogFragment.TAG_FRAGMENT);
-                });
-            });
+            LiveDataUtil.observeOnce(
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
+                    defaultNetwork -> {
+                        LiveDataUtil.observeOnce(
+                                mWalletModel.getCryptoModel().mIsSwapEnabled, isSwapSupported -> {
+                                    SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
+                                            SwapBottomSheetDialogFragment.newInstance(
+                                                    isSwapSupported);
+                                    swapBottomSheetDialogFragment.setNetwork(defaultNetwork);
+                                    swapBottomSheetDialogFragment.show(getSupportFragmentManager(),
+                                            SwapBottomSheetDialogFragment.TAG_FRAGMENT);
+                                });
+                    });
         });
 
         mPendingTxNotification = findViewById(R.id.pending_tx_notification);

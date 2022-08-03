@@ -624,6 +624,31 @@ public class Utils {
             return value;
     }
 
+    public static long toDecimalLamport(String amount, int decimals) {
+        try {
+            amount = removeHexPrefix(amount);
+            BigDecimal value = new BigDecimal(amount);
+
+            String resStr =
+                    value.multiply(new BigDecimal(getDecimalsDepNumber(decimals))).toPlainString();
+            int integerPlaces = resStr.indexOf('.');
+            if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+                resStr = resStr.substring(0, integerPlaces + 9);
+            }
+            return Long.parseLong(resStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String removeHexPrefix(String value) {
+        if (value.startsWith("0x")) {
+            return value.substring(2);
+        }
+        return value;
+    }
+
     public static TxData getTxData(
             String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
         TxData res = new TxData();
@@ -1497,5 +1522,25 @@ public class Utils {
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {
         if (token.symbol.equals(selectedNetwork.symbol)) return true;
         return false;
+    }
+
+    public static String getKeyringForCoinType(int coinType) {
+        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+        switch (coinType) {
+            case CoinType.ETH:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+            case CoinType.SOL:
+                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
+                break;
+            case CoinType.FIL:
+                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
+                break;
+            default:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+        }
+
+        return keyring;
     }
 }
