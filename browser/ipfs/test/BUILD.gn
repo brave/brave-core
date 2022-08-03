@@ -29,6 +29,7 @@ source_set("unittests") {
     "//brave/components/tor/buildflags",
     "//chrome/common:channel_info",
     "//chrome/test:test_support",
+    "//components/security_interstitials/content:security_interstitial_page",
     "//content/test:test_support",
     "//net",
     "//net:test_support",
