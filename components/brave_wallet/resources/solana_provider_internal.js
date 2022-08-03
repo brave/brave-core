@@ -13,9 +13,7 @@
     createPublickey: {
       value: (base58Str) => {
         const PublicKey = require('@solana/web3.js').PublicKey
-        const result = new $Object.self()
-        result.publicKey = new PublicKey(base58Str)
-        return result
+        return new PublicKey(base58Str)
       },
       writable: false
     },

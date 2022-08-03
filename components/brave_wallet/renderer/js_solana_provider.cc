@@ -190,9 +190,7 @@ void JSSolanaProvider::AccountChangedEvent(
     args.push_back(v8::Null(isolate));
   } else {
     // emits solanaWeb3.PublicKey
-    v8::Local<v8::Value> v8_public_key;
-    CHECK(GetProperty(context, CreatePublicKey(context, *account), u"publicKey")
-              .ToLocal(&v8_public_key));
+    v8::Local<v8::Value> v8_public_key = CreatePublicKey(context, *account);
     args.push_back(std::move(v8_public_key));
   }
   FireEvent(solana::kAccountChangedEvent, std::move(args));
@@ -239,11 +237,7 @@ v8::Local<v8::Value> JSSolanaProvider::GetPublicKey(gin::Arguments* arguments) {
   if (!solana_provider_->GetPublicKey(&public_key) || public_key.empty())
     return v8::Null(isolate);
 
-  v8::Local<v8::Value> v8_public_key;
-  CHECK(GetProperty(context, CreatePublicKey(context, public_key), u"publicKey")
-            .ToLocal(&v8_public_key));
-
-  return v8_public_key;
+  return CreatePublicKey(context, public_key);
 }
 
 v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
@@ -570,8 +564,14 @@ void JSSolanaProvider::OnConnect(
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> result;
+  v8::Local<v8::Value> v8_public_key;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    result = CreatePublicKey(context, public_key);
+    v8_public_key = CreatePublicKey(context, public_key);
+    v8::Local<v8::Object> object = v8::Object::New(isolate);
+    CHECK(CreateDataProperty(context, object, u"publicKey", v8_public_key)
+              .ToChecked());
+    result = object;
+
   } else {
     base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
@@ -581,10 +581,6 @@ void JSSolanaProvider::OnConnect(
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
                result, error == mojom::SolanaProviderError::kSuccess);
   if (error == mojom::SolanaProviderError::kSuccess) {
-    v8::Local<v8::Value> v8_public_key;
-    CHECK(
-        GetProperty(context, CreatePublicKey(context, public_key), u"publicKey")
-            .ToLocal(&v8_public_key));
     std::vector<v8::Local<v8::Value>> args;
     args.push_back(std::move(v8_public_key));
     FireEvent(kConnectEvent, std::move(args));
@@ -633,10 +629,7 @@ void JSSolanaProvider::OnSignMessage(
     const std::string* public_key = result.FindString("publicKey");
     const std::string* signature = result.FindString("signature");
     DCHECK(public_key && signature);
-    v8::Local<v8::Value> v8_public_key;
-    CHECK(GetProperty(context, CreatePublicKey(context, *public_key),
-                      u"publicKey")
-              .ToLocal(&v8_public_key));
+    v8::Local<v8::Value> v8_public_key = CreatePublicKey(context, *public_key);
     std::vector<uint8_t> signature_bytes(kSolanaSignatureSize);
     CHECK(Base58Decode(*signature, &signature_bytes, signature_bytes.size()));
     const base::Value signature_value(signature_bytes);
@@ -741,7 +734,12 @@ void JSSolanaProvider::OnRequest(
       const std::string* public_key = result.FindString("publicKey");
       DCHECK(public_key);
 
-      v8_result = CreatePublicKey(context, *public_key);
+      v8::Local<v8::Value> v8_public_key =
+          CreatePublicKey(context, *public_key);
+      v8::Local<v8::Object> object = v8::Object::New(isolate);
+      CHECK(CreateDataProperty(context, object, u"publicKey", v8_public_key)
+                .ToChecked());
+      v8_result = object;
     } else {
       // Dictionary to object
       base::Value value(std::move(result));
