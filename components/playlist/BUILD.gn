@@ -6,12 +6,21 @@
 import("//brave/build/config.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
 
-source_set("playlist") {
+source_set("playlist_features") {
   assert(enable_playlist)
 
   sources = [
     "features.cc",
     "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+source_set("playlist") {
+  assert(enable_playlist)
+
+  sources = [
     "media_detector_component_installer.cc",
     "media_detector_component_installer.h",
     "media_detector_component_manager.cc",
@@ -54,5 +63,8 @@ source_set("playlist") {
     "//url",
   ]
 
-  public_deps = [ "buildflags" ]
+  public_deps = [
+    ":playlist_features",
+    "buildflags",
+  ]
 }

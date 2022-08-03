@@ -5,6 +5,7 @@
 
 #include "base/command_line.h"
 #include "base/test/launcher/test_launcher.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/test/base/brave_test_launcher_delegate.h"
 #include "build/build_config.h"
 
@@ -12,6 +13,11 @@
 #include "base/test/test_switches.h"
 #include "base/win/win_util.h"
 #endif  // BUILDFLAG(IS_WIN)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "base/scoped_add_feature_flags.h"
+#include "brave/components/playlist/features.h"
+#endif
 
 int main(int argc, char** argv) {
   base::CommandLine::Init(argc, argv);
@@ -30,6 +36,12 @@ int main(int argc, char** argv) {
     base::win::EnableHighDPISupport();
   }
 #endif  // BUILDFLAG(IS_WIN)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  base::ScopedAddFeatureFlags scoped_feature_flags(
+      base::CommandLine::ForCurrentProcess());
+  scoped_feature_flags.DisableIfNotSet(playlist::features::kPlaylist);
+#endif
 
   ChromeTestSuiteRunner runner;
   BraveTestLauncherDelegate delegate(&runner);

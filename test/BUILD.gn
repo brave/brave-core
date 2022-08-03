@@ -623,6 +623,12 @@ static_library("browser_tests_runner") {
     deps = [ "//chrome/installer/util:strings" ]
   }
 
+  if (defined(deps)) {
+    deps += [ "//brave/components/playlist:playlist" ]
+  } else {
+    deps = [ "//brave/components/playlist:playlist" ]
+  }
+
   public_deps = [ ":browser_test_support" ]
 
   sources = [ "base/browser_tests_main.cc" ]

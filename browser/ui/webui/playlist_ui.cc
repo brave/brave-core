@@ -51,8 +51,8 @@ void PlaylistUI::CreatePageHandler(
     mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler) {
   DCHECK(pending_page.is_valid());
   page_handler_ = std::make_unique<PlaylistPageHandler>(
-      Profile::FromWebUI(web_ui()), std::move(pending_page_handler),
-      std::move(pending_page));
+      Profile::FromWebUI(web_ui()), web_ui()->GetWebContents(),
+      std::move(pending_page_handler), std::move(pending_page));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)

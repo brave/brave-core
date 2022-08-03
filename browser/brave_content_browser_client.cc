@@ -213,9 +213,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_ads/brave_ads_host.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 namespace {
 
@@ -597,7 +597,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         playlist::mojom::PageHandlerFactory, playlist::PlaylistUI>(map);

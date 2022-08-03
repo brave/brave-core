@@ -24,6 +24,7 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
  public:
   PlaylistPageHandler(
       Profile* profile,
+      content::WebContents* contents,
       mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler,
       mojo::PendingRemote<playlist::mojom::Page> pending_page);
   ~PlaylistPageHandler() override;
@@ -35,6 +36,8 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
                    PlaylistPageHandler::GetPlaylistCallback callback) override;
   void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
                                        const GURL& url) override;
+  void AddMediaFilesFromOpenTabsToPlaylist(
+      const std::string& playlist_id) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id) override;
   void CreatePlaylist(playlist::mojom::PlaylistPtr playlist) override;
@@ -46,6 +49,7 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
 
  private:
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   mojo::Remote<playlist::mojom::Page> page_;
   mojo::Receiver<playlist::mojom::PageHandler> handler_;
