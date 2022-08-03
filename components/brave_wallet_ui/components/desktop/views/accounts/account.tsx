@@ -138,8 +138,10 @@ export const Account = (props: Props) => {
   }, [userVisibleTokensInfo, selectedAccount, networkList])
 
   const nonFungibleTokens = React.useMemo(
-    () => accountsTokensList.filter(({ isErc721 }) => isErc721),
-    [accountsTokensList]
+    () =>
+      accountsTokensList.filter(({ isErc721 }) => isErc721)
+        .filter((token) => getBalance(selectedAccount, token) !== '0'),
+    [accountsTokensList, selectedAccount, getBalance]
   )
 
   const funigbleTokens = React.useMemo(
@@ -219,7 +221,7 @@ export const Account = (props: Props) => {
               spotPrices={transactionSpotPrices}
               networks={networkList}
               defaultCurrencies={defaultCurrencies}
-              key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
+              key={`${item.contractAddress}-${item.symbol}-${item.chainId}-${item.tokenId}`}
               assetBalance={getBalance(selectedAccount, item)}
               token={item}
             />

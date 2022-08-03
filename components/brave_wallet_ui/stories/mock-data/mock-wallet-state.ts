@@ -8,6 +8,8 @@ import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 // types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
 import { AllNetworksOption } from '../../options/network-filter-options'
+import { AllAssetsFilterOption } from '../../options/asset-filter-options'
+import { mockMoonCatNFT } from './mock-asset-options'
 
 // mocks
 import { mockNetwork } from '../../common/constants/mocks'
@@ -20,7 +22,8 @@ const mockAccount: WalletAccountType = {
   id: '1',
   name: 'Account 1',
   tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346'
+    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
+    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
   },
   nativeBalanceRegistry: {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
@@ -223,7 +226,10 @@ export const mockWalletState: WalletState = {
       visible: true,
       coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
-    }
+    },
+    mockMoonCatNFT,
+    { ...mockMoonCatNFT, tokenId: '0x52a5' },
+    { ...mockMoonCatNFT, tokenId: '0x62a5' }
   ],
   gasEstimates: undefined,
   hasIncorrectPassword: false,
@@ -323,13 +329,19 @@ export const mockWalletState: WalletState = {
       visible: true,
       coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.ROPSTEN_CHAIN_ID
-    }
+    },
+    mockMoonCatNFT,
+    { ...mockMoonCatNFT, tokenId: '0x52a5' },
+    { ...mockMoonCatNFT, tokenId: '0x62a5' },
+    { ...mockMoonCatNFT, tokenId: '0x72a5' },
+    { ...mockMoonCatNFT, tokenId: '0x82a5' }
   ],
   transactionProviderErrorRegistry: {},
   defaultNetworks: [mockNetwork],
   isTestNetworksEnabled: true,
   selectedCoin: BraveWallet.CoinType.ETH,
   selectedNetworkFilter: AllNetworksOption,
+  selectedAssetFilter: AllAssetsFilterOption,
   defaultAccounts: [
     {
       address: mockAccount.address,

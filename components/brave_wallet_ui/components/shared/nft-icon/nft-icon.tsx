@@ -5,18 +5,32 @@
 
 import * as React from 'react'
 
-import { AssetIconProps } from '../style'
 import {
   NftUiCommand,
   sendMessageToNftUiFrame,
-  UpdateNftImageUrl
+  UpdateNftImageUrl,
+  UpdateLoadingMessage
 } from '../../../nft/nft-ui-messages'
 
-import { NftImageIframe } from './nft-icon-styles'
+import {
+  NftImageIframe,
+  NftImageResponsiveIframe
+} from './nft-icon-styles'
 
-export const NftIcon = ({ icon }: AssetIconProps) => {
+interface Props {
+  icon?: string
+  responsive?: boolean
+}
+
+export const NftIcon = (props: Props) => {
+  const { icon, responsive } = props
   const [loaded, setLoaded] = React.useState<boolean>()
   const nftImageIframeRef = React.useRef<HTMLIFrameElement>(null)
+
+  const loadingCommand: UpdateLoadingMessage = {
+    command: NftUiCommand.UpdateLoading,
+    payload: false
+  }
 
   React.useEffect(() => {
     if (loaded && icon && nftImageIframeRef?.current) {
@@ -25,15 +39,23 @@ export const NftIcon = ({ icon }: AssetIconProps) => {
         payload: icon
       }
       sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, command)
+      sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, loadingCommand)
     }
   }, [loaded, icon, nftImageIframeRef])
 
   return (
-    <NftImageIframe
-      onLoad={() => setLoaded(true)}
-      ref={nftImageIframeRef}
-      src="chrome-untrusted://nft-display"
-      sandbox="allow-scripts allow-same-origin"
-    />
+    responsive
+      ? <NftImageResponsiveIframe
+        onLoad={() => setLoaded(true)}
+        ref={nftImageIframeRef}
+        src="chrome-untrusted://nft-display"
+        sandbox="allow-scripts allow-same-origin"
+      />
+      : <NftImageIframe
+        onLoad={() => setLoaded(true)}
+        ref={nftImageIframeRef}
+        src="chrome-untrusted://nft-display"
+        sandbox="allow-scripts allow-same-origin"
+      />
   )
 }

@@ -72,7 +72,9 @@ function NetworkFilterSelector () {
 
   return (
     <StyledWrapper>
-      <DropDownButton onClick={toggleShowNetworkFilter}>
+      <DropDownButton
+        buttonSize='big'
+        onClick={toggleShowNetworkFilter}>
         <LeftSide>
           {selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
             <CreateNetworkIcon network={selectedNetworkFilter} marginRight={14} size='big' />

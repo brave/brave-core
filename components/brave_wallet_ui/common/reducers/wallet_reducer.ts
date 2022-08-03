@@ -18,7 +18,8 @@ import {
   DefaultCurrencies,
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
-  SolFeeEstimates
+  SolFeeEstimates,
+  AssetFilterOption
 } from '../../constants/types'
 import {
   IsEip1559Changed,
@@ -36,6 +37,7 @@ import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
+import { AllAssetsFilterOption } from '../../options/asset-filter-options'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -101,6 +103,7 @@ const defaultState: WalletState = {
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
+  selectedAssetFilter: AllAssetsFilterOption,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
@@ -559,6 +562,13 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       passwordAttempts: payload
+    }
+  })
+
+  reducer.on(WalletActions.setSelectedAssetFilterItem, (state: WalletState, payload: AssetFilterOption): WalletState => {
+    return {
+      ...state,
+      selectedAssetFilter: payload
     }
   })
 

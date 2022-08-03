@@ -87,8 +87,8 @@ export const mockZrxErc20Token = {
 }
 
 export const mockMoonCatNFT = {
-  contractAddress: '7',
-  name: 'AcclimatedMoonCats',
+  contractAddress: '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69',
+  name: 'MoonCats',
   symbol: 'AMC',
   logo: MoonCatIcon,
   isErc20: false,
@@ -182,5 +182,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     coin: BraveWallet.CoinType.ETH,
     chainId: '0x1'
   },
-  mockMoonCatNFT
+  mockMoonCatNFT,
+  { ...mockMoonCatNFT, tokenId: '0x52a5' },
+  { ...mockMoonCatNFT, tokenId: '0x62a5' }
 ]
