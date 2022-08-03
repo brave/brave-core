@@ -520,20 +520,22 @@ class JsonRpcServiceUnitTest : public testing::Test {
         [&, expected_url, expected_method, expected_cache_header,
          content](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value(100, '\0');
-          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
-          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
-          EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+          std::string header_value;
+          EXPECT_EQ(request.headers.GetHeader("X-Eth-Method", &header_value),
+                    !expected_method.empty());
           EXPECT_EQ(expected_method, header_value);
           if (expected_method == "eth_blockNumber") {
             EXPECT_TRUE(
                 request.headers.GetHeader("X-Eth-Block", &header_value));
             EXPECT_EQ(expected_cache_header, header_value);
           } else if (expected_method == "eth_getBlockByNumber") {
-            EXPECT_TRUE(
-                request.headers.GetHeader("X-eth-get-block", &header_value));
+            EXPECT_EQ(
+                request.headers.GetHeader("X-eth-get-block", &header_value),
+                !expected_cache_header.empty());
             EXPECT_EQ(expected_cache_header, header_value);
           }
+          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
+          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
@@ -1675,6 +1677,28 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       request, true, base::Value(), mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, Request_BadHeaderValues) {
+  std::string request =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\n\","
+      "\"params\":"
+      "[]}";
+  std::string mock_response =
+      R"({"jsonrpc":"2.0",
+          "id":1,
+          "error":": {
+            "code": -32601,
+            "message": "unsupported method"
+          }})";
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH), "",
+                 "", mock_response);
+  bool callback_called = false;
+  json_rpc_service_->Request(
+      request, true, base::Value(), mojom::CoinType::ETH,
+      base::BindOnce(&OnRequestResponse, &callback_called, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
