@@ -206,6 +206,10 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV2ToV3();
 
   MigrateShieldsSettingsV3ToV4(version);
+
+#if BUILDFLAG(IS_ANDROID)
+  MigrateFPShieldsSettingsAndroid();
+#endif
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries(
@@ -453,6 +457,33 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
         ContentSettingToValue(ValueToContentSetting(new_rules[i].value)),
         {new_rules[i].expiration, new_rules[i].session_model});
   }
+}
+
+void BravePrefProvider::MigrateFPShieldsSettingsAndroid() {
+  if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration))
+    return;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+      /*off_the_record*/ false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+
+    if (rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
+        rule.value == CONTENT_SETTING_BLOCK) {
+      SetWebsiteSettingInternal(rule.primary_pattern, rule.secondary_pattern,
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_DEFAULT),
+                                {rule.expiration, rule.session_model});
+    } else if (rule.secondary_pattern ==
+               ContentSettingsPattern::FromString("https://balanced/*")) {
+      SetWebsiteSettingInternal(rule.primary_pattern, rule.secondary_pattern,
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_DEFAULT),
+                                {});
+    }
+  }
+  rule_iterator.reset();
+  prefs_->SetBoolean(kBraveShieldsFPSettingsMigration, true);
 }
 
 bool BravePrefProvider::SetWebsiteSetting(

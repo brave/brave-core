@@ -73,6 +73,7 @@ class BravePrefProvider : public PrefProvider,
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void MigrateShieldsSettingsV2ToV3();
   void MigrateShieldsSettingsV3ToV4(int start_version);
+  void MigrateFPShieldsSettingsAndroid();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);
