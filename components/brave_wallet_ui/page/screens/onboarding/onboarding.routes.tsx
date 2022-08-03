@@ -27,38 +27,84 @@ import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 export const OnboardingRoutes = () => {
  // redux
  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
- const walletTermsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
+ const termsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
 
   // render
-
-  if (!walletTermsAcknowledged) {
-    return (
-      <Switch>
-        <Route path={WalletRoutes.OnboardingWelcome} exact>
-          <OnboardingWelcome />
-        </Route>
-
-        <Route path={WalletRoutes.Onboarding} exact>
-          <Redirect to={WalletRoutes.OnboardingWelcome} />
-        </Route>
-
-        <Redirect to={WalletRoutes.Onboarding} />
-      </Switch>
-    )
-  }
-
   return (
     <Switch>
 
-      {isWalletCreated &&
-        <Route path={WalletRoutes.OnboardingComplete} exact>
-          <OnboardingSuccess />
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingWelcome} exact>
+          <OnboardingWelcome />
         </Route>
+      }
+
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.Onboarding} exact>
+          <Redirect to={WalletRoutes.OnboardingWelcome} />
+        </Route>
+      }
+
+      {(!termsAcknowledged && !isWalletCreated) &&
+        <Redirect to={WalletRoutes.OnboardingWelcome} />
       }
 
       <Route path={WalletRoutes.OnboardingCreatePassword} exact>
         <OnboardingCreatePassword />
       </Route>
+
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingImportOrRestore} exact>
+          <OnboardingImportOrRestoreWallet />
+        </Route>
+      }
+
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingRestoreWallet} exact>
+          <OnboardingRestoreFromRecoveryPhrase
+            key='seed' // keys are set here to prevent holding state between page changes
+            restoreFrom='seed'
+          />
+        </Route>
+      }
+
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
+          <OnboardingRestoreFromRecoveryPhrase
+            key='metamask'
+            restoreFrom='metamask'
+          />
+        </Route>
+      }
+
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingImportMetaMaskSeed} exact>
+          <OnboardingRestoreFromRecoveryPhrase
+            key='metamask-seed'
+            restoreFrom='metamask-seed'
+          />
+        </Route>
+      }
+
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingImportCryptoWallets} exact>
+          <OnboardingRestoreFromRecoveryPhrase
+            key='legacy'
+            restoreFrom='legacy'
+          />
+        </Route>
+      }
+
+      {!isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingImportCryptoWalletsSeed} exact>
+          <OnboardingRestoreFromRecoveryPhrase
+            key='legacy-seed'
+            restoreFrom='legacy-seed'
+          />
+        </Route>
+      }
+
+      {!isWalletCreated && <Redirect to={WalletRoutes.OnboardingWelcome} />}
 
       <Route path={WalletRoutes.OnboardingExplainRecoveryPhrase} exact>
         <OnboardingRecoveryPhraseExplainer />
@@ -72,54 +118,11 @@ export const OnboardingRoutes = () => {
         <OnboardingVerifyRecoveryPhrase />
       </Route>
 
-      <Route path={WalletRoutes.OnboardingImportOrRestore} exact>
-        <OnboardingImportOrRestoreWallet />
+      <Route path={WalletRoutes.OnboardingComplete} exact>
+        <OnboardingSuccess />
       </Route>
 
-      <Route path={WalletRoutes.OnboardingRestoreWallet} exact>
-        <OnboardingRestoreFromRecoveryPhrase
-          key='seed' // keys are set here to prevent holding state between page changes
-          restoreFrom='seed'
-        />
-      </Route>
-
-      <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
-        <OnboardingRestoreFromRecoveryPhrase
-          key='metamask'
-          restoreFrom='metamask'
-        />
-      </Route>
-
-      <Route path={WalletRoutes.OnboardingImportMetaMaskSeed} exact>
-        <OnboardingRestoreFromRecoveryPhrase
-          key='metamask-seed'
-          restoreFrom='metamask-seed'
-        />
-      </Route>
-
-      <Route path={WalletRoutes.OnboardingImportCryptoWallets} exact>
-        <OnboardingRestoreFromRecoveryPhrase
-          key='legacy'
-          restoreFrom='legacy'
-        />
-      </Route>
-
-      <Route path={WalletRoutes.OnboardingImportCryptoWalletsSeed} exact>
-        <OnboardingRestoreFromRecoveryPhrase
-          key='legacy-seed'
-          restoreFrom='legacy-seed'
-        />
-      </Route>
-
-      <Route path={WalletRoutes.OnboardingWelcome} exact>
-        <OnboardingWelcome />
-      </Route>
-
-      <Route path={WalletRoutes.Onboarding} exact>
-        <Redirect to={WalletRoutes.OnboardingWelcome} />
-      </Route>
-
-      <Redirect to={WalletRoutes.Onboarding} />
+      <Redirect to={WalletRoutes.OnboardingComplete} />
 
     </Switch>
   )
