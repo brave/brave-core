@@ -24,7 +24,8 @@ import {
 import {
   BraveWallet,
   NFTMetadataReturnType,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  ImportAccountErrorType
 } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
@@ -43,7 +44,7 @@ export const privateKeyAvailable = createAction<PrivateKeyAvailablePayloadType>(
 export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
 export const setShowAddModal = createAction<boolean>('setShowAddModal')
-export const setImportAccountError = createAction<boolean>('setImportAccountError')
+export const setImportAccountError = createAction<ImportAccountErrorType>('setImportAccountError')
 export const setImportWalletError = createAction<ImportWalletErrorPayloadType>('setImportWalletError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')

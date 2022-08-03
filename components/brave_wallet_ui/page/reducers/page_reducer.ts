@@ -9,7 +9,8 @@ import {
   BraveWallet,
   PageState,
   ImportWalletError,
-  NFTMetadataReturnType
+  NFTMetadataReturnType,
+  ImportAccountErrorType
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
@@ -23,7 +24,7 @@ const defaultState: PageState = {
   showAddModal: false,
   showRecoveryPhrase: false,
   invalidMnemonic: false,
-  importAccountError: false,
+  importAccountError: undefined,
   importWalletError: { hasError: false },
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
@@ -135,7 +136,7 @@ export const createPageReducer = (initialState: PageState) => {
     }
   })
 
-  reducer.on(Actions.setImportAccountError, (state: PageState, payload: boolean) => {
+  reducer.on(Actions.setImportAccountError, (state: PageState, payload: ImportAccountErrorType) => {
     return {
       ...state,
       importAccountError: payload

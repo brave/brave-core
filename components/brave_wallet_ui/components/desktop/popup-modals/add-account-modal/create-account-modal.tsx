@@ -14,7 +14,13 @@ import { getLocale } from '$web-common/locale'
 import { CreateAccountOptions } from '../../../../options/create-account-options'
 
 // types
-import { BraveWallet, CreateAccountOptionsType, WalletRoutes, WalletState } from '../../../../constants/types'
+import {
+  BraveWallet,
+  CreateAccountOptionsType,
+  WalletRoutes,
+  WalletState,
+  ImportAccountErrorType
+} from '../../../../constants/types'
 import { FilecoinNetworkTypes, FilecoinNetworkLocaleMapping, FilecoinNetwork } from '../../../../common/hardware/types'
 
 // actions
@@ -70,18 +76,18 @@ export const CreateAccountModal = () => {
   }, [accounts, selectedAccountType])
 
   // methods
-  const setImportAccountError = React.useCallback((hasError: boolean) => {
+  const setImportAccountError = React.useCallback((hasError: ImportAccountErrorType) => {
     dispatch(WalletPageActions.setImportAccountError(hasError))
   }, [])
 
   const onClickClose = React.useCallback(() => {
-    setImportAccountError(false)
+    setImportAccountError(undefined)
     history.push(WalletRoutes.Accounts)
   }, [setImportAccountError])
 
   const handleAccountNameChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value)
-    setImportAccountError(false)
+    setImportAccountError(undefined)
   }, [setImportAccountError])
 
   const onChangeFilecoinNetwork = React.useCallback((network: FilecoinNetwork) => {
