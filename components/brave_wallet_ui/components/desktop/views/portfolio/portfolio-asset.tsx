@@ -29,6 +29,7 @@ import {
   UpdateLoadingMessage, UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage, UpdateTokenNetworkMessage
 } from '../../../../nft/nft-ui-messages'
+import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -42,6 +43,7 @@ import { BackButton } from '../../../shared'
 import withPlaceholderIcon from '../../../shared/create-placeholder-icon'
 import { ChartControlBar, LineChart } from '../../'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
+import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
 // Hooks
 import { useBalance, usePricing, useTransactionParser } from '../../../../common/hooks'
@@ -53,7 +55,7 @@ import {
   AssetIcon,
   AssetNameText,
   AssetRow,
-  BalanceRow,
+  BalanceRow, BridgeToAuroraButton,
   DetailText,
   InfoColumn,
   NetworkDescription,
@@ -69,8 +71,13 @@ import {
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
+const rainbowbridgeLink = 'https://rainbowbridge.app'
+const bridgeToAuroraWarningShownKey = 'bridgeToAuroraWarningShown'
 
 export const PortfolioAsset = () => {
+  // state
+  const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
+  const [bridgeToAuroraWarningShown, setBridgeToAuroraWarningShown] = React.useState<boolean>()
   // routing
   const history = useHistory()
   const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
@@ -173,6 +180,13 @@ export const PortfolioAsset = () => {
       ? userVisibleTokensInfo.find((token) => tokenId ? token.contractAddress === assetId && token.tokenId === tokenId : token.contractAddress === assetId)
       : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase())
   }, [assetId, userVisibleTokensInfo, selectedTimeline, tokenId])
+
+  const isSelectedAssetBridgeSupported = React.useMemo(() => {
+    if (!selectedAssetFromParams) return false
+    return auroraSupportedContractAddresses
+        .includes(selectedAssetFromParams.contractAddress.toLowerCase()) ||
+      selectedAssetFromParams.symbol.toUpperCase() === 'ETH'
+  }, [selectedAssetFromParams])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo(() => {
@@ -295,6 +309,24 @@ export const PortfolioAsset = () => {
 
   const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
 
+  const onToggleShowBridgeToAurora = React.useCallback(() => {
+    if (bridgeToAuroraWarningShown) {
+      onOpenRainbowAppClick()
+    } else {
+      setShowBridgeToAuroraModal(prevShoModal => !prevShoModal)
+      localStorage.setItem(bridgeToAuroraWarningShownKey, 'true')
+    }
+  }, [bridgeToAuroraWarningShown])
+
+  const onOpenRainbowAppClick = React.useCallback(() => {
+    chrome.tabs.create({ url: rainbowbridgeLink }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+    setShowBridgeToAuroraModal(false)
+  }, [])
+
   // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
@@ -347,6 +379,10 @@ export const PortfolioAsset = () => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
   }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList])
+
+  React.useEffect(() => {
+    setBridgeToAuroraWarningShown(localStorage.getItem(bridgeToAuroraWarningShownKey) === 'true')
+  })
 
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
@@ -423,6 +459,21 @@ export const PortfolioAsset = () => {
           onUpdateBalance={onUpdateBalance}
           isLoading={selectedAsset ? isLoading : parseFloat(fullPortfolioFiatBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
           isDisabled={selectedAsset ? false : parseFloat(fullPortfolioFiatBalance) === 0}
+        />
+      }
+
+      {!isNftAsset && isSelectedAssetBridgeSupported &&
+        <BridgeToAuroraButton
+          onClick={onToggleShowBridgeToAurora}
+        >
+          Bridge to Aurora
+        </BridgeToAuroraButton>
+      }
+
+      {showBridgeToAuroraModal &&
+        <BridgeToAuroraModal
+          onClose={onToggleShowBridgeToAurora}
+          onOpenRainbowAppClick={onOpenRainbowAppClick}
         />
       }
 
