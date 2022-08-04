@@ -6,7 +6,6 @@
 #include "brave/components/brave_vpn/pref_names.h"
 
 #include "brave/components/skus/browser/skus_utils.h"
-#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_vpn {

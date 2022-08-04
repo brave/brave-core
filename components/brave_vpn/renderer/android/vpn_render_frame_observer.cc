@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -73,10 +74,9 @@ void VpnRenderFrameObserver::OnGetPurchaseToken(
     return;
   auto* frame = render_frame();
   if (frame && purchase_token.length() > 0) {
-    std::u16string set_local_storage(
-        u"window.sessionStorage.setItem(\"braveVpn.receipt\", \"");
-    set_local_storage.append(base::UTF8ToUTF16(purchase_token));
-    set_local_storage.append(u"\");");
+    std::u16string set_local_storage =
+        base::StrCat({u"window.sessionStorage.setItem(\"braveVpn.receipt\", \"",
+                      base::UTF8ToUTF16(purchase_token), u"\");"});
     frame->ExecuteJavaScript(set_local_storage);
   }
 }

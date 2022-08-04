@@ -880,7 +880,9 @@ void BraveVpnService::OnResume() {}
 
 #if BUILDFLAG(IS_ANDROID)
 void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
-  std::string purchase_token_string;
+  std::string purchase_token_string = "";
+  std::string package_string = "com.brave.browser";
+
   // Get the Android purchase token (for Google Play Store).
   // The value for this is validated on the account.brave.com side
   auto* purchase_token =
@@ -890,10 +892,17 @@ void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
         prefs_->GetString(prefs::kBraveVPNPurchaseTokenAndroid);
   }
 
+  // Package name is important; for real users, it'll be the Release package.
+  // For testing we do have the ability to use the Nightly package.
+  auto* package = prefs_->FindPreference(prefs::kBraveVPNPackageAndroid);
+  if (package && !package->IsDefaultValue()) {
+    package_string = prefs_->GetString(prefs::kBraveVPNPackageAndroid);
+  }
+
   base::Value response(base::Value::Type::DICTIONARY);
   response.SetStringKey("type", "android");
-  response.SetStringKey("raw_receipt", purchase_token_string.c_str());
-  response.SetStringKey("package", "com.brave.browser");
+  response.SetStringKey("raw_receipt", purchase_token_string);
+  response.SetStringKey("package", package_string);
   response.SetStringKey("subscription_id", "brave-firewall-vpn-premium");
 
   std::string response_json;

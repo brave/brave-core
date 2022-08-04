@@ -39,5 +39,6 @@ source_set("unit_tests") {
     "//brave/components/brave_vpn/renderer/android",
     "//content/public/renderer",
     "//testing/gtest",
+    "//v8",
   ]
 }
