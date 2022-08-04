@@ -95,8 +95,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                 if (mIsUpdate) {
                     if (mIsImported) {
                         mKeyringService.setKeyringImportedAccountName(
-                                BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
-                                mAddAccountText.getText().toString(), result -> {
+                                Utils.getKeyringForCoinType(mCryptoAccountTypeInfo.getCoinType()),
+                                mAddress, mAddAccountText.getText().toString(), result -> {
                                     if (result) {
                                         Intent returnIntent = new Intent();
                                         returnIntent.putExtra(
@@ -110,8 +110,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                                 });
                     } else {
                         mKeyringService.setKeyringDerivedAccountName(
-                                BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
-                                mAddAccountText.getText().toString(), result -> {
+                                Utils.getKeyringForCoinType(mCryptoAccountTypeInfo.getCoinType()),
+                                mAddress, mAddAccountText.getText().toString(), result -> {
                                     if (result) {
                                         Intent returnIntent = new Intent();
                                         returnIntent.putExtra(
