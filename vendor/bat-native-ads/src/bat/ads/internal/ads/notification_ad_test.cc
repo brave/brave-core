@@ -10,7 +10,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ads/notification_ad_unittest_util.h"
+#include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -81,7 +81,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, DoNotServeAtRegularIntervals) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsServingAdAtRegularIntervals());
+  ASSERT_FALSE(notification_ads::ShouldServeAdsAtRegularIntervals());
 }
 
 TEST_F(BatAdsNotificationAdIntegrationTest, TriggerServedEvent) {

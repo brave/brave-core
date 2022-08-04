@@ -424,6 +424,8 @@ source_set("ads") {
     "src/bat/ads/internal/ads/serving/notification_ad_serving.cc",
     "src/bat/ads/internal/ads/serving/notification_ad_serving.h",
     "src/bat/ads/internal/ads/serving/notification_ad_serving_observer.h",
+    "src/bat/ads/internal/ads/serving/notification_ad_serving_util.cc",
+    "src/bat/ads/internal/ads/serving/notification_ad_serving_util.h",
     "src/bat/ads/internal/ads/serving/permission_rules/allow_notifications_permission_rule.cc",
     "src/bat/ads/internal/ads/serving/permission_rules/allow_notifications_permission_rule.h",
     "src/bat/ads/internal/ads/serving/permission_rules/browser_is_active_permission_rule.cc",

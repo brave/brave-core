@@ -67,8 +67,6 @@ base::Value::Dict ClientInfo::ToValue() const {
   }
   dict.Set("seenAdvertisers", std::move(advertisers));
 
-  dict.Set("nextCheckServeAd", base::NumberToString(serve_ad_at.ToDoubleT()));
-
   base::Value::List probabilities_history;
   for (const auto& probabilities : text_classification_probabilities) {
     base::Value::Dict classification_probabilities;
@@ -155,16 +153,6 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       for (const auto [key, value] : list_value.GetDict()) {
         seen_advertisers[list_key][key] = value.GetBool();
       }
-    }
-  }
-
-  if (const auto value = root.FindDouble("nextCheckServeAd")) {
-    // Migrate legacy timestamp
-    serve_ad_at = base::Time::FromDoubleT(*value);
-  } else if (const auto* value = root.FindString("nextCheckServeAd")) {
-    double timestamp = 0.0;
-    if (base::StringToDouble(*value, &timestamp)) {
-      serve_ad_at = base::Time::FromDoubleT(timestamp);
     }
   }
 

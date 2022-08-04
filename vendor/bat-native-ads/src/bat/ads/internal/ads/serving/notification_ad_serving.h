@@ -40,9 +40,9 @@ class Serving final : public PrefManagerObserver {
  public:
   Serving(geographic::SubdivisionTargeting* subdivision_targeting,
           resource::AntiTargeting* anti_targeting_resource);
-  ~Serving() override;
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
+  ~Serving() override;
 
   void AddObserver(ServingObserver* observer);
   void RemoveObserver(ServingObserver* observer);
@@ -57,10 +57,6 @@ class Serving final : public PrefManagerObserver {
 
   bool IsSupported() const;
 
-  bool ShouldServeAdsAtRegularIntervals() const;
-  bool HasPreviouslyServedAnAd() const;
-  bool ShouldServeAd() const;
-  base::TimeDelta CalculateDelayBeforeServingAnAd() const;
   void MaybeServeAdAtNextRegularInterval();
   void RetryServingAdAtNextInterval();
   base::Time MaybeServeAdAfter(const base::TimeDelta delay);

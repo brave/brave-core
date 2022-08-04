@@ -56,6 +56,9 @@ const char kEpsilonGreedyBanditArms[] =
 const char kEpsilonGreedyBanditEligibleSegments[] =
     "brave.brave_ads.epsilon_greedy_bandit_eligible_segments";
 
+// Ads
+const char kServeAdAt[] = "brave.brave_ads.serve_ad_at";
+
 // Rewards
 const char kNextTokenRedemptionAt[] =
     "brave.brave_ads.rewards.next_time_redemption_at";
@@ -72,7 +75,7 @@ const char kHasMigratedRewardsState[] =
 
 // Stores hash
 const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
-const char kClientHash[] = "brave.brave_ads.client.hash.v2";
+const char kClientHash[] = "brave.brave_ads.client.hash.v3";
 
 }  // namespace prefs
 }  // namespace ads

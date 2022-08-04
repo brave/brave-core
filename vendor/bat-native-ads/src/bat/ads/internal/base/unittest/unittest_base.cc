@@ -295,6 +295,8 @@ void UnitTestBase::SetDefaultPrefs() {
 
   ads_client_mock_->SetInt64Pref(prefs::kIssuerPing, 0);
 
+  ads_client_mock_->SetTimePref(prefs::kServeAdAt, Now());
+
   ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
 
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, true);
