@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,19 @@ import android.view.ViewParent;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
 public class SwapBottomSheetDialogFragment
         extends BottomSheetDialogFragment implements View.OnClickListener {
@@ -30,14 +35,25 @@ public class SwapBottomSheetDialogFragment
     private LinearLayout mBuyLayout;
     private LinearLayout mSendLayout;
     private LinearLayout mSwapLayout;
+    private NetworkInfo mNetworkInfo;
+    private boolean mIsSwapSupported;
     private boolean mIsCustomNetwork;
 
-    public static SwapBottomSheetDialogFragment newInstance() {
-        return new SwapBottomSheetDialogFragment();
+    public SwapBottomSheetDialogFragment(boolean isSwapSupported) {
+        mIsSwapSupported = isSwapSupported;
+    }
+
+    public static SwapBottomSheetDialogFragment newInstance(boolean isSwapSupported) {
+        return new SwapBottomSheetDialogFragment(isSwapSupported);
     }
 
     public void setIsCustomNetwork(boolean isCustomNetwork) {
         mIsCustomNetwork = isCustomNetwork;
+    }
+
+    public void setNetwork(NetworkInfo networkInfo) {
+        mNetworkInfo = networkInfo;
+        updateViewState();
     }
 
     @Override
@@ -57,11 +73,10 @@ public class SwapBottomSheetDialogFragment
         }
     }
 
+    @Nullable
     @Override
-    public void setupDialog(@NonNull Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
-
-        @SuppressLint("InflateParams")
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         final View view =
                 LayoutInflater.from(getContext()).inflate(R.layout.swap_bottom_sheet, null);
 
@@ -71,17 +86,27 @@ public class SwapBottomSheetDialogFragment
         mSendLayout.setOnClickListener(this);
         mSwapLayout = view.findViewById(R.id.swap_layout);
         mSwapLayout.setOnClickListener(this);
-        if (!mIsCustomNetwork) {
-            mBuyLayout.setVisibility(View.VISIBLE);
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateViewState();
+    }
+
+    private void updateViewState() {
+        if (getView() == null) return;
+        if (!mIsCustomNetwork
+                && !(mNetworkInfo.coin == CoinType.SOL || mNetworkInfo.coin == CoinType.FIL)) {
             mSwapLayout.setVisibility(View.VISIBLE);
         } else {
-            mBuyLayout.setVisibility(View.GONE);
             mSwapLayout.setVisibility(View.GONE);
         }
 
-        dialog.setContentView(view);
-        ViewParent parent = view.getParent();
-        ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        if (!WalletConstants.BUY_SUPPORTED_NETWORKS.contains(mNetworkInfo.chainId)) {
+            mBuyLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override

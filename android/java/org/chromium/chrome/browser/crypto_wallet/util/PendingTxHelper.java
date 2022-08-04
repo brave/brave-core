@@ -130,6 +130,11 @@ public class PendingTxHelper implements TxServiceObserver {
         fetchTransactions(null);
     }
 
+    public void setAccountInfos(List<AccountInfo> accountInfos) {
+        this.mAccountInfos = accountInfos.toArray(new AccountInfo[0]);
+        fetchTransactions(null);
+    }
+
     @Override
     public void onNewUnapprovedTx(TransactionInfo txInfo) {
         processTx(txInfo, TxActionType.NEW_UNAPPROVED_TRANSACTION);
