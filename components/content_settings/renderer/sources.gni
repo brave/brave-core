@@ -12,6 +12,8 @@ brave_components_content_settings_renderer_sources += [
 ]
 
 if (is_android) {
-  brave_components_content_settings_renderer_deps +=
-      [ "//brave/components/brave_shields/common:mojom" ]
+  brave_components_content_settings_renderer_deps += [
+    "//brave/components/brave_shields/common",
+    "//brave/components/brave_shields/common:mojom",
+  ]
 }
