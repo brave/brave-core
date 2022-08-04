@@ -53,7 +53,6 @@ export const NewPasswordInput = ({
     confirmedPassword,
     hasConfirmedPasswordError,
     hasPasswordError,
-    isStrongPassword,
     passwordStrength,
     isValid,
     onPasswordChanged,
@@ -67,24 +66,13 @@ export const NewPasswordInput = ({
     setShowPassword(prevShowPassword => !prevShowPassword)
   }, [])
 
-  const handlePasswordChanged = React.useCallback((newPassword: string) => {
-    onPasswordChanged(newPassword)
-    onChange({
-      isValid: confirmedPassword === newPassword && isStrongPassword,
-      password: newPassword
-    })
-  }, [onPasswordChanged, onChange, confirmedPassword, isStrongPassword])
-
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       if (!hasConfirmedPasswordError) {
-        onSubmit({
-          isValid: confirmedPassword === password && isStrongPassword,
-          password
-        })
+        onSubmit({ isValid, password })
       }
     }
-  }, [hasConfirmedPasswordError, onSubmit, confirmedPassword, password, isStrongPassword])
+  }, [hasConfirmedPasswordError, onSubmit, isValid, password])
 
   // effect
   React.useEffect(() => {
@@ -103,7 +91,7 @@ export const NewPasswordInput = ({
           label={getLocale('braveWalletCreatePasswordInput')}
           name='password'
           onBlur={() => setIsPasswordFieldFocused(false)}
-          onChange={handlePasswordChanged}
+          onChange={onPasswordChanged}
           onFocus={() => setIsPasswordFieldFocused(true)}
           onKeyDown={handleKeyDown}
           onVisibilityToggled={onTogglePasswordVisibility}
@@ -113,7 +101,11 @@ export const NewPasswordInput = ({
         >
           {({ value }) => value
             ? <PasswordStrengthBar
-                criteria={[passwordStrength.isLongEnough]}
+                criteria={[
+                  passwordStrength.isLongEnough, // weak
+                  password.length >= 12, // medium
+                  password.length >= 16 // strong
+                ]}
                 isVisible={isPasswordFieldFocused}
                 passwordStrength={passwordStrength}
               />
