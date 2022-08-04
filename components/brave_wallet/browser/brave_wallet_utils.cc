@@ -145,7 +145,7 @@ const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
      "Optimism",
      {"https://optimistic.etherscan.io"},
      {},
-     {"https://mainnet.optimism.io"},
+     {},
      "ETH",
      "Ether",
      18,
@@ -155,7 +155,7 @@ const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
      "Aurora Mainnet",
      {"https://aurorascan.dev"},
      {},
-     {"https://mainnet.aurora.dev"},
+     {},
      "ETH",
      "Ether",
      18,
@@ -298,6 +298,8 @@ const base::flat_map<std::string, std::string> kInfuraSubdomains = {
 const base::flat_set<std::string> kInfuraChains = {
     brave_wallet::mojom::kMainnetChainId,
     brave_wallet::mojom::kPolygonMainnetChainId,
+    brave_wallet::mojom::kOptimismMainnetChainId,
+    brave_wallet::mojom::kAuroraMainnetChainId,
     brave_wallet::mojom::kRinkebyChainId,
     brave_wallet::mojom::kRopstenChainId,
     brave_wallet::mojom::kGoerliChainId,
@@ -325,9 +327,9 @@ constexpr const char kEnsRegistryContractAddress[] =
     "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
 std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
-  if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    return kPolygonMainnetEndpoint;
-  }
+  auto endpoint = brave_wallet::GetInfuraEndpointForKnownChainId(chain_id);
+  if (!endpoint.empty())
+    return endpoint;
 
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
   if (subdomain.empty())
@@ -452,6 +454,13 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
   }
 
   return nullptr;
+}
+
+std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id) {
+  const auto& endpoints = GetInfuraChainEndpoints();
+  if (endpoints.contains(chain_id))
+    return endpoints.at(chain_id);
+  return std::string();
 }
 
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {

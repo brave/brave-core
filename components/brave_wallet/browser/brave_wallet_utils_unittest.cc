@@ -834,6 +834,8 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
   base::flat_set<std::string> infura_chains = {
       brave_wallet::mojom::kMainnetChainId,
       brave_wallet::mojom::kPolygonMainnetChainId,
+      brave_wallet::mojom::kOptimismMainnetChainId,
+      brave_wallet::mojom::kAuroraMainnetChainId,
       brave_wallet::mojom::kRinkebyChainId,
       brave_wallet::mojom::kRopstenChainId,
       brave_wallet::mojom::kGoerliChainId,

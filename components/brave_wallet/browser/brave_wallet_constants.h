@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
 
+#include <string>
 #include <vector>
 
 #include "base/no_destructor.h"
@@ -722,6 +723,7 @@ constexpr char kSolanaPrefKey[] = "solana";
 const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
+const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 
 }  // namespace brave_wallet
 
