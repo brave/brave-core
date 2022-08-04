@@ -464,10 +464,13 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_WYRE" desc="Buy with Wyre option label">Buy with Wyre</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
+  <message name="IDS_BRAVE_WALLET_BUY_WITH_SARDINE" desc="Buy with Sardine option label">Buy with Sardine</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME" desc="Ramp.Network onramp provider name">Ramp.Network</message>
   <message name="IDS_BRAVE_WALLET_BUY_WYRE_NAME" desc="Wyre onramp provider name">Wyre</message>
+  <message name="IDS_BRAVE_WALLET_BUY_SARDINE_NAME" desc="Sardine onramp provider name">Sardine</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION" desc="Ramp.Network description in buy options list">Buy crypto with Visa or Mastercard.</message>
   <message name="IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION" desc="Wyre description in buy options list">Buy crypto with Visa or Mastercard.</message>
+  <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_ALL_ASSETS" desc="Aseet Filter Selector All Assets">All Assets</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_NFTS" desc="Aseet Filter Selector NFTs">NFTs</message>

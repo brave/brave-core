@@ -631,10 +631,14 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNotValidFilAddress", IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS},
     {"braveWalletBuyWithWyre", IDS_BRAVE_WALLET_BUY_WITH_WYRE},
     {"braveWalletBuyWithRamp", IDS_BRAVE_WALLET_BUY_WITH_RAMP},
+    {"braveWalletBuyWithSardine", IDS_BRAVE_WALLET_BUY_WITH_SARDINE},
     {"braveWalletBuyRampNetworkName", IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME},
     {"braveWalletBuyWyreName", IDS_BRAVE_WALLET_BUY_WYRE_NAME},
+    {"braveWalletBuySardineName", IDS_BRAVE_WALLET_BUY_SARDINE_NAME},
     {"braveWalletBuyRampDescription", IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION},
     {"braveWalletBuyWyreDescription", IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION},
+    {"braveWalletBuySardineDescription",
+     IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION},
     {"braveWalletNetworkFilterAll", IDS_BRAVE_WALLET_NETWORK_FILTER_ALL},
     {"braveWalletAssetFilterAllAssets",
      IDS_BRAVE_WALLET_ASSET_FILTER_ALL_ASSETS},
@@ -721,6 +725,8 @@ constexpr char kSolanaPrefKey[] = "solana";
 const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
+const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
+const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 
 }  // namespace brave_wallet

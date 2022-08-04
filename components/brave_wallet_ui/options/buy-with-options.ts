@@ -8,9 +8,11 @@ import { BraveWallet, BuyOption } from '../constants/types'
 
 import RampIcon from '../assets/svg-icons/ramp-icon.svg'
 import WyreIcon from '../assets/svg-icons/wyre-icon.svg'
+import SardineIconLight from '../assets/svg-icons/sardine-logo-light.svg'
+import SardineIconDark from '../assets/svg-icons/sardine-logo-dark.svg'
 
-export const BuyOptions: BuyOption[] = [
-  {
+function getBuyOptions (): BuyOption[] {
+  const buyOptions = [{
     id: BraveWallet.OnRampProvider.kRamp,
     actionText: getLocale('braveWalletBuyWithRamp'),
     icon: RampIcon,
@@ -23,5 +25,19 @@ export const BuyOptions: BuyOption[] = [
     icon: WyreIcon,
     name: getLocale('braveWalletBuyWyreName'),
     description: getLocale('braveWalletBuyWyreDescription')
+  }]
+
+  if (navigator.language.toLowerCase() === 'en-us') {
+    buyOptions.push({
+      id: BraveWallet.OnRampProvider.kSardine,
+      actionText: getLocale('braveWalletBuyWithSardine'),
+      icon: window.matchMedia('(prefers-color-scheme: dark)').matches ? SardineIconDark : SardineIconLight,
+      name: getLocale('braveWalletBuySardineName'),
+      description: getLocale('braveWalletBuySardineDescription')
+    })
   }
-]
+
+  return buyOptions
+}
+
+export const BuyOptions = getBuyOptions()

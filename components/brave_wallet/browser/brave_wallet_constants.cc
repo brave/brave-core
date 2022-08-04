@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <map>
+#include <string>
+
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 
 namespace brave_wallet {
@@ -165,6 +168,82 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
   return *tokens;
 }
 
+const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
+  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens({
+      {"", "Ethereum", "", false, false, "ETH", 18, true, "", "",
+       mojom::kMainnetChainId, mojom::CoinType::ETH},
+      {"0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9", "AAVE", "aave.png", true,
+       false, "AAVE", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9", "AAVE", "aave.png", true,
+       false, "AAVE", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"", "Avalanche", "", false, false, "AVAX", 18, true, "", "",
+       mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
+      {"0x0d8775f648430679a709e98d2b0cb6250d2887ef", "Basic Attention Token",
+       "bat.png", true, false, "BAT", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "BUSD.png",
+       true, false, "BUSD", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "busd.png",
+       true, false, "BUSD", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0xc00e94Cb662C3520282E6f5717214004A7f26888", "Compound", "comp.png",
+       true, false, "Comp", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x6B175474E89094C44Da98b954EedeAC495271d0F", "DAI", "dai.png", true,
+       false, "DAI", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x0f5d2fb29fb7d3cfee444a200298f468908cc942", "Decentraland", "mana.png",
+       true, false, "MANA", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c", "Enjin Coin", "enj.png",
+       true, false, "ENJ", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"", "Fantom", "", false, false, "FTM", 18, true, "", "",
+       mojom::kFantomMainnetChainId, mojom::CoinType::ETH},
+      {"0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202", "Kyber Network",
+       "kyber.png", true, false, "KNC", 18, true, "", "",
+       mojom::kMainnetChainId, mojom::CoinType::ETH},
+      {"0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2", "Maker", "mkr.png", true,
+       false, "MKR", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0xd26114cd6ee289accf82350c8d8487fedb8a0c07", "OMG Network", "omg.png",
+       true, false, "OMG", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"", "Polygon", "", false, false, "MATIC", 18, true, "", "",
+       mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
+      {"0x45804880de22913dafe09f4980848ece6ecbaf78", "Pax Gold", "paxg.png",
+       true, false, "PAXG", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x8e870d67f660d95d5be530380d0ec0bd388289e1", "Pax Dollar", "usdp.png",
+       true, false, "PAX", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce", "Shiba Inu", "shib.png",
+       true, false, "SHIB", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"", "Solana", "", false, false, "SOL", 9, true, "", "",
+       mojom::kSolanaMainnet, mojom::CoinType::SOL},
+      {"0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png", true,
+       false, "USDT", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0xc944e90c64b2c07662a292be6244bdf05cda44a7", "The Graph",
+       "graphToken.png", true, false, "GRT", 18, true, "", "",
+       mojom::kMainnetChainId, mojom::CoinType::ETH},
+      {"0x3845badAde8e6dFF049820680d1F14bD3903a5d0", "The Sandbox", "sand.png",
+       true, false, "SAND", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "Uniswap", "uni.png", true,
+       false, "UNI", 18, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+      {"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "USD Coin", "usdc.png",
+       true, false, "USDC", 6, true, "", "", mojom::kMainnetChainId,
+       mojom::CoinType::ETH},
+  });
+  return *tokens;
+}
+
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
   static base::NoDestructor<std::vector<mojom::OnRampCurrency>> currencies({
       {"USD",
@@ -179,6 +258,24 @@ const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
   });
 
   return *currencies;
+}
+
+const std::string GetSardineNetworkName(const std::string& chain_id) {
+  // key = chain_id, value = sardine_network_name
+  static std::map<std::string, std::string> sardine_network_names = {
+      {mojom::kMainnetChainId, "ethereum"},
+      {mojom::kPolygonMainnetChainId, "ethereum"},
+      {mojom::kAvalancheMainnetChainId, "avalanche"},
+      {mojom::kFantomMainnetChainId, "fantom"},
+      {mojom::kSolanaMainnet, "solana"}};
+  auto sardine_network_pair = sardine_network_names.find(chain_id.c_str());
+
+  if (sardine_network_pair == sardine_network_names.end()) {
+    // not found
+    return "";
+  } else {
+    return sardine_network_pair->second;
+  }
 }
 
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {

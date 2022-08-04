@@ -35,6 +35,7 @@ function Buy (props: Props) {
   const [buyAmount, setBuyAmount] = React.useState('')
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [buyOptions, setBuyOptions] = React.useState<BuyOption[]>(BuyOptions)
+  const [selectedOnRampProvider, setSelectedOnRampProvider] = React.useState<BraveWallet.OnRampProvider>()
 
   // Redux
   const {
@@ -45,45 +46,47 @@ function Buy (props: Props) {
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // Custom Hooks
-  const { wyreAssetOptions, rampAssetOptions } = useAssets()
+  const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions } = useAssets()
   const { getBuyAssetUrl } = useLib()
 
-  const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
+  const onSubmitBuy = React.useCallback(async (buyOption: BraveWallet.OnRampProvider) => {
     const asset = buyOption === BraveWallet.OnRampProvider.kRamp
       ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
       : selectedAsset
-    getBuyAssetUrl({
-      asset,
-      onRampProvider: buyOption,
-      chainId: selectedNetwork.chainId,
-      address: selectedAccount.address,
-      amount: buyAmount,
-      currencyCode: selectedCurrency ? selectedCurrency.currencyCode : 'USD'
-    })
-      .then(url => {
-        chrome.tabs.create({ url }, () => {
-          if (chrome.runtime.lastError) {
-            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-          }
-        })
+    setSelectedOnRampProvider(buyOption)
+
+    try {
+      const url = await getBuyAssetUrl({
+        asset,
+        onRampProvider: buyOption,
+        chainId: selectedNetwork.chainId,
+        address: selectedAccount.address,
+        amount: buyAmount,
+        currencyCode: selectedCurrency ? selectedCurrency.currencyCode : 'USD'
       })
-      .catch(e => console.error(e))
+
+      chrome.tabs.create({ url }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        }
+      })
+    } catch (e) {
+      console.error(e)
+    }
+    setSelectedOnRampProvider(undefined)
   }, [getBuyAssetUrl, selectedNetwork, selectedAccount, buyAmount, selectedAsset])
 
   React.useEffect(() => {
-    const supportingBuyOptions = BuyOptions.filter(buyOption => {
-      if (buyOption.id === BraveWallet.OnRampProvider.kWyre) {
-        return isSelectedAssetInAssetOptions(selectedAsset, wyreAssetOptions)
-      }
+    const providerAsset = {
+      [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
+      [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
+      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions
+    }
 
-      if (buyOption.id === BraveWallet.OnRampProvider.kRamp) {
-        return isSelectedAssetInAssetOptions(selectedAsset, rampAssetOptions)
-      }
-
-      return false
-    })
-    setBuyOptions(supportingBuyOptions)
-  }, [selectedAsset, wyreAssetOptions, rampAssetOptions])
+    const supportedBuyOptions = BuyOptions
+      .filter(buyOption => isSelectedAssetInAssetOptions(selectedAsset, providerAsset[buyOption.id]))
+    setBuyOptions(supportedBuyOptions)
+  }, [selectedAsset, wyreAssetOptions, rampAssetOptions, sardineAssetOptions])
 
   const onShowAssets = React.useCallback(() => {
     onChangeBuyView('assets', 'from')
@@ -111,6 +114,7 @@ function Buy (props: Props) {
       {showBuyOptions
         ? <SelectBuyOption
           buyOptions={buyOptions}
+          selectedOption={selectedOnRampProvider}
           onSelect={onSubmitBuy}
           onBack={onBack}
         />
