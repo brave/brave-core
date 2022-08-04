@@ -637,6 +637,31 @@ public class Utils {
         return res;
     }
 
+    public static long toDecimalLamport(String amount, int decimals) {
+        try {
+            amount = removeHexPrefix(amount);
+            BigDecimal value = new BigDecimal(amount);
+
+            String resStr =
+                    value.multiply(new BigDecimal(getDecimalsDepNumber(decimals))).toPlainString();
+            int integerPlaces = resStr.indexOf('.');
+            if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+                resStr = resStr.substring(0, integerPlaces + 9);
+            }
+            return Long.parseLong(resStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String removeHexPrefix(String value) {
+        if (value.startsWith("0x")) {
+            return value.substring(2);
+        }
+        return value;
+    }
+
     public static String stripAccountAddress(String address) {
         return address;
         // TODO(serg): Let's leave it for now as it could be we still
@@ -647,7 +672,6 @@ public class Utils {
         //     newAddress = address.substring(0, 6) + "***" + address.substring(address.length() -
         //     5);
         // }
-
         // return newAddress;
     }
 
@@ -1258,8 +1282,8 @@ public class Utils {
         Spannable spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
-            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(context,
-                    R.color.brave_theme_color, (view) -> { onClickListener.onClick(view); });
+            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
+                    context, (view) -> { onClickListener.onClick(view); });
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -1497,5 +1521,25 @@ public class Utils {
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {
         if (token.symbol.equals(selectedNetwork.symbol)) return true;
         return false;
+    }
+
+    public static String getKeyringForCoinType(int coinType) {
+        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+        switch (coinType) {
+            case CoinType.ETH:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+            case CoinType.SOL:
+                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
+                break;
+            case CoinType.FIL:
+                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
+                break;
+            default:
+                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+                break;
+        }
+
+        return keyring;
     }
 }

@@ -16,22 +16,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Pair;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,16 +50,10 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringInfo;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.brave_wallet.mojom.ProviderError;
@@ -73,38 +65,33 @@ import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
-import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.brave_wallet.mojom.TxServiceObserver;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.SendModel;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.Validations;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -125,7 +112,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private boolean mInitialLayoutInflationComplete;
 
     private int radioSlippageToleranceCheckedId;
-    private TextView mMarketLimitPriceText;
+    private List<AccountInfo> mAccountInfos;
+    private SendModel mSendModel;
 
     public enum ActivityType {
         BUY(0),
@@ -155,7 +143,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     }
 
     public String mActivateAllowanceTxId;
-
     private ActivityType mActivityType;
     private AccountSpinnerAdapter mCustomAccountAdapter;
     private double mConvertedFromBalance;
@@ -165,8 +152,13 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private SwapService mSwapService;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    private NetworkInfo mCurrentSelectedNetwork;
     private String mAllowanceTarget;
+    private String mCurrentChainId;
+    private NetworkInfo mSelectedNetwork;
+    private AccountInfo mSelectedAccount;
+    private WalletModel mWalletModel;
+
+    private TextView mMarketLimitPriceText;
     private Spinner mAccountSpinner;
     private Button mBtnBuySendSwap;
     private TextView mSlippageToleranceText;
@@ -181,6 +173,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private TextView mSendToValidation;
     private TextView mFromSendValueValidation;
     private LinearLayout mFromValueBlock;
+    private Spinner mNetworkSpinner;
+
+    private NetworkSpinnerAdapter mNetworkAdapter;
 
     @Override
     public void onDestroy() {
@@ -188,6 +183,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mCameraSourcePreview.release();
         }
         mSwapService.close();
+        mWalletModel.getCryptoModel().clearBSS();
         super.onDestroy();
     }
 
@@ -230,6 +226,20 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         mFromSendValueValidation = findViewById(R.id.from_send_value_error_text);
 
         mFromValueBlock = findViewById(R.id.from_value_block);
+
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+            mSendModel = mWalletModel.getCryptoModel().creteSendModel();
+        }
+
+        mNetworkSpinner = findViewById(R.id.network_spinner);
+        mNetworkAdapter = new NetworkSpinnerAdapter(this, new NetworkInfo[0]);
+        mNetworkSpinner.setAdapter(mNetworkAdapter);
+        mNetworkSpinner.setOnItemSelectedListener(this);
+        mCustomAccountAdapter =
+                new AccountSpinnerAdapter(getApplicationContext(), Collections.emptyList());
+        mAccountSpinner.setAdapter(mCustomAccountAdapter);
 
         onInitialLayoutInflationComplete();
         mInitialLayoutInflationComplete = true;
@@ -289,36 +299,30 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.network_spinner) {
-            String item = parent.getItemAtPosition(position).toString();
+            if (isSameSelectedNetwork(mSelectedNetwork)) return;
 
-            if (mJsonRpcService != null) {
-                mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                    final NetworkInfo network = Utils.getNetworkInfoByName(item, chains);
-                    final String chainId = network.chainId;
+            NetworkInfo networkInfo = mNetworkAdapter.getNetwork(position);
+            if (networkInfo != null) {
+                if (mActivityType == ActivityType.BUY) {
+                    adjustTestFaucetControls(getPerNetworkUiInfo(networkInfo));
+                }
 
-                    if (mActivityType == ActivityType.BUY) {
-                        adjustTestFaucetControls(getPerNetworkUiInfo(network));
+                // Shall be fine regardless of activity type
+                mFromValueText.setText("");
+                mFromValueText.setHint("0");
+
+                mWalletModel.getCryptoModel().getNetworkModel().setNetwork(networkInfo, success -> {
+                    if (!success) {
+                        Log.e(TAG, "Could not set network");
                     }
-
-                    // Shall be fine regardless of activity type
-                    mFromValueText.setText("");
-                    mFromValueText.setHint("0");
-                    resetSwapFromToAssets();
-
-                    mJsonRpcService.setNetwork(chainId, CoinType.ETH, (success) -> {
-                        if (!success) {
-                            Log.e(TAG, "Could not set network");
-                        }
-                        mJsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
-                            mCurrentSelectedNetwork = selectedNetwork;
-                            resetSwapFromToAssets();
-                        });
-                    });
-                    updateBalanceMaybeSwap(getCurrentSelectedAccountAddr());
+                    mSelectedNetwork = networkInfo;
                 });
             }
+
         } else if (parent.getId() == R.id.accounts_spinner) {
-            updateBalanceMaybeSwap(mCustomAccountAdapter.getTitleAtPosition(position));
+            AccountInfo accountInfo = mCustomAccountAdapter.getSelectedAccountAt(position);
+            mWalletModel.getKeyringModel().setSelectedAccount(
+                    accountInfo.address, accountInfo.coin);
         }
     }
 
@@ -326,8 +330,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void onNothingSelected(AdapterView<?> arg0) {}
 
     private void getSendSwapQuota(boolean calculatePerSellAsset, boolean sendTx) {
-        String from =
-                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
+        String from = mCustomAccountAdapter.getAccountAddressAtPosition(
+                mAccountSpinner.getSelectedItemPosition());
         Pair<Integer, String> toInfo =
                 Utils.getBuySendSwapContractAddress(mCurrentSwapToBlockchainToken);
         Pair<Integer, String> fromInfo =
@@ -462,20 +466,23 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (mBlockchainRegistry == null || mCustomAccountAdapter == null
                 || !mInitialLayoutInflationComplete)
             return;
-        final BlockchainToken nativeAsset = Utils.makeNetworkAsset(mCurrentSelectedNetwork);
+        final BlockchainToken nativeAsset = Utils.makeNetworkAsset(mSelectedNetwork);
         // Swap from
         final String swapFromAssetSymbol = getIntent().getStringExtra("swapFromAssetSymbol") != null
                 ? getIntent().getStringExtra("swapFromAssetSymbol")
                 : nativeAsset.symbol;
-        TokenUtils.getAllTokensFiltered(mBraveWalletService, mBlockchainRegistry,
-                mCurrentSelectedNetwork, mCurrentSelectedNetwork.coin, TokenUtils.TokenType.ERC20,
+        TokenUtils.getAllTokensFiltered(mBraveWalletService, mBlockchainRegistry, mSelectedNetwork,
+                mSelectedNetwork.coin,
+                nativeAsset.coin == CoinType.SOL ? TokenUtils.TokenType.SOL
+                                                 : TokenUtils.TokenType.ERC20,
                 allTokens -> {
                     if (swapFromAssetSymbol.equals(nativeAsset.symbol)) {
                         updateBuySendSwapAsset(nativeAsset.symbol, nativeAsset, true);
                         resetSwapToAsset(nativeAsset, allTokens, swapFromAssetSymbol);
+                        updateBalanceMaybeSwap();
                     } else {
-                        mBlockchainRegistry.getTokenBySymbol(mCurrentSelectedNetwork.chainId,
-                                mCurrentSelectedNetwork.coin, swapFromAssetSymbol, token -> {
+                        mBlockchainRegistry.getTokenBySymbol(mSelectedNetwork.chainId,
+                                mSelectedNetwork.coin, swapFromAssetSymbol, token -> {
                                     if (token != null) {
                                         updateBuySendSwapAsset(token.symbol, token, true);
                                         resetSwapToAsset(
@@ -506,8 +513,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             updateBuySendSwapAsset(nativeAsset.symbol, nativeAsset, false);
         } else {
             // Only ERC20 tokens can be swapped
-            mBlockchainRegistry.getTokenBySymbol(mCurrentSelectedNetwork.chainId,
-                    mCurrentSelectedNetwork.coin, defaultSwapToAsset, swapToToken -> {
+            mBlockchainRegistry.getTokenBySymbol(mSelectedNetwork.chainId, mSelectedNetwork.coin,
+                    defaultSwapToAsset, swapToToken -> {
                         if (swapToToken != null) {
                             updateBuySendSwapAsset(swapToToken.symbol, swapToToken, false);
                         } else {
@@ -547,9 +554,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         final double fee = gasLimit * Utils.fromWei(response.gasPrice, Utils.ETH_DEFAULT_DECIMALS);
         final double fromValue = valueFrom;
         assert mJsonRpcService != null;
-        mJsonRpcService.getBalance(
-                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
-                CoinType.ETH, mCurrentSelectedNetwork.chainId, (balance, error, errorMessage) -> {
+        mJsonRpcService.getBalance(mCustomAccountAdapter.getAccountAddressAtPosition(
+                                           mAccountSpinner.getSelectedItemPosition()),
+                CoinType.ETH, mSelectedNetwork.chainId, (balance, error, errorMessage) -> {
                     warnWhenError(TAG, "getBalance", error, errorMessage);
                     if (error == ProviderError.SUCCESS) {
                         double currentBalance =
@@ -593,8 +600,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private void checkAllowance(String contract, String spenderAddress, double amountToSend) {
         assert mJsonRpcService != null;
         assert mCurrentBlockchainToken != null;
-        String ownerAddress =
-                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
+        String ownerAddress = mCustomAccountAdapter.getAccountAddressAtPosition(
+                mAccountSpinner.getSelectedItemPosition());
         mJsonRpcService.getErc20TokenAllowance(
                 contract, ownerAddress, spenderAddress, (allowance, error, errorMessage) -> {
                     warnWhenError(TAG, "getErc20TokenAllowance", error, errorMessage);
@@ -618,18 +625,30 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (!from) {
             blockchainToken = mCurrentSwapToBlockchainToken;
         }
+
         if (blockchainToken == null || blockchainToken.contractAddress.isEmpty()) {
-            mJsonRpcService.getBalance(address, CoinType.ETH, mCurrentSelectedNetwork.chainId,
-                    (balance, error, errorMessage) -> {
-                        warnWhenError(TAG, "getBalance", error, errorMessage);
-                        if (error != ProviderError.SUCCESS) {
-                            return;
-                        }
-                        populateBalance(balance, from);
-                    });
+            if (mSelectedAccount.coin == CoinType.ETH) {
+                mJsonRpcService.getBalance(address, CoinType.ETH, mSelectedNetwork.chainId,
+                        (balance, error, errorMessage) -> {
+                            warnWhenError(TAG, "getBalance", error, errorMessage);
+                            if (error != ProviderError.SUCCESS) {
+                                return;
+                            }
+                            populateBalance(balance, from);
+                        });
+            } else if (mSelectedNetwork.coin == CoinType.SOL) {
+                mJsonRpcService.getSolanaBalance(
+                        address, mSelectedNetwork.chainId, (balance, error, errorMessage) -> {
+                            warnWhenError(TAG, "getSolanaBalance", error, errorMessage);
+                            if (error != ProviderError.SUCCESS) {
+                                return;
+                            }
+                            populateBalance(String.valueOf(balance), from);
+                        });
+            }
         } else if (blockchainToken.isErc721) {
             mJsonRpcService.getErc721TokenBalance(blockchainToken.contractAddress,
-                    blockchainToken.tokenId, address, mCurrentSelectedNetwork.chainId,
+                    blockchainToken.tokenId, address, mSelectedNetwork.chainId,
                     (balance, error, errorMessage) -> {
                         warnWhenError(TAG, "getERC721TokenBalance", error, errorMessage);
                         if (error != ProviderError.SUCCESS) {
@@ -637,9 +656,17 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         }
                         populateBalance(balance, from);
                     });
+        } else if (mSelectedNetwork.coin == CoinType.SOL
+                && !TextUtils.isEmpty(blockchainToken.contractAddress)) {
+            // TODO(pav) : fix why solana tx has erc20 as true
+            mJsonRpcService.getSplTokenAccountBalance(address, blockchainToken.contractAddress,
+                    mSelectedNetwork.chainId,
+                    (amount, decimals, uiAmountString, solanaProvideError, error_message) -> {
+                        populateBalance(amount, from);
+                    });
         } else {
             mJsonRpcService.getErc20TokenBalance(blockchainToken.contractAddress, address,
-                    mCurrentSelectedNetwork.chainId, (balance, error, errorMessage) -> {
+                    mSelectedNetwork.chainId, (balance, error, errorMessage) -> {
                         warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
                         if (error != ProviderError.SUCCESS) {
                             return;
@@ -647,6 +674,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         populateBalance(balance, from);
                     });
         }
+    }
+
+    public String getCurrentSelectedAccountAddr() {
+        return mCustomAccountAdapter.getAccountAddressAtPosition(
+                mAccountSpinner.getSelectedItemPosition());
     }
 
     // We have to call that for SWAP, to update both from and to balance
@@ -657,16 +689,26 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
     }
 
-    public String getCurrentSelectedAccountAddr() {
-        return mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
+    public void updateBalanceMaybeSwap() {
+        updateBalanceMaybeSwap(getCurrentSelectedAccountAddr());
     }
 
     private void populateBalance(String balance, boolean from) {
         BlockchainToken token = from ? mCurrentBlockchainToken : mCurrentSwapToBlockchainToken;
         TextView textView = from ? mFromBalanceText : mToBalanceText;
 
-        int decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
-        double fromToBalance = Utils.fromHexWei(balance, decimals);
+        double fromToBalance = 0;
+
+        // some old calls are returning ETH result when SOL is selected so do nothing
+        try {
+            int decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
+            fromToBalance = token != null && token.coin == CoinType.SOL
+                    ? Utils.fromWei(balance, decimals)
+                    : Utils.fromHexWei(balance, decimals);
+        } catch (NumberFormatException e) {
+            return;
+        }
+
         String text = getText(R.string.crypto_wallet_balance) + " "
                 + String.format(Locale.getDefault(), "%.4f", fromToBalance);
         textView.setText(text);
@@ -680,15 +722,27 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             getSendSwapQuota(true, false);
         }
     }
+    private void setSelected(NetworkInfo networkInfo, NetworkInfo[] networkInfos) {
+        if (isSameSelectedNetwork(networkInfo)) return;
+        mNetworkSpinner.setSelection(getIndexOf(networkInfo, networkInfos));
+    }
 
-    private int getIndexOf(Spinner spinner, NetworkInfo selectedNetwork) {
-        String strNetwork = selectedNetwork.chainName;
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
+    private boolean isSameSelectedNetwork(NetworkInfo networkInfo) {
+        NetworkInfo currSelected = (NetworkInfo) mNetworkSpinner.getSelectedItem();
+        if (currSelected != null && networkInfo.chainId.equals(currSelected.chainId)
+                && networkInfo.coin == currSelected.coin)
+            return true;
+        return false;
+    }
+
+    private int getIndexOf(NetworkInfo selectedNetwork, NetworkInfo[] networksInfos) {
+        for (int i = 0; i < networksInfos.length; i++) {
+            NetworkInfo networkInfo = networksInfos[i];
+            if (networkInfo.chainId.equals(selectedNetwork.chainId)
+                    && networkInfo.coin == selectedNetwork.coin) {
                 return i;
             }
         }
-
         return 0;
     }
 
@@ -727,12 +781,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         WalletCoinAdapter.AdapterType fromAdapterType = mActivityType == ActivityType.BUY
                 ? WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST
                 : mActivityType == ActivityType.SEND
-                        ? WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
-                        : WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST;
+                ? WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
+                : WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST;
         mFromAssetText.setOnClickListener(v -> {
             EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                     EditVisibleAssetsBottomSheetDialogFragment.newInstance(fromAdapterType);
-            bottomSheetDialogFragment.setSelectedNetwork(mCurrentSelectedNetwork);
+            bottomSheetDialogFragment.setSelectedNetwork(mSelectedNetwork);
             bottomSheetDialogFragment.show(getSupportFragmentManager(),
                     EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
         });
@@ -792,7 +846,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                                 WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST);
-                bottomSheetDialogFragment.setSelectedNetwork(mCurrentSelectedNetwork);
+                bottomSheetDialogFragment.setSelectedNetwork(mSelectedNetwork);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
             });
@@ -810,33 +864,29 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
                 findViewById(R.id.slippage_value_text).setEnabled(visibility != View.VISIBLE);
             });
-            radioSlippageTolerance.setOnCheckedChangeListener(
-                    new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            if (checkedId == -1) {
-                                radioSlippageToleranceCheckedId = checkedId;
-                                return;
-                            }
-                            double percent = 0d;
-                            if (checkedId == R.id.slippage_per_05_radiobutton) {
-                                percent = 0.5d;
-                            } else if (checkedId == R.id.slippage_per_1_radiobutton) {
-                                percent = 1d;
-                            } else if (checkedId == R.id.slippage_per_2_radiobutton) {
-                                percent = 2d;
-                            }
+            radioSlippageTolerance.setOnCheckedChangeListener((group, checkedId) -> {
+                if (checkedId == -1) {
+                    radioSlippageToleranceCheckedId = checkedId;
+                    return;
+                }
+                double percent = 0d;
+                if (checkedId == R.id.slippage_per_05_radiobutton) {
+                    percent = 0.5d;
+                } else if (checkedId == R.id.slippage_per_1_radiobutton) {
+                    percent = 1d;
+                } else if (checkedId == R.id.slippage_per_2_radiobutton) {
+                    percent = 2d;
+                }
 
-                            if (!(radioSlippageToleranceCheckedId == 0
-                                        || radioSlippageToleranceCheckedId == checkedId)) {
-                                updateSlippagePercentage(percent);
-                            }
-                            if (radioSlippageToleranceCheckedId == -1) {
-                                slippageValueText.setText("");
-                            }
-                            radioSlippageToleranceCheckedId = checkedId;
-                        }
-                    });
+                if (!(radioSlippageToleranceCheckedId == 0
+                            || radioSlippageToleranceCheckedId == checkedId)) {
+                    updateSlippagePercentage(percent);
+                }
+                if (radioSlippageToleranceCheckedId == -1) {
+                    slippageValueText.setText("");
+                }
+                radioSlippageToleranceCheckedId = checkedId;
+            });
             slippageValueText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void afterTextChanged(Editable s) {}
@@ -903,7 +953,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
 
         mBtnBuySendSwap.setOnClickListener(v -> {
-            String from = mCustomAccountAdapter.getTitleAtPosition(
+            String from = mCustomAccountAdapter.getAccountAddressAtPosition(
                     mAccountSpinner.getSelectedItemPosition());
             // TODO(sergz): Some kind of validation that we have enough balance
             String value = mFromValueText.getText().toString();
@@ -912,21 +962,33 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 if (to.isEmpty()) {
                     return;
                 }
-                if (mCurrentBlockchainToken == null
-                        || mCurrentBlockchainToken.contractAddress.isEmpty()) {
-                    TxData data = Utils.getTxData("", "", "", to,
-                            Utils.toHexWei(value, Utils.ETH_DEFAULT_DECIMALS), new byte[0]);
-                    sendTransaction(data, from, "", "");
-                } else if (mCurrentBlockchainToken.isErc20) {
-                    addUnapprovedTransactionERC20(to,
-                            Utils.toHexWei(value, mCurrentBlockchainToken.decimals), from,
-                            mCurrentBlockchainToken.contractAddress);
-                } else if (mCurrentBlockchainToken.isErc721) {
-                    addUnapprovedTransactionERC721(from, to, mCurrentBlockchainToken.tokenId,
-                            mCurrentBlockchainToken.contractAddress);
+                if (mSelectedAccount.coin == CoinType.ETH) {
+                    if (mCurrentBlockchainToken == null
+                            || mCurrentBlockchainToken.contractAddress.isEmpty()) {
+                        TxData data = Utils.getTxData("", "", "", to,
+                                Utils.toHexWei(value, Utils.ETH_DEFAULT_DECIMALS), new byte[0]);
+                        sendTransaction(data, from, "", "");
+                    } else if (mCurrentBlockchainToken.isErc20) {
+                        addUnapprovedTransactionERC20(to,
+                                Utils.toHexWei(value, mCurrentBlockchainToken.decimals), from,
+                                mCurrentBlockchainToken.contractAddress);
+                    } else if (mCurrentBlockchainToken.isErc721) {
+                        addUnapprovedTransactionERC721(from, to, mCurrentBlockchainToken.tokenId,
+                                mCurrentBlockchainToken.contractAddress);
+                    }
+                } else if (mSelectedAccount.coin == CoinType.SOL) {
+                    mSendModel.sendSolanaToken(mCurrentBlockchainToken, mSelectedAccount.address,
+                            to, Utils.toDecimalLamport(value, mCurrentBlockchainToken.decimals),
+                            (success, txMetaId, errorMessage) -> {
+                                // Do nothing here when success as we will receive an
+                                // unapproved transaction in TxServiceObserver.
+                                // When we have error, let the user know,
+                                // error_message is localized, do not disable send button
+                                setSendToFromValueValidationResult(errorMessage, false, true);
+                            });
                 }
             } else if (mActivityType == ActivityType.BUY) {
-                if (mCurrentSelectedNetwork.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
+                if (mSelectedNetwork.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
                     assert mBlockchainRegistry != null;
                     String asset = mFromAssetText.getText().toString();
                     mBlockchainRegistry.getBuyUrl(OnRampProvider.WYRE,
@@ -941,7 +1003,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 TabUtils.bringChromeTabbedActivityToTheTop(this);
                             });
                 } else {
-                    String url = getPerNetworkUiInfo(mCurrentSelectedNetwork).linkUrl;
+                    String url = getPerNetworkUiInfo(mSelectedNetwork).linkUrl;
                     if (url != null && !url.isEmpty()) {
                         TabUtils.openUrlInNewTab(false, url);
                         TabUtils.bringChromeTabbedActivityToTheTop(this);
@@ -1190,14 +1252,16 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mValidator = new Validations.SendToAccountAddress();
         }
 
+        void setCoinType() {}
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
+            String fromAccountAddress = mCustomAccountAdapter.getAccountAddressAtPosition(
                     mAccountSpinner.getSelectedItemPosition());
 
-            mValidator.validate(mCurrentSelectedNetwork, getKeyringService(),
-                    getBlockchainRegistry(), getBraveWalletService(), fromAccountAddress,
-                    s.toString(), (String validationResult, Boolean disableButton) -> {
+            mValidator.validate(mSelectedNetwork, getKeyringService(), getBlockchainRegistry(),
+                    getBraveWalletService(), fromAccountAddress, s.toString(),
+                    (String validationResult, Boolean disableButton) -> {
                         setSendToFromValueValidationResult(validationResult, disableButton, true);
                     });
         }
@@ -1219,13 +1283,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
+                String fromAccountAddress = mCustomAccountAdapter.getAccountAddressAtPosition(
                         mAccountSpinner.getSelectedItemPosition());
                 String receiverAccountAddress = ((EditText) v).getText().toString();
 
-                mValidator.validate(mCurrentSelectedNetwork, getKeyringService(),
-                        getBlockchainRegistry(), getBraveWalletService(), fromAccountAddress,
-                        receiverAccountAddress,
+                mValidator.validate(mSelectedNetwork, getKeyringService(), getBlockchainRegistry(),
+                        getBraveWalletService(), fromAccountAddress, receiverAccountAddress,
                         (String validationResult, Boolean disableButton) -> {
                             setSendToFromValueValidationResult(
                                     validationResult, disableButton, true);
@@ -1276,7 +1339,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     }
                     TxData txData = Utils.getTxData(
                             "", "", "", mCurrentBlockchainToken.contractAddress, "0x0", data);
-                    String from = mCustomAccountAdapter.getTitleAtPosition(
+                    String from = mCustomAccountAdapter.getAccountAddressAtPosition(
                             mAccountSpinner.getSelectedItemPosition());
                     sendTransaction(txData, from, "", "");
                 });
@@ -1295,7 +1358,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 isEIP1559 = false;
             } else {
                 for (NetworkInfo network : networks) {
-                    if (!mCurrentSelectedNetwork.chainId.equals(network.chainId)) {
+                    if (!mSelectedNetwork.chainId.equals(network.chainId)) {
                         continue;
                     }
                     isEIP1559 = network.data.getEthData().isEip1559;
@@ -1308,7 +1371,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             if (isEIP1559) {
                 TxData1559 txData1559 = new TxData1559();
                 txData1559.baseData = data;
-                txData1559.chainId = mCurrentSelectedNetwork.chainId;
+                txData1559.chainId = mSelectedNetwork.chainId;
                 txData1559.maxPriorityFeePerGas = maxPriorityFeePerGas;
                 txData1559.maxFeePerGas = maxFeePerGas;
                 txData1559.gasEstimation = new GasEstimation1559();
@@ -1418,7 +1481,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         BlockchainToken token = buySend ? mCurrentBlockchainToken : mCurrentSwapToBlockchainToken;
         // Replace USDC and DAI contract addresses for Ropsten network
         token.contractAddress = Utils.getContractAddress(
-                mCurrentSelectedNetwork.chainId, token.symbol, token.contractAddress);
+                mSelectedNetwork.chainId, token.symbol, token.contractAddress);
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         if (token.symbol.equals("ETH")) {
             token.logo = "eth.png";
@@ -1438,7 +1501,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         } else {
             mFromValueBlock.setVisibility(View.VISIBLE);
         }
-        if (buySend && mActivityType == ActivityType.SWAP || !buySend) {
+        if (!buySend || mActivityType == ActivityType.SWAP) {
             enableDisableSwapButton();
             getSendSwapQuota(true, false);
         }
@@ -1478,74 +1541,50 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitSwapService();
+        assert mWalletModel != null;
+        mWalletModel.getCryptoModel().getNetworkModel().mChainNetworkAllNetwork.observe(
+                this, chainAllNetworksAllNetwork -> {
+                    mCurrentChainId = chainAllNetworksAllNetwork.first;
+                    mSelectedNetwork = chainAllNetworksAllNetwork.second;
+                    NetworkInfo[] networks = chainAllNetworksAllNetwork.third;
 
-        if (mJsonRpcService != null) {
-            mJsonRpcService.getNetwork(CoinType.ETH, network -> {
-                mCurrentSelectedNetwork = network;
-                mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                    mJsonRpcService.getCustomNetworks(CoinType.ETH, customNetworkChainIds -> {
-                        // We want to hide custom networks for BUY and SWAP screens. We are
-                        // going to add a support for SWAP at least in the near future.
-                        if (mActivityType != ActivityType.SEND) {
-                            customNetworkChainIds = new String[0];
-                        }
-                        // Creating adapter for spinner
-                        Spinner spinner = findViewById(R.id.network_spinner);
-                        spinner.setOnItemSelectedListener(this);
-                        NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(this,
-                                Utils.makeNetworksList(this, chains),
-                                Utils.makeNetworksAbbrevList(this, chains));
-                        spinner.setAdapter(dataAdapter);
-                        spinner.setSelection(getIndexOf(spinner, network));
+                    mNetworkAdapter.setNetworks(networks);
+                    setSelected(mSelectedNetwork, networks);
 
-                        for (NetworkInfo chain : chains) {
-                            if (network.chainId.equals(chain.chainId)) {
-                                TextView fromAssetText = findViewById(R.id.from_asset_text);
-                                TextView marketLimitPriceText =
-                                        findViewById(R.id.market_limit_price_text);
+                    mFromAssetText.setText(mSelectedNetwork.symbol);
+                    mMarketLimitPriceText.setText(String.format(
+                            getString(R.string.market_price_in), mSelectedNetwork.symbol));
+                    Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, "",
+                            mSelectedNetwork.symbol, getResources().getDisplayMetrics().density,
+                            mFromAssetText, this, true, (float) 0.5);
 
-                                if (Arrays.asList(customNetworkChainIds)
-                                                .contains(network.chainId)) {
-                                    Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null,
-                                            "", chain.symbol,
-                                            getResources().getDisplayMetrics().density,
-                                            fromAssetText, this, true, (float) 0.5);
-                                }
-                                fromAssetText.setText(chain.symbol);
-                                marketLimitPriceText.setText(String.format(
-                                        getString(R.string.market_price_in), chain.symbol));
-                                break;
-                            }
-                        }
-                    });
-                    if (mKeyringService != null) {
-                        mKeyringService.getKeyringInfo(
-                                BraveWalletConstants.DEFAULT_KEYRING_ID, keyring -> {
-                                    String[] accountNames = new String[keyring.accountInfos.length];
-                                    String[] accountTitles =
-                                            new String[keyring.accountInfos.length];
-                                    int currentPos = 0;
-                                    for (AccountInfo info : keyring.accountInfos) {
-                                        accountNames[currentPos] = info.name;
-                                        accountTitles[currentPos] = info.address;
-                                        currentPos++;
-                                    }
-                                    mCustomAccountAdapter = new AccountSpinnerAdapter(
-                                            getApplicationContext(), accountNames, accountTitles);
-                                    mAccountSpinner.setAdapter(mCustomAccountAdapter);
-                                    mAccountSpinner.setOnItemSelectedListener(this);
-                                    if (accountTitles.length > 0) {
-                                        updateBalanceMaybeSwap(accountTitles[0]);
-                                    }
-
-                                    // updateBuySendSwapAsset needs mCustomAccountAdapter to be
-                                    // initialized
-                                    resetSwapFromToAssets();
-                                });
+                    // before updating, make sure we are same network with same account type
+                    if (mSelectedAccount != null
+                            && mSelectedAccount.coin == mSelectedNetwork.coin) {
+                        resetSwapFromToAssets();
                     }
                 });
-            });
-        }
+        mWalletModel.getKeyringModel().mAccountAllAccountsPair.observe(
+                this, accountInfoListPair -> {
+                    mSelectedAccount = accountInfoListPair.first;
+                    mAccountInfos = accountInfoListPair.second;
+
+                    mCustomAccountAdapter.setAccounts(mAccountInfos);
+                    if (mAccountInfos.size() > 0) {
+                        String selectedAccountAddress = mSelectedAccount != null
+                                ? mSelectedAccount.address
+                                : mAccountInfos.get(0).address;
+                        updateBalanceMaybeSwap(selectedAccountAddress);
+                        mAccountSpinner.setSelection(WalletUtils.getSelectedAccountIndex(
+                                mSelectedAccount, mAccountInfos));
+                    }
+                    mAccountSpinner.setOnItemSelectedListener(this);
+                    // before updating, make sure we are same network with same account type
+                    if (mSelectedNetwork != null
+                            && mSelectedAccount.coin == mSelectedNetwork.coin) {
+                        resetSwapFromToAssets();
+                    }
+                });
     }
 
     @Override

@@ -31,7 +31,6 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -50,8 +49,9 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageA
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
-import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
@@ -72,11 +72,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private ApprovedTxObserver mApprovedTxObserver;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    private String mChainSymbol;
-    private int mChainDecimals;
     private TransactionConfirmationListener mTransactionConfirmationListener;
     private List<TransactionInfo> mTransactionInfos;
     private Button mRejectAllTx;
+    private int mCoinType;
 
     public static ApproveTxBottomSheetDialogFragment newInstance(
             List<TransactionInfo> transactionInfos, TransactionInfo txInfo, String accountName,
@@ -101,8 +100,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mHandler = new Handler(Looper.getMainLooper());
         // TODO (Wengling): To support other networks, all hard-coded chainSymbol, etc. need to be
         // get from current network instead.
-        mChainSymbol = "ETH";
-        mChainDecimals = Utils.ETH_DEFAULT_DECIMALS;
         mTransactionInfos = Collections.emptyList();
     }
 
@@ -189,6 +186,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         super.onDismiss(dialog);
         if (mApprovedTxObserver != null) {
             if (mRejected || mApproved) {
+                // TODO(pav): 28/07/22 rename to callback, it's not an observer
                 mApprovedTxObserver.onTxApprovedRejected(mApproved, mAccountName, mTxInfo.id);
             } else {
                 mApprovedTxObserver.onTxPending(mAccountName, mTxInfo.id);
@@ -210,13 +208,18 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         JsonRpcService jsonRpcService = getJsonRpcService();
         KeyringService keyringService = getKeyringService();
-        assert jsonRpcService != null && keyringService != null;
+        assert jsonRpcService != null
+                && keyringService
+                        != null : "json is null=" + (jsonRpcService == null) + "keyring"
+                                  + (keyringService != null);
 
         TextView networkName = view.findViewById(R.id.network_name);
         TextView txType = view.findViewById(R.id.tx_type);
-        jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+
+        mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
+        jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
             networkName.setText(selectedNetwork.chainName);
-            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+            keyringService.getKeyringInfo(Utils.getKeyringForCoinType(mCoinType), keyringInfo -> {
                 final AccountInfo[] accounts = keyringInfo.accountInfos;
                 Utils.getTxExtraInfo((BraveWalletBaseActivity) getActivity(), selectedNetwork,
                         accounts, null, false,
@@ -347,8 +350,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (txService == null) {
             return;
         }
-        txService.rejectTransaction(CoinType.ETH, mTxInfo.id, success -> {
-            assert success;
+        txService.rejectTransaction(mCoinType, mTxInfo.id, success -> {
+            assert success : "tx is not rejected";
             if (!success || !dismiss) {
                 return;
             }
@@ -365,11 +368,13 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (txService == null) {
             return;
         }
-        txService.approveTransaction(CoinType.ETH, mTxInfo.id, (success, error, errorMessage) -> {
-            assert success;
-            Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
-                    "approveTransaction", error.getProviderError(), errorMessage);
+        txService.approveTransaction(mCoinType, mTxInfo.id, (success, error, errorMessage) -> {
+            assert success : "tx is not approved";
             if (!success) {
+                // error.getProviderError() seems to be cause an unnecessary assertion crash if
+                // there is no error
+                Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
+                        "approveTransaction", error.getProviderError(), errorMessage);
                 return;
             }
             mApproved = true;
