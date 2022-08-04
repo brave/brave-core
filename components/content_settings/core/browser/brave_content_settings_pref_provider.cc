@@ -10,6 +10,7 @@
 
 #include "base/bind.h"
 #include "base/containers/contains.h"
+#include "base/json/values_util.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
@@ -192,32 +193,28 @@ void BravePrefProvider::EnsureNoWildcardEntries() {
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
   BravePrefProvider::CopyPluginSettingsForMigration(prefs_);
 
-  const base::DictionaryValue* plugins_dictionary =
-      &base::Value::AsDictionaryValue(*prefs_->GetDictionary(
-          "brave.migrate.content_settings.exceptions.plugins"));
-  if (!plugins_dictionary)
-    return;
+  const base::Value::Dict& plugins_dict = *prefs_->GetValueDict(
+      "brave.migrate.content_settings.exceptions.plugins");
 
-  for (base::DictionaryValue::Iterator i(*plugins_dictionary); !i.IsAtEnd();
-       i.Advance()) {
-    const std::string& patterns_string(i.key());
-    const base::DictionaryValue* settings_dictionary = nullptr;
-    bool is_dictionary = i.value().GetAsDictionary(&settings_dictionary);
-    DCHECK(is_dictionary);
+  for (const auto [key, value] : plugins_dict) {
+    const std::string& patterns_string(key);
+    const base::Value::Dict* settings_dict = value.GetIfDict();
+    DCHECK(settings_dict);
 
     base::Time expiration =
-        GetTimeStampFromDictionary(settings_dictionary, kExpirationPath);
+        base::ValueToTime(settings_dict->Find(kExpirationPath))
+            .value_or(base::Time());
     SessionModel session_model =
-        GetSessionModelFromDictionary(settings_dictionary, kSessionModelPath);
+        GetSessionModelFromDictionary(*settings_dict, kSessionModelPath);
 
-    const base::DictionaryValue* resource_dictionary = nullptr;
-    if (settings_dictionary->GetDictionary(kPerResourcePath,
-                                           &resource_dictionary)) {
+    const base::Value::Dict* resource_dict =
+        settings_dict->FindDictByDottedPath(kPerResourcePath);
+    if (resource_dict) {
       base::Time last_modified =
-          GetTimeStampFromDictionary(settings_dictionary, kLastModifiedPath);
-      for (base::DictionaryValue::Iterator j(*resource_dictionary);
-           !j.IsAtEnd(); j.Advance()) {
-        const std::string& resource_identifier(j.key());
+          base::ValueToTime(settings_dict->Find(kLastModifiedPath))
+              .value_or(base::Time());
+      for (const auto [key, value] : *resource_dict) {
+        const std::string& resource_identifier(key);
         std::string shields_preference_name;
 
         // For "ads" and "cookies" we need to adapt the name to the new one,
@@ -240,11 +237,8 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           continue;
         }
 
-        int setting = CONTENT_SETTING_DEFAULT;
-        bool is_integer = j.value().is_int();
-        if (is_integer)
-          setting = j.value().GetInt();
-        DCHECK(is_integer);
+        DCHECK(value.is_int());
+        int setting = value.GetInt();
         DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);
 
         MigrateShieldsSettingsFromResourceIdsForOneType(

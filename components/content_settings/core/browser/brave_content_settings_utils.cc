@@ -116,24 +116,12 @@ std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
   return std::string("profile.content_settings.exceptions.").append(name);
 }
 
-// Extract a timestamp from |dictionary[key]|. Will return base::Time() if no
-// timestamp exists.
-base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
-                                      const char* key) {
-  int64_t timestamp = 0;
-  if (const std::string* timestamp_str = dictionary->FindStringKey(key))
-    base::StringToInt64(*timestamp_str, &timestamp);
-  base::Time last_modified =
-      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(timestamp));
-  return last_modified;
-}
-
-// Extract a SessionModel from |dictionary[key]|. Will return
+// Extract a SessionModel from |dict[key]|. Will return
 // SessionModel::Durable if no model exists.
 content_settings::SessionModel GetSessionModelFromDictionary(
-    const base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     const char* key) {
-  absl::optional<int> model_int = dictionary->FindIntKey(key);
+  absl::optional<int> model_int = dict.FindInt(key);
   if (!model_int.has_value() ||
       (model_int >
        static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
