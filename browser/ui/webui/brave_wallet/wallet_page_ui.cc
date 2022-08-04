@@ -56,9 +56,11 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       source,
       base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
       IDR_WALLET_PAGE_HTML);
+  source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + ";");
+      std::string("frame-src ") + kUntrustedTrezorURL + " " +
+          kUntrustedLedgerURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
