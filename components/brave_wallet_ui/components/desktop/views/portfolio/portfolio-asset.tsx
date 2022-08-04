@@ -309,14 +309,18 @@ export const PortfolioAsset = () => {
 
   const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
 
-  const onToggleShowBridgeToAurora = React.useCallback(() => {
+  const onBridgeToAuroraButton = React.useCallback(() => {
     if (bridgeToAuroraWarningShown) {
       onOpenRainbowAppClick()
     } else {
-      setShowBridgeToAuroraModal(prevShoModal => !prevShoModal)
       localStorage.setItem(bridgeToAuroraWarningShownKey, 'true')
+      setShowBridgeToAuroraModal(true)
     }
   }, [bridgeToAuroraWarningShown])
+
+  const onCloseAuroraModal = React.useCallback(() => {
+    setShowBridgeToAuroraModal(false)
+  }, [])
 
   const onOpenRainbowAppClick = React.useCallback(() => {
     chrome.tabs.create({ url: rainbowbridgeLink }, () => {
@@ -464,7 +468,7 @@ export const PortfolioAsset = () => {
 
       {!isNftAsset && isSelectedAssetBridgeSupported &&
         <BridgeToAuroraButton
-          onClick={onToggleShowBridgeToAurora}
+          onClick={onBridgeToAuroraButton}
         >
           Bridge to Aurora
         </BridgeToAuroraButton>
@@ -472,7 +476,7 @@ export const PortfolioAsset = () => {
 
       {showBridgeToAuroraModal &&
         <BridgeToAuroraModal
-          onClose={onToggleShowBridgeToAurora}
+          onClose={onCloseAuroraModal}
           onOpenRainbowAppClick={onOpenRainbowAppClick}
         />
       }
