@@ -41,6 +41,7 @@ import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
+import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
@@ -116,6 +117,20 @@ public class AccountDetailActivity
                 addAccountActivityIntent.putExtra(Utils.NAME, mName);
                 addAccountActivityIntent.putExtra(Utils.ISIMPORTED, mIsImported);
                 addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, true);
+                CryptoAccountTypeInfo cryptoAccountTypeInfo;
+                // TODO(sergz): Add other networks here
+                if (mCoinType == CoinType.SOL) {
+                    cryptoAccountTypeInfo = new CryptoAccountTypeInfo(
+                            getString(R.string.brave_wallet_create_account_solana_description),
+                            getString(R.string.wallet_sol_name), CoinType.SOL,
+                            R.drawable.ic_sol_asset_icon);
+                } else {
+                    cryptoAccountTypeInfo = new CryptoAccountTypeInfo(
+                            getString(R.string.brave_wallet_create_account_ethereum_description),
+                            getString(R.string.wallet_eth_name), CoinType.ETH, R.drawable.eth);
+                }
+                addAccountActivityIntent.putExtra(
+                        AddAccountActivity.ACCOUNT, cryptoAccountTypeInfo);
                 startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
             }
         });
