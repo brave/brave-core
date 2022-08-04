@@ -7,6 +7,7 @@
 
 #include <array>
 #include <string>
+#include <vector>
 
 #include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
