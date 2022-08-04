@@ -7,7 +7,6 @@
 #include <string>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 
 namespace brave_wallet {
 
