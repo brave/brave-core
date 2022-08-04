@@ -23,6 +23,7 @@ import Amount from '../../../../utils/amount'
 import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getTokensNetwork, getTokensCoinType } from '../../../../utils/network-utils'
+import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -39,6 +40,7 @@ import {
 } from '../../'
 // import NFTDetails from './components/nft-details'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
+import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
 // Hooks
 import { useBalance, usePricing, useTransactionParser } from '../../../../common/hooks'
@@ -52,6 +54,7 @@ import {
   AssetColumn,
   PriceRow,
   AssetNameText,
+  BridgeToAuroraButton,
   DetailText,
   InfoColumn,
   PriceText,
@@ -65,8 +68,13 @@ import {
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
+const rainbowbridgeLink = 'https://rainbowbridge.app'
+const bridgeToAuroraWarningShownKey = 'bridgeToAuroraWarningShown'
 
 export const PortfolioAsset = () => {
+  // state
+  const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
+  const [bridgeToAuroraWarningShown, setBridgeToAuroraWarningShown] = React.useState<boolean>()
   // routing
   const history = useHistory()
   const { id: assetId } = useParams<{ id?: string }>()
@@ -167,6 +175,13 @@ export const PortfolioAsset = () => {
       ? userVisibleTokensInfo.find((token) => token.contractAddress === assetId)
       : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase())
   }, [assetId, userVisibleTokensInfo, selectedTimeline])
+
+  const isSelectedAssetBridgeSupported = React.useMemo(() => {
+    if (!selectedAssetFromParams) return false
+    return auroraSupportedContractAddresses
+        .includes(selectedAssetFromParams.contractAddress.toLowerCase()) ||
+      selectedAssetFromParams.symbol.toUpperCase() === 'ETH'
+  }, [selectedAssetFromParams])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo(() => {
@@ -287,6 +302,28 @@ export const PortfolioAsset = () => {
     setHideBalances(prevHideBalances => !prevHideBalances)
   }, [])
 
+  const onOpenRainbowAppClick = React.useCallback(() => {
+    chrome.tabs.create({ url: rainbowbridgeLink }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+    setShowBridgeToAuroraModal(false)
+  }, [])
+
+  const onBridgeToAuroraButton = React.useCallback(() => {
+    if (bridgeToAuroraWarningShown) {
+      onOpenRainbowAppClick()
+    } else {
+      localStorage.setItem(bridgeToAuroraWarningShownKey, 'true')
+      setShowBridgeToAuroraModal(true)
+    }
+  }, [bridgeToAuroraWarningShown, onOpenRainbowAppClick])
+
+  const onCloseAuroraModal = React.useCallback(() => {
+    setShowBridgeToAuroraModal(false)
+  }, [])
+
   // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
@@ -298,6 +335,10 @@ export const PortfolioAsset = () => {
       dispatch(WalletPageActions.selectAsset({ asset: selectedAssetFromParams, timeFrame: selectedTimeline }))
     }
   }, [selectedAssetFromParams])
+
+  React.useEffect(() => {
+    setBridgeToAuroraWarningShown(localStorage.getItem(bridgeToAuroraWarningShownKey) === 'true')
+  })
 
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
@@ -377,15 +418,30 @@ export const PortfolioAsset = () => {
         />
       }
 
-      {/* {selectedAsset?.isErc721 &&
-        <NFTDetails
-          isLoading={isFetchingNFTMetadata}
-          selectedAsset={selectedAsset}
-          nftMetadata={nftMetadata}
-          defaultCurrencies={defaultCurrencies}
-          selectedNetwork={selectedNetwork}
+      {!isNftAsset && isSelectedAssetBridgeSupported &&
+        <BridgeToAuroraButton
+          onClick={onBridgeToAuroraButton}
+        >
+          Bridge to Aurora
+        </BridgeToAuroraButton>
+      }
+
+      {showBridgeToAuroraModal &&
+        <BridgeToAuroraModal
+          onClose={onCloseAuroraModal}
+          onOpenRainbowAppClick={onOpenRainbowAppClick}
         />
-      } */}
+      }
+
+      {/* {selectedAsset?.isErc721 &&
+       <NFTDetails
+       isLoading={isFetchingNFTMetadata}
+       selectedAsset={selectedAsset}
+       nftMetadata={nftMetadata}
+       defaultCurrencies={defaultCurrencies}
+       selectedNetwork={selectedNetwork}
+       />
+       } */}
 
       <AccountsAndTransactionsList
         formattedFullAssetBalance={formattedFullAssetBalance}
