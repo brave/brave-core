@@ -5,12 +5,13 @@
 
 import Foundation
 import BraveCore
+import OrderedCollections
 
 extension BraveWalletKeyringService {
   
   // Fetches all keyrings for all given coin types
   func keyrings(
-    for coins: Set<BraveWallet.CoinType>
+    for coins: OrderedSet<BraveWallet.CoinType>
   ) async -> [BraveWallet.KeyringInfo] {
     var allKeyrings: [BraveWallet.KeyringInfo] = []
     allKeyrings = await withTaskGroup(

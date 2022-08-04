@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveCore
+import OrderedCollections
 
 struct WalletConstants {
   /// The Brave swap fee as a % value
@@ -38,7 +39,7 @@ struct WalletConstants {
   ]
   
   /// The currently supported coin types.
-  static var supportedCoinTypes: Set<BraveWallet.CoinType> {
+  static var supportedCoinTypes: OrderedSet<BraveWallet.CoinType> {
     if WalletDebugFlags.isSolanaEnabled {
       return [.eth, .sol]
     }
