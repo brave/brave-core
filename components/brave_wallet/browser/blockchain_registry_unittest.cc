@@ -463,11 +463,11 @@ TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
       "USDC", "99.99",
       base::BindLambdaForTesting([&](const std::string& url,
                                      const absl::optional<std::string>& error) {
-        EXPECT_EQ(url,
-                  "https://pay.sendwyre.com/"
-                  "?dest=ethereum:0xdeadbeef&sourceCurrency=USD&destCurrency="
-                  "USDC&amount=99.99&"
-                  "accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card");
+        EXPECT_EQ(
+            url,
+            "https://pay.sendwyre.com/"
+            "?dest=ethereum%3A0xdeadbeef&sourceCurrency=USD&destCurrency=USDC&"
+            "amount=99.99&accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card");
         EXPECT_FALSE(error);
 
         run_loop.Quit();

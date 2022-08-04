@@ -42,11 +42,21 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   mojo::PendingRemote<mojom::AssetRatioService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::AssetRatioService> receiver);
 
+  // Get buy URL for on-ramps
+  void GetBuyUrlV1(mojom::OnRampProvider provider,
+                   const std::string& chain_id,
+                   const std::string& address,
+                   const std::string& symbol,
+                   const std::string& amount,
+                   const std::string& currency_code,
+                   GetBuyUrlV1Callback callback) override;
+
   // mojom::AssetRatioService
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,
                 brave_wallet::mojom::AssetPriceTimeframe timeframe,
                 GetPriceCallback callback) override;
+
   // The asset and vs_asset params are strings like: "bat"
   void GetPriceHistory(const std::string& asset,
                        const std::string& vs_asset,
@@ -54,6 +64,13 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                        GetPriceHistoryCallback callback) override;
   void GetTokenInfo(const std::string& contract_address,
                     GetTokenInfoCallback callback) override;
+
+  static GURL GetSardineBuyURL(const std::string network,
+                               const std::string address,
+                               const std::string symbol,
+                               const std::string amount,
+                               const std::string currency_code,
+                               const std::string auth_token);
 
   static GURL GetPriceURL(const std::vector<std::string>& from_assets,
                           const std::vector<std::string>& to_assets,
@@ -69,6 +86,17 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
+  void OnGetSardineAuthToken(
+      const std::string& network,
+      const std::string& address,
+      const std::string& symbol,
+      const std::string& amount,
+      const std::string& currency_code,
+      GetBuyUrlV1Callback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
   void OnGetPrice(std::vector<std::string> from_assets,
                   std::vector<std::string> to_assets,
                   GetPriceCallback callback,

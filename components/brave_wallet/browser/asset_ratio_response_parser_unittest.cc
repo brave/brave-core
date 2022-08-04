@@ -16,6 +16,25 @@
 
 namespace brave_wallet {
 
+TEST(AssetRatioResponseParserUnitTest, ParseSardineAuthToken) {
+  std::string json(R"({
+   "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
+   "expiresAt":"2022-07-25T19:59:57Z"
+  })");
+
+  auto auth_token = ParseSardineAuthToken(json);
+  ASSERT_TRUE(auth_token);
+  EXPECT_EQ(auth_token, "74618e17-a537-4f5d-ab4d-9916739560b1");
+
+  // Invalid json
+  json = (R"({)");
+  EXPECT_FALSE(ParseSardineAuthToken(json));
+
+  // Valid json, missing required field
+  json = (R"({})");
+  EXPECT_FALSE(ParseSardineAuthToken(json));
+}
+
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
   std::string json(R"({
      "payload":{
