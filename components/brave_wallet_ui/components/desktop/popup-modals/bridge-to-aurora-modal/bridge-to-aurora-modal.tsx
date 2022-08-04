@@ -36,6 +36,7 @@ export const BridgeToAuroraModal = ({ onClose, onOpenRainbowAppClick }: Props) =
         <Title>{getLocale('braveWalletAuroraModalTitle')}</Title>
         <Description>{getLocale('braveWalletAuroraModalDescription')}</Description>
         <LearnMoreLink
+          rel='noopener noreferrer'
           target='_blank'
           href={learnMoreLink}
         >
