@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.listeners;
 
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -17,5 +18,7 @@ public interface OnWalletListItemClick {
     default public void onTransactionClick(TransactionInfo txInfo){};
     default public void onAssetCheckedChanged(
             WalletListItemModel walletListItemModel, CheckBox assetCheck, boolean isChecked){};
+    default public void onMaybeShowTrashButton(
+            WalletListItemModel walletListItemModel, ImageView trashButton){};
     default public void onTrashIconClick(WalletListItemModel walletListItemModel){};
 }
