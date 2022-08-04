@@ -61,23 +61,32 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
   const base::Value* explorerUrlsListValue =
       params_dict->FindListKey("blockExplorerUrls");
   if (explorerUrlsListValue) {
-    for (const auto& entry : explorerUrlsListValue->GetList())
+    for (const auto& entry : explorerUrlsListValue->GetList()) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.block_explorer_urls.push_back(entry.GetString());
+    }
   }
 
   const base::Value* iconUrlsValue = params_dict->FindListKey("iconUrls");
   if (iconUrlsValue) {
-    for (const auto& entry : iconUrlsValue->GetList())
+    for (const auto& entry : iconUrlsValue->GetList()) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.icon_urls.push_back(entry.GetString());
+    }
   }
 
   const base::Value* rpcUrlsValue = params_dict->FindListKey("rpcUrls");
   if (rpcUrlsValue) {
-    for (const auto& entry : rpcUrlsValue->GetList())
+    for (const auto& entry : rpcUrlsValue->GetList()) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.rpc_urls.push_back(entry.GetString());
+    }
   }
   const base::Value* nativeCurrencyValue =
       params_dict->FindDictKey("nativeCurrency");
