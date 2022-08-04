@@ -11,10 +11,13 @@
 @class BraveBookmarksAPI;
 @class BraveHistoryAPI;
 @class BravePasswordAPI;
+@class BraveOpenTabsAPI;
+@class BraveSendTabAPI;
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
 @class BraveStats;
 @class AdblockService;
+@class BraveTabGeneratorAPI;
 
 @protocol BraveWalletBlockchainRegistry;
 @protocol BraveWalletEthereumProvider;
@@ -60,11 +63,17 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) BraveHistoryAPI* historyAPI;
 
+@property(nonatomic, readonly) BravePasswordAPI* passwordAPI;
+
+@property(nonatomic, readonly) BraveOpenTabsAPI* openTabsAPI;
+
+@property(nonatomic, readonly) BraveSendTabAPI* sendTabAPI;
+
 @property(nonatomic, readonly) BraveSyncAPI* syncAPI;
 
 @property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
 
-@property(nonatomic, readonly) BravePasswordAPI* passwordAPI;
+@property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
