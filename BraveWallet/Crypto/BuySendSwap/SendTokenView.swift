@@ -129,7 +129,7 @@ struct SendTokenView: View {
           }
         ) {
           HStack(spacing: 14.0) {
-            TextField(Strings.Wallet.sendCryptoAddressPlaceholder, text: $sendTokenStore.sendAddress)
+            TextField(Strings.Wallet.sendToCryptoAddressPlaceholder, text: $sendTokenStore.sendAddress)
             Button(action: {
               if let string = UIPasteboard.general.string {
                 sendTokenStore.sendAddress = string

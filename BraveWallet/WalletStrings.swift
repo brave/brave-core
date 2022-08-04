@@ -974,11 +974,11 @@ extension Strings {
       value: "To",
       comment: "A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side"
     )
-    public static let sendCryptoAddressPlaceholder = NSLocalizedString(
-      "wallet.sendCryptoAddressPlaceholder",
+    public static let sendToCryptoAddressPlaceholder = NSLocalizedString(
+      "wallet.sendToCryptoAddressPlaceholder",
       tableName: "BraveWallet",
       bundle: .strings,
-      value: "Enter address or url",
+      value: "Enter address",
       comment: "A placeholder of the address text field."
     )
     public static let scanQRCodeAccessibilityLabel = NSLocalizedString(
