@@ -376,6 +376,7 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE" desc="">Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES" desc=""><ph name="BEGIN_BOLD">$1</ph>Still having trouble?<ph name="END_BOLD">$2</ph> Try using <ph name="BEGIN_BRIDGES_LINK">$3</ph>bridges<ph name="END_BRIDGES_LINK">$4</ph> or <ph name="BEGIN_SUPPORT_LINK">$5</ph>contact support<ph name="END_SUPPORT_LINK">$6</ph>.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT" desc="">Contact support.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER" desc="A placeholder label to display on neutral state of the input box in private new tab page">Search the web privately</message>
 
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE" desc="Title for additional filters section">Additional Filters</message>

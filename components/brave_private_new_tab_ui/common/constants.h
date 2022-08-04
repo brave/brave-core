@@ -37,6 +37,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES},  // NOLINT
     {"torHelpContactSupport",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT},  // NOLINT
+    {"searchPlaceholderLabel",
+     IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER},  // NOLINT
 };
 
 }  // namespace brave_private_new_tab
