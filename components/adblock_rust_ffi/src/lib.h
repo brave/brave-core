@@ -184,4 +184,8 @@ char* engine_hidden_class_id_selectors(struct C_Engine* engine,
                                        const char* const* exceptions,
                                        size_t exceptions_size);
 
+#if defined(IS_IOS)
+char* convert_rules_to_content_blocking(const char* rules);
+#endif
+
 #endif /* BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_ */
