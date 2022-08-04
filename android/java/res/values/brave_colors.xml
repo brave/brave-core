@@ -28,6 +28,7 @@
     <color name="brave_wallet_day_night_text_color">@android:color/black</color>
     <color name="brave_wallet_day_night_icon_color">@android:color/black</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#E1E3E4</color>
+    <color name="brave_wallet_dn_error_text_bg_color">#F0F2FF</color>
 
     <!-- Text colors -->
     <color name="brave_theme_hint_text">#868E96</color>

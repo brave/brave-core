@@ -11,6 +11,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +51,11 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageA
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
@@ -213,6 +217,21 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         TextView networkName = view.findViewById(R.id.network_name);
         TextView txType = view.findViewById(R.id.tx_type);
 
+        if (mTxInfo.txType
+                == TransactionType
+                           .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION) {
+            TextView associatedSplTokenInfo =
+                    view.findViewById(R.id.tv_approve_dialog_additional_details);
+            associatedSplTokenInfo.setVisibility(View.VISIBLE);
+            Spanned associatedSPLTokenAccountInfo =
+                    Utils.createSpanForSurroundedPhrase(getContext(),
+                            R.string.brave_wallet_confirm_transaction_account_creation_fee, (v) -> {
+                                TabUtils.openUrlInNewTab(false, Utils.BRAVE_SUPPORT_URL);
+                                TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
+                            });
+            associatedSplTokenInfo.setMovementMethod(LinkMovementMethod.getInstance());
+            associatedSplTokenInfo.setText(associatedSPLTokenAccountInfo);
+        }
         mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
         jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
             networkName.setText(selectedNetwork.chainName);

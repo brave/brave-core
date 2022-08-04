@@ -73,6 +73,18 @@ public class TxDetailsFragment extends Fragment {
                 functionType = getResources().getString(
                         R.string.wallet_details_function_type_erc721transfer);
                 break;
+            case TransactionType.SOLANA_SYSTEM_TRANSFER:
+                functionType = getResources().getString(
+                        R.string.wallet_details_function_type_solana_system_transfer);
+                break;
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER:
+                functionType = getResources().getString(
+                        R.string.wallet_details_function_type_spl_token_transfer);
+                break;
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION:
+                functionType = getResources().getString(
+                        R.string.wallet_details_function_type_solana_spl_token_transfer_with_associated_token_account_creation);
+                break;
             default:
                 break;
         }
