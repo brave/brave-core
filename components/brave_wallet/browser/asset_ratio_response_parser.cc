@@ -341,7 +341,7 @@ bool ParseCoinMarkets(const std::string& json,
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(0) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
