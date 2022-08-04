@@ -30,7 +30,7 @@ void AsyncDataStore::InitializeDatabase(
 }
 
 void AsyncDataStore::AddTrainingInstance(
-    std::vector<brave_federated::mojom::CovariatePtr> training_instance,
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance,
     base::OnceCallback<void(bool)> callback) {
   data_store_.AsyncCall(&DataStore::AddTrainingInstance)
       .WithArgs(std::move(training_instance))

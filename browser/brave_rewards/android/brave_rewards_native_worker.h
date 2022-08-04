@@ -20,6 +20,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 
 namespace brave_rewards {
 class RewardsService;
@@ -234,11 +235,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnStartProcess();
 
-    void OnGetAdsAccountStatement(bool success,
-                                  double next_payment_date,
-                                  int ads_received_this_month,
-                                  double earnings_this_month,
-                                  double earnings_last_month);
+    void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
 
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;

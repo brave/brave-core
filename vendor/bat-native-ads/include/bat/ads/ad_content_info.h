@@ -30,7 +30,7 @@ struct ADS_EXPORT AdContentInfo final {
   AdContentLikeActionType ToggleThumbDownActionType() const;
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

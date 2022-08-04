@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -95,7 +96,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   user_data_builder.Build([=](const base::Value::Dict& user_data) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet_, unblinded_payment_tokens, user_data);
-    mojom::UrlRequestPtr url_request = url_request_builder.Build();
+    mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
     BLOG(6, UrlRequestToString(url_request));
     BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -108,7 +109,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeem(
-    const mojom::UrlResponse& url_response,
+    const mojom::UrlResponseInfo& url_response,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 

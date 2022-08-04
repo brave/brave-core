@@ -25,7 +25,7 @@ namespace ads {
 // "instance ". A column is called a "feature". To differentiate between
 // Chromium/Griffin features and federated services features, we call them
 // covariates instead. Covariate values can be of different data types as
-// defined in |mojom::ads::Covariate|. All covariates are only session based at
+// defined in |mojom::CovariateInfo|. All covariates are only session based at
 // the moment, i.e no measurements are persisted across sessions.
 class CovariateManager final {
  public:
@@ -39,7 +39,8 @@ class CovariateManager final {
   static bool HasInstance();
 
   void SetLogEntry(std::unique_ptr<CovariateLogEntryInterface> entry);
-  std::vector<brave_federated::mojom::CovariatePtr> GetTrainingInstance() const;
+  std::vector<brave_federated::mojom::CovariateInfoPtr> GetTrainingInstance()
+      const;
 
   void SetNotificationAdServedAt(const base::Time time);
   void SetNotificationAdEvent(const mojom::NotificationAdEventType event_type);

@@ -29,7 +29,7 @@ namespace {
 
 constexpr char kTableName[] = "transactions";
 
-int BindParameters(mojom::DBCommand* command,
+int BindParameters(mojom::DBCommandInfo* command,
                    const TransactionList& transactions) {
   DCHECK(command);
 
@@ -51,7 +51,7 @@ int BindParameters(mojom::DBCommand* command,
   return count;
 }
 
-TransactionInfo GetFromRecord(mojom::DBRecord* record) {
+TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   DCHECK(record);
 
   TransactionInfo transaction;
@@ -80,7 +80,7 @@ void Transactions::Save(const TransactionList& transactions,
     return;
   }
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   InsertOrUpdate(transaction.get(), transactions);
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -101,21 +101,23 @@ void Transactions::GetAll(GetTransactionsCallback callback) {
       "FROM %s",
       GetTableName().c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // created_at
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // ad_type
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // confirmation_type
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE   // reconciled_at
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // created_at
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // ad_type
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,                                      // confirmation_type
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE  // reconciled_at
   };
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -139,21 +141,23 @@ void Transactions::GetForDateRange(const base::Time from_time,
       "WHERE created_at BETWEEN %f and %f ",
       GetTableName().c_str(), from_time.ToDoubleT(), to_time.ToDoubleT());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // created_at
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // ad_type
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // confirmation_type
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE   // reconciled_at
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // created_at
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // ad_type
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,                                      // confirmation_type
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE  // reconciled_at
   };
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -179,8 +183,8 @@ void Transactions::Update(
       BuildBindingParameterPlaceholder(transaction_ids.size()).c_str(),
       BuildBindingParameterPlaceholder(1).c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   int index = 0;
@@ -193,7 +197,7 @@ void Transactions::Update(
              rewards::kMigrationUnreconciledTransactionId);
   index++;
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -202,7 +206,7 @@ void Transactions::Update(
 }
 
 void Transactions::Delete(ResultCallback callback) {
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
 
@@ -215,7 +219,7 @@ std::string Transactions::GetTableName() const {
   return kTableName;
 }
 
-void Transactions::Migrate(mojom::DBTransaction* transaction,
+void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
                            const int to_version) {
   DCHECK(transaction);
 
@@ -233,7 +237,7 @@ void Transactions::Migrate(mojom::DBTransaction* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Transactions::InsertOrUpdate(mojom::DBTransaction* transaction,
+void Transactions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                   const TransactionList& transactions) {
   DCHECK(transaction);
 
@@ -241,15 +245,15 @@ void Transactions::InsertOrUpdate(mojom::DBTransaction* transaction,
     return;
   }
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), transactions);
 
   transaction->commands.push_back(std::move(command));
 }
 
 std::string Transactions::BuildInsertOrUpdateQuery(
-    mojom::DBCommand* command,
+    mojom::DBCommandInfo* command,
     const TransactionList& transactions) {
   DCHECK(command);
 
@@ -268,10 +272,10 @@ std::string Transactions::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Transactions::OnGetTransactions(mojom::DBCommandResponsePtr response,
+void Transactions::OnGetTransactions(mojom::DBCommandResponseInfoPtr response,
                                      GetTransactionsCallback callback) {
-  if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
     callback(/* success */ false, {});
     return;
@@ -287,7 +291,7 @@ void Transactions::OnGetTransactions(mojom::DBCommandResponsePtr response,
   callback(/* success */ true, transactions);
 }
 
-void Transactions::MigrateToV18(mojom::DBTransaction* transaction) {
+void Transactions::MigrateToV18(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -300,8 +304,8 @@ void Transactions::MigrateToV18(mojom::DBTransaction* transaction) {
       "confirmation_type TEXT NOT NULL, "
       "reconciled_at TIMESTAMP)");
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

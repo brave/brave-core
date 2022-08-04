@@ -59,29 +59,29 @@ class ConversionQueue final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const ConversionQueueItemList& conversion_queue_items);
 
   std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommand* command,
+      mojom::DBCommandInfo* command,
       const ConversionQueueItemList& conversion_queue_items);
 
-  void OnGetAll(mojom::DBCommandResponsePtr response,
+  void OnGetAll(mojom::DBCommandResponseInfoPtr response,
                 GetConversionQueueCallback callback);
 
   void OnGetForCreativeInstanceId(
-      mojom::DBCommandResponsePtr response,
+      mojom::DBCommandResponseInfoPtr response,
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback);
 
-  void MigrateToV10(mojom::DBTransaction* transaction);
-  void MigrateToV11(mojom::DBTransaction* transaction);
-  void MigrateToV17(mojom::DBTransaction* transaction);
-  void MigrateToV21(mojom::DBTransaction* transaction);
+  void MigrateToV10(mojom::DBTransactionInfo* transaction);
+  void MigrateToV11(mojom::DBTransactionInfo* transaction);
+  void MigrateToV17(mojom::DBTransactionInfo* transaction);
+  void MigrateToV21(mojom::DBTransactionInfo* transaction);
 
   int batch_size_;
 };

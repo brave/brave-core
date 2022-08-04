@@ -12,6 +12,7 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -22,11 +23,10 @@
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/statement_info.h"
-#include "bat/ads/transaction_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -651,19 +651,18 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   SaveTransactions(transactions);
 
   // Act
-  account_->GetStatement(
-      [](const bool success, const StatementInfo& statement) {
-        ASSERT_TRUE(success);
+  account_->GetStatement([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
 
-        StatementInfo expected_statement;
-        expected_statement.next_payment_date =
-            TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-        expected_statement.earnings_this_month = 0.05;
-        expected_statement.earnings_last_month = 0.01;
-        expected_statement.ads_received_this_month = 3;
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.01;
+    expected_statement->earnings_this_month = 0.05;
+    expected_statement->next_payment_date =
+        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
+    expected_statement->ads_received_this_month = 3;
 
-        EXPECT_EQ(expected_statement, statement);
-      });
+    EXPECT_EQ(expected_statement, statement);
+  });
 
   // Assert
 }

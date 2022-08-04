@@ -5,6 +5,8 @@
 
 #include "bat/ads/promoted_content_ad_info.h"
 
+#include "url/gurl.h"
+
 namespace ads {
 
 PromotedContentAdInfo::PromotedContentAdInfo() = default;
@@ -19,6 +21,7 @@ PromotedContentAdInfo::~PromotedContentAdInfo() = default;
 
 base::Value::Dict PromotedContentAdInfo::ToValue() const {
   base::Value::Dict dict;
+
   dict.Set("type", type.ToString());
   dict.Set("uuid", placement_id);
   dict.Set("creative_instance_id", creative_instance_id);
@@ -29,10 +32,11 @@ base::Value::Dict PromotedContentAdInfo::ToValue() const {
   dict.Set("title", title);
   dict.Set("description", description);
   dict.Set("target_url", target_url.spec());
+
   return dict;
 }
 
-bool PromotedContentAdInfo::FromValue(const base::Value::Dict& root) {
+void PromotedContentAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("type")) {
     type = AdType(*value);
   }
@@ -72,8 +76,6 @@ bool PromotedContentAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("target_url")) {
     target_url = GURL(*value);
   }
-
-  return true;
 }
 
 bool PromotedContentAdInfo::IsValid() const {

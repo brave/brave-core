@@ -166,9 +166,8 @@ class AdsServiceImpl : public AdsService,
                         const base::TimeDelta idle_time);
 
   void OnMaybeServeInlineContentAd(MaybeServeInlineContentAdCallback callback,
-                                   const bool success,
                                    const std::string& dimensions,
-                                   const std::string& json);
+                                   absl::optional<base::Value::Dict> dict);
 
   absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
@@ -181,7 +180,7 @@ class AdsServiceImpl : public AdsService,
   void NotificationAdTimedOut(const std::string& placement_id);
 
   void PrefetchNewTabPageAd() override;
-  void OnPrefetchNewTabPageAd(bool success, const std::string& json);
+  void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
 
   void OnTriggerSearchResultAdEvent(
       TriggerSearchResultAdEventCallback callback,
@@ -194,7 +193,7 @@ class AdsServiceImpl : public AdsService,
   void OpenNewTabWithUrl(const GURL& url);
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnOpenNewTabWithAd(const std::string& json);
+  void OnGetNotificationAd(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   bool IsUpgradingFromPreBraveAdsBuild();
@@ -224,12 +223,10 @@ class AdsServiceImpl : public AdsService,
                           const std::string& message);
 
   void OnGetDiagnostics(GetDiagnosticsCallback callback,
-                        const bool success,
-                        const std::string& json);
+                        absl::optional<base::Value::List> value);
 
   void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
-                                const bool success,
-                                const std::string& json);
+                                ads::mojom::StatementInfoPtr statement);
 
   void OnGetHistory(GetHistoryCallback callback, const std::string& json);
 
@@ -261,7 +258,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
-                          ads::mojom::DBCommandResponsePtr response);
+                          ads::mojom::DBCommandResponseInfoPtr response);
 
   void OnLogTrainingInstance(bool success);
 
@@ -304,14 +301,14 @@ class AdsServiceImpl : public AdsService,
 
   void OnChangeLocale(const std::string& locale) override;
 
+  void OnUserGesture(const int32_t page_transition_type) override;
+
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
   void OnTextLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
-
-  void OnUserGesture(const int32_t page_transition_type) override;
 
   void OnMediaStart(const SessionID& tab_id) override;
   void OnMediaStop(const SessionID& tab_id) override;
@@ -343,7 +340,7 @@ class AdsServiceImpl : public AdsService,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdPtr ad_mojom,
+      ads::mojom::SearchResultAdInfoPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
@@ -398,7 +395,7 @@ class AdsServiceImpl : public AdsService,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -416,13 +413,13 @@ class AdsServiceImpl : public AdsService,
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
                       const std::string& value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
                                training_instance) override;
 
   bool GetBooleanPref(const std::string& path) const override;

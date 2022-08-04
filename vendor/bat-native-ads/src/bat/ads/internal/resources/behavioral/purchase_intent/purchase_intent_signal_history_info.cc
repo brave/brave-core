@@ -5,10 +5,8 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace targeting {
@@ -41,14 +39,15 @@ bool PurchaseIntentSignalHistoryInfo::operator!=(
 
 base::Value::Dict PurchaseIntentSignalHistoryInfo::ToValue() const {
   base::Value::Dict dict;
+
   dict.Set("timestamp_in_seconds",
            base::NumberToString(created_at.ToDoubleT()));
-
   dict.Set("weight", static_cast<int>(weight));
+
   return dict;
 }
 
-bool PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
+void PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
   weight = static_cast<uint16_t>(root.FindInt("weight").value_or(0));
 
   if (const auto* value = root.FindString("timestamp_in_seconds")) {
@@ -61,8 +60,6 @@ bool PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
   } else {
     created_at = base::Time();
   }
-
-  return true;
 }
 
 }  // namespace targeting

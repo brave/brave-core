@@ -46,15 +46,15 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo& info_2 =
+  const TransactionInfo& transaction_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  transactions.push_back(transaction_2);
 
   // Act
   SaveTransactions(transactions);
@@ -75,9 +75,9 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info =
+  const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
-  transactions.push_back(info);
+  transactions.push_back(transaction);
 
   SaveTransactions(transactions);
 
@@ -100,20 +100,20 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo& info_2 =
+  const TransactionInfo& transaction_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
 
   // Act
-  const TransactionList& expected_transactions = {info_2};
+  const TransactionList& expected_transactions = {transaction_2};
 
   Transactions database_table;
   database_table.GetForDateRange(
@@ -131,18 +131,19 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
-  TransactionInfo info_2 = BuildTransaction(0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  TransactionInfo transaction_2 =
+      BuildTransaction(0.03, ConfirmationType::kClicked);
+  transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
 
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
   privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
-  unblinded_payment_token.transaction_id = info_2.id;
+  unblinded_payment_token.transaction_id = transaction_2.id;
   unblinded_payment_tokens.push_back(unblinded_payment_token);
 
   // Act
@@ -151,8 +152,8 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
                         [](const bool success) { ASSERT_TRUE(success); });
 
   // Assert
-  info_2.reconciled_at = Now();
-  const TransactionList& expected_transactions = {info_1, info_2};
+  transaction_2.reconciled_at = Now();
+  const TransactionList& expected_transactions = {transaction_1, transaction_2};
 
   database_table.GetAll(
       [&expected_transactions](const bool success,
@@ -166,13 +167,13 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
-  const TransactionInfo& info_2 =
+  const TransactionInfo& transaction_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
 

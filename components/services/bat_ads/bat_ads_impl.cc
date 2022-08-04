@@ -18,13 +18,9 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/statement_info.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "url/gurl.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace bat_ads {
 
@@ -49,7 +45,8 @@ void BatAdsImpl::Initialize(
   auto* holder = new CallbackHolder<InitializeCallback>(AsWeakPtr(),
       std::move(callback));
 
-  ads_->Initialize(std::bind(BatAdsImpl::OnInitialize, holder, _1));
+  ads_->Initialize(
+      std::bind(BatAdsImpl::OnInitialize, holder, std::placeholders::_1));
 }
 
 void BatAdsImpl::Shutdown(
@@ -57,8 +54,17 @@ void BatAdsImpl::Shutdown(
   auto* holder = new CallbackHolder<ShutdownCallback>(AsWeakPtr(),
       std::move(callback));
 
-  auto shutdown_callback = std::bind(BatAdsImpl::OnShutdown, holder, _1);
+  auto shutdown_callback =
+      std::bind(BatAdsImpl::OnShutdown, holder, std::placeholders::_1);
   ads_->Shutdown(shutdown_callback);
+}
+
+void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
+  auto* holder = new CallbackHolder<GetDiagnosticsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_->GetDiagnostics(
+      std::bind(BatAdsImpl::OnGetDiagnostics, holder, std::placeholders::_1));
 }
 
 void BatAdsImpl::OnChangeLocale(const std::string& locale) {
@@ -67,6 +73,31 @@ void BatAdsImpl::OnChangeLocale(const std::string& locale) {
 
 void BatAdsImpl::OnPrefChanged(const std::string& path) {
   ads_->OnPrefChanged(path);
+}
+
+void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
+  ads_->OnResourceComponentUpdated(id);
+}
+
+void BatAdsImpl::OnIdle() {
+  ads_->OnIdle();
+}
+
+void BatAdsImpl::OnUnIdle(const base::TimeDelta idle_time,
+                          const bool was_locked) {
+  ads_->OnUnIdle(idle_time, was_locked);
+}
+
+void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
+  ads_->OnUserGesture(page_transition_type);
+}
+
+void BatAdsImpl::OnBrowserDidEnterForeground() {
+  ads_->OnBrowserDidEnterForeground();
+}
+
+void BatAdsImpl::OnBrowserDidEnterBackground() {
+  ads_->OnBrowserDidEnterBackground();
 }
 
 void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
@@ -79,27 +110,6 @@ void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& text) {
   ads_->OnTextLoaded(tab_id, redirect_chain, text);
-}
-
-void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
-  ads_->OnUserGesture(page_transition_type);
-}
-
-void BatAdsImpl::OnUnIdle(const base::TimeDelta idle_time,
-                          const bool was_locked) {
-  ads_->OnUnIdle(idle_time, was_locked);
-}
-
-void BatAdsImpl::OnIdle() {
-  ads_->OnIdle();
-}
-
-void BatAdsImpl::OnBrowserDidEnterForeground() {
-  ads_->OnBrowserDidEnterForeground();
-}
-
-void BatAdsImpl::OnBrowserDidEnterBackground() {
-  ads_->OnBrowserDidEnterBackground();
 }
 
 void BatAdsImpl::OnMediaPlaying(
@@ -125,43 +135,18 @@ void BatAdsImpl::OnTabClosed(
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::GetNotificationAd(const std::string& placement_id,
-                                   GetNotificationAdCallback callback) {
-  ads::NotificationAdInfo notification_ad;
-  ads_->GetNotificationAd(placement_id, &notification_ad);
-  std::move(callback).Run(notification_ad.ToJson());
+void BatAdsImpl::OnWalletUpdated(const std::string& payment_id,
+                                 const std::string& seed) {
+  ads_->OnWalletUpdated(payment_id, seed);
 }
 
-void BatAdsImpl::TriggerNotificationAdEvent(
-    const std::string& placement_id,
-    const ads::mojom::NotificationAdEventType event_type) {
-  ads_->TriggerNotificationAdEvent(placement_id, event_type);
-}
-
-void BatAdsImpl::MaybeServeNewTabPageAd(
-    MaybeServeNewTabPageAdCallback callback) {
-  auto* holder = new CallbackHolder<MaybeServeNewTabPageAdCallback>(
+void BatAdsImpl::GetStatementOfAccounts(
+    GetStatementOfAccountsCallback callback) {
+  auto* holder = new CallbackHolder<GetStatementOfAccountsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  auto maybe_serve_new_tab_page_ad_callback =
-      std::bind(BatAdsImpl::OnMaybeServeNewTabPageAd, holder, _1, _2);
-  ads_->MaybeServeNewTabPageAd(maybe_serve_new_tab_page_ad_callback);
-}
-
-void BatAdsImpl::TriggerNewTabPageAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const ads::mojom::NewTabPageAdEventType event_type) {
-  ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                 event_type);
-}
-
-void BatAdsImpl::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const ads::mojom::PromotedContentAdEventType event_type) {
-  ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                      event_type);
+  ads_->GetStatementOfAccounts(std::bind(BatAdsImpl::OnGetStatementOfAccounts,
+                                         holder, std::placeholders::_1));
 }
 
 void BatAdsImpl::MaybeServeInlineContentAd(
@@ -171,7 +156,8 @@ void BatAdsImpl::MaybeServeInlineContentAd(
       AsWeakPtr(), std::move(callback));
 
   auto maybe_serve_inline_content_ads_callback =
-      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder, _1, _2, _3);
+      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder,
+                std::placeholders::_1, std::placeholders::_2);
   ads_->MaybeServeInlineContentAd(dimensions,
                                   maybe_serve_inline_content_ads_callback);
 }
@@ -184,15 +170,61 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
                                     event_type);
 }
 
+void BatAdsImpl::MaybeServeNewTabPageAd(
+    MaybeServeNewTabPageAdCallback callback) {
+  auto* holder = new CallbackHolder<MaybeServeNewTabPageAdCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto maybe_serve_new_tab_page_ad_callback = std::bind(
+      BatAdsImpl::OnMaybeServeNewTabPageAd, holder, std::placeholders::_1);
+  ads_->MaybeServeNewTabPageAd(maybe_serve_new_tab_page_ad_callback);
+}
+
+void BatAdsImpl::TriggerNewTabPageAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const ads::mojom::NewTabPageAdEventType event_type) {
+  ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                 event_type);
+}
+
+void BatAdsImpl::GetNotificationAd(const std::string& placement_id,
+                                   GetNotificationAdCallback callback) {
+  const absl::optional<ads::NotificationAdInfo> ad =
+      ads_->GetNotificationAd(placement_id);
+  if (!ad) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  absl::optional<base::Value::Dict> dict = ad->ToValue();
+  std::move(callback).Run(std::move(dict));
+}
+
+void BatAdsImpl::TriggerNotificationAdEvent(
+    const std::string& placement_id,
+    const ads::mojom::NotificationAdEventType event_type) {
+  ads_->TriggerNotificationAdEvent(placement_id, event_type);
+}
+
+void BatAdsImpl::TriggerPromotedContentAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const ads::mojom::PromotedContentAdEventType event_type) {
+  ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
+                                      event_type);
+}
+
 void BatAdsImpl::TriggerSearchResultAdEvent(
-    ads::mojom::SearchResultAdPtr ad_mojom,
+    ads::mojom::SearchResultAdInfoPtr ad_mojom,
     const ads::mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
   auto* holder = new CallbackHolder<TriggerSearchResultAdEventCallback>(
       AsWeakPtr(), std::move(callback));
 
-  auto on_search_result_ad_event_callback =
-      std::bind(BatAdsImpl::OnTriggerSearchResultAdEvent, holder, _1, _2, _3);
+  auto on_search_result_ad_event_callback = std::bind(
+      BatAdsImpl::OnTriggerSearchResultAdEvent, holder, std::placeholders::_1,
+      std::placeholders::_2, std::placeholders::_3);
   ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
                                    on_search_result_ad_event_callback);
 }
@@ -204,26 +236,11 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
       AsWeakPtr(), std::move(callback));
 
   auto purge_ad_events_for_type_callback =
-      std::bind(BatAdsImpl::OnPurgeOrphanedAdEventsForType, holder, _1);
+      std::bind(BatAdsImpl::OnPurgeOrphanedAdEventsForType, holder,
+                std::placeholders::_1);
 
   ads_->PurgeOrphanedAdEventsForType(ad_type,
                                      purge_ad_events_for_type_callback);
-}
-
-void BatAdsImpl::RemoveAllHistory(
-    RemoveAllHistoryCallback callback) {
-  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),
-      std::move(callback));
-
-  auto remove_all_history_callback =
-      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, _1);
-  ads_->RemoveAllHistory(remove_all_history_callback);
-}
-
-void BatAdsImpl::OnWalletUpdated(
-    const std::string& payment_id,
-    const std::string& seed) {
-  ads_->OnWalletUpdated(payment_id, seed);
 }
 
 void BatAdsImpl::GetHistory(const base::Time from_time,
@@ -236,20 +253,13 @@ void BatAdsImpl::GetHistory(const base::Time from_time,
   std::move(callback).Run(history.ToJson());
 }
 
-void BatAdsImpl::GetStatementOfAccounts(
-    GetStatementOfAccountsCallback callback) {
-  auto* holder = new CallbackHolder<GetStatementOfAccountsCallback>(
+void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetStatementOfAccounts(
-      std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1, _2));
-}
-
-void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
-  auto* holder = new CallbackHolder<GetDiagnosticsCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ads_->GetDiagnostics(std::bind(BatAdsImpl::OnGetDiagnostics, holder, _1, _2));
+  auto remove_all_history_callback =
+      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, std::placeholders::_1);
+  ads_->RemoveAllHistory(remove_all_history_callback);
 }
 
 void BatAdsImpl::ToggleAdThumbUp(const std::string& json,
@@ -306,10 +316,6 @@ void BatAdsImpl::ToggleFlaggedAd(const std::string& json,
   std::move(callback).Run(ad_content.ToJson());
 }
 
-void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
-  ads_->OnResourceComponentUpdated(id);
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void BatAdsImpl::OnInitialize(CallbackHolder<InitializeCallback>* holder,
@@ -333,11 +339,15 @@ void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
 // static
 void BatAdsImpl::OnMaybeServeNewTabPageAd(
     CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-    const bool success,
-    const ads::NewTabPageAdInfo& ad) {
+    const absl::optional<ads::NewTabPageAdInfo>& ad) {
   DCHECK(holder);
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, ad.ToJson());
+    absl::optional<base::Value::Dict> dict;
+    if (ad) {
+      dict = ad->ToValue();
+    }
+
+    std::move(holder->get()).Run(std::move(dict));
   }
 
   delete holder;
@@ -345,11 +355,15 @@ void BatAdsImpl::OnMaybeServeNewTabPageAd(
 
 void BatAdsImpl::OnMaybeServeInlineContentAd(
     CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
-    const bool success,
     const std::string& dimensions,
-    const ads::InlineContentAdInfo& ad) {
+    const absl::optional<ads::InlineContentAdInfo>& ad) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, dimensions, ad.ToJson());
+    absl::optional<base::Value::Dict> dict;
+    if (ad) {
+      dict = ad->ToValue();
+    }
+
+    std::move(holder->get()).Run(dimensions, std::move(dict));
   }
 
   delete holder;
@@ -389,11 +403,9 @@ void BatAdsImpl::OnRemoveAllHistory(
 
 void BatAdsImpl::OnGetStatementOfAccounts(
     CallbackHolder<GetStatementOfAccountsCallback>* holder,
-    const bool success,
-    const ads::StatementInfo& statement) {
+    ads::mojom::StatementInfoPtr statement) {
   if (holder->is_valid()) {
-    const std::string json = statement.ToJson();
-    std::move(holder->get()).Run(success, json);
+    std::move(holder->get()).Run(statement.Clone());
   }
 
   delete holder;
@@ -402,12 +414,11 @@ void BatAdsImpl::OnGetStatementOfAccounts(
 // static
 void BatAdsImpl::OnGetDiagnostics(
     CallbackHolder<GetDiagnosticsCallback>* holder,
-    const bool success,
-    const std::string& json) {
+    absl::optional<base::Value::List> value) {
   DCHECK(holder);
 
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, json);
+    std::move(holder->get()).Run(std::move(value));
   }
 
   delete holder;

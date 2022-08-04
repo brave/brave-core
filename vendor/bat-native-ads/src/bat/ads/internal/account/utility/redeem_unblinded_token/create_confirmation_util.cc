@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"

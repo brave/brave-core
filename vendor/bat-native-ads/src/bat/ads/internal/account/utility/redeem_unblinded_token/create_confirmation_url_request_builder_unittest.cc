@@ -54,17 +54,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -91,17 +91,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -128,17 +128,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -165,17 +165,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -202,17 +202,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -239,17 +239,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -276,17 +276,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -313,17 +313,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -350,17 +350,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -387,17 +387,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -424,17 +424,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -461,17 +461,17 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethod::kPost;
+  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }

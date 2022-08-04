@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"
@@ -22,7 +23,7 @@ struct AdPreferencesInfo final {
   ~AdPreferencesInfo();
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

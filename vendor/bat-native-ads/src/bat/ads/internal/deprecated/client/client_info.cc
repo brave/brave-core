@@ -12,8 +12,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/base/logging_util.h"
 #include "build/build_config.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -92,8 +92,7 @@ base::Value::Dict ClientInfo::ToValue() const {
 
 bool ClientInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindDict("adPreferences")) {
-    if (!ad_preferences.FromValue(*value))
-      return false;
+    ad_preferences.FromValue(*value);
   }
 
 #if !BUILDFLAG(IS_IOS)
@@ -104,10 +103,10 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       if (!ad_shown.is_dict()) {
         continue;
       }
+
       HistoryItemInfo history_item;
-      if (history_item.FromValue(ad_shown.GetDict())) {
-        history.push_back(history_item);
-      }
+      history_item.FromValue(ad_shown.GetDict());
+      history.push_back(history_item);
     }
   }
 #endif
@@ -117,17 +116,18 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       std::vector<targeting::PurchaseIntentSignalHistoryInfo> histories;
 
       const auto* segment_history_items = value.GetIfList();
-      if (!segment_history_items)
+      if (!segment_history_items) {
         continue;
+      }
 
       for (const auto& segment_history_item : *segment_history_items) {
-        if (!segment_history_item.is_dict())
+        if (!segment_history_item.is_dict()) {
           continue;
+        }
 
         targeting::PurchaseIntentSignalHistoryInfo history;
-        if (history.FromValue(segment_history_item.GetDict())) {
-          histories.push_back(history);
-        }
+        history.FromValue(segment_history_item.GetDict());
+        histories.push_back(history);
       }
 
       purchase_intent_signal_history.emplace(key, histories);
@@ -136,8 +136,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindDict("seenAds")) {
     for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict())
+      if (!list_value.is_dict()) {
         continue;
+      }
 
       for (const auto [key, value] : list_value.GetDict()) {
         seen_ads[list_key][key] = value.GetBool();
@@ -147,8 +148,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindDict("seenAdvertisers")) {
     for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict())
+      if (!list_value.is_dict()) {
         continue;
+      }
 
       for (const auto [key, value] : list_value.GetDict()) {
         seen_advertisers[list_key][key] = value.GetBool();
@@ -173,19 +175,22 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         continue;
       const auto* probability_list =
           probabilities.GetDict().FindList("textClassificationProbabilities");
-      if (!probability_list)
+      if (!probability_list) {
         continue;
+      }
 
       targeting::TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability : *probability_list) {
         const auto* probability_dict = probability.GetIfDict();
-        if (!probability_dict)
+        if (!probability_dict) {
           continue;
+        }
 
         const std::string* segment = probability_dict->FindString("segment");
-        if (!segment)
+        if (!segment) {
           continue;
+        }
 
         double page_score = 0.0;
         if (const auto value = root.FindDouble("pageScore")) {

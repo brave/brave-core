@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/conversions/conversions.h"
 
-#include <memory>
-
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"

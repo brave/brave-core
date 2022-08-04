@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/user_data/conversion_user_data_builder.h"
 
 #include "base/test/values_test_util.h"
-#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"

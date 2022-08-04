@@ -44,7 +44,7 @@ constexpr char kTableName[] = "creative_inline_content_ads";
 
 constexpr int kDefaultBatchSize = 50;
 
-int BindParameters(mojom::DBCommand* command,
+int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeInlineContentAdList& creative_ads) {
   DCHECK(command);
 
@@ -67,7 +67,7 @@ int BindParameters(mojom::DBCommand* command,
   return count;
 }
 
-CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) {
+CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   DCHECK(record);
 
   CreativeInlineContentAdInfo creative_ad;
@@ -107,7 +107,7 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) {
 }
 
 CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
-    mojom::DBCommandResponsePtr response) {
+    mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
   CreativeInlineContentAdMap creative_ads;
@@ -145,7 +145,7 @@ CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
 }
 
 CreativeInlineContentAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponsePtr response) {
+    mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
   const CreativeInlineContentAdMap& grouped_creative_ads =
@@ -180,7 +180,7 @@ void CreativeInlineContentAds::Save(
     return;
   }
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   const std::vector<CreativeInlineContentAdList>& batches =
       SplitVector(creative_ads, batch_size_);
@@ -205,7 +205,7 @@ void CreativeInlineContentAds::Save(
 }
 
 void CreativeInlineContentAds::Delete(ResultCallback callback) {
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
 
@@ -265,41 +265,43 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
       "WHERE cbna.creative_instance_id = '%s'",
       GetTableName().c_str(), creative_instance_id.c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
-      mojom::DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // description
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dimensions
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // cta_text
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
-      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // end_at
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
+      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // description
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // image_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dimensions
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // cta_text
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
+      mojom::DBCommandInfo::RecordBindingType::
+          INT_TYPE,  // dayparts->start_minute
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
   };
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -364,8 +366,8 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
       BuildBindingParameterPlaceholder(segments.size()).c_str(),
       dimensions.c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   int index = 0;
@@ -375,36 +377,38 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
   }
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
-      mojom::DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // description
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dimensions
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // cta_text
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
-      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // end_at
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
+      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // description
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // image_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dimensions
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // cta_text
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
+      mojom::DBCommandInfo::RecordBindingType::
+          INT_TYPE,  // dayparts->start_minute
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
   };
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -466,41 +470,43 @@ void CreativeInlineContentAds::GetForDimensions(
       GetTableName().c_str(), dimensions.c_str(),
       TimeAsTimestampString(base::Time::Now()).c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
-      mojom::DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // description
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dimensions
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // cta_text
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
-      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // end_at
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
+      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // description
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // image_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dimensions
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // cta_text
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
+      mojom::DBCommandInfo::RecordBindingType::
+          INT_TYPE,  // dayparts->start_minute
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
   };
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -554,41 +560,43 @@ void CreativeInlineContentAds::GetAll(
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
-      mojom::DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // description
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dimensions
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // cta_text
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
-      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // end_at
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
+      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // description
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // image_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dimensions
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // cta_text
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
+      mojom::DBCommandInfo::RecordBindingType::
+          INT_TYPE,  // dayparts->start_minute
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
   };
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -600,7 +608,7 @@ std::string CreativeInlineContentAds::GetTableName() const {
   return kTableName;
 }
 
-void CreativeInlineContentAds::Migrate(mojom::DBTransaction* transaction,
+void CreativeInlineContentAds::Migrate(mojom::DBTransactionInfo* transaction,
                                        const int to_version) {
   DCHECK(transaction);
 
@@ -619,7 +627,7 @@ void CreativeInlineContentAds::Migrate(mojom::DBTransaction* transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 void CreativeInlineContentAds::InsertOrUpdate(
-    mojom::DBTransaction* transaction,
+    mojom::DBTransactionInfo* transaction,
     const CreativeInlineContentAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -627,15 +635,15 @@ void CreativeInlineContentAds::InsertOrUpdate(
     return;
   }
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }
 
 std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
-    mojom::DBCommand* command,
+    mojom::DBCommandInfo* command,
     const CreativeInlineContentAdList& creative_ads) {
   DCHECK(command);
 
@@ -656,11 +664,11 @@ std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
 }
 
 void CreativeInlineContentAds::OnGetForCreativeInstanceId(
-    mojom::DBCommandResponsePtr response,
+    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
     GetCreativeInlineContentAdCallback callback) {
-  if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ad");
     callback(/* success */ false, creative_instance_id, {});
     return;
@@ -681,11 +689,11 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
 }
 
 void CreativeInlineContentAds::OnGetForSegmentsAndDimensions(
-    mojom::DBCommandResponsePtr response,
+    mojom::DBCommandResponseInfoPtr response,
     const SegmentList& segments,
     GetCreativeInlineContentAdsCallback callback) {
-  if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
     callback(/* success */ false, segments, {});
     return;
@@ -698,10 +706,10 @@ void CreativeInlineContentAds::OnGetForSegmentsAndDimensions(
 }
 
 void CreativeInlineContentAds::OnGetForDimensions(
-    mojom::DBCommandResponsePtr response,
+    mojom::DBCommandResponseInfoPtr response,
     GetCreativeInlineContentAdsForDimensionsCallback callback) {
-  if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
     callback(/* success */ false, {});
     return;
@@ -714,10 +722,10 @@ void CreativeInlineContentAds::OnGetForDimensions(
 }
 
 void CreativeInlineContentAds::OnGetAll(
-    mojom::DBCommandResponsePtr response,
+    mojom::DBCommandResponseInfoPtr response,
     GetCreativeInlineContentAdsCallback callback) {
-  if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative inline content ads");
     callback(/* success */ false, {}, {});
     return;
@@ -731,7 +739,8 @@ void CreativeInlineContentAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeInlineContentAds::MigrateToV24(mojom::DBTransaction* transaction) {
+void CreativeInlineContentAds::MigrateToV24(
+    mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
   DropTable(transaction, "creative_inline_content_ads");
@@ -748,8 +757,8 @@ void CreativeInlineContentAds::MigrateToV24(mojom::DBTransaction* transaction) {
       "dimensions TEXT NOT NULL, "
       "cta_text TEXT NOT NULL)";
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
