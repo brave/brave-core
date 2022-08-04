@@ -309,6 +309,15 @@ export const PortfolioAsset = () => {
 
   const onNftDetailsLoad = React.useCallback(() => setNftIframeLoaded(true), [])
 
+  const onOpenRainbowAppClick = React.useCallback(() => {
+    chrome.tabs.create({ url: rainbowbridgeLink }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+    setShowBridgeToAuroraModal(false)
+  }, [])
+
   const onBridgeToAuroraButton = React.useCallback(() => {
     if (bridgeToAuroraWarningShown) {
       onOpenRainbowAppClick()
@@ -316,18 +325,9 @@ export const PortfolioAsset = () => {
       localStorage.setItem(bridgeToAuroraWarningShownKey, 'true')
       setShowBridgeToAuroraModal(true)
     }
-  }, [bridgeToAuroraWarningShown])
+  }, [bridgeToAuroraWarningShown, onOpenRainbowAppClick])
 
   const onCloseAuroraModal = React.useCallback(() => {
-    setShowBridgeToAuroraModal(false)
-  }, [])
-
-  const onOpenRainbowAppClick = React.useCallback(() => {
-    chrome.tabs.create({ url: rainbowbridgeLink }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
     setShowBridgeToAuroraModal(false)
   }, [])
 
