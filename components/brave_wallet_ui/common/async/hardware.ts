@@ -109,9 +109,6 @@ export async function signLedgerEthereumTransaction (
   if (!signed || !signed.success || !signed.payload) {
     const error = signed?.error ?? getLocale('braveWalletSignOnDeviceError')
     const code = signed?.code ?? ''
-    if (code === 'DisconnectedDeviceDuringOperation') {
-      // await deviceKeyring.makeApp() // TODO
-    }
     return { success: false, error: error, code: code }
   }
   const { v, r, s } = signed.payload as EthereumSignedTx
