@@ -581,5 +581,12 @@ provideStrings({
 
   // Help Center
   braveWalletHelpCenter: 'Help Center',
-  braveWalletHelpCenterText: 'Need help? See'
+  braveWalletHelpCenterText: 'Need help? See',
+
+  // Bridge to Aurora
+  braveWalletAuroraModalTitle: 'Open rainbowbridge.app',
+  braveWalletAuroraModalDescription: 'Bridging assets across networks allows you to use your crypto on other networks and other DApp' +
+    ' ecosystems. Bridging assets to other networks has some risks',
+  braveWalletAuroraModalLearnMore: 'Learn more',
+  braveWalletAuroraModalOPenButtonText: 'Open rainbowbridge.app'
 })

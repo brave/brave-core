@@ -17,13 +17,13 @@ export const StyledWrapper = styled.div`
   backdrop-filter: blur(16px);
 `
 
-export const Modal = styled.div`
+export const Modal = styled.div<{ width?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-conent: center;
-  min-width: 580px;
-  max-width: 580px;
+  min-width: ${p => p.width ? p.width : '580px'};
+  max-width: ${p => p.width ? p.width : '580px'};
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 8px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
