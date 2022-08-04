@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
@@ -11,7 +11,7 @@ import {
 } from '../shared-styles'
 
 import { WalletActions } from '../../../common/actions'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 export interface Props {
   hasAddButton?: boolean
@@ -26,6 +26,7 @@ export const SelectNetworkWithHeader = ({
 }: Props) => {
   // redux
   const dispatch = useDispatch()
+  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
 
   // methods
   const onSelectCustomNetwork = React.useCallback((network: BraveWallet.NetworkInfo): void => {
@@ -43,7 +44,10 @@ export const SelectNetworkWithHeader = ({
         onClickAdd={onAddNetwork}
       />
       <SelectScrollContainer>
-        <SelectNetwork onSelectCustomNetwork={onSelectCustomNetwork} />
+        <SelectNetwork
+          onSelectCustomNetwork={onSelectCustomNetwork}
+          selectedNetwork={selectedNetwork}
+        />
       </SelectScrollContainer>
     </SelectWrapper>
   )
