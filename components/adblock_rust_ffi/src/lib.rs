@@ -382,7 +382,7 @@ pub unsafe extern "C" fn convert_rules_to_content_blocking(rules: *const c_char)
         ""
     });
     let mut filter_set = adblock::lists::FilterSet::new(true);
-    let metadata = filter_set.add_filter_list(&rules, Default::default());
+    filter_set.add_filter_list(&rules, Default::default());
     // `unwrap` is safe here because `into_content_blocking` only panics if the `FilterSet` was not
     // created in debug mode
     let (cb_rules, _) = filter_set.into_content_blocking().unwrap();
