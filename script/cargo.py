@@ -63,6 +63,8 @@ def run_cargo(command, args):
         cargo_args.append("--manifest-path=" + args.manifest_path)
         cargo_args.append("--target-dir=" + args.build_path)
         cargo_args.append("--target=" + args.target)
+        if command == "build" and args.features is not None:
+            cargo_args.append("--features=" + args.features)
         subprocess.check_call(cargo_args, env=env)
 
     except subprocess.CalledProcessError as e:
@@ -111,6 +113,7 @@ def parse_args():
     parser.add_option("--rust_flag", action="append",
                                      dest="rust_flags",
                                      default=[])
+    parser.add_option('--features')
 
     options, _ = parser.parse_args()
 

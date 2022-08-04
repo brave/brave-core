@@ -18,6 +18,9 @@ crate-type = [ "staticlib" ]
 name = "brave_rust"
 path = "lib.rs"
 
+[features]
+ios = ["adblock-ffi/ios"]
+
 [profile.dev]
 panic = "abort"
 
