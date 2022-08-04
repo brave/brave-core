@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.Supplier;
@@ -137,7 +138,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     private boolean isBraveSearchPromoBanner() {
         Tab activeTab = mActivityTabSupplier.get();
-        if (ChromeFeatureList.isEnabled("BraveSearchOmniboxBanner")
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SEARCH_OMNIBOX_BANNER)
                 && mUrlBarEditingTextProvider != null
                 && mUrlBarEditingTextProvider.getTextWithoutAutocomplete().length() > 0
                 && activeTab != null && !activeTab.isIncognito()

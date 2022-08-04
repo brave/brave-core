@@ -14,10 +14,10 @@ import android.util.DisplayMetrics;
 
 import androidx.preference.Preference;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;

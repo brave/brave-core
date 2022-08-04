@@ -456,11 +456,6 @@
     *** createViewProvider(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
-    *** getVisibleSuggestionsCount(...);
-    *** getProcessorForSuggestion(...);
-}
-
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mNativeInitialized;
     public <init>(...);
@@ -474,6 +469,8 @@
     *** mDropdownHeight;
     *** mPriorityOrderedSuggestionProcessors;
     public <init>(...);
+    *** getVisibleSuggestionsCount(...);
+    *** getProcessorForSuggestion(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {
@@ -488,6 +485,7 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListManager {
     public <init>(...);
 }
+
 -keep class org.chromium.chrome.browser.ui.default_browser_promo.BraveDefaultBrowserPromoUtils {
     *** prepareLaunchPromoIfNeeded(...);
 }

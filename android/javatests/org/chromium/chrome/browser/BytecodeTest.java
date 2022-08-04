@@ -102,6 +102,7 @@ import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;
+import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
@@ -390,9 +391,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "updateTilePlaceholderVisibility", true, void.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
-                "createViewProvider", false, null));
     }
 
     @Test
@@ -400,6 +398,11 @@ public class BytecodeTest {
     public void testMethodsForInvocationExist() throws Exception {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
+
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                "createViewProvider", true, ViewProvider.class, Context.class,
+                MVCListAdapter.ModelList.class));
 
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
