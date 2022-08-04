@@ -6,6 +6,7 @@
 #include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 
 #include "base/android/jni_string.h"
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -410,7 +411,36 @@ base::android::ScopedJavaLocalRef<jstring>
 JNI_BravePrefServiceBridge_GetCaptchaId(JNIEnv* env) {
   return base::android::ConvertUTF8ToJavaString(
       env, GetOriginalProfile()->GetPrefs()->GetString(
-               "brave.rewards.scheduled_captcha.id"));
+               brave_adaptive_captcha::prefs::kScheduledCaptchaId));
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+JNI_BravePrefServiceBridge_GetPaymentId(JNIEnv* env) {
+  return base::android::ConvertUTF8ToJavaString(
+      env, GetOriginalProfile()->GetPrefs()->GetString(
+               brave_adaptive_captcha::prefs::kScheduledCaptchaPaymentId));
+}
+
+void JNI_BravePrefServiceBridge_IncrementFailedAttempts(JNIEnv* env) {
+  GetOriginalProfile()->GetPrefs()->SetUint64(
+      brave_adaptive_captcha::prefs::kScheduledCaptchaFailedAttempts,
+      GetOriginalProfile()->GetPrefs()->GetUint64(
+          brave_adaptive_captcha::prefs::kScheduledCaptchaFailedAttempts) +
+          1);
+}
+
+jlong JNI_BravePrefServiceBridge_GetFailedAttempts(JNIEnv* env) {
+  return GetOriginalProfile()->GetPrefs()->GetUint64(
+      brave_adaptive_captcha::prefs::kScheduledCaptchaFailedAttempts);
+}
+
+void JNI_BravePrefServiceBridge_SetCaptchaPaused(JNIEnv* env) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      brave_adaptive_captcha::prefs::kScheduledCaptchaPaused, true);
+}
+jboolean JNI_BravePrefServiceBridge_IsCaptchaPaused(JNIEnv* env) {
+  return GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_adaptive_captcha::prefs::kScheduledCaptchaPaused);
 }
 
 jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,

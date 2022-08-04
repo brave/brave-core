@@ -75,6 +75,7 @@ import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.AdaptiveCaptchaUtils;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -726,6 +727,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onPreferenceChange() {
         Log.e("BraveCaptcha", "Pref changed");
         Log.e("BraveCaptcha", BravePrefServiceBridge.getInstance().getCaptchaId());
+        solveAdaptiveCaptcha();
+    }
+
+    public void solveAdaptiveCaptcha() {
+        String captchaID = BravePrefServiceBridge.getInstance().getCaptchaId();
+        String paymentID = BravePrefServiceBridge.getInstance().getPaymentId();
+        if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
+                && BravePrefServiceBridge.getInstance().getFailedAttempts() < 10
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            AdaptiveCaptchaUtils.solveCaptcha(captchaID, paymentID);
+        }
     }
 
     @Override
@@ -736,6 +748,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
         mPrefChangeRegistrar.addObserver("brave.rewards.scheduled_captcha.id", this);
+
+        solveAdaptiveCaptcha();
 
         if (SharedPreferencesManager.getInstance().readBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {

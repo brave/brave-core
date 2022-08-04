@@ -187,6 +187,24 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getCaptchaId();
     }
 
+    public String getPaymentId() {
+        return BravePrefServiceBridgeJni.get().getPaymentId();
+    }
+
+    public void incrementFailedAttempts() {
+        BravePrefServiceBridgeJni.get().incrementFailedAttempts();
+    }
+    public long getFailedAttempts() {
+        return BravePrefServiceBridgeJni.get().getFailedAttempts();
+    }
+
+    public void setCaptchaPaused() {
+        BravePrefServiceBridgeJni.get().setCaptchaPaused();
+    }
+    public boolean isCaptchaPaused() {
+        return BravePrefServiceBridgeJni.get().isCaptchaPaused();
+    }
+
     public void setOldTrackersBlockedCount(Profile profile, long count) {
         BravePrefServiceBridgeJni.get().setOldTrackersBlockedCount(profile, count);
     }
@@ -374,5 +392,12 @@ public class BravePrefServiceBridge {
         boolean getShowNews();
 
         String getCaptchaId();
+        String getPaymentId();
+
+        void incrementFailedAttempts();
+        long getFailedAttempts();
+
+        void setCaptchaPaused();
+        boolean isCaptchaPaused();
     }
 }
