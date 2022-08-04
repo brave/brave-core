@@ -2459,6 +2459,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20APPROVE" desc="Brave wallet function type ERC20Approve" translateable="false">
       ERC20Approve
     </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_SYSTEM_TRANSFER" desc="Brave wallet function type SOLANA_SYSTEM_TRANSFER" translateable="false">
+      SolanaSystemTransfer
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SPL_TOKEN_TRANSFER" desc="Brave wallet function type SPL_TOKEN_TRANSFER" translateable="false">
+      SPLTokenTransfer
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" desc="Brave wallet function type SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" translateable="false">
+      SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    </message>
     <message name="IDS_WALLET_TX_INFO_SENT" desc="Brave wallet sent assets tx history">
       <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="CRYPTO_VALUE">%2$s<ex>0.0444</ex></ph> <ph name="ASSET">%3$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%4$s<ex>10.00</ex></ph>) - <ph name="DATE">%5$s<ex>2021-11-12 08:38pm</ex></ph>
     </message>
@@ -3034,6 +3043,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_INVALID_SOL_ADDRESS" desc="Message to indicate invalid Solana address">
       Not a valid SOL address
+    </message>
+    <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
+      The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.<ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
     </message>
   </messages>
   </release>

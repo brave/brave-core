@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -111,6 +112,9 @@ public class TxFragment extends Fragment {
         setupView(view);
 
         View advanceSettingContainer = view.findViewById(R.id.fragment_tx_tv_advance_setting);
+        advanceSettingContainer.setVisibility(
+                isAdvanceSettingEnabled(mSelectedNetwork) ? View.VISIBLE : View.INVISIBLE);
+
         advanceSettingContainer.setOnClickListener(v -> {
             Intent toAdvanceTxSetting =
                     new Intent(requireActivity(), AdvanceTxSettingActivity.class);
@@ -121,6 +125,7 @@ public class TxFragment extends Fragment {
         });
 
         TextView editGasFee = view.findViewById(R.id.edit_gas_fee);
+        editGasFee.setVisibility(isEditTxEnabled(mSelectedNetwork) ? View.VISIBLE : View.INVISIBLE);
         editGasFee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -433,5 +438,13 @@ public class TxFragment extends Fragment {
                 mTxInfo.txDataUnion.getEthTxData().nonce = nonce;
             }
         }
+    }
+
+    private boolean isEditTxEnabled(NetworkInfo selectedNetwork) {
+        return selectedNetwork.coin == CoinType.ETH;
+    }
+
+    private boolean isAdvanceSettingEnabled(NetworkInfo selectedNetwork) {
+        return isEditTxEnabled(selectedNetwork);
     }
 }
