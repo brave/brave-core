@@ -10,6 +10,9 @@ export * from 'gen/brave/components/speedreader/common/speedreader_panel.mojom.m
 const factory = SpeedreaderPanel.PanelFactory.getRemote()
 
 export const panelHandler = new SpeedreaderPanel.PanelHandlerRemote()
+export const panelDataHandler = new SpeedreaderPanel.PanelDataHandlerRemote()
 export const panelHandlerCallbackRouter = new SpeedreaderPanel.PanelHandlerCallbackRouter()
 
-factory.createInterfaces(panelHandler.$.bindNewPipeAndPassReceiver())
+factory.createInterfaces(
+  panelHandler.$.bindNewPipeAndPassReceiver(),
+  panelDataHandler.$.bindNewPipeAndPassReceiver())

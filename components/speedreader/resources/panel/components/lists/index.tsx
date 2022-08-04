@@ -45,11 +45,7 @@ type OptionType = {
   ariaLabel?: string
 }
 
-type ListBoxProps = {
-  children: JSX.Element | JSX.Element[]
-}
-
-function ListBox (props: ListBoxProps) {
+function ListBox (props: React.PropsWithChildren<{}>) {
   return (
     <S.Box role="listbox" aria-orientation="horizontal">
       {props.children}
@@ -83,6 +79,7 @@ export function FontStyleList () {
       {fontStyleOptions.map(entry => {
         return (
           <Option
+            key={entry.title}
             isSelected={activeOption === entry.title.toLocaleLowerCase()}
           >
             <div className="sm">
@@ -104,6 +101,7 @@ export function ContentList () {
       {contentStyleOptions.map(entry => {
         return (
           <Option
+            key={entry.title}
             isSelected={activeOption === entry.title.toLocaleLowerCase()}
             ariaLabel={entry.title}
           >

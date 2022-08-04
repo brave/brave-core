@@ -11,6 +11,7 @@ export const Box = styled.div`
   position: relative;
   width: 100%;
   height: 48px;
+  line-height: 0;
 `
 
 export const ButtonLeft = styled.button`

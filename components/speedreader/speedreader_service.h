@@ -16,9 +16,8 @@
 class PrefRegistrySimple;
 class PrefService;
 
-using speedreader::mojom::Theme;
-
 namespace speedreader {
+using mojom::Theme;
 
 class SpeedreaderService : public KeyedService {
  public:

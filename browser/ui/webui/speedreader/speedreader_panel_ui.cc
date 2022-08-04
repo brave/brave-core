@@ -15,7 +15,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_resources.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 SpeedreaderPanelUI::SpeedreaderPanelUI(content::WebUI* web_ui,
@@ -42,7 +41,12 @@ void SpeedreaderPanelUI::BindInterface(
 }
 
 void SpeedreaderPanelUI::CreateInterfaces(
-    mojo::PendingReceiver<speedreader::mojom::PanelHandler> panel_handler) {
-  panel_handler_impl_ = std::make_unique<SpeedreaderPanelHandlerImpl>(
+    mojo::PendingReceiver<speedreader::mojom::PanelHandler> panel_handler,
+    mojo::PendingReceiver<speedreader::mojom::PanelDataHandler>
+        panel_data_handler) {
+  panel_handler_ = std::make_unique<SpeedreaderPanelHandlerImpl>(
       std::move(panel_handler), this);
+  panel_data_handler_ = std::make_unique<SpeedreaderPanelDataHandlerImpl>(
+      std::move(panel_data_handler),
+      browser_->tab_strip_model()->GetActiveWebContents());
 }

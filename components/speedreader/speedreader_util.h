@@ -69,7 +69,6 @@ void SetEnabledForSite(HostContentSettingsMap* map,
 // Checks content settings if Speedreader is disabled for the URL
 bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url);
 
-// static
 bool IsSpeedreaderPanelV2Enabled();
 
 }  // namespace speedreader

@@ -4,6 +4,6 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.d.ts",
-    "../definitions/*.d.ts"
+    "../../../definitions/*.d.ts"
   ]
 }

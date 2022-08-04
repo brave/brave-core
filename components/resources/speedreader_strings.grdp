@@ -2,7 +2,7 @@
 <grit-part>
   <if expr="enable_speedreader">
     <message name="IDS_SPEEDREADER_BRAND_LABEL" desc="Used in places to show brand title">Brave Speedreader</message>
-     <message name="IDS_TOOLTIP_TURN_ON_SPEEDREADER" desc="Tooltip on the turned off speedreader toggle.">Turn ON Speedreader</message>
-     <message name="IDS_TOOLTIP_TURN_OFF_SPEEDREADER" desc="Tooltip on the turned on speedreader toggle.">Turn OFF Speedreader</message>
+    <message name="IDS_TOOLTIP_TURN_ON_SPEEDREADER" desc="Tooltip on the turned off speedreader toggle.">Turn ON Speedreader</message>
+    <message name="IDS_TOOLTIP_TURN_OFF_SPEEDREADER" desc="Tooltip on the turned on speedreader toggle.">Turn OFF Speedreader</message>
   </if>
 </grit-part>

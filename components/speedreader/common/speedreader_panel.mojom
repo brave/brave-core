@@ -6,7 +6,7 @@
 module speedreader.mojom;
 
 interface PanelFactory {
-  CreateInterfaces(pending_receiver<PanelHandler> panel_handler);
+  CreateInterfaces(pending_receiver<PanelHandler> panel_handler, pending_receiver<PanelDataHandler> panel_data_handler);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -16,7 +16,8 @@ interface PanelHandler {
 };
 
 interface PanelDataHandler {
-  Foo();
+  GetTheme() => (Theme theme);
+  SetTheme(Theme theme);
 };
 
 // Enum is used in prefs. Be careful when changing or extending.

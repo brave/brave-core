@@ -6,20 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_PANEL_HANDLER_IMPL_H_
 #define BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_PANEL_HANDLER_IMPL_H_
 
-#include <stdint.h>
-
-#include <memory>
-#include <string>
-
-#include "base/scoped_observation.h"
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
-
-class Profile;
 
 class SpeedreaderPanelHandlerImpl : public speedreader::mojom::PanelHandler {
  public:

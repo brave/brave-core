@@ -5,8 +5,6 @@ import { withKnobs } from '@storybook/addon-knobs'
 import './locale'
 import MainPanel from '../components/main-panel'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
-import darkTheme from '../theme/dark'
-import lightTheme from '../theme/light'
 
 export default {
   title: 'Speedreader/Panels',
@@ -19,10 +17,7 @@ export default {
   decorators: [
     (Story: any) => {
       return (
-        <ThemeProvider
-          dark={darkTheme}
-          light={lightTheme}
-        >
+        <ThemeProvider>
           <Story />
         </ThemeProvider>
       )

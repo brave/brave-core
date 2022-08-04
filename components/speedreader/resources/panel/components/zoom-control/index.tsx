@@ -10,7 +10,7 @@ function ZoomControl () {
       </S.ButtonLeft>
       <span>100%</span>
       <S.ButtonRight>
-        <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 7V.99C7 .457 7.462 0 8 0s.923.457 1 .914V7h6.01c.533 0 .99.462.99 1s-.457.923-.914 1H9v6.01c0 .533-.462.99-1 .99s-1-.457-1-.99V9H.99C.457 9 0 8.538 0 8s.457-1 .99-1H7Z" fill="currentColor"/></svg>
+        <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M7 7V.99C7 .457 7.462 0 8 0s.923.457 1 .914V7h6.01c.533 0 .99.462.99 1s-.457.923-.914 1H9v6.01c0 .533-.462.99-1 .99s-1-.457-1-.99V9H.99C.457 9 0 8.538 0 8s.457-1 .99-1H7Z" fill="currentColor"/></svg>
       </S.ButtonRight>
     </S.Box>
   )

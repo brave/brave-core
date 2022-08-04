@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "chrome/browser/profiles/profile.h"
-
 SpeedreaderPanelHandlerImpl::SpeedreaderPanelHandlerImpl(
     mojo::PendingReceiver<speedreader::mojom::PanelHandler> receiver,
     ui::MojoBubbleWebUIController* webui_controller)

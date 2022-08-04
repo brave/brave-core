@@ -1,12 +1,17 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  background: ${(p) => p.theme.color.background01};
+  --speedreader-background: #FFFFFF;
+  background: var(--speedreader-background);
   color: ${(p) => p.theme.color.text01};
   width: 100%;
   height: 100%;
   font-family: ${(p) => p.theme.fontFamily.heading};
   flex: 1 1 auto;
+
+  @media (prefers-color-scheme: dark) {
+    --speedreader-background: #1E2029;
+  }
 `
 
 export const HeaderBox = styled.div`

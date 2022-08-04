@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/browser/ui/webui/speedreader/speedreader_panel_data_handler_impl.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_handler_impl.h"
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
@@ -30,12 +31,15 @@ class SpeedreaderPanelUI : public ui::MojoBubbleWebUIController,
       mojo::PendingReceiver<speedreader::mojom::PanelFactory> receiver);
 
  private:
-  void CreateInterfaces(mojo::PendingReceiver<speedreader::mojom::PanelHandler>
-                            panel_handler) override;
+  void CreateInterfaces(
+      mojo::PendingReceiver<speedreader::mojom::PanelHandler> panel_handler,
+      mojo::PendingReceiver<speedreader::mojom::PanelDataHandler>
+          panel_data_handler) override;
 
   mojo::Receiver<speedreader::mojom::PanelFactory> panel_factory_{this};
 
-  std::unique_ptr<SpeedreaderPanelHandlerImpl> panel_handler_impl_;
+  std::unique_ptr<SpeedreaderPanelHandlerImpl> panel_handler_;
+  std::unique_ptr<SpeedreaderPanelDataHandlerImpl> panel_data_handler_;
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
