@@ -100,6 +100,10 @@ OBJC_EXPORT
 /// The default domain resolver.
 @property(class, readonly) DomainResolverCallback defaultDomainResolver;
 
+/// Converts ABP rules/filter sets into Content Blocker rules that can be used
+/// with ``WKWebView``
++ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet;
+
 @end
 
 NS_ASSUME_NONNULL_END

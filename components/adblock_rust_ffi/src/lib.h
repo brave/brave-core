@@ -184,7 +184,7 @@ char* engine_hidden_class_id_selectors(struct C_Engine* engine,
                                        const char* const* exceptions,
                                        size_t exceptions_size);
 
-#if defined(IS_IOS)
+#if BUILDFLAG(IS_IOS)
 char* convert_rules_to_content_blocking(const char* rules);
 #endif
 

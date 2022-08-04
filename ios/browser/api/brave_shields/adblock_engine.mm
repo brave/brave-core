@@ -7,6 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
+#include "brave/components/adblock_rust_ffi/src/lib.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/common/adblock_domain_resolver.h"
 
@@ -129,6 +130,11 @@
 
 + (DomainResolverCallback)defaultDomainResolver {
   return brave_shields::AdBlockServiceDomainResolver;
+}
+
++ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet {
+  return base::SysUTF8ToNSString(convert_rules_to_content_blocking(
+      base::SysNSStringToUTF8(filterSet).c_str()));
 }
 
 @end
