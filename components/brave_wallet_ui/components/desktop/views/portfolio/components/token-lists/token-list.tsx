@@ -168,7 +168,7 @@ export const TokenLists = ({
     <>
       <FilterTokenRow>
         <SearchBar
-          placeholder={getLocale('braveWalletsearchValue')}
+          placeholder={getLocale('braveWalletSearchText')}
           action={onSearchValueChange}
           value={searchValue}
         />
