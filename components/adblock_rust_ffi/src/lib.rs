@@ -386,7 +386,7 @@ pub unsafe extern "C" fn convert_rules_to_content_blocking(rules: *const c_char)
     // `unwrap` is safe here because `into_content_blocking` only panics if the `FilterSet` was not
     // created in debug mode
     let (cb_rules, _) = filter_set.into_content_blocking().unwrap();
-    CString::new(serde_json::to_string(cb_rules).unwrap_or_else(|_| "".into()))
+    CString::new(serde_json::to_string(&cb_rules).unwrap_or_else(|_| "".into()))
         .expect("Error: CString::new()")
         .into_raw()
 }
