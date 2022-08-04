@@ -27,7 +27,6 @@ namespace brave {
 std::string FarbleAcceptLanguageHeader(
     const GURL& tab_origin,
     Profile* profile,
-    PrefService* pref_service,
     HostContentSettingsMap* content_settings);
 
 int OnBeforeStartTransaction_ReduceLanguageWork(
