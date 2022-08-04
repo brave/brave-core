@@ -329,6 +329,7 @@ export const FundWalletScreen = () => {
                     layoutType='loose'
                     buyOptions={selectedAssetBuyOptions}
                     onSelect={onSubmitBuy}
+                    selectedOption={undefined}
                   />
                 </>
               }

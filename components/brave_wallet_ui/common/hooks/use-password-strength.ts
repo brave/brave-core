@@ -59,7 +59,7 @@ export const usePasswordStrength = () => {
     hasPasswordError ||
     password === '' ||
     confirmedPassword === ''
-  )
+  ) && isStrongPassword
 
   return {
     confirmedPassword,
