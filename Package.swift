@@ -279,6 +279,7 @@ let package = Package(
         "XCGLogger",
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
+        .product(name: "Collections", package: "swift-collections"),
       ],
       path: "BraveWallet",
       plugins: ["CurrentBundleGenPlugin"]

@@ -316,6 +316,13 @@ extension Strings {
       value: "Enter, paste, or import your private key string file or JSON.",
       comment: "A placeholder on a text box for entering the users private key/json data to import accounts"
     )
+    public static let importNonEthAccountPlaceholder = NSLocalizedString(
+      "wallet.importNonEthAccountPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Enter or paste your private key.",
+      comment: "A placeholder on a text box for entering the users private key to import accounts"
+    )
     public static let importButtonTitle = NSLocalizedString(
       "wallet.importButtonTitle",
       tableName: "BraveWallet",

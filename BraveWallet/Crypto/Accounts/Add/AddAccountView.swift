@@ -155,6 +155,27 @@ struct AddAccountView: View {
         }
       }
     }
+    .sheet(isPresented: $isPresentingImport) {
+      DocumentOpenerView(allowedContentTypes: [.text, .json]) { urls in
+        guard let fileURL = urls.first else { return }
+        self.isLoadingFile = true
+        DispatchQueue.global(qos: .userInitiated).async {
+          do {
+            let data = try String(contentsOf: fileURL)
+            DispatchQueue.main.async {
+              self.privateKey = data
+              self.isLoadingFile = false
+            }
+          } catch {
+            DispatchQueue.main.async {
+              // Error: Couldn't load file
+              self.isLoadingFile = false
+            }
+          }
+        }
+      }
+    }
+    .animation(.default, value: isJSONImported)
   }
 
   private var accountNameSection: some View {
@@ -190,6 +211,11 @@ struct AddAccountView: View {
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
+  
+  private var isJsonImportSupported: Bool {
+    // nil is possible if Solana is disabled
+    selectedCoin == nil || selectedCoin == .eth
+  }
 
   private var privateKeySection: some View {
     Section(
@@ -204,7 +230,7 @@ struct AddAccountView: View {
         .font(.system(.body, design: .monospaced))
         .frame(height: privateKeyFieldHeight)
         .background(
-          Text(Strings.Wallet.importAccountPlaceholder)
+          Text(isJsonImportSupported ? Strings.Wallet.importAccountPlaceholder : Strings.Wallet.importNonEthAccountPlaceholder)
             .padding(.vertical, 8)
             .padding(.horizontal, 4)  // To match the TextEditor's editing insets
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -217,19 +243,21 @@ struct AddAccountView: View {
           textView.smartQuotesType = .no
         }
         .accessibilityValue(privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey)
-      Button(action: { isPresentingImport = true }) {
-        HStack {
-          Text(Strings.Wallet.importButtonTitle)
-            .foregroundColor(.accentColor)
-            .font(.callout)
-          if isLoadingFile {
-            ProgressView()
-              .progressViewStyle(CircularProgressViewStyle())
+      if isJsonImportSupported {
+        Button(action: { isPresentingImport = true }) {
+          HStack {
+            Text(Strings.Wallet.importButtonTitle)
+              .foregroundColor(.accentColor)
+              .font(.callout)
+            if isLoadingFile {
+              ProgressView()
+                .progressViewStyle(CircularProgressViewStyle())
+            }
           }
+          .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
+        .disabled(isLoadingFile)
       }
-      .disabled(isLoadingFile)
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
