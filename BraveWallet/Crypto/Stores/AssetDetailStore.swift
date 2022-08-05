@@ -107,7 +107,7 @@ class AssetDetailStore: ObservableObject {
         AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
       }
       // fetch prices for the asset
-      let (_, prices) = await assetRatioService.price([token.symbol], toAssets: [currencyFormatter.currencyCode, "btc"], timeframe: timeframe)
+      let (_, prices) = await assetRatioService.price([token.assetRatioId], toAssets: [currencyFormatter.currencyCode, "btc"], timeframe: timeframe)
       self.isLoadingPrice = false
       self.isInitialState = false
       if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
@@ -126,12 +126,12 @@ class AssetDetailStore: ObservableObject {
         self.btcRatio = "\(assetPrice.price) BTC"
       }
       // fetch price history for the asset
-      let (_, priceHistory) = await assetRatioService.priceHistory(token.symbol, vsAsset: currencyFormatter.currencyCode, timeframe: timeframe)
+      let (_, priceHistory) = await assetRatioService.priceHistory(token.assetRatioId, vsAsset: currencyFormatter.currencyCode, timeframe: timeframe)
       self.isLoadingChart = false
       self.priceHistory = priceHistory
       
       self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring)
-      let assetRatios = [token.symbol.lowercased(): assetPriceValue]
+      let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
       self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, assetRatios: assetRatios)
     }
   }

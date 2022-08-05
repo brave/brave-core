@@ -118,7 +118,6 @@ extension SwapTokenStore {
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
       rpcService: MockJsonRpcService(),
-      assetRatioService: MockAssetRatioService(),
       swapService: MockSwapService(),
       txService: MockTxService(),
       walletService: MockBraveWalletService(),

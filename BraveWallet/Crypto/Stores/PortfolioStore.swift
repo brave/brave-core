@@ -123,10 +123,11 @@ public class PortfolioStore: ObservableObject {
       let balances = await fetchBalances(for: userAssets, accounts: keyring.accountInfos)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
       let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
-      let priceHistories = await fetchPriceHistory(for: nonZeroBalanceTokens)
+      let nonZeroBalanceTokensPriceIds = userAssets.filter({ nonZeroBalanceTokens.contains($0.symbol.lowercased())}).map { $0.assetRatioId }
+      let priceHistories = await fetchPriceHistory(for: nonZeroBalanceTokensPriceIds)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
-      let visibleTokenSymbols = userAssets.filter(\.visible).map { $0.symbol.lowercased() }
-      let prices = await fetchPrices(for: visibleTokenSymbols)
+      let visibleTokens = userAssets.filter(\.visible).map { $0.assetRatioId.lowercased() }
+      let prices = await fetchPrices(for: visibleTokens)
       
       // if the task was cancelled, don't update the UI
       guard !Task.isCancelled else { return }
@@ -134,11 +135,12 @@ public class PortfolioStore: ObservableObject {
       // build our userVisibleAssets
       userVisibleAssets = userAssets.map { token in
         let symbol = token.symbol.lowercased()
+        let priceId = token.assetRatioId.lowercased()
         return AssetViewModel(
           token: token,
           decimalBalance: balances[symbol] ?? 0.0,
-          price: prices[symbol] ?? "",
-          history: priceHistories[symbol] ?? []
+          price: prices[priceId] ?? "",
+          history: priceHistories[priceId] ?? []
         )
       }
       // Compute balance based on current prices
@@ -194,12 +196,12 @@ public class PortfolioStore: ObservableObject {
     return balances
   }
   
-  /// Fetches the prices for a given list of symbols, giving a dictionary with the price for each symbol
+  /// Fetches the prices for a given list of `assetRatioId`, giving a dictionary with the price for each symbol
   @MainActor func fetchPrices(
-    for symbols: [String]
+    for priceIds: [String]
   ) async -> [String: String] {
     let priceResult = await assetRatioService.priceWithIndividualRetry(
-      symbols.map { $0.lowercased() },
+      priceIds.map { $0.lowercased() },
       toAssets: [currencyFormatter.currencyCode],
       timeframe: timeframe
     )
@@ -207,21 +209,21 @@ public class PortfolioStore: ObservableObject {
     return prices
   }
   
-  /// Fetches the price history for the given symbols, giving a dictionary with the price history for each symbol
+  /// Fetches the price history for the given `assetRatioId`, giving a dictionary with the price history for each symbol
   @MainActor func fetchPriceHistory(
-    for symbols: [String]
+    for priceIds: [String]
   ) async -> [String: [BraveWallet.AssetTimePrice]] {
     let priceHistories = await withTaskGroup(of: [String: [BraveWallet.AssetTimePrice]].self) { @MainActor group -> [String: [BraveWallet.AssetTimePrice]] in
-      for symbol in symbols {
-        let symbol = symbol.lowercased()
+      for priceId in priceIds {
+        let priceId = priceId.lowercased()
         group.addTask { @MainActor in
           let (success, history) = await self.assetRatioService.priceHistory(
-            symbol,
+            priceId,
             vsAsset: self.currencyFormatter.currencyCode,
             timeframe: self.timeframe
           )
           if success {
-            return [symbol: history.sorted(by: { $0.date < $1.date })]
+            return [priceId: history.sorted(by: { $0.date < $1.date })]
           } else {
             return [:]
           }

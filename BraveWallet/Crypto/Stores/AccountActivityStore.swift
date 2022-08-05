@@ -66,7 +66,7 @@ class AccountActivityStore: ObservableObject {
       let userVisibleTokens: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: network.coin)
       self.assets = await fetchAssets(network: network, userVisibleTokens: userVisibleTokens)
       let assetRatios = self.assets.reduce(into: [String: Double](), {
-        $0[$1.token.symbol.lowercased()] = Double($1.price)
+        $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
       })
       self.transactionSummaries = await fetchTransactionSummarys(
         network: network,
@@ -87,13 +87,13 @@ class AccountActivityStore: ObservableObject {
     }
     // fetch price for each asset
     let priceResult = await assetRatioService.priceWithIndividualRetry(
-      userVisibleTokens.map { $0.symbol.lowercased() },
+      userVisibleTokens.map { $0.assetRatioId.lowercased() },
       toAssets: [currencyFormatter.currencyCode],
       timeframe: .oneDay
     )
     for price in priceResult.assetPrices {
       if let index = updatedAssets.firstIndex(where: {
-        $0.token.symbol.caseInsensitiveCompare(price.fromAsset) == .orderedSame
+        $0.token.assetRatioId.caseInsensitiveCompare(price.fromAsset) == .orderedSame
       }) {
         updatedAssets[index].price = price.price
       }

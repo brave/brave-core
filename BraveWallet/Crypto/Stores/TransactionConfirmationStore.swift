@@ -229,7 +229,7 @@ public class TransactionConfirmationStore: ObservableObject {
   
   @MainActor private func fetchAssetRatios(for userVisibleTokens: [BraveWallet.BlockchainToken]) async {
     let priceResult = await assetRatioService.priceWithIndividualRetry(
-      userVisibleTokens.map { $0.symbol.lowercased() },
+      userVisibleTokens.map { $0.assetRatioId.lowercased() },
       toAssets: [currencyFormatter.currencyCode],
       timeframe: .oneDay
     )
@@ -307,7 +307,7 @@ public class TransactionConfirmationStore: ObservableObject {
         }
       }
       
-      totalFiat = totalFiat(value: value, tokenSymbol: symbol, gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
+      totalFiat = totalFiat(value: value, tokenAssetRatioId: details.fromToken.assetRatioId, gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
       
     case let .ethErc20Approve(details):
       value = details.approvalAmount
@@ -367,7 +367,7 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         }
         
-        totalFiat = totalFiat(value: value, tokenSymbol: symbol, gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
+        totalFiat = totalFiat(value: value, tokenAssetRatioId: details.fromToken?.assetRatioId ?? "", gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
       }
     case let .erc721Transfer(details):
       symbol = details.fromToken?.symbol ?? ""
@@ -379,13 +379,13 @@ public class TransactionConfirmationStore: ObservableObject {
   
   private func totalFiat(
     value: String,
-    tokenSymbol: String,
+    tokenAssetRatioId: String,
     gasValue: String,
     gasSymbol: String,
     assetRatios: [String: Double],
     currencyFormatter: NumberFormatter
   ) -> String {
-    let ratio = assetRatios[tokenSymbol.lowercased(), default: 0]
+    let ratio = assetRatios[tokenAssetRatioId.lowercased(), default: 0]
     let gasRatio = assetRatios[gasSymbol.lowercased(), default: 0]
     let amount = (Double(value) ?? 0.0) * ratio
     let gasAmount = (Double(gasValue) ?? 0.0) * gasRatio
