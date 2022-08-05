@@ -46,7 +46,8 @@ extension NetworkStore {
     .init(
       keyringService: MockKeyringService(),
       rpcService: MockJsonRpcService(),
-      walletService: MockBraveWalletService()
+      walletService: MockBraveWalletService(),
+      swapService: MockSwapService()
     )
   }
   

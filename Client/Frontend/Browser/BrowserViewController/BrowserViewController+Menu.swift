@@ -151,6 +151,7 @@ extension BrowserViewController {
         let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
         let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
         let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let swapService = BraveWallet.SwapServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
         
         if let keyringService = keyringService,
           let walletService = walletService,
@@ -164,11 +165,13 @@ extension BrowserViewController {
         var networkStore: NetworkStore?
         if let keyringService = keyringService,
            let rpcService = rpcService,
-           let walletService = walletService {
+           let walletService = walletService,
+           let swapService = swapService {
           networkStore = NetworkStore(
             keyringService: keyringService,
             rpcService: rpcService,
-            walletService: walletService
+            walletService: walletService,
+            swapService: swapService
           )
         }
         

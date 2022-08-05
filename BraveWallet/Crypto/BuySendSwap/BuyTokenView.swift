@@ -18,6 +18,10 @@ struct BuyTokenView: View {
   @Environment(\.openWalletURLAction) private var openWalletURL
   
   var onDismiss: (() -> Void)
+  
+  private var isBuySupported: Bool {
+    WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(networkStore.selectedChainId)
+  }
 
   var body: some View {
     NavigationView {
@@ -33,7 +37,7 @@ struct BuyTokenView: View {
           .padding(.bottom, -16)  // Get it a bit closer
         ) {
         }
-        if networkStore.selectedChain.chainId == BraveWallet.MainnetChainId {
+        if isBuySupported {
           Section(
             header: WalletListHeaderView(title: Text(Strings.Wallet.buy))
           ) {
@@ -63,7 +67,11 @@ struct BuyTokenView: View {
           Section(
             header: HStack {
               Button(action: {
-                buyTokenStore.fetchBuyUrl(account: keyringStore.selectedAccount, amount: amountInput) { urlString in
+                buyTokenStore.fetchBuyUrl(
+                  chainId: networkStore.selectedChainId,
+                  account: keyringStore.selectedAccount,
+                  amount: amountInput
+                ) { urlString in
                   guard let urlString = urlString, let url = URL(string: urlString) else {
                     return
                   }
@@ -75,41 +83,11 @@ struct BuyTokenView: View {
               .buttonStyle(BraveFilledButtonStyle(size: .normal))
               .frame(maxWidth: .infinity)
             }
-            .resetListHeaderStyle()
-            .listRowBackground(Color(.clear))
+              .resetListHeaderStyle()
+              .listRowBackground(Color(.clear))
           ) {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        } else {
-          Section {
-            VStack(alignment: .leading, spacing: 4.0) {
-              Text(Strings.Wallet.buyTestTitle)
-                .font(.headline)
-              Text(String.localizedStringWithFormat(Strings.Wallet.buyTestDescription, networkStore.selectedChain.chainName))
-                .font(.subheadline)
-                .foregroundColor(Color(.secondaryBraveLabel))
-            }
-            .padding(.vertical, 6.0)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          }
-          .listRowBackground(Color(.clear))
-          Section(
-            header:
-              Button(action: {
-                buyTokenStore.fetchTestFaucetUrl { urlString in
-                  guard let urlString = urlString, let url = URL(string: urlString) else {
-                    return
-                  }
-                  openWalletURL?(url)
-                }
-              }) {
-                Text(Strings.Wallet.buyTestButtonTitle)
-              }
-              .buttonStyle(BraveFilledButtonStyle(size: .normal))
-              .frame(maxWidth: .infinity)
-              .resetListHeaderStyle()
-          ) {
-          }
         }
       }
       .navigationTitle(Strings.Wallet.buy)
@@ -122,8 +100,20 @@ struct BuyTokenView: View {
           }
         }
       }
+      .overlay(
+        Group {
+          if !isBuySupported {
+            Text(Strings.Wallet.networkNotSupportedForBuyToken)
+              .font(.headline.weight(.medium))
+              .frame(maxWidth: .infinity)
+              .multilineTextAlignment(.center)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .transition(.opacity)
+          }
+        }
+      )
       .onAppear {
-        buyTokenStore.fetchBuyTokens()
+        buyTokenStore.fetchBuyTokens(network: networkStore.selectedChain)
       }
     }
     .navigationViewStyle(.stack)

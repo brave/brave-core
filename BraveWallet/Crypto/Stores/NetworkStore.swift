@@ -26,19 +26,24 @@ public class NetworkStore: ObservableObject {
   var selectedChain: BraveWallet.NetworkInfo {
     allChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init()
   }
+  
+  @Published private(set) var isSwapSupported: Bool = true
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
+  private let swapService: BraveWalletSwapService
 
   public init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
-    walletService: BraveWalletBraveWalletService
+    walletService: BraveWalletBraveWalletService,
+    swapService: BraveWalletSwapService
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.walletService = walletService
+    self.swapService = swapService
     self.updateChainList()
     rpcService.add(self)
     keyringService.add(self)
@@ -49,6 +54,8 @@ public class NetworkStore: ObservableObject {
       // since we are fetch network from JsonRpcService,
       // we don't need to call `setNetwork` on JsonRpcService
       self.selectedChainId = chain.chainId
+      // update `isSwapSupported` for Buy/Send/Swap panel
+      self.isSwapSupported = await swapService.isSwapSupported(chain.chainId)
     }
   }
 
@@ -192,10 +199,14 @@ extension NetworkStore: BraveWalletJsonRpcServiceObserver {
     updateChainList()
   }
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    walletService.setSelectedCoin(coin)
-    // since JsonRpcService notify us of change,
-    // we don't need to call `setNetwork` on JsonRpcService
-    selectedChainId = chainId
+    Task { @MainActor in
+      walletService.setSelectedCoin(coin)
+      // since JsonRpcService notify us of change,
+      // we don't need to call `setNetwork` on JsonRpcService
+      selectedChainId = chainId
+      
+      isSwapSupported = await swapService.isSwapSupported(chainId)
+    }
   }
 }
 
