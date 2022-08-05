@@ -4,7 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-
+#include "brave/components/constants/webui_url_constants.h"
+#include "chrome/common/url_constants.h"
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "content/public/common/url_constants.h"
@@ -25,5 +26,9 @@ bool ShouldTrackURLForRestore(const GURL& url) {
     return false;
   }
 #endif
+  if (url.SchemeIs(content::kChromeUIScheme) && url.host() == kWalletPageHost &&
+      url.path() == kBraveOnboardingRestoreWalletPath) {
+    return false;
+  }
   return ShouldTrackURLForRestore_ChromiumImpl(url);
 }

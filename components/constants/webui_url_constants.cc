@@ -51,3 +51,5 @@ const char kFederatedInternalsHost[] = "federated-internals";
 const char kContentFiltersPath[] = "shields/filters";
 const char kPlaylistHost[] = "playlist";
 const char kPlaylistURL[] = "chrome://playlist/";
+const char kBraveOnboardingRestoreWalletPath[] =
+    "/crypto/onboarding/restore-wallet";
