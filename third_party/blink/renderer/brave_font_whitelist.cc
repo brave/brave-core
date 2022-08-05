@@ -19,6 +19,7 @@ bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Mac OS as of Mac OS 12.3.
 base::flat_set<base::StringPiece> kAllowedFontFamilies =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
+        "-apple-system",
         "academy engraved let",
         "al bayan",
         "al nile",
@@ -69,6 +70,7 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
         "baskerville",
         "beirut",
         "big caslon",
+        "blinkmacsystemfont",
         "bodoni 72",
         "bodoni 72 oldstyle",
         "bodoni 72 smallcaps",
@@ -284,6 +286,7 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
         "sukhumvit set",
         "superclarendon",
         "symbol",
+        "system-ui",
         "tahoma",
         "tamil mn",
         "tamil sangam mn",
