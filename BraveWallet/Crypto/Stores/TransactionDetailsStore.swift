@@ -67,7 +67,7 @@ class TransactionDetailsStore: ObservableObject {
       let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
       let userVisibleTokens: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: network.coin)
       let priceResult = await assetRatioService.priceWithIndividualRetry(
-        userVisibleTokens.map { $0.symbol.lowercased() },
+        userVisibleTokens.map { $0.assetRatioId.lowercased() },
         toAssets: [currencyFormatter.currencyCode],
         timeframe: .oneDay
       )
@@ -100,14 +100,14 @@ class TransactionDetailsStore: ObservableObject {
         self.title = Strings.Wallet.sent
         self.value = String(format: "%@ %@", details.fromAmount, details.fromToken.symbol)
         self.fiat = details.fromFiat
-        if let tokenPrice = assetRatios[details.fromToken.symbol.lowercased()] {
+        if let tokenPrice = assetRatios[details.fromToken.assetRatioId.lowercased()] {
           self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
         }
       case let .ethSwap(details):
         self.title = Strings.Wallet.swap
         if let fromToken = details.fromToken {
           self.value = String(format: "%@ %@", details.fromAmount, fromToken.symbol)
-          if let tokenPrice = assetRatios[fromToken.symbol.lowercased()] {
+          if let tokenPrice = assetRatios[fromToken.assetRatioId.lowercased()] {
             self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
           }
         } else {
@@ -117,14 +117,14 @@ class TransactionDetailsStore: ObservableObject {
       case let .ethErc20Approve(details):
         self.title = Strings.Wallet.approveNetworkButtonTitle
         self.value = String(format: "%@ %@", details.approvalAmount, details.token.symbol)
-        if let tokenPrice = assetRatios[details.token.symbol.lowercased()] {
+        if let tokenPrice = assetRatios[details.token.assetRatioId.lowercased()] {
           self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
         }
       case let .erc721Transfer(details):
         self.title = Strings.Wallet.swap
         if let fromToken = details.fromToken {
           self.value = String(format: "%@ %@", details.fromAmount, fromToken.symbol)
-          if let tokenPrice = assetRatios[fromToken.symbol.lowercased()] {
+          if let tokenPrice = assetRatios[fromToken.assetRatioId.lowercased()] {
             self.marketPrice = currencyFormatter.string(from: NSNumber(value: tokenPrice)) ?? "$0.00"
           }
         } else {

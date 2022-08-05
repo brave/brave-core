@@ -273,7 +273,7 @@ extension TransactionSummary {
       accountInfos: [.previewAccount],
       visibleTokens: [.previewToken, .previewDaiToken],
       allTokens: [],
-      assetRatios: [BraveWallet.BlockchainToken.previewToken.symbol.lowercased(): 1],
+      assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
       solEstimatedTxFee: nil,
       currencyFormatter: .usdCurrencyFormatter
     )

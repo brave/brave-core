@@ -102,7 +102,6 @@ public class SwapTokenStore: ObservableObject {
   private let keyringService: BraveWalletKeyringService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
-  private let assetRatioService: BraveWalletAssetRatioService
   private let swapService: BraveWalletSwapService
   private let txService: BraveWalletTxService
   private let walletService: BraveWalletBraveWalletService
@@ -147,7 +146,6 @@ public class SwapTokenStore: ObservableObject {
     keyringService: BraveWalletKeyringService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     rpcService: BraveWalletJsonRpcService,
-    assetRatioService: BraveWalletAssetRatioService,
     swapService: BraveWalletSwapService,
     txService: BraveWalletTxService,
     walletService: BraveWalletBraveWalletService,
@@ -157,7 +155,6 @@ public class SwapTokenStore: ObservableObject {
     self.keyringService = keyringService
     self.blockchainRegistry = blockchainRegistry
     self.rpcService = rpcService
-    self.assetRatioService = assetRatioService
     self.swapService = swapService
     self.txService = txService
     self.walletService = walletService
