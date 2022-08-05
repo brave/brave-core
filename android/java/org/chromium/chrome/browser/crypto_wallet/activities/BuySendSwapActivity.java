@@ -702,9 +702,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         // some old calls are returning ETH result when SOL is selected so do nothing
         try {
             int decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
-            fromToBalance = token != null && token.coin == CoinType.SOL
-                    ? Utils.fromWei(balance, decimals)
-                    : Utils.fromHexWei(balance, decimals);
+            int tokenCoin = token != null ? token.coin : CoinType.ETH;
+            fromToBalance = Utils.getBalanceForCoinType(tokenCoin, decimals, balance);
         } catch (NumberFormatException e) {
             return;
         }
