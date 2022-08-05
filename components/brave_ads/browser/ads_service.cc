@@ -70,6 +70,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
                                "");
 
+  registry->RegisterTimePref(ads::prefs::kServeAdAt, base::Time());
+
   registry->RegisterTimePref(ads::prefs::kNextTokenRedemptionAt,
                              base::Time::Now());
 

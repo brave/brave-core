@@ -39,6 +39,8 @@ extern const char kIssuerPing[];
 extern const char kEpsilonGreedyBanditArms[];
 extern const char kEpsilonGreedyBanditEligibleSegments[];
 
+extern const char kServeAdAt[];
+
 extern const char kNextTokenRedemptionAt[];
 
 extern const char kHasMigratedClientState[];

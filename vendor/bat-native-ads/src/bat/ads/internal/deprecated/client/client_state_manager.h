@@ -93,9 +93,6 @@ class ClientStateManager final {
                                    const AdType& type);
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
-  void SetServeAdAt(const base::Time time);
-  base::Time GetServeAdAt();
-
   void AppendTextClassificationProbabilitiesToHistory(
       const targeting::TextClassificationProbabilityMap& probabilities);
   const targeting::TextClassificationProbabilityList&

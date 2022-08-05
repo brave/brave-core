@@ -480,20 +480,6 @@ void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
   Save();
 }
 
-void ClientStateManager::SetServeAdAt(const base::Time time) {
-  DCHECK(is_initialized_);
-
-  client_->serve_ad_at = time;
-
-  Save();
-}
-
-base::Time ClientStateManager::GetServeAdAt() {
-  DCHECK(is_initialized_);
-
-  return client_->serve_ad_at;
-}
-
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
     const targeting::TextClassificationProbabilityMap& probabilities) {
   DCHECK(is_initialized_);

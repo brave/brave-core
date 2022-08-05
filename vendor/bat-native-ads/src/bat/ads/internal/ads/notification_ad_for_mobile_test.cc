@@ -10,7 +10,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ads/notification_ad_unittest_util.h"
+#include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -51,15 +51,13 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   }
 
   void ServeNextAd() {
-    ASSERT_TRUE(IsServingAdAtRegularIntervals());
+    ASSERT_TRUE(notification_ads::ShouldServeAdsAtRegularIntervals());
 
     const std::string name =
         privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
     EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
 
-    const base::Time serve_ad_at =
-        ClientStateManager::GetInstance()->GetServeAdAt();
-    FastForwardClockTo(serve_ad_at);
+    FastForwardClockTo(notification_ads::ServeAdAt());
   }
 
   void ServeAd() {
