@@ -5,13 +5,13 @@
 
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 
+#include <cstdint>
 #include <functional>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/net/http/http_status_code.h"
@@ -187,7 +187,7 @@ void SubdivisionTargeting::Fetch() {
   BLOG(2, "GET /v1/getstate");
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -196,7 +196,7 @@ void SubdivisionTargeting::Fetch() {
   AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
-void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void SubdivisionTargeting::OnFetch(const mojom::UrlResponse& url_response) {
   BLOG(1, "OnFetchSubdivisionTargeting");
 
   BLOG(6, UrlResponseToString(url_response));

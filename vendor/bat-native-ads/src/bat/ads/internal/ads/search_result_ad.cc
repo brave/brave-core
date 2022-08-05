@@ -29,7 +29,7 @@ SearchResultAd::~SearchResultAd() {
 }
 
 void SearchResultAd::TriggerEvent(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::SearchResultAdPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
   event_handler_->FireEvent(

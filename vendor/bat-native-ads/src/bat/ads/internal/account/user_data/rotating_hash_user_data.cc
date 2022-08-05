@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/user_data/rotating_hash_user_data.h"
 
-#include <cstdint>
-
 #include "base/hash/hash.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"

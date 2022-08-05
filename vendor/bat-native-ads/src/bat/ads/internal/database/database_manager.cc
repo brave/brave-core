@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/database/database_manager.h"
 
+#include <functional>
 #include <utility>
 
 #include "base/check_op.h"
@@ -54,21 +55,20 @@ void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
 void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   NotifyWillCreateOrOpenDatabase();
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->version = database::kVersion;
   transaction->compatible_version = database::kCompatibleVersion;
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::INITIALIZE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::INITIALIZE;
 
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), [=](mojom::DBCommandResponseInfoPtr response) {
+      std::move(transaction), [=](mojom::DBCommandResponsePtr response) {
         DCHECK(response);
 
-        if (response->status !=
-                mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
+        if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
             !response->result) {
           BLOG(0, "Failed to open or create database");
           NotifyFailedToCreateOrOpenDatabase();

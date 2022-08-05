@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
@@ -66,7 +67,7 @@ void Issuers::Fetch() {
   BLOG(2, "GET /v1/issuers/");
 
   IssuersUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -75,7 +76,7 @@ void Issuers::Fetch() {
   AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
-void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
   BLOG(1, "OnFetchIssuers");
 
   BLOG(6, UrlResponseToString(url_response));

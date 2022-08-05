@@ -27,10 +27,10 @@ using LoadCallback = std::function<void(const bool, const std::string&)>;
 
 using LoadFileCallback = base::OnceCallback<void(base::File)>;
 
-using UrlRequestCallback = std::function<void(const mojom::UrlResponseInfo&)>;
+using UrlRequestCallback = std::function<void(const mojom::UrlResponse&)>;
 
 using RunDBTransactionCallback =
-    std::function<void(mojom::DBCommandResponseInfoPtr)>;
+    std::function<void(mojom::DBCommandResponsePtr)>;
 
 using GetBrowsingHistoryCallback =
     std::function<void(const std::vector<GURL>&)>;

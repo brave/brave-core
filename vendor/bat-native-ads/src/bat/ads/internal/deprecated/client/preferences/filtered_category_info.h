@@ -20,7 +20,7 @@ struct FilteredCategoryInfo final {
   ~FilteredCategoryInfo();
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  bool FromValue(const base::Value::Dict& value);
 
   std::string name;
 };

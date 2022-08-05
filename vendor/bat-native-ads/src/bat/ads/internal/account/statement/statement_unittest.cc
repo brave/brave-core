@@ -5,10 +5,11 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
-#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/statement_info.h"
+#include "bat/ads/transaction_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -38,15 +39,15 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
-    ASSERT_TRUE(statement);
+  BuildStatement([](const bool success, const StatementInfo& statement) {
+    ASSERT_TRUE(success);
 
-    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.0;
-    expected_statement->earnings_this_month = 0.02;
-    expected_statement->next_payment_date =
+    StatementInfo expected_statement;
+    expected_statement.next_payment_date =
         TimeFromString("5 December 2020 23:59:59.999", /* is_local */ false);
-    expected_statement->ads_received_this_month = 2;
+    expected_statement.earnings_this_month = 0.02;
+    expected_statement.earnings_last_month = 0.0;
+    expected_statement.ads_received_this_month = 2;
 
     EXPECT_EQ(expected_statement, statement);
   });
@@ -99,15 +100,15 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
-    ASSERT_TRUE(statement);
+  BuildStatement([](const bool success, const StatementInfo& statement) {
+    ASSERT_TRUE(success);
 
-    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.01;
-    expected_statement->earnings_this_month = 0.05;
-    expected_statement->next_payment_date =
+    StatementInfo expected_statement;
+    expected_statement.next_payment_date =
         TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-    expected_statement->ads_received_this_month = 3;
+    expected_statement.earnings_this_month = 0.05;
+    expected_statement.earnings_last_month = 0.01;
+    expected_statement.ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
   });
@@ -150,15 +151,15 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
-    ASSERT_TRUE(statement);
+  BuildStatement([](const bool success, const StatementInfo& statement) {
+    ASSERT_TRUE(success);
 
-    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.01;
-    expected_statement->earnings_this_month = 0.04;
-    expected_statement->next_payment_date =
+    StatementInfo expected_statement;
+    expected_statement.next_payment_date =
         TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-    expected_statement->ads_received_this_month = 3;
+    expected_statement.earnings_this_month = 0.04;
+    expected_statement.earnings_last_month = 0.01;
+    expected_statement.ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
   });
@@ -171,15 +172,15 @@ TEST_F(BatAdsStatementTest, GetForNoTransactions) {
   AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   // Act
-  BuildStatement([](mojom::StatementInfoPtr statement) {
-    ASSERT_TRUE(statement);
+  BuildStatement([](const bool success, const StatementInfo& statement) {
+    ASSERT_TRUE(success);
 
-    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.0;
-    expected_statement->earnings_this_month = 0.0;
-    expected_statement->next_payment_date =
+    StatementInfo expected_statement;
+    expected_statement.next_payment_date =
         TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-    expected_statement->ads_received_this_month = 0;
+    expected_statement.earnings_this_month = 0.0;
+    expected_statement.earnings_last_month = 0.0;
+    expected_statement.ads_received_this_month = 0;
 
     EXPECT_EQ(expected_statement, statement);
   });

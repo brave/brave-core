@@ -28,7 +28,7 @@ class CreateConfirmationUrlRequestBuilder final
   CreateConfirmationUrlRequestBuilder operator=(
       const CreateConfirmationUrlRequestBuilder&) = delete;
 
-  mojom::UrlRequestInfoPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   GURL BuildUrl() const;

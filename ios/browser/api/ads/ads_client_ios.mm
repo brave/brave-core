@@ -33,8 +33,8 @@ bool AdsClientIOS::CanShowNotificationAdsWhileBrowserIsBackgrounded() const {
   return [bridge_ canShowNotificationAdsWhileBrowserIsBackgrounded];
 }
 
-void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
-  [bridge_ showNotificationAd:ad];
+void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& info) {
+  [bridge_ showNotificationAd:info];
 }
 
 bool AdsClientIOS::CanShowNotificationAds() {
@@ -65,7 +65,7 @@ void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
   [bridge_ resetAdEventHistoryForId:id];
 }
 
-void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestPtr url_request,
                               ads::UrlRequestCallback callback) {
   [bridge_ UrlRequest:std::move(url_request) callback:callback];
 }
@@ -120,9 +120,8 @@ void AdsClientIOS::Log(const char* file,
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 
-void AdsClientIOS::RunDBTransaction(
-    ads::mojom::DBTransactionInfoPtr transaction,
-    ads::RunDBTransactionCallback callback) {
+void AdsClientIOS::RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+                                    ads::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction) callback:callback];
 }
 
@@ -223,6 +222,6 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
 }
 
 void AdsClientIOS::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   [bridge_ logTrainingInstance:std::move(training_instance)];
 }

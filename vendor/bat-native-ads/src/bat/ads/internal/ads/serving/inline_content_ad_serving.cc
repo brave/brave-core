@@ -136,14 +136,14 @@ void Serving::ServeAd(const InlineContentAdInfo& ad,
 
   NotifyDidServeInlineContentAd(ad);
 
-  callback(ad.dimensions, ad);
+  callback(/* success */ true, ad.dimensions, ad);
 }
 
 void Serving::FailedToServeAd(const std::string& dimensions,
                               MaybeServeInlineContentAdCallback callback) {
   NotifyFailedToServeInlineContentAd();
 
-  callback(dimensions, absl::nullopt);
+  callback(/* success */ false, dimensions, {});
 }
 
 void Serving::NotifyOpportunityAroseToServeInlineContentAd(

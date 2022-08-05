@@ -19,10 +19,10 @@ IssuersUrlRequestBuilder::~IssuersUrlRequestBuilder() = default;
 
 // GET /v1/issuers/
 
-mojom::UrlRequestInfoPtr IssuersUrlRequestBuilder::Build() {
-  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
+mojom::UrlRequestPtr IssuersUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
-  url_request->method = mojom::UrlRequestMethodType::kGet;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }

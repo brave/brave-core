@@ -26,7 +26,7 @@ namespace {
 
 constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
 
-int BindParameters(mojom::DBCommandInfo* command,
+int BindParameters(mojom::DBCommand* command,
                    const CreativeNewTabPageAdList& creative_ads) {
   DCHECK(command);
 
@@ -54,7 +54,7 @@ CreativeNewTabPageAdWallpapers::CreativeNewTabPageAdWallpapers() = default;
 CreativeNewTabPageAdWallpapers::~CreativeNewTabPageAdWallpapers() = default;
 
 void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
-    mojom::DBTransactionInfo* transaction,
+    mojom::DBTransaction* transaction,
     const CreativeNewTabPageAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -69,8 +69,8 @@ void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command =
       BuildInsertOrUpdateQuery(command.get(), filtered_creative_ads);
 
@@ -78,7 +78,7 @@ void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
 }
 
 void CreativeNewTabPageAdWallpapers::Delete(ResultCallback callback) {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   DeleteTable(transaction.get(), GetTableName());
 
@@ -91,9 +91,8 @@ std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
   return kTableName;
 }
 
-void CreativeNewTabPageAdWallpapers::Migrate(
-    mojom::DBTransactionInfo* transaction,
-    const int to_version) {
+void CreativeNewTabPageAdWallpapers::Migrate(mojom::DBTransaction* transaction,
+                                             const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -111,7 +110,7 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateQuery(
-    mojom::DBCommandInfo* command,
+    mojom::DBCommand* command,
     const CreativeNewTabPageAdList& creative_ads) {
   DCHECK(command);
 
@@ -128,7 +127,7 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateQuery(
 }
 
 void CreativeNewTabPageAdWallpapers::MigrateToV24(
-    mojom::DBTransactionInfo* transaction) {
+    mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
@@ -144,8 +143,8 @@ void CreativeNewTabPageAdWallpapers::MigrateToV24(
       "UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) "
       "ON CONFLICT REPLACE)";
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

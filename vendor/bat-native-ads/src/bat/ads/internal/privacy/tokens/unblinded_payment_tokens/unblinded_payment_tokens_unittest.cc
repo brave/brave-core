@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 

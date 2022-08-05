@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "bat/ads/ads.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

@@ -25,7 +25,7 @@ namespace {
 
 constexpr char kTableName[] = "segments";
 
-int BindParameters(mojom::DBCommandInfo* command,
+int BindParameters(mojom::DBCommand* command,
                    const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -48,7 +48,7 @@ Segments::Segments() = default;
 
 Segments::~Segments() = default;
 
-void Segments::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
+void Segments::InsertOrUpdate(mojom::DBTransaction* transaction,
                               const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -56,15 +56,15 @@ void Segments::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }
 
 void Segments::Delete(ResultCallback callback) {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   DeleteTable(transaction.get(), GetTableName());
 
@@ -77,7 +77,7 @@ std::string Segments::GetTableName() const {
   return kTableName;
 }
 
-void Segments::Migrate(mojom::DBTransactionInfo* transaction,
+void Segments::Migrate(mojom::DBTransaction* transaction,
                        const int to_version) {
   DCHECK(transaction);
 
@@ -96,7 +96,7 @@ void Segments::Migrate(mojom::DBTransactionInfo* transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string Segments::BuildInsertOrUpdateQuery(
-    mojom::DBCommandInfo* command,
+    mojom::DBCommand* command,
     const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -110,7 +110,7 @@ std::string Segments::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Segments::MigrateToV24(mojom::DBTransactionInfo* transaction) {
+void Segments::MigrateToV24(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   DropTable(transaction, "segments");
@@ -122,8 +122,8 @@ void Segments::MigrateToV24(mojom::DBTransactionInfo* transaction) {
       "PRIMARY KEY (creative_set_id, segment), "
       "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)";
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

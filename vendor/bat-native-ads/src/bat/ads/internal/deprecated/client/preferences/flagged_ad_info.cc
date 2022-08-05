@@ -21,10 +21,11 @@ base::Value::Dict FlaggedAdInfo::ToValue() const {
   return dict;
 }
 
-void FlaggedAdInfo::FromValue(const base::Value::Dict& root) {
+bool FlaggedAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("creative_set_id")) {
     creative_set_id = *value;
   }
+  return true;
 }
 
 }  // namespace ads

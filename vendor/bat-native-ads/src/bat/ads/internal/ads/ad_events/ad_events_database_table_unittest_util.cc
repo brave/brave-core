@@ -19,16 +19,16 @@ namespace table {
 namespace ad_events {
 
 void Reset(ResultCallback callback) {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   DeleteTable(transaction.get(), "ad_events");
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      [callback](mojom::DBCommandResponseInfoPtr command_response) {
+      [callback](mojom::DBCommandResponsePtr command_response) {
         if (!command_response ||
             command_response->status !=
-                mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                mojom::DBCommandResponse::Status::RESPONSE_OK) {
           DCHECK(false);
           callback(/* success */ false);
           return;

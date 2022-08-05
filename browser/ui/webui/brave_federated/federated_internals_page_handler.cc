@@ -55,7 +55,7 @@ void FederatedInternalsPageHandler::OnUpdateDataStoresInfo(
     auto training_instance =
         federated_internals::mojom::TrainingInstance::New();
     training_instance->id = item.first;
-    std::vector<mojom::CovariateInfoPtr>& covariates = item.second;
+    std::vector<mojom::CovariatePtr>& covariates = item.second;
     for (auto& covariate : covariates) {
       training_instance->covariates.push_back(std::move(covariate));
     }

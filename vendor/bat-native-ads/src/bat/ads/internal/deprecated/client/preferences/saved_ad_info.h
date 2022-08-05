@@ -20,7 +20,7 @@ struct SavedAdInfo final {
   ~SavedAdInfo();
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  bool FromValue(const base::Value::Dict& value);
 
   std::string creative_instance_id;
 };

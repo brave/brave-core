@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_HISTORY_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "bat/ads/export.h"
@@ -21,7 +22,7 @@ struct ADS_EXPORT HistoryInfo final {
   ~HistoryInfo();
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  bool FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

@@ -8,12 +8,11 @@
 namespace ads {
 namespace database {
 
-void OnResultCallback(mojom::DBCommandResponseInfoPtr response,
+void OnResultCallback(mojom::DBCommandResponsePtr response,
                       ResultCallback callback) {
   DCHECK(response);
 
-  if (response->status !=
-      mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+  if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     callback(/* success */ false);
     return;
   }

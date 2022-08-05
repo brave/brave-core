@@ -18,7 +18,7 @@ interface BatAdsService {
 
   SetSysInfo(ads.mojom.SysInfo sys_info) => ();
 
-  SetBuildChannel(ads.mojom.BuildChannelInfo build_channel) => ();
+  SetBuildChannel(ads.mojom.BuildChannel build_channel) => ();
 };
 
 interface BatAdsClient {
@@ -36,7 +36,7 @@ interface BatAdsClient {
   CanShowNotificationAds() => (bool can_show);
   [Sync]
   CanShowNotificationAdsWhileBrowserIsBackgrounded() => (bool can_show);
-  ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
+  ShowNotificationAd(string json);
   CloseNotificationAd(string placement_id);
 
   UpdateAdRewards();
@@ -48,7 +48,7 @@ interface BatAdsClient {
 
   GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<url.mojom.Url> history);
 
-  UrlRequest(ads.mojom.UrlRequestInfo request) => (ads.mojom.UrlResponseInfo response);
+  UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
 
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
@@ -60,11 +60,11 @@ interface BatAdsClient {
   ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
   ClearScheduledCaptcha();
 
-  RunDBTransaction(ads.mojom.DBTransactionInfo transaction) => (ads.mojom.DBCommandResponseInfo response);
+  RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
 
   RecordP2AEvent(string name, string value);
 
-  LogTrainingInstance(array<brave_federated.mojom.CovariateInfo> training_instance);
+  LogTrainingInstance(array<brave_federated.mojom.Covariate> training_instance);
 
   [Sync]
   GetBooleanPref(string path) => (bool value);
@@ -106,17 +106,16 @@ interface BatAds {
   Initialize() => (bool success);
   Shutdown() => (bool success);
 
-  // Diagnostics
-  GetDiagnostics() => (mojo_base.mojom.ListValue? value);
+  GetDiagnostics() => (bool success, string json);
 
-  // Locale
   OnChangeLocale(string locale);
 
-  // Preferences
   OnPrefChanged(string path);
 
-  // Resources
   OnResourceComponentUpdated(string id);
+
+  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
+  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
 
   // User Interaction
   OnIdle();
@@ -129,9 +128,6 @@ interface BatAds {
   OnBrowserDidEnterBackground();
 
   // Tabs
-  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
-
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
 
@@ -141,21 +137,21 @@ interface BatAds {
   // Account
   OnWalletUpdated(string payment_id, string seed);
 
-  GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
+  GetStatementOfAccounts() => (bool success, string json);
 
   // Ads
-  MaybeServeInlineContentAd(string dimensions) => (string dimensions, mojo_base.mojom.DictionaryValue? value);
+  MaybeServeInlineContentAd(string dimensions) => (bool success, string dimensions, string ad);
   TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
 
-  MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
+  MaybeServeNewTabPageAd() => (bool success, string json);
   TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
 
-  GetNotificationAd(string placement_id) => (mojo_base.mojom.DictionaryValue? value);
+  GetNotificationAd(string placement_id) => (string json);
   TriggerNotificationAdEvent(string placement_id, ads.mojom.NotificationAdEventType event_type);
 
   TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
 
-  TriggerSearchResultAdEvent(ads.mojom.SearchResultAdInfo ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
+  TriggerSearchResultAdEvent(ads.mojom.SearchResultAd ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
 
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
 

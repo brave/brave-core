@@ -61,7 +61,12 @@ void DiagnosticManager::SetEntry(
 }
 
 void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
-  callback(ToValue(diagnostics_));
+  std::string json;
+  if (!base::JSONWriter::Write(ToValue(diagnostics_), &json)) {
+    callback(/* success */ false, {});
+  }
+
+  callback(/* success */ true, json);
 }
 
 }  // namespace ads

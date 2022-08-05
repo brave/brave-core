@@ -36,20 +36,20 @@ class Conversions final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransactionInfo* transaction,
+  void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const ConversionList& conversion);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const ConversionList& conversions);
 
-  void OnGetConversions(mojom::DBCommandResponseInfoPtr response,
+  void OnGetConversions(mojom::DBCommandResponsePtr response,
                         GetConversionsCallback callback);
 
-  void MigrateToV23(mojom::DBTransactionInfo* transaction);
+  void MigrateToV23(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

@@ -20,10 +20,10 @@ CatalogUrlRequestBuilder::~CatalogUrlRequestBuilder() = default;
 
 // GET /v#/catalog
 
-mojom::UrlRequestInfoPtr CatalogUrlRequestBuilder::Build() {
-  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
+mojom::UrlRequestPtr CatalogUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
-  url_request->method = mojom::UrlRequestMethodType::kGet;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }

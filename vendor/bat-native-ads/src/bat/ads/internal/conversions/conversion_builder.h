@@ -14,7 +14,7 @@ namespace ads {
 struct ConversionInfo;
 
 absl::optional<ConversionInfo> BuildConversion(
-    const mojom::SearchResultAdInfoPtr& ad_mojom);
+    const mojom::SearchResultAdPtr& ad_mojom);
 
 }  // namespace ads
 

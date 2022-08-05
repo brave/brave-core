@@ -17,7 +17,6 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/new_tab_page_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -44,8 +43,9 @@ NewTabPageAd::~NewTabPageAd() {
 }
 
 void NewTabPageAd::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
-  serving_->MaybeServeAd(
-      [=](const absl::optional<NewTabPageAdInfo>& ad) { callback(ad); });
+  serving_->MaybeServeAd([=](const bool success, const NewTabPageAdInfo& ad) {
+    callback(success, ad);
+  });
 }
 
 void NewTabPageAd::TriggerEvent(const std::string& placement_id,

@@ -14,9 +14,9 @@
 namespace ads {
 namespace database {
 
-mojom::DBRecordInfoPtr CreateRecord(
+mojom::DBRecordPtr CreateRecord(
     sql::Statement* statement,
-    const std::vector<mojom::DBCommandInfo::RecordBindingType>& bindings);
+    const std::vector<mojom::DBCommand::RecordBindingType>& bindings);
 
 }  // namespace database
 }  // namespace ads

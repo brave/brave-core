@@ -8,8 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/notreached.h"
-#include "base/values.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"

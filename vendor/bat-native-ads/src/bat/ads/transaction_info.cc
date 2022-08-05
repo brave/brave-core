@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/account/transactions/transaction_info.h"
+#include "bat/ads/transaction_info.h"
 
+#include "base/check.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {

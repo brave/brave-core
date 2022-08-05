@@ -271,19 +271,18 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
                     const URLEndpointMap& endpoints) {
   ON_CALL(*mock, UrlRequest(_, _))
-      .WillByDefault(
-          Invoke([endpoints](const mojom::UrlRequestInfoPtr& url_request,
-                             UrlRequestCallback callback) {
-            mojom::UrlResponseInfo url_response;
+      .WillByDefault(Invoke([endpoints](const mojom::UrlRequestPtr& url_request,
+                                        UrlRequestCallback callback) {
+        mojom::UrlResponse url_response;
 
-            const absl::optional<mojom::UrlResponseInfo> url_response_optional =
-                GetNextUrlResponse(url_request, endpoints);
-            if (url_response_optional) {
-              url_response = url_response_optional.value();
-            }
+        const absl::optional<mojom::UrlResponse> url_response_optional =
+            GetNextUrlResponse(url_request, endpoints);
+        if (url_response_optional) {
+          url_response = url_response_optional.value();
+        }
 
-            callback(url_response);
-          }));
+        callback(url_response);
+      }));
 }
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
@@ -342,16 +341,14 @@ void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock) {
 void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
                           const std::unique_ptr<Database>& database) {
   ON_CALL(*mock, RunDBTransaction(_, _))
-      .WillByDefault(Invoke([&database](mojom::DBTransactionInfoPtr transaction,
+      .WillByDefault(Invoke([&database](mojom::DBTransactionPtr transaction,
                                         RunDBTransactionCallback callback) {
         CHECK(transaction);
 
-        mojom::DBCommandResponseInfoPtr response =
-            mojom::DBCommandResponseInfo::New();
+        mojom::DBCommandResponsePtr response = mojom::DBCommandResponse::New();
 
         if (!database) {
-          response->status =
-              mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
+          response->status = mojom::DBCommandResponse::Status::RESPONSE_ERROR;
         } else {
           database->RunTransaction(std::move(transaction), response.get());
         }

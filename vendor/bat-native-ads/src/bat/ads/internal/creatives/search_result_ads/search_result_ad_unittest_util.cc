@@ -11,8 +11,8 @@
 
 namespace ads {
 
-mojom::SearchResultAdInfoPtr BuildSearchResultAd() {
-  mojom::SearchResultAdInfoPtr ad = mojom::SearchResultAdInfo::New();
+mojom::SearchResultAdPtr BuildSearchResultAd() {
+  mojom::SearchResultAdPtr ad = mojom::SearchResultAd::New();
 
   ad->creative_instance_id = base::GUID::GenerateRandomV4().AsLowercaseString();
   ad->placement_id = base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -23,7 +23,7 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAd() {
   ad->headline_text = "headline";
   ad->description = "description";
   ad->value = 1.0;
-  ad->conversion = mojom::ConversionInfo::New();
+  ad->conversion = mojom::Conversion::New();
   ad->conversion->type = "postview";
   ad->conversion->url_pattern = "https://brave.com/*";
   ad->conversion->advertiser_public_key =

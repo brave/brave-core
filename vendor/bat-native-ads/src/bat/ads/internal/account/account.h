@@ -18,7 +18,6 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -34,10 +33,12 @@ class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
 class Wallet;
 struct IssuersInfo;
+struct StatementInfo;
 struct TransactionInfo;
 struct WalletInfo;
 
-using GetStatementCallback = std::function<void(mojom::StatementInfoPtr)>;
+using GetStatementCallback =
+    std::function<void(const bool, const StatementInfo&)>;
 
 class Account final : public PrefManagerObserver,
                       public ConfirmationsDelegate,

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 
+#include <limits>
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"

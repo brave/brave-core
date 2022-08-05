@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 
 #include <algorithm>
+#include <iterator>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"

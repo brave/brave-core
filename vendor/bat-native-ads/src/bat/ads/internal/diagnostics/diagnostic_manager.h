@@ -25,7 +25,6 @@ class DiagnosticManager final {
   static bool HasInstance();
 
   void SetEntry(std::unique_ptr<DiagnosticEntryInterface> entry);
-
   void GetDiagnostics(GetDiagnosticsCallback callback) const;
 
  private:

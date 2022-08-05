@@ -20,7 +20,6 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace inline_content_ads {

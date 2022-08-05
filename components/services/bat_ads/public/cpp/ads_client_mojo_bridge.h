@@ -59,7 +59,7 @@ class AdsClientMojoBridge
       const std::vector<GURL>& history);
 
   static void OnURLRequest(CallbackHolder<UrlRequestCallback>* callback_holder,
-                           const ads::mojom::UrlResponseInfo& url_response);
+                           const ads::mojom::UrlResponse& url_response);
 
   static void OnSave(CallbackHolder<SaveCallback>* callback_holder,
                      const bool success);
@@ -69,7 +69,7 @@ class AdsClientMojoBridge
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* callback_holder,
-      ads::mojom::DBCommandResponseInfoPtr response);
+      ads::mojom::DBCommandResponsePtr response);
 
   // BatAdsClient:
   bool IsNetworkConnectionAvailable(bool* out_value) override;
@@ -89,7 +89,7 @@ class AdsClientMojoBridge
   void CanShowNotificationAdsWhileBrowserIsBackgrounded(
       CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback)
       override;
-  void ShowNotificationAd(base::Value::Dict dict) override;
+  void ShowNotificationAd(const std::string& json) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void UpdateAdRewards() override;
@@ -110,7 +110,7 @@ class AdsClientMojoBridge
                           const int days_ago,
                           GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -131,13 +131,13 @@ class AdsClientMojoBridge
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
                       const std::string& out_value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
                                training_instance) override;
 
   void GetBooleanPref(

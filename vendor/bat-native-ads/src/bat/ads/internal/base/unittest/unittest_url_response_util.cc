@@ -139,8 +139,8 @@ base::FilePath GetFilePath(const std::string& body) {
 
 }  // namespace
 
-absl::optional<mojom::UrlResponseInfo> GetNextUrlResponse(
-    const mojom::UrlRequestInfoPtr& url_request,
+absl::optional<mojom::UrlResponse> GetNextUrlResponse(
+    const mojom::UrlRequestPtr& url_request,
     const URLEndpointMap& endpoints) {
   const absl::optional<URLEndpointResponsePair> url_endpoint_response_optional =
       GetNextUrlEndpointResponse(url_request->url, endpoints);
@@ -161,7 +161,7 @@ absl::optional<mojom::UrlResponseInfo> GetNextUrlResponse(
     ParseAndReplaceTagsForText(&body);
   }
 
-  mojom::UrlResponseInfo url_response;
+  mojom::UrlResponse url_response;
   url_response.url = url_request->url;
   url_response.status_code = url_endpoint_response.first;
   url_response.body = body;

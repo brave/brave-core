@@ -21,10 +21,11 @@ base::Value::Dict SavedAdInfo::ToValue() const {
   return dict;
 }
 
-void SavedAdInfo::FromValue(const base::Value::Dict& root) {
+bool SavedAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("uuid")) {
     creative_instance_id = *value;
   }
+  return true;
 }
 
 }  // namespace ads

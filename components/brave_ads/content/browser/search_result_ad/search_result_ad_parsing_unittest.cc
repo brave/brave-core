@@ -115,7 +115,7 @@ TEST(SearchResultAdParsingTest, ValidWebPage) {
   blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
   SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
   EXPECT_EQ(ads.size(), 1u);
-  ads::mojom::SearchResultAdInfoPtr& search_result_ad = ads["value0"];
+  ads::mojom::SearchResultAdPtr& search_result_ad = ads["value0"];
   ASSERT_TRUE(search_result_ad.get());
 
   EXPECT_EQ(search_result_ad->target_url, GURL("https://target.url"));

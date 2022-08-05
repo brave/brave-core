@@ -37,7 +37,7 @@ std::string HeadersToString(
 
 }  // namespace
 
-std::string UrlResponseToString(const mojom::UrlResponseInfo& url_response) {
+std::string UrlResponseToString(const mojom::UrlResponse& url_response) {
   return base::StringPrintf(
       "URL Response:\n  URL: %s\n  Response "
       "Status Code: %d\n  Response: %s",
@@ -45,8 +45,7 @@ std::string UrlResponseToString(const mojom::UrlResponseInfo& url_response) {
       url_response.body.c_str());
 }
 
-std::string UrlResponseHeadersToString(
-    const mojom::UrlResponseInfo& url_response) {
+std::string UrlResponseHeadersToString(const mojom::UrlResponse& url_response) {
   const std::string formatted_headers = HeadersToString(url_response.headers);
   return base::StringPrintf("  Headers:\n%s", formatted_headers.c_str());
 }

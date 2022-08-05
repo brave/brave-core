@@ -20,7 +20,7 @@ class Migration final {
   void FromVersion(const int from_version, ResultCallback callback);
 
  private:
-  void ToVersion(mojom::DBTransactionInfo* transaction, const int to_version);
+  void ToVersion(mojom::DBTransaction* transaction, const int to_version);
 };
 
 }  // namespace database

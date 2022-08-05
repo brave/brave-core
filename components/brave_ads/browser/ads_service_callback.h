@@ -11,19 +11,21 @@
 #include "base/callback.h"
 #include "base/values.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace ads {
+struct NewTabPageAdInfo;
+}  // namespace ads
 
 namespace brave_ads {
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(absl::optional<base::Value::List> value)>;
+    base::OnceCallback<void(const bool, const std::string&)>;
 
-using GetStatementOfAccountsCallback =
-    base::OnceCallback<void(ads::mojom::StatementInfoPtr)>;
+using GetStatementOfAccountsCallback = base::OnceCallback<
+    void(const bool, const double, const int, const double, const double)>;
 
-using MaybeServeInlineContentAdCallback =
-    base::OnceCallback<void(const std::string&,
-                            absl::optional<base::Value::Dict> value)>;
+using MaybeServeInlineContentAdCallback = base::OnceCallback<
+    void(const bool, const std::string&, const base::Value::Dict&)>;
 
 using TriggerSearchResultAdEventCallback =
     base::OnceCallback<void(const bool,

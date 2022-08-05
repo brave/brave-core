@@ -46,7 +46,7 @@ void DatabaseErrorCallback(sql::Database* db,
 }
 
 void BindCovariateToStatement(
-    const brave_federated::mojom::CovariateInfo& covariate,
+    const brave_federated::mojom::Covariate& covariate,
     int training_instance_id,
     base::Time created_at,
     sql::Statement* stmt) {
@@ -97,7 +97,7 @@ int DataStore::GetNextTrainingInstanceId() {
 }
 
 void DataStore::SaveCovariate(
-    const brave_federated::mojom::CovariateInfo& covariate,
+    const brave_federated::mojom::Covariate& covariate,
     int training_instance_id,
     const base::Time created_at) {
   sql::Statement statement(database_.GetUniqueStatement(
@@ -114,8 +114,7 @@ void DataStore::SaveCovariate(
 }
 
 bool DataStore::AddTrainingInstance(
-    const std::vector<brave_federated::mojom::CovariateInfoPtr>
-        training_instance) {
+    const std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const int training_instance_id = GetNextTrainingInstanceId();
@@ -141,7 +140,7 @@ TrainingData DataStore::LoadTrainingData() {
   training_instances.clear();
   while (statement.Step()) {
     const int training_instance_id = statement.ColumnInt(1);
-    mojom::CovariateInfoPtr covariate = mojom::CovariateInfo::New();
+    mojom::CovariatePtr covariate = mojom::Covariate::New();
     covariate->type = (mojom::CovariateType)statement.ColumnInt(2);
     covariate->data_type = (mojom::DataType)statement.ColumnInt(3);
     covariate->value = statement.ColumnString(4);

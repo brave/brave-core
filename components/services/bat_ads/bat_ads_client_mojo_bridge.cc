@@ -64,12 +64,12 @@ bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotificationAd(
-    const ads::NotificationAdInfo& ad) {
+    const ads::NotificationAdInfo& info) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ShowNotificationAd(ad.ToValue());
+  bat_ads_client_->ShowNotificationAd(info.ToJson());
 }
 
 bool BatAdsClientMojoBridge::CanShowNotificationAds() {
@@ -126,8 +126,8 @@ void BatAdsClientMojoBridge::ResetAdEventHistoryForId(
 }
 
 void OnUrlRequest(const ads::UrlRequestCallback& callback,
-                  const ads::mojom::UrlResponseInfoPtr url_response_ptr) {
-  ads::mojom::UrlResponseInfo url_response;
+                  const ads::mojom::UrlResponsePtr url_response_ptr) {
+  ads::mojom::UrlResponse url_response;
 
   if (!url_response_ptr) {
     url_response.status_code = -1;
@@ -142,11 +142,10 @@ void OnUrlRequest(const ads::UrlRequestCallback& callback,
   callback(url_response);
 }
 
-void BatAdsClientMojoBridge::UrlRequest(
-    ads::mojom::UrlRequestInfoPtr url_request,
-    ads::UrlRequestCallback callback) {
+void BatAdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
+                                        ads::UrlRequestCallback callback) {
   if (!connected()) {
-    ads::mojom::UrlResponseInfo response;
+    ads::mojom::UrlResponse response;
     response.url = url_request->url;
     response.status_code = -1;
     callback(response);
@@ -214,7 +213,7 @@ void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
 }
 
 void BatAdsClientMojoBridge::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   if (!connected()) {
     return;
   }
@@ -251,12 +250,12 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
 }
 
 void OnRunDBTransaction(const ads::RunDBTransactionCallback& callback,
-                        ads::mojom::DBCommandResponseInfoPtr response) {
+                        ads::mojom::DBCommandResponsePtr response) {
   callback(std::move(response));
 }
 
 void BatAdsClientMojoBridge::RunDBTransaction(
-    ads::mojom::DBTransactionInfoPtr transaction,
+    ads::mojom::DBTransactionPtr transaction,
     ads::RunDBTransactionCallback callback) {
   bat_ads_client_->RunDBTransaction(std::move(transaction),
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));

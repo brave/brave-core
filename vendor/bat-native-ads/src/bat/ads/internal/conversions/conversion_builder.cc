@@ -11,7 +11,7 @@
 namespace ads {
 
 absl::optional<ConversionInfo> BuildConversion(
-    const mojom::SearchResultAdInfoPtr& ad_mojom) {
+    const mojom::SearchResultAdPtr& ad_mojom) {
   if (!ad_mojom || !ad_mojom->conversion) {
     return absl::nullopt;
   }

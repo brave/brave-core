@@ -23,10 +23,11 @@ base::Value::Dict FilteredCategoryInfo::ToValue() const {
   return dict;
 }
 
-void FilteredCategoryInfo::FromValue(const base::Value::Dict& root) {
+bool FilteredCategoryInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("name")) {
     name = *value;
   }
+  return true;
 }
 
 }  // namespace ads

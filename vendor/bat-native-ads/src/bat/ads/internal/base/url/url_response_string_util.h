@@ -12,9 +12,8 @@
 
 namespace ads {
 
-std::string UrlResponseToString(const mojom::UrlResponseInfo& url_response);
-std::string UrlResponseHeadersToString(
-    const mojom::UrlResponseInfo& url_response);
+std::string UrlResponseToString(const mojom::UrlResponse& url_response);
+std::string UrlResponseHeadersToString(const mojom::UrlResponse& url_response);
 
 }  // namespace ads
 

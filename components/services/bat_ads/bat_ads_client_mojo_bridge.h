@@ -63,7 +63,7 @@ class BatAdsClientMojoBridge
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -83,13 +83,13 @@ class BatAdsClientMojoBridge
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
                       const std::string& value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
                                training_instance) override;
 
   bool GetBooleanPref(const std::string& path) const override;

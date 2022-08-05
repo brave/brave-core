@@ -30,7 +30,7 @@ struct PurchaseIntentSignalHistoryInfo final {
   bool operator!=(const PurchaseIntentSignalHistoryInfo& rhs) const;
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  bool FromValue(const base::Value::Dict& value);
 
   base::Time created_at;
   uint16_t weight = 0;

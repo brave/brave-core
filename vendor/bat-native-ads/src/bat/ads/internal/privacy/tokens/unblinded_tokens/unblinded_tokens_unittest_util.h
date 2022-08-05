@@ -9,11 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace ads {
 namespace privacy {

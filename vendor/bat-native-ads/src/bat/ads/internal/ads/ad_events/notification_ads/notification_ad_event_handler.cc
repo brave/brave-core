@@ -10,7 +10,6 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace notification_ads {
@@ -33,9 +32,9 @@ void EventHandler::FireEvent(const std::string& placement_id,
                              const mojom::NotificationAdEventType event_type) {
   DCHECK(!placement_id.empty());
 
-  const absl::optional<NotificationAdInfo> ad =
-      NotificationAdManager::GetInstance()->GetForPlacementId(placement_id);
-  if (!ad) {
+  NotificationAdInfo ad;
+  if (!NotificationAdManager::GetInstance()->GetForPlacementId(placement_id,
+                                                               &ad)) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
     FailedToFireEvent(placement_id, event_type);
@@ -43,9 +42,9 @@ void EventHandler::FireEvent(const std::string& placement_id,
   }
 
   const auto ad_event = AdEventFactory::Build(event_type);
-  ad_event->FireEvent(*ad);
+  ad_event->FireEvent(ad);
 
-  NotifyNotificationAdEvent(*ad, event_type);
+  NotifyNotificationAdEvent(ad, event_type);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -5,6 +5,8 @@
 
 #include "bat/ads/category_content_info.h"
 
+#include "base/values.h"
+
 namespace ads {
 
 CategoryContentInfo::CategoryContentInfo() = default;

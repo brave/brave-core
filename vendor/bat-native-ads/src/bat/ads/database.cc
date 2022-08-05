@@ -5,6 +5,7 @@
 
 #include "bat/ads/database.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/bind.h"
@@ -27,8 +28,8 @@ Database::Database(const base::FilePath& path) : db_path_(path) {
 
 Database::~Database() = default;
 
-void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
-                              mojom::DBCommandResponseInfo* command_response) {
+void Database::RunTransaction(mojom::DBTransactionPtr transaction,
+                              mojom::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DCHECK(transaction);
@@ -36,51 +37,51 @@ void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
 
   if (!db_.is_open() && !db_.Open(db_path_)) {
     command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+        mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
     return;
   }
 
   sql::Transaction committer(&db_);
   if (!committer.Begin()) {
     command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::TRANSACTION_ERROR;
+        mojom::DBCommandResponse::Status::TRANSACTION_ERROR;
     return;
   }
 
   for (const auto& command : transaction->commands) {
     DCHECK(mojom::IsKnownEnumValue(command->type));
 
-    mojom::DBCommandResponseInfo::StatusType status;
+    mojom::DBCommandResponse::Status status;
 
     switch (command->type) {
-      case mojom::DBCommandInfo::Type::INITIALIZE: {
+      case mojom::DBCommand::Type::INITIALIZE: {
         status = Initialize(transaction->version,
                             transaction->compatible_version, command_response);
         break;
       }
 
-      case mojom::DBCommandInfo::Type::READ: {
+      case mojom::DBCommand::Type::READ: {
         status = Read(command.get(), command_response);
         break;
       }
 
-      case mojom::DBCommandInfo::Type::EXECUTE: {
+      case mojom::DBCommand::Type::EXECUTE: {
         status = Execute(command.get());
         break;
       }
 
-      case mojom::DBCommandInfo::Type::RUN: {
+      case mojom::DBCommand::Type::RUN: {
         status = Run(command.get());
         break;
       }
 
-      case mojom::DBCommandInfo::Type::MIGRATE: {
+      case mojom::DBCommand::Type::MIGRATE: {
         status = Migrate(transaction->version, transaction->compatible_version);
         break;
       }
     }
 
-    if (status != mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    if (status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
       committer.Rollback();
       command_response->status = status;
       return;
@@ -89,14 +90,14 @@ void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
 
   if (!committer.Commit()) {
     command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::TRANSACTION_ERROR;
+        mojom::DBCommandResponse::Status::TRANSACTION_ERROR;
   }
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Initialize(
+mojom::DBCommandResponse::Status Database::Initialize(
     const int32_t version,
     const int32_t compatible_version,
-    mojom::DBCommandResponseInfo* command_response) {
+    mojom::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DCHECK(command_response);
@@ -110,7 +111,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
     }
 
     if (!meta_table_.Init(&db_, version, compatible_version)) {
-      return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+      return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
     }
 
     if (table_exists) {
@@ -128,38 +129,36 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
   command_response->result = mojom::DBCommandResult::NewValue(
       mojom::DBValue::NewIntValue(table_version));
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Execute(
-    mojom::DBCommandInfo* command) {
+mojom::DBCommandResponse::Status Database::Execute(mojom::DBCommand* command) {
   DCHECK(command);
 
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   if (!db_.Execute(command->command.c_str())) {
     VLOG(0) << "Database store error: " << db_.GetErrorMessage();
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+    return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Run(
-    mojom::DBCommandInfo* command) {
+mojom::DBCommandResponse::Status Database::Run(mojom::DBCommand* command) {
   DCHECK(command);
 
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
   if (!statement.is_valid()) {
     VLOG(0) << "Database store error: Invalid statement";
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+    return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
   for (const auto& binding : command->bindings) {
@@ -167,27 +166,27 @@ mojom::DBCommandResponseInfo::StatusType Database::Run(
   }
 
   if (!statement.Run()) {
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+    return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Read(
-    mojom::DBCommandInfo* command,
-    mojom::DBCommandResponseInfo* command_response) {
+mojom::DBCommandResponse::Status Database::Read(
+    mojom::DBCommand* command,
+    mojom::DBCommandResponse* command_response) {
   DCHECK(command);
   DCHECK(command_response);
 
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
   if (!statement.is_valid()) {
     VLOG(0) << "Database store error: Invalid statement";
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+    return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
   for (const auto& binding : command->bindings) {
@@ -195,27 +194,27 @@ mojom::DBCommandResponseInfo::StatusType Database::Read(
   }
 
   command_response->result =
-      mojom::DBCommandResult::NewRecords(std::vector<mojom::DBRecordInfoPtr>());
+      mojom::DBCommandResult::NewRecords(std::vector<mojom::DBRecordPtr>());
 
   while (statement.Step()) {
     command_response->result->get_records().push_back(
         database::CreateRecord(&statement, command->record_bindings));
   }
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Migrate(
+mojom::DBCommandResponse::Status Database::Migrate(
     const int32_t version,
     const int32_t compatible_version) {
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   meta_table_.SetVersionNumber(version);
   meta_table_.SetCompatibleVersionNumber(compatible_version);
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
 void Database::OnErrorCallback(const int error, sql::Statement* statement) {

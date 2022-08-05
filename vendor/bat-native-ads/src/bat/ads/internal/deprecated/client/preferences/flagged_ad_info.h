@@ -20,7 +20,7 @@ struct FlaggedAdInfo final {
   ~FlaggedAdInfo();
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  bool FromValue(const base::Value::Dict& value);
 
   std::string creative_set_id;
 };
