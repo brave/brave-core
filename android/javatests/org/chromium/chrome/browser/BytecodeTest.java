@@ -611,7 +611,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
-                MVCListAdapter.ModelList.class, Context.class));
+                ModelList.class, Context.class));
     }
 
     @Test
