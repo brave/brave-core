@@ -5,10 +5,10 @@
 
 window.braveBlockRequests = (args) => {
   'use strict'
-
+  const messageHandler = webkit.messageHandlers[args.handlerName]
   const securityToken = args.securityToken
   const sendMessage = (resourceURL) => {
-    return webkit.messageHandlers[args.handlerName].postMessage({
+    return messageHandler.postMessage({
       securityToken: securityToken,
       data: {
         resourceURL: resourceURL.href,
