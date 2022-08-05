@@ -291,7 +291,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
         onChange={onPhraseInputChanged}
         onPaste={clearClipboard}
         onKeyDown={handleKeyDown}
-        autoComplete='off'
       >
         {phraseInput}
       </RecoveryTextArea>
@@ -301,7 +300,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
         onChange={onPhraseInputChanged}
         onPaste={clearClipboard}
         onKeyDown={handleKeyDown}
-        autoComplete='off'
       />
   }, [isPhraseShown, phraseInput, onPhraseInputChanged, handleKeyDown])
 
