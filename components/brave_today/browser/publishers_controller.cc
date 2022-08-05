@@ -37,8 +37,8 @@ PublishersController::PublishersController(
 
 PublishersController::~PublishersController() = default;
 
-mojom::Publisher* PublishersController::GetPublisherForSite(
-    const GURL& site_url) {
+const mojom::Publisher* PublishersController::GetPublisherForSite(
+    const GURL& site_url) const {
   if (publishers_.empty())
     return nullptr;
 
@@ -53,8 +53,8 @@ mojom::Publisher* PublishersController::GetPublisherForSite(
   return nullptr;
 }
 
-mojom::Publisher* PublishersController::GetPublisherForFeed(
-    const GURL& feed_url) {
+const mojom::Publisher* PublishersController::GetPublisherForFeed(
+    const GURL& feed_url) const {
   if (publishers_.empty())
     return nullptr;
 

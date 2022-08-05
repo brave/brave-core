@@ -41,8 +41,8 @@ class PublishersController {
   // not safe to hold onto, as the object it points to will be destroyed when
   // the publishers are updated (which happens regularly). If you need it to
   // live longer, take a clone.
-  mojom::Publisher* GetPublisherForSite(const GURL& site_url);
-  mojom::Publisher* GetPublisherForFeed(const GURL& feed_url);
+  const mojom::Publisher* GetPublisherForSite(const GURL& site_url) const;
+  const mojom::Publisher* GetPublisherForFeed(const GURL& feed_url) const;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
