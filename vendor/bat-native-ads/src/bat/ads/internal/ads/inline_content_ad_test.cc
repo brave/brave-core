@@ -18,7 +18,6 @@
 #include "bat/ads/internal/history/history_unittest_util.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -59,12 +58,12 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, Serve) {
 
   // Act
   GetAds()->MaybeServeInlineContentAd(
-      kDimensions, [](const std::string& dimensions,
-                      const absl::optional<InlineContentAdInfo>& ad) {
+      kDimensions, [](const bool success, const std::string& dimensions,
+                      const InlineContentAdInfo& ad) {
         // Assert
+        EXPECT_TRUE(success);
         EXPECT_EQ(kDimensions, dimensions);
-        EXPECT_TRUE(ad);
-        EXPECT_TRUE(ad->IsValid());
+        EXPECT_TRUE(ad.IsValid());
         EXPECT_EQ(1, GetAdEventCount(AdType::kInlineContentAd,
                                      ConfirmationType::kServed));
       });

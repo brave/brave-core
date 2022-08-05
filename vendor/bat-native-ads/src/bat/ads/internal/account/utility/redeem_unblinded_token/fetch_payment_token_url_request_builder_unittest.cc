@@ -37,13 +37,13 @@ TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url = GURL(
       R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)");
-  expected_url_request->method = mojom::UrlRequestMethodType::kGet;
+  expected_url_request->method = mojom::UrlRequestMethod::kGet;
 
   EXPECT_EQ(expected_url_request, url_request);
 }

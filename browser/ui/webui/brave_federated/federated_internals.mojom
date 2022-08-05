@@ -9,7 +9,7 @@ import "brave/components/brave_federated/public/interfaces/brave_federated.mojom
 
 struct TrainingInstance {
   int32 id;
-  array<brave_federated.mojom.CovariateInfo> covariates;
+  array<brave_federated.mojom.Covariate> covariates;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

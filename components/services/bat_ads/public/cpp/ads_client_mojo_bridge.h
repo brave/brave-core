@@ -7,9 +7,11 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_PUBLIC_CPP_ADS_CLIENT_MOJO_BRIDGE_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -22,7 +24,9 @@ class Time;
 
 namespace bat_ads {
 
-class AdsClientMojoBridge : public mojom::BatAdsClient {
+class AdsClientMojoBridge
+    : public mojom::BatAdsClient,
+      public base::SupportsWeakPtr<AdsClientMojoBridge> {
  public:
   explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
   AdsClientMojoBridge(const AdsClientMojoBridge&) = delete;
@@ -30,8 +34,42 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
   ~AdsClientMojoBridge() override;
 
  private:
-  static void OnURLRequest(UrlRequestCallback callback,
-                           const ads::mojom::UrlResponseInfo& url_response);
+  // TODO(https://github.com/brave/brave-browser/issues/20940) Workaround to
+  // pass |base::OnceCallback| into |std::bind| until we refactor Brave Ads
+  // |std::function| to |base::OnceCallback|.
+  template <typename T>
+  class CallbackHolder {
+   public:
+    CallbackHolder(base::WeakPtr<AdsClientMojoBridge> client, T callback)
+        : client_(client), callback_(std::move(callback)) {}
+
+    ~CallbackHolder() = default;
+
+    bool is_valid() { return !!client_.get(); }
+
+    T& get() { return callback_; }
+
+   private:
+    base::WeakPtr<AdsClientMojoBridge> client_;
+    T callback_;
+  };
+
+  static void OnGetBrowsingHistory(
+      CallbackHolder<GetBrowsingHistoryCallback>* callback_holder,
+      const std::vector<GURL>& history);
+
+  static void OnURLRequest(CallbackHolder<UrlRequestCallback>* callback_holder,
+                           const ads::mojom::UrlResponse& url_response);
+
+  static void OnSave(CallbackHolder<SaveCallback>* callback_holder,
+                     const bool success);
+  static void OnLoad(CallbackHolder<LoadCallback>* callback_holder,
+                     const bool success,
+                     const std::string& value);
+
+  static void OnRunDBTransaction(
+      CallbackHolder<RunDBTransactionCallback>* callback_holder,
+      ads::mojom::DBCommandResponsePtr response);
 
   // BatAdsClient:
   bool IsNetworkConnectionAvailable(bool* out_value) override;
@@ -51,7 +89,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
   void CanShowNotificationAdsWhileBrowserIsBackgrounded(
       CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback)
       override;
-  void ShowNotificationAd(base::Value::Dict dict) override;
+  void ShowNotificationAd(const std::string& json) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void UpdateAdRewards() override;
@@ -72,7 +110,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
                           const int days_ago,
                           GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -93,13 +131,13 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
                       const std::string& out_value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
                                training_instance) override;
 
   void GetBooleanPref(

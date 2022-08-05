@@ -17,7 +17,6 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -38,7 +37,7 @@ mojom::SysInfo& SysInfo();
 
 // Returns the build channel. |name| containg the build channel name.
 // |is_release| containing |true| if release build otherwise |false|.
-mojom::BuildChannelInfo& BuildChannel();
+mojom::BuildChannel& BuildChannel();
 
 // Data resources
 extern const char g_catalog_json_schema_data_resource_name[];
@@ -63,8 +62,9 @@ class ADS_EXPORT Ads {
   // |true| if successful otherwise |false|.
   virtual void Shutdown(ShutdownCallback callback) = 0;
 
-  // Called to get diagnostics to help identify issues. The callback takes one
-  // argument - |base::Value::List| containing info of the obtained diagnostics.
+  // Called to get diagnostics to help identify issues. The callback takes two
+  // arguments - |bool| is set to |true| if successful otherwise |false|.
+  // |std::string| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   // Called when the user changes the locale of their operating system. This
@@ -78,6 +78,20 @@ class ADS_EXPORT Ads {
 
   // Called when a resource component has been updated.
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
+
+  // Called when the page for |tad_id| has loaded and the content is available
+  // for analysis. |redirect_chain| containing a chain of redirect URLs that
+  // occurred for this navigation. |html| containing the page content as HTML.
+  virtual void OnHtmlLoaded(const int32_t tab_id,
+                            const std::vector<GURL>& redirect_chain,
+                            const std::string& html) = 0;
+
+  // Called when the page for |tab_id| has loaded and the content is available
+  // for analysis. |redirect_chain| containing a chain of redirect URLs that
+  // occurred for this navigation. |text| containing the page content as text.
+  virtual void OnTextLoaded(const int32_t tab_id,
+                            const std::vector<GURL>& redirect_chain,
+                            const std::string& text) = 0;
 
   // Called when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
@@ -101,20 +115,6 @@ class ADS_EXPORT Ads {
 
   // Called when the browser did enter the background.
   virtual void OnBrowserDidEnterBackground() = 0;
-
-  // Called when the page for |tad_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a chain of redirect URLs that
-  // occurred for this navigation. |html| containing the page content as HTML.
-  virtual void OnHtmlLoaded(const int32_t tab_id,
-                            const std::vector<GURL>& redirect_chain,
-                            const std::string& html) = 0;
-
-  // Called when the page for |tab_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a chain of redirect URLs that
-  // occurred for this navigation. |text| containing the page content as text.
-  virtual void OnTextLoaded(const int32_t tab_id,
-                            const std::vector<GURL>& redirect_chain,
-                            const std::string& text) = 0;
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.
@@ -142,15 +142,16 @@ class ADS_EXPORT Ads {
   virtual void OnWalletUpdated(const std::string& payment_id,
                                const std::string& seed) = 0;
 
-  // Called to get the statement of accounts. The callback takes one argument -
-  // |mojom::StatementInfo| containing info of the obtained statement of
-  // accounts.
+  // Called to get the statement of accounts. The callback takes two arguments -
+  // |bool| is set to |true| if successful otherwise |false|. |StatementInfo|
+  // containing info of the obtained statement of accounts.
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
   // Should be called to serve an inline content ad for the specified
-  // |dimensions|. The callback takes two arguments - |std::string| containing
-  // the dimensions and |InlineContentAdInfo| containing the info for the ad.
+  // |dimensions|. The callback takes three arguments - |bool| is set to |true|
+  // if successful otherwise |false|, |std::string| containing the dimensions
+  // and |InlineContentAdInfo| containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback) = 0;
@@ -166,8 +167,9 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) = 0;
 
-  // Should be called to serve a new tab page ad. The callback takes one
-  // argument - |NewTabPageAdInfo| containing the info for the ad.
+  // Should be called to serve a new tab page ad. The callback takes two
+  // arguments - |bool| is set to |true| if successful otherwise |false| and
+  // |NewTabPageAdInfo| containing the info for the ad.
   virtual void MaybeServeNewTabPageAd(
       MaybeServeNewTabPageAdCallback callback) = 0;
 
@@ -183,9 +185,10 @@ class ADS_EXPORT Ads {
       const mojom::NewTabPageAdEventType event_type) = 0;
 
   // Called to get the notification ad specified by |placement_id|. Returns
-  // |NotificationAdInfo| containing the info of the ad.
-  virtual absl::optional<NotificationAdInfo> GetNotificationAd(
-      const std::string& placement_id) = 0;
+  // |true| if the notification ad was found otherwise |false|.
+  // |notification_ad| containing the info of the ad.
+  virtual bool GetNotificationAd(const std::string& placement_id,
+                                 NotificationAdInfo* notification_ad) = 0;
 
   // Called when a user views or interacts with a notification ad or the ad
   // notification times out to trigger an |event_type| event for the specified
@@ -216,7 +219,7 @@ class ADS_EXPORT Ads {
   // wait for the callback before calling another |kViewed| event to handle
   // frequency capping.
   virtual void TriggerSearchResultAdEvent(
-      mojom::SearchResultAdInfoPtr ad_mojom,
+      mojom::SearchResultAdPtr ad_mojom,
       const mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 

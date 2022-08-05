@@ -7,8 +7,10 @@
 
 #include "base/check.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "url/gurl.h"
@@ -95,10 +97,10 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
                                                            blinded_tokens);
 
   // Act
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url = GURL(
       R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
   expected_url_request->headers = {
@@ -110,7 +112,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   expected_url_request->content =
       R"({"blindedTokens":["iEK4BXJINfAa0kzgpnnukGUAHvH5303+Y/msR5+u/nY=","eAAv7FNH2twpELsYf3glHLlOhnnlIMovIeEgEmcjgyo=","1G0+8546Y6jCIUXG0cKJq0qpkd6NsnG+4w9oSVW3gH8="]})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }
@@ -135,10 +137,10 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
                                                            blinded_tokens);
 
   // Act
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url = GURL(
       R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
   expected_url_request->headers = {
@@ -150,7 +152,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   expected_url_request->content =
       R"({"blindedTokens":["iEK4BXJINfAa0kzgpnnukGUAHvH5303+Y/msR5+u/nY=","eAAv7FNH2twpELsYf3glHLlOhnnlIMovIeEgEmcjgyo=","1G0+8546Y6jCIUXG0cKJq0qpkd6NsnG+4w9oSVW3gH8="]})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_EQ(url_request, expected_url_request);
 }

@@ -13,7 +13,6 @@
 #include "bat/ads/internal/flags/environment/environment_command_line_switch_parser_util.h"
 #include "bat/ads/internal/flags/flag_manager_constants.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

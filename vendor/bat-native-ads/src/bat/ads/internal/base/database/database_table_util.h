@@ -14,17 +14,17 @@
 namespace ads {
 namespace database {
 
-void CreateTableIndex(mojom::DBTransactionInfo* transaction,
+void CreateTableIndex(mojom::DBTransaction* transaction,
                       const std::string& table_name,
                       const std::string& key);
 
-void DropTable(mojom::DBTransactionInfo* transaction,
+void DropTable(mojom::DBTransaction* transaction,
                const std::string& table_name);
 
-void DeleteTable(mojom::DBTransactionInfo* transaction,
+void DeleteTable(mojom::DBTransaction* transaction,
                  const std::string& table_name);
 
-void CopyTableColumns(mojom::DBTransactionInfo* transaction,
+void CopyTableColumns(mojom::DBTransaction* transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
@@ -32,14 +32,14 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const bool should_drop,
                       const std::string& group_by = "");
 
-void CopyTableColumns(mojom::DBTransactionInfo* transaction,
+void CopyTableColumns(mojom::DBTransaction* transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
                       const bool should_drop,
                       const std::string& group_by = "");
 
-void RenameTable(mojom::DBTransactionInfo* transaction,
+void RenameTable(mojom::DBTransaction* transaction,
                  const std::string& from,
                  const std::string& to);
 

@@ -6,10 +6,10 @@
 #include "bat/ads/internal/conversions/conversions.h"
 
 #include <algorithm>
+#include <iterator>
 #include <set>
 
 #include "base/check.h"
-#include "base/notreached.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"

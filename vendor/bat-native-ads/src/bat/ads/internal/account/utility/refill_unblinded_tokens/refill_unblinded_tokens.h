@@ -44,10 +44,10 @@ class RefillUnblindedTokens final {
   void Refill();
 
   void RequestSignedTokens();
-  void OnRequestSignedTokens(const mojom::UrlResponseInfo& url_response);
+  void OnRequestSignedTokens(const mojom::UrlResponse& url_response);
 
   void GetSignedTokens();
-  void OnGetSignedTokens(const mojom::UrlResponseInfo& url_response);
+  void OnGetSignedTokens(const mojom::UrlResponse& url_response);
 
   void OnDidRefillUnblindedTokens();
 

@@ -9,7 +9,7 @@
 #include <functional>
 #include <string>
 
-#include "bat/ads/internal/account/transactions/transaction_info.h"
+#include "bat/ads/transaction_info.h"
 
 namespace base {
 class Time;

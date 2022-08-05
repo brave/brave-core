@@ -52,7 +52,7 @@ std::string HeadersToString(const std::vector<std::string>& headers,
 
 }  // namespace
 
-std::string UrlRequestToString(const mojom::UrlRequestInfoPtr& url_request) {
+std::string UrlRequestToString(const mojom::UrlRequestPtr& url_request) {
   std::string log = "URL Request:\n";
 
   log += base::StringPrintf("  URL: %s\n", url_request->url.spec().c_str());
@@ -74,8 +74,7 @@ std::string UrlRequestToString(const mojom::UrlRequestInfoPtr& url_request) {
   return log;
 }
 
-std::string UrlRequestHeadersToString(
-    const mojom::UrlRequestInfoPtr& url_request) {
+std::string UrlRequestHeadersToString(const mojom::UrlRequestPtr& url_request) {
   std::string log = "  Headers:\n";
 
   if (!url_request->headers.empty()) {

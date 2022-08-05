@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/totals_user_data.h"
 
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

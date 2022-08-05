@@ -12,12 +12,12 @@
 namespace ads {
 namespace database {
 
-mojom::DBRecordInfoPtr CreateRecord(
+mojom::DBRecordPtr CreateRecord(
     sql::Statement* statement,
-    const std::vector<mojom::DBCommandInfo::RecordBindingType>& bindings) {
+    const std::vector<mojom::DBCommand::RecordBindingType>& bindings) {
   DCHECK(statement);
 
-  mojom::DBRecordInfoPtr record = mojom::DBRecordInfo::New();
+  mojom::DBRecordPtr record = mojom::DBRecord::New();
 
   int column = 0;
 
@@ -26,27 +26,27 @@ mojom::DBRecordInfoPtr CreateRecord(
 
     mojom::DBValuePtr value;
     switch (binding) {
-      case mojom::DBCommandInfo::RecordBindingType::STRING_TYPE: {
+      case mojom::DBCommand::RecordBindingType::STRING_TYPE: {
         value = mojom::DBValue::NewStringValue(statement->ColumnString(column));
         break;
       }
 
-      case mojom::DBCommandInfo::RecordBindingType::INT_TYPE: {
+      case mojom::DBCommand::RecordBindingType::INT_TYPE: {
         value = mojom::DBValue::NewIntValue(statement->ColumnInt(column));
         break;
       }
 
-      case mojom::DBCommandInfo::RecordBindingType::INT64_TYPE: {
+      case mojom::DBCommand::RecordBindingType::INT64_TYPE: {
         value = mojom::DBValue::NewInt64Value(statement->ColumnInt64(column));
         break;
       }
 
-      case mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE: {
+      case mojom::DBCommand::RecordBindingType::DOUBLE_TYPE: {
         value = mojom::DBValue::NewDoubleValue(statement->ColumnDouble(column));
         break;
       }
 
-      case mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE: {
+      case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
         value = mojom::DBValue::NewBoolValue(statement->ColumnBool(column));
         break;
       }

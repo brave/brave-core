@@ -25,7 +25,7 @@ class AdsClientIOS : public ads::AdsClient {
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
-  void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
+  void ShowNotificationAd(const ads::NotificationAdInfo& info) override;
   bool CanShowNotificationAds() override;
   void CloseNotificationAd(const std::string& placement_id) override;
   void RecordAdEventForId(const std::string& id,
@@ -36,11 +36,11 @@ class AdsClientIOS : public ads::AdsClient {
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
   void ResetAdEventHistoryForId(const std::string& id) const override;
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,
             const std::string& value,
-            ads::SaveCallback callback) override;
+            ads::ResultCallback callback) override;
   void Load(const std::string& name, ads::LoadCallback callback) override;
   void LoadFileResource(const std::string& id,
                         const int version,
@@ -58,7 +58,7 @@ class AdsClientIOS : public ads::AdsClient {
            const int line,
            const int verbose_level,
            const std::string& message) override;
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
   void UpdateAdRewards() override;
   void SetBooleanPref(const std::string& path, const bool value) override;
@@ -87,8 +87,8 @@ class AdsClientIOS : public ads::AdsClient {
   void RecordP2AEvent(const std::string& name,
                       const std::string& value) override;
   void LogTrainingInstance(
-      const std::vector<brave_federated::mojom::CovariateInfoPtr>
-          training_instance) override;
+      const std::vector<brave_federated::mojom::CovariatePtr> training_instance)
+      override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

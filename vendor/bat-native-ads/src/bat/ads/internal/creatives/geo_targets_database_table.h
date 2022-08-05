@@ -24,21 +24,21 @@ class GeoTargets final : public TableInterface {
   GeoTargets(const GeoTargets&) = delete;
   GeoTargets& operator=(const GeoTargets&) = delete;
 
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const CreativeAdList& creative_ads);
 
   void Delete(ResultCallback callback);
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransactionInfo* transaction,
+  void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void MigrateToV24(mojom::DBTransactionInfo* transaction);
+  void MigrateToV24(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

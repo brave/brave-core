@@ -34,7 +34,7 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
   void SetSysInfo(ads::mojom::SysInfoPtr sys_info,
                   SetSysInfoCallback callback) override;
 
-  void SetBuildChannel(ads::mojom::BuildChannelInfoPtr build_channel,
+  void SetBuildChannel(ads::mojom::BuildChannelPtr build_channel,
                        SetBuildChannelCallback callback) override;
 
  private:

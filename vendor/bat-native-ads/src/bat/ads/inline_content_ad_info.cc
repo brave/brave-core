@@ -5,6 +5,11 @@
 
 #include "bat/ads/inline_content_ad_info.h"
 
+#include "base/check.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "bat/ads/confirmation_type.h"
+
 namespace ads {
 
 InlineContentAdInfo::InlineContentAdInfo() = default;
@@ -60,7 +65,7 @@ base::Value::Dict InlineContentAdInfo::ToValue() const {
   return dict;
 }
 
-void InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
+bool InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("type")) {
     type = AdType(*value);
   }
@@ -112,6 +117,26 @@ void InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("targetUrl")) {
     target_url = GURL(*value);
   }
+
+  return true;
+}
+
+std::string InlineContentAdInfo::ToJson() const {
+  std::string json;
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
+  return json;
+}
+
+bool InlineContentAdInfo::FromJson(const std::string& json) {
+  absl::optional<base::Value> document =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!document.has_value() || !document->is_dict()) {
+    return false;
+  }
+
+  return FromValue(document->GetDict());
 }
 
 }  // namespace ads

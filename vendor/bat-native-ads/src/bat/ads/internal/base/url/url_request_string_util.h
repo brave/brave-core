@@ -12,9 +12,8 @@
 
 namespace ads {
 
-std::string UrlRequestToString(const mojom::UrlRequestInfoPtr& url_request);
-std::string UrlRequestHeadersToString(
-    const mojom::UrlRequestInfoPtr& url_request);
+std::string UrlRequestToString(const mojom::UrlRequestPtr& url_request);
+std::string UrlRequestHeadersToString(const mojom::UrlRequestPtr& url_request);
 
 }  // namespace ads
 

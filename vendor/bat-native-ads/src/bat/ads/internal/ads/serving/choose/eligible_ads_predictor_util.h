@@ -15,7 +15,6 @@
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/segments/segment_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

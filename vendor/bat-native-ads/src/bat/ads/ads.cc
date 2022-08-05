@@ -20,8 +20,8 @@ mojom::SysInfo& SysInfo() {
   return *sys_info;
 }
 
-mojom::BuildChannelInfo& BuildChannel() {
-  static base::NoDestructor<mojom::BuildChannelInfo> build_channel;
+mojom::BuildChannel& BuildChannel() {
+  static base::NoDestructor<mojom::BuildChannel> build_channel;
   return *build_channel;
 }
 

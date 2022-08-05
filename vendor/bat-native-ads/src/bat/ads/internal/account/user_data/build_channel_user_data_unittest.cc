@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
 
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

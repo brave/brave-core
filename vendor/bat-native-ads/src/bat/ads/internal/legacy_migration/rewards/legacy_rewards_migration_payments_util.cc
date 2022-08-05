@@ -6,6 +6,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 
 #include <algorithm>
+#include <iterator>
 #include <string>
 
 #include "base/check.h"

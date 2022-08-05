@@ -43,7 +43,7 @@ void BatAdsServiceImpl::SetSysInfo(ads::mojom::SysInfoPtr sys_info,
 }
 
 void BatAdsServiceImpl::SetBuildChannel(
-    ads::mojom::BuildChannelInfoPtr build_channel,
+    ads::mojom::BuildChannelPtr build_channel,
     SetBuildChannelCallback callback) {
   DCHECK(!is_initialized_);
 

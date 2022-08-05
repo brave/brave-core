@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 
 #include "base/check_op.h"
+#include "base/values.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data_builder.h"
 

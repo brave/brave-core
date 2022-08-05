@@ -18,7 +18,6 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/new_tab_page_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -78,9 +77,9 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   features::ForceServingVersion(0);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
+  serving_->MaybeServeAd([=](const bool success, const NewTabPageAdInfo& ad) {
     // Assert
-    EXPECT_FALSE(ad);
+    EXPECT_FALSE(success);
     EXPECT_FALSE(had_opportunuity_);
     EXPECT_FALSE(did_serve_ad_);
     EXPECT_TRUE(failed_to_serve_ad_);
@@ -97,9 +96,9 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
+  serving_->MaybeServeAd([=](const bool success, const NewTabPageAdInfo& ad) {
     // Assert
-    EXPECT_TRUE(ad);
+    EXPECT_TRUE(success);
     EXPECT_TRUE(had_opportunuity_);
     EXPECT_TRUE(did_serve_ad_);
     EXPECT_FALSE(failed_to_serve_ad_);
@@ -118,9 +117,9 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
+  serving_->MaybeServeAd([=](const bool success, const NewTabPageAdInfo& ad) {
     // Assert
-    EXPECT_FALSE(ad);
+    EXPECT_FALSE(success);
     EXPECT_FALSE(had_opportunuity_);
     EXPECT_FALSE(did_serve_ad_);
     EXPECT_TRUE(failed_to_serve_ad_);
@@ -132,9 +131,9 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   ForcePermissionRules();
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
+  serving_->MaybeServeAd([=](const bool success, const NewTabPageAdInfo& ad) {
     // Assert
-    EXPECT_FALSE(ad);
+    EXPECT_FALSE(success);
     EXPECT_FALSE(had_opportunuity_);
     EXPECT_FALSE(did_serve_ad_);
     EXPECT_TRUE(failed_to_serve_ad_);
@@ -150,9 +149,9 @@ TEST_F(BatAdsNewTabPageAdServingTest,
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
+  serving_->MaybeServeAd([=](const bool success, const NewTabPageAdInfo& ad) {
     // Assert
-    EXPECT_FALSE(ad);
+    EXPECT_FALSE(success);
     EXPECT_FALSE(had_opportunuity_);
     EXPECT_FALSE(did_serve_ad_);
     EXPECT_TRUE(failed_to_serve_ad_);

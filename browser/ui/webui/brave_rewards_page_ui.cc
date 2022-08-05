@@ -121,8 +121,13 @@ class RewardsDOMHandler
   void GetPendingContributionsTotal(const base::Value::List& args);
   void OnGetPendingContributionsTotal(double amount);
   void GetStatement(const base::Value::List& args);
-  void OnGetStatement(ads::mojom::StatementInfoPtr statement);
   void GetExcludedSites(const base::Value::List& args);
+
+  void OnGetStatement(const bool success,
+                      const double next_payment_date,
+                      const int ads_received_this_month,
+                      const double earnings_this_month,
+                      const double earnings_last_month);
 
   void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
@@ -1541,8 +1546,12 @@ void RewardsDOMHandler::GetStatement(const base::Value::List& args) {
       &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetStatement(ads::mojom::StatementInfoPtr statement) {
-  if (!statement) {
+void RewardsDOMHandler::OnGetStatement(const bool success,
+                                       const double next_payment_date,
+                                       const int ads_received_this_month,
+                                       const double earnings_this_month,
+                                       const double earnings_last_month) {
+  if (!success) {
     return;
   }
 
@@ -1550,15 +1559,15 @@ void RewardsDOMHandler::OnGetStatement(ads::mojom::StatementInfoPtr statement) {
     return;
   }
 
-  base::Value::Dict dict;
-  dict.Set("adsNextPaymentDate",
-           statement->next_payment_date.ToDoubleT() * 1000);
-  dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
-  dict.Set("adsEarningsThisMonth", statement->earnings_this_month);
-  dict.Set("adsEarningsLastMonth", statement->earnings_last_month);
+  base::Value::Dict statement;
+
+  statement.Set("adsNextPaymentDate", next_payment_date * 1000);
+  statement.Set("adsReceivedThisMonth", ads_received_this_month);
+  statement.Set("adsEarningsThisMonth", earnings_this_month);
+  statement.Set("adsEarningsLastMonth", earnings_last_month);
 
   CallJavascriptFunction("brave_rewards.statement",
-                         base::Value(std::move(dict)));
+                         base::Value(std::move(statement)));
 }
 
 void RewardsDOMHandler::OnStatementChanged(

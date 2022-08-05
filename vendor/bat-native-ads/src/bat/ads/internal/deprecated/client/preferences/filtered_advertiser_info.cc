@@ -23,10 +23,11 @@ base::Value::Dict FilteredAdvertiserInfo::ToValue() const {
   return dict;
 }
 
-void FilteredAdvertiserInfo::FromValue(const base::Value::Dict& root) {
+bool FilteredAdvertiserInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("id")) {
     id = *value;
   }
+  return true;
 }
 
 }  // namespace ads

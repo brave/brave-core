@@ -18,7 +18,6 @@
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/transfer/transfer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -47,9 +46,9 @@ InlineContentAd::~InlineContentAd() {
 void InlineContentAd::MaybeServe(const std::string& dimensions,
                                  MaybeServeInlineContentAdCallback callback) {
   serving_->MaybeServeAd(dimensions,
-                         [=](const std::string& dimensions,
-                             const absl::optional<InlineContentAdInfo>& ad) {
-                           callback(dimensions, ad);
+                         [=](const bool success, const std::string& dimensions,
+                             const InlineContentAdInfo& ad) {
+                           callback(success, dimensions, ad);
                          });
 }
 

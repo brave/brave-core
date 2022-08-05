@@ -29,7 +29,7 @@ class AsyncDataStore {
   void InitializeDatabase(base::OnceCallback<void(bool)> callback);
 
   void AddTrainingInstance(
-      std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance,
+      std::vector<brave_federated::mojom::CovariatePtr> training_instance,
       base::OnceCallback<void(bool)> callback);
   void LoadTrainingData(base::OnceCallback<void(TrainingData)> callback);
   void PurgeTrainingDataAfterExpirationDate();

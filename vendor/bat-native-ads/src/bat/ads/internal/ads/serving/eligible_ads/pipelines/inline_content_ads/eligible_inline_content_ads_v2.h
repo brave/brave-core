@@ -44,18 +44,12 @@ class EligibleAdsV2 final : public EligibleAdsBase {
       GetEligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
-  void GetBrowsingHistory(
-      const targeting::UserModelInfo& user_model,
-      const AdEventList& ad_events,
-      const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
-
   void GetEligibleAds(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
       const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
-      const BrowsingHistoryList& browsing_history);
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
 
   CreativeInlineContentAdList FilterCreativeAds(
       const CreativeInlineContentAdList& creative_ads,

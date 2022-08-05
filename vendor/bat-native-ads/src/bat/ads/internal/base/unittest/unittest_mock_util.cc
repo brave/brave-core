@@ -264,35 +264,32 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
           history.push_back(GURL(spec));
         }
 
-        std::move(callback).Run(history);
+        callback(history);
       }));
 }
 
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
                     const URLEndpointMap& endpoints) {
   ON_CALL(*mock, UrlRequest(_, _))
-      .WillByDefault(
-          Invoke([endpoints](const mojom::UrlRequestInfoPtr& url_request,
-                             UrlRequestCallback callback) {
-            mojom::UrlResponseInfo url_response;
+      .WillByDefault(Invoke([endpoints](const mojom::UrlRequestPtr& url_request,
+                                        UrlRequestCallback callback) {
+        mojom::UrlResponse url_response;
 
-            const absl::optional<mojom::UrlResponseInfo> url_response_optional =
-                GetNextUrlResponse(url_request, endpoints);
-            if (url_response_optional) {
-              url_response = url_response_optional.value();
-            }
+        const absl::optional<mojom::UrlResponse> url_response_optional =
+            GetNextUrlResponse(url_request, endpoints);
+        if (url_response_optional) {
+          url_response = url_response_optional.value();
+        }
 
-            std::move(callback).Run(url_response);
-          }));
+        callback(url_response);
+      }));
 }
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, Save(_, _, _))
-      .WillByDefault(
-          Invoke([](const std::string& name, const std::string& value,
-                    SaveCallback callback) {
-            std::move(callback).Run(/* success */ true);
-          }));
+      .WillByDefault(Invoke(
+          [](const std::string& name, const std::string& value,
+             ResultCallback callback) { callback(/* success */ true); }));
 }
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
@@ -308,11 +305,11 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              std::move(callback).Run(/* success */ false, value);
+              callback(/* success */ false, value);
               return;
             }
 
-            std::move(callback).Run(/* success */ true, value);
+            callback(/* success */ true, value);
           }));
 }
 
@@ -344,21 +341,19 @@ void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock) {
 void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
                           const std::unique_ptr<Database>& database) {
   ON_CALL(*mock, RunDBTransaction(_, _))
-      .WillByDefault(Invoke([&database](mojom::DBTransactionInfoPtr transaction,
+      .WillByDefault(Invoke([&database](mojom::DBTransactionPtr transaction,
                                         RunDBTransactionCallback callback) {
         CHECK(transaction);
 
-        mojom::DBCommandResponseInfoPtr response =
-            mojom::DBCommandResponseInfo::New();
+        mojom::DBCommandResponsePtr response = mojom::DBCommandResponse::New();
 
         if (!database) {
-          response->status =
-              mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
+          response->status = mojom::DBCommandResponse::Status::RESPONSE_ERROR;
         } else {
           database->RunTransaction(std::move(transaction), response.get());
         }
 
-        std::move(callback).Run(std::move(response));
+        callback(std::move(response));
       }));
 }
 

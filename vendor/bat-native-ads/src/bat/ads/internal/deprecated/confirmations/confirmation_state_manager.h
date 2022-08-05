@@ -62,8 +62,6 @@ class ConfirmationStateManager final {
   bool is_mutated() const { return is_mutated_; }
 
  private:
-  void OnLoaded(const bool success, const std::string& json);
-
   bool ParseIssuersFromDictionary(const base::Value::Dict& dict);
 
   base::Value::Dict GetFailedConfirmationsAsDictionary(

@@ -20,7 +20,6 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace inline_content_ads {
@@ -48,31 +47,25 @@ void EligibleAdsV2::GetForUserModel(
           return;
         }
 
-        GetBrowsingHistory(user_model, ad_events, dimensions, callback);
+        const int max_count = features::GetBrowsingHistoryMaxCount();
+        const int days_ago = features::GetBrowsingHistoryDaysAgo();
+        AdsClientHelper::GetInstance()->GetBrowsingHistory(
+            max_count, days_ago,
+            [=](const BrowsingHistoryList& browsing_history) {
+              GetEligibleAds(user_model, ad_events, browsing_history,
+                             dimensions, callback);
+            });
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleAdsV2::GetBrowsingHistory(
-    const targeting::UserModelInfo& user_model,
-    const AdEventList& ad_events,
-    const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
-  const int max_count = features::GetBrowsingHistoryMaxCount();
-  const int days_ago = features::GetBrowsingHistoryDaysAgo();
-  AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      max_count, days_ago,
-      base::BindOnce(&EligibleAdsV2::GetEligibleAds, base::Unretained(this),
-                     user_model, ad_events, dimensions, callback));
-}
-
 void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
+    const BrowsingHistoryList& browsing_history,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
-    const BrowsingHistoryList& browsing_history) {
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForDimensions(
       dimensions,

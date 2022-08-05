@@ -33,8 +33,8 @@ bool AdsClientIOS::CanShowNotificationAdsWhileBrowserIsBackgrounded() const {
   return [bridge_ canShowNotificationAdsWhileBrowserIsBackgrounded];
 }
 
-void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
-  [bridge_ showNotificationAd:ad];
+void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& info) {
+  [bridge_ showNotificationAd:info];
 }
 
 bool AdsClientIOS::CanShowNotificationAds() {
@@ -65,15 +65,15 @@ void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
   [bridge_ resetAdEventHistoryForId:id];
 }
 
-void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestPtr url_request,
                               ads::UrlRequestCallback callback) {
-  [bridge_ UrlRequest:std::move(url_request) callback:std::move(callback)];
+  [bridge_ UrlRequest:std::move(url_request) callback:callback];
 }
 
 void AdsClientIOS::Save(const std::string& name,
                         const std::string& value,
-                        ads::SaveCallback callback) {
-  [bridge_ save:name value:value callback:std::move(callback)];
+                        ads::ResultCallback callback) {
+  [bridge_ save:name value:value callback:callback];
 }
 
 void AdsClientIOS::LoadFileResource(const std::string& id,
@@ -86,13 +86,11 @@ void AdsClientIOS::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
-  [bridge_ getBrowsingHistory:max_count
-                      forDays:days_ago
-                     callback:std::move(callback)];
+  [bridge_ getBrowsingHistory:max_count forDays:days_ago callback:callback];
 }
 
 void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {
-  [bridge_ load:name callback:std::move(callback)];
+  [bridge_ load:name callback:callback];
 }
 
 std::string AdsClientIOS::LoadDataResource(const std::string& name) {
@@ -122,11 +120,9 @@ void AdsClientIOS::Log(const char* file,
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 
-void AdsClientIOS::RunDBTransaction(
-    ads::mojom::DBTransactionInfoPtr transaction,
-    ads::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(transaction)
-                   callback:std::move(callback)];
+void AdsClientIOS::RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+                                    ads::RunDBTransactionCallback callback) {
+  [bridge_ runDBTransaction:std::move(transaction) callback:callback];
 }
 
 void AdsClientIOS::UpdateAdRewards() {
@@ -226,6 +222,6 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
 }
 
 void AdsClientIOS::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   [bridge_ logTrainingInstance:std::move(training_instance)];
 }

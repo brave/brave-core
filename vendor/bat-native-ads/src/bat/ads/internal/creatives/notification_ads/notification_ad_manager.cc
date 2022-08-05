@@ -20,6 +20,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/notification_ad_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -82,28 +83,33 @@ void NotificationAdManager::Initialize(InitializeCallback callback) {
   Load();
 }
 
-absl::optional<NotificationAdInfo> NotificationAdManager::GetForPlacementId(
-    const std::string& placement_id) const {
+bool NotificationAdManager::GetForPlacementId(
+    const std::string& placement_id,
+    NotificationAdInfo* notification_ad) const {
   DCHECK(is_initialized_);
+  DCHECK(notification_ad);
 
   auto iter =
       std::find_if(notification_ads_.cbegin(), notification_ads_.cend(),
                    [&placement_id](const NotificationAdInfo& notification) {
                      return notification.placement_id == placement_id;
                    });
+
   if (iter == notification_ads_.end()) {
-    return absl::nullopt;
+    return false;
   }
 
-  NotificationAdInfo ad = *iter;
-  ad.type = AdType::kNotificationAd;
-  return ad;
+  *notification_ad = *iter;
+
+  notification_ad->type = AdType::kNotificationAd;
+
+  return true;
 }
 
-void NotificationAdManager::PushBack(const NotificationAdInfo& ad) {
+void NotificationAdManager::PushBack(const NotificationAdInfo& info) {
   DCHECK(is_initialized_);
 
-  notification_ads_.push_back(ad);
+  notification_ads_.push_back(info);
 
   if (kMaximumNotificationAds > 0 && Count() > kMaximumNotificationAds) {
     PopFront(true);
@@ -380,9 +386,9 @@ void NotificationAdManager::Save() {
   BLOG(9, "Saving notification ads state");
 
   std::string json = ToJson();
-  AdsClientHelper::GetInstance()->Save(
-      kNotificationsFilename, json,
-      base::BindOnce(&NotificationAdManager::OnSaved, base::Unretained(this)));
+  auto callback =
+      std::bind(&NotificationAdManager::OnSaved, this, std::placeholders::_1);
+  AdsClientHelper::GetInstance()->Save(kNotificationsFilename, json, callback);
 }
 
 void NotificationAdManager::OnSaved(const bool success) {
@@ -397,9 +403,9 @@ void NotificationAdManager::OnSaved(const bool success) {
 void NotificationAdManager::Load() {
   BLOG(3, "Loading notification ads state");
 
-  AdsClientHelper::GetInstance()->Load(
-      kNotificationsFilename,
-      base::BindOnce(&NotificationAdManager::OnLoaded, base::Unretained(this)));
+  auto callback = std::bind(&NotificationAdManager::OnLoaded, this,
+                            std::placeholders::_1, std::placeholders::_2);
+  AdsClientHelper::GetInstance()->Load(kNotificationsFilename, callback);
 }
 
 void NotificationAdManager::OnLoaded(const bool success,

@@ -49,7 +49,7 @@ class DataStoreTest : public testing::Test {
 
   TrainingData TrainingDataFromTestInfo();
 
-  bool AddTrainingInstance(std::vector<mojom::CovariateInfoPtr> covariates);
+  bool AddTrainingInstance(std::vector<mojom::CovariatePtr> covariates);
   void InitializeDataStore();
 
   base::test::TaskEnvironment task_environment_;
@@ -90,7 +90,7 @@ TrainingData DataStoreTest::TrainingDataFromTestInfo() {
 
   for (const auto& item : kTrainingData) {
     int training_instance_id = item.training_instance_id;
-    mojom::CovariateInfoPtr covariate = mojom::CovariateInfo::New();
+    mojom::CovariatePtr covariate = mojom::Covariate::New();
     covariate->type = (mojom::CovariateType)item.feature_name;
     covariate->data_type = (mojom::DataType)item.feature_type;
     covariate->value = item.feature_value;
@@ -114,8 +114,8 @@ void DataStoreTest::InitializeDataStore() {
 }
 
 bool DataStoreTest::AddTrainingInstance(
-    std::vector<mojom::CovariateInfoPtr> covariates) {
-  std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance;
+    std::vector<mojom::CovariatePtr> covariates) {
+  std::vector<brave_federated::mojom::CovariatePtr> training_instance;
   for (auto& covariate : covariates) {
     training_instance.push_back(std::move(covariate));
   }

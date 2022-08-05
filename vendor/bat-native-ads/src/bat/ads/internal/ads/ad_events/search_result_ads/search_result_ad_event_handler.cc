@@ -59,7 +59,7 @@ void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
 }
 
 void EventHandler::FireEvent(
-    const mojom::SearchResultAdInfoPtr& ad_mojom,
+    const mojom::SearchResultAdPtr& ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -110,7 +110,7 @@ void EventHandler::FireEvent(
 }
 
 void EventHandler::FireViewedEvent(
-    const mojom::SearchResultAdInfoPtr& ad_mojom,
+    const mojom::SearchResultAdPtr& ad_mojom,
     TriggerSearchResultAdEventCallback callback) const {
   const DepositInfo& deposit = BuildDeposit(ad_mojom);
 

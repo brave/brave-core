@@ -17,7 +17,6 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -39,15 +38,14 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
 
 // PUT /v2/confirmation/payment/{payment_id}
 
-mojom::UrlRequestInfoPtr
-RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
-  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
+mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
   url_request->headers = BuildHeaders();
   const std::string payload = CreatePayload();
   url_request->content = BuildBody(payload);
   url_request->content_type = "application/json";
-  url_request->method = mojom::UrlRequestMethodType::kPut;
+  url_request->method = mojom::UrlRequestMethod::kPut;
 
   return url_request;
 }

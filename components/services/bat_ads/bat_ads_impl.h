@@ -13,10 +13,8 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -24,6 +22,7 @@ namespace ads {
 class Ads;
 struct NewTabPageAdInfo;
 struct InlineContentAdInfo;
+struct StatementInfo;
 }  // namespace ads
 
 namespace bat_ads {
@@ -52,6 +51,13 @@ class BatAdsImpl :
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
+  void OnHtmlLoaded(const int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& html) override;
+  void OnTextLoaded(const int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& text) override;
+
   void OnIdle() override;
   void OnUnIdle(const base::TimeDelta idle_time,
                 const bool was_locked) override;
@@ -60,13 +66,6 @@ class BatAdsImpl :
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
-
-  void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
-  void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
 
   void OnMediaPlaying(const int32_t tab_id) override;
   void OnMediaStopped(const int32_t tab_id) override;
@@ -109,7 +108,7 @@ class BatAdsImpl :
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdInfoPtr ad_mojom,
+      ads::mojom::SearchResultAdPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
@@ -163,20 +162,24 @@ class BatAdsImpl :
                          const bool success);
 
   static void OnGetDiagnostics(CallbackHolder<GetDiagnosticsCallback>* holder,
-                               absl::optional<base::Value::List> value);
+                               const bool success,
+                               const std::string& json);
 
   static void OnGetStatementOfAccounts(
       CallbackHolder<GetStatementOfAccountsCallback>* holder,
-      ads::mojom::StatementInfoPtr statement);
+      const bool success,
+      const ads::StatementInfo& statement);
 
   static void OnMaybeServeInlineContentAd(
       CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
+      const bool success,
       const std::string& dimensions,
-      const absl::optional<ads::InlineContentAdInfo>& ad);
+      const ads::InlineContentAdInfo& ad);
 
   static void OnMaybeServeNewTabPageAd(
       CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-      const absl::optional<ads::NewTabPageAdInfo>& ad);
+      const bool success,
+      const ads::NewTabPageAdInfo& ad);
 
   static void OnTriggerSearchResultAdEvent(
       CallbackHolder<TriggerSearchResultAdEventCallback>* holder,

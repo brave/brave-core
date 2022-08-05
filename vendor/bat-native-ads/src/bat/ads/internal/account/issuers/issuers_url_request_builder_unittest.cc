@@ -27,13 +27,13 @@ TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   IssuersUrlRequestBuilder url_request_builder;
 
   // Act
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       GURL(R"(https://static.ads.bravesoftware.com/v1/issuers/)");
-  expected_url_request->method = mojom::UrlRequestMethodType::kGet;
+  expected_url_request->method = mojom::UrlRequestMethod::kGet;
 
   EXPECT_EQ(expected_url_request, url_request);
 }

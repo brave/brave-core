@@ -39,7 +39,7 @@
          message:(const std::string&)message;
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(ads::SaveCallback)callback;
+    callback:(ads::ResultCallback)callback;
 - (void)showNotificationAd:(const ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)recordAdEventForId:(const std::string&)id
@@ -50,9 +50,9 @@
                             confirmationType:
                                 (const std::string&)confirmation_type;
 - (void)resetAdEventHistoryForId:(const std::string&)id;
-- (void)UrlRequest:(ads::mojom::UrlRequestInfoPtr)url_request
+- (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
           callback:(ads::UrlRequestCallback)callback;
-- (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
+- (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback;
 - (void)updateAdRewards;
 - (void)setBooleanPref:(const std::string&)path value:(const bool)value;
@@ -77,8 +77,7 @@
 - (bool)hasPrefPath:(const std::string&)path;
 - (void)recordP2AEvent:(const std::string&)name value:(const std::string&)value;
 - (void)logTrainingInstance:
-    (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
-        training_instance;
+    (const std::vector<brave_federated::mojom::CovariatePtr>)training_instance;
 
 @end
 

@@ -32,7 +32,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
   RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
       const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
 
-  mojom::UrlRequestInfoPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   GURL BuildUrl() const;

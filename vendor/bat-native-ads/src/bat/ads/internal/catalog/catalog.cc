@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
@@ -24,7 +25,6 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -73,16 +73,16 @@ void Catalog::Fetch() {
   is_processing_ = true;
 
   CatalogUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&Catalog::OnFetch, base::Unretained(this)));
+  const auto callback =
+      std::bind(&Catalog::OnFetch, this, std::placeholders::_1);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
-void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
   BLOG(1, "OnCatalog");
 
   BLOG(7, UrlResponseToString(url_response));

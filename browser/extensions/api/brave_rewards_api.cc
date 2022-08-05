@@ -1181,18 +1181,22 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
 }
 
 void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
-    ads::mojom::StatementInfoPtr statement) {
-  if (!statement) {
-    Respond(OneArgument(base::Value(false)));
+    const bool success,
+    const double next_payment_date,
+    const int ads_received_this_month,
+    const double earnings_this_month,
+    const double earnings_last_month) {
+  if (!success) {
+    Respond(OneArgument(base::Value(success)));
   } else {
-    base::Value::Dict dict;
-    dict.Set("nextPaymentDate",
-             statement->next_payment_date.ToDoubleT() * 1000);
-    dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
-    dict.Set("earningsThisMonth", statement->earnings_this_month);
-    dict.Set("earningsLastMonth", statement->earnings_last_month);
+    base::Value::Dict statement;
+    statement.Set("nextPaymentDate", next_payment_date * 1000);
+    statement.Set("adsReceivedThisMonth", ads_received_this_month);
+    statement.Set("earningsThisMonth", earnings_this_month);
+    statement.Set("earningsLastMonth", earnings_last_month);
 
-    Respond(TwoArguments(base::Value(true), base::Value(std::move(dict))));
+    Respond(
+        TwoArguments(base::Value(success), base::Value(std::move(statement))));
   }
 
   Release();  // Balanced in Run()

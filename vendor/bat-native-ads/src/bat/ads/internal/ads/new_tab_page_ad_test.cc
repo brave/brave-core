@@ -17,7 +17,6 @@
 #include "bat/ads/internal/history/history_unittest_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -54,14 +53,14 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
 
   // Act
-  GetAds()->MaybeServeNewTabPageAd(
-      [](const absl::optional<NewTabPageAdInfo>& ad) {
-        // Assert
-        EXPECT_TRUE(ad);
-        EXPECT_TRUE(ad->IsValid());
-        EXPECT_EQ(1, GetAdEventCount(AdType::kNewTabPageAd,
-                                     ConfirmationType::kServed));
-      });
+  GetAds()->MaybeServeNewTabPageAd([](const bool success,
+                                      const NewTabPageAdInfo& ad) {
+    // Assert
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(ad.IsValid());
+    EXPECT_EQ(
+        1, GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  });
 }
 
 TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {

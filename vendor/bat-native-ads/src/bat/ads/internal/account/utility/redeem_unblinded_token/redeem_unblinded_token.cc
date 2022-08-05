@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations_util.h"
@@ -71,19 +72,18 @@ void RedeemUnblindedToken::CreateConfirmation(
   BLOG(2, "POST /v2/confirmation/{confirmation_id}/{credential}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&RedeemUnblindedToken::OnCreateConfirmation,
-                     base::Unretained(this), confirmation));
+  const auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation,
+                                  this, std::placeholders::_1, confirmation);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
-    const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
+    const mojom::UrlResponse& url_response,
+    const ConfirmationInfo& confirmation) {
   BLOG(1, "OnCreateConfirmation");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -117,19 +117,18 @@ void RedeemUnblindedToken::FetchPaymentToken(
   BLOG(2, "GET /v2/confirmation/{confirmation_id}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&RedeemUnblindedToken::OnFetchPaymentToken,
-                     base::Unretained(this), confirmation));
+  const auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken,
+                                  this, std::placeholders::_1, confirmation);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RedeemUnblindedToken::OnFetchPaymentToken(
-    const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
+    const mojom::UrlResponse& url_response,
+    const ConfirmationInfo& confirmation) {
   BLOG(1, "OnFetchPaymentToken");
 
   BLOG(6, UrlResponseToString(url_response));

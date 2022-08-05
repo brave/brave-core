@@ -41,15 +41,11 @@ class EligibleAdsV1 final : public EligibleAdsBase {
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
 
  private:
-  void GetBrowsingHistory(
+  void GetEligibleAds(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
-
-  void GetEligibleAds(const targeting::UserModelInfo& user_model,
-                      const AdEventList& ad_events,
-                      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
-                      const BrowsingHistoryList& browsing_history);
 
   void GetForChildSegments(
       const targeting::UserModelInfo& user_model,

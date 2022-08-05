@@ -27,7 +27,7 @@ class GetSignedTokensUrlRequestBuilder final
   GetSignedTokensUrlRequestBuilder& operator=(
       const GetSignedTokensUrlRequestBuilder&) = delete;
 
-  mojom::UrlRequestInfoPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   GURL BuildUrl() const;

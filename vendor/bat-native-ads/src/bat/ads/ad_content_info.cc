@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
 
@@ -74,7 +74,7 @@ base::Value::Dict AdContentInfo::ToValue() const {
   return dict;
 }
 
-void AdContentInfo::FromValue(const base::Value::Dict& root) {
+bool AdContentInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("adType")) {
     type = AdType(*value);
   } else if (const auto* value = root.FindString("type")) {
@@ -168,6 +168,8 @@ void AdContentInfo::FromValue(const base::Value::Dict& root) {
     // Migrate legacy
     is_flagged = *value;
   }
+
+  return true;
 }
 
 std::string AdContentInfo::ToJson() const {
@@ -185,9 +187,7 @@ bool AdContentInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  FromValue(document->GetDict());
-
-  return true;
+  return FromValue(document->GetDict());
 }
 
 }  // namespace ads

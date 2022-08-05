@@ -12,7 +12,6 @@
 
 #include "base/check_op.h"
 #include "base/guid.h"
-#include "base/notreached.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

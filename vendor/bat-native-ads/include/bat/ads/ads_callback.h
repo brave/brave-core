@@ -9,14 +9,13 @@
 #include <functional>
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
+struct StatementInfo;
 
 using InitializeCallback = std::function<void(const bool)>;
 using ShutdownCallback = std::function<void(const bool)>;
@@ -24,11 +23,10 @@ using ShutdownCallback = std::function<void(const bool)>;
 using RemoveAllHistoryCallback = std::function<void(const bool)>;
 
 using MaybeServeNewTabPageAdCallback =
-    std::function<void(const absl::optional<NewTabPageAdInfo>&)>;
+    std::function<void(const bool, const NewTabPageAdInfo&)>;
 
-using MaybeServeInlineContentAdCallback =
-    std::function<void(const std::string&,
-                       const absl::optional<InlineContentAdInfo>&)>;
+using MaybeServeInlineContentAdCallback = std::function<
+    void(const bool, const std::string&, const InlineContentAdInfo&)>;
 
 using TriggerSearchResultAdEventCallback =
     std::function<void(const bool,
@@ -36,10 +34,10 @@ using TriggerSearchResultAdEventCallback =
                        const mojom::SearchResultAdEventType event_type)>;
 
 using GetStatementOfAccountsCallback =
-    std::function<void(mojom::StatementInfoPtr statement)>;
+    std::function<void(const bool, const StatementInfo&)>;
 
 using GetDiagnosticsCallback =
-    std::function<void(absl::optional<base::Value::List> value)>;
+    std::function<void(const bool, const std::string&)>;
 
 using PurgeOrphanedAdEventsForTypeCallback = std::function<void(const bool)>;
 

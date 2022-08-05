@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v2.h"
 
-#include "base/bind.h"
 #include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/choose/predict_ad.h"
@@ -20,7 +19,6 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace notification_ads {
@@ -47,29 +45,23 @@ void EligibleAdsV2::GetForUserModel(
           return;
         }
 
-        GetBrowsingHistory(user_model, ad_events, callback);
+        const int max_count = features::GetBrowsingHistoryMaxCount();
+        const int days_ago = features::GetBrowsingHistoryDaysAgo();
+        AdsClientHelper::GetInstance()->GetBrowsingHistory(
+            max_count, days_ago,
+            [=](const BrowsingHistoryList& browsing_history) {
+              GetEligibleAds(user_model, ad_events, browsing_history, callback);
+            });
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleAdsV2::GetBrowsingHistory(
-    const targeting::UserModelInfo& user_model,
-    const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
-  const int max_count = features::GetBrowsingHistoryMaxCount();
-  const int days_ago = features::GetBrowsingHistoryDaysAgo();
-  AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      max_count, days_ago,
-      base::BindOnce(&EligibleAdsV2::GetEligibleAds, base::Unretained(this),
-                     user_model, ad_events, callback));
-}
-
 void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
-    const BrowsingHistoryList& browsing_history) {
+    const BrowsingHistoryList& browsing_history,
+    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   database::table::CreativeNotificationAds database_table;
   database_table.GetAll([=](const bool success, const SegmentList& segments,
                             const CreativeNotificationAdList& creative_ads) {

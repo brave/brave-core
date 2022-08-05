@@ -9,6 +9,7 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "bat/ads/internal/studies/studies_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

@@ -9,10 +9,10 @@
 #include <string>
 
 #include "bat/ads/ads_client_callback.h"
-#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/transaction_info.h"
 
 namespace base {
 class Time;
@@ -47,20 +47,20 @@ class Transactions final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransactionInfo* transaction,
+  void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const TransactionList& transactions);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const TransactionList& transactions);
 
-  void OnGetTransactions(GetTransactionsCallback callback,
-                         mojom::DBCommandResponseInfoPtr response);
+  void OnGetTransactions(mojom::DBCommandResponsePtr response,
+                         GetTransactionsCallback callback);
 
-  void MigrateToV18(mojom::DBTransactionInfo* transaction);
+  void MigrateToV18(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

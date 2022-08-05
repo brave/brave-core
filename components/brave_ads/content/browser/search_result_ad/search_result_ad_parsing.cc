@@ -14,10 +14,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using ads::mojom::ConversionInfo;
-using ads::mojom::ConversionInfoPtr;
-using ads::mojom::SearchResultAdInfo;
-using ads::mojom::SearchResultAdInfoPtr;
+using ads::mojom::Conversion;
+using ads::mojom::ConversionPtr;
+using ads::mojom::SearchResultAd;
+using ads::mojom::SearchResultAdPtr;
 
 namespace brave_ads {
 
@@ -124,7 +124,7 @@ bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
 }
 
 bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
-                         SearchResultAdInfo* search_result_ad) {
+                         SearchResultAd* search_result_ad) {
   DCHECK(ad_property);
   DCHECK(search_result_ad);
   DCHECK(search_result_ad->conversion);
@@ -202,8 +202,8 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
         continue;
       }
 
-      SearchResultAdInfoPtr search_result_ad = SearchResultAdInfo::New();
-      search_result_ad->conversion = ConversionInfo::New();
+      SearchResultAdPtr search_result_ad = SearchResultAd::New();
+      search_result_ad->conversion = Conversion::New();
 
       base::flat_set<base::StringPiece> found_attributes;
       for (const auto& ad_property : ad_entity->properties) {

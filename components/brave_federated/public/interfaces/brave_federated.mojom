@@ -50,7 +50,7 @@ enum DataType {
   kString
 };
 
-struct CovariateInfo {
+struct Covariate {
   CovariateType type;
   DataType data_type;
   string value;

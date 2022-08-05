@@ -50,13 +50,13 @@ class AdsClientMock : public AdsClient {
                     GetBrowsingHistoryCallback callback));
 
   MOCK_METHOD2(UrlRequest,
-               void(mojom::UrlRequestInfoPtr url_request,
+               void(mojom::UrlRequestPtr url_request,
                     UrlRequestCallback callback));
 
   MOCK_METHOD3(Save,
                void(const std::string& name,
                     const std::string& value,
-                    SaveCallback callback));
+                    ResultCallback callback));
   MOCK_METHOD2(Load, void(const std::string& name, LoadCallback callback));
   MOCK_METHOD3(LoadFileResource,
                void(const std::string& id,
@@ -73,13 +73,13 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD0(ClearScheduledCaptcha, void());
 
   MOCK_METHOD2(RunDBTransaction,
-               void(mojom::DBTransactionInfoPtr, RunDBTransactionCallback));
+               void(mojom::DBTransactionPtr, RunDBTransactionCallback));
 
   MOCK_METHOD2(RecordP2AEvent,
                void(const std::string& name, const std::string& value));
 
   MOCK_METHOD1(LogTrainingInstance,
-               void(const std::vector<brave_federated::mojom::CovariateInfoPtr>
+               void(const std::vector<brave_federated::mojom::CovariatePtr>
                         training_instance));
 
   MOCK_CONST_METHOD1(GetBooleanPref, bool(const std::string& path));

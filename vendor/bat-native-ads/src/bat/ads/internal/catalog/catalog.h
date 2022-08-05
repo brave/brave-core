@@ -31,7 +31,7 @@ class Catalog final : public DatabaseManagerObserver {
 
  private:
   void Fetch();
-  void OnFetch(const mojom::UrlResponseInfo& url_response);
+  void OnFetch(const mojom::UrlResponse& url_response);
   void FetchAfterDelay();
 
   void Retry();

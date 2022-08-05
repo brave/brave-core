@@ -9,6 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/version_info/version_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

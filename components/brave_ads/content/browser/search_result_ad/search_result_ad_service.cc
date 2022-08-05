@@ -210,7 +210,7 @@ void SearchResultAdService::TriggerSearchResultAdViewedEventFromQueue() {
   }
   trigger_ad_viewed_event_in_progress_ = true;
 
-  ads::mojom::SearchResultAdInfoPtr search_result_ad =
+  ads::mojom::SearchResultAdPtr search_result_ad =
       std::move(ad_viewed_event_queue_.back());
   ad_viewed_event_queue_.pop_back();
 

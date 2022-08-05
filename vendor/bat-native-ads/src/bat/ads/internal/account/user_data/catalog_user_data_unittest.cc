@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/catalog_user_data.h"
 
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 

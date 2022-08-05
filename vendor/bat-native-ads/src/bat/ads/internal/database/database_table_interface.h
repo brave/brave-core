@@ -19,7 +19,7 @@ class TableInterface {
 
   virtual std::string GetTableName() const = 0;
 
-  virtual void Migrate(mojom::DBTransactionInfo* transaction,
+  virtual void Migrate(mojom::DBTransaction* transaction,
                        const int to_version) = 0;
 };
 

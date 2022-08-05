@@ -12,16 +12,9 @@ struct SysInfo {
   bool is_uncertain_future;
 };
 
-struct BuildChannelInfo {
+struct BuildChannel {
   bool is_release;
   string name;
-};
-
-struct StatementInfo {
-  double earnings_last_month;
-  double earnings_this_month;
-  mojo_base.mojom.Time next_payment_date;
-  int32 ads_received_this_month;
 };
 
 enum AdType {
@@ -33,7 +26,7 @@ enum AdType {
   kSearchResultAd
 };
 
-struct ConversionInfo {
+struct Conversion {
   string type;
   string url_pattern;
   string advertiser_public_key;
@@ -67,7 +60,7 @@ enum InlineContentAdEventType {
   kClicked
 };
 
-struct SearchResultAdInfo {
+struct SearchResultAd {
   AdType type = kSearchResultAd;
   string placement_id;
   string creative_instance_id;
@@ -78,7 +71,7 @@ struct SearchResultAdInfo {
   string headline_text;
   string description;
   double value;
-  ConversionInfo conversion;
+  Conversion conversion;
 };
 
 enum SearchResultAdEventType {
@@ -87,21 +80,21 @@ enum SearchResultAdEventType {
   kClicked
 };
 
-enum UrlRequestMethodType {
+enum UrlRequestMethod {
   kGet = 0,
   kPut,
   kPost
 };
 
-struct UrlRequestInfo {
+struct UrlRequest {
   url.mojom.Url url;
   array<string> headers;
   string content;
   string content_type;
-  UrlRequestMethodType method;
+  UrlRequestMethod method;
 };
 
-struct UrlResponseInfo {
+struct UrlResponse {
   url.mojom.Url url;
   int32 status_code = -1;
   string body;
@@ -117,12 +110,12 @@ union DBValue {
   int8 null_value;
 };
 
-struct DBCommandBindingInfo {
+struct DBCommandBinding {
   int32 index;
   DBValue value;
 };
 
-struct DBCommandInfo {
+struct DBCommand {
   enum Type {
     INITIALIZE,
     READ,
@@ -141,27 +134,27 @@ struct DBCommandInfo {
 
   Type type;
   string command;
-  array<DBCommandBindingInfo> bindings;
+  array<DBCommandBinding> bindings;
   array<RecordBindingType> record_bindings;
 };
 
-struct DBTransactionInfo {
+struct DBTransaction {
   int32 version;
   int32 compatible_version;
-  array<DBCommandInfo> commands;
+  array<DBCommand> commands;
 };
 
-struct DBRecordInfo {
+struct DBRecord {
   array<DBValue> fields;
 };
 
 union DBCommandResult {
-  array<DBRecordInfo> records;
+  array<DBRecord> records;
   DBValue value;
 };
 
-struct DBCommandResponseInfo {
-  enum StatusType {
+struct DBCommandResponse {
+  enum Status {
     RESPONSE_OK,
     INITIALIZATION_ERROR,
     TRANSACTION_ERROR,
@@ -170,5 +163,5 @@ struct DBCommandResponseInfo {
   };
 
   DBCommandResult? result;
-  StatusType status;
+  Status status;
 };

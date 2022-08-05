@@ -77,7 +77,7 @@ class ADS_EXPORT AdsClient {
   // asynchronously, so that the app remains responsive and should handle
   // incoming data or errors as they arrive. The callback takes 1 argument -
   // |URLResponse| containing the URL response.
-  virtual void UrlRequest(mojom::UrlRequestInfoPtr url_request,
+  virtual void UrlRequest(mojom::UrlRequestPtr url_request,
                           UrlRequestCallback callback) = 0;
 
   // Save a value for the specified |name| to persistent storage. The callback
@@ -85,7 +85,7 @@ class ADS_EXPORT AdsClient {
   // |false|.
   virtual void Save(const std::string& name,
                     const std::string& value,
-                    SaveCallback callback) = 0;
+                    ResultCallback callback) = 0;
 
   // Load a file for the specified |name| from persistent storage. The callback
   // takes 2 arguments - |bool| is set to |true| if successful otherwise
@@ -120,8 +120,8 @@ class ADS_EXPORT AdsClient {
   virtual void ClearScheduledCaptcha() = 0;
 
   // Run a database transaction. The callback takes one argument -
-  // |mojom::DBCommandResponseInfoPtr| containing the info of the transaction.
-  virtual void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
+  // |mojom::DBCommandResponsePtr| containing the info of the transaction.
+  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
                                 RunDBTransactionCallback callback) = 0;
 
   // Called to update brave://rewards.
@@ -134,7 +134,7 @@ class ADS_EXPORT AdsClient {
 
   // Log |training_instance|.
   virtual void LogTrainingInstance(
-      const std::vector<brave_federated::mojom::CovariateInfoPtr>
+      const std::vector<brave_federated::mojom::CovariatePtr>
           training_instance) = 0;
 
   // Get the value from the specified preference |path|. Returns the default

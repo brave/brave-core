@@ -20,7 +20,7 @@ class CatalogUrlRequestBuilder final : public UrlRequestBuilderInterface {
   CatalogUrlRequestBuilder(const CatalogUrlRequestBuilder&) = delete;
   CatalogUrlRequestBuilder& operator=(const CatalogUrlRequestBuilder&) = delete;
 
-  mojom::UrlRequestInfoPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   GURL BuildUrl() const;
