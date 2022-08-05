@@ -157,6 +157,9 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
     // installed by default.
     if (dict.FindBool("was_installed_by_default").value_or(true))
       continue;
+    // `"state": 0` means disabled state
+    if (!dict.FindInt("state").value_or(false))
+      continue;
 
     if (!dict.FindBool("from_webstore").value_or(false))
       continue;
