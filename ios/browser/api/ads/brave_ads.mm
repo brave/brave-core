@@ -751,6 +751,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   const auto copiedURL = url_request->url;
 
+  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
   const auto __weak weakSelf = self;
   return [self.commonOps
       loadURLRequest:url_request->url.spec()
@@ -771,7 +772,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
               url_response.status_code = statusCode;
               url_response.body = response;
               url_response.headers = headers;
-              callback(url_response);
+              if (cb) {
+                std::move(*cb).Run(url_response);
+              }
             }];
 }
 
@@ -1130,7 +1133,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    forDays:(const int)days_ago
                   callback:(ads::GetBrowsingHistoryCallback)callback {
   // To be implemented https://github.com/brave/brave-ios/issues/3499
-  callback({});
+  std::move(callback).Run({});
 }
 
 - (void)loadFileResource:(const std::string&)id
@@ -1170,9 +1173,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    callback(/* success */ false, "");
+    std::move(callback).Run(/* success */ false, "");
   } else {
-    callback(/* success */ true, contents);
+    std::move(callback).Run(/* success */ true, contents);
   }
 }
 
@@ -1203,11 +1206,11 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(ads::ResultCallback)callback {
+    callback:(ads::SaveCallback)callback {
   if ([self.commonOps saveContents:value name:name]) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
   } else {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
   }
 }
 
@@ -1322,13 +1325,16 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
-      base::BindOnce(^(ads::mojom::DBCommandResponseInfoPtr response) {
-        const auto strongSelf = weakSelf;
-        if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
-          return;
-        }
-        callback(std::move(response));
-      }));
+      base::BindOnce(
+          ^(ads::RunDBTransactionCallback callback,
+            ads::mojom::DBCommandResponseInfoPtr response) {
+            const auto strongSelf = weakSelf;
+            if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+              return;
+            }
+            std::move(callback).Run(std::move(response));
+          },
+          std::move(callback)));
 }
 
 - (void)updateAdRewards {

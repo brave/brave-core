@@ -84,8 +84,7 @@ void Transactions::Save(const TransactionList& transactions,
   InsertOrUpdate(transaction.get(), transactions);
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 void Transactions::GetAll(GetTransactionsCallback callback) {
@@ -121,8 +120,8 @@ void Transactions::GetAll(GetTransactionsCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&Transactions::OnGetTransactions, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&Transactions::OnGetTransactions,
+                                             base::Unretained(this), callback));
 }
 
 void Transactions::GetForDateRange(const base::Time from_time,
@@ -161,8 +160,8 @@ void Transactions::GetForDateRange(const base::Time from_time,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&Transactions::OnGetTransactions, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&Transactions::OnGetTransactions,
+                                             base::Unretained(this), callback));
 }
 
 void Transactions::Update(
@@ -201,8 +200,7 @@ void Transactions::Update(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 void Transactions::Delete(ResultCallback callback) {
@@ -211,8 +209,7 @@ void Transactions::Delete(ResultCallback callback) {
   DeleteTable(transaction.get(), GetTableName());
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 std::string Transactions::GetTableName() const {
@@ -272,8 +269,8 @@ std::string Transactions::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Transactions::OnGetTransactions(mojom::DBCommandResponseInfoPtr response,
-                                     GetTransactionsCallback callback) {
+void Transactions::OnGetTransactions(GetTransactionsCallback callback,
+                                     mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");

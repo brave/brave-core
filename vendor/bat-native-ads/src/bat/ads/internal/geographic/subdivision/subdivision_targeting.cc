@@ -191,9 +191,9 @@ void SubdivisionTargeting::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback =
-      std::bind(&SubdivisionTargeting::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&SubdivisionTargeting::OnFetch, base::Unretained(this)));
 }
 
 void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {

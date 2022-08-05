@@ -127,9 +127,10 @@ void RefillUnblindedTokens::RequestSignedTokens() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback = std::bind(&RefillUnblindedTokens::OnRequestSignedTokens,
-                                  this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&RefillUnblindedTokens::OnRequestSignedTokens,
+                     base::Unretained(this)));
 }
 
 void RefillUnblindedTokens::OnRequestSignedTokens(
@@ -179,9 +180,10 @@ void RefillUnblindedTokens::GetSignedTokens() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback = std::bind(&RefillUnblindedTokens::OnGetSignedTokens,
-                                  this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&RefillUnblindedTokens::OnGetSignedTokens,
+                     base::Unretained(this)));
 }
 
 void RefillUnblindedTokens::OnGetSignedTokens(

@@ -69,8 +69,7 @@ void Segments::Delete(ResultCallback callback) {
   DeleteTable(transaction.get(), GetTableName());
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
 }
 
 std::string Segments::GetTableName() const {

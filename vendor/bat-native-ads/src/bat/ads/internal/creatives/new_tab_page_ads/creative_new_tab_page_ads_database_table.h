@@ -79,16 +79,16 @@ class CreativeNewTabPageAds final : public TableInterface {
       mojom::DBCommandInfo* command,
       const CreativeNewTabPageAdList& creative_ads);
 
-  void OnGetForCreativeInstanceId(mojom::DBCommandResponseInfoPtr response,
-                                  const std::string& creative_instance_id,
-                                  GetCreativeNewTabPageAdCallback callback);
+  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
+                                  GetCreativeNewTabPageAdCallback callback,
+                                  mojom::DBCommandResponseInfoPtr response);
 
-  void OnGetForSegments(mojom::DBCommandResponseInfoPtr response,
-                        const SegmentList& segments,
-                        GetCreativeNewTabPageAdsCallback callback);
+  void OnGetForSegments(const SegmentList& segments,
+                        GetCreativeNewTabPageAdsCallback callback,
+                        mojom::DBCommandResponseInfoPtr response);
 
-  void OnGetAll(mojom::DBCommandResponseInfoPtr response,
-                GetCreativeNewTabPageAdsCallback callback);
+  void OnGetAll(GetCreativeNewTabPageAdsCallback callback,
+                mojom::DBCommandResponseInfoPtr response);
 
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 

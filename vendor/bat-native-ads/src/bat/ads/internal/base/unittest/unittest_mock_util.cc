@@ -264,7 +264,7 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
           history.push_back(GURL(spec));
         }
 
-        callback(history);
+        std::move(callback).Run(history);
       }));
 }
 
@@ -282,15 +282,17 @@ void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
               url_response = url_response_optional.value();
             }
 
-            callback(url_response);
+            std::move(callback).Run(url_response);
           }));
 }
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, Save(_, _, _))
-      .WillByDefault(Invoke(
-          [](const std::string& name, const std::string& value,
-             ResultCallback callback) { callback(/* success */ true); }));
+      .WillByDefault(
+          Invoke([](const std::string& name, const std::string& value,
+                    SaveCallback callback) {
+            std::move(callback).Run(/* success */ true);
+          }));
 }
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
@@ -306,11 +308,11 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              callback(/* success */ false, value);
+              std::move(callback).Run(/* success */ false, value);
               return;
             }
 
-            callback(/* success */ true, value);
+            std::move(callback).Run(/* success */ true, value);
           }));
 }
 
@@ -356,7 +358,7 @@ void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
           database->RunTransaction(std::move(transaction), response.get());
         }
 
-        callback(std::move(response));
+        std::move(callback).Run(std::move(response));
       }));
 }
 
