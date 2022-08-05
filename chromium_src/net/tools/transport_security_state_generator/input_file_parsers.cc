@@ -16,8 +16,10 @@ namespace transport_security_state {
 bool ParseCertificatesFile(base::StringPiece certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
-  base::StringPiece brave_certs = R"brave_certs(PinsListTimestamp
-1649894400
+  base::StringPiece brave_certs = R"brave_certs(
+# Last updated: Thu 04 Aug 2022 03:28:41 PM PDT
+PinsListTimestamp
+1659652121
 TestSPKI
 sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 
