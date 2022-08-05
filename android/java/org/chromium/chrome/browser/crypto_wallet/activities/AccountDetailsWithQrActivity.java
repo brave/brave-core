@@ -22,6 +22,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -42,6 +43,7 @@ public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
 
     private String mAddress;
     private String mName;
+    private int mCoinType;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -50,6 +52,7 @@ public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
         if (getIntent() != null) {
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
+            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -79,6 +82,7 @@ public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
                 Intent accountPrivateKeyActivityIntent = new Intent(
                         AccountDetailsWithQrActivity.this, AccountPrivateKeyActivity.class);
                 accountPrivateKeyActivityIntent.putExtra(Utils.ADDRESS, mAddress);
+                accountPrivateKeyActivityIntent.putExtra(Utils.COIN_TYPE, mCoinType);
                 startActivity(accountPrivateKeyActivityIntent);
             }
         });
