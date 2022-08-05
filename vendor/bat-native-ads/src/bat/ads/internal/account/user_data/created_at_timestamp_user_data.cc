@@ -15,9 +15,11 @@ namespace {
 constexpr char kCreatedAtTimestampKey[] = "createdAtTimestamp";
 }  // namespace
 
-base::Value::Dict GetCreatedAtTimestamp(const base::Time time) {
+base::Value::Dict GetCreatedAtTimestamp(const base::Time created_at) {
   base::Value::Dict user_data;
-  user_data.Set(kCreatedAtTimestampKey, TimeToPrivacyPreservingISO8601(time));
+
+  user_data.Set(kCreatedAtTimestampKey,
+                TimeToPrivacyPreservingISO8601(created_at));
 
   return user_data;
 }

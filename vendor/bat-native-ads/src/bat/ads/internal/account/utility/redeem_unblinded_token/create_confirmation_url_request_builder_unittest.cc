@@ -20,9 +20,9 @@ namespace ads {
 namespace {
 
 constexpr char kExpectedUrl[] =
-    R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJFdjVKRTQvOVRaSS81VHF5TjlKV2ZKMVRvMEhCd1F3MnJXZUFQY2RqWDNRPVwiXSxcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJwdWJsaWNLZXlcIjpcIlJKMmkvby9wWmtySCtpMGFHRU1ZMUc5Rlh0ZDdRN2dmUmkzWWROUm5ERGs9XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiZzV5R1FhcGNHcVkxeUhjMXV6TUhyT1ZhM2dHRkliTjkwUmlkcnlmakF0dTlyQzMwRmk5K3RVWGFrYmVYYVZKZDZVVkdub2w4ZW5MQWJQd0ZuNGpzc0E9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
+    R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJFdjVKRTQvOVRaSS81VHF5TjlKV2ZKMVRvMEhCd1F3MnJXZUFQY2RqWDNRPVwiXSxcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJwdWJsaWNLZXlcIjpcIlJKMmkvby9wWmtySCtpMGFHRU1ZMUc5Rlh0ZDdRN2dmUmkzWWROUm5ERGs9XCIsXCJ0cmFuc2FjdGlvbklkXCI6XCI4Yjc0Mjg2OS02ZTRhLTQ5MGMtYWMzMS0zMWI0OTEzMDA5OGFcIixcInR5cGVcIjpcInZpZXdcIn0iLCJzaWduYXR1cmUiOiJacnR0SXcwTWNlVFNuam50NHA4aXBtSGJaSzlpWGxlNEhnTWUzdVRDZFgxZStzK2pZTDljYkFOV01WaDhMZjVnN3BxRHRucWF5UTExQWZmMGxFSXEwUT09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)";
 constexpr char kExpectedContent[] =
-    R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","type":"view"})";
+    R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
 }  // namespace
 
 class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
@@ -30,6 +30,14 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
   BatAdsCreateConfirmationUrlRequestBuilderTest() = default;
 
   ~BatAdsCreateConfirmationUrlRequestBuilderTest() override = default;
+
+  ConfirmationInfo BuildConfirmation() {
+    return ::ads::BuildConfirmation(
+        /* id */ "d990ed8d-d739-49fb-811b-c2e02158fb60",
+        /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
+        /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+        ConfirmationType::kViewed, AdType::kNotificationAd);
+  }
 };
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -41,17 +49,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -78,17 +80,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -115,17 +111,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -152,17 +142,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -189,17 +173,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -226,17 +204,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -263,17 +235,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -300,17 +266,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -337,17 +297,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -374,17 +328,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -411,17 +359,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -448,17 +390,11 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   privacy::SetUnblindedTokens(1);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
-
   MockBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
