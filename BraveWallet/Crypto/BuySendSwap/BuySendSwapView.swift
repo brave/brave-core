@@ -8,25 +8,22 @@ import BraveCore
 import Strings
 
 struct BuySendSwapView: View {
-  var network: BraveWallet.NetworkInfo
+  var networkStore: NetworkStore
   var action: (BuySendSwapDestination) -> Void
-  var destinations: [BuySendSwapDestination]
+  var destinations: [BuySendSwapDestination] = []
 
   init(
-    network: BraveWallet.NetworkInfo,
-    isCustomNetwork: Bool,
+    networkStore: NetworkStore,
     action: @escaping (BuySendSwapDestination) -> Void
   ) {
-    self.network = network
+    self.networkStore = networkStore
     self.action = action
-    if isCustomNetwork || network.coin != .eth {
-      destinations = [BuySendSwapDestination(kind: .send)]
-    } else {
-      destinations = [
-        BuySendSwapDestination(kind: .buy),
-        BuySendSwapDestination(kind: .send),
-        BuySendSwapDestination(kind: .swap),
-      ]
+    if WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(networkStore.selectedChainId) {
+      self.destinations.append(BuySendSwapDestination(kind: .buy))
+    }
+    self.destinations.append(BuySendSwapDestination(kind: .send))
+    if networkStore.isSwapSupported {
+      self.destinations.append(BuySendSwapDestination(kind: .swap))
     }
   }
 
@@ -61,7 +58,7 @@ struct BuySendSwapView: View {
 #if DEBUG
 struct BuySendSwapView_Previews: PreviewProvider {
   static var previews: some View {
-    BuySendSwapView(network: .init(), isCustomNetwork: false, action: { _ in })
+    BuySendSwapView(networkStore: .previewStore, action: { _ in })
       .previewLayout(.sizeThatFits)
       //      .previewColorSchemes()
       .previewSizeCategories([.large, .accessibilityLarge])

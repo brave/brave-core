@@ -932,27 +932,6 @@ extension Strings {
       value: "Continue to Wyre",
       comment: "The title of the button for users to click when they are ready to buy using Wyre payment"
     )
-    public static let buyTestTitle = NSLocalizedString(
-      "wallet.buyTestTitle",
-      tableName: "BraveWallet",
-      bundle: .strings,
-      value: "Test Faucet",
-      comment: "The title below account picker when user has selected a test network"
-    )
-    public static let buyTestDescription = NSLocalizedString(
-      "wallet.buyTestDescription",
-      tableName: "BraveWallet",
-      bundle: .strings,
-      value: "Get Ether from a faucet for %@",
-      comment: "The description of where user will go to once a test network has been picked in buy screen. '%@' will be replaced with a network such as 'Rinkeby' or 'Ropsten'"
-    )
-    public static let buyTestButtonTitle = NSLocalizedString(
-      "wallet.buyTestButtonTitle",
-      tableName: "BraveWallet",
-      bundle: .strings,
-      value: "Get Ether",
-      comment: "The title of the button for users to get ether if the test network has been chosen"
-    )
     public static let sendCryptoFromTitle = NSLocalizedString(
       "wallet.sendCryptoFromTitle",
       tableName: "BraveWallet",
@@ -2660,6 +2639,13 @@ extension Strings {
       bundle: .strings,
       value: "View %@ test networks",
       comment: "A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\""
+    )
+    public static let networkNotSupportedForBuyToken = NSLocalizedString(
+      "wallet.networkNotSupportedForBuyToken",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Buy not supported for selected network",
+      comment: "A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre."
     )
   }
 }

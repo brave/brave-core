@@ -48,6 +48,14 @@ struct WalletConstants {
   
   /// The link for users to learn more about Solana SPL token account creation in transaction confirmation screen
   static let splTokenAccountCreationLink = URL(string: "https://support.brave.com/hc/en-us/articles/5546517853325")!
+  
+  /// Supported networks for buying via Wyre
+  // Not include Polygon Mainnet and Avalanche Mainnet due to core-side issue
+  // https://github.com/brave/brave-browser/issues/24444
+  // Will bring back via https://github.com/brave/brave-ios/issues/5781
+  static let supportedBuyWithWyreNetworkChainIds: [String] = [
+    BraveWallet.MainnetChainId
+  ]
 }
 
 struct WalletDebugFlags {

@@ -12,7 +12,7 @@ class NetworkStoreTests: XCTestCase {
   
   private var cancellables: Set<AnyCancellable> = .init()
   
-  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService) {
+  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
     let currentSelectedCoin: BraveWallet.CoinType = .eth
@@ -52,16 +52,20 @@ class NetworkStoreTests: XCTestCase {
     walletService._addObserver = { _ in }
     walletService._selectedCoin = { $0(currentSelectedCoin) }
     
-    return (keyringService, rpcService, walletService)
+    let swapService = BraveWallet.TestSwapService()
+    swapService._isSwapSupported = { $1(true) }
+    
+    return (keyringService, rpcService, walletService, swapService)
   }
   
   func testSetSelectedNetwork() async {
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let store = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let error = await store.setSelectedChain(.mockRopsten)
@@ -69,12 +73,13 @@ class NetworkStoreTests: XCTestCase {
   }
   
   func testSetSelectedNetworkSameNetwork() async {
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let store = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let error = await store.setSelectedChain(.mockMainnet)
@@ -82,12 +87,13 @@ class NetworkStoreTests: XCTestCase {
   }
   
   func testSetSelectedNetworkNoAccounts() async {
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let store = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let error = await store.setSelectedChain(.mockSolana)
@@ -96,12 +102,13 @@ class NetworkStoreTests: XCTestCase {
   
   func testUpdateChainList() {
     WalletDebugFlags.isSolanaEnabled = true
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let store = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let expectedAllChains: [BraveWallet.NetworkInfo] = [

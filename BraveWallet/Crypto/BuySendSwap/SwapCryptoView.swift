@@ -223,11 +223,6 @@ struct SwapCryptoView: View {
     }
   }
 
-  private var isSwapEnabled: Bool {
-    let selectedChain = networkStore.selectedChainId
-    return selectedChain == BraveWallet.MainnetChainId || selectedChain == BraveWallet.RopstenChainId
-  }
-
   @ViewBuilder var swapFormSections: some View {
     Section(
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoFromTitle))
@@ -479,7 +474,7 @@ struct SwapCryptoView: View {
           .padding(.bottom, -16)  // Get it a bit closer
         ) {
         }
-        if isSwapEnabled {
+        if networkStore.isSwapSupported {
           swapFormSections
         } else {
           unsupportedSwapChainSection

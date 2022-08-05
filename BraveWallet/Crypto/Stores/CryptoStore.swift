@@ -93,7 +93,8 @@ public class CryptoStore: ObservableObject {
     self.networkStore = .init(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     self.portfolioStore = .init(
       keyringService: keyringService,

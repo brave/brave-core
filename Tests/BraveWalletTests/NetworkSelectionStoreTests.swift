@@ -23,7 +23,7 @@ import BraveShared
     WalletDebugFlags.isSolanaEnabled = true
   }
   
-  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService) {
+  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
     let currentSelectedCoin: BraveWallet.CoinType = .eth
@@ -59,18 +59,22 @@ import BraveShared
     walletService._addObserver = { _ in }
     walletService._selectedCoin = { $0(currentSelectedCoin) }
     
-    return (keyringService, rpcService, walletService)
+    let swapService = BraveWallet.TestSwapService()
+    swapService._isSwapSupported = { $1(true) }
+    
+    return (keyringService, rpcService, walletService, swapService)
   }
   
   func testUpdate() {
     Preferences.Wallet.showTestNetworks.value = false
 
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     // wait for all chains to populate in `NetworkStore`
@@ -103,12 +107,13 @@ import BraveShared
   func testUpdateTestNetworksEnabled() {
     Preferences.Wallet.showTestNetworks.value = true
     
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     // wait for all chains to populate in `NetworkStore`
@@ -139,12 +144,13 @@ import BraveShared
   }
   
   func testSetSelectedNetwork() async {
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let store = NetworkSelectionStore(networkStore: networkStore)
@@ -154,12 +160,13 @@ import BraveShared
   }
   
   func testSetSelectedNetworkNoAccounts() async {
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let store = NetworkSelectionStore(networkStore: networkStore)
@@ -170,12 +177,13 @@ import BraveShared
   }
   
   func testAlertResponseCreateAccount() {
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let store = NetworkSelectionStore(networkStore: networkStore)
@@ -188,12 +196,13 @@ import BraveShared
   }
   
   func testAlertResponseDontCreateAccount() {
-    let (keyringService, rpcService, walletService) = setupServices()
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      swapService: swapService
     )
     
     let store = NetworkSelectionStore(networkStore: networkStore)

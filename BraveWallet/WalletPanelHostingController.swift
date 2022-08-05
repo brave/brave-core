@@ -38,8 +38,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
       guard let self = self, let store = walletStore.cryptoStore else { return }
       let controller = FixedHeightHostingPanModalController(
         rootView: BuySendSwapView(
-          network: store.networkStore.selectedChain,
-          isCustomNetwork: store.networkStore.isCustomChain(store.networkStore.selectedChain),
+          networkStore: store.networkStore,
           action: { destination in
             self.dismiss(
               animated: true,

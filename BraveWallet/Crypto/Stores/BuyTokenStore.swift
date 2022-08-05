@@ -15,13 +15,6 @@ public class BuyTokenStore: ObservableObject {
 
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
-  private let buyAssetUrls: [String: String] = [
-    BraveWallet.RopstenChainId: "https://faucet.ropsten.be/",
-    BraveWallet.RinkebyChainId: "https://www.rinkeby.io/#stats",
-    BraveWallet.GoerliChainId: "https://goerli-faucet.slock.it/",
-    BraveWallet.KovanChainId: "https://github.com/kovan-testnet/faucet",
-    BraveWallet.LocalhostChainId: "",
-  ]
 
   public init(
     blockchainRegistry: BraveWalletBlockchainRegistry,
@@ -31,31 +24,51 @@ public class BuyTokenStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.rpcService = rpcService
     self.selectedBuyToken = prefilledToken
+    
+    self.rpcService.add(self)
   }
 
-  func fetchBuyUrl(account: BraveWallet.AccountInfo, amount: String, completion: @escaping (_ url: String?) -> Void) {
+  func fetchBuyUrl(
+    chainId: String,
+    account: BraveWallet.AccountInfo,
+    amount: String,
+    completion: @escaping (_ url: String?) -> Void
+  ) {
     guard let token = selectedBuyToken else {
       completion(nil)
       return
     }
 
-    blockchainRegistry.buyUrl(.wyre, chainId: BraveWallet.MainnetChainId, address: account.address, symbol: token.symbol, amount: amount) { url, error  in
+    blockchainRegistry.buyUrl(.wyre, chainId: chainId, address: account.address, symbol: token.symbol, amount: amount) { url, error  in
       completion(error != nil ? nil : url)
     }
   }
 
-  func fetchTestFaucetUrl(completion: @escaping (_ url: String?) -> Void) {
-    rpcService.chainId(.eth) { [self] chainId in
-      completion(self.buyAssetUrls[chainId])
-    }
-  }
-
-  func fetchBuyTokens() {
-    blockchainRegistry.buyTokens(.wyre, chainId: BraveWallet.MainnetChainId) { [self] tokens in
+  func fetchBuyTokens(network: BraveWallet.NetworkInfo) {
+    blockchainRegistry.buyTokens(.wyre, chainId: network.chainId) { [self] tokens in
       buyTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
-      if selectedBuyToken == nil, let index = tokens.firstIndex(where: { $0.symbol == "BAT" }) {
-        selectedBuyToken = tokens[index]
+      if selectedBuyToken == nil || selectedBuyToken?.chainId != network.chainId {
+        if let index = buyTokens.firstIndex(where: { network.isNativeAsset($0) }) {
+          selectedBuyToken = buyTokens[safe: index]
+        } else {
+          selectedBuyToken = buyTokens.first
+        }
       }
     }
+  }
+}
+
+extension BuyTokenStore: BraveWalletJsonRpcServiceObserver {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+    Task { @MainActor in
+      let network = await rpcService.network(coin)
+      fetchBuyTokens(network: network)
+    }
+  }
+  
+  public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
+  }
+  
+  public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
 }
