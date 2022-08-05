@@ -13,7 +13,7 @@ import {
 
 let uuid = 0
 window.crypto = {
-  randomUUID () {
+  randomUUID (): string {
     return uuid++
   }
 }
