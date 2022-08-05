@@ -1,0 +1,22 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+transpile_web_ui("cookie_list_opt_in_ui") {
+  entry_points = [ [
+        "cookie_list_opt_in",
+        rebase_path("cookie_list_opt_in.tsx"),
+      ] ]
+  resource_name = "cookie_list_opt_in"
+  deps = [ "//brave/components/brave_shields/common:mojom_js" ]
+}
+
+pack_web_resources("cookie_list_opt_in_generated") {
+  resource_name = "cookie_list_opt_in"
+  output_dir = "$root_gen_dir/brave/components/brave_shields/resources/cookie_list_opt_in"
+  deps = [ ":cookie_list_opt_in_ui" ]
+}

@@ -29,6 +29,10 @@ const base::Feature kBraveAdblockCollapseBlockedElements{
 // always-on list, overriding any locally set preference.
 const base::Feature kBraveAdblockCookieListDefault{
     "BraveAdblockCookieListDefault", base::FEATURE_DISABLED_BY_DEFAULT};
+// When enabled, Brave will display a bubble inviting the user to turn on the
+// "Easylist-Cookie List" filter.
+const base::Feature kBraveAdblockCookieListOptIn{
+    "BraveAdblockCookieListOptIn", base::FEATURE_DISABLED_BY_DEFAULT};
 const base::Feature kBraveAdblockCosmeticFiltering{
     "BraveAdblockCosmeticFiltering",
     base::FEATURE_ENABLED_BY_DEFAULT};

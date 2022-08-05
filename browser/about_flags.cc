@@ -52,6 +52,7 @@
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
+using brave_shields::features::kBraveAdblockCookieListOptIn;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockCspRules;
@@ -89,6 +90,12 @@ constexpr char kBraveAdblockCookieListDefaultName[] =
 constexpr char kBraveAdblockCookieListDefaultDescription[] =
     "Enables the 'Easylist-Cookie List' regional list regardless of its "
     "toggle setting in brave://adblock";
+
+constexpr char kBraveAdblockCookieListOptInName[] =
+    "Show an opt-in bubble for the 'Easylist-Cookie List' filter";
+constexpr char kBraveAdblockCookieListOptInDescription[] =
+    "When enabled, a bubble will be displayed inviting the user to enable the "
+    "'Easylist-Cookie List' filter for blocking cookie consent dialogs";
 
 constexpr char kBraveAdblockCosmeticFilteringName[] =
     "Enable cosmetic filtering";
@@ -500,6 +507,10 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
      flag_descriptions::kBraveAdblockCookieListDefaultName,                 \
      flag_descriptions::kBraveAdblockCookieListDefaultDescription,          \
      kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockCookieListDefault)},           \
+    {"brave-adblock-cookie-list-opt-in",                                    \
+     flag_descriptions::kBraveAdblockCookieListOptInName,                   \
+     flag_descriptions::kBraveAdblockCookieListOptInDescription,            \
+     kOsDesktop, FEATURE_VALUE_TYPE(kBraveAdblockCookieListOptIn)},         \
     {"brave-adblock-cosmetic-filtering",                                    \
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
