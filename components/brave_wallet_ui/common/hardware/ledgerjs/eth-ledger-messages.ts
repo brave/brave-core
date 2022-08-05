@@ -62,7 +62,7 @@ export type EthSignPersonalMessageCommand = CommandMessage & {
 }
 
 // SignEip712Message command
-export type EthSignEip712MessageResponsePayload = EthSignPersonalMessageResponsePayload;
+export type EthSignEip712MessageResponsePayload = EthSignPersonalMessageResponsePayload
 
 export type EthSignEip712MessageResponse = CommandMessage & {
   payload: EthSignEip712MessageResponsePayload | LedgerError
@@ -76,4 +76,4 @@ export type EthSignEip712MessageCommand = CommandMessage & {
 }
 
 export type EthLedgerFrameCommand = EthGetAccountCommand | EthSignTransactionCommand | EthSignPersonalMessageCommand | EthSignEip712MessageCommand
-export type EthLedgerFrameResponse =  EthGetAccountResponse | EthSignTransactionResponse | EthSignPersonalMessageResponse | EthSignEip712MessageResponse
+export type EthLedgerFrameResponse = EthGetAccountResponse | EthSignTransactionResponse | EthSignPersonalMessageResponse | EthSignEip712MessageResponse

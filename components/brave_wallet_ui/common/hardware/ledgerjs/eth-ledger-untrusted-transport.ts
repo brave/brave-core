@@ -45,7 +45,7 @@ export class EthereumLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
         success: true,
         publicKey: result.publicKey,
         address: result.address,
-        chainCode: result.chainCode,
+        chainCode: result.chainCode
       }
       const response: EthGetAccountResponse = {
         id: command.id,

@@ -36,4 +36,4 @@ export type SolSignTransactionCommand = CommandMessage & {
 }
 
 export type SolLedgerFrameCommand = SolGetAccountCommand | SolSignTransactionCommand
-export type SolLedgerFrameResponse =  SolGetAccountResponse | SolSignTransactionResponse
+export type SolLedgerFrameResponse = SolGetAccountResponse | SolSignTransactionResponse

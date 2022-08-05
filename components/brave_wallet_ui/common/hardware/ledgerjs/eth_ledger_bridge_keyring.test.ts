@@ -10,7 +10,7 @@ import { BraveWallet } from '../../../constants/types'
 
 let uuid = 0
 window.crypto = {
-  randomUUID (): string  {
+  randomUUID (): string {
     return uuid++
   }
 }
@@ -232,7 +232,7 @@ test('signTransaction success', async () => {
       success: true,
       v: 'v',
       r: 'r',
-      s: 's',
+      s: 's'
     }
   }
   keyring.transport.addSendCommandResponse(signTransactionResponse)
@@ -246,7 +246,7 @@ test('signTransaction success', async () => {
     payload: {
       v: signTransactionResponse.payload.v,
       r: signTransactionResponse.payload.r,
-      s: signTransactionResponse.payload.s,
+      s: signTransactionResponse.payload.s
     }
   }
   expect(result).toEqual(expectedResult)
@@ -302,10 +302,7 @@ test('signPersonalMessage success with padding v<27', async () => {
   }
   keyring.transport.addSendCommandResponse(unlockSuccessReponse)
   const responsePayload: SignTransactionResponsePayload = {
-    payload: {
-      success: true,
-      v: 0, r: 'b68983', s: 'r68983'
-    }
+    payload: { success: true, v: 0, r: 'b68983', s: 'r68983' }
   }
   keyring.transport.addSendCommandResponse(responsePayload)
   const result: SignHardwareOperationResult = await keyring.signPersonalMessage(
@@ -324,10 +321,7 @@ test('signPersonalMessage success with padding v>=27', async () => {
   }
   keyring.transport.addSendCommandResponse(unlockSuccessReponse)
   const responsePayload: SignTransactionResponsePayload = {
-    payload: {
-      success: true,
-      v: 28, r: 'b68983', s: 'r68983'
-    }
+    payload: { success: true, v: 28, r: 'b68983', s: 'r68983' }
   }
   keyring.transport.addSendCommandResponse(responsePayload)
   const result: SignHardwareOperationResult = await keyring.signPersonalMessage(
@@ -335,7 +329,7 @@ test('signPersonalMessage success with padding v>=27', async () => {
     'message'
   )
 
-  const expectedResult = { payload: '0xb68983r6898301', success: true  }
+  const expectedResult = { payload: '0xb68983r6898301', success: true }
   expect(result).toEqual(expectedResult)
 })
 
@@ -389,10 +383,7 @@ test('signEip712Message success', async () => {
   keyring.transport.addSendCommandResponse(unlockSuccessReponse)
 
   const responsePayload: SignTransactionResponsePayload = {
-    payload: {
-      success: true,
-      v: 28, r: 'b68983', s: 'r68983'
-    }
+    payload: { success: true, v: 28, r: 'b68983', s: 'r68983' }
   }
   keyring.transport.addSendCommandResponse(responsePayload)
   const result: SignHardwareOperationResult = await keyring.signPersonalMessage(
@@ -400,7 +391,7 @@ test('signEip712Message success', async () => {
     'message'
   )
 
-  const expectedResult = { payload: '0xb68983r6898301', success: true  }
+  const expectedResult = { payload: '0xb68983r6898301', success: true }
   expect(result).toEqual(expectedResult)
 })
 
@@ -428,4 +419,3 @@ test('signEip712Message failure after successful unlock', async () => {
   }
   expect(result).toEqual(expectedResult)
 })
-

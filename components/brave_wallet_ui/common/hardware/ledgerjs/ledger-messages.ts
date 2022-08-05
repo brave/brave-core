@@ -25,7 +25,7 @@ export enum LedgerCommand {
   AuthorizationSuccess = 'authorization-success' // Sent by the frame to the parent context
 }
 
-// LedgerBrigeErrorCodes are errors related to the configuring 
+// LedgerBrigeErrorCodes are errors related to the configuring
 // and running of postMessages between window objects
 export enum LedgerBridgeErrorCodes {
   BridgeNotReady = 0,

@@ -29,7 +29,7 @@ const setUpAuthorizeButtonListner = (targetUrl: string, coinType: BraveWallet.Co
 }
 
 const getUntrustedMessagingTransport = (coinType: BraveWallet.CoinType, targetUrl: string): LedgerUntrustedMessagingTransport => {
-  switch(coinType) {
+  switch (coinType) {
     case BraveWallet.CoinType.SOL:
       return new SolanaLedgerUntrustedMessagingTransport(window.parent, targetUrl)
     case BraveWallet.CoinType.ETH:

@@ -114,7 +114,7 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     return { success: true, payload: signature }
   }
 
-  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareOperationResult>=> {
+  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareOperationResult> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -158,7 +158,7 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     const signature = `0x${result.r}${result.s}${v}`
     return signature
   }
- 
+
   private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: boolean, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
     let accounts = []
     const zeroPath = this.getPathForIndex(0, scheme)
