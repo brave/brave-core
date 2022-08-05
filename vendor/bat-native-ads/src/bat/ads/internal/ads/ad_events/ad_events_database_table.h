@@ -52,8 +52,8 @@ class AdEvents final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const AdEventList& ad_events);
 
-  void OnGetAdEvents(GetAdEventsCallback callback,
-                     mojom::DBCommandResponseInfoPtr response);
+  void OnGetAdEvents(mojom::DBCommandResponseInfoPtr response,
+                     GetAdEventsCallback callback);
 
   void MigrateToV5(mojom::DBTransactionInfo* transaction);
   void MigrateToV13(mojom::DBTransactionInfo* transaction);

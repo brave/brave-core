@@ -5,11 +5,12 @@
 
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 
+#include <functional>
 #include <memory>
-#include <utility>
 
 #include "base/bind.h"
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
@@ -27,10 +28,66 @@ AdsClientMojoBridge::AdsClientMojoBridge(
 AdsClientMojoBridge::~AdsClientMojoBridge() = default;
 
 // static
+void AdsClientMojoBridge::OnGetBrowsingHistory(
+    CallbackHolder<GetBrowsingHistoryCallback>* callback_holder,
+    const std::vector<GURL>& history) {
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(std::move(history));
+  }
+
+  delete callback_holder;
+}
+
+// static
 void AdsClientMojoBridge::OnURLRequest(
-    UrlRequestCallback callback,
+    CallbackHolder<UrlRequestCallback>* callback_holder,
     const ads::mojom::UrlResponseInfo& url_response) {
-  std::move(callback).Run(ads::mojom::UrlResponseInfo::New(url_response));
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get())
+        .Run(ads::mojom::UrlResponseInfo::New(url_response));
+  }
+
+  delete callback_holder;
+}
+
+// static
+void AdsClientMojoBridge::OnSave(CallbackHolder<SaveCallback>* callback_holder,
+                                 const bool success) {
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(success);
+  }
+
+  delete callback_holder;
+}
+
+// static
+void AdsClientMojoBridge::OnLoad(CallbackHolder<LoadCallback>* callback_holder,
+                                 const bool success,
+                                 const std::string& value) {
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(success, std::move(value));
+  }
+
+  delete callback_holder;
+}
+
+// static
+void AdsClientMojoBridge::OnRunDBTransaction(
+    CallbackHolder<RunDBTransactionCallback>* callback_holder,
+    ads::mojom::DBCommandResponseInfoPtr response) {
+  DCHECK(callback_holder);
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(std::move(response));
+  }
+  delete callback_holder;
 }
 
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(bool* out_value) {
@@ -137,25 +194,44 @@ void AdsClientMojoBridge::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     GetBrowsingHistoryCallback callback) {
-  ads_client_->GetBrowsingHistory(max_count, days_ago, std::move(callback));
+  // Callback holder will be deleted in |OnGetBrowsingHistory|.
+  auto* callback_holder = new CallbackHolder<GetBrowsingHistoryCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_client_->GetBrowsingHistory(
+      max_count, days_ago,
+      std::bind(AdsClientMojoBridge::OnGetBrowsingHistory, callback_holder,
+                std::placeholders::_1));
 }
 
 void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                                      UrlRequestCallback callback) {
-  ads_client_->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&AdsClientMojoBridge::OnURLRequest, std::move(callback)));
+  // Callback holder gets deleted in |OnURLRequest|.
+  auto* callback_holder =
+      new CallbackHolder<UrlRequestCallback>(AsWeakPtr(), std::move(callback));
+  ads_client_->UrlRequest(std::move(url_request),
+                          std::bind(AdsClientMojoBridge::OnURLRequest,
+                                    callback_holder, std::placeholders::_1));
 }
 
 void AdsClientMojoBridge::Save(
     const std::string& name,
     const std::string& value,
     SaveCallback callback) {
-  ads_client_->Save(name, value, std::move(callback));
+  // Callback holder will be deleted in |OnSave|.
+  auto* callback_holder =
+      new CallbackHolder<SaveCallback>(AsWeakPtr(), std::move(callback));
+  ads_client_->Save(name, value,
+                    std::bind(AdsClientMojoBridge::OnSave, callback_holder,
+                              std::placeholders::_1));
 }
 
 void AdsClientMojoBridge::Load(const std::string& name, LoadCallback callback) {
-  ads_client_->Load(name, std::move(callback));
+  // Callback holder will be deleted in |OnLoad|.
+  auto* callback_holder =
+      new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
+  ads_client_->Load(name,
+                    std::bind(AdsClientMojoBridge::OnLoad, callback_holder,
+                              std::placeholders::_1, std::placeholders::_2));
 }
 
 void AdsClientMojoBridge::LoadFileResource(const std::string& id,
@@ -195,7 +271,12 @@ void AdsClientMojoBridge::ClearScheduledCaptcha() {
 void AdsClientMojoBridge::RunDBTransaction(
     ads::mojom::DBTransactionInfoPtr transaction,
     RunDBTransactionCallback callback) {
-  ads_client_->RunDBTransaction(std::move(transaction), std::move(callback));
+  auto* callback_holder = new CallbackHolder<RunDBTransactionCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_client_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(AdsClientMojoBridge::OnRunDBTransaction, callback_holder,
+                std::placeholders::_1));
 }
 
 void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,

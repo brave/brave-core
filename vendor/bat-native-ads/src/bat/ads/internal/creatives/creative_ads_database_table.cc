@@ -150,7 +150,8 @@ void CreativeAds::Delete(ResultCallback callback) {
   DeleteTable(transaction.get(), GetTableName());
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void CreativeAds::GetForCreativeInstanceId(
@@ -200,8 +201,8 @@ void CreativeAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&CreativeAds::OnGetForCreativeInstanceId,
-                     base::Unretained(this), creative_instance_id, callback));
+      std::bind(&CreativeAds::OnGetForCreativeInstanceId, this,
+                std::placeholders::_1, creative_instance_id, callback));
 }
 
 std::string CreativeAds::GetTableName() const {
@@ -249,9 +250,9 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
 }
 
 void CreativeAds::OnGetForCreativeInstanceId(
+    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
-    GetCreativeAdCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
+    GetCreativeAdCallback callback) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");

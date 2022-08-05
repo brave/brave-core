@@ -100,16 +100,17 @@ void RedeemUnblindedPaymentTokens::Redeem() {
     BLOG(6, UrlRequestToString(url_request));
     BLOG(7, UrlRequestHeadersToString(url_request));
 
-    AdsClientHelper::GetInstance()->UrlRequest(
-        std::move(url_request),
-        base::BindOnce(&RedeemUnblindedPaymentTokens::OnRedeem,
-                       base::Unretained(this), unblinded_payment_tokens));
+    const auto callback =
+        std::bind(&RedeemUnblindedPaymentTokens::OnRedeem, this,
+                  std::placeholders::_1, unblinded_payment_tokens);
+    AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request),
+                                               callback);
   });
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeem(
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-    const mojom::UrlResponseInfo& url_response) {
+    const mojom::UrlResponseInfo& url_response,
+    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 
   BLOG(6, UrlResponseToString(url_response));

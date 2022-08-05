@@ -77,9 +77,9 @@ void Catalog::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&Catalog::OnFetch, base::Unretained(this)));
+  const auto callback =
+      std::bind(&Catalog::OnFetch, this, std::placeholders::_1);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {

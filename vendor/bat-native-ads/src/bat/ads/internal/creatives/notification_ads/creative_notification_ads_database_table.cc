@@ -192,7 +192,8 @@ void CreativeNotificationAds::Save(
   }
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void CreativeNotificationAds::Delete(ResultCallback callback) {
@@ -201,7 +202,8 @@ void CreativeNotificationAds::Delete(ResultCallback callback) {
   DeleteTable(transaction.get(), GetTableName());
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void CreativeNotificationAds::GetForSegments(
@@ -299,8 +301,8 @@ void CreativeNotificationAds::GetForSegments(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&CreativeNotificationAds::OnGetForSegments,
-                     base::Unretained(this), segments, callback));
+      std::bind(&CreativeNotificationAds::OnGetForSegments, this,
+                std::placeholders::_1, segments, callback));
 }
 
 void CreativeNotificationAds::GetAll(
@@ -382,8 +384,8 @@ void CreativeNotificationAds::GetAll(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&CreativeNotificationAds::OnGetAll,
-                                             base::Unretained(this), callback));
+      std::move(transaction), std::bind(&CreativeNotificationAds::OnGetAll,
+                                        this, std::placeholders::_1, callback));
 }
 
 std::string CreativeNotificationAds::GetTableName() const {
@@ -443,9 +445,9 @@ std::string CreativeNotificationAds::BuildInsertOrUpdateQuery(
 }
 
 void CreativeNotificationAds::OnGetForSegments(
+    mojom::DBCommandResponseInfoPtr response,
     const SegmentList& segments,
-    GetCreativeNotificationAdsCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
+    GetCreativeNotificationAdsCallback callback) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative notification ads");
@@ -460,8 +462,8 @@ void CreativeNotificationAds::OnGetForSegments(
 }
 
 void CreativeNotificationAds::OnGetAll(
-    GetCreativeNotificationAdsCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
+    mojom::DBCommandResponseInfoPtr response,
+    GetCreativeNotificationAdsCallback callback) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative notification ads");

@@ -80,7 +80,8 @@ void Conversions::Save(const ConversionList& conversions,
   InsertOrUpdate(transaction.get(), conversions);
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void Conversions::GetAll(GetConversionsCallback callback) {
@@ -114,8 +115,8 @@ void Conversions::GetAll(GetConversionsCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&Conversions::OnGetConversions,
-                                             base::Unretained(this), callback));
+      std::move(transaction), std::bind(&Conversions::OnGetConversions, this,
+                                        std::placeholders::_1, callback));
 }
 
 void Conversions::PurgeExpired(ResultCallback callback) {
@@ -133,7 +134,8 @@ void Conversions::PurgeExpired(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 std::string Conversions::GetTableName() const {
@@ -192,8 +194,8 @@ std::string Conversions::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(6, count).c_str());
 }
 
-void Conversions::OnGetConversions(GetConversionsCallback callback,
-                                   mojom::DBCommandResponseInfoPtr response) {
+void Conversions::OnGetConversions(mojom::DBCommandResponseInfoPtr response,
+                                   GetConversionsCallback callback) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");

@@ -68,7 +68,7 @@ class BatAdsClientMojoBridge
 
   void Save(const std::string& name,
             const std::string& value,
-            ads::SaveCallback callback) override;
+            ads::ResultCallback callback) override;
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;

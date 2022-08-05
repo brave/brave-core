@@ -52,7 +52,8 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void Migration::ToVersion(mojom::DBTransactionInfo* transaction,

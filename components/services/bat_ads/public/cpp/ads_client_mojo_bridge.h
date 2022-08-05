@@ -7,9 +7,11 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_PUBLIC_CPP_ADS_CLIENT_MOJO_BRIDGE_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -22,7 +24,9 @@ class Time;
 
 namespace bat_ads {
 
-class AdsClientMojoBridge : public mojom::BatAdsClient {
+class AdsClientMojoBridge
+    : public mojom::BatAdsClient,
+      public base::SupportsWeakPtr<AdsClientMojoBridge> {
  public:
   explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
   AdsClientMojoBridge(const AdsClientMojoBridge&) = delete;
@@ -30,8 +34,42 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
   ~AdsClientMojoBridge() override;
 
  private:
-  static void OnURLRequest(UrlRequestCallback callback,
+  // TODO(https://github.com/brave/brave-browser/issues/20940) Workaround to
+  // pass |base::OnceCallback| into |std::bind| until we refactor Brave Ads
+  // |std::function| to |base::OnceCallback|.
+  template <typename T>
+  class CallbackHolder {
+   public:
+    CallbackHolder(base::WeakPtr<AdsClientMojoBridge> client, T callback)
+        : client_(client), callback_(std::move(callback)) {}
+
+    ~CallbackHolder() = default;
+
+    bool is_valid() { return !!client_.get(); }
+
+    T& get() { return callback_; }
+
+   private:
+    base::WeakPtr<AdsClientMojoBridge> client_;
+    T callback_;
+  };
+
+  static void OnGetBrowsingHistory(
+      CallbackHolder<GetBrowsingHistoryCallback>* callback_holder,
+      const std::vector<GURL>& history);
+
+  static void OnURLRequest(CallbackHolder<UrlRequestCallback>* callback_holder,
                            const ads::mojom::UrlResponseInfo& url_response);
+
+  static void OnSave(CallbackHolder<SaveCallback>* callback_holder,
+                     const bool success);
+  static void OnLoad(CallbackHolder<LoadCallback>* callback_holder,
+                     const bool success,
+                     const std::string& value);
+
+  static void OnRunDBTransaction(
+      CallbackHolder<RunDBTransactionCallback>* callback_holder,
+      ads::mojom::DBCommandResponseInfoPtr response);
 
   // BatAdsClient:
   bool IsNetworkConnectionAvailable(bool* out_value) override;

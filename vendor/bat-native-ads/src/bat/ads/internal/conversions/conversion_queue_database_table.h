@@ -70,13 +70,13 @@ class ConversionQueue final : public TableInterface {
       mojom::DBCommandInfo* command,
       const ConversionQueueItemList& conversion_queue_items);
 
-  void OnGetAll(GetConversionQueueCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
+  void OnGetAll(mojom::DBCommandResponseInfoPtr response,
+                GetConversionQueueCallback callback);
 
   void OnGetForCreativeInstanceId(
+      mojom::DBCommandResponseInfoPtr response,
       const std::string& creative_instance_id,
-      GetConversionQueueForCreativeInstanceIdCallback callback,
-      mojom::DBCommandResponseInfoPtr response);
+      GetConversionQueueForCreativeInstanceIdCallback callback);
 
   void MigrateToV10(mojom::DBTransactionInfo* transaction);
   void MigrateToV11(mojom::DBTransactionInfo* transaction);

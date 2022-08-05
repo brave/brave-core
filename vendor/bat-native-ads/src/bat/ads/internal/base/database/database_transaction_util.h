@@ -12,8 +12,8 @@
 namespace ads {
 namespace database {
 
-void OnResultCallback(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr response);
+void OnResultCallback(mojom::DBCommandResponseInfoPtr response,
+                      ResultCallback callback);
 
 }  // namespace database
 }  // namespace ads

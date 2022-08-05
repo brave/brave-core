@@ -90,39 +90,35 @@ void ConfirmationStateManager::Load() {
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
-      base::BindOnce(&ConfirmationStateManager::OnLoaded,
-                     base::Unretained(this)));
-}
+      [=](const bool success, const std::string& json) {
+        if (!success) {
+          BLOG(3, "Confirmations state does not exist, creating default state");
 
-void ConfirmationStateManager::OnLoaded(const bool success,
-                                        const std::string& json) {
-  if (!success) {
-    BLOG(3, "Confirmations state does not exist, creating default state");
+          is_initialized_ = true;
 
-    is_initialized_ = true;
+          Save();
+        } else {
+          if (!FromJson(json)) {
+            BLOG(0, "Failed to load confirmations state");
 
-    Save();
-  } else {
-    if (!FromJson(json)) {
-      BLOG(0, "Failed to load confirmations state");
+            BLOG(3, "Failed to parse confirmations state: " << json);
 
-      BLOG(3, "Failed to parse confirmations state: " << json);
+            callback_(/* success */ false);
+            return;
+          }
 
-      callback_(/* success */ false);
-      return;
-    }
+          BLOG(3, "Successfully loaded confirmations state");
 
-    BLOG(3, "Successfully loaded confirmations state");
+          is_initialized_ = true;
+        }
 
-    is_initialized_ = true;
-  }
+        is_mutated_ = IsMutated(ToJson());
+        if (is_mutated_) {
+          BLOG(9, "Confirmation state is mutated");
+        }
 
-  is_mutated_ = IsMutated(ToJson());
-  if (is_mutated_) {
-    BLOG(9, "Confirmation state is mutated");
-  }
-
-  callback_(/* success */ true);
+        callback_(/* success */ true);
+      });
 }
 
 void ConfirmationStateManager::Save() {
@@ -139,14 +135,14 @@ void ConfirmationStateManager::Save() {
   }
 
   AdsClientHelper::GetInstance()->Save(
-      kConfirmationStateFilename, json, base::BindOnce([](const bool success) {
+      kConfirmationStateFilename, json, [](const bool success) {
         if (!success) {
           BLOG(0, "Failed to save confirmations state");
           return;
         }
 
         BLOG(9, "Successfully saved confirmations state");
-      }));
+      });
 }
 
 ConfirmationList ConfirmationStateManager::GetFailedConfirmations() const {

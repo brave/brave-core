@@ -81,7 +81,8 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   InsertOrUpdate(transaction.get(), deposit);
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -143,8 +144,8 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&Deposits::OnGetForCreativeInstanceId,
-                     base::Unretained(this), creative_instance_id, callback));
+      std::bind(&Deposits::OnGetForCreativeInstanceId, this,
+                std::placeholders::_1, creative_instance_id, callback));
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) {
@@ -161,7 +162,8 @@ void Deposits::PurgeExpired(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 std::string Deposits::GetTableName() const {
@@ -218,9 +220,9 @@ std::string Deposits::BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
 }
 
 void Deposits::OnGetForCreativeInstanceId(
+    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
-    GetDepositsCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
+    GetDepositsCallback callback) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");

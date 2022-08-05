@@ -85,7 +85,7 @@ class ADS_EXPORT AdsClient {
   // |false|.
   virtual void Save(const std::string& name,
                     const std::string& value,
-                    SaveCallback callback) = 0;
+                    ResultCallback callback) = 0;
 
   // Load a file for the specified |name| from persistent storage. The callback
   // takes 2 arguments - |bool| is set to |true| if successful otherwise

@@ -71,12 +71,12 @@ class CreativeNotificationAds final : public TableInterface {
       mojom::DBCommandInfo* command,
       const CreativeNotificationAdList& creative_notification_ads);
 
-  void OnGetForSegments(const SegmentList& segments,
-                        GetCreativeNotificationAdsCallback callback,
-                        mojom::DBCommandResponseInfoPtr response);
+  void OnGetForSegments(mojom::DBCommandResponseInfoPtr response,
+                        const SegmentList& segments,
+                        GetCreativeNotificationAdsCallback callback);
 
-  void OnGetAll(GetCreativeNotificationAdsCallback callback,
-                mojom::DBCommandResponseInfoPtr response);
+  void OnGetAll(mojom::DBCommandResponseInfoPtr response,
+                GetCreativeNotificationAdsCallback callback);
 
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 

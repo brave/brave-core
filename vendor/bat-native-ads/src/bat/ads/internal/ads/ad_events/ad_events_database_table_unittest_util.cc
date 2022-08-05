@@ -25,22 +25,19 @@ void Reset(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(
-          [](ResultCallback callback,
-             mojom::DBCommandResponseInfoPtr command_response) {
-            if (!command_response ||
-                command_response->status !=
-                    mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-              DCHECK(false);
-              callback(/* success */ false);
-              return;
-            }
+      [callback](mojom::DBCommandResponseInfoPtr command_response) {
+        if (!command_response ||
+            command_response->status !=
+                mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+          DCHECK(false);
+          callback(/* success */ false);
+          return;
+        }
 
-            RebuildAdEventHistoryFromDatabase();
+        RebuildAdEventHistoryFromDatabase();
 
-            callback(/* success */ true);
-          },
-          callback));
+        callback(/* success */ true);
+      });
 }
 
 }  // namespace ad_events

@@ -56,9 +56,9 @@ class Deposits final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const DepositInfo& deposit);
 
-  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                  GetDepositsCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response);
+  void OnGetForCreativeInstanceId(mojom::DBCommandResponseInfoPtr response,
+                                  const std::string& creative_instance_id,
+                                  GetDepositsCallback callback);
 
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };

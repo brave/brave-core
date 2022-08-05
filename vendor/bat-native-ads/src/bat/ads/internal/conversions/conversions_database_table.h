@@ -46,8 +46,8 @@ class Conversions final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const ConversionList& conversions);
 
-  void OnGetConversions(GetConversionsCallback callback,
-                        mojom::DBCommandResponseInfoPtr response);
+  void OnGetConversions(mojom::DBCommandResponseInfoPtr response,
+                        GetConversionsCallback callback);
 
   void MigrateToV23(mojom::DBTransactionInfo* transaction);
 };

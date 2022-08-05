@@ -380,9 +380,9 @@ void NotificationAdManager::Save() {
   BLOG(9, "Saving notification ads state");
 
   std::string json = ToJson();
-  AdsClientHelper::GetInstance()->Save(
-      kNotificationsFilename, json,
-      base::BindOnce(&NotificationAdManager::OnSaved, base::Unretained(this)));
+  auto callback =
+      std::bind(&NotificationAdManager::OnSaved, this, std::placeholders::_1);
+  AdsClientHelper::GetInstance()->Save(kNotificationsFilename, json, callback);
 }
 
 void NotificationAdManager::OnSaved(const bool success) {
@@ -397,9 +397,9 @@ void NotificationAdManager::OnSaved(const bool success) {
 void NotificationAdManager::Load() {
   BLOG(3, "Loading notification ads state");
 
-  AdsClientHelper::GetInstance()->Load(
-      kNotificationsFilename,
-      base::BindOnce(&NotificationAdManager::OnLoaded, base::Unretained(this)));
+  auto callback = std::bind(&NotificationAdManager::OnLoaded, this,
+                            std::placeholders::_1, std::placeholders::_2);
+  AdsClientHelper::GetInstance()->Load(kNotificationsFilename, callback);
 }
 
 void NotificationAdManager::OnLoaded(const bool success,

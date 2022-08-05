@@ -40,7 +40,7 @@ class AdsClientIOS : public ads::AdsClient {
                   ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,
             const std::string& value,
-            ads::SaveCallback callback) override;
+            ads::ResultCallback callback) override;
   void Load(const std::string& name, ads::LoadCallback callback) override;
   void LoadFileResource(const std::string& id,
                         const int version,

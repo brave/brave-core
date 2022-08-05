@@ -57,8 +57,8 @@ class Transactions final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const TransactionList& transactions);
 
-  void OnGetTransactions(GetTransactionsCallback callback,
-                         mojom::DBCommandResponseInfoPtr response);
+  void OnGetTransactions(mojom::DBCommandResponseInfoPtr response,
+                         GetTransactionsCallback callback);
 
   void MigrateToV18(mojom::DBTransactionInfo* transaction);
 };

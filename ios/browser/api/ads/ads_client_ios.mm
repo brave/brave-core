@@ -67,13 +67,13 @@ void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
 
 void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                               ads::UrlRequestCallback callback) {
-  [bridge_ UrlRequest:std::move(url_request) callback:std::move(callback)];
+  [bridge_ UrlRequest:std::move(url_request) callback:callback];
 }
 
 void AdsClientIOS::Save(const std::string& name,
                         const std::string& value,
-                        ads::SaveCallback callback) {
-  [bridge_ save:name value:value callback:std::move(callback)];
+                        ads::ResultCallback callback) {
+  [bridge_ save:name value:value callback:callback];
 }
 
 void AdsClientIOS::LoadFileResource(const std::string& id,
@@ -86,13 +86,11 @@ void AdsClientIOS::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
-  [bridge_ getBrowsingHistory:max_count
-                      forDays:days_ago
-                     callback:std::move(callback)];
+  [bridge_ getBrowsingHistory:max_count forDays:days_ago callback:callback];
 }
 
 void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {
-  [bridge_ load:name callback:std::move(callback)];
+  [bridge_ load:name callback:callback];
 }
 
 std::string AdsClientIOS::LoadDataResource(const std::string& name) {
@@ -125,8 +123,7 @@ void AdsClientIOS::Log(const char* file,
 void AdsClientIOS::RunDBTransaction(
     ads::mojom::DBTransactionInfoPtr transaction,
     ads::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(transaction)
-                   callback:std::move(callback)];
+  [bridge_ runDBTransaction:std::move(transaction) callback:callback];
 }
 
 void AdsClientIOS::UpdateAdRewards() {
