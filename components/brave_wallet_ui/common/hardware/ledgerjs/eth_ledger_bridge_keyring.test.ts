@@ -1,229 +1,431 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
-import LedgerBridgeKeyring from './eth_ledger_bridge_keyring'
-import { SignatureVRS } from '../../hardware_operations'
+import EthereumLedgerBridgeKeyring from './eth_ledger_bridge_keyring'
+import { MockLedgerTransport } from './ledger_bridge_keyring.test'
 import { LedgerDerivationPaths } from '../types'
+import { BraveWallet } from '../../../constants/types'
 
-// class MockApp {
-//   signature: SignatureVRS
+let uuid = 0
+window.crypto = {
+  randomUUID () {
+    return uuid++
+  }
+}
 
-//   async getAddress (path: string) {
-//     return { address: `address for ${path}` }
-//   }
+const createKeyring = () => {
+  const keyring = new EthereumLedgerBridgeKeyring()
+  const transport = new MockLedgerTransport()
+  keyring.transport = transport
+  const iframe = document.createElement('iframe')
+  document.body.appendChild(iframe)
+  keyring.bridge = iframe
 
-//   async signPersonalMessage (path: string, message: Buffer) {
-//     return Promise.resolve(this.signature)
-//   }
+  return keyring
+}
 
-//   async signEIP712HashedMessage (path: string, domainSeparatorHex: string, hashStructMessageHex: string) {
-//     return Promise.resolve(this.signature)
-//   }
-// }
+test('Check ledger bridge type', () => {
+  const keyring = createKeyring()
+  return expect(keyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
+})
 
-// const createLedgerKeyring = (app: MockApp = new MockApp()) => {
-//   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-//   ledgerHardwareKeyring.unlock = async () => {
-//     ledgerHardwareKeyring.app = app
-//     ledgerHardwareKeyring.deviceId = 'device1'
-//     return { success: true }
-//   }
-//   return ledgerHardwareKeyring
-// }
+test('getAccounts unlock error', async () => {
+  const keyring = createKeyring()
+  const sendCommandResponse: GetAccountsHardwareOperationResult = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
+  keyring.transport.addSendCommandResponse(sendCommandResponse)
+  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1)
+  const expectedResult: GetAccountsHardwareOperationResult = sendCommandResponse.payload
+  expect(result).toEqual(expectedResult)
+})
 
-// const unlockedLedgerKeyring = () => {
-//   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-//   ledgerHardwareKeyring.app = new MockApp()
-//   ledgerHardwareKeyring.deviceId = 'device1'
-//   return ledgerHardwareKeyring
-// }
+test('getAccounts ledger live derivation path success', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessResponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessResponse)
 
-// test('Extracting accounts from device', () => {
-//   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
-//     .resolves.toStrictEqual({
-//       payload: [
-//         {
-//           'address': 'address for m/44\'/60\'/0\'/0/0',
-//           'derivationPath': 'm/44\'/60\'/0\'/0/0',
-//           'hardwareVendor': 'Ledger',
-//           'name': 'Ledger',
-//           'deviceId': 'device1',
-//           'coin': BraveWallet.CoinType.ETH,
-//           'network': undefined
-//         },
-//         {
-//           'address': 'address for m/44\'/60\'/1\'/0/0',
-//           'derivationPath': 'm/44\'/60\'/1\'/0/0',
-//           'hardwareVendor': 'Ledger',
-//           'name': 'Ledger',
-//           'deviceId': 'device1',
-//           'coin': BraveWallet.CoinType.ETH,
-//           'network': undefined
-//         }],
-//       success: true
-//     }
-//     )
-// })
+  const getAccountsResponsePayload1: EthGetAccountsResponsePayload = {
+    success: true,
+    publicKey: 'publicKey',
+    address: 'address'
+  }
+  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload1 })
+  const getAccountsResponsePayload2: EthGetAccountsResponsePayload = {
+    success: true,
+    publicKey: 'publicKey 2',
+    address: 'address 2'
+  }
+  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload2 })
 
-// test('Extracting accounts from legacy device', () => {
-//   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.Legacy))
-//     .resolves.toStrictEqual({
-//       payload: [
-//         {
-//           'address': 'address for m/44\'/60\'/0\'/0',
-//           'derivationPath': 'm/44\'/60\'/0\'/0',
-//           'hardwareVendor': 'Ledger',
-//           'name': 'Ledger',
-//           'deviceId': 'device1',
-//           'coin': BraveWallet.CoinType.ETH,
-//           'network': undefined
-//         },
-//         {
-//           'address': 'address for m/44\'/60\'/0\'/1',
-//           'derivationPath': 'm/44\'/60\'/0\'/1',
-//           'hardwareVendor': 'Ledger',
-//           'name': 'Ledger',
-//           'deviceId': 'device1',
-//           'coin': BraveWallet.CoinType.ETH,
-//           'network': undefined
-//         }],
-//       success: true
-//     }
-//     )
-// })
+  const result = await keyring.getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive)
+  expect(result).toEqual({
+    success: true,
+    payload: [
+      {
+        address: 'address',
+        derivationPath: "m/44'/60'/0'/0/0",
+        name: 'Ledger',
+        hardwareVendor: 'Ledger',
+        deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
+        coin: BraveWallet.CoinType.ETH,
+        network: undefined
+      },
+      {
+        address: 'address 2',
+        derivationPath: "m/44'/60'/1'/0/0",
+        name: 'Ledger',
+        hardwareVendor: 'Ledger',
+        deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
+        coin: BraveWallet.CoinType.ETH,
+        network: undefined
+      }
+    ]
+  })
+})
 
-// test('Extracting accounts with deprecated derivation paths', () => {
-//   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.Deprecated))
-//     .resolves.toStrictEqual({
-//       payload: [
-//         {
-//           'address': 'address for m/44\'/60\'/0\'/0',
-//           'derivationPath': 'm/44\'/60\'/0\'/0',
-//           'hardwareVendor': 'Ledger',
-//           'name': 'Ledger',
-//           'deviceId': 'device1',
-//           'coin': BraveWallet.CoinType.ETH,
-//           'network': undefined
-//         },
-//         {
-//           'address': 'address for m/44\'/60\'/1\'/0',
-//           'derivationPath': 'm/44\'/60\'/1\'/0',
-//           'hardwareVendor': 'Ledger',
-//           'name': 'Ledger',
-//           'deviceId': 'device1',
-//           'coin': BraveWallet.CoinType.ETH,
-//           'network': undefined
-//         }],
-//       success: true
-//     }
-//     )
-// })
+test('getAccounts legacy derivation path success', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessResponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessResponse)
 
-// test('Check ledger bridge type', () => {
-//   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-//   return expect(ledgerHardwareKeyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
-// })
+  const getAccountsResponsePayload1: EthGetAccountsResponsePayload = {
+    success: true,
+    publicKey: 'publicKey',
+    address: 'address'
+  }
+  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload1 })
+  const getAccountsResponsePayload2: EthGetAccountsResponsePayload = {
+    success: true,
+    publicKey: 'publicKey 2',
+    address: 'address 2'
+  }
+  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload2 })
 
-// test('Check locks for device app only', () => {
-//   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-//   expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
-//   ledgerHardwareKeyring.app = new MockApp()
-//   expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
-// })
+  const result = await keyring.getAccounts(-2, 1, LedgerDerivationPaths.Legacy)
+  expect(result).toEqual({
+    success: true,
+    payload: [
+      {
+        address: 'address',
+        derivationPath: "m/44'/60'/0'/0",
+        name: 'Ledger',
+        hardwareVendor: 'Ledger',
+        deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
+        coin: BraveWallet.CoinType.ETH,
+        network: undefined
+      },
+      {
+        address: 'address 2',
+        derivationPath: "m/44'/60'/0'/1",
+        name: 'Ledger',
+        hardwareVendor: 'Ledger',
+        deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
+        coin: BraveWallet.CoinType.ETH,
+        network: undefined
+      }
+    ]
+  })
+})
 
-// test('Check locks for device app and device id', () => {
-//   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-//   expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
-//   ledgerHardwareKeyring.app = new MockApp()
-//   ledgerHardwareKeyring.deviceId = 'test'
-//   expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(true)
-// })
+test('getAccounts deprecated derivation path success', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessResponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessResponse)
 
-// test('Extract accounts from locked device', () => {
-//   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-//   ledgerHardwareKeyring.unlock = async function () {
-//     return { success: false, error: 'braveWalletUnlockError' }
-//   }
-//   return expect(ledgerHardwareKeyring.getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
-//     .resolves.toStrictEqual({ error: 'braveWalletUnlockError', success: false })
-// })
+  const getAccountsResponsePayload1: EthGetAccountsResponsePayload = {
+    success: true,
+    publicKey: 'publicKey',
+    address: 'address'
+  }
+  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload1 })
+  const getAccountsResponsePayload2: EthGetAccountsResponsePayload = {
+    success: true,
+    publicKey: 'publicKey 2',
+    address: 'address 2'
+  }
+  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload2 })
 
-// test('Extract accounts from unknown device', () => {
-//   const ledgerHardwareKeyring = unlockedLedgerKeyring()
-//   return expect(ledgerHardwareKeyring.getAccounts(-2, 1, 'unknown'))
-//     .rejects.toThrow()
-// })
+  const result = await keyring.getAccounts(-2, 1, LedgerDerivationPaths.Deprecated)
+  expect(result).toEqual({
+    success: true,
+    payload: [
+      {
+        address: 'address',
+        derivationPath: "m/44'/60'/0'/0",
+        name: 'Ledger',
+        hardwareVendor: 'Ledger',
+        deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
+        coin: BraveWallet.CoinType.ETH,
+        network: undefined
+      },
+      {
+        address: 'address 2',
+        derivationPath: "m/44'/60'/1'/0",
+        name: 'Ledger',
+        hardwareVendor: 'Ledger',
+        deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
+        coin: BraveWallet.CoinType.ETH,
+        network: undefined
+      }
+    ]
+  })
+})
 
-// test('Sign personal message successfully with padding v<27', () => {
-//   const ledgerHardwareKeyring = unlockedLedgerKeyring()
-//   ledgerHardwareKeyring.app.signature = { v: 0, r: 'b68983', s: 'r68983' }
-//   return expect(ledgerHardwareKeyring.signPersonalMessage(
-//     'm/44\'/60\'/0\'/0/0', 'message'))
-//     .resolves.toStrictEqual({ payload: '0xb68983r6898300', success: true })
-// })
+test('getAccounts ledger error after successful unlock', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
 
-// test('Sign personal message successfully with padding v>=27', () => {
-//   const ledgerHardwareKeyring = unlockedLedgerKeyring()
-//   ledgerHardwareKeyring.app.signature = { v: 28, r: 'b68983', s: 'r68983' }
-//   return expect(ledgerHardwareKeyring.signPersonalMessage(
-//     'm/44\'/60\'/0\'/0/0', 'message'))
-//     .resolves.toStrictEqual({ payload: '0xb68983r6898301', success: true })
-// })
+  const getAccountResponseLedgerError: EthGetAccountsResponsePayload = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
 
-// test('Sign personal message successfully without padding v>=27', () => {
-//   const ledgerHardwareKeyring = unlockedLedgerKeyring()
-//   ledgerHardwareKeyring.app.signature = { v: 44, r: 'b68983', s: 'r68983' }
-//   return expect(ledgerHardwareKeyring.signPersonalMessage(
-//     'm/44\'/60\'/0\'/0/0', 'message'))
-//     .resolves.toStrictEqual({ payload: '0xb68983r6898311', success: true })
-// })
+  keyring.transport.addSendCommandResponse({ payload: getAccountResponseLedgerError })
+  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive)
 
-// test('Sign personal message successfully without padding v<27', () => {
-//   const ledgerHardwareKeyring = unlockedLedgerKeyring()
-//   ledgerHardwareKeyring.app.signature = { v: 17, r: 'b68983', s: 'r68983' }
-//   return expect(ledgerHardwareKeyring.signPersonalMessage(
-//     'm/44\'/60\'/0\'/0/0', 'message'))
-//     .resolves.toStrictEqual({ payload: '0xb68983r6898311', success: true })
-// })
+  expect(result).toEqual({
+    success: false,
+    error: { payload: { message: 'LedgerError', statusCode: 101 } },
+    code: undefined
+  })
+})
 
-// test('Sign personal message failed', () => {
-//   const ledgerHardwareKeyring = createLedgerKeyring()
-//   return expect(ledgerHardwareKeyring.signPersonalMessage(
-//     'm/44\'/60\'/0\'/0/0', 'message'))
-//     .resolves.toMatchObject({ success: false })
-// })
+test('signTransaction unlock error', async () => {
+  const keyring = createKeyring()
+  const ledgerErrorUnlockResponse: GetAccountsHardwareOperationResult = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
+  keyring.transport.addSendCommandResponse(ledgerErrorUnlockResponse)
+  const result = await keyring.signTransaction("m/44'/60'/0'/0/0", Buffer.from('transaction'))
+  const expectedResult: SignHardwareOperationResult = ledgerErrorUnlockResponse.payload
+  expect(result).toEqual(expectedResult)
+})
 
-// test('Sign typed message success', () => {
-//   const app = new MockApp()
-//   app.signature = { v: 28, r: 'b68983', s: 'r68983' }
-//   const ledgerHardwareKeyring = createLedgerKeyring(app)
-//   return expect(ledgerHardwareKeyring.signEip712Message(
-//     'm/44\'/60\'/0\'/0/0', 'domainSeparatorHex', 'hashStructMessageHex'))
-//     .resolves.toStrictEqual({ payload: '0xb68983r6898301', success: true })
-// })
+test('signTransaction success', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  const signTransactionResponse: SignTransactionResponsePayload = {
+    payload: {
+      success: true,
+      v: 'v',
+      r: 'r',
+      s: 's',
+    }
+  }
+  keyring.transport.addSendCommandResponse(signTransactionResponse)
+  const result: SignHardwareOperationResult = await keyring.signTransaction(
+    '44\'/501\'/1\'/0\'',
+    Buffer.from('transaction')
+  )
 
-// test('Sign typed message locked', () => {
-//   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-//   ledgerHardwareKeyring.unlock = async () => {
-//     return { success: false }
-//   }
-//   return expect(ledgerHardwareKeyring.signEip712Message(
-//     'm/44\'/60\'/0\'/0/0', 'domainSeparatorHex', 'hashStructMessageHex'))
-//     .resolves.toStrictEqual({ success: false })
-// })
+  const expectedResult: SignHardwareOperationResult = {
+    success: true,
+    payload: {
+      v: signTransactionResponse.payload.v,
+      r: signTransactionResponse.payload.r,
+      s: signTransactionResponse.payload.s,
+    }
+  }
+  expect(result).toEqual(expectedResult)
+})
 
-// test('Sign typed message error', () => {
-//   const app = new MockApp()
-//   app.signEIP712HashedMessage = async (path: string,
-//     domainSeparatorHex: string,
-//     hashStructMessageHex: string) => {
-//       throw Error('some error')
-//   }
-//   const ledgerHardwareKeyring = createLedgerKeyring(app)
-//   return expect(ledgerHardwareKeyring.signEip712Message(
-//     'm/44\'/60\'/0\'/0/0', 'domainSeparatorHex', 'hashStructMessageHex'))
-//     .resolves.toStrictEqual({ success: false, error: 'some error', code: 'Error' })
-// })
+test('signTransaction ledger error after successful unlock', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  const signTransactionResponseLedgerError: SignTransactionResponsePayload = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
+  keyring.transport.addSendCommandResponse(signTransactionResponseLedgerError)
+  const result: SignHardwareOperationResult = await keyring.signTransaction(
+    "m/44'/60'/0'/0/0",
+    'transaction'
+  )
+
+  const expectedResult: SignHardwareOperationResult = {
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  }
+  expect(result).toEqual(expectedResult)
+})
+
+test('signPersonalMessage unlock error', async () => {
+  const keyring = createKeyring()
+  const ledgerErrorUnlockResponse: GetAccountsHardwareOperationResult = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
+  keyring.transport.addSendCommandResponse(ledgerErrorUnlockResponse)
+  const result = await keyring.signPersonalMessage(
+    "m/44'/60'/0'/0/0",
+    'message'
+  )
+  const expectedResult: SignHardwareOperationResult = ledgerErrorUnlockResponse.payload
+  expect(result).toEqual(expectedResult)
+})
+
+test('signPersonalMessage success with padding v<27', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  const responsePayload: SignTransactionResponsePayload = {
+    payload: {
+      success: true,
+      v: 0, r: 'b68983', s: 'r68983'
+    }
+  }
+  keyring.transport.addSendCommandResponse(responsePayload)
+  const result: SignHardwareOperationResult = await keyring.signPersonalMessage(
+    "m/44'/60'/0'/0/0",
+    'message'
+  )
+
+  const expectedResult = { payload: '0xb68983r6898300', success: true }
+  expect(result).toEqual(expectedResult)
+})
+
+test('signPersonalMessage success with padding v>=27', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  const responsePayload: SignTransactionResponsePayload = {
+    payload: {
+      success: true,
+      v: 28, r: 'b68983', s: 'r68983'
+    }
+  }
+  keyring.transport.addSendCommandResponse(responsePayload)
+  const result: SignHardwareOperationResult = await keyring.signPersonalMessage(
+    "m/44'/60'/0'/0/0",
+    'message'
+  )
+
+  const expectedResult = { payload: '0xb68983r6898301', success: true  }
+  expect(result).toEqual(expectedResult)
+})
+
+test('signPersonalMessage failure after successful unlock', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  const signPersonalMessageResponse: SignTransactionResponsePayload = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
+  keyring.transport.addSendCommandResponse(signPersonalMessageResponse)
+  const result: SignHardwareOperationResult = await keyring.signPersonalMessage(
+    "m/44'/60'/0'/0/0",
+    'message'
+  )
+  const expectedResult: SignHardwareOperationResult = {
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  }
+  expect(result).toEqual(expectedResult)
+})
+
+test('signEip712Message unlock error', async () => {
+  const keyring = createKeyring()
+  const ledgerErrorUnlockResponse: GetAccountsHardwareOperationResult = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
+  keyring.transport.addSendCommandResponse(ledgerErrorUnlockResponse)
+  const result = await keyring.signEip712Message(
+    "m/44'/60'/0'/0/0",
+    'message'
+  )
+  const expectedResult: SignHardwareOperationResult = ledgerErrorUnlockResponse.payload
+  expect(result).toEqual(expectedResult)
+})
+
+test('signEip712Message success', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+
+  const responsePayload: SignTransactionResponsePayload = {
+    payload: {
+      success: true,
+      v: 28, r: 'b68983', s: 'r68983'
+    }
+  }
+  keyring.transport.addSendCommandResponse(responsePayload)
+  const result: SignHardwareOperationResult = await keyring.signPersonalMessage(
+    "m/44'/60'/0'/0/0",
+    'message'
+  )
+
+  const expectedResult = { payload: '0xb68983r6898301', success: true  }
+  expect(result).toEqual(expectedResult)
+})
+
+test('signEip712Message failure after successful unlock', async () => {
+  const keyring = createKeyring()
+  const unlockSuccessReponse: UnlockResponsePayload = {
+    payload: { success: true }
+  }
+  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  const signPersonalMessageResponse: SignTransactionResponsePayload = {
+    payload: {
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  }
+  keyring.transport.addSendCommandResponse(signPersonalMessageResponse)
+  const result: SignHardwareOperationResult = await keyring.signEip712Message(
+    "m/44'/60'/0'/0/0",
+    'message'
+  )
+  const expectedResult: SignHardwareOperationResult = {
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  }
+  expect(result).toEqual(expectedResult)
+})
+
