@@ -57,6 +57,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
     private double nativeCurrencyTotal; // Cannot format directly because format is in R
     private double value;
     private String symbol = "";
+    private BlockchainToken token;
     private int decimals;
     private boolean insufficientFundsForGasError;
     private boolean insufficientFundsError;
@@ -142,6 +143,10 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public String getSymbol() {
         return this.symbol;
+    }
+
+    public BlockchainToken getToken() {
+        return this.token;
     }
 
     public int getDecimals() {
@@ -300,6 +305,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.hash = txInfo.txHash;
         parsedTransaction.type = txInfo.txType;
         parsedTransaction.nonce = nonce;
+        parsedTransaction.token = token;
         parsedTransaction.createdTime = txInfo.createdTime;
         parsedTransaction.status = txInfo.txStatus;
         parsedTransaction.sender = txInfo.fromAddress;
