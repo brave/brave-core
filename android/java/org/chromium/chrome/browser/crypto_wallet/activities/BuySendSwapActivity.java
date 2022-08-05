@@ -1489,8 +1489,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         String iconPath =
                 blockchainToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + token.logo);
         if (!token.logo.isEmpty()) {
-            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null,
-                    assetText, true);
+            Utils.setBitmapResource(mExecutor, mHandler, this, iconPath,
+                    Utils.getCoinIcon(token.coin), null, assetText, true);
         } else {
             Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, token.contractAddress,
                     token.symbol, getResources().getDisplayMetrics().density, assetText, this, true,
