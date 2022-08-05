@@ -16,6 +16,16 @@ bool SetDomainResolver(DomainResolverCallback resolver) {
   return set_domain_resolver(resolver);
 }
 
+#if BUILDFLAG(IS_IOS)
+const std::string ConvertRulesToContentBlockingRules(const std::string& rules) {
+  char* content_blocking_json =
+      convert_rules_to_content_blocking(rules.c_str());
+  const std::string result = std::string(content_blocking_json);
+  c_char_buffer_destroy(content_blocking_json);
+  return result;
+}
+#endif
+
 FilterListMetadata::FilterListMetadata() = default;
 
 FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {
