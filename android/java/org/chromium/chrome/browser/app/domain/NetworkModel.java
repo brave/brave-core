@@ -171,7 +171,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         }
     }
 
-    public void setNetwork(
+    public void setNetworkWithAccountCheck(
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
         List<AccountInfo> accountInfos = mSharedData.getAccounts().getValue();
         boolean hasAccountOfNetworkType = false;
@@ -197,6 +197,16 @@ public class NetworkModel implements JsonRpcServiceObserver {
             _mNeedToCreateAccountForNetwork.postValue(networkToBeSetAsSelected);
             callback.call(false);
         }
+    }
+
+    public void setNetwork(
+            NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
+        mJsonRpcService.setNetwork(
+                networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin, isSelected -> {
+                    callback.call(isSelected);
+                    mCryptoActions.updateCoinType();
+                    init();
+                });
     }
 
     public void clearCreateAccountState() {

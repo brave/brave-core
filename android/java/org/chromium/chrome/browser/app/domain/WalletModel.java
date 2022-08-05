@@ -203,5 +203,10 @@ public class WalletModel {
                 mCryptoModel.getNetworkModel().init();
             });
         }
+
+        @Override
+        public void onNewAccountAdded() {
+            mCryptoModel.refreshTransactions();
+        }
     }
 }

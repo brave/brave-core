@@ -47,6 +47,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -90,7 +91,6 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -307,12 +307,13 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 mFromValueText.setText("");
                 mFromValueText.setHint("0");
 
-                mWalletModel.getCryptoModel().getNetworkModel().setNetwork(networkInfo, success -> {
-                    if (!success) {
-                        return;
-                    }
-                    mSelectedNetwork = networkInfo;
-                });
+                mWalletModel.getCryptoModel().getNetworkModel().setNetworkWithAccountCheck(
+                        networkInfo, success -> {
+                            if (!success) {
+                                return;
+                            }
+                            mSelectedNetwork = networkInfo;
+                        });
             }
 
         } else if (parent.getId() == R.id.accounts_spinner) {
@@ -1581,6 +1582,46 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         resetSwapFromToAssets();
                     }
                 });
+
+        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(this, networkInfo -> {
+            if (networkInfo == null) return;
+            MaterialAlertDialogBuilder builder =
+                    new MaterialAlertDialogBuilder(this, R.style.BraveWalletAlertDialogTheme)
+                            .setMessage(getString(R.string.brave_wallet_create_account_description,
+                                    networkInfo.symbolName))
+                            .setPositiveButton(R.string.wallet_action_yes,
+                                    (dialog, which) -> {
+                                        mWalletModel.getCryptoModel().getNetworkModel().setNetwork(
+                                                networkInfo, success -> {
+                                                    if (success) {
+                                                        mWalletModel.getKeyringModel().addAccount(
+                                                                WalletUtils.getUniqueNextAccountName(
+                                                                        this,
+                                                                        mWalletModel
+                                                                                .getKeyringModel()
+                                                                                .mAccountInfos
+                                                                                .getValue()
+                                                                                .toArray(
+                                                                                        new AccountInfo
+                                                                                                [0]),
+                                                                        networkInfo.symbolName,
+                                                                        networkInfo.coin),
+                                                                networkInfo.coin,
+                                                                isAccountAdded -> {});
+                                                    }
+                                                    mWalletModel.getCryptoModel()
+                                                            .getNetworkModel()
+                                                            .clearCreateAccountState();
+                                                });
+                                    })
+                            .setNegativeButton(R.string.wallet_action_no, (dialog, which) -> {
+                                mWalletModel.getCryptoModel()
+                                        .getNetworkModel()
+                                        .clearCreateAccountState();
+                                dialog.dismiss();
+                            });
+            builder.show();
+        });
     }
 
     @Override
