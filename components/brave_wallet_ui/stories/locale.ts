@@ -716,5 +716,16 @@ provideStrings({
   // Wallet Welcome Perks
   braveWalletPerksTokens: 'Buy, send, and swap 200+ crypto assets',
   braveWalletMultiChain: 'Multi-chain & NFT support',
-  braveWalletPerksBrowserNative: 'Browser-native, no risky extensions'
+  braveWalletPerksBrowserNative: 'Browser-native, no risky extensions',
+
+  // Portfolio Asset More Popup
+  braveWalletPortfolioTokenDetailsMenuLabel: 'Token details',
+  braveWalletPortfolioViewOnExplorerMenuLabel: 'View on block explorer',
+  braveWalletPortfolioHideTokenMenuLabel: 'Hide token',
+  braveWalletHideTokenModalTitle: 'Hide token',
+
+  // Token detail modals
+  braveWalletMakeTokenVisibleInstructions: 'You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab',
+  braveWalletConfirmHidingToken: 'Hide',
+  braveWalletCancelHidingToken: 'Cancel'
 })
