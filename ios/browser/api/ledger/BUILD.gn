@@ -35,6 +35,7 @@ source_set("ledger") {
   deps = [
     ":ledger_mojom_wrappers",
     "//base",
+    "//brave/components/brave_rewards/common",
     "//brave/ios/browser/api/common",
     "//brave/ios/browser/api/ledger/legacy_database",
     "//brave/vendor/bat-native-ledger",

@@ -81,6 +81,8 @@ const BraveCoreSwitch BraveCoreSwitchVModule =
     base::SysUTF8ToNSString(switches::kVModule);
 const BraveCoreSwitch BraveCoreSwitchSyncURL =
     base::SysUTF8ToNSString(syncer::kSyncServiceURL);
+// There is no exposed switch for rewards
+const BraveCoreSwitch BraveCoreSwitchRewardsFlags = @"rewards";
 
 const BraveCoreLogSeverity BraveCoreLogSeverityFatal = logging::LOGGING_FATAL;
 const BraveCoreLogSeverity BraveCoreLogSeverityError = logging::LOGGING_ERROR;

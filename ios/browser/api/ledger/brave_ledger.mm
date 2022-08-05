@@ -17,6 +17,7 @@
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave/ios/browser/api/ledger/brave_ledger_observer.h"
 #import "brave/ios/browser/api/ledger/ledger.mojom.objc+private.h"
@@ -57,14 +58,6 @@
   }                                                                         \
   -(void)__objc_setter : (__type)newValue {                                 \
     ledger->__cpp_setter(newValue);                                         \
-  }
-
-#define BATClassLedgerBridge(__type, __objc_getter, __objc_setter, __cpp_var) \
-  +(__type)__objc_getter {                                                    \
-    return ledger::__cpp_var;                                                 \
-  }                                                                           \
-  +(void)__objc_setter : (__type)newValue {                                   \
-    ledger::__cpp_var = newValue;                                             \
   }
 
 NSString* const BraveLedgerErrorDomain = @"BraveLedgerErrorDomain";
@@ -187,11 +180,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [self savePrefs];
     }
 
-    const auto args = [NSProcessInfo processInfo].arguments;
-    const char* argv[args.count];
-    for (NSUInteger i = 0; i < args.count; i++) {
-      argv[i] = args[i].UTF8String;
-    }
+    [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
 
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -225,6 +214,34 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   [self.notificationStartupTimer invalidate];
   delete ledger;
   delete ledgerClient;
+}
+
+- (void)handleFlags:(const brave_rewards::RewardsFlags&)flags {
+  if (flags.environment) {
+    switch (*flags.environment) {
+      case brave_rewards::RewardsFlags::Environment::kDevelopment:
+        ledger::_environment = ledger::type::Environment::DEVELOPMENT;
+        break;
+      case brave_rewards::RewardsFlags::Environment::kStaging:
+        ledger::_environment = ledger::type::Environment::STAGING;
+        break;
+      case brave_rewards::RewardsFlags::Environment::kProduction:
+        ledger::_environment = ledger::type::Environment::PRODUCTION;
+        break;
+    }
+  }
+
+  if (flags.debug) {
+    ledger::is_debug = true;
+  }
+
+  if (flags.reconcile_interval) {
+    ledger::reconcile_interval = *flags.reconcile_interval;
+  }
+
+  if (flags.retry_interval) {
+    ledger::retry_interval = *flags.retry_interval;
+  }
 }
 
 - (void)initializeLedgerService:(nullable void (^)())completion {
@@ -422,27 +439,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)removeObserver:(BraveLedgerObserver*)observer {
   [self.observers removeObject:observer];
-}
-
-#pragma mark - Global
-
-BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
-        BATClassLedgerBridge(BOOL, isTesting, setTesting, is_testing)
-            BATClassLedgerBridge(int,
-                                 reconcileInterval,
-                                 setReconcileInterval,
-                                 reconcile_interval)
-                BATClassLedgerBridge(int,
-                                     retryInterval,
-                                     setRetryInterval,
-                                     retry_interval)
-
-    + (LedgerEnvironment)environment {
-  return static_cast<LedgerEnvironment>(ledger::_environment);
-}
-
-+ (void)setEnvironment:(LedgerEnvironment)environment {
-  ledger::_environment = static_cast<ledger::type::Environment>(environment);
 }
 
 #pragma mark - Wallet

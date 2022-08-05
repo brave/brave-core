@@ -36,6 +36,7 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
 #include "build/build_config.h"
@@ -974,15 +975,19 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    });
   };
 
-  NSString* baseUrl;
-
-#if defined(OFFICIAL_BUILD)
-  baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
-#else   // OFFICIAL_BUILD
-  baseUrl =
-      @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
-#endif  // !OFFICIAL_BUILD
-
+  NSString* baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
+  const auto flags = brave_rewards::RewardsFlags::ForCurrentProcess();
+  if (flags.environment) {
+    switch (*flags.environment) {
+      case brave_rewards::RewardsFlags::Environment::kDevelopment:
+      case brave_rewards::RewardsFlags::Environment::kStaging:
+        baseUrl = @"https://"
+                  @"brave-user-model-installer-input-dev.s3.bravesoftware.com";
+        break;
+      case brave_rewards::RewardsFlags::Environment::kProduction:
+        break;
+    }
+  }
   baseUrl = [baseUrl stringByAppendingPathComponent:folderName];
 
   NSString* manifestUrl =
