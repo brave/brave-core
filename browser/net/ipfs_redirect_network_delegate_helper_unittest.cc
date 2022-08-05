@@ -60,6 +60,10 @@ class IPFSRedirectNetworkDelegateHelperTest : public testing::Test {
 };
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIHTTPScheme) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
+
   GURL url("http://a.com/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile();
@@ -70,6 +74,9 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIHTTPScheme) {
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile();
@@ -83,6 +90,22 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
   EXPECT_EQ(brave_request_info->new_url_spec,
             "http://localhost:48080/ipfs/"
             "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       ProperMainFrameErrorCodeWhenIPFSDisabled) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
+
+  GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+  brave_request_info->browser_context = profile();
+  int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
+                                                     brave_request_info);
+  EXPECT_EQ(rc, net::ERR_IPFS_DISABLED);
+  EXPECT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest,
@@ -204,6 +227,10 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest,
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
+
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile();
@@ -219,6 +246,9 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile();
@@ -235,6 +265,10 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
+
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile();

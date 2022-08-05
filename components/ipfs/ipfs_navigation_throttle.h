@@ -45,6 +45,7 @@ class IpfsNavigationThrottle : public content::NavigationThrottle {
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
+  ThrottleCheckResult WillFailRequest() override;
   const char* GetNameForLogging() override;
 
  private:
@@ -64,6 +65,7 @@ class IpfsNavigationThrottle : public content::NavigationThrottle {
   void GetConnectedPeers();
   void OnGetConnectedPeers(bool success, const std::vector<std::string>& peers);
   void OnIpfsLaunched(bool result);
+  bool ShouldAsk();
 
   bool resume_pending_ = false;
   IpfsService* ipfs_service_ = nullptr;

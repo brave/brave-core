@@ -17,6 +17,15 @@
         SHOW_NO_BUTTONS,                                   \
     });                                                    \
     return &error;                                         \
+  } else if (error_code == net::ERR_IPFS_DISABLED) {       \
+    static LocalizedErrorMap error({                       \
+        net::ERR_IPFS_DISABLED,                            \
+        IDS_ERRORPAGES_IPFS_DISABLED_HEADING,              \
+        IDS_ERRORPAGES_IPFS_DISABLED_SUMMARY,              \
+        SUGGEST_NONE,                                      \
+        SHOW_BUTTON_RELOAD,                                \
+    });                                                    \
+    return &error;                                         \
   }
 
 namespace error_page {

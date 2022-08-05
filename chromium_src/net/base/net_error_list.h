@@ -11,3 +11,5 @@
 // Error occurs when user tries to access ipfs sites in
 // incognito context
 NET_ERROR(INCOGNITO_IPFS_NOT_ALLOWED, -10001)
+NET_ERROR(IPFS_DISABLED, -10002)
+NET_ERROR(IPFS_RESOLVE_METHOD_NOT_SELECTED, -10003)

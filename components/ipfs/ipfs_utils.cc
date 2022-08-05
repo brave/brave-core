@@ -102,6 +102,19 @@ bool IsIpfsResolveMethodDisabled(PrefService* prefs) {
              static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
 }
 
+bool IsIpfsResolveMethodAsk(PrefService* prefs) {
+  DCHECK(prefs);
+
+  // Ignore the actual pref value if IPFS feature is disabled.
+  if (IsIpfsResolveMethodDisabled(prefs)) {
+    return false;
+  }
+
+  return prefs->FindPreference(kIPFSResolveMethod) &&
+         prefs->GetInteger(kIPFSResolveMethod) ==
+             static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
+}
+
 bool IsIpfsMenuEnabled(PrefService* prefs) {
   return !ipfs::IsIpfsDisabledByFeatureOrPolicy(prefs) &&
          ipfs::IsLocalGatewayConfigured(prefs);
