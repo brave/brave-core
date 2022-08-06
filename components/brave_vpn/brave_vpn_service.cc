@@ -145,12 +145,8 @@ BraveVpnService::BraveVpnService(
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
-BraveVpnService::~BraveVpnService() {
-#if !BUILDFLAG(IS_ANDROID)
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::PowerMonitor::RemovePowerSuspendObserver(this);
-#endif  // !BUILDFLAG(IS_ANDROID)
-}
+BraveVpnService::~BraveVpnService() {}
+
 std::string BraveVpnService::GetCurrentEnvironment() const {
   return prefs_->GetString(prefs::kBraveVPNEEnvironment);
 }
@@ -1111,6 +1107,7 @@ void BraveVpnService::Shutdown() {
 #if !BUILDFLAG(IS_ANDROID)
   observed_.Reset();
   receivers_.Clear();
+  base::PowerMonitor::RemovePowerSuspendObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
