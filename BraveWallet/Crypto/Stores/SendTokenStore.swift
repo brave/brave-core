@@ -315,7 +315,7 @@ public class SendTokenStore: ObservableObject {
   ) {
     guard let token = selectedSendToken,
           let fromAddress = currentAccountAddress,
-          let lamports = WeiFormatter.decimalToLamports(amount)
+          let amount = WeiFormatter.decimalToAmount(amount, tokenDecimals: Int(token.decimals))
     else {
       completion(false, "An Internal Error")
       return
@@ -327,7 +327,7 @@ public class SendTokenStore: ObservableObject {
         self.solTxManagerProxy.makeSystemProgramTransferTxData(
           fromAddress,
           to: self.sendAddress,
-          lamports: lamports
+          lamports: amount
         ) { solTxData, error, errMsg in
           guard let solanaTxData = solTxData else {
             completion(false, errMsg)
@@ -343,7 +343,7 @@ public class SendTokenStore: ObservableObject {
           token.contractAddress,
           fromWalletAddress: fromAddress,
           toWalletAddress: self.sendAddress,
-          amount: lamports
+          amount: amount
         ) { solTxData, error, errMsg in
           guard let solanaTxData = solTxData else {
             completion(false, errMsg)
