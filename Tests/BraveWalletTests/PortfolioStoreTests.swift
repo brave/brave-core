@@ -120,7 +120,6 @@ class PortfolioStoreTests: XCTestCase {
   }
   
   func testUpdateSolana() {
-    WalletDebugFlags.isSolanaEnabled = true
     // config test
     let mockAccountInfos: [BraveWallet.AccountInfo] = [.mockSolAccount]
     let network: BraveWallet.NetworkInfo = .mockSolana
