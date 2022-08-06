@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "bat/ads/ads_callback.h"
 #include "build/build_config.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -31,10 +32,10 @@ class NotificationAdManager final {
 
   void Initialize(InitializeCallback callback);
 
-  bool GetForPlacementId(const std::string& placement_id,
-                         NotificationAdInfo* notification_ad) const;
+  absl::optional<NotificationAdInfo> GetForPlacementId(
+      const std::string& placement_id) const;
 
-  void PushBack(const NotificationAdInfo& info);
+  void PushBack(const NotificationAdInfo& ad);
   void PopFront(const bool should_dismiss);
 
   bool Remove(const std::string& placement_id);

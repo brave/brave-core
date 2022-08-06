@@ -20,7 +20,6 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -83,33 +82,28 @@ void NotificationAdManager::Initialize(InitializeCallback callback) {
   Load();
 }
 
-bool NotificationAdManager::GetForPlacementId(
-    const std::string& placement_id,
-    NotificationAdInfo* notification_ad) const {
+absl::optional<NotificationAdInfo> NotificationAdManager::GetForPlacementId(
+    const std::string& placement_id) const {
   DCHECK(is_initialized_);
-  DCHECK(notification_ad);
 
   auto iter =
       std::find_if(notification_ads_.cbegin(), notification_ads_.cend(),
                    [&placement_id](const NotificationAdInfo& notification) {
                      return notification.placement_id == placement_id;
                    });
-
   if (iter == notification_ads_.end()) {
-    return false;
+    return absl::nullopt;
   }
 
-  *notification_ad = *iter;
-
-  notification_ad->type = AdType::kNotificationAd;
-
-  return true;
+  NotificationAdInfo ad = *iter;
+  ad.type = AdType::kNotificationAd;
+  return ad;
 }
 
-void NotificationAdManager::PushBack(const NotificationAdInfo& info) {
+void NotificationAdManager::PushBack(const NotificationAdInfo& ad) {
   DCHECK(is_initialized_);
 
-  notification_ads_.push_back(info);
+  notification_ads_.push_back(ad);
 
   if (kMaximumNotificationAds > 0 && Count() > kMaximumNotificationAds) {
     PopFront(true);
