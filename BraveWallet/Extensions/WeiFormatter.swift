@@ -150,13 +150,13 @@ struct WeiFormatter {
       .rounded().asString(radix: outputRadix.rawValue)
   }
   
-  static func decimalToLamports(_ decimalString: String) -> UInt64? {
+  static func decimalToAmount(_ decimalString: String, tokenDecimals: Int) -> UInt64? {
     guard isStringValid(decimalString, radix: .decimal),
           let value = BDouble(decimalString, radix: Radix.decimal.rawValue)
     else {
       return nil
     }
-    let stringValue = (value * (BDouble(10) ** 9)).rounded().description
+    let stringValue = (value * (BDouble(10) ** tokenDecimals)).rounded().description
     return UInt64(stringValue)
   }
 }

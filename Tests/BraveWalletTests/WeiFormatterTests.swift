@@ -5,6 +5,7 @@
 
 import XCTest
 import BigNumber
+import BraveCore
 @testable import BraveWallet
 
 class WeiFormatterTests: XCTestCase {
@@ -73,13 +74,21 @@ class WeiFormatterTests: XCTestCase {
     }
   }
   
-  func testDecimalToLamports() {
+  func testDecimalToAmount() {
     let decimalInputString = "1"
-    let lamportsValueString = "1000000000"
-    let lamports = WeiFormatter.decimalToLamports(decimalInputString)
+    let solValueString = "1000000000"
+    let spdValueString = "1000000"
     
-    XCTAssertNotNil(UInt64(lamportsValueString))
-    XCTAssertNotNil(lamports)
-    XCTAssertEqual(UInt64(lamportsValueString)!, lamports!)
+    let solFormatted = WeiFormatter.decimalToAmount(decimalInputString, tokenDecimals: Int(BraveWallet.BlockchainToken.mockSolToken.decimals))
+    
+    XCTAssertNotNil(UInt64(solValueString))
+    XCTAssertNotNil(solFormatted)
+    XCTAssertEqual(UInt64(solValueString)!, solFormatted!)
+    
+    let spdformatted = WeiFormatter.decimalToAmount(decimalInputString, tokenDecimals: Int(BraveWallet.BlockchainToken.mockSpdToken.decimals))
+    
+    XCTAssertNotNil(UInt64(spdValueString))
+    XCTAssertNotNil(spdformatted)
+    XCTAssertEqual(UInt64(spdValueString)!, spdformatted!)
   }
 }
