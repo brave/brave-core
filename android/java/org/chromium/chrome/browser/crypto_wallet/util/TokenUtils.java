@@ -57,7 +57,7 @@ public class TokenUtils {
                     typeFilter = !t.isErc721;
                     break;
                 case SOL:
-                    typeFilter = t.coin == CoinType.SOL;
+                    typeFilter = t.coin != CoinType.SOL;
                     break;
                 case ALL:
                     typeFilter = false;
