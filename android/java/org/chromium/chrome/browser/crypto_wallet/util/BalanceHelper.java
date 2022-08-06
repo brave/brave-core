@@ -153,7 +153,8 @@ public class BalanceHelper {
                 Double tokenBalance =
                         (context.error == ProviderError.SUCCESS && context.balance != null
                                 && !context.balance.isEmpty())
-                        ? Utils.fromHexWei(context.balance, decimals)
+                        ? Utils.getBalanceForCoinType(
+                                selectedNetwork.coin, decimals, context.balance)
                         : 0.0d;
                 if (blockchainTokensBalances.containsKey(context.accountAddress)) {
                     blockchainTokensBalances.get(context.accountAddress)
