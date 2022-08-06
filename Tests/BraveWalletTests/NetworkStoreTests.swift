@@ -101,7 +101,6 @@ class NetworkStoreTests: XCTestCase {
   }
   
   func testUpdateChainList() {
-    WalletDebugFlags.isSolanaEnabled = true
     let (keyringService, rpcService, walletService, swapService) = setupServices()
     
     let store = NetworkStore(

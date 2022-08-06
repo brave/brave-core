@@ -40,10 +40,7 @@ struct WalletConstants {
   
   /// The currently supported coin types.
   static var supportedCoinTypes: OrderedSet<BraveWallet.CoinType> {
-    if WalletDebugFlags.isSolanaEnabled {
-      return [.eth, .sol]
-    }
-    return [.eth]
+    return [.eth, .sol]
   }
   
   /// The link for users to learn more about Solana SPL token account creation in transaction confirmation screen
@@ -56,8 +53,4 @@ struct WalletConstants {
   static let supportedBuyWithWyreNetworkChainIds: [String] = [
     BraveWallet.MainnetChainId
   ]
-}
-
-struct WalletDebugFlags {
-  static var isSolanaEnabled: Bool = false
 }
