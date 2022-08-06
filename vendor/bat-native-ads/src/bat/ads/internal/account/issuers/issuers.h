@@ -33,7 +33,7 @@ class Issuers {
 
  private:
   void Fetch();
-  void OnFetch(const mojom::UrlResponse& url_response);
+  void OnFetch(const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyFetchedIssuers(const IssuersInfo& issuers);
   void FailedToFetchIssuers(const bool should_retry);

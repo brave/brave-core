@@ -18,7 +18,7 @@ interface BatAdsService {
 
   SetSysInfo(ads.mojom.SysInfo sys_info) => ();
 
-  SetBuildChannel(ads.mojom.BuildChannel build_channel) => ();
+  SetBuildChannel(ads.mojom.BuildChannelInfo build_channel) => ();
 };
 
 interface BatAdsClient {
@@ -48,7 +48,7 @@ interface BatAdsClient {
 
   GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<url.mojom.Url> history);
 
-  UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
+  UrlRequest(ads.mojom.UrlRequestInfo request) => (ads.mojom.UrlResponseInfo response);
 
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
@@ -60,11 +60,11 @@ interface BatAdsClient {
   ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
   ClearScheduledCaptcha();
 
-  RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
+  RunDBTransaction(ads.mojom.DBTransactionInfo transaction) => (ads.mojom.DBCommandResponseInfo response);
 
   RecordP2AEvent(string name, string value);
 
-  LogTrainingInstance(array<brave_federated.mojom.Covariate> training_instance);
+  LogTrainingInstance(array<brave_federated.mojom.CovariateInfo> training_instance);
 
   [Sync]
   GetBooleanPref(string path) => (bool value);
@@ -151,7 +151,7 @@ interface BatAds {
 
   TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
 
-  TriggerSearchResultAdEvent(ads.mojom.SearchResultAd ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
+  TriggerSearchResultAdEvent(ads.mojom.SearchResultAdInfo ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
 
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
 

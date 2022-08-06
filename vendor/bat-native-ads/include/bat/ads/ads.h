@@ -37,7 +37,7 @@ mojom::SysInfo& SysInfo();
 
 // Returns the build channel. |name| containg the build channel name.
 // |is_release| containing |true| if release build otherwise |false|.
-mojom::BuildChannel& BuildChannel();
+mojom::BuildChannelInfo& BuildChannel();
 
 // Data resources
 extern const char g_catalog_json_schema_data_resource_name[];
@@ -219,7 +219,7 @@ class ADS_EXPORT Ads {
   // wait for the callback before calling another |kViewed| event to handle
   // frequency capping.
   virtual void TriggerSearchResultAdEvent(
-      mojom::SearchResultAdPtr ad_mojom,
+      mojom::SearchResultAdInfoPtr ad_mojom,
       const mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 

@@ -25,7 +25,7 @@ class FetchPaymentTokenUrlRequestBuilder final
   FetchPaymentTokenUrlRequestBuilder operator=(
       const FetchPaymentTokenUrlRequestBuilder&) = delete;
 
-  mojom::UrlRequestPtr Build() override;
+  mojom::UrlRequestInfoPtr Build() override;
 
  private:
   GURL BuildUrl() const;

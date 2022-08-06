@@ -91,13 +91,14 @@ class SearchResultAdService : public KeyedService {
 
   raw_ptr<AdsService> ads_service_ = nullptr;
 
-  std::map<SessionID, std::map<std::string, ads::mojom::SearchResultAdPtr>>
+  std::map<SessionID, std::map<std::string, ads::mojom::SearchResultAdInfoPtr>>
       search_result_ads_;
 
   std::map<SessionID, std::vector<AdViewedEventCallbackInfo>>
       ad_viewed_event_pending_callbacks_;
 
-  base::circular_deque<ads::mojom::SearchResultAdPtr> ad_viewed_event_queue_;
+  base::circular_deque<ads::mojom::SearchResultAdInfoPtr>
+      ad_viewed_event_queue_;
 
   bool trigger_ad_viewed_event_in_progress_ = false;
 

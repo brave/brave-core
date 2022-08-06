@@ -10,7 +10,7 @@
 namespace ads {
 namespace database {
 
-int ColumnInt(mojom::DBRecord* record, const size_t index) {
+int ColumnInt(mojom::DBRecordInfo* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(mojom::DBValue::Tag::kIntValue, record->fields.at(index)->which());
@@ -18,7 +18,7 @@ int ColumnInt(mojom::DBRecord* record, const size_t index) {
   return record->fields.at(index)->get_int_value();
 }
 
-int64_t ColumnInt64(mojom::DBRecord* record, const size_t index) {
+int64_t ColumnInt64(mojom::DBRecordInfo* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(mojom::DBValue::Tag::kInt64Value,
@@ -27,7 +27,7 @@ int64_t ColumnInt64(mojom::DBRecord* record, const size_t index) {
   return record->fields.at(index)->get_int64_value();
 }
 
-double ColumnDouble(mojom::DBRecord* record, const size_t index) {
+double ColumnDouble(mojom::DBRecordInfo* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(mojom::DBValue::Tag::kDoubleValue,
@@ -36,7 +36,7 @@ double ColumnDouble(mojom::DBRecord* record, const size_t index) {
   return record->fields.at(index)->get_double_value();
 }
 
-bool ColumnBool(mojom::DBRecord* record, const size_t index) {
+bool ColumnBool(mojom::DBRecordInfo* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(mojom::DBValue::Tag::kBoolValue, record->fields.at(index)->which());
@@ -44,7 +44,7 @@ bool ColumnBool(mojom::DBRecord* record, const size_t index) {
   return record->fields.at(index)->get_bool_value();
 }
 
-std::string ColumnString(mojom::DBRecord* record, const size_t index) {
+std::string ColumnString(mojom::DBRecordInfo* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(mojom::DBValue::Tag::kStringValue,

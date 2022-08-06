@@ -27,7 +27,7 @@ class EventHandler final : public EventHandlerObserver {
   void AddObserver(EventHandlerObserver* observer);
   void RemoveObserver(EventHandlerObserver* observer);
 
-  void FireEvent(const mojom::SearchResultAdPtr& ad_mojom,
+  void FireEvent(const mojom::SearchResultAdInfoPtr& ad_mojom,
                  const mojom::SearchResultAdEventType event_type,
                  TriggerSearchResultAdEventCallback callback) const;
 
@@ -35,7 +35,7 @@ class EventHandler final : public EventHandlerObserver {
   void FireEvent(const SearchResultAdInfo& ad,
                  const mojom::SearchResultAdEventType event_type,
                  TriggerSearchResultAdEventCallback callback) const;
-  void FireViewedEvent(const mojom::SearchResultAdPtr& ad_mojom,
+  void FireViewedEvent(const mojom::SearchResultAdInfoPtr& ad_mojom,
                        TriggerSearchResultAdEventCallback callback) const;
   void FireClickedEvent(const SearchResultAdInfo& ad,
                         TriggerSearchResultAdEventCallback callback) const;

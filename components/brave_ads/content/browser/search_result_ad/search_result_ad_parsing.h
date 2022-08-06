@@ -14,7 +14,8 @@
 
 namespace brave_ads {
 
-using SearchResultAdMap = std::map<std::string, ads::mojom::SearchResultAdPtr>;
+using SearchResultAdMap =
+    std::map<std::string, ads::mojom::SearchResultAdInfoPtr>;
 
 SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page);
 

@@ -29,7 +29,7 @@ namespace {
 
 constexpr char kTableName[] = "creative_ads";
 
-int BindParameters(mojom::DBCommand* command,
+int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -53,7 +53,7 @@ int BindParameters(mojom::DBCommand* command,
   return count;
 }
 
-CreativeAdInfo GetFromRecord(mojom::DBRecord* record) {
+CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   DCHECK(record);
 
   CreativeAdInfo creative_ad;
@@ -71,7 +71,7 @@ CreativeAdInfo GetFromRecord(mojom::DBRecord* record) {
 }
 
 CreativeAdMap GroupCreativeAdsFromResponse(
-    mojom::DBCommandResponsePtr response) {
+    mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
   CreativeAdMap creative_ads;
@@ -108,7 +108,7 @@ CreativeAdMap GroupCreativeAdsFromResponse(
 }
 
 CreativeAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponsePtr response) {
+    mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
   const CreativeAdMap& grouped_creative_ads =
@@ -129,7 +129,7 @@ CreativeAds::CreativeAds() = default;
 
 CreativeAds::~CreativeAds() = default;
 
-void CreativeAds::InsertOrUpdate(mojom::DBTransaction* transaction,
+void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                  const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -137,15 +137,15 @@ void CreativeAds::InsertOrUpdate(mojom::DBTransaction* transaction,
     return;
   }
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }
 
 void CreativeAds::Delete(ResultCallback callback) {
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
 
@@ -179,23 +179,24 @@ void CreativeAds::GetForCreativeInstanceId(
       "WHERE ca.creative_instance_id = '%s'",
       GetTableName().c_str(), creative_instance_id.c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommand::RecordBindingType::STRING_TYPE   // target_url
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE   // target_url
   };
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -208,7 +209,7 @@ std::string CreativeAds::GetTableName() const {
   return kTableName;
 }
 
-void CreativeAds::Migrate(mojom::DBTransaction* transaction,
+void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
                           const int to_version) {
   DCHECK(transaction);
 
@@ -227,7 +228,7 @@ void CreativeAds::Migrate(mojom::DBTransaction* transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string CreativeAds::BuildInsertOrUpdateQuery(
-    mojom::DBCommand* command,
+    mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -249,11 +250,11 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
 }
 
 void CreativeAds::OnGetForCreativeInstanceId(
-    mojom::DBCommandResponsePtr response,
+    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
     GetCreativeAdCallback callback) {
-  if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
     callback(/* success */ false, creative_instance_id, {});
     return;
@@ -273,7 +274,7 @@ void CreativeAds::OnGetForCreativeInstanceId(
   callback(/* success */ true, creative_instance_id, creative_ad);
 }
 
-void CreativeAds::MigrateToV24(mojom::DBTransaction* transaction) {
+void CreativeAds::MigrateToV24(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
   DropTable(transaction, "creative_ads");
@@ -291,8 +292,8 @@ void CreativeAds::MigrateToV24(mojom::DBTransaction* transaction) {
       "split_test_group TEXT, "
       "target_url TEXT NOT NULL)";
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

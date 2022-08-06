@@ -26,22 +26,22 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
   CreativeNewTabPageAdWallpapers& operator=(
       const CreativeNewTabPageAdWallpapers&) = delete;
 
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNewTabPageAdList& creative_ads);
 
   void Delete(ResultCallback callback);
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
   std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommand* command,
+      mojom::DBCommandInfo* command,
       const CreativeNewTabPageAdList& creative_ads);
 
-  void MigrateToV24(mojom::DBTransaction* transaction);
+  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace table

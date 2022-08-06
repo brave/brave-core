@@ -228,7 +228,7 @@ class AdsService : public KeyedService {
   // must wait for the callback before calling another |kViewed| event to handle
   // frequency capping.
   virtual void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdPtr ad_mojom,
+      ads::mojom::SearchResultAdInfoPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 

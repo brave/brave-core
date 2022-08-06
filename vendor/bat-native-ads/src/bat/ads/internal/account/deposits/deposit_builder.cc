@@ -10,7 +10,7 @@
 
 namespace ads {
 
-DepositInfo BuildDeposit(const mojom::SearchResultAdPtr& ad_mojom) {
+DepositInfo BuildDeposit(const mojom::SearchResultAdInfoPtr& ad_mojom) {
   DepositInfo deposit;
 
   deposit.creative_instance_id = ad_mojom->creative_instance_id;

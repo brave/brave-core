@@ -13,7 +13,7 @@ namespace ads {
 struct SearchResultAdInfo;
 
 SearchResultAdInfo BuildSearchResultAd(
-    const mojom::SearchResultAdPtr& ad_mojom);
+    const mojom::SearchResultAdInfoPtr& ad_mojom);
 
 }  // namespace ads
 

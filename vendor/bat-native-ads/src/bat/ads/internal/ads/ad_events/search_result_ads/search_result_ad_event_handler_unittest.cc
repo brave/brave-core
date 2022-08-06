@@ -35,9 +35,9 @@ constexpr char kInvalidPlacementId[] = "";
 constexpr char kCreativeInstanceId[] = "1547f94f-9086-4db9-a441-efb2f0365269";
 constexpr char kInvalidCreativeInstanceId[] = "";
 
-mojom::SearchResultAdPtr BuildAd(const std::string& placement_id,
-                                 const std::string& creative_instance_id) {
-  mojom::SearchResultAdPtr ad_mojom = mojom::SearchResultAd::New();
+mojom::SearchResultAdInfoPtr BuildAd(const std::string& placement_id,
+                                     const std::string& creative_instance_id) {
+  mojom::SearchResultAdInfoPtr ad_mojom = mojom::SearchResultAdInfo::New();
 
   ad_mojom->creative_instance_id = creative_instance_id;
   ad_mojom->placement_id = placement_id;
@@ -48,15 +48,15 @@ mojom::SearchResultAdPtr BuildAd(const std::string& placement_id,
   ad_mojom->headline_text = "headline";
   ad_mojom->description = "description";
   ad_mojom->value = 1.0;
-  ad_mojom->conversion = mojom::Conversion::New();
+  ad_mojom->conversion = mojom::ConversionInfo::New();
 
   return ad_mojom;
 }
 
-mojom::SearchResultAdPtr BuildAdWithConversion(
+mojom::SearchResultAdInfoPtr BuildAdWithConversion(
     const std::string& placement_id,
     const std::string& creative_instance_id) {
-  mojom::SearchResultAdPtr ad_mojom =
+  mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(placement_id, creative_instance_id);
 
   ad_mojom->conversion->type = "postview";
@@ -114,7 +114,7 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
     UnitTestBase::TearDown();
   }
 
-  void FireEvent(const mojom::SearchResultAdPtr& ad_mojom,
+  void FireEvent(const mojom::SearchResultAdInfoPtr& ad_mojom,
                  const mojom::SearchResultAdEventType event_type) {
     event_handler_->FireEvent(
         ad_mojom, event_type,
@@ -156,7 +156,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   // Act
@@ -179,7 +179,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAdWithConversion(kPlacementId, kCreativeInstanceId);
 
   // Act
@@ -203,7 +203,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
@@ -222,7 +222,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   // Act
@@ -244,7 +244,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kClicked);
@@ -260,7 +260,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kInvalidPlacementId, kCreativeInstanceId);
 
   // Act
@@ -278,7 +278,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kInvalidCreativeInstanceId);
 
   // Act
@@ -295,7 +295,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
   // Arrange
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   // Act
@@ -315,7 +315,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
@@ -340,7 +340,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
@@ -363,7 +363,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
@@ -391,7 +391,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRules();
 
-  const mojom::SearchResultAdPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
