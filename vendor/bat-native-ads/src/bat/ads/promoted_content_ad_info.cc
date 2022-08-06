@@ -32,7 +32,7 @@ base::Value::Dict PromotedContentAdInfo::ToValue() const {
   return dict;
 }
 
-bool PromotedContentAdInfo::FromValue(const base::Value::Dict& root) {
+void PromotedContentAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("type")) {
     type = AdType(*value);
   }
@@ -72,8 +72,6 @@ bool PromotedContentAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("target_url")) {
     target_url = GURL(*value);
   }
-
-  return true;
 }
 
 bool PromotedContentAdInfo::IsValid() const {

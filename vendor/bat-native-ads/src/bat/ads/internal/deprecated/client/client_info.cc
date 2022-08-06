@@ -90,8 +90,7 @@ base::Value::Dict ClientInfo::ToValue() const {
 
 bool ClientInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindDict("adPreferences")) {
-    if (!ad_preferences.FromValue(*value))
-      return false;
+    ad_preferences.FromValue(*value);
   }
 
 #if !BUILDFLAG(IS_IOS)
@@ -102,10 +101,10 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       if (!ad_shown.is_dict()) {
         continue;
       }
+
       HistoryItemInfo history_item;
-      if (history_item.FromValue(ad_shown.GetDict())) {
-        history.push_back(history_item);
-      }
+      history_item.FromValue(ad_shown.GetDict());
+      history.push_back(history_item);
     }
   }
 #endif
@@ -123,9 +122,8 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
           continue;
 
         targeting::PurchaseIntentSignalHistoryInfo history;
-        if (history.FromValue(segment_history_item.GetDict())) {
-          histories.push_back(history);
-        }
+        history.FromValue(segment_history_item.GetDict());
+        histories.push_back(history);
       }
 
       purchase_intent_signal_history.emplace(key, histories);

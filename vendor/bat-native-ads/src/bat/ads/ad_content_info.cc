@@ -74,7 +74,7 @@ base::Value::Dict AdContentInfo::ToValue() const {
   return dict;
 }
 
-bool AdContentInfo::FromValue(const base::Value::Dict& root) {
+void AdContentInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("adType")) {
     type = AdType(*value);
   } else if (const auto* value = root.FindString("type")) {
@@ -168,8 +168,6 @@ bool AdContentInfo::FromValue(const base::Value::Dict& root) {
     // Migrate legacy
     is_flagged = *value;
   }
-
-  return true;
 }
 
 std::string AdContentInfo::ToJson() const {
@@ -187,7 +185,9 @@ bool AdContentInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  FromValue(document->GetDict());
+
+  return true;
 }
 
 }  // namespace ads

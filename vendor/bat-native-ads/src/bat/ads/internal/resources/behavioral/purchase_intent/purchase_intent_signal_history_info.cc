@@ -48,7 +48,7 @@ base::Value::Dict PurchaseIntentSignalHistoryInfo::ToValue() const {
   return dict;
 }
 
-bool PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
+void PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
   weight = static_cast<uint16_t>(root.FindInt("weight").value_or(0));
 
   if (const auto* value = root.FindString("timestamp_in_seconds")) {
@@ -61,8 +61,6 @@ bool PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
   } else {
     created_at = base::Time();
   }
-
-  return true;
 }
 
 }  // namespace targeting

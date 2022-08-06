@@ -39,7 +39,7 @@ base::Value::Dict HistoryItemInfo::ToValue() const {
   return dict;
 }
 
-bool HistoryItemInfo::FromValue(const base::Value::Dict& root) {
+void HistoryItemInfo::FromValue(const base::Value::Dict& root) {
   if (const auto value = root.FindDouble("timestamp_in_seconds")) {
     // Migrate legacy timestamp
     created_at = base::Time::FromDoubleT(*value);
@@ -51,16 +51,12 @@ bool HistoryItemInfo::FromValue(const base::Value::Dict& root) {
   }
 
   if (const auto* value = root.FindDict("ad_content")) {
-    if (!ad_content.FromValue(*value)) {
-      return false;
-    }
+    ad_content.FromValue(*value);
   }
 
   if (const auto* value = root.FindDict("category_content")) {
     category_content.FromValue(*value);
   }
-
-  return true;
 }
 
 }  // namespace ads
