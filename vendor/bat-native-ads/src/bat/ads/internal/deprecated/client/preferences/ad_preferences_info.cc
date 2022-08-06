@@ -63,13 +63,15 @@ base::Value::Dict AdPreferencesInfo::ToValue() const {
 bool AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindList("filtered_advertisers")) {
     for (const auto& item : *value) {
-      if (!item.is_dict())
+      if (!item.is_dict()) {
         continue;
+      }
 
       const auto& advertiser = item.GetDict();
       const auto* id = advertiser.FindString("id");
-      if (!id)
+      if (!id) {
         continue;
+      }
 
       FilteredAdvertiserInfo filtered_advertiser;
       filtered_advertiser.id = *id;
@@ -79,13 +81,15 @@ bool AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindList("filtered_categories")) {
     for (const auto& item : *value) {
-      if (!item.is_dict())
+      if (!item.is_dict()) {
         continue;
+      }
 
       const auto& category = item.GetDict();
       const auto* name = category.FindString("name");
-      if (!name)
+      if (!name) {
         continue;
+      }
 
       FilteredCategoryInfo filtered_category;
       filtered_category.name = *name;
@@ -95,13 +99,15 @@ bool AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindList("saved_ads")) {
     for (const auto& item : *value) {
-      if (!item.is_dict())
+      if (!item.is_dict()) {
         continue;
+      }
 
       const auto& ad = item.GetDict();
       const auto* creative_instance_id = ad.FindString("creative_instance_id");
-      if (!creative_instance_id)
+      if (!creative_instance_id) {
         continue;
+      }
 
       SavedAdInfo saved_ad;
       saved_ad.creative_instance_id = *creative_instance_id;
@@ -111,13 +117,15 @@ bool AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindList("flagged_ads")) {
     for (const auto& item : *value) {
-      if (!item.is_dict())
+      if (!item.is_dict()) {
         continue;
+      }
 
       const auto& ad = item.GetDict();
       const auto* creative_set_id = ad.FindString("creative_set_id");
-      if (!creative_set_id)
+      if (!creative_set_id) {
         continue;
+      }
 
       FlaggedAdInfo flagged_ad;
       flagged_ad.creative_set_id = *creative_set_id;

@@ -115,12 +115,14 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       std::vector<targeting::PurchaseIntentSignalHistoryInfo> histories;
 
       const auto* segment_history_items = value.GetIfList();
-      if (!segment_history_items)
+      if (!segment_history_items) {
         continue;
+      }
 
       for (const auto& segment_history_item : *segment_history_items) {
-        if (!segment_history_item.is_dict())
+        if (!segment_history_item.is_dict()) {
           continue;
+        }
 
         targeting::PurchaseIntentSignalHistoryInfo history;
         if (history.FromValue(segment_history_item.GetDict())) {
@@ -134,8 +136,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindDict("seenAds")) {
     for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict())
+      if (!list_value.is_dict()) {
         continue;
+      }
 
       for (const auto [key, value] : list_value.GetDict()) {
         seen_ads[list_key][key] = value.GetBool();
@@ -145,8 +148,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindDict("seenAdvertisers")) {
     for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict())
+      if (!list_value.is_dict()) {
         continue;
+      }
 
       for (const auto [key, value] : list_value.GetDict()) {
         seen_advertisers[list_key][key] = value.GetBool();
@@ -161,19 +165,22 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         continue;
       const auto* probability_list =
           probabilities.GetDict().FindList("textClassificationProbabilities");
-      if (!probability_list)
+      if (!probability_list) {
         continue;
+      }
 
       targeting::TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability : *probability_list) {
         const auto* probability_dict = probability.GetIfDict();
-        if (!probability_dict)
+        if (!probability_dict) {
           continue;
+        }
 
         const std::string* segment = probability_dict->FindString("segment");
-        if (!segment)
+        if (!segment) {
           continue;
+        }
 
         double page_score = 0.0;
         if (const auto value = root.FindDouble("pageScore")) {
