@@ -114,9 +114,6 @@ interface BatAds {
 
   OnResourceComponentUpdated(string id);
 
-  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
-
   // User Interaction
   OnIdle();
   OnUnIdle(mojo_base.mojom.TimeDelta idle_time, bool was_locked);
@@ -128,6 +125,9 @@ interface BatAds {
   OnBrowserDidEnterBackground();
 
   // Tabs
+  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
+  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
+
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
 

@@ -69,6 +69,31 @@ void BatAdsImpl::OnPrefChanged(const std::string& path) {
   ads_->OnPrefChanged(path);
 }
 
+void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
+  ads_->OnResourceComponentUpdated(id);
+}
+
+void BatAdsImpl::OnIdle() {
+  ads_->OnIdle();
+}
+
+void BatAdsImpl::OnUnIdle(const base::TimeDelta idle_time,
+                          const bool was_locked) {
+  ads_->OnUnIdle(idle_time, was_locked);
+}
+
+void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
+  ads_->OnUserGesture(page_transition_type);
+}
+
+void BatAdsImpl::OnBrowserDidEnterForeground() {
+  ads_->OnBrowserDidEnterForeground();
+}
+
+void BatAdsImpl::OnBrowserDidEnterBackground() {
+  ads_->OnBrowserDidEnterBackground();
+}
+
 void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& html) {
@@ -79,27 +104,6 @@ void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& text) {
   ads_->OnTextLoaded(tab_id, redirect_chain, text);
-}
-
-void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
-  ads_->OnUserGesture(page_transition_type);
-}
-
-void BatAdsImpl::OnUnIdle(const base::TimeDelta idle_time,
-                          const bool was_locked) {
-  ads_->OnUnIdle(idle_time, was_locked);
-}
-
-void BatAdsImpl::OnIdle() {
-  ads_->OnIdle();
-}
-
-void BatAdsImpl::OnBrowserDidEnterForeground() {
-  ads_->OnBrowserDidEnterForeground();
-}
-
-void BatAdsImpl::OnBrowserDidEnterBackground() {
-  ads_->OnBrowserDidEnterBackground();
 }
 
 void BatAdsImpl::OnMediaPlaying(
@@ -210,16 +214,6 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
                                      purge_ad_events_for_type_callback);
 }
 
-void BatAdsImpl::RemoveAllHistory(
-    RemoveAllHistoryCallback callback) {
-  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),
-      std::move(callback));
-
-  auto remove_all_history_callback =
-      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, _1);
-  ads_->RemoveAllHistory(remove_all_history_callback);
-}
-
 void BatAdsImpl::OnWalletUpdated(
     const std::string& payment_id,
     const std::string& seed) {
@@ -236,20 +230,17 @@ void BatAdsImpl::GetHistory(const base::Time from_time,
   std::move(callback).Run(history.ToJson());
 }
 
-void BatAdsImpl::GetStatementOfAccounts(
-    GetStatementOfAccountsCallback callback) {
-  auto* holder = new CallbackHolder<GetStatementOfAccountsCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ads_->GetStatementOfAccounts(
-      std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1, _2));
-}
 
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   auto* holder = new CallbackHolder<GetDiagnosticsCallback>(
+void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(
       AsWeakPtr(), std::move(callback));
 
   ads_->GetDiagnostics(std::bind(BatAdsImpl::OnGetDiagnostics, holder, _1, _2));
+  auto remove_all_history_callback =
+      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, _1);
+  ads_->RemoveAllHistory(remove_all_history_callback);
 }
 
 void BatAdsImpl::ToggleAdThumbUp(const std::string& json,
@@ -304,10 +295,6 @@ void BatAdsImpl::ToggleFlaggedAd(const std::string& json,
   ad_content.is_flagged = ads_->ToggleFlaggedAd(json);
 
   std::move(callback).Run(ad_content.ToJson());
-}
-
-void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
-  ads_->OnResourceComponentUpdated(id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -119,6 +119,11 @@ class AdsService : public KeyedService {
   // Called when a resource component has been updated.
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
+  // Called when a page navigation was initiated by a user gesture.
+  // |page_transition_type| containing the page transition type, see enums for
+  // |PageTransitionType|.
+  virtual void OnUserGesture(const int32_t page_transition_type) = 0;
+
   // Called when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a chain of redirect URLs that
   // occurred for this navigation. |html| containing the page content as HTML.
@@ -132,11 +137,6 @@ class AdsService : public KeyedService {
   virtual void OnTextLoaded(const SessionID& tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& text) = 0;
-
-  // Called when a page navigation was initiated by a user gesture.
-  // |page_transition_type| containing the page transition type, see enums for
-  // |PageTransitionType|.
-  virtual void OnUserGesture(const int32_t page_transition_type) = 0;
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.

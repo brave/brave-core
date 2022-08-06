@@ -51,13 +51,6 @@ class BatAdsImpl :
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
-  void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
-
   void OnIdle() override;
   void OnUnIdle(const base::TimeDelta idle_time,
                 const bool was_locked) override;
@@ -66,6 +59,13 @@ class BatAdsImpl :
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
+
+  void OnHtmlLoaded(const int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& html) override;
+  void OnTextLoaded(const int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& text) override;
 
   void OnMediaPlaying(const int32_t tab_id) override;
   void OnMediaStopped(const int32_t tab_id) override;

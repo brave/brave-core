@@ -176,25 +176,8 @@ void AdsImpl::OnPrefChanged(const std::string& path) {
   PrefManager::GetInstance()->OnPrefChanged(path);
 }
 
-void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain,
-                           const std::string& html) {
-  TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
-                                                    html);
-}
-
-void AdsImpl::OnTextLoaded(const int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain,
-                           const std::string& text) {
-  TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
-                                                    text);
-}
-
-void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
-  if (IsInitialized()) {
-    UserActivityManager::GetInstance()->RecordEventForPageTransition(
-        page_transition_type);
-  }
+void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
+  ResourceManager::GetInstance()->UpdateResource(id);
 }
 
 void AdsImpl::OnIdle() {
@@ -210,12 +193,33 @@ void AdsImpl::OnUnIdle(const base::TimeDelta idle_time, const bool was_locked) {
   }
 }
 
+void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
+  if (IsInitialized()) {
+    UserActivityManager::GetInstance()->RecordEventForPageTransition(
+        page_transition_type);
+  }
+}
+
 void AdsImpl::OnBrowserDidEnterForeground() {
   BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
 }
 
 void AdsImpl::OnBrowserDidEnterBackground() {
   BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
+}
+
+void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
+                           const std::vector<GURL>& redirect_chain,
+                           const std::string& html) {
+  TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
+                                                    html);
+}
+
+void AdsImpl::OnTextLoaded(const int32_t tab_id,
+                           const std::vector<GURL>& redirect_chain,
+                           const std::string& text) {
+  TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
+                                                    text);
 }
 
 void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
@@ -258,10 +262,6 @@ void AdsImpl::OnTabClosed(const int32_t tab_id) {
 
 void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
   account_->SetWallet(id, seed);
-}
-
-void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
-  ResourceManager::GetInstance()->UpdateResource(id);
 }
 
 bool AdsImpl::GetNotificationAd(const std::string& placement_id,
@@ -347,12 +347,6 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
   });
 }
 
-void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
-  ClientStateManager::GetInstance()->RemoveAllHistory();
-
-  callback(/* success */ true);
-}
-
 HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
                                 const HistorySortType sort_type,
                                 const base::Time from_time,
@@ -381,6 +375,12 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   DiagnosticManager::GetInstance()->GetDiagnostics(callback);
 }
 
+void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  ClientStateManager::GetInstance()->RemoveAllHistory();
+
+  callback(/* success */ true);
+}
+
 AdContentLikeActionType AdsImpl::ToggleAdThumbUp(const std::string& json) {
   AdContentInfo ad_content;
   ad_content.FromJson(json);
@@ -407,16 +407,16 @@ CategoryContentOptActionType AdsImpl::ToggleAdOptOut(
       category, action_type);
 }
 
-bool AdsImpl::ToggleFlaggedAd(const std::string& json) {
-  AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(ad_content);
-}
-
 bool AdsImpl::ToggleSavedAd(const std::string& json) {
   AdContentInfo ad_content;
   ad_content.FromJson(json);
   return HistoryManager::GetInstance()->ToggleSavedAd(ad_content);
+}
+
+bool AdsImpl::ToggleFlaggedAd(const std::string& json) {
+  AdContentInfo ad_content;
+  ad_content.FromJson(json);
+  return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(ad_content);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
