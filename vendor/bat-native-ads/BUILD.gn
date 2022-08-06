@@ -995,7 +995,6 @@ source_set("ads") {
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.cc",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.h",
-    "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info_alias.h",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.cc",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h",
     "src/bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.cc",
