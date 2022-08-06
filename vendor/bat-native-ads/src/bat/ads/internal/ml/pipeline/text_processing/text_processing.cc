@@ -62,12 +62,11 @@ void TextProcessing::SetInfo(PipelineInfo info) {
   transformations_ = std::move(info.transformations);
 }
 
-bool TextProcessing::FromValue(base::Value resource_value) {
-  absl::optional<PipelineInfo> pipeline_info =
-      ParsePipelineValue(std::move(resource_value));
+bool TextProcessing::FromValue(base::Value value) {
+  absl::optional<PipelineInfo> pipeline = ParsePipelineValue(std::move(value));
 
-  if (pipeline_info.has_value()) {
-    SetInfo(std::move(pipeline_info.value()));
+  if (pipeline) {
+    SetInfo(std::move(*pipeline));
     is_initialized_ = true;
   } else {
     is_initialized_ = false;

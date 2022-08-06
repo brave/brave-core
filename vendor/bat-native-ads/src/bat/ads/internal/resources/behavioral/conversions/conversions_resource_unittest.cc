@@ -29,8 +29,7 @@ TEST_F(BatAdsConversionsResourceTest, Load) {
   task_environment_.RunUntilIdle();
 
   // Assert
-  const bool is_initialized = resource.IsInitialized();
-  EXPECT_TRUE(is_initialized);
+  EXPECT_TRUE(resource.IsInitialized());
 }
 
 TEST_F(BatAdsConversionsResourceTest, Get) {

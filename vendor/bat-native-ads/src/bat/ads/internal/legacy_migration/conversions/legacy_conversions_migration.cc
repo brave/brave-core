@@ -83,31 +83,31 @@ absl::optional<ConversionQueueItemList> GetFromList(
     const base::Value::List& list) {
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& value : list) {
-    if (!value.is_dict()) {
+  for (const auto& item : list) {
+    const base::Value::Dict* dict = item.GetIfDict();
+    if (!dict) {
       return absl::nullopt;
     }
 
-    const base::Value::Dict& dict = value.GetDict();
     const absl::optional<ConversionQueueItemInfo> conversion_queue_item =
-        GetFromDictionary(dict);
+        GetFromDictionary(*dict);
     if (!conversion_queue_item) {
       return absl::nullopt;
     }
 
-    conversion_queue_items.push_back(conversion_queue_item.value());
+    conversion_queue_items.push_back(*conversion_queue_item);
   }
 
   return conversion_queue_items;
 }
 
 absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
-  const absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
+  const base::Value::Dict& dict = root->GetDict();
 
-  const base::Value::Dict& dict = value->GetDict();
   const base::Value::List* list = dict.FindList(kListKey);
   if (!list) {
     return absl::nullopt;
@@ -134,22 +134,20 @@ void Migrate(InitializeCallback callback) {
           return;
         }
 
-        const absl::optional<ConversionQueueItemList>
-            conversion_queue_items_optional = FromJson(json);
-        if (!conversion_queue_items_optional) {
+        const absl::optional<ConversionQueueItemList> conversion_queue_items =
+            FromJson(json);
+        if (!conversion_queue_items) {
           BLOG(0, "Failed to parse conversion state");
           FailedToMigrate(callback);
           return;
         }
-        const ConversionQueueItemList& conversion_queue_items =
-            conversion_queue_items_optional.value();
 
         BLOG(3, "Successfully loaded conversion state");
 
         BLOG(1, "Migrating conversion state");
 
         database::table::ConversionQueue conversion_queue;
-        conversion_queue.Save(conversion_queue_items, [=](const bool success) {
+        conversion_queue.Save(*conversion_queue_items, [=](const bool success) {
           if (!success) {
             BLOG(0, "Failed to save conversion state");
             FailedToMigrate(callback);

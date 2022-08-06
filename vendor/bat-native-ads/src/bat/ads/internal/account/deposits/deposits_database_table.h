@@ -24,7 +24,7 @@ namespace table {
 
 using GetDepositsCallback =
     std::function<void(const bool success,
-                       const absl::optional<DepositInfo>& deposit_optional)>;
+                       const absl::optional<DepositInfo>& deposit)>;
 
 class Deposits final : public TableInterface {
  public:

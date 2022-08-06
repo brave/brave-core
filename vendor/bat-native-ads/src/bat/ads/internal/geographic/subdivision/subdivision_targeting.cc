@@ -77,35 +77,35 @@ std::string SubdivisionTargeting::GetSubdivisionCode() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SubdivisionTargeting::OnAutoDetectedSubdivisionTargetingCodePrefChanged() {
-  auto_detected_subdivision_code_optional_ =
+  auto_detected_subdivision_code_ =
       AdsClientHelper::GetInstance()->GetStringPref(
           prefs::kAutoDetectedSubdivisionTargetingCode);
 }
 
 void SubdivisionTargeting::OnSubdivisionTargetingCodePrefChanged() {
-  subdivision_code_optional_ = AdsClientHelper::GetInstance()->GetStringPref(
+  subdivision_code_ = AdsClientHelper::GetInstance()->GetStringPref(
       prefs::kSubdivisionTargetingCode);
 
   MaybeFetch();
 }
 
 std::string SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode() const {
-  if (!auto_detected_subdivision_code_optional_) {
-    auto_detected_subdivision_code_optional_ =
+  if (!auto_detected_subdivision_code_) {
+    auto_detected_subdivision_code_ =
         AdsClientHelper::GetInstance()->GetStringPref(
             prefs::kAutoDetectedSubdivisionTargetingCode);
   }
 
-  return auto_detected_subdivision_code_optional_.value();
+  return *auto_detected_subdivision_code_;
 }
 
 std::string SubdivisionTargeting::GetLazySubdivisionCode() const {
-  if (!subdivision_code_optional_) {
-    subdivision_code_optional_ = AdsClientHelper::GetInstance()->GetStringPref(
+  if (!subdivision_code_) {
+    subdivision_code_ = AdsClientHelper::GetInstance()->GetStringPref(
         prefs::kSubdivisionTargetingCode);
   }
 
-  return subdivision_code_optional_.value();
+  return *subdivision_code_;
 }
 
 bool SubdivisionTargeting::IsSupportedLocale(const std::string& locale) const {
@@ -225,12 +225,12 @@ void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
 }
 
 bool SubdivisionTargeting::ParseJson(const std::string& json) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return false;
   }
+  const base::Value::Dict& dict = root->GetDict();
 
-  const base::Value::Dict& dict = value->GetDict();
   const std::string* country = dict.FindString("country");
   if (!country || country->empty()) {
     return false;

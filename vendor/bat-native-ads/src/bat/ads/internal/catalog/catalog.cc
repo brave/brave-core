@@ -104,17 +104,16 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "Successfully fetched catalog");
 
   BLOG(1, "Parsing catalog");
-  const absl::optional<CatalogInfo> catalog_optional =
+  const absl::optional<CatalogInfo> catalog =
       JSONReader::ReadCatalog(url_response.body);
-  if (!catalog_optional) {
+  if (!catalog) {
     BLOG(1, "Failed to parse catalog");
     NotifyFailedToUpdateCatalog();
     Retry();
     return;
   }
-  const CatalogInfo& catalog = catalog_optional.value();
 
-  if (catalog.version != kCatalogVersion) {
+  if (catalog->version != kCatalogVersion) {
     BLOG(1, "Catalog version mismatch");
     NotifyFailedToUpdateCatalog();
     Retry();
@@ -123,14 +122,14 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
 
   SetCatalogLastUpdated(base::Time::Now());
 
-  if (!HasCatalogChanged(catalog.id)) {
-    BLOG(1, "Catalog id " << catalog.id << " is up to date");
+  if (!HasCatalogChanged(catalog->id)) {
+    BLOG(1, "Catalog id " << catalog->id << " is up to date");
     FetchAfterDelay();
     return;
   }
 
-  SaveCatalog(catalog);
-  NotifyDidUpdateCatalog(catalog);
+  SaveCatalog(*catalog);
+  NotifyDidUpdateCatalog(*catalog);
   FetchAfterDelay();
 }
 

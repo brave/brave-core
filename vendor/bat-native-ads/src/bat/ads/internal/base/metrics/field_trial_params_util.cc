@@ -41,7 +41,7 @@ base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
 
   const absl::optional<base::TimeDelta> time_delta =
       base::TimeDeltaFromString(value);
-  if (!time_delta.has_value()) {
+  if (!time_delta) {
     BLOG(0, "Failed to parse field trial param "
                 << param_name << " with string value " << value
                 << " under feature " << feature.name
@@ -51,7 +51,7 @@ base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
     return default_value;
   }
 
-  return time_delta.value();
+  return *time_delta;
 }
 
 }  // namespace ads

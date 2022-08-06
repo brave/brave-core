@@ -59,7 +59,6 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
     for (const auto& token_base64 : tokens_base64) {
       const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
       DCHECK(token.has_value());
-
       tokens.push_back(token);
     }
 
@@ -1076,7 +1075,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   for (const auto& token_base64 : tokens_base64) {
     const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
     ASSERT_TRUE(token.has_value());
-
     tokens.push_back(token);
   }
 

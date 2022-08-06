@@ -14,16 +14,17 @@ namespace rewards {
 namespace JSONReader {
 
 absl::optional<PaymentList> ReadPayments(const std::string& json) {
-  const absl::optional<base::Value>& value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
 
-  const absl::optional<PaymentList>& payments_optional = ParsePayments(*value);
-  if (!payments_optional) {
+  const absl::optional<PaymentList> payments = ParsePayments(*root);
+  if (!payments) {
     return absl::nullopt;
   }
-  return payments_optional.value();
+
+  return *payments;
 }
 
 }  // namespace JSONReader

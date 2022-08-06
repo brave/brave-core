@@ -36,7 +36,7 @@ std::unique_ptr<AntiTargetingInfo> AntiTargetingInfo::CreateFromValue(
     return {};
   }
 
-  base::Value::Dict& resource = resource_value.GetDict();
+  const base::Value::Dict& resource = resource_value.GetDict();
   if (absl::optional<int> version = resource.FindInt("version")) {
     if (features::GetAntiTargetingResourceVersion() != *version) {
       *error_message = "Failed to load from JSON, version missing";

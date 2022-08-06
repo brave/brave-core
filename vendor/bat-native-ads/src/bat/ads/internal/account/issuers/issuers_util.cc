@@ -56,18 +56,21 @@ void SetIssuers(const IssuersInfo& issuers) {
 }
 
 absl::optional<IssuersInfo> GetIssuers() {
-  IssuersInfo issuers;
-
-  issuers.ping =
-      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
-
   const absl::optional<base::Value::List> list =
       AdsClientHelper::GetInstance()->GetListPref(prefs::kIssuers);
   if (!list) {
     return absl::nullopt;
   }
 
-  issuers.issuers = ValueToIssuers(*list);
+  const absl::optional<IssuerList> issuer = ValueToIssuers(*list);
+  if (!issuer) {
+    return absl::nullopt;
+  }
+
+  IssuersInfo issuers;
+  issuers.ping =
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
+  issuers.issuers = *issuer;
 
   return issuers;
 }

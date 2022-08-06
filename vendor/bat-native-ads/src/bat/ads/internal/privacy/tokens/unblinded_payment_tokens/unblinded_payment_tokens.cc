@@ -73,12 +73,12 @@ void UnblindedPaymentTokens::SetTokens(
 void UnblindedPaymentTokens::SetTokensFromList(const base::Value::List& list) {
   UnblindedPaymentTokenList unblinded_payment_tokens;
 
-  for (const auto& value : list) {
-    if (!value.is_dict()) {
+  for (const auto& item : list) {
+    if (!item.is_dict()) {
       BLOG(0, "Unblinded payment token should be a dictionary");
       continue;
     }
-    const base::Value::Dict& dict = value.GetDict();
+    const base::Value::Dict& dict = item.GetDict();
 
     UnblindedPaymentTokenInfo unblinded_payment_token;
 

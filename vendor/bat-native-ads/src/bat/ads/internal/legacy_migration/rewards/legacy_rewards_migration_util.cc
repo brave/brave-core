@@ -18,52 +18,41 @@ namespace rewards {
 
 absl::optional<TransactionList> BuildTransactionsFromJson(
     const std::string& json) {
-  const absl::optional<PaymentList>& payments_optional =
-      JSONReader::ReadPayments(json);
-  if (!payments_optional) {
+  const absl::optional<PaymentList> payments = JSONReader::ReadPayments(json);
+  if (!payments) {
     return absl::nullopt;
   }
-  const PaymentList& payments = payments_optional.value();
 
-  const absl::optional<TransactionList>& transaction_history_optional =
+  const absl::optional<TransactionList> transaction_history =
       JSONReader::ReadTransactionHistory(json);
-  if (!transaction_history_optional) {
+  if (!transaction_history) {
     return absl::nullopt;
   }
-  const TransactionList& transaction_history =
-      transaction_history_optional.value();
 
-  const absl::optional<privacy::UnblindedPaymentTokenList>&
-      unblinded_payment_tokens_optional =
-          JSONReader::ReadUnblindedPaymentTokens(json);
-  if (!unblinded_payment_tokens_optional) {
+  const absl::optional<privacy::UnblindedPaymentTokenList>
+      unblinded_payment_tokens = JSONReader::ReadUnblindedPaymentTokens(json);
+  if (!unblinded_payment_tokens) {
     return absl::nullopt;
   }
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-      unblinded_payment_tokens_optional.value();
 
   // Get a list of all unreconciled transactions
   TransactionList transactions = GetAllUnreconciledTransactions(
-      transaction_history, unblinded_payment_tokens);
+      *transaction_history, *unblinded_payment_tokens);
 
   // Append a list of reconciled transactions for this month
-  const absl::optional<TransactionList>& reconciled_transactions_optional =
-      BuildTransactionsForReconciledTransactionsThisMonth(payments);
-  if (reconciled_transactions_optional) {
-    const TransactionList& reconciled_transactions =
-        reconciled_transactions_optional.value();
-    transactions.insert(transactions.end(), reconciled_transactions.cbegin(),
-                        reconciled_transactions.cend());
+  const absl::optional<TransactionList> reconciled_transactions =
+      BuildTransactionsForReconciledTransactionsThisMonth(*payments);
+  if (reconciled_transactions) {
+    transactions.insert(transactions.end(), reconciled_transactions->cbegin(),
+                        reconciled_transactions->cend());
   }
 
   // Append a single transaction with an accumulated value for reconciled
   // transactions last month for calculating the next payment date
-  const absl::optional<TransactionInfo>& reconciled_transaction_optional =
-      BuildTransactionForReconciledTransactionsLastMonth(payments);
-  if (reconciled_transaction_optional) {
-    const TransactionInfo& reconciled_transaction =
-        reconciled_transaction_optional.value();
-    transactions.push_back(reconciled_transaction);
+  const absl::optional<TransactionInfo> reconciled_transaction =
+      BuildTransactionForReconciledTransactionsLastMonth(*payments);
+  if (reconciled_transaction) {
+    transactions.push_back(*reconciled_transaction);
   }
 
   return transactions;

@@ -109,24 +109,22 @@ void TabManager::OnTabUpdated(const int32_t id,
 
   visible_tab_id_ = id;
 
-  const absl::optional<TabInfo> tab_optional = GetTabForId(id);
-  if (tab_optional) {
+  if (const auto tab = GetTabForId(id)) {
     BLOG(2, "Focused on existing tab id " << id);
 
-    const TabInfo& tab = tab_optional.value();
-    UpdateTab(tab);
-
+    UpdateTab(*tab);
     NotifyTabDidChangeFocus(id);
-  } else {
-    BLOG(2, "Opened a new tab with id " << id);
-
-    TabInfo tab;
-    tab.id = id;
-    tab.url = url;
-    AddTab(tab);
-
-    NotifyDidOpenNewTab(tab);
+    return;
   }
+
+  BLOG(2, "Opened a new tab with id " << id);
+
+  TabInfo tab;
+  tab.id = id;
+  tab.url = url;
+  AddTab(tab);
+
+  NotifyDidOpenNewTab(tab);
 }
 
 void TabManager::OnTextContentDidChange(const int32_t id,

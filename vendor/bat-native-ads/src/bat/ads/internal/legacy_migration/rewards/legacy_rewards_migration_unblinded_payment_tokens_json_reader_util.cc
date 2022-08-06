@@ -57,21 +57,18 @@ GetUnblindedPaymentTokensFromList(const base::Value& value) {
 
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
-  for (const auto& unblinded_payment_token_value : value.GetList()) {
-    if (!unblinded_payment_token_value.is_dict()) {
+  for (const auto& item : value.GetList()) {
+    if (!item.is_dict()) {
       return absl::nullopt;
     }
 
-    const absl::optional<privacy::UnblindedPaymentTokenInfo>&
-        unblinded_payment_token_optional =
-            ParseUnblindedPaymentToken(unblinded_payment_token_value);
-    if (!unblinded_payment_token_optional) {
+    const absl::optional<privacy::UnblindedPaymentTokenInfo>
+        unblinded_payment_token = ParseUnblindedPaymentToken(item);
+    if (!unblinded_payment_token) {
       return absl::nullopt;
     }
-    const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token =
-        unblinded_payment_token_optional.value();
 
-    unblinded_payment_tokens.push_back(unblinded_payment_token);
+    unblinded_payment_tokens.push_back(*unblinded_payment_token);
   }
 
   return unblinded_payment_tokens;
@@ -87,14 +84,14 @@ absl::optional<privacy::UnblindedPaymentTokenList> ParseUnblindedPaymentTokens(
     return absl::nullopt;
   }
 
-  const absl::optional<privacy::UnblindedPaymentTokenList>&
-      unblinded_payment_tokens_optional =
+  const absl::optional<privacy::UnblindedPaymentTokenList>
+      unblinded_payment_tokens =
           GetUnblindedPaymentTokensFromList(*unblinded_payment_tokens_value);
-  if (!unblinded_payment_tokens_optional) {
+  if (!unblinded_payment_tokens) {
     return absl::nullopt;
   }
 
-  return unblinded_payment_tokens_optional.value();
+  return *unblinded_payment_tokens;
 }
 
 }  // namespace JSONReader

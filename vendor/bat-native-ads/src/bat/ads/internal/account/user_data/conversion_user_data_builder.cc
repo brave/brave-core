@@ -54,26 +54,22 @@ void BuildConversion(const std::string& creative_instance_id,
 
         const ConversionQueueItemInfo& conversion_queue_item =
             conversion_queue_items.front();
-        const absl::optional<security::VerifiableConversionEnvelopeInfo>&
-            verifiable_conversion_envelope_optional =
-                GetEnvelope(conversion_queue_item);
-        if (!verifiable_conversion_envelope_optional) {
+        const absl::optional<security::VerifiableConversionEnvelopeInfo>
+            verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
+        if (!verifiable_conversion_envelope) {
           ReportConversionDoesNotExist(callback);
           return;
         }
-        const security::VerifiableConversionEnvelopeInfo&
-            verifiable_conversion_envelope =
-                verifiable_conversion_envelope_optional.value();
 
         base::Value::Dict conversion_envelope;
         conversion_envelope.Set(kAlgorithmKey, kAlgorithm);
         conversion_envelope.Set(kCipherTextKey,
-                                verifiable_conversion_envelope.ciphertext);
+                                verifiable_conversion_envelope->ciphertext);
         conversion_envelope.Set(
             kEphemeralPublicKeyKey,
-            verifiable_conversion_envelope.ephemeral_public_key);
+            verifiable_conversion_envelope->ephemeral_public_key);
         conversion_envelope.Set(kNonceKey,
-                                verifiable_conversion_envelope.nonce);
+                                verifiable_conversion_envelope->nonce);
 
         base::Value::Dict user_data;
         user_data.Set(kConversionEnvelopeKey, std::move(conversion_envelope));

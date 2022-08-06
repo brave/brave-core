@@ -38,21 +38,20 @@ absl::optional<SearchEngineInfo> FindSearchEngineResultsPage(const GURL& url) {
 }  // namespace
 
 bool IsSearchEngineResultsPage(const GURL& url) {
-  const absl::optional<SearchEngineInfo> search_engine_optional =
+  const absl::optional<SearchEngineInfo> search_engine =
       FindSearchEngineResultsPage(url);
-  if (!search_engine_optional) {
+  if (!search_engine) {
     return false;
   }
-  const SearchEngineInfo& search_engine = search_engine_optional.value();
 
-  if (search_engine.search_term_query_key.empty()) {
+  if (search_engine->search_term_query_key.empty()) {
     // We should only match |result_page_url_pattern| if the search engine does
     // not have a search term query key
     return true;
   }
 
   std::string search_term_query_value;
-  if (!net::GetValueForKeyInQuery(url, search_engine.search_term_query_key,
+  if (!net::GetValueForKeyInQuery(url, search_engine->search_term_query_key,
                                   &search_term_query_value)) {
     return false;
   }
@@ -61,15 +60,14 @@ bool IsSearchEngineResultsPage(const GURL& url) {
 }
 
 absl::optional<std::string> ExtractSearchTermQueryValue(const GURL& url) {
-  const absl::optional<SearchEngineInfo> search_engine_optional =
+  const absl::optional<SearchEngineInfo> search_engine =
       FindSearchEngineResultsPage(url);
-  if (!search_engine_optional) {
+  if (!search_engine) {
     return absl::nullopt;
   }
-  const SearchEngineInfo& search_engine = search_engine_optional.value();
 
   std::string search_term_query_value;
-  if (!net::GetValueForKeyInQuery(url, search_engine.search_term_query_key,
+  if (!net::GetValueForKeyInQuery(url, search_engine->search_term_query_key,
                                   &search_term_query_value)) {
     return absl::nullopt;
   }

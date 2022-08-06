@@ -99,16 +99,15 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
   const std::vector<std::string> train_labels = {"spam", "spam", "ham", "ham",
                                                  "junk"};
 
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
-  pipeline::TextProcessing text_processing_pipeline;
+  ASSERT_TRUE(json);
+
+  base::Value value = base::test::ParseJson(*json);
 
   // Act
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string json = json_optional.value();
-  base::Value value = base::test::ParseJson(json);
-  bool load_success = text_processing_pipeline.FromValue(std::move(value));
-  ASSERT_TRUE(load_success);
+  pipeline::TextProcessing text_processing_pipeline;
+  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); i++) {
@@ -131,76 +130,76 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
 
 TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
   // Arrange
-  pipeline::TextProcessing text_processing_pipeline;
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
+  ASSERT_TRUE(json);
+
+  base::Value value = base::test::ParseJson(*json);
 
   // Act
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string json = json_optional.value();
-  base::Value value = base::test::ParseJson(json);
-  bool loaded_successfully =
-      text_processing_pipeline.FromValue(std::move(value));
+  pipeline::TextProcessing text_processing_pipeline;
+  const bool success = text_processing_pipeline.FromValue(std::move(value));
 
   // Assert
-  EXPECT_TRUE(loaded_successfully);
+  EXPECT_TRUE(success);
 }
 
 TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
   // Arrange
-  pipeline::TextProcessing text_processing_pipeline;
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
+  ASSERT_TRUE(json);
+
+  base::Value value = base::test::ParseJson(*json);
 
   // Act
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string json = json_optional.value();
-  base::Value value = base::test::ParseJson(json);
-  bool loaded_successfully =
-      text_processing_pipeline.FromValue(std::move(value));
+  pipeline::TextProcessing text_processing_pipeline;
+  const bool success = text_processing_pipeline.FromValue(std::move(value));
 
   // Assert
-  EXPECT_FALSE(loaded_successfully);
+  EXPECT_FALSE(success);
 }
 
 TEST_F(BatAdsTextProcessingPipelineTest, EmptyModelTest) {
   // Arrange
-  pipeline::TextProcessing text_processing_pipeline;
-  const std::string empty_model_json = "{}";
+  const std::string json = "{}";
+
+  base::Value value = base::test::ParseJson(json);
 
   // Act
-  base::Value value = base::test::ParseJson(empty_model_json);
-  bool loaded_successfully =
-      text_processing_pipeline.FromValue(std::move(value));
+  pipeline::TextProcessing text_processing_pipeline;
+  const bool success = text_processing_pipeline.FromValue(std::move(value));
 
   // Assert
-  EXPECT_FALSE(loaded_successfully);
+  EXPECT_FALSE(success);
 }
 
 TEST_F(BatAdsTextProcessingPipelineTest, MissingModelTest) {
   // Arrange
-  pipeline::TextProcessing text_processing_pipeline;
 
   // Act
-  bool loaded_successfully = text_processing_pipeline.FromValue(base::Value());
+  pipeline::TextProcessing text_processing_pipeline;
+  const bool success = text_processing_pipeline.FromValue(base::Value());
 
   // Assert
-  EXPECT_FALSE(loaded_successfully);
+  EXPECT_FALSE(success);
 }
 
 TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   // Arrange
   const size_t kMaxPredictionsSize = 100;
   const std::string kTestPage = "ethereum bitcoin bat zcash crypto tokens!";
-  pipeline::TextProcessing text_processing_pipeline;
-  const absl::optional<std::string> json_optional =
+
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
+  ASSERT_TRUE(json);
+
+  base::Value value = base::test::ParseJson(*json);
+
+  pipeline::TextProcessing text_processing_pipeline;
+  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
 
   // Act
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string json = json_optional.value();
-  base::Value value = base::test::ParseJson(json);
-  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
   const PredictionMap predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
 
@@ -217,23 +216,23 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   // Arrange
   const size_t kMinPredictionsSize = 2;
   const size_t kMaxPredictionsSize = 100;
-  pipeline::TextProcessing text_processing_pipeline;
 
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(json_optional.has_value());
+  ASSERT_TRUE(json);
 
-  const std::string json = json_optional.value();
-  base::Value value = base::test::ParseJson(json);
+  base::Value value = base::test::ParseJson(*json);
+
+  pipeline::TextProcessing text_processing_pipeline;
   ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
 
-  const absl::optional<std::string> text_optional =
+  const absl::optional<std::string> text =
       ReadFileFromTestPathToString(kTextCMCCrash);
+  ASSERT_TRUE(text);
 
   // Act
-  ASSERT_TRUE(text_optional.has_value());
-  const std::string text = text_optional.value();
-  const PredictionMap predictions = text_processing_pipeline.ClassifyPage(text);
+  const PredictionMap predictions =
+      text_processing_pipeline.ClassifyPage(*text);
 
   // Assert
   ASSERT_GT(predictions.size(), kMinPredictionsSize);

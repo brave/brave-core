@@ -93,14 +93,14 @@ UnblindedTokenList GetRandomUnblindedTokens(const int count) {
   TokenGenerator token_generator;
   const std::vector<cbr::Token>& tokens = token_generator.Generate(count);
   for (const auto& token : tokens) {
-    const absl::optional<std::string> token_base64_optional =
-        token.EncodeBase64();
-    if (!token_base64_optional) {
+    const absl::optional<std::string> token_base64 = token.EncodeBase64();
+    if (!token_base64) {
       NOTREACHED();
       continue;
     }
+
     const UnblindedTokenInfo& unblinded_token =
-        CreateUnblindedToken(token_base64_optional.value());
+        CreateUnblindedToken(*token_base64);
 
     unblinded_tokens.push_back(unblinded_token);
   }
@@ -114,20 +114,19 @@ base::Value GetUnblindedTokensAsList(const int count) {
   const UnblindedTokenList& unblinded_tokens = GetUnblindedTokens(count);
 
   for (const auto& unblinded_token : unblinded_tokens) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::Value dict(base::Value::Type::DICTIONARY);
 
-    const absl::optional<std::string> unblinded_token_base64_optional =
+    const absl::optional<std::string> unblinded_token_base64 =
         unblinded_token.value.EncodeBase64();
-    DCHECK(unblinded_token_base64_optional);
-    dictionary.SetStringKey("unblinded_token",
-                            unblinded_token_base64_optional.value());
+    DCHECK(unblinded_token_base64);
+    dict.SetStringKey("unblinded_token", *unblinded_token_base64);
 
-    const absl::optional<std::string> public_key_base64_optional =
+    const absl::optional<std::string> public_key_base64 =
         unblinded_token.public_key.EncodeBase64();
-    DCHECK(public_key_base64_optional);
-    dictionary.SetStringKey("public_key", public_key_base64_optional.value());
+    DCHECK(public_key_base64);
+    dict.SetStringKey("public_key", *public_key_base64);
 
-    list.Append(std::move(dictionary));
+    list.Append(std::move(dict));
   }
 
   return list;

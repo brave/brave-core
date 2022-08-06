@@ -36,7 +36,7 @@ class ScopedLibcTZ {
 
   ~ScopedLibcTZ() {
     auto env = base::Environment::Create();
-    if (old_timezone_.has_value()) {
+    if (old_timezone_) {
       CHECK(env->SetVar(kTZ, old_timezone_.value()));
     } else {
       CHECK(env->UnSetVar(kTZ));

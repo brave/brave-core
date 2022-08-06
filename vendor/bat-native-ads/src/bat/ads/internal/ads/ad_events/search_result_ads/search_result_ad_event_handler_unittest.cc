@@ -75,11 +75,10 @@ void ExpectDepositExistsForCreativeInstanceId(
   database::table::Deposits database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [](const bool success,
-         const absl::optional<DepositInfo>& deposit_optional) {
+      [](const bool success, const absl::optional<DepositInfo>& deposit) {
         ASSERT_TRUE(success);
 
-        EXPECT_TRUE(deposit_optional);
+        EXPECT_TRUE(deposit);
       });
 }
 

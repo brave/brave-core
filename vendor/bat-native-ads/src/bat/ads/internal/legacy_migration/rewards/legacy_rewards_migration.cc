@@ -59,17 +59,16 @@ void Migrate(InitializeCallback callback) {
 
         BLOG(3, "Migrating rewards state");
 
-        const absl::optional<TransactionList>& transactions_optional =
+        const absl::optional<TransactionList> transactions =
             BuildTransactionsFromJson(json);
-        if (!transactions_optional) {
+        if (!transactions) {
           BLOG(0, "Failed to parse rewards state");
           FailedToMigrate(callback);
           return;
         }
-        const TransactionList& transactions = transactions_optional.value();
 
         database::table::Transactions database_table;
-        database_table.Save(transactions, [=](const bool success) {
+        database_table.Save(*transactions, [=](const bool success) {
           if (!success) {
             BLOG(0, "Failed to save rewards state");
             FailedToMigrate(callback);

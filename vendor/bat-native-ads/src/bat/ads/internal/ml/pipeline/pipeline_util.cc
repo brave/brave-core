@@ -43,12 +43,11 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
     std::string parsed_transformation_type = *transformation_type;
 
     if (parsed_transformation_type.compare("TO_LOWER") == 0) {
-      transformations.value().push_back(
-          std::make_unique<LowercaseTransformation>());
+      transformations->push_back(std::make_unique<LowercaseTransformation>());
     }
 
     if (parsed_transformation_type.compare("NORMALIZE") == 0) {
-      transformations.value().push_back(
+      transformations->push_back(
           std::make_unique<NormalizationTransformation>());
     }
 
@@ -62,15 +61,13 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
 
       const absl::optional<int> nb =
           transformation_params->FindIntKey("num_buckets");
-      if (!nb.has_value()) {
+      if (!nb) {
         return absl::nullopt;
       }
-
-      int num_buckets = nb.value();
+      int num_buckets = *nb;
 
       const base::Value* ngram_sizes =
           transformation_params->FindListKey("ngrams_range");
-
       if (!ngram_sizes) {
         return absl::nullopt;
       }
@@ -83,9 +80,8 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
           return absl::nullopt;
         }
       }
-      transformations.value().push_back(
-          std::make_unique<HashedNGramsTransformation>(num_buckets,
-                                                       ngram_range));
+      transformations->push_back(std::make_unique<HashedNGramsTransformation>(
+          num_buckets, ngram_range));
     }
   }
 
@@ -123,7 +119,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
       return absl::nullopt;
     }
 
-    const std::string class_string = class_name.GetString();
+    const std::string& class_string = class_name.GetString();
     if (class_string.empty()) {
       return absl::nullopt;
     }
@@ -178,52 +174,45 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     }
   }
 
-  absl::optional<model::Linear> linear_model =
-      model::Linear(std::move(weights), std::move(specified_biases));
-  return linear_model;
+  return model::Linear(std::move(weights), std::move(specified_biases));
 }
 
 }  // namespace
 
-absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value) {
-  if (!resource_value.is_dict()) {
+absl::optional<PipelineInfo> ParsePipelineValue(base::Value value) {
+  if (!value.is_dict()) {
     return absl::nullopt;
   }
 
-  absl::optional<int> version_value = resource_value.FindIntKey("version");
-  if (!version_value.has_value()) {
-    return absl::nullopt;
-  }
-  int version = version_value.value();
-
-  std::string* timestamp_value = resource_value.FindStringKey("timestamp");
-  if (!timestamp_value) {
-    return absl::nullopt;
-  }
-  std::string timestamp = *timestamp_value;
-
-  std::string* locale_value = resource_value.FindStringKey("locale");
-  if (!locale_value) {
-    return absl::nullopt;
-  }
-  std::string locale = *locale_value;
-
-  absl::optional<TransformationVector> transformations_optional =
-      ParsePipelineTransformations(
-          resource_value.FindListKey("transformations"));
-  if (!transformations_optional.has_value()) {
+  const absl::optional<int> version = value.FindIntKey("version");
+  if (!version) {
     return absl::nullopt;
   }
 
-  absl::optional<model::Linear> linear_model_optional =
-      ParsePipelineClassifier(resource_value.FindKey("classifier"));
-  if (!linear_model_optional.has_value()) {
+  const std::string* timestamp = value.FindStringKey("timestamp");
+  if (!timestamp) {
     return absl::nullopt;
   }
 
-  return PipelineInfo(version, timestamp, locale,
-                      std::move(transformations_optional.value()),
-                      std::move(linear_model_optional.value()));
+  const std::string* locale = value.FindStringKey("locale");
+  if (!locale) {
+    return absl::nullopt;
+  }
+
+  absl::optional<TransformationVector> transformations =
+      ParsePipelineTransformations(value.FindListKey("transformations"));
+  if (!transformations) {
+    return absl::nullopt;
+  }
+
+  absl::optional<model::Linear> linear_model =
+      ParsePipelineClassifier(value.FindKey("classifier"));
+  if (!linear_model) {
+    return absl::nullopt;
+  }
+
+  return PipelineInfo(*version, *timestamp, *locale,
+                      std::move(*transformations), std::move(*linear_model));
 }
 
 }  // namespace pipeline

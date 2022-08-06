@@ -21,19 +21,18 @@ void CashDeposit::GetValue(const std::string& creative_instance_id,
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [callback](const bool success,
-                 const absl::optional<DepositInfo>& deposit_optional) {
+                 const absl::optional<DepositInfo>& deposit) {
         if (!success) {
           callback(/* success */ false, /* value */ 0.0);
           return;
         }
 
-        if (!deposit_optional) {
+        if (!deposit) {
           callback(/* success */ false, /* value */ 0.0);
           return;
         }
 
-        const DepositInfo& deposit = deposit_optional.value();
-        callback(/* success */ true, deposit.value);
+        callback(/* success */ true, deposit->value);
       });
 }
 

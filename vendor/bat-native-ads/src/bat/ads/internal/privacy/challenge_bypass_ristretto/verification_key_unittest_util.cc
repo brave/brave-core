@@ -18,10 +18,10 @@ namespace cbr {
 
 VerificationKey GetVerificationKey() {
   const UnblindedToken unblinded_token = GetUnblindedToken();
-  const absl::optional<VerificationKey> verification_key_optional =
+  const absl::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
-  DCHECK(verification_key_optional);
-  return verification_key_optional.value();
+  DCHECK(verification_key);
+  return *verification_key;
 }
 
 }  // namespace cbr

@@ -136,14 +136,11 @@ TEST(BatAdsDLEQProofTest, EncodeBase64) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
-      dleq_proof.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  const absl::optional<std::string> encoded_base64 = dleq_proof.EncodeBase64();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kDLEQProofBase64, encoded_base64);
+  EXPECT_EQ(kDLEQProofBase64, *encoded_base64);
 }
 
 TEST(BatAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
@@ -151,11 +148,10 @@ TEST(BatAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   DLEQProof dleq_proof;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
-      dleq_proof.EncodeBase64();
+  const absl::optional<std::string> encoded_base64 = dleq_proof.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsDLEQProofTest, Verify) {

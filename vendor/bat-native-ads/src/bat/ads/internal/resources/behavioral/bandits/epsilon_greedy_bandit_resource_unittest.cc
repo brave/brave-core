@@ -35,23 +35,20 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   // Arrange
   Catalog catalog;
 
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kCatalog);
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string& json = json_optional.value();
+  ASSERT_TRUE(json);
 
-  const absl::optional<CatalogInfo> catalog_info_optional =
-      JSONReader::ReadCatalog(json);
-  ASSERT_TRUE(catalog_info_optional);
-  const CatalogInfo& catalog_info = catalog_info_optional.value();
+  const absl::optional<CatalogInfo> catalog_info =
+      JSONReader::ReadCatalog(*json);
+  ASSERT_TRUE(catalog_info);
 
   // Act
   EpsilonGreedyBandit resource(&catalog);
-  resource.LoadFromCatalog(catalog_info);
+  resource.LoadFromCatalog(*catalog_info);
 
   // Assert
-  const bool is_initialized = resource.IsInitialized();
-  EXPECT_TRUE(is_initialized);
+  EXPECT_TRUE(resource.IsInitialized());
 }
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
@@ -65,8 +62,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   resource.LoadFromCatalog(catalog_info);
 
   // Assert
-  const bool is_initialized = resource.IsInitialized();
-  EXPECT_TRUE(is_initialized);
+  EXPECT_TRUE(resource.IsInitialized());
 }
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
@@ -78,8 +74,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   EpsilonGreedyBandit resource(&catalog);
 
   // Assert
-  const bool is_initialized = resource.IsInitialized();
-  EXPECT_FALSE(is_initialized);
+  EXPECT_FALSE(resource.IsInitialized());
 }
 
 }  // namespace resource
