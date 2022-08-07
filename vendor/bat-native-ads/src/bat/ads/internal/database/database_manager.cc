@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/database/database_manager.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/check_op.h"

@@ -8,7 +8,6 @@
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "bat/ads/confirmation_type.h"
 
 namespace ads {
 

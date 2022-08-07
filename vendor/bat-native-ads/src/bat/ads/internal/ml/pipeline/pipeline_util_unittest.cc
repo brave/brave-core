@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/test/values_test_util.h"
-#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"

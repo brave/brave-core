@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/user_data/mutated_user_data.h"
 
-#include <utility>
-
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 

@@ -6,7 +6,6 @@
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "base/json/json_reader.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

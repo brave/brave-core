@@ -5,7 +5,6 @@
 
 #include "bat/ads/database.h"
 
-#include <utility>
 #include <vector>
 
 #include "base/bind.h"
