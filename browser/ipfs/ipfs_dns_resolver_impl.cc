@@ -12,6 +12,8 @@
 
 namespace ipfs {
 
+const int kThrottleDeltaMs = 1000;
+
 mojo::Remote<network::mojom::DnsConfigChangeManager>
 GetDnsConfigChangeManager() {
   mojo::Remote<network::mojom::DnsConfigChangeManager>
@@ -21,7 +23,7 @@ GetDnsConfigChangeManager() {
   return dns_config_change_manager_remote;
 }
 
-IpfsDnsResolverImpl::IpfsDnsResolverImpl() {
+IpfsDnsResolverImpl::IpfsDnsResolverImpl() : weak_ptr_factory_(this) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   dns_config_change_manager_ = GetDnsConfigChangeManager();
   SetupDnsConfigChangeNotifications();
@@ -41,7 +43,11 @@ IpfsDnsResolverImpl::~IpfsDnsResolverImpl() {}
 void IpfsDnsResolverImpl::OnDnsConfigChangeManagerConnectionError() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   receiver_.reset();
-  SetupDnsConfigChangeNotifications();
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&IpfsDnsResolverImpl::SetupDnsConfigChangeNotifications,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::Milliseconds(kThrottleDeltaMs));
 }
 
 void IpfsDnsResolverImpl::OnDnsConfigChanged() {
