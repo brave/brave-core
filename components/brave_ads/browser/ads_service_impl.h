@@ -224,8 +224,7 @@ class AdsServiceImpl : public AdsService,
                           const std::string& message);
 
   void OnGetDiagnostics(GetDiagnosticsCallback callback,
-                        const bool success,
-                        const std::string& json);
+                        absl::optional<base::Value::List> value);
 
   void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
                                 ads::mojom::StatementInfoPtr statement);

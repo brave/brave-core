@@ -13,8 +13,10 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -161,8 +163,7 @@ class BatAdsImpl :
                          const bool success);
 
   static void OnGetDiagnostics(CallbackHolder<GetDiagnosticsCallback>* holder,
-                               const bool success,
-                               const std::string& json);
+                               absl::optional<base::Value::List> value);
 
   static void OnGetStatementOfAccounts(
       CallbackHolder<GetStatementOfAccountsCallback>* holder,

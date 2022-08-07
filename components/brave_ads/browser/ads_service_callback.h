@@ -11,11 +11,12 @@
 #include "base/callback.h"
 #include "base/values.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(const bool, const std::string&)>;
+    base::OnceCallback<void(absl::optional<base::Value::List>)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(ads::mojom::StatementInfoPtr)>;

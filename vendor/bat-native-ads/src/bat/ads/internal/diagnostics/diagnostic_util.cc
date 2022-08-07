@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/values.h"
 
 namespace ads {
 
@@ -19,17 +18,17 @@ constexpr char kValueKey[] = "value";
 
 }  // namespace
 
-base::Value ToValue(const DiagnosticMap& diagnostics) {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List ToValue(const DiagnosticMap& diagnostics) {
+  base::Value::List list;
 
   for (const auto& diagnostic : diagnostics) {
     DiagnosticEntryInterface* entry = diagnostic.second.get();
     DCHECK(entry);
 
-    base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetStringKey(kNameKey, entry->GetName());
-    dictionary.SetStringKey(kValueKey, entry->GetValue());
-    list.Append(std::move(dictionary));
+    base::Value::Dict dict;
+    dict.Set(kNameKey, entry->GetName());
+    dict.Set(kValueKey, entry->GetValue());
+    list.Append(std::move(dict));
   }
 
   return list;

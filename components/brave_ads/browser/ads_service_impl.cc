@@ -1085,7 +1085,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, "");
+    std::move(callback).Run(/* diagnostics */ absl::nullopt);
     return;
   }
 
@@ -2026,9 +2026,8 @@ void AdsServiceImpl::OnGetStatementOfAccounts(
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,
-                                      const bool success,
-                                      const std::string& json) {
-  std::move(callback).Run(success, json);
+                                      absl::optional<base::Value::List> value) {
+  std::move(callback).Run(std::move(value));
 }
 
 void AdsServiceImpl::OnToggleAdThumbUp(ToggleAdThumbUpCallback callback,

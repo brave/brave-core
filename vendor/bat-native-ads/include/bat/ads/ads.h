@@ -62,9 +62,8 @@ class ADS_EXPORT Ads {
   // |true| if successful otherwise |false|.
   virtual void Shutdown(ShutdownCallback callback) = 0;
 
-  // Called to get diagnostics to help identify issues. The callback takes two
-  // arguments - |bool| is set to |true| if successful otherwise |false|.
-  // |std::string| containing info of the obtained diagnostics.
+  // Called to get diagnostics to help identify issues. The callback takes one
+  // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   // Called when the user changes the locale of their operating system. This

@@ -106,7 +106,7 @@ interface BatAds {
   Initialize() => (bool success);
   Shutdown() => (bool success);
 
-  GetDiagnostics() => (bool success, string json);
+  GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
   OnChangeLocale(string locale);
 
