@@ -183,6 +183,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "searchPromotionNTPPopupTitle2", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2},  // NOLINT
         { "searchPromotionNTPPopupDesc", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC},       // NOLINT
         { "searchPromotionNTPPopupBottom", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM},   // NOLINT
+        { "searchPromotionSearchBoxPlaceholderLabel", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER},   // NOLINT
 
         { "braveTodayTitle", IDS_BRAVE_TODAY_TITLE },
         { "braveTodayIntroTitle", IDS_BRAVE_TODAY_INTRO_TITLE },
