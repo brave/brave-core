@@ -248,7 +248,8 @@ public class AssetDetailActivity
                 jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
                     WalletListItemModel thisAssetItemModel = new WalletListItemModel(
                             R.drawable.ic_eth, mAsset.name, mAsset.symbol, mAsset.tokenId, "", "");
-                    Utils.getTxExtraInfo(this, selectedNetwork, accountInfos, mAsset, false,
+                    Utils.getTxExtraInfo(this, selectedNetwork, accountInfos,
+                            new BlockchainToken[] {mAsset}, false,
                             (assetPrices, fullTokenList, nativeAssetsBalances,
                                     blockchainTokensBalances) -> {
                                 thisAssetItemModel.setBlockchainToken(mAsset);
