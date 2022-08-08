@@ -78,7 +78,7 @@ base::Value::Dict NewTabPageAdInfo::ToValue() const {
   return dict;
 }
 
-bool NewTabPageAdInfo::FromValue(const base::Value::Dict& root) {
+void NewTabPageAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("type")) {
     type = AdType(*value);
   }
@@ -151,8 +151,6 @@ bool NewTabPageAdInfo::FromValue(const base::Value::Dict& root) {
       wallpapers.push_back(wallpaper_info);
     }
   }
-
-  return true;
 }
 
 std::string NewTabPageAdInfo::ToJson() const {
@@ -170,7 +168,9 @@ bool NewTabPageAdInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  FromValue(document->GetDict());
+
+  return true;
 }
 
 }  // namespace ads

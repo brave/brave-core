@@ -32,7 +32,7 @@ base::Value::Dict HistoryInfo::ToValue() const {
   return dict;
 }
 
-bool HistoryInfo::FromValue(const base::Value::Dict& root) {
+void HistoryInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindList("history")) {
     for (const auto& item : *value) {
       if (!item.is_dict())
@@ -43,8 +43,6 @@ bool HistoryInfo::FromValue(const base::Value::Dict& root) {
       items.push_back(history_item);
     }
   }
-
-  return true;
 }
 
 std::string HistoryInfo::ToJson() const {
@@ -62,7 +60,9 @@ bool HistoryInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  FromValue(document->GetDict());
+
+  return true;
 }
 
 }  // namespace ads

@@ -48,7 +48,7 @@ base::Value::Dict NotificationAdInfo::ToValue() const {
   return dict;
 }
 
-bool NotificationAdInfo::FromValue(const base::Value::Dict& root) {
+void NotificationAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("type")) {
     type = AdType(*value);
   }
@@ -88,8 +88,6 @@ bool NotificationAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("target_url")) {
     target_url = GURL(*value);
   }
-
-  return true;
 }
 
 std::string NotificationAdInfo::ToJson() const {
@@ -107,7 +105,9 @@ bool NotificationAdInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  FromValue(document->GetDict());
+
+  return true;
 }
 
 }  // namespace ads

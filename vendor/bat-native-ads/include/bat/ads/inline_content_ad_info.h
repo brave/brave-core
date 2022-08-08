@@ -27,10 +27,10 @@ struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   bool IsValid() const;
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);
+  void FromValue(const base::Value::Dict& value);
 
   std::string title;
   std::string description;
