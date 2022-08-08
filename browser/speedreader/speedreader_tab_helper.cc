@@ -39,6 +39,16 @@
 
 namespace speedreader {
 
+namespace test {
+
+const std::u16string* g_show_original_link_title = nullptr;
+
+void SetShowOriginalLinkTitle(const std::u16string* title) {
+  g_show_original_link_title = title;
+}
+
+}  // namespace test
+
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents) {
@@ -406,18 +416,21 @@ void SpeedreaderTabHelper::DOMContentLoaded(
         getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       if (!link)
         return;
-      link.text = '$1';
+      link.text = "$1";
       link.addEventListener('click', (e) => {
         window.speedreader.showOriginalPage();
       })
     })();
   )js";
 
-  const auto link_text = brave_l10n::GetLocalizedResourceUTF16String(
+  auto link_text = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
+  if (test::g_show_original_link_title) {
+    link_text = *test::g_show_original_link_title;
+  }
+
   // Make sure that the link text doesn't contain js injection
-  CHECK_EQ(std::u16string::npos, link_text.find(u'\''));
-  CHECK_EQ(std::u16string::npos, link_text.find(u'\\'));
+  base::ReplaceChars(link_text, u"\"", u"\\\"", &link_text);
 
   const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
                                                       link_text, nullptr);
