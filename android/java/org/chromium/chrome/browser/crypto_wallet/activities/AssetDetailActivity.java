@@ -354,7 +354,7 @@ public class AssetDetailActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mJsonRpcService, this, accountInfos);
+        Utils.openTransaction(txInfo, mJsonRpcService, this, accountInfos, mCoinType);
     }
 
     @Override
