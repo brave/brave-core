@@ -15,7 +15,7 @@ import {
 // to a window object at a targetUrl and subscribing of responses, and (2)
 // the definition of handlers to be run when a different LedgerMessagingTransport
 // instance at a different Window sends messages to it.
-export abstract class LedgerMessagingTransport {
+export class LedgerMessagingTransport {
   protected targetWindow: Window
   protected targetUrl: string
   protected handlers: Map<string, Function>
