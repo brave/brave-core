@@ -200,6 +200,17 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
+    public List<AccountInfo> stripNoBuySwapAccounts(List<AccountInfo> accountInfos) {
+        List<AccountInfo> accountInfosFiltered = new ArrayList<>();
+        for (AccountInfo accountInfo : accountInfos) {
+            if (accountInfo.coin != CoinType.SOL) {
+                accountInfosFiltered.add(accountInfo);
+            }
+        }
+
+        return accountInfosFiltered;
+    }
+
     public void getAccounts(Callbacks.Callback1<AccountInfo[]> callback1) {
         mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
             List<AccountInfo> accountInfos = WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
