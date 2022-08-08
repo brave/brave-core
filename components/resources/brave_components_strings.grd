@@ -240,6 +240,9 @@
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for brave search promotion from NTP">
         Try Brave Search now
       </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER" desc="The place holder text of search box at brave search promotion from NTP">
+        Search the web privately
+      </message>
 
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
