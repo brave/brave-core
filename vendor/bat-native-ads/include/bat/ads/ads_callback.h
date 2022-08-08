@@ -24,7 +24,7 @@ using ShutdownCallback = std::function<void(const bool)>;
 using RemoveAllHistoryCallback = std::function<void(const bool)>;
 
 using MaybeServeNewTabPageAdCallback =
-    std::function<void(const bool, const NewTabPageAdInfo&)>;
+    std::function<void(const absl::optional<NewTabPageAdInfo>&)>;
 
 using MaybeServeInlineContentAdCallback = std::function<
     void(const bool, const std::string&, const InlineContentAdInfo&)>;

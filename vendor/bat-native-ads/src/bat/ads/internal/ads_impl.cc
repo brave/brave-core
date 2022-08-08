@@ -277,7 +277,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, {});
+    callback(/* ads */ absl::nullopt);
     return;
   }
 

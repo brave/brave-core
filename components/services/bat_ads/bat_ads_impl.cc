@@ -144,7 +144,7 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
       AsWeakPtr(), std::move(callback));
 
   auto maybe_serve_new_tab_page_ad_callback =
-      std::bind(BatAdsImpl::OnMaybeServeNewTabPageAd, holder, _1, _2);
+      std::bind(BatAdsImpl::OnMaybeServeNewTabPageAd, holder, _1);
   ads_->MaybeServeNewTabPageAd(maybe_serve_new_tab_page_ad_callback);
 }
 
@@ -333,11 +333,15 @@ void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
 // static
 void BatAdsImpl::OnMaybeServeNewTabPageAd(
     CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-    const bool success,
-    const ads::NewTabPageAdInfo& ad) {
+    const absl::optional<ads::NewTabPageAdInfo>& ad) {
   DCHECK(holder);
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, ad.ToJson());
+    absl::optional<base::Value::Dict> dict;
+    if (ad) {
+      dict = ad->ToValue();
+    }
+
+    std::move(holder->get()).Run(std::move(dict));
   }
 
   delete holder;

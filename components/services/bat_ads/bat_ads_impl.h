@@ -177,8 +177,7 @@ class BatAdsImpl :
 
   static void OnMaybeServeNewTabPageAd(
       CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-      const bool success,
-      const ads::NewTabPageAdInfo& ad);
+      const absl::optional<ads::NewTabPageAdInfo>& ad);
 
   static void OnTriggerSearchResultAdEvent(
       CallbackHolder<TriggerSearchResultAdEventCallback>* holder,

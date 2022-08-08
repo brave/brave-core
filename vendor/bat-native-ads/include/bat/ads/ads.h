@@ -166,9 +166,8 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) = 0;
 
-  // Should be called to serve a new tab page ad. The callback takes two
-  // arguments - |bool| is set to |true| if successful otherwise |false| and
-  // |NewTabPageAdInfo| containing the info for the ad.
+  // Should be called to serve a new tab page ad. The callback takes one
+  // argument - |NewTabPageAdInfo| containing the info for the ad.
   virtual void MaybeServeNewTabPageAd(
       MaybeServeNewTabPageAdCallback callback) = 0;
 

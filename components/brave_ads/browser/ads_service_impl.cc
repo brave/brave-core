@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
 #include "base/debug/dump_without_crashing.h"
@@ -1212,13 +1213,13 @@ AdsServiceImpl::GetPrefetchedNewTabPageAd() {
     return absl::nullopt;
   }
 
-  absl::optional<ads::NewTabPageAdInfo> ad_info;
-  if (prefetched_new_tab_page_ad_info_) {
-    ad_info = prefetched_new_tab_page_ad_info_;
-    prefetched_new_tab_page_ad_info_.reset();
+  absl::optional<ads::NewTabPageAdInfo> ad;
+  if (prefetched_new_tab_page_ad_) {
+    ad = prefetched_new_tab_page_ad_;
+    prefetched_new_tab_page_ad_.reset();
   }
 
-  return ad_info;
+  return ad;
 }
 
 void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
@@ -1875,7 +1876,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
 
   // The previous prefetched new tab page ad is available. No need to do
   // prefetch again.
-  if (prefetched_new_tab_page_ad_info_) {
+  if (prefetched_new_tab_page_ad_) {
     return;
   }
 
@@ -1891,15 +1892,18 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
   }
 }
 
-void AdsServiceImpl::OnPrefetchNewTabPageAd(bool success,
-                                            const std::string& json) {
-  if (!success) {
+void AdsServiceImpl::OnPrefetchNewTabPageAd(
+    absl::optional<base::Value::Dict> dict) {
+  if (!dict) {
+    VLOG(0) << "Failed to prefetch new tab page ad";
     return;
   }
 
-  ads::NewTabPageAdInfo ad_info;
-  ad_info.FromJson(json);
-  prefetched_new_tab_page_ad_info_ = ad_info;
+  ads::NewTabPageAdInfo ad;
+  ad.FromValue(*dict);
+
+  DCHECK(!prefetched_new_tab_page_ad_);
+  prefetched_new_tab_page_ad_ = ad;
 }
 
 void AdsServiceImpl::OnURLRequest(

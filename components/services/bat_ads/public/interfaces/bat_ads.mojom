@@ -143,7 +143,7 @@ interface BatAds {
   MaybeServeInlineContentAd(string dimensions) => (bool success, string dimensions, string ad);
   TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
 
-  MaybeServeNewTabPageAd() => (bool success, string json);
+  MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
 
   GetNotificationAd(string placement_id) => (string json);
