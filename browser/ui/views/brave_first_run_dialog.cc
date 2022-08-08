@@ -27,6 +27,7 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_shell_integration.h"
+#include "brave/browser/brave_shell_integration_win.h"
 #else
 #include "chrome/browser/shell_integration.h"
 #endif
@@ -123,7 +124,13 @@ bool BraveFirstRunDialog::Accept() {
 
 #if BUILDFLAG(IS_WIN)
   base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
-      ->StartSetAsDefault(base::NullCallback());
+      ->StartSetAsDefault(
+          base::BindOnce([](shell_integration::DefaultWebClientState state) {
+            if (state == shell_integration::DefaultWebClientState::IS_DEFAULT) {
+              // Try to pin to taskbar when Brave is set as a default browser.
+              shell_integration::win::PinToTaskbar();
+            }
+          }));
 #else
   shell_integration::SetAsDefaultBrowser();
 #endif
