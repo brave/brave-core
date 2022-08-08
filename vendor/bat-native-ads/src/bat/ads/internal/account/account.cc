@@ -15,6 +15,7 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/statement/statement.h"
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
@@ -29,7 +30,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/statement_info.h"
-#include "bat/ads/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

@@ -85,7 +85,6 @@ source_set("headers") {
     "include/bat/ads/pref_names.h",
     "include/bat/ads/promoted_content_ad_info.h",
     "include/bat/ads/statement_info.h",
-    "include/bat/ads/transaction_info.h",
   ]
 
   public_deps = [
@@ -174,6 +173,8 @@ source_set("ads") {
     "src/bat/ads/internal/account/statement/statement_util.h",
     "src/bat/ads/internal/account/transactions/reconciled_transactions_util.cc",
     "src/bat/ads/internal/account/transactions/reconciled_transactions_util.h",
+    "src/bat/ads/internal/account/transactions/transaction_info.cc",
+    "src/bat/ads/internal/account/transactions/transaction_info.h",
     "src/bat/ads/internal/account/transactions/transactions.cc",
     "src/bat/ads/internal/account/transactions/transactions.h",
     "src/bat/ads/internal/account/transactions/transactions_database_table.cc",
@@ -1089,7 +1090,6 @@ source_set("ads") {
     "src/bat/ads/pref_names.cc",
     "src/bat/ads/promoted_content_ad_info.cc",
     "src/bat/ads/statement_info.cc",
-    "src/bat/ads/transaction_info.cc",
   ]
 
   if (is_android) {

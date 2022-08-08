@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/statement_info.h"
-#include "bat/ads/transaction_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
