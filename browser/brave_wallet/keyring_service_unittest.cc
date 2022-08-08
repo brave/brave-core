@@ -706,70 +706,47 @@ TEST_F(KeyringServiceUnitTest, GetPrefInBytesForKeyring) {
     EXPECT_EQ(bytes[3], 0xef);
   };
 
-  std::vector<uint8_t> mnemonic;
-  ASSERT_TRUE(service.GetPrefInBytesForKeyring(kEncryptedMnemonic, &mnemonic,
-                                               mojom::kDefaultKeyringId));
-  verify_bytes(mnemonic);
-
-  std::vector<uint8_t> mnemonic_fixed(4);
-  ASSERT_TRUE(service.GetPrefInBytesForKeyring(
-      kEncryptedMnemonic, &mnemonic_fixed, mojom::kDefaultKeyringId));
-  verify_bytes(mnemonic_fixed);
-
-  std::vector<uint8_t> mnemonic_smaller(2);
-  ASSERT_TRUE(service.GetPrefInBytesForKeyring(
-      kEncryptedMnemonic, &mnemonic_smaller, mojom::kDefaultKeyringId));
-  verify_bytes(mnemonic_smaller);
-
-  std::vector<uint8_t> mnemonic_bigger(8);
-  ASSERT_TRUE(service.GetPrefInBytesForKeyring(
-      kEncryptedMnemonic, &mnemonic_bigger, mojom::kDefaultKeyringId));
-  verify_bytes(mnemonic_bigger);
+  auto mnemonic = KeyringService::GetPrefInBytesForKeyring(
+      GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId);
+  ASSERT_TRUE(mnemonic);
+  verify_bytes(*mnemonic);
 
   // invalid base64 encoded
-  mnemonic.clear();
   KeyringService::SetPrefForKeyring(GetPrefs(), kEncryptedMnemonic,
                                     base::Value("3q2+7w^^"),
                                     mojom::kDefaultKeyringId);
-  EXPECT_FALSE(service.GetPrefInBytesForKeyring(kEncryptedMnemonic, &mnemonic,
-                                                mojom::kDefaultKeyringId));
+  EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
+      GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId));
 
   // default pref value (empty)
-  mnemonic.clear();
   GetPrefs()->ClearPref(kBraveWalletKeyrings);
-  EXPECT_FALSE(service.GetPrefInBytesForKeyring(kEncryptedMnemonic, &mnemonic,
-                                                mojom::kDefaultKeyringId));
-
-  // bytes is nullptr
-  EXPECT_FALSE(service.GetPrefInBytesForKeyring(kEncryptedMnemonic, nullptr,
-                                                mojom::kDefaultKeyringId));
+  EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
+      GetPrefs(), kEncryptedMnemonic, mojom::kDefaultKeyringId));
 
   // non-existing pref
-  mnemonic.clear();
-  EXPECT_FALSE(service.GetPrefInBytesForKeyring("brave.nothinghere", &mnemonic,
-                                                mojom::kDefaultKeyringId));
+  EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
+      GetPrefs(), "brave.nothinghere", mojom::kDefaultKeyringId));
 
   // non-string pref
-  mnemonic.clear();
   KeyringService::SetPrefForKeyring(GetPrefs(), "test_num", base::Value(123),
                                     mojom::kDefaultKeyringId);
-  EXPECT_FALSE(service.GetPrefInBytesForKeyring("test_num", &mnemonic,
-                                                mojom::kDefaultKeyringId));
+  EXPECT_FALSE(KeyringService::GetPrefInBytesForKeyring(
+      GetPrefs(), "test_num", mojom::kDefaultKeyringId));
 }
 
 TEST_F(KeyringServiceUnitTest, SetPrefInBytesForKeyring) {
   const uint8_t bytes_array[] = {0xde, 0xad, 0xbe, 0xef};
   KeyringService service(json_rpc_service(), GetPrefs());
-  service.SetPrefInBytesForKeyring(kEncryptedMnemonic, bytes_array,
-                                   mojom::kDefaultKeyringId);
+  KeyringService::SetPrefInBytesForKeyring(
+      GetPrefs(), kEncryptedMnemonic, bytes_array, mojom::kDefaultKeyringId);
   EXPECT_EQ(
       GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId),
       "3q2+7w==");
 
   GetPrefs()->ClearPref(kBraveWalletKeyrings);
   const std::vector<uint8_t> bytes_vector = {0xde, 0xad, 0xbe, 0xef};
-  service.SetPrefInBytesForKeyring(kEncryptedMnemonic, bytes_vector,
-                                   mojom::kDefaultKeyringId);
+  KeyringService::SetPrefInBytesForKeyring(
+      GetPrefs(), kEncryptedMnemonic, bytes_vector, mojom::kDefaultKeyringId);
   EXPECT_EQ(
       GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId),
       "3q2+7w==");
@@ -813,6 +790,47 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
     const std::vector<uint8_t> nonce2 =
         service.GetOrCreateNonceForKeyring("keyring2");
     EXPECT_NE(base::Base64Encode(nonce2), encoded_nonce2);
+  }
+}
+
+TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
+  std::string encoded_salt;
+  std::string encoded_salt2;
+  {
+    KeyringService service(json_rpc_service(), GetPrefs());
+    const std::vector<uint8_t> salt =
+        service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
+    encoded_salt = base::Base64Encode(salt);
+    const std::vector<uint8_t> salt2 =
+        service.GetOrCreateSaltForKeyring("keyring2");
+    encoded_salt2 = base::Base64Encode(salt2);
+    EXPECT_EQ(encoded_salt, GetStringPrefForKeyring(kPasswordEncryptorSalt,
+                                                    mojom::kDefaultKeyringId));
+    EXPECT_EQ(encoded_salt2,
+              GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2"));
+  }
+  {  // It should be the same salt as long as the pref exists
+    KeyringService service(json_rpc_service(), GetPrefs());
+    const std::vector<uint8_t> salt =
+        service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
+    EXPECT_EQ(base::Base64Encode(salt), encoded_salt);
+    const std::vector<uint8_t> salt2 =
+        service.GetOrCreateSaltForKeyring("keyring2");
+    EXPECT_EQ(base::Base64Encode(salt2), encoded_salt2);
+    EXPECT_EQ(encoded_salt, GetStringPrefForKeyring(kPasswordEncryptorSalt,
+                                                    mojom::kDefaultKeyringId));
+    EXPECT_EQ(encoded_salt2,
+              GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2"));
+  }
+  GetPrefs()->ClearPref(kBraveWalletKeyrings);
+  {  // salt should be different now
+    KeyringService service(json_rpc_service(), GetPrefs());
+    const std::vector<uint8_t> salt =
+        service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
+    EXPECT_NE(base::Base64Encode(salt), encoded_salt);
+    const std::vector<uint8_t> salt2 =
+        service.GetOrCreateSaltForKeyring("keyring2");
+    EXPECT_NE(base::Base64Encode(salt2), encoded_salt2);
   }
 }
 

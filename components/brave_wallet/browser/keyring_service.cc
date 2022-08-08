@@ -750,14 +750,13 @@ const std::string KeyringService::GetMnemonicForKeyringImpl(
     return std::string();
   }
   DCHECK(encryptors_[keyring_id]);
-  std::vector<uint8_t> encrypted_mnemonic;
-
-  if (!GetPrefInBytesForKeyring(kEncryptedMnemonic, &encrypted_mnemonic,
-                                keyring_id)) {
+  auto encrypted_mnemonic =
+      GetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, keyring_id);
+  if (!encrypted_mnemonic)
     return std::string();
-  }
+
   std::vector<uint8_t> mnemonic;
-  if (!encryptors_[keyring_id]->Decrypt(encrypted_mnemonic,
+  if (!encryptors_[keyring_id]->Decrypt(*encrypted_mnemonic,
                                         GetOrCreateNonceForKeyring(keyring_id),
                                         &mnemonic)) {
     return std::string();
@@ -1689,56 +1688,68 @@ void KeyringService::ResetAutoLockTimer() {
   }
 }
 
-bool KeyringService::GetPrefInBytesForKeyring(const std::string& key,
-                                              std::vector<uint8_t>* bytes,
-                                              const std::string& id) const {
-  if (!bytes)
-    return false;
-
-  const base::Value* value = GetPrefForKeyring(prefs_, key, id);
+// static
+absl::optional<std::vector<uint8_t>> KeyringService::GetPrefInBytesForKeyring(
+    PrefService* prefs,
+    const std::string& key,
+    const std::string& id) {
+  const base::Value* value = GetPrefForKeyring(prefs, key, id);
   if (!value)
-    return false;
+    return absl::nullopt;
 
   const std::string* encoded = value->GetIfString();
   if (!encoded || encoded->empty())
-    return false;
+    return absl::nullopt;
 
   std::string decoded;
   if (!base::Base64Decode(*encoded, &decoded)) {
-    return false;
+    return absl::nullopt;
   }
-  *bytes = std::vector<uint8_t>(decoded.begin(), decoded.end());
-  return true;
+  return std::vector<uint8_t>(decoded.begin(), decoded.end());
 }
 
-void KeyringService::SetPrefInBytesForKeyring(const std::string& key,
+// static
+void KeyringService::SetPrefInBytesForKeyring(PrefService* prefs,
+                                              const std::string& key,
                                               base::span<const uint8_t> bytes,
                                               const std::string& id) {
   const std::string encoded = base::Base64Encode(bytes);
-  SetPrefForKeyring(prefs_, key, base::Value(encoded), id);
+  SetPrefForKeyring(prefs, key, base::Value(encoded), id);
 }
 
 std::vector<uint8_t> KeyringService::GetOrCreateNonceForKeyring(
     const std::string& id) {
-  std::vector<uint8_t> nonce(kNonceSize);
-  if (!GetPrefInBytesForKeyring(kPasswordEncryptorNonce, &nonce, id)) {
-    crypto::RandBytes(nonce);
-    SetPrefInBytesForKeyring(kPasswordEncryptorNonce, nonce, id);
+  if (auto nonce =
+          GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, id)) {
+    return *nonce;
   }
+
+  std::vector<uint8_t> nonce(kNonceSize);
+  crypto::RandBytes(nonce);
+  SetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, nonce, id);
   return nonce;
+}
+
+std::vector<uint8_t> KeyringService::GetOrCreateSaltForKeyring(
+    const std::string& id) {
+  if (auto salt =
+          GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, id)) {
+    return *salt;
+  }
+
+  std::vector<uint8_t> salt(kSaltSize);
+  crypto::RandBytes(salt);
+  SetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, salt, id);
+  return salt;
 }
 
 bool KeyringService::CreateEncryptorForKeyring(const std::string& password,
                                                const std::string& id) {
   if (password.empty())
     return false;
-  std::vector<uint8_t> salt(kSaltSize);
-  if (!GetPrefInBytesForKeyring(kPasswordEncryptorSalt, &salt, id)) {
-    crypto::RandBytes(salt);
-    SetPrefInBytesForKeyring(kPasswordEncryptorSalt, salt, id);
-  }
   encryptors_[id] = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-      password, salt, kPbkdf2Iterations, kPbkdf2KeySize);
+      password, GetOrCreateSaltForKeyring(id), kPbkdf2Iterations,
+      kPbkdf2KeySize);
   return encryptors_[id] != nullptr;
 }
 
@@ -1769,13 +1780,10 @@ bool KeyringService::CreateKeyringInternal(const std::string& keyring_id,
     return false;
   }
 
-  SetPrefInBytesForKeyring(kEncryptedMnemonic, encrypted_mnemonic, keyring_id);
-  if (is_legacy_brave_wallet)
-    SetPrefForKeyring(prefs_, kLegacyBraveWallet, base::Value(true),
-                      keyring_id);
-  else
-    SetPrefForKeyring(prefs_, kLegacyBraveWallet, base::Value(false),
-                      keyring_id);
+  SetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, encrypted_mnemonic,
+                           keyring_id);
+  SetPrefForKeyring(prefs_, kLegacyBraveWallet,
+                    base::Value(is_legacy_brave_wallet), keyring_id);
 
   if (keyring_id == mojom::kDefaultKeyringId) {
     keyrings_[mojom::kDefaultKeyringId] = std::make_unique<EthereumKeyring>();
@@ -2041,36 +2049,30 @@ void KeyringService::ValidatePassword(const std::string& password,
 
   const std::string keyring_id = mojom::kDefaultKeyringId;
 
-  std::vector<uint8_t> salt(kSaltSize);
-  if (!GetPrefInBytesForKeyring(kPasswordEncryptorSalt, &salt, keyring_id)) {
+  auto salt =
+      GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, keyring_id);
+  auto encrypted_mnemonic =
+      GetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, keyring_id);
+  auto nonce =
+      GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, keyring_id);
+
+  if (!salt || !encrypted_mnemonic || !nonce) {
     std::move(callback).Run(false);
     return;
   }
 
-  // TODO(apaymyshev): move this call(and other ones in this file) to background
-  // thread.
+  // TODO(apaymyshev): move this call(and other ones in this file) to
+  // background thread.
   auto encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-      password, salt, kPbkdf2Iterations, kPbkdf2KeySize);
+      password, *salt, kPbkdf2Iterations, kPbkdf2KeySize);
+
   if (!encryptor) {
     std::move(callback).Run(false);
     return;
   }
 
-  std::vector<uint8_t> encrypted_mnemonic;
-  if (!GetPrefInBytesForKeyring(kEncryptedMnemonic, &encrypted_mnemonic,
-                                keyring_id)) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  std::vector<uint8_t> nonce(kNonceSize);
-  if (!GetPrefInBytesForKeyring(kPasswordEncryptorNonce, &nonce, keyring_id)) {
-    std::move(callback).Run(false);
-    return;
-  }
-
   std::vector<uint8_t> mnemonic;
-  if (!encryptor->Decrypt(encrypted_mnemonic, nonce, &mnemonic)) {
+  if (!encryptor->Decrypt(*encrypted_mnemonic, *nonce, &mnemonic)) {
     std::move(callback).Run(false);
     return;
   }
