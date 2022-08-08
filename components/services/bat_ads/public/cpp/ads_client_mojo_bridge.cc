@@ -282,8 +282,8 @@ void AdsClientMojoBridge::RunDBTransaction(
 }
 
 void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
-                                         const std::string& out_value) {
-  ads_client_->RecordP2AEvent(name, out_value);
+                                         base::Value::List value) {
+  ads_client_->RecordP2AEvent(name, std::move(value));
 }
 
 void AdsClientMojoBridge::LogTrainingInstance(

@@ -966,6 +966,8 @@ source_set("ads") {
     "src/bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity_questions.h",
     "src/bat/ads/internal/privacy/p2a/p2a.cc",
     "src/bat/ads/internal/privacy/p2a/p2a.h",
+    "src/bat/ads/internal/privacy/p2a/p2a_values_util.cc",
+    "src/bat/ads/internal/privacy/p2a/p2a_values_util.h",
     "src/bat/ads/internal/privacy/tokens/token_generator.cc",
     "src/bat/ads/internal/privacy/tokens/token_generator.h",
     "src/bat/ads/internal/privacy/tokens/token_generator_interface.h",

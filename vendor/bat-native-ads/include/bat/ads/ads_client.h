@@ -127,10 +127,10 @@ class ADS_EXPORT AdsClient {
   // Called to update brave://rewards.
   virtual void UpdateAdRewards() = 0;
 
-  // Record a P2A (Privacy Preserving Anonymous) event with |value| for the
-  // specfied |name|.
+  // Record a P2A (Privacy Preserving Anonymous) event with |base::Value::List|
+  // for the specified |name|.
   virtual void RecordP2AEvent(const std::string& name,
-                              const std::string& value) = 0;
+                              base::Value::List value) = 0;
 
   // Log |training_instance|.
   virtual void LogTrainingInstance(

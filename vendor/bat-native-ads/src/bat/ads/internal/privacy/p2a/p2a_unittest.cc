@@ -5,9 +5,15 @@
 
 #include "bat/ads/internal/privacy/p2a/p2a.h"
 
+#include <functional>
+
+#include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
+
+using ::testing::Eq;
 
 namespace ads {
 namespace privacy {
@@ -15,8 +21,8 @@ namespace p2a {
 
 namespace {
 
-constexpr char kName[] = "name";
-constexpr char kExpectedValue[] = R"~(["question_1","question_2"])~";
+constexpr char kEventName[] = "name";
+constexpr char kQuestionsAsJson[] = R"(["question_1","question_2"])";
 
 }  // namespace
 
@@ -29,12 +35,17 @@ class BatAdsP2ATest : public UnitTestBase {
 
 TEST_F(BatAdsP2ATest, RecordEvent) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(kName, kExpectedValue));
+  const base::Value value = base::test::ParseJson(kQuestionsAsJson);
+  const base::Value::List* list = value.GetIfList();
+  ASSERT_TRUE(list);
+
+  EXPECT_CALL(*ads_client_mock_,
+              RecordP2AEvent(kEventName, Eq(std::ref(*list))));
 
   // Act
 
   // Assert
-  RecordEvent(kName, {"question_1", "question_2"});
+  RecordEvent(kEventName, {"question_1", "question_2"});
 }
 
 }  // namespace p2a

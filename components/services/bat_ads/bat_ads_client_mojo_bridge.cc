@@ -9,7 +9,6 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/notification_ad_info.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -205,12 +204,12 @@ void BatAdsClientMojoBridge::GetBrowsingHistory(
 }
 
 void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
-                                            const std::string& value) {
+                                            base::Value::List value) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->RecordP2AEvent(name, value);
+  bat_ads_client_->RecordP2AEvent(name, std::move(value));
 }
 
 void BatAdsClientMojoBridge::LogTrainingInstance(
