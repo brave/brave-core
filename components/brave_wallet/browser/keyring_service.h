@@ -48,6 +48,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   KeyringService(JsonRpcService* json_rpc_service, PrefService* prefs);
   ~KeyringService() override;
 
+  static absl::optional<int>& GetPbkdf2IterationsForTesting();
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
   static bool HasPrefForKeyring(PrefService* prefs,
@@ -368,6 +369,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeKeyring(const std::string& keyring_id,
                            const std::string& password);
+
+  void MaybeMigratePBKDF2Iterations(const std::string& password);
 
   void NotifyAccountsChanged();
   void StopAutoLockTimer();
