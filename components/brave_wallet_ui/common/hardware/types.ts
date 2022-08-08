@@ -36,16 +36,6 @@ export type SignHardwareOperationResult = HardwareOperationResult & {
   payload?: EthereumSignedTx | SignedLotusMessage | Buffer | string
 }
 
-export type GetAccountOperationResult = HardwareOperationResult & {
-  payload?: Buffer
-}
-
-export interface TrezorBridgeAccountsPayload {
-  success: boolean
-  accounts: BraveWallet.HardwareWalletAccount[]
-  error?: string
-}
-
 export enum LedgerDerivationPaths {
   LedgerLive = 'ledger-live',
   Legacy = 'legacy',
