@@ -462,27 +462,36 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
 void BravePrefProvider::MigrateFPShieldsSettingsAndroid() {
   if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration))
     return;
+
+  // Find rules that can be migrated and create replacement rules for them.
+  std::vector<Rule> rules;
   auto rule_iterator = PrefProvider::GetRuleIterator(
       ContentSettingsType::BRAVE_FINGERPRINTING_V2,
       /*off_the_record*/ false);
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
-
-    if (rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
-        rule.value == CONTENT_SETTING_BLOCK) {
-      SetWebsiteSettingInternal(rule.primary_pattern, rule.secondary_pattern,
-                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                                ContentSettingToValue(CONTENT_SETTING_DEFAULT),
-                                {rule.expiration, rule.session_model});
-    } else if (rule.secondary_pattern ==
-               ContentSettingsPattern::FromString("https://balanced/*")) {
-      SetWebsiteSettingInternal(rule.primary_pattern, rule.secondary_pattern,
-                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                                ContentSettingToValue(CONTENT_SETTING_DEFAULT),
-                                {});
-    }
+    rules.emplace_back(CloneRule(rule));
   }
   rule_iterator.reset();
+
+  // Migrate.
+  for (const auto& fp_rule : rules) {
+    if (fp_rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
+        fp_rule.value == CONTENT_SETTING_BLOCK) {
+      SetWebsiteSettingInternal(fp_rule.primary_pattern,
+                                fp_rule.secondary_pattern,
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_DEFAULT),
+                                {fp_rule.expiration, fp_rule.session_model});
+    } else if (fp_rule.secondary_pattern ==
+               ContentSettingsPattern::FromString("https://balanced/*")) {
+      SetWebsiteSettingInternal(
+          fp_rule.primary_pattern, fp_rule.secondary_pattern,
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
+    }
+  }
+
   prefs_->SetBoolean(kBraveShieldsFPSettingsMigration, true);
 }
 
