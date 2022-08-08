@@ -25,6 +25,10 @@ class WebContents;
 
 namespace speedreader {
 
+namespace test {
+void SetShowOriginalLinkTitle(const std::u16string* title);
+}
+
 class SpeedreaderBubbleView;
 
 // Determines if speedreader should be active for a given top-level navigation.
