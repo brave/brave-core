@@ -65,6 +65,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -1015,7 +1016,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void viewOnBlockExplorer(String address) {
-        Utils.openAddress("/address/" + address, mJsonRpcService, this);
+        // TODO(sergz): We will need to correct that while doing Solana DApps
+        Utils.openAddress("/address/" + address, mJsonRpcService, this, CoinType.ETH);
     }
 
     // should only be called if the wallet is setup and unlocked

@@ -542,8 +542,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         String action = "";
         String detailInfo = "";
+        String actionFiatValue = String.format(Locale.getDefault(), "%.2f", this.fiatValue);
         if (this.type == TransactionType.ERC20_TRANSFER) {
-            String actionFiatValue = String.format(Locale.getDefault(), "%.2f", this.fiatValue);
             action = String.format(context.getResources().getString(R.string.wallet_tx_info_sent),
                     this.senderLabel, this.formatValueToDisplay(), this.symbol, actionFiatValue,
                     strDate);
@@ -568,7 +568,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     + "0x Exchange Proxy";
         } else {
             action = String.format(context.getResources().getString(R.string.wallet_tx_info_sent),
-                    this.senderLabel, this.formatValueToDisplay(), this.symbol, "0.00", strDate);
+                    this.senderLabel, this.formatValueToDisplay(), this.symbol, actionFiatValue,
+                    strDate);
             detailInfo = this.senderLabel + " -> " + this.recipientLabel;
         }
 
