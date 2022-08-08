@@ -10,6 +10,7 @@ export * from 'gen/brave/components/brave_today/common/brave_news.mojom.m.js'
 // Provide easy access to types which mojom functions return but aren't
 // defined as a struct.
 export type Publishers = Record<string, BraveNews.Publisher>
+export type Channels = Record<string, BraveNews.Channel>
 
 // Create singleton connection to browser interface
 let braveNewsControllerInstance: BraveNews.BraveNewsControllerRemote

@@ -36,7 +36,15 @@ bool ParseCombinedPublisherList(const std::string& json,
     publisher->publisher_id = *publisher_raw.FindStringKey("publisher_id");
     publisher->type = mojom::PublisherType::COMBINED_SOURCE;
     publisher->publisher_name = *publisher_raw.FindStringKey("publisher_name");
+
     publisher->category_name = *publisher_raw.FindStringKey("category");
+    auto* channels_raw = publisher_raw.FindListKey("channels");
+    if (channels_raw) {
+      for (const auto& channel : channels_raw->GetList()) {
+        publisher->channels.push_back(channel.GetString());
+      }
+    }
+
     publisher->is_enabled = publisher_raw.FindBoolKey("enabled").value_or(true);
     GURL feed_source(*publisher_raw.FindStringKey("feed_url"));
     if (feed_source.is_valid()) {

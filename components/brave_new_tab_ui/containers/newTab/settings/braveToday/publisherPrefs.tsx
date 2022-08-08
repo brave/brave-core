@@ -6,24 +6,54 @@
 import * as React from 'react'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
 import { VariableSizeList } from 'react-window'
-import { Publisher, UserEnabled } from '../../../../api/brave_news'
+import getBraveNewsController, { Channels, Publisher, UserEnabled } from '../../../../api/brave_news'
 import {
   SettingsRow,
   SettingsText
 } from '../../../../components/default'
 import { Toggle } from '../../../../components/toggle'
 import * as s from './style'
+import usePromise from '../../../../hooks/usePromise'
 
-function isPublisherContentAllowed (publisher: Publisher): boolean {
-  // Either the publisher is enabled-by-default (remotely) and the user has
-  // not overriden that default, or the user has made a choice.
-  if (publisher.userEnabledStatus === UserEnabled.ENABLED) {
-    return true
-  }
-  if (publisher.isEnabled && publisher.userEnabledStatus !== UserEnabled.DISABLED) {
-    return true
-  }
-  return false
+/**
+ * Determines whether a publishers content is shown in the feed. This might mean
+ * it belongs to an active channel, or that the user has explicitly turned it on
+ * or off, or that the feed is enabled by default (if channels are not available).
+ * @param publisher The publisher to check.
+ * @param channels All the current channels, with up to date subscriptions
+ * @returns Whether the publisher is current enabled.
+ */
+function isPublisherContentAllowed (publisher: Publisher, channels: Channels): boolean {
+  // If the user has an explicit preference for this feed, use that.
+  if (publisher.userEnabledStatus === UserEnabled.ENABLED) return true
+  if (publisher.userEnabledStatus === UserEnabled.DISABLED) return false
+
+  console.log(channels)
+
+  // If there are no channels, we're using the old API, so content is allowed
+  // if the source is default enabled.
+  if (Object.keys(channels).length === 0) return publisher.isEnabled
+
+  // Otherwise, we're using the channels API - the publisher is allowed if it's
+  // in one of the channels we're subscribed to.
+  return publisher.channels.some(c => channels[c]?.subscribed)
+}
+
+/**
+ * While we're in the process of migrating to the new sources system, we may or
+ * may not have channels specified, so we use this function to decide whether
+ * to return the category, or the channels.
+ *
+ * Each source should be in at least one channel, so if there are no channels
+ * then it's safe to assume we aren't receiving channels from the server (and
+ * thus, that we're on the old sources.json).
+ *
+ * Once we've turned on the new sources.json for everyone, we can simply remove
+ * this function and always use channels.
+ * @param publisher The publisher to get channels for.
+ */
+export function getPublisherChannels (publisher: Publisher) {
+  return publisher.channels.length ? publisher.channels : [publisher.categoryName]
 }
 
 export const DynamicListContext = React.createContext<
@@ -40,6 +70,7 @@ type ListItemProps = {
   width: number
   data: Publisher[]
   style: React.CSSProperties
+  channels: Channels
   setPublisherPref: (publisherId: string, enabled: boolean) => any
 }
 
@@ -58,7 +89,9 @@ function ListItem (props: ListItemProps) {
   }, [props.index, setSize, props.width])
 
   const publisher = props.data[props.index]
-  const isChecked = publisher ? isPublisherContentAllowed(publisher) : false
+  const isChecked = publisher
+    ? isPublisherContentAllowed(publisher, props.channels)
+    : false
 
   const onChange = React.useCallback(() => {
     if (!publisher) {
@@ -86,9 +119,14 @@ function ListItem (props: ListItemProps) {
   )
 }
 
+// TODO: When we can subscribe to channels, make sure we use the most up to date
+// channels. For now though, this is fine.
+const channelsPromise = getBraveNewsController().getChannels().then(r => r.channels as Channels)
+
 export default function PublisherPrefs (props: PublisherPrefsProps) {
   const listRef = React.useRef<VariableSizeList | null>(null)
   const sizeMap = React.useRef<{ [key: string]: number }>({})
+  const { result: channels = {} } = usePromise(() => channelsPromise, [])
 
   const setSize = React.useCallback((index: number, size: number) => {
     // Performance: Only update the sizeMap and reset cache if an actual value changed
@@ -131,6 +169,7 @@ export default function PublisherPrefs (props: PublisherPrefsProps) {
                   <ListItem
                     {...itemProps}
                     width={width}
+                    channels={channels}
                     setPublisherPref={props.setPublisherPref}
                   />
                 )

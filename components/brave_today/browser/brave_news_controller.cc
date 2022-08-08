@@ -24,8 +24,10 @@
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "brave/components/brave_today/browser/brave_news_p3a.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
+#include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
@@ -66,6 +68,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                 brave_news_enabled_default);
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
   registry->RegisterDictionaryPref(prefs::kBraveTodaySources);
+  registry->RegisterDictionaryPref(prefs::kBraveNewsSubscriptions);
   registry->RegisterDictionaryPref(prefs::kBraveTodayDirectFeeds);
 
   p3a::RegisterProfilePrefs(registry);
@@ -92,7 +95,9 @@ BraveNewsController::BraveNewsController(
       feed_controller_(&publishers_controller_,
                        &direct_feed_controller_,
                        history_service,
-                       &api_request_helper_),
+                       &api_request_helper_,
+                       prefs),
+      channels_controller_(prefs, &publishers_controller_),
       weak_ptr_factory_(this) {
   DCHECK(prefs);
   // Set up preference listeners
@@ -105,6 +110,12 @@ BraveNewsController::BraveNewsController(
       prefs::kBraveTodayOptedIn,
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
+
+  auto* subscriptions = prefs_->GetDictionary(prefs::kBraveNewsSubscriptions);
+  if (subscriptions->DictEmpty()) {
+    channels_controller_.SetChannelSubscribed(brave_today::GetRegionUrlPart(),
+                                              kTopSourcesChannel, true);
+  }
 
   p3a::RecordAtInit(prefs);
   // Monitor kBraveTodaySources and update feed / publisher cache
@@ -147,6 +158,20 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
                                     FindFeedsCallback callback) {
   direct_feed_controller_.FindFeeds(possible_feed_or_site_url,
                                     std::move(callback));
+}
+
+void BraveNewsController::GetChannels(GetChannelsCallback callback) {
+  channels_controller_.GetAllChannels(brave_today::GetRegionUrlPart(),
+                                      std::move(callback));
+}
+
+void BraveNewsController::SetChannelSubscribed(
+    const std::string& channel_id,
+    bool subscribed,
+    SetChannelSubscribedCallback callback) {
+  auto result = channels_controller_.SetChannelSubscribed(
+      brave_today::GetRegionUrlPart(), channel_id, subscribed);
+  std::move(callback).Run(std::move(result));
 }
 
 void BraveNewsController::SubscribeToNewDirectFeed(

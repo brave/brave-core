@@ -76,6 +76,11 @@ enum UserEnabled {
   DISABLED,
 };
 
+struct Channel {
+  string channel_name;
+  bool subscribed;
+};
+
 enum PublisherType {
   // Remote single feed of feed items combinging all default-provided feeds.
   COMBINED_SOURCE,
@@ -90,6 +95,7 @@ struct Publisher {
   PublisherType type;
   string publisher_name;
   string category_name;
+  array<string> channels;
   bool is_enabled;
 
   // All the locales this publisher is available within.
@@ -134,6 +140,8 @@ interface BraveNewsController {
 
   GetFeed() => (Feed feed);
   GetPublishers() => (map<string, Publisher> publishers);
+  GetChannels() => (map<string, Channel> channels);
+  SetChannelSubscribed(string channel_id, bool subscribed) => (Channel updated);
   // Look at the incoming url and return results
   //  - if it's a feed url then return the feed item
   //  - if it's an html document url, then search for related feed items in the html

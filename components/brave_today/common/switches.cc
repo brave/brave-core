@@ -9,6 +9,7 @@ namespace brave_today {
 namespace switches {
 
 const char kBraveTodayHost[] = "brave-today-host";
+const char kBraveNewsRegion[] = "brave-news-region";
 
 }  // namespace switches
 }  // namespace brave_today
