@@ -1081,7 +1081,7 @@ public class Utils {
     }
 
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
-            AppCompatActivity activity, String accountName) {
+            AppCompatActivity activity, String accountName, int coinType) {
         assert txInfo != null;
         if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
             if (activity instanceof ApprovedTxObserver) {
@@ -1093,39 +1093,40 @@ public class Utils {
             if (txInfo.txHash == null || txInfo.txHash.isEmpty()) {
                 return;
             }
-            openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity);
+            openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity, coinType);
         }
     }
 
-    public static void openAddress(
-            String toAppend, JsonRpcService jsonRpcService, AppCompatActivity activity) {
+    public static void openAddress(String toAppend, JsonRpcService jsonRpcService,
+            AppCompatActivity activity, int coinType) {
         assert jsonRpcService != null;
-        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
-                for (NetworkInfo network : networks) {
-                    if (!chainId.equals(network.chainId)) {
-                        continue;
-                    }
-                    String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
-                    if (blockExplorerUrl.length() > 2) {
-                        blockExplorerUrl =
-                                blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
-                                + toAppend;
-                        TabUtils.openUrlInNewTab(false, blockExplorerUrl);
-                        TabUtils.bringChromeTabbedActivityToTheTop(activity);
-                        break;
-                    }
+        jsonRpcService.getNetwork(coinType, network -> {
+            String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
+            if (blockExplorerUrl.length() > 2) {
+                blockExplorerUrl = blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1);
+            }
+            if (coinType == CoinType.ETH) {
+                blockExplorerUrl += toAppend;
+            } else if (coinType == CoinType.SOL) {
+                int iPos = blockExplorerUrl.indexOf("?cluster=");
+                if (iPos != -1) {
+                    blockExplorerUrl = blockExplorerUrl.substring(0, iPos - 1) + toAppend
+                            + blockExplorerUrl.substring(iPos);
+                } else {
+                    blockExplorerUrl += toAppend;
                 }
-            });
+            }
+            TabUtils.openUrlInNewTab(false, blockExplorerUrl);
+            TabUtils.bringChromeTabbedActivityToTheTop(activity);
         });
     }
 
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
-            AppCompatActivity activity, AccountInfo[] accountInfos) {
+            AppCompatActivity activity, AccountInfo[] accountInfos, int coinType) {
         assert txInfo != null;
         AccountInfo account = findAccount(accountInfos, txInfo.fromAddress);
         openTransaction(txInfo, jsonRpcService, activity,
-                account != null ? account.name : stripAccountAddress(txInfo.fromAddress));
+                account != null ? account.name : stripAccountAddress(txInfo.fromAddress), coinType);
     }
 
     public static void setUpTransactionList(BraveWalletBaseActivity activity,
@@ -1153,11 +1154,35 @@ public class Utils {
             pendingTxHelper.fetchTransactions(() -> {
                 HashMap<String, TransactionInfo[]> pendingTxInfos =
                         pendingTxHelper.getTransactions();
-                workWithTransactions(activity, selectedNetwork, pendingTxInfos, accounts,
-                        walletListItemModel, assetPrices, fullTokenList, nativeAssetsBalances,
-                        blockchainTokensBalances, rvTransactions, callback, walletTxCoinAdapter);
+                SolanaTransactionsGasHelper solanaTransactionsGasHelper =
+                        new SolanaTransactionsGasHelper(
+                                activity, getTransactionArray(pendingTxInfos));
+                solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
+                    workWithTransactions(activity, selectedNetwork, pendingTxInfos, accounts,
+                            walletListItemModel, assetPrices, fullTokenList, nativeAssetsBalances,
+                            blockchainTokensBalances, rvTransactions, callback, walletTxCoinAdapter,
+                            solanaTransactionsGasHelper.getPerTxFee());
+                });
             });
         });
+    }
+
+    private static TransactionInfo[] getTransactionArray(
+            HashMap<String, TransactionInfo[]> txInfos) {
+        TransactionInfo[] result = new TransactionInfo[0];
+        for (String key : txInfos.keySet()) {
+            TransactionInfo[] txs = txInfos.get(key);
+            result = concatWithArrayCopy(result, txs);
+        }
+
+        return result;
+    }
+
+    private static <T> T[] concatWithArrayCopy(T[] array1, T[] array2) {
+        T[] result = Arrays.copyOf(array1, array1.length + array2.length);
+        System.arraycopy(array2, 0, result, array1.length, array2.length);
+
+        return result;
     }
 
     private static void workWithTransactions(BraveWalletBaseActivity activity,
@@ -1167,7 +1192,7 @@ public class Utils {
             HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             RecyclerView rvTransactions, OnWalletListItemClick callback,
-            WalletCoinAdapter walletTxCoinAdapter) {
+            WalletCoinAdapter walletTxCoinAdapter, HashMap<String, Long> perTxSolanaFee) {
         walletTxCoinAdapter.setWalletCoinAdapterType(
                 WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -1177,8 +1202,12 @@ public class Utils {
         for (String accountName : pendingTxInfos.keySet()) {
             TransactionInfo[] txInfos = pendingTxInfos.get(accountName);
             for (TransactionInfo txInfo : txInfos) {
+                long solanaEstimatedTxFee = 0;
+                if (perTxSolanaFee.get(txInfo.id) != null) {
+                    solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
+                }
                 ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo,
-                        selectedNetwork, accounts, assetPrices, 0, fullTokenList,
+                        selectedNetwork, accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);
                 WalletListItemModel itemModel =
                         makeWalletItem((Context) activity, txInfo, selectedNetwork, parsedTx);

@@ -225,7 +225,7 @@ public class AccountDetailActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mJsonRpcService, this, mName);
+        Utils.openTransaction(txInfo, mJsonRpcService, this, mName, mCoinType);
     }
 
     @Override

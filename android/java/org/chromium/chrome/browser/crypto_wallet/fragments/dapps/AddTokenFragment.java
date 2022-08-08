@@ -90,9 +90,11 @@ public class AddTokenFragment extends BaseDAppsFragment {
                 mTokenAddress.setOnClickListener(v -> {
                     Activity activity = getActivity();
                     if (activity instanceof BraveWalletBaseActivity) {
+                        // TODO(sergz): We will need to correct that while doing Solana DApps
                         Utils.openAddress(
                                 "/token/" + mCurrentAddSuggestTokenRequest.token.contractAddress,
-                                getJsonRpcService(), (BraveWalletBaseActivity) activity);
+                                getJsonRpcService(), (BraveWalletBaseActivity) activity,
+                                CoinType.ETH);
                     }
                 });
             }
