@@ -185,7 +185,7 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
-    ads::mojom::SearchResultAdPtr ad_mojom,
+    ads::mojom::SearchResultAdInfoPtr ad_mojom,
     const ads::mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
   auto* holder = new CallbackHolder<TriggerSearchResultAdEventCallback>(

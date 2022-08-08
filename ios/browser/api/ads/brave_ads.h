@@ -60,8 +60,8 @@ OBJC_EXPORT
 
 /// System info
 @property(nonatomic, class) AdsSysInfo* sysInfo;
-/// The build channel that ads is configured for
-@property(nonatomic, class) AdsBuildChannel* buildChannel;
+/// The build channel info that ads is configured for
+@property(nonatomic, class) AdsBuildChannelInfo* buildChannelInfo;
 
 #pragma mark - Initialization / Shutdown
 

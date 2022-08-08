@@ -261,7 +261,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
-                          ads::mojom::DBCommandResponsePtr response);
+                          ads::mojom::DBCommandResponseInfoPtr response);
 
   void OnLogTrainingInstance(bool success);
 
@@ -343,7 +343,7 @@ class AdsServiceImpl : public AdsService,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdPtr ad_mojom,
+      ads::mojom::SearchResultAdInfoPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
@@ -398,7 +398,7 @@ class AdsServiceImpl : public AdsService,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -416,13 +416,13 @@ class AdsServiceImpl : public AdsService,
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
                       const std::string& value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
                                training_instance) override;
 
   bool GetBooleanPref(const std::string& path) const override;

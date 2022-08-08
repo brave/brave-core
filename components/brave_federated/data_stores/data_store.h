@@ -17,7 +17,7 @@
 
 namespace brave_federated {
 
-using TrainingData = base::flat_map<int, std::vector<mojom::CovariatePtr>>;
+using TrainingData = base::flat_map<int, std::vector<mojom::CovariateInfoPtr>>;
 
 struct DataStoreTask {
   int id = 0;
@@ -38,11 +38,11 @@ class DataStore {
   bool InitializeDatabase();
 
   int GetNextTrainingInstanceId();
-  void SaveCovariate(const brave_federated::mojom::Covariate& covariate,
+  void SaveCovariate(const brave_federated::mojom::CovariateInfo& covariate,
                      int training_instance_id,
                      const base::Time created_at);
   bool AddTrainingInstance(
-      const std::vector<brave_federated::mojom::CovariatePtr>
+      const std::vector<brave_federated::mojom::CovariateInfoPtr>
           training_instance);
 
   bool DeleteTrainingData();

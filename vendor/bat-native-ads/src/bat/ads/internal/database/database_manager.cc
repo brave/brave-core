@@ -54,20 +54,21 @@ void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
 void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   NotifyWillCreateOrOpenDatabase();
 
-  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->version = database::kVersion;
   transaction->compatible_version = database::kCompatibleVersion;
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::INITIALIZE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::INITIALIZE;
 
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), [=](mojom::DBCommandResponsePtr response) {
+      std::move(transaction), [=](mojom::DBCommandResponseInfoPtr response) {
         DCHECK(response);
 
-        if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
+        if (response->status !=
+                mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
             !response->result) {
           BLOG(0, "Failed to open or create database");
           NotifyFailedToCreateOrOpenDatabase();

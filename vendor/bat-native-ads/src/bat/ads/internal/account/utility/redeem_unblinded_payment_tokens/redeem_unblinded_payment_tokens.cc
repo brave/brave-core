@@ -96,7 +96,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   user_data_builder.Build([=](const base::Value::Dict& user_data) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet_, unblinded_payment_tokens, user_data);
-    mojom::UrlRequestPtr url_request = url_request_builder.Build();
+    mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
     BLOG(6, UrlRequestToString(url_request));
     BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -109,7 +109,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeem(
-    const mojom::UrlResponse& url_response,
+    const mojom::UrlResponseInfo& url_response,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 

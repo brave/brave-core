@@ -47,20 +47,20 @@ class Transactions final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const TransactionList& transactions);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const TransactionList& transactions);
 
-  void OnGetTransactions(mojom::DBCommandResponsePtr response,
+  void OnGetTransactions(mojom::DBCommandResponseInfoPtr response,
                          GetTransactionsCallback callback);
 
-  void MigrateToV18(mojom::DBTransaction* transaction);
+  void MigrateToV18(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace table

@@ -20,7 +20,7 @@ class IssuersUrlRequestBuilder : public UrlRequestBuilderInterface {
   IssuersUrlRequestBuilder(const IssuersUrlRequestBuilder&) = delete;
   IssuersUrlRequestBuilder& operator=(const IssuersUrlRequestBuilder&) = delete;
 
-  mojom::UrlRequestPtr Build() override;
+  mojom::UrlRequestInfoPtr Build() override;
 
  private:
   GURL BuildUrl() const;

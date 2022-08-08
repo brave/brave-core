@@ -90,12 +90,13 @@ static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
 
-ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
-    ads::mojom::DBTransactionPtr transaction,
+ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
+    ads::mojom::DBTransactionInfoPtr transaction,
     ads::Database* database) {
-  auto response = ads::mojom::DBCommandResponse::New();
+  auto response = ads::mojom::DBCommandResponseInfo::New();
   if (!database) {
-    response->status = ads::mojom::DBCommandResponse::Status::RESPONSE_ERROR;
+    response->status =
+        ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), response.get());
   }
@@ -238,17 +239,17 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
-+ (AdsBuildChannel*)buildChannel {
-  auto build_channel = [[AdsBuildChannel alloc] init];
++ (AdsBuildChannelInfo*)buildChannelInfo {
+  auto build_channel = [[AdsBuildChannelInfo alloc] init];
   build_channel.isRelease = ads::BuildChannel().is_release;
   build_channel.name = base::SysUTF8ToNSString(ads::BuildChannel().name);
 
   return build_channel;
 }
 
-+ (void)setBuildChannel:(AdsBuildChannel*)buildChannel {
-  ads::BuildChannel().is_release = buildChannel.isRelease;
-  ads::BuildChannel().name = base::SysNSStringToUTF8(buildChannel.name);
++ (void)setBuildChannelInfo:(AdsBuildChannelInfo*)buildChannelInfo {
+  ads::BuildChannel().is_release = buildChannelInfo.isRelease;
+  ads::BuildChannel().name = base::SysNSStringToUTF8(buildChannelInfo.name);
 }
 
 #pragma mark - Initialization / Shutdown
@@ -737,12 +738,12 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Network
 
-- (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
+- (void)UrlRequest:(ads::mojom::UrlRequestInfoPtr)url_request
           callback:(ads::UrlRequestCallback)callback {
-  std::map<ads::mojom::UrlRequestMethod, std::string> methodMap{
-      {ads::mojom::UrlRequestMethod::kGet, "GET"},
-      {ads::mojom::UrlRequestMethod::kPost, "POST"},
-      {ads::mojom::UrlRequestMethod::kPut, "PUT"}};
+  std::map<ads::mojom::UrlRequestMethodType, std::string> methodMap{
+      {ads::mojom::UrlRequestMethodType::kGet, "GET"},
+      {ads::mojom::UrlRequestMethodType::kPost, "POST"},
+      {ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
 
   const auto copiedURL = url_request->url;
 
@@ -761,7 +762,7 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
               if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
                 return;
               }
-              ads::mojom::UrlResponse url_response;
+              ads::mojom::UrlResponseInfo url_response;
               url_response.url = copiedURL;
               url_response.status_code = statusCode;
               url_response.body = response;
@@ -1311,14 +1312,14 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
                          encoding:[NSString defaultCStringEncoding]];
 }
 
-- (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction
+- (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback {
   __weak BraveAds* weakSelf = self;
   base::PostTaskAndReplyWithResult(
       databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
-      base::BindOnce(^(ads::mojom::DBCommandResponsePtr response) {
+      base::BindOnce(^(ads::mojom::DBCommandResponseInfoPtr response) {
         const auto strongSelf = weakSelf;
         if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
           return;
@@ -1929,7 +1930,7 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)logTrainingInstance:
-    (std::vector<brave_federated::mojom::CovariatePtr>)training_instance {
+    (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_instance {
   // Not needed on iOS
 }
 

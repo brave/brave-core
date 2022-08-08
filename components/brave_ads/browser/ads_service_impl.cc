@@ -134,17 +134,17 @@ int GetDataResourceId(const std::string& name) {
   return -1;
 }
 
-std::string URLMethodToRequestType(ads::mojom::UrlRequestMethod method) {
+std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
   switch (method) {
-    case ads::mojom::UrlRequestMethod::kGet: {
+    case ads::mojom::UrlRequestMethodType::kGet: {
       return "GET";
     }
 
-    case ads::mojom::UrlRequestMethod::kPost: {
+    case ads::mojom::UrlRequestMethodType::kPost: {
       return "POST";
     }
 
-    case ads::mojom::UrlRequestMethod::kPut: {
+    case ads::mojom::UrlRequestMethodType::kPut: {
       return "PUT";
     }
   }
@@ -255,15 +255,15 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
   return true;
 }
 
-ads::mojom::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
-    ads::mojom::DBTransactionPtr transaction,
+ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
+    ads::mojom::DBTransactionInfoPtr transaction,
     ads::Database* database) {
-  ads::mojom::DBCommandResponsePtr command_response =
-      ads::mojom::DBCommandResponse::New();
+  ads::mojom::DBCommandResponseInfoPtr command_response =
+      ads::mojom::DBCommandResponseInfo::New();
 
   if (!database) {
     command_response->status =
-        ads::mojom::DBCommandResponse::Status::RESPONSE_ERROR;
+        ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), command_response.get());
   }
@@ -420,7 +420,8 @@ void AdsServiceImpl::SetSysInfo() {
 void AdsServiceImpl::SetBuildChannel() {
   DCHECK(IsBatAdsServiceBound());
 
-  ads::mojom::BuildChannelPtr build_channel = ads::mojom::BuildChannel::New();
+  ads::mojom::BuildChannelInfoPtr build_channel =
+      ads::mojom::BuildChannelInfo::New();
   build_channel->name = brave::GetChannelName();
   build_channel->is_release = build_channel->name == "release" ? true : false;
 
@@ -1252,7 +1253,7 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
-    ads::mojom::SearchResultAdPtr ad_mojom,
+    ads::mojom::SearchResultAdInfoPtr ad_mojom,
     const ads::mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
   if (!IsBatAdsBound()) {
@@ -1528,7 +1529,7 @@ void AdsServiceImpl::GetBrowsingHistory(
       &history_service_task_tracker_);
 }
 
-void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestPtr url_request,
+void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                                 ads::UrlRequestCallback callback) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = url_request->url;
@@ -1665,8 +1666,9 @@ void AdsServiceImpl::ClearScheduledCaptcha() {
 #endif
 }
 
-void AdsServiceImpl::RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
-                                      ads::RunDBTransactionCallback callback) {
+void AdsServiceImpl::RunDBTransaction(
+    ads::mojom::DBTransactionInfoPtr transaction,
+    ads::RunDBTransactionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
@@ -1695,7 +1697,7 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
 }
 
 void AdsServiceImpl::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
   if (!notification_ad_timing_data_store_) {
     return;
   }
@@ -1943,7 +1945,7 @@ void AdsServiceImpl::OnURLRequest(
     }
   }
 
-  ads::mojom::UrlResponse url_response;
+  ads::mojom::UrlResponseInfo url_response;
   url_response.url = url_loader->GetFinalURL();
   url_response.status_code = response_code;
   url_response.body = response_body ? *response_body : "";
@@ -2501,7 +2503,7 @@ void AdsServiceImpl::OnLogTrainingInstance(bool success) {
 
 void AdsServiceImpl::OnRunDBTransaction(
     ads::RunDBTransactionCallback callback,
-    ads::mojom::DBCommandResponsePtr response) {
+    ads::mojom::DBCommandResponseInfoPtr response) {
   callback(std::move(response));
 }
 

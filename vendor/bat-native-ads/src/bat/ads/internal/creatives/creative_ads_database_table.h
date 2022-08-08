@@ -30,7 +30,7 @@ class CreativeAds final : public TableInterface {
   CreativeAds(const CreativeAds&) = delete;
   CreativeAds& operator=(const CreativeAds&) = delete;
 
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 
   void Delete(ResultCallback callback);
@@ -40,18 +40,18 @@ class CreativeAds final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const CreativeAdList& creative_ads);
 
-  void OnGetForCreativeInstanceId(mojom::DBCommandResponsePtr response,
+  void OnGetForCreativeInstanceId(mojom::DBCommandResponseInfoPtr response,
                                   const std::string& creative_instance_id,
                                   GetCreativeAdCallback callback);
 
-  void MigrateToV24(mojom::DBTransaction* transaction);
+  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace table
