@@ -242,4 +242,10 @@ extension AccountActivityStore: BraveWalletBraveWalletServiceObserver {
 
   public func onNetworkListChanged() {
   }
+  
+  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
 }

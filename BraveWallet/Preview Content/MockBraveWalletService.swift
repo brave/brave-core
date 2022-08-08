@@ -187,5 +187,26 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func base58Encode(_ addresses: [[NSNumber]], completion: @escaping ([String]) -> Void) {
     completion([])
   }
+
+  func isPermissionDenied(_ coin: BraveWallet.CoinType, origin: URLOrigin, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+
+  func onOnboardingShown() {
+  }
+  
+  func defaultEthereumWallet(_ completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
+    completion(.braveWallet)
+  }
+  
+  func defaultSolanaWallet(_ completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
+    completion(.braveWallet)
+  }
+  
+  func setDefaultEthereumWallet(_ defaultWallet: BraveWallet.DefaultWallet) {
+  }
+  
+  func setDefaultSolanaWallet(_ defaultWallet: BraveWallet.DefaultWallet) {
+  }
 }
 #endif
