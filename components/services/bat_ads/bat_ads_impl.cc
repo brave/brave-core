@@ -20,6 +20,7 @@
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 using std::placeholders::_1;
@@ -125,11 +126,18 @@ void BatAdsImpl::OnTabClosed(
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::GetNotificationAd(const std::string& placement_id,
-                                   GetNotificationAdCallback callback) {
-  ads::NotificationAdInfo notification_ad;
-  ads_->GetNotificationAd(placement_id, &notification_ad);
-  std::move(callback).Run(notification_ad.ToJson());
+void BatAdsImpl::MaybeGetNotificationAd(
+    const std::string& placement_id,
+    MaybeGetNotificationAdCallback callback) {
+  const absl::optional<ads::NotificationAdInfo> ad =
+      ads_->MaybeGetNotificationAd(placement_id);
+  if (!ad) {
+    std::move(callback).Run(/* ad */ absl::nullopt);
+    return;
+  }
+
+  absl::optional<base::Value::Dict> dict = ad->ToValue();
+  std::move(callback).Run(std::move(dict));
 }
 
 void BatAdsImpl::TriggerNotificationAdEvent(

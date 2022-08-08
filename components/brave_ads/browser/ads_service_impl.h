@@ -193,7 +193,7 @@ class AdsServiceImpl : public AdsService,
   void OpenNewTabWithUrl(const GURL& url);
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnOpenNewTabWithAd(const std::string& json);
+  void OnGetNotificationAd(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   bool IsUpgradingFromPreBraveAdsBuild();

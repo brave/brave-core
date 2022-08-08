@@ -82,7 +82,8 @@ void NotificationAdManager::Initialize(InitializeCallback callback) {
   Load();
 }
 
-absl::optional<NotificationAdInfo> NotificationAdManager::GetForPlacementId(
+absl::optional<NotificationAdInfo>
+NotificationAdManager::MaybeGetForPlacementId(
     const std::string& placement_id) const {
   DCHECK(is_initialized_);
 

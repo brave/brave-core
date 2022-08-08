@@ -36,7 +36,7 @@ interface BatAdsClient {
   CanShowNotificationAds() => (bool can_show);
   [Sync]
   CanShowNotificationAdsWhileBrowserIsBackgrounded() => (bool can_show);
-  ShowNotificationAd(string json);
+  ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
   UpdateAdRewards();
@@ -146,7 +146,7 @@ interface BatAds {
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
 
-  GetNotificationAd(string placement_id) => (string json);
+  MaybeGetNotificationAd(string placement_id) => (mojo_base.mojom.DictionaryValue? value);
   TriggerNotificationAdEvent(string placement_id, ads.mojom.NotificationAdEventType event_type);
 
   TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);

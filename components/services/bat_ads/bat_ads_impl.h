@@ -97,8 +97,8 @@ class BatAdsImpl :
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) override;
 
-  void GetNotificationAd(const std::string& placement_id,
-                         GetNotificationAdCallback callback) override;
+  void MaybeGetNotificationAd(const std::string& placement_id,
+                              MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       const ads::mojom::NotificationAdEventType event_type) override;

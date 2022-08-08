@@ -89,7 +89,7 @@ class AdsClientMojoBridge
   void CanShowNotificationAdsWhileBrowserIsBackgrounded(
       CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback)
       override;
-  void ShowNotificationAd(const std::string& json) override;
+  void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void UpdateAdRewards() override;

@@ -854,14 +854,20 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
     return;
   }
 
-  bat_ads_->GetNotificationAd(
+  bat_ads_->MaybeGetNotificationAd(
       placement_id,
-      base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnGetNotificationAd, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
+void AdsServiceImpl::OnGetNotificationAd(
+    absl::optional<base::Value::Dict> dict) {
+  if (!dict) {
+    VLOG(0) << "Failed to get notification ad";
+    return;
+  }
+
   ads::NotificationAdInfo notification;
-  notification.FromJson(json);
+  notification.FromValue(*dict);
 
   OpenNewTabWithUrl(notification.target_url);
 }

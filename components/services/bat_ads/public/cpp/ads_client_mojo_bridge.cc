@@ -149,11 +149,9 @@ void AdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded(
       ads_client_->CanShowNotificationAdsWhileBrowserIsBackgrounded());
 }
 
-void AdsClientMojoBridge::ShowNotificationAd(const std::string& json) {
+void AdsClientMojoBridge::ShowNotificationAd(base::Value::Dict dict) {
   ads::NotificationAdInfo notification_ad;
-  if (!notification_ad.FromJson(json)) {
-    return;
-  }
+  notification_ad.FromValue(dict);
 
   ads_client_->ShowNotificationAd(notification_ad);
 }

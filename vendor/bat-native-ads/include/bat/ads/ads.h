@@ -17,6 +17,7 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -182,10 +183,9 @@ class ADS_EXPORT Ads {
       const mojom::NewTabPageAdEventType event_type) = 0;
 
   // Called to get the notification ad specified by |placement_id|. Returns
-  // |true| if the notification ad was found otherwise |false|.
-  // |notification_ad| containing the info of the ad.
-  virtual bool GetNotificationAd(const std::string& placement_id,
-                                 NotificationAdInfo* notification_ad) = 0;
+  // |NotificationAdInfo| containing the info of the ad.
+  virtual absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
+      const std::string& placement_id) = 0;
 
   // Called when a user views or interacts with a notification ad or the ad
   // notification times out to trigger an |event_type| event for the specified

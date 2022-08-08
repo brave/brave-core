@@ -32,7 +32,7 @@ class NotificationAdManager final {
 
   void Initialize(InitializeCallback callback);
 
-  absl::optional<NotificationAdInfo> GetForPlacementId(
+  absl::optional<NotificationAdInfo> MaybeGetForPlacementId(
       const std::string& placement_id) const;
 
   void PushBack(const NotificationAdInfo& ad);

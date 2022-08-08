@@ -1233,11 +1233,14 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return nil;
   }
-  ads::NotificationAdInfo info;
-  if (ads->GetNotificationAd(identifier.UTF8String, &info)) {
-    return [[NotificationAdIOS alloc] initWithNotificationInfo:info];
+
+  const absl::optional<ads::NotificationAdInfo> ad =
+      ads->MaybeGetNotificationAd(identifier.UTF8String);
+  if (!ad) {
+    return nil;
   }
-  return nil;
+
+  return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
 }
 
 - (bool)canShowNotificationAds {

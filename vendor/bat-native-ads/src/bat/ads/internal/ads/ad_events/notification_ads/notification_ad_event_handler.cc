@@ -34,7 +34,8 @@ void EventHandler::FireEvent(const std::string& placement_id,
   DCHECK(!placement_id.empty());
 
   const absl::optional<NotificationAdInfo> ad =
-      NotificationAdManager::GetInstance()->GetForPlacementId(placement_id);
+      NotificationAdManager::GetInstance()->MaybeGetForPlacementId(
+          placement_id);
   if (!ad) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
