@@ -10,19 +10,21 @@
 #include <utility>
 
 #include "base/command_line.h"
-#include "base/one_shot_event.h"
+#include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_news_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -35,7 +37,6 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_action_manager.h"
 #include "extensions/browser/extension_registry.h"
-#include "extensions/browser/extension_registry_observer.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
@@ -95,9 +96,9 @@ void BraveActionsContainer::Init() {
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
   constexpr int kSeparatorMargin = 3;
   constexpr int kSeparatorWidth = 1;
-  brave_button_separator_->SetPreferredSize(gfx::Size(
-                                    kSeparatorWidth + kSeparatorMargin*2,
-                                    GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
+  brave_button_separator_->SetPreferredSize(
+      gfx::Size(kSeparatorWidth + kSeparatorMargin * 2,
+                GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
   // separator left & right margin
   brave_button_separator_->SetBorder(views::CreateEmptyBorder(
       gfx::Insets::TLBR(0, kSeparatorMargin, 0, kSeparatorMargin)));
@@ -110,6 +111,11 @@ void BraveActionsContainer::Init() {
     AddActionViewForRewards();
   } else {
     actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
+  }
+
+  if (base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsSubscribeButtonFeature)) {
+    AddActionViewForNews();
   }
 
   // React to Brave Rewards preferences changes.
@@ -183,8 +189,8 @@ void BraveActionsContainer::AddActionStubForRewards() {
   if (actions_[id].view_) {
     return;
   }
-  actions_[id].view_ = std::make_unique<BraveRewardsActionStubView>(
-      browser_->profile(), this);
+  actions_[id].view_ =
+      std::make_unique<BraveRewardsActionStubView>(browser_->profile(), this);
   AttachAction(id);
 }
 
@@ -229,8 +235,8 @@ void BraveActionsContainer::AddAction(const std::string& id) {
 
 void BraveActionsContainer::RemoveAction(const std::string& id) {
   DCHECK(IsContainerAction(id));
-  VLOG(1) << "RemoveAction (" << id << "), was loaded: "
-          << static_cast<bool>(actions_[id].view_);
+  VLOG(1) << "RemoveAction (" << id
+          << "), was loaded: " << static_cast<bool>(actions_[id].view_);
   // This will reset references and automatically remove the child from the
   // parent (us)
   actions_[id].Reset();
@@ -281,6 +287,15 @@ void BraveActionsContainer::AddActionViewForRewards() {
   rewards_action_btn_->Update();
 }
 
+void BraveActionsContainer::AddActionViewForNews() {
+  news_action_btn_ =
+      AddChildViewAt(std::make_unique<BraveNewsActionView>(
+                         browser_->profile(), browser_->tab_strip_model()),
+                     0);
+  news_action_btn_->SetPreferredSize(GetToolbarActionSize());
+  news_action_btn_->Init();
+}
+
 void BraveActionsContainer::Update() {
   if (shields_action_btn_) {
     shields_action_btn_->Update();
@@ -310,6 +325,9 @@ void BraveActionsContainer::UpdateVisibility() {
   if (rewards_action_btn_) {
     can_show = can_show || rewards_action_btn_->GetVisible();
   }
+
+  if (news_action_btn_)
+    news_action_btn_->Update();
 
   for (auto& [_, value] : actions_) {
     if (value.view_) {
@@ -346,19 +364,19 @@ gfx::Size BraveActionsContainer::GetToolbarActionSize() {
 }
 
 void BraveActionsContainer::WriteDragDataForView(View* sender,
-                                                   const gfx::Point& press_pt,
-                                                   OSExchangeData* data) {
+                                                 const gfx::Point& press_pt,
+                                                 OSExchangeData* data) {
   // Not supporting drag for action buttons inside this container
 }
 
 int BraveActionsContainer::GetDragOperationsForView(View* sender,
-                                                      const gfx::Point& p) {
+                                                    const gfx::Point& p) {
   return ui::DragDropTypes::DRAG_NONE;
 }
 
 bool BraveActionsContainer::CanStartDragForView(View* sender,
-                                                  const gfx::Point& press_pt,
-                                                  const gfx::Point& p) {
+                                                const gfx::Point& press_pt,
+                                                const gfx::Point& p) {
   return false;
 }
 // end ToolbarActionView::Delegate members
@@ -370,12 +388,12 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
   actions_[brave_rewards_extension_id].view_->SetState(
       views::Button::STATE_PRESSED);
   extensions::ExtensionService* service =
-           extension_system_->extension_service();
+      extension_system_->extension_service();
   if (service) {
     is_rewards_pressed_ = true;
     extensions::ComponentLoader* loader = service->component_loader();
-          static_cast<extensions::BraveComponentLoader*>(loader)->
-              AddRewardsExtension();
+    static_cast<extensions::BraveComponentLoader*>(loader)
+        ->AddRewardsExtension();
 
     if (rewards_service_) {
       rewards_service_->StartProcess(base::DoNothing());
@@ -432,8 +450,8 @@ void BraveActionsContainer::OnBraveActionShouldTrigger(
   }
   if (actions_[extension_id].view_controller_) {
     if (ui_relative_path)
-      actions_[extension_id].view_controller_
-          ->ExecuteActionUI(*ui_relative_path);
+      actions_[extension_id].view_controller_->ExecuteActionUI(
+          *ui_relative_path);
     else
       actions_[extension_id].view_controller_->ExecuteUserAction(
           ToolbarActionViewController::InvocationSource::kApi);

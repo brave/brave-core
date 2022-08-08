@@ -64,6 +64,7 @@ interface Props {
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowToday: (value: boolean) => any
+  saveShowBraveNewsButton: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
@@ -299,6 +300,12 @@ class NewTabPage extends React.Component<Props, State> {
   toggleShowToday = () => {
     this.props.saveShowToday(
       !this.props.newTabData.showToday
+    )
+  }
+
+  toggleShowBraveNewsButton = () => {
+    this.props.saveShowBraveNewsButton(
+      !this.props.newTabData.showBraveNewsButton
     )
   }
 
@@ -1311,6 +1318,7 @@ class NewTabPage extends React.Component<Props, State> {
           showSettingsMenu={showSettingsMenu}
           featureFlagBraveNewsEnabled={newTabData.featureFlagBraveNewsEnabled}
           featureCustomBackgroundEnabled={newTabData.featureCustomBackgroundEnabled}
+          featureFlagBraveNewsSubscribeButtonEnabled={newTabData.featureFlagBraveNewsSubscribeButtonEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
           onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
@@ -1319,6 +1327,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}
           toggleShowToday={this.toggleShowToday}
+          toggleShowBraveNewsButton={this.toggleShowBraveNewsButton}
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
@@ -1328,6 +1337,7 @@ class NewTabPage extends React.Component<Props, State> {
           clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
           showToday={newTabData.showToday}
+          showBraveNewsButton={newTabData.showBraveNewsButton}
           showTopSites={newTabData.showTopSites}
           customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}

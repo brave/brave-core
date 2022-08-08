@@ -12,6 +12,8 @@ if (is_android) {
 brave_browser_brave_news_sources += [
   "//brave/browser/brave_news/brave_news_controller_factory.cc",
   "//brave/browser/brave_news/brave_news_controller_factory.h",
+  "//brave/browser/brave_news/brave_news_tab_helper.cc",
+  "//brave/browser/brave_news/brave_news_tab_helper.h",
 ]
 
 brave_browser_brave_news_deps += [

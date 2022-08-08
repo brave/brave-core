@@ -282,6 +282,24 @@
       <message name="IDS_BRAVE_TODAY_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Brave News">
         Show Brave News
       </message>
+      <message name="IDS_BRAVE_TODAY_SHOW_TOOLBAR_BUTTON" desc="Button text for opting in to Brave News">
+        Show Brave News button in the toolbar
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING" desc="The text displayed while a feed is being subscribed or unsubscribed">
+        Loading...
+      </message>
+      <message name="IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP" desc="The tooltip text displayed when hovering over the Brave News action view in the toolbar">
+        Manage Subscriptions
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE" desc="The text on the button for subscribing to a feed">
+        Subscribe
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE" desc="The text on the button for unsubscribing from a feed">
+        Unsubscribe
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER" desc="The text on the button hidding the Brave News bubble, and not showing it again">
+        Hide and don't show this again
+      </message>
       <message name="IDS_BRAVE_TODAY_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
         No thanks
       </message>

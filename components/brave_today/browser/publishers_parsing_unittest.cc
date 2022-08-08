@@ -22,19 +22,25 @@ TEST(BraveNewsPublisherParsing, ParsePublisherList) {
         "publisher_id": "111",
         "publisher_name": "Test Publisher 1",
         "category": "Tech",
-        "enabled": false
+        "enabled": false,
+        "site_url": "https://one.example.com",
+        "feed_url": "https://one.example.com/feed"
       },
       {
         "publisher_id": "222",
         "publisher_name": "Test Publisher 2",
         "category": "Sports",
-        "enabled": true
+        "enabled": true,
+        "site_url": "https://two.example.com",
+        "feed_url": "https://two.example.com/feed"
       },
       {
         "publisher_id": "333",
         "publisher_name": "Test Publisher 3",
         "category": "Design",
-        "enabled": true
+        "enabled": true,
+        "site_url": "https://three.example.com",
+        "feed_url": "https://three.example.com/feed"
       }
     ]
   )");

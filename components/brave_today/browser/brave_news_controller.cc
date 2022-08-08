@@ -38,6 +38,14 @@
 
 namespace brave_news {
 
+bool IsPublisherEnabled(const mojom::Publisher* publisher) {
+  if (!publisher)
+    return false;
+  return (publisher->is_enabled &&
+          publisher->user_enabled_status != mojom::UserEnabled::DISABLED) ||
+         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
+}
+
 // static
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   // Only default brave today to be shown for
@@ -49,6 +57,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   const bool is_japanese_language = language_code == "ja";
   const bool brave_news_enabled_default =
       is_english_language || is_japanese_language;
+  registry->RegisterBooleanPref(prefs::kShouldShowToolbarButton, true);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowToday,
                                 brave_news_enabled_default);
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);

@@ -14,6 +14,7 @@
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "components/prefs/pref_service.h"
 
@@ -35,6 +36,13 @@ class PublishersController {
    public:
     virtual void OnPublishersUpdated(PublishersController* controller) = 0;
   };
+
+  // The following methods return a pointer to a |Publisher|. This pointer is
+  // not safe to hold onto, as the object it points to will be destroyed when
+  // the publishers are updated (which happens regularly). If you need it to
+  // live longer, take a clone.
+  const mojom::Publisher* GetPublisherForSite(const GURL& site_url) const;
+  const mojom::Publisher* GetPublisherForFeed(const GURL& feed_url) const;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
