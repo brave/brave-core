@@ -11,7 +11,6 @@ BraveIncognitoClearBrowsingDataDialog::BraveIncognitoClearBrowsingDataDialog(
     Type type)
     : IncognitoClearBrowsingDataDialog(anchor_view, incognito_profile, type) {
   SetShowCloseButton(false);
-  
 }
 
 // static
