@@ -5,10 +5,8 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace targeting {

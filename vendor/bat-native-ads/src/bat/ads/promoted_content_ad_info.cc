@@ -5,6 +5,8 @@
 
 #include "bat/ads/promoted_content_ad_info.h"
 
+#include "url/gurl.h"
+
 namespace ads {
 
 PromotedContentAdInfo::PromotedContentAdInfo() = default;

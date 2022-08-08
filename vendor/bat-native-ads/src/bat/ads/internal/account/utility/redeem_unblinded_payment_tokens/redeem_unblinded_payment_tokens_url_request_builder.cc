@@ -17,6 +17,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {

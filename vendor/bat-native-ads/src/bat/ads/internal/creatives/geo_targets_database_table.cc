@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/creatives/geo_targets_database_table.h"
 
-#include <algorithm>
 #include <functional>
 #include <utility>
 

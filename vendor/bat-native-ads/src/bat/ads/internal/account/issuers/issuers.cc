@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
-#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>

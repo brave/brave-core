@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"

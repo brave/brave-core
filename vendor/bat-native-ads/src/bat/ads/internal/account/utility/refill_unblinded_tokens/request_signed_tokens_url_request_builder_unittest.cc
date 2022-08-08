@@ -7,10 +7,8 @@
 
 #include "base/check.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "url/gurl.h"

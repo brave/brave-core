@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"

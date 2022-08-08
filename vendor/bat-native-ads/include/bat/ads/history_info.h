@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_HISTORY_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "base/values.h"
 #include "bat/ads/export.h"

@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
-#include <cstdint>
 #include <functional>
 #include <utility>
 
@@ -13,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"

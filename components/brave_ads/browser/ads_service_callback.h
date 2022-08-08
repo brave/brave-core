@@ -12,10 +12,6 @@
 #include "base/values.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-struct NewTabPageAdInfo;
-}  // namespace ads
-
 namespace brave_ads {
 
 using GetDiagnosticsCallback =

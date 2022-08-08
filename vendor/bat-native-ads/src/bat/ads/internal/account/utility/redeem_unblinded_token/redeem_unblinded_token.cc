@@ -13,7 +13,6 @@
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
-#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations_util.h"

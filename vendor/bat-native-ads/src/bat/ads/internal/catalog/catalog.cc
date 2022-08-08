@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
-#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
@@ -25,6 +24,7 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
