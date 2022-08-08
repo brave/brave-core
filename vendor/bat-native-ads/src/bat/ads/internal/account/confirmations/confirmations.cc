@@ -15,6 +15,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_user_data_builder.h"
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -30,7 +31,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/transaction_info.h"
 
 namespace ads {
 
