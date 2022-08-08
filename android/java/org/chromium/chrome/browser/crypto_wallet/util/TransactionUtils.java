@@ -6,9 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.FilTxData;
-import org.chromium.brave_wallet.mojom.SolanaTxData;
-import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 
 public class TransactionUtils {

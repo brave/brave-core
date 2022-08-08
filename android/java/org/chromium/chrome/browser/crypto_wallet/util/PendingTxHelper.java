@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class PendingTxHelper implements TxServiceObserver {
     private TxService mTxService;
@@ -37,6 +38,8 @@ public class PendingTxHelper implements TxServiceObserver {
     private final MutableLiveData<TransactionInfo> _mSelectedPendingRequest;
     private final MutableLiveData<Boolean> _mHasNoPendingTxAfterProcessing;
     private final MutableLiveData<List<TransactionInfo>> _mTransactionInfos;
+    private final MutableLiveData<List<TransactionInfo>> _mPendingTransactionInfoLd;
+    public LiveData<List<TransactionInfo>> mPendingTransactionInfoLd;
     public LiveData<List<TransactionInfo>> mTransactionInfoLd;
     public LiveData<TransactionInfo> mSelectedPendingRequest;
     public LiveData<Boolean> mHasNoPendingTxAfterProcessing;
@@ -53,6 +56,8 @@ public class PendingTxHelper implements TxServiceObserver {
         _mSelectedPendingRequest = new MutableLiveData<>();
         _mHasNoPendingTxAfterProcessing = new MutableLiveData<>();
         _mTransactionInfos = new MutableLiveData<>(Collections.emptyList());
+        _mPendingTransactionInfoLd = new MutableLiveData<>(Collections.emptyList());
+        mPendingTransactionInfoLd = _mPendingTransactionInfoLd;
         mTransactionInfoLd = _mTransactionInfos;
         mSelectedPendingRequest = _mSelectedPendingRequest;
         mHasNoPendingTxAfterProcessing = _mHasNoPendingTxAfterProcessing;
@@ -125,6 +130,32 @@ public class PendingTxHelper implements TxServiceObserver {
         });
     }
 
+    public String getAccountNameForTransaction(TransactionInfo transactionInfo) {
+        for (Map.Entry<String, TransactionInfo[]> entry : mTxInfos.entrySet()) {
+            for (TransactionInfo info : entry.getValue()) {
+                if (info.id.equals(transactionInfo.id)) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return null;
+    }
+
+    public void updateTxInfosMap(TransactionInfo transactionInfo) {
+        if (transactionInfo.txType != TransactionStatus.UNAPPROVED) {
+            for (Map.Entry<String, TransactionInfo[]> entry : mTxInfos.entrySet()) {
+                TransactionInfo[] infos = entry.getValue();
+                for (int i = 0; i < infos.length; i++) {
+                    TransactionInfo info = infos[i];
+                    if (info.id.equals(transactionInfo.id)) {
+                        infos[i] = transactionInfo;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     public void setAccountInfos(AccountInfo[] accountInfos) {
         this.mAccountInfos = accountInfos;
         fetchTransactions(null);
@@ -137,17 +168,19 @@ public class PendingTxHelper implements TxServiceObserver {
 
     @Override
     public void onNewUnapprovedTx(TransactionInfo txInfo) {
-        processTx(txInfo, TxActionType.NEW_UNAPPROVED_TRANSACTION);
+        fetchTransactions(null);
     }
 
     @Override
     public void onUnapprovedTxUpdated(TransactionInfo txInfo) {
         processTx(txInfo, TxActionType.UNAPPROVED_TRANSACTION_UPDATED);
+        updateTxInfosMap(txInfo);
     }
 
     @Override
     public void onTransactionStatusChanged(TransactionInfo txInfo) {
         processTx(txInfo, TxActionType.TRANSACTION_STATUS_CHANGED);
+        updateTxInfosMap(txInfo);
     }
 
     public List<TransactionInfo> getPendingTransactions() {
@@ -165,6 +198,7 @@ public class PendingTxHelper implements TxServiceObserver {
         processCachedTx();
         Collections.sort(mTransactionInfos, sortByDateComparator);
         _mTransactionInfos.postValue(mTransactionInfos);
+        updatePending(mTransactionInfos);
         postTxUpdates();
     }
 
@@ -174,6 +208,7 @@ public class PendingTxHelper implements TxServiceObserver {
         } else {
             updateTransactionList(txInfo, txActionType);
             _mTransactionInfos.postValue(mTransactionInfos);
+            updatePending(mTransactionInfos);
         }
     }
 
@@ -239,6 +274,16 @@ public class PendingTxHelper implements TxServiceObserver {
             _mSelectedPendingRequest.postValue(null);
             _mHasNoPendingTxAfterProcessing.postValue(true);
         }
+    }
+
+    private void updatePending(List<TransactionInfo> transactionInfos) {
+        List<TransactionInfo> infos = new ArrayList<>();
+        for (TransactionInfo info : transactionInfos) {
+            if (info.txStatus == TransactionStatus.UNAPPROVED) {
+                infos.add(info);
+            }
+        }
+        _mPendingTransactionInfoLd.postValue(infos);
     }
 
     /*
