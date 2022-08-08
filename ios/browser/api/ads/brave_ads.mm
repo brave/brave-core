@@ -608,20 +608,24 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
                             completion:
-                                (void (^)(BOOL success,
-                                          NSString* dimensions,
+                                (void (^)(NSString* dimensions,
                                           InlineContentAdIOS* ad))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->MaybeServeInlineContentAd(base::SysNSStringToUTF8(dimensions), ^(
-                                     const bool success,
-                                     const std::string& dimensions,
-                                     const ads::InlineContentAdInfo& ad) {
-    const auto inline_content_ad =
-        [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:ad];
-    completion(success, base::SysUTF8ToNSString(dimensions), inline_content_ad);
-  });
+  ads->MaybeServeInlineContentAd(
+      base::SysNSStringToUTF8(dimensions),
+      ^(const std::string& dimensions,
+        const absl::optional<ads::InlineContentAdInfo>& ad) {
+        if (!ad) {
+          completion(base::SysUTF8ToNSString(dimensions), nil);
+          return;
+        }
+
+        const auto inline_content_ad =
+            [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
+        completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
+      });
 }
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId

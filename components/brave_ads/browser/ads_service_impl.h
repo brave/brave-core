@@ -166,9 +166,8 @@ class AdsServiceImpl : public AdsService,
                         const base::TimeDelta idle_time);
 
   void OnMaybeServeInlineContentAd(MaybeServeInlineContentAdCallback callback,
-                                   const bool success,
                                    const std::string& dimensions,
-                                   const std::string& json);
+                                   absl::optional<base::Value::Dict> dict);
 
   absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(

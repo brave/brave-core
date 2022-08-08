@@ -304,7 +304,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, dimensions, {});
+    callback(dimensions, absl::nullopt);
     return;
   }
 

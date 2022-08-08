@@ -21,8 +21,9 @@ using GetDiagnosticsCallback =
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(ads::mojom::StatementInfoPtr)>;
 
-using MaybeServeInlineContentAdCallback = base::OnceCallback<
-    void(const bool, const std::string&, const base::Value::Dict&)>;
+using MaybeServeInlineContentAdCallback =
+    base::OnceCallback<void(const std::string&,
+                            absl::optional<base::Value::Dict>)>;
 
 using TriggerSearchResultAdEventCallback =
     base::OnceCallback<void(const bool,

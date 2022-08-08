@@ -148,9 +148,8 @@ class ADS_EXPORT Ads {
       GetStatementOfAccountsCallback callback) = 0;
 
   // Should be called to serve an inline content ad for the specified
-  // |dimensions|. The callback takes three arguments - |bool| is set to |true|
-  // if successful otherwise |false|, |std::string| containing the dimensions
-  // and |InlineContentAdInfo| containing the info for the ad.
+  // |dimensions|. The callback takes two arguments - |std::string| containing
+  // the dimensions and |InlineContentAdInfo| containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback) = 0;

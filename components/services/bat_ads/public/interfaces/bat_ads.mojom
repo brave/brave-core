@@ -140,7 +140,7 @@ interface BatAds {
   GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
 
   // Ads
-  MaybeServeInlineContentAd(string dimensions) => (bool success, string dimensions, string ad);
+  MaybeServeInlineContentAd(string dimensions) => (string dimensions, mojo_base.mojom.DictionaryValue? value);
   TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
 
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);

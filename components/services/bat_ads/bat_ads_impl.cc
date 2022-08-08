@@ -171,7 +171,7 @@ void BatAdsImpl::MaybeServeInlineContentAd(
       AsWeakPtr(), std::move(callback));
 
   auto maybe_serve_inline_content_ads_callback =
-      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder, _1, _2, _3);
+      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder, _1, _2);
   ads_->MaybeServeInlineContentAd(dimensions,
                                   maybe_serve_inline_content_ads_callback);
 }
@@ -349,11 +349,15 @@ void BatAdsImpl::OnMaybeServeNewTabPageAd(
 
 void BatAdsImpl::OnMaybeServeInlineContentAd(
     CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
-    const bool success,
     const std::string& dimensions,
-    const ads::InlineContentAdInfo& ad) {
+    const absl::optional<ads::InlineContentAdInfo>& ad) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, dimensions, ad.ToJson());
+    absl::optional<base::Value::Dict> dict;
+    if (ad) {
+      dict = ad->ToValue();
+    }
+
+    std::move(holder->get()).Run(dimensions, std::move(dict));
   }
 
   delete holder;

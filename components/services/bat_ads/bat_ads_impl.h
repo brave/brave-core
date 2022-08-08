@@ -171,9 +171,8 @@ class BatAdsImpl :
 
   static void OnMaybeServeInlineContentAd(
       CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
-      const bool success,
       const std::string& dimensions,
-      const ads::InlineContentAdInfo& ad);
+      const absl::optional<ads::InlineContentAdInfo>& ad);
 
   static void OnMaybeServeNewTabPageAd(
       CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,

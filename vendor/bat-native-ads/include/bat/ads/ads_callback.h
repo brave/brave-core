@@ -26,8 +26,9 @@ using RemoveAllHistoryCallback = std::function<void(const bool)>;
 using MaybeServeNewTabPageAdCallback =
     std::function<void(const absl::optional<NewTabPageAdInfo>&)>;
 
-using MaybeServeInlineContentAdCallback = std::function<
-    void(const bool, const std::string&, const InlineContentAdInfo&)>;
+using MaybeServeInlineContentAdCallback =
+    std::function<void(const std::string&,
+                       const absl::optional<InlineContentAdInfo>&)>;
 
 using TriggerSearchResultAdEventCallback =
     std::function<void(const bool,
