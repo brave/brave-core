@@ -22,7 +22,6 @@ namespace ads {
 class Ads;
 struct NewTabPageAdInfo;
 struct InlineContentAdInfo;
-struct StatementInfo;
 }  // namespace ads
 
 namespace bat_ads {

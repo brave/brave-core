@@ -33,7 +33,6 @@ class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
 class Wallet;
 struct IssuersInfo;
-struct StatementInfo;
 struct TransactionInfo;
 struct WalletInfo;
 

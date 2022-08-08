@@ -61,7 +61,6 @@
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
-#include "bat/ads/statement_info.h"
 #include "build/build_config.h"
 #include "url/gurl.h"
 

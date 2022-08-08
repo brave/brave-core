@@ -84,7 +84,6 @@ source_set("headers") {
     "include/bat/ads/page_transition_types.h",
     "include/bat/ads/pref_names.h",
     "include/bat/ads/promoted_content_ad_info.h",
-    "include/bat/ads/statement_info.h",
   ]
 
   public_deps = [
@@ -1089,7 +1088,6 @@ source_set("ads") {
     "src/bat/ads/notification_ad_info.cc",
     "src/bat/ads/pref_names.cc",
     "src/bat/ads/promoted_content_ad_info.cc",
-    "src/bat/ads/statement_info.cc",
   ]
 
   if (is_android) {

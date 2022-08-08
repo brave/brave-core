@@ -15,7 +15,6 @@ namespace ads {
 
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
-struct StatementInfo;
 
 using InitializeCallback = std::function<void(const bool)>;
 using ShutdownCallback = std::function<void(const bool)>;
