@@ -32,6 +32,7 @@
 -AppInfoDialogViewsTest.*
 -AppLauncherHandlerTest.*
 -AssistantSidePanelCoordinatorImplTest.*
+-AutofillContextMenuTest/RenderViewContestMenuAutofillTest.ShowAutofillOptions/*
 -AvatarToolbarButtonTest.*
 -BackFwdMenuModelIncognitoTest.*
 -BackFwdMenuModelTest.*
