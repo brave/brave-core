@@ -18,6 +18,12 @@
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_today {
+namespace {
+// TODO(petemill): Have a remotely-updatable list of supported language
+// variations.
+const base::flat_set<std::string> kSupportedLocales = {"en_US", "ja_JP",
+                                                       "en_ES", "en_MX"};
+}  // namespace
 
 std::string GetHostname() {
   std::string from_switch =

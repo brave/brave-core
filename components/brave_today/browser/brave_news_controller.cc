@@ -239,6 +239,23 @@ void BraveNewsController::SubscribeToNewDirectFeed(
           feed_url, std::move(callback), base::Unretained(this)));
 }
 
+void BraveNewsController::GetChannels(GetChannelsCallback callback) {
+  channels_controller_.GetAllChannels(brave_today::GetRegionUrlPart(),
+                                      std::move(callback));
+}
+
+void BraveNewsController::SetChannelSubscribed(
+    const std::string& channel_id,
+    bool subscribed,
+    SetChannelSubscribedCallback callback) {
+  channels_controller_.SetChannelSubscribed(brave_today::GetRegionUrlPart(),
+                                            channel_id, subscribed);
+  auto result = mojom::Channel::New();
+  result->channel_name = channel_id;
+  result->subscribed = subscribed;
+  std::move(callback).Run(std::move(result));
+}
+
 void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
   direct_feed_controller_.RemoveDirectFeedPref(publisher_id);
 

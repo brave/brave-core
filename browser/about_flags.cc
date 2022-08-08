@@ -30,6 +30,7 @@
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "build/build_config.h"
+#include "components/flags_ui/flags_state.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/flags_ui/flags_state.h"
 #include "components/translate/core/browser/translate_prefs.h"

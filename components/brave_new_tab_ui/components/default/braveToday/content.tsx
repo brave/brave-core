@@ -15,6 +15,7 @@ import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
+import { useBraveNews } from '../../braveNews/Context'
 
 function getFeedHashForCache (feed?: Feed) {
   return feed ? feed.hash : ''
@@ -26,6 +27,7 @@ export default function BraveTodayContent (props: Props) {
   const { feed, publishers } = props
 
   const dispatch = useDispatch()
+  const { setPage } = useBraveNews()
 
   const previousYAxis = React.useRef(0)
   const [showOptions, setShowOptions] = React.useState(false)
@@ -67,7 +69,7 @@ export default function BraveTodayContent (props: Props) {
       // Show if target article is inside or above viewport.
       const isInteracting = entries.some(
         entry => entry.isIntersecting ||
-                  entry.boundingClientRect.top < 0
+          entry.boundingClientRect.top < 0
       )
       console.debug('Brave News: Intersection Observer trigger show options, changing', isInteracting)
       setShowOptions(isInteracting)
@@ -172,8 +174,8 @@ export default function BraveTodayContent (props: Props) {
   let runningCardCount = introCount
   return (
     <>
-    {/* featured item */}
-      { feed.featuredItem && <CardLarge
+      {/* featured item */}
+      {feed.featuredItem && <CardLarge
         content={[feed.featuredItem]}
         publishers={publishers}
         articleToScrollTo={props.articleToScrollTo}
@@ -183,53 +185,53 @@ export default function BraveTodayContent (props: Props) {
       }
       <div ref={interactionTriggerElement} />
       <div {...{ [attributeNameCardCount]: 1 }} ref={registerCardCountTriggerElement} />
-      { !isOnlyDisplayingPeekingCard &&
-      <>
+      {!isOnlyDisplayingPeekingCard &&
         <>
-          <CardDisplayAd
-            onVisitDisplayAd={props.onVisitDisplayAd}
-            onViewedDisplayAd={props.onViewedDisplayAd}
-            getContent={props.getDisplayAd}
+          <>
+            <CardDisplayAd
+              onVisitDisplayAd={props.onVisitDisplayAd}
+              onViewedDisplayAd={props.onViewedDisplayAd}
+              getContent={props.getDisplayAd}
+            />
+            <div {...{ [attributeNameCardCount]: introCount }} ref={registerCardCountTriggerElement} />
+          </>
+          {
+            /* Infinitely repeating collections of content. */
+            Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
+              const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
+              let startingDisplayIndex = runningCardCount
+              runningCardCount += feed.pages[index].items.length
+              return (
+                <CardsGroup
+                  key={index}
+                  itemStartingDisplayIndex={startingDisplayIndex}
+                  content={feed.pages[index]}
+                  publishers={publishers}
+                  articleToScrollTo={props.articleToScrollTo}
+                  shouldScrollToDisplayAd={shouldScrollToDisplayAd}
+                  onReadFeedItem={props.onReadFeedItem}
+                  onPeriodicCardViews={registerCardCountTriggerElement}
+                  onSetPublisherPref={props.onSetPublisherPref}
+                  onPromotedItemViewed={props.onPromotedItemViewed}
+                  onVisitDisplayAd={props.onVisitDisplayAd}
+                  onViewedDisplayAd={props.onViewedDisplayAd}
+                  getDisplayAdContent={props.getDisplayAd}
+                />
+              )
+            })
+          }
+          <Customize onCustomizeBraveToday={() => setPage('news')} show={showOptions} />
+          <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
+          <div
+            ref={setScrollTriggerRef}
+            style={{
+              width: '1px',
+              height: '1px',
+              position: 'absolute',
+              bottom: '900px'
+            }}
           />
-          <div {...{ [attributeNameCardCount]: introCount }} ref={registerCardCountTriggerElement} />
         </>
-        {
-          /* Infinitely repeating collections of content. */
-          Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
-            const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
-            let startingDisplayIndex = runningCardCount
-            runningCardCount += feed.pages[index].items.length
-            return (
-              <CardsGroup
-                key={index}
-                itemStartingDisplayIndex={startingDisplayIndex}
-                content={feed.pages[index]}
-                publishers={publishers}
-                articleToScrollTo={props.articleToScrollTo}
-                shouldScrollToDisplayAd={shouldScrollToDisplayAd}
-                onReadFeedItem={props.onReadFeedItem}
-                onPeriodicCardViews={registerCardCountTriggerElement}
-                onSetPublisherPref={props.onSetPublisherPref}
-                onPromotedItemViewed={props.onPromotedItemViewed}
-                onVisitDisplayAd={props.onVisitDisplayAd}
-                onViewedDisplayAd={props.onViewedDisplayAd}
-                getDisplayAdContent={props.getDisplayAd}
-              />
-            )
-          })
-        }
-        <Customize onCustomizeBraveToday={props.onCustomizeBraveToday} show={showOptions} />
-        <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
-        <div
-          ref={setScrollTriggerRef}
-          style={{
-            width: '1px',
-            height: '1px',
-            position: 'absolute',
-            bottom: '0'
-          }}
-        />
-      </>
       }
     </>
   )

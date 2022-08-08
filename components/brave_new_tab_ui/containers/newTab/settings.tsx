@@ -21,6 +21,7 @@ import {
 
 import { getLocale } from '../../../common/locale'
 import { Publishers } from '../../api/brave_news'
+import { BraveNewsContext } from '../../components/braveNews/Context'
 
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
@@ -110,6 +111,7 @@ interface State {
 }
 
 export default class Settings extends React.PureComponent<Props, State> {
+  static contextType: typeof BraveNewsContext = BraveNewsContext
   settingsMenuRef: React.RefObject<any>
   allTabTypes: TabType[]
   allTabTypesWithoutBackground: TabType[]
@@ -195,6 +197,12 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   setActiveTab (activeTab: TabType) {
+    if (activeTab === TabType.BraveToday) {
+      this.context.setPage('news')
+      this.props.onClose()
+      return
+    }
+
     this.setState({ activeTab })
   }
 

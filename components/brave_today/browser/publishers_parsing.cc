@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
@@ -71,6 +72,7 @@ bool ParseCombinedPublisherList(const std::string& json,
       continue;
     }
     publisher->site_url = site_url;
+
     // TODO(petemill): Validate
     publishers->insert_or_assign(publisher->publisher_id, std::move(publisher));
   }

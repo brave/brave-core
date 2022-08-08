@@ -6,10 +6,9 @@
 import * as React from 'react'
 
 // Components
-import Stats from './stats'
-import TopSitesGrid from './gridSites'
-import FooterInfo from '../../components/default/footer/footer'
-import SiteRemovalNotification from './notification'
+import getNTPBrowserAPI from '../../api/background'
+import { addNewTopSite, editTopSite } from '../../api/topSites'
+import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
   Clock,
   RewardsWidget as Rewards,
@@ -22,30 +21,27 @@ import {
   EditCards,
   OverrideReadabilityColor
 } from '../../components/default'
+import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
+import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
+import FooterInfo from '../../components/default/footer/footer'
+import { SponsoredImageTooltip } from '../../components/default/rewards'
+import TopSitesGrid from './gridSites'
+import SiteRemovalNotification from './notification'
+import Stats from './stats'
 import { FTXWidget as FTX } from '../../widgets/ftx/components'
 import * as Page from '../../components/default/page'
-import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
-import BraveTodayHint from '../../components/default/braveToday/hint'
-import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
-import { SponsoredImageTooltip } from '../../components/default/rewards'
-import { addNewTopSite, editTopSite } from '../../api/topSites'
-import getNTPBrowserAPI from '../../api/background'
 
 // Helpers
-import VisibilityTimer from '../../helpers/visibilityTimer'
 import {
-  fetchCryptoDotComTickerPrices,
-  fetchCryptoDotComLosersGainers,
-  fetchCryptoDotComCharts,
-  fetchCryptoDotComSupportedPairs
+  fetchCryptoDotComCharts, fetchCryptoDotComLosersGainers, fetchCryptoDotComSupportedPairs, fetchCryptoDotComTickerPrices
 } from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
+import VisibilityTimer from '../../helpers/visibilityTimer'
 import isReadableOnBackground from '../../helpers/colorUtil'
 
 // Types
-import { GeminiAssetAddress } from '../../actions/gemini_actions'
 import { getLocale } from '../../../common/locale'
+import { GeminiAssetAddress } from '../../actions/gemini_actions'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
@@ -55,6 +51,9 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 // NTP features
 import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
+
+import { BraveNewsContextProvider } from '../../components/braveNews/Context'
+import BraveNewsModal from '../../components/braveNews/Modal'
 import GridWidget from './gridWidget'
 
 interface Props {
@@ -95,7 +94,7 @@ interface State {
 
 function GetBackgroundImageSrc (props: Props) {
   if (!props.newTabData.showBackgroundImage &&
-      (!props.newTabData.brandedWallpaper || props.newTabData.brandedWallpaper.isSponsored)) {
+    (!props.newTabData.brandedWallpaper || props.newTabData.brandedWallpaper.isSponsored)) {
     return undefined
   }
   if (props.newTabData.brandedWallpaper) {
@@ -131,12 +130,12 @@ function GetShouldForceToHideWidget (props: Props, showSearchPromotion: boolean)
 function GetIsShowingBrandedWallpaper (props: Props) {
   const { newTabData } = props
   return !!((newTabData.brandedWallpaper &&
-          newTabData.brandedWallpaper.isSponsored))
+    newTabData.brandedWallpaper.isSponsored))
 }
 
 function GetShouldShowBrandedWallpaperNotification (props: Props) {
   return GetIsShowingBrandedWallpaper(props) &&
-  !props.newTabData.isBrandedWallpaperNotificationDismissed
+    !props.newTabData.isBrandedWallpaperNotificationDismissed
 }
 
 class NewTabPage extends React.Component<Props, State> {
@@ -211,12 +210,12 @@ class NewTabPage extends React.Component<Props, State> {
       this.setState({ backgroundHasLoaded: false })
     }
     if (!GetShouldShowBrandedWallpaperNotification(prevProps) &&
-        GetShouldShowBrandedWallpaperNotification(this.props)) {
+      GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
     }
 
     if (GetShouldShowBrandedWallpaperNotification(prevProps) &&
-        !GetShouldShowBrandedWallpaperNotification(this.props)) {
+      !GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
     }
   }
@@ -1177,6 +1176,7 @@ class NewTabPage extends React.Component<Props, State> {
         colorForBackground={colorForBackground}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveToday) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
+        <BraveNewsContextProvider>
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
@@ -1208,8 +1208,7 @@ class NewTabPage extends React.Component<Props, State> {
             <Clock />
           </GridWidget>
           {
-            showTopSites
-              ? (
+            showTopSites &&
               <Page.GridItemTopSites>
                 <TopSitesGrid
                   actions={actions}
@@ -1225,48 +1224,47 @@ class NewTabPage extends React.Component<Props, State> {
                   textDirection={newTabData.textDirection}
                 />
               </Page.GridItemTopSites>
-              ) : null
-          }
-          {
-            gridSitesData.shouldShowSiteRemovedNotification
-            ? (
-            <Page.GridItemNotification>
-              <SiteRemovalNotification actions={actions} showRestoreAll={!newTabData.customLinksEnabled} />
-            </Page.GridItemNotification>
-            ) : null
-          }
+            }
+            {
+              gridSitesData.shouldShowSiteRemovedNotification
+                ? (
+                  <Page.GridItemNotification>
+                    <SiteRemovalNotification actions={actions} showRestoreAll={!newTabData.customLinksEnabled} />
+                  </Page.GridItemNotification>
+                ) : null
+            }
             {cryptoContent}
-          <Page.Footer>
-            <Page.FooterContent>
-            {isShowingBrandedWallpaper && newTabData.brandedWallpaper &&
-            newTabData.brandedWallpaper.logo &&
-            <Page.GridItemBrandedLogo>
-              <BrandedWallpaperLogo
-                menuPosition={'right'}
-                paddingType={'default'}
-                textDirection={newTabData.textDirection}
-                onClickLogo={this.onClickLogo}
-                data={newTabData.brandedWallpaper.logo}
-              />
-              {this.renderBrandedWallpaperNotification()}
-            </Page.GridItemBrandedLogo>}
-            <FooterInfo
-              textDirection={newTabData.textDirection}
-              supportsBraveTalk={newTabData.braveTalkSupported}
-              showBraveTalkPrompt={newTabData.braveTalkPromptAllowed && !newTabData.braveTalkPromptDismissed}
-              backgroundImageInfo={newTabData.backgroundWallpaper}
-              showPhotoInfo={!isShowingBrandedWallpaper && hasWallpaperInfo && newTabData.showBackgroundImage}
-              onClickSettings={this.openSettings}
-              onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}
-            />
-            </Page.FooterContent>
-          </Page.Footer>
-          {newTabData.showToday &&
-          <Page.GridItemNavigationBraveToday>
-            <BraveTodayHint />
-          </Page.GridItemNavigationBraveToday>
-          }
-        </Page.Page>
+            <Page.Footer>
+              <Page.FooterContent>
+                {isShowingBrandedWallpaper && newTabData.brandedWallpaper &&
+                  newTabData.brandedWallpaper.logo &&
+                  <Page.GridItemBrandedLogo>
+                    <BrandedWallpaperLogo
+                      menuPosition={'right'}
+                      paddingType={'default'}
+                      textDirection={newTabData.textDirection}
+                      onClickLogo={this.onClickLogo}
+                      data={newTabData.brandedWallpaper.logo}
+                    />
+                    {this.renderBrandedWallpaperNotification()}
+                  </Page.GridItemBrandedLogo>}
+                <FooterInfo
+                  textDirection={newTabData.textDirection}
+                  supportsBraveTalk={newTabData.braveTalkSupported}
+                  showBraveTalkPrompt={newTabData.braveTalkPromptAllowed && !newTabData.braveTalkPromptDismissed}
+                  backgroundImageInfo={newTabData.backgroundWallpaper}
+                  showPhotoInfo={!isShowingBrandedWallpaper && hasWallpaperInfo && newTabData.showBackgroundImage}
+                  onClickSettings={this.openSettings}
+                  onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}
+                />
+              </Page.FooterContent>
+            </Page.Footer>
+            {newTabData.showToday &&
+              <Page.GridItemNavigationBraveToday>
+                <BraveTodayHint />
+              </Page.GridItemNavigationBraveToday>
+            }
+          </Page.Page>
         { newTabData.showToday && newTabData.featureFlagBraveNewsEnabled &&
         <BraveToday
           feed={this.props.todayData.feed}
@@ -1347,6 +1345,7 @@ class NewTabPage extends React.Component<Props, State> {
           newTabData={this.props.newTabData}
           onEnableRewards={this.startRewards}
         />
+        <BraveNewsModal />
         {
           showEditTopSite
             ? <EditTopSite
@@ -1356,6 +1355,7 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
+        </BraveNewsContextProvider>
       </Page.App>
     )
   }

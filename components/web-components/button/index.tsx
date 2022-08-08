@@ -6,7 +6,7 @@ import style from './button.module.scss'
 
 type Scale = 'tiny' | 'small' | 'regular' | 'large' | 'jumbo'
 
-interface Props {
+export interface ButtonProps {
   scale?: Scale
   isPrimary?: boolean
   isTertiary?: boolean
@@ -16,6 +16,7 @@ interface Props {
   ariaLabel?: string
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type']
   children?: React.ReactNode | React.ReactNode[]
+  className?: string
   onClick: () => unknown
 }
 
@@ -39,8 +40,8 @@ export function ButtonIconContainer (props: React.PropsWithChildren<{}>) {
   )
 }
 
-export default function Button (props: Props) {
-  const { scale = 'regular' } = props
+export default function Button (props: ButtonProps) {
+  const { scale = 'regular', className } = props
   return (
     <button
       className={classnames(
@@ -51,7 +52,8 @@ export default function Button (props: Props) {
           [style.isTertiary]: props.isTertiary && !props.isPrimary,
           [style.isLoading]: props.isLoading,
           [style.isCallToAction]: props.isCallToAction
-        }
+        },
+        className
       )}
       disabled={props.isDisabled}
       aria-label={props.ariaLabel}

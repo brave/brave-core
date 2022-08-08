@@ -83,9 +83,7 @@ function ListItem (props: ListItemProps) {
   }, [props.index, setSize, props.width])
 
   const publisher = props.data[props.index]
-  const isChecked = publisher
-    ? isPublisherContentAllowed(publisher, props.channels)
-    : false
+  const isChecked = publisher && isPublisherContentAllowed(publisher, props.channels)
 
   const onChange = React.useCallback(() => {
     if (!publisher) {
