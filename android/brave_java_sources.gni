@@ -153,6 +153,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/PendingTxHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/PortfolioHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SmoothLineChartEquallySpaced.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SolanaTransactionsGasHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/TokenUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/TransactionUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Utils.java",
