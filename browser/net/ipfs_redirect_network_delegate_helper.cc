@@ -40,7 +40,10 @@ int OnBeforeURLRequest_IPFSRedirectWork(
   if (has_ipfs_scheme && !brave::IsRegularProfile(ctx->browser_context)) {
     // Don't allow IPFS requests without translation of IPFS urls.
     ctx->blocked_by = brave::kOtherBlocked;
-    return net::ERR_INCOGNITO_IPFS_NOT_ALLOWED;
+    // Only net::OK navigation will be actually blocked without commit.
+    return ctx->resource_type == blink::mojom::ResourceType::kMainFrame
+               ? net::ERR_INCOGNITO_IPFS_NOT_ALLOWED
+               : net::OK;
   }
 
   GURL new_url;

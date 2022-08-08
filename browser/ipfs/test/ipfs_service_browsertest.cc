@@ -431,6 +431,15 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_content(
           "<iframe "
           "src='ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2'>"
+          "</iframe>"
+          "<iframe "
+          "src='ipfs://10.10.1.1'>"
+          "</iframe>"
+          "<iframe "
+          "src='ipns://10.10.1.1'>"
+          "</iframe>"
+          "<iframe "
+          "src='ipfs://'>"
           "</iframe>");
       http_response->set_code(net::HTTP_OK);
     } else if (request_path ==
@@ -840,8 +849,49 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResourcesFromIPFS) {
   EXPECT_EQ(base::Value(true), got_fetch.value);
 }
 
+// Make sure an <iframe src="ipfs://..."> cannot load within http:// scheme in
+// incognito
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       CannotLoadIframeFromHTTP_Incognito) {
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
+  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser,
+                                           GetURL("b.com", "/iframe.html")));
+  content::WebContents* contents =
+      private_browser->tab_strip_model()->GetActiveWebContents();
+
+  int child_index = 0;
+  while (auto* child_frame =
+             ChildFrameAt(contents->GetMainFrame(), child_index++)) {
+    auto location =
+        EvalJs(child_frame,
+               "const timer = setInterval(function () {"
+               "  if (document.readyState == 'complete') {"
+               "    clearInterval(timer);"
+               "    window.domAutomationController.send(window.location.href);"
+               "  }"
+               "}, 100);",
+               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+
+    ASSERT_TRUE(location.error.empty());
+    EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
+  }
+}
+
 // Make sure an <iframe src="ipfs://..."> cannot load within http:// scheme
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
@@ -851,19 +901,57 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto* child_frame = ChildFrameAt(contents->GetMainFrame(), 0);
-  auto location =
-      EvalJs(child_frame,
-             "const timer = setInterval(function () {"
-             "  if (document.readyState == 'complete') {"
-             "    clearInterval(timer);"
-             "    window.domAutomationController.send(window.location.href);"
-             "  }"
-             "}, 100);",
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  int child_index = 0;
+  while (auto* child_frame =
+             ChildFrameAt(contents->GetMainFrame(), child_index++)) {
+    auto location =
+        EvalJs(child_frame,
+               "const timer = setInterval(function () {"
+               "  if (document.readyState == 'complete') {"
+               "    clearInterval(timer);"
+               "    window.domAutomationController.send(window.location.href);"
+               "  }"
+               "}, 100);",
+               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
 
-  ASSERT_TRUE(location.error.empty());
-  EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
+    ASSERT_TRUE(location.error.empty());
+    EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
+  }
+}
+
+// Make sure an <iframe src="ipfs://..."> cannot load within http:// scheme when
+// ipfs is disabled
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       CannotLoadIframeFromHTTP_IPFSDisabled) {
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
+
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/iframe.html")));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  int child_index = 0;
+  while (auto* child_frame =
+             ChildFrameAt(contents->GetMainFrame(), child_index++)) {
+    auto location =
+        EvalJs(child_frame,
+               "const timer = setInterval(function () {"
+               "  if (document.readyState == 'complete') {"
+               "    clearInterval(timer);"
+               "    window.domAutomationController.send(window.location.href);"
+               "  }"
+               "}, 100);",
+               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+
+    ASSERT_TRUE(location.error.empty());
+    EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
+  }
 }
 
 // Make sure an <iframe src="ipfs://..."> can load within another ipfs:// scheme

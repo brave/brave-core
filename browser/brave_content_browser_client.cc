@@ -139,6 +139,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #endif
@@ -965,6 +966,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
+  throttles.insert(
+      throttles.begin(),
+      ipfs::IpfsSubframeNavigationThrottle::CreateThrottleFor(handle));
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
       ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
           handle, ipfs::IpfsServiceFactory::GetForContext(context),

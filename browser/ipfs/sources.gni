@@ -25,6 +25,8 @@ if (enable_ipfs) {
     "//brave/browser/ipfs/ipfs_host_resolver.h",
     "//brave/browser/ipfs/ipfs_service_factory.cc",
     "//brave/browser/ipfs/ipfs_service_factory.h",
+    "//brave/browser/ipfs/ipfs_subframe_navigation_throttle.cc",
+    "//brave/browser/ipfs/ipfs_subframe_navigation_throttle.h",
     "//brave/browser/ipfs/ipfs_tab_helper.cc",
     "//brave/browser/ipfs/ipfs_tab_helper.h",
   ]
