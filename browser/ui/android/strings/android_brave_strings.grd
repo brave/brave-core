@@ -3045,7 +3045,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Not a valid SOL address
     </message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
-      The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.<ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
+      The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
     </message>
   </messages>
   </release>
