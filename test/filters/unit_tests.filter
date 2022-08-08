@@ -28,6 +28,7 @@
 -All/TabSharingInfoBarDelegateTest.*
 -All/TabStripTest.*
 -All/WebstorePrivateBeginInstallWithManifest3FrictionDialogTest.*
+-ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
 -AppInfoDialogViewsTest.*
 -AppLauncherHandlerTest.*
 -AssistantSidePanelCoordinatorImplTest.*
@@ -88,6 +89,8 @@
 -ChromePingManagerTest.*
 -ChromeRuntimeAPIDelegateReloadTest.*
 -ChromeRuntimeAPIDelegateTest.*
+-ChromeTailoredSecurityServiceTest.*
+-ChromeUsbDelegateTest.*
 -ChromeWebContentsMenuHelperUnitTest.*
 -ChromeWebContentsViewDelegateViewsTest.*
 -Chromium/ChannelInfoTest.*
@@ -200,6 +203,7 @@
 -InstallVerifierTest.*
 -InstantNTPURLRewriteTest.*
 -InstantServiceTest.*
+-IntentPickerBubbleViewGridLayoutTest.*
 -IntentPickerBubbleViewTest.*
 -InvalidSearchProviderTest.*
 -KeywordEditorControllerNoWebDataTest.*
@@ -247,7 +251,9 @@
 -PermissionMessageCombinationsUnittest.*
 -PermissionMessagesUnittest.*
 -PermissionsAPIUnitTest.*
+-PermissionsManagerUnitTest.FaviconPermissionsAreNotWithheld
 -PermissionsTest.*
+-PermissionsUpdaterTest.*
 -PinnedTabCodecTest.*
 -PinnedTabServiceTest.*
 -PinnedTabsResetTest.*
@@ -280,7 +286,9 @@
 -ProfileManagerTest.*
 -ProfileResetterTest.*
 -ProfileSigninConfirmationHelperTest.*
+-ReadAnythingControllerTest.*
 -ReadAnythingCoordinatorTest.*
+-ReadAnythingModelTest.*
 -RelaunchNotificationControllerPlatformImplTest.*
 -RenameHandlerOpenDownloadTest.*
 -RenderViewContextMenuExtensionsTest.*
@@ -313,12 +321,14 @@
 -SettingsResetPromptModelTest.*
 -SharedModuleServiceUnitTest.*
 -SharingDialogViewTest.*
+-SidePanelCoordinatorLoadingContentTest.*
 -SidePanelCoordinatorTest.*
 -SidePanelToolbarButtonTest.*
 -SigninErrorHandlerTest.*
 -SigninManagerTest.*
 -SigninUiUtilTest.*
 -SitePermissionsHelperUnitTest.*
+-SitePermissionsHelperWithUserHostControlsUnitTest.DowngradingFromAllSitesToOnClickAppliesUserPermittedSites
 -SiteSettingsCounterTest.*
 -SiteSettingsHandlerInfobarTest.*
 -SiteSettingsHandlerTest.*
@@ -341,6 +351,7 @@
 -TabLoaderTest.*
 -TabLoadTrackerTest.*
 -TabManagerTest.*
+-TabMatcherDesktopTest.*
 -TabMenuModelTest.*
 -TabMetricsLoggerTest.*
 -TabMetricsTest.*
@@ -366,6 +377,7 @@
 -UkmPageLoadMetricsObserverTest.*
 -UpdateInstallGateTest.*
 -UpdateServiceCanUpdateFeatureEnabledNonDefaultUpdateUrl.*
+-UserNoteServiceDelegateImplTest.*
 -UserNoteUICoordinatorTest.*
 -UserScriptListenerTest.*
 -VideoOverlayWindowViewsTest.*
