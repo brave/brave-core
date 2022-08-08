@@ -559,7 +559,7 @@ Config.prototype.shouldSign = function () {
 
   if (process.platform === 'win32') {
     return process.env.CERT !== undefined ||
-      process.env.CERT_HASH !== undefined ||
+      process.env.AUTHENTICODE_HASH !== undefined ||
       process.env.SIGNTOOL_ARGS !== undefined
   }
 

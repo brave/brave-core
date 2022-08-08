@@ -11,16 +11,16 @@ import subprocess
 import sys
 
 cert = os.environ.get('CERT')
-cert_hash = os.environ.get('CERT_HASH')
+cert_hash = os.environ.get('AUTHENTICODE_HASH')
 signtool_args = (os.environ.get('SIGNTOOL_ARGS') or
                  'sign /t http://timestamp.digicert.com /sm '
                  '/fd sha256')
 
 
 assert cert or cert_hash or signtool_args, \
-    'At least one of CERT_HASH, CERT and SIGNTOOL_ARGS must be set.\n'\
-    'The preferred parameter is CERT_HASH. Its value can be obtained via the '\
-    'command `Get-ChildItem -path cert:\\LocalMachine\\My`.\n' \
+    'At least one of AUTHENTICODE_HASH, CERT and SIGNTOOL_ARGS must be set.\n'\
+    'The preferred parameter is AUTHENTICODE_HASH. Its value can be obtained '\
+    'via the command `Get-ChildItem -path cert:\\LocalMachine\\My`.\n' \
     'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
