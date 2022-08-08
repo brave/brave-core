@@ -188,7 +188,8 @@ void JSEthereumProvider::CreateEthereumObject(
                             v8::True(isolate))
         .Check();
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "_metamask"), metamask_obj)
+        ->DefineOwnProperty(context, gin::StringToSymbol(isolate, "_metamask"),
+                            metamask_obj, v8::ReadOnly)
         .Check();
     BindFunctionsToObject(isolate, context, ethereum_obj, metamask_obj);
     UpdateAndBindJSProperties(isolate, context, ethereum_obj);
@@ -243,8 +244,8 @@ void JSEthereumProvider::UpdateAndBindJSProperties(
   }
 
   ethereum_obj
-      ->Set(context, gin::StringToSymbol(isolate, "chainId"),
-            gin::StringToV8(isolate, chain_id_))
+      ->DefineOwnProperty(context, gin::StringToSymbol(isolate, "chainId"),
+                          gin::StringToV8(isolate, chain_id_), v8::ReadOnly)
       .Check();
 
   // We have no easy way to convert a uin256 to a decimal number string yet
@@ -255,13 +256,16 @@ void JSEthereumProvider::UpdateAndBindJSProperties(
       chain_id_uint256 <= (uint256_t)std::numeric_limits<uint64_t>::max()) {
     uint64_t networkVersion = (uint64_t)chain_id_uint256;
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "networkVersion"),
-              gin::StringToV8(isolate, std::to_string(networkVersion)))
+        ->DefineOwnProperty(
+            context, gin::StringToSymbol(isolate, "networkVersion"),
+            gin::StringToV8(isolate, std::to_string(networkVersion)),
+            v8::ReadOnly)
         .Check();
   } else {
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "networkVersion"),
-              undefined)
+        ->DefineOwnProperty(context,
+                            gin::StringToSymbol(isolate, "networkVersion"),
+                            undefined, v8::ReadOnly)
         .Check();
   }
 
@@ -269,13 +273,15 @@ void JSEthereumProvider::UpdateAndBindJSProperties(
   // first connected account that was given permissions.
   if (first_allowed_account_.empty()) {
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "selectedAddress"),
-              undefined)
+        ->DefineOwnProperty(context,
+                            gin::StringToSymbol(isolate, "selectedAddress"),
+                            undefined, v8::ReadOnly)
         .Check();
   } else {
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "selectedAddress"),
-              gin::StringToV8(isolate, first_allowed_account_))
+        ->DefineOwnProperty(
+            context, gin::StringToSymbol(isolate, "selectedAddress"),
+            gin::StringToV8(isolate, first_allowed_account_), v8::ReadOnly)
         .Check();
   }
 }

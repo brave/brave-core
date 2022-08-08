@@ -25,6 +25,15 @@
 #include "url/gurl.h"
 
 namespace {
+std::string NonWriteableScriptProperty(const std::string& property) {
+  return base::StringPrintf(
+      R"(window.ethereum.%s = "brave"
+         if (window.ethereum.%s === "brave")
+           window.domAutomationController.send(false)
+         else
+           window.domAutomationController.send(true))",
+      property.c_str(), property.c_str());
+}
 std::string NonWriteableScriptMethod(const std::string& provider,
                                      const std::string& method) {
   return base::StringPrintf(
@@ -165,6 +174,14 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
+  // window.ethereum.* (properties)
+  for (const std::string& property : {"isBraveWallet", "_metamask", "chainId",
+                                      "networkVersion", "selectedAddress"}) {
+    SCOPED_TRACE(property);
+    auto result = EvalJs(web_contents(), NonWriteableScriptProperty(property),
+                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(true), result.value) << result.error;
+  }
   // window.ethereum.* (methods)
   for (const std::string& method :
        {"on", "emit", "removeListener", "removeAllListeners", "request",
