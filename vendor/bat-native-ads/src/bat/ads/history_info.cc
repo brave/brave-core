@@ -35,8 +35,9 @@ base::Value::Dict HistoryInfo::ToValue() const {
 void HistoryInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindList("history")) {
     for (const auto& item : *value) {
-      if (!item.is_dict())
+      if (!item.is_dict()) {
         continue;
+      }
 
       HistoryItemInfo history_item;
       history_item.FromValue(item.GetDict());
