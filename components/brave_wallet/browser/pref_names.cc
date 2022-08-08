@@ -50,15 +50,6 @@ extern const char kBraveWalletWasOnboardingShown[] =
 
 // DEPRECATED
 const char kBraveWalletSelectedAccount[] = "brave.wallet.selected_account";
-const char kBraveWalletPasswordEncryptorSalt[] =
-    "brave.wallet.password_encryptor.salt";
-const char kBraveWalletPasswordEncryptorNonce[] =
-    "brave.wallet.password_encryptor.nonce";
-const char kBraveWalletEncryptedMnemonic[] = "brave.wallet.encrypted_mnemonic";
-const char kBraveWalletDefaultKeyringAccountNum[] =
-    "brave.wallet.default_keyring_account_num";
-const char kBraveWalletAccountNames[] = "brave.wallet.wallet_account_names";
-const char kBraveWalletBackupComplete[] = "brave.wallet.wallet_backup_complete";
 const char kBraveWalletWeb3ProviderDeprecated[] = "brave.wallet.web3_provider";
 const char kDefaultWalletDeprecated[] = "brave.wallet.default_wallet";
 const char kBraveWalletCustomNetworksDeprecated[] =

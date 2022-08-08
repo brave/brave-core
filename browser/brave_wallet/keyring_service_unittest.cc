@@ -47,13 +47,11 @@ namespace {
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
-const char kBackupComplete[] = "backup_complete";
 const char kAccountMetas[] = "account_metas";
 const char kHardwareAccounts[] = "hardware";
 const char kImportedAccounts[] = "imported_accounts";
 const char kAccountAddress[] = "account_address";
 const char kEncryptedPrivateKey[] = "encrypted_private_key";
-const char kSelectedAccount[] = "selected_account";
 
 const char kMnemonic1[] =
     "divide cruise upon flag harsh carbon filter merit once advice bright "
@@ -1481,11 +1479,6 @@ TEST_F(KeyringServiceUnitTest, GetAccountPathByIndex) {
 }
 
 TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
-  GetPrefs()->SetString(kBraveWalletPasswordEncryptorSalt, "test_salt");
-  GetPrefs()->SetString(kBraveWalletPasswordEncryptorNonce, "test_nonce");
-  GetPrefs()->SetString(kBraveWalletEncryptedMnemonic, "test_mnemonic");
-  GetPrefs()->SetString(kBraveWalletSelectedAccount, "0x111");
-  GetPrefs()->SetInteger(kBraveWalletDefaultKeyringAccountNum, 3);
   GetPrefs()->Set(kBraveWalletKeyrings, GetHardwareKeyringValueForTesting());
   EXPECT_EQ(
       *GetPrefs()
@@ -1493,52 +1486,7 @@ TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
            ->FindStringPath("hardware.A1.account_metas.0x111.account_name"),
       "test1");
 
-  base::Value account_names(base::Value::Type::LIST);
-  account_names.Append(base::Value("Account1"));
-  account_names.Append(base::Value("Account2"));
-  account_names.Append(base::Value("Account3"));
-  GetPrefs()->Set(kBraveWalletAccountNames, account_names);
-
-  GetPrefs()->SetBoolean(kBraveWalletBackupComplete, true);
-
   KeyringService::MigrateObsoleteProfilePrefs(GetPrefs());
-
-  EXPECT_EQ(
-      GetStringPrefForKeyring(kPasswordEncryptorSalt, mojom::kDefaultKeyringId),
-      "test_salt");
-  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce,
-                                    mojom::kDefaultKeyringId),
-            "test_nonce");
-  EXPECT_EQ(
-      GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId),
-      "test_mnemonic");
-
-  const base::Value* backup_complete = KeyringService::GetPrefForKeyring(
-      GetPrefs(), kBackupComplete, mojom::kDefaultKeyringId);
-  ASSERT_TRUE(backup_complete);
-  EXPECT_TRUE(backup_complete->GetBool());
-
-  const base::Value* selected_account = KeyringService::GetPrefForKeyring(
-      GetPrefs(), kSelectedAccount, mojom::kDefaultKeyringId);
-  ASSERT_TRUE(selected_account);
-  EXPECT_EQ(selected_account->GetString(), "0x111");
-  ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletSelectedAccount));
-
-  const base::Value* account_metas = KeyringService::GetPrefForKeyring(
-      GetPrefs(), kAccountMetas, mojom::kDefaultKeyringId);
-  EXPECT_EQ(account_metas->DictSize(), 3u);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(
-                GetPrefs(), KeyringService::GetAccountPathByIndex(0),
-                mojom::kDefaultKeyringId),
-            "Account1");
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(
-                GetPrefs(), KeyringService::GetAccountPathByIndex(1),
-                mojom::kDefaultKeyringId),
-            "Account2");
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(
-                GetPrefs(), KeyringService::GetAccountPathByIndex(2),
-                mojom::kDefaultKeyringId),
-            "Account3");
 
   const base::Value* hardware_accounts = KeyringService::GetPrefForKeyring(
       GetPrefs(), kHardwareAccounts, mojom::kDefaultKeyringId);
@@ -1566,25 +1514,6 @@ TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
       GetPrefs()
           ->Get(kBraveWalletKeyrings)
           ->FindStringPath("hardware.A1.account_metas.0x111.account_name"));
-}
-
-TEST_F(KeyringServiceUnitTest, MigrationPrefsFailSafe) {
-  GetPrefs()->SetInteger(kBraveWalletDefaultKeyringAccountNum, 2);
-
-  base::Value account_names(base::Value::Type::LIST);
-  account_names.Append(base::Value("Account1"));
-  account_names.Append(base::Value("Account2"));
-  account_names.Append(base::Value("Account3"));
-  GetPrefs()->Set(kBraveWalletAccountNames, account_names);
-
-  KeyringService::MigrateObsoleteProfilePrefs(GetPrefs());
-  const base::Value* account_metas = KeyringService::GetPrefForKeyring(
-      GetPrefs(), kAccountMetas, mojom::kDefaultKeyringId);
-  EXPECT_EQ(account_metas->DictSize(), 1u);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(
-                GetPrefs(), KeyringService::GetAccountPathByIndex(0),
-                mojom::kDefaultKeyringId),
-            "Account 1");
 }
 
 TEST_F(KeyringServiceUnitTest, ImportedAccounts) {

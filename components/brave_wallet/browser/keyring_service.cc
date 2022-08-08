@@ -264,58 +264,6 @@ absl::optional<std::string> KeyringService::GetKeyringIdForCoinNonFIL(
 
 // static
 void KeyringService::MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  if (prefs->HasPrefPath(kBraveWalletPasswordEncryptorSalt) &&
-      prefs->HasPrefPath(kBraveWalletPasswordEncryptorNonce) &&
-      prefs->HasPrefPath(kBraveWalletEncryptedMnemonic)) {
-    SetPrefForKeyring(
-        prefs, kPasswordEncryptorSalt,
-        base::Value(prefs->GetString(kBraveWalletPasswordEncryptorSalt)),
-        mojom::kDefaultKeyringId);
-    SetPrefForKeyring(
-        prefs, kPasswordEncryptorNonce,
-        base::Value(prefs->GetString(kBraveWalletPasswordEncryptorNonce)),
-        mojom::kDefaultKeyringId);
-    SetPrefForKeyring(
-        prefs, kEncryptedMnemonic,
-        base::Value(prefs->GetString(kBraveWalletEncryptedMnemonic)),
-        mojom::kDefaultKeyringId);
-    prefs->ClearPref(kBraveWalletPasswordEncryptorSalt);
-    prefs->ClearPref(kBraveWalletPasswordEncryptorNonce);
-    prefs->ClearPref(kBraveWalletEncryptedMnemonic);
-  }
-
-  if (prefs->HasPrefPath(kBraveWalletDefaultKeyringAccountNum) &&
-      prefs->HasPrefPath(kBraveWalletAccountNames)) {
-    size_t account_num =
-        (size_t)prefs->GetInteger(kBraveWalletDefaultKeyringAccountNum);
-    const base::Value* account_names_list =
-        prefs->GetList(kBraveWalletAccountNames);
-    if (account_names_list &&
-        account_names_list->GetList().size() == account_num) {
-      const base::Value::List& account_names = account_names_list->GetList();
-      for (size_t i = 0; i < account_names.size(); ++i) {
-        SetAccountMetaForKeyring(prefs, GetAccountPathByIndex(i),
-                                 account_names[i].GetString(), "",
-                                 mojom::kDefaultKeyringId);
-      }
-    } else {
-      // This shouldn't happen but we will reset account to default state as
-      // fail-safe
-      SetAccountMetaForKeyring(prefs, GetAccountPathByIndex(0),
-                               GetAccountName(1), "", mojom::kDefaultKeyringId);
-    }
-    prefs->ClearPref(kBraveWalletDefaultKeyringAccountNum);
-    prefs->ClearPref(kBraveWalletAccountNames);
-  }
-
-  if (prefs->HasPrefPath(kBraveWalletBackupComplete)) {
-    SetPrefForKeyring(
-        prefs, kBackupComplete,
-        base::Value(prefs->GetBoolean(kBraveWalletBackupComplete)),
-        mojom::kDefaultKeyringId);
-    prefs->ClearPref(kBraveWalletBackupComplete);
-  }
-
   if (prefs->HasPrefPath(kBraveWalletSelectedAccount)) {
     SetPrefForKeyring(
         prefs, kSelectedAccount,
