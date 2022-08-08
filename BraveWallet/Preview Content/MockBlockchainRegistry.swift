@@ -50,4 +50,8 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   func searchNetworks(_ chainIdFilter: String?, chainNameFilter: String?, completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
     completion([])
   }
+  
+  func prepopulatedNetworks(_ completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
+    completion([])
+  }
 }

@@ -346,7 +346,14 @@ class MockKeyringService: BraveWalletKeyringService {
 
   func notifyUserInteraction() {
   }
-
+  
+  func addFilecoinAccount(_ accountName: String, fileCoinNetwork: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func filecoinSelectedAccount(_ network: String, completion: @escaping (String?) -> Void) {
+    completion("")
+  }
 }
 
 extension BraveWallet.AccountInfo {
@@ -355,7 +362,8 @@ extension BraveWallet.AccountInfo {
     name: "mock_eth_name",
     isImported: false,
     hardware: nil,
-    coin: .eth
+    coin: .eth,
+    keyringId: nil
   )
   
   static let mockSolAccount: BraveWallet.AccountInfo = .init(
@@ -363,7 +371,8 @@ extension BraveWallet.AccountInfo {
     name: "mock_sol_name",
     isImported: false,
     hardware: nil,
-    coin: .sol
+    coin: .sol,
+    keyringId: nil
   )
   
   static let mockFilAccount: BraveWallet.AccountInfo = .init(
@@ -371,7 +380,8 @@ extension BraveWallet.AccountInfo {
     name: "mock_fil_name",
     isImported: false,
     hardware: nil,
-    coin: .fil
+    coin: .fil,
+    keyringId: nil
   )
 }
 

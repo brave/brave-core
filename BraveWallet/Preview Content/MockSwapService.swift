@@ -25,6 +25,14 @@ class MockSwapService: BraveWalletSwapService {
       .init(price: "", guaranteedPrice: "", to: "", data: "", value: "", gas: "", estimatedGas: "", gasPrice: "", protocolFee: "", minimumProtocolFee: "", buyTokenAddress: "", sellTokenAddress: "", buyAmount: "", sellAmount: "", allowanceTarget: "", sellTokenToEthRate: "", buyTokenToEthRate: ""),
       nil)
   }
+  
+  func jupiterQuote(_ params: BraveWallet.JupiterQuoteParams, completion: @escaping (Bool, BraveWallet.JupiterQuote?, String?) -> Void) {
+    completion(false, nil, nil)
+  }
+  
+  func jupiterSwapTransactions(_ params: BraveWallet.JupiterSwapParams, completion: @escaping (Bool, BraveWallet.JupiterSwapTransactions?, String?) -> Void) {
+    completion(false, nil, nil)
+  }
 }
 
 #endif

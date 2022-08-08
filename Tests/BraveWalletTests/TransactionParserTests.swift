@@ -18,7 +18,8 @@ private extension BraveWallet.AccountInfo {
       name: name,
       isImported: false,
       hardware: nil,
-      coin: .eth
+      coin: .eth,
+      keyringId: BraveWallet.DefaultKeyringId
     )
   }
 }

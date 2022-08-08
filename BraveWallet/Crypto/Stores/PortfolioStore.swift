@@ -296,4 +296,10 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
 
   public func onNetworkListChanged() {
   }
+  
+  public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
 }

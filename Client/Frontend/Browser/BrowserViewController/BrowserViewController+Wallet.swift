@@ -273,6 +273,13 @@ extension Tab: BraveWalletProviderDelegate {
   func isTabVisible() -> Bool {
     tabDelegate?.isTabVisible(self) ?? false
   }
+  
+  func isPermissionDenied(_ type: BraveWallet.CoinType) -> Bool {
+    return type != .eth
+  }
+  
+  func showAccountCreation(_ type: BraveWallet.CoinType) {
+  }
 }
 
 extension Tab: BraveWalletEventsListener {
