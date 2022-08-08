@@ -30,13 +30,12 @@ namespace {
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
 absl::optional<IssuersInfo> ParseJson(const std::string& json) {
-  const absl::optional<IssuersInfo>& issuers_optional =
-      JSONReader::ReadIssuers(json);
-  if (!issuers_optional) {
+  const absl::optional<IssuersInfo> issuers = JSONReader::ReadIssuers(json);
+  if (!issuers) {
     return absl::nullopt;
   }
 
-  return issuers_optional;
+  return issuers;
 }
 
 }  // namespace
@@ -86,17 +85,14 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
     return;
   }
 
-  const absl::optional<IssuersInfo>& issuers_optional =
-      ParseJson(url_response.body);
-  if (!issuers_optional) {
+  const absl::optional<IssuersInfo> issuers = ParseJson(url_response.body);
+  if (!issuers) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     FailedToFetchIssuers(/* should_retry */ true);
     return;
   }
 
-  const IssuersInfo& issuers = issuers_optional.value();
-
-  SuccessfullyFetchedIssuers(issuers);
+  SuccessfullyFetchedIssuers(*issuers);
 }
 
 void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {

@@ -25,7 +25,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersChanged) {
   BuildAndSetIssuers();
 
   // Act
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(3600000,
                    {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
                     {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
@@ -43,7 +43,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersNotChanged) {
   BuildAndSetIssuers();
 
   // Act
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -69,7 +69,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
 
 TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   // Arrange
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000, {},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
@@ -96,7 +96,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
 
 TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
   // Arrange
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
@@ -163,7 +163,7 @@ TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
 
 TEST_F(BatAdsIssuersUtilTest, GetIssuersForType) {
   // Arrange
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -171,11 +171,9 @@ TEST_F(BatAdsIssuersUtilTest, GetIssuersForType) {
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
   // Act
-  const absl::optional<IssuerInfo>& issuer_optional =
+  const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(issuers, IssuerType::kPayments);
-  ASSERT_NE(absl::nullopt, issuer_optional);
-
-  const IssuerInfo& issuer = issuer_optional.value();
+  ASSERT_TRUE(issuer);
 
   // Assert
   IssuerInfo expected_issuer;
@@ -184,28 +182,28 @@ TEST_F(BatAdsIssuersUtilTest, GetIssuersForType) {
       {"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}};
 
-  EXPECT_EQ(expected_issuer, issuer);
+  EXPECT_EQ(expected_issuer, *issuer);
 }
 
 TEST_F(BatAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   // Arrange
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {});
 
   // Act
-  const absl::optional<IssuerInfo>& issuer =
+  const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(issuers, IssuerType::kPayments);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, issuer);
+  EXPECT_FALSE(issuer);
 }
 
 TEST_F(BatAdsIssuersUtilTest, IsIssuerValid) {
   // Arrange
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -213,14 +211,12 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuerValid) {
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
                     {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1}});
 
-  const absl::optional<IssuerInfo>& issuer_optional =
+  const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(issuers, IssuerType::kPayments);
-  ASSERT_NE(absl::nullopt, issuer_optional);
-
-  const IssuerInfo& issuer = issuer_optional.value();
+  ASSERT_TRUE(issuer);
 
   // Act
-  const bool is_valid = IsIssuerValid(issuer);
+  const bool is_valid = IsIssuerValid(*issuer);
 
   // Assert
   EXPECT_TRUE(is_valid);
@@ -228,7 +224,7 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuerValid) {
 
 TEST_F(BatAdsIssuersUtilTest, IsIssuerInvalid) {
   // Arrange
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -238,14 +234,12 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuerInvalid) {
                     {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
                     {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1}});
 
-  const absl::optional<IssuerInfo>& issuer_optional =
+  const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(issuers, IssuerType::kPayments);
-  ASSERT_NE(absl::nullopt, issuer_optional);
-
-  const IssuerInfo& issuer = issuer_optional.value();
+  ASSERT_TRUE(issuer);
 
   // Act
-  const bool is_valid = IsIssuerValid(issuer);
+  const bool is_valid = IsIssuerValid(*issuer);
 
   // Assert
   EXPECT_FALSE(is_valid);

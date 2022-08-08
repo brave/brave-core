@@ -22,18 +22,17 @@ absl::optional<int> ParsePing(const base::Value& value) {
 }
 
 absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value) {
-  const base::Value::List* issuers_value = value.FindList(kIssuersKey);
-  if (!issuers_value) {
+  const base::Value::List* list = value.FindList(kIssuersKey);
+  if (!list) {
     return absl::nullopt;
   }
 
-  const absl::optional<IssuerList>& issuers_optional =
-      ValueToIssuerList(*issuers_value);
-  if (!issuers_optional) {
+  const absl::optional<IssuerList> issuers = ValueToIssuers(*list);
+  if (!issuers) {
     return absl::nullopt;
   }
 
-  return issuers_optional;
+  return issuers;
 }
 
 }  // namespace JSONReader

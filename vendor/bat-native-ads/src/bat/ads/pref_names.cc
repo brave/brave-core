@@ -45,8 +45,9 @@ const char kCatalogPing[] = "brave.brave_ads.catalog_ping";
 // Stores catalog last updated
 const char kCatalogLastUpdated[] = "brave.brave_ads.catalog_last_updated";
 
-// Stores issuer ping
+// Stores issuers
 const char kIssuerPing[] = "brave.brave_ads.issuer_ping";
+const char kIssuers[] = "brave.brave_ads.issuers";
 
 // Stores epsilon greedy bandit arms
 const char kEpsilonGreedyBanditArms[] =
@@ -73,8 +74,7 @@ const char kHasMigratedConversionState[] =
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 
-// Stores hash
-const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
+const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash.v2";
 const char kClientHash[] = "brave.brave_ads.client.hash.v3";
 
 }  // namespace prefs
