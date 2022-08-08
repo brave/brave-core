@@ -6,6 +6,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
@@ -322,23 +323,29 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
+  const std::u16string title = u"\u0022\"script shouldn't fail\"\u0022";
+  speedreader::test::SetShowOriginalLinkTitle(&title);
+
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
 
-  constexpr const char kClickLink[] =
+  constexpr const char kClickLinkAndGetTitle[] =
       R"js(
     (function() {
       // element id is hardcoded in extractor.rs
       const link =
         document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       link.click();
+      return link.text
     })();
   )js";
 
-  ASSERT_TRUE(content::ExecJs(web_contents, kClickLink,
-                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              speedreader::kIsolatedWorldId));
+  EXPECT_EQ(base::UTF16ToUTF8(title),
+            content::EvalJs(web_contents, kClickLinkAndGetTitle,
+                            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                            speedreader::kIsolatedWorldId)
+                .ExtractString());
   content::WaitForLoadStop(web_contents);
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
@@ -351,6 +358,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   content::WaitForLoadStop(web_contents);
   EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
             tab_helper->PageDistillState());
+
+  speedreader::test::SetShowOriginalLinkTitle(nullptr);
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
