@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
-index 954be95c153ca822d3dc9f41868d82545a20b3ff..37f71e8c3b0be178dc8a928dac36f3ed7ac09c64 100644
+index e75715f37ad0d7092004dad63b821f0b9dc36998..8c3a5fe3239f35d513b47fb7530970ee6927c5c6 100644
 --- a/components/content_settings/core/common/cookie_settings_base.h
 +++ b/components/content_settings/core/common/cookie_settings_base.h
 @@ -66,12 +66,12 @@ namespace content_settings {
