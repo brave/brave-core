@@ -12,8 +12,8 @@
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode, \
     &brave_rewards::features::kBraveRewards,                 \
-    &brave_today::features::kBraveNewsFeature,               \
     &brave_search_conversion::features::kOmniboxBanner,      \
+    &brave_today::features::kBraveNewsFeature,               \
     &brave_wallet::features::kNativeBraveWalletFeature,      \
     &brave_wallet::features::kBraveWalletSolanaFeature
 // clang-format on
