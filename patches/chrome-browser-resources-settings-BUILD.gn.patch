@@ -1,16 +1,17 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index b6d81b8457a70ea46f38af743bffa855622cc261..695b4b863257997b715db0a7fad0fbdb90d3c882 100644
+index fa23f4af6c3904ffe44430d870fedb6e057ab94c..d0dc53be4f529e1da3d18358c4b8c6bf9a41d4ac 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -175,6 +175,7 @@ ts_library("build_ts") {
-     ":preprocess",
-     ":preprocess_generated",
-   ]
+@@ -168,6 +168,8 @@ ts_library("build_ts") {
+     # writing, unfortunately).
+     extra_deps += [ "//ash/webui/common/resources:generate_definitions" ]
+   }
++
 +  in_files += brave_deps_chrome_browser_resources_settings_in_files extra_deps += brave_deps_chrome_browser_resources_settings_extra_deps
  }
  
  generate_grd("build_grd") {
-@@ -263,4 +264,5 @@ generate_grd("build_grd") {
+@@ -256,4 +258,5 @@ generate_grd("build_grd") {
      manifest_files =
          filter_include(get_target_outputs(":build_ts"), [ "*.manifest" ])
    }
