@@ -346,7 +346,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool UpdateNameForHardwareAccountSync(const std::string& address,
                                         const std::string& name,
                                         mojom::CoinType coin);
-  const std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
+  std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
 
   std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id);
   std::vector<uint8_t> GetOrCreateSaltForKeyring(const std::string& id);

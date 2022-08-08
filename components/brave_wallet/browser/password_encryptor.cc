@@ -43,38 +43,25 @@ PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
   return rv == 1 ? std::move(encryptor) : nullptr;
 }
 
-bool PasswordEncryptor::Encrypt(base::span<const uint8_t> plaintext,
-                                base::span<const uint8_t> nonce,
-                                std::vector<uint8_t>* ciphertext) {
-  if (!ciphertext)
-    return false;
+std::vector<uint8_t> PasswordEncryptor::Encrypt(
+    base::span<const uint8_t> plaintext,
+    base::span<const uint8_t> nonce) {
   crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV);
   aead.Init(key_);
-  *ciphertext = aead.Seal(plaintext, nonce, std::vector<uint8_t>());
-  return true;
+  return aead.Seal(plaintext, nonce, std::vector<uint8_t>());
 }
 
-bool PasswordEncryptor::Decrypt(base::span<const uint8_t> ciphertext,
-                                base::span<const uint8_t> nonce,
-                                std::vector<uint8_t>* plaintext) {
-  if (!plaintext)
-    return false;
+absl::optional<std::vector<uint8_t>> PasswordEncryptor::Decrypt(
+    base::span<const uint8_t> ciphertext,
+    base::span<const uint8_t> nonce) {
   crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV);
   aead.Init(key_);
-  absl::optional<std::vector<uint8_t>> decrypted =
-      aead.Open(ciphertext, nonce, std::vector<uint8_t>());
-  if (!decrypted)
-    return false;
-  *plaintext = std::vector<uint8_t>(decrypted->data(),
-                                    decrypted->data() + decrypted->size());
-  return true;
+  return aead.Open(ciphertext, nonce, std::vector<uint8_t>());
 }
 
-bool PasswordEncryptor::DecryptForImporter(base::span<const uint8_t> ciphertext,
-                                           base::span<const uint8_t> nonce,
-                                           std::vector<uint8_t>* plaintext) {
-  if (!plaintext)
-    return false;
+absl::optional<std::vector<uint8_t>> PasswordEncryptor::DecryptForImporter(
+    base::span<const uint8_t> ciphertext,
+    base::span<const uint8_t> nonce) {
   crypto::Aead aead(crypto::Aead::AES_256_GCM);
   aead.Init(key_);
   // MM uses 16 bytes nonce while boringSSL expect it to be 12
@@ -91,13 +78,7 @@ bool PasswordEncryptor::DecryptForImporter(base::span<const uint8_t> ciphertext,
   if (nonce.size() != aead.NonceLength()) {
     aead.OverrideNonceLength(nonce.size());
   }
-  absl::optional<std::vector<uint8_t>> decrypted =
-      aead.Open(ciphertext, nonce, std::vector<uint8_t>());
-  if (!decrypted)
-    return false;
-  *plaintext = std::vector<uint8_t>(decrypted->data(),
-                                    decrypted->data() + decrypted->size());
-  return true;
+  return aead.Open(ciphertext, nonce, std::vector<uint8_t>());
 }
 
 }  // namespace brave_wallet

@@ -568,24 +568,25 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
 
   for (const auto& imported_account_info :
        GetImportedAccountsForKeyring(prefs_, keyring_id)) {
-    std::string private_key_decoded;
-    if (!base::Base64Decode(imported_account_info.encrypted_private_key,
-                            &private_key_decoded))
+    auto private_key_decoded =
+        base::Base64Decode(imported_account_info.encrypted_private_key);
+    if (!private_key_decoded)
       continue;
-    std::vector<uint8_t> private_key;
-    if (!encryptors_[keyring_id]->Decrypt(
-            ToSpan(private_key_decoded), GetOrCreateNonceForKeyring(keyring_id),
-            &private_key)) {
+
+    auto private_key = encryptors_[keyring_id]->Decrypt(
+        base::make_span(*private_key_decoded),
+        GetOrCreateNonceForKeyring(keyring_id));
+    if (!private_key)
       continue;
-    }
+
     if (IsFilecoinKeyringId(keyring_id)) {
       auto* filecoin_keyring = static_cast<FilecoinKeyring*>(keyring);
       if (filecoin_keyring) {
         filecoin_keyring->RestoreFilecoinAccount(
-            private_key, imported_account_info.account_address);
+            *private_key, imported_account_info.account_address);
       }
     } else {
-      keyring->ImportAccount(private_key);
+      keyring->ImportAccount(*private_key);
     }
   }
 
@@ -743,7 +744,7 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
   std::move(callback).Run(keyring);
 }
 
-const std::string KeyringService::GetMnemonicForKeyringImpl(
+std::string KeyringService::GetMnemonicForKeyringImpl(
     const std::string& keyring_id) {
   if (IsLocked(keyring_id)) {
     VLOG(1) << __func__ << ": Must Unlock service first";
@@ -755,14 +756,12 @@ const std::string KeyringService::GetMnemonicForKeyringImpl(
   if (!encrypted_mnemonic)
     return std::string();
 
-  std::vector<uint8_t> mnemonic;
-  if (!encryptors_[keyring_id]->Decrypt(*encrypted_mnemonic,
-                                        GetOrCreateNonceForKeyring(keyring_id),
-                                        &mnemonic)) {
+  auto mnemonic = encryptors_[keyring_id]->Decrypt(
+      *encrypted_mnemonic, GetOrCreateNonceForKeyring(keyring_id));
+  if (!mnemonic)
     return std::string();
-  }
 
-  return std::string(mnemonic.begin(), mnemonic.end());
+  return std::string(mnemonic->begin(), mnemonic->end());
 }
 
 void KeyringService::AddFilecoinAccount(const std::string& account_name,
@@ -895,13 +894,9 @@ void KeyringService::ImportFilecoinAccount(
     return;
   }
 
-  std::vector<uint8_t> encrypted_key;
-  if (!encryptors_[filecoin_keyring_id]->Encrypt(
-          private_key, GetOrCreateNonceForKeyring(filecoin_keyring_id),
-          &encrypted_key)) {
-    std::move(callback).Run(false, "");
-    return;
-  }
+  std::vector<uint8_t> encrypted_key =
+      encryptors_[filecoin_keyring_id]->Encrypt(
+          private_key, GetOrCreateNonceForKeyring(filecoin_keyring_id));
 
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_key),
@@ -1252,12 +1247,8 @@ absl::optional<std::string> KeyringService::ImportAccountForKeyring(
   if (address.empty()) {
     return absl::nullopt;
   }
-  std::vector<uint8_t> encrypted_private_key;
-  if (!encryptors_[keyring_id]->Encrypt(private_key,
-                                        GetOrCreateNonceForKeyring(keyring_id),
-                                        &encrypted_private_key)) {
-    return absl::nullopt;
-  }
+  std::vector<uint8_t> encrypted_private_key = encryptors_[keyring_id]->Encrypt(
+      private_key, GetOrCreateNonceForKeyring(keyring_id));
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_private_key),
                            GetCoinForKeyring(keyring_id));
@@ -1701,11 +1692,7 @@ absl::optional<std::vector<uint8_t>> KeyringService::GetPrefInBytesForKeyring(
   if (!encoded || encoded->empty())
     return absl::nullopt;
 
-  std::string decoded;
-  if (!base::Base64Decode(*encoded, &decoded)) {
-    return absl::nullopt;
-  }
-  return std::vector<uint8_t>(decoded.begin(), decoded.end());
+  return base::Base64Decode(*encoded);
 }
 
 // static
@@ -1773,12 +1760,8 @@ bool KeyringService::CreateKeyringInternal(const std::string& keyring_id,
     return false;
   }
 
-  std::vector<uint8_t> encrypted_mnemonic;
-  if (!encryptors_[keyring_id]->Encrypt(ToSpan(mnemonic),
-                                        GetOrCreateNonceForKeyring(keyring_id),
-                                        &encrypted_mnemonic)) {
-    return false;
-  }
+  std::vector<uint8_t> encrypted_mnemonic = encryptors_[keyring_id]->Encrypt(
+      ToSpan(mnemonic), GetOrCreateNonceForKeyring(keyring_id));
 
   SetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, encrypted_mnemonic,
                            keyring_id);
@@ -2071,12 +2054,8 @@ void KeyringService::ValidatePassword(const std::string& password,
     return;
   }
 
-  std::vector<uint8_t> mnemonic;
-  if (!encryptor->Decrypt(*encrypted_mnemonic, *nonce, &mnemonic)) {
-    std::move(callback).Run(false);
-    return;
-  }
-  std::move(callback).Run(!mnemonic.empty());
+  auto mnemonic = encryptor->Decrypt(*encrypted_mnemonic, *nonce);
+  std::move(callback).Run(mnemonic && !mnemonic->empty());
 }
 
 void KeyringService::GetChecksumEthAddress(
