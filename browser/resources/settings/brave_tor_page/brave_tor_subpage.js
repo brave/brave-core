@@ -300,6 +300,10 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     this.showRequestBridgesDialog_ = false
     this.requestedBridges_ = event.currentTarget.bridges_.join('\n')
   }
+
+  currentRouteChanged() {
+    // This is intentional. currentRouteChanged() should be overridden.
+  }
 }
 
 customElements.define(
