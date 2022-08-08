@@ -63,12 +63,29 @@ window.__firefox__.includeOnce("MediaBackgrounding", function() {
             element.visibilityState = visibilityState_Get.call(document);
             
             document.addEventListener("visibilitychange", function(e) {
-              e.stopPropagation();
-              element.visibilityState = visibilityState_Get.call(document);
-              
-              if (visibilityState_Get.call(document) != "visible" && !element.ended) {
-                  playControl.call(element);
-              }
+                element.visibilityState = visibilityState_Get.call(document);
+            }, false);
+            
+            element.addEventListener("pause", function(e) {
+                if (!element.userHitPause && visibilityState_Get.call(document) == "visible") {
+                    var onVisibilityChanged = (e) => {
+                        document.removeEventListener("visibilitychange", onVisibilityChanged);
+
+                        if (visibilityState_Get.call(document) != "visible" && !element.ended) {
+                            playControl.call(element);
+                        }
+                    };
+
+                    document.addEventListener("visibilitychange", onVisibilityChanged);
+
+                    setTimeout(function() {
+                        document.removeEventListener("visibilitychange", onVisibilityChanged);
+                    }, 2000);
+                } else {
+                    if (!element.userHitPause && element.visibilityState == "visible" && !element.ended) {
+                        playControl.call(element);
+                    }
+                }
             }, false);
         }
         
@@ -80,21 +97,27 @@ window.__firefox__.includeOnce("MediaBackgrounding", function() {
             }, true);
         }
     }
-  
-//                  Debugging JS Events - Do not Remove
-//    const dispatchEvent_original = EventTarget.prototype.dispatchEvent;
-//    EventTarget.prototype.dispatchEvent = function (event) {
-//      if (this.constructor.name == 'HTMLVideoElement') {
-//        addListeners(this);
-//      }
-//      dispatchEvent_original.apply(this, arguments);
-//    };
+    
+    const queue = [];
+    function onMutation() {
+      for (const mutations of queue) {
+          mutations.addedNodes.forEach(function (node) {
+              if (node.constructor.name == 'HTMLVideoElement') {
+                  addListeners(node);
+              }
+          });
+      }
+      queue.length = 0;
+    }
     
     var observer = new MutationObserver(function(mutations) {
-        const videoElements = document.querySelectorAll('video');
-        for (const e of videoElements) {
-            addListeners(e);
+        if (!queue.length) {
+            // Debounce the mutation for performance
+            // with setTimeout | requestIdleCallback | requestAnimationFrame
+            // requestIdleCallback isn't available on iOS yet.
+            requestAnimationFrame(onMutation);
         }
+        queue.push(...mutations);
     });
     
     observer.observe(document, {
