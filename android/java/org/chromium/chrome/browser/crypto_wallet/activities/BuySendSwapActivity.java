@@ -487,6 +487,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                         updateBuySendSwapAsset(token.symbol, token, true);
                                         resetSwapToAsset(
                                                 nativeAsset, allTokens, swapFromAssetSymbol);
+                                        updateBalanceMaybeSwap();
                                         return;
                                     }
                                     // We most likely have a custom token
@@ -496,6 +497,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                                     filteredToken.symbol, filteredToken, true);
                                             resetSwapToAsset(
                                                     nativeAsset, allTokens, swapFromAssetSymbol);
+                                            updateBalanceMaybeSwap();
                                             break;
                                         }
                                     }
@@ -1573,7 +1575,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         String selectedAccountAddress = mSelectedAccount != null
                                 ? mSelectedAccount.address
                                 : mAccountInfos.get(0).address;
-                        updateBalanceMaybeSwap(selectedAccountAddress);
                         mAccountSpinner.setSelection(WalletUtils.getSelectedAccountIndex(
                                 mSelectedAccount, mAccountInfos));
                     }
