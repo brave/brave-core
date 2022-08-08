@@ -1845,6 +1845,83 @@ extension Strings {
         value: "%lld items",
         comment: "%lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use")
   }
+  
+  public struct PlaylistFolderSharing {
+    public static let addButtonTitle =
+    NSLocalizedString("playlistFolderSharing.addButtonTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Add",
+                      comment: "Title for the button that adds the playlist to the database.")
+    
+    public static let addButtonAccessibilityTitle =
+    NSLocalizedString("playlistFolderSharing.addButtonAccessibilityTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Add to Brave Playlist Button",
+                      comment: "Accessibility Title for the button that adds the playlist to the database.")
+    
+    public static let menuButtonAccessibilityTitle =
+    NSLocalizedString("playlistFolderSharing.menuButtonAccessibilityTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Playlist Menu Button",
+                      comment: "Accessibility Title for the playlist menu.")
+    
+    public static let syncNowMenuTitle =
+    NSLocalizedString("playlistFolderSharing.syncNowMenuTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Sync Now",
+                      comment: "Menu Title for syncing playlist")
+    
+    public static let editMenuTitle =
+    NSLocalizedString("playlistFolderSharing.editMenuTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Edit",
+                      comment: "Menu Title for editing a folder")
+    
+    public static let renameMenuTitle =
+    NSLocalizedString("playlistFolderSharing.renameMenuTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Rename",
+                      comment: "Menu Title for renaming a folder")
+    
+    public static let deleteOfflineDataMenuTitle =
+    NSLocalizedString("playlistFolderSharing.deleteOfflineDataMenuTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Remove Offline Data",
+                      comment: "Menu Title for removing offline data/cache")
+    
+    public static let deletePlaylistMenuTitle =
+    NSLocalizedString("playlistFolderSharing.deletePlaylistMenuTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Delete Playlist",
+                      comment: "Menu Title for deleting the playlist")
+    
+    public static let offlineManagementViewTitle =
+    NSLocalizedString("playlistFolderSharing.offlineManagementViewTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Managing your Playlist data",
+                      comment: "Title of the playlist offline data management view")
+    
+    public static let offlineManagementViewDescription =
+    NSLocalizedString("playlistFolderSharing.offlineManagementViewDescription", tableName: "BraveShared", bundle: .strings,
+                      value: "Auto-save for offline use is on, meaning new additions to playlists, including shared playlists are saved to your device for viewing offline and could use your cellular data.",
+                      comment: "Description of the playlist offline data management view")
+    
+    public static let offlineManagementViewSubDescription =
+    NSLocalizedString("playlistFolderSharing.offlineManagementViewSubDescription",
+                      tableName: "BraveShared", bundle: .strings,
+                      value: "Auto-save for offline use can be managed in Playlist settings.",
+                      comment: "Description of the playlist offline data management view")
+    
+    public static let offlineManagementViewAddButtonTitle =
+    NSLocalizedString("playlistFolderSharing.offlineManagementViewAddButtonTitle",
+                      tableName: "BraveShared", bundle: .strings,
+                      value: "Add playlist now",
+                      comment: "Button that adds the playlist to the local database")
+    
+    public static let offlineManagementViewSettingsButtonTitle =
+    NSLocalizedString("playlistFolderSharing.offlineManagementViewSettingsButtonTitle",
+                      tableName: "BraveShared", bundle: .strings,
+                      value: "Settings",
+                      comment: "Button that takes the user to the settings menu")
+    
+    public static let playListSharedFolderSectionTitle =
+    NSLocalizedString("playList.playListSharedFolderSectionTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Shared with you",
+                      comment: "Title For the Section that videos are listed")
+  }
+    
+    
 }
 
 // MARK: - SSL Certificate Viewer
