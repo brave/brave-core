@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { CaratRightIcon, PlusIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
-import { Publisher } from '../../../../api/brave_news'
+import getBraveNewsController, { Publisher } from '../../../../api/brave_news'
 import {
   SettingsRow,
   SettingsText,
@@ -83,7 +83,17 @@ type SourcesProps = Props & {
   setCategory: (category: string) => any
 }
 
+const useBraveNewsLocale = () => {
+  const [locale, setLocale] = React.useState('')
+  React.useEffect(() => {
+    getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale))
+  }, [])
+  return locale
+}
+
 export default function Sources (props: SourcesProps) {
+  const locale = useBraveNewsLocale()
+
   // Memoisze list of publishers by category
   const publishersByCategory = React.useMemo<Map<string, Publisher[]>>(() => {
     const result = new Map<string, Publisher[]>()
@@ -92,6 +102,12 @@ export default function Sources (props: SourcesProps) {
       return result
     }
     for (const publisher of Object.values(props.publishers)) {
+      // If the publisher has a locale (which can only happen in the V2 API) and
+      // it doesn't include the current locale, skip over it.
+      if (publisher.locales.length !== 0 && !publisher.locales.includes(locale)) {
+        continue
+      }
+
       // Do not include user feeds, as they are separated
       if (publisher.categoryName === categoryNameDirectFeeds) {
         continue
@@ -110,7 +126,7 @@ export default function Sources (props: SourcesProps) {
       publishers.sort((a, b) => a.publisherName.toLocaleLowerCase().localeCompare(b.publisherName.toLocaleLowerCase()))
     }
     return result
-  }, [props.publishers])
+  }, [props.publishers, locale])
   const {
     userFeeds,
     feedInputIsValid,

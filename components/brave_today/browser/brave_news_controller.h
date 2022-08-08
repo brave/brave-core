@@ -18,6 +18,7 @@
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -71,6 +72,7 @@ class BraveNewsController : public KeyedService,
   }
 
   // mojom::BraveNewsController
+  void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
@@ -112,8 +114,10 @@ class BraveNewsController : public KeyedService,
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
   brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
-  PublishersController publishers_controller_;
+
   DirectFeedController direct_feed_controller_;
+  UnsupportedPublisherMigrator unsupported_publisher_migrator_;
+  PublishersController publishers_controller_;
   FeedController feed_controller_;
 
   PrefChangeRegistrar pref_change_registrar_;

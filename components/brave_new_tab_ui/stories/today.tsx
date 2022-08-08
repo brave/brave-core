@@ -52,6 +52,7 @@ export const Publisher = () => (
         categoryName: 'Top News',
         feedSource: { url: 'http://www.example.com/feed' },
         siteUrl: { url: 'https://www.example.com' },
+        locales: ['en_US'],
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: true,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
@@ -65,6 +66,7 @@ export const Publisher = () => (
         categoryName: 'Top News',
         feedSource: { url: 'http://www.example.com/feed' },
         siteUrl: { url: 'https://www.example.com' },
+        locales: ['en_US'],
         type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: true,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED

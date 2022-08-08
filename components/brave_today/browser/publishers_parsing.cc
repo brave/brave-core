@@ -43,6 +43,15 @@ bool ParseCombinedPublisherList(const std::string& json,
       publisher->feed_source = feed_source;
     }
 
+    auto* locales_raw = publisher_raw.FindListKey("locales");
+    if (locales_raw) {
+      for (const auto& locale : locales_raw->GetList()) {
+        if (!locale.is_string())
+          continue;
+        publisher->locales.push_back(locale.GetString());
+      }
+    }
+
     std::string site_url_raw = *publisher_raw.FindStringKey("site_url");
     if (!base::StartsWith(site_url_raw, "https://")) {
       site_url_raw = "https://" + site_url_raw;
