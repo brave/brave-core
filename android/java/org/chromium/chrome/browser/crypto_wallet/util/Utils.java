@@ -649,7 +649,7 @@ public class Utils {
             if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
                 resStr = resStr.substring(0, integerPlaces + 9);
             }
-            return Long.parseLong(resStr);
+            return (long) Double.parseDouble(resStr);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1178,7 +1178,7 @@ public class Utils {
             TransactionInfo[] txInfos = pendingTxInfos.get(accountName);
             for (TransactionInfo txInfo : txInfos) {
                 ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo,
-                        selectedNetwork, accounts, assetPrices, null, fullTokenList,
+                        selectedNetwork, accounts, assetPrices, 0, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);
                 WalletListItemModel itemModel =
                         makeWalletItem((Context) activity, txInfo, selectedNetwork, parsedTx);

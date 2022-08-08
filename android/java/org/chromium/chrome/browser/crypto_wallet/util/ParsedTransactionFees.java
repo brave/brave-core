@@ -15,7 +15,6 @@ import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 
-import java.math.BigInteger;
 import java.util.Locale;
 
 /*
@@ -98,7 +97,7 @@ public class ParsedTransactionFees {
     }
 
     public static ParsedTransactionFees parseTransactionFees(TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, Double networkSpotPrice, BigInteger solFeeEstimatesFee) {
+            NetworkInfo selectedNetwork, Double networkSpotPrice, long solFeeEstimatesFee) {
         TxDataUnion txDataUnion = txInfo.txDataUnion;
         TxData1559 txData = txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
                 ? txDataUnion.getEthTxData1559()
@@ -141,11 +140,11 @@ public class ParsedTransactionFees {
     // so extracting this part as a separate function
     public static double[] calcGasFee(NetworkInfo selectedNetwork, double networkSpotPrice,
             boolean isEIP1559Transaction, String gasLimit, String gasPrice, String maxFeePerGas,
-            boolean isSolTransaction, BigInteger solFeeEstimatesFee) {
+            boolean isSolTransaction, long solFeeEstimatesFee) {
         final int networkDecimals = selectedNetwork.decimals;
         final double gasFee = isSolTransaction
-                ? solFeeEstimatesFee != null
-                        ? Utils.fromHexWei(solFeeEstimatesFee.toString(), networkDecimals)
+                ? solFeeEstimatesFee != 0
+                        ? Utils.fromWei(Long.toString(solFeeEstimatesFee), networkDecimals)
                         : 0.0d
                 : Utils.fromHexWei(isEIP1559Transaction
                                 ? Utils.multiplyHexBN(maxFeePerGas, gasLimit)

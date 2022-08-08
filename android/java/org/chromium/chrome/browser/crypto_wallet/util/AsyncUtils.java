@@ -14,6 +14,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.mojo.bindings.Callbacks;
@@ -301,6 +302,26 @@ public class AsyncUtils {
         @Override
         public void call(HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
             this.blockchainTokensBalances = blockchainTokensBalances;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetSolanaEstimatedTxFeeResponseContext extends SingleResponseBaseContext
+            implements SolanaTxManagerProxy.GetEstimatedTxFee_Response {
+        public Long fee;
+        public Integer error;
+        public String errorMessage;
+        public String txMetaId;
+
+        public GetSolanaEstimatedTxFeeResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(Long fee, Integer error, String errorMessage) {
+            this.fee = fee;
+            this.error = error;
+            this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();
         }
     }
