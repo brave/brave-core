@@ -502,4 +502,9 @@
   <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help Center link label">Help Center</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER_TEXT" desc="Help Center text description below buy-send-swap">Need help? See</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR" desc="Error message of unsupported hardware wallet operation">This hardware wallet does not support this operation.</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD" desc="Prompt for the user to enter their password">Enter your Brave Wallet password</message>
+  <message name="IDS_BRAVE_WALLET_AURORA_MODAL_TITLE" desc="Bridge to Aurora modal title">Open rainbowbridge.app?</message>
+  <message name="IDS_BRAVE_WALLET_AURORA_MODAL_DESCRIPTION" desc="Bridge to Aurora modal description">Bridging assets across networks allows you to use your crypto on other networks and other DApp ecosystems. Bridging assets to other networks has some risks.</message>
+  <message name="IDS_BRAVE_WALLET_AURORA_MODAL_LEARN_MORE" desc="Bridge to Aurora modal learn more link text">Learn more</message>
+  <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">Open rainbowbridge.app</message>
 </grit-part>

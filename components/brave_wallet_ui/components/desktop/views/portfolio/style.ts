@@ -253,3 +253,24 @@ export const FilterTokenRow = styled.div`
   flex-direction: row;
   width: 100%;
 `
+
+export const BridgeToAuroraButton = styled(WalletButton)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 14px;
+  height: 40px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 40px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  background-color: ${(p) => p.theme.palette.blurple500};
+  color: ${(p) => p.theme.palette.white};
+  border: none;
+  margin-bottom: 32px;
+`
