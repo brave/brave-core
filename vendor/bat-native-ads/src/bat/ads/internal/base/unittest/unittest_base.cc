@@ -295,6 +295,11 @@ void UnitTestBase::SetDefaultPrefs() {
 
   ads_client_mock_->SetInt64Pref(prefs::kIssuerPing, 0);
 
+  ads_client_mock_->SetDictPref(prefs::kEpsilonGreedyBanditArms,
+                                base::Value::Dict());
+  ads_client_mock_->SetListPref(prefs::kEpsilonGreedyBanditEligibleSegments,
+                                base::Value::List());
+
   ads_client_mock_->SetTimePref(prefs::kServeAdAt, Now());
 
   ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
