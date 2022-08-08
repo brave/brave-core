@@ -1638,4 +1638,19 @@ public class Utils {
 
         return result;
     }
+
+    public static boolean allowBuyAndSwap(String chainId) {
+        switch (chainId) {
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
+                return true;
+            default:
+                break;
+        }
+
+        return false;
+    }
 }
