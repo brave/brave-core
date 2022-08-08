@@ -10,6 +10,9 @@
   <message name="IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE" desc="Label for the button that opens the multi-profile user manager.">
     Manage other profiles
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_ADDITIONAL_FEATURES_TITLE" desc="In the settings tab, the title of a link that adds additional accessibility features not found in the built-in settings.">
+    Find more accessibility tools in the Web Store
+  </message>
   <if expr="reven">
     </if>
   <if expr="not reven">
