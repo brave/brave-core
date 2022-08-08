@@ -13,6 +13,7 @@ group("storybook") {
   deps = [
     "//brave/components/brave_vpn/mojom:mojom_js",
     "//brave/components/brave_wallet/common:mojom_js",
-    "//ui/webui/resources/js:cr.m",
+    "//ui/webui/resources/js:modulize",
+    "//ui/webui/resources/js:preprocess",
   ]
 }

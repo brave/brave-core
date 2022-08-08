@@ -113,6 +113,8 @@ class BraveNewsController : public KeyedService,
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
+  bool GetIsEnabled();
+  void HandleSubscriptionsChanged();
   void Prefetch();
 
   raw_ptr<PrefService> prefs_ = nullptr;

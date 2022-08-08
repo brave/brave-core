@@ -20,7 +20,10 @@ export default function getBraveNewsController () {
   // doesn't try to connect, or pages which use exported types
   // but ultimately don't fetch any data.
   if (!braveNewsControllerInstance) {
-    braveNewsControllerInstance = BraveNews.BraveNewsController.getRemote()
+    // In Storybook, we have a mocked BraveNewsController because none of the
+    // mojo apis are available.
+    // @ts-expect-error
+    braveNewsControllerInstance = window.storybookBraveNewsController || BraveNews.BraveNewsController.getRemote()
   }
   return braveNewsControllerInstance
 }

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import classNames from '$web-common/classnames'
 import styles from './input.module.scss'
+import '../app.global.scss'
 
 type CustomProps = {
   label?: string

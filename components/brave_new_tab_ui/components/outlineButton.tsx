@@ -8,11 +8,12 @@ import styled from 'styled-components'
 const Button = styled('button')`
   --outer-border-size: 0px;
   --inner-border-size: 1px;
+  --border-color: black;
   appearance: none;
   cursor: pointer;
   background: none;
   border-radius: 24px;
-  border: solid var(--border-size);
+  border: solid var(--border-size) var(--border-color);
   padding: 10px 22px;
   display: flex;
   flex-direction: row;

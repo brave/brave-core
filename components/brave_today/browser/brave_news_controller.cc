@@ -111,6 +111,10 @@ BraveNewsController::BraveNewsController(
       prefs::kBraveTodayOptedIn,
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kBraveNewsChannels,
+      base::BindRepeating(&BraveNewsController::HandleSubscriptionsChanged,
+                          base::Unretained(this)));
 
   if (base::FeatureList::IsEnabled(
           brave_today::features::kBraveNewsV2Feature)) {
@@ -505,10 +509,7 @@ void BraveNewsController::Prefetch() {
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {
   // Refresh data on an interval only if Brave News is enabled
-  bool should_show = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
-  bool opted_in = prefs_->GetBoolean(prefs::kBraveTodayOptedIn);
-  bool is_enabled = (should_show && opted_in);
-  if (is_enabled) {
+  if (GetIsEnabled()) {
     VLOG(1) << "STARTING TIMERS";
     if (!timer_feed_update_.IsRunning()) {
       timer_feed_update_.Start(FROM_HERE, base::Hours(3), this,
@@ -531,6 +532,22 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
     feed_controller_.ClearCache();
     publishers_controller_.ClearCache();
+  }
+}
+
+bool BraveNewsController::GetIsEnabled() {
+  bool should_show = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  bool opted_in = prefs_->GetBoolean(prefs::kBraveTodayOptedIn);
+  bool is_enabled = (should_show && opted_in);
+  return is_enabled;
+}
+
+void BraveNewsController::HandleSubscriptionsChanged() {
+  if (GetIsEnabled()) {
+    VLOG(1) << "HandleSubscriptionsChanged: Ensuring feed is updated";
+    feed_controller_.EnsureFeedIsUpdating();
+  } else {
+    VLOG(1) << "HandleSubscriptionsChanged: News not enabled, doing nothing.";
   }
 }
 

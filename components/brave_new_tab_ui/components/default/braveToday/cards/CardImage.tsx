@@ -8,54 +8,66 @@ import * as Card from '../cardSizes'
 import getBraveNewsController, * as BraveNews from '../../../../api/brave_news'
 
 type Props = {
-  imageUrl: string
+  imageUrl?: string
   list?: boolean
-  isUnpadded?: boolean
   isPromoted?: boolean
   onLoaded?: () => any
 }
 
-function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?: () => any) {
+const cache: { [url: string]: string } = {}
+
+export function useGetUnpaddedImage (paddedUrl: string | undefined, onLoaded?: () => any, useCache?: boolean) {
   const [unpaddedUrl, setUnpaddedUrl] = React.useState('')
-  const onReceiveUnpaddedUrl = (result: string) => {
-    setUnpaddedUrl(result)
-    window.requestAnimationFrame(() => {
-      if (onLoaded) {
-        onLoaded()
-      }
-    })
-  }
+
   React.useEffect(() => {
+    const onReceiveUnpaddedUrl = (result: string) => {
+      if (useCache) cache[paddedUrl!] = result
+      setUnpaddedUrl(result)
+
+      if (onLoaded) window.requestAnimationFrame(() => onLoaded())
+    }
+
     // Storybook method
     // @ts-expect-error
     if (window.braveStorybookUnpadUrl) {
       // @ts-expect-error
       window.braveStorybookUnpadUrl(paddedUrl)
-      .then(onReceiveUnpaddedUrl)
+        .then(onReceiveUnpaddedUrl)
+      return
+    }
+
+    if (!paddedUrl) return
+
+    if (cache[paddedUrl]) {
+      onReceiveUnpaddedUrl(cache[paddedUrl])
       return
     }
 
     let blobUrl: string
     getBraveNewsController().getImageData({ url: paddedUrl })
-    .then(async (result) => {
-      if (!result.imageData) {
-        return
-      }
-      const blob = new Blob([new Uint8Array(result.imageData)], { type: 'image/*' })
-      blobUrl = URL.createObjectURL(blob)
-      onReceiveUnpaddedUrl(blobUrl)
-    })
-    .catch(err => {
-      console.error(`Error getting image for ${paddedUrl}.`, err)
-    })
+      .then(async (result) => {
+        if (!result.imageData) {
+          return
+        }
 
-    return () => URL.revokeObjectURL(blobUrl)
-  }, [paddedUrl, isUnpadded])
+        const blob = new Blob([new Uint8Array(result.imageData)], { type: 'image/*' })
+        blobUrl = URL.createObjectURL(blob)
+        onReceiveUnpaddedUrl(blobUrl)
+      })
+      .catch(err => {
+        console.error(`Error getting image for ${paddedUrl}.`, err)
+      })
+
+      // Only revoke the URL if we aren't using the cache.
+      return () => {
+        if (!useCache) URL.revokeObjectURL(blobUrl)
+      }
+  }, [paddedUrl])
   return unpaddedUrl
 }
 
 export default function CardImage (props: Props) {
-  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, !!props.isUnpadded, props.onLoaded)
+  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, props.onLoaded)
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
   React.useEffect(() => {
     if (unpaddedUrl) {
