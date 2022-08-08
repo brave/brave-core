@@ -11,14 +11,18 @@ import subprocess
 import sys
 
 cert = os.environ.get('CERT')
+cert_hash = os.environ.get('CERT_HASH')
 signtool_args = (os.environ.get('SIGNTOOL_ARGS') or
                  'sign /t http://timestamp.digicert.com /sm '
                  '/fd sha256')
 
-assert (cert or signtool_args), ('One or both of the CERT or SIGNTOOL_ARGS '
-                                 'must be set. CERT by default is the name in the //CurrentUser/My windows '
-                                 'certificate store. `SIGNTOOL_ARGS` can be used in combination `CERT` or '
-                                 'by it self.')
+
+assert cert or cert_hash or signtool_args, \
+    'At least one of CERT_HASH, CERT and SIGNTOOL_ARGS must be set.\n'\
+    'The preferred parameter is CERT_HASH. Its value can be obtained via the '\
+    'command `Get-ChildItem -path cert:\\LocalMachine\\My`.\n' \
+    'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
+    'Store. It is ambiguous and will likely be deprecated in the future.'
 
 
 def get_sign_cmd(file):
@@ -28,6 +32,8 @@ def get_sign_cmd(file):
     cmd = 'signtool {}'.format(signtool_args)
     if cert:
         cmd = cmd + ' /n "' + cert + '"'
+    if cert_hash:
+        cmd = cmd + ' /sha1 "' + cert_hash + '"'
     return cmd + ' "' + file + '"'
 
 
