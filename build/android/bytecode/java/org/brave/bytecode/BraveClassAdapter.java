@@ -24,6 +24,7 @@ public class BraveClassAdapter {
         chain = new BraveDefaultBrowserPromoUtilsClassAdapter(chain);
         chain = new BraveDropdownItemViewInfoListBuilderClassAdapter(chain);
         chain = new BraveDropdownItemViewInfoListManagerClassAdapter(chain);
+        chain = new BraveDynamicColorsClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
