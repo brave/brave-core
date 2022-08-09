@@ -568,6 +568,7 @@
 -PrivacyBudgetBrowserTest.*
 -PrivacyBudgetBrowserTestWithScopedConfig.*
 -PrivacyBudgetBrowserTestWithTestRecorder.*
+-PrivacyBudgetBrowserTestWithUkmRecording.*
 -PrivacySandboxDialogHelperTestWithParamInstance/PrivacySandboxDialogHelperTestWithParam.*
 -PrivacySandboxSettingsBrowserTest.*
 -PrivateNetworkAccessWithFeatureEnabledBrowserTest.*
