@@ -31,6 +31,9 @@
     <color name="onboarding_card_bg_color">#1E2029</color>
     <color name="onboarding_card_text_color">#F0F2FF</color>
     <color name="onboarding_negative_button_color">#A0A5EB</color>
+
+    <color name="scan_qr_code_text_color">#F0F2FF</color>
+    <color name="scan_qr_code_bg_color">#1E2029</color>
     
     <!-- Day/Night colors -->
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>

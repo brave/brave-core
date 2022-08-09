@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
+index 4979cfde6fc1417c8c406cee4679145bbf1e7efc..67b6829d77f86188ad0cd8faf0b4289d4edf4a68 100644
+--- a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
++++ b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
+@@ -20,6 +20,7 @@
+             android:visibility="invisible"
+             android:contentDescription="@string/accessibility_toolbar_btn_delete_url" />
+ 
++<org.chromium.ui.widget.ChromeImageButton android:id="@+id/qr_button" style="@style/LocationBarActionButton" android:src="@drawable/ic_qr_code_18" android:visibility="invisible" android:contentDescription="@string/scan_qr_code" />
+         <org.chromium.ui.widget.ChromeImageButton
+             android:id="@+id/mic_button"
+             style="@style/LocationBarActionButton"
