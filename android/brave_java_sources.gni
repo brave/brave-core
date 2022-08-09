@@ -140,6 +140,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveEthereumPermissionPromptDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AccountsPermissionsHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AndroidUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetsPricesHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AsyncUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/BalanceHelper.java",

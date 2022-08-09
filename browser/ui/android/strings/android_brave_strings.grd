@@ -3004,6 +3004,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
       The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
     </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_TITLE" desc="Bridge to Aurora modal title">
+      Open rainbowbridge.app?
+    </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_DESCRIPTION" desc="Bridge to Aurora modal description">
+      Bridging assets across networks allows you to use your crypto on other networks and other DApp ecosystems. Bridging assets to other networks has some risks. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
+    </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">
+      Open rainbowbridge.app
+    </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_BUTTON_TEXT" desc="Bridge to Aurora button text" translateable="false">
+      Bridge to Aurora
+    </message>
     <message name="IDS_UPDATING_VPN_PROFILE" desc="Message to indicate profile is being update after split tunnel update.">
       Updating VPN Profile ...
     </message>

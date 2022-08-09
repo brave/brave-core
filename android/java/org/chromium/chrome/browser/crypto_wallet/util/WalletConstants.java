@@ -8,6 +8,14 @@ import java.util.List;
 public final class WalletConstants {
     public static final long MILLI_SECOND = 1000;
 
+    // URLs
+
+    // Crypto
+    public static final String URL_BRIDGE_RISKS = "https://ethereum.org/en/bridges/#bridge-risk";
+
+    // Aurora
+    public static final String URL_RAINBOW_AURORA = "https://rainbowbridge.app";
+
     // Android resources
     public static final String RESOURCE_ID = "id";
 
@@ -23,6 +31,9 @@ public final class WalletConstants {
     // BraveWalletAddNetworksFragment
     public static final String ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK = "activeNetwork";
     public static final String ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID = "chainId";
+
+    // AssetDetailsActivity
+    public static final String PREF_SHOW_BRIDGE_INFO_DIALOG = "pref_show_bridge_info_dialog";
 
     public static List<String> BUY_SUPPORTED_NETWORKS = Arrays.asList(
             BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.RINKEBY_CHAIN_ID,
