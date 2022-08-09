@@ -40,11 +40,6 @@
     </settings-checkbox>
   </div>
 </template>
-<settings-toggle-button
-  pref="{{prefs.brave.show_brave_rewards_button}}"
-  class="cr-row"
-  label="$i18n{appearanceSettingsShowBraveRewardsButtonLabel}">
-</settings-toggle-button>
 <if expr="enable_brave_vpn">
   <template is="dom-if" if="[[showBraveVPNOption_()]]">
     <settings-toggle-button
