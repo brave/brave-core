@@ -30,7 +30,10 @@ namespace {
 std::pair<std::string, std::string> GetServiceAndAccountName() {
   std::string service_name, account_name;
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch("import-chrome")) {
+  if (command_line->HasSwitch("import-edge")) {
+    service_name = std::string("Microsoft Edge Safe Storage");
+    account_name = std::string("Microsoft Edge");
+  } else if (command_line->HasSwitch("import-chrome")) {
     service_name = std::string("Chrome Safe Storage");
     account_name = std::string("Chrome");
   } else if (command_line->HasSwitch("import-vivaldi")) {
