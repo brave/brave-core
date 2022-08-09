@@ -25,14 +25,6 @@
     removeAllListeners: {
       value: BraveWeb3ProviderEventEmitter.removeAllListeners,
       writable: false
-    },
-    isMetaMask: {
-      value: true,
-      writable: true // https://github.com/brave/brave-browser/issues/22213
-    },
-    isBraveWallet: {
-      value: true,
-      writable: false
     }
   })
 
