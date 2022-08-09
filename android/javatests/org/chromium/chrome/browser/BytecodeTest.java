@@ -613,8 +613,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
-                Supplier.class, BookmarkState.class, ExploreIconProvider.class,
-                OmniboxPedalDelegate.class));
+                Supplier.class, BookmarkState.class, OmniboxPedalDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
