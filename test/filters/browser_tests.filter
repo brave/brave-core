@@ -721,6 +721,8 @@
 -StartupBrowserWithWebAppTest.*
 -StartupHelperBrowserTest.*
 -StorageAccessAPIBrowserTest.*
+-StorageAccessAPIStorageBrowserTest.NestedThirdPartyIFrameStorage/*
+-StorageAccessAPIStorageBrowserTest.ThirdPartyIFrameStorageRequestsAccess/*
 -SubframeTaskBrowserTest.*
 -SubresourceFilterPrerenderingBrowserTest.*
 -SyncAwareCounterTest.*
