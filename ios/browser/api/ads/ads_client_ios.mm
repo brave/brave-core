@@ -33,8 +33,8 @@ bool AdsClientIOS::CanShowNotificationAdsWhileBrowserIsBackgrounded() const {
   return [bridge_ canShowNotificationAdsWhileBrowserIsBackgrounded];
 }
 
-void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& info) {
-  [bridge_ showNotificationAd:info];
+void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
+  [bridge_ showNotificationAd:ad];
 }
 
 bool AdsClientIOS::CanShowNotificationAds() {

@@ -34,7 +34,6 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/statement_info.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -609,20 +608,24 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
                             completion:
-                                (void (^)(BOOL success,
-                                          NSString* dimensions,
+                                (void (^)(NSString* dimensions,
                                           InlineContentAdIOS* ad))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->MaybeServeInlineContentAd(base::SysNSStringToUTF8(dimensions), ^(
-                                     const bool success,
-                                     const std::string& dimensions,
-                                     const ads::InlineContentAdInfo& ad) {
-    const auto inline_content_ad =
-        [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:ad];
-    completion(success, base::SysUTF8ToNSString(dimensions), inline_content_ad);
-  });
+  ads->MaybeServeInlineContentAd(
+      base::SysNSStringToUTF8(dimensions),
+      ^(const std::string& dimensions,
+        const absl::optional<ads::InlineContentAdInfo>& ad) {
+        if (!ad) {
+          completion(base::SysUTF8ToNSString(dimensions), nil);
+          return;
+        }
+
+        const auto inline_content_ad =
+            [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
+        completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
+      });
 }
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId
@@ -664,20 +667,20 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetStatementOfAccounts(^(const bool success,
-                                const ads::StatementInfo& list) {
-    if (!success) {
+  ads->GetStatementOfAccounts(^(ads::mojom::StatementInfoPtr statement) {
+    if (!statement) {
       completion(0, 0, nil);
       return;
     }
 
     NSDate* nextPaymentDate = nil;
-    if (!list.next_payment_date.is_null()) {
-      nextPaymentDate = [NSDate
-          dateWithTimeIntervalSince1970:list.next_payment_date.ToDoubleT()];
+    if (!statement->next_payment_date.is_null()) {
+      nextPaymentDate =
+          [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                    .ToDoubleT()];
     }
-    completion(list.ads_received_this_month, list.earnings_this_month,
-               nextPaymentDate);
+    completion(statement->ads_received_this_month,
+               statement->earnings_this_month, nextPaymentDate);
   });
 }
 
@@ -1230,11 +1233,14 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return nil;
   }
-  ads::NotificationAdInfo info;
-  if (ads->GetNotificationAd(identifier.UTF8String, &info)) {
-    return [[NotificationAdIOS alloc] initWithNotificationInfo:info];
+
+  const absl::optional<ads::NotificationAdInfo> ad =
+      ads->MaybeGetNotificationAd(identifier.UTF8String);
+  if (!ad) {
+    return nil;
   }
-  return nil;
+
+  return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
 }
 
 - (bool)canShowNotificationAds {

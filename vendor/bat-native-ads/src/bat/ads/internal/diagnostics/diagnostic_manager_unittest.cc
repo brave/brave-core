@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -15,6 +17,7 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/pref_names.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
@@ -45,16 +48,18 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   SetLastUnIdleTimeDiagnosticEntry();
 
   // Act
-  DiagnosticManager::GetInstance()->GetDiagnostics([](const bool success,
-                                                      const std::string& json) {
-    ASSERT_TRUE(success);
+  DiagnosticManager::GetInstance()->GetDiagnostics([](absl::optional<
+                                                       base::Value::List>
+                                                          list) {
+    // Assert
+    ASSERT_TRUE(list);
 
-    const std::string expected_json =
-        R"([{"name":"Device Id","value":"21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"},{"name":"Enabled","value":"true"},{"name":"Locale","value":"en-KY"},{"name":"Catalog ID","value":"da5dd0e8-71e9-4607-a45b-13e28b607a81"},{"name":"Catalog last updated","value":"1970-11-18T12:34:56.000Z"},{"name":"Last unidle time","value":"1970-11-18T12:34:56.000Z"}])";
-    EXPECT_EQ(expected_json, json);
+    const base::Value expected_list = base::test::ParseJson(
+        R"([{"name":"Device Id","value":"21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"},{"name":"Enabled","value":"true"},{"name":"Locale","value":"en-KY"},{"name":"Catalog ID","value":"da5dd0e8-71e9-4607-a45b-13e28b607a81"},{"name":"Catalog last updated","value":"1970-11-18T12:34:56.000Z"},{"name":"Last unidle time","value":"1970-11-18T12:34:56.000Z"}])");
+    ASSERT_TRUE(expected_list.is_list());
+
+    EXPECT_EQ(expected_list, list);
   });
-
-  // Assert
 }
 
 }  // namespace ads

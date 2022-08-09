@@ -61,7 +61,6 @@
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
-#include "bat/ads/statement_info.h"
 #include "build/build_config.h"
 #include "url/gurl.h"
 
@@ -264,10 +263,10 @@ void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
   ResourceManager::GetInstance()->UpdateResource(id);
 }
 
-bool AdsImpl::GetNotificationAd(const std::string& placement_id,
-                                NotificationAdInfo* notification) {
-  return NotificationAdManager::GetInstance()->GetForPlacementId(placement_id,
-                                                                 notification);
+absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
+    const std::string& placement_id) {
+  return NotificationAdManager::GetInstance()->MaybeGetForPlacementId(
+      placement_id);
 }
 
 void AdsImpl::TriggerNotificationAdEvent(
@@ -278,7 +277,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, {});
+    callback(/* ads */ absl::nullopt);
     return;
   }
 
@@ -305,7 +304,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, dimensions, {});
+    callback(dimensions, absl::nullopt);
     return;
   }
 
@@ -367,14 +366,13 @@ HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, {});
+    callback(/* statement */ nullptr);
     return;
   }
 
-  account_->GetStatement(
-      [callback](const bool success, const StatementInfo& statement) {
-        callback(success, statement);
-      });
+  account_->GetStatement([callback](mojom::StatementInfoPtr statement) {
+    callback(std::move(statement));
+  });
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

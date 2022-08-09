@@ -166,9 +166,8 @@ class AdsServiceImpl : public AdsService,
                         const base::TimeDelta idle_time);
 
   void OnMaybeServeInlineContentAd(MaybeServeInlineContentAdCallback callback,
-                                   const bool success,
                                    const std::string& dimensions,
-                                   const std::string& json);
+                                   absl::optional<base::Value::Dict> dict);
 
   absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
@@ -181,7 +180,7 @@ class AdsServiceImpl : public AdsService,
   void NotificationAdTimedOut(const std::string& placement_id);
 
   void PrefetchNewTabPageAd() override;
-  void OnPrefetchNewTabPageAd(bool success, const std::string& json);
+  void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
 
   void OnTriggerSearchResultAdEvent(
       TriggerSearchResultAdEventCallback callback,
@@ -194,7 +193,7 @@ class AdsServiceImpl : public AdsService,
   void OpenNewTabWithUrl(const GURL& url);
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnOpenNewTabWithAd(const std::string& json);
+  void OnGetNotificationAd(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   bool IsUpgradingFromPreBraveAdsBuild();
@@ -224,12 +223,10 @@ class AdsServiceImpl : public AdsService,
                           const std::string& message);
 
   void OnGetDiagnostics(GetDiagnosticsCallback callback,
-                        const bool success,
-                        const std::string& json);
+                        absl::optional<base::Value::List> value);
 
   void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
-                                const bool success,
-                                const std::string& json);
+                                ads::mojom::StatementInfoPtr statement);
 
   void OnGetHistory(GetHistoryCallback callback, const std::string& json);
 
@@ -488,7 +485,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_ad_timers_;
 
-  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
+  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_;
   bool need_purge_orphaned_new_tab_page_ad_events_ = false;
   bool prefetch_new_tab_page_ad_on_first_run_ = false;
 

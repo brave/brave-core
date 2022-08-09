@@ -27,7 +27,6 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/statement_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
@@ -657,19 +656,18 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   SaveTransactions(transactions);
 
   // Act
-  account_->GetStatement(
-      [](const bool success, const StatementInfo& statement) {
-        ASSERT_TRUE(success);
+  account_->GetStatement([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
 
-        StatementInfo expected_statement;
-        expected_statement.next_payment_date =
-            TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-        expected_statement.earnings_this_month = 0.05;
-        expected_statement.earnings_last_month = 0.01;
-        expected_statement.ads_received_this_month = 3;
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.01;
+    expected_statement->earnings_this_month = 0.05;
+    expected_statement->next_payment_date =
+        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
+    expected_statement->ads_received_this_month = 3;
 
-        EXPECT_EQ(expected_statement, statement);
-      });
+    EXPECT_EQ(expected_statement, statement);
+  });
 
   // Assert
 }

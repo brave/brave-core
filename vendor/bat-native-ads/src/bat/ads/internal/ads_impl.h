@@ -20,6 +20,7 @@
 #include "bat/ads/internal/history/history_manager_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -149,8 +150,8 @@ class AdsImpl final : public Ads,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override;
 
-  bool GetNotificationAd(const std::string& placement_id,
-                         NotificationAdInfo* notification_ad) override;
+  absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
+      const std::string& placement_id) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) override;

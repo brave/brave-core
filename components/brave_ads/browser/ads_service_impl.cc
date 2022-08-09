@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
 #include "base/debug/dump_without_crashing.h"
@@ -32,12 +33,10 @@
 #include "bat/ads/database.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
-#include "bat/ads/statement_info.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_browser_process.h"
@@ -855,14 +854,20 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
     return;
   }
 
-  bat_ads_->GetNotificationAd(
+  bat_ads_->MaybeGetNotificationAd(
       placement_id,
-      base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnGetNotificationAd, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
+void AdsServiceImpl::OnGetNotificationAd(
+    absl::optional<base::Value::Dict> dict) {
+  if (!dict) {
+    VLOG(0) << "Failed to get notification ad";
+    return;
+  }
+
   ads::NotificationAdInfo notification;
-  notification.FromJson(json);
+  notification.FromValue(*dict);
 
   OpenNewTabWithUrl(notification.target_url);
 }
@@ -1086,7 +1091,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, "");
+    std::move(callback).Run(/* diagnostics */ absl::nullopt);
     return;
   }
 
@@ -1173,7 +1178,7 @@ void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, 0, 0, 0.0, 0.0);
+    std::move(callback).Run(/* statement */ nullptr);
     return;
   }
 
@@ -1186,7 +1191,7 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(false, "", base::Value::Dict());
+    std::move(callback).Run(dimensions, absl::nullopt);
     return;
   }
 
@@ -1213,13 +1218,13 @@ AdsServiceImpl::GetPrefetchedNewTabPageAd() {
     return absl::nullopt;
   }
 
-  absl::optional<ads::NewTabPageAdInfo> ad_info;
-  if (prefetched_new_tab_page_ad_info_) {
-    ad_info = prefetched_new_tab_page_ad_info_;
-    prefetched_new_tab_page_ad_info_.reset();
+  absl::optional<ads::NewTabPageAdInfo> ad;
+  if (prefetched_new_tab_page_ad_) {
+    ad = prefetched_new_tab_page_ad_;
+    prefetched_new_tab_page_ad_.reset();
   }
 
-  return ad_info;
+  return ad;
 }
 
 void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
@@ -1876,7 +1881,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
 
   // The previous prefetched new tab page ad is available. No need to do
   // prefetch again.
-  if (prefetched_new_tab_page_ad_info_) {
+  if (prefetched_new_tab_page_ad_) {
     return;
   }
 
@@ -1892,15 +1897,18 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
   }
 }
 
-void AdsServiceImpl::OnPrefetchNewTabPageAd(bool success,
-                                            const std::string& json) {
-  if (!success) {
+void AdsServiceImpl::OnPrefetchNewTabPageAd(
+    absl::optional<base::Value::Dict> dict) {
+  if (!dict) {
+    VLOG(0) << "Failed to prefetch new tab page ad";
     return;
   }
 
-  ads::NewTabPageAdInfo ad_info;
-  ad_info.FromJson(json);
-  prefetched_new_tab_page_ad_info_ = ad_info;
+  ads::NewTabPageAdInfo ad;
+  ad.FromValue(*dict);
+
+  DCHECK(!prefetched_new_tab_page_ad_);
+  prefetched_new_tab_page_ad_ = ad;
 }
 
 void AdsServiceImpl::OnURLRequest(
@@ -1956,18 +1964,9 @@ void AdsServiceImpl::OnURLRequest(
 
 void AdsServiceImpl::OnMaybeServeInlineContentAd(
     MaybeServeInlineContentAdCallback callback,
-    const bool success,
     const std::string& dimensions,
-    const std::string& json) {
-  base::Value::Dict dict;
-
-  if (success) {
-    ads::InlineContentAdInfo ad;
-    ad.FromJson(json);
-    dict = ad.ToValue();
-  }
-
-  std::move(callback).Run(success, dimensions, dict);
+    absl::optional<base::Value::Dict> dict) {
+  std::move(callback).Run(dimensions, std::move(dict));
 }
 
 void AdsServiceImpl::OnTriggerSearchResultAdEvent(
@@ -2017,26 +2016,18 @@ void AdsServiceImpl::OnGetHistory(GetHistoryCallback callback,
 
 void AdsServiceImpl::OnGetStatementOfAccounts(
     GetStatementOfAccountsCallback callback,
-    const bool success,
-    const std::string& json) {
-  if (!success) {
-    std::move(callback).Run(success, 0, 0, 0.0, 0.0);
+    ads::mojom::StatementInfoPtr statement) {
+  if (!statement) {
+    std::move(callback).Run(/* statement */ nullptr);
     return;
   }
 
-  ads::StatementInfo statement;
-  statement.FromJson(json);
-
-  std::move(callback).Run(success, statement.next_payment_date.ToDoubleT(),
-                          statement.ads_received_this_month,
-                          statement.earnings_this_month,
-                          statement.earnings_last_month);
+  std::move(callback).Run(std::move(statement));
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,
-                                      const bool success,
-                                      const std::string& json) {
-  std::move(callback).Run(success, json);
+                                      absl::optional<base::Value::List> value) {
+  std::move(callback).Run(std::move(value));
 }
 
 void AdsServiceImpl::OnToggleAdThumbUp(ToggleAdThumbUpCallback callback,

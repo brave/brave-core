@@ -5,8 +5,6 @@
 
 #include "bat/ads/notification_ad_info.h"
 
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -35,6 +33,7 @@ bool NotificationAdInfo::IsValid() const {
 
 base::Value::Dict NotificationAdInfo::ToValue() const {
   base::Value::Dict dict;
+
   dict.Set("type", type.ToString());
   dict.Set("uuid", placement_id);
   dict.Set("creative_instance_id", creative_instance_id);
@@ -45,6 +44,7 @@ base::Value::Dict NotificationAdInfo::ToValue() const {
   dict.Set("title", title);
   dict.Set("body", body);
   dict.Set("target_url", target_url.spec());
+
   return dict;
 }
 
@@ -88,26 +88,6 @@ void NotificationAdInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("target_url")) {
     target_url = GURL(*value);
   }
-}
-
-std::string NotificationAdInfo::ToJson() const {
-  std::string json;
-  CHECK(base::JSONWriter::Write(ToValue(), &json));
-  return json;
-}
-
-bool NotificationAdInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> document =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!document.has_value() || !document->is_dict()) {
-    return false;
-  }
-
-  FromValue(document->GetDict());
-
-  return true;
 }
 
 }  // namespace ads

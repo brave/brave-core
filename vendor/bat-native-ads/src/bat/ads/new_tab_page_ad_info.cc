@@ -7,10 +7,6 @@
 
 #include <tuple>
 
-#include "base/check.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-
 namespace ads {
 
 NewTabPageAdInfo::NewTabPageAdInfo() = default;
@@ -151,26 +147,6 @@ void NewTabPageAdInfo::FromValue(const base::Value::Dict& root) {
       wallpapers.push_back(wallpaper_info);
     }
   }
-}
-
-std::string NewTabPageAdInfo::ToJson() const {
-  std::string json;
-  CHECK(base::JSONWriter::Write(ToValue(), &json));
-  return json;
-}
-
-bool NewTabPageAdInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> document =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!document.has_value() || !document->is_dict()) {
-    return false;
-  }
-
-  FromValue(document->GetDict());
-
-  return true;
 }
 
 }  // namespace ads
