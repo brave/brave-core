@@ -13,6 +13,12 @@ bool SharedWorkerContentSettingsProxy::AllowFingerprinting() {
   return result;
 }
 
+bool SharedWorkerContentSettingsProxy::IsReduceLanguageEnabled() {
+  bool result = true;
+  GetService()->IsReduceLanguageEnabled(&result);
+  return result;
+}
+
 BraveFarblingLevel SharedWorkerContentSettingsProxy::GetBraveFarblingLevel() {
   uint8_t result = BraveFarblingLevel::OFF;
   GetService()->GetBraveFarblingLevel(&result);

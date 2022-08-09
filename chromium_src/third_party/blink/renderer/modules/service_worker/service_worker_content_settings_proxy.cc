@@ -13,6 +13,12 @@ bool ServiceWorkerContentSettingsProxy::AllowFingerprinting() {
   return result;
 }
 
+bool ServiceWorkerContentSettingsProxy::IsReduceLanguageEnabled() {
+  bool result = true;
+  GetService()->IsReduceLanguageEnabled(&result);
+  return result;
+}
+
 BraveFarblingLevel ServiceWorkerContentSettingsProxy::GetBraveFarblingLevel() {
   uint8_t result = BraveFarblingLevel::OFF;
   GetService()->GetBraveFarblingLevel(&result);

@@ -16,6 +16,15 @@ void SharedWorkerContentSettingsProxyImpl::AllowFingerprinting(
   }
 }
 
+void SharedWorkerContentSettingsProxyImpl::IsReduceLanguageEnabled(
+    AllowFingerprintingCallback callback) {
+  if (!origin_.opaque()) {
+    owner_->IsReduceLanguageEnabled(origin_.GetURL(), std::move(callback));
+  } else {
+    std::move(callback).Run(false);
+  }
+}
+
 void SharedWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
     GetBraveFarblingLevelCallback callback) {
   if (!origin_.opaque()) {

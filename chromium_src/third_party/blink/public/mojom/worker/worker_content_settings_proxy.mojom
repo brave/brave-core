@@ -11,5 +11,7 @@ interface WorkerContentSettingsProxy {
   [Sync]
   AllowFingerprinting() => (bool result);
   [Sync]
+  IsReduceLanguageEnabled() => (bool result);
+  [Sync]
   GetBraveFarblingLevel() => (uint8 result);
 };

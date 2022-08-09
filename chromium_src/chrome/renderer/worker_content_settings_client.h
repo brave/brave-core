@@ -9,6 +9,7 @@
 #define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H         \
   BraveFarblingLevel GetBraveFarblingLevel() override; \
   bool AllowFingerprinting() override;                 \
+  bool IsReduceLanguageEnabled() override;             \
   blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override;
 
 #include "src/chrome/renderer/worker_content_settings_client.h"

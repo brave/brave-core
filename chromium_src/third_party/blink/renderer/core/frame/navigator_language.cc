@@ -20,9 +20,11 @@ void NavigatorLanguage::EnsureUpdatedLanguage() {
   NavigatorLanguage_ChromiumImpl::EnsureUpdatedLanguage();
   blink::WebContentSettingsClient* settings =
       brave::GetContentSettingsClientFor(execution_context_);
-  // If Brave Shields are down or anti-fingerprinting is off for this site,
-  // do nothing.
-  if (!settings || settings->GetBraveFarblingLevel() == BraveFarblingLevel::OFF)
+  // If "reduce language" feature flag is off or "reduce language" profile-level
+  // preference is toggled off or Brave Shields are down for this site or
+  // anti-fingerprinting is off for this site, do nothing.
+  if (!settings || !settings->IsReduceLanguageEnabled() ||
+      settings->GetBraveFarblingLevel() == BraveFarblingLevel::OFF)
     return;
   if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::MAXIMUM) {
     // If anti-fingerprinting is at maximum, override the entire language list

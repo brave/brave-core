@@ -48,6 +48,9 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
       const ::url::Origin& top_frame_origin,
       AllowEphemeralStorageAccessCallback callback) override {}
 
+  void IsReduceLanguageEnabled(
+      IsReduceLanguageEnabledCallback callback) override {}
+
   void OnContentBlocked(int32_t render_frame_id,
                         ContentSettingsType type) override {
     ++log_->on_content_blocked_count;

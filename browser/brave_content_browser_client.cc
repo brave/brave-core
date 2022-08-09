@@ -495,6 +495,13 @@ bool BraveContentBrowserClient::AllowWorkerFingerprinting(
          BraveFarblingLevel::MAXIMUM;
 }
 
+bool BraveContentBrowserClient::WorkerIsReduceLanguageEnabled(
+    const GURL& url,
+    content::BrowserContext* browser_context) {
+  return brave_shields::IsReduceLanguageEnabledForProfile(
+      user_prefs::UserPrefs::Get(browser_context));
+}
+
 uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
     const GURL& url,
     content::BrowserContext* browser_context) {

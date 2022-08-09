@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -188,6 +189,22 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
   BlockFingerprinting(domain2);
   NavigateToURLUntilLoadStop(url2);
+  EXPECT_EQ(strict_languages,
+            EvalJs(web_contents(), kNavigatorLanguagesScript));
+
+  // Turn off "reduce language" preference toggle and re-test.
+  // (Results should be equivalent to when fingerprinting was off.)
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kReduceLanguageEnabled, false);
+  NavigateToURLUntilLoadStop(url1);
+  SetAcceptLanguages(testing_languages);
+  EXPECT_EQ(testing_languages,
+            EvalJs(web_contents(), kNavigatorLanguagesScript));
+
+  // Turn on "reduce language" preference toggle again.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kReduceLanguageEnabled, true);
+  NavigateToURLUntilLoadStop(url1);
   EXPECT_EQ(strict_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
 }

@@ -11,6 +11,7 @@
 
 #define AllowStorageAccessSync                         \
   AllowFingerprinting() override;                      \
+  bool IsReduceLanguageEnabled() override;             \
   BraveFarblingLevel GetBraveFarblingLevel() override; \
   bool AllowStorageAccessSync
 

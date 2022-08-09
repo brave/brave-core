@@ -15,6 +15,14 @@ void SharedWorkerHost::AllowFingerprinting(
           url, GetProcessHost()->GetBrowserContext()));
 }
 
+void SharedWorkerHost::IsReduceLanguageEnabled(
+    const GURL& url,
+    base::OnceCallback<void(bool)> callback) {
+  std::move(callback).Run(
+      GetContentClient()->browser()->WorkerIsReduceLanguageEnabled(
+          url, GetProcessHost()->GetBrowserContext()));
+}
+
 void SharedWorkerHost::GetBraveFarblingLevel(
     const GURL& url,
     base::OnceCallback<void(uint8_t)> callback) {

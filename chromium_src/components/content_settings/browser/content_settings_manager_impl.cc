@@ -23,4 +23,9 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
                               : absl::nullopt);
 }
 
+void ContentSettingsManagerImpl::IsReduceLanguageEnabled(
+    IsReduceLanguageEnabledCallback callback) {
+  std::move(callback).Run(true);  // TODO
+}
+
 }  // namespace content_settings

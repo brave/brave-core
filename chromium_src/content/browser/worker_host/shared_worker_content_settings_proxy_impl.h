@@ -12,6 +12,8 @@
 
 #define RequestFileSystemAccessSync                                            \
   AllowFingerprinting(AllowFingerprintingCallback callback) override;          \
+  void IsReduceLanguageEnabled(IsReduceLanguageEnabledCallback callback)       \
+      override;                                                                \
   void GetBraveFarblingLevel(GetBraveFarblingLevelCallback callback) override; \
   void RequestFileSystemAccessSync
 

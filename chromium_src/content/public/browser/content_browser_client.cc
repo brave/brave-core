@@ -21,6 +21,12 @@ bool ContentBrowserClient::AllowWorkerFingerprinting(
   return true;
 }
 
+bool ContentBrowserClient::WorkerIsReduceLanguageEnabled(
+    const GURL& url,
+    BrowserContext* browser_context) {
+  return false;
+}
+
 uint8_t ContentBrowserClient::WorkerGetBraveFarblingLevel(
     const GURL& url,
     BrowserContext* browser_context) {

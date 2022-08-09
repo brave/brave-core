@@ -24,6 +24,23 @@ void ServiceWorkerContentSettingsProxyImpl::AllowFingerprinting(
           origin_.GetURL(), context_wrapper_->browser_context()));
 }
 
+void ServiceWorkerContentSettingsProxyImpl::IsReduceLanguageEnabled(
+    AllowFingerprintingCallback callback) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  // May be shutting down.
+  if (!context_wrapper_->browser_context()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  if (origin_.opaque()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::move(callback).Run(
+      GetContentClient()->browser()->WorkerIsReduceLanguageEnabled(
+          origin_.GetURL(), context_wrapper_->browser_context()));
+}
+
 void ServiceWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
     GetBraveFarblingLevelCallback callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);

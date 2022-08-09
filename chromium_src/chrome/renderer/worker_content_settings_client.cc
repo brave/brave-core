@@ -44,6 +44,14 @@ bool WorkerContentSettingsClient::AllowFingerprinting() {
   return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
 }
 
+bool WorkerContentSettingsClient::IsReduceLanguageEnabled() {
+  EnsureContentSettingsManager();
+  bool is_reduce_language_enabled;
+  content_settings_manager_->IsReduceLanguageEnabled(
+      &is_reduce_language_enabled);
+  return is_reduce_language_enabled;
+}
+
 blink::WebSecurityOrigin
 WorkerContentSettingsClient::GetEphemeralStorageOriginSync() {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))

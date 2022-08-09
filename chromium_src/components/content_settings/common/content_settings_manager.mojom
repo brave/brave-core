@@ -6,6 +6,8 @@ import "url/mojom/origin.mojom";
 [BraveExtend]
 interface ContentSettingsManager {
   [Sync]
+  IsReduceLanguageEnabled() => (bool result);
+  [Sync]
   AllowEphemeralStorageAccess(
       int32 render_frame_id,
       url.mojom.Origin origin,

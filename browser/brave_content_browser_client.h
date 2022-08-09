@@ -71,6 +71,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       content::BrowserContext* browser_context) override;
 
+  bool WorkerIsReduceLanguageEnabled(
+      const GURL& url,
+      content::BrowserContext* browser_context) override;
+
   uint8_t WorkerGetBraveFarblingLevel(
       const GURL& url,
       content::BrowserContext* browser_context) override;
