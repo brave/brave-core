@@ -47,12 +47,12 @@ void CallOnGetDaemonStatus(content::WebUI* web_ui, const std::string& error) {
     return;
   }
 
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetBoolKey("installed", service->IsIPFSExecutableAvailable());
-  value.SetBoolKey("launched", service->IsDaemonLaunched());
-  value.SetStringKey("error", error);
+  base::Value::Dict value;
+  value.Set("installed", service->IsIPFSExecutableAvailable());
+  value.Set("launched", service->IsDaemonLaunched());
+  value.Set("error", error);
   web_ui->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                       std::move(value));
+                                       base::Value(std::move(value)));
 }
 
 }  // namespace
@@ -136,10 +136,10 @@ void IPFSDOMHandler::OnGetConnectedPeers(
     const std::vector<std::string>& peers) {
   if (!web_ui()->CanCallJavascript())
     return;
-  base::Value stats_value(base::Value::Type::DICTIONARY);
-  stats_value.SetDoubleKey("peerCount", peers.size());
+  base::Value::Dict stats_value;
+  stats_value.Set("peerCount", static_cast<double>(peers.size()));
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetConnectedPeers",
-                                         std::move(stats_value));
+                                         base::Value(std::move(stats_value)));
 }
 
 void IPFSDOMHandler::HandleGetAddressesConfig(const base::Value::List& args) {
@@ -162,16 +162,16 @@ void IPFSDOMHandler::OnGetAddressesConfig(bool success,
   if (!web_ui()->CanCallJavascript())
     return;
 
-  base::Value config_value(base::Value::Type::DICTIONARY);
-  config_value.SetStringKey("api", config.api);
-  config_value.SetStringKey("gateway", config.gateway);
-  base::Value swarm_value(base::Value::Type::LIST);
+  base::Value::Dict config_value;
+  config_value.Set("api", config.api);
+  config_value.Set("gateway", config.gateway);
+  base::Value::List swarm_value;
   for (const auto& addr : config.swarm)
     swarm_value.Append(addr);
-  config_value.SetKey("swarm", std::move(swarm_value));
+  config_value.Set("swarm", std::move(swarm_value));
 
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetAddressesConfig",
-                                         std::move(config_value));
+                                         base::Value(std::move(config_value)));
 }
 
 void IPFSDOMHandler::HandleGetDaemonStatus(const base::Value::List& args) {
@@ -217,20 +217,21 @@ void IPFSDOMHandler::OnInstallationEvent(ipfs::ComponentUpdaterEvents event) {
     update_client::CrxUpdateItem item;
     if (updater->GetComponentDetails(ipfs::kIpfsClientComponentId, &item)) {
       if (item.downloaded_bytes > 0 && item.total_bytes > 0) {
-        base::Value value(base::Value::Type::DICTIONARY);
-        value.SetDoubleKey("total_bytes", item.total_bytes);
-        value.SetDoubleKey("downloaded_bytes", item.downloaded_bytes);
+        base::Value::Dict value;
+        value.Set("total_bytes", static_cast<double>(item.total_bytes));
+        value.Set("downloaded_bytes",
+                  static_cast<double>(item.downloaded_bytes));
         web_ui()->CallJavascriptFunctionUnsafe("ipfs.onInstallationProgress",
-                                               std::move(value));
+                                               base::Value(std::move(value)));
       }
     }
   } else if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
-    base::Value value(base::Value::Type::DICTIONARY);
-    value.SetBoolKey("installed", false);
-    value.SetStringKey(
-        "error", l10n_util::GetStringUTF8(IDS_IPFS_NODE_INSTALLATION_ERROR));
+    base::Value::Dict value;
+    value.Set("installed", false);
+    value.Set("error",
+              l10n_util::GetStringUTF8(IDS_IPFS_NODE_INSTALLATION_ERROR));
     web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                           std::move(value));
+                                           base::Value(std::move(value)));
   }
 }
 
@@ -287,15 +288,15 @@ void IPFSDOMHandler::OnGetRepoStats(bool success,
   if (!web_ui()->CanCallJavascript())
     return;
 
-  base::Value stats_value(base::Value::Type::DICTIONARY);
-  stats_value.SetDoubleKey("objects", stats.objects);
-  stats_value.SetDoubleKey("size", stats.size);
-  stats_value.SetDoubleKey("storage", stats.storage_max);
-  stats_value.SetStringKey("path", stats.path);
-  stats_value.SetStringKey("version", stats.version);
+  base::Value::Dict stats_value;
+  stats_value.Set("objects", static_cast<double>(stats.objects));
+  stats_value.Set("size", static_cast<double>(stats.size));
+  stats_value.Set("storage", static_cast<double>(stats.storage_max));
+  stats_value.Set("path", stats.path);
+  stats_value.Set("version", stats.version);
 
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetRepoStats",
-                                         std::move(stats_value));
+                                         base::Value(std::move(stats_value)));
 }
 
 void IPFSDOMHandler::HandleGetNodeInfo(const base::Value::List& args) {
@@ -333,12 +334,12 @@ void IPFSDOMHandler::OnGarbageCollection(bool success,
   if (!web_ui()->CanCallJavascript())
     return;
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetStringKey("error", error);
-  result.SetBoolKey("success", success);
-  result.SetBoolKey("started", false);
+  base::Value::Dict result;
+  result.Set("error", error);
+  result.Set("success", success);
+  result.Set("started", false);
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGarbageCollection",
-                                         std::move(result));
+                                         base::Value(std::move(result)));
 }
 std::string IPFSDOMHandler::GetIpfsClientUpdaterVersion() const {
   if (client_updater_version_for_testing_)
@@ -350,13 +351,13 @@ void IPFSDOMHandler::OnGetNodeInfo(bool success, const ipfs::NodeInfo& info) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  base::Value node_value(base::Value::Type::DICTIONARY);
-  node_value.SetStringKey("id", info.id);
-  node_value.SetStringKey("version", info.version);
+  base::Value::Dict node_value;
+  node_value.Set("id", info.id);
+  node_value.Set("version", info.version);
   auto extension_version = GetIpfsClientUpdaterVersion();
   if (!extension_version.empty()) {
-    node_value.SetStringKey("component_version", extension_version);
+    node_value.Set("component_version", extension_version);
   }
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetNodeInfo",
-                                         std::move(node_value));
+                                         base::Value(std::move(node_value)));
 }
