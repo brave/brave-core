@@ -7,6 +7,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
+#include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "ui/gfx/win/hwnd_util.h"
