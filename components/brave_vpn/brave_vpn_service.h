@@ -21,6 +21,7 @@
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -36,7 +37,6 @@
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace network {
@@ -74,6 +74,11 @@ class BraveVpnService :
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
   std::string GetCurrentEnvironment() const;
+  bool is_purchased_user() const {
+    return purchased_state_ == mojom::PurchasedState::PURCHASED;
+  }
+  void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
+  void ReloadPurchasedState();
 
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
@@ -81,12 +86,7 @@ class BraveVpnService :
   bool is_connected() const {
     return connection_state_ == mojom::ConnectionState::CONNECTED;
   }
-  bool is_purchased_user() const {
-    return purchased_state_ == mojom::PurchasedState::PURCHASED;
-  }
   mojom::ConnectionState connection_state() const { return connection_state_; }
-  void ReloadPurchasedState();
-  void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
 
   // mojom::vpn::ServiceHandler
   void GetConnectionState(GetConnectionStateCallback callback) override;
@@ -108,6 +108,9 @@ class BraveVpnService :
   // base::PowerMonitor
   void OnSuspend() override;
   void OnResume() override;
+#else
+  // mojom::vpn::ServiceHandler
+  void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   using ResponseCallback =
@@ -262,13 +265,14 @@ class BraveVpnService :
   base::ScopedObservation<BraveVPNOSConnectionAPI,
                           BraveVPNOSConnectionAPI::Observer>
       observed_{this};
-  mojo::ReceiverSet<mojom::ServiceHandler> receivers_;
   base::RepeatingTimer region_data_update_timer_;
 
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+  mojo::ReceiverSet<mojom::ServiceHandler> receivers_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

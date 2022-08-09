@@ -247,6 +247,7 @@ test("brave_unit_tests") {
     "//brave/components/sidebar:unit_tests",
     "//brave/components/signin/public/identity_manager:unit_tests",
     "//brave/components/skus/browser:unit_tests",
+    "//brave/components/skus/renderer:unit_tests",
     "//brave/components/sync/driver:unit_tests",
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/time_period_storage",
@@ -429,7 +430,9 @@ test("brave_unit_tests") {
       "//chrome/test/android:chrome_java_test_support",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
     ]
-
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn/renderer/android:unit_tests" ]
+    }
     if (use_v8_context_snapshot) {
       deps += [ "//tools/v8_context_snapshot:v8_context_snapshot_assets" ]
     }
@@ -839,7 +842,9 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
-
+    if (enable_brave_vpn) {
+      deps += [ "//brave/renderer/brave_vpn:browser_tests" ]
+    }
     if (is_mac) {
       sources += [
         "//chrome/browser/ui/test/test_browser_dialog_mac.h",
@@ -1153,10 +1158,6 @@ if (!is_android) {
       "//testing/android/native_test:native_test_support",
     ]
 
-    if (enable_brave_vpn) {
-      deps += [ "//brave/components/brave_vpn" ]
-    }
-
     # There are three types of tests that need to be rewritten for Android:
     # 1. using extensions
     # 2. using desktop specific UI elements (e.g. TabStripModelObserver)
@@ -1177,6 +1178,10 @@ if (!is_android) {
       "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
       "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
     ]
+
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn" ]
+    }
 
     data = [
       "$root_out_dir/brave_100_percent.pak",

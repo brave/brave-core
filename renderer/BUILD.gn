@@ -1,3 +1,4 @@
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("renderer") {
@@ -22,4 +23,8 @@ source_set("renderer") {
     "//brave/renderer/brave_wallet/",
     "//v8",
   ]
+
+  if (enable_brave_vpn && is_android) {
+    deps += [ "//brave/components/brave_vpn/renderer/android" ]
+  }
 }

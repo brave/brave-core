@@ -11,6 +11,12 @@
 namespace brave_vpn {
 namespace prefs {
 
+#if BUILDFLAG(IS_ANDROID)
+const char kBraveVPNPurchaseTokenAndroid[] =
+    "brave.brave_vpn.purchase_token_android";
+const char kBraveVPNPackageAndroid[] = "brave.brave_vpn.package_android";
+#endif
+
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kBraveVPNShowButton, true);
@@ -18,6 +24,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(kBraveVPNSelectedRegion, "");
   registry->RegisterBooleanPref(kBraveVPNShowDNSPolicyWarningDialog, true);
+#elif BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(kBraveVPNPurchaseTokenAndroid, "");
+  registry->RegisterStringPref(kBraveVPNPackageAndroid, "");
 #endif
   registry->RegisterStringPref(kBraveVPNEEnvironment,
                                skus::GetDefaultEnvironment());

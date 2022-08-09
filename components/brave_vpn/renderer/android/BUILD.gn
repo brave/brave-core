@@ -1,26 +1,24 @@
-# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-assert(!is_ios)
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 
-source_set("renderer") {
+assert(enable_brave_vpn)
+
+source_set("android") {
   sources = [
-    "skus_js_handler.cc",
-    "skus_js_handler.h",
-    "skus_render_frame_observer.cc",
-    "skus_render_frame_observer.h",
-    "skus_utils.cc",
-    "skus_utils.h",
+    "vpn_render_frame_observer.cc",
+    "vpn_render_frame_observer.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_vpn",
     "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_vpn/mojom",
-    "//brave/components/skus/common",
-    "//brave/components/skus/common:mojom",
+    "//brave/components/skus/renderer",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
@@ -34,13 +32,13 @@ source_set("renderer") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "skus_utils_unittest.cc" ]
+  sources = [ "vpn_render_frame_observer_unittest.cc" ]
 
   deps = [
     "//base",
-    "//brave/components/skus/renderer",
-    "//services/network:test_support",
+    "//brave/components/brave_vpn/renderer/android",
+    "//content/public/renderer",
     "//testing/gtest",
-    "//third_party/blink/public:blink",
+    "//v8",
   ]
 }

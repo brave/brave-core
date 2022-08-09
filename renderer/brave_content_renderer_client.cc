@@ -30,6 +30,11 @@
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
+#endif  // BUILDFLAG(IS_ANDROID)
+
 BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
 
@@ -100,6 +105,13 @@ void BraveContentRendererClient::RenderFrameCreated(
     new skus::SkusRenderFrameObserver(render_frame,
                                       content::ISOLATED_WORLD_ID_GLOBAL);
   }
+
+#if BUILDFLAG(IS_ANDROID)
+  if (brave_vpn::IsBraveVPNEnabled()) {
+    new brave_vpn::VpnRenderFrameObserver(render_frame,
+                                          content::ISOLATED_WORLD_ID_GLOBAL);
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {

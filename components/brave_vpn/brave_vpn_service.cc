@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
@@ -103,7 +104,7 @@ bool IsNetworkAvailable() {
   return net::NetworkChangeNotifier::GetConnectionType() !=
          net::NetworkChangeNotifier::CONNECTION_NONE;
 }
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 }  // namespace
 
 namespace brave_vpn {
@@ -141,24 +142,26 @@ BraveVpnService::BraveVpnService(
     ReloadPurchasedState();
   }
   base::PowerMonitor::AddPowerSuspendObserver(this);
-#endif
-}
-
-BraveVpnService::~BraveVpnService() {
-#if !BUILDFLAG(IS_ANDROID)
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::PowerMonitor::RemovePowerSuspendObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
+
+BraveVpnService::~BraveVpnService() {}
+
 std::string BraveVpnService::GetCurrentEnvironment() const {
   return prefs_->GetString(prefs::kBraveVPNEEnvironment);
 }
 
-#if !BUILDFLAG(IS_ANDROID)
 void BraveVpnService::ReloadPurchasedState() {
   LoadPurchasedState(skus::GetDomain("vpn", GetCurrentEnvironment()));
 }
 
+void BraveVpnService::BindInterface(
+    mojo::PendingReceiver<mojom::ServiceHandler> receiver) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  receivers_.Add(this, std::move(receiver));
+}
+
+#if !BUILDFLAG(IS_ANDROID)
 void BraveVpnService::ScheduleBackgroundRegionDataFetch() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (region_data_update_timer_.IsRunning())
@@ -398,12 +401,6 @@ void BraveVpnService::ToggleConnection() {
 const BraveVPNConnectionInfo& BraveVpnService::GetConnectionInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return connection_info_;
-}
-
-void BraveVpnService::BindInterface(
-    mojo::PendingReceiver<mojom::ServiceHandler> receiver) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  receivers_.Add(this, std::move(receiver));
 }
 
 void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
@@ -855,6 +852,8 @@ BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() {
   return BraveVPNOSConnectionAPI::GetInstance();
 }
 
+// NOTE(bsclifton): Desktop uses API to create a ticket.
+// Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(
     CreateSupportTicketCallback callback,
     int status,
@@ -874,6 +873,43 @@ void BraveVpnService::OnSuspend() {
 
 void BraveVpnService::OnResume() {}
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(IS_ANDROID)
+void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
+  std::string purchase_token_string = "";
+  std::string package_string = "com.brave.browser";
+
+  // Get the Android purchase token (for Google Play Store).
+  // The value for this is validated on the account.brave.com side
+  auto* purchase_token =
+      prefs_->FindPreference(prefs::kBraveVPNPurchaseTokenAndroid);
+  if (purchase_token && !purchase_token->IsDefaultValue()) {
+    purchase_token_string =
+        prefs_->GetString(prefs::kBraveVPNPurchaseTokenAndroid);
+  }
+
+  // Package name is important; for real users, it'll be the Release package.
+  // For testing we do have the ability to use the Nightly package.
+  auto* package = prefs_->FindPreference(prefs::kBraveVPNPackageAndroid);
+  if (package && !package->IsDefaultValue()) {
+    package_string = prefs_->GetString(prefs::kBraveVPNPackageAndroid);
+  }
+
+  base::Value response(base::Value::Type::DICTIONARY);
+  response.SetStringKey("type", "android");
+  response.SetStringKey("raw_receipt", purchase_token_string);
+  response.SetStringKey("package", package_string);
+  response.SetStringKey("subscription_id", "brave-firewall-vpn-premium");
+
+  std::string response_json;
+  base::JSONWriter::Write(response, &response_json);
+
+  std::string encoded_response_json;
+  base::Base64Encode(response_json, &encoded_response_json);
+
+  std::move(callback).Run(encoded_response_json);
+}
+#endif  // BUILDFLAG(IS_ANDROID)
 
 void BraveVpnService::AddObserver(
     mojo::PendingRemote<mojom::ServiceObserver> observer) {
@@ -1071,6 +1107,7 @@ void BraveVpnService::Shutdown() {
 #if !BUILDFLAG(IS_ANDROID)
   observed_.Reset();
   receivers_.Clear();
+  base::PowerMonitor::RemovePowerSuspendObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

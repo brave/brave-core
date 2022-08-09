@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_PREF_NAMES_H_
 
+#include "build/build_config.h"
+
 class PrefRegistrySimple;
 
 namespace brave_vpn {
@@ -19,6 +21,12 @@ constexpr char kBraveVPNSelectedRegion[] =
 constexpr char kBraveVPNShowDNSPolicyWarningDialog[] =
     "brave.brave_vpn.show_dns_policy_warning_dialog";
 constexpr char kBraveVPNEEnvironment[] = "brave.brave_vpn.env";
+
+#if BUILDFLAG(IS_ANDROID)
+extern const char kBraveVPNPurchaseTokenAndroid[];
+extern const char kBraveVPNPackageAndroid[];
+#endif
+
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace prefs
