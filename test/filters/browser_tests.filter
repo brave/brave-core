@@ -118,6 +118,7 @@
 -AppSessionRestoreTest.NoAppRestore
 -AppSessionRestoreTest.OpeningAppDoesNotAffectBrowserSession
 -AutofillServerTest.*
+-AvatarMenuBrowserTest.EditProfile_NotLoaded
 -AvatarToolbarButtonBrowserTest.*
 -BackForwardCacheFileSystemAccessBrowserTest.*
 -BackForwardCachePageLoadMetricsObserverBrowserTest.*
@@ -408,6 +409,7 @@
 -MediaRouterUIBrowserTest.*
 -MessagingApiFencedFrameTest/MessagingApiFencedFrameTest.*
 -MetadataCheckAndDeepScanningBrowserTest.*
+-MetricsLogBrowserTest.CommandLineKeyHash
 -MetricsServiceBrowserDoUploadTest.*
 -MetricsServiceBrowserTest.*
 -MetricsServiceUserDemographicsBrowserTest.*
