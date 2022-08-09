@@ -32,6 +32,9 @@ class BraveTranslateIconView : public TranslateIconView {
 
   void InstallGoogleTranslate();
 
+ protected:
+  const gfx::VectorIcon& GetVectorIcon() const override;
+
  private:
   void OnInstallResult(bool success,
                        const std::string& error,
