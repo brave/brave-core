@@ -100,6 +100,7 @@
 -ClientSideDetectionHostTest.*
 -CloudBinaryUploadServiceTest.*
 -CloudPrintProxyPolicyTest.*
+-ColorProviderTest.OmniboxContrast/*
 -CommanderEntityMatchTest.*
 -ComponentLoaderTest.*
 -ConfigParserTest.*
