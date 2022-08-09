@@ -11,7 +11,7 @@ import * as HWInterfaces from '../hardware/interfaces'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 
-export type HardwareKeyring = EthereumLedgerBridgeKeyring | TrezorBridgeKeyring | SolanaLedgerBridgeKeyring
+export type HardwareKeyring = HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.LedgerFilecoinKeyring | HWInterfaces.LedgerSolanaKeyring
 
 export function getCoinName (coin: BraveWallet.CoinType) {
   switch (coin) {
