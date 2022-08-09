@@ -626,6 +626,7 @@ export type BlockExplorerUrlTypes =
   | 'address'
   | 'token'
   | 'contract'
+  | 'nft'
 
 export interface CreateAccountOptionsType {
   name: string

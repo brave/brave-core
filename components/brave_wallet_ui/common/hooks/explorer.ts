@@ -10,12 +10,18 @@ import { BraveWallet, BlockExplorerUrlTypes } from '../../constants/types'
 import Amount from '../../utils/amount'
 
 export function buildExplorerUrl (
-    network: BraveWallet.NetworkInfo, type: BlockExplorerUrlTypes,
-    value?: string, id?: string) {
+  network: BraveWallet.NetworkInfo, type: BlockExplorerUrlTypes,
+  value?: string, id?: string) {
   const explorerURL = network.blockExplorerUrls[0]
 
+  const fallbackURL = `${explorerURL}/${value}`
+
+  if (type === 'nft') {
+    return id ? `${explorerURL}/token/${value}?a=${new Amount(id).format()}` : fallbackURL
+  }
+
   if (type === 'contract') {
-    return id ? `${explorerURL}/${value}?a=${new Amount(id).format()}` : `${explorerURL}/${value}}`
+    return id ? `${explorerURL}/${value}?a=${new Amount(id).format()}` : fallbackURL
   }
 
   const isFileCoinNet =
