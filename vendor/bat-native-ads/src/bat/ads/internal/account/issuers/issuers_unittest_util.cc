@@ -32,13 +32,13 @@ IssuersInfo BuildIssuers(const int ping,
   issuers.ping = ping;
 
   if (!confirmations_public_keys.empty()) {
-    const IssuerInfo& confirmations_issuer =
+    const IssuerInfo confirmations_issuer =
         BuildIssuer(IssuerType::kConfirmations, confirmations_public_keys);
     issuers.issuers.push_back(confirmations_issuer);
   }
 
   if (!payments_public_keys.empty()) {
-    const IssuerInfo& payments_issuer =
+    const IssuerInfo payments_issuer =
         BuildIssuer(IssuerType::kPayments, payments_public_keys);
     issuers.issuers.push_back(payments_issuer);
   }
@@ -47,7 +47,7 @@ IssuersInfo BuildIssuers(const int ping,
 }
 
 void BuildAndSetIssuers() {
-  const IssuersInfo& issuers =
+  const IssuersInfo issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},

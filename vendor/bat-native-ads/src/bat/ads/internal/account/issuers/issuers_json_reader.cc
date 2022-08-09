@@ -15,27 +15,24 @@ namespace ads {
 namespace JSONReader {
 
 absl::optional<IssuersInfo> ReadIssuers(const std::string& json) {
-  const absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
 
-  const absl::optional<int> ping_optional = ParsePing(*value);
-  if (!ping_optional) {
+  const absl::optional<int> ping = ParsePing(*root);
+  if (!ping) {
     return absl::nullopt;
   }
-  const int ping = ping_optional.value();
 
-  const absl::optional<IssuerList>& issuers_optional =
-      ParseIssuers(value->GetDict());
-  if (!issuers_optional) {
+  const absl::optional<IssuerList> issuers = ParseIssuers(root->GetDict());
+  if (!issuers) {
     return absl::nullopt;
   }
-  const IssuerList& issuers = issuers_optional.value();
 
   IssuersInfo new_issuers;
-  new_issuers.ping = ping;
-  new_issuers.issuers = issuers;
+  new_issuers.ping = *ping;
+  new_issuers.issuers = *issuers;
 
   return new_issuers;
 }

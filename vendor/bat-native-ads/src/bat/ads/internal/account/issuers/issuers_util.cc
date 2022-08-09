@@ -7,11 +7,12 @@
 
 #include <algorithm>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
+#include "bat/ads/internal/account/issuers/issuers_value_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -50,15 +51,23 @@ void SetIssuers(const IssuersInfo& issuers) {
   AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIssuerPing,
                                                  issuers.ping);
 
-  ConfirmationStateManager::GetInstance()->SetIssuers(issuers.issuers);
-  ConfirmationStateManager::GetInstance()->Save();
+  AdsClientHelper::GetInstance()->SetListPref(prefs::kIssuers,
+                                              IssuersToValue(issuers.issuers));
 }
 
-IssuersInfo GetIssuers() {
+absl::optional<IssuersInfo> GetIssuers() {
   IssuersInfo issuers;
+
   issuers.ping =
       AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
-  issuers.issuers = ConfirmationStateManager::GetInstance()->GetIssuers();
+
+  const absl::optional<base::Value::List> list =
+      AdsClientHelper::GetInstance()->GetListPref(prefs::kIssuers);
+  if (!list) {
+    return absl::nullopt;
+  }
+
+  issuers.issuers = ValueToIssuers(*list);
 
   return issuers;
 }
@@ -73,8 +82,12 @@ bool HasIssuers() {
 }
 
 bool HasIssuersChanged(const IssuersInfo& issuers) {
-  const IssuersInfo& last_issuers = GetIssuers();
-  if (issuers == last_issuers) {
+  const absl::optional<IssuersInfo> last_issuers = GetIssuers();
+  if (!last_issuers) {
+    return false;
+  }
+
+  if (issuers == *last_issuers) {
     return false;
   }
 
@@ -82,11 +95,14 @@ bool HasIssuersChanged(const IssuersInfo& issuers) {
 }
 
 bool IssuerExistsForType(const IssuerType issuer_type) {
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  if (!issuers) {
+    return false;
+  }
 
-  const absl::optional<IssuerInfo>& issuer_optional =
-      GetIssuerForType(issuers, issuer_type);
-  if (!issuer_optional) {
+  const absl::optional<IssuerInfo> issuer =
+      GetIssuerForType(*issuers, issuer_type);
+  if (!issuer) {
     return false;
   }
 
@@ -108,16 +124,18 @@ absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
 
 bool PublicKeyExistsForIssuerType(const IssuerType issuer_type,
                                   const std::string& public_key) {
-  const IssuersInfo& issuers = GetIssuers();
-
-  const absl::optional<IssuerInfo>& issuer_optional =
-      GetIssuerForType(issuers, issuer_type);
-  if (!issuer_optional) {
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  if (!issuers) {
     return false;
   }
-  const IssuerInfo& issuer = issuer_optional.value();
 
-  return PublicKeyExists(issuer, public_key);
+  const absl::optional<IssuerInfo> issuer =
+      GetIssuerForType(*issuers, issuer_type);
+  if (!issuer) {
+    return false;
+  }
+
+  return PublicKeyExists(*issuer, public_key);
 }
 
 }  // namespace ads

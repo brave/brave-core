@@ -15,6 +15,7 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -43,9 +44,9 @@ class BatAdsIssuersTest : public UnitTestBase {
 
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Arrange
-  const URLEndpointMap& endpoints = {{// Issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLEndpointMap endpoints = {{// Issuers request
+                                     R"(/v1/issuers/)",
+                                     {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -80,7 +81,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -100,9 +101,9 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
-  const URLEndpointMap& endpoints = {{// Issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, "FOOBAR"}}}};
+  const URLEndpointMap endpoints = {{// Issuers request
+                                     R"(/v1/issuers/)",
+                                     {{net::HTTP_OK, "FOOBAR"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
@@ -116,15 +117,18 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   FastForwardClockToNextPendingTask();
 
   // Assert
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
+
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
-  const URLEndpointMap& endpoints = {{// Issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_NOT_FOUND, ""}}}};
+  const URLEndpointMap endpoints = {{// Issuers request
+                                     R"(/v1/issuers/)",
+                                     {{net::HTTP_NOT_FOUND, ""}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
@@ -138,8 +142,11 @@ TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   FastForwardClockToNextPendingTask();
 
   // Assert
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
+
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 }  // namespace ads

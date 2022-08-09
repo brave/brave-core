@@ -28,6 +28,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/statement_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -214,10 +215,11 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -226,7 +228,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
                     {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
                     {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
@@ -281,12 +283,13 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
   const IssuersInfo expected_issuers;
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
@@ -347,17 +350,18 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
@@ -393,17 +397,18 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
