@@ -576,6 +576,7 @@
 -ProfileBrowserTest.*
 -ProfileBrowserTestWithoutDestroyProfile.*
 -ProfileCustomizationBubbleBrowserTest.*
+-ProfileCustomizationDialogBrowserTest.*
 -ProfileKeyedServiceBrowserTest.SystemProfileOTR_NeededServices
 -ProfileKeyedServiceBrowserTest.SystemProfileParent_NeededServices
 -ProfileListDesktopBrowserTest.*
