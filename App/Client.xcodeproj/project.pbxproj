@@ -246,7 +246,7 @@
 		27FDB77C284FDB9D00ACEB16 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "Shortcuts/zh-TW.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
 		27FDCE512835AE0800E78FAD /* l10n.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = l10n.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27FDCED72835B3D300E78FAD /* SharedStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedStrings.swift; path = ../Sources/Shared/SharedStrings.swift; sourceTree = SOURCE_ROOT; };
-		27FDCED92835B5AA00E78FAD /* BraveStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BraveStrings.swift; path = ../BraveShared/BraveStrings.swift; sourceTree = SOURCE_ROOT; };
+		27FDCED92835B5AA00E78FAD /* BraveStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BraveStrings.swift; path = ../Sources/BraveShared/BraveStrings.swift; sourceTree = SOURCE_ROOT; };
 		27FDCEDB2835B66D00E78FAD /* WalletStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletStrings.swift; path = ../BraveWallet/WalletStrings.swift; sourceTree = SOURCE_ROOT; };
 		2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrowserIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
