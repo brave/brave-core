@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import TrezorConnect, { Unsuccessful, Success } from 'trezor-connect'
+import TrezorConnect from 'trezor-connect'
+import { Unsuccessful, Success } from '../common/hardware/trezor/trezor-connect-types'
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript/networks/ethereum'
 import {
   TrezorCommand,

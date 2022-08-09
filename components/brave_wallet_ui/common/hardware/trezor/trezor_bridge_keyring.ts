@@ -31,7 +31,7 @@ import {
   SignHardwareOperationResult,
   TrezorDerivationPaths
 } from '../types'
-import { Unsuccessful } from 'trezor-connect'
+import { Unsuccessful } from './trezor-connect-types'
 import { TrezorKeyring } from '../interfaces'
 import { HardwareVendor } from '../../api/hardware_keyrings'
 

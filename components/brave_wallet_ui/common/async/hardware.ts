@@ -26,7 +26,7 @@ import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import { BraveWallet } from '../../constants/types'
 import { LedgerEthereumKeyring, LedgerFilecoinKeyring, LedgerSolanaKeyring } from '../hardware/interfaces'
-import { EthereumSignedTx } from 'trezor-connect'
+import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
 import { SignedLotusMessage } from '@glif/filecoin-message'
 
 export function dialogErrorFromLedgerErrorCode (code: string | number): HardwareWalletResponseCodeType {
