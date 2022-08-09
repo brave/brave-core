@@ -178,7 +178,7 @@ absl::optional<base::Value> AdBlockEngine::UrlCosmeticResources(
   return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
 
-base::Value AdBlockEngine::HiddenClassIdSelectors(
+base::Value::List AdBlockEngine::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
@@ -186,9 +186,10 @@ base::Value AdBlockEngine::HiddenClassIdSelectors(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
 
   if (!result) {
-    return base::ListValue();
+    return base::Value::List();
   } else {
-    return std::move(*result);
+    DCHECK(result->is_list());
+    return std::move(result->GetList());
   }
 }
 

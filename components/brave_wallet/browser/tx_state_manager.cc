@@ -25,22 +25,23 @@ constexpr size_t kMaxRejectedTxNum = 10;
 }  // namespace
 
 // static
-bool TxStateManager::ValueToTxMeta(const base::Value& value, TxMeta* meta) {
-  const std::string* id = value.FindStringKey("id");
+bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
+                                   TxMeta* meta) {
+  const std::string* id = value.FindString("id");
   if (!id)
     return false;
   meta->set_id(*id);
 
-  absl::optional<int> status = value.FindIntKey("status");
+  absl::optional<int> status = value.FindInt("status");
   if (!status)
     return false;
   meta->set_status(static_cast<mojom::TransactionStatus>(*status));
-  const std::string* from = value.FindStringKey("from");
+  const std::string* from = value.FindString("from");
   if (!from)
     return false;
   meta->set_from(*from);
 
-  const base::Value* created_time = value.FindKey("created_time");
+  const base::Value* created_time = value.Find("created_time");
   if (!created_time)
     return false;
   absl::optional<base::Time> created_time_from_value =
@@ -49,7 +50,7 @@ bool TxStateManager::ValueToTxMeta(const base::Value& value, TxMeta* meta) {
     return false;
   meta->set_created_time(*created_time_from_value);
 
-  const base::Value* submitted_time = value.FindKey("submitted_time");
+  const base::Value* submitted_time = value.Find("submitted_time");
   if (!submitted_time)
     return false;
   absl::optional<base::Time> submitted_time_from_value =
@@ -58,7 +59,7 @@ bool TxStateManager::ValueToTxMeta(const base::Value& value, TxMeta* meta) {
     return false;
   meta->set_submitted_time(*submitted_time_from_value);
 
-  const base::Value* confirmed_time = value.FindKey("confirmed_time");
+  const base::Value* confirmed_time = value.Find("confirmed_time");
   if (!confirmed_time)
     return false;
   absl::optional<base::Time> confirmed_time_from_value =
@@ -67,12 +68,12 @@ bool TxStateManager::ValueToTxMeta(const base::Value& value, TxMeta* meta) {
     return false;
   meta->set_confirmed_time(*confirmed_time_from_value);
 
-  const std::string* tx_hash = value.FindStringKey("tx_hash");
+  const std::string* tx_hash = value.FindString("tx_hash");
   if (!tx_hash)
     return false;
   meta->set_tx_hash(*tx_hash);
 
-  const std::string* origin_spec = value.FindStringKey("origin");
+  const std::string* origin_spec = value.FindString("origin");
   // That's ok not to have origin.
   if (origin_spec) {
     meta->set_origin(url::Origin::Create(GURL(*origin_spec)));
@@ -92,11 +93,11 @@ TxStateManager::~TxStateManager() = default;
 
 void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::Value* dict = update.Get();
+  base::Value::Dict& dict = update.Get()->GetDict();
   const std::string path = GetTxPrefPathPrefix() + "." + meta.id();
 
-  bool is_add = dict->FindPath(path) == nullptr;
-  dict->SetPath(path, meta.ToValue());
+  bool is_add = dict.FindByDottedPath(path) == nullptr;
+  dict.SetByDottedPath(path, meta.ToValue());
   if (!is_add) {
     for (auto& observer : observers_)
       observer.OnTransactionStatusChanged(meta.ToTransactionInfo());
@@ -112,10 +113,10 @@ void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
 }
 
 std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& id) {
-  const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
-  if (!dict)
-    return nullptr;
-  const base::Value* value = dict->FindPath(GetTxPrefPathPrefix() + "." + id);
+  const base::Value::Dict& dict =
+      *prefs_->GetValueDict(kBraveWalletTransactions);
+  const base::Value::Dict* value =
+      dict.FindDictByDottedPath(GetTxPrefPathPrefix() + "." + id);
   if (!value)
     return nullptr;
 
@@ -125,26 +126,28 @@ std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& id) {
 void TxStateManager::DeleteTx(const std::string& id) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::Value* dict = update.Get();
-  dict->RemovePath(GetTxPrefPathPrefix() + "." + id);
+  dict->GetDict().RemoveByDottedPath(GetTxPrefPathPrefix() + "." + id);
 }
 
 void TxStateManager::WipeTxs() {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::Value* dict = update.Get();
-  dict->RemovePath(GetTxPrefPathPrefix());
+  dict->GetDict().RemoveByDottedPath(GetTxPrefPathPrefix());
 }
 
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
     absl::optional<mojom::TransactionStatus> status,
     absl::optional<std::string> from) {
   std::vector<std::unique_ptr<TxMeta>> result;
-  const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
-  const base::Value* network_dict = dict->FindPath(GetTxPrefPathPrefix());
+  const base::Value::Dict& dict =
+      *prefs_->GetValueDict(kBraveWalletTransactions);
+  const base::Value::Dict* network_dict =
+      dict.FindDictByDottedPath(GetTxPrefPathPrefix());
   if (!network_dict)
     return result;
 
-  for (const auto it : network_dict->DictItems()) {
-    std::unique_ptr<TxMeta> meta = ValueToTxMeta(it.second);
+  for (const auto it : *network_dict) {
+    std::unique_ptr<TxMeta> meta = ValueToTxMeta(it.second.GetDict());
     if (!meta) {
       continue;
     }

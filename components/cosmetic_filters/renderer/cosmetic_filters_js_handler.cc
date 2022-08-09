@@ -439,23 +439,22 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     ExecuteObservingBundleEntryPoint();
 }
 
-void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
+void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
+    base::Value::Dict result) {
   if (generichide_) {
     return;
   }
 
-  DCHECK(result.is_dict());
-
-  base::Value* hide_selectors = result.FindListKey("hide_selectors");
+  base::Value::List* hide_selectors = result.FindList("hide_selectors");
   DCHECK(hide_selectors);
 
-  base::Value* force_hide_selectors =
-      result.FindListKey("force_hide_selectors");
+  base::Value::List* force_hide_selectors =
+      result.FindList("force_hide_selectors");
   DCHECK(force_hide_selectors);
 
-  if (force_hide_selectors->GetList().size() != 0) {
+  if (force_hide_selectors->size() != 0) {
     std::string stylesheet = "";
-    for (auto& selector : force_hide_selectors->GetList()) {
+    for (auto& selector : *force_hide_selectors) {
       DCHECK(selector.is_string());
       stylesheet += selector.GetString() + "{display:none !important}";
     }
@@ -469,7 +468,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
 
   if (enabled_1st_party_cf_) {
     std::string stylesheet = "";
-    for (auto& selector : hide_selectors->GetList()) {
+    for (auto& selector : *hide_selectors) {
       DCHECK(selector.is_string());
       stylesheet += selector.GetString() + "{display:none !important}";
     }
@@ -484,7 +483,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
     // Building a script for stylesheet modifications
     std::string new_selectors_script =
         base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
-    if (hide_selectors->GetList().size() != 0) {
+    if (hide_selectors->size() != 0) {
       web_frame->ExecuteScriptInIsolatedWorld(
           isolated_world_id_,
           blink::WebScriptSource(

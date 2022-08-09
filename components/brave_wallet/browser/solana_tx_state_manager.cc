@@ -23,19 +23,19 @@ SolanaTxStateManager::SolanaTxStateManager(PrefService* prefs,
 SolanaTxStateManager::~SolanaTxStateManager() = default;
 
 std::unique_ptr<SolanaTxMeta> SolanaTxStateManager::ValueToSolanaTxMeta(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   return std::unique_ptr<SolanaTxMeta>{
       static_cast<SolanaTxMeta*>(ValueToTxMeta(value).release())};
 }
 
 std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   std::unique_ptr<SolanaTxMeta> meta = std::make_unique<SolanaTxMeta>();
 
   if (!TxStateManager::ValueToTxMeta(value, meta.get()))
     return nullptr;
 
-  const base::Value* tx_value = value.FindKey("tx");
+  const base::Value* tx_value = value.Find("tx");
   if (!tx_value)
     return nullptr;
   auto tx = SolanaTransaction::FromValue(*tx_value);
@@ -43,7 +43,7 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
     return nullptr;
   meta->set_tx(std::move(tx));
 
-  const base::Value* signature_status_value = value.FindKey("signature_status");
+  const base::Value* signature_status_value = value.Find("signature_status");
   if (!signature_status_value)
     return nullptr;
   absl::optional<SolanaSignatureStatus> signature_status =

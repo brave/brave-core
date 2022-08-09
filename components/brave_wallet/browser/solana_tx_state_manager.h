@@ -32,12 +32,14 @@ class SolanaTxStateManager : public TxStateManager {
   SolanaTxStateManager operator=(const SolanaTxStateManager&) = delete;
 
   std::unique_ptr<SolanaTxMeta> GetSolanaTx(const std::string& id);
-  std::unique_ptr<SolanaTxMeta> ValueToSolanaTxMeta(const base::Value& value);
+  std::unique_ptr<SolanaTxMeta> ValueToSolanaTxMeta(
+      const base::Value::Dict& value);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTxStateManagerUnitTest, GetTxPrefPathPrefix);
 
-  std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
+  std::unique_ptr<TxMeta> ValueToTxMeta(
+      const base::Value::Dict& value) override;
   std::string GetTxPrefPathPrefix() override;
 };
 

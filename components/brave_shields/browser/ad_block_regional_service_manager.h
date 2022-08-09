@@ -75,7 +75,7 @@ class AdBlockRegionalServiceManager
   void EnableFilterList(const std::string& uuid, bool enabled);
 
   absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
-  base::Value HiddenClassIdSelectors(
+  base::Value::List HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);

@@ -16,50 +16,50 @@ namespace brave_wallet {
 namespace solana {
 
 std::string getBalance(const std::string& pubkey) {
-  return GetJsonRpc1Param("getBalance", pubkey);
+  return GetJsonRpcString("getBalance", pubkey);
 }
 
 std::string getTokenAccountBalance(const std::string& pubkey) {
-  return GetJsonRpc1Param("getTokenAccountBalance", pubkey);
+  return GetJsonRpcString("getTokenAccountBalance", pubkey);
 }
 
 std::string sendTransaction(
     const std::string& signed_tx,
     absl::optional<SolanaTransaction::SendOptions> options) {
-  base::Value params(base::Value::Type::LIST);
+  base::Value::List params;
   params.Append(signed_tx);
 
   // Set encoding to base64 because the document says base58 is currently the
   // default value but is slow and deprecated.
-  base::Value configuration(base::Value::Type::DICTIONARY);
-  configuration.SetStringKey("encoding", "base64");
+  base::Value::Dict configuration;
+  configuration.Set("encoding", "base64");
 
   if (options) {
     if (options->max_retries)
-      configuration.SetStringKey("maxRetries",
-                                 base::NumberToString(*options->max_retries));
+      configuration.Set("maxRetries",
+                        base::NumberToString(*options->max_retries));
     if (options->preflight_commitment)
-      configuration.SetStringKey("preflightCommitment",
-                                 *options->preflight_commitment);
+      configuration.Set("preflightCommitment", *options->preflight_commitment);
     if (options->skip_preflight)
-      configuration.SetBoolKey("skipPreflight", *options->skip_preflight);
+      configuration.Set("skipPreflight", *options->skip_preflight);
   }
 
   params.Append(std::move(configuration));
 
-  base::Value dictionary = GetJsonRpcDictionary("sendTransaction", &params);
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("sendTransaction", std::move(params));
   return std::string(json::convert_string_value_to_uint64(
       "/params/1/maxRetries", GetJSON(dictionary), true));
 }
 
 std::string getLatestBlockhash() {
-  return GetJsonRpcNoParams("getLatestBlockhash");
+  return GetJsonRpcString("getLatestBlockhash");
 }
 
 std::string getSignatureStatuses(
     const std::vector<std::string>& tx_signatures) {
-  base::Value params(base::Value::Type::LIST);
-  base::Value tx_signatures_value(base::Value::Type::LIST);
+  base::Value::List params;
+  base::Value::List tx_signatures_value;
   for (const auto& tx_signature : tx_signatures)
     tx_signatures_value.Append(tx_signature);
   params.Append(std::move(tx_signatures_value));
@@ -67,35 +67,36 @@ std::string getSignatureStatuses(
   // Solana node will search its ledger cache for any signatures not found in
   // the recent status cache. Enable this since we may try to update a pending
   // transaction sitting for a while.
-  base::Value configuration(base::Value::Type::DICTIONARY);
-  configuration.SetBoolKey("searchTransactionHistory", true);
+  base::Value::Dict configuration;
+  configuration.Set("searchTransactionHistory", true);
   params.Append(std::move(configuration));
 
-  base::Value dictionary =
-      GetJsonRpcDictionary("getSignatureStatuses", &params);
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("getSignatureStatuses", std::move(params));
   return GetJSON(dictionary);
 }
 
 std::string getAccountInfo(const std::string& pubkey) {
-  base::Value params(base::Value::Type::LIST);
+  base::Value::List params;
   params.Append(pubkey);
 
   // Set encoding to base64 because the document says base58 is currently the
   // default value but is slow and deprecated.
-  base::Value configuration(base::Value::Type::DICTIONARY);
-  configuration.SetStringKey("encoding", "base64");
+  base::Value::Dict configuration;
+  configuration.Set("encoding", "base64");
   params.Append(std::move(configuration));
 
-  base::Value dictionary = GetJsonRpcDictionary("getAccountInfo", &params);
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("getAccountInfo", std::move(params));
   return GetJSON(dictionary);
 }
 
 std::string getFeeForMessage(const std::string& message) {
-  return GetJsonRpc1Param("getFeeForMessage", message);
+  return GetJsonRpcString("getFeeForMessage", message);
 }
 
 std::string getBlockHeight() {
-  return GetJsonRpcNoParams("getBlockHeight");
+  return GetJsonRpcString("getBlockHeight");
 }
 
 }  // namespace solana

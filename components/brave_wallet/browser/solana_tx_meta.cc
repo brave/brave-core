@@ -25,10 +25,10 @@ bool SolanaTxMeta::operator==(const SolanaTxMeta& meta) const {
          signature_status_ == meta.signature_status_ && *tx_ == *meta.tx_;
 }
 
-base::Value SolanaTxMeta::ToValue() const {
-  base::Value dict = TxMeta::ToValue();
-  dict.SetKey("tx", tx_->ToValue());
-  dict.SetKey("signature_status", signature_status_.ToValue());
+base::Value::Dict SolanaTxMeta::ToValue() const {
+  base::Value::Dict dict = TxMeta::ToValue();
+  dict.Set("tx", tx_->ToValue());
+  dict.Set("signature_status", signature_status_.ToValue());
   return dict;
 }
 

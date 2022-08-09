@@ -182,7 +182,8 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
       regional_service_manager()->UrlCosmeticResources(url);
 
   if (regional_resources && regional_resources->is_dict()) {
-    MergeResourcesInto(std::move(*regional_resources), &*resources,
+    MergeResourcesInto(std::move(regional_resources->GetDict()),
+                       resources->GetIfDict(),
                        /*force_hide=*/true);
   }
 
@@ -190,7 +191,8 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
       custom_filters_service()->UrlCosmeticResources(url);
 
   if (custom_resources && custom_resources->is_dict()) {
-    MergeResourcesInto(std::move(*custom_resources), &*resources,
+    MergeResourcesInto(std::move(custom_resources->GetDict()),
+                       resources->GetIfDict(),
                        /*force_hide=*/true);
   }
 
@@ -198,7 +200,8 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
       subscription_service_manager()->UrlCosmeticResources(url);
 
   if (subscription_resources && subscription_resources->is_dict()) {
-    MergeResourcesInto(std::move(*subscription_resources), &*resources,
+    MergeResourcesInto(std::move(subscription_resources->GetDict()),
+                       resources->GetIfDict(),
                        /*force_hide=*/true);
   }
 
@@ -214,42 +217,38 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
 // For now, this returns a dict with two properties:
 //  - "hide_selectors" - wraps the result from the default engine
 //  - "force_hide_selectors" - wraps appended results from all other engines
-base::Value AdBlockService::HiddenClassIdSelectors(
+base::Value::Dict AdBlockService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  base::Value hide_selectors =
+  base::Value::List hide_selectors =
       default_service()->HiddenClassIdSelectors(classes, ids, exceptions);
 
-  base::Value regional_selectors =
+  base::Value::List regional_selectors =
       regional_service_manager()->HiddenClassIdSelectors(classes, ids,
                                                          exceptions);
-  DCHECK(regional_selectors.is_list());
 
-  base::Value custom_selectors =
+  base::Value::List custom_selectors =
       custom_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                        exceptions);
-  DCHECK(custom_selectors.is_list());
-
-  base::Value subscription_selectors =
+  base::Value::List subscription_selectors =
       subscription_service_manager()->HiddenClassIdSelectors(classes, ids,
                                                              exceptions);
-  DCHECK(subscription_selectors.is_list());
 
-  base::Value force_hide_selectors = std::move(regional_selectors);
+  base::Value::List force_hide_selectors = std::move(regional_selectors);
 
-  for (auto& custom_selector : custom_selectors.GetList()) {
+  for (auto& custom_selector : custom_selectors) {
     force_hide_selectors.Append(std::move(custom_selector));
   }
 
-  for (auto& subscription_selectors : subscription_selectors.GetList()) {
+  for (auto& subscription_selectors : subscription_selectors) {
     force_hide_selectors.Append(std::move(subscription_selectors));
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("hide_selectors", std::move(hide_selectors));
-  result.SetKey("force_hide_selectors", std::move(force_hide_selectors));
+  base::Value::Dict result;
+  result.Set("hide_selectors", std::move(hide_selectors));
+  result.Set("force_hide_selectors", std::move(force_hide_selectors));
   return result;
 }
 

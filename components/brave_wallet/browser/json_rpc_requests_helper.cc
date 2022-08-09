@@ -11,71 +11,31 @@
 
 namespace brave_wallet {
 
-base::Value GetJsonRpcDictionary(const std::string& method,
-                                 base::Value* params) {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetKey("jsonrpc", base::Value("2.0"));
-  dictionary.SetKey("method", base::Value(method));
-  dictionary.SetKey("params", std::move(*params));
+namespace internal {
+
+base::Value::Dict ComposeRpcDict(base::StringPiece method) {
+  base::Value::Dict dict;
+  dict.Set("jsonrpc", "2.0");
+  dict.Set("method", method);
   // I don't think we need to use this param, but it is required,
   // so always set it to 1 for now..
-  dictionary.SetKey("id", base::Value(1));
-  return dictionary;
+  dict.Set("id", 1);
+  return dict;
 }
 
-std::string GetJSON(const base::Value& dictionary) {
+}  // namespace internal
+
+std::string GetJSON(base::ValueView dict) {
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
+  base::JSONWriter::Write(dict, &json);
   return json;
 }
 
-std::string GetJsonRpcNoParams(const std::string& method) {
-  base::Value params(base::Value::Type::LIST);
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-std::string GetJsonRpc1Param(const std::string& method,
-                             const std::string& val) {
-  base::Value params(base::Value::Type::LIST);
-  params.Append(base::Value(val));
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-std::string GetJsonRpc2Params(const std::string& method,
-                              const std::string& val1,
-                              const std::string& val2) {
-  return GetJsonRpc2Params(method, base::Value(val1), base::Value(val2));
-}
-
-std::string GetJsonRpc2Params(const std::string& method,
-                              base::Value&& val1,
-                              base::Value&& val2) {
-  base::Value params(base::Value::Type::LIST);
-  params.Append(std::move(val1));
-  params.Append(std::move(val2));
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-std::string GetJsonRpc3Params(const std::string& method,
-                              const std::string& val1,
-                              const std::string& val2,
-                              const std::string& val3) {
-  base::Value params(base::Value::Type::LIST);
-  params.Append(base::Value(val1));
-  params.Append(base::Value(val2));
-  params.Append(base::Value(val3));
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-void AddKeyIfNotEmpty(base::Value* dict,
-                      const std::string& name,
-                      const std::string& val) {
+void AddKeyIfNotEmpty(base::Value::Dict* dict,
+                      base::StringPiece name,
+                      base::StringPiece val) {
   if (!val.empty()) {
-    dict->SetKey(name, base::Value(val));
+    dict->Set(name, val);
   }
 }
 

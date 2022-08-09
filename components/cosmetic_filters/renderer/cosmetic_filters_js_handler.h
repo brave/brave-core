@@ -65,7 +65,7 @@ class CosmeticFiltersJSHandler {
   void OnUrlCosmeticResources(base::OnceClosure callback,
                               base::Value result);
   void CSSRulesRoutine(const base::Value::Dict& resources_dict);
-  void OnHiddenClassIdSelectors(base::Value result);
+  void OnHiddenClassIdSelectors(base::Value::Dict result);
   bool OnIsFirstParty(const std::string& url_string);
 
   void InjectStylesheet(const std::string& stylesheet);
