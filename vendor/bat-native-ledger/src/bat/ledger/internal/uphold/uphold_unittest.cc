@@ -1685,8 +1685,49 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::REGION_NOT_SUPPORTED,
       type::WalletStatus::NOT_CONNECTED
     },
+    LinkWalletParamType{  // Mismatched provider account regions.
+      "06_mismatched_provider_account_regions",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
+        {}
+      },
+      false,
+      R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_BAD_REQUEST,
+        R"(
+          {
+              "message": "error linking wallet: mismatched provider account regions: geo reset is different",
+              "code": 400
+          }
+        )",
+        {}
+      },
+      type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS,
+      type::WalletStatus::NOT_CONNECTED
+    },
     LinkWalletParamType{  // Rewards Link (Claim) Wallet failed.
-      "06_link_wallet_failed",
+      "07_link_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -1722,7 +1763,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::PENDING
     },
     LinkWalletParamType{  // Happy path.
-      "07_happy_path",
+      "08_happy_path",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},

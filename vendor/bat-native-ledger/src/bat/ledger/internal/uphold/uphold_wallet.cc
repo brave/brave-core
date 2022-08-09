@@ -299,6 +299,7 @@ void UpholdWallet::OnLinkWallet(ledger::ResultCallback callback,
     case type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
     case type::Result::FLAGGED_WALLET:
     case type::Result::REGION_NOT_SUPPORTED:
+    case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       // Entering NOT_CONNECTED.
       ledger_->uphold()->DisconnectWallet("");
       ledger_->database()->SaveEventLog(
