@@ -224,6 +224,7 @@ void GeminiAuthorization::OnClaimWallet(
     case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
     case type::Result::FLAGGED_WALLET:
     case type::Result::REGION_NOT_SUPPORTED:
+    case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(result),
           constant::kWalletGemini + std::string("/") +
