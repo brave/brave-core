@@ -346,6 +346,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveConstants.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDbUtil.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ConfigurationUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/LiveDataUtil.java",
