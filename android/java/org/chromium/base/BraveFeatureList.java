@@ -5,10 +5,6 @@
 
 package org.chromium.base;
 
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
-
-@JNINamespace("chrome::android")
 public abstract class BraveFeatureList {
     public static final String BRAVE_REWARDS = "BraveRewards";
     public static final String NATIVE_BRAVE_WALLET = "NativeBraveWallet";
@@ -20,14 +16,4 @@ public abstract class BraveFeatureList {
     public static final String ENABLE_TAB_GRID = "enable-tab-grid-layout";
     public static final String BRAVE_WALLET_SOLANA = "BraveWalletSolana";
     public static final String BRAVE_SEARCH_OMNIBOX_BANNER = "BraveSearchOmniboxBanner";
-
-    public static void enableFeature(
-            String featureName, boolean enabled, boolean fallbackToDefault) {
-        BraveFeatureListJni.get().enableFeature(featureName, enabled, fallbackToDefault);
-    }
-
-    @NativeMethods
-    interface Natives {
-        void enableFeature(String featureName, boolean enabled, boolean fallbackToDefault);
-    }
 }
