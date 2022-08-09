@@ -417,9 +417,7 @@
 -Mode/BackgroundColorChangeWebAppBrowserTest.*
 -MojoFileSystemAccessBrowserTest.CanResolveFilePath
 -MojoJSInterfaceBrokerBrowserTest.*
--MultiOriginSessionRestoreTest.BackToAboutBlank1
--MultiOriginSessionRestoreTest.BackToAboutBlank2
--MultiOriginSessionRestoreTest.SecFetchSite
+-MultiOriginSessionRestoreTest.*
 -MultiPageBrowserTest.*
 -MultipleTabSharingUIViewsBrowserTest.*
 -MultiTabLoadingPageLoadMetricsBrowserTest.MultiTabForeground
