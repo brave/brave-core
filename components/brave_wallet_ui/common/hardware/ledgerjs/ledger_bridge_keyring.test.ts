@@ -19,7 +19,8 @@ import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
 let uuid = 0
 window.crypto = {
   randomUUID (): string {
-    return uuid++
+    uuid++
+    return uuid.toString()
   }
 }
 
