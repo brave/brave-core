@@ -46,7 +46,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
-    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 22;
+    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 23;
 
     private int mItemsLeft;
 

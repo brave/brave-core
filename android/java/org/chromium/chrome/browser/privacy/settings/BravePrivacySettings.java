@@ -50,6 +50,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
+    private static final String PREF_FINGERPRINT_LANGUAGE = "fingerprint_language";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -95,7 +96,7 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
             PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_DE_AMP, PREF_HTTPSE,
             PREF_HTTPS_FIRST_MODE, PREF_BLOCK_SCRIPTS, PREF_BLOCK_CROSS_SITE_COOKIES,
-            PREF_FINGERPRINTING_PROTECTION,
+            PREF_FINGERPRINTING_PROTECTION, PREF_FINGERPRINT_LANGUAGE,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
             PREF_CLEAR_ON_EXIT, PREF_CLEAR_BROWSING_DATA,
             PREF_BRAVE_SOCIAL_BLOCKING_SECTION, // social blocking section
@@ -145,6 +146,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeBasePreference mWebrtcPolicy;
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
+    private ChromeSwitchPreference mFingerprntLanguagePref;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -186,6 +188,10 @@ public class BravePrivacySettings extends PrivacySettings {
         mFingerprintingProtectionPref =
                 (BraveDialogPreference) findPreference(PREF_FINGERPRINTING_PROTECTION);
         mFingerprintingProtectionPref.setOnPreferenceChangeListener(this);
+
+        mFingerprntLanguagePref =
+                (ChromeSwitchPreference) findPreference(PREF_FINGERPRINT_LANGUAGE);
+        mFingerprntLanguagePref.setOnPreferenceChangeListener(this);
 
         mCloseTabsOnExitPref = (ChromeSwitchPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
         mCloseTabsOnExitPref.setOnPreferenceChangeListener(this);
@@ -311,6 +317,9 @@ public class BravePrivacySettings extends PrivacySettings {
                         R.string.block_fingerprinting_option_3));
                 mFingerprintingProtectionPref.setCheckedIndex(2);
             }
+        } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
         } else if (PREF_BLOCK_CROSS_SITE_COOKIES.equals(key)) {
             if ((int) newValue == 0) {
                 BravePrefServiceBridge.getInstance().setCookiesBlockType(
@@ -510,6 +519,8 @@ public class BravePrivacySettings extends PrivacySettings {
         mSearchSuggestions.setEnabled(autocompleteEnabled);
         mAutocompleteTopSites.setEnabled(autocompleteEnabled);
         mAutocompleteBraveSuggestedSites.setEnabled(autocompleteEnabled);
+        mFingerprntLanguagePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                                   .getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
     }
 
     private void removePreferenceIfPresent(String key) {
