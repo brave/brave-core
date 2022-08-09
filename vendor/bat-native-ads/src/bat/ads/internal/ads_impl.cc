@@ -331,16 +331,14 @@ void AdsImpl::TriggerInlineContentAdEvent(
 
 void AdsImpl::TriggerSearchResultAdEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    const mojom::SearchResultAdEventType event_type,
-    TriggerSearchResultAdEventCallback callback) {
+    const mojom::SearchResultAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   if (!IsInitialized()) {
-    callback(/* success */ false, ad_mojom->placement_id, event_type);
     return;
   }
 
-  search_result_ad_->TriggerEvent(std::move(ad_mojom), event_type, callback);
+  search_result_ad_->TriggerEvent(std::move(ad_mojom), event_type);
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(

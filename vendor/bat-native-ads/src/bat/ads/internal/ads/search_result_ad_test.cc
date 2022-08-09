@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ads/search_result_ad.h"
 
-#include "base/notreached.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
@@ -14,9 +13,12 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
+
+using testing::_;
 
 namespace ads {
 
@@ -30,43 +32,62 @@ class BatAdsSearchResultAdIntegrationTest : public UnitTestBase {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
 
     ForcePermissionRules();
+
+    // Need to trigger several search result ad events.
+    privacy::SetUnblindedTokens(11);
   }
 };
 
-TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   // Arrange
 
   // Act
-  GetAds()->TriggerSearchResultAdEvent(
-      BuildSearchResultAd(), mojom::SearchResultAdEventType::kViewed,
-      [](const bool success, const std::string& placement_id,
-         const mojom::SearchResultAdEventType event_type) {
-        // Assert
-        ASSERT_TRUE(success);
+  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
+                                       mojom::SearchResultAdEventType::kViewed);
 
-        switch (event_type) {
-          case mojom::SearchResultAdEventType::kServed: {
-            EXPECT_EQ(1, GetAdEventCount(AdType::kSearchResultAd,
-                                         ConfirmationType::kServed));
-            EXPECT_EQ(0, GetHistoryItemCount());
-            EXPECT_EQ(0, GetTransactionCount());
-            break;
-          }
+  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
+                                       mojom::SearchResultAdEventType::kViewed);
 
-          case mojom::SearchResultAdEventType::kViewed: {
-            EXPECT_EQ(1, GetAdEventCount(AdType::kSearchResultAd,
-                                         ConfirmationType::kViewed));
-            EXPECT_EQ(1, GetHistoryItemCount());
-            EXPECT_EQ(1, GetTransactionCount());
-            break;
-          }
+  // Assert
+  EXPECT_EQ(
+      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+  EXPECT_EQ(
+      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+  EXPECT_EQ(2, GetHistoryItemCount());
+  EXPECT_EQ(2, GetTransactionCount());
+}
 
-          default: {
-            NOTREACHED();
-            break;
-          }
-        }
-      });
+TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
+  // Arrange
+
+  // Act
+  SearchResultAd::DeferTriggeringOfAdViewedEventForTesting();
+  // This ad viewed event triggering will be deferred.
+  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
+                                       mojom::SearchResultAdEventType::kViewed);
+
+  // This ad viewed event will be queued as the previous ad viewed event has not
+  // completed.
+  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
+                                       mojom::SearchResultAdEventType::kViewed);
+
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1, GetHistoryItemCount());
+  EXPECT_EQ(1, GetTransactionCount());
+
+  // Complete triggering of the deferred ad viewed event.
+  SearchResultAd::TriggerDeferredAdViewedEventForTesting();
+
+  // Assert
+  EXPECT_EQ(
+      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+  EXPECT_EQ(
+      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+  EXPECT_EQ(2, GetHistoryItemCount());
+  EXPECT_EQ(2, GetTransactionCount());
 }
 
 TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
@@ -74,18 +95,13 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
 
   // Act
   GetAds()->TriggerSearchResultAdEvent(
-      BuildSearchResultAd(), mojom::SearchResultAdEventType::kClicked,
-      [](const bool success, const std::string& placement_id,
-         const mojom::SearchResultAdEventType event_type) {
-        // Assert
-        ASSERT_TRUE(success);
+      BuildSearchResultAd(), mojom::SearchResultAdEventType::kClicked);
 
-        EXPECT_EQ(mojom::SearchResultAdEventType::kClicked, event_type);
-        EXPECT_EQ(1, GetAdEventCount(AdType::kSearchResultAd,
-                                     ConfirmationType::kClicked));
-        EXPECT_EQ(1, GetHistoryItemCount());
-        EXPECT_EQ(1, GetTransactionCount());
-      });
+  // Assert
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
+  EXPECT_EQ(1, GetHistoryItemCount());
+  EXPECT_EQ(1, GetTransactionCount());
 }
 
 }  // namespace ads

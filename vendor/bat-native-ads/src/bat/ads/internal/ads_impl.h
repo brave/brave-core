@@ -162,8 +162,7 @@ class AdsImpl final : public Ads,
 
   void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      const mojom::SearchResultAdEventType event_type,
-      TriggerSearchResultAdEventCallback callback) override;
+      const mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
       const mojom::AdType ad_type,

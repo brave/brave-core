@@ -203,17 +203,10 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
     ads::mojom::SearchResultAdInfoPtr ad_mojom,
-    const ads::mojom::SearchResultAdEventType event_type,
-    TriggerSearchResultAdEventCallback callback) {
+    const ads::mojom::SearchResultAdEventType event_type) {
   DCHECK(ads::mojom::IsKnownEnumValue(event_type));
 
-  auto* holder = new CallbackHolder<TriggerSearchResultAdEventCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  auto on_search_result_ad_event_callback =
-      std::bind(BatAdsImpl::OnTriggerSearchResultAdEvent, holder, _1, _2, _3);
-  ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
-                                   on_search_result_ad_event_callback);
+  ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
 }
 
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
@@ -379,20 +372,6 @@ void BatAdsImpl::OnMaybeServeInlineContentAd(
     }
 
     std::move(holder->get()).Run(dimensions, std::move(dict));
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::OnTriggerSearchResultAdEvent(
-    CallbackHolder<TriggerSearchResultAdEventCallback>* holder,
-    const bool success,
-    const std::string& placement_id,
-    const ads::mojom::SearchResultAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, placement_id, event_type);
   }
 
   delete holder;

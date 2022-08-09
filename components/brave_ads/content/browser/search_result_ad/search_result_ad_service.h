@@ -79,15 +79,8 @@ class SearchResultAdService : public KeyedService {
 
   void RunAdViewedEventPendingCallbacks(SessionID tab_id, bool ads_fetched);
 
-  bool QueueSearchResultAdViewedEvent(const std::string& creative_instance_id,
-                                      SessionID tab_id);
-
-  void TriggerSearchResultAdViewedEventFromQueue();
-
-  void OnTriggerSearchResultAdViewedEvent(
-      bool success,
-      const std::string& placement_id,
-      ads::mojom::SearchResultAdEventType ad_event_type);
+  bool TriggerSearchResultAdViewedEvent(const std::string& creative_instance_id,
+                                        SessionID tab_id);
 
   raw_ptr<AdsService> ads_service_ = nullptr;
 
@@ -96,11 +89,6 @@ class SearchResultAdService : public KeyedService {
 
   std::map<SessionID, std::vector<AdViewedEventCallbackInfo>>
       ad_viewed_event_pending_callbacks_;
-
-  base::circular_deque<ads::mojom::SearchResultAdInfoPtr>
-      ad_viewed_event_queue_;
-
-  bool trigger_ad_viewed_event_in_progress_ = false;
 
   base::OnceClosure metadata_request_finished_callback_for_testing_;
 

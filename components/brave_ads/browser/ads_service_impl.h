@@ -182,12 +182,6 @@ class AdsServiceImpl : public AdsService,
   void PrefetchNewTabPageAd() override;
   void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
 
-  void OnTriggerSearchResultAdEvent(
-      TriggerSearchResultAdEventCallback callback,
-      const bool success,
-      const std::string& placement_id,
-      const ads::mojom::SearchResultAdEventType event_type);
-
   void OnPurgeOrphanedNewTabPageAdEvents(const bool success);
 
   void OpenNewTabWithUrl(const GURL& url);
@@ -341,8 +335,7 @@ class AdsServiceImpl : public AdsService,
 
   void TriggerSearchResultAdEvent(
       ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      const ads::mojom::SearchResultAdEventType event_type,
-      TriggerSearchResultAdEventCallback callback) override;
+      const ads::mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type,

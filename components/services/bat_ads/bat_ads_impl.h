@@ -110,8 +110,7 @@ class BatAdsImpl :
 
   void TriggerSearchResultAdEvent(
       ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      const ads::mojom::SearchResultAdEventType event_type,
-      TriggerSearchResultAdEventCallback callback) override;
+      const ads::mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type,
@@ -177,12 +176,6 @@ class BatAdsImpl :
   static void OnMaybeServeNewTabPageAd(
       CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
       const absl::optional<ads::NewTabPageAdInfo>& ad);
-
-  static void OnTriggerSearchResultAdEvent(
-      CallbackHolder<TriggerSearchResultAdEventCallback>* holder,
-      const bool success,
-      const std::string& placement_id,
-      const ads::mojom::SearchResultAdEventType event_type);
 
   static void OnPurgeOrphanedAdEventsForType(
       CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>* holder,

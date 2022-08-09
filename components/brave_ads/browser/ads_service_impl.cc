@@ -1281,20 +1281,14 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     ads::mojom::SearchResultAdInfoPtr ad_mojom,
-    const ads::mojom::SearchResultAdEventType event_type,
-    TriggerSearchResultAdEventCallback callback) {
+    const ads::mojom::SearchResultAdEventType event_type) {
   DCHECK(ads::mojom::IsKnownEnumValue(event_type));
 
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, ad_mojom->placement_id,
-                            event_type);
     return;
   }
 
-  bat_ads_->TriggerSearchResultAdEvent(
-      std::move(ad_mojom), event_type,
-      base::BindOnce(&AdsServiceImpl::OnTriggerSearchResultAdEvent, AsWeakPtr(),
-                     std::move(callback)));
+  bat_ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
@@ -1979,16 +1973,6 @@ void AdsServiceImpl::OnMaybeServeInlineContentAd(
     const std::string& dimensions,
     absl::optional<base::Value::Dict> dict) {
   std::move(callback).Run(dimensions, std::move(dict));
-}
-
-void AdsServiceImpl::OnTriggerSearchResultAdEvent(
-    TriggerSearchResultAdEventCallback callback,
-    const bool success,
-    const std::string& placement_id,
-    const ads::mojom::SearchResultAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
-
-  std::move(callback).Run(success, placement_id, event_type);
 }
 
 void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
