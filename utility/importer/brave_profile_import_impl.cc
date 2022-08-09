@@ -63,6 +63,8 @@ void BraveProfileImportImpl::StartImport(
   if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
                        "Chrome", base::CompareCase::SENSITIVE)) {
     command_line->AppendSwitch("import-chrome");
+  } else if (source_profile.importer_type == importer::TYPE_EDGE_CHROMIUM) {
+    command_line->AppendSwitch("import-edge");
   } else if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
                               "Chromium", base::CompareCase::SENSITIVE)) {
     command_line->AppendSwitch("import-chromium");
