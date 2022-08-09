@@ -17,8 +17,8 @@ namespace brave_ads {
 using GetDiagnosticsCallback =
     base::OnceCallback<void(const bool, const std::string&)>;
 
-using GetStatementOfAccountsCallback = base::OnceCallback<
-    void(const bool, const double, const int, const double, const double)>;
+using GetStatementOfAccountsCallback =
+    base::OnceCallback<void(ads::mojom::StatementInfoPtr)>;
 
 using MaybeServeInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::Value::Dict&)>;

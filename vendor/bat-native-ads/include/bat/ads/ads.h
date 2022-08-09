@@ -142,9 +142,9 @@ class ADS_EXPORT Ads {
   virtual void OnWalletUpdated(const std::string& payment_id,
                                const std::string& seed) = 0;
 
-  // Called to get the statement of accounts. The callback takes two arguments -
-  // |bool| is set to |true| if successful otherwise |false|. |StatementInfo|
-  // containing info of the obtained statement of accounts.
+  // Called to get the statement of accounts. The callback takes one argument -
+  // |mojom::StatementInfo| containing info of the obtained statement of
+  // accounts.
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 

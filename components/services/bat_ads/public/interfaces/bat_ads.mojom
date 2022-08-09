@@ -137,7 +137,7 @@ interface BatAds {
   // Account
   OnWalletUpdated(string payment_id, string seed);
 
-  GetStatementOfAccounts() => (bool success, string json);
+  GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
 
   // Ads
   MaybeServeInlineContentAd(string dimensions) => (bool success, string dimensions, string ad);

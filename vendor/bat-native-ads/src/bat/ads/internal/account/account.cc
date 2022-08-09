@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/account.h"
 
+#include <utility>
+
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
@@ -124,14 +126,13 @@ void Account::Deposit(const std::string& creative_instance_id,
 
 void Account::GetStatement(GetStatementCallback callback) const {
   if (!ShouldRewardUser()) {
-    callback(/* success */ false, {});
+    callback(/* statement */ nullptr);
     return;
   }
 
-  return BuildStatement(
-      [callback](const bool success, const StatementInfo& statement) {
-        callback(success, statement);
-      });
+  return BuildStatement([callback](mojom::StatementInfoPtr statement) {
+    callback(std::move(statement));
+  });
 }
 
 ///////////////////////////////////////////////////////////////////////////////

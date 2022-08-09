@@ -366,14 +366,13 @@ HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, {});
+    callback(/* statement */ nullptr);
     return;
   }
 
-  account_->GetStatement(
-      [callback](const bool success, const StatementInfo& statement) {
-        callback(success, statement);
-      });
+  account_->GetStatement([callback](mojom::StatementInfoPtr statement) {
+    callback(std::move(statement));
+  });
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

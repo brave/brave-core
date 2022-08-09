@@ -18,6 +18,7 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "url/gurl.h"
 
@@ -241,7 +242,7 @@ void BatAdsImpl::GetStatementOfAccounts(
       AsWeakPtr(), std::move(callback));
 
   ads_->GetStatementOfAccounts(
-      std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1, _2));
+      std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1));
 }
 
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -388,11 +389,9 @@ void BatAdsImpl::OnRemoveAllHistory(
 
 void BatAdsImpl::OnGetStatementOfAccounts(
     CallbackHolder<GetStatementOfAccountsCallback>* holder,
-    const bool success,
-    const ads::StatementInfo& statement) {
+    ads::mojom::StatementInfoPtr statement) {
   if (holder->is_valid()) {
-    const std::string json = statement.ToJson();
-    std::move(holder->get()).Run(success, json);
+    std::move(holder->get()).Run(std::move(statement));
   }
 
   delete holder;

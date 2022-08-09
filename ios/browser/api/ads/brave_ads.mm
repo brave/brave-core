@@ -663,20 +663,20 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetStatementOfAccounts(^(const bool success,
-                                const ads::StatementInfo& list) {
-    if (!success) {
+  ads->GetStatementOfAccounts(^(ads::mojom::StatementInfoPtr statement) {
+    if (!statement) {
       completion(0, 0, nil);
       return;
     }
 
     NSDate* nextPaymentDate = nil;
-    if (!list.next_payment_date.is_null()) {
-      nextPaymentDate = [NSDate
-          dateWithTimeIntervalSince1970:list.next_payment_date.ToDoubleT()];
+    if (!statement->next_payment_date.is_null()) {
+      nextPaymentDate =
+          [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                    .ToDoubleT()];
     }
-    completion(list.ads_received_this_month, list.earnings_this_month,
-               nextPaymentDate);
+    completion(statement->ads_received_this_month,
+               statement->earnings_this_month, nextPaymentDate);
   });
 }
 

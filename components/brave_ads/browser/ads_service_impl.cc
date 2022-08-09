@@ -1172,7 +1172,7 @@ void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, 0, 0, 0.0, 0.0);
+    std::move(callback).Run(/* statement */ nullptr);
     return;
   }
 
@@ -2016,20 +2016,13 @@ void AdsServiceImpl::OnGetHistory(GetHistoryCallback callback,
 
 void AdsServiceImpl::OnGetStatementOfAccounts(
     GetStatementOfAccountsCallback callback,
-    const bool success,
-    const std::string& json) {
-  if (!success) {
-    std::move(callback).Run(success, 0, 0, 0.0, 0.0);
+    ads::mojom::StatementInfoPtr statement) {
+  if (!statement) {
+    std::move(callback).Run(/* statement */ nullptr);
     return;
   }
 
-  ads::StatementInfo statement;
-  statement.FromJson(json);
-
-  std::move(callback).Run(success, statement.next_payment_date.ToDoubleT(),
-                          statement.ads_received_this_month,
-                          statement.earnings_this_month,
-                          statement.earnings_last_month);
+  std::move(callback).Run(std::move(statement));
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,

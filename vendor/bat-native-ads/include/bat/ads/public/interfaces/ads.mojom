@@ -17,6 +17,13 @@ struct BuildChannelInfo {
   string name;
 };
 
+struct StatementInfo {
+  double earnings_last_month;
+  double earnings_this_month;
+  mojo_base.mojom.Time next_payment_date;
+  int32 ads_received_this_month;
+};
+
 enum AdType {
   kUndefined = 0,
   kNotificationAd,

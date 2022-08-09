@@ -166,8 +166,7 @@ class BatAdsImpl :
 
   static void OnGetStatementOfAccounts(
       CallbackHolder<GetStatementOfAccountsCallback>* holder,
-      const bool success,
-      const ads::StatementInfo& statement);
+      ads::mojom::StatementInfoPtr statement);
 
   static void OnMaybeServeInlineContentAd(
       CallbackHolder<MaybeServeInlineContentAdCallback>* holder,

@@ -228,8 +228,7 @@ class AdsServiceImpl : public AdsService,
                         const std::string& json);
 
   void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
-                                const bool success,
-                                const std::string& json);
+                                ads::mojom::StatementInfoPtr statement);
 
   void OnGetHistory(GetHistoryCallback callback, const std::string& json);
 

@@ -33,7 +33,7 @@ using TriggerSearchResultAdEventCallback =
                        const mojom::SearchResultAdEventType event_type)>;
 
 using GetStatementOfAccountsCallback =
-    std::function<void(const bool, const StatementInfo&)>;
+    std::function<void(mojom::StatementInfoPtr statement)>;
 
 using GetDiagnosticsCallback =
     std::function<void(const bool, const std::string&)>;
