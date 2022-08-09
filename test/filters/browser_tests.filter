@@ -349,6 +349,8 @@
 -IdentityGetAccountsFunctionTest.*
 -IdentityGetProfileUserInfoFunctionTest.*
 -ImageUtilTest.CheckDefaultToolbarColor
+-Incognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-Incognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
 -IncognitoBrowsingDataBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
@@ -497,6 +499,7 @@
 -PageLoadTrackerDecoratorTest.*
 -PageTextObserverSingleProcessBrowserTest.*
 -PasswordBubbleBrowserTest.*
+-PasswordManagerAnonymousIframeTest.DisablePasswordManagerOnAnonymousIframe
 -PasswordManagerBackForwardCacheBrowserTest.*
 -PasswordManagerBrowserTest.*
 -PasswordManagerInternalsWebUIBrowserTest.*
@@ -788,6 +791,8 @@
 -UpdateServiceTest.*
 -UseCounterPageLoadMetricsObserverBrowserTest.*
 -UserPolicySigninServiceSyncNotRequiredTest.*
+-UserProfile/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-UserProfile/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
 -UserPolicySigninServiceTest.*
 -UserScriptListenerTest.*
 -VariationsHttpHeadersBrowserTest.*
@@ -864,6 +869,7 @@
 -WebViewTests/WebViewTest.Shim_TestRendererNavigationRedirectWhileUnattached/SiteIsolationForGuestsEnabled
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsDisabled
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
+-WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
 -ZeroSuggestPrefetchTabHelperBrowserTest.*
 -ZoomControllerForPrerenderingTest.*
