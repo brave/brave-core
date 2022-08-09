@@ -60,11 +60,7 @@ const defaultState: WalletState = {
     symbolName: 'Ethereum',
     decimals: 18,
     coin: BraveWallet.CoinType.ETH,
-    data: {
-      ethData: {
-        isEip1559: true
-      }
-    }
+    isEip1559: true
   },
   accounts: [],
   userVisibleTokensInfo: [],
@@ -413,11 +409,7 @@ export const createWalletReducer = (initialState: WalletState) => {
 
     const updatedNetwork: BraveWallet.NetworkInfo = {
       ...selectedNetwork,
-      data: {
-        ethData: {
-          isEip1559: payload.isEip1559
-        }
-      }
+      isEip1559: payload.isEip1559
     }
 
     return {

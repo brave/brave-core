@@ -9,11 +9,7 @@ export const emptyNetwork = {
   symbolName: '',
   decimals: 0,
   coin: BraveWallet.CoinType.ETH,
-  data: {
-    ethData: {
-      isEip1559: true
-    }
-  }
+  isEip1559: true
 }
 
 export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list: BraveWallet.NetworkInfo[]) => {

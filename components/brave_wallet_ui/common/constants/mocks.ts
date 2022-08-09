@@ -64,7 +64,7 @@ export const mockNetwork: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [],
   coin: BraveWallet.CoinType.ETH,
-  data: undefined
+  isEip1559: false
 }
 
 export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
@@ -77,7 +77,7 @@ export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [],
   coin: BraveWallet.CoinType.FIL,
-  data: undefined
+  isEip1559: false
 }
 
 export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
@@ -90,7 +90,7 @@ export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [],
   coin: BraveWallet.CoinType.FIL,
-  data: undefined
+  isEip1559: false
 }
 
 export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
@@ -103,7 +103,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 9,
   iconUrls: [],
   coin: BraveWallet.CoinType.SOL,
-  data: undefined
+  isEip1559: false
 }
 
 export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
@@ -116,7 +116,7 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   decimals: 9,
   iconUrls: [],
   coin: BraveWallet.CoinType.SOL,
-  data: undefined
+  isEip1559: false
 }
 
 export const mockERC20Token: BraveWallet.BlockchainToken = {

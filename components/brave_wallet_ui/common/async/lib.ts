@@ -678,7 +678,7 @@ export function hasEIP1559Support (account: WalletAccountType, network: BraveWal
       keyringSupportsEIP1559 = false
   }
 
-  return keyringSupportsEIP1559 && (network.data?.ethData?.isEip1559 ?? false)
+  return keyringSupportsEIP1559 && network.isEip1559
 }
 
 export async function sendEthTransaction (store: Store, payload: SendEthTransactionParams) {
