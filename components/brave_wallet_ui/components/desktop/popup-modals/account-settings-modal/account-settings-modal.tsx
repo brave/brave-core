@@ -97,7 +97,7 @@ export const AccountSettingsModal = ({
   const [qrCode, setQRCode] = React.useState<string>('')
 
   // custom hooks
-  const { attemptPasswordEntry } = usePasswordAttempts({ maxAttempts: 3 })
+  const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
   const handleAccountNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {

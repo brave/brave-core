@@ -37,17 +37,13 @@ function renderHookOptionsWithCustomStore (store: any) {
   }
 }
 
-const MAX_ATTEMPTS = 3
-
-describe('useTransactionParser hook', () => {
-  it('should increment attempts on bad password ', async () => {
+describe('usePasswordAttempts hook', () => {
+  it('should increment attempts on bad password & lock wallet after 3 failed attempts', async () => {
     const store = makeStore()
 
     const {
       result
-    } = renderHook(() => usePasswordAttempts({
-      maxAttempts: MAX_ATTEMPTS
-    }), renderHookOptionsWithCustomStore(store))
+    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
 
     expect(result.current.attempts).toEqual(0)
 
