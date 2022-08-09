@@ -32,7 +32,7 @@ class EthTxMeta : public TxMeta {
   bool operator==(const EthTxMeta&) const;
 
   // TxMeta
-  base::Value ToValue() const override;
+  base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
 
   TransactionReceipt tx_receipt() const { return tx_receipt_; }

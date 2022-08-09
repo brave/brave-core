@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/ui/views/brave_actions/brave_news_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/extension_action/extension_action_api.h"
@@ -32,6 +33,7 @@ class BraveActionsContainerTest;
 class BraveRewardsActionView;
 class BraveShieldsActionView;
 class RewardsBrowserTest;
+class BraveNewsActionView;
 
 namespace extensions {
 class ExtensionActionManager;
@@ -162,6 +164,7 @@ class BraveActionsContainer : public views::View,
   void AddActionStubForRewards();
   void AddActionViewForRewards();
   void AddActionViewForShields();
+  void AddActionViewForNews();
   void RemoveAction(const std::string& id);
   void UpdateActionVisibility(const std::string& id);
   views::Button* GetActionButton(const std::string& id) const;
@@ -172,7 +175,8 @@ class BraveActionsContainer : public views::View,
   void UpdateVisibility();
 
   // BraveActionAPI::Observer
-  void OnBraveActionShouldTrigger(const std::string& extension_id,
+  void OnBraveActionShouldTrigger(
+      const std::string& extension_id,
       std::unique_ptr<std::string> ui_relative_path) override;
 
   bool should_hide_ = false;
@@ -212,6 +216,7 @@ class BraveActionsContainer : public views::View,
 
   raw_ptr<BraveShieldsActionView> shields_action_btn_ = nullptr;
   raw_ptr<BraveRewardsActionView> rewards_action_btn_ = nullptr;
+  raw_ptr<BraveNewsActionView> news_action_btn_ = nullptr;
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember brave_rewards_enabled_;

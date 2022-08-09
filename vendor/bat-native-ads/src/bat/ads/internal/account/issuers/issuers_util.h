@@ -19,7 +19,7 @@ struct IssuersInfo;
 bool IsIssuerValid(const IssuerInfo& issuer);
 
 void SetIssuers(const IssuersInfo& issuers);
-IssuersInfo GetIssuers();
+absl::optional<IssuersInfo> GetIssuers();
 
 bool HasIssuers();
 bool HasIssuersChanged(const IssuersInfo& issuers);

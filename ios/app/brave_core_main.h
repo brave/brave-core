@@ -42,6 +42,16 @@ OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchVModule;
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSyncURL;
+/// Sets a number of overrides for the ads & ledger services such as which
+/// environment its using, debug mode, etc.
+///
+/// Expected value: A comma-separated list of flags, including:
+///     - staging={bool}
+////    - development={bool}
+///     - debug={bool}
+///     - reconcile-interval={int}
+///     - retry-interval={int}
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchRewardsFlags;
 
 typedef int BraveCoreLogSeverity NS_TYPED_ENUM;
 OBJC_EXPORT const BraveCoreLogSeverity BraveCoreLogSeverityFatal;

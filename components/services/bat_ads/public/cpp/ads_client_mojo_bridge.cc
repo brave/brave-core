@@ -17,6 +17,9 @@
 #include "bat/ads/notification_ad_info.h"
 #include "url/gurl.h"
 
+using std::placeholders::_1;
+using std::placeholders::_2;
+
 namespace bat_ads {
 
 AdsClientMojoBridge::AdsClientMojoBridge(
@@ -200,7 +203,7 @@ void AdsClientMojoBridge::GetBrowsingHistory(
   ads_client_->GetBrowsingHistory(
       max_count, days_ago,
       std::bind(AdsClientMojoBridge::OnGetBrowsingHistory, callback_holder,
-                std::placeholders::_1));
+                _1));
 }
 
 void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
@@ -208,9 +211,9 @@ void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
   // Callback holder gets deleted in |OnURLRequest|.
   auto* callback_holder =
       new CallbackHolder<UrlRequestCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->UrlRequest(std::move(url_request),
-                          std::bind(AdsClientMojoBridge::OnURLRequest,
-                                    callback_holder, std::placeholders::_1));
+  ads_client_->UrlRequest(
+      std::move(url_request),
+      std::bind(AdsClientMojoBridge::OnURLRequest, callback_holder, _1));
 }
 
 void AdsClientMojoBridge::Save(
@@ -220,18 +223,16 @@ void AdsClientMojoBridge::Save(
   // Callback holder will be deleted in |OnSave|.
   auto* callback_holder =
       new CallbackHolder<SaveCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->Save(name, value,
-                    std::bind(AdsClientMojoBridge::OnSave, callback_holder,
-                              std::placeholders::_1));
+  ads_client_->Save(
+      name, value, std::bind(AdsClientMojoBridge::OnSave, callback_holder, _1));
 }
 
 void AdsClientMojoBridge::Load(const std::string& name, LoadCallback callback) {
   // Callback holder will be deleted in |OnLoad|.
   auto* callback_holder =
       new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->Load(name,
-                    std::bind(AdsClientMojoBridge::OnLoad, callback_holder,
-                              std::placeholders::_1, std::placeholders::_2));
+  ads_client_->Load(
+      name, std::bind(AdsClientMojoBridge::OnLoad, callback_holder, _1, _2));
 }
 
 void AdsClientMojoBridge::LoadFileResource(const std::string& id,
@@ -275,8 +276,7 @@ void AdsClientMojoBridge::RunDBTransaction(
       AsWeakPtr(), std::move(callback));
   ads_client_->RunDBTransaction(
       std::move(transaction),
-      std::bind(AdsClientMojoBridge::OnRunDBTransaction, callback_holder,
-                std::placeholders::_1));
+      std::bind(AdsClientMojoBridge::OnRunDBTransaction, callback_holder, _1));
 }
 
 void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,

@@ -52,6 +52,7 @@
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
+using brave_shields::features::kBraveAdblockCookieListOptIn;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockCspRules;
@@ -89,6 +90,12 @@ constexpr char kBraveAdblockCookieListDefaultName[] =
 constexpr char kBraveAdblockCookieListDefaultDescription[] =
     "Enables the 'Easylist-Cookie List' regional list regardless of its "
     "toggle setting in brave://adblock";
+
+constexpr char kBraveAdblockCookieListOptInName[] =
+    "Show an opt-in bubble for the 'Easylist-Cookie List' filter";
+constexpr char kBraveAdblockCookieListOptInDescription[] =
+    "When enabled, a bubble will be displayed inviting the user to enable the "
+    "'Easylist-Cookie List' filter for blocking cookie consent dialogs";
 
 constexpr char kBraveAdblockCosmeticFilteringName[] =
     "Enable cosmetic filtering";
@@ -283,6 +290,12 @@ constexpr char kBraveNewsCardPeekFeatureDescription[] =
     "Prompt Brave News via the top featured article peeking up from the bottom "
     "of the New Tab Page, after a short delay.";
 
+constexpr char kBraveNewsSubscribeButtonName[] =
+    "Enable Brave New Subscribe Button";
+constexpr char kBraveNewsSubscribeButtonDescription[] =
+    "Show a button in the toolbar to allow you to add supported sites to Brave "
+    "News.";
+
 constexpr char kCryptoWalletsForNewInstallsName[] =
     "Enable Crypto Wallets option in settings";
 constexpr char kCryptoWalletsForNewInstallsDescription[] =
@@ -421,17 +434,23 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
      FEATURE_VALUE_TYPE(                                                       \
       brave_wallet::features::kBraveWalletDappsSupportFeature)},
 
-#define BRAVE_NEWS_FEATURE_ENTRIES                                         \
-    {"brave-news",                                                         \
-     flag_descriptions::kBraveNewsName,                                    \
-     flag_descriptions::kBraveNewsDescription,                             \
-     kOsDesktop | kOsAndroid,                                              \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},        \
-    {"brave-news-peek",                                                    \
-     flag_descriptions::kBraveNewsCardPeekFeatureName,                     \
-     flag_descriptions::kBraveNewsCardPeekFeatureDescription,              \
-     kOsDesktop,                                                           \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)},
+#define BRAVE_NEWS_FEATURE_ENTRIES                                          \
+    {"brave-news",                                                          \
+     flag_descriptions::kBraveNewsName,                                     \
+     flag_descriptions::kBraveNewsDescription,                              \
+     kOsDesktop | kOsAndroid,                                               \
+     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},         \
+    {"brave-news-peek",                                                     \
+     flag_descriptions::kBraveNewsCardPeekFeatureName,                      \
+     flag_descriptions::kBraveNewsCardPeekFeatureDescription,               \
+     kOsDesktop,                                                            \
+     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)}, \
+    {"brave-news-subscribe-button",                                         \
+     flag_descriptions::kBraveNewsSubscribeButtonName,                      \
+     flag_descriptions::kBraveNewsSubscribeButtonDescription,               \
+     kOsLinux | kOsMac | kOsWin,                                            \
+     FEATURE_VALUE_TYPE(                                                    \
+      brave_today::features::kBraveNewsSubscribeButtonFeature)},
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                 \
     {"brave-federated",                                                 \
@@ -500,6 +519,10 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
      flag_descriptions::kBraveAdblockCookieListDefaultName,                 \
      flag_descriptions::kBraveAdblockCookieListDefaultDescription,          \
      kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockCookieListDefault)},           \
+    {"brave-adblock-cookie-list-opt-in",                                    \
+     flag_descriptions::kBraveAdblockCookieListOptInName,                   \
+     flag_descriptions::kBraveAdblockCookieListOptInDescription,            \
+     kOsDesktop, FEATURE_VALUE_TYPE(kBraveAdblockCookieListOptIn)},         \
     {"brave-adblock-cosmetic-filtering",                                    \
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \

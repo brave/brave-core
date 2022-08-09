@@ -16,7 +16,14 @@ import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { CreateAccountOptions } from '../../../../options/create-account-options'
 
 // types
-import { BraveWallet, CreateAccountOptionsType, PageState, WalletRoutes, WalletState } from '../../../../constants/types'
+import {
+  BraveWallet,
+  CreateAccountOptionsType,
+  PageState,
+  WalletRoutes,
+  WalletState,
+  ImportAccountErrorType
+} from '../../../../constants/types'
 import { FilecoinNetworkTypes, FilecoinNetworkLocaleMapping, FilecoinNetwork } from '../../../../common/hardware/types'
 
 // actions
@@ -92,14 +99,14 @@ export const ImportAccountModal = () => {
   const hasImportError = useSelector(({ page }: { page: PageState }) => page.importAccountError)
 
   // methods
-  const setImportError = React.useCallback((hasError: boolean) => {
+  const setImportError = React.useCallback((hasError: ImportAccountErrorType) => {
     dispatch(WalletPageActions.setImportAccountError(hasError))
   }, [])
 
   const onClickClose = React.useCallback(() => {
-    setImportError(false)
+    setImportError(undefined)
     history.push(WalletRoutes.Accounts)
-  }, [])
+  }, [setImportError])
 
   const importAccount = React.useCallback((accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
     dispatch(WalletPageActions.importAccount({ accountName, privateKey, coin }))
@@ -115,7 +122,7 @@ export const ImportAccountModal = () => {
 
   const handleAccountNameChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value)
-    setImportError(false)
+    setImportError(undefined)
   }, [setImportError])
 
   const onChangeFilecoinNetwork = React.useCallback((network: FilecoinNetwork) => {
@@ -124,7 +131,7 @@ export const ImportAccountModal = () => {
 
   const handlePrivateKeyChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPrivateKey(event.target.value)
-    setImportError(false)
+    setImportError(undefined)
   }, [setImportError])
 
   const onClearClipboard = React.useCallback(() => {
@@ -134,14 +141,14 @@ export const ImportAccountModal = () => {
   const onFileUpload = React.useCallback((file: React.ChangeEvent<HTMLInputElement>) => {
     if (file.target.files) {
       setFile(file.target.files)
-      setImportError(false)
+      setImportError(undefined)
       passwordInputRef.current?.focus()
     }
   }, [setImportError])
 
   const handlePasswordChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
-    setImportError(false)
+    setImportError(undefined)
   }, [setImportError])
 
   const onClickCreateAccount = React.useCallback(() => {
@@ -151,9 +158,6 @@ export const ImportAccountModal = () => {
       } else {
         importAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
       }
-
-      history.push(WalletRoutes.Accounts)
-
       return
     }
 
@@ -167,8 +171,6 @@ export const ImportAccountModal = () => {
       }
 
       reader.readAsText(index)
-
-      history.push(WalletRoutes.Accounts)
     }
   }, [
     importOption,
@@ -189,6 +191,13 @@ export const ImportAccountModal = () => {
   const onSelectAccountType = React.useCallback((accountType: CreateAccountOptionsType) => () => {
     history.push(WalletRoutes.ImportAccountModal.replace(':accountTypeName?', accountType.name.toLowerCase()))
   }, [])
+
+  React.useEffect(() => {
+    if (hasImportError === false) {
+      setImportError(undefined)
+      history.push(WalletRoutes.Accounts)
+    }
+  }, [hasImportError, setImportError])
 
   // computed
   const isDisabled = accountName === ''

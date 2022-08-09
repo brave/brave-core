@@ -14,6 +14,8 @@ const base::Feature kBraveNewsFeature{"BraveNews",
                                       base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveNewsCardPeekFeature{"BraveNewsCardPeek",
                                               base::FEATURE_ENABLED_BY_DEFAULT};
+const base::Feature kBraveNewsSubscribeButtonFeature{
+    "BraveNewsSubscribeButton", base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace brave_today

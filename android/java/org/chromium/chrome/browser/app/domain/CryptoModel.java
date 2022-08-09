@@ -10,8 +10,10 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -31,10 +33,10 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -133,12 +135,17 @@ public class CryptoModel {
             if (mKeyringService == null || mPendingTxHelper == null) {
                 return;
             }
-            getPendingTxHelper().fetchTransactions(null);
-            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                List<AccountInfo> accountInfos =
-                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                mPendingTxHelper.setAccountInfos(accountInfos);
-            });
+            // TODO(pav): uncomment the below and mvoe to refreshTransactions.
+            // To process pending tx from all networks and full network name
+
+            //            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(),
+            //            keyringInfos -> {
+            //                List<AccountInfo> accountInfos =
+            //                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
+            //                mPendingTxHelper.setAccountInfos(accountInfos);
+            //            });
+
+            refreshTransactions();
 
             // Filter out a separate list of unapproved transactions
             mPendingTransactions =
@@ -192,10 +199,19 @@ public class CryptoModel {
             if (mKeyringService == null || mPendingTxHelper == null) {
                 return;
             }
+            List<Integer> coins = new ArrayList<>();
+            for (CryptoAccountTypeInfo cryptoAccountTypeInfo :
+                    mSharedData.getSupportedCryptoAccountTypes()) {
+                coins.add(cryptoAccountTypeInfo.getCoinType());
+            }
+
             mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
                 List<AccountInfo> accountInfos =
                         WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                mPendingTxHelper.setAccountInfos(accountInfos);
+                new SelectedAccountResponsesCollector(mKeyringService, coins, accountInfos)
+                        .getAccounts(defaultAccountPerCoin -> {
+                            mPendingTxHelper.setAccountInfos(accountInfos);
+                        });
             });
         }
     }
@@ -210,7 +226,7 @@ public class CryptoModel {
     }
 
     public LiveData<List<TransactionInfo>> getPendingTransactions() {
-        return mPendingTransactions;
+        return mPendingTxHelper.mPendingTransactionInfoLd;
     }
 
     public LiveData<List<TransactionInfo>> getAllTransactions() {

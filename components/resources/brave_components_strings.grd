@@ -169,6 +169,12 @@
       <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_SUMMARY" desc="Summary in the error page when IPFS failed in incognito mode.">
         IPFS pages are not allowed in private windows.
       </message>
+      <message name="IDS_ERRORPAGES_IPFS_DISABLED_HEADING" desc="Heading of the IPFS disabled error page.">
+        IPFS page cannot be loaded.
+      </message>
+      <message name="IDS_ERRORPAGES_IPFS_DISABLED_SUMMARY" desc="Summary in the error page when IPFS failed because it is disabled.">
+        IPFS is disabled. Select IPFS resolve method in settings to open this site.
+      </message>
       <!-- WebUI newtab resources -->
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Trackers &amp; ads blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
@@ -240,6 +246,9 @@
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for brave search promotion from NTP">
         Try Brave Search now
       </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER" desc="The place holder text of search box at brave search promotion from NTP">
+        Search the web privately
+      </message>
 
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
@@ -275,6 +284,24 @@
       </message>
       <message name="IDS_BRAVE_TODAY_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Brave News">
         Show Brave News
+      </message>
+      <message name="IDS_BRAVE_TODAY_SHOW_TOOLBAR_BUTTON" desc="Button text for opting in to Brave News">
+        Show Brave News button in the toolbar
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING" desc="The text displayed while a feed is being subscribed or unsubscribed">
+        Loading...
+      </message>
+      <message name="IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP" desc="The tooltip text displayed when hovering over the Brave News action view in the toolbar">
+        Manage Subscriptions
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE" desc="The text on the button for subscribing to a feed">
+        Subscribe
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE" desc="The text on the button for unsubscribing from a feed">
+        Unsubscribe
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER" desc="The text on the button hidding the Brave News bubble, and not showing it again">
+        Hide and don't show this again
       </message>
       <message name="IDS_BRAVE_TODAY_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
         No thanks
@@ -524,6 +551,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TITLE" desc="">Error: Brave Rewards profile is flagged</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE" desc="">Error: You need a verified account to log in</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TEXT" desc="">Hmm, it looks like your Brave Rewards profile was already connected to a custodial account in another region. Please try connecting again with your previous custodial account, or update your custodial account's region to match your previous account.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE" desc="">Error: Different account region</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">Error: Different account</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT" desc="">Unfortunately, your Brave Rewards cannot be verified because your region is not supported for Brave Rewards verification at this time.</message>

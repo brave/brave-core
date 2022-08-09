@@ -72,7 +72,7 @@ IN_PROC_BROWSER_TEST_F(IpfsRedirectNetworkDelegateHelperBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsRedirectNetworkDelegateHelperBrowserTest,
-                       IPFSResolveRedirectsToErrorPage) {
+                       IPFSResolveRedirectsToErrorPage_Incognito) {
   GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -90,6 +90,26 @@ IN_PROC_BROWSER_TEST_F(IpfsRedirectNetworkDelegateHelperBrowserTest,
   EXPECT_TRUE(ui_test_utils::NavigateToURL(private_browser, ipfs_url()));
   EXPECT_TRUE(private_wc->GetMainFrame()->IsErrorDocument());
   EXPECT_EQ(net::ERR_INCOGNITO_IPFS_NOT_ALLOWED, observer.net_error_code());
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsRedirectNetworkDelegateHelperBrowserTest,
+                       IPFSResolveRedirectsToErrorPage_IpfsDisabled) {
+  GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
+
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
+  EXPECT_EQ(web_contents()->GetURL(), ipfs_url());
+
+  auto* wc = browser()->tab_strip_model()->GetActiveWebContents();
+
+  content::NavigationHandleObserver observer(wc, ipfs_url());
+
+  // Try to navigate to the url. The navigation should be canceled and the
+  // NavigationHandle should have the right error code.
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
+  EXPECT_TRUE(wc->GetMainFrame()->IsErrorDocument());
+  EXPECT_EQ(net::ERR_IPFS_DISABLED, observer.net_error_code());
 }
 
 }  // namespace ipfs

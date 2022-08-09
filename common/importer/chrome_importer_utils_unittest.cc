@@ -38,7 +38,11 @@ TEST(ChromeImporterUtilsTest, BasicTest) {
   base::ReadFileToString(secured_preference_path, &secured_preference_content);
   absl::optional<base::Value> secured_preference =
       base::JSONReader::Read(secured_preference_content);
-  auto* extensions = secured_preference->FindPath(kChromeExtensionsListPath);
+  ASSERT_TRUE(secured_preference);
+  ASSERT_TRUE(secured_preference->is_dict());
+  auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
+      kChromeExtensionsListPath);
+  ASSERT_TRUE(extensions);
   auto extensions_list =
       GetImportableListFromChromeExtensionsList(*extensions);
   // Only 2 extensions installed from webstore are importing target extensions.

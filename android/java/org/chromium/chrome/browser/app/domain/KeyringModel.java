@@ -18,7 +18,9 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
+import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -200,6 +202,17 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
+    public List<AccountInfo> stripNoBuySwapAccounts(List<AccountInfo> accountInfos) {
+        List<AccountInfo> accountInfosFiltered = new ArrayList<>();
+        for (AccountInfo accountInfo : accountInfos) {
+            if (accountInfo.coin != CoinType.SOL) {
+                accountInfosFiltered.add(accountInfo);
+            }
+        }
+
+        return accountInfosFiltered;
+    }
+
     public void getAccounts(Callbacks.Callback1<AccountInfo[]> callback1) {
         mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
             List<AccountInfo> accountInfos = WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
@@ -232,6 +245,7 @@ public class KeyringModel implements KeyringServiceObserver {
                 }
             }
             mCryptoSharedActions.updateCoinType();
+            mCryptoSharedActions.onNewAccountAdded();
             callback.call(result);
         });
     }

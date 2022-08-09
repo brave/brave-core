@@ -111,6 +111,30 @@ TEST_F(PostClaimUpholdTest, ServerError400RegionNotSupported) {
       }));
 }
 
+TEST_F(PostClaimUpholdTest, ServerError400MismatchedProviderAccountRegions) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "error linking wallet: mismatched provider account regions: geo reset is different",
+    "code": 400
+}
+            )";
+            std::move(callback).Run(response);
+          }));
+
+  claim_->Request(
+      30.0, "address",
+      base::BindOnce([](type::Result result, const std::string& address) {
+        EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS);
+        EXPECT_EQ(address, kExpectedAddress);
+      }));
+}
+
 TEST_F(PostClaimUpholdTest, ServerError400UnknownMessage) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(

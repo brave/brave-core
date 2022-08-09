@@ -37,18 +37,18 @@ std::string FilTxStateManager::GetTxPrefPathPrefix() {
 }
 
 std::unique_ptr<FilTxMeta> FilTxStateManager::ValueToFilTxMeta(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   return std::unique_ptr<FilTxMeta>{
       static_cast<FilTxMeta*>(ValueToTxMeta(value).release())};
 }
 
 std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   std::unique_ptr<FilTxMeta> meta = std::make_unique<FilTxMeta>();
 
   if (!TxStateManager::ValueToTxMeta(value, meta.get()))
     return nullptr;
-  const base::Value* tx = value.FindKey("tx");
+  const base::Value* tx = value.Find("tx");
   if (!tx)
     return nullptr;
   absl::optional<FilTransaction> tx_from_value = FilTransaction::FromValue(*tx);

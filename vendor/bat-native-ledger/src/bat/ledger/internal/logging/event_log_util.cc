@@ -14,6 +14,8 @@ std::string GetEventLogKeyForLinkingResult(type::Result result) {
       return log::kDeviceLimitReached;
     case type::Result::FLAGGED_WALLET:
       return log::kFlaggedWallet;
+    case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
+      return log::kMismatchedProviderAccountRegions;
     case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
       return log::kMismatchedProviderAccounts;
     case type::Result::NOT_FOUND:

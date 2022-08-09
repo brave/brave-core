@@ -7,10 +7,12 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 
 #include <cstdint>
+#include <map>
 #include <memory>
+#include <set>
 #include <string>
 
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_alias.h"
+class GURL;
 
 namespace base {
 class Value;
@@ -18,6 +20,9 @@ class Value;
 
 namespace ads {
 namespace resource {
+
+using AntiTargetingSiteList = std::set<GURL>;
+using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
 
 struct AntiTargetingInfo final {
   AntiTargetingInfo();

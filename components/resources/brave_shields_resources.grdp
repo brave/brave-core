@@ -3,4 +3,5 @@
   <include name="IDR_BRAVE_SHIELDS_ICON_64" file="../brave_shields/resources/icon.png" type="BINDATA" />
   <include name="IDR_BRAVE_SHIELDS_ICON_64_DISABLED" file="../brave_shields/resources/icon-off.png" type="BINDATA" />
   <include name="IDR_SHIELDS_PANEL_HTML" file="../brave_shields/resources/panel/brave_shields.html" type="BINDATA" />
+  <include name="IDR_COOKIE_LIST_OPT_IN_HTML" file="../brave_shields/resources/cookie_list_opt_in/cookie_list_opt_in.html" type="BINDATA" />
 </grit-part>

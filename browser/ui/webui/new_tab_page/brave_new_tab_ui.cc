@@ -41,8 +41,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
 
   if (brave::ShouldNewTabShowBlankpage(profile)) {
-    content::WebUIDataSource* source =
-        content::WebUIDataSource::Create(name);
+    content::WebUIDataSource* source = content::WebUIDataSource::Create(name);
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
     AddBackgroundColorToSource(source, web_ui->GetWebContents());
     content::WebUIDataSource::Add(profile, source);
@@ -67,6 +66,11 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
                      base::FeatureList::IsEnabled(
                          brave_today::features::kBraveNewsCardPeekFeature));
+  source->AddBoolean(
+      "featureFlagBraveNewsSubscribeButtonEnabled",
+      base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsSubscribeButtonFeature));
+
   web_ui->AddMessageHandler(
       base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
   web_ui->AddMessageHandler(

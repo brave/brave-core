@@ -35,9 +35,12 @@ extern const char kCatalogPing[];
 extern const char kCatalogLastUpdated[];
 
 extern const char kIssuerPing[];
+extern const char kIssuers[];
 
 extern const char kEpsilonGreedyBanditArms[];
 extern const char kEpsilonGreedyBanditEligibleSegments[];
+
+extern const char kServeAdAt[];
 
 extern const char kNextTokenRedemptionAt[];
 

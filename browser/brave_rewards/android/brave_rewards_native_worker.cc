@@ -298,7 +298,7 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
   if (!statement) {
     Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
         env, weak_java_brave_rewards_native_worker_.get(env),
-        /* success */ false, 0, 0, 0.0, 0.0);
+        /* success */ false, 0.0, 0, 0.0, 0.0);
     return;
   }
 

@@ -61,6 +61,7 @@ bool ParsePeerConnectionString(const std::string& value,
 GURL ContentHashToCIDv1URL(const std::string& contenthash);
 bool IsAPIGateway(const GURL& url, version_info::Channel channel);
 bool IsIpfsResolveMethodDisabled(PrefService* prefs);
+bool IsIpfsResolveMethodAsk(PrefService* prefs);
 std::string GetRegistryDomainFromIPNS(const GURL& url);
 bool IsValidCIDOrDomain(const std::string& value);
 

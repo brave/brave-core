@@ -43,7 +43,8 @@ class Eip1559Transaction : public Eip2930Transaction {
   static absl::optional<Eip1559Transaction> FromTxData(
       const mojom::TxData1559Ptr& tx_data,
       bool strict = true);
-  static absl::optional<Eip1559Transaction> FromValue(const base::Value& value);
+  static absl::optional<Eip1559Transaction> FromValue(
+      const base::Value::Dict& value);
 
   uint256_t max_priority_fee_per_gas() const {
     return max_priority_fee_per_gas_;
@@ -71,7 +72,7 @@ class Eip1559Transaction : public Eip2930Transaction {
   // signatureS])
   std::string GetSignedTransaction() const override;
 
-  base::Value ToValue() const override;
+  base::Value::Dict ToValue() const override;
 
   uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const override;
 

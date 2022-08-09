@@ -1302,18 +1302,30 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.wallet_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.getKeyringModel().addAccount(
-                                                        WalletUtils.getUniqueNextAccountName(this,
-                                                                mWalletModel.getKeyringModel()
-                                                                        .mAccountInfos.getValue()
-                                                                        .toArray(
-                                                                                new AccountInfo[0]),
-                                                                networkInfo.symbolName,
-                                                                networkInfo.coin),
-                                                        networkInfo.coin, isAccountAdded -> {});
                                                 mWalletModel.getCryptoModel()
                                                         .getNetworkModel()
-                                                        .clearCreateAccountState();
+                                                        .setNetwork(networkInfo, success -> {
+                                                            if (success) {
+                                                                mWalletModel.getKeyringModel().addAccount(
+                                                                        WalletUtils.getUniqueNextAccountName(
+                                                                                this,
+                                                                                mWalletModel
+                                                                                        .getKeyringModel()
+                                                                                        .mAccountInfos
+                                                                                        .getValue()
+                                                                                        .toArray(
+                                                                                                new AccountInfo
+                                                                                                        [0]),
+                                                                                networkInfo
+                                                                                        .symbolName,
+                                                                                networkInfo.coin),
+                                                                        networkInfo.coin,
+                                                                        isAccountAdded -> {});
+                                                            }
+                                                            mWalletModel.getCryptoModel()
+                                                                    .getNetworkModel()
+                                                                    .clearCreateAccountState();
+                                                        });
                                             })
                                     .setNegativeButton(
                                             R.string.wallet_action_no, (dialog, which) -> {

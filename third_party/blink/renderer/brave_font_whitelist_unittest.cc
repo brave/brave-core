@@ -43,7 +43,7 @@ TEST(BraveFontWhitelistTest, Platforms) {
 
 #if BUILDFLAG(IS_MAC)
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
-  EXPECT_EQ(allowed.size(), 282UL);
+  EXPECT_EQ(allowed.size(), 285UL);
 #elif BUILDFLAG(IS_WIN)
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
   EXPECT_EQ(allowed.size(), 312UL);
@@ -105,8 +105,11 @@ TEST(BraveFontWhitelistTest, Locales) {
 }
 
 TEST(BraveFontWhitelistTest, KnownFonts) {
-  const std::array<std::tuple<AtomicString, bool>, 7> test_cases = {
+  const std::array<std::tuple<AtomicString, bool>, 10> test_cases = {
 #if BUILDFLAG(IS_MAC)
+    std::make_tuple<>("-apple-system", true),
+    std::make_tuple<>("system-ui", true),
+    std::make_tuple<>("BlinkMacSystemFont", true),
     std::make_tuple<>("Arial Unicode MS", true),
     std::make_tuple<>("Calibri", false),
     std::make_tuple<>("Gill Sans", true),
@@ -115,6 +118,9 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
     std::make_tuple<>("Menlo", true),
     std::make_tuple<>("Franklin Gothic Medium", false),
 #elif BUILDFLAG(IS_WIN)
+    std::make_tuple<>("-apple-system", false),
+    std::make_tuple<>("system-ui", false),
+    std::make_tuple<>("BlinkMacSystemFont", false),
     std::make_tuple<>("Arial Unicode MS", false),
     std::make_tuple<>("Calibri", true),
     std::make_tuple<>("Gill Sans", false),
@@ -123,6 +129,9 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
     std::make_tuple<>("Menlo", false),
     std::make_tuple<>("Franklin Gothic Medium", true),
 #else
+    std::make_tuple<>("-apple-system", false),
+    std::make_tuple<>("system-ui", false),
+    std::make_tuple<>("BlinkMacSystemFont", false),
     std::make_tuple<>("Arial Unicode MS", false),
     std::make_tuple<>("Calibri", false),
     std::make_tuple<>("Gill Sans", false),

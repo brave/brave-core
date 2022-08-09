@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -71,16 +70,17 @@ public class NetworkSelectorActivity
 
     @Override
     public void onNetworkItemSelected(NetworkInfo networkInfo) {
-        mWalletModel.getCryptoModel().getNetworkModel().setNetwork(networkInfo, isSelected -> {
-            if (!isSelected) {
-                Toast.makeText(this,
-                             getString(R.string.brave_wallet_network_selection_error,
-                                     networkInfo.chainName),
-                             Toast.LENGTH_SHORT)
-                        .show();
-                networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
-            }
-            finish();
-        });
+        mWalletModel.getCryptoModel().getNetworkModel().setNetworkWithAccountCheck(
+                networkInfo, isSelected -> {
+                    if (!isSelected) {
+                        Toast.makeText(this,
+                                     getString(R.string.brave_wallet_network_selection_error,
+                                             networkInfo.chainName),
+                                     Toast.LENGTH_SHORT)
+                                .show();
+                        networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
+                    }
+                    finish();
+                });
     }
 }

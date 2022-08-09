@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
 #include "base/debug/dump_without_crashing.h"
@@ -63,10 +64,17 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/fullscreen.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#endif
+#include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/network_service_instance.h"
@@ -81,14 +89,6 @@
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
 #include "url/gurl.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/fullscreen.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_navigator.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
-#endif
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
@@ -854,7 +854,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
     return;
   }
 
-  bat_ads_->GetNotificationAd(
+  bat_ads_->MaybeGetNotificationAd(
       placement_id,
       base::BindOnce(&AdsServiceImpl::OnGetNotificationAd, AsWeakPtr()));
 }
@@ -1091,7 +1091,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(/* diagnostics */ absl::nullopt);
     return;
   }
 
@@ -1178,7 +1178,7 @@ void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(/* statement */ nullptr);
     return;
   }
 
@@ -1218,13 +1218,13 @@ AdsServiceImpl::GetPrefetchedNewTabPageAd() {
     return absl::nullopt;
   }
 
-  absl::optional<ads::NewTabPageAdInfo> ad_info;
-  if (prefetched_new_tab_page_ad_info_) {
-    ad_info = prefetched_new_tab_page_ad_info_;
-    prefetched_new_tab_page_ad_info_.reset();
+  absl::optional<ads::NewTabPageAdInfo> ad;
+  if (prefetched_new_tab_page_ad_) {
+    ad = prefetched_new_tab_page_ad_;
+    prefetched_new_tab_page_ad_.reset();
   }
 
-  return ad_info;
+  return ad;
 }
 
 void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
@@ -1881,7 +1881,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
 
   // The previous prefetched new tab page ad is available. No need to do
   // prefetch again.
-  if (prefetched_new_tab_page_ad_info_) {
+  if (prefetched_new_tab_page_ad_) {
     return;
   }
 
@@ -1904,7 +1904,11 @@ void AdsServiceImpl::OnPrefetchNewTabPageAd(
     return;
   }
 
-  prefetched_new_tab_page_ad_info_->FromValue(*dict);
+  ads::NewTabPageAdInfo ad;
+  ad.FromValue(*dict);
+
+  DCHECK(!prefetched_new_tab_page_ad_);
+  prefetched_new_tab_page_ad_ = ad;
 }
 
 void AdsServiceImpl::OnURLRequest(
@@ -2014,11 +2018,11 @@ void AdsServiceImpl::OnGetStatementOfAccounts(
     GetStatementOfAccountsCallback callback,
     ads::mojom::StatementInfoPtr statement) {
   if (!statement) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(/* statement */ nullptr);
     return;
   }
 
-  std::move(callback).Run(statement.Clone());
+  std::move(callback).Run(std::move(statement));
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,

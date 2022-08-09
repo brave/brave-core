@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -11,6 +12,7 @@
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode, \
     &brave_rewards::features::kBraveRewards,                 \
+    &brave_search_conversion::features::kOmniboxBanner,      \
     &brave_today::features::kBraveNewsFeature,               \
     &brave_wallet::features::kNativeBraveWalletFeature,      \
     &brave_wallet::features::kBraveWalletSolanaFeature

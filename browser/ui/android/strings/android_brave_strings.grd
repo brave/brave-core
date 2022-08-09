@@ -565,6 +565,18 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_DONT_ASK_AGAIN" desc="Set default browser modal text">
         Don't ask again
       </message>
+      <message name="IDS_BRAVE_OMNIBOX_SEARCH_PROMO_TITLE" desc="Omnibox brave search banner promo title">
+        Support independent search with better privacy
+      </message>
+      <message name="IDS_BRAVE_OMNIBOX_SEARCH_PROMO_DESC" desc="Omnibox brave search banner promo description">
+        Brave Search doesn't bias or censor results, and it doesn't track you, your queries, or your clicks.
+      </message>
+      <message name="IDS_TRY_BRAVE_SEARCH" desc="Omnibox brave search promo button text">
+        Try Brave Search
+      </message>
+      <message name="IDS_DISMISS" desc="Omnibox brave search promo dismiss button text">
+        Dismiss
+      </message>
       <message name="IDS_BRAVE_UI_MONTH_JAN" desc="Name of a month">JANUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_FEB" desc="Name of a month">FEBRUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_MAR" desc="Name of a month">MARCH</message>
@@ -1180,6 +1192,12 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_SHIELDS_SUMMARY" desc="Title for shields option.">
         These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.
+      </message>
+      <message name="IDS_FINGERPRINT_LANGUAGE_SWITCH" desc="Title for fingerprint language switch">
+        Prevent fingerprinting via language settings
+      </message>
+      <message name="IDS_FINGERPRINT_LANGUAGE_SWITCH_SUMMARY" desc="Title for shields option fingerprint language">
+        Reduces how much websites can learn about you based on your browser's language settings.
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents browser from recognizing your device
@@ -3075,7 +3093,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Not a valid SOL address
     </message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
-      The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.<ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
+      The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
     </message>
   </messages>
   </release>

@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import static org.chromium.chrome.browser.crypto_wallet.util.Utils.fromHexWei;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,39 +26,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TransactionStatus;
+import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
-import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
+import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -79,6 +71,8 @@ public class PortfolioFragment
     private int mPreviousCheckedRadioId;
     private int mCurrentTimeframeType;
     private WalletModel mWalletModel;
+    private List<TransactionInfo> mPendingTxs;
+    private TransactionInfo mCurrentPendingTx;
 
     PortfolioHelper mPortfolioHelper;
 
@@ -157,7 +151,7 @@ public class PortfolioFragment
         mBalance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePortfolioGetPendingTx(false);
+                updatePortfolioGetPendingTx();
             }
         });
         setUpObservers();
@@ -169,8 +163,17 @@ public class PortfolioFragment
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
                     mBtnChangeNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
-                    updatePortfolioGetPendingTx(true);
+                    updatePortfolioGetPendingTx();
                 });
+        mWalletModel.getCryptoModel().getPendingTransactions().observe(
+                getViewLifecycleOwner(), transactionInfos -> {
+                    mPendingTxs = transactionInfos;
+                    if (mCurrentPendingTx == null && mPendingTxs.size() > 0) {
+                        mCurrentPendingTx = mPendingTxs.get(0);
+                    }
+                    updatePendingTxNotification();
+                });
+
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
@@ -182,19 +185,30 @@ public class PortfolioFragment
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.wallet_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.getKeyringModel().addAccount(
-                                                        WalletUtils.getUniqueNextAccountName(
-                                                                requireContext(),
-                                                                mWalletModel.getKeyringModel()
-                                                                        .mAccountInfos.getValue()
-                                                                        .toArray(
-                                                                                new AccountInfo[0]),
-                                                                networkInfo.symbolName,
-                                                                networkInfo.coin),
-                                                        networkInfo.coin, isAccountAdded -> {});
                                                 mWalletModel.getCryptoModel()
                                                         .getNetworkModel()
-                                                        .clearCreateAccountState();
+                                                        .setNetwork(networkInfo, success -> {
+                                                            if (success) {
+                                                                mWalletModel.getKeyringModel().addAccount(
+                                                                        WalletUtils.getUniqueNextAccountName(
+                                                                                requireContext(),
+                                                                                mWalletModel
+                                                                                        .getKeyringModel()
+                                                                                        .mAccountInfos
+                                                                                        .getValue()
+                                                                                        .toArray(
+                                                                                                new AccountInfo
+                                                                                                        [0]),
+                                                                                networkInfo
+                                                                                        .symbolName,
+                                                                                networkInfo.coin),
+                                                                        networkInfo.coin,
+                                                                        isAccountAdded -> {});
+                                                            }
+                                                            mWalletModel.getCryptoModel()
+                                                                    .getNetworkModel()
+                                                                    .clearCreateAccountState();
+                                                        });
                                             })
                                     .setNegativeButton(
                                             R.string.wallet_action_no, (dialog, which) -> {
@@ -231,7 +245,7 @@ public class PortfolioFragment
                         @Override
                         public void onDismiss(Boolean isAssetsListChanged) {
                             if (isAssetsListChanged != null && isAssetsListChanged) {
-                                updatePortfolioGetPendingTx(false);
+                                updatePortfolioGetPendingTx();
                             }
                         }
                     });
@@ -351,7 +365,7 @@ public class PortfolioFragment
         AssetPriceTimeframe.validate(mCurrentTimeframeType);
 
         if (mPortfolioHelper == null) {
-            updatePortfolioGetPendingTx(false);
+            updatePortfolioGetPendingTx();
             return;
         }
 
@@ -367,7 +381,7 @@ public class PortfolioFragment
         });
     }
 
-    private void updatePortfolioGetPendingTx(boolean getPendingTx) {
+    private void updatePortfolioGetPendingTx() {
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
 
@@ -403,80 +417,52 @@ public class PortfolioFragment
                             updatePortfolioGraph();
                         });
                     });
-                    if (getPendingTx) {
-                        getPendingTx(accountInfos, () -> { updatePendingTxNotification(); });
-                    }
                 });
     }
 
     @Override
     public void onTxPending(String accountName, String txId) {
-        updatePortfolioGetPendingTx(true);
+        updatePortfolioGetPendingTx();
     }
 
     @Override
     public void onTxApprovedRejected(boolean approved, String accountName, String txId) {
-        assert mPendingTxInfos != null;
-        if (!hasPendingTx()) {
-            return;
-        }
-        TransactionInfo[] txInfos = mPendingTxInfos.get(accountName);
-        if (txInfos == null) {
-            return;
-        }
-        int index = -1;
-        for (int i = 0; i < txInfos.length; i++) {
-            if (txInfos[i].id.equals(txId)) {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
-            TransactionInfo[] copy = new TransactionInfo[txInfos.length - 1];
-            // copy elements from original array from beginning till index into copy
-            System.arraycopy(txInfos, 0, copy, 0, index);
-            // copy elements from original array from index + 1 till end into copy
-            System.arraycopy(txInfos, index + 1, copy, index, txInfos.length - index - 1);
-            mPendingTxInfos.put(accountName, copy);
-        }
         updatePendingTxNotification();
+        updateNextPendingTx();
         callAnotherApproveDialog();
     }
 
     public void callAnotherApproveDialog() {
-        assert mPendingTxInfos != null;
         if (!hasPendingTx()) {
             return;
         }
-        for (String key : mPendingTxInfos.keySet()) {
-            TransactionInfo[] txInfos = mPendingTxInfos.get(key);
-            if (txInfos.length == 0) {
-                continue;
+        ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
+                ApproveTxBottomSheetDialogFragment.newInstance(mCurrentPendingTx,
+                        mWalletModel.getCryptoModel()
+                                .getPendingTxHelper()
+                                .getAccountNameForTransaction(mCurrentPendingTx));
+        approveTxBottomSheetDialogFragment.setApprovedTxObserver(this);
+        approveTxBottomSheetDialogFragment.show(
+                getFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+    }
+
+    private void updateNextPendingTx() {
+        if (mCurrentPendingTx != null) {
+            for (TransactionInfo info : mPendingTxs) {
+                if (!mCurrentPendingTx.id.equals(info.id)
+                        && info.txStatus == TransactionStatus.UNAPPROVED) {
+                    mCurrentPendingTx = info;
+                    return;
+                }
             }
-            ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
-                    ApproveTxBottomSheetDialogFragment.newInstance(txInfos[0], key);
-            approveTxBottomSheetDialogFragment.setApprovedTxObserver(this);
-            approveTxBottomSheetDialogFragment.show(
-                    getFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
-            break;
+            mCurrentPendingTx = null;
+        } else if (mPendingTxs.size() > 0) {
+            mCurrentPendingTx = mPendingTxs.get(0);
         }
     }
 
     private boolean hasPendingTx() {
-        if (mPendingTxInfos == null || mPendingTxInfos.size() == 0) {
-            return false;
-        }
-
-        boolean pending = false;
-        for (String key : mPendingTxInfos.keySet()) {
-            TransactionInfo[] txInfos = mPendingTxInfos.get(key);
-            if (txInfos.length != 0) {
-                pending = true;
-                break;
-            }
-        }
-
-        return pending;
+        return mCurrentPendingTx != null;
     }
 
     private void getPendingTx(AccountInfo[] accountInfos, @Nullable Runnable callback) {

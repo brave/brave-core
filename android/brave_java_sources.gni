@@ -16,7 +16,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
-  "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureList.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveIntentHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLaunchIntentDispatcher.java",
@@ -152,6 +151,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ParsedTransactionFees.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/PendingTxHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/PortfolioHelper.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SelectedAccountResponsesCollector.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SmoothLineChartEquallySpaced.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SolanaTransactionsGasHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/TokenUtils.java",
@@ -416,6 +416,7 @@ brave_browser_ui_android_toolbar_sources = [
 
 brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
+  "//brave/android/java/org/chromium/base/BraveFeatureList.java",
   "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
 ]
 

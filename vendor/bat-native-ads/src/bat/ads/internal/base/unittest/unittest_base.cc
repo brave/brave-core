@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/values.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/base/unittest/unittest_command_line_switch_util.h"
 #include "bat/ads/internal/base/unittest/unittest_constants.h"
@@ -294,6 +295,9 @@ void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetTimePref(prefs::kCatalogLastUpdated, DistantPast());
 
   ads_client_mock_->SetInt64Pref(prefs::kIssuerPing, 0);
+  ads_client_mock_->SetListPref(prefs::kIssuers, base::Value::List());
+
+  ads_client_mock_->SetTimePref(prefs::kServeAdAt, Now());
 
   ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
 

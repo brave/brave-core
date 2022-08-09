@@ -27,6 +27,7 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -213,10 +214,11 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -225,7 +227,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
                     {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
                     {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
@@ -280,12 +282,13 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
   const IssuersInfo expected_issuers;
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
@@ -346,17 +349,18 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
@@ -392,17 +396,18 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
@@ -411,15 +416,15 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   const URLEndpointMap& endpoints = {
       {// Create confirmation request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
             {
-              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
               "payload" : {},
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.717Z",
-              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520"
+              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
             }
           )"}}},
       {// Fetch payment token request

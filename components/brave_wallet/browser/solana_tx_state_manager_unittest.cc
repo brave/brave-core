@@ -88,7 +88,7 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
       "FmBV6UjKdiSZkQUW");
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
 
-  base::Value meta_value = meta.ToValue();
+  base::Value::Dict meta_value = meta.ToValue();
   auto meta_from_value =
       solana_tx_state_manager_->ValueToSolanaTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);

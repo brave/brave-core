@@ -106,6 +106,10 @@ source_set("ui") {
       "webui/brave_rewards/rewards_panel_ui.h",
       "webui/brave_settings_ui.cc",
       "webui/brave_settings_ui.h",
+      "webui/brave_shields/cookie_list_opt_in_page_handler.cc",
+      "webui/brave_shields/cookie_list_opt_in_page_handler.h",
+      "webui/brave_shields/cookie_list_opt_in_ui.cc",
+      "webui/brave_shields/cookie_list_opt_in_ui.h",
       "webui/brave_shields/shields_panel_data_handler.cc",
       "webui/brave_shields/shields_panel_data_handler.h",
       "webui/brave_shields/shields_panel_handler.cc",
@@ -184,6 +188,10 @@ source_set("ui") {
       "views/brave_first_run_dialog.h",
       "views/brave_layout_provider.cc",
       "views/brave_layout_provider.h",
+      "views/brave_news/brave_news_bubble_view.cc",
+      "views/brave_news/brave_news_bubble_view.h",
+      "views/brave_shields/cookie_list_opt_in_bubble_host.cc",
+      "views/brave_shields/cookie_list_opt_in_bubble_host.h",
       "views/crash_report_permission_ask_dialog_view.cc",
       "views/crash_report_permission_ask_dialog_view.h",
       "views/download/brave_download_item_view.cc",
@@ -360,6 +368,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/components/brave_shields/common:common",
     ]
   }
 
@@ -472,6 +481,7 @@ source_set("ui") {
       "//brave/components/brave_rewards/resources:tip_generated_resources",
       "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_generated",
       "//brave/components/brave_shields/common:mojom",
+      "//brave/components/brave_shields/resources/cookie_list_opt_in:cookie_list_opt_in_generated",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:sync_service_impl_helper",
@@ -506,6 +516,8 @@ source_set("ui") {
       "views/brave_actions/brave_action_view.h",
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
+      "views/brave_actions/brave_news_action_view.cc",
+      "views/brave_actions/brave_news_action_view.h",
       "views/brave_actions/brave_rewards_action_stub_view.cc",
       "views/brave_actions/brave_rewards_action_stub_view.h",
       "views/brave_actions/brave_rewards_action_view.cc",

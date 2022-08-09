@@ -278,7 +278,7 @@ export interface PageState {
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
-  importAccountError: boolean
+  importAccountError: ImportAccountErrorType
   importWalletError: ImportWalletError
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
@@ -707,3 +707,5 @@ export interface AssetFilterOption {
   name: string
   id: AssetFilterOptionIds
 }
+
+export type ImportAccountErrorType = boolean | undefined

@@ -30,13 +30,13 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   absl::optional<base::Value> input_value = base::JSONReader::Read(input);
   if (!input_value) {
     // Nothing to work with
-    std::move(callback).Run(base::Value());
+    std::move(callback).Run(base::Value::Dict());
 
     return;
   }
   base::Value::Dict* input_dict = input_value->GetIfDict();
   if (!input_dict) {
-    std::move(callback).Run(base::Value());
+    std::move(callback).Run(base::Value::Dict());
     return;
   }
   std::vector<std::string> classes;

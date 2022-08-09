@@ -106,17 +106,16 @@ interface BatAds {
   Initialize() => (bool success);
   Shutdown() => (bool success);
 
-  // Diagnostics
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  // Locale
   OnChangeLocale(string locale);
 
-  // Preferences
   OnPrefChanged(string path);
 
-  // Resources
   OnResourceComponentUpdated(string id);
+
+  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
+  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
 
   // User Interaction
   OnIdle();
@@ -129,9 +128,6 @@ interface BatAds {
   OnBrowserDidEnterBackground();
 
   // Tabs
-  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
-
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
 
@@ -150,7 +146,7 @@ interface BatAds {
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
 
-  GetNotificationAd(string placement_id) => (mojo_base.mojom.DictionaryValue? value);
+  MaybeGetNotificationAd(string placement_id) => (mojo_base.mojom.DictionaryValue? value);
   TriggerNotificationAdEvent(string placement_id, ads.mojom.NotificationAdEventType event_type);
 
   TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);

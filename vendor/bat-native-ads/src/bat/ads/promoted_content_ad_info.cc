@@ -21,7 +21,6 @@ PromotedContentAdInfo::~PromotedContentAdInfo() = default;
 
 base::Value::Dict PromotedContentAdInfo::ToValue() const {
   base::Value::Dict dict;
-
   dict.Set("type", type.ToString());
   dict.Set("uuid", placement_id);
   dict.Set("creative_instance_id", creative_instance_id);
@@ -32,7 +31,6 @@ base::Value::Dict PromotedContentAdInfo::ToValue() const {
   dict.Set("title", title);
   dict.Set("description", description);
   dict.Set("target_url", target_url.spec());
-
   return dict;
 }
 

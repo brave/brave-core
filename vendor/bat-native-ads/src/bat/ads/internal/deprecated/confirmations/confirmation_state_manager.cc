@@ -16,7 +16,6 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/account/issuers/issuers_value_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
@@ -182,9 +181,6 @@ bool ConfirmationStateManager::RemoveFailedConfirmation(
 std::string ConfirmationStateManager::ToJson() {
   base::Value::Dict dict;
 
-  // Issuers
-  dict.Set("issuers", IssuerListToValue(issuers_));
-
   // Confirmations
   dict.Set("confirmations",
            GetFailedConfirmationsAsDictionary(failed_confirmations_));
@@ -209,9 +205,6 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
   }
 
   const base::Value::Dict& dict = value->GetDict();
-  if (!ParseIssuersFromDictionary(dict)) {
-    BLOG(1, "Failed to parse issuers");
-  }
 
   if (!ParseFailedConfirmationsFromDictionary(dict)) {
     BLOG(1, "Failed to parse failed confirmations");
@@ -229,16 +222,6 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void ConfirmationStateManager::SetIssuers(const IssuerList& issuers) {
-  DCHECK(is_initialized_);
-  issuers_ = issuers;
-}
-
-IssuerList ConfirmationStateManager::GetIssuers() const {
-  DCHECK(is_initialized_);
-  return issuers_;
-}
 
 base::Value::Dict ConfirmationStateManager::GetFailedConfirmationsAsDictionary(
     const ConfirmationList& confirmations) const {
@@ -498,22 +481,6 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 
   *confirmations = new_failed_confirmations;
 
-  return true;
-}
-
-bool ConfirmationStateManager::ParseIssuersFromDictionary(
-    const base::Value::Dict& dict) {
-  const base::Value::List* value = dict.FindList("issuers");
-  if (!value) {
-    return false;
-  }
-
-  const absl::optional<IssuerList>& issuers = ValueToIssuerList(*value);
-  if (!issuers) {
-    return false;
-  }
-
-  issuers_ = issuers.value();
   return true;
 }
 

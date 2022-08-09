@@ -106,6 +106,13 @@ class AdsImpl final : public Ads,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
+  void OnHtmlLoaded(const int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& html) override;
+  void OnTextLoaded(const int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& text) override;
+
   void OnIdle() override;
   void OnUnIdle(const base::TimeDelta idle_time,
                 const bool was_locked) override;
@@ -114,13 +121,6 @@ class AdsImpl final : public Ads,
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
-
-  void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
-  void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
 
   void OnMediaPlaying(const int32_t tab_id) override;
   void OnMediaStopped(const int32_t tab_id) override;
@@ -150,7 +150,7 @@ class AdsImpl final : public Ads,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override;
 
-  absl::optional<NotificationAdInfo> GetNotificationAd(
+  absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
       const std::string& placement_id) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,

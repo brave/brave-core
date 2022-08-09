@@ -2,8 +2,6 @@
   "confirmations": {
     "failed_confirmations": []
   },
-  "issuers": {
-  },
   "unblinded_payment_tokens": [],
   "unblinded_tokens": []
 }

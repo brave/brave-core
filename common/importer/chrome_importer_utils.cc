@@ -40,7 +40,10 @@ bool HasImportableExtensions(const base::FilePath& secured_preference_path) {
   base::ReadFileToString(secured_preference_path, &secured_preference_content);
   absl::optional<base::Value> secured_preference =
       base::JSONReader::Read(secured_preference_content);
-  if (auto* extensions = secured_preference->FindPath(
+  DCHECK(secured_preference);
+  DCHECK(secured_preference->is_dict());
+
+  if (auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
           kChromeExtensionsListPath)) {
     auto extensions_list =
         GetImportableListFromChromeExtensionsList(*extensions);
@@ -145,27 +148,27 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 std::vector<std::string> GetImportableListFromChromeExtensionsList(
-    const base::Value& extensions_list) {
-  DCHECK(extensions_list.is_dict());
-
+    const base::Value::Dict& extensions_list) {
   std::vector<std::string> extensions;
-  for (const auto item : extensions_list.DictItems()) {
+  for (const auto [key, value] : extensions_list) {
+    DCHECK(value.is_dict());
+    const base::Value::Dict& dict = value.GetDict();
     // Only import if type is extension, it's came from webstore and it's not
     // installed by default.
-    if (item.second.FindBoolKey("was_installed_by_default").value_or(true))
-        continue;
-
-    if (!item.second.FindBoolKey("from_webstore").value_or(false))
+    if (dict.FindBool("was_installed_by_default").value_or(true))
       continue;
 
-    if (auto* manifest_value = item.second.FindDictKey("manifest")) {
-      if (!manifest_value->is_dict())
-        continue;
+    if (!dict.FindBool("from_webstore").value_or(false))
+      continue;
 
-      const auto& manifest = base::Value::AsDictionaryValue(*manifest_value);
-      if (Manifest::GetTypeFromManifestValue(manifest) ==
+    if (auto* manifest_dict = dict.FindDict("manifest")) {
+      // TODO(cdesouza): Whenever Manifest::GetTypeFromManifestValue gets
+      // refactored upstream to take a base::Value::Dict reference, also
+      // remove the cloning done here to convert back to value.
+      if (Manifest::GetTypeFromManifestValue(base::Value::AsDictionaryValue(
+              base::Value(manifest_dict->Clone()))) ==
           Manifest::TYPE_EXTENSION) {
-        extensions.push_back(item.first);
+        extensions.push_back(key);
       }
     }
   }

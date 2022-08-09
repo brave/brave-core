@@ -61,9 +61,10 @@ bool DecodeStringArray(const std::string& input,
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
 
-base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
+base::Value::Dict TransactionReceiptToValue(
+    const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
-    const base::Value& value);
+    const base::Value::Dict& value);
 
 std::vector<mojom::NetworkInfoPtr> GetAllKnownEthChains(PrefService* prefs);
 std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();

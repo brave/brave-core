@@ -32,13 +32,12 @@ base::FilePath GetOperaUserDataFolder();
 base::FilePath GetOperaSnapUserDataFolder();
 #endif
 base::Value::List GetChromeSourceProfiles(const base::FilePath& local_state);
-base::ListValue* GetOperaSourceProfiles(const base::FilePath& user_data_folder);
 bool ChromeImporterCanImport(const base::FilePath& profile,
                              uint16_t* services_supported);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 std::vector<std::string> GetImportableListFromChromeExtensionsList(
-    const base::Value& extension_list);
+    const base::Value::Dict& extension_list);
 #endif
 
 #endif  // BRAVE_COMMON_IMPORTER_CHROME_IMPORTER_UTILS_H_

@@ -48,8 +48,10 @@ ConfirmationInfo BuildConfirmation(const std::string& id,
         "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=");
     DCHECK(confirmation.blinded_payment_token.has_value());
 
-    const std::string payload = CreateConfirmationRequestDTO(confirmation);
-    confirmation.credential = CreateCredential(unblinded_token, payload);
+    const std::string confirmation_request_dto =
+        CreateConfirmationRequestDTO(confirmation);
+    confirmation.credential =
+        CreateCredential(unblinded_token, confirmation_request_dto);
   }
 
   confirmation.user_data = "";

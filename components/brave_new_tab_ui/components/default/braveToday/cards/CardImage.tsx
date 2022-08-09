@@ -6,7 +6,6 @@
 import * as React from 'react'
 import * as Card from '../cardSizes'
 import getBraveNewsController, * as BraveNews from '../../../../api/brave_news'
-import { getDataUrl } from '../../../../../common/privateCDN'
 
 type Props = {
   imageUrl: string
@@ -36,18 +35,21 @@ function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?:
       return
     }
 
+    let blobUrl: string
     getBraveNewsController().getImageData({ url: paddedUrl })
     .then(async (result) => {
       if (!result.imageData) {
         return
       }
-      const resultBuffer = new Uint8Array(result.imageData).buffer
-      const dataUrl = await getDataUrl(resultBuffer)
-      onReceiveUnpaddedUrl(dataUrl)
+      const blob = new Blob([new Uint8Array(result.imageData)], { type: 'image/*' })
+      blobUrl = URL.createObjectURL(blob)
+      onReceiveUnpaddedUrl(blobUrl)
     })
     .catch(err => {
       console.error(`Error getting image for ${paddedUrl}.`, err)
     })
+
+    return () => URL.revokeObjectURL(blobUrl)
   }, [paddedUrl, isUnpadded])
   return unpaddedUrl
 }

@@ -110,13 +110,13 @@ JsonRpcService::JsonRpcService(
       weak_ptr_factory_(this) {
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::ETH),
                   mojom::CoinType::ETH))
-    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for ETH";
+    LOG(ERROR) << "Could not set network from JsonRpcService() for ETH";
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::SOL),
                   mojom::CoinType::SOL))
-    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for SOL";
+    LOG(ERROR) << "Could not set network from JsonRpcService() for SOL";
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::FIL),
                   mojom::CoinType::FIL))
-    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for FIL";
+    LOG(ERROR) << "Could not set network from JsonRpcService() for FIL";
 }
 
 void JsonRpcService::SetAPIRequestHelperForTesting(

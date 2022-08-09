@@ -34,15 +34,14 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
 #include "build/build_config.h"
 #import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
 #import "notification_ad_ios.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -971,15 +970,19 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    });
   };
 
-  NSString* baseUrl;
-
-#if defined(OFFICIAL_BUILD)
-  baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
-#else   // OFFICIAL_BUILD
-  baseUrl =
-      @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
-#endif  // !OFFICIAL_BUILD
-
+  NSString* baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
+  const auto flags = brave_rewards::RewardsFlags::ForCurrentProcess();
+  if (flags.environment) {
+    switch (*flags.environment) {
+      case brave_rewards::RewardsFlags::Environment::kDevelopment:
+      case brave_rewards::RewardsFlags::Environment::kStaging:
+        baseUrl = @"https://"
+                  @"brave-user-model-installer-input-dev.s3.bravesoftware.com";
+        break;
+      case brave_rewards::RewardsFlags::Environment::kProduction:
+        break;
+    }
+  }
   baseUrl = [baseUrl stringByAppendingPathComponent:folderName];
 
   NSString* manifestUrl =
@@ -1232,7 +1235,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 
   const absl::optional<ads::NotificationAdInfo> ad =
-      ads->GetNotificationAd(identifier.UTF8String);
+      ads->MaybeGetNotificationAd(identifier.UTF8String);
   if (!ad) {
     return nil;
   }

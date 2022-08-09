@@ -24,7 +24,7 @@ void BuildStatement(BuildStatementCallback callback) {
       [=](const bool success, const TransactionList& transactions) {
         if (!success) {
           BLOG(0, "Failed to get transactions");
-          callback(nullptr);
+          callback(/* statement */ nullptr);
           return;
         }
 

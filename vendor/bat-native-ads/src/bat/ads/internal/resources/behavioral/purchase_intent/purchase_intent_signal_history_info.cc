@@ -39,11 +39,10 @@ bool PurchaseIntentSignalHistoryInfo::operator!=(
 
 base::Value::Dict PurchaseIntentSignalHistoryInfo::ToValue() const {
   base::Value::Dict dict;
-
   dict.Set("timestamp_in_seconds",
            base::NumberToString(created_at.ToDoubleT()));
-  dict.Set("weight", static_cast<int>(weight));
 
+  dict.Set("weight", static_cast<int>(weight));
   return dict;
 }
 

@@ -56,7 +56,7 @@ TEST(FilTxMeta, ToValue) {
       std::make_unique<FilTransaction>(*transaction);
   FilTxMeta meta(std::move(tx));
   auto root = meta.ToValue();
-  auto* tx_node = root.FindDictKey("tx");
+  auto* tx_node = root.FindDict("tx");
   ASSERT_TRUE(tx_node);
   EXPECT_EQ(transaction->ToValue(), *tx_node);
 }

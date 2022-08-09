@@ -301,14 +301,14 @@ class AdsServiceImpl : public AdsService,
 
   void OnChangeLocale(const std::string& locale) override;
 
-  void OnUserGesture(const int32_t page_transition_type) override;
-
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
   void OnTextLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
+
+  void OnUserGesture(const int32_t page_transition_type) override;
 
   void OnMediaStart(const SessionID& tab_id) override;
   void OnMediaStop(const SessionID& tab_id) override;
@@ -485,7 +485,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_ad_timers_;
 
-  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
+  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_;
   bool need_purge_orphaned_new_tab_page_ad_events_ = false;
   bool prefetch_new_tab_page_ad_on_first_run_ = false;
 
