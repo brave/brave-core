@@ -9,7 +9,6 @@
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/numbers/number_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
@@ -84,8 +83,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
   const double earnings = GetEarningsForThisMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.07;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.07, earnings);
 }
 
 TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
@@ -120,8 +118,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
   const double earnings = GetEarningsForLastMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.02;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.02, earnings);
 }
 
 TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {

@@ -24,9 +24,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalisingConstantWithEmptyAds) {
       CalculateNormalisingConstant(creative_ad_predictors);
 
   // Assert
-  const double expected_normalising_constant = 0.0;
-  EXPECT_TRUE(
-      DoubleEquals(expected_normalising_constant, normalising_constant));
+  EXPECT_DOUBLE_EQ(0.0, normalising_constant);
 }
 
 TEST(BatAdsSampleAdsTest, CalculateNormalisingConstant) {
@@ -53,9 +51,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalisingConstant) {
       CalculateNormalisingConstant(creative_ad_predictors);
 
   // Assert
-  const double expected_normalising_constant = 6.6;
-  EXPECT_TRUE(
-      DoubleEquals(expected_normalising_constant, normalising_constant));
+  EXPECT_DOUBLE_EQ(6.6, normalising_constant);
 }
 
 TEST(BatAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {

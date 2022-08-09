@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/statement/earnings_util.h"
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/numbers/number_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
@@ -55,8 +54,7 @@ TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarnings) {
   const double earnings = GetUnreconciledEarnings(transactions);
 
   // Assert
-  const double expected_earnings = 0.09;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.09, earnings);
 }
 
 TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
@@ -67,8 +65,7 @@ TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
   const double earnings = GetUnreconciledEarnings(transactions);
 
   // Assert
-  const double expected_earnings = 0.0;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.0, earnings);
 }
 
 TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
@@ -113,8 +110,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
   const double earnings = GetReconciledEarningsForThisMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.08;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.08, earnings);
 }
 
 TEST_F(BatAdsEarningsUtilTest,
@@ -152,8 +148,7 @@ TEST_F(BatAdsEarningsUtilTest,
   const double earnings = GetReconciledEarningsForThisMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.0;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.0, earnings);
 }
 
 TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
@@ -202,8 +197,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
   const double earnings = GetReconciledEarningsForLastMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.12;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.12, earnings);
 }
 
 TEST_F(BatAdsEarningsUtilTest,
@@ -245,8 +239,7 @@ TEST_F(BatAdsEarningsUtilTest,
   const double earnings = GetReconciledEarningsForLastMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.0;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.0, earnings);
 }
 
 }  // namespace ads
