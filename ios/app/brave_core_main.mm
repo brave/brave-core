@@ -102,7 +102,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   NSMutableDictionary<NSNumber* /* BraveWalletCoinType */, NSString*>*
       _providerScripts;
 }
-@property(nonatomic) bool appIsTerminating;
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BravePasswordAPI* passwordAPI;
@@ -139,7 +138,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
                name:UIApplicationWillTerminateNotification
              object:nil];
 
-    _appIsTerminating = false;
     _providerScripts = [[NSMutableDictionary alloc] init];
 
     // Register all providers before calling any Chromium code.
@@ -202,33 +200,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   return self;
 }
 
-- (void)onAppEnterBackground:(NSNotification*)notification {
-  auto* context = GetApplicationContext();
-  if (context)
-    context->OnAppEnterBackground();
-}
-
-- (void)onAppEnterForeground:(NSNotification*)notification {
-  auto* context = GetApplicationContext();
-  if (context)
-    context->OnAppEnterForeground();
-}
-
-- (void)onAppWillTerminate:(NSNotification*)notification {
-  VLOG(1) << "Terminating Brave-Core";
-
-  if (_appIsTerminating) {
-    // Previous handling of this method spun the runloop, resulting in
-    // recursive calls; this does not appear to happen with the new shutdown
-    // flow, but this is here to ensure that if it can happen, it gets noticed
-    // and fixed.
-    DCHECK(false);
-    VLOG(0) << "Brave-Core AppWillTerminate called more than once!";
-  }
-  _appIsTerminating = true;
-
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-
+- (void)dealloc {
   _bookmarksAPI = nil;
   _historyAPI = nil;
   _openTabsAPI = nil;
@@ -249,9 +221,24 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _webMain.reset();
   _delegate.reset();
   _webClient.reset();
-  _appIsTerminating = false;
 
   VLOG(1) << "Terminated Brave-Core";
+}
+
+- (void)onAppEnterBackground:(NSNotification*)notification {
+  auto* context = GetApplicationContext();
+  if (context)
+    context->OnAppEnterBackground();
+}
+
+- (void)onAppEnterForeground:(NSNotification*)notification {
+  auto* context = GetApplicationContext();
+  if (context)
+    context->OnAppEnterForeground();
+}
+
+- (void)onAppWillTerminate:(NSNotification*)notification {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)scheduleLowPriorityStartupTasks {
@@ -268,10 +255,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   brave_wallet::RegisterWalletDataFilesComponent(cus);
 
   [self.adblockService registerDefaultShieldsComponent];
-}
-
-- (void)dealloc {
-  [self onAppWillTerminate:nil];
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {
