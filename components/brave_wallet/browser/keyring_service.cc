@@ -990,8 +990,11 @@ void KeyringService::ImportAccount(const std::string& account_name,
   std::vector<uint8_t> private_key_bytes;
   if (*keyring_id == mojom::kDefaultKeyringId) {
     if (!base::HexStringToBytes(private_key, &private_key_bytes)) {
-      std::move(callback).Run(false, "");
-      return;
+      // try again with 0x prefix considered
+      if (!PrefixedHexStringToBytes(private_key, &private_key_bytes)) {
+        std::move(callback).Run(false, "");
+        return;
+      }
     }
   } else if (*keyring_id == mojom::kSolanaKeyringId) {
     if (!LazilyCreateKeyring(*keyring_id)) {
