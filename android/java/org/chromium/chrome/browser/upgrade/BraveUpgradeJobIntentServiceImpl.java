@@ -10,10 +10,10 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.util.SafetyNetCheck;

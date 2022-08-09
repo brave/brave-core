@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser;
+package org.chromium.base;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
@@ -19,6 +19,7 @@ public abstract class BraveFeatureList {
     public static final String ENABLE_TAB_GROUPS = "enable-tab-groups";
     public static final String ENABLE_TAB_GRID = "enable-tab-grid-layout";
     public static final String BRAVE_WALLET_SOLANA = "BraveWalletSolana";
+    public static final String BRAVE_SEARCH_OMNIBOX_BANNER = "BraveSearchOmniboxBanner";
 
     public static void enableFeature(
             String featureName, boolean enabled, boolean fallbackToDefault) {

@@ -562,6 +562,18 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_DONT_ASK_AGAIN" desc="Set default browser modal text">
         Don't ask again
       </message>
+      <message name="IDS_BRAVE_OMNIBOX_SEARCH_PROMO_TITLE" desc="Omnibox brave search banner promo title">
+        Support independent search with better privacy
+      </message>
+      <message name="IDS_BRAVE_OMNIBOX_SEARCH_PROMO_DESC" desc="Omnibox brave search banner promo description">
+        Brave Search doesn't bias or censor results, and it doesn't track you, your queries, or your clicks.
+      </message>
+      <message name="IDS_TRY_BRAVE_SEARCH" desc="Omnibox brave search promo button text">
+        Try Brave Search
+      </message>
+      <message name="IDS_DISMISS" desc="Omnibox brave search promo dismiss button text">
+        Dismiss
+      </message>
       <message name="IDS_BRAVE_UI_MONTH_JAN" desc="Name of a month">JANUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_FEB" desc="Name of a month">FEBRUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_MAR" desc="Name of a month">MARCH</message>
