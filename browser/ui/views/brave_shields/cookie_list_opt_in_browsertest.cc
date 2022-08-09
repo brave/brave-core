@@ -19,14 +19,17 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
-#include "chrome/common/chrome_switches.h"
+#include "chrome/browser/ui/startup/launch_mode_recorder.h"
+#include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "url/url_constants.h"
 
 namespace brave_shields {
@@ -181,6 +184,25 @@ IN_PROC_BROWSER_TEST_F(CookieListOptInBrowserTest, MultipleWindowRestore) {
   EXPECT_EQ(bubble_count, 1);
 }
 
+IN_PROC_BROWSER_TEST_F(CookieListOptInBrowserTest, FirstRun) {
+  base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
+  StartupBrowserCreatorImpl creator(base::FilePath(), command_line,
+                                    chrome::startup::IsFirstRun::kYes);
+
+  creator.Launch(browser()->profile(), chrome::startup::IsProcessStartup::kNo,
+                 nullptr);
+
+  Browser* new_browser = chrome::FindBrowserWithProfile(browser()->profile());
+  ASSERT_TRUE(new_browser);
+  TabStripModel* tab_strip = new_browser->tab_strip_model();
+  ASSERT_EQ(1, tab_strip->count());
+  content::WebContents* web_contents = tab_strip->GetWebContentsAt(0);
+  content::TestNavigationObserver observer(web_contents, 1);
+  observer.Wait();
+
+  EXPECT_FALSE(CookieListOptInBubbleHost::FromBrowser(new_browser));
+}
+
 class CookieListOptInPreEnabledBrowserTest : public CookieListOptInBrowserTest {
  public:
   ~CookieListOptInPreEnabledBrowserTest() override = default;
@@ -195,26 +217,6 @@ class CookieListOptInPreEnabledBrowserTest : public CookieListOptInBrowserTest {
 IN_PROC_BROWSER_TEST_F(CookieListOptInPreEnabledBrowserTest, AlreadyEnabled) {
   WaitForSessionRestore();
   EXPECT_FALSE(GetBubbleWebContents());
-  EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(
-      prefs::kAdBlockCookieListOptInShown));
-}
-
-class CookieListOptInFirstRunBrowserTest : public CookieListOptInBrowserTest {
- public:
-  ~CookieListOptInFirstRunBrowserTest() override = default;
-
- protected:
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    // In browser tests, `chrome::IsChromeFirstRun()` will return `false`. Force
-    // first-run behavior for this test by using a command line flag.
-    command_line->AppendSwitch(switches::kForceFirstRun);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(CookieListOptInFirstRunBrowserTest, FirstRun) {
-  WaitForSessionRestore();
-  EXPECT_FALSE(GetBubbleWebContents());
-  EXPECT_FALSE(IsCookieListFilterEnabled());
   EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(
       prefs::kAdBlockCookieListOptInShown));
 }
