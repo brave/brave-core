@@ -177,7 +177,19 @@ void JSEthereumProvider::CreateEthereumObject(
           .Check();
     }
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "_metamask"), metamask_obj)
+        ->DefineOwnProperty(context,
+                            gin::StringToSymbol(isolate, "isBraveWallet"),
+                            v8::True(isolate), v8::ReadOnly)
+        .Check();
+    // isMetaMask shuld be writable because of
+    // https://github.com/brave/brave-browser/issues/22213
+    ethereum_obj
+        ->DefineOwnProperty(context, gin::StringToSymbol(isolate, "isMetaMask"),
+                            v8::True(isolate))
+        .Check();
+    ethereum_obj
+        ->DefineOwnProperty(context, gin::StringToSymbol(isolate, "_metamask"),
+                            metamask_obj, v8::ReadOnly)
         .Check();
     BindFunctionsToObject(isolate, context, ethereum_obj, metamask_obj);
     UpdateAndBindJSProperties(isolate, context, ethereum_obj);
@@ -218,9 +230,22 @@ void JSEthereumProvider::UpdateAndBindJSProperties(
     v8::Local<v8::Context> context,
     v8::Local<v8::Object> ethereum_obj) {
   v8::Local<v8::Primitive> undefined(v8::Undefined(isolate));
+
+  // Skip window.ethereum is not owned by Brave. Note this is not accurate since
+  // anyone can fake window.ethereum.isBraveWallet. We don't need this kind of
+  // check when we migrate to gin::Wrappable because we won't need to grab
+  // window.ethereum from global space to update properties and provider object
+  // owned property getter will be bound to a native function.
+  v8::Local<v8::Value> is_brave_wallet;
+  if (!GetProperty(context, ethereum_obj, u"isBraveWallet")
+           .ToLocal(&is_brave_wallet) ||
+      !is_brave_wallet->BooleanValue(isolate)) {
+    return;
+  }
+
   ethereum_obj
-      ->Set(context, gin::StringToSymbol(isolate, "chainId"),
-            gin::StringToV8(isolate, chain_id_))
+      ->DefineOwnProperty(context, gin::StringToSymbol(isolate, "chainId"),
+                          gin::StringToV8(isolate, chain_id_), v8::ReadOnly)
       .Check();
 
   // We have no easy way to convert a uin256 to a decimal number string yet
@@ -231,13 +256,16 @@ void JSEthereumProvider::UpdateAndBindJSProperties(
       chain_id_uint256 <= (uint256_t)std::numeric_limits<uint64_t>::max()) {
     uint64_t networkVersion = (uint64_t)chain_id_uint256;
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "networkVersion"),
-              gin::StringToV8(isolate, std::to_string(networkVersion)))
+        ->DefineOwnProperty(
+            context, gin::StringToSymbol(isolate, "networkVersion"),
+            gin::StringToV8(isolate, std::to_string(networkVersion)),
+            v8::ReadOnly)
         .Check();
   } else {
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "networkVersion"),
-              undefined)
+        ->DefineOwnProperty(context,
+                            gin::StringToSymbol(isolate, "networkVersion"),
+                            undefined, v8::ReadOnly)
         .Check();
   }
 
@@ -245,13 +273,15 @@ void JSEthereumProvider::UpdateAndBindJSProperties(
   // first connected account that was given permissions.
   if (first_allowed_account_.empty()) {
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "selectedAddress"),
-              undefined)
+        ->DefineOwnProperty(context,
+                            gin::StringToSymbol(isolate, "selectedAddress"),
+                            undefined, v8::ReadOnly)
         .Check();
   } else {
     ethereum_obj
-        ->Set(context, gin::StringToSymbol(isolate, "selectedAddress"),
-              gin::StringToV8(isolate, first_allowed_account_))
+        ->DefineOwnProperty(
+            context, gin::StringToSymbol(isolate, "selectedAddress"),
+            gin::StringToV8(isolate, first_allowed_account_), v8::ReadOnly)
         .Check();
   }
 }

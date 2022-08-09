@@ -21,6 +21,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/browser/brave_wallet",
     "//brave/common",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:utils",
