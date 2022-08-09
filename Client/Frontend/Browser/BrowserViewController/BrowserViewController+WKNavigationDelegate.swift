@@ -520,6 +520,14 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     if let tab = tabManager[webView] {
+      
+      // Deciding whether to inject app's IAP receipt for Brave SKUs or not
+      if let url = tab.url,
+          let braveSkusHelper = BraveSkusWebHelper(for: url),
+          let receiptData = braveSkusHelper.receiptData,
+          !tab.isPrivate {
+        tab.injectSessionStorageItem(key: receiptData.key, value: receiptData.value)
+      }
 
       // Second attempt to inject results to the BraveSearch.
       // This will be called if we got fallback results faster than

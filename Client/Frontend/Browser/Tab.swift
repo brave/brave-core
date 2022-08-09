@@ -953,3 +953,12 @@ extension Tab {
     }
   }
 }
+
+// MARK: - Brave SKU
+extension Tab {
+  func injectSessionStorageItem(key: String, value: String) {
+    self.webView?.evaluateSafeJavaScript(functionName: "sessionStorage.setItem",
+                                         args: [key, value],
+                                         contentWorld: .page)
+  }
+}
