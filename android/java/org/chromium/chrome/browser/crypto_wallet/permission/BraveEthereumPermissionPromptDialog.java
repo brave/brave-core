@@ -96,6 +96,9 @@ public class BraveEthereumPermissionPromptDialog
         }
     }
 
+    // TODO: It is much more efficient to retrieve resources by identifier (e.g. R.foo.bar) than by
+    // name (e.g. getIdentifier("bar", "foo", null)).
+    @SuppressLint("DiscouragedApi")
     @CalledByNative
     void show() {
         View customView = LayoutInflaterUtils.inflate(
