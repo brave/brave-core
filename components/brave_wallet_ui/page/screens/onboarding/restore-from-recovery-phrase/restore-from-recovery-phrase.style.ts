@@ -29,7 +29,7 @@ export const RecoveryBaseCss = css`
   background-color: ${(p) => p.theme.color.background02};
 `
 
-export const RecoveryTextArea = styled.textarea`
+export const RecoveryTextDiv = styled.div`
   ${RecoveryBaseCss}
   padding: 16px;
   height: 166px;

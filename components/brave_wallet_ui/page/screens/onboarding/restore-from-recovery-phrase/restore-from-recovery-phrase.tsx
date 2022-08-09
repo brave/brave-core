@@ -9,7 +9,6 @@ import { useHistory } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import { clearClipboard } from '../../../../utils/copy-to-clipboard'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -20,8 +19,6 @@ import { PageState, WalletRoutes, WalletState } from '../../../../constants/type
 // styles
 import {
   LoadingIcon,
-  ToggleVisibilityButton,
-  WalletLink,
   VerticalSpace,
   CloseIcon
 } from '../../../../components/shared/style'
@@ -32,12 +29,8 @@ import {
   StyledWrapper,
   Title,
   TitleAndDescriptionContainer,
-  PhraseCard,
-  PhraseCardBody,
-  PhraseCardBottomRow,
-  PhraseCardTopRow
+  PhraseCard
 } from '../onboarding.style'
-import { RecoveryTextArea, RecoveryTextInput } from './restore-from-recovery-phrase.style'
 
 // components
 import LoadingSkeleton from '../../../../components/shared/loading-skeleton/index'
@@ -50,6 +43,7 @@ import {
 import { NavButton } from '../../../../components/extension'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
+import { RecoveryInput } from './recovery-input'
 
 enum RestoreFromOtherWalletSteps {
   phrase = 'phrase',
@@ -100,12 +94,12 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   const isCheckingExtensions = !restoreFrom.includes('seed') && !isImportWalletsCheckComplete
 
   // state
+  const [isPhraseShown, setIsPhraseShown] = React.useState(false)
   const [isCheckingImportPassword, setIsCheckingImportPassword] = React.useState(false)
   const [currentImportAttempt, setCurrentImportAttempt] = React.useState(importWalletAttempts)
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [extensionPassword, setExtensionPassword] = React.useState('')
-  const [isPhraseShown, setIsPhraseShown] = React.useState(false)
   const [phraseInput, setPhraseInput] = React.useState('')
   const [currentStep, setCurrentStep] = React.useState<RestoreFromOtherWalletSteps>(
     isImportingFromExtension
@@ -138,10 +132,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     extensionPassword,
     importWalletAttempts
   ])
-
-  const toggleShowPhrase = React.useCallback(() => {
-    setIsPhraseShown(prev => !prev)
-  }, [])
 
   const restoreWallet = React.useCallback(async () => {
     if (!isPasswordValid) {
@@ -184,45 +174,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     isImportingFromMetaMaskExtension,
     isImportingFromLegacyExtension
   ])
-
-  const onPhraseInputChanged = React.useCallback((event: React.ChangeEvent<
-    HTMLInputElement | HTMLTextAreaElement
-  >) => {
-    const value = event.target.value
-
-    // This prevents there from being a space at the begining of the phrase.
-    const removeBegginingWhiteSpace = value.trimStart()
-
-    // This Prevents there from being more than one space between words.
-    const removedDoubleSpaces = removeBegginingWhiteSpace.replace(/ +(?= )/g, '')
-
-    // Although the above removes double spaces, it is initialy recognized as a
-    // a double-space before it is removed and macOS automatically replaces double-spaces with a period.
-    const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
-
-    // This prevents an extra space at the end of a 24 word phrase.
-    const cleanedInput = phraseInput.split(' ').length === 24
-      ? removePeriod.trimEnd()
-      : removePeriod
-
-    setPhraseInput(cleanedInput)
-
-    // isValid
-    dispatch(WalletPageActions.hasMnemonicError(
-      cleanedInput.trim().split(/\s+/g).length < 12
-    ))
-  }, [phraseInput])
-
-  const onClickPasteFromClipboard = React.useCallback(async () => {
-    const phraseFromClipboard = await navigator.clipboard.readText()
-    setPhraseInput(phraseFromClipboard.trim())
-    clearClipboard()
-    onPhraseInputChanged({
-      target: { value: phraseFromClipboard }
-    } as React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >)
-  }, [onPhraseInputChanged])
 
   const handlePasswordChange = React.useCallback(({ isValid, password }: NewPasswordValues) => {
     setPassword(password)
@@ -281,29 +232,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       onContinueClicked()
     }
   }, [onContinueClicked])
-
-  // memos
-  const RecoveryInput = React.useMemo(() => {
-    return isPhraseShown
-    ? <RecoveryTextArea
-        as='textarea'
-        value={phraseInput}
-        onChange={onPhraseInputChanged}
-        onPaste={clearClipboard}
-        onKeyDown={handleKeyDown}
-        autoComplete='off'
-      >
-        {phraseInput}
-      </RecoveryTextArea>
-    : <RecoveryTextInput
-        type='password'
-        value={phraseInput}
-        onChange={onPhraseInputChanged}
-        onPaste={clearClipboard}
-        onKeyDown={handleKeyDown}
-        autoComplete='off'
-      />
-  }, [isPhraseShown, phraseInput, onPhraseInputChanged, handleKeyDown])
 
   const pageText = React.useMemo(() => {
     switch (currentStep) {
@@ -422,25 +350,11 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
           {!isCheckingExtensions && currentStep === RestoreFromOtherWalletSteps.phrase &&
             <>
               <PhraseCard>
-                <PhraseCardTopRow>
-                  <ToggleVisibilityButton
-                    isVisible={isPhraseShown}
-                    onClick={toggleShowPhrase}
-                  />
-                </PhraseCardTopRow>
-
-                <PhraseCardBody>
-                  {RecoveryInput}
-                </PhraseCardBody>
-
-                <PhraseCardBottomRow centered>
-                  <WalletLink
-                    as='button'
-                    onClick={onClickPasteFromClipboard}
-                  >
-                    {getLocale('braveWalletPasteFromClipboard')}
-                  </WalletLink>
-                </PhraseCardBottomRow>
+                <RecoveryInput
+                  onChange={setPhraseInput}
+                  onKeyDown={handleKeyDown}
+                  onToggleShowPhrase={setIsPhraseShown}
+                />
               </PhraseCard>
 
               <VerticalSpace space={isPhraseShown ? '20px' : '130px'} />
