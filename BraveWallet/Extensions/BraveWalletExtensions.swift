@@ -196,8 +196,16 @@ extension BraveWallet.NetworkInfo {
 }
 
 extension BraveWallet.BlockchainToken {
-  /// The id to fetch price and price history. Use `coingeckoId` when it's not empty, otherwise use `symbol`
+  /// The id to fetch price and price history.
   var assetRatioId: String {
-    coingeckoId.isEmpty ? symbol : coingeckoId
+    if !coingeckoId.isEmpty {
+      return coingeckoId
+    }
+    
+    if chainId != BraveWallet.MainnetChainId || contractAddress.isEmpty {
+      return symbol
+    }
+    
+    return contractAddress
   }
 }
