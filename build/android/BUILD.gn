@@ -176,7 +176,7 @@ brave_xml_preprocessor("brave_java_xml_preprocess_resources") {
 
 generate_jni("jni_headers") {
   sources = [
-    "//brave/android/java/org/chromium/base/BraveFeatureList.java",
+    "//brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
