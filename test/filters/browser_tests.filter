@@ -168,6 +168,9 @@
 -ChromeSitePerProcessTest.*
 -ChromeURLDataManagerTest.*
 -ChromeURLDataManagerWebUITrustedTypesTest.*
+-Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/0
+-Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/6
+-Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/7
 -ClickToCallBrowserTest.*
 -ClientHintsAcceptCHFrameObserverBrowserTest.*
 -ClientHintsBrowserTest.*
