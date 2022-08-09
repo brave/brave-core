@@ -9,12 +9,13 @@ window.braveDeAmp = (args) => {
   const W = window
   const D = W.document
   const securityToken = args.securityToken
-
+  const messageHandler = webkit.messageHandlers[args.handlerName]
+  
   let timesToCheck = 20
   let intervalId
   
   const sendMessage = (destURL) => {
-    return webkit.messageHandlers[args.handlerName].postMessage({
+    return messageHandler.postMessage({
       securityToken: securityToken,
       destURL: destURL.href
     })

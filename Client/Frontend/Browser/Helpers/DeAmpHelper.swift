@@ -9,24 +9,8 @@ import WebKit
 
 public class DeAmpHelper: TabContentScript {
   private struct DeAmpDTO: Decodable {
-    enum CodingKeys: String, CodingKey {
-      case destURL, securityToken
-    }
-    
     let securityToken: String
     let destURL: URL
-    
-    init(from decoder: Decoder) throws {
-      let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.securityToken = try container.decode(String.self, forKey: .securityToken)
-      let destURLString = try container.decode(String.self, forKey: .destURL)
-      
-      guard let destURL = URL(string: destURLString) else {
-        throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "`resourceURL` is not a valid URL. Fix the `RequestBlocking.js` script"))
-      }
-      
-      self.destURL = destURL
-    }
   }
   
   private weak var tab: Tab?
@@ -59,8 +43,10 @@ public class DeAmpHelper: TabContentScript {
       }
       
       // Check that the destination is not the same as the previousURL
-      // or that previousURL is nil
-      let shouldRedirect = dto.destURL != tab?.previousComittedURL
+      // or that previousURL is nil which indicates circular loop cause by a client side redirect
+      // Also check that our window url does not match the previously committed url
+      // or that previousURL is nil which indicates as circular loop caused by a server side redirect
+      let shouldRedirect = dto.destURL != tab?.previousComittedURL && tab?.committedURL != tab?.previousComittedURL
       replyHandler(shouldRedirect, nil)
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")
