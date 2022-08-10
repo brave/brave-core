@@ -27,7 +27,14 @@ extern const char kBraveVPNPurchaseTokenAndroid[];
 extern const char kBraveVPNPackageAndroid[];
 #endif
 
+constexpr char kBraveVPNFirstUseTime[] = "brave.brave_vpn.first_use_time";
+constexpr char kBraveVPNLastUseTime[] = "brave.brave_vpn.last_use_time";
+constexpr char kBraveVPNUsedSecondDay[] = "brave.brave_vpn.used_second_day";
+constexpr char kBraveVPNDaysInMonthUsed[] =
+    "brave.brave_vpn.days_in_month_used";
+
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 }  // namespace prefs
 

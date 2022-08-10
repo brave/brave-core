@@ -47,6 +47,8 @@ public class BraveVpnPrefUtils {
     public static final String PREF_BRAVE_VPN_SERVER_PUBLIC_KEY = "brave_vpn_server_public_key";
     public static final String PREF_BRAVE_VPN_IP_ADDRESS = "brave_vpn_ip_address";
     public static final String PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY = "brave_vpn_client_private_key";
+    public static final String PREF_SESSION_START_TIME = "brave_vpn_session_start_time";
+    public static final String PREF_SESSION_END_TIME = "brave_vpn_session_end_time";
 
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
@@ -267,5 +269,25 @@ public class BraveVpnPrefUtils {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putStringSet(PREF_EXCLUDED_PACKAGES, packages);
         sharedPreferencesEditor.apply();
+    }
+
+    public static void setSessionEndTimeMs(long timeMs) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_SESSION_END_TIME, timeMs);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static long getSessionEndTimeMs() {
+        return mSharedPreferences.getLong(PREF_SESSION_END_TIME, -1);
+    }
+
+    public static void setSessionStartTimeMs(long timeMs) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_SESSION_START_TIME, timeMs);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static long getSessionStartTimeMs() {
+        return mSharedPreferences.getLong(PREF_SESSION_START_TIME, -1);
     }
 }

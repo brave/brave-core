@@ -26,6 +26,7 @@ static_library("brave_vpn") {
     "mojom",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/p3a_utils",
     "//brave/components/resources:strings",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
@@ -113,6 +114,7 @@ source_set("unit_tests") {
     deps = [
       ":brave_vpn",
       "//base",
+      "//brave/components/p3a_utils",
       "//brave/components/skus/browser",
       "//brave/components/skus/common",
       "//brave/components/skus/common:mojom",

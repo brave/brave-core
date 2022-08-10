@@ -17,6 +17,7 @@ import android.os.Build;
 import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 import org.chromium.ui.widget.Toast;
@@ -62,6 +63,7 @@ public class BraveVpnProfileUtils {
     }
 
     public void startVpn(Context context) {
+        BraveVpnNativeWorker.getInstance().reportForegroundP3A();
         ContextCompat.startForegroundService(context, new Intent(context, WireguardService.class));
     }
 

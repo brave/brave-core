@@ -172,6 +172,15 @@ public class BraveVpnNativeWorker {
                 mNativeBraveVpnNativeWorker, purchaseToken, productId, productType, packageName);
     }
 
+    public void reportBackgroundP3A(long sessionStartTimeMs, long sessionEndTimeMs) {
+        BraveVpnNativeWorkerJni.get().reportBackgroundP3A(
+                mNativeBraveVpnNativeWorker, sessionStartTimeMs, sessionEndTimeMs);
+    }
+
+    public void reportForegroundP3A() {
+        BraveVpnNativeWorkerJni.get().reportForegroundP3A(mNativeBraveVpnNativeWorker);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveVpnNativeWorker caller);
@@ -190,5 +199,8 @@ public class BraveVpnNativeWorker {
                 String packageName);
         void verifyPurchaseToken(long nativeBraveVpnNativeWorker, String purchaseToken,
                 String productId, String productType, String packageName);
+        void reportBackgroundP3A(
+                long nativeBraveVpnNativeWorker, long sessionStartTimeMs, long sessionEndTimeMs);
+        void reportForegroundP3A(long nativeBraveVpnNativeWorker);
     }
 }
