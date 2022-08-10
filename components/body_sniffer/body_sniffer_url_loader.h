@@ -121,7 +121,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
 
   std::string buffered_body_;
   size_t bytes_remaining_in_buffer_;
-  size_t read_bytes_;
+  size_t read_bytes_ = 0;
 
   mojo::ScopedDataPipeConsumerHandle body_consumer_handle_;
   mojo::ScopedDataPipeProducerHandle body_producer_handle_;
