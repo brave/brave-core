@@ -5,6 +5,8 @@ on:
     types: [closed]
     branches: [master, 1.*]
 
+concurrency: set-bb-issues-milestone
+
 jobs:
   set-pr-milestone:
     if: github.event.pull_request.merged == true
