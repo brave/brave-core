@@ -217,9 +217,9 @@ bool SidebarContainerView::ShouldForceShowSidebar() const {
   // whether the active index is a panel item rather than checking if
   // side_panel_ is visible.
   bool panel_is_active = false;
-  if (auto active_index = sidebar_model_->active_index(); active_index != -1) {
+  if (auto active_index = sidebar_model_->active_index()) {
     const auto& items = sidebar_model_->GetAllSidebarItems();
-    const auto& active_item = items[active_index];
+    const auto& active_item = items[*active_index];
     panel_is_active = active_item.open_in_panel;
   }
   // Always show if user is reordering or a menu is visible
@@ -264,9 +264,13 @@ void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
   ShowSidebar(false, true);
 }
 
-void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
-  DVLOG(1) << "OnActiveIndexChanged: " << old_index << " to " << new_index;
-  if (new_index == -1) {
+void SidebarContainerView::OnActiveIndexChanged(
+    absl::optional<size_t> old_index,
+    absl::optional<size_t> new_index) {
+  DVLOG(1) << "OnActiveIndexChanged: "
+           << (old_index ? std::to_string(*old_index) : "none") << " to "
+           << (new_index ? std::to_string(*new_index) : "none");
+  if (!new_index) {
     // `is_side_panel_event_` is used because `SidePanelCoordinator::Close`
     // unfortunately calls both the event handler for `OnEntryHidden` as well
     // as removing the View. Without it, we end up calling
@@ -279,7 +283,7 @@ void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
       side_panel_coordinator_->Close();
     GetFocusManager()->ClearFocus();
   } else if (!is_side_panel_event_) {
-    const auto& item = sidebar_model_->GetAllSidebarItems()[new_index];
+    const auto& item = sidebar_model_->GetAllSidebarItems()[*new_index];
     if (item.open_in_panel) {
       // Get side panel entry information
       side_panel_coordinator_->Show(SidePanelIdFromSideBarItem(item));
@@ -291,12 +295,12 @@ void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
 }
 
 void SidebarContainerView::OnItemAdded(const sidebar::SidebarItem& item,
-                                       int index,
+                                       size_t index,
                                        bool user_gesture) {
   UpdateToolbarButtonVisibility();
 }
 
-void SidebarContainerView::OnItemRemoved(int index) {
+void SidebarContainerView::OnItemRemoved(size_t index) {
   UpdateToolbarButtonVisibility();
 }
 
@@ -401,7 +405,7 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
       auto* controller = browser_->sidebar_controller();
       if (controller->IsActiveIndex(side_bar_index)) {
-        controller->ActivateItemAt(-1);
+        controller->ActivateItemAt(absl::nullopt);
       }
       break;
     }

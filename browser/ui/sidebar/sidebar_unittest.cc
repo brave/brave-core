@@ -18,9 +18,13 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+using ::testing::Eq;
+using ::testing::Optional;
 
 namespace sidebar {
 
@@ -31,20 +35,21 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
 
   MOCK_METHOD(void,
               OnItemAdded,
-              (const SidebarItem& item, int index, bool user_gesture),
+              (const SidebarItem& item, size_t index, bool user_gesture),
               (override));
   MOCK_METHOD(void,
               OnItemMoved,
-              (const SidebarItem& item, int from, int to),
+              (const SidebarItem& item, size_t from, size_t to),
               (override));
-  MOCK_METHOD(void, OnItemRemoved, (int index), (override));
+  MOCK_METHOD(void, OnItemRemoved, (size_t index), (override));
   MOCK_METHOD(void,
               OnActiveIndexChanged,
-              (int old_index, int new_index),
+              (absl::optional<size_t> old_index,
+               absl::optional<size_t> new_index),
               (override));
   MOCK_METHOD(void,
               OnWillUpdateFavicon,
-              (const SidebarItem& item, int index),
+              (const SidebarItem& item, size_t index),
               (override));
   MOCK_METHOD(void,
               OnFaviconUpdatedForItem,
@@ -83,7 +88,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   model()->Init(nullptr);
 
-  EXPECT_EQ(-1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
 
   // Add one more item to test with 5 items.
   SidebarItem new_item = SidebarItem::Create(
@@ -124,35 +129,37 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
             service()->items()[2].built_in_item_type);
   EXPECT_EQ(item_data.url, service()->items()[2].url);
   EXPECT_EQ(item_data.title, service()->items()[2].title);
-  EXPECT_EQ(-1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
   EXPECT_EQ(items_size, service()->items().size());
 
   model()->SetActiveIndex(1, false);
-  EXPECT_EQ(1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(1u));
 
   // Move item at 1 to 2. This causes active index change because item at 1 was
   // active item. After moving, active item index should be 2.
   EXPECT_CALL(observer_, OnItemMoved(testing::_, 1, 2)).Times(1);
-  EXPECT_CALL(observer_, OnActiveIndexChanged(1, 2)).Times(1);
+  EXPECT_CALL(observer_, OnActiveIndexChanged(Optional(1), Optional(2)))
+      .Times(1);
   service()->MoveItem(1, 2);
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_EQ(2, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(2u));
 
   // Moving item from 1 to 0 doesn't affect active index.
   EXPECT_CALL(observer_, OnItemMoved(testing::_, 1, 0)).Times(1);
   EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
   service()->MoveItem(1, 0);
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_EQ(2, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(2u));
 
   // Moving item from 3 to 0 affect active index. Items behind the active
   // item(at 2) to the front of active index. So, active item is also moved from
   // 2 to 3 index.
   EXPECT_CALL(observer_, OnItemMoved(testing::_, 3, 0)).Times(1);
-  EXPECT_CALL(observer_, OnActiveIndexChanged(2, 3)).Times(1);
+  EXPECT_CALL(observer_, OnActiveIndexChanged(Optional(2), Optional(3)))
+      .Times(1);
   service()->MoveItem(3, 0);
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_EQ(3, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(3u));
 }
 
 TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {

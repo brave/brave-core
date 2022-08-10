@@ -183,12 +183,12 @@ std::u16string SidebarControlView::GetTooltipTextFor(
 }
 
 void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,
-                                     int index,
+                                     size_t index,
                                      bool user_gesture) {
   UpdateItemAddButtonState();
 }
 
-void SidebarControlView::OnItemRemoved(int index) {
+void SidebarControlView::OnItemRemoved(size_t index) {
   UpdateItemAddButtonState();
 }
 

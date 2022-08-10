@@ -50,7 +50,7 @@ SidebarController::SidebarController(BraveBrowser* browser, Profile* profile)
 
 SidebarController::~SidebarController() = default;
 
-bool SidebarController::IsActiveIndex(int index) const {
+bool SidebarController::IsActiveIndex(absl::optional<size_t> index) const {
   return sidebar_model_->active_index() == index;
 }
 
@@ -60,17 +60,16 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
   return !GetAllExistingTabIndexForHost(browser_, item.url.host()).empty();
 }
 
-void SidebarController::ActivateItemAt(int index,
+void SidebarController::ActivateItemAt(absl::optional<size_t> index,
                                        WindowOpenDisposition disposition) {
-  // -1 means there is no active item.
-  DCHECK_GE(index, -1);
-  if (index == -1) {
+  // disengaged means there is no active item.
+  if (!index) {
     sidebar_model_->SetActiveIndex(index);
     UpdateSidebarVisibility();
     return;
   }
 
-  const auto& item = sidebar_model_->GetAllSidebarItems()[index];
+  const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
     sidebar_model_->SetActiveIndex(index);

@@ -52,12 +52,13 @@ class SidebarModel : public SidebarService::Observer,
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnItemAdded(const SidebarItem& item,
-                             int index,
+                             size_t index,
                              bool user_gesture) {}
-    virtual void OnItemMoved(const SidebarItem& item, int from, int to) {}
-    virtual void OnItemRemoved(int index) {}
-    virtual void OnActiveIndexChanged(int old_index, int new_index) {}
-    virtual void OnWillUpdateFavicon(const SidebarItem& item, int index) {}
+    virtual void OnItemMoved(const SidebarItem& item, size_t from, size_t to) {}
+    virtual void OnItemRemoved(size_t index) {}
+    virtual void OnActiveIndexChanged(absl::optional<size_t> old_index,
+                                      absl::optional<size_t> new_index) {}
+    virtual void OnWillUpdateFavicon(const SidebarItem& item, size_t index) {}
     virtual void OnFaviconUpdatedForItem(const SidebarItem& item,
                                          const gfx::ImageSkia& image) {}
 
@@ -77,24 +78,24 @@ class SidebarModel : public SidebarService::Observer,
   void RemoveObserver(Observer* observer);
 
   // |false| is used in unit test.
-  void SetActiveIndex(int index, bool load = true);
+  void SetActiveIndex(absl::optional<size_t> index, bool load = true);
   // Returns true if webcontents of item at |index| already loaded url.
   bool IsSidebarHasAllBuiltInItems() const;
-  int GetIndexOf(const SidebarItem& item) const;
+  absl::optional<size_t> GetIndexOf(const SidebarItem& item) const;
 
   // Don't cache item list. list can be changed during the runtime.
   const std::vector<SidebarItem>& GetAllSidebarItems() const;
 
-  // Return -1 if sidebar panel is not opened.
-  int active_index() const { return active_index_; }
+  // Return absl::nullopt if sidebar panel is not opened.
+  absl::optional<size_t> active_index() const { return active_index_; }
 
   // SidebarService::Observer overrides:
-  void OnItemAdded(const SidebarItem& item, int index) override;
-  void OnItemMoved(const SidebarItem& item, int from, int to) override;
+  void OnItemAdded(const SidebarItem& item, size_t index) override;
+  void OnItemMoved(const SidebarItem& item, size_t from, size_t to) override;
   void OnItemUpdated(const SidebarItem& item,
                      const SidebarItemUpdate& update) override;
-  void OnWillRemoveItem(const SidebarItem& item, int index) override;
-  void OnItemRemoved(const SidebarItem& item, int index) override;
+  void OnWillRemoveItem(const SidebarItem& item, size_t index) override;
+  void OnItemRemoved(const SidebarItem& item, size_t index) override;
 
   // history::HistoryServiceObserver overrides:
   void OnURLVisited(history::HistoryService* history_service,
@@ -106,9 +107,9 @@ class SidebarModel : public SidebarService::Observer,
   FRIEND_TEST_ALL_PREFIXES(SidebarModelTest, ItemsChangedTest);
 
   // Add item at last.
-  void AddItem(const SidebarItem& item, int index, bool user_gesture);
-  void RemoveItemAt(int index);
-  void UpdateActiveIndexAndNotify(int new_active_index);
+  void AddItem(const SidebarItem& item, size_t index, bool user_gesture);
+  void RemoveItemAt(size_t index);
+  void UpdateActiveIndexAndNotify(absl::optional<size_t> new_active_index);
 
   // TODO(simonhong): Use separated class for fetching favicon from this model
   // class.
@@ -123,8 +124,8 @@ class SidebarModel : public SidebarService::Observer,
       const gfx::Image& image,
       const image_fetcher::RequestMetadata& request_metadata);
 
-  // Non-negative if sidebar panel is opened.
-  int active_index_ = -1;
+  // Optional engaged if sidebar panel is opened.
+  absl::optional<size_t> active_index_ = absl::nullopt;
   Profile* profile_ = nullptr;
   std::unique_ptr<base::CancelableTaskTracker> task_tracker_;
   base::ObserverList<Observer> observers_;

@@ -9,6 +9,7 @@
 #include "base/containers/adapters.h"
 #include "base/containers/stack.h"
 #include "base/guid.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -428,7 +429,11 @@
 
 - (NSInteger)indexOfChild:(IOSBookmarkNode*)child {
   DCHECK(node_);
-  return node_->GetIndexOf(child->node_);
+  auto index = node_->GetIndexOf(child->node_);
+  if (!index)
+    return NSNotFound;
+
+  return base::checked_cast<NSInteger>(*index);
 }
 
 - (bool)hasAncestor:(IOSBookmarkNode*)parent {
