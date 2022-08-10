@@ -166,9 +166,9 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -209,7 +209,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
@@ -234,9 +234,9 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -277,7 +277,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
@@ -297,9 +297,9 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
   BuildAndSetIssuers();
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -344,7 +344,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
@@ -369,9 +369,9 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
 
   BuildAndSetIssuers();
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -391,7 +391,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
@@ -414,7 +414,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {// Create confirmation request
        R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
@@ -445,7 +445,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
               }
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   BuildAndSetIssuers();
 

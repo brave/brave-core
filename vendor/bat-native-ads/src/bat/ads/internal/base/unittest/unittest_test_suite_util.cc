@@ -5,22 +5,24 @@
 
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
 
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ads {
 
-std::string GetCurrentTestSuiteAndName() {
+std::string GetNamespaceForCurrentTest() {
   const ::testing::TestInfo* const test_info =
       ::testing::UnitTest::GetInstance()->current_test_info();
+  CHECK(test_info);
 
   return base::StringPrintf("%s.%s", test_info->test_suite_name(),
                             test_info->name());
 }
 
-std::string GetUuidForCurrentTestSuiteAndName(const std::string& name) {
-  return base::StringPrintf("%s:%s", name.c_str(),
-                            GetCurrentTestSuiteAndName().c_str());
+std::string GetUuidForCurrentTestAndValue(const std::string& value) {
+  return base::StringPrintf("%s:%s", value.c_str(),
+                            GetNamespaceForCurrentTest().c_str());
 }
 
 }  // namespace ads

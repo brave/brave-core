@@ -43,10 +43,10 @@ class BatAdsSubdivisionTargetingExclusionRuleTest : public UnitTestBase {
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -64,10 +64,10 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedForMultipleGeoTargets) {
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -86,10 +86,10 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -107,10 +107,10 @@ TEST_F(
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelected) {
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -129,10 +129,10 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -164,10 +164,10 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -186,10 +186,10 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -207,10 +207,10 @@ TEST_F(
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"XX", "region":"NO REGION"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -231,10 +231,10 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kSubdivisionTargetingCode, "DISABLED");
 
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 
@@ -255,10 +255,10 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kSubdivisionTargetingCode, "DISABLED");
 
-  const URLEndpointMap endpoints = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
             {"country":"US", "region":"FL"}
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   subdivision_targeting_->MaybeFetch();
 

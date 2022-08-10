@@ -215,7 +215,7 @@ void UnitTestBase::Initialize() {
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 
   // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
-  // tasks have fired before running tests
+  // tasks have fired before running tests.
   task_environment_.FastForwardUntilNoTasksRemain();
 }
 

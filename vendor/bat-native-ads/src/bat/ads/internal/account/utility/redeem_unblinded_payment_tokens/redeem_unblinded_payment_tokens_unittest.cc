@@ -48,7 +48,7 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   // Arrange
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -64,12 +64,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
               ]
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               Now());
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
@@ -92,7 +92,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo& wallet = GetWallet();
+  const WalletInfo wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -104,7 +104,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
        RedeemUnblindedPaymentTokensMultipleTimes) {
   // Arrange
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -134,12 +134,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
               ]
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               Now());
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
@@ -164,7 +164,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo& wallet = GetWallet();
+  const WalletInfo wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
@@ -174,7 +174,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -190,12 +190,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
               ]
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               Now());
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
@@ -218,7 +218,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo& wallet = GetWallet();
+  const WalletInfo wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -229,7 +229,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Arrange
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -245,12 +245,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
               ]
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               Now());
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
@@ -285,7 +285,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -301,7 +301,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
               ]
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               Now());
@@ -326,7 +326,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo& wallet = GetWallet();
+  const WalletInfo wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -337,9 +337,9 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   // Arrange
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_NOT_FOUND, ""}, {net::HTTP_OK, R"(
+       {{net::HTTP_NOT_FOUND, {}}, {net::HTTP_OK, R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -353,12 +353,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
               ]
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               Now());
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
@@ -380,7 +380,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_));
 
-  const WalletInfo& wallet = GetWallet();
+  const WalletInfo wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();

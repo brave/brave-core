@@ -42,10 +42,10 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLEndpointMap endpoints = {
+    const URLResponseMap responses = {
         {"/v9/catalog",
          {{net::HTTP_OK, "/catalog_with_notification_ad.json"}}}};
-    MockUrlRequest(ads_client_mock_, endpoints);
+    MockUrlResponses(ads_client_mock_, responses);
   }
 
   void ServeAd() {

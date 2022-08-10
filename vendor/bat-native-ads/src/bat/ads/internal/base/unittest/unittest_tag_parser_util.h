@@ -10,7 +10,7 @@
 
 namespace ads {
 
-void ParseAndReplaceTagsForText(std::string* text);
+void ParseAndReplaceTags(std::string* out_text);
 
 }  // namespace ads
 

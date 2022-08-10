@@ -24,14 +24,14 @@ class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLEndpointMap endpoints = {
+    const URLResponseMap responses = {
         {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
-    MockUrlRequest(ads_client_mock_, endpoints);
+    MockUrlResponses(ads_client_mock_, responses);
   }
 };
 
 TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
-       GetConversionsFromCatalogEndpoint) {
+       GetConversionsFromCatalogResponse) {
   // Arrange
 
   // Act

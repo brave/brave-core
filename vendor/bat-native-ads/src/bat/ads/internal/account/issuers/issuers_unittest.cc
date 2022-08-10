@@ -44,7 +44,7 @@ class BatAdsIssuersTest : public UnitTestBase {
 
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Arrange
-  const URLEndpointMap endpoints = {{// Issuers request
+  const URLResponseMap responses = {{// Issuers request
                                      R"(/v1/issuers/)",
                                      {{net::HTTP_OK, R"(
         {
@@ -79,7 +79,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
@@ -101,10 +101,10 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
-  const URLEndpointMap endpoints = {{// Issuers request
+  const URLResponseMap responses = {{// Issuers request
                                      R"(/v1/issuers/)",
                                      {{net::HTTP_OK, "FOOBAR"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
@@ -126,10 +126,10 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
-  const URLEndpointMap endpoints = {{// Issuers request
+  const URLResponseMap responses = {{// Issuers request
                                      R"(/v1/issuers/)",
                                      {{net::HTTP_NOT_FOUND, ""}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, responses);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
