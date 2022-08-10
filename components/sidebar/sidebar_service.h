@@ -59,10 +59,10 @@ class SidebarService : public KeyedService {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnItemAdded(const SidebarItem& item, int index) {}
-    virtual void OnItemMoved(const SidebarItem& item, int from, int to) {}
-    virtual void OnWillRemoveItem(const SidebarItem& item, int index) {}
-    virtual void OnItemRemoved(const SidebarItem& item, int index) {}
+    virtual void OnItemAdded(const SidebarItem& item, size_t index) {}
+    virtual void OnItemMoved(const SidebarItem& item, size_t from, size_t to) {}
+    virtual void OnWillRemoveItem(const SidebarItem& item, size_t index) {}
+    virtual void OnItemRemoved(const SidebarItem& item, size_t index) {}
     virtual void OnItemUpdated(const SidebarItem& item,
                                const SidebarItemUpdate& update) {}
     virtual void OnShowSidebarOptionChanged(ShowSidebarOption option) {}
@@ -81,7 +81,7 @@ class SidebarService : public KeyedService {
 
   void AddItem(const SidebarItem& item);
   void RemoveItemAt(int index);
-  void MoveItem(int from, int to);
+  void MoveItem(size_t from, size_t to);
 
   // Only non-builtin type is editable.
   // URL acts like an id for each item.
@@ -98,7 +98,7 @@ class SidebarService : public KeyedService {
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
   absl::optional<SidebarItem> GetDefaultPanelItem() const;
-  bool IsEditableItemAt(int index) const;
+  bool IsEditableItemAt(size_t index) const;
 
   SidebarService(const SidebarService&) = delete;
   SidebarService& operator=(const SidebarService&) = delete;
