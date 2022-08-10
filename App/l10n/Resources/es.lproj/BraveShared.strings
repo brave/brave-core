@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Lista de reproducción";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Compartidos contigo";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "Este ajuste cambiará la ubicación de la lista de vídeos al lado izquierdo o al derecho.";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Carpeta sin título";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Botón para añadir a Lista de reproducción de Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Añadir";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Eliminar datos sin conexión";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Eliminar lista de reproducción";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Editar";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Botón del menú de la lista de reproducción";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Añadir a la lista de reproducción";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "El guardado automático para el uso sin conexión está activado. Por tanto, todo lo que se añada a las listas de reproducción, incluidas las compartidas, se guardará en tu dispositivo para que puedas verlo sin conexión y podrá usar tus datos móviles.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Configuración";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "El guardado automático para el uso sin conexión puede gestionarse en la configuración de Lista de producción.";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Gestionar tus datos en Lista de producción";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Cambiar nombre";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Sincronizar";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Lista de reproducción";

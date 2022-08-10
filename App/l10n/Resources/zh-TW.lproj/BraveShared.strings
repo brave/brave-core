@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "播放清單";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "與您共用";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "此設定將在左側／右側之間更改影片清單的位置。";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "無標題資料夾";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "新增至 Brave 播放清單按鈕";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "新增";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "刪除離線數據";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "删除播放清單";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "編輯";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "播放清單選單按鈕";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "立即新增播放清單";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "已啟動自動儲存功能，以便離線使用。換句話說，播放清單 (包括共用的播放清單) 增加的新項目會儲存至您的裝置，以供您離線檢視，而這些項目將能使用您的行動網路。";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "設定";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "您可前往「播放清單」設定，管理自動儲存以供離線使用的功能。";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "管理播放清單資料";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "重新命名";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "立即同步";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "播放清單";

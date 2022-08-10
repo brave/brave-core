@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Spellista";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Delat med dig";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "Den här inställningen ändrar videolistans plats från vänster sida/höger sida.";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Mapp utan titel";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Knappen Lägg till i Brave-spellista";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Lägg till";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Ta bort offlinedata";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Ta bort spellista";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Redigera";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Knappen Spellistemeny";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Lägg till spellista nu";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Spara automatiskt för offline-användning är aktiverat, vilket innebär att objekt du lägger till i spellistor – inklusive delade spellistor – sparas till enheten så att du kan titta på dem offline, vilket kan använda mobildata.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Inställningar";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "Spara automatiskt för offline-användning kan hanteras i inställningarna för spellistor.";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Hantering av data för spellistor";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Ändra namn";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Synkronisera nu";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Spellista";

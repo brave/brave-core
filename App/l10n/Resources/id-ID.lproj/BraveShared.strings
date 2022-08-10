@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Daftar Putar";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Dibagikan kepada Anda";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "Pengaturan ini akan mengubah lokasi daftar video di antara sisi kiri atau kanan.";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Folder Tanpa Nama";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Tambahkan ke Tombol Daftar Putar Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Tambahkan";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Hapus Data Luring";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Hapus Daftar Putar";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Edit";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Tombol Menu Daftar Putar";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Tambahkan daftar putar sekarang";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Simpan otomatis untuk penggunaan luring diaktifkan, artinya tambahan baru ke daftar putar, termasuk daftar putar yang dibagikan disimpan ke perangkat Anda untuk melihatnya luring dan dapat menggunakan data ponsel Anda.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Pengaturan";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "Simpan otomatis untuk penggunaan luring dapat dikelola di pengaturan Daftar Putar.";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Mengelola data Daftar Putar Anda";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Namakan ulang";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Sinkronisasikan Sekarang";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Daftar Putar";
