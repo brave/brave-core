@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
@@ -116,9 +117,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
                    "https://xdaichain.com/fake/example/url/xdai.svg",
                    "https://xdaichain.com/fake/example/url/xdai.png"}));
     ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
-    ASSERT_TRUE(chain->data);
-    ASSERT_TRUE(chain->data->is_eth_data());
-    EXPECT_TRUE(chain->data->get_eth_data()->is_eip1559);
+    ASSERT_TRUE(chain->is_eip1559);
   }
   {
     mojom::NetworkInfoPtr chain =
@@ -135,7 +134,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
     ASSERT_TRUE(chain->symbol_name.empty());
     ASSERT_TRUE(chain->symbol.empty());
     ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
-    ASSERT_FALSE(chain->data);
+    ASSERT_FALSE(chain->is_eip1559);
     EXPECT_EQ(chain->decimals, 0);
   }
 
@@ -156,11 +155,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
 }
 
 TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
-  mojom::NetworkInfo chain(
-      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
-  base::Value::Dict value = brave_wallet::EthNetworkInfoToValue(chain);
+  mojom::NetworkInfo chain = GetTestNetworkInfo1();
+  base::Value::Dict value = EthNetworkInfoToValue(chain);
   EXPECT_EQ(*value.FindString("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindString("chainName"), chain.chain_name);
   EXPECT_EQ(*value.FindStringByDottedPath("nativeCurrency.name"),
@@ -169,7 +165,7 @@ TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
             chain.symbol);
   EXPECT_EQ(*value.FindIntByDottedPath("nativeCurrency.decimals"),
             chain.decimals);
-  EXPECT_EQ(value.FindBool("is_eip1559").value(), true);
+  EXPECT_EQ(value.FindBool("is_eip1559").value(), false);
   auto* rpc_urls = value.FindList("rpcUrls");
   for (const auto& entry : *rpc_urls) {
     ASSERT_NE(std::find(chain.rpc_urls.begin(), chain.rpc_urls.end(),

@@ -13,11 +13,7 @@ export const mockNetworks: BraveWallet.NetworkInfo[] = [
     decimals: 18,
     iconUrls: [ETHIconUrl],
     coin: BraveWallet.CoinType.ETH,
-    data: {
-       ethData: {
-        isEip1559: true
-      }
-    }
+    isEip1559: true
   },
   {
     chainId: '0x3',
@@ -29,10 +25,6 @@ export const mockNetworks: BraveWallet.NetworkInfo[] = [
     decimals: 18,
     iconUrls: [ETHIconUrl],
     coin: BraveWallet.CoinType.ETH,
-    data: {
-       ethData: {
-        isEip1559: true
-      }
-    }
+    isEip1559: true
   }
 ]

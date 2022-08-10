@@ -31,7 +31,7 @@ const mockAccount: WalletAccountType = {
   keyringId: undefined
 }
 
-const mockNetworkList = [
+const mockNetworkList: BraveWallet.NetworkInfo[] = [
   {
     'chainId': '0x1',
     'chainName': 'Ethereum Mainnet',
@@ -46,11 +46,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x4',
@@ -66,11 +62,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x3',
@@ -86,11 +78,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x5',
@@ -106,11 +94,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x2a',
@@ -126,11 +110,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x539',
@@ -146,11 +126,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': false
-      }
-    }
+    'isEip1559': false
   }
 ]
 

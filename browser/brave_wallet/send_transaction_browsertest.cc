@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -749,11 +750,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   observer()->SetExpectEip1559Tx(false);
   RestoreWallet();
 
-  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"}, "TC",
-                           "Test Coin", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
 
   TestUserApproved("request", "", true /* skip_restore */);

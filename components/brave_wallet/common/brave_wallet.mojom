@@ -527,7 +527,7 @@ interface BlockchainRegistry {
 
   // Get currencies list
   GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
-  
+
   // Returns list of prepopulated networks.
   GetPrepopulatedNetworks() => (array<NetworkInfo> networks);
 };
@@ -761,14 +761,6 @@ enum CoinType {
   SOL = 501
 };
 
-struct NetworkInfoDataETH {
-  bool is_eip1559;
-};
-
-union NetworkInfoData {
-  NetworkInfoDataETH eth_data;
-};
-
 struct NetworkInfo {
   string chain_id;
   string chain_name;
@@ -779,7 +771,7 @@ struct NetworkInfo {
   string symbol_name;
   int32 decimals;
   CoinType coin;
-  NetworkInfoData? data;
+  bool is_eip1559; // only for ETH.
 };
 
 struct OriginInfo {

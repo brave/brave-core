@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -1230,11 +1231,7 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
-  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"}, "TC",
-                           "Test Coin", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
 
   AddCustomNetwork(GetPrefs(), chain);
   base::RunLoop().RunUntilIdle();
@@ -1258,16 +1255,12 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
 
 TEST_F(BraveWalletServiceUnitTest,
        CustomChainNativeAssetAddRemoveSetUserAssetVisible) {
-  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"}, "TC",
-                           "Test Coin", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
   AddCustomNetwork(GetPrefs(), chain);
 
   auto native_asset = mojom::BlockchainToken::New(
-      "", "Test Coin", "https://url1.com", false, false, "TC", 11, true, "", "",
-      "0x5566", mojom::CoinType::ETH);
+      "", "symbol_name", "https://url1.com", false, false, "symbol", 11, true,
+      "", "", "0x5566", mojom::CoinType::ETH);
 
   bool success = false;
   std::vector<mojom::BlockchainTokenPtr> tokens;
