@@ -28,35 +28,29 @@ interface Props {
   actions: any
 }
 
-export class BraveWebtorrentPage extends React.Component<Props, {}> {
-  render () {
-    const { actions, torrentState, torrentObj } = this.props
+function BraveWebTorrentPage ({ actions, torrentState, torrentObj }: Props) {
+  if (!torrentState) return null
 
-    if (!torrentState) return null
+  const name = torrentObj && torrentObj.name
+    ? torrentObj.name
+    : torrentState && torrentState.name
+    ? torrentState.name
+    : undefined
 
-    let name = torrentObj && torrentObj.name
-      ? torrentObj.name
-      : torrentState && torrentState.name
-      ? torrentState.name
-      : undefined
+  document.title = name
+    ? name + ' – WebTorrent'
+    : 'WebTorrent'
 
-    document.title = name
-      ? name + ' – WebTorrent'
-      : 'WebTorrent'
-
-    if (torrentObj && typeof torrentState.ix === 'number') {
-      return <MediaViewer torrent={torrentObj} ix={torrentState.ix} />
-    }
-
-    return (
-      <TorrentViewer
-        actions={actions}
-        name={name}
-        torrentState={torrentState}
-        torrent={torrentObj}
-      />
-    )
+  if (torrentObj && typeof torrentState.ix === 'number') {
+    return <MediaViewer torrent={torrentObj} ix={torrentState.ix} />
   }
+
+  return <TorrentViewer
+    actions={actions}
+    name={name}
+    torrentState={torrentState}
+    torrent={torrentObj}
+  />
 }
 
 export const mapStateToProps = (
@@ -76,4 +70,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BraveWebtorrentPage)
+)(BraveWebTorrentPage)
