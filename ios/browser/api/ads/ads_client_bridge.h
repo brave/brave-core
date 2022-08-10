@@ -75,7 +75,7 @@
 - (absl::optional<base::Value::List>)getListPref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
-- (void)recordP2AEvent:(const std::string&)name value:(const std::string&)value;
+- (void)recordP2AEvent:(const std::string&)name value:(base::Value::List)value;
 - (void)logTrainingInstance:
     (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
         training_instance;

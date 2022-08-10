@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/privacy/p2a/p2a.h"
 
-#include "base/json/json_writer.h"
-#include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/privacy/p2a/p2a_values_util.h"
 
 namespace ads {
 namespace privacy {
@@ -18,15 +17,8 @@ void RecordEvent(const std::string& name,
   DCHECK(!name.empty());
   DCHECK(!questions.empty());
 
-  base::Value list(base::Value::Type::LIST);
-  for (const auto& question : questions) {
-    list.Append(question);
-  }
-
-  std::string json;
-  base::JSONWriter::Write(list, &json);
-
-  AdsClientHelper::GetInstance()->RecordP2AEvent(name, json);
+  AdsClientHelper::GetInstance()->RecordP2AEvent(name,
+                                                 QuestionsToValue(questions));
 }
 
 }  // namespace p2a

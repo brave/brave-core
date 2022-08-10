@@ -1930,8 +1930,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return _paths;
 }
 
-- (void)recordP2AEvent:(const std::string&)name
-                 value:(const std::string&)value {
+- (void)recordP2AEvent:(const std::string&)name value:(base::Value::List)value {
   // Not needed on iOS
 }
 

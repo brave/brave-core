@@ -355,6 +355,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/p2a/impressions/p2a_impression_questions_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity_questions_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/p2a/p2a_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/p2a/p2a_values_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/tokens/token_generator_mock.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/tokens/token_generator_mock.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/tokens/token_generator_unittest.cc",

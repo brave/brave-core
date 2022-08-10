@@ -135,7 +135,7 @@ class AdsClientMojoBridge
                         RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
-                      const std::string& out_value) override;
+                      base::Value::List value) override;
 
   void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
                                training_instance) override;

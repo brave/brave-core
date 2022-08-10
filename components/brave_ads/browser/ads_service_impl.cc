@@ -1683,18 +1683,8 @@ void AdsServiceImpl::RunDBTransaction(
 }
 
 void AdsServiceImpl::RecordP2AEvent(const std::string& name,
-                                    const std::string& value) {
-  absl::optional<base::Value> parsed_json = base::JSONReader::Read(value);
-  if (!parsed_json) {
-    return;
-  }
-
-  base::Value::List* list = parsed_json->GetIfList();
-  if (!list) {
-    return;
-  }
-
-  for (auto& item : *list) {
+                                    base::Value::List value) {
+  for (const auto& item : value) {
     DCHECK(item.is_string());
     RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
                                                    item.GetString());
