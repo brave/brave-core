@@ -5,7 +5,6 @@
 
 import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { BraveWallet } from '../../../constants/types'
-// import { HardwareKeyring } from '../interfaces'
 import { getLocale } from '../../../../common/locale'
 import { HardwareVendor } from '../../api/hardware_keyrings'
 import {
@@ -86,6 +85,7 @@ export default class LedgerBridgeKeyring {
       element.src = (new URL(targetUrl)).origin + `?targetUrl=${encodeURIComponent(window.origin)}` + '&coinType=' + this.coin()
       element.style.display = 'none'
       element.allow = 'hid'
+      element.setAttribute('sandbox', 'allow-scripts allow-same-origin')
       element.onload = () => {
         this.bridge = element
         resolve(element)
