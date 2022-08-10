@@ -80,7 +80,7 @@ function ConnectHardwareWalletPanel (props: Props) {
       {
         hardwareWalletCode !== 'deviceBusy' && (
           hardwareWalletCode === 'unauthorized'
-          ? <AuthorizeHardwareDeviceIFrame/>
+          ? <AuthorizeHardwareDeviceIFrame coinType={coinType}/>
           : <ButtonWrapper> <NavButton buttonType='secondary' text={getLocale('braveWalletBackupButtonCancel')} onSubmit={onCancelConnect} /> </ButtonWrapper>
         )
       }

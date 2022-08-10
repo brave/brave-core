@@ -6,9 +6,15 @@
 import * as React from 'react'
 import { StyledIFrame } from './style'
 import { LEDGER_BRIDGE_URL } from '../../../common/hardware/ledgerjs/ledger-messages'
+import { BraveWallet } from '../../../constants/types'
 
-export const AuthorizeHardwareDeviceIFrame = () => {
-  const src = LEDGER_BRIDGE_URL + `?targetUrl=${encodeURIComponent(window.origin)}`
+export interface Props {
+  coinType: BraveWallet.CoinType
+}
+
+export const AuthorizeHardwareDeviceIFrame = (props: Props) => {
+  const { coinType } = props
+  const src = LEDGER_BRIDGE_URL + `?targetUrl=${encodeURIComponent(window.origin)}` + '&coinType=' + coinType
   return (
     <StyledIFrame src={src} allow="hid" frameBorder="0"/>
   )
