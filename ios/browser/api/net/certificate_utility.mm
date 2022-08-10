@@ -103,7 +103,7 @@ namespace {
           net::x509_util::DefaultParseCertificateOptions() /* {} */, &errors));
 
   if (!extended_cert) {
-    LOG(ERROR) << errors.ToDebugString();
+    VLOG(1) << errors.ToDebugString();
     return nil;
   }
 
