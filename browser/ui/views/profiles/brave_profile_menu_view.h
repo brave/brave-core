@@ -12,12 +12,11 @@ class BraveProfileMenuView : public ProfileMenuView {
  public:
   BraveProfileMenuView(const BraveProfileMenuView&) = delete;
   BraveProfileMenuView& operator=(const BraveProfileMenuView&) = delete;
+  ~BraveProfileMenuView() override = default;
 
  private:
   friend class ProfileMenuView;
-
   using ProfileMenuView::ProfileMenuView;
-  ~BraveProfileMenuView() override = default;
 
   // Helper methods for building the menu.
   void BuildIdentity() override;
