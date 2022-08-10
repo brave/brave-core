@@ -1,7 +1,86 @@
 # Changelog
 
 ## [1.41.1](https://github.com/brave/brave-ios/releases/tag/v1.41.1)
+
 - Fixed usage ping from reporting week of install as Sunday instead of Monday. ([#5750](https://github.com/brave/brave-ios/issues/5750))
+
+## [1.41](https://github.com/brave/brave-ios/releases/tag/v1.41)
+
+- Updated Ecosia search engine logo under search engine settings. ([#5504](https://github.com/brave/brave-ios/issues/5504))
+- Updated URL bar and bottom toolbar transition during page scroll. ([#5645](https://github.com/brave/brave-ios/issues/5645))
+- Fixed 'Try Brave Search' button to show full text on multi-line for certain languages. ([#5644](https://github.com/brave/brave-ios/issues/5644))
+- Fixed Wallet panel from being shown during page reload. ([#5616](https://github.com/brave/brave-ios/issues/5616))
+
+## [1.40](https://github.com/brave/brave-ios/releases/tag/v1.40.1)
+
+- Implemented Get Encryption Public Key & Decrypt Requests for wallets. ([#5424](https://github.com/brave/brave-ios/issues/5424))
+- Added context menu to show full account address. ([#5477](https://github.com/brave/brave-ios/issues/5477))
+- Added badge to wallet URL bar icon when there is a pending request. ([#5358](https://github.com/brave/brave-ios/issues/5358))
+- Fixed tab from loading YouTube home page when browser is restarted. ([#5615](https://github.com/brave/brave-ios/issues/5615))
+- Fixed Reader mode to use custom fonts. ([#5553](https://github.com/brave/brave-ios/issues/5553))
+- Fixed to show eTLD+1 prominently in request panel ([#5188](https://github.com/brave/brave-ios/issues/5188))
+- Fixed wallet to show eTLD+1 in bold and show the full URL. ([#5534](https://github.com/brave/brave-ios/issues/5534))
+- Fixed wallet to show eTLD+1 in bold on transaction confirmation screens. ([#5405](https://github.com/brave/brave-ios/issues/5405))
+- Fixed wallet provider object to be only available for `https` sites. ([#5518](https://github.com/brave/brave-ios/issues/5518))
+- Fixed wallet blockie colors to match other platforms. ([#5472](https://github.com/brave/brave-ios/issues/5472))
+- Fixed white screen when restoring a tab via tab tray. ([#5508](https://github.com/brave/brave-ios/issues/5508))
+
+## [1.39.1](https://github.com/brave/brave-ios/releases/tag/v1.39.1)
+
+- Fixed page from going into infinite redirect loop when trying to load an amp page. ([#5461](https://github.com/brave/brave-ios/issues/5461))
+
+## [1.39](https://github.com/brave/brave-ios/releases/tag/v1.39)
+
+- Implemented debouncing feature on iOS. ([#5225](https://github.com/brave/brave-ios/issues/5225))
+- Implemented additional farbling protections for fingerprinters accessing CPU information. ([#5268](https://github.com/brave/brave-ios/issues/5268))
+- Added "Force Paste" option to long press context menu. ([#5292](https://github.com/brave/brave-ios/issues/5292))
+- Added ability to set default currency via wallet settings. ([#4341](https://github.com/brave/brave-ios/issues/4341))
+- Fixed Share menu from showing up when selecting "Share Link" via Mobile bookmarks. ([#5331](https://github.com/brave/brave-ios/issues/5331))
+
+## [1.38](https://github.com/brave/brave-ios/releases/tag/v1.38)
+
+- Implemented Farbling & Fingerprinting protections for iOS. ([#3700](https://github.com/brave/brave-ios/issues/3700))
+- Implemented approval confirmation for Swaps. ([#5107](https://github.com/brave/brave-ios/issues/5107))
+- Implemented transactions details view when tapped on a transaction. ([#4425](https://github.com/brave/brave-ios/issues/4425))
+- Added extra validation of ETH address in send transaction screen. ([#4744](https://github.com/brave/brave-ios/issues/4744))
+- Fixed rounding of token balance to show correct balance on transaction screen. ([#5247](https://github.com/brave/brave-ios/issues/5247))
+- Fixed crash on clicking a recovery phrase on the seed phrase verification screen. ([#4938](https://github.com/brave/brave-ios/issues/4938))
+- Fixed settings menu from staying open when a bookmark is opened in a new tab via long press on the bookmark. ([#4820](https://github.com/brave/brave-ios/issues/4820))
+
+## [1.37](https://github.com/brave/brave-ios/releases/tag/v1.37)
+
+- Implemented cosmetic filtering. ([#2683](https://github.com/brave/brave-ios/issues/2683)) 
+- Added ability to save PDF opened in Brave via share sheet menu. ([#3323](https://github.com/brave/brave-ios/issues/3323))
+- Added ability to specify custom nonce for a transaction via the settings feature in transaction confirmation panel. ([#5052](https://github.com/brave/brave-ios/issues/5052))
+- Added ability to reset local transactions from wallet settings. ([#5051](https://github.com/brave/brave-ios/issues/5051))
+- Fixed portfolio balance from showing incorrect balance when the same switching network multiple times. ([#5027](https://github.com/brave/brave-ios/issues/5027))
+
+## [1.36](https://github.com/brave/brave-ios/releases/tag/v1.36)
+
+- Added ability to add, modify and remove a custom network from wallet settings. ([#4822](https://github.com/brave/brave-ios/issues/4822))
+- Added ability to swap selected tokens directly from swap screen. ([#4979](https://github.com/brave/brave-ios/issues/4979))
+- Fixed Inline ads from showing up in Brave News when all sources are disabled. ([#4995](https://github.com/brave/brave-ios/issues/4995))
+- Fixed displaying custom token in Swap tokens list. ([#4981](https://github.com/brave/brave-ios/issues/4981))
+- Fixed displaying native currency at the top of the token list by default in Buy/Send/Swap screens. ([#4980](https://github.com/brave/brave-ios/issues/4980))
+
+## [1.35.1](https://github.com/brave/brave-ios/releases/tag/v1.35.1)
+
+- Fixed issue to show certificate error on restart when bypasses ignores the error and closes the browser. ([#4973](https://github.com/brave/brave-ios/issues/4973))
+- Fixed app crash on devices running iOS 14. ([#4967](https://github.com/brave/brave-ios/issues/4967))
+
+## [1.35](https://github.com/brave/brave-ios/releases/tag/v1.35)
+
+- Implemented ability to delete Site-Specific data. ([#4835](https://github.com/brave/brave-ios/issues/4835))
+- Deprecated Yubico SDK in favor of built-in WebAuth of WKWebView. ([#4473](https://github.com/brave/brave-ios/issues/4473))
+- Fixed websites from crashing browser in certain cases when using print functionality. ([#4848](https://github.com/brave/brave-ios/issues/4848))
+- Fixed token selection on Swap screen when opened via token details screen. ([#4677](https://github.com/brave/brave-ios/issues/4677))
+- Fixed asset detail screen to list newly added account instantly. ([#4562](https://github.com/brave/brave-ios/issues/4562))
+- Fixed padding in address bar to be symmetrical on both ends. ([#4214](https://github.com/brave/brave-ios/issues/4214))
+- Fixed a crash when dragging the rewards panel. ([#4631](https://github.com/brave/brave-ios/issues/4631))
+- Fixed transform-style animation to tab tray. ([#4841](https://github.com/brave/brave-ios/issues/4841))
+- Fixed Quick search engine not being shown in certain cases. ([#3959](https://github.com/brave/brave-ios/issues/3959))
+- Fixed Quick search engines bar to appear if less than 2 quick search engines are enabled. ([#3190](https://github.com/brave/brave-ios/issues/3190))
+- Fixed an issue where some page elements are not shown on page load. ([#4871](https://github.com/brave/brave-ios/issues/4871))
 
 ## [1.34.1](https://github.com/brave/brave-ios/releases/tag/v1.34.1)
 
