@@ -5,7 +5,6 @@
 
 import { BraveWallet } from '../constants/types'
 import { LedgerCommand, LEDGER_BRIDGE_URL } from '../common/hardware/ledgerjs/ledger-messages'
-
 import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
