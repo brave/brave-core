@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Senarai Main";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Dikongsi dengan anda";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "Tetapan ini akan mengubah lokasi senarai video antara sebelah kiri/kanan.";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Folder Tiada Tajuk";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Butang Tambahkan pada Senarai Main Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Tambah";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Alih Keluar Data Luar Talian";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Padam Senarai Main";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Edit";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Butang Menu Senarai Main";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Tambah senarai main sekarang";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Autosimpan untuk kegunaan luar talian dihidupkan, bermaksud tambahan baharu pada senarai main, termasuk senarai main dikongsi akan disimpan pada peranti anda untuk paparan luar talian dan boleh menggunakan data selular anda.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Tetapan";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "Autosimpan untuk kegunaan luar talian boleh diurus dalam tetapan Senarai Main.";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Mengurus data Senarai Main anda";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Namakan semula";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Segerakkan Sekarang";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Senarai Main";

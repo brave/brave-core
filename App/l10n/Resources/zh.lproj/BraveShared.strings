@@ -857,7 +857,7 @@
 "invalidDetailsMessage" = "付款请求中的详细信息无效";
 
 /* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "同步代码无效，请检查并重试。";
+"InvalidSyncCodeDescription" = "無效的同步代碼，請檢查並再試一次。";
 
 /* History tableview section header */
 "LastMonth" = "上个月";
@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "播放列表";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "已与您分享";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "此设置会将视频列表位置在左侧/右侧切换。";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "无标题文件夹";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "添加到 Brave 播放列表按钮";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "添加";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "删除离线数据";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "删除播放列表";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "编辑";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "播放列表菜单按钮";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "立即添加播放列表";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "适用于离线使用的自动保存功能已开启，这意味着播放列表的新增内容（包括共享播放列表）将保存到您的设备以供离线查看，并可使用您的蜂窝数据。";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "设置";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "可以在播放列表设置中管理自动保存以供离线使用。";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "管理播放列表数据";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "重命名";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "立即同步";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "播放列表";

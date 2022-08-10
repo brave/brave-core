@@ -188,7 +188,7 @@
 "braveSearchPromotion.bannerTryButtonTitle" = "Brave ile Aramayı Deneyin";
 
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
-"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Kapat";
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dismiss";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Gelişmiş denetimler";
@@ -1010,7 +1010,7 @@
 "NotEnoughWordsTitle" = "Yeterli Sözcük Yok";
 
 /* Setting title for option to automatically redirect a url to another url */
-"nprRedirectFooter" = "NPR bağlantılarını otomatik olarak (text.npr.org adresindeki) metin tabanlı sürümlerine yönlendirir.";
+"nprRedirectFooter" = "NPR bağlantıları otomatik olarak metin tabanlı sürümlerine (text.npr.org adresindeki) yönlendirir.";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Brave Destek";
@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Oynatma listesi";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Sizinle paylaşılanlar";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "Bu ayar, video listesi konumunu sol taraf / sağ taraf arasında değiştirir.";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Başlıksız Klasör";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Brave Oynatma Listesi Düğmesine Ekle";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Ekle";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Çevrimdışı Verileri Kaldır";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Oynatma Listesini Sil";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Düzenle";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Oynatma Listesi Menü Düğmesi";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Oynatma listesini hemen ekle";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Cihazınıza kaydettiğiniz paylaşılan oynatma listeleri dahil olmak üzere oynatma listelerine yeni eklenenleri çevrimdışı görüntülemek ve hücresel verinizi kullanabilmenizi sağlayan çevrimdışı kullanım için otomatik kaydetme açıktır.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Ayarlar";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "Çevrimdışı kullanım için otomatik kaydetme, Oynatma Listesi ayarlarından yönetilebilir.";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Oynatma Listesi verinizin yönetimi";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Yeniden adlandır";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Şimdi Senkronize Et";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Oynatma listesi";
@@ -2756,7 +2798,7 @@
 "SyncDevices" = "Aygıtlar ve Ayarlar";
 
 /* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Bu senkronizasyon kodunun süresi doldu, lütfen yeni bir senkronizasyon kodu oluşturup tekrar deneyin.";
+"syncExpiredError" = "Bu senkronize kodunun süresi dolmuş, lütfen yeni bir senkronize kodu oluşturun ve tekrar deneyin.";
 
 /* Generic Sync Error Description */
 "syncGenericError" = "Üzgünüz, bir sorun oluştu";
@@ -2903,7 +2945,7 @@
 "TabToolbarStopButtonAccessibilityLabel" = "Dur";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
-"TabToolbarWarningImageAccessibilityLabel" = "Güvensiz bağlantı";
+"TabToolbarWarningImageAccessibilityLabel" = "Güvenli olmayan bağlantı";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Sekme Tepsisi";

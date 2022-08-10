@@ -70,6 +70,9 @@
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "고급 설정";
 
+/* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
+"wallet.amountAndFee" = "금액 + 수수료";
+
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
 "wallet.amountAndGas" = "수량 + 가스비";
 
@@ -151,15 +154,6 @@
 /* The description of a buy button on the buy/send/swap modal */
 "wallet.buyDescription" = "Wyre를 통해 Apple Pay나 신용/직불카드로 암호화폐를 구매할 수 있습니다.";
 
-/* The title of the button for users to get ether if the test network has been chosen */
-"wallet.buyTestButtonTitle" = "이더 얻기";
-
-/* The description of where user will go to once a test network has been picked in buy screen. '%@' will be replaced with a network such as 'Rinkeby' or 'Ropsten' */
-"wallet.buyTestDescription" = "%@ 파우셋에서 이더 얻기";
-
-/* The title below account picker when user has selected a test network */
-"wallet.buyTestTitle" = "파우셋 테스트";
-
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "날짜";
 
@@ -169,9 +163,11 @@
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "코인게코에서 가격 데이터 제공";
 
-/* A description for Ethereum coin type.
-   One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "이더리움";
+
+/* A description for Ethereum coin type. */
+"wallet.coinTypeEthereumDescription" = "이더리움 블록체인(ERC-20, ERC-721, ERC-1551, ERC-1155)에 EVM 호환 자산 지원";
 
 /* One of the coin types for users to create an account to store FIL assets */
 "wallet.coinTypeFilecoin" = "파일코인";
@@ -211,6 +207,9 @@
 
 /* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
 "wallet.confirmationViewModeTransaction" = "트랜잭션";
+
+/* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "아직 연결된 토큰 계정이 존재하지 않습니다. 계정을 만들고 자금을 입금하는 데 소액의 SOL가 지출됩니다.";
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "무제한 승인 요청됨";
@@ -374,6 +373,24 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "해독 요청";
 
+/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
+"wallet.defaultEthAccountName" = "이더리움 계정 %lld";
+
+/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
+"wallet.defaultFilAccountName" = "Filecoin 계정 %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
+"wallet.defaultSecondaryEthAccountName" = "보조 이더리움 계정 %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
+"wallet.defaultSecondaryFilAccountName" = "보조 Filecoin 계정 %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
+"wallet.defaultSecondarySolAccountName" = "보조 Solana 계정 %lld";
+
+/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
+"wallet.defaultSolAccountName" = "Solana 계정 %lld";
+
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "삭제";
 
@@ -527,6 +544,9 @@
 /* A button title that when tapped will display a file import dialog */
 "wallet.importButtonTitle" = "가져오기…";
 
+/* A placeholder on a text box for entering the users private key to import accounts */
+"wallet.importNonEthAccountPlaceholder" = "비공개 키를 입력하거나 붙여넣으세요.";
+
 /* The error message displayed when the user enters the wrong password while unlocking the wallet */
 "wallet.incorrectPasswordErrorMessage" = "비밀번호 틀림";
 
@@ -535,6 +555,9 @@
 
 /* A label shown inside of a box when there is no input data for a given transaction */
 "wallet.inputDataPlaceholder" = "데이터 없음.";
+
+/* A label shown inside of a box when there is no input data for a given Solana transaction */
+"wallet.inputDataPlaceholderSolana" = "기능 유형: %d";
 
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "잔고 부족";
@@ -601,6 +624,18 @@
 
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkNameTitle" = "네트워크 이름";
+
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre. */
+"wallet.networkNotSupportedForBuyToken" = "선택한 네트워크에 구매가 지원되지 않음";
+
+/* The title of the section for secondary networks in the network selection view. */
+"wallet.networkSelectionSecondaryNetworks" = "보조 네트워크";
+
+/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\" */
+"wallet.networkSelectionTestnetAccessibilityLabel" = "%@ 테스트 네트워크 보기";
+
+/* The title of the to select a network from the available networks */
+"wallet.networkSelectionTitle" = "네트워크 선택";
 
 /* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkURLTitle" = "네트워크 URL";
@@ -749,9 +784,6 @@
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "보내기";
 
-/* A placeholder of the address text field. */
-"wallet.sendCryptoAddressPlaceholder" = "주소 또는 URL 입력";
-
 /* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.sendCryptoAmountTitle" = "보낼 %@ 수량 입력";
 
@@ -770,6 +802,9 @@
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "한 계정에서 다른 계정으로 암호화폐를 보내거나 이전합니다.";
 
+/* A placeholder of the address text field. */
+"wallet.sendToCryptoAddressPlaceholder" = "주소 입력";
+
 /* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
 "wallet.sendWarningAddressInvalidChecksum" = "주소가 검증을 통과하지 못했습니다(유효하지 않은 체크섬). 소문자를 대문자로 변경하여 다시 시도해보세요.";
 
@@ -784,6 +819,9 @@
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
 "wallet.sendWarningAddressNotValid" = "유효한 ETH 주소 아님";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
+"wallet.sendWarningSolAddressNotValid" = "유효한 SOL 주소 아님";
 
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "송금됨";
@@ -977,6 +1015,9 @@
 /* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
 "wallet.transactionDetailsTxFeeTitle" = "트랜잭션 수수료";
 
+/* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
+"wallet.transactionFee" = "수수료";
+
 /* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
 "wallet.transactionFromToAccessibilityLabel" = "출발지: %1$@. 도착지: %2$@";
 
@@ -1013,8 +1054,8 @@
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
 "wallet.transactionSummaryFee" = "수수료: %1$@ %2$@(%3$@)";
 
-/* A title shown for a swap transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Swapped 0.0054 ETH ($22.44)\" */
-"wallet.transactionSwapTitle" = "%1$@ %2$@ 스왑됨(%3$@)";
+/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
+"wallet.transactionSwappedTitle" = "%1$@ %2$@에서 %3$@ %4$@(으)로 스왑됨";
 
 /* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
 "wallet.transactionTypeApprove" = "승인";

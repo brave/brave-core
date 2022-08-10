@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Playlist";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "共有アイテム";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "この設定では動画リストの表示位置を左側/右側に切り替えます";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "未タイトルフォルダ";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "ボタンをクリックするとBrave Playlistに追加します";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "追加";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "オフライン再生用データを消去する";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Playlistを削除";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Edit";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Playlistメニューを表示します";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Playlistを今すぐ追加";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "オフライン用に自動保存をオンにすると、Playlist (共有プレイリストを含む) に新しく追加されたデータがオフライン再生用としてデバイスに保存され、お使いのデバイスの通信量を大きく消費する可能性があります。";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Settings";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "オフライン用の自動保存はPlaylistの設定から管理できます。";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Playlistのデータを管理する";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "名前を変更";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "同期を開始する";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Playlist";

@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "재생목록";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "공유받음";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "이 설정은 동영상 목록 위치를 왼쪽/오른쪽 간에 전환합니다.";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "무제 폴더";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Brave 재생목록에 추가 버튼";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "추가";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "오프라인 데이터 삭제";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "재생목록 삭제";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "편집";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "재생목록 메뉴 버튼";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "지금 재생목록 추가";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "오프라인용으로 자동 저장이 켜져 있어 공유받은 재생목록 등, 재생목록에 새로 추가된 항목이 기기에 저장되어 오프라인으로 볼 수 있으며, 이를 위해 셀룰러 데이터가 사용될 수 있습니다. ";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "설정";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "오프라인용으로 자동 저장은 재생목록 설정에서 관리 가능합니다.";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "재생목록 데이터 관리";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "이름 변경";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "지금 동기화";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "재생목록";

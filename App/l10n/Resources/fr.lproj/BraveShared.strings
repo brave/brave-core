@@ -1417,6 +1417,9 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Liste de lecture";
 
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Partagées avec vous";
+
 /* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
 "playlist.playlistSidebarLocationFooterText" = "Ce paramètre modifie l’emplacement de la liste de vidéos entre le côté gauche et le côté droit.";
 
@@ -1584,6 +1587,45 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Dossier sans titre";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Bouton Ajouter à la liste de lecture Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Ajouter";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Supprimer les données hors ligne";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Supprimer la liste de lecture";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Édition";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Bouton Menu de la liste de lecture";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Ajouter la liste de lecture";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "L'enregistrement automatique pour une utilisation hors ligne est activé. Les ajouts aux listes de lecture (y compris les listes de lecture partagées) sont enregistrés sur votre appareil pour pouvoir être visionnés hors ligne, ce qui peut utiliser vos données cellulaires.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Paramètres";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewSubDescription" = "Pour gérer l'enregistrement automatique, accédez aux paramètres de la liste de lecture.";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Gérer vos données de liste de lecture";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Renommer";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Synchroniser";
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Liste de lecture";
