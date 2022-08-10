@@ -5,7 +5,7 @@
 import { TextEncoder, TextDecoder } from 'util'
 global.TextDecoder = TextDecoder
 global.TextEncoder = TextEncoder
-import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
+import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
 import {
   BraveWallet,
   GetNonceForHardwareTransactionReturnInfo,
