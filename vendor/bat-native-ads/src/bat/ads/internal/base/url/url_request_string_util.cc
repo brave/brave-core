@@ -34,7 +34,7 @@ std::string HeadersToString(const std::vector<std::string>& headers,
                             const int indent = 4) {
   std::vector<std::string> formatted_headers;
 
-  const std::string spaces = std::string(' ', indent);
+  const std::string spaces = std::string(indent, ' ');
 
   for (const auto& header : headers) {
     if (!ShouldAllowHeader(header)) {
