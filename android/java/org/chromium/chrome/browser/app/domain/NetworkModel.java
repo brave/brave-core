@@ -16,6 +16,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
@@ -201,6 +202,17 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     public void clearCreateAccountState() {
         _mNeedToCreateAccountForNetwork.postValue(null);
+    }
+
+    public NetworkInfo[] stripNoBuySwapNetworks(NetworkInfo[] networkInfos) {
+        List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
+        for (NetworkInfo networkInfo : networkInfos) {
+            if (Utils.allowBuyAndSwap(networkInfo.chainId)) {
+                networkInfosFiltered.add(networkInfo);
+            }
+        }
+
+        return networkInfosFiltered.toArray(new NetworkInfo[networkInfosFiltered.size()]);
     }
 
     private NetworkInfo[] stripDebugNetwork(Context context, NetworkInfo[] networkInfos) {

@@ -303,10 +303,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
             NetworkInfo networkInfo = mNetworkAdapter.getNetwork(position);
             if (networkInfo != null) {
-                if (mActivityType == ActivityType.BUY) {
-                    adjustTestFaucetControls(getPerNetworkUiInfo(networkInfo));
-                }
-
                 // Shall be fine regardless of activity type
                 mFromValueText.setText("");
                 mFromValueText.setHint("0");
@@ -1538,6 +1534,28 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         mSwapService = SwapServiceFactory.getInstance().getSwapService(this);
     }
 
+    private void initAccountsUI() {
+        if (mSelectedAccount == null || mSelectedNetwork == null) {
+            return;
+        }
+        if (mActivityType != ActivityType.SEND) {
+            mAccountInfos = mWalletModel.getKeyringModel().stripNoBuySwapAccounts(mAccountInfos);
+        }
+
+        mCustomAccountAdapter.setAccounts(mAccountInfos);
+        if (mAccountInfos.size() > 0) {
+            String selectedAccountAddress = mSelectedAccount != null ? mSelectedAccount.address
+                                                                     : mAccountInfos.get(0).address;
+            mAccountSpinner.setSelection(
+                    WalletUtils.getSelectedAccountIndex(mSelectedAccount, mAccountInfos));
+        }
+        mAccountSpinner.setOnItemSelectedListener(this);
+        // Before updating, make sure we are on a network with the same coin type
+        if (mSelectedNetwork != null && mSelectedAccount.coin == mSelectedNetwork.coin) {
+            resetSwapFromToAssets();
+        }
+    }
+
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
@@ -1547,7 +1565,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 this, chainAllNetworksAllNetwork -> {
                     mCurrentChainId = chainAllNetworksAllNetwork.first;
                     mSelectedNetwork = chainAllNetworksAllNetwork.second;
-                    NetworkInfo[] networks = chainAllNetworksAllNetwork.third;
+                    NetworkInfo[] networks = mActivityType != ActivityType.SEND
+                            ? mWalletModel.getCryptoModel()
+                                      .getNetworkModel()
+                                      .stripNoBuySwapNetworks(chainAllNetworksAllNetwork.third)
+                            : chainAllNetworksAllNetwork.third;
 
                     mNetworkAdapter.setNetworks(networks);
                     setSelected(mSelectedNetwork, networks);
@@ -1559,31 +1581,22 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             mSelectedNetwork.symbol, getResources().getDisplayMetrics().density,
                             mFromAssetText, this, true, (float) 0.5);
 
-                    // before updating, make sure we are same network with same account type
+                    // Before updating, make sure we are on a network with the same coin type
                     if (mSelectedAccount != null
                             && mSelectedAccount.coin == mSelectedNetwork.coin) {
                         resetSwapFromToAssets();
                     }
+                    if (mActivityType == ActivityType.BUY) {
+                        adjustTestFaucetControls(getPerNetworkUiInfo(mSelectedNetwork));
+                    }
+                    initAccountsUI();
                 });
         mWalletModel.getKeyringModel().mAccountAllAccountsPair.observe(
                 this, accountInfoListPair -> {
                     mSelectedAccount = accountInfoListPair.first;
                     mAccountInfos = accountInfoListPair.second;
 
-                    mCustomAccountAdapter.setAccounts(mAccountInfos);
-                    if (mAccountInfos.size() > 0) {
-                        String selectedAccountAddress = mSelectedAccount != null
-                                ? mSelectedAccount.address
-                                : mAccountInfos.get(0).address;
-                        mAccountSpinner.setSelection(WalletUtils.getSelectedAccountIndex(
-                                mSelectedAccount, mAccountInfos));
-                    }
-                    mAccountSpinner.setOnItemSelectedListener(this);
-                    // before updating, make sure we are same network with same account type
-                    if (mSelectedNetwork != null
-                            && mSelectedAccount.coin == mSelectedNetwork.coin) {
-                        resetSwapFromToAssets();
-                    }
+                    initAccountsUI();
                 });
     }
 
