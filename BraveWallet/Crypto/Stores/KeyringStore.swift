@@ -367,21 +367,26 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
   }
 
   public func keyringCreated(_ keyringId: String) {
-    var coin: BraveWallet.CoinType = .eth
-    switch keyringId {
-    case BraveWallet.DefaultKeyringId:
-      coin = .eth
-    case BraveWallet.SolanaKeyringId:
-      coin = .sol
-    case BraveWallet.FilecoinKeyringId:
-      coin = .fil
-    default:
-      break
+    Task { @MainActor in
+      var coin: BraveWallet.CoinType = .eth
+      switch keyringId {
+      case BraveWallet.DefaultKeyringId:
+        coin = .eth
+      case BraveWallet.SolanaKeyringId:
+        coin = .sol
+      case BraveWallet.FilecoinKeyringId:
+        coin = .fil
+      default:
+        break
+      }
+      
+      if selectedAccount.coin.keyringId != keyringId {
+        walletService.setSelectedCoin(coin)
+        let network = await rpcService.network(coin)
+        await rpcService.setNetwork(network.chainId, coin: network.coin)
+      }
+      updateKeyringInfo()
     }
-    if selectedAccount.coin.keyringId != keyringId {
-      walletService.setSelectedCoin(coin)
-    }
-    updateKeyringInfo()
   }
 
   public func keyringRestored(_ keyringId: String) {

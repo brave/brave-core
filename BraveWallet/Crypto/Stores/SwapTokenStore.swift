@@ -744,7 +744,13 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
     Task { @MainActor in
       let network = await rpcService.network(coinType)
-      guard await swapService.isSwapSupported(network.chainId) else { return }
+      let isSwapSupported: Bool
+      if coinType == .eth {
+        isSwapSupported = await swapService.isSwapSupported(network.chainId)
+      } else {
+        isSwapSupported = false
+      }
+      guard isSwapSupported else { return }
       
       let keyringInfo = await keyringService.keyringInfo(coinType.keyringId)
       if !keyringInfo.accountInfos.isEmpty {
@@ -761,9 +767,13 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
 extension SwapTokenStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     Task { @MainActor in
-      guard await swapService.isSwapSupported(chainId), let accountInfo = accountInfo else {
-        return
+      let isSwapSupported: Bool
+      if coin == .eth {
+        isSwapSupported = await swapService.isSwapSupported(chainId)
+      } else {
+        isSwapSupported = false
       }
+      guard isSwapSupported, let accountInfo = accountInfo else { return }
       selectedFromToken = nil
       selectedToToken = nil
       prepare(with: accountInfo) { [self] in
