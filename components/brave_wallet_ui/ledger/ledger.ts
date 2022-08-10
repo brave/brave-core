@@ -9,7 +9,7 @@ import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/l
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
 
-const setUpAuthorizeButtonListner = (targetUrl: string, coinType: BraveWallet.CoinType) => {
+const setUpAuthorizeButtonListener = (targetUrl: string, coinType: BraveWallet.CoinType) => {
   const untrustedMessagingTransport = getUntrustedMessagingTransport(coinType, targetUrl)
   window.addEventListener('DOMContentLoaded', (event) => {
     const authorizeBtn = document.getElementById('authorize')
@@ -42,5 +42,5 @@ const params = new URLSearchParams(window.location.search)
 const targetUrl = params.get('targetUrl')
 const coinType = Number(params.get('coinType'))
 if (targetUrl && coinType) {
-  setUpAuthorizeButtonListner(targetUrl, coinType)
+  setUpAuthorizeButtonListener(targetUrl, coinType)
 }
