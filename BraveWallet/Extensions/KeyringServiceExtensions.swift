@@ -23,11 +23,12 @@ extension BraveWalletKeyringService {
             await self.keyringInfo(coin.keyringId)
           }
         }
-        var allKeyrings: [BraveWallet.KeyringInfo] = []
-        for await keyring in group {
-          allKeyrings.append(keyring)
-        }
-        return allKeyrings
+        return await group.reduce([BraveWallet.KeyringInfo](), { partialResult, prior in
+          return partialResult + [prior]
+        })
+        .sorted(by: { lhs, rhs in
+          (lhs.coin ?? .eth).sortOrder < (rhs.coin ?? .eth).sortOrder
+        })
       }
     )
     return allKeyrings

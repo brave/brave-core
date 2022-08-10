@@ -165,6 +165,20 @@ extension BraveWallet.CoinType {
       return ""
     }
   }
+  
+  /// Sort order used when sorting by coin types
+  var sortOrder: Int {
+    switch self {
+    case .eth:
+      return 1
+    case .sol:
+      return 2
+    case .fil:
+      return 3
+    @unknown default:
+      return 10
+    }
+  }
 }
 
 extension BraveWallet.KeyringInfo {

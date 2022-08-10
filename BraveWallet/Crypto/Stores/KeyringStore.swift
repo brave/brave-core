@@ -146,23 +146,7 @@ public class KeyringStore: ObservableObject {
     }
     Task { @MainActor in // fetch all KeyringInfo for all coin types
       let selectedCoin = await walletService.selectedCoin()
-      self.allKeyrings = await withTaskGroup(
-        of: BraveWallet.KeyringInfo.self,
-        returning: [BraveWallet.KeyringInfo].self,
-        body: { @MainActor [weak keyringService] group in
-          guard let keyringService = keyringService else { return [] }
-          for coin in WalletConstants.supportedCoinTypes {
-            group.addTask { @MainActor in
-              await keyringService.keyringInfo(coin.keyringId)
-            }
-          }
-          var allKeyrings: [BraveWallet.KeyringInfo] = []
-          for await keyring in group {
-            allKeyrings.append(keyring)
-          }
-          return allKeyrings
-        }
-      )
+      self.allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
       if let defaultKeyring = self.allKeyrings.first(where: { $0.id == BraveWallet.DefaultKeyringId }) {
         self.defaultKeyring = defaultKeyring
       }
