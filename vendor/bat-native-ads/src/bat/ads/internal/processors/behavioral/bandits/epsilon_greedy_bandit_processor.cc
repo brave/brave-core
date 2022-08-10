@@ -7,23 +7,24 @@
 
 #include <algorithm>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/notreached.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_values_util.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/segments/segment_util.h"
-#include "bat/ads/pref_names.h"
 
 namespace ads {
 namespace processor {
 
 namespace {
 
-constexpr double kArmDefaultValue = 1.0;
-constexpr uint64_t kArmDefaultPulls = 0;
+constexpr double kDefaultArmValue = 1.0;
+constexpr int kDefaultArmPulls = 0;
 
 targeting::EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     const targeting::EpsilonGreedyBanditArmMap& arms) {
@@ -42,8 +43,8 @@ targeting::EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     }
 
     targeting::EpsilonGreedyBanditArmInfo arm;
-    arm.value = kArmDefaultValue;
-    arm.pulls = kArmDefaultPulls;
+    arm.value = kDefaultArmValue;
+    arm.pulls = kDefaultArmPulls;
 
     updated_arms[segment] = arm;
 
@@ -117,31 +118,22 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void EpsilonGreedyBandit::InitializeArms() const {
-  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
-      prefs::kEpsilonGreedyBanditArms);
-
   targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::EpsilonGreedyBanditArms::FromJson(json);
+      targeting::GetEpsilonGreedyBanditArms();
 
   arms = MaybeAddOrResetArms(arms);
 
   arms = MaybeDeleteArms(arms);
 
-  json = targeting::EpsilonGreedyBanditArms::ToJson(arms);
-  AdsClientHelper::GetInstance()->SetStringPref(prefs::kEpsilonGreedyBanditArms,
-                                                json);
+  targeting::SetEpsilonGreedyBanditArms(arms);
 
   BLOG(1, "Successfully initialized epsilon greedy bandit arms");
 }
 
-void EpsilonGreedyBandit::UpdateArm(const uint64_t reward,
+void EpsilonGreedyBandit::UpdateArm(const int reward,
                                     const std::string& segment) const {
-  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
-      prefs::kEpsilonGreedyBanditArms);
-
   targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::EpsilonGreedyBanditArms::FromJson(json);
-
+      targeting::GetEpsilonGreedyBanditArms();
   if (arms.empty()) {
     BLOG(1, "No epsilon greedy bandit arms");
     return;
@@ -156,13 +148,12 @@ void EpsilonGreedyBandit::UpdateArm(const uint64_t reward,
 
   targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
   arm.pulls++;
-  arm.value = arm.value + (1.0 / arm.pulls * (reward - arm.value));
+  DCHECK_NE(0, arm.pulls);
+  arm.value =
+      arm.value + (1.0 / arm.pulls * (static_cast<double>(reward) - arm.value));
   iter->second = arm;
 
-  json = targeting::EpsilonGreedyBanditArms::ToJson(arms);
-
-  AdsClientHelper::GetInstance()->SetStringPref(prefs::kEpsilonGreedyBanditArms,
-                                                json);
+  targeting::SetEpsilonGreedyBanditArms(arms);
 
   BLOG(1,
        "Epsilon greedy bandit arm was updated for " << segment << " segment");

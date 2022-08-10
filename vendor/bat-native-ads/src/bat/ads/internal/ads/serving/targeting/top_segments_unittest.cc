@@ -13,7 +13,6 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/ads/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -21,13 +20,15 @@
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -154,7 +155,7 @@ class BatAdsTopSegmentsTest
 
 TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   // Arrange
-  model::SaveAllSegments();
+  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   ModelCombinationsParamInfo param(GetParam());
   if (param.previously_processed) {
@@ -234,7 +235,7 @@ INSTANTIATE_TEST_SUITE_P(BatAdsTopSegmentsTest,
 
 TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
-  model::SaveAllSegments();
+  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   ProcessBandit();
   ProcessTextClassification();
@@ -272,7 +273,7 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
 TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
-  model::SaveAllSegments();
+  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   ProcessBandit();
   ProcessTextClassification();

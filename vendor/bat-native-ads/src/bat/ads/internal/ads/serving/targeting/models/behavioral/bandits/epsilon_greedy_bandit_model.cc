@@ -12,12 +12,11 @@
 
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms.h"
-#include "bat/ads/internal/segments/segment_json_reader.h"
-#include "bat/ads/pref_names.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
+#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 
 namespace ads {
 namespace targeting {
@@ -69,25 +68,19 @@ ArmBucketMap BucketSortArms(const ArmList& arms) {
   return buckets;
 }
 
-SegmentList GetEligibleSegments() {
-  const std::string json = AdsClientHelper::GetInstance()->GetStringPref(
-      prefs::kEpsilonGreedyBanditEligibleSegments);
-
-  return JSONReader::ReadSegments(json);
-}
-
 EpsilonGreedyBanditArmMap GetEligibleArms(
     const EpsilonGreedyBanditArmMap& arms) {
-  const SegmentList eligible_segments = GetEligibleSegments();
-  if (eligible_segments.empty()) {
+  const SegmentList segments =
+      resource::GetEpsilonGreedyBanditEligibleSegments();
+  if (segments.empty()) {
     return {};
   }
 
   EpsilonGreedyBanditArmMap eligible_arms;
 
   for (const auto& arm : arms) {
-    if (std::find(eligible_segments.cbegin(), eligible_segments.cend(),
-                  arm.first) == eligible_segments.end()) {
+    if (std::find(segments.cbegin(), segments.cend(), arm.first) ==
+        segments.end()) {
       continue;
     }
 
@@ -192,13 +185,7 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
 SegmentList EpsilonGreedyBandit::GetSegments() const {
-  const std::string json = AdsClientHelper::GetInstance()->GetStringPref(
-      prefs::kEpsilonGreedyBanditArms);
-
-  const EpsilonGreedyBanditArmMap arms =
-      EpsilonGreedyBanditArms::FromJson(json);
-
-  return GetSegmentsForArms(arms);
+  return GetSegmentsForArms(GetEpsilonGreedyBanditArms());
 }
 
 }  // namespace model

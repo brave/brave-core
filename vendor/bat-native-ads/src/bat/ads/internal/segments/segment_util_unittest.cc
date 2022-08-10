@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/segments/segment_util.h"
 
-#include <string>
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/catalog/catalog_info.h"

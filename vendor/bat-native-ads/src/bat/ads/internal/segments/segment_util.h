@@ -32,8 +32,8 @@ SegmentList GetSegments(const T& creative_ads) {
 }
 
 std::string GetParentSegment(const std::string& segment);
-bool MatchParentSegments(const std::string& lhs, const std::string& rhs);
 
+bool MatchParentSegments(const std::string& lhs, const std::string& rhs);
 SegmentList GetParentSegments(const SegmentList& segments);
 
 bool HasChildSegment(const std::string& segment);

@@ -49,13 +49,11 @@ const char kCatalogLastUpdated[] = "brave.brave_ads.catalog_last_updated";
 const char kIssuerPing[] = "brave.brave_ads.issuer_ping";
 const char kIssuers[] = "brave.brave_ads.issuers";
 
-// Stores epsilon greedy bandit arms
+// Stores epsilon greedy bandit
 const char kEpsilonGreedyBanditArms[] =
-    "brave.brave_ads.epsilon_greedy_bandit_arms";
-
-// Stores epsilon greedy bandit eligible segments
+    "brave.brave_ads.epsilon_greedy_bandit_arms.v2";
 const char kEpsilonGreedyBanditEligibleSegments[] =
-    "brave.brave_ads.epsilon_greedy_bandit_eligible_segments";
+    "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
 
 // Ads
 const char kServeAdAt[] = "brave.brave_ads.serve_ad_at";
