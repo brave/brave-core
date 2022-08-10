@@ -8,7 +8,6 @@
 #import <Security/Security.h>
 #import <XCTest/XCTest.h>
 
-#include "net/http/hsts_info.h"
 #include "net/http/transport_security_state.h"
 #include "net/net_buildflags.h"
 
