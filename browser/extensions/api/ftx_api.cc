@@ -174,13 +174,14 @@ ExtensionFunction::ResponseAction FtxGetAccountBalancesFunction::Run() {
 void FtxGetAccountBalancesFunction::OnGetAccountBalances(
     const FTXAccountBalances& balances,
     bool auth_invalid) {
-  base::Value result(base::Value::Type::DICTIONARY);
+  base::Value::Dict result;
 
   for (const auto& balance : balances) {
-    result.SetDoubleKey(balance.first, balance.second);
+    result.Set(balance.first, balance.second);
   }
 
-  Respond(TwoArguments(std::move(result), base::Value(auth_invalid)));
+  Respond(
+      TwoArguments(base::Value(std::move(result)), base::Value(auth_invalid)));
 }
 
 ExtensionFunction::ResponseAction FtxIsSupportedFunction::Run() {
