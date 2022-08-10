@@ -100,6 +100,12 @@ const char kEnableWindowClosingConfirm[] =
 const char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
 #endif
 
+#if BUILDFLAG(IS_WIN)
+// If it's true, pin current profile's shortcut to taskbar even if taskbar has
+// any other profiles' pinned shortcut.
+const char kForceToPinToTaskbar[] = "brave.force_to_pin_to_taskbar";
+#endif
+
 const char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
 

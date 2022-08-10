@@ -88,6 +88,10 @@ extern const char kDefaultBrowserLaunchingCount[];
 extern const char kTabsSearchShow[];
 extern const char kDontAskForCrashReporting[];
 
+#if BUILDFLAG(IS_WIN)
+extern const char kForceToPinToTaskbar[];
+#endif
+
 // Cast extension requires a browser restart once the setting is toggled.
 // kEnableMediaRouterOnRestart is used as a proxy to identify the current
 // state of the switch and prefs::kEnableMediaRouter is updated to

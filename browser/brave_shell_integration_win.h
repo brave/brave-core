@@ -6,9 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHELL_INTEGRATION_WIN_H_
 #define BRAVE_BROWSER_BRAVE_SHELL_INTEGRATION_WIN_H_
 
+class Profile;
+
 namespace shell_integration::win {
 
-void PinToTaskbar();
+// Pin profile-specific shortcut when |profile| is non-null.
+// Set true to |check_existing_pinned_shortcut| if want to pin
+// only when taskbar doesn't have any pinned brave shortcuts.
+void PinToTaskbar(Profile* profile = nullptr,
+                  bool check_existing_pinned_shortcut = false);
 
 }  // namespace shell_integration::win
 

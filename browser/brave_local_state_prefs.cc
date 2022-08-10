@@ -106,6 +106,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kDontAskForCrashReporting, false);
 #endif
 
+#if BUILDFLAG(IS_WIN)
+  registry->RegisterBooleanPref(kForceToPinToTaskbar, true);
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
   RegisterWidevineLocalstatePrefs(registry);
 #endif
