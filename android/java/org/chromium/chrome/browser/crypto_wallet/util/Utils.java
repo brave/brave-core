@@ -47,6 +47,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -752,8 +753,7 @@ public class Utils {
             } catch (Exception exc) {
                 org.chromium.base.Log.e("Utils", exc.getMessage());
                 if (textView != null) {
-                    Drawable iconDrawable =
-                            ApiCompatibilityUtils.getDrawable(context.getResources(), iconId);
+                    Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
                     Bitmap bitmap = Bitmap.createBitmap(iconDrawable.getIntrinsicWidth(),
                             iconDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                     Canvas canvas = new Canvas(bitmap);
