@@ -48,7 +48,6 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     blink::features::kViewportHeightClientHintHeader,
     // Client hints features
     blink::features::kClientHintsMetaHTTPEquivAcceptCH,
-    blink::features::kClientHintsMetaNameAcceptCH,
     blink::features::kClientHintThirdPartyDelegation,
 };
 
