@@ -11,11 +11,30 @@
 
 namespace brave_adaptive_captcha {
 
-namespace {
-
 using brave_rewards::RewardsFlags;
 
-std::string GetHost() {
+ServerUtil::ServerUtil() = default;
+ServerUtil::~ServerUtil() = default;
+
+ServerUtil* ServerUtil::GetInstance() {
+  static base::NoDestructor<ServerUtil> instance;
+  return instance.get();
+}
+
+std::string ServerUtil::GetServerUrl(const std::string& path) {
+  DCHECK(!path.empty());
+  return GetHost() + path;
+}
+
+void ServerUtil::SetServerHostForTesting(const std::string& host) {
+  server_host_ = host;
+}
+
+std::string ServerUtil::GetHost() {
+  if (!server_host_.empty()) {
+    return server_host_;
+  }
+
   const auto& flags = RewardsFlags::ForCurrentProcess();
   switch (flags.environment.value_or(RewardsFlags::Environment::kProduction)) {
     case RewardsFlags::Environment::kDevelopment:
@@ -24,13 +43,6 @@ std::string GetHost() {
     case RewardsFlags::Environment::kProduction:
       return BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT);
   }
-}
-
-}  // namespace
-
-std::string GetServerUrl(const std::string& path) {
-  DCHECK(!path.empty());
-  return GetHost() + path;
 }
 
 }  // namespace brave_adaptive_captcha
