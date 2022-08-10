@@ -1,5 +1,3 @@
-import("//build/config/ui.gni")
-
 source_set("tabs") {
   # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
   check_includes = false

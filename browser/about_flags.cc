@@ -528,7 +528,7 @@ constexpr char kBraveVerticalTabsDescription[] =
     {"brave-vertical-tabs",  \
     flag_descriptions::kBraveVerticalTabsName, \
     flag_descriptions::kBraveVerticalTabsDescription, \
-    kOsWin | kOsMac, \
+    kOsWin | kOsMac | kOsLinux, \
     FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs)},
 #else
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
