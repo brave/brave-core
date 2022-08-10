@@ -494,8 +494,7 @@ public class BytecodeTest {
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
                 SnackbarManager.class, JankTracker.class, Supplier.class, OneshotSupplier.class,
-                OmniboxPedalDelegate.class, Supplier.class, boolean.class, BackPressManager.class,
-                Runnable.class));
+                OmniboxPedalDelegate.class, Supplier.class, boolean.class, BackPressManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
