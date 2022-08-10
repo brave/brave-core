@@ -944,6 +944,7 @@ if (!is_android) {
       deps += [
         "//brave/browser/renderer_context_menu",
         "//components/language/core/browser",
+        "//components/spellcheck/common",
       ]
     }
 
