@@ -72,10 +72,12 @@ source_set("unit_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/p3a",
     "//components/prefs:test_support",
-    "//content/test:test_support",
     "//net:net",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gtest",
   ]
+  if (!is_ios) {
+    deps += [ "//content/test:test_support" ]
+  }
 }
