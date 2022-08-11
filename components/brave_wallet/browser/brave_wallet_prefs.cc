@@ -68,8 +68,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
-  registry->RegisterBooleanPref(kBraveWalletKeyringsNeedPasswordsMigration,
-                                true);
+  registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
+                                false);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,

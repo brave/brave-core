@@ -628,6 +628,8 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
       // We have no way to check if new mnemonic is same as current mnemonic so
       // we need to clear all prefs for fresh start
       Reset(false);
+      // Consider no migration needed after wallet is reset.
+      prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
     }
   }
 
@@ -686,7 +688,7 @@ void KeyringService::GetMnemonicForDefaultKeyring(
 
 void KeyringService::CreateWallet(const std::string& password,
                                   CreateWalletCallback callback) {
-  prefs_->SetBoolean(kBraveWalletKeyringsNeedPasswordsMigration, false);
+  prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
 
   auto* keyring = CreateKeyring(mojom::kDefaultKeyringId, password);
   if (keyring) {
@@ -717,14 +719,8 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
                                    const std::string& password,
                                    bool is_legacy_brave_wallet,
                                    RestoreWalletCallback callback) {
-  // Added 08.08.2022
-  MaybeMigratePBKDF2Iterations(password);
-
   auto* keyring = RestoreKeyring(mojom::kDefaultKeyringId, mnemonic, password,
                                  is_legacy_brave_wallet);
-  if (keyring) {
-    prefs_->SetBoolean(kBraveWalletKeyringsNeedPasswordsMigration, false);
-  }
   if (keyring && !keyring->GetAccountsNumber()) {
     AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
   }
@@ -1616,9 +1612,6 @@ bool KeyringService::IsHardwareAccount(const std::string& address) const {
 
 void KeyringService::Unlock(const std::string& password,
                             KeyringService::UnlockCallback callback) {
-  // Added 08.08.2022
-  MaybeMigratePBKDF2Iterations(password);
-
   if (!ResumeKeyring(mojom::kDefaultKeyringId, password)) {
     encryptors_.erase(mojom::kDefaultKeyringId);
     std::move(callback).Run(false);
@@ -1688,48 +1681,53 @@ void KeyringService::Reset(bool notify_observer) {
 }
 
 void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
-  if (!prefs_->GetBoolean(kBraveWalletKeyringsNeedPasswordsMigration)) {
+  if (prefs_->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated)) {
     return;
   }
 
-  // Pref is supposed to be set only as false.
-  DCHECK(!prefs_->HasPrefPath(kBraveWalletKeyringsNeedPasswordsMigration));
+  // Pref is supposed to be set only as true.
+  DCHECK(!prefs_->HasPrefPath(kBraveWalletKeyringEncryptionKeysMigrated));
 
   for (auto* keyring_id :
        {mojom::kDefaultKeyringId, mojom::kFilecoinKeyringId,
         mojom::kFilecoinTestnetKeyringId, mojom::kSolanaKeyringId}) {
     auto legacy_encrypted_mnemonic =
         GetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, keyring_id);
-    auto nonce =
+    auto legacy_nonce =
         GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, keyring_id);
-    auto salt =
+    auto legacy_salt =
         GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, keyring_id);
 
-    if (!legacy_encrypted_mnemonic || !nonce || !salt) {
+    if (!legacy_encrypted_mnemonic || !legacy_nonce || !legacy_salt) {
       continue;
     }
 
     auto legacy_encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-        password, *salt, kPbkdf2IterationsLegacy, kPbkdf2KeySize);
+        password, *legacy_salt, kPbkdf2IterationsLegacy, kPbkdf2KeySize);
     if (!legacy_encryptor)
       continue;
 
     auto mnemonic =
-        legacy_encryptor->Decrypt(*legacy_encrypted_mnemonic, *nonce);
+        legacy_encryptor->Decrypt(*legacy_encrypted_mnemonic, *legacy_nonce);
     if (!mnemonic)
       continue;
 
+    auto salt = GetOrCreateSaltForKeyring(keyring_id, /*force_create = */ true);
+
     auto encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-        password, *salt, GetkPbkdf2Iterations(), kPbkdf2KeySize);
+        password, salt, GetkPbkdf2Iterations(), kPbkdf2KeySize);
     if (!encryptor)
       continue;
 
+    auto nonce =
+        GetOrCreateNonceForKeyring(keyring_id, /*force_create = */ true);
+
     SetPrefInBytesForKeyring(
         prefs_, kEncryptedMnemonic,
-        encryptor->Encrypt(base::make_span(*mnemonic), *nonce), keyring_id);
+        encryptor->Encrypt(base::make_span(*mnemonic), nonce), keyring_id);
 
     if (keyring_id == mojom::kDefaultKeyringId) {
-      prefs_->SetBoolean(kBraveWalletKeyringsNeedPasswordsMigration, false);
+      prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
     }
 
     const base::Value* imported_accounts_legacy =
@@ -1752,13 +1750,13 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
         continue;
 
       auto private_key = legacy_encryptor->Decrypt(
-          base::make_span(*legacy_private_key_decoded), *nonce);
+          base::make_span(*legacy_private_key_decoded), *legacy_nonce);
       if (!private_key)
         continue;
 
       imported_account.GetDict().Set(
           kEncryptedPrivateKey,
-          base::Base64Encode(encryptor->Encrypt(*private_key, *nonce)));
+          base::Base64Encode(encryptor->Encrypt(*private_key, nonce)));
     }
     SetPrefForKeyring(prefs_, kImportedAccounts, std::move(imported_accounts),
                       keyring_id);
@@ -1806,10 +1804,13 @@ void KeyringService::SetPrefInBytesForKeyring(PrefService* prefs,
 }
 
 std::vector<uint8_t> KeyringService::GetOrCreateNonceForKeyring(
-    const std::string& id) {
-  if (auto nonce =
-          GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, id)) {
-    return *nonce;
+    const std::string& id,
+    bool force_create) {
+  if (!force_create) {
+    if (auto nonce =
+            GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, id)) {
+      return *nonce;
+    }
   }
 
   std::vector<uint8_t> nonce(kNonceSize);
@@ -1819,10 +1820,13 @@ std::vector<uint8_t> KeyringService::GetOrCreateNonceForKeyring(
 }
 
 std::vector<uint8_t> KeyringService::GetOrCreateSaltForKeyring(
-    const std::string& id) {
-  if (auto salt =
-          GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, id)) {
-    return *salt;
+    const std::string& id,
+    bool force_create) {
+  if (!force_create) {
+    if (auto salt =
+            GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, id)) {
+      return *salt;
+    }
   }
 
   std::vector<uint8_t> salt(kSaltSize);
@@ -1835,6 +1839,10 @@ bool KeyringService::CreateEncryptorForKeyring(const std::string& password,
                                                const std::string& id) {
   if (password.empty())
     return false;
+
+  // Added 08.08.2022
+  MaybeMigratePBKDF2Iterations(password);
+
   encryptors_[id] = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
       password, GetOrCreateSaltForKeyring(id), GetkPbkdf2Iterations(),
       kPbkdf2KeySize);
@@ -2132,6 +2140,10 @@ void KeyringService::ValidatePassword(const std::string& password,
   }
 
   const std::string keyring_id = mojom::kDefaultKeyringId;
+  if (IsLocked(keyring_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
 
   auto salt =
       GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, keyring_id);

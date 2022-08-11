@@ -349,8 +349,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                         mojom::CoinType coin);
   std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
 
-  std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id);
-  std::vector<uint8_t> GetOrCreateSaltForKeyring(const std::string& id);
+  std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id,
+                                                  bool force_create = false);
+  std::vector<uint8_t> GetOrCreateSaltForKeyring(const std::string& id,
+                                                 bool force_create = false);
   bool CreateEncryptorForKeyring(const std::string& password,
                                  const std::string& id);
   bool CreateKeyringInternal(const std::string& keyring_id,

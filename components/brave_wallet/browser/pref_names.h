@@ -39,7 +39,7 @@ extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
 
 extern const char kBraveWalletWasOnboardingShown[];
-extern const char kBraveWalletKeyringsNeedPasswordsMigration[];
+extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
 
 // DEPRECATED
 extern const char kBraveWalletSelectedAccount[];
