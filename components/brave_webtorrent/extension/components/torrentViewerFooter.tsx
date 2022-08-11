@@ -18,13 +18,16 @@ const FooterNotice = styled.div`
   color: var(--text02);
 `
 
+const PowerByLink = styled(Anchor)`
+    color: #8b8b9f;
+`
+
 export default function TorrentViewerFooter ({ torrent }: Props) {
   return torrent
-      ? <Anchor
+      ? <PowerByLink
         href='https://webtorrent.io'
         text='Powered By WebTorrent'
-        target='_blank'
-        id='webTorrentCredit' />
+        target='_blank' />
       : <FooterNotice>
           <b>Privacy Warning:</b> When you click "Start Torrent" Brave will begin
           downloading pieces of the torrent file from other users and uploading to

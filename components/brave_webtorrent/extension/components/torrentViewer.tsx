@@ -31,8 +31,11 @@ const StyledTorrentViewer = styled.div`
   gap: 40px;
 
   min-height: 100%;
-  padding: 100px;
+  padding: 50px;
   font-family: Muli, sans-serif;
+
+  max-width: 1280px;
+  margin: 0 auto;
 `
 
 export default function TorrentViewer ({ actions, name, torrent, torrentState }: Props) {

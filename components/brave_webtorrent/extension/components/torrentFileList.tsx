@@ -32,7 +32,7 @@ const HeaderRow = styled.div`
 
 const FilesContainer = styled.div`
   background: var(--background01);
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 16px;
   box-shadow: 0px 0.5px 1.5px 0px rgb(0 0 0 / 15%);
   
@@ -47,6 +47,14 @@ const FilesContainer = styled.div`
   table {
     margin: 0;
     padding: 0;
+  }
+`
+
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  svg {
+    height: 32px;
   }
 `
 
@@ -66,15 +74,7 @@ const tableHeader: Cell[] = [
 ]
 
 export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }: Props) {
-    if (!torrent || !torrent.files) {
-      return <div className='torrentSubhead'>
-          <p className='starterText'>
-            Click "Start Torrent" to begin your download.
-          </p>
-        </div>
-    }
-
-    const rows = React.useMemo<Row[]>(() => torrent.files!.map((file: File, index: number) => ({
+    const rows = React.useMemo<Row[] | undefined>(() => torrent?.files?.map((file: File, index: number) => ({
         content: [
           {
             content: index + 1
@@ -95,10 +95,10 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
             content: prettierBytes(file.length)
           }
         ]
-      })), [torrent.files, torrentId])
+      })), [torrent?.files, torrentId])
 
     const saveAllFiles = () => {
-      if (!torrent.serverURL || !torrent.files || torrent.progress !== 1) {
+      if (!torrent?.serverURL || !torrent?.files || torrent?.progress !== 1) {
         return
       }
       onSaveAllFiles()
@@ -111,13 +111,13 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
       </HeaderRow>
       <FilesContainer>
         <Table header={tableHeader} rows={rows}>
-          <div className='loadingContainer'>
-            <div className='__icon'>
-              <LoaderIcon />
-            </div>
-            Loading the torrent file list
-          </div>
-        </Table>
+            {torrent && torrent.files
+              ? <LoadingContainer>
+                <LoaderIcon />
+                Loading the torrent file list
+              </LoadingContainer>
+              : 'Click "Start Torrent" to begin your download.'}
+          </Table>
       </FilesContainer>
     </Container>
 }

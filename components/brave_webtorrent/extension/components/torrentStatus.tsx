@@ -18,6 +18,7 @@ const Container = styled.div`
 
 const StatsContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   
   padding: 16px;
@@ -74,7 +75,7 @@ export default function TorrentStatus ({ torrent, errorMsg }: Props) {
   if (!torrent) return null
 
   const downloaded = prettierBytes(torrent.downloaded)
-  const total = prettierBytes(torrent.uploaded)
+  const total = prettierBytes(torrent.length)
   return <Container>
     <Header>Torrent stats</Header>
     <StatsContainer>
