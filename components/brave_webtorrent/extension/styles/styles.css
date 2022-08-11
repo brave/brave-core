@@ -2,7 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- :global {
+:global {
+  body {
+    --background02: rgba(248, 249, 250, 1);
+    --background01: white;
+    --text02: rgba(73, 80, 87, 1);
+
+    background-color: var(--background02);
+  }
+
   a {
     text-decoration: none;
     color: #fb542b;
@@ -52,7 +60,8 @@
     font-size: 16px;
   }
 
-  .torrentStat, .torrentStatDivider {
+  .torrentStat,
+  .torrentStatDivider {
     margin-right: 15px;
   }
 
@@ -77,7 +86,11 @@
     margin: 0 0 18px;
   }
 
-  #video, #audio, #image, #object, #iframe {
+  #video,
+  #audio,
+  #image,
+  #object,
+  #iframe {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -88,7 +101,8 @@
     margin: auto;
   }
 
-  #object, #iframe {
+  #object,
+  #iframe {
     width: 100%;
     height: 100%;
   }
