@@ -14,6 +14,7 @@
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_today/common/features.h"
@@ -132,6 +133,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
+
+  if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
+    ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
+  }
 }
 
 }  // namespace brave

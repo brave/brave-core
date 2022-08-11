@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/bind.h"
@@ -22,6 +23,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -30,6 +32,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
@@ -71,12 +74,14 @@ ViewCounterService::ViewCounterService(
     brave_ads::AdsService* ads_service,
     PrefService* prefs,
     PrefService* local_state,
+    std::unique_ptr<NTPP3AHelper> ntp_p3a_helper,
     bool is_supported_locale)
     : service_(service),
       ads_service_(ads_service),
       prefs_(prefs),
       is_supported_locale_(is_supported_locale),
-      custom_bi_service_(custom_service) {
+      custom_bi_service_(custom_service),
+      ntp_p3a_helper_(std::move(ntp_p3a_helper)) {
   DCHECK(service_);
   service_->AddObserver(this);
 
@@ -117,6 +122,12 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
         wallpaper_id ? *wallpaper_id : "",
         creative_instance_id ? *creative_instance_id : "",
         ads::mojom::NewTabPageAdEventType::kViewed);
+
+    if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
+      // Should only report to P3A if ads are disabled, as required by spec.
+      ntp_p3a_helper_->RecordView(creative_instance_id ? *creative_instance_id
+                                                       : "");
+    }
   }
 
   branded_new_tab_count_state_->AddDelta(1);
@@ -333,6 +344,11 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
   ads_service_->TriggerNewTabPageAdEvent(
       wallpaper_id, creative_instance_id,
       ads::mojom::NewTabPageAdEventType::kClicked);
+
+  if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
+    // Should only report to P3A if ads are disabled, as required by spec.
+    ntp_p3a_helper_->RecordClickAndMaybeLand(creative_instance_id);
+  }
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {
@@ -350,6 +366,12 @@ bool ViewCounterService::ShouldShowCustomBackground() const {
 void ViewCounterService::InitializeWebUIDataSource(
     content::WebUIDataSource* html_source) {
   html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
+}
+
+void ViewCounterService::OnTabURLChanged(const GURL& url) {
+  if (ntp_p3a_helper_) {
+    ntp_p3a_helper_->SetLastTabURL(url);
+  }
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {

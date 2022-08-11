@@ -19,6 +19,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
@@ -159,10 +160,14 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
         std::make_unique<NTPCustomBackgroundImagesService>(std::move(delegate));
     view_counter_ = std::make_unique<ViewCounterService>(
         service_.get(), custom_bi_service_.get(), &ads_service_, prefs(),
-        &local_pref_, true);
+        &local_pref_,
+        // don't need to test p3a, so passing nullptr
+        std::unique_ptr<NTPP3AHelper>(),
+        /* is_supported_locale */ true);
 #else
     view_counter_ = std::make_unique<ViewCounterService>(
-        service_.get(), nullptr, &ads_service_, prefs(), &local_pref_, true);
+        service_.get(), nullptr, &ads_service_, prefs(), &local_pref_,
+        std::unique_ptr<NTPP3AHelper>(), true);
 #endif
 
     // Set referral service is properly initialized sr component is set.
