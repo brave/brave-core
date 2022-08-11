@@ -60,7 +60,7 @@ class BravePrefProvider : public PrefProvider,
                            TestShieldsSettingsMigrationFromUnknownSettings);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, EnsureNoWildcardEntries);
   void MigrateShieldsSettings(bool incognito);
-  void EnsureNoWildcardEntries();
+  void EnsureNoWildcardEntries(ContentSettingsType content_type);
   void MigrateShieldsSettingsFromResourceIds();
   void MigrateShieldsSettingsFromResourceIdsForOneType(
       const std::string& preference_path,
@@ -97,6 +97,9 @@ class BravePrefProvider : public PrefProvider,
 
   bool initialized_;
   bool store_last_modified_;
+
+  PrefChangeRegistrar pref_change_registrar_;
+
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
 };
 
