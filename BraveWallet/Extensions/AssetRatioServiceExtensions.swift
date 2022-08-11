@@ -16,7 +16,9 @@ extension BraveWalletAssetRatioService {
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> PricesResult {
-    let (success, prices) = await self.price(fromAssets, toAssets: toAssets, timeframe: timeframe)
+    // make sure there is no duplicate priceId
+    let uniquePriceIds = Array(Set(fromAssets))
+    let (success, prices) = await self.price(uniquePriceIds, toAssets: toAssets, timeframe: timeframe)
     guard success else {
       return await self.priceIndividually(fromAssets, toAssets: toAssets, timeframe: timeframe)
     }
@@ -29,8 +31,10 @@ extension BraveWalletAssetRatioService {
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> PricesResult {
-    await withTaskGroup(of: PricesResult.self) { @MainActor group -> PricesResult in
-      fromAssets.forEach { asset in
+    // make sure there is no duplicate priceId
+    let uniquePriceIds = Set(fromAssets)
+    return await withTaskGroup(of: PricesResult.self) { @MainActor group -> PricesResult in
+      uniquePriceIds.forEach { asset in
         group.addTask { @MainActor in
           let (success, prices) = await self.price([asset], toAssets: toAssets, timeframe: timeframe)
           return PricesResult(prices, success ? 0 : 1)
@@ -52,7 +56,9 @@ extension BraveWalletAssetRatioService {
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (PricesResult) -> Void
   ) {
-    price(fromAssets, toAssets: toAssets, timeframe: timeframe) { [self] success, prices in
+    // make sure there is no duplicate priceId
+    let uniquePriceIds = Array(Set(fromAssets))
+    price(uniquePriceIds, toAssets: toAssets, timeframe: timeframe) { [self] success, prices in
       guard success else {
         self.priceIndividually(fromAssets, toAssets: toAssets, timeframe: timeframe, completion: completion)
         return
@@ -68,9 +74,11 @@ extension BraveWalletAssetRatioService {
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (PricesResult) -> Void
   ) {
+    // make sure there is no duplicate priceId
+    let uniquePriceIds = Set(fromAssets)
     var pricesResults: [PricesResult] = []
     let dispatchGroup = DispatchGroup()
-    fromAssets.forEach { asset in
+    uniquePriceIds.forEach { asset in
       dispatchGroup.enter()
       self.price([asset], toAssets: toAssets, timeframe: timeframe) { success, prices in
         defer { dispatchGroup.leave() }

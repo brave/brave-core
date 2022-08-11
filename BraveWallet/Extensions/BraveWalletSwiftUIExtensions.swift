@@ -91,7 +91,7 @@ extension BraveWallet.SignMessageRequest {
 
 extension BraveWallet.BlockchainToken: Identifiable {
   public var id: String {
-    symbol.lowercased()
+    contractAddress.lowercased()
   }
 
   public func contractAddress(in network: BraveWallet.NetworkInfo) -> String {
