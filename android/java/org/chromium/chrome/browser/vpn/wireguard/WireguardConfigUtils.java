@@ -39,6 +39,21 @@ public class WireguardConfigUtils {
         return config;
     }
 
+    public static Config createConfig(Context context, Config existingConfig)
+            throws IOException, BadConfigException {
+        File file = fileForConfig(context);
+        if (!file.createNewFile()) {
+            throw new IOException("Configuration file already exists");
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(file, false);
+        Config config = new Config.Builder()
+                                .setInterface(getInterface(existingConfig.getInterface()))
+                                .addPeers(existingConfig.getPeers())
+                                .build();
+        fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
+        return config;
+    }
+
     public static void deleteConfig(Context context) throws Exception {
         File file = fileForConfig(context);
         if (!file.delete()) {
