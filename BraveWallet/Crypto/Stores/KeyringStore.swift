@@ -146,19 +146,18 @@ public class KeyringStore: ObservableObject {
     }
     Task { @MainActor in // fetch all KeyringInfo for all coin types
       let selectedCoin = await walletService.selectedCoin()
+      let selectedAccountAddress = await keyringService.selectedAccount(selectedCoin)
       self.allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
-      if let defaultKeyring = self.allKeyrings.first(where: { $0.id == BraveWallet.DefaultKeyringId }) {
+      if let defaultKeyring = allKeyrings.first(where: { $0.id == BraveWallet.DefaultKeyringId }) {
         self.defaultKeyring = defaultKeyring
       }
-      
-      if let selectedAccountKeyring = self.allKeyrings.first(where: { $0.coin == selectedCoin }) {
-        if !selectedAccountKeyring.accountInfos.isEmpty {
-          let selectedAccountAddress = await keyringService.selectedAccount(selectedCoin)
-          if self.selectedAccount.address != selectedAccountAddress {
-            self.selectedAccount = selectedAccountKeyring.accountInfos.first(where: { $0.address == selectedAccountAddress }) ?? selectedAccountKeyring.accountInfos.first!
-          }
-        }
-      }
+      if let selectedAccountKeyring = allKeyrings.first(where: { $0.coin == selectedCoin }) {
+        if self.selectedAccount.address != selectedAccountAddress {
+          if let selectedAccount = selectedAccountKeyring.accountInfos.first(where: { $0.address == selectedAccountAddress }) {
+            self.selectedAccount = selectedAccount
+          } // else selected account address does not exist in keyring (should not occur...)
+        } // else `self.selectedAccount` is already the currently selected account
+      } // else keyring for selected coin is unavailable (should not occur...)
     }
   }
 

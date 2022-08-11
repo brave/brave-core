@@ -35,7 +35,7 @@ public struct WalletPanelContainerView: View {
 
   private var visibleScreen: VisibleScreen {
     let keyring = keyringStore.defaultKeyring
-    if keyringStore.defaultKeyring.id.isEmpty {
+    if keyringStore.defaultKeyring.id.isEmpty || keyringStore.selectedAccount.address.isEmpty {
       return .loading
     }
     if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
