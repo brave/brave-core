@@ -3,10 +3,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Button, Heading } from 'brave-ui/components'
+import { Button } from 'brave-ui/components'
 
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
+import styled from 'styled-components'
 
 interface Props {
   name?: string | string[]
@@ -18,6 +19,23 @@ interface Props {
 }
 
 const remoteProtocols = ['http:', 'https:', 'ftp:', 'sftp:', 'ws:', 'wss:']
+
+const HeaderText = styled.h1`
+  all: unset;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 38px;
+`
+
+const HeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`
 
 export default function TorrentHeaderViewer ({ torrent, torrentId, name, tabId, onStartTorrent, onStopDownload }: Props) {
   name = typeof name === 'object'
@@ -90,25 +108,21 @@ export default function TorrentHeaderViewer ({ torrent, torrentId, name, tabId, 
     }
   }
 
-  return <div className='headerContainer'>
-    <div className='__column'>
-      <Heading children={title} className='__torrentTitle' />
-    </div>
-    <div className='__column'>
+  return <HeaderRow>
+      <HeaderText>{title}</HeaderText>
+    <ButtonsContainer>
       <Button
         type='accent'
         level={!torrent ? 'primary' : 'secondary'}
         text={mainButtonText}
         onClick={() => torrent ? onStopDownload(tabId) : onStartTorrent(torrentId, tabId)}
-        className='__button'
       />
       <Button
         type='accent'
         level='secondary'
         text={copyButtonText}
         onClick={onCopyClick}
-        className='__button'
       />
-    </div>
-  </div>
+    </ButtonsContainer>
+  </HeaderRow>
 }
