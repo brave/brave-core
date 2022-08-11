@@ -9,7 +9,6 @@ require('../../../../ui/webui/resources/fonts/muli.css')
 require('../styles/styles.css')
 
 // Components
-import { StyledTorrentViewer } from '../styles/styles'
 import TorrentViewerHeader from './torrentViewerHeader'
 import TorrentStatus from './torrentStatus'
 import TorrentFileList from './torrentFileList'
@@ -17,6 +16,7 @@ import TorrentViewerFooter from './torrentViewerFooter'
 
 // Constants
 import { TorrentObj, TorrentState } from '../constants/webtorrentState'
+import styled from 'styled-components'
 
 interface Props {
   actions: any
@@ -25,31 +25,31 @@ interface Props {
   torrentState: TorrentState
 }
 
-export default class TorrentViewer extends React.PureComponent<Props, {}> {
-  render () {
-    const { actions, name, torrent, torrentState } = this.props
+const StyledTorrentViewer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  min-height: 100%;
+  padding: 100px;
+  font-family: Muli, sans-serif;
+`
+
+export default function TorrentViewer ({ actions, name, torrent, torrentState }: Props) {
     const { torrentId, tabId, errorMsg, infoHash } = torrentState
-
-    const onSaveAllFiles = () => actions.saveAllFiles(infoHash)
-
-    return (
-      <StyledTorrentViewer>
+    return <StyledTorrentViewer>
         <TorrentViewerHeader
           name={name}
           torrent={torrent}
           torrentId={torrentId}
           tabId={tabId}
           onStartTorrent={actions.startTorrent}
-          onStopDownload={actions.stopDownload}
-        />
+          onStopDownload={actions.stopDownload} />
         <TorrentStatus torrent={torrent} errorMsg={errorMsg} />
         <TorrentFileList
           torrentId={torrentId}
           torrent={torrent}
-          onSaveAllFiles={onSaveAllFiles}
-        />
+          onSaveAllFiles={() => actions.saveAllFiles(infoHash)} />
         <TorrentViewerFooter torrent={torrent} />
       </StyledTorrentViewer>
-    )
-  }
 }

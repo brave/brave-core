@@ -109,20 +109,18 @@ export default function TorrentHeaderViewer ({ torrent, torrentId, name, tabId, 
   }
 
   return <HeaderRow>
-      <HeaderText>{title}</HeaderText>
+    <HeaderText>{title}</HeaderText>
     <ButtonsContainer>
       <Button
         type='accent'
         level={!torrent ? 'primary' : 'secondary'}
         text={mainButtonText}
-        onClick={() => torrent ? onStopDownload(tabId) : onStartTorrent(torrentId, tabId)}
-      />
+        onClick={() => torrent ? onStopDownload(tabId) : onStartTorrent(torrentId, tabId)} />
       <Button
         type='accent'
         level='secondary'
         text={copyButtonText}
-        onClick={onCopyClick}
-      />
+        onClick={onCopyClick} />
     </ButtonsContainer>
   </HeaderRow>
 }
