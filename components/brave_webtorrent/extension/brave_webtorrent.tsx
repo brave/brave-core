@@ -16,6 +16,8 @@ import App from './components/app'
 // Constants
 import { ApplicationState } from './constants/webtorrentState'
 
+import '$web-components/app.global.scss'
+
 // This is a hack that's needed for lazy loading
 // Basically we need the browser to restart the navigation, so we redirect first
 // to brave_webtorrent2.html and have that rewrite the URL to

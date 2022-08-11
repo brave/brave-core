@@ -36,6 +36,12 @@ const StyledTorrentViewer = styled.div`
 
   max-width: 1280px;
   margin: 0 auto;
+
+  color: var(--text1);
+
+  button > div {
+    font-weight: 600;
+  }
 `
 
 export default function TorrentViewer ({ actions, name, torrent, torrentState }: Props) {

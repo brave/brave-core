@@ -9,5 +9,5 @@ export const Header = styled.h2`
     all: unset;
     font-weight: 600;
     font-size: 24px;
-    color: var(--text02);
+    color: var(--text2);
 `

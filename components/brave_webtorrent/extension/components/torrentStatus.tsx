@@ -24,7 +24,7 @@ const StatsContainer = styled.div`
   padding: 16px;
   border-radius: 8px;
 
-  background: var(--background01);
+  background: var(--background1);
 
   box-shadow: 0px 0.5px 1.5px 0px rgb(0 0 0 / 15%);
 

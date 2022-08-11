@@ -29,17 +29,12 @@ interface Props {
 }
 
 function BraveWebTorrentPage ({ actions, torrentState, torrentObj }: Props) {
+  const name = torrentObj?.name ?? torrentState?.name
+  React.useEffect(() => {
+    document.title = name ? `${name} - WebTorrent` : 'WebTorrent'
+  }, [name])
+
   if (!torrentState) return null
-
-  const name = torrentObj && torrentObj.name
-    ? torrentObj.name
-    : torrentState && torrentState.name
-    ? torrentState.name
-    : undefined
-
-  document.title = name
-    ? name + ' – WebTorrent'
-    : 'WebTorrent'
 
   if (torrentObj && typeof torrentState.ix === 'number') {
     return <MediaViewer torrent={torrentObj} ix={torrentState.ix} />

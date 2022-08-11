@@ -32,17 +32,21 @@ const HeaderRow = styled.div`
 `
 
 const FilesContainer = styled.div`
-  background: var(--background01);
+  background: var(--background1);
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0px 0.5px 1.5px 0px rgb(0 0 0 / 15%);
   
   td {
     border: none;
+    color: var(--text1);
   }
 
   th {
-    border-top: none!important;
+    border-top: none;
+    border-color: var(--divider1);
+    border-width: 2px;
+    color: var(--text3);
   }
 
   table {

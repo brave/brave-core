@@ -35,6 +35,7 @@ const HeaderRow = styled.div`
 const ButtonsContainer = styled.div`
   display: flex;
   gap: 8px;
+  --button-main-color: var(--interactive2);
 `
 
 export default function TorrentHeaderViewer ({ torrent, torrentId, name, tabId, onStartTorrent, onStopDownload }: Props) {

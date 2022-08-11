@@ -3,12 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 :global {
-  body {
-    --background02: rgba(248, 249, 250, 1);
-    --background01: white;
-    --text02: rgba(73, 80, 87, 1);
-    --interactive02: rgba(251, 84, 43, 1);
-
-    background-color: var(--background02);
-  }
+ body {
+  background: var(--background2);
+ }
 }

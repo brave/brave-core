@@ -15,16 +15,12 @@ interface Props {
 
 const FooterNotice = styled.div`
   padding: 18px 0;
-  color: var(--text02);
-`
-
-const PowerByLink = styled(Anchor)`
-    color: #8b8b9f;
+  color: var(--text3);
 `
 
 export default function TorrentViewerFooter ({ torrent }: Props) {
   return torrent
-      ? <PowerByLink
+      ? <Anchor
         href='https://webtorrent.io'
         text='Powered By WebTorrent'
         target='_blank' />

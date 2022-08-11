@@ -1,9 +1,12 @@
 :root {
   --brave-font-family-default: Poppins, sans-serif;
   --background1: white;
+  --background2: #F8F9FA;
+  --divider1: #E9E9F4;
   --text1: #212529;
   --text2: #495057;
   --text3: #868E96;
+  --interactive2: #FB542B;
   --interactive4: #353DAB;
   --interactive5: #4C54D2;
   --interactive6: #737ADE;
@@ -18,9 +21,12 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background1: #1E2029;
+    --background2: #17171F;
+    --divider1: #3B3E4F;
     --text1: #F0F2FF;
     --text2: #C2C4CF;
     --text3: #84889C;
+    --interactive2: #FB542B;
     --interactive7: #F0F2FF;
     --interactive8: #5E6175;
     --disabled: #343A40;
