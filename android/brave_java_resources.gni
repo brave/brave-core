@@ -630,7 +630,6 @@ brave_java_resources = [
   "java/res/drawable/ic_brave_battery.xml",
   "java/res/drawable/ic_brave_logo.xml",
   "java/res/drawable/ic_brave_mobiledata.xml",
-  "java/res/drawable/ic_brave_talk.xml",
   "java/res/drawable/ic_brave_vpn_graphic.xml",
   "java/res/drawable/ic_calendar.xml",
   "java/res/drawable/ic_carat_down.xml",

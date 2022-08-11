@@ -154,7 +154,6 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -193,7 +192,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                    OnBraveSetDefaultBrowserListener, ConnectionErrorHandler {
     public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
-    private static final String BRAVE_TALK_URL = "https://talk.brave.com/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
@@ -318,8 +316,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             ApplicationLifetime.terminate(false);
         } else if (id == R.id.set_default_browser) {
             BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
-        } else if (id == R.id.brave_talk_id) {
-            TabUtils.openUrlInNewTab(false, BRAVE_TALK_URL);
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
