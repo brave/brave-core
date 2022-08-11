@@ -8,7 +8,7 @@ import styled from 'styled-components'
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
 import { getFileType, isMedia } from '../utils/fileType'
-import Spinner from './Spinner'
+import Spinner from './spinner'
 
 const getSelectedFile = (torrent: TorrentObj, ix: number) => torrent.files?.[ix]
 

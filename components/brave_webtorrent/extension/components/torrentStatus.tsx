@@ -8,7 +8,7 @@ import * as prettierBytes from 'prettier-bytes'
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
 import styled from 'styled-components'
-import { Header } from './Header'
+import { Header } from './header'
 
 const Container = styled.div`
   display: flex;

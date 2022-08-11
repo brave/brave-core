@@ -9,9 +9,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { File, TorrentObj } from '../constants/webtorrentState'
 import { getFileType } from '../utils/fileType'
-import { Header } from './Header'
-import { Link } from './Link'
-import Spinner from './Spinner'
+import { Header } from './header'
+import { Link } from './link'
+import Spinner from './spinner'
 
 interface Props {
   torrentId: string
