@@ -70,7 +70,7 @@ void Serving::MaybeServeAd(const std::string& dimensions,
     return;
   }
 
-  const targeting::UserModelInfo& user_model = targeting::BuildUserModel();
+  const targeting::UserModelInfo user_model = targeting::BuildUserModel();
 
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
@@ -92,9 +92,9 @@ void Serving::MaybeServeAd(const std::string& dimensions,
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
+        const CreativeInlineContentAdInfo creative_ad = creative_ads.at(rand);
 
-        const InlineContentAdInfo& ad = BuildInlineContentAd(creative_ad);
+        const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
         ServeAd(ad, callback);
       });
 }

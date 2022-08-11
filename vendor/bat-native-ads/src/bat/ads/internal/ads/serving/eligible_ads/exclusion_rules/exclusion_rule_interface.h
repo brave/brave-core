@@ -19,7 +19,7 @@ class ExclusionRuleInterface {
 
   virtual bool ShouldExclude(const T&) = 0;
 
-  virtual std::string GetLastMessage() const = 0;
+  virtual const std::string& GetLastMessage() const = 0;
 };
 
 }  // namespace ads

@@ -23,13 +23,13 @@ UnblindedTokens::UnblindedTokens() = default;
 
 UnblindedTokens::~UnblindedTokens() = default;
 
-UnblindedTokenInfo UnblindedTokens::GetToken() const {
+const UnblindedTokenInfo& UnblindedTokens::GetToken() const {
   DCHECK_NE(Count(), 0);
 
   return unblinded_tokens_.front();
 }
 
-UnblindedTokenList UnblindedTokens::GetAllTokens() const {
+const UnblindedTokenList& UnblindedTokens::GetAllTokens() const {
   return unblinded_tokens_;
 }
 

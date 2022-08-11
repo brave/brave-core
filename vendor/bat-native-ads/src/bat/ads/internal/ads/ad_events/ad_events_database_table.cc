@@ -82,7 +82,7 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 
 void AdEvents::GetIf(const std::string& condition,
                      GetAdEventsCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
       "ae.type, "
@@ -101,7 +101,7 @@ void AdEvents::GetIf(const std::string& condition,
 }
 
 void AdEvents::GetAll(GetAdEventsCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
       "ae.type, "
@@ -120,9 +120,9 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) {
-  const std::string& ad_type_as_string = AdType(ad_type).ToString();
+  const std::string ad_type_as_string = AdType(ad_type).ToString();
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
       "ae.type, "
@@ -141,7 +141,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE creative_set_id NOT IN "
       "(SELECT creative_set_id from creative_ads) "
@@ -164,9 +164,9 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) {
-  const std::string& ad_type_as_string = AdType(ad_type).ToString();
+  const std::string ad_type_as_string = AdType(ad_type).ToString();
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE uuid IN (SELECT uuid from %s GROUP BY uuid having count(*) = 1) "
       "AND confirmation_type IN (SELECT confirmation_type from %s "
@@ -293,7 +293,7 @@ void AdEvents::OnGetAdEvents(mojom::DBCommandResponseInfoPtr response,
   AdEventList ad_events;
 
   for (const auto& record : response->result->get_records()) {
-    const AdEventInfo& ad_event = GetFromRecord(record.get());
+    const AdEventInfo ad_event = GetFromRecord(record.get());
     ad_events.push_back(ad_event);
   }
 
@@ -305,7 +305,7 @@ void AdEvents::MigrateToV5(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "ad_events");
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "CREATE TABLE ad_events "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "uuid TEXT NOT NULL, "
@@ -329,7 +329,7 @@ void AdEvents::MigrateToV13(mojom::DBTransactionInfo* transaction) {
 
   RenameTable(transaction, "ad_events", "ad_events_temp");
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "CREATE TABLE ad_events "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "uuid TEXT NOT NULL, "

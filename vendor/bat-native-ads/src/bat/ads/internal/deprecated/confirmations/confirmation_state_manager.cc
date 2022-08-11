@@ -144,7 +144,8 @@ void ConfirmationStateManager::Save() {
       });
 }
 
-ConfirmationList ConfirmationStateManager::GetFailedConfirmations() const {
+const ConfirmationList& ConfirmationStateManager::GetFailedConfirmations()
+    const {
   DCHECK(is_initialized_);
   return failed_confirmations_;
 }

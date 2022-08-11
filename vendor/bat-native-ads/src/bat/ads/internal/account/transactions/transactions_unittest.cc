@@ -25,7 +25,7 @@ TEST_F(BatAdsTransactionsTest, Add) {
   // Arrange
 
   // Act
-  const TransactionInfo& transaction = transactions::Add(
+  const TransactionInfo transaction = transactions::Add(
       "42a33833-0a08-4cbb-ab3e-458e020221ab", 0.01, AdType::kNotificationAd,
       ConfirmationType::kViewed,
       [](const bool success, const TransactionInfo& transaction) {
@@ -33,7 +33,7 @@ TEST_F(BatAdsTransactionsTest, Add) {
       });
 
   // Assert
-  const TransactionList& expected_transactions = {transaction};
+  const TransactionList expected_transactions = {transaction};
 
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
@@ -50,24 +50,24 @@ TEST_F(BatAdsTransactionsTest, GetForDateRange) {
 
   AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.0, ConfirmationType::kDismissed);
   transactions.push_back(transaction_2);
 
-  const TransactionInfo& transaction_3 =
+  const TransactionInfo transaction_3 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   SaveTransactions(transactions);
 
   // Act
-  const TransactionList& expected_transactions = {transaction_2, transaction_3};
+  const TransactionList expected_transactions = {transaction_2, transaction_3};
 
   transactions::GetForDateRange(
       Now(), DistantFuture(),
@@ -84,11 +84,11 @@ TEST_F(BatAdsTransactionsTest, RemoveAll) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.0, ConfirmationType::kDismissed);
   transactions.push_back(transaction_2);
 

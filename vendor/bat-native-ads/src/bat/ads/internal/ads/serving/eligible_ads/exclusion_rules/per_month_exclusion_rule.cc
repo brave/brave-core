@@ -34,7 +34,7 @@ bool PerMonthExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string PerMonthExclusionRule::GetLastMessage() const {
+const std::string& PerMonthExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

@@ -106,7 +106,7 @@ CreativeNotificationAdMap GroupCreativeAdsFromResponse(
   CreativeNotificationAdMap creative_ads;
 
   for (const auto& record : response->result->get_records()) {
-    const CreativeNotificationAdInfo& creative_ad = GetFromRecord(record.get());
+    const CreativeNotificationAdInfo creative_ad = GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
     if (iter == creative_ads.end()) {
@@ -140,12 +140,12 @@ CreativeNotificationAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
-  const CreativeNotificationAdMap& grouped_creative_ads =
+  const CreativeNotificationAdMap grouped_creative_ads =
       GroupCreativeAdsFromResponse(std::move(response));
 
   CreativeNotificationAdList creative_ads;
   for (const auto& grouped_creative_ad : grouped_creative_ads) {
-    const CreativeNotificationAdInfo& creative_ad = grouped_creative_ad.second;
+    const CreativeNotificationAdInfo creative_ad = grouped_creative_ad.second;
     creative_ads.push_back(creative_ad);
   }
 
@@ -174,7 +174,7 @@ void CreativeNotificationAds::Save(
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  const std::vector<CreativeNotificationAdList>& batches =
+  const std::vector<CreativeNotificationAdList> batches =
       SplitVector(creative_ads, batch_size_);
 
   for (const auto& batch : batches) {
@@ -214,7 +214,7 @@ void CreativeNotificationAds::GetForSegments(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "can.creative_instance_id, "
       "can.creative_set_id, "
@@ -307,7 +307,7 @@ void CreativeNotificationAds::GetForSegments(
 
 void CreativeNotificationAds::GetAll(
     GetCreativeNotificationAdsCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "can.creative_instance_id, "
       "can.creative_set_id, "
@@ -455,7 +455,7 @@ void CreativeNotificationAds::OnGetForSegments(
     return;
   }
 
-  const CreativeNotificationAdList& creative_ads =
+  const CreativeNotificationAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
   callback(/* success */ true, segments, creative_ads);
@@ -471,10 +471,10 @@ void CreativeNotificationAds::OnGetAll(
     return;
   }
 
-  const CreativeNotificationAdList& creative_ads =
+  const CreativeNotificationAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
-  const SegmentList& segments = GetSegments(creative_ads);
+  const SegmentList segments = GetSegments(creative_ads);
 
   callback(/* success */ true, segments, creative_ads);
 }
@@ -485,7 +485,7 @@ void CreativeNotificationAds::MigrateToV24(
 
   DropTable(transaction, "creative_ad_notifications");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE creative_ad_notifications "
       "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
       "ON CONFLICT REPLACE, "

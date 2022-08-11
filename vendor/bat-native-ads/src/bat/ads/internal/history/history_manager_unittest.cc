@@ -111,7 +111,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNotificationAd) {
   // Assert
   const base::circular_deque<HistoryItemInfo> expected_history = {history_item};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -129,7 +129,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNewTabPageAd) {
   // Assert
   const base::circular_deque<HistoryItemInfo> expected_history = {history_item};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -147,7 +147,7 @@ TEST_F(BatAdsHistoryManagerTest, AddPromotedContentAd) {
   // Assert
   const base::circular_deque<HistoryItemInfo> expected_history = {history_item};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -165,7 +165,7 @@ TEST_F(BatAdsHistoryManagerTest, AddInlineContentAd) {
   // Assert
   const base::circular_deque<HistoryItemInfo> expected_history = {history_item};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -183,7 +183,7 @@ TEST_F(BatAdsHistoryManagerTest, AddSearchResultAd) {
   // Assert
   const base::circular_deque<HistoryItemInfo> expected_history = {history_item};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));

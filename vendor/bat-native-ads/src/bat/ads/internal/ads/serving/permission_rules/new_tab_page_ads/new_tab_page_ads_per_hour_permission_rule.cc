@@ -24,7 +24,7 @@ AdsPerHourPermissionRule::AdsPerHourPermissionRule() = default;
 AdsPerHourPermissionRule::~AdsPerHourPermissionRule() = default;
 
 bool AdsPerHourPermissionRule::ShouldAllow() {
-  const std::vector<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -35,7 +35,7 @@ bool AdsPerHourPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string AdsPerHourPermissionRule::GetLastMessage() const {
+const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

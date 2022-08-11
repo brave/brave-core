@@ -85,7 +85,7 @@ void Conversions::Save(const ConversionList& conversions,
 }
 
 void Conversions::GetAll(GetConversionsCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "ac.creative_set_id, "
       "ac.type, "
@@ -122,7 +122,7 @@ void Conversions::GetAll(GetConversionsCallback callback) {
 void Conversions::PurgeExpired(ResultCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE %s >= expiry_timestamp",
       GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
@@ -206,7 +206,7 @@ void Conversions::OnGetConversions(mojom::DBCommandResponseInfoPtr response,
   ConversionList conversions;
 
   for (const auto& record : response->result->get_records()) {
-    const ConversionInfo& conversion = GetFromRecord(record.get());
+    const ConversionInfo conversion = GetFromRecord(record.get());
     conversions.push_back(conversion);
   }
 

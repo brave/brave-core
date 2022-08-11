@@ -79,7 +79,7 @@ TextClassification::TextClassification() = default;
 TextClassification::~TextClassification() = default;
 
 SegmentList TextClassification::GetSegments() const {
-  const TextClassificationProbabilityList probabilities =
+  const TextClassificationProbabilityList& probabilities =
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 

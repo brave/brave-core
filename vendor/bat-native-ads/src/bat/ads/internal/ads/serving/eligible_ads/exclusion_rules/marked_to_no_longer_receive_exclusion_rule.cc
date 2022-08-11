@@ -36,7 +36,8 @@ bool MarkedToNoLongerReceiveExclusionRule::ShouldExclude(
   return false;
 }
 
-std::string MarkedToNoLongerReceiveExclusionRule::GetLastMessage() const {
+const std::string& MarkedToNoLongerReceiveExclusionRule::GetLastMessage()
+    const {
   return last_message_;
 }
 

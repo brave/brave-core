@@ -45,13 +45,13 @@ std::map<std::string, HistoryItemInfo> BuildBuckets(
   std::map<std::string, HistoryItemInfo> buckets;
 
   for (const auto& item : history) {
-    const ConfirmationType& confirmation_type =
+    const ConfirmationType confirmation_type =
         item.ad_content.confirmation_type;
     if (ShouldFilterConfirmationType(confirmation_type)) {
       continue;
     }
 
-    const std::string& placement_id = item.ad_content.placement_id;
+    const std::string placement_id = item.ad_content.placement_id;
     const auto iter = buckets.find(placement_id);
     if (iter == buckets.end()) {
       buckets.insert({placement_id, item});

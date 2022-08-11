@@ -31,7 +31,7 @@ class AntiTargeting final : public LocaleManagerObserver,
 
   void Load();
 
-  AntiTargetingInfo get() const { return *anti_targeting_; }
+  const AntiTargetingInfo& get() const { return *anti_targeting_; }
 
  private:
   void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);

@@ -22,7 +22,7 @@ CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
   CreativePromotedContentAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
-    const CreativePromotedContentAdInfo& creative_ad =
+    const CreativePromotedContentAdInfo creative_ad =
         BuildCreativePromotedContentAd();
     creative_ads.push_back(creative_ad);
   }
@@ -31,7 +31,7 @@ CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
 }
 
 CreativePromotedContentAdInfo BuildCreativePromotedContentAd() {
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
   CreativePromotedContentAdInfo creative_promoted_content_ad(creative_ad);
 
   creative_promoted_content_ad.title = "Test Ad Title";

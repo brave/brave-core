@@ -26,7 +26,7 @@ class SplitTestExclusionRule : public ExclusionRuleInterface<CreativeAdInfo> {
 
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
-  std::string GetLastMessage() const override;
+  const std::string& GetLastMessage() const override;
 
  private:
   std::string last_message_;

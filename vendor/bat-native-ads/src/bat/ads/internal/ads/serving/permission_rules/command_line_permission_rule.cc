@@ -22,7 +22,7 @@ bool CommandLinePermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string CommandLinePermissionRule::GetLastMessage() const {
+const std::string& CommandLinePermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

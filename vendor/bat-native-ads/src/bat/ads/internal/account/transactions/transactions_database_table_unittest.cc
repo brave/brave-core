@@ -25,13 +25,13 @@ class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Arrange
-  const TransactionList& transactions = {};
+  const TransactionList transactions = {};
 
   // Act
   SaveTransactions(transactions);
 
   // Assert
-  const TransactionList& expected_transactions = transactions;
+  const TransactionList expected_transactions = transactions;
 
   Transactions database_table;
   database_table.GetAll(
@@ -46,13 +46,13 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo info_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo& info_2 =
+  const TransactionInfo info_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
   transactions.push_back(info_2);
 
@@ -60,7 +60,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   SaveTransactions(transactions);
 
   // Assert
-  const TransactionList& expected_transactions = transactions;
+  const TransactionList expected_transactions = transactions;
 
   Transactions database_table;
   database_table.GetAll(
@@ -75,7 +75,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info =
+  const TransactionInfo info =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(info);
 
@@ -85,7 +85,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   SaveTransactions(transactions);
 
   // Assert
-  const TransactionList& expected_transactions = transactions;
+  const TransactionList expected_transactions = transactions;
 
   Transactions database_table;
   database_table.GetAll(
@@ -100,20 +100,20 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo info_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo& info_2 =
+  const TransactionInfo info_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
   transactions.push_back(info_2);
 
   SaveTransactions(transactions);
 
   // Act
-  const TransactionList& expected_transactions = {info_2};
+  const TransactionList expected_transactions = {info_2};
 
   Transactions database_table;
   database_table.GetForDateRange(
@@ -131,7 +131,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo info_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
@@ -152,7 +152,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
 
   // Assert
   info_2.reconciled_at = Now();
-  const TransactionList& expected_transactions = {info_1, info_2};
+  const TransactionList expected_transactions = {info_1, info_2};
 
   database_table.GetAll(
       [&expected_transactions](const bool success,
@@ -166,11 +166,11 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo& info_1 =
+  const TransactionInfo info_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
-  const TransactionInfo& info_2 =
+  const TransactionInfo info_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
   transactions.push_back(info_2);
 
@@ -194,7 +194,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   Transactions database_table;
 
   // Act
-  const std::string table_name = database_table.GetTableName();
+  const std::string& table_name = database_table.GetTableName();
 
   // Assert
   const std::string expected_table_name = "transactions";

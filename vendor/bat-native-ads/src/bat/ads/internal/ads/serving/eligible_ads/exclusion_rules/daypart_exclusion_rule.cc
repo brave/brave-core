@@ -52,7 +52,7 @@ bool DaypartExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string DaypartExclusionRule::GetLastMessage() const {
+const std::string& DaypartExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 
@@ -68,7 +68,7 @@ bool DaypartExclusionRule::DoesRespectCap(
   const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
 
   const int day_of_week = GetDayOfWeek(now, /* is_local */ true);
-  const std::string& day_of_week_as_string = base::NumberToString(day_of_week);
+  const std::string day_of_week_as_string = base::NumberToString(day_of_week);
 
   for (const CreativeDaypartInfo& daypart : creative_ad.dayparts) {
     if (!MatchDayOfWeek(daypart, day_of_week_as_string)) {

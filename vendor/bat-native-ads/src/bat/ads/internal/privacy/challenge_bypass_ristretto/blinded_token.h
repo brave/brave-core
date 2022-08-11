@@ -36,7 +36,12 @@ class BlindedToken {
 
   bool has_value() const { return blinded_token_.has_value(); }
 
-  challenge_bypass_ristretto::BlindedToken get() const {
+  challenge_bypass_ristretto::BlindedToken& get() {
+    DCHECK(blinded_token_);
+    return *blinded_token_;
+  }
+
+  const challenge_bypass_ristretto::BlindedToken& get() const {
     DCHECK(blinded_token_);
     return *blinded_token_;
   }

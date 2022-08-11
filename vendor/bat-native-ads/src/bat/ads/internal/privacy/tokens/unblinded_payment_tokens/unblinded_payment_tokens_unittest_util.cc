@@ -24,7 +24,7 @@ UnblindedPaymentTokens* GetUnblindedPaymentTokens() {
 }
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {
-  const UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
   GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
   return unblinded_payment_tokens;
@@ -72,7 +72,7 @@ UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
 
   for (const auto& unblinded_payment_token_base64 :
        unblinded_payment_tokens_base64) {
-    const UnblindedPaymentTokenInfo& unblinded_payment_token =
+    const UnblindedPaymentTokenInfo unblinded_payment_token =
         CreateUnblindedPaymentToken(unblinded_payment_token_base64);
 
     unblinded_payment_tokens.push_back(unblinded_payment_token);
@@ -101,7 +101,7 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   for (int i = 0; i < count; i++) {
     const std::string& unblinded_payment_token_base64 =
         unblinded_payment_tokens_base64.at(i % modulo);
-    const UnblindedPaymentTokenInfo& unblinded_payment_token =
+    const UnblindedPaymentTokenInfo unblinded_payment_token =
         CreateUnblindedPaymentToken(unblinded_payment_token_base64);
 
     unblinded_payment_tokens.push_back(unblinded_payment_token);
@@ -114,7 +114,7 @@ UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count) {
   UnblindedPaymentTokenList unblinded_payment_tokens;
 
   TokenGenerator token_generator;
-  const std::vector<cbr::Token>& tokens = token_generator.Generate(count);
+  const std::vector<cbr::Token> tokens = token_generator.Generate(count);
   for (const auto& token : tokens) {
     const absl::optional<std::string> token_base64 = token.EncodeBase64();
     DCHECK(token_base64);
@@ -131,7 +131,7 @@ UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count) {
 base::Value::List GetUnblindedPaymentTokensAsList(const int count) {
   base::Value::List list;
 
-  const UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
 
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {

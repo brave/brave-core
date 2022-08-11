@@ -66,7 +66,7 @@ void SubdivisionTargeting::MaybeFetch() {
   MaybeFetchForLocale(locale);
 }
 
-std::string SubdivisionTargeting::GetSubdivisionCode() const {
+const std::string& SubdivisionTargeting::GetSubdivisionCode() const {
   if (ShouldAutoDetect()) {
     return GetLazyAutoDetectedSubdivisionCode();
   }
@@ -89,7 +89,8 @@ void SubdivisionTargeting::OnSubdivisionTargetingCodePrefChanged() {
   MaybeFetch();
 }
 
-std::string SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode() const {
+const std::string& SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode()
+    const {
   if (!auto_detected_subdivision_code_) {
     auto_detected_subdivision_code_ =
         AdsClientHelper::GetInstance()->GetStringPref(
@@ -99,7 +100,7 @@ std::string SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode() const {
   return *auto_detected_subdivision_code_;
 }
 
-std::string SubdivisionTargeting::GetLazySubdivisionCode() const {
+const std::string& SubdivisionTargeting::GetLazySubdivisionCode() const {
   if (!subdivision_code_) {
     subdivision_code_ = AdsClientHelper::GetInstance()->GetStringPref(
         prefs::kSubdivisionTargetingCode);
@@ -131,7 +132,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(
   const SupportedSubdivisionCodesSet subdivision_codes =
       kSupportedSubdivisionCodes.at(country_code);
 
-  const std::string subdivision_code = GetSubdivisionCode();
+  const std::string& subdivision_code = GetSubdivisionCode();
   if (subdivision_codes.find(subdivision_code) == subdivision_codes.end()) {
     AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, false);

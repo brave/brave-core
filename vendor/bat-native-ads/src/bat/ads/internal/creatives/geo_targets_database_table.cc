@@ -116,7 +116,7 @@ void GeoTargets::MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "geo_targets");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE geo_targets "
       "(campaign_id TEXT NOT NULL, "
       "geo_target TEXT NOT NULL, "

@@ -47,7 +47,7 @@ void BuildAndSaveConversionQueueItem(const std::string& conversion_id,
                                      const std::string& advertiser_public_key) {
   ConversionQueueItemList conversion_queue_items;
 
-  const ConversionQueueItemInfo& conversion_queue_item =
+  const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion_id, advertiser_public_key);
 
   conversion_queue_items.push_back(conversion_queue_item);

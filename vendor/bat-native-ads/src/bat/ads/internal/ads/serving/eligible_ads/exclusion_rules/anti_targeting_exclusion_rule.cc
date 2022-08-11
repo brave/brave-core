@@ -58,7 +58,7 @@ bool AntiTargetingExclusionRule::ShouldExclude(
   return false;
 }
 
-std::string AntiTargetingExclusionRule::GetLastMessage() const {
+const std::string& AntiTargetingExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

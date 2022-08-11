@@ -88,7 +88,7 @@ void ConversionQueue::Save(
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  const std::vector<ConversionQueueItemList>& batches =
+  const std::vector<ConversionQueueItemList> batches =
       SplitVector(conversion_queue_items, batch_size_);
 
   for (const auto& batch : batches) {
@@ -103,7 +103,7 @@ void ConversionQueue::Save(
 void ConversionQueue::Delete(
     const ConversionQueueItemInfo& conversion_queue_item,
     ResultCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE creative_instance_id = '%s'",
       GetTableName().c_str(),
@@ -124,7 +124,7 @@ void ConversionQueue::Delete(
 void ConversionQueue::Update(
     const ConversionQueueItemInfo& conversion_queue_item,
     ResultCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "UPDATE %s "
       "SET was_processed = 1 "
       "WHERE was_processed == 0 "
@@ -145,7 +145,7 @@ void ConversionQueue::Update(
 }
 
 void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cq.ad_type, "
       "cq.campaign_id, "
@@ -187,7 +187,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
 }
 
 void ConversionQueue::GetUnprocessed(GetConversionQueueCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cq.ad_type, "
       "cq.campaign_id, "
@@ -237,7 +237,7 @@ void ConversionQueue::GetForCreativeInstanceId(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cq.ad_type, "
       "cq.campaign_id, "
@@ -368,7 +368,7 @@ void ConversionQueue::OnGetAll(mojom::DBCommandResponseInfoPtr response,
   ConversionQueueItemList conversion_queue_items;
 
   for (const auto& record : response->result->get_records()) {
-    const ConversionQueueItemInfo& conversion_queue_item =
+    const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(record.get());
     conversion_queue_items.push_back(conversion_queue_item);
   }
@@ -390,7 +390,7 @@ void ConversionQueue::OnGetForCreativeInstanceId(
   ConversionQueueItemList conversion_queue_items;
 
   for (const auto& record : response->result->get_records()) {
-    const ConversionQueueItemInfo& conversion_queue_item =
+    const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(record.get());
     conversion_queue_items.push_back(conversion_queue_item);
   }
@@ -406,7 +406,7 @@ void ConversionQueue::MigrateToV10(mojom::DBTransactionInfo* transaction) {
   // campaign_id and advertiser_id can be NULL for legacy conversions migrated
   // from |ad_conversions.json| and conversion_id and advertiser_public_key will
   // be empty for non verifiable conversions
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE conversion_queue "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "campaign_id TEXT, "
@@ -426,10 +426,10 @@ void ConversionQueue::MigrateToV10(mojom::DBTransactionInfo* transaction) {
 void ConversionQueue::MigrateToV11(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
-  const std::string& temp_table_name = "conversion_queue_temp";
+  const std::string temp_table_name = "conversion_queue_temp";
 
   // Create a temporary table with new |advertiser_public_key| column
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE conversion_queue_temp "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "campaign_id TEXT, "
@@ -447,7 +447,7 @@ void ConversionQueue::MigrateToV11(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 
   // Copy columns to temporary table
-  const std::vector<std::string>& columns = {
+  const std::vector<std::string> columns = {
       "campaign_id",   "creative_set_id", "creative_instance_id",
       "advertiser_id", "conversion_id",   "timestamp"};
 
@@ -467,10 +467,10 @@ void ConversionQueue::MigrateToV17(mojom::DBTransactionInfo* transaction) {
 void ConversionQueue::MigrateToV21(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
-  const std::string& temp_table_name = "conversion_queue_temp";
+  const std::string temp_table_name = "conversion_queue_temp";
 
   // Create a temporary table with new |ad_type| column
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE conversion_queue_temp "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "ad_type TEXT, "
@@ -490,7 +490,7 @@ void ConversionQueue::MigrateToV21(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 
   // Copy columns to temporary table
-  const std::vector<std::string>& columns = {
+  const std::vector<std::string> columns = {
       "campaign_id",   "creative_set_id", "creative_instance_id",
       "advertiser_id", "conversion_id",   "advertiser_public_key",
       "timestamp"};
@@ -502,7 +502,7 @@ void ConversionQueue::MigrateToV21(mojom::DBTransactionInfo* transaction) {
   RenameTable(transaction, temp_table_name, "conversion_queue");
 
   // Migrate legacy conversions
-  const std::string& update_query = base::StringPrintf(
+  const std::string update_query = base::StringPrintf(
       "UPDATE conversion_queue "
       "SET ad_type = 'ad_notification' "
       "WHERE ad_type IS NULL");

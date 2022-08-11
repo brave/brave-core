@@ -28,7 +28,7 @@ bool NetworkConnectionPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string NetworkConnectionPermissionRule::GetLastMessage() const {
+const std::string& NetworkConnectionPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

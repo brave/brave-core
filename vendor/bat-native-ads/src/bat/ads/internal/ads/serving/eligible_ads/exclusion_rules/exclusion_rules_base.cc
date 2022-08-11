@@ -127,7 +127,7 @@ bool ExclusionRulesBase::AddToCacheIfNeeded(
     BLOG(2, last_message);
   }
 
-  const std::string& uuid = exclusion_rule->GetUuid(creative_ad);
+  const std::string uuid = exclusion_rule->GetUuid(creative_ad);
   AddToCache(uuid);
 
   return true;

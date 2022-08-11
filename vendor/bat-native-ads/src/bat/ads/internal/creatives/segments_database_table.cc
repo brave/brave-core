@@ -115,7 +115,7 @@ void Segments::MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "segments");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE segments "
       "(creative_set_id TEXT NOT NULL, "
       "segment TEXT NOT NULL, "

@@ -23,7 +23,7 @@ CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
   CreativeNotificationAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
-    const CreativeNotificationAdInfo& creative_ad =
+    const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();
     creative_ads.push_back(creative_ad);
   }
@@ -32,7 +32,7 @@ CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
 }
 
 CreativeNotificationAdInfo BuildCreativeNotificationAd() {
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
   CreativeNotificationAdInfo creative_notification_ad(creative_ad);
 
   creative_notification_ad.title = "Test Ad Title";

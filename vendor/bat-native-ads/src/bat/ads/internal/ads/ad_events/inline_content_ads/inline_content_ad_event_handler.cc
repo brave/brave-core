@@ -84,7 +84,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
           return;
         }
 
-        const InlineContentAdInfo& ad =
+        const InlineContentAdInfo ad =
             BuildInlineContentAd(creative_ad, placement_id);
 
         FireEvent(ad, placement_id, creative_instance_id, event_type);

@@ -51,7 +51,7 @@ TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
 TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   // Arrange
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
   SaveTransactions(transactions);
@@ -65,7 +65,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
       confirmation);
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetRandomUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
 
@@ -80,9 +80,9 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
           EXPECT_TRUE(transactions.empty());
         });
 
-    const ConfirmationList& confirmations =
+    const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
-    EXPECT_TRUE(confirmations.empty());
+    EXPECT_TRUE(failed_confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
         privacy::GetUnblindedPaymentTokens()->GetAllTokens();
@@ -106,9 +106,9 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
           EXPECT_TRUE(transactions.empty());
         });
 
-    const ConfirmationList& confirmations =
+    const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
-    EXPECT_TRUE(confirmations.empty());
+    EXPECT_TRUE(failed_confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
         privacy::GetUnblindedPaymentTokens()->GetAllTokens();

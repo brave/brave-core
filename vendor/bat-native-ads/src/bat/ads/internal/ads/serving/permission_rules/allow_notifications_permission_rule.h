@@ -19,7 +19,7 @@ class AllowNotificationsPermissionRule final : public PermissionRuleInterface {
 
   bool ShouldAllow() override;
 
-  std::string GetLastMessage() const override;
+  const std::string& GetLastMessage() const override;
 
  private:
   bool DoesRespectCap();

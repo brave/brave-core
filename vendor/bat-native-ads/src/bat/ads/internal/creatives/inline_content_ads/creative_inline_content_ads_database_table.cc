@@ -113,8 +113,7 @@ CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
   CreativeInlineContentAdMap creative_ads;
 
   for (const auto& record : response->result->get_records()) {
-    const CreativeInlineContentAdInfo& creative_ad =
-        GetFromRecord(record.get());
+    const CreativeInlineContentAdInfo creative_ad = GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
     if (iter == creative_ads.end()) {
@@ -148,12 +147,12 @@ CreativeInlineContentAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
-  const CreativeInlineContentAdMap& grouped_creative_ads =
+  const CreativeInlineContentAdMap grouped_creative_ads =
       GroupCreativeAdsFromResponse(std::move(response));
 
   CreativeInlineContentAdList creative_ads;
   for (const auto& grouped_creative_ad : grouped_creative_ads) {
-    const CreativeInlineContentAdInfo& creative_ad = grouped_creative_ad.second;
+    const CreativeInlineContentAdInfo creative_ad = grouped_creative_ad.second;
     creative_ads.push_back(creative_ad);
   }
 
@@ -182,7 +181,7 @@ void CreativeInlineContentAds::Save(
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  const std::vector<CreativeInlineContentAdList>& batches =
+  const std::vector<CreativeInlineContentAdList> batches =
       SplitVector(creative_ads, batch_size_);
 
   for (const auto& batch : batches) {
@@ -222,7 +221,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cbna.creative_instance_id, "
       "cbna.creative_set_id, "
@@ -319,7 +318,7 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cbna.creative_instance_id, "
       "cbna.creative_set_id, "
@@ -425,7 +424,7 @@ void CreativeInlineContentAds::GetForDimensions(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cbna.creative_instance_id, "
       "cbna.creative_set_id, "
@@ -517,7 +516,7 @@ void CreativeInlineContentAds::GetForDimensions(
 
 void CreativeInlineContentAds::GetAll(
     GetCreativeInlineContentAdsCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cbna.creative_instance_id, "
       "cbna.creative_set_id, "
@@ -674,7 +673,7 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativeInlineContentAdList& creative_ads =
+  const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
   if (creative_ads.size() != 1) {
@@ -683,7 +682,7 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativeInlineContentAdInfo& creative_ad = creative_ads.front();
+  const CreativeInlineContentAdInfo creative_ad = creative_ads.front();
 
   callback(/* success */ true, creative_instance_id, creative_ad);
 }
@@ -699,7 +698,7 @@ void CreativeInlineContentAds::OnGetForSegmentsAndDimensions(
     return;
   }
 
-  const CreativeInlineContentAdList& creative_ads =
+  const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
   callback(/* success */ true, segments, creative_ads);
@@ -715,7 +714,7 @@ void CreativeInlineContentAds::OnGetForDimensions(
     return;
   }
 
-  const CreativeInlineContentAdList& creative_ads =
+  const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
   callback(/* success */ true, creative_ads);
@@ -731,10 +730,10 @@ void CreativeInlineContentAds::OnGetAll(
     return;
   }
 
-  const CreativeInlineContentAdList& creative_ads =
+  const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
-  const SegmentList& segments = GetSegments(creative_ads);
+  const SegmentList segments = GetSegments(creative_ads);
 
   callback(/* success */ true, segments, creative_ads);
 }
@@ -745,7 +744,7 @@ void CreativeInlineContentAds::MigrateToV24(
 
   DropTable(transaction, "creative_inline_content_ads");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE creative_inline_content_ads "
       "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
       "ON CONFLICT REPLACE, "

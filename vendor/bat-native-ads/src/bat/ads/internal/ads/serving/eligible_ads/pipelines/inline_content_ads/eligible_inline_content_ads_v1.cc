@@ -77,7 +77,7 @@ void EligibleAdsV1::GetForChildSegments(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
-  const SegmentList& segments = targeting::GetTopChildSegments(user_model);
+  const SegmentList segments = targeting::GetTopChildSegments(user_model);
   if (segments.empty()) {
     GetForParentSegments(user_model, dimensions, ad_events, browsing_history,
                          callback);
@@ -124,7 +124,7 @@ void EligibleAdsV1::GetForParentSegments(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
-  const SegmentList& segments = targeting::GetTopParentSegments(user_model);
+  const SegmentList segments = targeting::GetTopParentSegments(user_model);
   if (segments.empty()) {
     GetForUntargeted(dimensions, ad_events, browsing_history, callback);
     return;

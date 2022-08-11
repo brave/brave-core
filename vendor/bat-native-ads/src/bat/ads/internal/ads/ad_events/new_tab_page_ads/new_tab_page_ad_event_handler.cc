@@ -95,7 +95,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
           return;
         }
 
-        const NewTabPageAdInfo& ad =
+        const NewTabPageAdInfo ad =
             BuildNewTabPageAd(creative_ad, placement_id);
 
         FireEvent(ad, placement_id, creative_instance_id, event_type);

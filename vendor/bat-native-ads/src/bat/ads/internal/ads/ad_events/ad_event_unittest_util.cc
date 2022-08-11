@@ -103,8 +103,8 @@ void RecordAdEvents(const AdType& type,
   DCHECK_GT(count, 0);
 
   const std::string& id = GetInstanceId();
-  const std::string& ad_type_as_string = type.ToString();
-  const std::string& confirmation_type_as_string = confirmation_type.ToString();
+  const std::string ad_type_as_string = type.ToString();
+  const std::string confirmation_type_as_string = confirmation_type.ToString();
   const base::Time time = Now();
 
   for (int i = 0; i < count; i++) {

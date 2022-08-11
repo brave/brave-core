@@ -38,7 +38,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   processor.Process(url);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   EXPECT_TRUE(history.empty());
@@ -56,7 +56,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   processor.Process(url);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   EXPECT_TRUE(history.empty());
@@ -91,7 +91,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
   processor.Process(url);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   const base::Time now = Now();
@@ -118,7 +118,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   processor.Process(url);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   const base::Time now = Now();
@@ -155,7 +155,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   processor.Process(url_2);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   const uint16_t weight = 1;
@@ -193,7 +193,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   processor.Process(url_2);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   const uint16_t weight = 1;
@@ -230,7 +230,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   processor.Process(url_2);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   const uint16_t weight = 1;
@@ -257,7 +257,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   processor.Process(url);
 
   // Assert
-  const targeting::PurchaseIntentSignalHistoryMap history =
+  const targeting::PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   const base::Time now = Now();

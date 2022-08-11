@@ -312,7 +312,7 @@ void Conversions::CheckRedirectChain(
 
       // Check for conversions
       for (const auto& conversion : filtered_conversions) {
-        const AdEventList& filtered_ad_events =
+        const AdEventList filtered_ad_events =
             FilterAdEventsForConversion(ad_events, conversion);
 
         for (const auto& ad_event : filtered_ad_events) {
