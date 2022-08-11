@@ -430,7 +430,8 @@ void BraveContentBrowserClient::
         content::RenderFrameHost& render_frame_host,                // NOLINT
         blink::AssociatedInterfaceRegistry& associated_registry) {  // NOLINT
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  associated_registry.AddInterface(base::BindRepeating(
+  associated_registry.AddInterface<
+      brave_drm::mojom::BraveDRM>(base::BindRepeating(
       [](content::RenderFrameHost* render_frame_host,
          mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM> receiver) {
         BraveDrmTabHelper::BindBraveDRM(std::move(receiver), render_frame_host);
@@ -438,7 +439,8 @@ void BraveContentBrowserClient::
       &render_frame_host));
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
-  associated_registry.AddInterface(base::BindRepeating(
+  associated_registry.AddInterface<
+      brave_shields::mojom::BraveShieldsHost>(base::BindRepeating(
       [](content::RenderFrameHost* render_frame_host,
          mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>
              receiver) {
@@ -448,14 +450,15 @@ void BraveContentBrowserClient::
       &render_frame_host));
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  associated_registry.AddInterface(base::BindRepeating(
-      [](content::RenderFrameHost* render_frame_host,
-         mojo::PendingAssociatedReceiver<speedreader::mojom::SpeedreaderHost>
-             receiver) {
-        speedreader::SpeedreaderTabHelper::BindSpeedreaderHost(
-            std::move(receiver), render_frame_host);
-      },
-      &render_frame_host));
+  associated_registry.AddInterface<speedreader::mojom::SpeedreaderHost>(
+      base::BindRepeating(
+          [](content::RenderFrameHost* render_frame_host,
+             mojo::PendingAssociatedReceiver<
+                 speedreader::mojom::SpeedreaderHost> receiver) {
+            speedreader::SpeedreaderTabHelper::BindSpeedreaderHost(
+                std::move(receiver), render_frame_host);
+          },
+          &render_frame_host));
 #endif
 
   ChromeContentBrowserClient::
