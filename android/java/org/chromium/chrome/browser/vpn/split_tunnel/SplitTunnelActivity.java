@@ -119,11 +119,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
             if (mRecyclerViewAdapterExcludedApps != null) {
                 BraveVpnPrefUtils.setExcludedPackages(
                         mRecyclerViewAdapterExcludedApps.getApplicationPackages());
-                BraveVpnNativeWorker.getInstance().invalidateCredentials(
-                        BraveVpnPrefUtils.getHostname(), BraveVpnPrefUtils.getClientId(),
-                        BraveVpnPrefUtils.getSubscriberCredential(),
-                        BraveVpnPrefUtils.getApiAuthToken());
-                BraveVpnUtils.resetProfileConfiguration(SplitTunnelActivity.this);
+                BraveVpnUtils.mUpdateProfileAfterSplitTunnel = true;
                 finish();
                 return true;
             }
