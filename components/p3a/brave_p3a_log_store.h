@@ -63,7 +63,7 @@ class BraveP3ALogStore : public metrics::LogStore {
 
   // |TrimAndPersistUnsentLogs| should not be used, since we persist everything
   // on the fly.
-  void TrimAndPersistUnsentLogs() override;
+  void TrimAndPersistUnsentLogs(bool overwrite_in_memory_store) override;
   // Returns early if founds malformed persisted values.
   void LoadPersistedUnsentLogs() override;
 
