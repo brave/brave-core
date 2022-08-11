@@ -6,73 +6,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 // Constants
-import { TorrentObj, File } from '../constants/webtorrentState'
-
-const SUPPORTED_VIDEO_EXTENSIONS = [
-  'm4v',
-  'mkv',
-  'mov',
-  'mp4',
-  'ogv',
-  'webm'
-]
-
-const SUPPORTED_AUDIO_EXTENSIONS = [
-  'aac',
-  'flac',
-  'm4a',
-  'm4b',
-  'm4p',
-  'mp3',
-  'oga',
-  'ogg',
-  'wav'
-]
-
-const SUPPORTED_IMAGE_EXTENSIONS = [
-  'bmp',
-  'gif',
-  'jpeg',
-  'jpg',
-  'png',
-  'svg'
-]
-
-const SUPPORTED_PDF_EXTENSIONS = [
-  'pdf'
-]
-
-const SUPPORTED_IFRAME_EXTENSIONS = [
-  'css',
-  'html',
-  'js',
-  'md',
-  'txt'
-]
-
-type FileType = 'video' | 'audio' | 'image' | 'pdf' | 'iframe' | 'unknown'
-const mediaTypes: FileType[] = ['video', 'audio', 'image']
-
-// Given 'foo.txt', returns 'txt'
-// undefined or README return ''
-const getExtension = (filename?: string) => {
-  if (!filename) return ''
-  const ix = filename.lastIndexOf('.')
-  if (ix < 0) return ''
-  return filename.substring(ix + 1)
-}
+import { TorrentObj } from '../constants/webtorrentState'
+import { getFileType, isMedia } from '../utils/fileType'
 
 const getSelectedFile = (torrent: TorrentObj, ix: number) => torrent.files?.[ix]
-
-const getFileType = (file?: File): FileType => {
-  const extension = getExtension(file?.name)
-  if (SUPPORTED_VIDEO_EXTENSIONS.includes(extension)) return 'video'
-  if (SUPPORTED_AUDIO_EXTENSIONS.includes(extension)) return 'audio'
-  if (SUPPORTED_IMAGE_EXTENSIONS.includes(extension)) return 'image'
-  if (SUPPORTED_PDF_EXTENSIONS.includes(extension)) return 'pdf'
-  if (SUPPORTED_IFRAME_EXTENSIONS.includes(extension)) return 'iframe'
-  return 'unknown'
-}
 
 const Container = styled.div`
   video, audio, image-rendering, object, iframe, img {
@@ -95,7 +32,6 @@ const Container = styled.div`
     border: 0;
   }
 `
-
 interface Props {
   torrent: TorrentObj
   ix: number
@@ -118,14 +54,13 @@ export default function MediaViewer ({ torrent, ix }: Props) {
   const loading = !file || !fileURL
 
   React.useEffect(() => {
-    const isMedia = mediaTypes.includes(fileType)
-    document.body.style.backgroundColor = isMedia ? 'rgb(0, 0, 0)' : ''
+    document.body.style.backgroundColor = isMedia(fileType) ? 'rgb(0, 0, 0)' : ''
 
     // Reset background color when unmounted.
     return () => {
       document.body.style.backgroundColor = ''
     }
-  }, [file, fileType])
+  }, [fileType])
 
   return <Container>
     {loading
