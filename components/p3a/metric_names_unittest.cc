@@ -17,25 +17,27 @@ TEST(P3AMetrics, Searchable) {
   // Check that some expected elements made it into the set.
   // This set was chosen as likely to be long-lived; it will need
   // to be updated if any of them are retired.
-  EXPECT_TRUE(kCollectedHistograms.contains("Brave.Core.IsDefault"));
-  EXPECT_TRUE(kCollectedHistograms.contains("Brave.P3A.SentAnswersCount"));
-  EXPECT_TRUE(kCollectedHistograms.contains("Brave.P2A.TotalAdOpportunities"));
+  EXPECT_TRUE(kCollectedTypicalHistograms.contains("Brave.Core.IsDefault"));
+  EXPECT_TRUE(
+      kCollectedTypicalHistograms.contains("Brave.P3A.SentAnswersCount"));
+  EXPECT_TRUE(
+      kCollectedTypicalHistograms.contains("Brave.P2A.TotalAdOpportunities"));
   // Verify set membership testing isn't returning true unconditionally.
-  EXPECT_FALSE(kCollectedHistograms.contains("Not.A.Brave.Metric"));
-  EXPECT_FALSE(kCollectedHistograms.contains("antimetric"));
+  EXPECT_FALSE(kCollectedTypicalHistograms.contains("Not.A.Brave.Metric"));
+  EXPECT_FALSE(kCollectedTypicalHistograms.contains("antimetric"));
 }
 
 TEST(P3AMetrics, Enumerable) {
-  const size_t size = kCollectedHistograms.size();
+  const size_t size = kCollectedTypicalHistograms.size();
   size_t count = 0;
   std::string last = {};
 
   // Check that we can loop through the set members.
   DLOG(INFO) << "Set of collected metrics has " << size << " members:";
-  for (auto item : kCollectedHistograms) {
+  for (auto item : kCollectedTypicalHistograms) {
     DLOG(INFO) << "  " << item;
     // Each item should be a set member.
-    EXPECT_TRUE(kCollectedHistograms.contains(item));
+    EXPECT_TRUE(kCollectedTypicalHistograms.contains(item));
     // Each item should be different from the previous one.
     EXPECT_NE(item, last);
     last = std::string(item);
@@ -45,7 +47,7 @@ TEST(P3AMetrics, Enumerable) {
 
   // Verify we saw all of the members.
   EXPECT_EQ(count, size);
-  EXPECT_EQ(size, kCollectedHistograms.size());
+  EXPECT_EQ(size, kCollectedTypicalHistograms.size());
 }
 
 }  // namespace brave::p3a

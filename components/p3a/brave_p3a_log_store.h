@@ -12,6 +12,7 @@
 #include "base/containers/flat_set.h"
 #include "base/strings/string_piece.h"
 #include "base/time/time.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "components/metrics/log_store.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -30,14 +31,16 @@ class BraveP3ALogStore : public metrics::LogStore {
    public:
     // Prepares a string representaion of an entry.
     virtual std::string Serialize(base::StringPiece histogram_name,
-                                  uint64_t value) = 0;
+                                  uint64_t value,
+                                  const std::string& upload_type) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
     virtual bool IsActualMetric(base::StringPiece histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 
   BraveP3ALogStore(Delegate* delegate,
-                   PrefService* local_state);
+                   PrefService* local_state,
+                   MetricLogType type);
 
   ~BraveP3ALogStore() override;
 
@@ -49,6 +52,7 @@ class BraveP3ALogStore : public metrics::LogStore {
   // Marks all saved values as unsent.
   void ResetUploadStamps();
 
+  const std::string& staged_log_key() const;
   // metrics::LogStore:
   bool has_unsent_logs() const override;
   bool has_staged_log() const override;
@@ -87,6 +91,8 @@ class BraveP3ALogStore : public metrics::LogStore {
 
   Delegate* const delegate_ = nullptr;  // Weak.
   PrefService* const local_state_ = nullptr;
+
+  MetricLogType type_;
 
   // TODO(iefremov): Try to replace with base::StringPiece?
   base::flat_map<std::string, LogEntry> log_;

@@ -22,7 +22,7 @@ namespace brave::p3a {
 // TODO(iefremov) Clean up obsolete metrics.
 //
 // clang-format off
-constexpr inline auto kCollectedHistograms =
+constexpr inline auto kCollectedTypicalHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Core.BookmarksCountOnProfileLoad.2",
     "Brave.Core.CrashReportsEnabled",
@@ -157,6 +157,14 @@ constexpr inline auto kCollectedHistograms =
     "Brave.P2A.AdImpressionsPerSegment.weather",
     "Brave.P2A.AdImpressionsPerSegment.untargeted"
 });
+
+constexpr inline auto kCollectedExpressHistograms =
+  base::MakeFixedFlatSet<base::StringPiece>({
+    // Please remove following placeholder metric once
+    // static express metrics are added
+    "Brave.P3A.ExampleExpressMetric"
+});
+
 // clang-format on
 
 }  // namespace brave::p3a

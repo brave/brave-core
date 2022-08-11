@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/p3a/brave_p3a_uploader.h"
 #include "crypto/sha2.h"
 
 namespace brave {
@@ -20,8 +21,20 @@ MessageMetainfo::~MessageMetainfo() = default;
 
 base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          uint64_t metric_value,
-                                         const MessageMetainfo& meta) {
+                                         const MessageMetainfo& meta,
+                                         const std::string& upload_type) {
   base::Value::Dict result;
+
+  // Fill basic meta.
+  result.Set("platform", meta.platform);
+  result.Set("channel", meta.channel);
+  // Set the metric
+  result.Set("metric_name", metric_name);
+  result.Set("metric_value", static_cast<int>(metric_value));
+
+  if (upload_type == kP3ACreativeUploadType) {
+    return result;
+  }
 
   // Find out years of install and survey.
   base::Time::Exploded exploded;
@@ -35,15 +48,9 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
 
   // Fill meta.
   result.Set("country_code", meta.country_code);
-  result.Set("platform", meta.platform);
   result.Set("version", meta.version);
-  result.Set("channel", meta.channel);
   result.Set("woi", meta.woi);
   result.Set("wos", meta.wos);
-
-  // Set the metric
-  result.Set("metric_name", metric_name);
-  result.Set("metric_value", static_cast<int>(metric_value));
 
   return result;
 }

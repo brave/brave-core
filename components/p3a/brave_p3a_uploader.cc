@@ -20,7 +20,7 @@ namespace {
 // TODO(iefremov): Provide more details for the traffic annotation.
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
     base::StringPiece upload_type) {
-  if (upload_type == "p3a") {
+  if (upload_type == kP3ACreativeUploadType || upload_type == kP3AUploadType) {
     return net::DefineNetworkTrafficAnnotation("p3a", R"(
         semantics {
           sender: "Brave Privacy-Preserving Product Analytics Uploader"
@@ -42,7 +42,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
              "Not implemented."
         })");
   }
-  DCHECK_EQ(upload_type, "p2a");
+  DCHECK_EQ(upload_type, kP2AUploadType);
   return net::DefineNetworkTrafficAnnotation("p2a", R"(
       semantics {
         sender: "Brave Privacy-Preserving Ad Analytics Uploader"
@@ -72,23 +72,29 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
 BraveP3AUploader::BraveP3AUploader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const GURL& p3a_endpoint,
+    const GURL& p3a_creative_endpoint,
     const GURL& p2a_endpoint,
     const UploadCallback& on_upload_complete)
     : url_loader_factory_(url_loader_factory),
       p3a_endpoint_(p3a_endpoint),
+      p3a_creative_endpoint_(p3a_creative_endpoint),
       p2a_endpoint_(p2a_endpoint),
       on_upload_complete_(on_upload_complete) {}
 
 BraveP3AUploader::~BraveP3AUploader() = default;
 
 void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
-                                 const std::string& upload_type) {
+                                 const std::string& upload_type,
+                                 MetricLogType log_type) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  if (upload_type == "p2a") {
+  if (upload_type == kP2AUploadType) {
     resource_request->url = p2a_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P2A", "?1");
-  } else if (upload_type == "p3a") {
+  } else if (upload_type == kP3AUploadType) {
     resource_request->url = p3a_endpoint_;
+    resource_request->headers.SetHeader("X-Brave-P3A", "?1");
+  } else if (upload_type == kP3ACreativeUploadType) {
+    resource_request->url = p3a_creative_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P3A", "?1");
   } else {
     NOTREACHED();
@@ -104,10 +110,11 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&BraveP3AUploader::OnUploadComplete,
-                     base::Unretained(this)));
+                     base::Unretained(this), log_type));
 }
 
 void BraveP3AUploader::OnUploadComplete(
+    MetricLogType log_type,
     std::unique_ptr<std::string> response_body) {
   int response_code = -1;
   if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
@@ -117,7 +124,7 @@ void BraveP3AUploader::OnUploadComplete(
 
   bool was_https = url_loader_->GetFinalURL().SchemeIs(url::kHttpsScheme);
   url_loader_.reset();
-  on_upload_complete_.Run(response_code, error_code, was_https);
+  on_upload_complete_.Run(response_code, error_code, was_https, log_type);
 }
 
 }  // namespace brave
