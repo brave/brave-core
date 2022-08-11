@@ -7,62 +7,9 @@
     --background02: rgba(248, 249, 250, 1);
     --background01: white;
     --text02: rgba(73, 80, 87, 1);
+    --interactive02: rgba(251, 84, 43, 1);
 
     background-color: var(--background02);
-  }
-
-  a {
-    text-decoration: none;
-    color: #fb542b;
-  }
-
-  .headerContainer {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 0 18px;
-  }
-
-  .headerContainer .__column {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-  }
-
-  .headerContainer .__torrentTitle {
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 36px;
-  }
-
-  .headerContainer .__button {
-    white-space: nowrap;
-    margin: 12px;
-  }
-
-  .torrentSubhead {
-    border-top: solid 1px #c8c8d5;
-    margin: 16px 0;
-  }
-
-  .starterText {
-    font-size: 20px;
-    margin: 32px 0;
-  }
-
-  .torrentHeading {
-    font-size: 20px;
-    margin: 32px 0 16px 0;
-    font-weight: 500;
-    color: #fb542b;
-  }
-
-  .torrentStatus {
-    font-size: 16px;
-  }
-
-  .torrentStat,
-  .torrentStatDivider {
-    margin-right: 15px;
   }
 
   #video,
@@ -88,14 +35,6 @@
 
   #iframe {
     border: 0;
-  }
-
-  a.inactive {
-    color: gray;
-  }
-
-  a.inactive:hover {
-    cursor: default;
   }
 
 }

@@ -12,6 +12,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { File, TorrentObj } from '../constants/webtorrentState'
 import { Header } from './Header'
+import { Link } from './Link'
 
 interface Props {
   torrentId: string
@@ -80,16 +81,16 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
             content: index + 1
           },
           {
-            content: <a target='_blank' rel='noopener'
+            content: <Link target='_blank' rel='noopener'
               href={torrentId + (/^https?:/.test(torrentId)
                 ? '#ix='
                 : '&ix=') + index}>
               {` ${file.name} `}
-            </a>
+            </Link>
           },
           {
             content: torrent.serverURL &&
-              <a href={`${torrent.serverURL}/${index}/${file.name}`} download={file.name}>⇩</a>
+              <Link href={`${torrent.serverURL}/${index}/${file.name}`} download={file.name}>⇩</Link>
           },
           {
             content: prettierBytes(file.length)
