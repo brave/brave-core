@@ -11,9 +11,20 @@ ios_xctest_test("brave_core_ios_tests") {
   sources = [
     "dictionary_transform_test.mm",
     "main.mm",
+    "net_test.mm",
     "test_foo.h",
     "test_foo.mm",
     "vector_transform_test.mm",
   ]
-  deps = [ "//base" ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/net",
+    "//net",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "Security.framework",
+  ]
 }
