@@ -30,13 +30,13 @@
   <if expr="not chromeos_ash">
     </if>
 
-  <if expr="chromeos_ash or chromeos_lacros">
+  <if expr="is_chromeos">
     </if>
-  <if expr="not chromeos_ash and not chromeos_lacros">
+  <if expr="not is_chromeos">
     </if>
   <if expr="is_linux">
     </if>
-  <if expr="not is_linux or chromeos_ash or chromeos_lacros or is_fuchsia">
+  <if expr="not is_linux or is_chromeos or is_fuchsia">
     </if>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
@@ -53,11 +53,11 @@
   <if expr="is_win">
     </if>
 
-  <if expr="not chromeos_ash and not chromeos_lacros">
+  <if expr="not is_chromeos">
     </if>
 
   <if expr="use_nss_certs">
-    <if expr="chromeos_ash or chromeos_lacros">
+    <if expr="is_chromeos">
       </if>
   </if>
 
@@ -74,7 +74,7 @@
       </if>
     </if>
 
-  <if expr="chromeos_ash or chromeos_lacros">
+  <if expr="is_chromeos">
     <if expr="reven">
       </if>
     <if expr="not reven">
@@ -140,12 +140,12 @@
   <if expr="not chromeos_ash">
     </if>
 
-  <if expr="not chromeos_ash and not chromeos_lacros">
+  <if expr="not is_chromeos">
     </if>
 
   <if expr="not chromeos_ash">
     </if>
-  <if expr="not chromeos_ash and not chromeos_lacros">
+  <if expr="not is_chromeos">
     </if>
   <if expr="chromeos_lacros">
     </if>

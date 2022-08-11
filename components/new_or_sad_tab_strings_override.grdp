@@ -20,11 +20,11 @@
           Open page in a new Private tab
         </message>
       </if>
-      <if expr="is_macosx or chromeos_ash or chromeos_lacros">
+      <if expr="is_macosx or is_chromeos">
         </if>
       <if expr="is_linux">
         </if>
-      <if expr="is_macosx or chromeos_ash or chromeos_lacros or is_ios">
+      <if expr="is_macosx or is_chromeos or is_ios">
         </if>
       <if expr="is_linux">
         </if>
