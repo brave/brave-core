@@ -5,9 +5,10 @@
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_util.h"
 
-#include <algorithm>
 #include <vector>
 
+#include "base/containers/adapters.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -32,11 +33,10 @@ int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
 
 int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
                                           UserActivityEventType event_type) {
-  const auto iter =
-      std::find_if(events.crbegin(), events.crend(),
-                   [event_type](const UserActivityEventInfo& event) {
-                     return event.type == event_type;
-                   });
+  const auto iter = base::ranges::find_if(
+      base::Reversed(events), [event_type](const UserActivityEventInfo& event) {
+        return event.type == event_type;
+      });
 
   if (iter == events.crend()) {
     return kUserActivityMissingValue;

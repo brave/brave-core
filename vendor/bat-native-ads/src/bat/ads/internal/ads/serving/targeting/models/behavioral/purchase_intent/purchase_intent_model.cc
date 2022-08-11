@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/adapters.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
@@ -65,10 +66,9 @@ SegmentList PurchaseIntent::GetSegments() const {
   }
 
   const uint16_t threshold = features::GetPurchaseIntentThreshold();
-  std::multimap<uint16_t, std::string>::reverse_iterator iter;
-  for (iter = scores.rbegin(); iter != scores.rend(); ++iter) {
-    if (iter->first >= threshold) {
-      segments.push_back(iter->second);
+  for (const auto& item : base::Reversed(scores)) {
+    if (item.first >= threshold) {
+      segments.push_back(item.second);
     }
 
     if (segments.size() >= kMaximumSegments) {
