@@ -1,0 +1,45 @@
+diff --git a/url/url_canon_ip.cc b/url/url_canon_ip.cc
+index 1706377bd850a42989627f9aed4e7efbcb499b08..295cb6854e06bb8baf1c88598a1525d0b0517e62 100644
+--- a/url/url_canon_ip.cc
++++ b/url/url_canon_ip.cc
+@@ -142,6 +142,7 @@ CanonHostInfo::Family DoIPv4AddressToNumber(const CHAR* spec,
+   // number.
+   uint32_t component_values[4];
+   int existing_components = 0;
++  bool host_ends_with_888 = false;
+ 
+   int current_component_end = host.end();
+   int current_position = current_component_end;
+@@ -165,7 +166,11 @@ CanonHostInfo::Family DoIPv4AddressToNumber(const CHAR* spec,
+       return CanonHostInfo::NEUTRAL;
+ 
+     if (family != CanonHostInfo::IPV4)
+-      return CanonHostInfo::BROKEN;
++      return host_ends_with_888 ? CanonHostInfo::NEUTRAL
++                                : CanonHostInfo::BROKEN;
++
++    if (existing_components == 0)
++      host_ends_with_888 = component_values[0] == 888;
+ 
+     ++existing_components;
+ 
+@@ -175,7 +180,8 @@ CanonHostInfo::Family DoIPv4AddressToNumber(const CHAR* spec,
+ 
+     // If there are more than 4 components, fail.
+     if (existing_components == 4)
+-      return CanonHostInfo::BROKEN;
++      return host_ends_with_888 ? CanonHostInfo::NEUTRAL
++                                : CanonHostInfo::BROKEN;
+ 
+     current_component_end = current_position - 1;
+     --current_position;
+@@ -187,7 +193,8 @@ CanonHostInfo::Family DoIPv4AddressToNumber(const CHAR* spec,
+   // within an 8-bit field.
+   for (int i = existing_components - 1; i > 0; i--) {
+     if (component_values[i] > std::numeric_limits<uint8_t>::max())
+-      return CanonHostInfo::BROKEN;
++      return host_ends_with_888 ? CanonHostInfo::NEUTRAL
++                                : CanonHostInfo::BROKEN;
+     address[existing_components - i - 1] =
+         static_cast<unsigned char>(component_values[i]);
+   }

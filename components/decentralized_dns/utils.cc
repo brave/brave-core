@@ -52,6 +52,8 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 }
 
 bool IsUnstoppableDomainsTLD(const GURL& url) {
+  if (!url.is_valid())
+    return false;
   for (auto* domain : kUnstoppableDomains) {
     if (base::EndsWith(url.host_piece(), domain))
       return true;
@@ -78,6 +80,8 @@ bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state) {
 }
 
 bool IsENSTLD(const GURL& url) {
+  if (!url.is_valid())
+    return false;
   return base::EndsWith(url.host_piece(), kEthDomain);
 }
 
