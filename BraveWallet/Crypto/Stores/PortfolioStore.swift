@@ -123,7 +123,7 @@ public class PortfolioStore: ObservableObject {
       let balances = await fetchBalances(for: userAssets, accounts: keyring.accountInfos)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
       let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
-      let nonZeroBalanceTokensPriceIds = userAssets.filter({ nonZeroBalanceTokens.contains($0.symbol.lowercased())}).map { $0.assetRatioId }
+      let nonZeroBalanceTokensPriceIds = userAssets.filter({ nonZeroBalanceTokens.contains($0.assetBalanceId.lowercased())}).map { $0.assetRatioId }
       let priceHistories = await fetchPriceHistory(for: nonZeroBalanceTokensPriceIds)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
       let visibleTokens = userAssets.filter(\.visible).map { $0.assetRatioId.lowercased() }
@@ -134,11 +134,11 @@ public class PortfolioStore: ObservableObject {
       
       // build our userVisibleAssets
       userVisibleAssets = userAssets.map { token in
-        let symbol = token.symbol.lowercased()
+        let balanceId = token.assetBalanceId.lowercased()
         let priceId = token.assetRatioId.lowercased()
         return AssetViewModel(
           token: token,
-          decimalBalance: balances[symbol] ?? 0.0,
+          decimalBalance: balances[balanceId] ?? 0.0,
           price: prices[priceId] ?? "",
           history: priceHistories[priceId] ?? []
         )
@@ -182,8 +182,8 @@ public class PortfolioStore: ObservableObject {
             guard let balance = await self.rpcService.balance(for: token, in: account) else {
               return [:]
             }
-            let symbol = token.symbol.lowercased()
-            return [symbol: balance]
+            let balanceId = token.assetBalanceId.lowercased()
+            return [balanceId: balance]
           }
         }
       }
@@ -213,8 +213,9 @@ public class PortfolioStore: ObservableObject {
   @MainActor func fetchPriceHistory(
     for priceIds: [String]
   ) async -> [String: [BraveWallet.AssetTimePrice]] {
+    let uniquePriceIds = Set(priceIds)
     let priceHistories = await withTaskGroup(of: [String: [BraveWallet.AssetTimePrice]].self) { @MainActor group -> [String: [BraveWallet.AssetTimePrice]] in
-      for priceId in priceIds {
+      for priceId in uniquePriceIds {
         let priceId = priceId.lowercased()
         group.addTask { @MainActor in
           let (success, history) = await self.assetRatioService.priceHistory(

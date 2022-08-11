@@ -273,7 +273,7 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._addObserver = { _ in }
     
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { $2([.previewToken]) }
+    walletService._userAssets = { $2([.mockSolToken]) }
     walletService._selectedCoin = { $0(BraveWallet.CoinType.sol) }
     
     let keyringService = BraveWallet.TestKeyringService()
@@ -310,18 +310,16 @@ class SendTokenStoreTests: XCTestCase {
   }
   
   func testSolSendTokenProgramTransfer() {
-    let mockBalance = 47
-    
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._chainId = { $1(BraveWallet.NetworkInfo.mockSolana.chainId) }
     rpcService._network = { $1(BraveWallet.NetworkInfo.mockSolana)}
-    rpcService._solanaBalance = { _, _ , completion in
-      completion(UInt64(mockBalance), .success, "")
+    rpcService._splTokenAccountBalance = {_, _, _, completion in
+      completion("1000000", UInt8(6), "1", .success, "")
     }
     rpcService._addObserver = { _ in }
     
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { $2([.previewToken]) }
+    walletService._userAssets = { $2([.mockSpdToken]) }
     walletService._selectedCoin = { $0(BraveWallet.CoinType.sol) }
     
     let keyringService = BraveWallet.TestKeyringService()

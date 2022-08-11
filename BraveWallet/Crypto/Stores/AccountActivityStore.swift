@@ -112,7 +112,7 @@ class AccountActivityStore: ObservableObject {
     // update assets with balance
     for tokenBalance in tokenBalances {
       if let value = tokenBalance.balance, let index = updatedAssets.firstIndex(where: {
-        $0.token.symbol.caseInsensitiveCompare(tokenBalance.token.symbol) == .orderedSame
+        $0.token.assetBalanceId.caseInsensitiveCompare(tokenBalance.token.assetBalanceId) == .orderedSame
       }) {
         updatedAssets[index].decimalBalance = value
       }

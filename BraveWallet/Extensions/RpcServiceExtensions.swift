@@ -43,7 +43,7 @@ extension BraveWalletJsonRpcService {
           }
         )
       case .sol:
-        if token.symbol == network.nativeToken.symbol {
+        if network.isNativeAsset(token) {
           solanaBalance(account.address, chainId: network.chainId) { lamports, status, errorMessage in
             guard status == .success else {
               completion(nil)
@@ -142,7 +142,7 @@ extension BraveWalletJsonRpcService {
           }
         )
       case .sol:
-        if token.symbol == network.nativeToken.symbol {
+        if network.isNativeAsset(token) {
           solanaBalance(accountAddress, chainId: network.chainId) { lamports, status, errorMessage in
             guard status == .success else {
               completion(nil)
