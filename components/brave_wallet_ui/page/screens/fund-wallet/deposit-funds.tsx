@@ -81,6 +81,7 @@ export const DepositFundsScreen = () => {
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
 
   // state
+  const [delayedList, setDelayedList] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
@@ -107,9 +108,9 @@ export const DepositFundsScreen = () => {
 
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher in the list
-    const { bat, nonBat } = getBatTokensFromList(fullTokenList)
+    const { bat, nonBat } = getBatTokensFromList(delayedList)
     return [...mainnetNetworkAssetsList, ...bat, ...nonBat]
-  }, [mainnetNetworkAssetsList, fullTokenList])
+  }, [mainnetNetworkAssetsList, delayedList])
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -235,6 +236,15 @@ export const DepositFundsScreen = () => {
       }
     })
   }, [selectedAccount, isMounted])
+
+  // The full token list is too big to render all at once on first mount
+  // Delay the rendering so that the page becomes interactive faster
+  // Could possibly be fixed by a virtualized-list
+  React.useEffect(() => {
+    setTimeout(function () {
+      setDelayedList(fullTokenList)
+    }, 500)
+  }, [fullTokenList])
 
   React.useEffect(() => {
     // unselect asset on chain filter changed
