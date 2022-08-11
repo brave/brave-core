@@ -302,6 +302,7 @@ export const DepositFundsScreen = () => {
                     userAssetList={assetsForFilteredNetwork}
                     networks={mainnetsList}
                     hideAddButton
+                    hideAssetFilter
                     renderToken={({ asset }) => {
                       return <BuyAssetOptionItem
                         isSelected={asset === selectedAsset}

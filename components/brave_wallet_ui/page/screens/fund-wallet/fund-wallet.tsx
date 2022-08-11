@@ -243,6 +243,7 @@ export const FundWalletScreen = () => {
                       userAssetList={assetsForFilteredNetwork}
                       networks={networksFilterOptions}
                       hideAddButton
+                      hideAssetFilter
                       renderToken={({ asset }) => {
                         return <BuyAssetOptionItem
                           isSelected={asset === selectedAsset}

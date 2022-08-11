@@ -47,6 +47,7 @@ interface Props {
   networks: BraveWallet.NetworkInfo[]
   renderToken: (item: UserAssetInfoType, viewMode: ViewMode) => JSX.Element
   hideAddButton?: boolean
+  hideAssetFilter?: boolean
   enableScroll?: boolean
   maxListHeight?: string
 }
@@ -57,7 +58,8 @@ export const TokenLists = ({
   renderToken,
   hideAddButton,
   enableScroll,
-  maxListHeight
+  maxListHeight,
+  hideAssetFilter
 }: Props) => {
   // routing
   const history = useHistory()
@@ -173,7 +175,7 @@ export const TokenLists = ({
           value={searchValue}
         />
         <NetworkFilterSelector networkListSubset={networks} />
-        <AssetFilterSelector />
+        {!hideAssetFilter && <AssetFilterSelector />}
       </FilterTokenRow>
 
       {enableScroll
