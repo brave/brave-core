@@ -4,16 +4,14 @@
 
 import { Button, Table } from 'brave-ui/components'
 import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
-import { LoaderIcon } from 'brave-ui/components/icons'
 import * as prettierBytes from 'prettier-bytes'
 import * as React from 'react'
-
-// Constants
 import styled from 'styled-components'
 import { File, TorrentObj } from '../constants/webtorrentState'
 import { getFileType } from '../utils/fileType'
 import { Header } from './Header'
 import { Link } from './Link'
+import Spinner from './Spinner'
 
 interface Props {
   torrentId: string
@@ -59,9 +57,6 @@ const FilesContainer = styled.div`
 const LoadingContainer = styled.div`
   display: flex;
   flex-direction: column;
-  svg {
-    height: 32px;
-  }
 `
 
 const tableHeader: Cell[] = [
@@ -121,7 +116,7 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
         <Table header={tableHeader} rows={rows}>
             {torrent && torrent.files
               ? <LoadingContainer>
-                <LoaderIcon />
+                <Spinner/>
                 Loading the torrent file list
               </LoadingContainer>
               : 'Click "Start Torrent" to begin your download.'}

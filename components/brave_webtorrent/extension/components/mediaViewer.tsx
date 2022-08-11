@@ -8,6 +8,7 @@ import styled from 'styled-components'
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
 import { getFileType, isMedia } from '../utils/fileType'
+import Spinner from './Spinner'
 
 const getSelectedFile = (torrent: TorrentObj, ix: number) => torrent.files?.[ix]
 
@@ -32,6 +33,17 @@ const Container = styled.div`
     border: 0;
   }
 `
+
+const LoadingContainer = styled.div`
+  color: var(--text3);
+  margin-top: 40px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`
+
 interface Props {
   torrent: TorrentObj
   ix: number
@@ -64,7 +76,7 @@ export default function MediaViewer ({ torrent, ix }: Props) {
 
   return <Container>
     {loading
-      ? <div>Loading media...</div>
+      ? <LoadingContainer><Spinner/>Loading media...</LoadingContainer>
       : <>
         {fileType === 'video' && <video id='video' src={fileURL} ref={setMediaElementRef} controls />}
         {fileType === 'audio' && <audio id='audio' src={fileURL} ref={setMediaElementRef} controls />}
