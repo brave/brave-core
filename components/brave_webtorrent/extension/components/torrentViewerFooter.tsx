@@ -8,32 +8,18 @@ import { Anchor } from 'brave-ui/old'
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
 
-// Themes
-// import { theme } from '../constants/theme'
-
 interface Props {
   torrent?: TorrentObj
 }
 
-export default class TorrentViewerFooter extends React.PureComponent<
-  Props,
-  {}
-> {
-  render () {
-    const { torrent } = this.props
-
-    if (torrent) {
-      return (
-        <Anchor
-          href='https://webtorrent.io'
-          text='Powered By WebTorrent'
-          target='_blank'
-          id='webTorrentCredit'
-        />
-      )
-    } else {
-      return (
-        <div className='footerNotice'>
+export default function TorrentViewerFooter ({ torrent }: Props) {
+  return torrent
+      ? <Anchor
+        href='https://webtorrent.io'
+        text='Powered By WebTorrent'
+        target='_blank'
+        id='webTorrentCredit' />
+      : <div className='footerNotice'>
           <b>Privacy Warning:</b> When you click "Start Torrent" Brave will begin
           downloading pieces of the torrent file from other users and uploading to
           them in turn. This action will share that you're downloading this file.
@@ -41,8 +27,5 @@ export default class TorrentViewerFooter extends React.PureComponent<
           public IP address. The download may bypass your proxy settings.
           <br /><br />
           The WebTorrent extension can be disabled from Brave settings.
-        </div>
-      )
-    }
-  }
+    </div>
 }
