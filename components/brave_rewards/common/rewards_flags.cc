@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
-#include <string>
 #include <vector>
 
 #include "base/command_line.h"
+#include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -90,6 +91,21 @@ RewardsFlags Parse(const std::string& input) {
 
 void RewardsFlags::SetForceParsingForTesting(bool force_parsing_for_testing) {
   g_force_parsing_for_testing = force_parsing_for_testing;
+}
+
+const std::string& RewardsFlags::GetCommandLineSwitchASCII() {
+  static base::NoDestructor<std::string> command_line_switch(
+      []() -> std::string {
+        const auto* const command_line = base::CommandLine::ForCurrentProcess();
+        if (!command_line->HasSwitch(kSwitchName)) {
+          return {};
+        }
+
+        return base::StrCat(
+            {kSwitchName, "=", command_line->GetSwitchValueASCII(kSwitchName)});
+      }());
+
+  return *command_line_switch;
 }
 
 const RewardsFlags& RewardsFlags::ForCurrentProcess() {

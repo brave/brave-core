@@ -55,6 +55,7 @@
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
@@ -292,6 +293,18 @@ void OnURLResponseStarted(
   }
 }
 
+std::vector<std::string> ExtraCommandLineSwitches() {
+  std::vector<std::string> command_line_switches;
+
+  const std::string& rewards_command_line_switch =
+      brave_rewards::RewardsFlags::GetCommandLineSwitchASCII();
+  if (!rewards_command_line_switch.empty()) {
+    command_line_switches.push_back(rewards_command_line_switch);
+  }
+
+  return command_line_switches;
+}
+
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
@@ -473,6 +486,7 @@ void AdsServiceImpl::StartBatAdsService() {
         bat_ads_service_.BindNewPipeAndPassReceiver(),
         content::ServiceProcessHost::Options()
             .WithDisplayName(IDS_SERVICE_BAT_ADS)
+            .WithExtraCommandLineSwitches(ExtraCommandLineSwitches())
             .Pass());
 
     bat_ads_service_.set_disconnect_handler(
