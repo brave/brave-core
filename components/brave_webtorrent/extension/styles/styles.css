@@ -11,30 +11,4 @@
 
     background-color: var(--background02);
   }
-
-  #video,
-  #audio,
-  #image,
-  #object,
-  #iframe {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    max-height: 100%;
-    max-width: 100%;
-    margin: auto;
-  }
-
-  #object,
-  #iframe {
-    width: 100%;
-    height: 100%;
-  }
-
-  #iframe {
-    border: 0;
-  }
-
 }

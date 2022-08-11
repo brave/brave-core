@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import styled from 'styled-components'
 
 // Constants
 import { TorrentObj, File } from '../constants/webtorrentState'
@@ -73,6 +74,28 @@ const getFileType = (file?: File): FileType => {
   return 'unknown'
 }
 
+const Container = styled.div`
+  video, audio, image-rendering, object, iframe, img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+  }
+
+  object, iframe {
+    width: 100%;
+    height: 100%;
+  }
+
+  iframe {
+    border: 0;
+  }
+`
+
 interface Props {
   torrent: TorrentObj
   ix: number
@@ -104,7 +127,7 @@ export default function MediaViewer ({ torrent, ix }: Props) {
     }
   }, [file, fileType])
 
-  return <div className='mediaViewer'>
+  return <Container>
     {loading
       ? <div>Loading media...</div>
       : <>
@@ -115,5 +138,5 @@ export default function MediaViewer ({ torrent, ix }: Props) {
         {fileType === 'iframe' && <iframe id='iframe' src={fileURL} sandbox='allow-same-origin' />}
         {fileType === 'unknown' && <div>Unsupported file type</div>}
       </>}
-  </div>
+  </Container>
 }
