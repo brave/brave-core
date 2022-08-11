@@ -130,7 +130,6 @@
   DCHECK(history_service_->backend_loaded());
 
   // Important! Only Typed URL is being synced in core side
-  // Disable Floc - Not allow tracking!! 
   history::HistoryAddPageArgs args = history::HistoryAddPageArgs(
       /*url*/ net::GURLWithNSURL(history.url),
       /*time*/ base::Time::FromNSDate(history.dateAdded),
@@ -141,8 +140,9 @@
       isURLTyped ? ui::PAGE_TRANSITION_TYPED : ui::PAGE_TRANSITION_LINK,
       /*hidden=*/false, /*visit_source*/ history::VisitSource::SOURCE_BROWSED,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
-      /*floc_allowed=*/false,
-      /*title*/ base::SysNSStringToUTF16(history.title));
+      /*title*/ base::SysNSStringToUTF16(history.title),
+      /*opener*/ absl::nullopt,
+      /*bookmark_id*/ absl::nullopt);
 
   history_service_->AddPage(args);
 }
