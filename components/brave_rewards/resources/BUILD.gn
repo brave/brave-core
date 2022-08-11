@@ -8,11 +8,7 @@ pack_web_resources("page_generated_resources") {
   output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
 
   # need webpack and GRD generation first
-  if (is_android) {
-    deps = [ "android_page" ]
-  } else {
-    deps = [ "page" ]
-  }
+  deps = [ "page" ]
 }
 
 pack_web_resources("internals_generated_resources") {

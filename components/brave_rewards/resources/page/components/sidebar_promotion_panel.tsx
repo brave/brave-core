@@ -4,18 +4,62 @@
 
 import * as React from 'react'
 
+import { PlatformContext } from '../lib/platform_context'
+import { LocaleContext } from '../../shared/lib/locale_context'
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { RewardsTourPromo } from '../../shared/components/onboarding'
-import { getActivePromos, getPromo } from './promos'
-import { SidebarPromo } from '../../ui/components'
+import { BitflyerPromotion } from './bitflyer_promotion'
+import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
+import { PromotionKey, getAvailablePromotions, getPromotionURL } from '../lib/promotions'
+import { CloseIcon } from '../../shared/components/icons/close_icon'
 
 import * as style from './sidebar_promotion_panel.style'
+
+interface PromotionMessages {
+  title: string
+  text: string
+  disclaimer: string
+}
+
+function getPromotionMessages (
+  key: Exclude<PromotionKey, 'bitflyer-verification'>
+): PromotionMessages {
+  switch (key) {
+    case 'gemini':
+      return {
+        title: 'geminiPromoTitle',
+        text: 'geminiPromoInfo',
+        disclaimer: ''
+      }
+    case 'tap-network':
+      return {
+        title: 'tapNetworkTitle',
+        text: 'tapNetworkInfo',
+        disclaimer: 'tapNetworkDisclaimer'
+      }
+    case 'uphold-card':
+      return {
+        title: 'upholdPromoTitle',
+        text: 'upholdPromoInfo',
+        disclaimer: ''
+      }
+    case 'uphold-equities':
+      return {
+        title: 'upholdPromoEquitiesTitle',
+        text: 'upholdPromoEquitiesInfo',
+        disclaimer: ''
+      }
+  }
+}
 
 interface Props {
   onTakeRewardsTour: () => void
 }
 
 export function SidebarPromotionPanel (props: Props) {
+  const { isAndroid } = React.useContext(PlatformContext)
+  const { getString } = React.useContext(LocaleContext)
+
   const actions = useActions()
 
   const {
@@ -28,7 +72,7 @@ export function SidebarPromotionPanel (props: Props) {
     adsData: data.adsData,
     currentCountryCode: data.currentCountryCode,
     showOnboarding: data.showOnboarding,
-    promosDismissed: data.ui.promosDismissed,
+    promosDismissed: data.ui.promosDismissed || {},
     externalWallet: data.externalWallet
   }))
 
@@ -37,7 +81,7 @@ export function SidebarPromotionPanel (props: Props) {
 
     if (showOnboarding ||
         adsData && adsData.adsEnabled ||
-        promosDismissed && promosDismissed[promoKey]) {
+        promosDismissed[promoKey]) {
       return null
     }
 
@@ -59,27 +103,64 @@ export function SidebarPromotionPanel (props: Props) {
     <div>
       {renderOnboardingPromo()}
       {
-        getActivePromos(externalWallet).map((key) => {
-          if (promosDismissed && promosDismissed[key]) {
+        getAvailablePromotions(
+          currentCountryCode,
+          externalWalletFromExtensionData(externalWallet),
+          isAndroid
+        ).map((key) => {
+          if (promosDismissed[key]) {
             return null
           }
 
-          const promo = getPromo(key)
-          if (!promo || !promo.supportedLocales.includes(currentCountryCode)) {
-            return null
+          const visitPromotionURL = () => {
+            window.open(getPromotionURL(key), '_blank')
           }
 
-          const onDismiss = (event: React.UIEvent) => {
+          const onDismiss = () => {
             actions.dismissPromoPrompt(key)
-            event.preventDefault()
           }
+
+          const onClose = (event: React.UIEvent) => {
+            onDismiss()
+            event.stopPropagation()
+          }
+
+          if (key === 'bitflyer-verification') {
+            return (
+              <BitflyerPromotion
+                key={key}
+                onLearnMore={visitPromotionURL}
+                onDismiss={onDismiss}
+              />
+            )
+          }
+
+          const messages = getPromotionMessages(key)
 
           return (
-            <SidebarPromo
-              key={`${key}-promo`}
-              {...promo}
-              onDismissPromo={onDismiss}
-            />
+            <style.promotion
+              key={key}
+              className={`promotion-${key}`}
+              onClick={visitPromotionURL}
+            >
+              <style.header>
+                <style.title>
+                  {getString(messages.title)}
+                </style.title>
+                <style.close>
+                  <button onClick={onClose}><CloseIcon /></button>
+                </style.close>
+              </style.header>
+              <style.text>
+                {getString(messages.text)}
+              </style.text>
+              {
+                messages.disclaimer &&
+                  <style.disclaimer>
+                    {getString(messages.disclaimer)}
+                  </style.disclaimer>
+              }
+            </style.promotion>
           )
         })
       }

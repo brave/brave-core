@@ -47,6 +47,7 @@ export function GrantList () {
                   claimableUntil: promotion.claimableUntil,
                   expiresAt: promotion.expiresAt
                 }}
+                showSpinner={promotion.captchaStatus === 'start'}
                 onClaim={onClaim}
               />
             </div>

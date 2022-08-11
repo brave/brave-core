@@ -26,6 +26,7 @@ import { convertBalance, isPublisherConnectedOrVerified } from './utils'
 import { DetailRow } from '../../ui/components/tableDonation'
 
 interface Props extends Rewards.ComponentProps {
+  showSettings: boolean
 }
 
 interface State {
@@ -106,6 +107,10 @@ class TipBox extends React.Component<Props, State> {
   }
 
   donationSettingsChild = () => {
+    if (!this.props.showSettings) {
+      return null
+    }
+
     let value = this.props.rewardsData.inlineTip
 
     if (!value) {

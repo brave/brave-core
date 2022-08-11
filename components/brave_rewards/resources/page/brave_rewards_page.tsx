@@ -12,6 +12,7 @@ import { createStore, bindActionCreators } from 'redux'
 
 import { loadTimeData } from '../../../common/loadTimeData'
 import { LocaleContext } from '../shared/lib/locale_context'
+import { PlatformContext } from './lib/platform_context'
 import { WithThemeVariables } from '../shared/components/with_theme_variables'
 import { createReducer } from './reducers'
 import { getCurrentBalanceReport } from './reducers/utils'
@@ -29,13 +30,19 @@ function initialize () {
     getString: (key: string) => loadTimeData.getString(key)
   }
 
+  const platformInfo = {
+    isAndroid: loadTimeData.getBoolean('isAndroid')
+  }
+
   render(
     <Provider store={store}>
       <ThemeProvider theme={Theme}>
         <LocaleContext.Provider value={localeContext}>
-          <WithThemeVariables>
-            <App />
-          </WithThemeVariables>
+          <PlatformContext.Provider value={platformInfo}>
+            <WithThemeVariables>
+              <App />
+            </WithThemeVariables>
+          </PlatformContext.Provider>
         </LocaleContext.Provider>
       </ThemeProvider>
     </Provider>,
@@ -55,6 +62,10 @@ function promotions (properties: Rewards.PromotionResponse) {
 
 function recoverWalletData (result: number) {
   actions.onRecoverWalletData(result)
+}
+
+function promotionClaimStarted (promotionId: string) {
+  actions.onPromotionClaimStarted(promotionId)
 }
 
 function promotionFinish (properties: Rewards.PromotionFinish) {
@@ -264,6 +275,7 @@ Object.defineProperty(window, 'brave_rewards', {
     rewardsParameters,
     promotions,
     recoverWalletData,
+    promotionClaimStarted,
     promotionFinish,
     reconcileStamp,
     contributeList,

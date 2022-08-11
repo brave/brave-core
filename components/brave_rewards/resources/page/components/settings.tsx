@@ -5,6 +5,7 @@
 import * as React from 'react'
 
 import { useActions, useRewardsData } from '../lib/redux_hooks'
+import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
 
@@ -22,6 +23,7 @@ import { BatIcon } from '../../shared/components/icons/bat_icon'
 import * as style from './settings.style'
 
 export function Settings () {
+  const { isAndroid } = React.useContext(PlatformContext)
   const layoutKind = React.useContext(LayoutContext)
   const { getString } = React.useContext(LocaleContext)
   const actions = useActions()
@@ -148,8 +150,22 @@ export function Settings () {
   }
 
   const renderContent = () => {
+    // Do not display content until the user's onboarding status has been
+    // determined.
+    if (rewardsData.showOnboarding === null) {
+      return null
+    }
+
     if (rewardsData.showOnboarding) {
-      return renderOnboarding()
+      // On Android a native modal is displayed when this page is accessed and
+      // the user has not opted-in to Rewards. For backward-compatibility with
+      // the previous Android-specific settings page, display the page content
+      // underneath the modal. Note that this behavior will need to change when
+      // Android is updated to force the user through onboarding before
+      // displaying content.
+      if (!isAndroid) {
+        return renderOnboarding()
+      }
     }
 
     return (
@@ -166,7 +182,7 @@ export function Settings () {
             <ContributeBox />
           </style.settingGroup>
           <style.settingGroup>
-            <TipBox />
+            <TipBox showSettings={!isAndroid} />
           </style.settingGroup>
           <style.settingGroup>
             <MonthlyTipsBox />

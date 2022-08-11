@@ -112,7 +112,7 @@ export const StyledSettingTitleWrapper = styled('div')`
 
 export const StyledSettingsTitle = styled('div')<{}>`
   display: flex;
-  margin: 0 0 24px;
+  margin: 0 18px 24px 0;
 `
 
 export const StyledSettingsToggleContainer = styled('div')<{}>`
@@ -132,6 +132,6 @@ export const StyledSettingsText = styled('div')<{}>`
 export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
   color: ${p => p.theme.palette.grey800};
   margin: 20px -32px 0;
-  padding: 0 0 15px 32px;
+  padding: 0 15px 15px 32px;
   border-bottom: 1px solid rgba(184, 185, 196, 0.4);
 `

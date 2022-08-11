@@ -2,9 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { createStore } from 'redux'
+import styled from 'styled-components'
 
-// Utils
-import reducers from './reducers'
+export const root = styled.div`
+  min-height: 100vh;
 
-export default createStore(reducers)
+  .layout-narrow & cr-toolbar {
+    display: none;
+  }
+`
