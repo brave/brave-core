@@ -7,10 +7,16 @@ import { Anchor } from 'brave-ui/old'
 
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
+import styled from 'styled-components'
 
 interface Props {
   torrent?: TorrentObj
 }
+
+const FooterNotice = styled.div`
+  padding: 18px 0;
+  color: var(--text02);
+`
 
 export default function TorrentViewerFooter ({ torrent }: Props) {
   return torrent
@@ -19,7 +25,7 @@ export default function TorrentViewerFooter ({ torrent }: Props) {
         text='Powered By WebTorrent'
         target='_blank'
         id='webTorrentCredit' />
-      : <div className='footerNotice'>
+      : <FooterNotice>
           <b>Privacy Warning:</b> When you click "Start Torrent" Brave will begin
           downloading pieces of the torrent file from other users and uploading to
           them in turn. This action will share that you're downloading this file.
@@ -27,5 +33,5 @@ export default function TorrentViewerFooter ({ torrent }: Props) {
           public IP address. The download may bypass your proxy settings.
           <br /><br />
           The WebTorrent extension can be disabled from Brave settings.
-    </div>
+    </FooterNotice>
 }

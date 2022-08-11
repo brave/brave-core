@@ -8,18 +8,12 @@ import * as prettierBytes from 'prettier-bytes'
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
 import styled from 'styled-components'
+import { Header } from './Header'
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`
-
-const StatsHeader = styled.div`
-  color: var(--text02);
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 36px;
 `
 
 const StatsContainer = styled.div`
@@ -82,7 +76,7 @@ export default function TorrentStatus ({ torrent, errorMsg }: Props) {
   const downloaded = prettierBytes(torrent.downloaded)
   const total = prettierBytes(torrent.uploaded)
   return <Container>
-    <StatsHeader>Torrent stats</StatsHeader>
+    <Header>Torrent stats</Header>
     <StatsContainer>
       <StatusText>{torrent.progress < 1 ? 'Downloading' : 'Seeding'}</StatusText>
       <StatsDivider/>
