@@ -78,4 +78,9 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
 
     @Override
     public void onNativeInitialized() {}
+
+    @Override
+    public boolean allowBackgroundRounding() {
+        return false;
+    }
 }
