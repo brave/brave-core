@@ -137,7 +137,7 @@ public class SearchEngineOnboardingFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 View radioButton = radioGroup.findViewById(i);
-                size_t index = radioGroup.indexOfChild(radioButton);
+                int index = radioGroup.indexOfChild(radioButton);
                 searchEngineSelected(index, templateUrls);
             }
         });
