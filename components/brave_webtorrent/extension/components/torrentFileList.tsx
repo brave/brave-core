@@ -11,6 +11,7 @@ import * as React from 'react'
 // Constants
 import styled from 'styled-components'
 import { File, TorrentObj } from '../constants/webtorrentState'
+import { getFileType } from '../utils/fileType'
 import { Header } from './Header'
 import { Link } from './Link'
 
@@ -85,12 +86,14 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
             content: index + 1
           },
           {
-            content: <Link target='_blank' rel='noopener'
-              href={torrentId + (/^https?:/.test(torrentId)
-                ? '#ix='
-                : '&ix=') + index}>
-              {` ${file.name} `}
-            </Link>
+            content: getFileType(file) !== 'unknown'
+              ? <Link target='_blank' rel='noopener'
+                href={torrentId + (/^https?:/.test(torrentId)
+                  ? '#ix='
+                  : '&ix=') + index}>
+                {file.name}
+              </Link>
+              : <span>{file.name}</span>
           },
           {
             content: torrent.serverURL &&
