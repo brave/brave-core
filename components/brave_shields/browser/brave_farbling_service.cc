@@ -62,10 +62,8 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
 // static
 void BraveFarblingService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(
-      brave_shields::prefs::kReduceLanguageEnabled,
-      base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveReduceLanguage));
+  registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
+                                true);
 }
 
 }  // namespace brave
