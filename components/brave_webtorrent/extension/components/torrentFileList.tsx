@@ -2,14 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
-import { Heading, Table } from 'brave-ui/components'
+import { Button, Table } from 'brave-ui/components'
 import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import * as prettierBytes from 'prettier-bytes'
+import * as React from 'react'
 
 // Constants
+import styled from 'styled-components'
 import { File, TorrentObj } from '../constants/webtorrentState'
+import { Header } from './Header'
 
 interface Props {
   torrentId: string
@@ -17,78 +19,83 @@ interface Props {
   onSaveAllFiles: () => void
 }
 
-export default class TorrentFileList extends React.PureComponent<Props, {}> {
-  render () {
-    const { torrent, torrentId, onSaveAllFiles } = this.props
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+const HeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const FilesContainer = styled.div`
+  background: var(--background01);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0px 0.5px 1.5px 0px rgb(0 0 0 / 15%);
+  
+  td {
+    border: none;
+  }
+
+  th {
+    border-top: none!important;
+  }
+
+  table {
+    margin: 0;
+    padding: 0;
+  }
+`
+
+const tableHeader: Cell[] = [
+  {
+    content: '#'
+  },
+  {
+    content: 'Name'
+  },
+  {
+    content: 'Save file'
+  },
+  {
+    content: 'Size'
+  }
+]
+
+export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }: Props) {
     if (!torrent || !torrent.files) {
-      return (
-        <div className='torrentSubhead'>
+      return <div className='torrentSubhead'>
           <p className='starterText'>
             Click "Start Torrent" to begin your download.
           </p>
         </div>
-      )
     }
 
-    const header: Cell[] = [
-      {
-        content: '#'
-      },
-      {
-        content: 'Name'
-      },
-      {
-        content: 'Save File'
-      },
-      {
-        content: 'Size'
-      }
-    ]
-
-    const renderFileLink = (file: File, ix: number, isDownload: boolean) => {
-      if (isDownload) {
-        if (torrent.serverURL) {
-          const url = `${torrent.serverURL}/${ix}/${file.name}`
-          return (
-            <a href={url} download={file.name}>
-              ⇩
-            </a>
-          )
-        } else {
-          return <div /> // No download links until the server is ready
-        }
-      } else {
-        // use # for .torrent links, since query params might cause the remote
-        // server to return 404
-        const suffix = /^https?:/.test(torrentId) ? '#ix=' + ix : '&ix=' + ix
-        const href = torrentId + suffix
-        return (
-          <a href={href} target='_blank' rel='noopener'>
-            {' '}
-            {file.name}{' '}
-          </a>
-        )
-      }
-    }
-
-    const rows: Row[] = torrent.files.map((file: File, index: number) => {
-      return {
+    const rows = React.useMemo<Row[]>(() => torrent.files!.map((file: File, index: number) => ({
         content: [
           {
             content: index + 1
           },
           {
-            content: renderFileLink(file, index, false)
+            content: <a target='_blank' rel='noopener'
+              href={torrentId + (/^https?:/.test(torrentId)
+                ? '#ix='
+                : '&ix=') + index}>
+              {` ${file.name} `}
+            </a>
           },
           {
-            content: renderFileLink(file, index, true)
+            content: torrent.serverURL &&
+              <a href={`${torrent.serverURL}/${index}/${file.name}`} download={file.name}>⇩</a>
           },
           {
             content: prettierBytes(file.length)
           }
         ]
-      }
-    })
+      })), [torrent.files, torrentId])
 
     const saveAllFiles = () => {
       if (!torrent.serverURL || !torrent.files || torrent.progress !== 1) {
@@ -97,17 +104,13 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
       onSaveAllFiles()
     }
 
-    return (
-      <div>
-        <Heading children='Files' level={2} className='torrentHeading' />
-        <a
-          href='#'
-          onClick={saveAllFiles}
-          className={torrent.progress === 1 ? 'active' : 'inactive'}
-        >
-          Save All Files...
-        </a>
-        <Table header={header} rows={rows}>
+    return <Container>
+      <HeaderRow>
+        <Header>Files</Header>
+        <Button onClick={saveAllFiles} text="Save all files"/>
+      </HeaderRow>
+      <FilesContainer>
+        <Table header={tableHeader} rows={rows}>
           <div className='loadingContainer'>
             <div className='__icon'>
               <LoaderIcon />
@@ -115,7 +118,6 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
             Loading the torrent file list
           </div>
         </Table>
-      </div>
-    )
-  }
+      </FilesContainer>
+    </Container>
 }
