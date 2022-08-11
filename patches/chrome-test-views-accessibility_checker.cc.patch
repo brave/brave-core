@@ -1,5 +1,5 @@
 diff --git a/chrome/test/views/accessibility_checker.cc b/chrome/test/views/accessibility_checker.cc
-index 58e149ba642ca43cbc5e1b6aa2cb0d60a8e84372..04320ff652e8950d97229a65e0a3cede723536ef 100644
+index 888881e7f0e11404d49cbd5aa1cadfe1245b067e..04860fb2dc1ec15f5c708825335be43fc27c3b58 100644
 --- a/chrome/test/views/accessibility_checker.cc
 +++ b/chrome/test/views/accessibility_checker.cc
 @@ -44,6 +44,7 @@ bool DoesViewHaveAccessibleNameOrLabelError(ui::AXNodeData* data) {
