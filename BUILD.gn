@@ -5,11 +5,15 @@ import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//build/util/process_version.gni")
 import("//extensions/buildflags/buildflags.gni")
-import("//media/cdm/library_cdm/cdm_paths.gni")
+import("//media/media_options.gni")
 import("//third_party/icu/config.gni")
 import("//tools/grit/repack.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 import("//ui/base/ui_features.gni")
+
+if (enable_library_cdms) {
+  import("//media/cdm/library_cdm/cdm_paths.gni")
+}
 
 if (!is_ios) {
   import("//brave/brave_paks.gni")
