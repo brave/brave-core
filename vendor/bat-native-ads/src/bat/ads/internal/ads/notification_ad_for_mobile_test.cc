@@ -44,10 +44,10 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   void SetUpMocks() override {
     MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-    const URLEndpointMap endpoints = {
+    const URLResponseMap responses = {
         {"/v9/catalog",
          {{net::HTTP_OK, "/catalog_with_notification_ad.json"}}}};
-    MockUrlRequest(ads_client_mock_, endpoints);
+    MockUrlResponses(ads_client_mock_, responses);
   }
 
   void ServeNextAd() {

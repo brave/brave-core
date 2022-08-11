@@ -52,8 +52,8 @@ void MockResetAdEventHistoryForId(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
-                    const URLEndpointMap& endpoints);
+void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
+                      const URLResponseMap& url_responses);
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
