@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_REWARDS_FLAGS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_REWARDS_FLAGS_H_
 
+#include <string>
+
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards {
@@ -14,6 +16,8 @@ struct RewardsFlags {
   enum class Environment { kDevelopment, kStaging, kProduction };
 
   static void SetForceParsingForTesting(bool force_parsing_for_testing);
+
+  static const std::string& GetCommandLineSwitchASCII();
 
   static const RewardsFlags& ForCurrentProcess();
 
