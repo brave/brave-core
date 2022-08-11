@@ -2,12 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
 import * as prettierBytes from 'prettier-bytes'
+import * as React from 'react'
 
 // Constants
-import { TorrentObj } from '../constants/webtorrentState'
 import styled from 'styled-components'
+import { TorrentObj } from '../constants/webtorrentState'
 import { Header } from './header'
 
 const Container = styled.div`

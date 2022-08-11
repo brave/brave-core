@@ -6,17 +6,16 @@ import * as React from 'react'
 
 // Assets
 require('../../../../ui/webui/resources/fonts/muli.css')
-require('../styles/styles.css')
 
 // Components
-import TorrentViewerHeader from './torrentViewerHeader'
-import TorrentStatus from './torrentStatus'
 import TorrentFileList from './torrentFileList'
+import TorrentStatus from './torrentStatus'
 import TorrentViewerFooter from './torrentViewerFooter'
+import TorrentViewerHeader from './torrentViewerHeader'
 
 // Constants
-import { TorrentObj, TorrentState } from '../constants/webtorrentState'
 import styled from 'styled-components'
+import { TorrentObj, TorrentState } from '../constants/webtorrentState'
 
 interface Props {
   actions: any

@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import { Store } from 'webext-redux'
 
 import Theme from 'brave-ui/theme/brave-default'
-import { ThemeProvider } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 // Components
 import App from './components/app'
@@ -27,6 +27,12 @@ if (window.location.pathname === '/extension/brave_webtorrent2.html') {
     window.location.href.replace('brave_webtorrent2.html', 'brave_webtorrent.html')
 }
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: var(--background2);
+  }
+`
+
 const store: Store<ApplicationState> = new Store({
   portName: 'WEBTORRENT'
 })
@@ -42,6 +48,7 @@ const unsubscribe = store.subscribe(async () => {
   try {
     const tab: any = await new Promise(resolve => chrome.tabs.getCurrent(resolve))
     render(<Provider store={store}>
+      <GlobalStyle/>
       <ThemeProvider theme={Theme}>
         <App tabId={tab.id} />
       </ThemeProvider>
