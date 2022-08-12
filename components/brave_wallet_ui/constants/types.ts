@@ -283,6 +283,9 @@ export interface PageState {
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
+  isImportWalletsCheckComplete: boolean
+  importWalletAttempts: number
+  walletTermsAcknowledged: boolean
 }
 
 export interface WalletPageState {
@@ -598,10 +601,29 @@ export enum WalletRoutes {
 
   // onboarding
   Onboarding = '/crypto/onboarding',
+  OnboardingWelcome = '/crypto/onboarding/welcome',
+
+  // onboarding (new wallet)
   OnboardingCreatePassword = '/crypto/onboarding/create-password',
   OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
+  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/explain-recovery-phrase',
+  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/backup-recovery-phrase',
+  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/verify-recovery-phrase',
+
+  // onboarding (import / restore)
+  OnboardingImportOrRestore = '/crypto/onboarding/import-or-restore',
   OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
+  OnboardingImportMetaMaskSeed = '/crypto/onboarding/import-metamask-seed',
+  OnboardingRestoreWallet = '/crypto/onboarding/restore-wallet',
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
+  OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
+
+  // onboarding complete
+  OnboardingComplete = '/crypto/onboarding/complete',
+
+  // fund wallet page
+  FundWalletPage = '/crypto/fund-wallet',
+  DepositFundsPage = '/crypto/deposit-funds',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -628,6 +650,7 @@ export enum WalletRoutes {
   // portfolio
   Portfolio = '/crypto/portfolio',
   PortfolioAsset = '/crypto/portfolio/:id/:tokenId?',
+  PortfolioSub = '/crypto/portfolio/:id?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
@@ -680,6 +703,15 @@ export const SupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
   BraveWallet.CoinType.ETH,
   BraveWallet.CoinType.FIL
+]
+
+export const SupportedOnRampNetworks = [
+  BraveWallet.SOLANA_MAINNET,
+  BraveWallet.MAINNET_CHAIN_ID, // ETH
+  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
+  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.CELO_MAINNET_CHAIN_ID,
+  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
 ]
 
 export const SupportedTestNetworks = [

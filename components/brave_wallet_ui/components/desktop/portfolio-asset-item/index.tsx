@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 // Options
@@ -16,8 +21,6 @@ import {
   FiatBalanceText,
   NameAndIcon,
   AssetIcon,
-  IconsWrapper,
-  NetworkIconWrapper,
   NameColumn,
   Spacer,
   NetworkDescriptionText
@@ -31,6 +34,7 @@ import { getTokensNetwork } from '../../../utils/network-utils'
 import { usePricing } from '../../../common/hooks'
 import { unbiasedRandom } from '../../../utils/random-utils'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
+import { IconsWrapper, NetworkIconWrapper } from '../../shared/style'
 
 interface Props {
   spotPrices: BraveWallet.AssetPrice[]
@@ -43,20 +47,24 @@ interface Props {
   isPanel?: boolean
 }
 
-const PortfolioAssetItem = (props: Props) => {
-  const {
-    spotPrices,
-    assetBalance,
-    action,
-    token,
-    defaultCurrencies,
-    hideBalances,
-    isPanel,
-    networks
-  } = props
+export const PortfolioAssetItem = ({
+  spotPrices,
+  assetBalance,
+  action,
+  token,
+  defaultCurrencies,
+  hideBalances,
+  isPanel,
+  networks
+}: Props) => {
+  // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
 
+  // custom hooks
+  const { computeFiatAmount } = usePricing(spotPrices)
+
+  // memos & computed
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
   }, [token])
@@ -69,7 +77,6 @@ const PortfolioAssetItem = (props: Props) => {
       .divideByDecimals(token.decimals)
       .formatAsAsset(6, token.symbol)
 
-  const { computeFiatAmount } = usePricing(spotPrices)
   const fiatBalance = React.useMemo(() => {
     return computeFiatAmount(assetBalance, token.symbol, token.decimals)
   }, [computeFiatAmount, assetBalance, token])
@@ -95,6 +102,7 @@ const PortfolioAssetItem = (props: Props) => {
     return token.symbol
   }, [tokensNetwork, token])
 
+  // effects
   React.useEffect(() => {
     // Randow value between 100 & 250
     // Set value only once
@@ -107,6 +115,7 @@ const PortfolioAssetItem = (props: Props) => {
     }
   }, [])
 
+  // render
   return (
     <>
       {token.visible &&

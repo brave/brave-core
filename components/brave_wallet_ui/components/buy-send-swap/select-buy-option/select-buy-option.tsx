@@ -8,7 +8,7 @@ import * as React from 'react'
 import { BraveWallet, BuyOption } from '../../../constants/types'
 
 // Components
-import { BuyOptionItem } from '../../buy-option/buy-option-item'
+import { BuyOptionItem } from '../../shared/buy-option/buy-option-item'
 import { BackButton } from '../../shared'
 
 // Styled Components
@@ -21,23 +21,33 @@ interface Props {
   buyOptions: BuyOption[]
   selectedOption: BraveWallet.OnRampProvider | undefined
   onSelect: (optionId: BraveWallet.OnRampProvider) => void
-  onBack: () => void
+  onBack?: () => void
+  layoutType?: 'tight' | 'loose'
 }
 
-export const SelectBuyOption = ({ buyOptions, selectedOption, onSelect, onBack }: Props) => {
+export const SelectBuyOption = ({
+  buyOptions,
+  onSelect,
+  onBack,
+  layoutType,
+  selectedOption
+}: Props) => {
   return (
-    <StyledWrapper>
-      <BackButton onSubmit={onBack} />
+    <StyledWrapper layoutType={layoutType}>
+      {onBack && <BackButton onSubmit={onBack} />}
       {buyOptions.map((option, index) => (
-        <div
-          key={`${option.name}-${option.id}`}
-        >
+        <div key={`${option.name}-${option.id}`}>
           <BuyOptionItem
+            key={`${option.name}-${option.id}`}
+            layoutType={layoutType}
             option={option}
             selectedOption={selectedOption}
             onSelect={onSelect}
           />
-          {index !== buyOptions.length - 1 && <SubDivider/>}
+
+          {layoutType !== 'loose' && index !== buyOptions.length - 1 &&
+            <SubDivider />
+          }
         </div>
       ))}
 

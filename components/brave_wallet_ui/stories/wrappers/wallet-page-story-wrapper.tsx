@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
@@ -12,7 +17,7 @@ import { createPageReducer } from '../../page/reducers/page_reducer'
 import { WalletActions } from '../../common/actions'
 
 // types
-import { PageState, WalletState } from '../../constants/types'
+import { PageState, WalletRoutes, WalletState } from '../../constants/types'
 
 // components
 import { LibContext } from '../../common/context/lib.context'
@@ -58,7 +63,7 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
 
   // render
   return (
-    <MemoryRouter initialEntries={['/']}>
+    <MemoryRouter initialEntries={[WalletRoutes.OnboardingWelcome]}>
       <Provider store={store}>
         <ApiProxyContext.Provider value={mockedProxy}>
           <LibContext.Provider value={Lib as any}>

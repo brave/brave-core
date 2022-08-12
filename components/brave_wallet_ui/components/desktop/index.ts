@@ -30,16 +30,7 @@ import SwapTooltip from './swap-tooltip'
 import WithHideBalancePlaceholder from './with-hide-balance-placeholder'
 import NetworkFilterSelector from './network-filter-selector'
 import { CryptoView, PortfolioAsset, PortfolioOverview } from './views'
-import { AssetFilterSelector } from './asset-filter-selector.tsx/asset-filter-selector'
-import {
-  OnboardingWelcome,
-  OnboardingBackup,
-  OnboardingRecovery,
-  OnboardingVerify,
-  OnboardingCreatePassword,
-  OnboardingRestore,
-  OnboardingImportMetaMaskOrLegacy
-} from './wallet-onboarding'
+import { AssetFilterSelector } from './asset-filter-selector/asset-filter-selector'
 
 export {
   SideNavButton,
@@ -57,15 +48,9 @@ export {
   CryptoView,
   PortfolioAsset,
   PortfolioOverview,
-  OnboardingWelcome,
-  OnboardingBackup,
-  OnboardingRecovery,
-  OnboardingVerify,
-  OnboardingCreatePassword,
   LockScreen,
   WalletMorePopup,
   WalletBanner,
-  OnboardingRestore,
   AccountListItem,
   PopupModal,
   AddAccountModal,
@@ -73,7 +58,6 @@ export {
   AssetWatchlistItem,
   SelectNetworkDropdown,
   EditVisibleAssetsModal,
-  OnboardingImportMetaMaskOrLegacy,
   TransactionPopup,
   SwapTooltip,
   WithHideBalancePlaceholder,

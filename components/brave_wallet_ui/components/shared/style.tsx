@@ -1,18 +1,120 @@
-import styled from 'styled-components'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import { FC } from 'react'
+import styled, { css, CSSProperties } from 'styled-components'
+import { Link } from 'react-router-dom'
+
+// types
 import { BraveWallet } from '../../constants/types'
-import transparent40x40Image from '../../assets/png-icons/transparent40x40.png'
+import IThemeProps from 'brave-ui/src/theme/theme-interface'
+
+// utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
 
-export interface AssetIconProps {
-  icon?: string
+// components
+import { LoaderIcon } from 'brave-ui/components/icons'
+
+// images & icons
+import transparent40x40Image from '../../assets/png-icons/transparent40x40.png'
+import EyeOnIcon from '../../assets/svg-icons/eye-on-icon.svg'
+import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
+import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
+import CloseSvg from '../../assets/svg-icons/close.svg'
+import ClipboardSvg from '../../assets/svg-icons/clipboard-icon.svg'
+import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
+import CheckIconSvg from '../../assets/svg-icons/checkbox-check.svg'
+import SwitchDown from '../../assets/svg-icons/switch-icon.svg'
+
+// graphics
+import BraveWalletWithCoins from '../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
+
+// Spacers
+export const VerticalSpacer = styled.div<{ space: number | string }>`
+  display: flex;
+  height: ${p => typeof p.space === 'number' ? `${p.space}px` : p.space};
+`
+
+// Text
+export const LinkText = styled.a`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  margin: 0px;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: center;
+  text-decoration: none;
+`
+
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 10px;
+`
+
+interface FlexProps {
+  alignItems?: CSSProperties['alignItems']
+  justifyContent?: CSSProperties['justifyContent']
+  gap?: CSSProperties['gap']
 }
 
-interface StyleProps {
-  status: BraveWallet.TransactionStatus
-  space: number
-}
+// Mixins
+export const walletButtonFocusMixin = css`
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.palette.blurple300};
+    outline-width: 2px;
+  }
+`
 
-export const StatusBubble = styled.div<Partial<StyleProps>>`
+// Containers
+export const Row = styled.div<FlexProps & {
+  maxWidth?: CSSProperties['maxWidth']
+}>`
+  display: flex;
+  flex-direction: row;
+  align-items: ${(p) => p.alignItems ?? 'center'};
+  justify-content: ${(p) => p.justifyContent ?? 'center'};
+  gap: ${(p) => p.gap ?? 'unset'};
+  width: 100%;
+  max-width: ${(p) => p.maxWidth ?? 'unset'};
+`
+
+export const Column = styled.div<FlexProps & { fullWidth?: boolean }>`
+  width: ${(p) => p.fullWidth ? '100%' : 'unset'};
+  display: flex;
+  flex-direction: column;
+  align-items: ${(p) => p.alignItems ?? 'center'};
+  justify-content: ${(p) => p.justifyContent ?? 'center'};
+  gap: ${(p) => p.gap ?? 'unset'};
+`
+
+export const ScrollableColumn = styled(Column)<{
+  scrollDisabled?: boolean
+  maxHeight?: string
+  marginBottom?: string
+}>`
+  justify-content: flex-start;
+  max-height: ${(p) => p.maxHeight || '100%'};
+  overflow-y: ${(p) => p.scrollDisabled ? 'unset' : 'auto'};
+  margin-bottom: ${(p) => p.marginBottom || 'unset'};
+`
+
+export const Flex = styled.div`
+  flex: 1;
+`
+
+export const StatusBubble = styled.div<{ status: BraveWallet.TransactionStatus }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,13 +135,97 @@ export const StatusBubble = styled.div<Partial<StyleProps>>`
   margin-right: 6px;
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
-  margin-bottom: 10px;
+// Buttons
+export const WalletButton = styled.button`
+  ${walletButtonFocusMixin}
 `
+
+export const WalletLink = styled(Link)`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  color: ${(p) => p.theme.color.interactive05};
+  background: none;
+  border: none;
+
+  text-decoration: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+  
+  &:active {
+    opacity: 0.5;
+  }
+`
+
+export const WalletButtonLink = styled(Link)`
+  ${walletButtonFocusMixin}
+`
+
+export const ToggleVisibilityButton = styled.button<{
+  isVisible: boolean
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0px;
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.color.text02};
+  -webkit-mask-image: url(${(p) => p.isVisible ? EyeOffIcon : EyeOnIcon});
+  mask-image: url(${(p) => p.isVisible ? EyeOffIcon : EyeOnIcon});
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  &:focus-visible {
+    outline: auto;
+    outline-style: solid;
+    outline-color: ${p => p.theme.palette.blurple300};
+    outline-width: 2px;
+  } 
+`
+
+export const CopyButton = styled(WalletButton)<{
+  iconColor?: keyof IThemeProps['color']
+}>`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  mask-image: url(${ClipboardSvg});
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 14px;
+  background-color: ${(p) => p.theme.color[p?.iconColor ?? 'text01']};
+  height: 14px;
+  width: 14px;
+`
+
+export const DownloadButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  mask-image: url(${DownloadSvg});
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 14px;
+  background-color: ${(p) => p.theme.color.text01};
+  height: 14px;
+  width: 14px;
+`
+
+// Icons
+export interface AssetIconProps {
+  icon?: string
+}
 
 export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
   src: stripERC20TokenImageURL(props.icon)
@@ -56,17 +242,133 @@ export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
   loading: 'lazy'
 }))
 
-export const WalletButton = styled.button<{
-  isDraggedOver?: boolean
-}>`
-  &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.palette.blurple300};
-    outline-width: 2px;
-  }
- `
+// Construct styled-component using JS object instead of string, for editor
+// support with custom AssetIconFactory.
+//
+// Ref: https://styled-components.com/docs/advanced#style-objects
+export const SmallAssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '24px',
+  height: 'auto'
+})
+export const MediumAssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '40px',
+  height: 'auto'
+})
+export const LargeAssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '60px',
+  height: 'auto'
+})
 
-export const VerticalSpacer = styled.div<Partial<StyleProps>>`
+export const GreenCheckmark = styled.div`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  background-color: ${(p) => p.theme.color.successBorder};
+  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
+  mask-size: contain;
+  vertical-align: middle;
+`
+
+export const CloseIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: ${(p) => p.theme.color.text02};
+  -webkit-mask-image: url(${CloseSvg});
+  mask-image: url(${CloseSvg});
+  mask-size: 20px;
+  mask-position: center center;
+  display: inline-block;
+`
+
+export const ErrorXIcon = styled.div`
+  width: 12px;
+  height: 12px;
+  background-color: ${(p) => p.theme.color.errorIcon};
+  -webkit-mask-image: url(${CloseSvg});
+  mask-image: url(${CloseSvg});
+  mask-size: 12px;
+  mask-position: center center;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+`
+
+export const LoadingIcon = styled(LoaderIcon as FC<{}>)<{
+  size: string
+  color: keyof IThemeProps['color']
+  opacity: number
+}>`
+  color: ${p => p.theme.color[p.color]};
+  height: ${(p) => p.size};
+  width: ${(p) => p.size};
+  opacity: ${(p) => p.opacity};
+`
+
+export const CheckIcon = styled.div<{
+  color?: IThemeProps['color']
+}>`
+  width: 100%;
+  height: 100%;
+  background-color: ${(p) => p?.color || p.theme.color.text};
+  -webkit-mask-image: url(${CheckIconSvg});
+  mask-image: url(${CheckIconSvg});
+  mask-repeat: no-repeat;
+  mask-size: 12px;
+  mask-position: center center;
+  display: inline-block;
+`
+
+export const SwitchAccountIcon = styled.div`
+  cursor: pointer;
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: url(${SwitchDown});
+`
+
+// Asset Icon containers
+export const IconsWrapper = styled.div<{
+  marginRight?: string
+}>`
   display: flex;
-  height: ${p => p.space}px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: relative;
+  margin-right: ${(p) => p.marginRight || '6px'};
+`
+
+export const NetworkIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0px;
+  right: 4px;
+  background-color: ${(p) => p.theme.color.background02};
+  border-radius: 100%;
+  padding: 2px;
+`
+
+// Graphics
+export const WalletWelcomeGraphic = styled.div<{scale?: CSSProperties['scale']}>`
+  width: 350px;
+  height: 264px;
+  background: url(${BraveWalletWithCoins});
+  background-repeat: no-repeat;
+  transform: scale(${(p) => p.scale ?? 1});
+`
+
+// spacers
+export const VerticalSpace = styled.div<{ space: string }>`
+  display: block;
+  height: ${(p) => p.space};
+  width: 100%;
+`
+
+export const HorizontalSpace = styled.div<{ space: string }>`
+  min-height: 1px;
+  width: ${(p) => p.space};
 `

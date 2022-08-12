@@ -18,7 +18,8 @@ import {
   SendEthTransactionParams,
   SendFilTransactionParams,
   SendSolTransactionParams,
-  SolanaSerializedTransactionParams
+  SolanaSerializedTransactionParams,
+  SupportedOnRampNetworks
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -27,6 +28,7 @@ import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
+import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -189,6 +191,16 @@ export async function getBuyAssetUrl (args: {
     console.log(`Failed to get buy URL: ${error}`)
   }
 
+  // adjust Wyre on-ramp url for multichain
+  if (args.onRampProvider === BraveWallet.OnRampProvider.kWyre) {
+    if (args.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) {
+      return url.replace('dest=ethereum:', 'dest=avalanche:')
+    }
+    if (args.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) {
+      return url.replace('dest=ethereum:', 'dest=matic:')
+    }
+  }
+
   return url
 }
 
@@ -197,6 +209,69 @@ export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, 
   return (await blockchainRegistry.getBuyTokens(
     onRampProvider,
     chainId)).tokens
+}
+
+export const getAllBuyAssets = async (): Promise<{
+  rampAssetOptions: BraveWallet.BlockchainToken[]
+  wyreAssetOptions: BraveWallet.BlockchainToken[]
+  allAssetOptions: BraveWallet.BlockchainToken[]
+}> => {
+  const { blockchainRegistry } = getAPIProxy()
+  const { kRamp, kWyre } = BraveWallet.OnRampProvider
+
+  const rampAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kRamp, chainId))
+  )
+  const wyreAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kWyre, chainId))
+  )
+
+  // add token logos
+  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  const wyreAssetOptions: BraveWallet.BlockchainToken[] = wyreAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  // seperate native assets from tokens
+  const {
+    tokens: rampTokenOptions,
+    nativeAssets: rampNativeAssetOptions
+  } = getNativeTokensFromList(rampAssetOptions)
+
+  const {
+    tokens: wyreTokenOptions,
+    nativeAssets: wyreNativeAssetOptions
+  } = getNativeTokensFromList(wyreAssetOptions)
+
+  // seperate BAT from other tokens
+  const {
+    bat: rampBatTokens,
+    nonBat: rampNonBatTokens
+  } = getBatTokensFromList(rampTokenOptions)
+
+  const {
+    bat: wyreBatTokens,
+    nonBat: wyreNonBatTokens
+  } = getBatTokensFromList(wyreTokenOptions)
+
+  // sort lists
+  // Move Gas coins and BAT to front of list
+  const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
+  const sortedWyreOptions = [...wyreNativeAssetOptions, ...wyreBatTokens, ...wyreNonBatTokens]
+
+  const results = {
+    rampAssetOptions: sortedRampOptions,
+    wyreAssetOptions: sortedWyreOptions,
+    allAssetOptions: getUniqueAssets([
+      ...sortedRampOptions,
+      ...sortedWyreOptions
+    ])
+  }
+
+  return results
 }
 
 export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {

@@ -106,7 +106,7 @@ export const PresetButton = styled(WalletButton) <Partial<StyleProps>>`
   width: 48px;
   border-radius: 4px;
   background-color: ${(p) => p.isSelected ? p.isSlippage ? p.theme.color.interactive05 : p.theme.color.divider01 : 'none'};
-  color: ${(p) => p.isSlippage && p.isSelected ? p.theme.palette.white : p.theme.color.interactive05}};
+  color: ${(p) => p.isSlippage && p.isSelected ? p.theme.palette.white : p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {
     color: ${(p) => p.isSlippage && p.isSelected ? p.theme.palette.white : p.theme.palette.blurple300};
   }

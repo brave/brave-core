@@ -1,14 +1,24 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
-import { reduceAddress } from '../../../utils/reduce-address'
 import { create } from 'ethereum-blockies'
+
+// utils
+import { reduceAddress } from '../../../utils/reduce-address'
+
+// types
 import {
   BraveWallet,
   WalletAccountType
 } from '../../../constants/types'
 
+// components
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 
-// Styled Components
+// style
 import {
   StyledWrapper,
   AccountName,
@@ -31,29 +41,30 @@ export interface Props {
   onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
 }
 
-function AccountListItem (props: Props) {
-  const {
-    account,
-    isHardwareWallet,
-    onClick,
-    onRemoveAccount
-  } = props
-
-  const onSelectAccount = () => {
+export const AccountListItem = ({
+  account,
+  isHardwareWallet,
+  onClick,
+  onRemoveAccount
+}: Props) => {
+  // methods
+  const onSelectAccount = React.useCallback(() => {
     onClick(account)
-  }
+  }, [onClick, account])
 
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
-
-  const removeAccount = () => {
+  const removeAccount = React.useCallback(() => {
     let confirmAction = confirm(`Are you sure to remove ${account.name}?`)
     if (confirmAction) {
       onRemoveAccount(account.address, isHardwareWallet, account.coin)
     }
-  }
+  }, [account, isHardwareWallet, onRemoveAccount])
 
+  // memos
+  const orb = React.useMemo(() => {
+    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [account.address])
+
+  // render
   return (
     <StyledWrapper>
       <NameAndIcon>

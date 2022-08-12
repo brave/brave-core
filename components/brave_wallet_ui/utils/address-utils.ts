@@ -3,6 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// utils
+import { getLocale } from '../../common/locale'
+
+// types
 import {
   BraveWallet,
   WalletAccountType
@@ -31,4 +35,12 @@ export function isValidAddress (value: string, length: number): boolean {
 
 export function isHardwareAccount (accounts: WalletAccountType[], address: string) {
   return accounts.some(account => account.deviceId && account.address === address)
+}
+
+export const suggestNewAccountName = (
+  accounts: WalletAccountType[],
+  network: BraveWallet.NetworkInfo
+) => {
+  const accountTypeLength = accounts.filter((account) => account.coin === network.coin).length + 1
+  return `${network.symbolName} ${getLocale('braveWalletAccount')} ${accountTypeLength}`
 }

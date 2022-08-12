@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import { BraveWallet } from '../constants/types'
 
 export const stripERC20TokenImageURL = (url?: string) =>
@@ -18,24 +23,33 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
   return trimmedUrl.startsWith('ipfs://') ? trimmedUrl.replace('ipfs://', 'https://ipfs.io/ipfs/') : trimmedUrl
 }
 
+/**
+ * Wyre currently supports the following chains:
+ *  bitcoin, ethereum, avalanche(X & C), stellar, algorand, matic, flow
+ * @see https://docs.sendwyre.com/reference/system-resource-names-1
+ * @param chainId This Id of the chain on which to receive funds
+ * @returns a string containing any prefix needed to lookup Wyre assets accross chains
+ */
+export const getWyreNetworkPrefix = (chainId: string) => {
+  switch (chainId) {
+    case BraveWallet.POLYGON_MAINNET_CHAIN_ID: return 'M'
+    case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: return 'AVAXC'
+    case BraveWallet.MAINNET_CHAIN_ID: return ''
+    default: return ''
+  }
+}
+
 export const getRampNetworkPrefix = (chainId: string) => {
   switch (chainId) {
-    case BraveWallet.MAINNET_CHAIN_ID:
-    case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
-    case BraveWallet.CELO_MAINNET_CHAIN_ID:
-      return ''
-    case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
-      return 'BSC'
-    case BraveWallet.POLYGON_MAINNET_CHAIN_ID:
-      return 'MATIC'
-    case BraveWallet.SOLANA_MAINNET:
-      return 'SOLANA'
-    case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
-      return 'OPTIMISM'
-    case BraveWallet.FILECOIN_MAINNET:
-      return 'FILECOIN'
-    default:
-      return ''
+    case BraveWallet.MAINNET_CHAIN_ID: return ''
+    case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: return 'AVAXC'
+    case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID: return 'BSC'
+    case BraveWallet.POLYGON_MAINNET_CHAIN_ID: return 'MATIC'
+    case BraveWallet.SOLANA_MAINNET: return 'SOLANA'
+    case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID: return 'OPTIMISM'
+    case BraveWallet.CELO_MAINNET_CHAIN_ID: return ''
+    case BraveWallet.FILECOIN_MAINNET: return 'FILECOIN'
+    default: return ''
   }
 }
 

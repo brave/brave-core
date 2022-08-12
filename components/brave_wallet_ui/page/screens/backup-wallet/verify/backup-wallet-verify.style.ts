@@ -1,0 +1,158 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import styled from 'styled-components'
+
+// styles
+import { WalletButton } from '../../../../components/shared/style'
+
+const selectedBubbleHeight = 34
+
+export const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 32px;
+`
+
+export const Title = styled.span`
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 30px;
+  color: ${(p) => p.theme.color.text01};
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+`
+
+export const Description = styled.span`
+  display: flex;
+  align-items: center;
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 300;
+  color: ${(p) => p.theme.color.text02};
+  max-width: 380px;
+  height: 64px;
+  text-align: center;
+  margin-bottom: 4px;
+`
+
+export const SelectedPhraseContainer = styled.div<{
+  numberOfRows?: number
+  error?: boolean
+}>`
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  justify-content: ${(p) => p.error ? 'center' : 'flex-start'};
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 466px;
+  min-height: ${(p) => p.numberOfRows ? `${(p.numberOfRows * selectedBubbleHeight) + 10}px` : '112px'};
+  margin-bottom: 40px;
+  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 8px 0px 0px 8px;
+`
+
+export const RecoveryPhraseContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 418px;
+  margin-bottom: 40px;
+`
+
+export const RecoveryBubble = styled(WalletButton)<{
+  isSelected?: boolean
+}>`
+  cursor: ${(p) => p.isSelected ? 'default' : 'pointer'};
+  outline: none;
+  background: none;
+  border: ${(p) => p.isSelected ? `1px solid ${p.theme.color.divider01}` : 'none'};
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: ${(p) => p.isSelected ? p.theme.color.background02 : p.theme.color.background01};
+  padding: 5px 0px;
+  border-radius: 4px;
+  width: 100px;
+  margin-bottom: 6px;
+  height: 32px;
+`
+
+export const RecoveryBubbleText = styled.span<{
+  isSelected?: boolean
+}>`
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+  color: ${(p) => p.isSelected ? p.theme.color.background02 : p.theme.color.text01};
+`
+
+export const SelectedBubble = styled(WalletButton)<{
+  isDraggedOver: boolean
+}>`
+  cursor: pointer;
+  outline: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: ${(p) => p.theme.color.background01};
+  width: 106px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  border: ${(p) => p.isDraggedOver
+    ? `1px solid ${p.theme.color.focusBorder}`
+    : `1px solid ${p.theme.color.divider01}`
+  };
+  box-sizing: border-box;
+  border-radius: 4px;
+`
+
+export const SelectedBubbleText = styled.span<{
+  isInCorrectPosition?: boolean
+}>`
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+  color: ${(p) => p.isInCorrectPosition ? p.theme.color.text01 : p.theme.color.errorText};
+`
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: ${(p) => p.theme.color.errorBackground};
+  border: ${(p) => `1px solid ${p.theme.color.errorBorder}`};
+  border-radius: 4px;
+  position: absolute;
+`
+
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 14px;
+  color: ${(p) => p.theme.color.errorText};
+`
+
+export const PlaceholderBubble = styled.div`
+  width: 106px;
+  height: 2rem;
+`

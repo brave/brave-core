@@ -129,7 +129,7 @@ function ConnectWithSite (props: Props) {
       </MiddleWrapper>
       <ConnectBottomNav
         primaryText={isReady ? getLocale('braveWalletAddAccountConnect') : getLocale('braveWalletConnectWithSiteNext')}
-        secondaryText={isReady ? getLocale('braveWalletBack') : getLocale('braveWalletBackupButtonCancel')}
+        secondaryText={isReady ? getLocale('braveWalletBack') : getLocale('braveWalletButtonCancel')}
         primaryAction={primaryAction}
         secondaryAction={secondaryAction}
         disabled={selectedAccounts.length === 0}

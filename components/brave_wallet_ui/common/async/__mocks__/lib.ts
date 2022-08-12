@@ -57,6 +57,18 @@ export const getBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((re
   resolve(mockBuyAssetList)
 })
 
+export const getAllBuyAssets = () => new Promise<{
+  wyreAssetOptions: BraveWallet.BlockchainToken[]
+  rampAssetOptions: BraveWallet.BlockchainToken[]
+  allAssetOptions: BraveWallet.BlockchainToken[]
+}>((resolve) => {
+  resolve({
+    wyreAssetOptions: mockBuyAssetList,
+    rampAssetOptions: mockBuyAssetList,
+    allAssetOptions: mockBuyAssetList
+  })
+})
+
 export const setMockedBuyAssets = (newList: BraveWallet.BlockchainToken[]) => {
   mockBuyAssetList = newList
 }
@@ -82,12 +94,7 @@ export const getChecksumEthAddress = async () => {
 }
 
 export const isStrongPassword = (value: string) => {
-  return (
-    (value.length > 7) && // is at least 7 characters
-    /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/g.test(value) && // contains a special character
-    value.toLowerCase() !== value && // contains an uppercase character
-    /\d/.test(value) // contains a number
-  )
+  return value.length >= 8 // is at least 8 characters
 }
 
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
@@ -110,4 +117,8 @@ export const getBalance = (): Promise<string> => {
   return new Promise(async (resolve) => {
     resolve('0')
   })
+}
+
+export const getBuyAssetUrl = () => {
+  return 'brave.com'
 }

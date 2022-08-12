@@ -4,14 +4,20 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as qr from 'qr-image'
 
 // utils
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+import { generateQRCode } from '../../../../utils/qr-code-utils'
 
 // constants
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
+
+// options
+import {
+  AccountSettingsNavOptions,
+  HardwareAccountSettingsNavOptions
+} from '../../../../options/account-settings-nav-options'
 
 // types
 import {
@@ -22,12 +28,6 @@ import {
   TopTabNavObjectType
 } from '../../../../constants/types'
 
-// options
-import {
-  AccountSettingsNavOptions,
-  HardwareAccountSettingsNavOptions
-} from '../../../../options/account-settings-nav-options'
-
 // components
 import { NavButton } from '../../../extension'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
@@ -36,6 +36,7 @@ import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
 
 // hooks
+import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 
 // style
@@ -84,6 +85,9 @@ export const AccountSettingsModal = ({
   onViewPrivateKey,
   onDoneViewingPrivateKey
 }: Props) => {
+  // custom hooks
+  const isMounted = useIsMounted()
+
   // state
   const [accountName, setAccountName] = React.useState<string>(account.name)
   const [showPrivateKey, setShowPrivateKey] = React.useState<boolean>(false)
@@ -111,15 +115,13 @@ export const AccountSettingsModal = ({
     onUpdateAccountName(payload).success ? onClose() : setUpdateError(true)
   }
 
-  const generateQRData = () => {
-    const image = qr.image(account.address)
-    let chunks: Uint8Array[] = []
-    image
-      .on('data', (chunk: Uint8Array) => chunks.push(chunk))
-      .on('end', () => {
-        setQRCode(`data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`)
-      })
-  }
+  const generateQRData = React.useCallback(() => {
+    generateQRCode(account.address).then(qr => {
+      if (isMounted) {
+        setQRCode(qr)
+      }
+    })
+  }, [account, isMounted])
 
   const onSelectTab = (id: AccountSettingsNavTypes) => {
     setShowPrivateKey(false)
@@ -300,3 +302,5 @@ export const AccountSettingsModal = ({
     </PopupModal>
   )
 }
+
+export default AccountSettingsModal
