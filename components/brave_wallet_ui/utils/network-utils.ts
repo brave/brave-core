@@ -5,7 +5,7 @@
 
 import { BraveWallet } from '../constants/types'
 
-export const emptyNetwork: BraveWallet.NetworkInfo: BraveWallet.NetworkInfo = {
+export const emptyNetwork: BraveWallet.NetworkInfo = {
   chainId: '',
   chainName: '',
   rpcUrls: [],
