@@ -37,6 +37,7 @@ class TxMeta {
   base::Time confirmed_time() const { return confirmed_time_; }
   const std::string& tx_hash() const { return tx_hash_; }
   const absl::optional<url::Origin>& origin() const { return origin_; }
+  const absl::optional<std::string>& group_id() const { return group_id_; }
 
   void set_id(const std::string& id) { id_ = id; }
   void set_status(mojom::TransactionStatus status) { status_ = status; }
@@ -54,6 +55,9 @@ class TxMeta {
   void set_origin(const absl::optional<url::Origin>& origin) {
     origin_ = origin;
   }
+  void set_group_id(const absl::optional<std::string>& group_id) {
+    group_id_ = group_id;
+  }
 
  protected:
   bool operator==(const TxMeta&) const;
@@ -66,6 +70,7 @@ class TxMeta {
   base::Time confirmed_time_;
   std::string tx_hash_;
   absl::optional<url::Origin> origin_;
+  absl::optional<std::string> group_id_;
 };
 
 }  // namespace brave_wallet

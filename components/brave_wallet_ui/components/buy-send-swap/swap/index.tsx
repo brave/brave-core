@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux'
 
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 import {
+  AmountPresetTypes,
   BraveWallet,
   BuySendSwapViewTypes,
   ToOrFromType,
-  AmountPresetTypes,
   WalletState
 } from '../../../constants/types'
 import SwapInputComponent from '../swap-input-component'
@@ -14,22 +14,24 @@ import { SwapTooltip } from '../../desktop'
 
 // Styled Components
 import {
-  StyledWrapper,
-  ArrowDownIcon,
+  AlertIcon,
   ArrowButton,
-  SwapNavButton,
-  SwapButtonText,
+  ArrowDownIcon,
+  StyledWrapper,
   SwapButtonLoader,
-  SwapDisclaimerText,
+  SwapButtonText,
   SwapDisclaimerButton,
   SwapDisclaimerRow,
-  AlertIcon,
+  SwapDisclaimerText,
   SwapFeesNoticeRow,
-  SwapFeesNoticeText
+  SwapFeesNoticeText,
+  SwapNavButton
 } from './style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { ResetButton } from '../shared-styles'
 import { useSwap } from '../../../common/hooks'
+import { SwapProvider } from '../../../common/hooks/swap'
+
 export interface Props {
   isFetchingSwapQuote: boolean
   onChangeSwapView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
@@ -58,6 +60,7 @@ export interface Props {
   swapValidationError: ReturnType<typeof useSwap>['swapValidationError']
   toAmount: ReturnType<typeof useSwap>['toAmount']
   toAssetBalance: ReturnType<typeof useSwap>['toAssetBalance']
+  swapProvider: SwapProvider
 }
 
 function Swap (props: Props) {
@@ -88,7 +91,8 @@ function Swap (props: Props) {
     swapValidationError: validationError,
     toAmount,
     toAsset,
-    toAssetBalance
+    toAssetBalance,
+    swapProvider
   } = props
 
   // redux
@@ -132,10 +136,16 @@ function Swap (props: Props) {
   }, [validationError, fromAsset])
 
   const disclaimerText = getLocale('braveWalletSwapDisclaimer')
+    .replace('$3', swapProvider === SwapProvider.Jupiter
+      ? 'Jupiter'
+      : '0x')
   const { beforeTag, duringTag, afterTag } = splitStringForTag(disclaimerText)
 
-  const onClick0x = () => {
-    chrome.tabs.create({ url: 'https://0x.org' }, () => {
+  const onClickSwapProvider = () => {
+    const url = swapProvider === SwapProvider.Jupiter
+      ? 'https://jup.ag'
+      : 'https://0x.org'
+    chrome.tabs.create({ url }, () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
@@ -231,17 +241,22 @@ function Swap (props: Props) {
       </ResetButton>
       <SwapFeesNoticeRow>
         <SwapFeesNoticeText>
-          {getLocale('braveWalletSwapFeesNotice')}
+          {getLocale('braveWalletSwapFeesNotice')
+            .replace('$1', swapProvider === SwapProvider.Jupiter
+              ? '0.85%'
+              : '0.875%')}
         </SwapFeesNoticeText>
       </SwapFeesNoticeRow>
       <SwapDisclaimerRow>
         <SwapDisclaimerText>
           {beforeTag}
-          <SwapDisclaimerButton onClick={onClick0x}>{duringTag}</SwapDisclaimerButton>
+          <SwapDisclaimerButton onClick={onClickSwapProvider}>{duringTag}</SwapDisclaimerButton>
           {afterTag}
         </SwapDisclaimerText>
         <SwapTooltip
-          text={getLocale('braveWalletSwapDisclaimerDescription')}
+          text={swapProvider === SwapProvider.Jupiter
+            ? getLocale('braveWalletJupiterSwapDisclaimerDescription')
+            : getLocale('braveWalletSwapDisclaimerDescription')}
         >
           <AlertIcon />
         </SwapTooltip>

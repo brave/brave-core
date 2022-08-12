@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.span`
   flex: 1;
   display: flex;
   position: relative;
@@ -20,7 +20,8 @@ export const Tip = styled.div`
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.01em;
-  top: -124px;
+  top: -144px;
+  height: 108px;
   width: 240px;
 `
 

@@ -331,6 +331,12 @@ export interface SwapErrorResponse {
   validationErrors?: Array<{ field: string, code: number, reason: string }>
 }
 
+export interface JupiterErrorResponse {
+  statusCode: string
+  error: string
+  message: string
+}
+
 export type AmountValidationErrorType =
   | 'fromAmountDecimalsOverflow'
   | 'toAmountDecimalsOverflow'
@@ -425,6 +431,14 @@ export interface SendSolTransactionParams extends BaseTransactionParams {
 
 export interface SPLTransferFromParams extends BaseTransactionParams {
   splTokenMintAddress: string
+}
+
+export interface SolanaSerializedTransactionParams {
+  encodedTransaction: string
+  from: string
+  txType: BraveWallet.TransactionType
+  sendOptions?: BraveWallet.SolanaSendTransactionOptions
+  groupId?: string
 }
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {

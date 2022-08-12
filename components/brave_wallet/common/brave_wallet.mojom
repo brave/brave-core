@@ -376,6 +376,7 @@ struct JupiterQuoteParams {
 struct JupiterSwapParams {
   JupiterRoute route;
   string user_public_key;
+  string output_mint;
 };
 
 struct JupiterSwapTransactions {
@@ -920,13 +921,14 @@ enum TransactionType {
   ERC721TransferFrom = 3,
   ERC721SafeTransferFrom = 4,
   Other = 5,
-  SolanaSystemTransfer = 6,  // transfering SOL
+  SolanaSystemTransfer = 6,  // transferring SOL
   SolanaSPLTokenTransfer = 7,
   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8,
   ERC1155SafeTransferFrom = 9,
   ETHSwap = 10,
   SolanaDappSignAndSendTransaction = 11,
-  SolanaDappSignTransaction = 12
+  SolanaDappSignTransaction = 12,
+  SolanaSwap = 13
 };
 
 struct FilTxData {
@@ -960,6 +962,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta submitted_time;
   mojo_base.mojom.TimeDelta confirmed_time;
   OriginInfo? origin_info;
+  string? group_id;
 };
 
 interface TxServiceObserver {
@@ -978,7 +981,7 @@ interface TxServiceObserver {
 // transactions.
 interface TxService {
   // Used to add a transaction. Missing origin is expected to come from chrome://wallet.
-  AddUnapprovedTransaction(TxDataUnion tx_data_union, string from, url.mojom.Origin? origin) => (bool success, string tx_meta_id, string error_message);
+  AddUnapprovedTransaction(TxDataUnion tx_data_union, string from, url.mojom.Origin? origin, string? group_id) => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
   ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderErrorUnion error_union, string error_message);
@@ -1048,7 +1051,7 @@ interface SolanaTxManagerProxy {
   // transaction will have one instruction which is the transfer instruction.
   // If the receiving associated token account is not created yet, the created
   // transaction will have two instructions, the first one is the instruction
-  // to create the associated token account for the receipient, and the second
+  // to create the associated token account for the recipient, and the second
   // instruction is the transfer instruction. Note that sender will fund the
   // creation (an additional cost) with the minimum balance for the new account
   // to be rent exempt.
@@ -1060,6 +1063,16 @@ interface SolanaTxManagerProxy {
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 
   GetEstimatedTxFee(string tx_meta_id) => (uint64 fee, SolanaProviderError error, string error_message);
+
+  // Get transaction data from transaction bytes encoded in base64 format.
+  //
+  // The client must set a TransactionType using the tx_type parameter, and
+  // optionally pass standard Solana send options.
+  MakeTxDataFromBase64EncodedTransaction(
+      string encoded_transaction,
+      TransactionType tx_type,
+      SolanaSendTransactionOptions? send_options)
+      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 };
 
 interface FilTxManagerProxy {

@@ -121,7 +121,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5 * 1000) },
       submittedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
       confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -153,7 +154,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
@@ -185,7 +187,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -217,7 +220,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -249,7 +253,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     }
   ],
   [mockUserAccounts[1].id]: [
@@ -283,7 +288,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -315,7 +321,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     }
   ]
 }

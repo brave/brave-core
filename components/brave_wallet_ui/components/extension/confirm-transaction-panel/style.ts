@@ -304,3 +304,65 @@ export const LoadIcon = styled(LoaderIcon)`
   width: 24px;
   opacity: .4;
 `
+
+export const GroupBox = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: 'flex-start';
+  flex-direction: column;
+  border: 1px solid ${(p) => p.theme.color.divider01};
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 255px;
+  min-height: 82px;
+  padding: 4px 14px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  margin-top: 10px;
+  background: ${p => p.theme.color.infoBackground};
+`
+
+export const GroupBoxColumn = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  flex-direction: column;
+`
+
+export const GroupBoxTitle = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text02};
+  word-break: break-all;
+`
+
+export const GroupBoxText = styled.div<{ dark: boolean }>`
+  font-family: Poppins;
+  font-size: 11px;
+  font-weight: ${(p) => p.dark ? 600 : 400};
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.dark ? p.theme.color.text02 : p.theme.color.text03};
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+`
+
+export const GroupEnumeration = styled.code`
+  padding-right: 5px;
+`
+
+export const SmallLoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.interactive08};
+  height: 16px;
+  width: 16px;
+  opacity: .4;
+  padding-left: 5px;
+`

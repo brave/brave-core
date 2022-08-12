@@ -1,5 +1,6 @@
 import { BraveWallet } from '../constants/types'
 import { getLocale } from '../../common/locale'
+import { SolanaTransactionTypes } from '../common/constants/solana'
 
 type Order = 'ascending' | 'descending'
 
@@ -30,4 +31,10 @@ export const getTransactionStatusString = (statusId: number) => {
     default:
       return ''
   }
+}
+
+export function isSolanaTransaction (transaction: BraveWallet.TransactionInfo) {
+  const { txType, txDataUnion: { solanaTxData } } = transaction
+  return SolanaTransactionTypes.includes(txType) ||
+    (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
 }

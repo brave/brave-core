@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 
 namespace {
 
@@ -42,25 +43,18 @@ absl::optional<uint64_t> ParseUint64ResultFromStringDictValue(
   return absl::nullopt;
 }
 
-// Parses uint64_t value from a JSON integer field.
-//
-// Returns empty result for values that are either negative or beyond maximum
-// safe integer in Javascript (ES6 section 20.1.2.6 Number.MAX_SAFE_INTEGER).
-//
-// For larger values, use ParseUint64ResultFromStringDictValue after converting
-// them to strings.
-absl::optional<uint64_t> ParseUint64ResultFromIntegerDictValue(
+absl::optional<double> ParseDoubleResultFromStringDictValue(
     const base::Value::Dict& dict_value,
     const std::string& key) {
-  const auto value = dict_value.FindDouble(key);
+  const auto* value = dict_value.FindString(key);
   if (!value)
     return absl::nullopt;
 
-  if (*value < 0 ||
-      *value > static_cast<double>(brave_wallet::kMaxSafeIntegerUint64))
-    return absl::nullopt;
+  double ret;
+  if (base::StringToDouble(*value, &ret))
+    return ret;
 
-  return static_cast<uint64_t>(*value);
+  return absl::nullopt;
 }
 
 absl::optional<const base::Value::List> GetRoutesFromJupiterSwapQuote(
@@ -232,7 +226,7 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
   //          "otherAmountThreshold": "258660",
   //          "outAmountWithSlippage": "258660",
   //          "swapMode": "ExactIn",
-  //          "priceImpactPct": 0.008955716118219659,
+  //          "priceImpactPct": "0.008955716118219659",
   //          "marketInfos": [
   //            {
   //              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -242,22 +236,22 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
   //              "notEnoughLiquidity": false,
   //              "inAmount": "10000",
   //              "outAmount": "117001203",
-  //              "priceImpactPct": 1.196568750220778e-7,
+  //              "priceImpactPct": "0.0000001196568750220778",
   //              "lpFee": {
-  //                "amount": 30,
+  //                "amount": "30",
   //                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  //                "pct": 0.003
+  //                "pct": "0.003"
   //              },
   //              "platformFee": {
-  //                "amount": 0,
+  //                "amount": "0",
   //                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-  //                "pct": 0
+  //                "pct": "0"
   //              }
   //            }
   //          ]
   //        }
   //      ],
-  //      "timeTaken": 0.044471802000089156
+  //      "timeTaken": "0.044471802000089156"
   //    }
   const auto routes_value = GetRoutesFromJupiterSwapQuote(json);
   if (!routes_value)
@@ -298,7 +292,8 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
       return nullptr;
     route.swap_mode = *swap_mode;
 
-    auto price_impact_pct = route_dict.FindDouble("priceImpactPct");
+    auto price_impact_pct =
+        ParseDoubleResultFromStringDictValue(route_dict, "priceImpactPct");
     if (!price_impact_pct)
       return nullptr;
     route.price_impact_pct = *price_impact_pct;
@@ -349,8 +344,8 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
         return nullptr;
       market_info.out_amount = *market_info_out_amount;
 
-      auto market_info_price_impact_pct =
-          market_info_dict.FindDouble("priceImpactPct");
+      auto market_info_price_impact_pct = ParseDoubleResultFromStringDictValue(
+          market_info_dict, "priceImpactPct");
       if (!market_info_price_impact_pct)
         return nullptr;
       market_info.price_impact_pct = *market_info_price_impact_pct;
@@ -365,7 +360,7 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
       // is expensive due to its deep nesting.
       mojom::JupiterFee lp_fee;
       auto lp_fee_amount =
-          ParseUint64ResultFromIntegerDictValue(*lp_fee_value, "amount");
+          ParseUint64ResultFromStringDictValue(*lp_fee_value, "amount");
       if (!lp_fee_amount)
         return nullptr;
       lp_fee.amount = *lp_fee_amount;
@@ -375,7 +370,8 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
         return nullptr;
       lp_fee.mint = *lp_fee_mint;
 
-      auto lp_fee_pct = lp_fee_value->FindDouble("pct");
+      auto lp_fee_pct =
+          ParseDoubleResultFromStringDictValue(*lp_fee_value, "pct");
       if (!lp_fee_pct)
         return nullptr;
       lp_fee.pct = *lp_fee_pct;
@@ -392,7 +388,7 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
       // is expensive due to its deep nesting.
       mojom::JupiterFee platform_fee;
       auto platform_fee_amount =
-          ParseUint64ResultFromIntegerDictValue(*platform_fee_value, "amount");
+          ParseUint64ResultFromStringDictValue(*platform_fee_value, "amount");
       if (!platform_fee_amount)
         return nullptr;
       platform_fee.amount = *platform_fee_amount;
@@ -402,7 +398,8 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
         return nullptr;
       platform_fee.mint = *platform_fee_mint;
 
-      auto platform_fee_pct = platform_fee_value->FindDouble("pct");
+      auto platform_fee_pct =
+          ParseDoubleResultFromStringDictValue(*platform_fee_value, "pct");
       if (!platform_fee_pct)
         return nullptr;
       platform_fee.pct = *platform_fee_pct;
@@ -457,32 +454,13 @@ mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
   return swap_transactions;
 }
 
-// Function to convert uint64 numbers in JSON string to strings.
+// Function to convert all numbers in JSON string to strings.
 //
 // For sample JSON response, refer to ParseJupiterQuote.
-absl::optional<std::string> ConvertJupiterQuoteUint64ToString(
-    const std::string& json) {
-  // STEP 1: convert JSON integer fields in routes to string values.
-  auto converted_json = ConvertMultiUint64InObjectArrayToString(
-      "/data", {"inAmount", "outAmount", "amount", "otherAmountThreshold"},
-      json);
-  if (!converted_json) {
-    LOG(ERROR) << "Failed to parse integer fields, JSON is: " << json;
+absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+  auto converted_json = std::string(json::convert_all_numbers_to_string(json));
+  if (converted_json.empty())
     return absl::nullopt;
-  }
-
-  // STEP 2: Obtain number of routes in swap quote.
-  auto routes_value_1 = GetRoutesFromJupiterSwapQuote(*converted_json);
-  if (!routes_value_1)
-    return absl::nullopt;
-
-  // STEP 3: Loop over the routes and convert JSON integer fields in
-  // marketInfos to string values.
-  for (int i = 0; i < static_cast<int>(routes_value_1->size()); i++) {
-    converted_json = ConvertMultiUint64InObjectArrayToString(
-        base::StringPrintf("/data/%d/marketInfos", i),
-        {"inAmount", "outAmount"}, *converted_json);
-  }
 
   return converted_json;
 }

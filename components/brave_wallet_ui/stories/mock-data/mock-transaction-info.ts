@@ -31,7 +31,8 @@ export const mockTransactionInfo: BraveWallet.TransactionInfo = {
   createdTime: { microseconds: BigInt(0) },
   submittedTime: { microseconds: BigInt(0) },
   confirmedTime: { microseconds: BigInt(0) },
-  originInfo: mockOriginInfo
+  originInfo: mockOriginInfo,
+  groupId: undefined
 }
 
 export const mockedErc20ApprovalTransaction = {

@@ -149,7 +149,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559!,
               baseData: {
@@ -184,7 +184,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559!,
               baseData: {
@@ -291,7 +291,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559!,
               maxFeePerGas: '0x22ecb25c00', // 150 Gwei
@@ -337,7 +337,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...mockTxData,
               baseData: {
@@ -367,7 +367,7 @@ describe('useTransactionParser hook', () => {
         txDataUnion: {
           ethTxData: {} as any,
           filTxData: undefined,
-          solanaTxData: {} as any,
+          solanaTxData: undefined,
           ethTxData1559: {
             ...mockTransactionInfo.txDataUnion.ethTxData1559!,
             baseData: {
@@ -471,7 +471,7 @@ describe('useTransactionParser hook', () => {
         txDataUnion: {
           ethTxData: {} as any,
           filTxData: undefined,
-          solanaTxData: {} as any,
+          solanaTxData: undefined,
           ethTxData1559: {
             ...mockTransactionInfo.txDataUnion.ethTxData1559!,
             baseData: {
@@ -524,7 +524,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559!,
               baseData: {
@@ -553,7 +553,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...mockTransactionInfo.txDataUnion.ethTxData1559!,
               baseData: {
@@ -600,7 +600,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...baseMockTransactionInfo.txDataUnion.ethTxData1559!,
               baseData: {
@@ -619,7 +619,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...baseMockTransactionInfo.txDataUnion.ethTxData1559!,
               baseData: {
@@ -638,7 +638,7 @@ describe('useTransactionParser hook', () => {
           txDataUnion: {
             ethTxData: {} as any,
             filTxData: undefined,
-            solanaTxData: {} as any,
+            solanaTxData: undefined,
             ethTxData1559: {
               ...baseMockTransactionInfo.txDataUnion.ethTxData1559!,
               baseData: {

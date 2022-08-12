@@ -81,9 +81,10 @@ provideStrings({
   braveWalletExpiresInTitle: 'Expires in',
   braveWalletSendPlaceholder: 'Wallet address or URL',
   braveWalletSendNoURLPlaceholder: 'Wallet address',
-  braveWalletSwapDisclaimer: 'Brave uses $10x$2 as a DEX aggregator.',
+  braveWalletSwapDisclaimer: 'Brave uses $1$3$2 as a DEX aggregator.',
   braveWalletSwapDisclaimerDescription: '0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.',
-  braveWalletSwapFeesNotice: 'Quote includes a 0.875% Brave fee.',
+  braveWalletJupiterSwapDisclaimerDescription: 'Jupiter will process the Solana address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.',
+  braveWalletSwapFeesNotice: 'Quote includes a $1 Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
   braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
 

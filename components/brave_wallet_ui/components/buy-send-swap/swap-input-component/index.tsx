@@ -309,7 +309,11 @@ function SwapInputComponent (props: Props) {
                   (componentType === 'fromAmount' && !!fromAmountHasErrors) ||
                   (componentType === 'toAmount' && !!toAmountHasErrors)
                 }
-                disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
+                disabled={
+                  (orderType === 'market' && componentType === 'exchange') ||
+                  (orderType === 'limit' && componentType === 'toAmount') ||
+                  (selectedNetwork?.chainId === BraveWallet.SOLANA_MAINNET && componentType === 'toAmount')
+                }
                 autoFocus={autoFocus}
               />
             }
