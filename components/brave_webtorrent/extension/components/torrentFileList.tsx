@@ -74,6 +74,13 @@ const tableHeader: Cell[] = [
   }
 ]
 
+const downloadFile = (url: string, filename: string) => {
+  const anchor = document.createElement('a')
+  anchor.setAttribute('href', url)
+  anchor.setAttribute('download', filename)
+  anchor.click()
+}
+
 export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }: Props) {
     const rows = React.useMemo<Row[] | undefined>(() => torrent?.files?.map((file: File, index: number) => ({
         content: [
@@ -91,8 +98,9 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
               : <span>{file.name}</span>
           },
           {
-            content: torrent.serverURL &&
-              <Link href={`${torrent.serverURL}/${index}/${file.name}`} download={file.name}>⇩</Link>
+            content: torrent.serverURL && <Button text="Save file"
+              level="secondary"
+              onClick={() => downloadFile(`${torrent.serverURL}/${index}/${file.name}`, file.name)}/>
           },
           {
             content: prettierBytes(file.length)
