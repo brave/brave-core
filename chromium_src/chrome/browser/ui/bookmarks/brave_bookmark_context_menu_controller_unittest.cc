@@ -58,9 +58,8 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 TEST_F(BraveBookmarkContextMenuControllerTest,
        DontShowAppsShortcutContextMenuInBookmarksBar) {
   BookmarkContextMenuController controller(
-      nullptr, nullptr, nullptr, profile_.get(), NullNavigatorGetter(),
-      BOOKMARK_LAUNCH_LOCATION_CONTEXT_MENU, model_->bookmark_bar_node(),
-      std::vector<const BookmarkNode*>());
+      nullptr, nullptr, nullptr, profile_.get(), BOOKMARK_LAUNCH_LOCATION_CONTEXT_MENU,
+      model_->bookmark_bar_node(), std::vector<const BookmarkNode*>());
 
   // Show apps command is not present by default.
   sync_preferences::TestingPrefServiceSyncable* prefs =
