@@ -228,6 +228,8 @@ void Conversions::MaybeConvert(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns) {
+  DCHECK(!redirect_chain.empty());
+
   if (!ShouldAllow()) {
     BLOG(1, "Conversions are not allowed");
     return;

@@ -84,6 +84,7 @@ void Transfer::TransferAd(const int32_t tab_id,
 void Transfer::OnTransferAd(const int32_t tab_id,
                             const std::vector<GURL>& redirect_chain) {
   const AdInfo ad = last_clicked_ad_;
+
   last_clicked_ad_ = {};
 
   transferring_ad_tab_id_ = 0;
@@ -93,12 +94,14 @@ void Transfer::OnTransferAd(const int32_t tab_id,
     return;
   }
 
-  absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(tab_id);
-  if (!tab || tab->redirect_chain.empty()) {
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance()->GetTabForId(tab_id);
+  if (!tab) {
     FailedToTransferAd(ad);
     return;
   }
 
+  DCHECK(!tab->redirect_chain.empty());
   if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
     FailedToTransferAd(ad);
     return;
@@ -167,10 +170,8 @@ void Transfer::NotifyFailedToTransferAd(const AdInfo& ad) const {
   }
 }
 
-void Transfer::OnHtmlContentDidChange(const int32_t id,
-                                      const std::vector<GURL>& redirect_chain,
-                                      const std::string& content) {
-  MaybeTransferAd(id, redirect_chain);
+void Transfer::OnTabDidChange(const TabInfo& tab) {
+  MaybeTransferAd(tab.id, tab.redirect_chain);
 }
 
 void Transfer::OnDidCloseTab(const int32_t tab_id) {
