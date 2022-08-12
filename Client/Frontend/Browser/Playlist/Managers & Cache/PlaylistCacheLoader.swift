@@ -664,7 +664,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
 
         // Force adblocking on
-        domainForShields.shield_allOff = 1
+        domainForShields.shield_allOff = 0
         domainForShields.shield_adblockAndTp = true
 
         let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
