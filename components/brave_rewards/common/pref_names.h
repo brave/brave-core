@@ -16,10 +16,10 @@ extern const char kAdsEnabledTimeDelta[];
 extern const char kAdsEnabledTimestamp[];
 extern const char kNotifications[];
 extern const char kNotificationTimerInterval[];
-extern const char kBackupNotificationInterval[];
-extern const char kBackupSucceeded[];
-extern const char kUserHasFunded[];
-extern const char kUserHasClaimedGrant[];
+extern const char kBackupNotificationInterval[];  // DEPRECATED
+extern const char kBackupSucceeded[];             // DEPRECATED
+extern const char kUserHasFunded[];               // DEPRECATED
+extern const char kUserHasClaimedGrant[];         // DEPRECATED
 extern const char kAddFundsNotification[];
 extern const char kNotificationStartupDelay[];
 extern const char kExternalWallets[];  // DEPRECATED
@@ -55,7 +55,7 @@ extern const char kParametersAutoContributeChoices[];
 extern const char kParametersTipChoices[];
 extern const char kParametersMonthlyTipChoices[];
 extern const char kParametersPayoutStatus[];
-extern const char kFetchOldBalance[];
+extern const char kFetchOldBalance[];  // DEPRECATED
 extern const char kEmptyBalanceChecked[];
 extern const char kWalletBrave[];
 extern const char kWalletUphold[];

@@ -42,8 +42,6 @@ class PostClaimUpholdTest : public testing::Test {
   }
 };
 
-const char kExpectedAddress[] = "address";
-
 TEST_F(PostClaimUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
@@ -55,12 +53,9 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_OK);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError400FlaggedWallet) {
@@ -79,12 +74,9 @@ TEST_F(PostClaimUpholdTest, ServerError400FlaggedWallet) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::FLAGGED_WALLET);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::FLAGGED_WALLET);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError400RegionNotSupported) {
@@ -103,12 +95,9 @@ TEST_F(PostClaimUpholdTest, ServerError400RegionNotSupported) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::REGION_NOT_SUPPORTED);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::REGION_NOT_SUPPORTED);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError400MismatchedProviderAccountRegions) {
@@ -128,10 +117,8 @@ TEST_F(PostClaimUpholdTest, ServerError400MismatchedProviderAccountRegions) {
           }));
 
   claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
+      "address", base::BindOnce([](type::Result result) {
         EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS);
-        EXPECT_EQ(address, kExpectedAddress);
       }));
 }
 
@@ -151,12 +138,9 @@ TEST_F(PostClaimUpholdTest, ServerError400UnknownMessage) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError403KYCRequired) {
@@ -175,12 +159,9 @@ TEST_F(PostClaimUpholdTest, ServerError403KYCRequired) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::NOT_FOUND);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError403MismatchedProviderAccounts) {
@@ -199,12 +180,10 @@ TEST_F(PostClaimUpholdTest, ServerError403MismatchedProviderAccounts) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result,
+                              type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError403TransactionVerificationFailure) {
@@ -223,13 +202,11 @@ TEST_F(PostClaimUpholdTest, ServerError403TransactionVerificationFailure) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result,
-                  type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(
+                        result,
+                        type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError403UnknownMessage) {
@@ -248,12 +225,9 @@ TEST_F(PostClaimUpholdTest, ServerError403UnknownMessage) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError404) {
@@ -267,12 +241,9 @@ TEST_F(PostClaimUpholdTest, ServerError404) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::NOT_FOUND);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError409) {
@@ -286,12 +257,9 @@ TEST_F(PostClaimUpholdTest, ServerError409) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::DEVICE_LIMIT_REACHED);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::DEVICE_LIMIT_REACHED);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerError500) {
@@ -305,12 +273,9 @@ TEST_F(PostClaimUpholdTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
@@ -324,12 +289,9 @@ TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      30.0, "address",
-      base::BindOnce([](type::Result result, const std::string& address) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(address, kExpectedAddress);
-      }));
+  claim_->Request("address", base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 }  // namespace promotion

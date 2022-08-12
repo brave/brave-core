@@ -40,9 +40,7 @@ std::string PostSuggestions::GeneratePayload(
   }
   data.Set("channel", redeem.publisher_key);
 
-  const bool is_sku =
-      redeem.processor == type::ContributionProcessor::UPHOLD ||
-      redeem.processor == type::ContributionProcessor::BRAVE_USER_FUNDS;
+  const bool is_sku = redeem.processor == type::ContributionProcessor::UPHOLD;
 
   std::string data_json;
   base::JSONWriter::Write(data, &data_json);

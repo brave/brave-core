@@ -11,7 +11,6 @@
 #include "bat/ledger/internal/endpoint/payment/get_credentials/get_credentials.h"
 #include "bat/ledger/internal/endpoint/payment/post_credentials/post_credentials.h"
 #include "bat/ledger/internal/endpoint/payment/post_order/post_order.h"
-#include "bat/ledger/internal/endpoint/payment/post_transaction_anon/post_transaction_anon.h"
 #include "bat/ledger/internal/endpoint/payment/post_transaction_gemini/post_transaction_sku_gemini.h"
 #include "bat/ledger/internal/endpoint/payment/post_transaction_uphold/post_transaction_uphold.h"
 #include "bat/ledger/internal/endpoint/payment/post_votes/post_votes.h"
@@ -39,8 +38,6 @@ class PaymentServer {
 
   payment::PostTransactionUphold* post_transaction_uphold() const;
 
-  payment::PostTransactionAnon* post_transaction_anon() const;
-
  private:
   std::unique_ptr<payment::PostOrder> post_order_;
   std::unique_ptr<payment::PostCredentials> post_credentials_;
@@ -48,7 +45,6 @@ class PaymentServer {
   std::unique_ptr<payment::PostVotes> post_votes_;
   std::unique_ptr<payment::PostTransactionGemini> post_transaction_gemini_;
   std::unique_ptr<payment::PostTransactionUphold> post_transaction_uphold_;
-  std::unique_ptr<payment::PostTransactionAnon> post_transaction_anon_;
 };
 
 }  // namespace endpoint

@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_WALLET_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_WALLET_H_
 
-#include <map>
 #include <memory>
 #include <string>
 
@@ -41,21 +40,9 @@ class UpholdWallet {
                     type::Result result,
                     const std::string& id) const;
 
-  void GetAnonFunds(
-      endpoint::promotion::GetWalletBalanceCallback callback) const;
-
-  void OnGetAnonFunds(const std::string& id,
-                      ledger::ResultCallback callback,
-                      const type::Result result,
-                      type::BalancePtr balance) const;
-
-  void LinkWallet(double user_funds,
-                  const std::string& id,
-                  endpoint::promotion::PostClaimUpholdCallback callback) const;
-
-  void OnLinkWallet(ledger::ResultCallback callback,
-                    type::Result result,
-                    const std::string& id) const;
+  void OnClaimWallet(ledger::ResultCallback callback,
+                     const std::string& id,
+                     type::Result result) const;
 
   void OnTransferTokens(ledger::ResultCallback callback,
                         type::Result result,

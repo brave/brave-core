@@ -92,10 +92,6 @@ class State {
 
   base::flat_map<std::string, std::string> GetPayoutStatus();
 
-  void SetFetchOldBalanceEnabled(bool enabled);
-
-  bool GetFetchOldBalanceEnabled();
-
   void SetEmptyBalanceChecked(const bool checked);
 
   bool GetEmptyBalanceChecked();

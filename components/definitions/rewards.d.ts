@@ -130,7 +130,6 @@ declare namespace Rewards {
     NONE = 0,
     BRAVE_TOKENS = 1,
     UPHOLD = 2,
-    BRAVE_USER_FUNDS = 3,
     BITFLYER = 4,
     GEMINI = 5
   }
@@ -291,7 +290,7 @@ declare namespace Rewards {
     wallets: Record<string, number>
   }
 
-  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
+  export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 
   export enum WalletStatus {
     NOT_CONNECTED = 0,

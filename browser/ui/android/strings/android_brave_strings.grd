@@ -652,12 +652,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_DESC" desc="A notification message about not enough funds">
         Your Brave Rewards account is waiting for a deposit.
       </message>
-      <message name="IDS_BRAVE_UI_BACKUP_WALLET_MSG" desc="A notification message title about backing up the wallet">
-        Back up Brave Rewards
-      </message>
-      <message name="IDS_BRAVE_UI_BACKUP_WALLET_DESC" desc="A notification message description about backing up the wallet">
-        Please back up your Brave Rewards.
-      </message>
       <message name="IDS_BRAVE_WALLET_PORTFOLIO_BALANCE_UPDATING" desc="A placeholder to display for unupdated balance" translateable="false">
         ...
       </message>

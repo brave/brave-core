@@ -12,7 +12,6 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
@@ -30,23 +29,20 @@ PostClaimUphold::PostClaimUphold(LedgerImpl* ledger) : ledger_(ledger) {
 
 PostClaimUphold::~PostClaimUphold() = default;
 
-void PostClaimUphold::Request(const double user_funds,
-                              const std::string& address,
+void PostClaimUphold::Request(const std::string& address,
                               PostClaimUpholdCallback callback) const {
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->method = type::UrlMethod::POST;
-  request->content = GeneratePayload(user_funds, address);
+  request->content = GeneratePayload(address);
   request->content_type = "application/json; charset=utf-8";
 
-  ledger_->LoadURL(
-      std::move(request),
-      base::BindOnce(&PostClaimUphold::OnRequest, base::Unretained(this),
-                     std::move(callback), address));
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostClaimUphold::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
-std::string PostClaimUphold::GeneratePayload(const double user_funds,
-                                             const std::string& address) const {
+std::string PostClaimUphold::GeneratePayload(const std::string& address) const {
   const auto rewards_wallet = ledger_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
@@ -54,7 +50,7 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds,
   }
 
   base::Value::Dict denomination;
-  denomination.Set("amount", base::NumberToString(user_funds));
+  denomination.Set("amount", "0");
   denomination.Set("currency", "BAT");
 
   base::Value::Dict octets;
@@ -108,10 +104,9 @@ std::string PostClaimUphold::GetUrl() const {
 }
 
 void PostClaimUphold::OnRequest(PostClaimUpholdCallback callback,
-                                const std::string& address,
                                 const type::UrlResponse& response) const {
   ledger::LogUrlResponse(__func__, response);
-  std::move(callback).Run(ProcessResponse(response), address);
+  std::move(callback).Run(ProcessResponse(response));
 }
 
 type::Result PostClaimUphold::ProcessResponse(

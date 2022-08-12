@@ -3,10 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_GET_RECOVER_WALLET_GET_RECOVER_\
-WALLET_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_GET_RECOVER_WALLET_GET_RECOVER_\
-WALLET_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_RECOVER_WALLET_GET_RECOVER_WALLET_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_RECOVER_WALLET_GET_RECOVER_WALLET_H_
 
 #include <string>
 
@@ -38,10 +36,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using GetRecoverWalletCallback = std::function<void(
-    const type::Result result,
-    const std::string& payment_id,
-    const bool legacy_wallet)>;
+using GetRecoverWalletCallback =
+    std::function<void(type::Result result, const std::string& payment_id)>;
 
 class GetRecoverWallet {
  public:
@@ -57,10 +53,7 @@ class GetRecoverWallet {
 
   type::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* payment_id,
-      bool* legacy_wallet);
+  type::Result ParseBody(const std::string& body, std::string* payment_id);
 
   void OnRequest(
       const type::UrlResponse& response,
@@ -73,5 +66,4 @@ class GetRecoverWallet {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_GET_RECOVER_WALLET_GET_RECOVER_\
-// WALLET_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_GET_RECOVER_WALLET_GET_RECOVER_WALLET_H_

@@ -1096,9 +1096,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
-        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET) {
-            mBraveRewardsNativeWorker.DeleteNotification(id);
-        } else if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
+        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
             // Set flag
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();

@@ -17,7 +17,6 @@ typedef NS_ENUM(NSInteger, RewardsNotificationKind) {
   RewardsNotificationKindGrantAds,
   RewardsNotificationKindFailedContribution,
   RewardsNotificationKindInsufficientFunds,
-  RewardsNotificationKindBackupWallet,
   RewardsNotificationKindTipsProcessed,
   RewardsNotificationKindAdsLaunch,  // Unused
   RewardsNotificationKindVerifiedPublisher,

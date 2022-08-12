@@ -25,8 +25,6 @@ PromotionServer::PromotionServer(LedgerImpl* ledger)
       post_claim_gemini_(std::make_unique<promotion::PostClaimGemini>(ledger)),
       post_claim_uphold_(std::make_unique<promotion::PostClaimUphold>(ledger)),
       get_wallet_(std::make_unique<promotion::GetWallet>(ledger)),
-      get_wallet_balance_(
-          std::make_unique<promotion::GetWalletBalance>(ledger)),
       post_captcha_(std::make_unique<promotion::PostCaptcha>(ledger)),
       get_captcha_(std::make_unique<promotion::GetCaptcha>(ledger)),
       put_captcha_(std::make_unique<promotion::PutCaptcha>(ledger)),
@@ -84,10 +82,6 @@ promotion::PostClaimUphold* PromotionServer::post_claim_uphold() const {
 
 promotion::GetWallet* PromotionServer::get_wallet() const {
   return get_wallet_.get();
-}
-
-promotion::GetWalletBalance* PromotionServer::get_wallet_balance() const {
-  return get_wallet_balance_.get();
 }
 
 promotion::PostCaptcha* PromotionServer::post_captcha() const {

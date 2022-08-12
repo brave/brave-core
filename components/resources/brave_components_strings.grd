@@ -741,7 +741,6 @@
       <message name="IDS_BRAVE_UI_CAPTCHA_TARGET" desc="">target.</message>
       <message name="IDS_BRAVE_UI_CLAIM" desc="">Claim</message>
       <message name="IDS_BRAVE_UI_CONTRIBUTE" desc="">Contribute</message>
-      <message name="IDS_BRAVE_UI_COPY" desc="">Copy</message>
       <message name="IDS_BRAVE_UI_DATE" desc="">Date</message>
       <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
       <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
@@ -792,8 +791,6 @@
       <message name="IDS_BRAVE_UI_PROCESSOR_BITFLYER" desc="">bitFlyer</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_GEMINI" desc="">Gemini</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_UPHOLD" desc="">Uphold</message>
-      <message name="IDS_BRAVE_UI_PROCESSOR_BRAVE_USER_FUNDS" desc="">Deposited BAT</message>
-      <message name="IDS_BRAVE_UI_RECOVERY_KEYS" desc="">Recovery Key</message>
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
@@ -807,10 +804,6 @@
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1" desc="">If your Brave Rewards is not verified, your BAT balance is stored in local files on your device.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2" desc="">If you'd like to secure your BAT in case you need to do a clean reinstall of the browser or reformat your device, and would like to enjoy other benefits such as adding or withdrawing your BAT, we recommend <ph name="LINK_BEGIN">$1</ph>verifying<ph name="LINK_END">$2</ph>.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Keep this recovery key safe.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">You can always use this key to get your Rewards profile back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your Rewards profile. It’s probably safest to write it down on a piece of paper, or wherever else you keep important info.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT3" desc="">Note:</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT4" desc="">Part of the funds may be received from Brave and are not included in the backup as it is not required. It's available for you to spend exclusively on this browser.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
@@ -824,7 +817,6 @@
       <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS" desc="">Your Rewards data will be permanently lost if you reset your Brave Rewards.</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
-      <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>
       <message name="IDS_BRAVE_UI_SAVE" desc="">Save</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all [[numItems]] items</message>
       <message name="IDS_BRAVE_UI_SEND_DONATION" desc="">Send Tip</message>

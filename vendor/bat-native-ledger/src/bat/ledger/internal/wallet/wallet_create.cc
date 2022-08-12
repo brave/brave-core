@@ -77,7 +77,6 @@ void WalletCreate::OnCreate(ledger::ResultCallback callback,
 
   ledger_->state()->ResetReconcileStamp();
   if (!ledger::is_testing) {
-    ledger_->state()->SetFetchOldBalanceEnabled(false);
     ledger_->state()->SetEmptyBalanceChecked(true);
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }

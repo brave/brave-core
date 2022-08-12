@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class BraveRewardsBalance {
-    public static final String WALLET_ANONYMOUS = "anonymous";
     public static final String WALLET_BLINDED = "blinded";
 
     /**

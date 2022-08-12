@@ -29,20 +29,10 @@ WalletBalance::WalletBalance(LedgerImpl* ledger) :
 WalletBalance::~WalletBalance() = default;
 
 void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
-  // if we don't have user funds in anon card anymore
-  // we can skip balance server ping
-  if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
-    auto balance = type::Balance::New();
-    GetUnblindedTokens(std::move(balance), std::move(callback));
-    return;
-  }
-
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(1, "Wallet is not created");
-    ledger_->state()->SetFetchOldBalanceEnabled(false);
-    auto balance = type::Balance::New();
-    std::move(callback).Run(type::Result::LEDGER_OK, std::move(balance));
+    std::move(callback).Run(type::Result::LEDGER_OK, type::Balance::New());
     return;
   }
 
@@ -52,26 +42,7 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
     return;
   }
 
-  auto load_callback = base::BindOnce(
-      &WalletBalance::OnFetch, base::Unretained(this), std::move(callback));
-
-  promotion_server_->get_wallet_balance()->Request(std::move(load_callback));
-}
-
-void WalletBalance::OnFetch(ledger::FetchBalanceCallback callback,
-                            const type::Result result,
-                            type::BalancePtr balance) {
-  if (result != type::Result::LEDGER_OK || !balance) {
-    BLOG(0, "Couldn't fetch wallet balance");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
-    return;
-  }
-
-  if (balance->total == 0.0) {
-    ledger_->state()->SetFetchOldBalanceEnabled(false);
-  }
-
-  GetUnblindedTokens(std::move(balance), std::move(callback));
+  GetUnblindedTokens(type::Balance::New(), std::move(callback));
 }
 
 void WalletBalance::GetUnblindedTokens(

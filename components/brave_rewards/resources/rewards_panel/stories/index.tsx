@@ -104,7 +104,7 @@ function createHost (): Host {
     },
     notifications: [
       {
-        type: 'backup-wallet',
+        type: 'monthly-tip-completed',
         id: '1',
         timeStamp: Date.now() - 100
       }
@@ -272,7 +272,7 @@ export function Notification () {
         <div style={{ width: '375px' }}>
           <NotificationCard
             notification={{
-              type: 'backup-wallet',
+              type: 'monthly-tip-completed',
               id: '123',
               timeStamp: Date.now()
             }}

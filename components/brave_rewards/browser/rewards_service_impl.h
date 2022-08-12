@@ -201,7 +201,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetExternalWalletType(const std::string& wallet_type) override;
 
   RewardsNotificationService* GetNotificationService() const override;
-  void SetBackupCompleted() override;
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
 
@@ -422,12 +421,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnRestorePublishers(const ledger::type::Result result);
 
   void OnRecurringTip(const ledger::type::Result result);
-
-  void MaybeShowBackupNotification(uint64_t boot_stamp);
-
-  void WalletBackupNotification(const uint64_t boot_stamp,
-                                const ledger::type::Result result,
-                                ledger::type::ExternalWalletPtr wallet);
 
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
 

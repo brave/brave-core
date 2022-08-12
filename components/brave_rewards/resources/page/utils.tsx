@@ -48,14 +48,6 @@ export const tipsListTotal = (list: Rewards.Publisher[]) => {
   return list.reduce((accumulator: number, item: Rewards.Publisher) => accumulator + item.percentage, 0)
 }
 
-export const constructBackupString = (backupKey: string) => {
-  return `Brave Wallet Recovery Key\nDate created: ${new Date(Date.now()).toLocaleDateString()} \n\nRecovery Key: ${backupKey}` +
-    '\n\nNote: This key is not stored on Brave servers. ' +
-    'This key is your only method of recovering your Brave wallet. ' +
-    'Save this key in a safe place, separate from your Brave browser. ' +
-    'Make sure you keep this key private, or else your wallet will be compromised.'
-}
-
 export const isPublisherVerified = (status: Rewards.PublisherStatus) => {
   return status > 1
 }

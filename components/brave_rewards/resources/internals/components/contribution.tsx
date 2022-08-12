@@ -34,8 +34,6 @@ const getProcessorString = (processor: number) => {
       return getLocale('processorBraveTokens')
     case 2:
       return getLocale('processorUphold')
-    case 3:
-      return getLocale('processorBraveUserFunds')
     case 4:
       return getLocale('processorBitflyer')
     case 5:

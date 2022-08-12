@@ -70,12 +70,6 @@ BraveGeneralLedgerNotificationID const
 
 static NSString* const kNextAddFundsDateNotificationKey =
     @"BATNextAddFundsDateNotification";
-static NSString* const kBackupNotificationIntervalKey =
-    @"BATBackupNotificationInterval";
-static NSString* const kBackupNotificationFrequencyKey =
-    @"BATBackupNotificationFrequency";
-static NSString* const kUserHasFundedKey = @"BATRewardsUserHasFunded";
-static NSString* const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 static NSString* const kMigrationSucceeded = @"BATRewardsMigrationSucceeded";
 
 static NSString* const kContributionQueueAutoincrementID =
@@ -172,10 +166,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       // Setup defaults
       self.prefs[kNextAddFundsDateNotificationKey] =
           @([[NSDate date] timeIntervalSince1970]);
-      self.prefs[kBackupNotificationFrequencyKey] = @(7 * kOneDay);  // 7 days
-      self.prefs[kBackupNotificationIntervalKey] = @(7 * kOneDay);   // 7 days
-      self.prefs[kBackupSucceededKey] = @(NO);
-      self.prefs[kUserHasFundedKey] = @(NO);
       self.prefs[kMigrationSucceeded] = @(NO);
       [self savePrefs];
     }
@@ -1598,31 +1588,8 @@ BATLedgerBridge(BOOL,
 - (void)checkForNotificationsAndFetchGrants {
   self.lastNotificationCheckDate = [NSDate date];
 
-  [self showBackupNotificationIfNeccessary];
   [self showAddFundsNotificationIfNeccessary];
   [self fetchPromotions:nil];
-}
-
-- (void)showBackupNotificationIfNeccessary {
-  // This is currently not required as the user cannot manage their wallet on
-  // mobile... yet
-  /*
-  auto bootstamp = ledger->GetCreationStamp();
-  auto userFunded = [self.prefs[kUserHasFundedKey] boolValue];
-  auto backupSucceeded = [self.prefs[kBackupSucceededKey] boolValue];
-  if (userFunded && !backupSucceeded) {
-    auto frequency = 10; [self.prefs[kBackupNotificationFrequencyKey]
-  doubleValue]; auto interval = 10; [self.prefs[kBackupNotificationIntervalKey]
-  doubleValue]; auto delta = [[NSDate date] timeIntervalSinceDate:[NSDate
-  dateWithTimeIntervalSince1970:bootstamp]]; if (delta > interval) { auto
-  nextBackupNotificationInterval = frequency + interval;
-      self.prefs[kBackupNotificationIntervalKey] =
-  @(nextBackupNotificationInterval); [self savePrefs]; [self
-  addNotificationOfKind:RewardsNotificationKindBackupWallet arguments:nil
-                   notificationID:@"rewards_notification_backup_wallet"];
-    }
-  }
-  */
 }
 
 - (void)showAddFundsNotificationIfNeccessary {

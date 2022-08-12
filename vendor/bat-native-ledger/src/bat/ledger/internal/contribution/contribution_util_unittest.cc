@@ -27,8 +27,6 @@ TEST(ContributionUtilTest, GetReportTypeFromRewardsType) {
 TEST(ContributionUtilTest, GetProcessor) {
   ASSERT_EQ(type::ContributionProcessor::BRAVE_TOKENS,
             GetProcessor(constant::kWalletUnBlinded));
-  ASSERT_EQ(type::ContributionProcessor::BRAVE_USER_FUNDS,
-            GetProcessor(constant::kWalletAnonymous));
   ASSERT_EQ(type::ContributionProcessor::UPHOLD,
             GetProcessor(constant::kWalletUphold));
   ASSERT_EQ(type::ContributionProcessor::BITFLYER,
@@ -39,10 +37,8 @@ TEST(ContributionUtilTest, GetProcessor) {
 }
 
 TEST(ContributionUtilTest, GetNextProcessor) {
-  ASSERT_EQ(constant::kWalletAnonymous,
-            GetNextProcessor(constant::kWalletUnBlinded));
   ASSERT_EQ(constant::kWalletUphold,
-            GetNextProcessor(constant::kWalletAnonymous));
+            GetNextProcessor(constant::kWalletUnBlinded));
   ASSERT_EQ(constant::kWalletBitflyer,
             GetNextProcessor(constant::kWalletUphold));
   ASSERT_EQ(constant::kWalletGemini,
