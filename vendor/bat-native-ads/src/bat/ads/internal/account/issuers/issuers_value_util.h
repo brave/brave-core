@@ -12,7 +12,7 @@
 namespace ads {
 
 base::Value::List IssuersToValue(const IssuerList& issuers);
-IssuerList ValueToIssuers(const base::Value::List& value);
+absl::optional<IssuerList> ValueToIssuers(const base::Value::List& value);
 
 }  // namespace ads
 

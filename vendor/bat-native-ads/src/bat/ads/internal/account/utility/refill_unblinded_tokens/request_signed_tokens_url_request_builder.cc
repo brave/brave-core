@@ -16,7 +16,6 @@
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -105,21 +104,17 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& blinded_token : blinded_tokens_) {
-    const absl::optional<std::string> blinded_token_base64_optional =
-        blinded_token.EncodeBase64();
-    if (!blinded_token_base64_optional) {
-      continue;
+    if (const auto blinded_token_base64 = blinded_token.EncodeBase64()) {
+      base::Value value = base::Value(*blinded_token_base64);
+      list.Append(std::move(value));
     }
-    base::Value blinded_token_base64_value =
-        base::Value(blinded_token_base64_optional.value());
-    list.Append(std::move(blinded_token_base64_value));
   }
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetKey("blindedTokens", base::Value(std::move(list)));
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetKey("blindedTokens", base::Value(std::move(list)));
 
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
+  base::JSONWriter::Write(dict, &json);
 
   return json;
 }

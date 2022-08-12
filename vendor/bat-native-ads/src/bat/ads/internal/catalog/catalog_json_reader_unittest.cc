@@ -442,16 +442,13 @@ class BatAdsCatalogTest : public UnitTestBase {
 
 TEST_F(BatAdsCatalogTest, ParseCatalogWithSingleCampaign) {
   // Arrange
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string& json = json_optional.value();
+  ASSERT_TRUE(json);
 
   // Act
-  const absl::optional<CatalogInfo> catalog_optional =
-      JSONReader::ReadCatalog(json);
-  ASSERT_TRUE(catalog_optional);
-  const CatalogInfo& catalog = catalog_optional.value();
+  const absl::optional<CatalogInfo> catalog = JSONReader::ReadCatalog(*json);
+  ASSERT_TRUE(catalog);
 
   // Assert
   CatalogInfo expected_catalog;
@@ -460,21 +457,18 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithSingleCampaign) {
   expected_catalog.ping = base::Milliseconds(7200000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
 
-  EXPECT_EQ(expected_catalog, catalog);
+  EXPECT_EQ(expected_catalog, *catalog);
 }
 
 TEST_F(BatAdsCatalogTest, ParseCatalogWithMultipleCampaigns) {
   // Arrange
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string& json = json_optional.value();
+  ASSERT_TRUE(json);
 
   // Act
-  const absl::optional<CatalogInfo> catalog_optional =
-      JSONReader::ReadCatalog(json);
-  ASSERT_TRUE(catalog_optional);
-  const CatalogInfo& catalog = catalog_optional.value();
+  const absl::optional<CatalogInfo> catalog = JSONReader::ReadCatalog(*json);
+  ASSERT_TRUE(catalog);
 
   // Assert
   CatalogInfo expected_catalog;
@@ -484,37 +478,34 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithMultipleCampaigns) {
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
   expected_catalog.campaigns.push_back(BuildCatalogCampaign2());
 
-  EXPECT_EQ(expected_catalog, catalog);
+  EXPECT_EQ(expected_catalog, *catalog);
 }
 
 TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
   // Arrange
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string& json = json_optional.value();
+  ASSERT_TRUE(json);
 
   // Act
-  const absl::optional<CatalogInfo> catalog_optional =
-      JSONReader::ReadCatalog(json);
-  ASSERT_TRUE(catalog_optional);
-  const CatalogInfo& catalog = catalog_optional.value();
+  const absl::optional<CatalogInfo> catalog = JSONReader::ReadCatalog(*json);
+  ASSERT_TRUE(catalog);
 
   // Assert
   CatalogInfo expected_catalog;
 
-  EXPECT_EQ(expected_catalog, catalog);
+  EXPECT_EQ(expected_catalog, *catalog);
 }
 
 TEST_F(BatAdsCatalogTest, InvalidCatalog) {
   // Arrange
 
   // Act
-  const absl::optional<CatalogInfo> catalog_optional =
+  const absl::optional<CatalogInfo> catalog =
       JSONReader::ReadCatalog(kInvalidCatalog);
 
   // Assert
-  EXPECT_FALSE(catalog_optional);
+  EXPECT_FALSE(catalog);
 }
 
 }  // namespace ads

@@ -31,12 +31,11 @@ TEST(BatAdsConversionUserDataUtilTest, GetEnvelope) {
       BuildConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          GetEnvelope(conversion_queue_item);
+  const absl::optional<security::VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
 
   // Assert
-  EXPECT_TRUE(verifiable_conversion_envelope_optional);
+  EXPECT_TRUE(verifiable_conversion_envelope);
 }
 
 TEST(BatAdsConversionUserDataUtilTest, DoNotGetEnvelopeIfConversionIdIsEmpty) {
@@ -45,12 +44,11 @@ TEST(BatAdsConversionUserDataUtilTest, DoNotGetEnvelopeIfConversionIdIsEmpty) {
       BuildConversionQueueItem(kEmptyConversionId, kAdvertiserPublicKey);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          GetEnvelope(conversion_queue_item);
+  const absl::optional<security::VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope_optional);
+  EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
 TEST(BatAdsConversionUserDataUtilTest,
@@ -60,12 +58,11 @@ TEST(BatAdsConversionUserDataUtilTest,
       BuildConversionQueueItem(kConversionId, kEmptyAdvertiserPublicKey);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          GetEnvelope(conversion_queue_item);
+  const absl::optional<security::VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope_optional);
+  EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
 TEST(BatAdsConversionUserDataUtilTest,
@@ -75,12 +72,11 @@ TEST(BatAdsConversionUserDataUtilTest,
       BuildConversionQueueItem(kEmptyConversionId, kEmptyAdvertiserPublicKey);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          GetEnvelope(conversion_queue_item);
+  const absl::optional<security::VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope_optional);
+  EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
 }  // namespace user_data

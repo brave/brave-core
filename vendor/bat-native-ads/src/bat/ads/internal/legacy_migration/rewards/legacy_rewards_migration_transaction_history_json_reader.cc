@@ -15,17 +15,18 @@ namespace JSONReader {
 
 absl::optional<TransactionList> ReadTransactionHistory(
     const std::string& json) {
-  const absl::optional<base::Value>& value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
 
-  const absl::optional<TransactionList>& transaction_history_optional =
-      ParseTransactionHistory(value->GetDict());
-  if (!transaction_history_optional) {
+  const absl::optional<TransactionList> transaction_history =
+      ParseTransactionHistory(root->GetDict());
+  if (!transaction_history) {
     return absl::nullopt;
   }
-  return transaction_history_optional.value();
+
+  return *transaction_history;
 }
 
 }  // namespace JSONReader

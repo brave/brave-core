@@ -121,13 +121,12 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
         "confirmationType",
         unblinded_payment_token.confirmation_type.ToString());
 
-    const absl::optional<std::string> public_key_base64_optional =
+    const absl::optional<std::string> public_key_base64 =
         unblinded_payment_token.public_key.EncodeBase64();
-    if (!public_key_base64_optional) {
+    if (!public_key_base64) {
       NOTREACHED();
     } else {
-      payment_credential.SetStringKey("publicKey",
-                                      public_key_base64_optional.value());
+      payment_credential.SetStringKey("publicKey", *public_key_base64);
     }
 
     payment_request_dto.Append(std::move(payment_credential));
@@ -143,51 +142,43 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
 
   base::Value credential(base::Value::Type::DICTIONARY);
 
-  const absl::optional<privacy::cbr::VerificationKey>
-      verification_key_optional =
-          unblinded_payment_token.value.DeriveVerificationKey();
-  if (!verification_key_optional) {
+  absl::optional<privacy::cbr::VerificationKey> verification_key =
+      unblinded_payment_token.value.DeriveVerificationKey();
+  if (!verification_key) {
     NOTREACHED();
     return credential;
   }
-  privacy::cbr::VerificationKey verification_key =
-      verification_key_optional.value();
 
   const absl::optional<privacy::cbr::VerificationSignature>
-      verification_signature_optional = verification_key.Sign(payload);
-  if (!verification_signature_optional) {
-    NOTREACHED();
-    return credential;
-  }
-  const privacy::cbr::VerificationSignature& verification_signature =
-      verification_signature_optional.value();
-
-  const absl::optional<std::string> verification_signature_base64_optional =
-      verification_signature.EncodeBase64();
-  if (!verification_signature_base64_optional) {
+      verification_signature = verification_key->Sign(payload);
+  if (!verification_signature) {
     NOTREACHED();
     return credential;
   }
 
-  const absl::optional<privacy::cbr::TokenPreimage> token_preimage_optional =
+  const absl::optional<std::string> verification_signature_base64 =
+      verification_signature->EncodeBase64();
+  if (!verification_signature_base64) {
+    NOTREACHED();
+    return credential;
+  }
+
+  const absl::optional<privacy::cbr::TokenPreimage> token_preimage =
       unblinded_payment_token.value.GetTokenPreimage();
-  if (!token_preimage_optional) {
-    NOTREACHED();
-    return credential;
-  }
-  const privacy::cbr::TokenPreimage& token_preimage =
-      token_preimage_optional.value();
-
-  const absl::optional<std::string> token_preimage_base64_optional =
-      token_preimage.EncodeBase64();
-  if (!token_preimage_base64_optional) {
+  if (!token_preimage) {
     NOTREACHED();
     return credential;
   }
 
-  credential.SetStringKey("signature",
-                          verification_signature_base64_optional.value());
-  credential.SetStringKey("t", token_preimage_base64_optional.value());
+  const absl::optional<std::string> token_preimage_base64 =
+      token_preimage->EncodeBase64();
+  if (!token_preimage_base64) {
+    NOTREACHED();
+    return credential;
+  }
+
+  credential.SetStringKey("signature", *verification_signature_base64);
+  credential.SetStringKey("t", *token_preimage_base64);
 
   return credential;
 }

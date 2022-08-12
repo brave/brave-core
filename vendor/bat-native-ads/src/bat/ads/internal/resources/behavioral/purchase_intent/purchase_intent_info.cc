@@ -57,8 +57,8 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   std::vector<std::string> segments;
-  for (const auto& segment_value : list3->GetList()) {
-    const std::string segment = segment_value.GetString();
+  for (const auto& item : list3->GetList()) {
+    const std::string& segment = item.GetString();
     if (segment.empty()) {
       *error_message = "Failed to load from JSON, empty segment found";
       return {};

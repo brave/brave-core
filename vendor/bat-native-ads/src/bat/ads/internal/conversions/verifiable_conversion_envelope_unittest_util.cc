@@ -66,41 +66,35 @@ absl::optional<std::string> OpenEnvelope(
     return absl::nullopt;
   }
 
-  const absl::optional<std::vector<uint8_t>> ciphertext_optional =
+  absl::optional<std::vector<uint8_t>> ciphertext =
       base::Base64Decode(verifiable_conversion_envelope.ciphertext);
-  if (!ciphertext_optional) {
+  if (!ciphertext) {
     return absl::nullopt;
   }
-  std::vector<uint8_t> ciphertext = ciphertext_optional.value();
 
   // API requires 16 leading zero-padding bytes
-  ciphertext.insert(ciphertext.cbegin(), kCryptoBoxZeroBytes, 0);
+  ciphertext->insert(ciphertext->cbegin(), kCryptoBoxZeroBytes, 0);
 
-  const absl::optional<std::vector<uint8_t>> nonce_optional =
+  const absl::optional<std::vector<uint8_t>> nonce =
       base::Base64Decode(verifiable_conversion_envelope.nonce);
-  if (!nonce_optional) {
+  if (!nonce) {
     return absl::nullopt;
   }
-  const std::vector<uint8_t>& nonce = nonce_optional.value();
 
-  const absl::optional<std::vector<uint8_t>> ephemeral_public_key_optional =
+  const absl::optional<std::vector<uint8_t>> ephemeral_public_key =
       base::Base64Decode(verifiable_conversion_envelope.ephemeral_public_key);
-  if (!ephemeral_public_key_optional) {
+  if (!ephemeral_public_key) {
     return absl::nullopt;
   }
-  std::vector<uint8_t> ephemeral_public_key =
-      ephemeral_public_key_optional.value();
 
-  const absl::optional<std::vector<uint8_t>> advertiser_secret_key_optional =
+  const absl::optional<std::vector<uint8_t>> advertiser_secret_key =
       base::Base64Decode(advertiser_secret_key_base64);
-  if (!advertiser_secret_key_optional) {
+  if (!advertiser_secret_key) {
     return absl::nullopt;
   }
-  const std::vector<uint8_t>& advertiser_secret_key =
-      advertiser_secret_key_optional.value();
 
-  const std::vector<uint8_t> plaintext =
-      Decrypt(ciphertext, nonce, ephemeral_public_key, advertiser_secret_key);
+  const std::vector<uint8_t> plaintext = Decrypt(
+      *ciphertext, *nonce, *ephemeral_public_key, *advertiser_secret_key);
 
   return std::string((const char*)&plaintext.front());
 }
@@ -108,23 +102,14 @@ absl::optional<std::string> OpenEnvelope(
 absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(
     const base::Value::Dict& user_data,
     const std::string& advertiser_secret_key) {
-  const absl::optional<VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope =
           GetVerifiableConversionEnvelopeForUserData(user_data);
-  if (!verifiable_conversion_envelope_optional) {
+  if (!verifiable_conversion_envelope) {
     return absl::nullopt;
   }
-  const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope =
-      verifiable_conversion_envelope_optional.value();
 
-  const absl::optional<std::string>& message_optional =
-      OpenEnvelope(verifiable_conversion_envelope, advertiser_secret_key);
-  if (!message_optional) {
-    return absl::nullopt;
-  }
-  const std::string message = message_optional.value();
-
-  return message;
+  return OpenEnvelope(*verifiable_conversion_envelope, advertiser_secret_key);
 }
 
 }  // namespace security

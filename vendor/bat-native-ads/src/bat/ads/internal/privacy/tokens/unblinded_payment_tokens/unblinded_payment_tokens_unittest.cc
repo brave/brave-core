@@ -79,32 +79,30 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
 
   // Act
   const base::Value::List list = GetUnblindedPaymentTokens()->GetTokensAsList();
-  const UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens()->GetAllTokens();
-  EXPECT_EQ(list.size(), unblinded_payment_tokens.size());
 
-  for (const auto& value : list) {
-    const base::Value::Dict* dictionary = value.GetIfDict();
-    ASSERT_TRUE(dictionary);
-    const std::string* unblinded_payment_token_value =
-        dictionary->FindString("unblinded_token");
-    ASSERT_TRUE(unblinded_payment_token_value);
-    const std::string unblinded_payment_token_base64 =
-        *unblinded_payment_token_value;
-
-    const std::string* public_key_value = dictionary->FindString("public_key");
-    ASSERT_TRUE(public_key_value);
-    const std::string public_key_base64 = *public_key_value;
+  for (const auto& item : list) {
+    const base::Value::Dict* dict = item.GetIfDict();
+    ASSERT_TRUE(dict);
 
     UnblindedPaymentTokenInfo unblinded_payment_token;
+
     unblinded_payment_token.transaction_id =
         "0d9de7ce-b3f9-4158-8726-23d52b9457c6";
+
+    const std::string* unblinded_payment_token_base64 =
+        dict->FindString("unblinded_token");
+    ASSERT_TRUE(unblinded_payment_token_base64);
     unblinded_payment_token.value =
-        cbr::UnblindedToken(unblinded_payment_token_base64);
+        cbr::UnblindedToken(*unblinded_payment_token_base64);
     ASSERT_TRUE(unblinded_payment_token.value.has_value());
-    unblinded_payment_token.public_key = cbr::PublicKey(public_key_base64);
+
+    const std::string* public_key_base64 = dict->FindString("public_key");
+    ASSERT_TRUE(public_key_base64);
+    unblinded_payment_token.public_key = cbr::PublicKey(*public_key_base64);
     ASSERT_TRUE(unblinded_payment_token.public_key.has_value());
+
     unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
+
     unblinded_payment_token.ad_type = AdType::kNotificationAd;
 
     EXPECT_TRUE(

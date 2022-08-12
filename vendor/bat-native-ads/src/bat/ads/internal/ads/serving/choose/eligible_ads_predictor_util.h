@@ -15,7 +15,6 @@
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/segments/segment_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -88,20 +87,15 @@ AdPredictorInfo<T> ComputePredictorFeatures(
 
   const base::Time now = base::Time::Now();
 
-  const absl::optional<base::Time> last_seen_ad_at_optional =
-      GetLastSeenAdTime(ad_events, ad_predictor.creative_ad);
-  if (last_seen_ad_at_optional) {
-    const base::Time last_seen_ad_at = last_seen_ad_at_optional.value();
-    const base::TimeDelta time_delta = now - last_seen_ad_at;
+  if (const auto last_seen_ad_at =
+          GetLastSeenAdTime(ad_events, ad_predictor.creative_ad)) {
+    const base::TimeDelta time_delta = now - *last_seen_ad_at;
     mutable_ad_predictor.ad_last_seen_hours_ago = time_delta.InHours();
   }
 
-  const absl::optional<base::Time> last_seen_advertiser_at_optional =
-      GetLastSeenAdvertiserTime(ad_events, ad_predictor.creative_ad);
-  if (last_seen_advertiser_at_optional) {
-    const base::Time last_seen_advertiser_at =
-        last_seen_advertiser_at_optional.value();
-    const base::TimeDelta time_delta = now - last_seen_advertiser_at;
+  if (const auto last_seen_advertiser_at =
+          GetLastSeenAdvertiserTime(ad_events, ad_predictor.creative_ad)) {
+    const base::TimeDelta time_delta = now - *last_seen_advertiser_at;
     mutable_ad_predictor.advertiser_last_seen_hours_ago = time_delta.InHours();
   }
 

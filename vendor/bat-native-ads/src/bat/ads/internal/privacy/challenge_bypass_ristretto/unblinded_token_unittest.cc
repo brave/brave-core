@@ -90,14 +90,12 @@ TEST(BatAdsUnblindedTokenTest, EncodeBase64) {
   UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       unblinded_token.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kUnblindedTokenBase64, encoded_base64);
+  EXPECT_EQ(kUnblindedTokenBase64, *encoded_base64);
 }
 
 TEST(BatAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
@@ -105,11 +103,11 @@ TEST(BatAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   UnblindedToken unblinded_token;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       unblinded_token.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsUnblindedTokenTest, IsEqual) {
@@ -192,11 +190,11 @@ TEST(BatAdsUnUnblindedTokenTest, DeriveVerificationKey) {
   UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
-  const absl::optional<VerificationKey> verification_key_optional =
+  const absl::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
 
   // Assert
-  EXPECT_TRUE(verification_key_optional);
+  EXPECT_TRUE(verification_key);
 }
 
 TEST(BatAdsUnUnblindedTokenTest, FailToDeriveVerificationKeyWhenUninitialized) {
@@ -204,11 +202,11 @@ TEST(BatAdsUnUnblindedTokenTest, FailToDeriveVerificationKeyWhenUninitialized) {
   UnblindedToken unblinded_token;
 
   // Act
-  const absl::optional<VerificationKey> verification_key_optional =
+  const absl::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
 
   // Assert
-  EXPECT_FALSE(verification_key_optional);
+  EXPECT_FALSE(verification_key);
 }
 
 TEST(BatAdsUnUnblindedTokenTest,
@@ -217,11 +215,11 @@ TEST(BatAdsUnUnblindedTokenTest,
   UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
-  const absl::optional<VerificationKey> verification_key_optional =
+  const absl::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
 
   // Assert
-  EXPECT_FALSE(verification_key_optional);
+  EXPECT_FALSE(verification_key);
 }
 
 TEST(BatAdsUnblindedTokenTest, GetTokenPreimage) {
@@ -229,13 +227,12 @@ TEST(BatAdsUnblindedTokenTest, GetTokenPreimage) {
   UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
-  const absl::optional<TokenPreimage> token_preimage_optional =
+  const absl::optional<TokenPreimage> token_preimage =
       unblinded_token.GetTokenPreimage();
-  ASSERT_TRUE(token_preimage_optional);
-  const TokenPreimage& token_preimage = token_preimage_optional.value();
+  ASSERT_TRUE(token_preimage);
 
   // Assert
-  EXPECT_EQ(GetTokenPreimage(), token_preimage);
+  EXPECT_EQ(GetTokenPreimage(), *token_preimage);
 }
 
 TEST(BatAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
@@ -243,11 +240,11 @@ TEST(BatAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
   UnblindedToken unblinded_token;
 
   // Act
-  const absl::optional<TokenPreimage> token_preimage_optional =
+  const absl::optional<TokenPreimage> token_preimage =
       unblinded_token.GetTokenPreimage();
 
   // Assert
-  EXPECT_FALSE(token_preimage_optional);
+  EXPECT_FALSE(token_preimage);
 }
 
 TEST(BatAdsUnblindedTokenTest,
@@ -256,11 +253,11 @@ TEST(BatAdsUnblindedTokenTest,
   UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
-  const absl::optional<TokenPreimage> token_preimage_optional =
+  const absl::optional<TokenPreimage> token_preimage =
       unblinded_token.GetTokenPreimage();
 
   // Assert
-  EXPECT_FALSE(token_preimage_optional);
+  EXPECT_FALSE(token_preimage);
 }
 
 }  // namespace cbr

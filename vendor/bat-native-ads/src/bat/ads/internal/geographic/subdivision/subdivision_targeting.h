@@ -62,8 +62,8 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   Timer timer_;
   BackoffTimer retry_timer_;
 
-  mutable absl::optional<std::string> auto_detected_subdivision_code_optional_;
-  mutable absl::optional<std::string> subdivision_code_optional_;
+  mutable absl::optional<std::string> auto_detected_subdivision_code_;
+  mutable absl::optional<std::string> subdivision_code_;
 };
 
 }  // namespace geographic

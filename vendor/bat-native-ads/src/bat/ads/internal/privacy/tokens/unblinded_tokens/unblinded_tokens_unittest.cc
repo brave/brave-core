@@ -82,21 +82,21 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
       GetUnblindedTokens()->GetAllTokens();
   EXPECT_EQ(list.size(), unblinded_tokens.size());
 
-  for (const auto& value : list) {
-    const base::Value::Dict* dictionary = value.GetIfDict();
-    ASSERT_TRUE(dictionary);
-    const std::string* unblinded_token_value =
-        dictionary->FindString("unblinded_token");
-    ASSERT_TRUE(unblinded_token_value);
-    const std::string unblinded_token_base64 = *unblinded_token_value;
-
-    const std::string* public_key_value = dictionary->FindString("public_key");
-    ASSERT_TRUE(public_key_value);
-    const std::string public_key_base64 = *public_key_value;
+  for (const auto& item : list) {
+    const base::Value::Dict* dict = item.GetIfDict();
+    ASSERT_TRUE(dict);
 
     UnblindedTokenInfo unblinded_token;
-    unblinded_token.value = cbr::UnblindedToken(unblinded_token_base64);
-    unblinded_token.public_key = cbr::PublicKey(public_key_base64);
+
+    const std::string* unblinded_token_base64 =
+        dict->FindString("unblinded_token");
+    ASSERT_TRUE(unblinded_token_base64);
+    unblinded_token.value = cbr::UnblindedToken(*unblinded_token_base64);
+
+    const std::string* public_key_base64 = dict->FindString("public_key");
+    ASSERT_TRUE(public_key_base64);
+    unblinded_token.public_key = cbr::PublicKey(*public_key_base64);
+
     ASSERT_TRUE(unblinded_token.is_valid());
 
     EXPECT_TRUE(GetUnblindedTokens()->TokenExists(unblinded_token));

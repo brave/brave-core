@@ -30,15 +30,13 @@ class BatAdsHashVectorizerTest : public UnitTestBase {
     // Arrange
     const double kTolerance = 1e-7;
 
-    const absl::optional<std::string> opt_value =
+    const absl::optional<std::string> json =
         ReadFileFromTestPathToString(kHashCheck);
+    ASSERT_TRUE(json);
 
     // Act
-    ASSERT_TRUE(opt_value.has_value());
-    const std::string hash_check_json = opt_value.value();
 
-    const absl::optional<base::Value> root =
-        base::JSONReader::Read(hash_check_json);
+    const absl::optional<base::Value> root = base::JSONReader::Read(*json);
     ASSERT_TRUE(root);
 
     const base::Value* case_params = root->FindDictKey(test_case_name);

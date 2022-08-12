@@ -29,18 +29,16 @@ class BatAdsTargetingSegmentUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
-  const absl::optional<std::string> json_optional =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kCatalog);
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string& json = json_optional.value();
+  ASSERT_TRUE(json);
 
-  const absl::optional<CatalogInfo> catalog_optional =
-      JSONReader::ReadCatalog(json);
-  ASSERT_TRUE(catalog_optional);
-  const CatalogInfo& catalog = catalog_optional.value();
+  const absl::optional<CatalogInfo> catalog_info =
+      JSONReader::ReadCatalog(*json);
+  ASSERT_TRUE(catalog_info);
 
   // Act
-  const SegmentList segments = GetSegments(catalog);
+  const SegmentList segments = GetSegments(*catalog_info);
 
   // Assert
   const SegmentList expected_segments = {"technology & computing",

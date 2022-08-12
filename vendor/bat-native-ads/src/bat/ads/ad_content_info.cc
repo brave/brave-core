@@ -177,15 +177,15 @@ std::string AdContentInfo::ToJson() const {
 }
 
 bool AdContentInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> document =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
 
-  if (!document.has_value() || !document->is_dict()) {
+  if (!root || !root->is_dict()) {
     return false;
   }
 
-  FromValue(document->GetDict());
+  FromValue(root->GetDict());
 
   return true;
 }

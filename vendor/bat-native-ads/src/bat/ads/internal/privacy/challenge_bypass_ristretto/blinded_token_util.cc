@@ -15,18 +15,17 @@ namespace cbr {
 
 std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens) {
   std::vector<BlindedToken> blinded_tokens;
-  for (auto token : tokens) {
+  for (Token token : tokens) {
     if (!token.has_value()) {
       return {};
     }
 
-    const absl::optional<BlindedToken> blinded_token_optional = token.Blind();
-    if (!blinded_token_optional) {
+    const absl::optional<BlindedToken> blinded_token = token.Blind();
+    if (!blinded_token) {
       return {};
     }
-    const BlindedToken& blinded_token = blinded_token_optional.value();
 
-    blinded_tokens.push_back(blinded_token);
+    blinded_tokens.push_back(*blinded_token);
   }
 
   return blinded_tokens;

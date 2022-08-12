@@ -21,7 +21,6 @@
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace search_result_ads {
@@ -114,8 +113,10 @@ void EventHandler::FireViewedEvent(
     TriggerSearchResultAdEventCallback callback) const {
   const DepositInfo& deposit = BuildDeposit(ad_mojom);
 
-  const absl::optional<ConversionInfo>& conversion_optional =
-      BuildConversion(ad_mojom);
+  ConversionList conversions;
+  if (const auto conversion = BuildConversion(ad_mojom)) {
+    conversions.push_back(*conversion);
+  }
 
   const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
 
@@ -128,12 +129,6 @@ void EventHandler::FireViewedEvent(
     }
 
     BLOG(3, "Successfully saved deposits state");
-
-    ConversionList conversions;
-    if (conversion_optional) {
-      const ConversionInfo& conversion = conversion_optional.value();
-      conversions.push_back(conversion);
-    }
 
     database::table::Conversions conversion_database_table;
     conversion_database_table.Save(conversions, [=](const bool success) {

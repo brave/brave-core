@@ -35,8 +35,8 @@ class SignedToken {
   bool has_value() const { return signed_token_.has_value(); }
 
   challenge_bypass_ristretto::SignedToken get() const {
-    DCHECK(has_value());
-    return signed_token_.value();
+    DCHECK(signed_token_);
+    return *signed_token_;
   }
 
   static SignedToken DecodeBase64(const std::string& signed_token_base64);

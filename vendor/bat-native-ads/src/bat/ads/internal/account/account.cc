@@ -285,15 +285,14 @@ void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
 }
 
 void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
-  const absl::optional<IssuerInfo>& issuer_optional =
+  const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(issuers, IssuerType::kPayments);
-  if (!issuer_optional) {
+  if (!issuer) {
     BLOG(0, "Missing issuers");
     return;
   }
-  const IssuerInfo& issuer = issuer_optional.value();
 
-  if (!IsIssuerValid(issuer)) {
+  if (!IsIssuerValid(*issuer)) {
     BLOG(0, "Invalid issuers");
     return;
   }

@@ -43,20 +43,20 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
     return {};
   }
 
-  for (const auto value : conversion_id_patterns_value->DictItems()) {
-    if (!value.second.is_dict()) {
+  for (const auto item : conversion_id_patterns_value->DictItems()) {
+    if (!item.second.is_dict()) {
       *error_message =
           "Failed to load from JSON, conversion pattern not of type dict";
       return {};
     }
 
-    const std::string* id_pattern = value.second.FindStringKey("id_pattern");
+    const std::string* id_pattern = item.second.FindStringKey("id_pattern");
     if (!id_pattern || id_pattern->empty()) {
       *error_message = "Failed to load from JSON, pattern id_pattern missing";
       return {};
     }
 
-    const std::string* search_in = value.second.FindStringKey("search_in");
+    const std::string* search_in = item.second.FindStringKey("search_in");
     if (!search_in || search_in->empty()) {
       *error_message = "Failed to load from JSON, pattern search_in missing";
       return {};
@@ -65,7 +65,7 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
     ConversionIdPatternInfo info;
     info.id_pattern = *id_pattern;
     info.search_in = *search_in;
-    info.url_pattern = value.first;
+    info.url_pattern = item.first;
     conversion->id_patterns.insert({info.url_pattern, info});
   }
 

@@ -37,9 +37,7 @@ absl::optional<SearchEngineInfo> FindSearchEngine(const GURL& url) {
 }  // namespace
 
 bool IsSearchEngine(const GURL& url) {
-  const absl::optional<SearchEngineInfo> search_engine_optional =
-      FindSearchEngine(url);
-  if (!search_engine_optional) {
+  if (!FindSearchEngine(url)) {
     return false;
   }
 

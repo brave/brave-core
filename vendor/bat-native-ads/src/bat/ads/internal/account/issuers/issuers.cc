@@ -26,18 +26,7 @@
 namespace ads {
 
 namespace {
-
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
-
-absl::optional<IssuersInfo> ParseJson(const std::string& json) {
-  const absl::optional<IssuersInfo> issuers = JSONReader::ReadIssuers(json);
-  if (!issuers) {
-    return absl::nullopt;
-  }
-
-  return issuers;
-}
-
 }  // namespace
 
 Issuers::Issuers() = default;
@@ -85,7 +74,8 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
     return;
   }
 
-  const absl::optional<IssuersInfo> issuers = ParseJson(url_response.body);
+  const absl::optional<IssuersInfo> issuers =
+      JSONReader::ReadIssuers(url_response.body);
   if (!issuers) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     FailedToFetchIssuers(/* should_retry */ true);

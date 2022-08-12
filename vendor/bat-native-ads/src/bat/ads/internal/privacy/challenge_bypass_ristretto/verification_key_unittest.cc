@@ -25,14 +25,12 @@ TEST(BatAdsVerificationKeyTest, Sign) {
   VerificationKey verification_key = GetVerificationKey();
 
   // Act
-  const absl::optional<VerificationSignature> verification_signature_optional =
+  const absl::optional<VerificationSignature> verification_signature =
       verification_key.Sign(kMessage);
-  ASSERT_TRUE(verification_signature_optional);
-  const VerificationSignature& verification_signature =
-      verification_signature_optional.value();
+  ASSERT_TRUE(verification_signature);
 
   // Assert
-  EXPECT_EQ(GetVerificationSignature(), verification_signature);
+  EXPECT_EQ(GetVerificationSignature(), *verification_signature);
 }
 
 TEST(BatAdsVerificationKeyTest, Verify) {

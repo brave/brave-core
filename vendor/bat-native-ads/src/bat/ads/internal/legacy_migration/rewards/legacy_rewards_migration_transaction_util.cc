@@ -78,14 +78,12 @@ TransactionList GetAllUnreconciledTransactions(
 absl::optional<TransactionList>
 BuildTransactionsForReconciledTransactionsThisMonth(
     const PaymentList& payments) {
-  const absl::optional<PaymentInfo>& payment_optional =
-      GetPaymentForThisMonth(payments);
-  if (!payment_optional) {
+  const absl::optional<PaymentInfo> payment = GetPaymentForThisMonth(payments);
+  if (!payment) {
     return absl::nullopt;
   }
 
-  const PaymentInfo& payment = payment_optional.value();
-  if (payment.balance == 0.0) {
+  if (payment->balance == 0.0) {
     return absl::nullopt;
   }
 
@@ -94,11 +92,11 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   TransactionList reconciled_transactions;
 
   // Add a transaction with the payment balance for this month as the value
-  reconciled_transactions.push_back(BuildTransaction(time, payment.balance));
+  reconciled_transactions.push_back(BuildTransaction(time, payment->balance));
 
   // Add |transaction_count - 1| transactions with a value of 0.0 to migrate ads
   // received this month
-  for (int i = 0; i < payment.transaction_count - 1; i++) {
+  for (int i = 0; i < payment->transaction_count - 1; i++) {
     reconciled_transactions.push_back(BuildTransaction(time,
                                                        /* value */ 0.0));
   }
@@ -109,19 +107,13 @@ BuildTransactionsForReconciledTransactionsThisMonth(
 absl::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(
     const PaymentList& payments) {
-  const absl::optional<PaymentInfo>& payment_optional =
-      GetPaymentForLastMonth(payments);
-  if (!payment_optional) {
-    return absl::nullopt;
-  }
-
-  const PaymentInfo& payment = payment_optional.value();
-  if (payment.balance == 0.0) {
+  const absl::optional<PaymentInfo> payment = GetPaymentForLastMonth(payments);
+  if (!payment || payment->balance == 0.0) {
     return absl::nullopt;
   }
 
   const base::Time time = GetLocalTimeAtBeginningOfLastMonth();
-  return BuildTransaction(time, payment.balance);
+  return BuildTransaction(time, payment->balance);
 }
 
 }  // namespace rewards

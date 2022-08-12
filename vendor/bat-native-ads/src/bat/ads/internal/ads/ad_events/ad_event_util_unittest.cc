@@ -93,7 +93,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
 
   // Assert
   const base::Time expected_last_seen_ad_time = now - base::Hours(6);
-  EXPECT_EQ(expected_last_seen_ad_time, last_seen_ad_time.value());
+  EXPECT_EQ(expected_last_seen_ad_time, *last_seen_ad_time);
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
@@ -178,8 +178,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
 
   // Assert
   const base::Time expected_last_seen_advertiser_time = now - base::Hours(3);
-  EXPECT_EQ(expected_last_seen_advertiser_time,
-            last_seen_advertiser_time.value());
+  EXPECT_EQ(expected_last_seen_advertiser_time, *last_seen_advertiser_time);
 }
 
 }  // namespace ads

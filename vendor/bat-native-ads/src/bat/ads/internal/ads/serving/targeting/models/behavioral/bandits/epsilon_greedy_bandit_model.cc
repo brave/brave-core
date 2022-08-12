@@ -146,8 +146,7 @@ SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
 }
 
 SegmentList ExploitSegments(const EpsilonGreedyBanditArmMap& arms) {
-  const ArmList arm_list = ToArmList(arms);
-  const ArmBucketMap unsorted_buckets = BucketSortArms(arm_list);
+  const ArmBucketMap unsorted_buckets = BucketSortArms(ToArmList(arms));
   const ArmBucketList sorted_buckets = GetSortedBuckets(unsorted_buckets);
   const ArmList top_arms = GetTopArms(sorted_buckets, kTopArmCount);
   const SegmentList segments = ToSegmentList(top_arms);

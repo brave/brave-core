@@ -170,12 +170,12 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       targeting::TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability : *probability_list) {
-        const auto* probability_dict = probability.GetIfDict();
-        if (!probability_dict) {
+        const base::Value::Dict* dict = probability.GetIfDict();
+        if (!dict) {
           continue;
         }
 
-        const std::string* segment = probability_dict->FindString("segment");
+        const std::string* segment = dict->FindString("segment");
         if (!segment) {
           continue;
         }
@@ -210,15 +210,14 @@ std::string ClientInfo::ToJson() {
 }
 
 bool ClientInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> document =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!document.has_value() || !document->is_dict()) {
+  if (!root || !root->is_dict()) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  return FromValue(root->GetDict());
 }
 
 }  // namespace ads

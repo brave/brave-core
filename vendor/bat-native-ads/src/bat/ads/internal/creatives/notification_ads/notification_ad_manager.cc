@@ -431,12 +431,11 @@ void NotificationAdManager::OnLoaded(const bool success,
 }
 
 bool NotificationAdManager::FromJson(const std::string& json) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return false;
   }
-
-  base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = root->GetDict();
 
   if (!GetNotificationsFromDictionary(dict)) {
     return false;

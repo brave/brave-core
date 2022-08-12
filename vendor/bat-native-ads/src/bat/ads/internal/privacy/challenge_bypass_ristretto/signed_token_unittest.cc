@@ -88,14 +88,12 @@ TEST(BatAdsSignedTokenTest, EncodeBase64) {
   SignedToken signed_token(kSignedTokenBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       signed_token.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kSignedTokenBase64, encoded_base64);
+  EXPECT_EQ(kSignedTokenBase64, *encoded_base64);
 }
 
 TEST(BatAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
@@ -103,11 +101,11 @@ TEST(BatAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
   SignedToken signed_token;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       signed_token.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsSignedTokenTest, IsEqual) {

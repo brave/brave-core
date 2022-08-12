@@ -66,26 +66,25 @@ absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& value) {
 }
 
 absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& value) {
-  const base::Value::List* const public_keys_value =
-      value.FindList(kPublicKeysKey);
-  if (!public_keys_value) {
+  const base::Value::List* const list = value.FindList(kPublicKeysKey);
+  if (!list) {
     return absl::nullopt;
   }
 
   PublicKeyMap public_keys;
-  for (const auto& public_key_value : *public_keys_value) {
-    if (!public_key_value.is_dict()) {
+  for (const auto& item : *list) {
+    const base::Value::Dict* dict = item.GetIfDict();
+    if (!dict) {
       return absl::nullopt;
     }
-    const base::Value::Dict& dict = public_key_value.GetDict();
 
-    const std::string* const public_key = dict.FindString(kPublicKeyKey);
+    const std::string* const public_key = dict->FindString(kPublicKeyKey);
     if (!public_key) {
       return absl::nullopt;
     }
 
     const std::string* const associated_value =
-        dict.FindString(kAssociatedValueKey);
+        dict->FindString(kAssociatedValueKey);
     if (!associated_value) {
       return absl::nullopt;
     }
@@ -128,7 +127,7 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
   return list;
 }
 
-IssuerList ValueToIssuers(const base::Value::List& value) {
+absl::optional<IssuerList> ValueToIssuers(const base::Value::List& value) {
   IssuerList issuers;
 
   for (const auto& item : value) {
@@ -137,20 +136,19 @@ IssuerList ValueToIssuers(const base::Value::List& value) {
     }
 
     const base::Value::Dict& dict = item.GetDict();
-
-    const absl::optional<IssuerType> type = ParseIssuerType(dict);
-    if (!type) {
-      continue;
+    const absl::optional<IssuerType> issuer_type = ParseIssuerType(dict);
+    if (!issuer_type) {
+      return absl::nullopt;
     }
-    DCHECK_NE(IssuerType::kUndefined, *type);
+    DCHECK_NE(IssuerType::kUndefined, *issuer_type);
 
     const absl::optional<PublicKeyMap> public_keys = ParsePublicKeys(dict);
     if (!public_keys) {
-      continue;
+      return absl::nullopt;
     }
 
     IssuerInfo issuer;
-    issuer.type = *type;
+    issuer.type = *issuer_type;
     issuer.public_keys = *public_keys;
 
     issuers.push_back(issuer);

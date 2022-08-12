@@ -91,20 +91,18 @@ void EligibleAdsV2::GetEligibleAds(
           return;
         }
 
-        const absl::optional<CreativeInlineContentAdInfo> creative_ad_optional =
+        const absl::optional<CreativeInlineContentAdInfo> creative_ad =
             PredictAd(user_model, ad_events, eligible_creative_ads);
-        if (!creative_ad_optional) {
+        if (!creative_ad) {
           BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
           callback(/* had_opportunity */ true, {});
           return;
         }
-        const CreativeInlineContentAdInfo& creative_ad =
-            creative_ad_optional.value();
 
         BLOG(1, eligible_creative_ads.size() << " eligible ads out of "
                                              << creative_ads.size() << " ads");
 
-        callback(/* had_opportunity */ true, {creative_ad});
+        callback(/* had_opportunity */ true, {*creative_ad});
       });
 }
 
