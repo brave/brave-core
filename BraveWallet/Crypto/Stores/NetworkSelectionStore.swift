@@ -116,10 +116,12 @@ class NetworkSelectionStore: ObservableObject {
     }
   }
   
-  @MainActor func handleDismissAddAccount() async {
-    guard let nextNetwork = nextNetwork else { return }
+  /// Should be called after dismissing create account. Returns true if an account was created and we switched networks.
+  @MainActor func handleDismissAddAccount() async -> Bool {
+    guard let nextNetwork = nextNetwork else { return false }
     // if it errors it's due to no accounts and we don't want to switch to nextNetwork
-    await networkStore.setSelectedChain(nextNetwork)
+    let result = await networkStore.setSelectedChain(nextNetwork)
     self.nextNetwork = nil
+    return result != .selectedChainHasNoAccounts
   }
 }

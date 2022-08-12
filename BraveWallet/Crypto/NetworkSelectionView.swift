@@ -114,7 +114,9 @@ struct NetworkSelectionView: View {
           .navigationViewStyle(.stack)
           .onDisappear {
             Task { @MainActor in
-              await store.handleDismissAddAccount()
+              if await store.handleDismissAddAccount() {
+                presentationMode.dismiss()
+              }
             }
           }
         }

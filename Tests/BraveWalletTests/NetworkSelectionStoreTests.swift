@@ -209,4 +209,77 @@ import BraveShared
     XCTAssertFalse(store.isPresentingNextNetworkAlert, "Expected to set isPresentingNextNetworkAlert to false to hide alert")
     XCTAssertNil(store.nextNetwork, "Expected to reset nextNetwork to nil as user does not want to create an account")
   }
+  
+  func testDismissAddAccount() async {
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    
+    let networkStore = NetworkStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      swapService: swapService
+    )
+    
+    let store = NetworkSelectionStore(networkStore: networkStore)
+    
+    let didSwitchNetworks = await store.handleDismissAddAccount()
+    XCTAssertFalse(didSwitchNetworks, "Expected to not switch networks as no account was created")
+  }
+  
+  func testDismissAddAccountAfterCreation() async {
+    let (_, rpcService, walletService, swapService) = setupServices()
+    
+    var accountInfosDict: [BraveWallet.CoinType: [BraveWallet.AccountInfo]] = [
+      .eth: [.mockEthAccount]
+    ]
+    
+    let keyringService = BraveWallet.TestKeyringService()
+    keyringService._keyringInfo = { keyringId, completion in
+      let accountInfos: [BraveWallet.AccountInfo]
+      switch keyringId {
+      case BraveWallet.CoinType.eth.keyringId:
+        accountInfos = accountInfosDict[.eth, default: []]
+      case BraveWallet.CoinType.sol.keyringId:
+        accountInfos = accountInfosDict[.sol, default: []]
+      case BraveWallet.CoinType.fil.keyringId:
+        accountInfos = accountInfosDict[.fil, default: []]
+      default:
+        accountInfos = []
+      }
+      let keyring: BraveWallet.KeyringInfo = .init(
+        id: keyringId,
+        isKeyringCreated: true,
+        isLocked: false,
+        isBackedUp: false,
+        accountInfos: accountInfos
+      )
+      completion(keyring)
+    }
+    keyringService._addObserver = { _ in }
+    keyringService._isLocked = { $0(false) }
+    
+    let networkStore = NetworkStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      swapService: swapService
+    )
+    
+    let store = NetworkSelectionStore(networkStore: networkStore)
+    
+    let success = await store.selectNetwork(network: .mockSolana)
+    XCTAssertFalse(success, "Expected failure to select network due to no accounts")
+    XCTAssertTrue(store.isPresentingNextNetworkAlert, "Expected to present next network alert")
+    
+    store.handleCreateAccountAlertResponse(shouldCreateAccount: true)
+    
+    XCTAssertFalse(store.isPresentingNextNetworkAlert, "Expected to set isPresentingNextNetworkAlert to false to hide alert")
+    XCTAssertTrue(store.isPresentingAddAccount, "Expected to set isPresentingAddAccount to true to present add network")
+    
+    // simulate an account created
+    accountInfosDict[.sol] = [.mockSolAccount]
+    
+    let didSwitchNetworks = await store.handleDismissAddAccount()
+    XCTAssertTrue(didSwitchNetworks, "Expected to switch networks as an account was created")
+  }
 }
