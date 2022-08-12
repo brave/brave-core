@@ -4030,7 +4030,8 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest, MigrateWithUnlock) {
   ValidateImportedAccountsForUnlockedKeyring(&service);
 }
 
-TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest, MigrateWithRestore) {
+TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest,
+       MigrateWithRestoreDoingResume) {
   // Setup prefs with legacy iterations count value.
   KeyringService::GetPbkdf2IterationsForTesting() = 100000;
   SetupKeyring();
