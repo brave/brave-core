@@ -124,6 +124,7 @@ BravePrefProvider::~BravePrefProvider() = default;
 
 void BravePrefProvider::ShutdownOnUIThread() {
   RemoveObserver(this);
+  pref_change_registrar_.RemoveAll();
   PrefProvider::ShutdownOnUIThread();
 }
 
@@ -182,12 +183,15 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 
     // We need to bind PostTask to break the stack trace because if we get there
     // from the sync the ChangeProcessor will ignore this update.
-    pref_change_registrar_.Add(
-        info->website_settings_info()->pref_name(),
-        base::BindPostTask(
-            base::SequencedTaskRunnerHandle::Get(),
-            base::BindRepeating(&BravePrefProvider::EnsureNoWildcardEntries,
-                                base::Unretained(this), content_type)));
+    if (!pref_change_registrar_.IsObserved(
+            info->website_settings_info()->pref_name())) {
+      pref_change_registrar_.Add(
+          info->website_settings_info()->pref_name(),
+          base::BindPostTask(
+              base::SequencedTaskRunnerHandle::Get(),
+              base::BindRepeating(&BravePrefProvider::EnsureNoWildcardEntries,
+                                  weak_factory_.GetWeakPtr(), content_type)));
+    }
     EnsureNoWildcardEntries(content_type);
   }
 
