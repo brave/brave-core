@@ -38,8 +38,7 @@ def get_sign_cmd(file):
 
 
 def run_cmd(cmd):
-    p = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE)  # pylint: disable=consider-using-with
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     for line in p.stdout:
         print(line)
     p.wait()
