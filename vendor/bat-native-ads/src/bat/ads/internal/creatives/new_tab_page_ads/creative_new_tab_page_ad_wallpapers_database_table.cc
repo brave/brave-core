@@ -133,7 +133,7 @@ void CreativeNewTabPageAdWallpapers::MigrateToV24(
 
   DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE creative_new_tab_page_ad_wallpapers "
       "(creative_instance_id TEXT NOT NULL, "
       "image_url TEXT NOT NULL, "

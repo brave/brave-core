@@ -124,7 +124,7 @@ void Campaigns::MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "campaigns");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE campaigns "
       "(campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
       "start_at_timestamp TIMESTAMP NOT NULL, "

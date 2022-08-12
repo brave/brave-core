@@ -32,14 +32,14 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
 
   void MaybeFetch();
 
-  std::string GetSubdivisionCode() const;
+  const std::string& GetSubdivisionCode() const;
 
  private:
   void OnAutoDetectedSubdivisionTargetingCodePrefChanged();
   void OnSubdivisionTargetingCodePrefChanged();
 
-  std::string GetLazyAutoDetectedSubdivisionCode() const;
-  std::string GetLazySubdivisionCode() const;
+  const std::string& GetLazyAutoDetectedSubdivisionCode() const;
+  const std::string& GetLazySubdivisionCode() const;
 
   bool IsSupportedLocale(const std::string& locale) const;
   void MaybeAllowForLocale(const std::string& locale) const;

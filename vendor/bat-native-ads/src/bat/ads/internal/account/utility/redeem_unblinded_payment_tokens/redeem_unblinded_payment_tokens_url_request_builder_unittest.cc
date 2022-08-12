@@ -23,7 +23,7 @@ namespace ads {
 namespace {
 
 privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
-  const std::vector<std::string>& unblinded_payment_tokens_base64 = {
+  const std::vector<std::string> unblinded_payment_tokens_base64 = {
       "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuY"
       "L5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
@@ -94,7 +94,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
       "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a56615650"
       "33cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(7);
 
   RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
@@ -140,7 +140,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
       "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a56615650"
       "33cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(7);
 
   RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(

@@ -19,8 +19,8 @@ class UnblindedPaymentTokens final {
   UnblindedPaymentTokens(const UnblindedPaymentTokens&) = delete;
   UnblindedPaymentTokens& operator=(const UnblindedPaymentTokens&) = delete;
 
-  UnblindedPaymentTokenInfo GetToken() const;
-  UnblindedPaymentTokenList GetAllTokens() const;
+  const UnblindedPaymentTokenInfo& GetToken() const;
+  const UnblindedPaymentTokenList& GetAllTokens() const;
   base::Value::List GetTokensAsList();
 
   void SetTokens(const UnblindedPaymentTokenList& unblinded_payment_tokens);

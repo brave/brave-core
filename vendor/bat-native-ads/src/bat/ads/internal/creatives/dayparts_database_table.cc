@@ -121,7 +121,7 @@ void Dayparts::MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "dayparts");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE dayparts "
       "(campaign_id TEXT NOT NULL, "
       "dow TEXT NOT NULL, "

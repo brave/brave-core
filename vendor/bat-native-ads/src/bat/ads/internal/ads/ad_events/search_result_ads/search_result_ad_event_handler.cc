@@ -63,7 +63,7 @@ void EventHandler::FireEvent(
     TriggerSearchResultAdEventCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   if (!ad.IsValid()) {
     BLOG(1, "Failed to fire event due to an invalid search result ad");
@@ -111,14 +111,14 @@ void EventHandler::FireEvent(
 void EventHandler::FireViewedEvent(
     const mojom::SearchResultAdInfoPtr& ad_mojom,
     TriggerSearchResultAdEventCallback callback) const {
-  const DepositInfo& deposit = BuildDeposit(ad_mojom);
+  const DepositInfo deposit = BuildDeposit(ad_mojom);
 
   ConversionList conversions;
   if (const auto conversion = BuildConversion(ad_mojom)) {
     conversions.push_back(*conversion);
   }
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   database::table::Deposits deposits_database_table;
   deposits_database_table.Save(deposit, [=](const bool success) {

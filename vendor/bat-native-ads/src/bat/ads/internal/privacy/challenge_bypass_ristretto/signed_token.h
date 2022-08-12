@@ -34,7 +34,12 @@ class SignedToken {
 
   bool has_value() const { return signed_token_.has_value(); }
 
-  challenge_bypass_ristretto::SignedToken get() const {
+  challenge_bypass_ristretto::SignedToken& get() {
+    DCHECK(signed_token_);
+    return *signed_token_;
+  }
+
+  const challenge_bypass_ristretto::SignedToken& get() const {
     DCHECK(signed_token_);
     return *signed_token_;
   }

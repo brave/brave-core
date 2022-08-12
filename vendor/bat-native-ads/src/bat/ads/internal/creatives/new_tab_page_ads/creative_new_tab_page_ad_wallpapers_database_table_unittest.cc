@@ -21,8 +21,7 @@ TEST(BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
   const std::string& table_name = database_table.GetTableName();
 
   // Assert
-  const std::string& expected_table_name =
-      "creative_new_tab_page_ad_wallpapers";
+  const std::string expected_table_name = "creative_new_tab_page_ad_wallpapers";
   EXPECT_EQ(expected_table_name, table_name);
 }
 

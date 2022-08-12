@@ -113,19 +113,20 @@ bool ClientStateManager::HasInstance() {
   return !!g_client_instance;
 }
 
-FilteredAdvertiserList ClientStateManager::GetFilteredAdvertisers() const {
+const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()
+    const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.filtered_advertisers;
 }
 
-FilteredCategoryList ClientStateManager::GetFilteredCategories() const {
+const FilteredCategoryList& ClientStateManager::GetFilteredCategories() const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.filtered_categories;
 }
 
-FlaggedAdList ClientStateManager::GetFlaggedAds() const {
+const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.flagged_ads;
@@ -512,7 +513,7 @@ void ClientStateManager::RemoveAllHistory() {
   Save();
 }
 
-std::string ClientStateManager::GetVersionCode() const {
+const std::string& ClientStateManager::GetVersionCode() const {
   DCHECK(is_initialized_);
 
   return client_->version_code;

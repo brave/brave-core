@@ -49,7 +49,7 @@ bool SplitTestExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string SplitTestExclusionRule::GetLastMessage() const {
+const std::string& SplitTestExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

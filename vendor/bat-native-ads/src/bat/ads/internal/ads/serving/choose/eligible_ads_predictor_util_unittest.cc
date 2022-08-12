@@ -49,7 +49,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
 
   const AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor =
       creative_ad_predictors.at(creative_ad_2.creative_instance_id);
-  const SegmentList& expected_segments = {"foo-bar2", "foo-bar4"};
+  const SegmentList expected_segments = {"foo-bar2", "foo-bar4"};
   EXPECT_EQ(expected_segments, ad_predictor.segments);
 }
 

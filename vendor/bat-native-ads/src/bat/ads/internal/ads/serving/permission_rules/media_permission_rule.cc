@@ -29,7 +29,7 @@ bool MediaPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string MediaPermissionRule::GetLastMessage() const {
+const std::string& MediaPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

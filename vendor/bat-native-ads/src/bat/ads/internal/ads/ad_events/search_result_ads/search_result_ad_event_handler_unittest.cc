@@ -318,9 +318,9 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
-  const AdEventInfo& ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                             ConfirmationType::kViewed, Now());
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+  const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_hour = features::GetMaximumSearchResultAdsPerHour();
   FireAdEvents(ad_event, ads_per_hour - 1);
@@ -343,9 +343,9 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
-  const AdEventInfo& ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                             ConfirmationType::kViewed, Now());
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+  const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_hour = features::GetMaximumSearchResultAdsPerHour();
   FireAdEvents(ad_event, ads_per_hour);
@@ -366,9 +366,9 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
-  const AdEventInfo& ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                             ConfirmationType::kViewed, Now());
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+  const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_day = features::GetMaximumSearchResultAdsPerDay();
 
@@ -394,9 +394,9 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
-  const AdEventInfo& ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                             ConfirmationType::kViewed, Now());
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+  const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_day = features::GetMaximumSearchResultAdsPerDay();
 

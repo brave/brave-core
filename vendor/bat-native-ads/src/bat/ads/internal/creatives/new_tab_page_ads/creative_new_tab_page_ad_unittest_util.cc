@@ -26,7 +26,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
   CreativeNewTabPageAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
-    const CreativeNewTabPageAdInfo& creative_ad = BuildCreativeNewTabPageAd();
+    const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
     creative_ads.push_back(creative_ad);
   }
 
@@ -34,7 +34,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
 }
 
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd() {
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
   CreativeNewTabPageAdInfo creative_new_tab_page_ad(creative_ad);
 
   creative_new_tab_page_ad.company_name = "Test Ad Company Name";

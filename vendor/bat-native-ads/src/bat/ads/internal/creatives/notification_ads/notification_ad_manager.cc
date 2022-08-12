@@ -209,7 +209,7 @@ void NotificationAdManager::RemoveAllAfterUpdate() {
   const std::string current_version_code =
       base::android::BuildInfo::GetInstance()->package_version_code();
 
-  const std::string last_version_code =
+  const std::string& last_version_code =
       ClientStateManager::GetInstance()->GetVersionCode();
 
   if (last_version_code == current_version_code) {

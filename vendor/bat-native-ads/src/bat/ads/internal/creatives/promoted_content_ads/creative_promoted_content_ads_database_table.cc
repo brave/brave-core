@@ -105,7 +105,7 @@ CreativePromotedContentAdMap GroupCreativeAdsFromResponse(
   CreativePromotedContentAdMap creative_ads;
 
   for (const auto& record : response->result->get_records()) {
-    const CreativePromotedContentAdInfo& creative_ad =
+    const CreativePromotedContentAdInfo creative_ad =
         GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
@@ -140,12 +140,12 @@ CreativePromotedContentAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
-  const CreativePromotedContentAdMap& grouped_creative_ads =
+  const CreativePromotedContentAdMap grouped_creative_ads =
       GroupCreativeAdsFromResponse(std::move(response));
 
   CreativePromotedContentAdList creative_ads;
   for (const auto& grouped_creative_ad : grouped_creative_ads) {
-    const CreativePromotedContentAdInfo& creative_ad =
+    const CreativePromotedContentAdInfo creative_ad =
         grouped_creative_ad.second;
     creative_ads.push_back(creative_ad);
   }
@@ -175,7 +175,7 @@ void CreativePromotedContentAds::Save(
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  const std::vector<CreativePromotedContentAdList>& batches =
+  const std::vector<CreativePromotedContentAdList> batches =
       SplitVector(creative_ads, batch_size_);
 
   for (const auto& batch : batches) {
@@ -215,7 +215,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cpca.creative_instance_id, "
       "cpca.creative_set_id, "
@@ -303,7 +303,7 @@ void CreativePromotedContentAds::GetForSegments(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cpca.creative_instance_id, "
       "cpca.creative_set_id, "
@@ -394,7 +394,7 @@ void CreativePromotedContentAds::GetForSegments(
 
 void CreativePromotedContentAds::GetAll(
     GetCreativePromotedContentAdsCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "cpca.creative_instance_id, "
       "cpca.creative_set_id, "
@@ -540,7 +540,7 @@ void CreativePromotedContentAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativePromotedContentAdList& creative_ads =
+  const CreativePromotedContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
   if (creative_ads.size() != 1) {
@@ -549,7 +549,7 @@ void CreativePromotedContentAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativePromotedContentAdInfo& creative_ad = creative_ads.front();
+  const CreativePromotedContentAdInfo creative_ad = creative_ads.front();
 
   callback(/* success */ true, creative_instance_id, creative_ad);
 }
@@ -565,7 +565,7 @@ void CreativePromotedContentAds::OnGetForSegments(
     return;
   }
 
-  const CreativePromotedContentAdList& creative_ads =
+  const CreativePromotedContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
   callback(/* success */ true, segments, creative_ads);
@@ -581,10 +581,10 @@ void CreativePromotedContentAds::OnGetAll(
     return;
   }
 
-  const CreativePromotedContentAdList& creative_ads =
+  const CreativePromotedContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
-  const SegmentList& segments = GetSegments(creative_ads);
+  const SegmentList segments = GetSegments(creative_ads);
 
   callback(/* success */ true, segments, creative_ads);
 }
@@ -595,7 +595,7 @@ void CreativePromotedContentAds::MigrateToV24(
 
   DropTable(transaction, "creative_promoted_content_ads");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE creative_promoted_content_ads "
       "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
       "ON CONFLICT REPLACE, "

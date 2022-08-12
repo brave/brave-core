@@ -34,7 +34,7 @@ bool TotalMaxExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string TotalMaxExclusionRule::GetLastMessage() const {
+const std::string& TotalMaxExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

@@ -47,7 +47,7 @@ void AdEventHistory::RecordForId(const std::string& id,
   DCHECK(!ad_type.empty());
   DCHECK(!confirmation_type.empty());
 
-  const std::string& type_id = GetTypeId(ad_type, confirmation_type);
+  const std::string type_id = GetTypeId(ad_type, confirmation_type);
 
   history_[id][type_id].push_back(time);
 
@@ -60,7 +60,7 @@ std::vector<base::Time> AdEventHistory::Get(
   DCHECK(!ad_type.empty());
   DCHECK(!confirmation_type.empty());
 
-  const std::string& type_id = GetTypeId(ad_type, confirmation_type);
+  const std::string type_id = GetTypeId(ad_type, confirmation_type);
 
   std::vector<base::Time> timestamps;
 

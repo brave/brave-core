@@ -32,7 +32,7 @@ bool DoNotDisturbPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string DoNotDisturbPermissionRule::GetLastMessage() const {
+const std::string& DoNotDisturbPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

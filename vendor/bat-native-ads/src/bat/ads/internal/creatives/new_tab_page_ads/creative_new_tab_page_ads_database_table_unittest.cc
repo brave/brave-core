@@ -38,13 +38,13 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        SaveCreativeNewTabPageAds) {
   // Arrange
-  const CreativeNewTabPageAdList& creative_ads = BuildCreativeNewTabPageAds(2);
+  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(2);
 
   // Act
   SaveCreativeAds(creative_ads);
 
   // Assert
-  const CreativeNewTabPageAdList& expected_creative_ads = creative_ads;
+  const CreativeNewTabPageAdList expected_creative_ads = creative_ads;
 
   database_table.GetAll(
       [&expected_creative_ads](const bool success, const SegmentList& segments,
@@ -59,13 +59,13 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   database_table.SetBatchSize(2);
 
-  const CreativeNewTabPageAdList& creative_ads = BuildCreativeNewTabPageAds(3);
+  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(3);
 
   // Act
   SaveCreativeAds(creative_ads);
 
   // Assert
-  const CreativeNewTabPageAdList& expected_creative_ads = creative_ads;
+  const CreativeNewTabPageAdList expected_creative_ads = creative_ads;
 
   database_table.GetAll(
       [&expected_creative_ads](const bool success, const SegmentList& segments,
@@ -125,7 +125,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   expected_creative_ads.push_back(creative_ad_1);
   expected_creative_ads.push_back(creative_ad_3);
 
-  const SegmentList& segments = {"food & drink"};
+  const SegmentList segments = {"food & drink"};
 
   database_table.GetForSegments(
       segments,
@@ -141,10 +141,10 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  const CreativeNewTabPageAdInfo& creative_ad_1 = BuildCreativeNewTabPageAd();
+  const CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
   creative_ads.push_back(creative_ad_1);
 
-  const CreativeNewTabPageAdInfo& creative_ad_2 = BuildCreativeNewTabPageAd();
+  const CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
   creative_ads.push_back(creative_ad_2);
 
   SaveCreativeAds(creative_ads);
@@ -152,7 +152,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeNewTabPageAdInfo& expected_creative_ad = creative_ad_1;
+  const CreativeNewTabPageAdInfo expected_creative_ad = creative_ad_1;
 
   database_table.GetForCreativeInstanceId(
       expected_creative_ad.creative_instance_id,
@@ -167,7 +167,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForNonExistentCreativeInstanceId) {
   // Arrange
-  const CreativeNewTabPageAdList& creative_ads = BuildCreativeNewTabPageAds(1);
+  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(1);
 
   SaveCreativeAds(creative_ads);
 
@@ -185,14 +185,14 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForEmptySegments) {
   // Arrange
-  const CreativeNewTabPageAdList& creative_ads = BuildCreativeNewTabPageAds(1);
+  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(1);
 
   SaveCreativeAds(creative_ads);
 
   // Act
 
   // Assert
-  const SegmentList& segments = {""};
+  const SegmentList segments = {""};
 
   database_table.GetForSegments(
       segments, [](const bool success, const SegmentList& segments,
@@ -205,14 +205,14 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForNonExistentSegment) {
   // Arrange
-  const CreativeNewTabPageAdList& creative_ads = BuildCreativeNewTabPageAds(1);
+  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(1);
 
   SaveCreativeAds(creative_ads);
 
   // Act
 
   // Assert
-  const SegmentList& segments = {"FOOBAR"};
+  const SegmentList segments = {"FOOBAR"};
 
   database_table.GetForSegments(
       segments, [](const bool success, const SegmentList& segments,
@@ -248,7 +248,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   expected_creative_ads.push_back(creative_ad_1);
   expected_creative_ads.push_back(creative_ad_2);
 
-  const SegmentList& segments = {creative_ad_1.segment, creative_ad_2.segment};
+  const SegmentList segments = {creative_ad_1.segment, creative_ad_2.segment};
 
   database_table.GetForSegments(
       segments,
@@ -312,7 +312,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   CreativeNewTabPageAdList expected_creative_ads;
   expected_creative_ads.push_back(creative_ad_2);
 
-  const SegmentList& segments = {"FoOd & DrInK"};
+  const SegmentList segments = {"FoOd & DrInK"};
 
   database_table.GetForSegments(
       segments,
@@ -330,7 +330,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, TableName) {
   const std::string& table_name = database_table.GetTableName();
 
   // Assert
-  const std::string& expected_table_name = "creative_new_tab_page_ads";
+  const std::string expected_table_name = "creative_new_tab_page_ads";
   EXPECT_EQ(expected_table_name, table_name);
 }
 

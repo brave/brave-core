@@ -99,7 +99,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       }
 
       // Segments
-      const auto& segments_node = creative_set_node["segments"].GetArray();
+      const auto segments_node = creative_set_node["segments"].GetArray();
       if (segments_node.Size() == 0) {
         continue;
       }
@@ -112,7 +112,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       }
 
       // Oses
-      const auto& oses_node = creative_set_node["oses"].GetArray();
+      const auto oses_node = creative_set_node["oses"].GetArray();
       for (const auto& os_node : oses_node) {
         CatalogOsInfo os;
         os.code = os_node["code"].GetString();
@@ -121,7 +121,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       }
 
       // Conversions
-      const auto& conversions = creative_set_node["conversions"].GetArray();
+      const auto conversions = creative_set_node["conversions"].GetArray();
       for (const auto& conversion_node : conversions) {
         ConversionInfo conversion;
         conversion.creative_set_id = creative_set.creative_set_id;
@@ -153,7 +153,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
             creative_node["creativeInstanceId"].GetString();
 
         // Type
-        const auto& type = creative_node["type"].GetObject();
+        const auto type = creative_node["type"].GetObject();
 
         std::string code = type["code"].GetString();
         if (code == "notification_all_v1") {
@@ -167,7 +167,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetUint64();
 
           // Payload
-          const auto& payload = creative_node["payload"].GetObject();
+          const auto payload = creative_node["payload"].GetObject();
           creative.payload.body = payload["body"].GetString();
           creative.payload.title = payload["title"].GetString();
           creative.payload.target_url = GURL(payload["targetUrl"].GetString());
@@ -190,7 +190,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetUint64();
 
           // Payload
-          const auto& payload = creative_node["payload"].GetObject();
+          const auto payload = creative_node["payload"].GetObject();
           creative.payload.title = payload["title"].GetString();
           creative.payload.description = payload["description"].GetString();
           creative.payload.image_url = GURL(payload["imageUrl"].GetString());
@@ -222,8 +222,8 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetUint64();
 
           // Payload
-          const auto& payload = creative_node["payload"].GetObject();
-          const auto& logo = payload["logo"].GetObject();
+          const auto payload = creative_node["payload"].GetObject();
+          const auto logo = payload["logo"].GetObject();
 
           creative.payload.company_name = logo["companyName"].GetString();
           creative.payload.image_url = GURL(logo["imageUrl"].GetString());
@@ -241,7 +241,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
             CatalogNewTabPageAdWallpaperInfo wallpaper;
             wallpaper.image_url = GURL(item["imageUrl"].GetString());
 
-            const auto& focal_point = item["focalPoint"].GetObject();
+            const auto focal_point = item["focalPoint"].GetObject();
             wallpaper.focal_point.x = focal_point["x"].GetInt();
             wallpaper.focal_point.y = focal_point["y"].GetInt();
 
@@ -266,7 +266,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetUint64();
 
           // Payload
-          const auto& payload = creative_node["payload"].GetObject();
+          const auto payload = creative_node["payload"].GetObject();
           creative.payload.title = payload["title"].GetString();
           creative.payload.description = payload["description"].GetString();
           creative.payload.target_url = GURL(payload["feed"].GetString());

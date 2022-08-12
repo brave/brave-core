@@ -34,7 +34,7 @@ bool PerDayExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string PerDayExclusionRule::GetLastMessage() const {
+const std::string& PerDayExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

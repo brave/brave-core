@@ -40,7 +40,7 @@ class ConfirmationStateManager final {
   std::string ToJson();
   bool FromJson(const std::string& json);
 
-  ConfirmationList GetFailedConfirmations() const;
+  const ConfirmationList& GetFailedConfirmations() const;
   void AppendFailedConfirmation(const ConfirmationInfo& confirmation);
   bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
   void reset_failed_confirmations() { failed_confirmations_ = {}; }

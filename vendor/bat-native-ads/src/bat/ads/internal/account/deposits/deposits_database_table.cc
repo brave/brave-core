@@ -119,7 +119,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "creative_instance_id, "
       "value, "
@@ -149,7 +149,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) {
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE DATETIME('now') >= DATETIME(expire_at, 'unixepoch')",
       GetTableName().c_str());
@@ -245,7 +245,7 @@ void Deposits::OnGetForCreativeInstanceId(
 void Deposits::MigrateToV24(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE IF NOT EXISTS deposits "
       "(creative_instance_id TEXT NOT NULL, "
       "value DOUBLE NOT NULL, "

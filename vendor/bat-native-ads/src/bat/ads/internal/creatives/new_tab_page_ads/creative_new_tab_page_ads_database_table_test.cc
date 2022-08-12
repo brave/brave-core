@@ -38,7 +38,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const SegmentList& segments = {"technology & computing"};
+  const SegmentList segments = {"technology & computing"};
 
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(

@@ -42,7 +42,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   processor.Process(text);
 
   // Assert
-  const targeting::TextClassificationProbabilityList list =
+  const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 
@@ -56,7 +56,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   processor.Process(text);
 
   // Assert
-  const targeting::TextClassificationProbabilityList list =
+  const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 
@@ -69,7 +69,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const targeting::TextClassificationProbabilityList list =
+  const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 
@@ -83,7 +83,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
   processor.Process(text);
 
   // Assert
-  const targeting::TextClassificationProbabilityList list =
+  const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 
@@ -104,7 +104,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
   processor.Process(text_3);
 
   // Assert
-  const targeting::TextClassificationProbabilityList list =
+  const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 

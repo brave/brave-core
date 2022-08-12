@@ -38,7 +38,7 @@ bool PerHourExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string PerHourExclusionRule::GetLastMessage() const {
+const std::string& PerHourExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

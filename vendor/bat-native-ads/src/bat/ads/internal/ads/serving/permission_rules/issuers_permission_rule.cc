@@ -23,7 +23,7 @@ bool IssuersPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string IssuersPermissionRule::GetLastMessage() const {
+const std::string& IssuersPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

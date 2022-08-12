@@ -77,7 +77,7 @@ CreativeAdMap GroupCreativeAdsFromResponse(
   CreativeAdMap creative_ads;
 
   for (const auto& record : response->result->get_records()) {
-    const CreativeAdInfo& creative_ad = GetFromRecord(record.get());
+    const CreativeAdInfo creative_ad = GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
     if (iter == creative_ads.end()) {
@@ -111,12 +111,12 @@ CreativeAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
-  const CreativeAdMap& grouped_creative_ads =
+  const CreativeAdMap grouped_creative_ads =
       GroupCreativeAdsFromResponse(std::move(response));
 
   CreativeAdList creative_ads;
   for (const auto& grouped_creative_ad : grouped_creative_ads) {
-    const CreativeAdInfo& creative_ad = grouped_creative_ad.second;
+    const CreativeAdInfo creative_ad = grouped_creative_ad.second;
     creative_ads.push_back(creative_ad);
   }
 
@@ -164,7 +164,7 @@ void CreativeAds::GetForCreativeInstanceId(
     return;
   }
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "SELECT "
       "creative_instance_id, "
       "conversion, "
@@ -260,7 +260,7 @@ void CreativeAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativeAdList& creative_ads =
+  const CreativeAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
   if (creative_ads.size() != 1) {
@@ -269,7 +269,7 @@ void CreativeAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativeAdInfo& creative_ad = creative_ads.front();
+  const CreativeAdInfo creative_ad = creative_ads.front();
 
   callback(/* success */ true, creative_instance_id, creative_ad);
 }
@@ -279,7 +279,7 @@ void CreativeAds::MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "creative_ads");
 
-  const std::string& query =
+  const std::string query =
       "CREATE TABLE creative_ads "
       "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
       "ON CONFLICT REPLACE, "

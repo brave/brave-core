@@ -28,7 +28,11 @@ class VerificationKey {
   VerificationKey& operator=(const VerificationKey& verification_key);
   ~VerificationKey();
 
-  challenge_bypass_ristretto::VerificationKey get() const {
+  challenge_bypass_ristretto::VerificationKey& get() {
+    return verification_key_;
+  }
+
+  const challenge_bypass_ristretto::VerificationKey& get() const {
     return verification_key_;
   }
 

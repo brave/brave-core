@@ -40,7 +40,7 @@ bool DismissedExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string DismissedExclusionRule::GetLastMessage() const {
+const std::string& DismissedExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

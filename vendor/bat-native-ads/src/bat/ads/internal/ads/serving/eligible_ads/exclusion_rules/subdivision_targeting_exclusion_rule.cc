@@ -77,7 +77,7 @@ bool SubdivisionTargetingExclusionRule::ShouldExclude(
   return false;
 }
 
-std::string SubdivisionTargetingExclusionRule::GetLastMessage() const {
+const std::string& SubdivisionTargetingExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 
@@ -91,7 +91,7 @@ bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     return !DoesAdTargetSubdivision(creative_ad);
   }
 
-  const std::string subdivision_code =
+  const std::string& subdivision_code =
       subdivision_targeting_->GetSubdivisionCode();
   if (subdivision_code.empty()) {
     return false;
