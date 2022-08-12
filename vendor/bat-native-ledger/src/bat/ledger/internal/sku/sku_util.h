@@ -16,8 +16,6 @@ namespace sku {
 
 std::string GetBraveDestination(const std::string& wallet_type);
 
-std::string GetAnonCardDestination();
-
 std::string GetUpholdDestination();
 
 std::string GetGeminiDestination();

@@ -29,16 +29,12 @@ ledger::type::SKUTransactionType GetTransactionTypeFromWalletType(
     return ledger::type::SKUTransactionType::GEMINI;
   }
 
-  if (wallet_type == ledger::constant::kWalletAnonymous) {
-    return ledger::type::SKUTransactionType::ANONYMOUS_CARD;
-  }
-
   if (wallet_type == ledger::constant::kWalletUnBlinded) {
     return ledger::type::SKUTransactionType::TOKENS;
   }
 
   NOTREACHED();
-  return ledger::type::SKUTransactionType::ANONYMOUS_CARD;
+  return ledger::type::SKUTransactionType::TOKENS;
 }
 
 }  // namespace
@@ -186,8 +182,7 @@ void SKUTransaction::SendExternalTransaction(
 
   switch (transaction.type) {
     case type::SKUTransactionType::NONE:
-    case type::SKUTransactionType::TOKENS:
-    case type::SKUTransactionType::ANONYMOUS_CARD: {
+    case type::SKUTransactionType::TOKENS: {
       NOTREACHED();
       return;
     }

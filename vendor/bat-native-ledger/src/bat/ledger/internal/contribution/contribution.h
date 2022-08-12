@@ -16,7 +16,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/contribution/contribution_ac.h"
-#include "bat/ledger/internal/contribution/contribution_anon_card.h"
 #include "bat/ledger/internal/contribution/contribution_external_wallet.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
 #include "bat/ledger/internal/contribution/contribution_sku.h"
@@ -174,7 +173,6 @@ class Contribution {
   std::unique_ptr<ContributionAC> ac_;
   std::unique_ptr<ContributionTip> tip_;
   std::unique_ptr<ContributionExternalWallet> external_wallet_;
-  std::unique_ptr<ContributionAnonCard> anon_card_;
   base::OneShotTimer last_reconcile_timer_;
   std::map<std::string, base::OneShotTimer> retry_timers_;
   base::OneShotTimer queue_timer_;

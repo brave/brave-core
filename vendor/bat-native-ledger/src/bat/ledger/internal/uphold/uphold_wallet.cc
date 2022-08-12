@@ -208,77 +208,14 @@ void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
     return std::move(callback).Run(type::Result::CONTINUE);
   }
 
-  GetAnonFunds(base::BindOnce(&UpholdWallet::OnGetAnonFunds,
-                              base::Unretained(this), id, std::move(callback)));
+  promotion_server_->post_claim_uphold()->Request(
+      id, base::BindOnce(&UpholdWallet::OnClaimWallet, base::Unretained(this),
+                         std::move(callback), id));
 }
 
-void UpholdWallet::GetAnonFunds(
-    endpoint::promotion::GetWalletBalanceCallback callback) const {
-  // if we don't have user funds in anon card anymore
-  // we can skip balance server ping
-  if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
-    return std::move(callback).Run(type::Result::LEDGER_OK,
-                                   type::Balance::New());
-  }
-
-  const auto rewards_wallet = ledger_->wallet()->GetWallet();
-  if (!rewards_wallet) {
-    BLOG(1, "Rewards wallet is null!");
-    ledger_->state()->SetFetchOldBalanceEnabled(false);
-    return std::move(callback).Run(type::Result::LEDGER_OK,
-                                   type::Balance::New());
-  }
-
-  if (rewards_wallet->payment_id.empty()) {
-    BLOG(0, "Payment ID is empty!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
-  }
-
-  promotion_server_->get_wallet_balance()->Request(std::move(callback));
-}
-
-void UpholdWallet::OnGetAnonFunds(const std::string& id,
-                                  ledger::ResultCallback callback,
-                                  const type::Result result,
-                                  type::BalancePtr balance) const {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
-  if (!uphold_wallet) {
-    BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
-  }
-
-  if (uphold_wallet->status != type::WalletStatus::PENDING) {
-    return std::move(callback).Run(type::Result::LEDGER_OK);
-  }
-
-  CheckWalletState(uphold_wallet.get());
-  DCHECK(!id.empty());
-
-  if (result != type::Result::LEDGER_OK || !balance) {
-    BLOG(0, "Couldn't get anonymous funds!");
-    return std::move(callback).Run(type::Result::CONTINUE);
-  }
-
-  if (balance->user_funds == 0.0) {  // == floating-point comparison!
-    ledger_->state()->SetFetchOldBalanceEnabled(false);
-  }
-
-  LinkWallet(balance->user_funds, id,
-             base::BindOnce(&UpholdWallet::OnLinkWallet, base::Unretained(this),
-                            std::move(callback)));
-}
-
-void UpholdWallet::LinkWallet(
-    double user_funds,
-    const std::string& id,
-    ledger::endpoint::promotion::PostClaimUpholdCallback callback) const {
-  promotion_server_->post_claim_uphold()->Request(user_funds, id,
-                                                  std::move(callback));
-}
-
-void UpholdWallet::OnLinkWallet(ledger::ResultCallback callback,
-                                type::Result result,
-                                const std::string& id) const {
+void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
+                                 const std::string& id,
+                                 type::Result result) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");

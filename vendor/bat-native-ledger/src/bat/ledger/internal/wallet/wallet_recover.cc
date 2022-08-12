@@ -18,7 +18,6 @@
 
 using std::placeholders::_1;
 using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace ledger {
 namespace wallet {
@@ -70,13 +69,8 @@ void WalletRecover::Start(const std::string& pass_phrase,
   const std::string public_key_hex =
       util::Security::GetPublicKeyHexFromSeed(new_seed);
 
-  auto url_callback = std::bind(&WalletRecover::OnRecover,
-      this,
-      _1,
-      _2,
-      _3,
-      new_seed,
-      callback);
+  auto url_callback =
+      std::bind(&WalletRecover::OnRecover, this, _1, _2, new_seed, callback);
 
   promotion_server_->get_recover_wallet()->Request(
       public_key_hex,
@@ -85,7 +79,6 @@ void WalletRecover::Start(const std::string& pass_phrase,
 
 void WalletRecover::OnRecover(type::Result result,
                               const std::string& payment_id,
-                              bool legacy_wallet,
                               const std::vector<uint8_t>& new_seed,
                               ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
@@ -105,9 +98,6 @@ void WalletRecover::OnRecover(type::Result result,
 
   ledger_->state()->SetPromotionLastFetchStamp(0);
   ledger_->state()->SetPromotionCorruptedMigrated(true);
-  if (legacy_wallet) {
-    ledger_->state()->SetFetchOldBalanceEnabled(true);
-  }
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
   ledger_->database()->SaveEventLog(log::kWalletRecovered, payment_id);
   callback(type::Result::LEDGER_OK);

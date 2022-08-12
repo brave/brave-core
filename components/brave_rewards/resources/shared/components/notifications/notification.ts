@@ -11,7 +11,6 @@ export type NotificationType =
   'monthly-tip-completed' |
   'monthly-contribution-failed' |
   'grant-available' |
-  'backup-wallet' |
   'pending-publisher-verified' |
   'pending-tip-failed' |
   'external-wallet-disconnected'
@@ -55,7 +54,6 @@ export interface ExternalWalletDisconnectedNotification extends Notification {
 export type NotificationActionType =
   'open-link' |
   'claim-grant' |
-  'backup-wallet' |
   'add-funds' |
   'reconnect-external-wallet'
 

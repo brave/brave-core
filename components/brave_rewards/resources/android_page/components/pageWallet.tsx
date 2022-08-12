@@ -55,11 +55,6 @@ class PageWallet extends React.Component<Props, State> {
     return this.props.actions
   }
 
-  hasUserFunds () {
-    const { balance } = this.props.rewardsData
-    return balance && balance.wallets.anonymous > 0
-  }
-
   componentDidMount () {
     this.isBackupUrl()
     this.isDisconnectUrl()
@@ -82,52 +77,10 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.onModalBackupOpen()
   }
 
-  showBackupNotice = () => {
-    return this.state.activeTabId === 0 && !this.hasUserFunds()
-  }
-
   onModalBackupTabChange = (newTabId: number) => {
     this.setState({
       activeTabId: newTabId
     })
-  }
-
-  onModalBackupOnCopy = async (backupKey: string) => {
-    // TODO(jsadler) possibly flash a message that copy was completed
-    try {
-      await navigator.clipboard.writeText(backupKey)
-      console.log('Copy successful')
-      chrome.send('brave_rewards.setBackupCompleted')
-    } catch (e) {
-      console.log('Copy failed')
-    }
-  }
-
-  onModalBackupOnPrint = (backupKey: string) => {
-    if (document.location) {
-      const win = window.open(document.location.href)
-      if (win) {
-        win.document.body.innerText = utils.constructBackupString(backupKey) // this should be text, not HTML
-        win.print()
-        win.close()
-        chrome.send('brave_rewards.setBackupCompleted')
-      }
-    }
-  }
-
-  onModalBackupOnSaveFile = (backupKey: string) => {
-    const backupString = utils.constructBackupString(backupKey)
-    const backupFileText = 'brave_wallet_recovery.txt'
-    const a = document.createElement('a')
-    document.body.appendChild(a)
-    a.style.display = 'display: none'
-    const blob = new Blob([backupString], { type: 'plain/text' })
-    const url = window.URL.createObjectURL(blob)
-    a.href = url
-    a.download = backupFileText
-    a.click()
-    window.URL.revokeObjectURL(url)
-    chrome.send('brave_rewards.setBackupCompleted')
   }
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {
@@ -534,10 +487,6 @@ class PageWallet extends React.Component<Props, State> {
         text = getLocale('processorUphold')
         break
       }
-      case 3: { // Rewards.Processor.BRAVE_USER_FUNDS
-        text = getLocale('processorBraveUserFunds')
-        break
-      }
       case 4: { // Rewards.Processor.BITFLYER
         text = getLocale('processorBitflyer')
         break
@@ -676,7 +625,7 @@ class PageWallet extends React.Component<Props, State> {
       return 0
     }
 
-    return (balance.wallets.anonymous || 0) + (balance.wallets.blinded || 0)
+    return (balance.wallets.blinded || 0)
   }
 
   getBackupErrorMessage = () => {
@@ -740,7 +689,6 @@ class PageWallet extends React.Component<Props, State> {
       enabledContribute,
       externalWalletProviderList,
       ui,
-      recoveryKey,
       externalWallet,
       parameters,
       paymentId,
@@ -795,13 +743,8 @@ class PageWallet extends React.Component<Props, State> {
           modalBackup
             ? <ModalBackupRestore
               activeTabId={this.state.activeTabId}
-              backupKey={recoveryKey}
-              showBackupNotice={this.showBackupNotice()}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
-              onCopy={this.onModalBackupOnCopy}
-              onPrint={this.onModalBackupOnPrint}
-              onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
               onVerify={this.onVerifyClick}
               onReset={this.onModalBackupOnReset}

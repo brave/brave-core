@@ -429,7 +429,6 @@ public class BraveRewardsPanel
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_TIPS_PROCESSED:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_ADS_ONBOARDING:
             case REWARDS_NOTIFICATION_NO_INTERNET:
@@ -555,13 +554,6 @@ public class BraveRewardsPanel
                         R.string.brave_ui_insufficient_funds_msg);
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_insufficient_funds_desc);
-                break;
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET:
-                actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                notificationIcon = R.drawable.ic_info_rewards;
-                title = mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_msg);
-                description =
-                        mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_desc);
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_TIPS_PROCESSED:
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
@@ -1127,14 +1119,6 @@ public class BraveRewardsPanel
 
     @Override
     public void OnGetLatestNotification(String id, int type, long timestamp, String[] args) {
-        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET) {
-            if (mBraveRewardsNativeWorker != null) {
-                mBraveRewardsNativeWorker.DeleteNotification(id);
-                mBraveRewardsNativeWorker.GetAllNotifications();
-            }
-            return;
-        }
-
         if (!mCurrentNotificationId.equals(REWARDS_PROMOTION_CLAIM_ERROR_ID)) {
             showNotification(id, type, timestamp, args);
         }

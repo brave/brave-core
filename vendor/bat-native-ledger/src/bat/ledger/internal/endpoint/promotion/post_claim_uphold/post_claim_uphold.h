@@ -37,8 +37,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostClaimUpholdCallback =
-    base::OnceCallback<void(type::Result result, const std::string& address)>;
+using PostClaimUpholdCallback = base::OnceCallback<void(type::Result)>;
 
 class PostClaimUphold {
  public:
@@ -46,18 +45,15 @@ class PostClaimUphold {
 
   ~PostClaimUphold();
 
-  void Request(const double user_funds,
-               const std::string& address,
+  void Request(const std::string& address,
                PostClaimUpholdCallback callback) const;
 
  private:
-  std::string GeneratePayload(const double user_funds,
-                              const std::string& address) const;
+  std::string GeneratePayload(const std::string& address) const;
 
   std::string GetUrl() const;
 
   void OnRequest(PostClaimUpholdCallback callback,
-                 const std::string& address,
                  const type::UrlResponse& response) const;
 
   type::Result ProcessResponse(const type::UrlResponse& response) const;
