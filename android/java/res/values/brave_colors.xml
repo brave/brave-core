@@ -166,8 +166,6 @@
     <color name="brave_rewards_modal_theme_color">#4C54D2</color>
     <color name="brave_rewards_modal_close_button_color">#5E5F6C</color>
     <color name="brave_rewards_tos_color">#868E96</color>
-    <color name="brave_rewards_opt_in_bg_color">#E7E9FE</color>
-    <color name="brave_rewards_opt_in_text_color">#474958</color>
     <color name="brave_blue_tint_color">#4C54D2</color>
 
     <color name="shields_tooltip_arrow_color_1">#DD295B</color>

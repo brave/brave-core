@@ -111,6 +111,11 @@ import java.util.TimerTask;
 
 public class BraveRewardsPanel
         implements BraveRewardsObserver, BraveRewardsHelper.LargeIconReadyCallback {
+    public static final String PREF_WAS_BRAVE_REWARDS_TURNED_ON = "brave_rewards_turned_on";
+    public static final String PREF_GRANTS_NOTIFICATION_RECEIVED = "grants_notification_received";
+    public static final String PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED =
+            "was_toolbar_bat_logo_button_pressed";
+
     private static final String TAG = "BraveRewards";
     private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
     private static final int PUBLISHER_INFO_FETCH_RETRY = 3 * 1000; // In milliseconds

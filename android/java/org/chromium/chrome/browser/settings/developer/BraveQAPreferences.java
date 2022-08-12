@@ -35,9 +35,9 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -409,8 +409,10 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (success) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_GRANTS_NOTIFICATION_RECEIVED, false);
-            sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
+            sharedPreferencesEditor.putBoolean(
+                    BraveRewardsPanel.PREF_GRANTS_NOTIFICATION_RECEIVED, false);
+            sharedPreferencesEditor.putBoolean(
+                    BraveRewardsPanel.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
             sharedPreferencesEditor.apply();
 
             BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
