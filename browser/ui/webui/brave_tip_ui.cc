@@ -521,12 +521,6 @@ void TipMessageHandler::GetPublisherBannerCallback(
     result.Set("provider", banner->provider);
     result.Set("status", static_cast<int>(banner->status));
 
-    base::Value::List amounts;
-    for (const auto& value : banner->amounts) {
-      amounts.Append(value);
-    }
-    result.Set("amounts", std::move(amounts));
-
     base::Value::Dict links;
     for (const auto& item : banner->links) {
       links.Set(item.first, item.second);

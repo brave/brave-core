@@ -196,7 +196,10 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
           rewards_browsertest_util::TipAction::OneTime);
   const auto tip_options =
       rewards_browsertest_util::GetSiteBannerTipOptions(site_banner.get());
-  ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
+
+  // Creator-specific default tip amounts are no longer supported, so just
+  // verify that the tip options match the global defaults
+  ASSERT_EQ(tip_options, std::vector<double>({1, 5, 50}));
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {

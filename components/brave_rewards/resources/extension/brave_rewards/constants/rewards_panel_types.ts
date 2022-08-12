@@ -27,7 +27,6 @@ export const enum types {
   SAVE_RECURRING_TIP = '@@rewards_panel/SAVE_RECURRING_TIP',
   REMOVE_RECURRING_TIP = '@@rewards_panel/REMOVE_RECURRING_TIP',
   ON_RECURRING_TIPS = '@@rewards_panel/ON_RECURRING_TIPS',
-  ON_PUBLISHER_BANNER = '@@rewards_panel/ON_PUBLISHER_BANNER',
   ON_PUBLISHER_STATUS_REFRESHED = '@@rewards_panel/ON_PUBLISHER_STATUS_REFRESHED',
   ON_ALL_NOTIFICATIONS = '@@rewards_panel/ON_ALL_NOTIFICATIONS',
   ON_INIT = '@@rewards_panel/ON_INIT',
