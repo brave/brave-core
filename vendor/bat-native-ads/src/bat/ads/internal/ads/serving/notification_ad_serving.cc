@@ -70,7 +70,8 @@ void Serving::StartServingAdsAtRegularIntervals() {
 
   const base::TimeDelta delay = CalculateDelayBeforeServingAnAd();
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
+              serve_ad_at, /* use_sentence_style */ true));
 }
 
 void Serving::StopServingAdsAtRegularIntervals() {
@@ -155,7 +156,8 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
   const base::TimeDelta delay =
       base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
+              serve_ad_at, /* use_sentence_style */ true));
 }
 
 void Serving::RetryServingAdAtNextInterval() {
@@ -164,7 +166,8 @@ void Serving::RetryServingAdAtNextInterval() {
   }
 
   const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfterDelay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
+              serve_ad_at, /* use_sentence_style */ true));
 }
 
 base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {

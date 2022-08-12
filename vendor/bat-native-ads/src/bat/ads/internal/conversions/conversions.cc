@@ -461,14 +461,16 @@ void Conversions::ProcessQueueItem(
 
 void Conversions::FailedToConvertQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  BLOG(1,
-       "Failed to convert "
-           << conversion_queue_item.ad_type << " with campaign id "
-           << conversion_queue_item.campaign_id << ", creative set id "
-           << conversion_queue_item.creative_set_id << ", creative instance id "
-           << conversion_queue_item.creative_instance_id
-           << " and advertiser id " << conversion_queue_item.advertiser_id
-           << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
+  BLOG(1, "Failed to convert "
+              << conversion_queue_item.ad_type << " with campaign id "
+              << conversion_queue_item.campaign_id << ", creative set id "
+              << conversion_queue_item.creative_set_id
+              << ", creative instance id "
+              << conversion_queue_item.creative_instance_id
+              << " and advertiser id " << conversion_queue_item.advertiser_id
+              << " "
+              << LongFriendlyDateAndTime(conversion_queue_item.process_at,
+                                         /* use_sentence_style */ true));
 
   NotifyConversionFailed(conversion_queue_item);
 
@@ -477,14 +479,16 @@ void Conversions::FailedToConvertQueueItem(
 
 void Conversions::ConvertedQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  BLOG(1,
-       "Successfully converted "
-           << conversion_queue_item.ad_type << " with campaign id "
-           << conversion_queue_item.campaign_id << ", creative set id "
-           << conversion_queue_item.creative_set_id << ", creative instance id "
-           << conversion_queue_item.creative_instance_id
-           << " and advertiser id " << conversion_queue_item.advertiser_id
-           << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
+  BLOG(1, "Successfully converted "
+              << conversion_queue_item.ad_type << " with campaign id "
+              << conversion_queue_item.campaign_id << ", creative set id "
+              << conversion_queue_item.creative_set_id
+              << ", creative instance id "
+              << conversion_queue_item.creative_instance_id
+              << " and advertiser id " << conversion_queue_item.advertiser_id
+              << " "
+              << LongFriendlyDateAndTime(conversion_queue_item.process_at,
+                                         /* use_sentence_style */ true));
 
   NotifyConversion(conversion_queue_item);
 
@@ -569,7 +573,8 @@ void Conversions::StartTimer(
                      << conversion_queue_item.creative_instance_id
                      << " and advertiser id "
                      << conversion_queue_item.advertiser_id << " "
-                     << FriendlyDateAndTime(process_queue_at));
+                     << FriendlyDateAndTime(process_queue_at,
+                                            /* use_sentence_style */ true));
 }
 
 void Conversions::NotifyConversion(
