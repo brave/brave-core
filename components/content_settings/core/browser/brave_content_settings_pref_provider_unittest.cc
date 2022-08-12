@@ -216,6 +216,24 @@ class ShieldsFingerprintingSetting : public ShieldsSetting {
                        {{GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2},
                         {GURL("https://firstParty/*"),
                          ContentSettingsType::BRAVE_FINGERPRINTING_V2}}) {}
+
+  void SetPreMigrationSettingsAndroid(
+      const ContentSettingsPattern& pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSetting setting) {
+    provider_->SetWebsiteSetting(pattern, secondary_pattern,
+                                 ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                 ContentSettingToValue(setting), {});
+  }
+
+  void CheckSettingsAndroid(const GURL& url, ContentSetting setting) {
+    for (const auto& url_source : urls_) {
+      EXPECT_EQ(setting,
+                TestUtils::GetContentSetting(
+                    provider_, url_source.first, url,
+                    ContentSettingsType::BRAVE_FINGERPRINTING_V2, false));
+    }
+  }
 };
 
 class ShieldsHTTPSESetting : public ShieldsSetting {
@@ -437,6 +455,31 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
   prefs->SetInteger(kBraveShieldsSettingsVersion, 5);
   provider.MigrateShieldsSettings(/*incognito*/ false);
   EXPECT_EQ(5, prefs->GetInteger(kBraveShieldsSettingsVersion));
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, MigrateFPShieldsSettingsAndroid) {
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  provider.run_fp_migration_for_testing_ = true;
+  ShieldsFingerprintingSetting fp_settings(&provider);
+
+  GURL url("http://brave.com:8080/");
+  ContentSettingsPattern pattern = ContentSettingsPattern::FromURL(url);
+
+  GURL url2("http://brave.com:3030");
+  ContentSettingsPattern pattern2 = ContentSettingsPattern::FromURL(url2);
+
+  fp_settings.SetPreMigrationSettingsAndroid(
+      pattern, ContentSettingsPattern::Wildcard(), CONTENT_SETTING_BLOCK);
+  fp_settings.SetPreMigrationSettingsAndroid(
+      pattern2, ContentSettingsPattern::FromString("https://balanced/*"),
+      CONTENT_SETTING_BLOCK);
+  provider.MigrateFPShieldsSettingsAndroid();
+  fp_settings.CheckSettingsAndroid(url, CONTENT_SETTING_DEFAULT);
+  fp_settings.CheckSettingsAndroid(url2, CONTENT_SETTING_DEFAULT);
 
   provider.ShutdownOnUIThread();
 }

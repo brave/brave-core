@@ -33,6 +33,8 @@ class BravePrefProvider : public PrefProvider,
   BravePrefProvider& operator=(const BravePrefProvider&) = delete;
   ~BravePrefProvider() override;
 
+  bool run_fp_migration_for_testing_ = false;
+
   static void CopyPluginSettingsForMigration(PrefService* prefs);
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
@@ -59,6 +61,8 @@ class BravePrefProvider : public PrefProvider,
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationFromUnknownSettings);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, EnsureNoWildcardEntries);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           MigrateFPShieldsSettingsAndroid);
   void MigrateShieldsSettings(bool incognito);
   void EnsureNoWildcardEntries(ContentSettingsType content_type);
   void MigrateShieldsSettingsFromResourceIds();

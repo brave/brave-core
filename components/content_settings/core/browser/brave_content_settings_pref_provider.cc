@@ -207,9 +207,13 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 
   MigrateShieldsSettingsV3ToV4(version);
 
+  bool run_fp_migration = run_fp_migration_for_testing_;
 #if BUILDFLAG(IS_ANDROID)
-  MigrateFPShieldsSettingsAndroid();
+  run_fp_migration = true;
 #endif
+  if (run_fp_migration) {
+    MigrateFPShieldsSettingsAndroid();
+  }
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries(
