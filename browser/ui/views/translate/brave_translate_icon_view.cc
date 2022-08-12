@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,6 +46,10 @@ void BraveTranslateIconView::InstallGoogleTranslate() {
             base::BindOnce(&BraveTranslateIconView::OnInstallResult,
               weak_ptr_factory_.GetWeakPtr()));
   installer->BeginInstall();
+}
+
+const gfx::VectorIcon& BraveTranslateIconView::GetVectorIcon() const {
+  return kBraveTranslateIcon;
 }
 
 void BraveTranslateIconView::OnInstallResult(
