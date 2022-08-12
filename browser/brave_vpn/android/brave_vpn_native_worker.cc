@@ -273,6 +273,7 @@ void BraveVpnNativeWorker::ReportBackgroundP3A(JNIEnv* env,
   if (brave_vpn_service) {
     brave_vpn_service->RecordAndroidBackgroundP3A(session_start_time_ms,
                                                   session_end_time_ms);
+  }
 }
 
 jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
