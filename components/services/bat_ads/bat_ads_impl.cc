@@ -6,7 +6,6 @@
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
 #include <functional>
-#include <vector>
 
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ads.h"
@@ -114,11 +113,12 @@ void BatAdsImpl::OnMediaStopped(
 }
 
 void BatAdsImpl::OnTabUpdated(const int32_t tab_id,
-                              const GURL& url,
+                              const std::vector<GURL>& redirect_chain,
                               const bool is_active,
                               const bool is_browser_active,
                               const bool is_incognito) {
-  ads_->OnTabUpdated(tab_id, url, is_active, is_browser_active, is_incognito);
+  ads_->OnTabUpdated(tab_id, redirect_chain, is_active, is_browser_active,
+                     is_incognito);
 }
 
 void BatAdsImpl::OnTabClosed(

@@ -237,8 +237,11 @@ void PurchaseIntent::OnTextContentDidChange(
 
   const absl::optional<TabInfo> last_visible_tab =
       TabManager::GetInstance()->GetLastVisibleTab();
-  if (SameDomainOrHost(url,
-                       last_visible_tab ? last_visible_tab->url : GURL())) {
+  if (!last_visible_tab) {
+    return;
+  }
+
+  if (SameDomainOrHost(url, last_visible_tab->redirect_chain.back())) {
     return;
   }
 

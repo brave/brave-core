@@ -93,14 +93,13 @@ void Transfer::OnTransferAd(const int32_t tab_id,
     return;
   }
 
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetTabForId(tab_id);
-  if (!tab) {
+  absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(tab_id);
+  if (!tab || tab->redirect_chain.empty()) {
     FailedToTransferAd(ad);
     return;
   }
 
-  if (!DomainOrHostExists(redirect_chain, tab->url)) {
+  if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
     FailedToTransferAd(ad);
     return;
   }

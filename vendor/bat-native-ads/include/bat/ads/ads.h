@@ -80,15 +80,19 @@ class ADS_EXPORT Ads {
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
   // Called when the page for |tad_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a chain of redirect URLs that
-  // occurred for this navigation. |html| containing the page content as HTML.
+  // for analysis. |redirect_chain| containing a list of redirect URLs that
+  // occurred on the way to the current page. The current page is the last one
+  // in the list (so even when there's no redirect, there should be one entry in
+  // the list). |html| containing the page content as HTML.
   virtual void OnHtmlLoaded(const int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& html) = 0;
 
   // Called when the page for |tab_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a chain of redirect URLs that
-  // occurred for this navigation. |text| containing the page content as text.
+  // for analysis. |redirect_chain| containing a list of redirect URLs that
+  // occurred on the way to the current page. The current page is the last one
+  // in the list (so even when there's no redirect, there should be one entry in
+  // the list). |text| containing the page content as text.
   virtual void OnTextLoaded(const int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& text) = 0;
@@ -124,13 +128,16 @@ class ADS_EXPORT Ads {
   // |tab_id|.
   virtual void OnMediaStopped(const int32_t tab_id) = 0;
 
-  // Called when a browser tab is updated with the specified |url|. |is_active|
-  // is set to |true| if |tab_id| refers to the currently active tab otherwise
-  // is set to |false|. |is_browser_active| is set to |true| if the browser
-  // window is active otherwise |false|. |is_incognito| is set to |true| if the
-  // tab is incognito otherwise |false|.
+  // Called when a browser tab is updated with the specified |redirect_chain|
+  // containing a list of redirect URLs that occurred on the way to the current
+  // page. The current page is the last one in the list (so even when there's no
+  // redirect, there should be one entry in the list). |is_active| is set to
+  // |true| if |tab_id| refers to the currently active tab otherwise is set to
+  // |false|. |is_browser_active| is set to |true| if the browser window is
+  // active otherwise |false|. |is_incognito| is set to |true| if the tab is
+  // incognito otherwise |false|.
   virtual void OnTabUpdated(const int32_t tab_id,
-                            const GURL& url,
+                            const std::vector<GURL>& redirect_chain,
                             const bool is_active,
                             const bool is_browser_active,
                             const bool is_incognito) = 0;

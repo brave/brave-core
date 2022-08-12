@@ -136,6 +136,7 @@ OBJC_EXPORT
 /// Report that a tab with a given id was updated
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL*)url
+      redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
               isSelected:(BOOL)isSelected
                isPrivate:(BOOL)isPrivate;
 
