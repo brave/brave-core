@@ -37,8 +37,8 @@ import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
-import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
+import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -73,7 +73,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
-    } else if (keyring instanceof FilecoinLedgerKeyring && opts.network) {
+    } else if (keyring instanceof FilecoinLedgerBridgeKeyring && opts.network) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.network)
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
