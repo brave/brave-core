@@ -10,3 +10,24 @@ source_set("sync") {
     "//components/sync_device_info",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+  deps = []
+
+  # Chromium/iOS shouldn't use anything in //chrome, so disable these tests
+  # for iOS
+  if (!is_ios) {
+    sources += [ "brave_sync_client_unittest.cc" ]
+    deps += [
+      "//brave/components/brave_component_updater/browser",
+      "//brave/components/brave_shields/browser",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profile",
+      "//chrome/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}

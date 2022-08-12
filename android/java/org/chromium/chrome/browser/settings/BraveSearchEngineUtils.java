@@ -36,18 +36,17 @@ public class BraveSearchEngineUtils {
     }
 
     static private void initializeDSEPrefs() {
-        // At first run, we should set initial default prefs to each standard/private DSE prefs.
-        // Those pref values will be used until user change DES options explicitly.
+        // At first run, we should set initial default prefs to private DSE pref.
+        // Those pref values will be used until user change DSE options explicitly.
+        // DSE for normal tab will be managed by native code, TemplateUrlService.
         final String notInitialized = "notInitialized";
         if (notInitialized.equals(ContextUtils.getAppSharedPreferences().getString(
-                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
+                    BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, notInitialized))) {
             TemplateUrl templateUrl =
                     TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
 
             SharedPreferences.Editor sharedPreferencesEditor =
                     ContextUtils.getAppSharedPreferences().edit();
-            sharedPreferencesEditor.putString(
-                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, templateUrl.getShortName());
             sharedPreferencesEditor.putString(
                     BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, templateUrl.getShortName());
             sharedPreferencesEditor.apply();

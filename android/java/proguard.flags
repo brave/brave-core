@@ -18,6 +18,14 @@
     *** getProcessorForSuggestion(...);
 }
 
+-keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
+    *** didSearchEnginesChange(...);
+    *** computeStartIndexForRecentSearchEngines(...);
+    *** mPrepopulatedSearchEngines;
+    *** mRecentSearchEngines;
+    *** mSelectedSearchEnginePosition;
+}
+
 -keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources {
     *** getResourceItem(...);
 }
