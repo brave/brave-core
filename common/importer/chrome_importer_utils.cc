@@ -150,12 +150,16 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
 
   std::vector<std::string> extensions;
   for (const auto item : extensions_list.DictItems()) {
+    const base::Value::Dict& dict = item.second.GetDict();
     // Only import if type is extension, it's came from webstore and it's not
     // installed by default.
     if (item.second.FindBoolKey("was_installed_by_default").value_or(true))
         continue;
 
     if (!item.second.FindBoolKey("from_webstore").value_or(false))
+      continue;
+    // `"state": 0` means disabled state
+    if (!dict.FindInt("state").value_or(false))
       continue;
 
     if (auto* manifest_value = item.second.FindDictKey("manifest")) {
