@@ -5,13 +5,17 @@
 
 import { loadTimeData } from '../../../../common/loadTimeData'
 import type {
-  SolLedgerFrameCommand,
-  SolLedgerFrameResponse
-} from './sol-ledger-messages'
-import type {
   EthLedgerFrameCommand,
   EthLedgerFrameResponse
 } from './eth-ledger-messages'
+import type {
+  FilLedgerFrameCommand,
+  FilLedgerFrameResponse
+} from './fil-ledger-messages'
+import type {
+  SolLedgerFrameCommand,
+  SolLedgerFrameResponse
+} from './sol-ledger-messages'
 
 export const LEDGER_BRIDGE_URL = loadTimeData.getString('braveWalletLedgerBridgeUrl').slice(0, -1) // Strip off trailing '/' in URL
 
@@ -72,8 +76,8 @@ export type AuthorizationSuccessCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationSuccess
 }
 
-export type LedgerFrameCommand = UnlockCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand | SolLedgerFrameCommand | EthLedgerFrameCommand
-export type LedgerFrameResponse = UnlockResponse | SolLedgerFrameResponse | EthLedgerFrameResponse
+export type LedgerFrameCommand = UnlockCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand | SolLedgerFrameCommand | EthLedgerFrameCommand | FilLedgerFrameCommand
+export type LedgerFrameResponse = UnlockResponse | SolLedgerFrameResponse | EthLedgerFrameResponse | FilLedgerFrameResponse
 
 type LedgerCommandHandler <T>= ((command: LedgerFrameCommand) => Promise<T>)
 type LedgerCommandResponseHandler <T>= ((response: T) => void)

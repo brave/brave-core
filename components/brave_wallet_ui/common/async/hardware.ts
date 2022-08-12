@@ -20,7 +20,6 @@ import {
   HardwareVendor
 } from '../api/hardware_keyrings'
 import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
-import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
@@ -28,6 +27,7 @@ import { BraveWallet } from '../../constants/types'
 import { LedgerEthereumKeyring, LedgerFilecoinKeyring, LedgerSolanaKeyring } from '../hardware/interfaces'
 import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
 import { SignedLotusMessage } from '@glif/filecoin-message'
+import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 
 export function dialogErrorFromLedgerErrorCode (code: string | number): HardwareWalletResponseCodeType {
   if (code === 'TransportOpenUserCancelled') {
@@ -133,9 +133,6 @@ export async function signLedgerFilecoinTransaction (
   if (!signed || !signed.success || !signed.payload) {
     const error = signed?.error ?? getLocale('braveWalletSignOnDeviceError')
     const code = signed?.code ?? ''
-    if (code === 'DisconnectedDeviceDuringOperation') {
-      await deviceKeyring.makeApp()
-    }
     return { success: false, error: error, code: code }
   }
   const signedMessage = signed.payload as SignedLotusMessage
@@ -210,7 +207,7 @@ export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVen
 
   if (deviceKeyring instanceof SolanaLedgerBridgeKeyring && message.bytes) {
     return deviceKeyring.signTransaction(path, Buffer.from(message.bytes))
-  } else if (deviceKeyring instanceof TrezorBridgeKeyring || deviceKeyring instanceof EthereumLedgerBridgeKeyring || deviceKeyring instanceof FilecoinLedgerKeyring) {
+  } else if (deviceKeyring instanceof TrezorBridgeKeyring || deviceKeyring instanceof EthereumLedgerBridgeKeyring || deviceKeyring instanceof FilecoinLedgerBridgeKeyring) {
     return { success: false, error: getLocale('braveWalletHardwareOperationUnsupportedError') }
   }
 

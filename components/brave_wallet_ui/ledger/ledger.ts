@@ -8,11 +8,13 @@ import { LedgerCommand, LEDGER_BRIDGE_URL } from '../common/hardware/ledgerjs/le
 import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
+import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil_ledger-untrusted-transport'
 
 const setUpAuthorizeButtonListener = (targetUrl: string, coinType: BraveWallet.CoinType) => {
   const untrustedMessagingTransport = getUntrustedMessagingTransport(coinType, targetUrl)
   window.addEventListener('DOMContentLoaded', (event) => {
     const authorizeBtn = document.getElementById('authorize')
+
     if (authorizeBtn) {
       authorizeBtn.addEventListener('click', () => {
         untrustedMessagingTransport.promptAuthorization().then((result) => {
@@ -33,6 +35,8 @@ const getUntrustedMessagingTransport = (coinType: BraveWallet.CoinType, targetUr
       return new SolanaLedgerUntrustedMessagingTransport(window.parent, targetUrl)
     case BraveWallet.CoinType.ETH:
       return new EthereumLedgerUntrustedMessagingTransport(window.parent, targetUrl)
+    case BraveWallet.CoinType.FIL:
+      return new FilecoinLedgerUntrustedMessagingTransport(window.parent, targetUrl)
     default:
       throw new Error('Invalid coinType.')
   }

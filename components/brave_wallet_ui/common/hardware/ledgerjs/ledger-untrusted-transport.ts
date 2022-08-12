@@ -31,9 +31,9 @@ export class LedgerUntrustedMessagingTransport extends LedgerMessagingTransport 
       await transport.close()
     }
   }
-
   protected handleUnlock = async (command: UnlockCommand): Promise<UnlockResponse> => {
     const isAuthNeeded = await this.authorizationNeeded()
+
     const payload: LedgerResponsePayload | HardwareOperationResult =
       isAuthNeeded
         ? { success: false, error: 'unauthorized', code: 'unauthorized' }
