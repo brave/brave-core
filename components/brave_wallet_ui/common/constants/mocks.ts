@@ -57,7 +57,8 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
 export const mockNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x1',
   chainName: 'Ethereum Main Net',
-  rpcUrls: ['https://mainnet.infura.io/v3/'],
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://api.node.glif.io/rpc/v0' }],
   blockExplorerUrls: ['https://etherscan.io'],
   symbol: 'ETH',
   symbolName: 'Ethereum',
@@ -70,7 +71,8 @@ export const mockNetwork: BraveWallet.NetworkInfo = {
 export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   chainId: 'f',
   chainName: 'Filecoin Mainnet',
-  rpcUrls: ['https://api.node.glif.io/rpc/v0'],
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://calibration.node.glif.io/rpc/v0' }],
   blockExplorerUrls: ['https://filscan.io/tipset/message-detail'],
   symbol: 'FIL',
   symbolName: 'Filecoin',
@@ -83,7 +85,8 @@ export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
 export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
   chainId: 't',
   chainName: 'Filecoin Testnet',
-  rpcUrls: ['https://calibration.node.glif.io/rpc/v0'],
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://mainnet-beta-solana.brave.com/rpc' }],
   blockExplorerUrls: ['https://calibration.filscan.io/tipset/message-detail'],
   symbol: 'FIL',
   symbolName: 'Filecoin',
@@ -96,7 +99,8 @@ export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
 export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x65',
   chainName: 'Solana Mainnet Beta',
-  rpcUrls: ['https://mainnet-beta-solana.brave.com/rpc'],
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://testnet-solana.brave.com/rpc' }],
   blockExplorerUrls: ['https://explorer.solana.com'],
   symbol: 'SOL',
   symbolName: 'Solana',
@@ -109,7 +113,8 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
 export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x66',
   chainName: 'Solana Testnet',
-  rpcUrls: ['https://testnet-solana.brave.com/rpc'],
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://testnet-solana.brave.com/rpc' }],
   blockExplorerUrls: ['https://explorer.solana.com?cluster=testnet'],
   symbol: 'SOL',
   symbolName: 'Solana',

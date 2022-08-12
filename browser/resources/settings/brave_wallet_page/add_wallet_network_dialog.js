@@ -7,6 +7,8 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
 import 'chrome://resources/cr_elements/cr_searchable_drop_down/cr_searchable_drop_down.js';
+import 'chrome://resources/cr_elements/cr_radio_button/cr_radio_button.m.js';
+import 'chrome://resources/cr_elements/cr_radio_group/cr_radio_group.m.js';
 import { Polymer, html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { I18nBehavior } from 'chrome://resources/js/i18n_behavior.m.js';
 import { BraveWalletBrowserProxyImpl } from './brave_wallet_browser_proxy.m.js';
@@ -27,7 +29,10 @@ Polymer({
         return [];
       },
     },
-
+    selectedRpcUrl: {
+      type: String,
+      value: ''
+    },
     rpcUrls: {
       type: Array,
       value() {
@@ -129,11 +134,12 @@ Polymer({
     if (decimals) {
       this.currencyDecimalsValue_ = decimals
     }
-    this.rpcUrls = this.selected.rpcUrls.map(element => { return { value: element } })
+    this.rpcUrls = this.selected.rpcUrls.map(value => { return { value } })
+    this.selectedRpcUrl = this.selected.rpcUrls[this.selected.activeRpcEndpointIndex] || this.selected.rpcUrls[0]
     if (this.selected.iconUrls.length)
-      this.iconUrls = this.selected.iconUrls.map(element => { return { value: element } })
+      this.iconUrls = this.selected.iconUrls.map(value => { return { value } })
     if (this.selected.blockExplorerUrls.length)
-      this.blockUrls = this.selected.blockExplorerUrls.map(element => { return { value: element } })
+      this.blockUrls = this.selected.blockExplorerUrls.map(value => { return { value } })
     this.isSubmitButtonEnabled_ = true
     this.updatePlusButtonState('rpc')
     this.updatePlusButtonState('icon')
@@ -344,18 +350,12 @@ Polymer({
       }
       payload.nativeCurrency = nativeCurrency;
     }
-    const rpcUrls = this.transformListForSerializaion_(this.rpcUrls)
-    if (rpcUrls) {
-      payload.rpcUrls = rpcUrls
-    }
-    const blockExplorerUrls = this.transformListForSerializaion_(this.blockUrls)
-    if (blockExplorerUrls) {
-      payload.blockExplorerUrls = blockExplorerUrls
-    }
-    const iconUrls = this.transformListForSerializaion_(this.iconUrls)
-    if (iconUrls) {
-      payload.iconUrls = iconUrls
-    }
+    payload.rpcUrls = this.transformListForSerializaion_(this.rpcUrls)
+    payload.activeRpcEndpointIndex = payload.rpcUrls.findIndex(it => it === this.selectedRpcUrl)
+    if (payload.activeRpcEndpointIndex < 0)
+      payload.activeRpcEndpointIndex = 0
+    payload.blockExplorerUrls = this.transformListForSerializaion_(this.blockUrls)
+    payload.iconUrls = this.transformListForSerializaion_(this.iconUrls)
     if (this.networks.find(element => { return element.chainId === payload.chainId })) {
       if (!window.confirm(this.i18n('walletAddNetworkDialogReplaceNetwork'))) {
         return
@@ -385,11 +385,12 @@ Polymer({
       if (decimals) {
         this.currencyDecimalsValue_ = decimals
       }
-      this.rpcUrls = found.rpcUrls.map(element => { return { value: element } })
+      this.rpcUrls = found.rpcUrls.map(value => { return { value } })
+      this.selectedRpcUrl = found.rpcUrls[found.activeRpcEndpointIndex] || found.rpcUrls[0]
       if (found.iconUrls.length)
-        this.iconUrls = found.iconUrls.map(element => { return { value: element } })
+        this.iconUrls = found.iconUrls.map(value => { return { value } })
       if (found.blockExplorerUrls.length)
-        this.blockUrls = found.blockExplorerUrls.map(element => { return { value: element } })
+        this.blockUrls = found.blockExplorerUrls.map(value => { return { value } })
       this.isSubmitButtonEnabled_ = true
       this.updatePlusButtonState('rpc')
       this.updatePlusButtonState('icon')

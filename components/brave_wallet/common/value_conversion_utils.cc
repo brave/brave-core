@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/guid.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -40,8 +41,7 @@ absl::optional<std::string> ExtractChainIdFromValue(
   return *chain_id;
 }
 
-mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
-                                            bool check_url) {
+mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   mojom::NetworkInfo chain;
   const base::Value::Dict* params_dict = value.GetIfDict();
   if (!params_dict)
@@ -64,8 +64,7 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
     for (const auto& entry : *explorerUrlsListValue) {
       if (!entry.is_string())
         continue;
-      if (!check_url || IsValidURL(entry.GetString()))
-        chain.block_explorer_urls.push_back(entry.GetString());
+      chain.block_explorer_urls.push_back(entry.GetString());
     }
   }
 
@@ -74,8 +73,7 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
     for (const auto& entry : *iconUrlsValue) {
       if (!entry.is_string())
         continue;
-      if (!check_url || IsValidURL(entry.GetString()))
-        chain.icon_urls.push_back(entry.GetString());
+      chain.icon_urls.push_back(entry.GetString());
     }
   }
 
@@ -84,10 +82,23 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
     for (const auto& entry : *rpcUrlsValue) {
       if (!entry.is_string())
         continue;
-      if (!check_url || IsValidURL(entry.GetString()))
-        chain.rpc_urls.push_back(entry.GetString());
+      chain.rpc_endpoints.emplace_back(entry.GetString());
     }
   }
+
+  if (const auto& endpoint_index =
+          params_dict->FindInt("activeRpcEndpointIndex")) {
+    chain.active_rpc_endpoint_index = endpoint_index.value();
+    if (chain.active_rpc_endpoint_index < 0 ||
+        static_cast<size_t>(chain.active_rpc_endpoint_index) >
+            chain.rpc_endpoints.size()) {
+      chain.active_rpc_endpoint_index = 0;
+    }
+  } else {
+    chain.active_rpc_endpoint_index =
+        GetFirstValidChainURLIndex(chain.rpc_endpoints);
+  }
+
   const auto* nativeCurrencyValue = params_dict->FindDict("nativeCurrency");
   chain.decimals = 0;
   if (nativeCurrencyValue) {
@@ -108,6 +119,78 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
   chain.coin = mojom::CoinType::ETH;
 
   chain.is_eip1559 = params_dict->FindBool("is_eip1559").value_or(false);
+
+  return chain.Clone();
+}
+
+mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
+  mojom::NetworkInfo chain;
+  const base::Value::Dict* params_dict = value.GetIfDict();
+  if (!params_dict)
+    return nullptr;
+
+  const std::string* chain_id = params_dict->FindString("chainId");
+  if (!chain_id) {
+    return nullptr;
+  }
+  chain.chain_id = *chain_id;
+
+  const std::string* chain_name = params_dict->FindString("chainName");
+  if (chain_name) {
+    chain.chain_name = *chain_name;
+  }
+
+  const auto* explorerUrlsListValue =
+      params_dict->FindList("blockExplorerUrls");
+  if (explorerUrlsListValue) {
+    for (const auto& entry : *explorerUrlsListValue) {
+      if (!entry.is_string() || !IsValidURL(entry.GetString()))
+        continue;
+      chain.block_explorer_urls.push_back(entry.GetString());
+    }
+  }
+
+  const auto* iconUrlsValue = params_dict->FindList("iconUrls");
+  if (iconUrlsValue) {
+    for (const auto& entry : *iconUrlsValue) {
+      if (!entry.is_string() || !IsValidURL(entry.GetString()))
+        continue;
+      chain.icon_urls.push_back(entry.GetString());
+    }
+  }
+
+  const auto* rpcUrlsValue = params_dict->FindList("rpcUrls");
+  if (rpcUrlsValue) {
+    for (const auto& entry : *rpcUrlsValue) {
+      if (!entry.is_string() || !IsValidURL(entry.GetString()))
+        continue;
+      chain.rpc_endpoints.emplace_back(entry.GetString());
+    }
+  }
+
+  chain.active_rpc_endpoint_index =
+      GetFirstValidChainURLIndex(chain.rpc_endpoints);
+
+  const auto* nativeCurrencyValue = params_dict->FindDict("nativeCurrency");
+  chain.decimals = 0;
+  if (nativeCurrencyValue) {
+    const std::string* symbol_name = nativeCurrencyValue->FindString("name");
+    if (symbol_name) {
+      chain.symbol_name = *symbol_name;
+    }
+    const std::string* symbol = nativeCurrencyValue->FindString("symbol");
+    if (symbol) {
+      chain.symbol = *symbol;
+    }
+    absl::optional<int> decimals = nativeCurrencyValue->FindInt("decimals");
+    if (decimals) {
+      chain.decimals = decimals.value();
+    }
+  }
+
+  chain.coin = mojom::CoinType::ETH;
+
+  chain.is_eip1559 = false;
 
   return chain.Clone();
 }
@@ -136,10 +219,14 @@ base::Value::Dict EthNetworkInfoToValue(const mojom::NetworkInfo& chain) {
   dict.Set("iconUrls", std::move(iconUrlsValue));
 
   base::Value::List rpcUrlsValue;
-  for (const auto& url : chain.rpc_urls) {
-    rpcUrlsValue.Append(url);
+  for (const auto& url : chain.rpc_endpoints) {
+    rpcUrlsValue.Append(url.spec());
   }
   dict.Set("rpcUrls", std::move(rpcUrlsValue));
+  DCHECK_GE(chain.active_rpc_endpoint_index, 0);
+  DCHECK_LT(static_cast<size_t>(chain.active_rpc_endpoint_index),
+            chain.rpc_endpoints.size());
+  dict.Set("activeRpcEndpointIndex", chain.active_rpc_endpoint_index);
   base::Value::Dict currency;
   currency.Set("name", chain.symbol_name);
   currency.Set("symbol", chain.symbol);
@@ -242,6 +329,23 @@ base::Value::List PermissionRequestResponseToValue(
   dict.Set("parentCapability", "eth_accounts");
   container_list.Append(std::move(dict));
   return container_list;
+}
+
+int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls) {
+  if (chain_urls.empty())
+    return 0;
+  size_t index = 0;
+  for (const GURL& url : chain_urls) {
+    if (url.is_valid() && url.SchemeIsHTTPOrHTTPS() &&
+        !base::Contains(url.spec(), "$%7BINFURA_API_KEY%7D") &&
+        !base::Contains(url.spec(), "$%7BALCHEMY_API_KEY%7D") &&
+        !base::Contains(url.spec(), "$%7BAPI_KEY%7D") &&
+        !base::Contains(url.spec(), "$%7BPULSECHAIN_API_KEY%7D")) {
+      return index;
+    }
+    index++;
+  }
+  return 0;
 }
 
 }  // namespace brave_wallet

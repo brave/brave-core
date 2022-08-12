@@ -86,6 +86,7 @@ const mojom::NetworkInfo* GetEthMainnet() {
        "Ethereum Mainnet",
        {"https://etherscan.io"},
        {},
+       0,
        {},
        "ETH",
        "Ethereum",
@@ -101,6 +102,7 @@ const mojom::NetworkInfo* GetPolygonMainnet() {
        "Polygon Mainnet",
        {"https://polygonscan.com"},
        {},
+       0,
        {},
        "MATIC",
        "MATIC",
@@ -116,7 +118,8 @@ const mojom::NetworkInfo* GetBscMainnet() {
        "Binance Smart Chain Mainnet",
        {"https://bscscan.com"},
        {},
-       {"https://bsc-dataseed1.binance.org"},
+       0,
+       {GURL("https://bsc-dataseed1.binance.org")},
        "BNB",
        "Binance Chain Native Token",
        18,
@@ -131,7 +134,8 @@ const mojom::NetworkInfo* GetCeloMainnet() {
        "Celo Mainnet",
        {"https://explorer.celo.org"},
        {},
-       {"https://forno.celo.org"},
+       0,
+       {GURL("https://forno.celo.org")},
        "CELO",
        "CELO",
        18,
@@ -146,7 +150,8 @@ const mojom::NetworkInfo* GetAvalancheMainnet() {
        "Avalanche C-Chain",
        {"https://snowtrace.io"},
        {},
-       {"https://api.avax.network/ext/bc/C/rpc"},
+       0,
+       {GURL("https://api.avax.network/ext/bc/C/rpc")},
        "AVAX",
        "Avalanche",
        18,
@@ -161,7 +166,8 @@ const mojom::NetworkInfo* GetFantomOperaMainnet() {
        "Fantom Opera",
        {"https://ftmscan.com"},
        {},
-       {"https://rpc.ftm.tools"},
+       0,
+       {GURL("https://rpc.ftm.tools")},
        "FTM",
        "Fantom",
        18,
@@ -176,6 +182,7 @@ const mojom::NetworkInfo* GetOptimismMainnet() {
        "Optimism",
        {"https://optimistic.etherscan.io"},
        {},
+       0,
        {},
        "ETH",
        "Ether",
@@ -191,6 +198,7 @@ const mojom::NetworkInfo* GetAuroraMainnet() {
        "Aurora Mainnet",
        {"https://aurorascan.dev"},
        {},
+       0,
        {},
        "ETH",
        "Ether",
@@ -206,6 +214,7 @@ const mojom::NetworkInfo* GetRinkebyTestNetwork() {
        "Rinkeby Test Network",
        {"https://rinkeby.etherscan.io"},
        {},
+       0,
        {},
        "ETH",
        "Ethereum",
@@ -221,6 +230,7 @@ const mojom::NetworkInfo* GetRopstenTestNetwork() {
        "Ropsten Test Network",
        {"https://ropsten.etherscan.io"},
        {},
+       0,
        {},
        "ETH",
        "Ethereum",
@@ -236,6 +246,7 @@ const mojom::NetworkInfo* GetGoerliTestNetwork() {
        "Goerli Test Network",
        {"https://goerli.etherscan.io"},
        {},
+       0,
        {},
        "ETH",
        "Ethereum",
@@ -251,6 +262,7 @@ const mojom::NetworkInfo* GetKovanTestNetwork() {
        "Kovan Test Network",
        {"https://kovan.etherscan.io"},
        {},
+       0,
        {},
        "ETH",
        "Ethereum",
@@ -266,7 +278,8 @@ const mojom::NetworkInfo* GetEthLocalhost() {
        "Localhost",
        {kGanacheLocalhostURL},
        {},
-       {kGanacheLocalhostURL},
+       0,
+       {GURL(kGanacheLocalhostURL)},
        "ETH",
        "Ethereum",
        18,
@@ -303,7 +316,8 @@ const mojom::NetworkInfo* GetSolMainnet() {
        "Solana Mainnet Beta",
        {"https://explorer.solana.com/"},
        {},
-       {"https://mainnet-beta-solana.brave.com/rpc"},
+       0,
+       {GURL("https://mainnet-beta-solana.brave.com/rpc")},
        "SOL",
        "Solana",
        9,
@@ -318,7 +332,8 @@ const mojom::NetworkInfo* GetSolTestnet() {
        "Solana Testnet",
        {"https://explorer.solana.com/?cluster=testnet"},
        {},
-       {"https://testnet-solana.brave.com/rpc"},
+       0,
+       {GURL("https://testnet-solana.brave.com/rpc")},
        "SOL",
        "Solana",
        9,
@@ -333,7 +348,8 @@ const mojom::NetworkInfo* GetSolDevnet() {
        "Solana Devnet",
        {"https://explorer.solana.com/?cluster=devnet"},
        {},
-       {"https://api.devnet.solana.com"},
+       0,
+       {GURL("https://api.devnet.solana.com")},
        "SOL",
        "Solana",
        9,
@@ -349,7 +365,8 @@ const mojom::NetworkInfo* GetSolLocalhost() {
        {"https://explorer.solana.com/"
         "?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899"},
        {},
-       {kSolanaLocalhostURL},
+       0,
+       {GURL(kSolanaLocalhostURL)},
        "SOL",
        "Solana",
        9,
@@ -376,7 +393,8 @@ const mojom::NetworkInfo* GetFilMainnet() {
        "Filecoin Mainnet",
        {"https://filscan.io/tipset/message-detail"},
        {},
-       {"https://api.node.glif.io/rpc/v0"},
+       0,
+       {GURL("https://api.node.glif.io/rpc/v0")},
        "FIL",
        "Filecoin",
        18,
@@ -391,7 +409,8 @@ const mojom::NetworkInfo* GetFilTestnet() {
        "Filecoin Testnet",
        {"https://calibration.filscan.io/tipset/message-detail"},
        {},
-       {"https://calibration.node.glif.io/rpc/v0"},
+       0,
+       {GURL("https://calibration.node.glif.io/rpc/v0")},
        "FIL",
        "Filecoin",
        18,
@@ -406,7 +425,8 @@ const mojom::NetworkInfo* GetFilLocalhost() {
        "Filecoin Localhost",
        {kFilecoinLocalhostURL},
        {},
-       {kFilecoinLocalhostURL},
+       0,
+       {GURL(kFilecoinLocalhostURL)},
        "FIL",
        "Filecoin",
        18,
@@ -464,15 +484,16 @@ const base::flat_map<std::string, std::string>
 constexpr const char kEnsRegistryContractAddress[] =
     "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
-std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
+GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
   auto endpoint = brave_wallet::GetInfuraEndpointForKnownChainId(chain_id);
   if (!endpoint.empty())
-    return endpoint;
+    return GURL(endpoint);
 
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
   if (subdomain.empty())
-    return std::string();
-  return base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str());
+    return GURL();
+  return GURL(
+      base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str()));
 }
 
 const base::Value::List* GetEthCustomNetworksList(PrefService* prefs) {
@@ -523,7 +544,8 @@ GURL AddInfuraProjectId(const GURL& url) {
 }
 
 GURL MaybeAddInfuraProjectId(const GURL& url) {
-  DCHECK(url.is_valid()) << url.possibly_invalid_spec();
+  if (!url.is_valid())
+    return GURL();
   for (const auto& infura_chain_id : kInfuraChains) {
     if (GetInfuraURLForKnownChainId(infura_chain_id) == url) {
       return AddInfuraProjectId(url);
@@ -539,8 +561,10 @@ mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
       continue;
 
     auto result = network->Clone();
-    if (result->rpc_urls.empty())
-      result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
+    if (result->rpc_endpoints.empty()) {
+      result->active_rpc_endpoint_index = 0;
+      result->rpc_endpoints = {GURL(GetInfuraURLForKnownChainId(chain_id))};
+    }
 
     if (prefs && chain_id == brave_wallet::mojom::kLocalhostChainId) {
       result->is_eip1559 = prefs->GetBoolean(kSupportEip1559OnLocalhostChain);
@@ -653,25 +677,6 @@ bool CustomEthChainExists(PrefService* prefs,
     }
   }
   return false;
-}
-
-GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls) {
-  if (chain_urls.empty())
-    return GURL();
-  for (const std::string& spec : chain_urls) {
-    GURL url(spec);
-    if (url.is_valid() && url.SchemeIsHTTPOrHTTPS() &&
-        !base::Contains(spec, "${INFURA_API_KEY}") &&
-        !base::Contains(spec, "${ALCHEMY_API_KEY}") &&
-        !base::Contains(spec, "${API_KEY}") &&
-        !base::Contains(spec, "${PULSECHAIN_API_KEY}")) {
-      return url;
-    }
-  }
-  GURL front_url(chain_urls.front());
-  if (front_url.is_valid())
-    return front_url;
-  return GURL();
 }
 
 bool IsNativeWalletEnabled() {
@@ -1035,21 +1040,20 @@ GURL GetNetworkURL(PrefService* prefs,
                    mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
     if (auto custom_chain = GetCustomEthChain(prefs, chain_id)) {
-      return MaybeAddInfuraProjectId(
-          GetFirstValidChainURL(custom_chain->rpc_urls));
+      return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*custom_chain));
     } else if (auto known_chain = GetKnownEthChain(prefs, chain_id)) {
-      return MaybeAddInfuraProjectId(GURL(known_chain->rpc_urls.front()));
+      return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*known_chain));
     }
   } else if (coin == mojom::CoinType::SOL) {
     for (const auto* network : GetKnownSolNetworks()) {
-      if (network->chain_id == chain_id && network->rpc_urls.size()) {
-        return GURL(network->rpc_urls.front());
+      if (network->chain_id == chain_id) {
+        return GetActiveEndpointUrl(*network);
       }
     }
   } else if (coin == mojom::CoinType::FIL) {
     for (const auto* network : GetKnownFilNetworks()) {
-      if (network->chain_id == chain_id && network->rpc_urls.size()) {
-        return GURL(network->rpc_urls.front());
+      if (network->chain_id == chain_id) {
+        return GetActiveEndpointUrl(*network);
       }
     }
   }
@@ -1126,7 +1130,7 @@ std::string GetKnownEthNetworkId(const std::string& chain_id) {
     if (network->chain_id != chain_id)
       continue;
     if (chain_id == mojom::kLocalhostChainId)
-      return GURL(network->rpc_urls.front()).spec();
+      return network->rpc_endpoints.front().spec();
     return chain_id;
   }
 
@@ -1143,7 +1147,7 @@ std::string GetKnownSolNetworkId(const std::string& chain_id) {
   if (chain_id == mojom::kLocalhostChainId) {
     for (const auto* network : GetKnownSolNetworks()) {
       if (network->chain_id == chain_id) {
-        return GURL(network->rpc_urls.front()).spec();
+        return network->rpc_endpoints.front().spec();
       }
     }
   }
@@ -1161,7 +1165,7 @@ std::string GetKnownFilNetworkId(const std::string& chain_id) {
   if (chain_id == mojom::kLocalhostChainId) {
     for (const auto* network : GetKnownFilNetworks()) {
       if (network->chain_id == chain_id) {
-        return GURL(network->rpc_urls.front()).spec();
+        return network->rpc_endpoints.front().spec();
       }
     }
   }
@@ -1487,4 +1491,14 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);
   return mojom::CoinType::ETH;
 }
+
+GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
+  if (chain.active_rpc_endpoint_index >= 0 &&
+      static_cast<size_t>(chain.active_rpc_endpoint_index) <
+          chain.rpc_endpoints.size()) {
+    return chain.rpc_endpoints[chain.active_rpc_endpoint_index];
+  }
+  return GURL();
+}
+
 }  // namespace brave_wallet

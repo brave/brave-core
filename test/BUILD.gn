@@ -1308,6 +1308,7 @@ if (is_android) {
       "//third_party/androidx:androidx_test_runner_java",
       "//third_party/junit",
       "//ui/android:ui_no_recycler_view_java",
+      "//url/mojom:url_mojom_gurl_java",
     ]
   }
 }  # if (is_android) {

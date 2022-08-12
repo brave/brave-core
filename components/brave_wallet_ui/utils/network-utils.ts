@@ -2,7 +2,8 @@ import { BraveWallet } from '../constants/types'
 export const emptyNetwork = {
   chainId: '',
   chainName: '',
-  rpcUrls: [],
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [],
   blockExplorerUrls: [],
   iconUrls: [],
   symbol: '',

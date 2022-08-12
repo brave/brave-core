@@ -766,7 +766,8 @@ struct NetworkInfo {
   string chain_name;
   array<string> block_explorer_urls;
   array<string> icon_urls;
-  array<string> rpc_urls;
+  int32 active_rpc_endpoint_index;
+  array<url.mojom.Url> rpc_endpoints;
   string symbol;
   string symbol_name;
   int32 decimals;

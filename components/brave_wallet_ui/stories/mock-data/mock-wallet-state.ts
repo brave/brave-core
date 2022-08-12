@@ -39,8 +39,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -55,8 +56,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://rinkeby.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://rinkeby-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://rinkeby-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -71,8 +73,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://ropsten.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://ropsten-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://ropsten-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -87,8 +90,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://goerli.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://goerli-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://goerli-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -103,8 +107,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://kovan.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://kovan-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://kovan-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -119,8 +124,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'http://localhost:7545/'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'http://localhost:7545/'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'http://localhost:7545/' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',

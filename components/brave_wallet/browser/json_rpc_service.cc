@@ -257,7 +257,7 @@ void JsonRpcService::GetPendingAddChainRequests(
 void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
                                       AddEthereumChainCallback callback) {
   auto chain_id = chain->chain_id;
-  GURL url = MaybeAddInfuraProjectId(GetFirstValidChainURL(chain->rpc_urls));
+  GURL url = MaybeAddInfuraProjectId(GetActiveEndpointUrl(*chain));
 
   if (!url.is_valid()) {
     std::move(callback).Run(
@@ -276,12 +276,13 @@ void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
 
   auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidated,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
-                               std::move(callback));
+                               url, std::move(callback));
   RequestInternal(eth::eth_chainId(), true, url, std::move(result));
 }
 
 void JsonRpcService::OnEthChainIdValidated(
     mojom::NetworkInfoPtr chain,
+    const GURL& rpc_url,
     AddEthereumChainCallback callback,
     const int http_code,
     const std::string& response,
@@ -289,9 +290,8 @@ void JsonRpcService::OnEthChainIdValidated(
   if (brave_wallet::ParseSingleStringResult(response) != chain->chain_id) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringFUTF8(
-            IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-            base::ASCIIToUTF16(GetFirstValidChainURL(chain->rpc_urls).spec())));
+        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                                  base::ASCIIToUTF16(rpc_url.spec())));
     return;
   }
 
@@ -338,7 +338,7 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
   }
 
   const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
-  GURL url = MaybeAddInfuraProjectId(GetFirstValidChainURL(chain.rpc_urls));
+  GURL url = MaybeAddInfuraProjectId(GetActiveEndpointUrl(chain));
   if (!url.is_valid()) {
     FirePendingRequestCompleted(
         chain_id,
@@ -349,12 +349,13 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
   }
 
   auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidatedForOrigin,
-                               weak_ptr_factory_.GetWeakPtr(), chain_id);
+                               weak_ptr_factory_.GetWeakPtr(), chain_id, url);
   RequestInternal(eth::eth_chainId(), true, url, std::move(result));
 }
 
 void JsonRpcService::OnEthChainIdValidatedForOrigin(
     const std::string& chain_id,
+    const GURL& rpc_url,
     const int http_code,
     const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
@@ -365,9 +366,8 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
   if (brave_wallet::ParseSingleStringResult(response) != chain_id) {
     FirePendingRequestCompleted(
         chain_id,
-        l10n_util::GetStringFUTF8(
-            IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-            base::ASCIIToUTF16(GetFirstValidChainURL(chain.rpc_urls).spec())));
+        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                                  base::ASCIIToUTF16(rpc_url.spec())));
     add_chain_pending_requests_.erase(chain_id);
     return;
   }
