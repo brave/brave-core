@@ -20,8 +20,9 @@ program
   .option('--target_android_base <target_android_base>', 'target Android OS level for apk or aab (classic, modern, mono)')
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
-  .option('--sync_src [arg]', 'force or skip src sync (true/false/1/0)', JSON.parse)
-  .option('--cleanup', 'remove obsolete gclient dirs')
+  .option('--sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
+  .option('--ignore_chromium', 'do not update chromium version even if it is stale [deprecated, use --sync_chromium=false]')
+  .option('--sync_chromium_and_delete_unused_deps', 'force chromium sync and delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
 
 function maybeInstallDepotTools() {
@@ -55,15 +56,15 @@ function maybeInstallDepotTools() {
   }
 }
 
-function buildDefaultGClientConfig() {
-  function toGClientConfigItem(name, value, pretty = true) {
-    // Convert value to json and replace "%True%" -> True, "%False%" -> False,
-    // "%None%" -> None.
-    const pythonLikeValue =
-        JSON.stringify(value, null, pretty ? 2 : 0).replace(/"%(.*?)%"/gm, '$1')
-    return `${name} = ${pythonLikeValue}\n`
-  }
+function toGClientConfigItem(name, value, pretty = true) {
+  // Convert value to json and replace "%True%" -> True, "%False%" -> False,
+  // "%None%" -> None.
+  const pythonLikeValue =
+      JSON.stringify(value, null, pretty ? 2 : 0).replace(/"%(.*?)%"/gm, '$1')
+  return `${name} = ${pythonLikeValue}\n`
+}
 
+function buildDefaultGClientConfig() {
   let out = toGClientConfigItem('solutions', [
     {
       managed: '%False%',
@@ -102,13 +103,13 @@ function buildDefaultGClientConfig() {
   fs.writeFileSync(config.defaultGClientFile, out)
 }
 
-function shouldUpdateChromium(latestSuccessfulSync, expectedSuccessfulSync) {
-  const chromiumRef = expectedSuccessfulSync.chromiumRef
+function shouldUpdateChromium(latestSuccessfulSyncInfo, expectedSuccessfulSyncInfo) {
+  const chromiumRef = expectedSuccessfulSyncInfo.chromiumRef
   const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
   const needsUpdate = targetSHA !== headSHA || (!headSHA && !targetSHA) ||
-      JSON.stringify(latestSuccessfulSync) !==
-          JSON.stringify(expectedSuccessfulSync)
+      JSON.stringify(latestSuccessfulSyncInfo) !==
+          JSON.stringify(expectedSuccessfulSyncInfo)
   if (needsUpdate) {
     const currentRef = util.getGitReadableLocalRef(config.srcDir)
     console.log(
@@ -118,7 +119,7 @@ function shouldUpdateChromium(latestSuccessfulSync, expectedSuccessfulSync) {
             chalk.italic(currentRef || '[unknown]')} at commit ${
             chalk.inverse(
                 headSHA || '[missing]')}\n  latest successful sync is ${
-                  JSON.stringify(latestSuccessfulSync, null, 4)}`)
+                  JSON.stringify(latestSuccessfulSyncInfo, null, 4)}`)
   } else {
     console.log(
         chalk.green.bold(`Chromium repo does not need sync as it is already ${
@@ -140,41 +141,50 @@ function syncChromium(program) {
   if (syncWithForce) {
     args.push('--force')
   }
-  if (program.cleanup) {
+
+  if (program.sync_chromium_and_delete_unused_deps) {
     if (util.isGitExclusionExists(config.srcDir, 'brave/')) {
       args.push('-D')
     } else {
       Log.warn(
-          '--cleanup is ignored, because brave dir is not excluded from src')
+          '--sync_chromium_and_delete_unused_deps was specified but cannot ' +
+          'be used to remove old Chromium deps as sync has not yet added the ' +
+          'exclusion for the src/brave/ directory, likely because sync has ' +
+          'not previously successfully run before.')
     }
   }
 
-  const latestSuccessfulSyncFile =
+  const latestSuccessfulSyncFilePath =
       path.join(config.rootDir, '.brave_latest_successful_sync.json')
-  const latestSuccessfulSync = util.readJSON(latestSuccessfulSyncFile)
-  const expectedSuccessfulSync = {
+  const latestSuccessfulSyncInfo = util.readJSON(latestSuccessfulSyncFilePath)
+  const expectedSuccessfulSyncInfo = {
     chromiumRef: requiredChromiumRef,
-    gClientTimestamp: fs.statSync(config.gClientFile).mtimeMs.toString()
+    gClientTimestamp: fs.statSync(config.gClientFile).mtimeMs.toString(),
   }
 
   const chromiumNeedsUpdate =
-      shouldUpdateChromium(latestSuccessfulSync, expectedSuccessfulSync)
-  const shouldSyncSrc = chromiumNeedsUpdate || syncWithForce ||
-      program.sync_src || program.cleanup
-  if (!shouldSyncSrc) {
+      shouldUpdateChromium(latestSuccessfulSyncInfo, expectedSuccessfulSyncInfo)
+  const shouldSyncChromium =
+      chromiumNeedsUpdate || syncWithForce || program.sync_chromium
+  if (!shouldSyncChromium) {
     return false
   }
 
-  if (program.sync_src !== undefined && !program.sync_src) {
-    Log.warn(chalk.yellow.bold(
-        'Chromium needed sync but received the flag to skip performing the ' +
-        'update. Working directory may not compile correctly.'))
-    return false
+  if (program.sync_chromium !== undefined) {
+    if (!program.sync_chromium) {
+      Log.warn(
+          'Chromium needed sync but received the flag to skip performing the ' +
+          'update. Working directory may not compile correctly.')
+      return false
+    } else if (!chromiumNeedsUpdate && !syncWithForce) {
+      Log.warn(
+          'Chromium doesn\'t need sync but received the flag to do it anyway.')
+    }
   }
 
   util.runGClient(args, {cwd: config.rootDir}, config.gClientFile)
   util.addGitExclusion(config.srcDir, 'brave/')
-  util.writeJSON(latestSuccessfulSyncFile, expectedSuccessfulSync)
+  util.writeJSON(latestSuccessfulSyncFilePath, expectedSuccessfulSyncInfo)
 
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
   Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
@@ -186,9 +196,6 @@ function syncBrave(program) {
   const syncWithForce = program.init || program.force
   if (syncWithForce) {
     args.push('--force')
-  }
-  if (program.cleanup) {
-    args.push('-D')
   }
 
   // Don't pass gClientFile here, let gclient find it automatically, which
@@ -203,6 +210,15 @@ function gclientRunhooks() {
 async function RunCommand () {
   program.parse(process.argv)
   config.update(program)
+  if (program.ignore_chromium) {
+    Log.warn(
+        '--ignore_chromium is deprecated, please replpace with ' +
+        '--sync_chromium=false')
+    program.sync_chromium = false
+  }
+  if (program.sync_chromium_and_delete_unused_deps) {
+    program.sync_chromium = true
+  }
 
   if (program.init || !fs.existsSync(config.depotToolsDir)) {
     maybeInstallDepotTools()
@@ -212,7 +228,12 @@ async function RunCommand () {
     buildDefaultGClientConfig()
   } else if (program.target_os) {
     Log.warn(
-        '--target_os is ignored. Use with --init or edit .gclient manually')
+        '--target_os is ignored. If you are attempting to sync with ' +
+        'a different target_os argument from that used originally via init ' +
+        '(and specified in the .gclient file), then you will likely not end ' +
+        'up with the correct dependency projects. Specify new target_os ' +
+        'values with --init, or edit .gclient manually before running sync ' +
+        'again.')
   }
 
   Log.progress('Running gclient sync...')
