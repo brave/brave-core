@@ -94,7 +94,7 @@ void TextClassification::OnResourceDidUpdate(const std::string& id) {
 }
 
 void TextClassification::OnTextContentDidChange(
-    const int32_t id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
   const GURL& url = redirect_chain.back();

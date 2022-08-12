@@ -58,7 +58,7 @@ class Transfer final : public TabManagerObserver {
   void OnHtmlContentDidChange(const int32_t id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
-  void OnDidCloseTab(const int32_t id) override;
+  void OnDidCloseTab(const int32_t tab_id) override;
 
   base::ObserverList<TransferObserver> observers_;
 

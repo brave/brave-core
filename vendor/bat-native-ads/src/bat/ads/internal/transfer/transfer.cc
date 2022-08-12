@@ -173,8 +173,8 @@ void Transfer::OnHtmlContentDidChange(const int32_t id,
   MaybeTransferAd(id, redirect_chain);
 }
 
-void Transfer::OnDidCloseTab(const int32_t id) {
-  Cancel(id);
+void Transfer::OnDidCloseTab(const int32_t tab_id) {
+  Cancel(tab_id);
 }
 
 }  // namespace ads

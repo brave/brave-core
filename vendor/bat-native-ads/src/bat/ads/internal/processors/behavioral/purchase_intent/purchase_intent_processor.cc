@@ -224,7 +224,7 @@ void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
 }
 
 void PurchaseIntent::OnTextContentDidChange(
-    const int32_t id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
   const GURL& url = redirect_chain.back();

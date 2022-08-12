@@ -51,12 +51,12 @@ class UserActivityManager final : public BrowserManagerObserver,
   void OnBrowserDidEnterBackground() override;
 
   // TabManagerObserver:
-  void OnTabDidChangeFocus(const int32_t id) override;
+  void OnTabDidChangeFocus(const int32_t tab_id) override;
   void OnTabDidChange(const TabInfo& tab) override;
   void OnDidOpenNewTab(const TabInfo& tab) override;
-  void OnDidCloseTab(const int32_t id) override;
-  void OnTabDidStartPlayingMedia(const int32_t id) override;
-  void OnTabDidStopPlayingMedia(const int32_t id) override;
+  void OnDidCloseTab(const int32_t tab_id) override;
+  void OnTabDidStartPlayingMedia(const int32_t tab_id) override;
+  void OnTabDidStopPlayingMedia(const int32_t tab_id) override;
 
   UserActivityEventList history_;
 };
