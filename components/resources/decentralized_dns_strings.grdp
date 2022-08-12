@@ -7,7 +7,7 @@
     Enable support of Unstoppable Domains in Brave?
   </message>
   <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of unstoppable domains opt-in interstitial page.">
-    Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domain name lookup requests. If you enable this, Infura will see those specific domains that you're trying to visit but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">$1</ph>terms of use<ph name="END_INFURA_TOU_LINK">$2</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">$3</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">$4</ph>.
+    Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) domain name lookup requests. If you enable this, Infura will see those specific domains that you're trying to visit but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">$1</ph>terms of use<ph name="END_INFURA_TOU_LINK">$2</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">$3</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">$4</ph>.
   </message>
   <message name="IDS_ENS_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS.">
     Ethereum Name Service

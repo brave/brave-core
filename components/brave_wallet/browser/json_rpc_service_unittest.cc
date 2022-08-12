@@ -2505,6 +2505,7 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "test.888",
       "test.blockchain",
       "test.bitcoin",
+      "brave.zil",
       "a.crypto",
       "1.crypto",
       "-.crypto",
@@ -2518,7 +2519,6 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "crypto.brave",
       "brave.crypto-",
       "brave.test.crypto",
-      "brave.zil",
   };
   // clang-format on
   for (const auto& domain : valid_domains)
