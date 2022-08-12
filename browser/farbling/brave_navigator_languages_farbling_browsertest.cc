@@ -131,7 +131,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
-    if (request.relative_url != "/simple.html")
+    if (request.relative_url.find("/reduce-language/") == std::string::npos)
       return;
     if (expected_http_accept_language_.empty())
       return;
@@ -232,13 +232,15 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
 }
 
-// Tests results of farbling user agent
+// Tests results of farbling HTTP Accept-Language header
 IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
                        FarbleHTTPAcceptLanguage) {
   std::string domain_b = "b.test";
   std::string domain_d = "d.test";
-  GURL url_b = https_server_.GetURL(domain_b, "/simple.html");
-  GURL url_d = https_server_.GetURL(domain_d, "/simple.html");
+  GURL url_b = https_server_.GetURL(
+      domain_b, "/reduce-language/page-with-subresources.html");
+  GURL url_d = https_server_.GetURL(
+      domain_d, "/reduce-language/page-with-subresources.html");
   SetAcceptLanguages("la,es,en");
 
   // Farbling level: off
@@ -255,6 +257,34 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   SetExpectedHTTPAcceptLanguage("la;q=0.7");
   NavigateToURLUntilLoadStop(url_b);
   SetExpectedHTTPAcceptLanguage("la;q=0.8");
+  SetFingerprintingDefault(domain_d);
+  NavigateToURLUntilLoadStop(url_d);
+
+  // Farbling level: maximum
+  // HTTP Accept-Language header should be farbled but the same across domains.
+  BlockFingerprinting(domain_b);
+  SetExpectedHTTPAcceptLanguage("en-US,en;q=0.9");
+  NavigateToURLUntilLoadStop(url_b);
+  BlockFingerprinting(domain_d);
+  NavigateToURLUntilLoadStop(url_d);
+
+  // Test with subdivided language code as the primary language.
+  SetAcceptLanguages("zh-HK,zh,la");
+
+  // Farbling level: off
+  // HTTP Accept-Language header should not be farbled.
+  AllowFingerprinting(domain_b);
+  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.9,la;q=0.8");
+  NavigateToURLUntilLoadStop(url_b);
+  AllowFingerprinting(domain_d);
+  NavigateToURLUntilLoadStop(url_d);
+
+  // Farbling level: default
+  // HTTP Accept-Language header should be farbled by domain.
+  SetFingerprintingDefault(domain_b);
+  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.7");
+  NavigateToURLUntilLoadStop(url_b);
+  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.8");
   SetFingerprintingDefault(domain_d);
   NavigateToURLUntilLoadStop(url_d);
 
