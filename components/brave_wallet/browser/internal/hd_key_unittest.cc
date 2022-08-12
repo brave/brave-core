@@ -304,11 +304,18 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
 
 TEST(HDKeyUnitTest, SetPrivateKey) {
   HDKey key;
-  key.SetPrivateKey(std::vector<uint8_t>(31));
+  key.SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(31), SecureZeroVectorDeleter<uint8_t>()));
   ASSERT_TRUE(key.private_key().empty());
-  key.SetPrivateKey(std::vector<uint8_t>(33));
+  key.SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(33), SecureZeroVectorDeleter<uint8_t>()));
   ASSERT_TRUE(key.private_key().empty());
-  key.SetPrivateKey(std::vector<uint8_t>(32, 0x1));
+  key.SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(32, 0x1),
+          SecureZeroVectorDeleter<uint8_t>()));
   EXPECT_FALSE(key.private_key().empty());
   EXPECT_TRUE(!IsPublicKeyEmpty(key.public_key_));
 }
