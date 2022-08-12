@@ -1,5 +1,5 @@
 diff --git a/url/url_canon_ip.cc b/url/url_canon_ip.cc
-index 1706377bd850a42989627f9aed4e7efbcb499b08..295cb6854e06bb8baf1c88598a1525d0b0517e62 100644
+index 1706377bd850a42989627f9aed4e7efbcb499b08..a229dd71055d121286b4c4d0969c0e8f0f63ceb8 100644
 --- a/url/url_canon_ip.cc
 +++ b/url/url_canon_ip.cc
 @@ -142,6 +142,7 @@ CanonHostInfo::Family DoIPv4AddressToNumber(const CHAR* spec,
@@ -43,3 +43,12 @@ index 1706377bd850a42989627f9aed4e7efbcb499b08..295cb6854e06bb8baf1c88598a1525d0
      address[existing_components - i - 1] =
          static_cast<unsigned char>(component_values[i]);
    }
+@@ -200,7 +207,7 @@ CanonHostInfo::Family DoIPv4AddressToNumber(const CHAR* spec,
+ 
+   // If the last component has residual bits, report overflow.
+   if (last_value != 0)
+-    return CanonHostInfo::BROKEN;
++    return host_ends_with_888 ? CanonHostInfo::NEUTRAL : CanonHostInfo::BROKEN;
+ 
+   // Tell the caller how many components we saw.
+   *num_ipv4_components = existing_components;

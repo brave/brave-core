@@ -118,6 +118,7 @@ TEST_F(UtilsUnitTest, Dot888Test) {
       "555.888",          // Non-last component overflow case.
       "555.1.888",        // Non-last component overflow case.
       "555.1.1.888",      // Non-last component overflow case.
+      "1.2.3.888",        // Last component residual bits.
       "1.1.test.888",     // Some test
       "888.888",          // Some test
       "1.888.888",        // Some test
