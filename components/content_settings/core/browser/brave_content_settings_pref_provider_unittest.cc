@@ -630,7 +630,23 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   // Verify global has changed
   shields_enabled_settings.CheckSettingsWouldAllow(example_url);
   // Remove wildcards
-  provider.EnsureNoWildcardEntries();
+  provider.EnsureNoWildcardEntries(ContentSettingsType::BRAVE_SHIELDS);
+  // Verify global has reset
+  shields_enabled_settings.CheckSettingsAreDefault(example_url);
+
+  // Simulate sync updates pref directly.
+  base::Value::Dict value;
+  value.Set("expiration", "0");
+  value.Set("last_modified", "13304670271801570");
+  value.Set("model", 0);
+  value.Set("setting", 2);
+
+  base::Value::Dict update;
+  update.Set("*,*", std::move(value));
+
+  testing_profile()->GetPrefs()->SetDict(
+      "profile.content_settings.exceptions.braveShields", std::move(update));
+  base::RunLoop().RunUntilIdle();
   // Verify global has reset
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
   provider.ShutdownOnUIThread();
