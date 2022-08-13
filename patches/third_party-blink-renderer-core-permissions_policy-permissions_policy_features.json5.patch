@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-index 16ba1fe4ec2c55bd97c9862248dc15c28cb682bf..2b206834a689ecda4ab492eb96abc278d2670dfb 100644
+index 8690c632cff7a298861719c0098d5e13b92d68bd..7b423fae6b1dff9d52212272a8c6be5bf7bddd77 100644
 --- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 +++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-@@ -394,5 +394,13 @@
+@@ -400,5 +400,13 @@
        permissions_policy_name: "local-fonts",
        depends_on: ["FontAccess"],
      },

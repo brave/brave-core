@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index ecb7cb4f6d9dade9c798a5deebe584b4c196c557..01fc9b9dfea25c1e107a3dd18a7353e9d0d50fd2 100644
+index 6dc2c861acdc61e460d8b64ae0e0d221cdde4615..db35167164a8b29af91c7f6f4c0a6ab0e1d91a18 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -235,6 +235,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -180,6 +180,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(kFRETrialGroupPrefName, 0);
  
    registry->RegisterIntegerPref(kTrialGroupV3PrefName, 0);
@@ -10,7 +10,7 @@ index ecb7cb4f6d9dade9c798a5deebe584b4c196c557..01fc9b9dfea25c1e107a3dd18a7353e9
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -372,6 +373,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -298,6 +299,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                  PrefRegistry::LOSSY_PREF);
    registry->RegisterTimePref(prefs::kIosShareChromeLastShare, base::Time(),
                               PrefRegistry::LOSSY_PREF);

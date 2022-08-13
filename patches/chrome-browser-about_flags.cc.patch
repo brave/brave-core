@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index cc717b16dbce6d1e4d7e71719e9f53b5eabeb758..78010433b303f8d99b6821887d8f257b32c8b7bc 100644
+index 28dfe745a4ec66141171dd5ac41d7edc0f8c9991..1b1c6cbbfc9df6662475201108403381d1049172 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -3277,6 +3277,7 @@ const FeatureEntry::FeatureVariation
