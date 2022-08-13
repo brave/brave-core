@@ -1,5 +1,5 @@
 import("//build/util/branding.gni")
-import("//build/util/version.gni")
+import("//chrome/version.gni")
 
 declare_args() {
   # Release channel support.
