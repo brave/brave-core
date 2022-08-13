@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index b31aeb03de4b1d89fc0964481b39be1c2a972bf8..5992bea6d71926ce2e469245b3175d543f383a04 100644
+index 379c2ee116b90a1382dbaf4ebd8f3a53e5fba528..59b047ed968d2845c2581cce5d12fdfc8429904e 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -655,6 +655,7 @@ static_library("ui") {
+@@ -654,6 +654,7 @@ static_library("ui") {
      "//ui/webui",
      "//v8:v8_version",
    ]
@@ -27,4 +27,4 @@ index b31aeb03de4b1d89fc0964481b39be1c2a972bf8..5992bea6d71926ce2e469245b3175d54
 +      }
      }
    } else {  # 'OS!="win"
-     # The Cast Linux build sets toolkit_views to false, but many files in this
+     if (toolkit_views) {
