@@ -44,7 +44,7 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -117,7 +117,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_search_conversion::p3a::RegisterLocalStatePrefs(registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::prefs::RegisterLocalStatePrefs(registry);
+  brave_vpn::RegisterLocalStatePrefs(registry);
 #endif
 }
 

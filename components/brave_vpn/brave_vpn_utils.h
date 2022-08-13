@@ -8,10 +8,15 @@
 
 #include <string>
 
+class PrefRegistrySimple;
+
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled();
 std::string GetManageUrl(const std::string& env);
+
+void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 }  // namespace brave_vpn
 
