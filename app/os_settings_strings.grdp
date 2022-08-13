@@ -2358,6 +2358,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_AUDIO_VOLUME_TITLE" desc="In Device Settings, the title of the volume row under the output section in audio settings subpage.">
     Volume
   </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the output section in audio settings subpage.">
+    Device
+  </message>
 
   <!-- Device pointer page (OS settings) -->
   <message name="IDS_SETTINGS_MOUSE_TITLE" desc="In Device Settings, the title of the mouse settings subpage.">
@@ -3550,6 +3553,12 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOGIN_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure security and sign-in settings.">
     Enter your password to configure security and sign-in
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_RECOVERY_TOGGLE_LABEL" desc="Label of toggle to enable or disable cryptohome recovery.">
+    Local data recovery
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_RECOVERY_TOGGLE_SUB_LABEL" desc="Sub-label of toggle to enable or disable cryptohome recovery.">
+    Local data can be restored if you forget your password
   </message>
 
   <!-- Kerberos section (OS settings) -->
