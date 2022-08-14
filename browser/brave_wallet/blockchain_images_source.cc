@@ -80,7 +80,8 @@ void BlockchainImagesSource::OnGotImageFile(GotDataCallback callback,
   std::move(callback).Run(std::move(bytes));
 }
 
-std::string BlockchainImagesSource::GetMimeType(const std::string& path) {
+std::string BlockchainImagesSource::GetMimeType(const GURL& url) {
+  const std::string path = URLDataSource::URLToRequestPath(url);
   if (base::EndsWith(path, ".png", base::CompareCase::INSENSITIVE_ASCII))
     return "image/png";
   if (base::EndsWith(path, ".gif", base::CompareCase::INSENSITIVE_ASCII))

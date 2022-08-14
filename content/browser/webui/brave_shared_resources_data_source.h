@@ -31,7 +31,7 @@ class BraveSharedResourcesDataSource : public content::URLDataSource {
       const content::WebContents::Getter& wc_getter,
       content::URLDataSource::GotDataCallback callback) override;
   bool AllowCaching() override;
-  std::string GetMimeType(const std::string& path) override;
+  std::string GetMimeType(const GURL& url) override;
   bool ShouldServeMimeTypeAsContentTypeHeader() override;
   std::string GetAccessControlAllowOriginForOrigin(
       const std::string& origin) override;
