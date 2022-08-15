@@ -1620,18 +1620,16 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
           "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA",
           "ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
       }};
-  for (size_t i = 0;
-       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
-    absl::optional<std::string> imported_account =
-        ImportAccount(&service, imported_accounts[i].name,
-                      imported_accounts[i].private_key, mojom::CoinType::ETH);
+  for (const auto& account : imported_accounts) {
+    absl::optional<std::string> imported_account = ImportAccount(
+        &service, account.name, account.private_key, mojom::CoinType::ETH);
     ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(imported_accounts[i].address, *imported_account);
+    EXPECT_EQ(account.address, *imported_account);
 
-    auto private_key = GetPrivateKeyForKeyringAccount(
-        &service, imported_accounts[i].address, mojom::CoinType::ETH);
+    auto private_key = GetPrivateKeyForKeyringAccount(&service, account.address,
+                                                      mojom::CoinType::ETH);
     EXPECT_TRUE(private_key);
-    EXPECT_EQ(imported_accounts[i].encoded_private_key, private_key);
+    EXPECT_EQ(account.encoded_private_key, private_key);
   }
 
   observer.Reset();
@@ -1972,15 +1970,13 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
                                              kUpdatedName));
 
   // Add import accounts.
-  for (size_t i = 0;
-       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+  for (const auto& account : imported_accounts) {
     ASSERT_FALSE(observer.AccountsChangedFired());
 
-    absl::optional<std::string> imported_account =
-        ImportAccount(&service, imported_accounts[i].name,
-                      imported_accounts[i].private_key, mojom::CoinType::ETH);
+    absl::optional<std::string> imported_account = ImportAccount(
+        &service, account.name, account.private_key, mojom::CoinType::ETH);
     ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(imported_accounts[i].address, *imported_account);
+    EXPECT_EQ(account.address, *imported_account);
 
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(observer.AccountsChangedFired());
@@ -2001,12 +1997,11 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
                                             kUpdatedName));
 
   // Private key of imported accounts should not be changed.
-  for (size_t i = 0;
-       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+  for (const auto& imported_account : imported_accounts) {
     auto private_key = GetPrivateKeyForKeyringAccount(
-        &service, imported_accounts[i].address, mojom::CoinType::ETH);
+        &service, imported_account.address, mojom::CoinType::ETH);
     EXPECT_TRUE(private_key);
-    EXPECT_EQ(imported_accounts[i].private_key, *private_key);
+    EXPECT_EQ(imported_account.private_key, *private_key);
   }
 
   // Only second imported account's name is updated.

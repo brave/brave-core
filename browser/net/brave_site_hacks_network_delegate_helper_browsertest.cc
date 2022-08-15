@@ -260,10 +260,8 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
       "", "foo=bar", "fbclid=1", "fbclid=2&key=value", "key=value&fbclid=3",
   };
 
-  constexpr size_t input_count = std::size(inputs);
-
-  for (size_t i = 0; i < input_count; i++) {
-    const GURL dest_url = landing_url(inputs[i], simple_landing_url());
+  for (const auto& input : inputs) {
+    const GURL dest_url = landing_url(input, simple_landing_url());
     brave_shields::SetBraveShieldsEnabled(content_settings(), false, dest_url);
     NavigateToURLAndWaitForRedirects(url(dest_url, cross_site_url()), dest_url);
   }
@@ -278,12 +276,10 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   };
   // Same-site requests should be untouched.
 
-  constexpr size_t input_count = sizeof(inputs) / sizeof(std::string);
-
-  for (size_t i = 0; i < input_count; i++) {
+  for (const auto& input : inputs) {
     NavigateToURLAndWaitForRedirects(
-        url(landing_url(inputs[i], simple_landing_url()), same_site_url()),
-        landing_url(inputs[i], simple_landing_url()));
+        url(landing_url(input, simple_landing_url()), same_site_url()),
+        landing_url(input, simple_landing_url()));
   }
 }
 
@@ -321,15 +317,13 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
       "fbclid=1",
   };
 
-  constexpr size_t input_count = sizeof(inputs) / sizeof(std::string);
-
-  for (size_t i = 0; i < input_count; i++) {
+  for (const auto& input : inputs) {
     // Same-site navigations to a same-site redirect are exempted from the query
     // filter.
     NavigateToURLAndWaitForRedirects(
-        url(landing_url(inputs[i], redirect_to_same_site_landing_url()),
+        url(landing_url(input, redirect_to_same_site_landing_url()),
             same_site_url()),
-        landing_url(inputs[i], simple_landing_url()));
+        landing_url(input, simple_landing_url()));
   }
 }
 

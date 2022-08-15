@@ -109,17 +109,17 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   entry1->SetLocalProfileName(profile_data[0].profile_name,
                               profile_data[0].force_default_name);
   // Rest are generated
-  for (size_t i = 0; i != profile_data.size(); i++) {
+  for (auto& profile : profile_data) {
     base::RunLoop run_loop;
     profile_manager->CreateProfileAsync(
-        profile_data[i].profile_path,
+        profile.profile_path,
         base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop));
     run_loop.Run();
     ProfileAttributesEntry* entry =
-        storage.GetProfileAttributesWithPath(profile_data[i].profile_path);
+        storage.GetProfileAttributesWithPath(profile.profile_path);
     ASSERT_NE(entry, nullptr);
-    entry->SetLocalProfileName(profile_data[i].profile_name,
-                               profile_data[i].force_default_name);
+    entry->SetLocalProfileName(profile.profile_name,
+                               profile.force_default_name);
   }
 }
 

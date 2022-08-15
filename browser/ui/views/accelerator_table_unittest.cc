@@ -13,8 +13,7 @@ namespace {
 
 bool HasCommandID(int command_id) {
   const std::vector<AcceleratorMapping> accelerator_list(GetAcceleratorList());
-  for (auto it = accelerator_list.begin(); it != accelerator_list.end(); ++it) {
-    const AcceleratorMapping& entry = *it;
+  for (auto entry : accelerator_list) {
     if (entry.command_id == command_id)
       return true;
   }
