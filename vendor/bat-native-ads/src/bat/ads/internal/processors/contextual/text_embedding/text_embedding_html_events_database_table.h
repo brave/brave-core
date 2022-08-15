@@ -37,7 +37,7 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
@@ -45,18 +45,18 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
                       GetTextEmbeddingHtmlEventsCallback callback);
 
   void InsertOrUpdate(
-      mojom::DBTransaction* transaction,
+      mojom::DBTransactionInfo* transaction,
       const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
   std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommand* command,
+      mojom::DBCommandInfo* command,
       const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
   void OnGetTextEmbeddingHtmlEvents(
-      mojom::DBCommandResponsePtr response,
+      mojom::DBCommandResponseInfoPtr response,
       GetTextEmbeddingHtmlEventsCallback callback);
 
-  void MigrateToV25(mojom::DBTransaction* transaction);
+  void MigrateToV25(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace table
