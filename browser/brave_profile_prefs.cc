@@ -144,7 +144,7 @@ using extensions::FeatureSwitch;
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
@@ -199,7 +199,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::prefs::RegisterProfilePrefs(registry);
+  brave_vpn::RegisterProfilePrefs(registry);
 #endif
 
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {

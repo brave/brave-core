@@ -9,6 +9,7 @@
 
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/secure_dns_util.h"
@@ -62,7 +63,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
     SetPolicyValue(policy::key::kDnsOverHttpsMode, "");
-    prefs::RegisterProfilePrefs(pref_service_.registry());
+    brave_vpn::RegisterProfilePrefs(pref_service_.registry());
     dns_service_->SetPrefServiceForTesting(pref_service());
   }
 
