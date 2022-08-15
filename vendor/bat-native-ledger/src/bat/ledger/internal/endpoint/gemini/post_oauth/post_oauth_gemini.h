@@ -44,7 +44,7 @@ namespace endpoint {
 namespace gemini {
 
 using PostOauthCallback =
-    std::function<void(const type::Result result, const std::string& token)>;
+    base::OnceCallback<void(type::Result, const std::string& token)>;
 
 class PostOauth {
  public:
@@ -53,7 +53,7 @@ class PostOauth {
 
   void Request(const std::string& external_account_id,
                const std::string& code,
-               PostOauthCallback callback);
+               PostOauthCallback);
 
  private:
   std::string GetUrl();
@@ -63,7 +63,7 @@ class PostOauth {
 
   type::Result ParseBody(const std::string& body, std::string* token);
 
-  void OnRequest(const type::UrlResponse& response, PostOauthCallback callback);
+  void OnRequest(PostOauthCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

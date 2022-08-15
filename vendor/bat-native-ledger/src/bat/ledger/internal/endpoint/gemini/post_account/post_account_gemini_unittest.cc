@@ -70,12 +70,12 @@ TEST_F(GeminiPostAccountTest, ServerOK) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& linking_info,
-         const std::string& user_name) {
+      base::BindOnce([](type::Result result, const std::string& linking_info,
+                        const std::string& user_name) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(linking_info, "mocktoken");
         EXPECT_EQ(user_name, "Test");
-      });
+      }));
 }
 
 TEST_F(GeminiPostAccountTest, ServerError401) {
@@ -91,12 +91,12 @@ TEST_F(GeminiPostAccountTest, ServerError401) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& linking_info,
-         const std::string& user_name) {
+      base::BindOnce([](type::Result result, const std::string& linking_info,
+                        const std::string& user_name) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostAccountTest, ServerError403) {
@@ -112,12 +112,12 @@ TEST_F(GeminiPostAccountTest, ServerError403) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& linking_info,
-         const std::string& user_name) {
+      base::BindOnce([](type::Result result, const std::string& linking_info,
+                        const std::string& user_name) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostAccountTest, ServerError404) {
@@ -133,12 +133,12 @@ TEST_F(GeminiPostAccountTest, ServerError404) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& linking_info,
-         const std::string& user_name) {
+      base::BindOnce([](type::Result result, const std::string& linking_info,
+                        const std::string& user_name) {
         EXPECT_EQ(result, type::Result::NOT_FOUND);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
@@ -154,12 +154,12 @@ TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& linking_info,
-         const std::string& user_name) {
+      base::BindOnce([](type::Result result, const std::string& linking_info,
+                        const std::string& user_name) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
-      });
+      }));
 }
 
 }  // namespace gemini

@@ -10,6 +10,8 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
+#include "bat/ledger/internal/endpoint/post_connect/uphold/post_connect_uphold.h"
+#include "bat/ledger/internal/endpoint/request.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
@@ -17,15 +19,15 @@
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 
+using ledger::endpoint::Request;
+using ledger::endpoint::connect::PostConnectUphold;
 using ledger::uphold::Capabilities;
 using ledger::wallet::OnWalletStatusChange;
 
 namespace ledger {
 namespace uphold {
 
-UpholdWallet::UpholdWallet(LedgerImpl* ledger)
-    : ledger_{ledger},
-      promotion_server_{std::make_unique<endpoint::PromotionServer>(ledger)} {}
+UpholdWallet::UpholdWallet(LedgerImpl* ledger) : ledger_{ledger} {}
 
 UpholdWallet::~UpholdWallet() = default;
 
@@ -208,14 +210,20 @@ void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
     return std::move(callback).Run(type::Result::CONTINUE);
   }
 
-  promotion_server_->post_claim_uphold()->Request(
-      id, base::BindOnce(&UpholdWallet::OnClaimWallet, base::Unretained(this),
-                         std::move(callback), id));
+  auto on_connect =
+      base::BindOnce(&UpholdWallet::OnConnectWallet, base::Unretained(this),
+                     std::move(callback), id);
+
+  if (Request request{std::make_unique<PostConnectUphold>(ledger_, id)}) {
+    std::move(request).Send(std::move(on_connect));
+  } else {
+    std::move(on_connect).Run(type::Result::LEDGER_ERROR);
+  }
 }
 
-void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
-                                 const std::string& id,
-                                 type::Result result) const {
+void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
+                                   const std::string& id,
+                                   type::Result result) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");

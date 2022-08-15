@@ -43,16 +43,17 @@ class LedgerImpl;
 namespace endpoint {
 namespace gemini {
 
-using PostAccountCallback = std::function<void(const type::Result result,
-                                               const std::string& linking_info,
-                                               const std::string& user_name)>;
+using PostAccountCallback =
+    base::OnceCallback<void(type::Result,
+                            const std::string& linking_info,
+                            const std::string& user_name)>;
 
 class PostAccount {
  public:
   explicit PostAccount(LedgerImpl* ledger);
   ~PostAccount();
 
-  void Request(const std::string& token, PostAccountCallback callback);
+  void Request(const std::string& token, PostAccountCallback);
 
  private:
   std::string GetUrl();
@@ -61,8 +62,7 @@ class PostAccount {
                          std::string* linking_info,
                          std::string* user_name);
 
-  void OnRequest(const type::UrlResponse& response,
-                 PostAccountCallback callback);
+  void OnRequest(PostAccountCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -44,23 +44,21 @@ namespace endpoint {
 namespace gemini {
 
 using PostRecipientIdCallback =
-    std::function<void(const type::Result result,
-                       const std::string& recipient_id)>;
+    base::OnceCallback<void(type::Result, const std::string& recipient_id)>;
 
 class PostRecipientId {
  public:
   explicit PostRecipientId(LedgerImpl* ledger);
   ~PostRecipientId();
 
-  void Request(const std::string& token, PostRecipientIdCallback callback);
+  void Request(const std::string& token, PostRecipientIdCallback);
 
  private:
   std::string GetUrl();
 
   type::Result ParseBody(const std::string& body, std::string* recipient_id);
 
-  void OnRequest(const type::UrlResponse& response,
-                 PostRecipientIdCallback callback);
+  void OnRequest(PostRecipientIdCallback, const type::UrlResponse&);
   std::string GeneratePayload();
 
   LedgerImpl* ledger_;  // NOT OWNED

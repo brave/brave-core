@@ -48,10 +48,11 @@ class LedgerImpl;
 namespace endpoint {
 namespace bitflyer {
 
-using PostOauthCallback = std::function<void(const type::Result result,
-                                             const std::string& token,
-                                             const std::string& address,
-                                             const std::string& linking_info)>;
+using PostOauthCallback =
+    base::OnceCallback<void(type::Result,
+                            const std::string& token,
+                            const std::string& address,
+                            const std::string& linking_info)>;
 
 class PostOauth {
  public:
@@ -61,7 +62,7 @@ class PostOauth {
   void Request(const std::string& external_account_id,
                const std::string& code,
                const std::string& code_verifier,
-               PostOauthCallback callback);
+               PostOauthCallback);
 
  private:
   std::string GetUrl();
@@ -70,14 +71,14 @@ class PostOauth {
                               const std::string& code,
                               const std::string& code_verifier);
 
-  type::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(int status_code);
 
   type::Result ParseBody(const std::string& body,
                          std::string* token,
                          std::string* address,
                          std::string* linking_info);
 
-  void OnRequest(const type::UrlResponse& response, PostOauthCallback callback);
+  void OnRequest(PostOauthCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

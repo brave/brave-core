@@ -10,12 +10,14 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "bat/ledger/internal/endpoint/gemini/gemini_server.h"
-#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
 class LedgerImpl;
+
+namespace endpoint {
+class GeminiServer;
+}
 
 namespace gemini {
 
@@ -26,33 +28,31 @@ class GeminiAuthorization {
   ~GeminiAuthorization();
 
   void Authorize(const base::flat_map<std::string, std::string>& args,
-                 ledger::ExternalWalletAuthorizationCallback callback);
+                 ledger::ExternalWalletAuthorizationCallback);
 
  private:
-  void OnPostAccount(const type::Result result,
+  void OnPostAccount(ledger::ExternalWalletAuthorizationCallback,
+                     const std::string& token,
+                     const std::string& recipient_id,
+                     type::Result,
                      const std::string& linking_info,
-                     const std::string& name,
-                     const std::string& token,
-                     const std::string& recipient_id,
-                     ledger::ExternalWalletAuthorizationCallback callback);
+                     const std::string& name);
 
-  void OnAuthorize(const type::Result result,
-                   const std::string& token,
-                   ledger::ExternalWalletAuthorizationCallback callback);
+  void OnAuthorize(ledger::ExternalWalletAuthorizationCallback,
+                   type::Result,
+                   const std::string& token);
 
-  void OnClaimWallet(const type::Result result,
-                     const std::string& token,
-                     const std::string& recipient_id,
-                     ledger::ExternalWalletAuthorizationCallback callback);
+  void OnConnectWallet(ledger::ExternalWalletAuthorizationCallback,
+                       const std::string& recipient_id,
+                       type::Result);
 
-  void OnFetchRecipientId(const type::Result result,
-                          const std::string& recipient_id,
+  void OnFetchRecipientId(ledger::ExternalWalletAuthorizationCallback,
                           const std::string& token,
-                          ledger::ExternalWalletAuthorizationCallback callback);
+                          type::Result,
+                          const std::string& recipient_id);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::GeminiServer> gemini_server_;
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
 }  // namespace gemini

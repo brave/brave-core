@@ -16,8 +16,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace gemini {
@@ -73,30 +71,30 @@ type::Result PostOauth::ParseBody(const std::string& body, std::string* token) {
 void PostOauth::Request(const std::string& external_account_id,
                         const std::string& code,
                         PostOauthCallback callback) {
-  auto url_callback = std::bind(&PostOauth::OnRequest, this, _1, callback);
-
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(external_account_id, code);
   request->content_type = "application/json";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
+                                  std::move(callback)));
 }
 
-void PostOauth::OnRequest(const type::UrlResponse& response,
-                          PostOauthCallback callback) {
+void PostOauth::OnRequest(PostOauthCallback callback,
+                          const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response, true);
 
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "");
-    return;
+    return std::move(callback).Run(result, "");
   }
 
   std::string token;
   result = ParseBody(response.body, &token);
-  callback(result, token);
+  std::move(callback).Run(result, token);
 }
 
 }  // namespace gemini

@@ -10,26 +10,25 @@
 #include "base/strings/string_number_conversions.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
-#include "bat/ledger/internal/gemini/gemini_util.h"
+#include "bat/ledger/internal/endpoint/gemini/gemini_server.h"
+#include "bat/ledger/internal/endpoint/post_connect/gemini/post_connect_gemini.h"
+#include "bat/ledger/internal/endpoint/request.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
-#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "crypto/sha2.h"
 
+using ledger::endpoint::Request;
+using ledger::endpoint::connect::PostConnectGemini;
 using ledger::wallet::OnWalletStatusChange;
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace ledger {
 namespace gemini {
 
 GeminiAuthorization::GeminiAuthorization(LedgerImpl* ledger)
     : ledger_(ledger),
-      gemini_server_(std::make_unique<endpoint::GeminiServer>(ledger)),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
+      gemini_server_(std::make_unique<endpoint::GeminiServer>(ledger)) {}
 
 GeminiAuthorization::~GeminiAuthorization() = default;
 
@@ -102,17 +101,16 @@ void GeminiAuthorization::Authorize(
   const std::string external_account_id =
       base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
 
-  auto url_callback =
-      std::bind(&GeminiAuthorization::OnAuthorize, this, _1, _2, callback);
-
-  gemini_server_->post_oauth()->Request(external_account_id, code,
-                                        url_callback);
+  gemini_server_->post_oauth()->Request(
+      external_account_id, code,
+      base::BindOnce(&GeminiAuthorization::OnAuthorize, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void GeminiAuthorization::OnAuthorize(
-    const type::Result result,
-    const std::string& token,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback,
+    type::Result result,
+    const std::string& token) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     ledger_->gemini()->DisconnectWallet();
@@ -131,16 +129,18 @@ void GeminiAuthorization::OnAuthorize(
     callback(type::Result::LEDGER_ERROR, {});
     return;
   }
-  auto url_callback = std::bind(&GeminiAuthorization::OnFetchRecipientId, this,
-                                _1, _2, token, callback);
-  gemini_server_->post_recipient_id()->Request(token, url_callback);
+
+  gemini_server_->post_recipient_id()->Request(
+      token,
+      base::BindOnce(&GeminiAuthorization::OnFetchRecipientId,
+                     base::Unretained(this), std::move(callback), token));
 }
 
 void GeminiAuthorization::OnFetchRecipientId(
-    const type::Result result,
-    const std::string& recipient_id,
+    ledger::ExternalWalletAuthorizationCallback callback,
     const std::string& token,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    type::Result result,
+    const std::string& recipient_id) {
   if (result == type::Result::NOT_FOUND) {
     BLOG(0, "Unverified User");
     ledger_->database()->SaveEventLog(log::kKYCRequired,
@@ -168,18 +168,19 @@ void GeminiAuthorization::OnFetchRecipientId(
     return;
   }
 
-  auto url_callback = std::bind(&GeminiAuthorization::OnPostAccount, this, _1,
-                                _2, _3, token, recipient_id, callback);
-  gemini_server_->post_account()->Request(token, url_callback);
+  gemini_server_->post_account()->Request(
+      token, base::BindOnce(&GeminiAuthorization::OnPostAccount,
+                            base::Unretained(this), std::move(callback), token,
+                            recipient_id));
 }
 
 void GeminiAuthorization::OnPostAccount(
-    const type::Result result,
-    const std::string& linking_info,
-    const std::string& name,
+    ledger::ExternalWalletAuthorizationCallback callback,
     const std::string& token,
     const std::string& recipient_id,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    type::Result result,
+    const std::string& linking_info,
+    const std::string& name) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
@@ -200,18 +201,22 @@ void GeminiAuthorization::OnPostAccount(
 
   ledger_->gemini()->SetWallet(wallet_ptr->Clone());
 
-  auto url_callback = std::bind(&GeminiAuthorization::OnClaimWallet, this, _1,
-                                token, recipient_id, callback);
+  auto on_connect =
+      base::BindOnce(&GeminiAuthorization::OnConnectWallet,
+                     base::Unretained(this), std::move(callback), recipient_id);
 
-  promotion_server_->post_claim_gemini()->Request(linking_info, recipient_id,
-                                                  url_callback);
+  if (Request request{std::make_unique<PostConnectGemini>(ledger_, linking_info,
+                                                          recipient_id)}) {
+    std::move(request).Send(std::move(on_connect));
+  } else {
+    std::move(on_connect).Run(type::Result::LEDGER_ERROR);
+  }
 }
 
-void GeminiAuthorization::OnClaimWallet(
-    const type::Result result,
-    const std::string& token,
+void GeminiAuthorization::OnConnectWallet(
+    ledger::ExternalWalletAuthorizationCallback callback,
     const std::string& recipient_id,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    type::Result result) {
   auto wallet_ptr = ledger_->gemini()->GetWallet();
   if (!wallet_ptr) {
     BLOG(0, "Gemini wallet is null!");
