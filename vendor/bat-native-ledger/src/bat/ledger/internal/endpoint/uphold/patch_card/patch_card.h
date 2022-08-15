@@ -82,34 +82,32 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace uphold {
+namespace endpoint::uphold {
 
-using PatchCardCallback = base::OnceCallback<void(type::Result result)>;
+using PatchCardCallback = base::OnceCallback<void(type::Result)>;
 
 class PatchCard {
  public:
-  explicit PatchCard(LedgerImpl* ledger);
+  explicit PatchCard(LedgerImpl*);
   ~PatchCard();
 
   void Request(const std::string& token,
                const std::string& address,
-               PatchCardCallback callback);
+               PatchCardCallback);
 
  private:
   std::string GetUrl(const std::string& address);
 
   std::string GeneratePayload();
 
-  type::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(int status_code);
 
-  void OnRequest(PatchCardCallback callback, const type::UrlResponse& response);
+  void OnRequest(PatchCardCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace uphold
-}  // namespace endpoint
+}  // namespace endpoint::uphold
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_

@@ -103,7 +103,7 @@ TEST_F(PostCardsTest, ServerOK) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, const std::string& id) {
+                 base::BindOnce([](type::Result result, std::string&& id) {
                    EXPECT_EQ(result, type::Result::LEDGER_OK);
                    EXPECT_EQ(id, "bd91a720-f3f9-42f8-b2f5-19548004f6a7");
                  }));
@@ -121,7 +121,7 @@ TEST_F(PostCardsTest, ServerError401) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, const std::string& id) {
+                 base::BindOnce([](type::Result result, std::string&& id) {
                    EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
                    EXPECT_EQ(id, "");
                  }));
@@ -139,7 +139,7 @@ TEST_F(PostCardsTest, ServerErrorRandom) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, const std::string& id) {
+                 base::BindOnce([](type::Result result, std::string&& id) {
                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                    EXPECT_EQ(id, "");
                  }));

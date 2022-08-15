@@ -10,40 +10,40 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h"
-#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
 class LedgerImpl;
 
+namespace endpoint {
+class BitflyerServer;
+}
+
 namespace bitflyer {
 
 class BitflyerAuthorization {
  public:
-  explicit BitflyerAuthorization(LedgerImpl* ledger);
+  explicit BitflyerAuthorization(LedgerImpl*);
 
   ~BitflyerAuthorization();
 
   void Authorize(const base::flat_map<std::string, std::string>& args,
-                 ledger::ExternalWalletAuthorizationCallback callback);
+                 ledger::ExternalWalletAuthorizationCallback);
 
  private:
-  void OnAuthorize(const type::Result result,
-                   const std::string& token,
-                   const std::string& address,
-                   const std::string& linking_info,
-                   ledger::ExternalWalletAuthorizationCallback callback);
+  void OnAuthorize(ledger::ExternalWalletAuthorizationCallback,
+                   type::Result,
+                   std::string&& token,
+                   std::string&& address,
+                   std::string&& linking_info);
 
-  void OnClaimWallet(const type::Result result,
-                     const std::string& token,
-                     const std::string& address,
-                     const std::string& linking_info,
-                     ledger::ExternalWalletAuthorizationCallback callback);
+  void OnConnectWallet(ledger::ExternalWalletAuthorizationCallback,
+                       std::string&& token,
+                       std::string&& address,
+                       type::Result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
 }  // namespace bitflyer

@@ -15,11 +15,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using std::placeholders::_1;
-
-namespace ledger {
-namespace endpoint {
-namespace gemini {
+namespace ledger::endpoint::gemini {
 
 PostRecipientId::PostRecipientId(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -72,45 +68,37 @@ std::string PostRecipientId::GeneratePayload() {
 
 void PostRecipientId::Request(const std::string& token,
                               PostRecipientIdCallback callback) {
-  auto url_callback =
-      std::bind(&PostRecipientId::OnRequest, this, _1, callback);
-
   auto request = type::UrlRequest::New();
-  auto payload = GeneratePayload();
-
   request->url = GetUrl();
   request->method = type::UrlMethod::POST;
   request->headers = RequestAuthorization(token);
-  request->headers.push_back("X-GEMINI-PAYLOAD: " + payload);
+  request->headers.push_back("X-GEMINI-PAYLOAD: " + GeneratePayload());
 
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostRecipientId::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
-void PostRecipientId::OnRequest(const type::UrlResponse& response,
-                                PostRecipientIdCallback callback) {
+void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
+                                const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   auto header = response.headers.find("www-authenticate");
   if (header != response.headers.end()) {
     std::string auth_header = header->second;
     if (auth_header.find("unverified_account") != std::string::npos) {
-      callback(type::Result::NOT_FOUND, "");
-      return;
+      return std::move(callback).Run(type::Result::NOT_FOUND, "");
     }
   }
 
   type::Result result = CheckStatusCode(response.status_code);
-
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "");
-    return;
+    return std::move(callback).Run(result, "");
   }
 
   std::string recipient_id;
   result = ParseBody(response.body, &recipient_id);
-  callback(result, recipient_id);
+  std::move(callback).Run(result, std::move(recipient_id));
 }
 
-}  // namespace gemini
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::gemini

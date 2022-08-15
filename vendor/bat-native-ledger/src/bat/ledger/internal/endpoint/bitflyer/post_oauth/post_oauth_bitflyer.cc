@@ -16,11 +16,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
-namespace ledger {
-namespace endpoint {
-namespace bitflyer {
+namespace ledger::endpoint::bitflyer {
 
 PostOauth::PostOauth(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -56,7 +52,7 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   return payload;
 }
 
-type::Result PostOauth::CheckStatusCode(const int status_code) {
+type::Result PostOauth::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
@@ -114,8 +110,6 @@ void PostOauth::Request(const std::string& external_account_id,
                         const std::string& code,
                         const std::string& code_verifier,
                         PostOauthCallback callback) {
-  auto url_callback = std::bind(&PostOauth::OnRequest, this, _1, callback);
-
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(external_account_id, code, code_verifier);
@@ -123,27 +117,27 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content_type = "application/json";
   request->method = type::UrlMethod::POST;
   request->skip_log = true;
-  ledger_->LoadURL(std::move(request), url_callback);
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
+                                  std::move(callback)));
 }
 
-void PostOauth::OnRequest(const type::UrlResponse& response,
-                          PostOauthCallback callback) {
+void PostOauth::OnRequest(PostOauthCallback callback,
+                          const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response, true);
 
   type::Result result = CheckStatusCode(response.status_code);
-
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "", "", "");
-    return;
+    return std::move(callback).Run(result, "", "", "");
   }
 
   std::string token;
   std::string address;
   std::string linking_info;
   result = ParseBody(response.body, &token, &address, &linking_info);
-  callback(result, token, address, linking_info);
+  std::move(callback).Run(result, std::move(token), std::move(address),
+                          std::move(linking_info));
 }
 
-}  // namespace bitflyer
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::bitflyer

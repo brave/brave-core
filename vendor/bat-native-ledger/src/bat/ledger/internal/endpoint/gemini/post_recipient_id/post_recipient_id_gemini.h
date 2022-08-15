@@ -40,34 +40,30 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace gemini {
+namespace endpoint::gemini {
 
 using PostRecipientIdCallback =
-    std::function<void(const type::Result result,
-                       const std::string& recipient_id)>;
+    base::OnceCallback<void(type::Result, std::string&& recipient_id)>;
 
 class PostRecipientId {
  public:
-  explicit PostRecipientId(LedgerImpl* ledger);
+  explicit PostRecipientId(LedgerImpl*);
   ~PostRecipientId();
 
-  void Request(const std::string& token, PostRecipientIdCallback callback);
+  void Request(const std::string& token, PostRecipientIdCallback);
 
  private:
   std::string GetUrl();
 
   type::Result ParseBody(const std::string& body, std::string* recipient_id);
 
-  void OnRequest(const type::UrlResponse& response,
-                 PostRecipientIdCallback callback);
+  void OnRequest(PostRecipientIdCallback, const type::UrlResponse&);
   std::string GeneratePayload();
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace gemini
-}  // namespace endpoint
+}  // namespace endpoint::gemini
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_GEMINI_POST_RECIPIENT_ID_POST_RECIPIENT_ID_GEMINI_H_

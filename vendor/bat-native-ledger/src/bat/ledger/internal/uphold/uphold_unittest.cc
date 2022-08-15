@@ -1277,6 +1277,7 @@ TEST_P(GetCardID, Paths) {
 using ClaimWalletParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
+    std::string,                        // input Rewards wallet
     type::UrlResponse,                  // Uphold Get User response
     type::UrlResponse,                  // Uphold Get Capabilities response
     type::UrlResponse,                  // Uphold List Cards response
@@ -1295,6 +1296,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Device limit reached.
       "00_device_limit_reached",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1329,6 +1331,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // KYC required.
       "01_kyc_required",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1368,6 +1371,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Mismatched provider accounts.
       "02_mismatched_provider_accounts",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1407,6 +1411,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Transaction verification failure.
       "03_transaction_verification_failure",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1446,6 +1451,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Flagged wallet.
       "04_flagged_wallet",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1485,6 +1491,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Region not supported.
       "05_region_not_supported",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1524,6 +1531,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Mismatched provider account regions.
       "06_mismatched_provider_account_regions",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1563,6 +1571,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Rewards Link (Claim) Wallet failed.
       "07_link_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1597,6 +1606,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Happy path.
       "08_happy_path",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
       type::UrlResponse{
         {},
         {},
@@ -1635,12 +1645,16 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_P(ClaimWallet, Paths) {
   const auto& params = GetParam();
   std::string uphold_wallet = std::get<1>(params);
-  const auto& uphold_get_user_response = std::get<2>(params);
-  const auto& uphold_get_capabilities_response = std::get<3>(params);
-  const auto& uphold_list_cards_response = std::get<4>(params);
-  const auto& rewards_link_wallet_response = std::get<5>(params);
-  const auto expected_result = std::get<6>(params);
-  const auto expected_status = std::get<7>(params);
+  const auto& rewards_wallet = std::get<2>(params);
+  const auto& uphold_get_user_response = std::get<3>(params);
+  const auto& uphold_get_capabilities_response = std::get<4>(params);
+  const auto& uphold_list_cards_response = std::get<5>(params);
+  const auto& rewards_link_wallet_response = std::get<6>(params);
+  const auto expected_result = std::get<7>(params);
+  const auto expected_status = std::get<8>(params);
+
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+      .WillByDefault(Return(rewards_wallet));
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(

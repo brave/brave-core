@@ -41,7 +41,7 @@ class UpholdWallet;
 
 using FetchBalanceCallback = base::OnceCallback<void(type::Result, double)>;
 using CreateCardCallback =
-    base::OnceCallback<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(type::Result, std::string&& id)>;
 using endpoint::uphold::GetCapabilitiesCallback;
 
 class Uphold {
