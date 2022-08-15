@@ -52,27 +52,30 @@ void EmbeddingProcessing::SetIsInitialized(bool is_initialized) {
   is_initialized_ = is_initialized;
 }
 
-void EmbeddingProcessing::SetEmbeddingPipeline(
-    const EmbeddingPipelineInfo& info) {
-  embedding_pipeline_.version = info.version;
-  embedding_pipeline_.timestamp = info.timestamp;
-  embedding_pipeline_.locale = info.locale;
-  embedding_pipeline_.dim = info.dim;
-  embedding_pipeline_.embeddings = info.embeddings;
-}
-
 bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
-  absl::optional<EmbeddingPipelineInfo> pipeline_embedding =
-      ParseEmbeddingPipeline(std::move(resource_value));
-
-  if (pipeline_embedding.has_value()) {
-    SetEmbeddingPipeline(pipeline_embedding.value());
+  bool success = embedding_pipeline_.FromValue(std::move(resource_value));
+  if (success) {
     SetIsInitialized(true);
   } else {
     SetIsInitialized(false);
   }
 
   return is_initialized_;
+}
+
+bool EmbeddingProcessing::SetEmbeddingPipelineForTesting(const int version,
+  const base::Time timestamp,
+  const std::string& locale,
+  const int dim,
+  const std::map<std::string, VectorData>& embeddings) {
+    embedding_pipeline_.version = version;
+    embedding_pipeline_.timestamp = timestamp;
+    embedding_pipeline_.locale = locale;
+    embedding_pipeline_.dim = dim;
+    embedding_pipeline_.embeddings = embeddings;
+    SetIsInitialized(true);
+
+    return is_initialized_;
 }
 
 TextEmbeddingData EmbeddingProcessing::EmbedText(

@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_PROCESSING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_PROCESSING_H_
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -37,8 +38,13 @@ class EmbeddingProcessing final {
 
   void SetIsInitialized(bool is_initialized);
 
-  void SetEmbeddingPipeline(const EmbeddingPipelineInfo& info);
   bool SetEmbeddingPipeline(base::Value resource_value);
+
+  bool SetEmbeddingPipelineForTesting(const int version,
+                                const base::Time timestamp,
+                                const std::string& locale,
+                                const int dim,
+                                const std::map<std::string, VectorData>& embeddings);
 
   TextEmbeddingData EmbedText(const std::string& text) const;
 

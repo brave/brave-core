@@ -24,11 +24,7 @@ struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& info) noexcept;
   ~EmbeddingPipelineInfo();
 
-  EmbeddingPipelineInfo(const int version,
-                        const base::Time timestamp,
-                        const std::string& locale,
-                        const int dim,
-                        const std::map<std::string, VectorData>& embeddings);
+  bool FromValue(base::Value resource_value);
 
   int version;
   base::Time timestamp;
@@ -36,9 +32,6 @@ struct EmbeddingPipelineInfo final {
   int dim;
   std::map<std::string, VectorData> embeddings;
 };
-
-absl::optional<EmbeddingPipelineInfo> ParseEmbeddingPipeline(
-    base::Value resource_value);
 
 }  // namespace pipeline
 }  // namespace ml

@@ -24,52 +24,42 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
-EmbeddingPipelineInfo::EmbeddingPipelineInfo(
-    const int version,
-    const base::Time timestamp,
-    const std::string& locale,
-    const int dim,
-    const std::map<std::string, VectorData>& embeddings)
-    : version(version),
-      timestamp(timestamp),
-      locale(locale),
-      dim(dim),
-      embeddings(embeddings) {}
-
-absl::optional<EmbeddingPipelineInfo> ParseEmbeddingPipeline(
+bool EmbeddingPipelineInfo::FromValue(
     base::Value value) {
   base::Value::Dict* resource = value.GetIfDict();
   if (!resource) {
-    return absl::nullopt;
+    return false;
   }
 
   absl::optional<int> version_value = resource->FindInt("version");
   if (!version_value.has_value()) {
-    return absl::nullopt;
+    return false;
   }
+  version = version_value.value();
 
   std::string* timestamp_value = resource->FindString("timestamp");
   if (!timestamp_value) {
-    return absl::nullopt;
+    return false;
   }
   base::Time timestamp;
   bool success =
       base::Time::FromUTCString((*timestamp_value).c_str(), &timestamp);
   if (!success) {
-    return absl::nullopt;
+    return false;
   }
 
   std::string* locale_value = resource->FindString("locale");
   if (!locale_value) {
-    return absl::nullopt;
+    return false;
   }
+  locale = *locale_value;
 
   base::Value::Dict* embeddings_value = resource->FindDict("embeddings");
   if (!embeddings_value) {
-    return absl::nullopt;
+    return false;
   }
-  int dim = 1;
-  std::map<std::string, VectorData> embeddings;
+
+  dim = 1;
   for (const auto item : *embeddings_value) {
     const auto vector = std::move(item.second.GetList());
     std::vector<float> embedding;
@@ -82,11 +72,11 @@ absl::optional<EmbeddingPipelineInfo> ParseEmbeddingPipeline(
     dim = embeddings[item.first].GetDimensionCount();
   }
 
-  absl::optional<EmbeddingPipelineInfo> pipeline_embedding =
-      EmbeddingPipelineInfo(version_value.value(), timestamp, *locale_value,
-                            dim, embeddings);
+  if (dim == 1) {
+    return false;
+  }
 
-  return pipeline_embedding;
+  return true;
 }
 
 }  // namespace pipeline

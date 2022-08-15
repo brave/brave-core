@@ -28,21 +28,21 @@ class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
 TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   // Arrange
   pipeline::EmbeddingProcessing embedding_processing;
-  pipeline::EmbeddingPipelineInfo pipeline_embedding;
 
+  const int version = 1;
+  const base::Time timestamp = base::Time::Now();
+  const std::string& locale = "en";
+  const int dim = 3;
   const std::map<std::string, VectorData> embeddings = {
       {"this", VectorData({1.0, 0.5, 0.7})},
       {"unittest", VectorData({-0.2, 0.8, 1.0})},
       {"simple", VectorData({0.7, -0.1, 1.3})}};
 
-  pipeline_embedding.version = 1;
-  pipeline_embedding.timestamp = base::Time::Now();
-  pipeline_embedding.locale = "en";
-  pipeline_embedding.dim = 3;
-  pipeline_embedding.embeddings = embeddings;
-
-  embedding_processing.SetEmbeddingPipeline(pipeline_embedding);
-  embedding_processing.SetIsInitialized(true);
+  embedding_processing.SetEmbeddingPipelineForTesting(version,
+                                timestamp,
+                                locale,
+                                dim,
+                                embeddings);
 
   const std::map<std::string, VectorData> samples = {
       {"this simple unittest", VectorData({0.5, 0.4, 1.0})},
