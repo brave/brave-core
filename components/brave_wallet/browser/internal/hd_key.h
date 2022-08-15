@@ -13,6 +13,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_base.h"
+#include "brave/components/brave_wallet/common/mem_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -36,11 +37,12 @@ class HDKey : public HDKeyBase {
                                                   const std::string& json);
 
   // value must be 32 bytes
-  void SetPrivateKey(const std::vector<uint8_t>& value);
+  void SetPrivateKey(std::unique_ptr<std::vector<uint8_t>,
+                                     SecureZeroVectorDeleter<uint8_t>> key);
   // base58 encoded of hash160 of private key
   std::string GetPrivateExtendedKey() const;
   std::string GetEncodedPrivateKey() const override;
-  const std::vector<uint8_t>& private_key() const { return private_key_; }
+  const std::vector<uint8_t>& private_key() const { return *private_key_; }
   // TODO(darkdh): For exporting private key as keystore file
   // std::string GetPrivateKeyinV3UTC() const;
 
@@ -97,15 +99,18 @@ class HDKey : public HDKeyBase {
 
   void GeneratePublicKey();
   const std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input);
-  std::string Serialize(uint32_t version,
-                        const std::vector<uint8_t>& key) const;
+  std::string Serialize(
+      uint32_t version,
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
+          key) const;
 
   uint8_t depth_;
   uint32_t fingerprint_;
   uint32_t parent_fingerprint_;
   uint32_t index_;
   std::vector<uint8_t> identifier_;
-  std::vector<uint8_t> private_key_;
+  std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
+      private_key_;
   std::vector<uint8_t> public_key_;
   std::vector<uint8_t> chain_code_;
 

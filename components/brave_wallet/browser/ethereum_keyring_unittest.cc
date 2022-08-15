@@ -119,7 +119,10 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
       &private_key));
 
   std::unique_ptr<HDKey> key = std::make_unique<HDKey>();
-  key->SetPrivateKey(private_key);
+  key->SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(private_key),
+          SecureZeroVectorDeleter<uint8_t>()));
 
   EthereumKeyring keyring;
   keyring.accounts_.push_back(std::move(key));

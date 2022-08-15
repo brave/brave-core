@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -120,7 +121,10 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransaction) {
       &private_key));
 
   HDKey key;
-  key.SetPrivateKey(private_key);
+  key.SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(private_key),
+          SecureZeroVectorDeleter<uint8_t>()));
   int recid;
   const std::vector<uint8_t> signature =
       key.Sign(tx.GetMessageToSign(), &recid);

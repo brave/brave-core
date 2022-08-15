@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -114,7 +115,10 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
       &private_key));
 
   HDKey key;
-  key.SetPrivateKey(private_key);
+  key.SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(private_key),
+          SecureZeroVectorDeleter<uint8_t>()));
   EthTransaction tx = *EthTransaction::FromTxData(
       mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",

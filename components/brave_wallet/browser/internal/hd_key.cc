@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -12,7 +14,6 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/mem_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
@@ -92,7 +93,8 @@ HDKey::HDKey()
       parent_fingerprint_(0),
       index_(0),
       identifier_(20),
-      private_key_(0),
+      private_key_(new std::vector<uint8_t>(0),
+                   SecureZeroVectorDeleter<uint8_t>()),
       public_key_(33),
       chain_code_(32),
       secp256k1_ctx_(secp256k1_context_create(SECP256K1_CONTEXT_SIGN |
@@ -103,7 +105,8 @@ HDKey::HDKey(uint8_t depth, uint32_t parent_fingerprint, uint32_t index)
       parent_fingerprint_(parent_fingerprint),
       index_(index),
       identifier_(20),
-      private_key_(0),
+      private_key_(new std::vector<uint8_t>(0),
+                   SecureZeroVectorDeleter<uint8_t>()),
       public_key_(33),
       chain_code_(32),
       secp256k1_ctx_(secp256k1_context_create(SECP256K1_CONTEXT_SIGN |
@@ -111,7 +114,6 @@ HDKey::HDKey(uint8_t depth, uint32_t parent_fingerprint, uint32_t index)
 
 HDKey::~HDKey() {
   secp256k1_context_destroy(secp256k1_ctx_);
-  SecureZeroData(private_key_.data(), private_key_.size());
 }
 
 // static
@@ -133,21 +135,26 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(
   }
   DCHECK(out_len == hmac_length);
 
-  const std::vector<uint8_t> IL(hmac.begin(), hmac.begin() + hmac_length / 2);
+  std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>> IL(
+      new std::vector<uint8_t>(hmac.begin(), hmac.begin() + hmac_length / 2),
+      SecureZeroVectorDeleter<uint8_t>());
   const std::vector<uint8_t> IR(hmac.begin() + hmac_length / 2, hmac.end());
-  hdkey->SetPrivateKey(IL);
+  hdkey->SetPrivateKey(std::move(IL));
   hdkey->SetChainCode(IR);
   return hdkey;
 }
 
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
-  std::vector<unsigned char> buf(SERIALIZATION_LEN);
-  if (!DecodeBase58Check(key, buf, buf.size())) {
+  std::vector<unsigned char> decoded_key(SERIALIZATION_LEN);
+  if (!DecodeBase58Check(key, decoded_key, decoded_key.size())) {
     LOG(ERROR) << __func__ << ": DecodeBase58Check failed";
     return nullptr;
   }
 
+  std::vector<unsigned char, SecureZeroAllocator<unsigned char>> buf(
+      decoded_key.begin(), decoded_key.end());
+  SecureZeroData(decoded_key.data(), decoded_key.size());
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
   uint8_t* ptr = reinterpret_cast<uint8_t*>(buf.data());
@@ -174,8 +181,10 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
 
   if (*ptr == 0x00) {
     DCHECK_EQ(version, MAINNET_PRIVATE);
-    std::vector<uint8_t> private_key(ptr + 1, ptr + 33);
-    hdkey->SetPrivateKey(private_key);
+    std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
+        private_key(new std::vector<uint8_t>(ptr + 1, ptr + 33),
+                    SecureZeroVectorDeleter<uint8_t>());
+    hdkey->SetPrivateKey(std::move(private_key));
   } else {
     DCHECK_EQ(version, MAINNET_PUBLIC);
     std::vector<uint8_t> public_key(ptr, ptr + 33);
@@ -191,7 +200,10 @@ std::unique_ptr<HDKey> HDKey::GenerateFromPrivateKey(
   if (private_key.size() != 32)
     return nullptr;
   std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>(0, 0, 0);
-  hd_key->SetPrivateKey(private_key);
+  hd_key->SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(private_key),
+          SecureZeroVectorDeleter<uint8_t>()));
   return hd_key;
 }
 
@@ -347,20 +359,24 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
 
-  std::vector<uint8_t> private_key;
+  std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
+      private_key(new std::vector<uint8_t>(),
+                  SecureZeroVectorDeleter<uint8_t>());
   if (!UTCDecryptPrivateKey(derived_key->key(), ciphertext_bytes, iv_bytes,
-                            &private_key, *dklen))
+                            private_key.get(), *dklen))
     return nullptr;
 
-  return GenerateFromPrivateKey(private_key);
+  return GenerateFromPrivateKey(*std::move(private_key));
 }
 
-void HDKey::SetPrivateKey(const std::vector<uint8_t>& value) {
-  if (value.size() != 32) {
+void HDKey::SetPrivateKey(
+    std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
+        value) {
+  if (value->size() != 32) {
     LOG(ERROR) << __func__ << ": pivate key must be 32 bytes";
     return;
   }
-  private_key_ = value;
+  private_key_ = std::move(value);
   GeneratePublicKey();
   identifier_ = Hash160(public_key_);
 
@@ -369,14 +385,15 @@ void HDKey::SetPrivateKey(const std::vector<uint8_t>& value) {
 }
 
 std::string HDKey::GetPrivateExtendedKey() const {
-  std::vector<uint8_t> key;
-  key.push_back(0x00);
-  key.insert(key.end(), private_key_.begin(), private_key_.end());
-  return Serialize(MAINNET_PRIVATE, key);
+  std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>> key(
+      new std::vector<uint8_t>(), SecureZeroVectorDeleter<uint8_t>());
+  key->push_back(0x00);
+  key->insert(key->end(), private_key_->begin(), private_key_->end());
+  return Serialize(MAINNET_PRIVATE, std::move(key));
 }
 
 std::string HDKey::GetEncodedPrivateKey() const {
-  return base::ToLowerASCII(base::HexEncode(private_key_));
+  return base::ToLowerASCII(base::HexEncode(*private_key_));
 }
 
 void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
@@ -400,7 +417,11 @@ void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
 }
 
 std::string HDKey::GetPublicExtendedKey() const {
-  return Serialize(MAINNET_PUBLIC, public_key_);
+  return Serialize(
+      MAINNET_PUBLIC,
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(public_key_),
+          SecureZeroVectorDeleter<uint8_t>()));
 }
 
 std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
@@ -425,7 +446,7 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
 std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
   size_t public_key_len = crypto_scalarmult_curve25519_tweet_BYTES;
   std::vector<uint8_t> public_key(public_key_len);
-  const uint8_t* private_key_ptr = private_key_.data();
+  const uint8_t* private_key_ptr = private_key_->data();
   if (crypto_scalarmult_curve25519_tweet_base(public_key.data(),
                                               private_key_ptr) != 0)
     return std::vector<uint8_t>();
@@ -446,7 +467,7 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
   if (ephemeral_public_key.size() !=
       crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES)
     return absl::nullopt;
-  if (private_key_.size() !=
+  if (private_key_->size() !=
       crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES)
     return absl::nullopt;
 
@@ -454,7 +475,7 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
   padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
                            0);
   std::vector<uint8_t> padded_plaintext(padded_ciphertext.size());
-  const uint8_t* private_key_ptr = private_key_.data();
+  const uint8_t* private_key_ptr = private_key_->data();
   if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
                       padded_ciphertext.size(), nonce.data(),
                       ephemeral_public_key.data(), private_key_ptr) != 0)
@@ -472,13 +493,13 @@ void HDKey::SetChainCode(const std::vector<uint8_t>& value) {
 std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
   bool is_hardened = index >= HARDENED_OFFSET;
-  std::vector<uint8_t> data;
+  std::vector<uint8_t, SecureZeroAllocator<uint8_t>> data;
 
   if (is_hardened) {
     // Hardened: data = 0x00 || ser256(kpar) || ser32(index)
-    DCHECK(!private_key_.empty());
+    DCHECK(!private_key_->empty());
     data.push_back(0x00);
-    data.insert(data.end(), private_key_.begin(), private_key_.end());
+    data.insert(data.end(), private_key_->begin(), private_key_->end());
   } else {
     // Normal private: data = serP(point(kpar)) || ser32(index)
     // Normal pubic  : data = serP(Kpar) || ser32(index)
@@ -505,17 +526,19 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
 
   hdkey->chain_code_ = IR;
 
-  if (!private_key_.empty()) {
+  if (!private_key_->empty()) {
     // Private parent key -> private child key
     // Also Private parent key -> public child key because we always create
     // public key.
-    std::vector<uint8_t> private_key = private_key_;
-    if (!secp256k1_ec_seckey_tweak_add(secp256k1_ctx_, private_key.data(),
+    std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
+        private_key(new std::vector<uint8_t>(*private_key_),
+                    SecureZeroVectorDeleter<uint8_t>());
+    if (!secp256k1_ec_seckey_tweak_add(secp256k1_ctx_, private_key->data(),
                                        IL.data())) {
       LOG(ERROR) << __func__ << ": secp256k1_ec_seckey_tweak_add failed";
       return nullptr;
     }
-    hdkey->SetPrivateKey(private_key);
+    hdkey->SetPrivateKey(std::move(private_key));
   } else {
     // Public parent key -> public child key (Normal only)
     DCHECK(!is_hardened);
@@ -551,8 +574,11 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
 std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
   std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
   if (path == "m") {
-    if (!private_key_.empty())
-      hd_key->SetPrivateKey(private_key_);
+    if (!private_key_->empty())
+      hd_key->SetPrivateKey(std::unique_ptr<std::vector<uint8_t>,
+                                            SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(*private_key_),
+          SecureZeroVectorDeleter<uint8_t>()));
     else
       hd_key->SetPublicKey(public_key_);
     hd_key->chain_code_ = chain_code_;
@@ -570,8 +596,11 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
         LOG(ERROR) << __func__ << ": path must starts with \"m\"";
         return nullptr;
       }
-      if (!private_key_.empty())
-        hd_key->SetPrivateKey(private_key_);
+      if (!private_key_->empty())
+        hd_key->SetPrivateKey(std::unique_ptr<std::vector<uint8_t>,
+                                              SecureZeroVectorDeleter<uint8_t>>(
+            new std::vector<uint8_t>(*private_key_),
+            SecureZeroVectorDeleter<uint8_t>()));
       else
         hd_key->SetPublicKey(public_key_);
       hd_key->chain_code_ = chain_code_;
@@ -609,7 +638,7 @@ std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
   if (!recid) {
     secp256k1_ecdsa_signature ecdsa_sig;
     if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
-                              private_key_.data(),
+                              private_key_->data(),
                               secp256k1_nonce_function_rfc6979, nullptr)) {
       LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
       return sig;
@@ -623,7 +652,7 @@ std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
   } else {
     secp256k1_ecdsa_recoverable_signature ecdsa_sig;
     if (!secp256k1_ecdsa_sign_recoverable(
-            secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_.data(),
+            secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_->data(),
             secp256k1_nonce_function_rfc6979, nullptr)) {
       LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign_recoverable failed";
       return sig;
@@ -710,7 +739,7 @@ std::vector<uint8_t> HDKey::Recover(bool compressed,
 void HDKey::GeneratePublicKey() {
   secp256k1_pubkey public_key;
   if (!secp256k1_ec_pubkey_create(secp256k1_ctx_, &public_key,
-                                  private_key_.data())) {
+                                  private_key_->data())) {
     LOG(ERROR) << "secp256k1_ec_pubkey_create failed";
     return;
   }
@@ -722,35 +751,38 @@ void HDKey::GeneratePublicKey() {
   }
 }
 
-std::string HDKey::Serialize(uint32_t version,
-                             const std::vector<uint8_t>& key) const {
+std::string HDKey::Serialize(
+    uint32_t version,
+    std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>> key)
+    const {
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
-  std::vector<uint8_t> buf;
+  std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>> buf(
+      new std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>());
 
-  buf.push_back((version >> 24) & 0xFF);
-  buf.push_back((version >> 16) & 0xFF);
-  buf.push_back((version >> 8) & 0xFF);
-  buf.push_back((version >> 0) & 0xFF);
+  buf->push_back((version >> 24) & 0xFF);
+  buf->push_back((version >> 16) & 0xFF);
+  buf->push_back((version >> 8) & 0xFF);
+  buf->push_back((version >> 0) & 0xFF);
 
-  buf.push_back(depth_);
+  buf->push_back(depth_);
 
-  buf.push_back((parent_fingerprint_ >> 24) & 0xFF);
-  buf.push_back((parent_fingerprint_ >> 16) & 0xFF);
-  buf.push_back((parent_fingerprint_ >> 8) & 0xFF);
-  buf.push_back(parent_fingerprint_ & 0xFF);
+  buf->push_back((parent_fingerprint_ >> 24) & 0xFF);
+  buf->push_back((parent_fingerprint_ >> 16) & 0xFF);
+  buf->push_back((parent_fingerprint_ >> 8) & 0xFF);
+  buf->push_back(parent_fingerprint_ & 0xFF);
 
-  buf.push_back((index_ >> 24) & 0xFF);
-  buf.push_back((index_ >> 16) & 0xFF);
-  buf.push_back((index_ >> 8) & 0xFF);
-  buf.push_back(index_ & 0xFF);
+  buf->push_back((index_ >> 24) & 0xFF);
+  buf->push_back((index_ >> 16) & 0xFF);
+  buf->push_back((index_ >> 8) & 0xFF);
+  buf->push_back(index_ & 0xFF);
 
-  buf.insert(buf.end(), chain_code_.begin(), chain_code_.end());
-  DCHECK_EQ(key.size(), 33u);
-  buf.insert(buf.end(), key.begin(), key.end());
+  buf->insert(buf->end(), chain_code_.begin(), chain_code_.end());
+  DCHECK_EQ(key->size(), 33u);
+  buf->insert(buf->end(), key->begin(), key->end());
 
-  DCHECK(buf.size() == SERIALIZATION_LEN);
-  return EncodeBase58Check(buf);
+  DCHECK(buf->size() == SERIALIZATION_LEN);
+  return EncodeBase58Check(*buf);
 }
 
 const std::vector<uint8_t> HDKey::Hash160(const std::vector<uint8_t>& input) {
