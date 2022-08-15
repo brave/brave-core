@@ -17,9 +17,9 @@ namespace de_amp {
 
 namespace {
 
-constexpr uint32_t kReadBufferSize = 65536;  // bytes
+constexpr uint32_t kReadBufferSizeBytes = 65536;
 constexpr uint32_t kMaxBytesToCheck =
-    kReadBufferSize * 3;  // Should always be a multiple
+    kReadBufferSizeBytes * 3;  // Should always be a multiple
 
 }  // namespace
 
@@ -64,14 +64,12 @@ DeAmpURLLoader::~DeAmpURLLoader() = default;
 
 void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   if (state_ == State::kSending) {
-    if (bytes_remaining_in_buffer_ > 0) {
-      SendBufferedBodyToClient();
-    } else {
-      ForwardBodyToClient();
-    }
+    // The pipe becoming readable when kSending means all buffered body has
+    // already been sent.
+    ForwardBodyToClient();
     return;
   }
-  if (!CheckBufferedBody(kReadBufferSize)) {
+  if (!CheckBufferedBody(kReadBufferSizeBytes)) {
     return;
   }
   const bool redirected = MaybeRedirectToCanonicalLink();
@@ -84,6 +82,7 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
       (found_amp_but_not_canonical_link && read_bytes_ >= kMaxBytesToCheck)) {
     found_amp_ = false;  // reset
     CompleteLoading(std::move(buffered_body_));
+    return;
   }
   body_consumer_watcher_.ArmOrNotify();
 }
@@ -102,21 +101,26 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
 
   auto canonical_link = FindCanonicalAmpUrl(buffered_body_);
   if (!canonical_link.has_value()) {
-    LOG(WARNING) << canonical_link.error();
+    VLOG(2) << __func__ << canonical_link.error();
     return false;
   }
 
   const GURL canonical_url(canonical_link.value());
+  // Validate the found canonical AMP URL
   if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
     VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
+    found_amp_ = false;  // reset
     return false;
   }
+  // Attempt to go to the canonical URL
   VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
   if (!de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
+    found_amp_ = false;  // reset
     return false;
   }
   // Only abort if we know we're successfully going to the canonical URL
   Abort();
+  found_amp_ = false;  // reset for the new navigation
   return true;
 }
 

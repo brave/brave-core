@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
-#include "base/types/expected.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -30,7 +29,6 @@ constexpr char kFindCanonicalLinkTagPattern[] =
     "(<\\s*?link\\s[^>]*?rel=(?:\"|')?canonical(?:\"|')?(?:\\s[^>]*?>|>|/>))";
 constexpr char kFindCanonicalHrefInTagPattern[] =
     "href=(?:\"|')?(.*?)(?:\"|')?(?:\\s[^>]*?>|>|/>)";
-}  // namespace
 
 RE2::Options InitRegexOptions() {
   RE2::Options opt;
@@ -38,6 +36,8 @@ RE2::Options InitRegexOptions() {
   opt.set_dot_nl(true);
   return opt;
 }
+
+}  // namespace
 
 bool IsDeAmpEnabled(PrefService* prefs) {
   return base::FeatureList::IsEnabled(features::kBraveDeAMP) &&
@@ -52,7 +52,6 @@ bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
          canonical_link != original_url;
 }
 
-// Run a regex against a string to check if AMP page
 bool CheckIfAmpPage(const std::string& body) {
   auto opt = InitRegexOptions();
   // The order of running these regexes is important:
@@ -74,8 +73,6 @@ bool CheckIfAmpPage(const std::string& body) {
   return true;
 }
 
-// Find canonical link in body or return error
-// NOTE: caller makes sure that body is AMP page
 base::expected<std::string, std::string> FindCanonicalAmpUrl(
     const std::string& body) {
   auto opt = InitRegexOptions();
