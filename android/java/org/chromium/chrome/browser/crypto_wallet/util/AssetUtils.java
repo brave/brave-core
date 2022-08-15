@@ -7,48 +7,53 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.text.TextUtils;
 
-public class AssetUtils {
-    public static String ASSET_SYMBOL_ETH = "ETH";
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 
+public class AssetUtils {
     public static String AURORA_SUPPORTED_CONTRACT_ADDRESSES[] = {
-            "0x4e834cdcc911605227eedddb89fad336ab9dc00a", // AAVE
-            "0x8bec47865ade3b172a928df8f990bc7f2a3b9f79", // AURORA
-            "0xb59d0fdaf498182ff19c4e80c00ecfc4470926e2", // BAL
-            "0x2b9025aecc5ce7a8e6880d3e9c6e458927ecba04", // BAT
-            "0xdeacf0faa2b80af41470003b5f6cd113d47b4dcd", // COMP
-            "0xabe9818c5fb5e751c4310be6f0f18c8d85f9bd7f", // CREAM
-            "0xe3520349f477a5f6eb06107066048508498a291b", // DAI
-            "0xe301ed8c7630c9678c39e4e45193d1e7dfb914f7", // DODO
-            "0xea62791aa682d455614eaa2a12ba3d9a2fd197af", // FLX
-            "0xda2585430fef327ad8ee44af8f1f989a2a91a3d2", // FRAX
-            "0xc8fdd32e0bf33f0396a18209188bb8c6fb8747d2", // FXS
-            "0x943f4bf75d5854e92140403255a471950ab8a26f", // HAPI
-            "0x94190d8ef039c670c6d6b9990142e0ce2a1e3178", // LINK
-            "0x1d1f82d8b8fc72f29a8c268285347563cb6cd8b3", // MKR
-            "0x74974575d2f1668c63036d51ff48dbaa68e52408", // MODA
-            "0x951cfdc9544b726872a8faf56792ef6704731aae", // OCT
-            "0x07b2055fbd17b601c780aeb3abf4c2b3a30c7aae", // OIN
-            "0x885f8CF6E45bdd3fdcDc644efdcd0AC93880c781", // PAD
-            "0x291c8fceaca3342b29cc36171deb98106f712c66", // PICKLE
-            "0x18921f1e257038e538ba24d49fa6495c8b1617bc", // REN
-            "0xdc9be1ff012d3c6da818d136a3b2e5fdd4442f74", // SNX
-            "0x7821c773a12485b12a2b5b7bc451c3eb200986b1", // SUSHI
-            "0x1bc741235ec0ee86ad488fa49b69bb6c823ee7b7", // UNI
-            "0xb12bfca5a55806aaf64e99521918a4bf0fc40802", // USDC
-            "0x4988a896b1227218e4a686fde5eabdcabd91571f", // USDT
-            "0xf4eb217ba2454613b15dbdea6e5f22276410e89e", // WBTC
-            "0x99ec8f13b2afef5ec49073b9d20df109d25f78c0", // WOO
-            "0xa64514a8af3ff7366ad3d5daa5a548eefcef85e0" // YFI
+            "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", // AAVE
+            "0xaaaaaa20d9e0e2461697782ef11675f668207961", // AURORA
+            "0xba100000625a3754423978a60c9317c58a424e3d", // BAL
+            "0x0d8775f648430679a709e98d2b0cb6250d2887ef", // BAT
+            "0xc00e94cb662c3520282e6f5717214004a7f26888", // COMP
+            "0x2ba592f78db6436527729929aaf6c908497cb200", // CREAM
+            "0x6b175474e89094c44da98b954eedeac495271d0f", // DAI
+            "0x43dfc4159d86f3a37a5a4b3d4580b888ad7d4ddd", // DODO
+            "0x3ea8ea4237344c9931214796d9417af1a1180770", // FLX
+            "0x853d955acef822db058eb8505911ed77f175b99e", // FRAX
+            "0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0", // FXS
+            "0xd9c2d319cd7e6177336b0a9c93c21cb48d84fb54", // HAPI
+            "0x514910771af9ca656af840dff83e8264ecf986ca", // LINK
+            "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2", // MKR
+            "0x1117ac6ad6cdf1a3bc543bad3b133724620522d5", // MODA
+            "0xf5cfbc74057c610c8ef151a439252680ac68c6dc", // OCT
+            "0x9aeb50f542050172359a0e1a25a9933bc8c01259", // OIN
+            "0xea7cc765ebc94c4805e3bff28d7e4ae48d06468a", // PAD
+            "0x429881672b9ae42b8eba0e26cd9c73711b891ca5", // PICKLE
+            "0x408e41876cccdc0f92210600ef50372656052a38", // REN
+            "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f", // SNX
+            "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2", // SUSHI
+            "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984", // UNI
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // USDC
+            "0xdac17f958d2ee523a2206206994597c13d831ec7", // USDT
+            "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599", // WBTC
+            "0x4691937a7508860f876c9c0a2a617e7d9e945d4b", // WOO
+            "0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e" // YFI
     };
 
-    public static boolean isAuroraAddress(String contractAddress, String assetSymbol) {
-        if (!TextUtils.isEmpty(contractAddress)) {
+    public static boolean isAuroraAddress(String contractAddress, String chainId) {
+        boolean isEthereumBridgeAddress = false;
+        boolean isNativeAsset = TextUtils.isEmpty(contractAddress);
+
+        if (!isNativeAsset) {
             for (String address : AURORA_SUPPORTED_CONTRACT_ADDRESSES) {
-                if (address.equalsIgnoreCase(contractAddress)) {
-                    return true;
+                isEthereumBridgeAddress = address.equalsIgnoreCase(contractAddress);
+                if (isEthereumBridgeAddress) {
+                    break;
                 }
             }
         }
-        return ASSET_SYMBOL_ETH.equalsIgnoreCase(assetSymbol);
+        return (isEthereumBridgeAddress || isNativeAsset)
+                && chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID);
     }
 }
