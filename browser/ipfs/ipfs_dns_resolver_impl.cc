@@ -5,12 +5,15 @@
 
 #include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
 
+#include "base/time/time.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "content/public/browser/network_service_instance.h"
 #include "services/network/public/mojom/network_service.mojom.h"
 
 namespace ipfs {
+
+constexpr base::TimeDelta kRetryDelay = base::Seconds(1);
 
 mojo::Remote<network::mojom::DnsConfigChangeManager>
 GetDnsConfigChangeManager() {
@@ -21,7 +24,7 @@ GetDnsConfigChangeManager() {
   return dns_config_change_manager_remote;
 }
 
-IpfsDnsResolverImpl::IpfsDnsResolverImpl() {
+IpfsDnsResolverImpl::IpfsDnsResolverImpl() : weak_ptr_factory_(this) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   dns_config_change_manager_ = GetDnsConfigChangeManager();
   SetupDnsConfigChangeNotifications();
@@ -41,7 +44,12 @@ IpfsDnsResolverImpl::~IpfsDnsResolverImpl() {}
 void IpfsDnsResolverImpl::OnDnsConfigChangeManagerConnectionError() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   receiver_.reset();
-  SetupDnsConfigChangeNotifications();
+  // Throttle network service reconnect to prevent possible battery drain.
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&IpfsDnsResolverImpl::SetupDnsConfigChangeNotifications,
+                     weak_ptr_factory_.GetWeakPtr()),
+      kRetryDelay);
 }
 
 void IpfsDnsResolverImpl::OnDnsConfigChanged() {

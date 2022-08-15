@@ -34,6 +34,7 @@ class IpfsDnsResolverImpl
   absl::optional<std::string> GetFirstDnsOverHttpsServer() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(IpfsDnsResolverImplUnitTest, ReconnectOnMojoError);
   void SetupDnsConfigChangeNotifications();
 
   mojo::Remote<network::mojom::DnsConfigChangeManager>
@@ -41,6 +42,8 @@ class IpfsDnsResolverImpl
   mojo::Receiver<network::mojom::DnsConfigChangeManagerClient> receiver_{this};
 
   SEQUENCE_CHECKER(sequence_checker_);
+
+  base::WeakPtrFactory<IpfsDnsResolverImpl> weak_ptr_factory_;
 };
 
 }  // namespace ipfs
