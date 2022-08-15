@@ -85,8 +85,8 @@ const base::FilePath::CharType kSubscriptionsDir[] =
 
 }  // namespace
 
-SubscriptionInfo::SubscriptionInfo() {}
-SubscriptionInfo::~SubscriptionInfo() {}
+SubscriptionInfo::SubscriptionInfo() = default;
+SubscriptionInfo::~SubscriptionInfo() = default;
 SubscriptionInfo::SubscriptionInfo(const SubscriptionInfo&) = default;
 
 void SubscriptionInfo::RegisterJSONConverter(
@@ -136,7 +136,8 @@ bool AdBlockSubscriptionServiceManager::IsInitialized() {
   return initialized_;
 }
 
-AdBlockSubscriptionServiceManager::~AdBlockSubscriptionServiceManager() {}
+AdBlockSubscriptionServiceManager::~AdBlockSubscriptionServiceManager() =
+    default;
 
 base::FilePath AdBlockSubscriptionServiceManager::GetSubscriptionPath(
     const GURL& sub_url) const {

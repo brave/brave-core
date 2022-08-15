@@ -9,9 +9,9 @@
 
 namespace brave_shields {
 
-AdBlockRegionalCatalogProvider::AdBlockRegionalCatalogProvider() {}
+AdBlockRegionalCatalogProvider::AdBlockRegionalCatalogProvider() = default;
 
-AdBlockRegionalCatalogProvider::~AdBlockRegionalCatalogProvider() {}
+AdBlockRegionalCatalogProvider::~AdBlockRegionalCatalogProvider() = default;
 
 void AdBlockRegionalCatalogProvider::AddObserver(
     AdBlockRegionalCatalogProvider::Observer* observer) {

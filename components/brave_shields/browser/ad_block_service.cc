@@ -325,7 +325,7 @@ AdBlockService::AdBlockService(
           local_state_);
 }
 
-AdBlockService::~AdBlockService() {}
+AdBlockService::~AdBlockService() = default;
 
 bool AdBlockService::Start() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

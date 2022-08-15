@@ -24,7 +24,7 @@ BraveFarblingService::BraveFarblingService() {
   incognito_session_token_ = base::RandUint64();
 }
 
-BraveFarblingService::~BraveFarblingService() {}
+BraveFarblingService::~BraveFarblingService() = default;
 
 uint64_t BraveFarblingService::session_token(bool is_off_the_record) {
   if (is_off_the_record)

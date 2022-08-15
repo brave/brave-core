@@ -32,7 +32,7 @@ AdBlockDefaultFiltersProvider::AdBlockDefaultFiltersProvider(
   }
 }
 
-AdBlockDefaultFiltersProvider::~AdBlockDefaultFiltersProvider() {}
+AdBlockDefaultFiltersProvider::~AdBlockDefaultFiltersProvider() = default;
 
 void AdBlockDefaultFiltersProvider::OnComponentReady(
     const base::FilePath& path) {

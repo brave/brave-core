@@ -33,7 +33,7 @@ const char kHTTPSEverywhereComponentTestBase64PublicKey[] =
 
 class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
  public:
-  HTTPSEverywhereServiceTest() {}
+  HTTPSEverywhereServiceTest() = default;
 
   void SetUp() override {
     InitEmbeddedTestServer();

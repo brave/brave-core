@@ -9,9 +9,9 @@
 
 namespace brave_shields {
 
-AdBlockResourceProvider::AdBlockResourceProvider() {}
+AdBlockResourceProvider::AdBlockResourceProvider() = default;
 
-AdBlockResourceProvider::~AdBlockResourceProvider() {}
+AdBlockResourceProvider::~AdBlockResourceProvider() = default;
 
 void AdBlockResourceProvider::AddObserver(
     AdBlockResourceProvider::Observer* observer) {

@@ -14,8 +14,8 @@ using ::testing::_;
 
 class CosmeticResourceMergeTest : public testing::Test {
  public:
-  CosmeticResourceMergeTest() {}
-  ~CosmeticResourceMergeTest() override {}
+  CosmeticResourceMergeTest() = default;
+  ~CosmeticResourceMergeTest() override = default;
 
   void CompareMergeFromStrings(
           const std::string& a,

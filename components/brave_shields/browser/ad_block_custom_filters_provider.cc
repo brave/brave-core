@@ -18,7 +18,7 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
     : local_state_(local_state) {}
 
-AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
+AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() = default;
 
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
