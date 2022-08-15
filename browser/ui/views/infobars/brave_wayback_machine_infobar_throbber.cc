@@ -10,8 +10,8 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/paint_throbber.h"
 
-BraveWaybackMachineInfoBarThrobber::BraveWaybackMachineInfoBarThrobber() {
-}
+BraveWaybackMachineInfoBarThrobber::BraveWaybackMachineInfoBarThrobber() =
+    default;
 
 BraveWaybackMachineInfoBarThrobber::~BraveWaybackMachineInfoBarThrobber() {
   Stop();

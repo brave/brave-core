@@ -37,8 +37,7 @@ BraveBookmarkTabHelper::BraveBookmarkTabHelper(
     content::WebContents* web_contents)
     : content::WebContentsUserData<BraveBookmarkTabHelper>(*web_contents) {}
 
-BraveBookmarkTabHelper::~BraveBookmarkTabHelper() {
-}
+BraveBookmarkTabHelper::~BraveBookmarkTabHelper() = default;
 
 void BraveBookmarkTabHelper::AddObserver(BookmarkTabHelperObserver* observer) {
   BookmarkTabHelper::FromWebContents(&GetWebContents())->AddObserver(observer);

@@ -68,7 +68,7 @@ BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
 #endif
 }
 
-BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {}
+BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() = default;
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());

@@ -110,7 +110,7 @@ bool IsAvatarButtonHideable(Profile* profile) {
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
     : ToolbarView(browser, browser_view) {}
 
-BraveToolbarView::~BraveToolbarView() {}
+BraveToolbarView::~BraveToolbarView() = default;
 
 void BraveToolbarView::Init() {
   ToolbarView::Init();

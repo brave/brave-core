@@ -96,4 +96,4 @@ TorInternalsUI::TorInternalsUI(content::WebUI* web_ui, const std::string& name)
   web_ui->AddMessageHandler(std::make_unique<TorInternalsDOMHandler>());
 }
 
-TorInternalsUI::~TorInternalsUI() {}
+TorInternalsUI::~TorInternalsUI() = default;

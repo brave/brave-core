@@ -22,7 +22,7 @@
 BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(Browser* browser)
     : BrowserLocationBarModelDelegate(browser) {}
 
-BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() {}
+BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() = default;
 
 // static
 void BraveLocationBarModelDelegate::FormattedStringFromURL(

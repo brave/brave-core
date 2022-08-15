@@ -93,7 +93,7 @@ class IPFSLocationButtonView : public views::LabelButton {
   IPFSLocationButtonView(const IPFSLocationButtonView&) = delete;
   IPFSLocationButtonView& operator=(const IPFSLocationButtonView&) = delete;
 
-  ~IPFSLocationButtonView() override {}
+  ~IPFSLocationButtonView() override = default;
 
   void SetIPFSLocation(GURL location) { ipfs_location_ = location; }
 
@@ -141,7 +141,7 @@ IPFSLocationView::IPFSLocationView(Profile* profile) {
   AddChildView(button_);
 }
 
-IPFSLocationView::~IPFSLocationView() {}
+IPFSLocationView::~IPFSLocationView() = default;
 
 void IPFSLocationView::Update(content::WebContents* web_contents) {
   if (!web_contents)

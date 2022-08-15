@@ -59,7 +59,7 @@ void CallOnGetDaemonStatus(content::WebUI* web_ui, const std::string& error) {
 
 IPFSDOMHandler::IPFSDOMHandler() : weak_ptr_factory_{this} {}
 
-IPFSDOMHandler::~IPFSDOMHandler() {}
+IPFSDOMHandler::~IPFSDOMHandler() = default;
 
 void IPFSDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
@@ -115,7 +115,7 @@ IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
   web_ui->AddMessageHandler(std::make_unique<IPFSDOMHandler>());
 }
 
-IPFSUI::~IPFSUI() {}
+IPFSUI::~IPFSUI() = default;
 
 void IPFSDOMHandler::HandleGetConnectedPeers(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);

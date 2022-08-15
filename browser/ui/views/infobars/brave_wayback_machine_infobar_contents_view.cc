@@ -63,7 +63,7 @@ BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
 }
 
 BraveWaybackMachineInfoBarContentsView::
-~BraveWaybackMachineInfoBarContentsView() {}
+    ~BraveWaybackMachineInfoBarContentsView() = default;
 
 void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
   views::View::OnThemeChanged();
