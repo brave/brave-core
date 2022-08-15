@@ -54,4 +54,6 @@ jobs:
           git push -f origin "$contribHeadRefName"
           # TODO remove `-d` draft
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
-          [[ "$existing_prs" = "[]" ]] && gh pr create -d -F ".github/PULL_REQUEST_TEMPLATE.md" -B "$baseRefName" -H "$contribHeadRefName" -t "Don't merge - this is a CI run for $url"
+          if [[ "$existing_prs" = "[]" ]]; then
+            gh pr create -d -F ".github/PULL_REQUEST_TEMPLATE.md" -B "$baseRefName" -H "$contribHeadRefName" -t "Don't merge - this is a CI run for $url"
+          fi
