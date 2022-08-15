@@ -36,7 +36,7 @@ jobs:
           git config user.email devops@brave.com
           git config push.default simple
           git config --list
-          gh auth status
+          # gh auth status
           JQ="jq -e -r"
 
           gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
