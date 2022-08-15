@@ -58,7 +58,7 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 TEST_F(BraveBookmarkContextMenuControllerTest,
        DontShowAppsShortcutContextMenuInBookmarksBar) {
   BookmarkContextMenuController controller(
-      NULL, NULL, NULL, profile_.get(), NullNavigatorGetter(),
+      nullptr, nullptr, nullptr, profile_.get(), NullNavigatorGetter(),
       BOOKMARK_LAUNCH_LOCATION_CONTEXT_MENU, model_->bookmark_bar_node(),
       std::vector<const BookmarkNode*>());
 

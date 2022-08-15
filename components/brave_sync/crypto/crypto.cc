@@ -34,8 +34,8 @@ std::vector<uint8_t> HKDFSha512(const std::vector<uint8_t>& ikm,
   std::vector<uint8_t> derived_key(derived_key_size);
   int result =
       HKDF(derived_key.data(), derived_key.size(), EVP_sha512(), ikm.data(),
-           ikm.size(), salt ? salt->data() : NULL, salt ? salt->size() : 0,
-           info ? info->data() : NULL, info ? info->size() : 0);
+           ikm.size(), salt ? salt->data() : nullptr, salt ? salt->size() : 0,
+           info ? info->data() : nullptr, info ? info->size() : 0);
   DCHECK(result);
   return derived_key;
 }
