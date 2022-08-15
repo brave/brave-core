@@ -27,7 +27,7 @@ jobs:
 
       - name: Sync PR from fork
         env:
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           PR_NUMBER: ${{ inputs.PR_NUMBER }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
