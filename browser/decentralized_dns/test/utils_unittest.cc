@@ -98,40 +98,50 @@ TEST_F(UtilsUnitTest, ResolveMethodMigration) {
 }
 
 TEST_F(UtilsUnitTest, Dot888Test) {
-  net::IPAddress ip_address;
-  // These tests were passing without .888 fix in `url_canon_ip.cc`.
-  EXPECT_TRUE(GURL("http://1.1.888").is_valid());
-  EXPECT_TRUE(ip_address.AssignFromIPLiteral("1.1.888"));
-  EXPECT_TRUE(GURL("http://123.888").is_valid());
-  EXPECT_TRUE(ip_address.AssignFromIPLiteral("123.888"));
-  EXPECT_TRUE(GURL("http://1.123.888").is_valid());
-  EXPECT_TRUE(ip_address.AssignFromIPLiteral("1.123.888"));
-  EXPECT_TRUE(GURL("http://.com").is_valid());
-  EXPECT_FALSE(ip_address.AssignFromIPLiteral(".com"));
-
-  // These tests start passing with .888 fix in `url_canon_ip.cc`.
-  const char* cases[] = {
-      "test.888",         // Non-ipv4 component case.
-      "test1.test2.888",  // Non-ipv4 component case.
-      "1.2.3.4.888",      // Too many components case.
-      "1.2.3.4.5.888",    // Too many components case.
-      "555.888",          // Non-last component overflow case.
-      "555.1.888",        // Non-last component overflow case.
-      "555.1.1.888",      // Non-last component overflow case.
-      "1.2.3.888",        // Last component residual bits.
-      "1.1.test.888",     // Some test
-      "888.888",          // Some test
-      "1.888.888",        // Some test
-      ".888",             // Same as .com
+  auto validate_string = [](const std::string& test_case, bool url_result,
+                            bool ip_result) {
+    SCOPED_TRACE(testing::Message() << test_case);
+    EXPECT_EQ(url_result, GURL("http://" + test_case).is_valid());
+    net::IPAddress ip_address;
+    EXPECT_EQ(ip_result, ip_address.AssignFromIPLiteral(test_case));
   };
 
-  for (auto* test_case : cases) {
-    SCOPED_TRACE(testing::Message() << test_case);
-    // Ok for being a host for url.
-    EXPECT_TRUE(GURL(std::string("http://") + test_case).is_valid());
-    // Still not ok to be an ipv4 address.
-    EXPECT_FALSE(ip_address.AssignFromIPLiteral(test_case));
-  }
+  // These tests were passing without .888 fix in `url_canon_ip.cc`.
+  validate_string("1.1.888", true, true);
+  validate_string("123.888", true, true);
+  validate_string("1.123.888", true, true);
+  validate_string(".com", true, false);
+
+  // Not breaking something near 888.
+  validate_string("1.2.889", true, true);
+  validate_string("1.2.3.889", false, false);
+  validate_string("test.889", false, false);
+
+  // Different form of dec 888.
+  validate_string("1.2.0x378", true, true);  // 888 as hex.
+  validate_string("test.0x378", false, false);
+  validate_string("1.2.01570", true, true);  // 888 as oct.
+  validate_string("test.01570", false, false);
+
+  // These tests start passing with .888 fix in `url_canon_ip.cc`. Ok to be an
+  // url, but still not valid ipv4 address.
+  // Non-ipv4 component case.
+  validate_string("test.888", true, false);
+  validate_string("test1.test2.888", true, false);
+  // Too many components case.
+  validate_string("1.2.3.4.888", true, false);
+  validate_string("1.2.3.4.5.888", true, false);
+  // Non-last component overflow case.
+  validate_string("555.888", true, false);
+  validate_string("555.1.888", true, false);
+  validate_string("555.1.1.888", true, false);
+  // Last component residual bits.
+  validate_string("1.2.3.888", true, false);
+  // Some tests.
+  validate_string("1.1.test.888", true, false);
+  validate_string("888.888", true, false);
+  validate_string("1.888.888", true, false);
+  validate_string(".888", true, false);  // Same as .com
 }
 
 }  // namespace decentralized_dns
