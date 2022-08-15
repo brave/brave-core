@@ -201,8 +201,8 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
 void TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents(
     mojom::DBCommandResponseInfoPtr response,
     GetTextEmbeddingHtmlEventsCallback callback) {
-  if (!response ||
-      response->status != mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+  if (!response || response->status !=
+                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get embeddings");
     callback(/* success */ false, {});
     return;
@@ -219,7 +219,8 @@ void TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents(
   callback(/* success */ true, text_embedding_html_events);
 }
 
-void TextEmbeddingHtmlEvents::MigrateToV25(mojom::DBTransactionInfo* transaction) {
+void TextEmbeddingHtmlEvents::MigrateToV25(
+    mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
   const std::string& query = base::StringPrintf(
