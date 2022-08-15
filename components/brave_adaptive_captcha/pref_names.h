@@ -8,15 +8,11 @@
 
 namespace brave_adaptive_captcha {
 namespace prefs {
-constexpr char kScheduledCaptchaId[] = "brave.rewards.scheduled_captcha.id";
-constexpr char kScheduledCaptchaPaymentId[] =
-    "brave.rewards.scheduled_captcha.payment_id";
-constexpr char kScheduledCaptchaSnoozeCount[] =
-    "brave.rewards.scheduled_captcha.snooze_count";
-constexpr char kScheduledCaptchaFailedAttempts[] =
-    "brave.rewards.scheduled_captcha.failed_attempts";
-constexpr char kScheduledCaptchaPaused[] =
-    "brave.rewards.scheduled_captcha.paused";
+extern const char kScheduledCaptchaId[];
+extern const char kScheduledCaptchaPaymentId[];
+extern const char kScheduledCaptchaSnoozeCount[];
+extern const char kScheduledCaptchaFailedAttempts[];
+extern const char kScheduledCaptchaPaused[];
 
 }  // namespace prefs
 

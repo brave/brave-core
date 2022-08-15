@@ -9,7 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 
@@ -24,17 +26,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AdaptiveCaptchaUtils {
-    private static final String TAG = "adaptive_captcha_android";
-    private static final String ADAPTIVE_CAPTCHA_URL =
-            "http://url/v3/captcha/solution/%s/%s";
+public class BraveAdaptiveCaptchaUtils {
+    private static final String TAG = "brave_adaptive_captcha_android";
+    // private static final String ADAPTIVE_CAPTCHA_URL =
+    //         "http://grant.rewards.bravesoftware.com/v3/captcha/solution/%s/%s";
 
     public static synchronized void solveCaptcha(String captchaId, String paymentId) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             HttpURLConnection urlConnection = null;
+            String adaptiveCaptchaSolutionUrl =
+                    BraveRewardsNativeWorker.getInstance().getCaptchaSolutionURL(
+                            paymentId, captchaId);
+            Log.e(TAG, adaptiveCaptchaSolutionUrl);
             try {
-                URL url = new URL(String.format(ADAPTIVE_CAPTCHA_URL, paymentId, captchaId));
+                URL url = new URL(String.format(adaptiveCaptchaSolutionUrl, paymentId, captchaId));
                 Log.e(TAG, url.toString());
                 urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
                         url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
@@ -42,8 +48,6 @@ public class AdaptiveCaptchaUtils {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setUseCaches(false);
                 urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.setRequestProperty(
-                        "Authorization", "Bearer token");
                 urlConnection.connect();
 
                 JSONObject jsonParam = new JSONObject();
@@ -64,10 +68,16 @@ public class AdaptiveCaptchaUtils {
                     while ((line = br.readLine()) != null) {
                         sb.append(line + "\n");
                     }
-                    Log.e(TAG, line);
+                    clearCaptchaPrefs();
                     br.close();
                 } else {
-                    BravePrefServiceBridge.getInstance().incrementFailedAttempts();
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .setInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS,
+                                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                                    .getInteger(
+                                                            BravePref
+                                                                    .SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
+                                            + 1);
                     Log.e(TAG, urlConnection.getResponseMessage());
                 }
             } catch (MalformedURLException e) {
@@ -80,5 +90,14 @@ public class AdaptiveCaptchaUtils {
                 if (urlConnection != null) urlConnection.disconnect();
             }
         });
+    }
+
+    private static void clearCaptchaPrefs() {
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS, 0);
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setString(BravePref.SCHEDULED_CAPTCHA_ID, "");
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID, "");
     }
 }

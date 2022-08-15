@@ -75,8 +75,8 @@ import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.AdaptiveCaptchaUtils;
 import org.chromium.chrome.browser.ApplicationLifetime;
+import org.chromium.chrome.browser.BraveAdaptiveCaptchaUtils;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -119,6 +119,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -170,6 +171,7 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.search_engines.TemplateUrl;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -726,17 +728,23 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onPreferenceChange() {
         Log.e("BraveCaptcha", "Pref changed");
-        Log.e("BraveCaptcha", BravePrefServiceBridge.getInstance().getCaptchaId());
+        Log.e("BraveCaptcha",
+                UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_ID));
         solveAdaptiveCaptcha();
     }
 
     public void solveAdaptiveCaptcha() {
-        String captchaID = BravePrefServiceBridge.getInstance().getCaptchaId();
-        String paymentID = BravePrefServiceBridge.getInstance().getPaymentId();
+        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
         if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
-                && BravePrefServiceBridge.getInstance().getFailedAttempts() < 10
+                && UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
+                        < 10
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
-            AdaptiveCaptchaUtils.solveCaptcha(captchaID, paymentID);
+            BraveAdaptiveCaptchaUtils.solveCaptcha(captchaID, paymentID);
         }
     }
 
