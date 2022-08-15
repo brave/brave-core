@@ -627,8 +627,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     keyring_service_->GetKeyringInfo(
         brave_wallet::mojom::kDefaultKeyringId,
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          for (size_t i = 0; i < keyring_info->account_infos.size(); ++i) {
-            result.push_back(keyring_info->account_infos[i]->address);
+          for (auto& account_info : keyring_info->account_infos) {
+            result.push_back(account_info->address);
           }
           run_loop.Quit();
         }));

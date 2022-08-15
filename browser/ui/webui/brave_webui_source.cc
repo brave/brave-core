@@ -46,17 +46,15 @@ struct WebUISimpleItem {
 
 void AddLocalizedStringsBulk(content::WebUIDataSource* html_source,
                              const std::vector<WebUISimpleItem>& simple_items) {
-  for (size_t i = 0; i < simple_items.size(); i++) {
-    html_source->AddLocalizedString(simple_items[i].name,
-                                    simple_items[i].id);
+  for (auto simple_item : simple_items) {
+    html_source->AddLocalizedString(simple_item.name, simple_item.id);
   }
 }
 
 void AddResourcePaths(content::WebUIDataSource* html_source,
                       const std::vector<WebUISimpleItem>& simple_items) {
-  for (size_t i = 0; i < simple_items.size(); i++) {
-    html_source->AddResourcePath(simple_items[i].name,
-                                 simple_items[i].id);
+  for (auto simple_item : simple_items) {
+    html_source->AddResourcePath(simple_item.name, simple_item.id);
   }
 }
 
