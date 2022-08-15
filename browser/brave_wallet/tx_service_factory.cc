@@ -141,7 +141,7 @@ TxServiceFactory::TxServiceFactory()
   DependsOn(brave_wallet::AssetRatioServiceFactory::GetInstance());
 }
 
-TxServiceFactory::~TxServiceFactory() {}
+TxServiceFactory::~TxServiceFactory() = default;
 
 KeyedService* TxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

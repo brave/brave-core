@@ -17,7 +17,7 @@ HDKeyEd25519::HDKeyEd25519(
     : private_key_(std::move(private_key)) {
   CHECK(private_key_->is_ok());
 }
-HDKeyEd25519::~HDKeyEd25519() {}
+HDKeyEd25519::~HDKeyEd25519() = default;
 
 // static
 std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(

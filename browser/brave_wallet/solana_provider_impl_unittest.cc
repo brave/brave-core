@@ -49,7 +49,7 @@ constexpr char kHardwareAccountAddr[] =
 
 class TestEventsListener : public mojom::SolanaEventsListener {
  public:
-  TestEventsListener() {}
+  TestEventsListener() = default;
 
   void AccountChangedEvent(
       const absl::optional<std::string>& account) override {

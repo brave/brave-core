@@ -123,7 +123,7 @@ std::vector<uint8_t> DecodeHexHash(const std::string& hash_hex) {
 
 class TestEventsListener : public brave_wallet::mojom::EventsListener {
  public:
-  TestEventsListener() {}
+  TestEventsListener() = default;
 
   void ChainChangedEvent(const std::string& chain_id) override {
     chain_id_ = chain_id;

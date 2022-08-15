@@ -235,7 +235,7 @@ KeyringService::ImportedAccountInfo::ImportedAccountInfo(
       encrypted_private_key(input_encrypted_private_key),
       coin(input_coin) {}
 
-KeyringService::ImportedAccountInfo::~ImportedAccountInfo() {}
+KeyringService::ImportedAccountInfo::~ImportedAccountInfo() = default;
 
 KeyringService::ImportedAccountInfo::ImportedAccountInfo(
     const KeyringService::ImportedAccountInfo& other) {

@@ -59,7 +59,7 @@ KeyringServiceFactory::KeyringServiceFactory()
   DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
 }
 
-KeyringServiceFactory::~KeyringServiceFactory() {}
+KeyringServiceFactory::~KeyringServiceFactory() = default;
 
 KeyedService* KeyringServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

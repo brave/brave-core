@@ -58,7 +58,7 @@ AssetRatioServiceFactory::AssetRatioServiceFactory()
           "AssetRatioService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-AssetRatioServiceFactory::~AssetRatioServiceFactory() {}
+AssetRatioServiceFactory::~AssetRatioServiceFactory() = default;
 
 KeyedService* AssetRatioServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

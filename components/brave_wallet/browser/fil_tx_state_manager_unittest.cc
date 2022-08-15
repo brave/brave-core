@@ -29,7 +29,7 @@ class FilTxStateManagerUnitTest : public testing::Test {
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
-  ~FilTxStateManagerUnitTest() override {}
+  ~FilTxStateManagerUnitTest() override = default;
 
  protected:
   void SetUp() override {
