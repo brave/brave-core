@@ -297,6 +297,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       self?.setupLedger()
     }
 
+    rewards.ads.captchaHandler = self
     let shouldStartAds = rewards.ads.isEnabled || Preferences.BraveNews.isEnabled.value
     if shouldStartAds {
       // Only start ledger service automatically if ads is enabled

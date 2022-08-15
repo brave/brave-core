@@ -144,82 +144,84 @@ extension BraveLedger {
         return
       }
       let paymentId = self.paymentId ?? ""
-      client.generateEnrollment(paymentId: paymentId, token: token) { registration, error in
-        if let error = error {
-          log.error("Failed to enroll in DeviceCheck: \(error)")
-          completion()
-          return
+      Task { @MainActor in
+        do {
+          let registration = try client.generateEnrollment(paymentId: paymentId, token: token)
+          try await client.registerDevice(enrollment: registration)
+        } catch {
+          log.error("Failed to register device with mobile attestation server: \(error)")
         }
-        guard let registration = registration else { return }
-        client.registerDevice(enrollment: registration) { error in
-          if let error = error {
-            log.error("Failed to register device with mobile attestation server: \(error)")
-            completion()
-            return
-          }
-        }
+        completion()
       }
     }
   }
 
-  public func claimPromotion(_ promotion: Ledger.Promotion, completion: @escaping (_ success: Bool) -> Void) {
+  public func claimPromotion(_ promotion: Ledger.Promotion) async -> Bool {
     guard let paymentId = self.paymentId else {
-      completion(false)
-      return
+      return false
     }
     let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
-    let group = DispatchGroup()
     if !DeviceCheckClient.isDeviceEnrolled() {
-      group.enter()
-      setupDeviceCheckEnrollment(deviceCheck) {
-        if !DeviceCheckClient.isDeviceEnrolled() {
-          DispatchQueue.main.async {
-            completion(false)
-          }
-          return
+      let didEnroll: Bool = await withCheckedContinuation { c in
+        setupDeviceCheckEnrollment(deviceCheck) {
+          c.resume(returning: DeviceCheckClient.isDeviceEnrolled())
         }
-        group.leave()
+      }
+      if !didEnroll {
+        log.error("Cannot solve adaptive captcha as user is not enrolled with the attestation server")
+        return false
       }
     }
-    group.notify(queue: .main) {
-      deviceCheck.generateAttestation(paymentId: paymentId) { (attestation, error) in
-        guard let attestation = attestation else {
-          completion(false)
+    guard let attestation = try? deviceCheck.generateAttestation(paymentId: paymentId) else {
+      return false
+    }
+    return await withCheckedContinuation { c in
+      self.claimPromotion(promotion.id, publicKey: attestation.publicKeyHash) { result, nonce in
+        if result != .ledgerOk {
+          c.resume(returning: false)
           return
         }
-        self.claimPromotion(promotion.id, publicKey: attestation.publicKeyHash) { result, nonce in
-          if result != .ledgerOk {
-            completion(false)
-            return
-          }
-
-          deviceCheck.generateAttestationVerification(nonce: nonce) { verification, error in
-            guard let verification = verification else {
-              completion(false)
-              return
-            }
-
-            let solution = PromotionSolution()
-            solution.nonce = nonce
-            solution.signature = verification.signature
-            do {
-              solution.blob = try verification.attestationBlob.bsonData().base64EncodedString()
-            } catch {
-              log.error("Couldn't serialize attestation blob. The attest promotion will fail")
-            }
-
-            self.attestPromotion(promotion.id, solution: solution) { result, promotion in
-              if result == .ledgerOk {
-                self.updatePendingAndFinishedPromotions {
-                  completion(true)
-                }
-              } else {
-                completion(false)
+        do {
+          let verification = try deviceCheck.generateAttestationVerification(nonce: nonce)
+          let solution = PromotionSolution()
+          solution.nonce = nonce
+          solution.signature = verification.signature
+          solution.blob = try verification.attestationBlob.bsonData().base64EncodedString()
+          
+          self.attestPromotion(promotion.id, solution: solution) { result, promotion in
+            if result == .ledgerOk {
+              self.updatePendingAndFinishedPromotions {
+                c.resume(returning: true)
               }
+            } else {
+              c.resume(returning: false)
             }
           }
+        } catch {
+          c.resume(returning: false)
         }
       }
     }
+  }
+  
+  func solveAdaptiveCaptcha(paymentId: String, captchaId: String) async throws {
+    let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
+    if !DeviceCheckClient.isDeviceEnrolled() {
+      let didEnroll: Bool = await withCheckedContinuation { c in
+        setupDeviceCheckEnrollment(deviceCheck) {
+          c.resume(returning: DeviceCheckClient.isDeviceEnrolled())
+        }
+      }
+      if !didEnroll {
+        log.error("Cannot solve adaptive captcha as user is not enrolled with the attestation server")
+        return
+      }
+    }
+    
+    let attestation = try deviceCheck.generateAttestation(paymentId: paymentId)
+    let blob = try await deviceCheck.getAttestation(attestation: attestation)
+    let verification = try deviceCheck.generateAttestationVerification(nonce: blob.nonce)
+    try await deviceCheck.setAttestation(nonce: blob.nonce, verification: verification)
+    try await deviceCheck.solveAdaptiveCaptcha(paymentId: paymentId, captchaId: captchaId, verification: verification)
   }
 }

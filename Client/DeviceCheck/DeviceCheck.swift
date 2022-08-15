@@ -167,51 +167,27 @@ public class DeviceCheckClient {
   // MARK: - Server calls for DeviceCheck
 
   // Registers a device with the server using the device-check token
-  public func registerDevice(enrollment: DeviceCheckRegistration, _ completion: @escaping (Error?) -> Void) {
-    do {
-      try executeRequest(.register(enrollment)) { (result: Swift.Result<Data, Error>) in
-        if case .failure(let error) = result {
-          return completion(error)
-        }
-
-        Preferences.Rewards.didEnrollDeviceCheck.value = true
-        completion(nil)
-      }
-    } catch {
-      completion(error)
-    }
+  public func registerDevice(enrollment: DeviceCheckRegistration) async throws {
+    let _: Data = try await executeRequest(.register(enrollment))
+    Preferences.Rewards.didEnrollDeviceCheck.value = true
   }
 
   // Retrieves existing attestations for this device and returns a nonce if any
-  public func getAttestation(attestation: Attestation, _ completion: @escaping (AttestationBlob?, Error?) -> Void) {
-    do {
-      try executeRequest(.getAttestation(attestation)) { (result: Swift.Result<AttestationBlob, Error>) in
-        switch result {
-        case .success(let blob):
-          completion(blob, nil)
-
-        case .failure(let error):
-          completion(nil, error)
-        }
-      }
-    } catch {
-      completion(nil, error)
-    }
+  public func getAttestation(attestation: Attestation) async throws -> AttestationBlob {
+    return try await executeRequest(.getAttestation(attestation))
   }
 
   // Sends the attestation to the server along with the nonce and the challenge signature
-  public func setAttestation(nonce: String, verification: AttestationVerifcation, _ completion: @escaping (Error?) -> Void) {
-    do {
-      try executeRequest(.setAttestation(nonce, verification)) { (result: Swift.Result<Data, Error>) in
-        if case .failure(let error) = result {
-          return completion(error)
-        }
-
-        completion(nil)
-      }
-    } catch {
-      completion(error)
-    }
+  public func setAttestation(nonce: String, verification: AttestationVerifcation) async throws {
+    let _: Data = try await executeRequest(.setAttestation(nonce, verification))
+  }
+  
+  public func solveAdaptiveCaptcha(
+    paymentId: String,
+    captchaId: String,
+    verification: AttestationVerifcation
+  ) async throws {
+    let _: Data = try await executeRequest(.solveCaptcha(paymentId: paymentId, captchaId: captchaId, nonce: verification.attestationBlob.nonce))
   }
 
   // MARK: - Factory functions for generating structures to be used with the above server calls
@@ -232,70 +208,58 @@ public class DeviceCheckClient {
   }
 
   // Generates an enrollment structure to be used with `registerDevice`
-  public func generateEnrollment(paymentId: String, token: String, _ completion: (DeviceCheckRegistration?, Error?) -> Void) {
-    do {
-      guard let privateKey = try Cryptography.generateKey(id: DeviceCheckClient.privateKeyId) else {
-        throw CryptographyError(description: "Unable to generate private key")
-      }
-
-      guard let publicKey = try privateKey.getPublicAsPEM() else {
-        throw CryptographyError(description: "Unable to retrieve public key")
-      }
-
-      let enrollment = DeviceCheckEnrollment(
-        paymentId: paymentId,
-        publicKey: publicKey,
-        deviceToken: token)
-
-      let signature = try privateKey.sign(message: enrollment.bsonData()).base64EncodedString()
-
-      let registration = DeviceCheckRegistration(
-        enrollmentBlob: enrollment,
-        signature: signature)
-      completion(registration, nil)
-    } catch {
-      completion(nil, error)
+  public func generateEnrollment(paymentId: String, token: String) throws -> DeviceCheckRegistration {
+    guard let privateKey = try Cryptography.generateKey(id: DeviceCheckClient.privateKeyId) else {
+      throw CryptographyError(description: "Unable to generate private key")
     }
+    
+    guard let publicKey = try privateKey.getPublicAsPEM() else {
+      throw CryptographyError(description: "Unable to retrieve public key")
+    }
+    
+    let enrollment = DeviceCheckEnrollment(
+      paymentId: paymentId,
+      publicKey: publicKey,
+      deviceToken: token)
+    
+    let signature = try privateKey.sign(message: enrollment.bsonData()).base64EncodedString()
+    
+    let registration = DeviceCheckRegistration(
+      enrollmentBlob: enrollment,
+      signature: signature)
+    return registration
   }
 
   // Generates an attestation structure to be used with `getAttestation`
-  public func generateAttestation(paymentId: String, _ completion: (Attestation?, Error?) -> Void) {
-    do {
-      guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
-        throw CryptographyError(description: "Unable to retrieve existing private key")
-      }
-
-      guard let publicKeyFingerprint = try privateKey.getPublicKeySha256FingerPrint() else {
-        throw CryptographyError(description: "Unable to retrieve public key")
-      }
-
-      let attestation = Attestation(
-        publicKeyHash: publicKeyFingerprint,
-        paymentId: paymentId)
-
-      completion(attestation, nil)
-    } catch {
-      completion(nil, error)
+  public func generateAttestation(paymentId: String) throws -> Attestation {
+    guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
+      throw CryptographyError(description: "Unable to retrieve existing private key")
     }
+    
+    guard let publicKeyFingerprint = try privateKey.getPublicKeySha256FingerPrint() else {
+      throw CryptographyError(description: "Unable to retrieve public key")
+    }
+    
+    let attestation = Attestation(
+      publicKeyHash: publicKeyFingerprint,
+      paymentId: paymentId)
+    
+    return attestation
   }
 
   // Generates an attestation verification structure to be used with `setAttestation`
-  public func generateAttestationVerification(nonce: String, _ completion: (AttestationVerifcation?, Error?) -> Void) {
-    do {
-      guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
-        throw CryptographyError(description: "Unable to retrieve existing private key")
-      }
-
-      let attestation = AttestationBlob(nonce: nonce)
-      let signature = try privateKey.sign(message: try attestation.bsonData()).base64EncodedString()
-      let verification = AttestationVerifcation(
-        attestationBlob: attestation,
-        signature: signature)
-
-      completion(verification, nil)
-    } catch {
-      completion(nil, error)
+  public func generateAttestationVerification(nonce: String) throws -> AttestationVerifcation {
+    guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
+      throw CryptographyError(description: "Unable to retrieve existing private key")
     }
+    
+    let attestation = AttestationBlob(nonce: nonce)
+    let signature = try privateKey.sign(message: try attestation.bsonData()).base64EncodedString()
+    let verification = AttestationVerifcation(
+      attestationBlob: attestation,
+      signature: signature)
+    
+    return verification
   }
 }
 
@@ -324,12 +288,14 @@ private extension DeviceCheckClient {
     case register(DeviceCheckRegistration)
     case getAttestation(Attestation)
     case setAttestation(String, AttestationVerifcation)
+    case solveCaptcha(paymentId: String, captchaId: String, nonce: String)
 
     func method() -> HttpMethod {
       switch self {
       case .register: return .post
       case .getAttestation: return .post
       case .setAttestation: return .put
+      case .solveCaptcha: return .post
       }
     }
 
@@ -344,58 +310,66 @@ private extension DeviceCheckClient {
       case .setAttestation(let nonce, _):
         let nonce = nonce.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? nonce
         return URL(string: "/v1/devicecheck/attestations/\(nonce)", relativeTo: client.baseURL)
+      case .solveCaptcha(let paymentId, let captchaId, _):
+        let paymentId = paymentId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? paymentId
+        let captchaId = captchaId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? captchaId
+        return URL(string: "/v3/captcha/solution/\(paymentId)/\(captchaId)", relativeTo: client.baseURL)
       }
     }
   }
 
-  @discardableResult
-  private func executeRequest<T: Codable>(_ request: Request, _ completion: @escaping (Swift.Result<T, Error>) -> Void) throws -> URLSessionDataTask {
-
+  private func executeRequest<T: Codable>(_ request: Request) async throws -> T {
     let request = try encodeRequest(request)
-    let task = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main).dataTask(with: request) { data, response, error in
-
-      if let error = error {
-        return completion(.failure(error))
-      }
-
-      if let data = data, let error = try? JSONDecoder().decode(DeviceCheckError.self, from: data) {
-        return completion(.failure(error))
-      }
-
-      if let response = response as? HTTPURLResponse {
-        if response.statusCode < 200 || response.statusCode > 299 {
-          return completion(
-            .failure(
-              DeviceCheckError(message: "Validation Failed: Invalid Response Code", code: response.statusCode)
-            )
-          )
+    return try await withCheckedThrowingContinuation { continuation in
+      let task = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main).dataTask(with: request) { data, response, error in
+        
+        if let error = error {
+          continuation.resume(throwing: error)
+          return
         }
-      }
-
-      guard let data = data else {
-        return completion(
-          .failure(
+        
+        if let data = data, let error = try? JSONDecoder().decode(DeviceCheckError.self, from: data) {
+          continuation.resume(throwing: error)
+          return
+        }
+        
+        if let response = response as? HTTPURLResponse {
+          if response.statusCode < 200 || response.statusCode > 299 {
+            let error = DeviceCheckError(
+              message: "Validation Failed: Invalid Response Code",
+              code: response.statusCode
+            )
+            continuation.resume(throwing: error)
+            return
+          }
+        }
+        
+        guard let data = data else {
+          continuation.resume(throwing:
             DeviceCheckError(message: "Validation Failed: Empty Server Response", code: 500)
           )
-        )
+          return
+        }
+        
+        if T.self == Data.self {
+          continuation.resume(returning: data as! T) // swiftlint:disable:this force_cast
+          return
+        }
+        
+        if T.self == String.self {
+          continuation.resume(returning: String(data: data, encoding: .utf8) as! T) // swiftlint:disable:this force_cast
+          return
+        }
+        
+        do {
+          let value = try JSONDecoder().decode(T.self, from: data)
+          continuation.resume(returning: value)
+        } catch {
+          continuation.resume(throwing: error)
+        }
       }
-
-      if T.self == Data.self {
-        return completion(.success(data as! T))  // swiftlint:disable:this force_cast
-      }
-
-      if T.self == String.self {
-        return completion(.success(String(data: data, encoding: .utf8) as! T))  // swiftlint:disable:this force_cast
-      }
-
-      do {
-        completion(.success(try JSONDecoder().decode(T.self, from: data)))
-      } catch {
-        completion(.failure(error))
-      }
+      task.resume()
     }
-    task.resume()
-    return task
   }
 
   // Encodes the given `endpoint` into a `URLRequest
@@ -419,6 +393,10 @@ private extension DeviceCheckClient {
 
     case .setAttestation(_, let parameters):
       request.httpBody = try JSONEncoder().encode(parameters)
+      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+      
+    case .solveCaptcha(_, _, let nonce):
+      request.httpBody = try JSONSerialization.data(withJSONObject: ["solution": nonce])
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
     return request
