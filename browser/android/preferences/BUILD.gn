@@ -33,8 +33,8 @@ source_set("preferences") {
 java_cpp_strings("java_pref_names_srcjar") {
   sources = [
     "//brave/components/brave_rewards/common/pref_names.cc",
-    "//brave/components/brave_vpn/pref_names.cc",
     "//brave/components/brave_shields/common/pref_names.cc",
+    "//brave/components/brave_vpn/pref_names.cc",
     "//brave/components/constants/pref_names.cc",
     "//brave/components/ntp_background_images/common/pref_names.cc",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
