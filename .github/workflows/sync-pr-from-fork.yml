@@ -19,6 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ inputs.PR_NUMBER }}
         run: |
+          set -x
           JQ="jq -e -r"
 
           gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
