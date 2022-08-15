@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 
 // types
-import { WalletState } from '../../../constants/types'
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 // Utils
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
@@ -53,8 +53,15 @@ import {
   QueueStepText,
   QueueStepRow,
   QueueStepButton,
-  ErrorText
+  ErrorText,
+  GroupBox,
+  GroupBoxColumn,
+  GroupBoxTitle,
+  GroupBoxText,
+  GroupEnumeration,
+  SmallLoadIcon
 } from './style'
+import { StatusBubble } from '../../shared/style'
 
 type confirmPanelTabs = 'transaction' | 'details'
 export interface Props {
@@ -99,7 +106,9 @@ export const ConfirmSolanaTransactionPanel = ({
     transactionsQueueLength,
     transactionTitle,
     isSolanaDappTransaction,
-    fromAccountName
+    fromAccountName,
+    groupTransactions,
+    selectedPendingTransactionGroupIndex
   } = pendingTxInfo
 
   // state
@@ -205,6 +214,38 @@ export const ConfirmSolanaTransactionPanel = ({
             </WarningTitle>
           </WarningBoxTitleRow>
         </WarningBox>
+      }
+
+      {groupTransactions.length > 0 && selectedPendingTransactionGroupIndex >= 0 && transactionInfo &&
+        <GroupBox>
+          <GroupBoxColumn>
+            <GroupBoxTitle>
+              Transaction group
+            </GroupBoxTitle>
+            {
+              groupTransactions.map((txn, idx) =>
+                <GroupBoxText dark={selectedPendingTransactionGroupIndex === idx} key={idx}>
+                  <GroupEnumeration>
+                    [{idx + 1}/{groupTransactions.length}]
+                  </GroupEnumeration>
+
+                  <StatusBubble status={txn.txStatus} />
+
+                  {txn.txStatus === BraveWallet.TransactionStatus.Unapproved && getLocale('braveWalletTransactionStatusUnapproved')}
+                  {txn.txStatus === BraveWallet.TransactionStatus.Approved && getLocale('braveWalletTransactionStatusApproved')}
+                  {txn.txStatus === BraveWallet.TransactionStatus.Rejected && getLocale('braveWalletTransactionStatusRejected')}
+                  {txn.txStatus === BraveWallet.TransactionStatus.Submitted && getLocale('braveWalletTransactionStatusSubmitted')}
+                  {txn.txStatus === BraveWallet.TransactionStatus.Confirmed && getLocale('braveWalletTransactionStatusConfirmed')}
+                  {txn.txStatus === BraveWallet.TransactionStatus.Error && getLocale('braveWalletTransactionStatusError')}
+                  {txn.txStatus === BraveWallet.TransactionStatus.Dropped && getLocale('braveWalletTransactionStatusDropped')}
+
+                  {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted]
+                    .includes(txn.txStatus) && <SmallLoadIcon />}
+                </GroupBoxText>
+              )
+            }
+          </GroupBoxColumn>
+        </GroupBox>
       }
 
       <TabRow>

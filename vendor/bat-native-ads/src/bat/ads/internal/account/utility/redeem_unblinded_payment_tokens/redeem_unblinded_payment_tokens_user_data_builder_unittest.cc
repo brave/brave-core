@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -40,13 +38,11 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
 
   // Act
   user_data_builder.Build([](const base::Value::Dict& user_data) {
-    std::string json;
-    base::JSONWriter::Write(user_data, &json);
+    const base::Value expected_user_data = base::test::ParseJson(
+        R"({"odyssey":"host","platform":"windows","totals":[{"ad_format":"ad_notification","view":"2"}]})");
+    ASSERT_TRUE(expected_user_data.is_dict());
 
-    const std::string expected_json =
-        R"({"odyssey":"host","platform":"windows","totals":[{"ad_format":"ad_notification","view":"2"}]})";
-
-    EXPECT_EQ(expected_json, json);
+    EXPECT_EQ(expected_user_data, user_data);
   });
 
   // Assert

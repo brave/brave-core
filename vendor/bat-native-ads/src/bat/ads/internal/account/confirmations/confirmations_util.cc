@@ -24,17 +24,13 @@ bool VerifyConfirmation(const ConfirmationInfo& confirmation) {
   std::string credential;
   base::Base64Decode(confirmation.credential, &credential);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(credential);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(credential);
+  if (!root || !root->is_dict()) {
     return false;
   }
+  const base::Value::Dict& dict = root->GetDict();
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return false;
-  }
-
-  const std::string* signature = dictionary->FindStringKey("signature");
+  const std::string* signature = dict.FindString("signature");
   if (!signature) {
     return false;
   }
@@ -48,18 +44,18 @@ bool VerifyConfirmation(const ConfirmationInfo& confirmation) {
 
   const privacy::cbr::UnblindedToken& unblinded_token =
       confirmation.unblinded_token.value;
-  const absl::optional<privacy::cbr::VerificationKey>
-      verification_key_optional = unblinded_token.DeriveVerificationKey();
-  if (!verification_key_optional) {
+  absl::optional<privacy::cbr::VerificationKey> verification_key =
+      unblinded_token.DeriveVerificationKey();
+  if (!verification_key) {
     NOTREACHED();
     return false;
   }
-  privacy::cbr::VerificationKey verification_key =
-      verification_key_optional.value();
 
-  const std::string payload = CreateConfirmationRequestDTO(confirmation);
+  const std::string confirmation_request_dto =
+      CreateConfirmationRequestDTO(confirmation);
 
-  return verification_key.Verify(verification_signature, payload);
+  return verification_key->Verify(verification_signature,
+                                  confirmation_request_dto);
 }
 
 }  // namespace ads

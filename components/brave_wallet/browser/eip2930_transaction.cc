@@ -83,11 +83,11 @@ absl::optional<Eip2930Transaction> Eip2930Transaction::FromTxData(
 
 // static
 absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   absl::optional<EthTransaction> legacy_tx = EthTransaction::FromValue(value);
   if (!legacy_tx)
     return absl::nullopt;
-  const std::string* tx_chain_id = value.FindStringKey("chain_id");
+  const std::string* tx_chain_id = value.FindString("chain_id");
   if (!tx_chain_id)
     return absl::nullopt;
   uint256_t chain_id;
@@ -101,7 +101,7 @@ absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
   tx.r_ = legacy_tx->r();
   tx.s_ = legacy_tx->s();
 
-  const base::Value* access_list = value.FindKey("access_list");
+  const base::Value::List* access_list = value.FindList("access_list");
   if (!access_list)
     return absl::nullopt;
   absl::optional<AccessList> access_list_from_value =
@@ -114,28 +114,28 @@ absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
 }
 
 // static
-std::vector<base::Value> Eip2930Transaction::AccessListToValue(
+base::Value::List Eip2930Transaction::AccessListToValue(
     const AccessList& list) {
-  std::vector<base::Value> access_list;
+  base::Value::List access_list;
   for (const AccessListItem& item : list) {
-    std::vector<base::Value> access_list_item;
-    access_list_item.push_back(base::Value(item.address));
-    std::vector<base::Value> storage_keys;
+    base::Value::List access_list_item;
+    access_list_item.Append(base::Value(item.address));
+    base::Value::List storage_keys;
     for (const AccessedStorageKey& key : item.storage_keys) {
-      storage_keys.push_back(base::Value(key));
+      storage_keys.Append(base::Value(key));
     }
-    access_list_item.push_back(base::Value(storage_keys));
+    access_list_item.Append(std::move(storage_keys));
 
-    access_list.push_back(base::Value(access_list_item));
+    access_list.Append(std::move(access_list_item));
   }
   return access_list;
 }
 
 // static
 absl::optional<Eip2930Transaction::AccessList>
-Eip2930Transaction::ValueToAccessList(const base::Value& value) {
+Eip2930Transaction::ValueToAccessList(const base::Value::List& value) {
   AccessList access_list;
-  for (const auto& item_value : value.GetList()) {
+  for (const auto& item_value : value) {
     AccessListItem item;
     std::vector<uint8_t> address = item_value.GetList()[0].GetBlob();
     std::move(address.begin(), address.end(), item.address.begin());
@@ -157,19 +157,17 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
   std::vector<uint8_t> result;
   result.push_back(type_);
 
-  // TODO(darkdh): Migrate to std::vector<base::Value>, base::ListValue is
-  // deprecated
-  base::ListValue list;
-  list.Append(RLPUint256ToBlobValue(chain_id_));
-  list.Append(RLPUint256ToBlobValue(nonce_.value()));
-  list.Append(RLPUint256ToBlobValue(gas_price_));
-  list.Append(RLPUint256ToBlobValue(gas_limit_));
-  list.Append(base::Value(to_.bytes()));
-  list.Append(RLPUint256ToBlobValue(value_));
+  base::Value::List list;
+  list.Append(RLPUint256ToBlob(chain_id_));
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(to_.bytes());
+  list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
 
-  const std::string rlp_msg = RLPEncode(std::move(list));
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
   result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
   return hash ? KeccakHash(result) : result;
 }
@@ -178,25 +176,23 @@ std::string Eip2930Transaction::GetSignedTransaction() const {
   DCHECK(IsSigned());
   DCHECK(nonce_);
 
-  // TODO(darkdh): Migrate to std::vector<base::Value>, base::ListValue is
-  // deprecated
-  base::ListValue list;
-  list.Append(RLPUint256ToBlobValue(chain_id_));
-  list.Append(RLPUint256ToBlobValue(nonce_.value()));
-  list.Append(RLPUint256ToBlobValue(gas_price_));
-  list.Append(RLPUint256ToBlobValue(gas_limit_));
-  list.Append(base::Value(to_.bytes()));
-  list.Append(RLPUint256ToBlobValue(value_));
+  base::Value::List list;
+  list.Append(RLPUint256ToBlob(chain_id_));
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(to_.bytes());
+  list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(RLPUint256ToBlobValue(v_));
+  list.Append(RLPUint256ToBlob(v_));
   list.Append(base::Value(r_));
   list.Append(base::Value(s_));
 
   std::vector<uint8_t> result;
   result.push_back(type_);
 
-  const std::string rlp_msg = RLPEncode(std::move(list));
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
   result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
 
   return ToHex(result);
@@ -213,10 +209,10 @@ bool Eip2930Transaction::IsSigned() const {
   return r_.size() != 0 && s_.size() != 0;
 }
 
-base::Value Eip2930Transaction::ToValue() const {
-  base::Value tx = EthTransaction::ToValue();
-  tx.SetStringKey("chain_id", Uint256ValueToHex(chain_id_));
-  tx.SetKey("access_list", base::Value(AccessListToValue(access_list_)));
+base::Value::Dict Eip2930Transaction::ToValue() const {
+  base::Value::Dict tx = EthTransaction::ToValue();
+  tx.Set("chain_id", Uint256ValueToHex(chain_id_));
+  tx.Set("access_list", base::Value(AccessListToValue(access_list_)));
 
   return tx;
 }

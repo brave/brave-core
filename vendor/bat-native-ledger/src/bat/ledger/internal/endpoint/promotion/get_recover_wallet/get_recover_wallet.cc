@@ -52,11 +52,9 @@ type::Result GetRecoverWallet::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-type::Result GetRecoverWallet::ParseBody(
-    const std::string& body,
-    std::string* payment_id,
-    bool* legacy_wallet) {
-  DCHECK(payment_id && legacy_wallet);
+type::Result GetRecoverWallet::ParseBody(const std::string& body,
+                                         std::string* payment_id) {
+  DCHECK(payment_id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
@@ -64,26 +62,24 @@ type::Result GetRecoverWallet::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* payment_id_string = dictionary->FindStringKey("paymentId");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* payment_id_string = dict.FindString("paymentId");
   if (!payment_id_string || payment_id_string->empty()) {
     BLOG(0, "Payment id is missing");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* wallet_name =
-      dictionary->FindStringPath("walletProvider.name");
+  const auto* wallet_name = dict.FindStringByDottedPath("walletProvider.name");
   if (!wallet_name) {
     BLOG(0, "Wallet name is missing");
     return type::Result::LEDGER_ERROR;
   }
 
-  *legacy_wallet = *wallet_name == "uphold";
+  if (*wallet_name == "uphold") {
+    BLOG(0, "We don't support anonymous Uphold wallets anymore!");
+    return type::Result::LEDGER_ERROR;
+  }
+
   *payment_id = *payment_id_string;
   return type::Result::LEDGER_OK;
 }
@@ -107,16 +103,15 @@ void GetRecoverWallet::OnRequest(
   ledger::LogUrlResponse(__func__, response);
 
   std::string payment_id;
-  bool legacy_wallet = false;
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, payment_id, legacy_wallet);
+    callback(result, payment_id);
     return;
   }
 
-  result = ParseBody(response.body, &payment_id, &legacy_wallet);
-  callback(result, payment_id, legacy_wallet);
+  result = ParseBody(response.body, &payment_id);
+  callback(result, payment_id);
 }
 
 }  // namespace promotion

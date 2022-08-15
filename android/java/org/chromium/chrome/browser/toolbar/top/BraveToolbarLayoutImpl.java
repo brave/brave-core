@@ -50,6 +50,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.MathUtils;
@@ -59,12 +60,10 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
@@ -774,7 +773,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
+        editor.putBoolean(BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
         editor.apply();
     }
 
@@ -787,17 +786,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
             showShieldsMenu(mBraveShieldsButton);
         } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
-            // Context context = getContext();
-            // if (checkForRewardsOnboarding()) {
-            //   OnboardingPrefManager.getInstance().showOnboarding(context);
-            //   hideRewardsOnboardingIcon();
-            // } else {
-            //   if (null != mRewardsPopup) {
-            //     return;
-            //   }
-            //   mRewardsPopup = new BraveRewardsPanelPopup(v);
-            //   mRewardsPopup.showLikePopDownMenu();
-            // }
             if (null != mRewardsPopup) {
                 return;
             }
@@ -808,8 +796,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (mBraveRewardsNotificationsCount.isShown()) {
                 SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean(
-                        BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
+                editor.putBoolean(BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
                 editor.apply();
                 mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
                 mIsInitialNotificationPosted = false;
@@ -1109,14 +1096,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
-        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET) {
-            mBraveRewardsNativeWorker.DeleteNotification(id);
-        } else if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
+        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
             // Set flag
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
             sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPanelPopup.PREF_GRANTS_NOTIFICATION_RECEIVED, true);
+                    BraveRewardsPanel.PREF_GRANTS_NOTIFICATION_RECEIVED, true);
             sharedPreferencesEditor.apply();
         }
         mBraveRewardsNativeWorker.GetAllNotifications();
@@ -1185,7 +1170,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void updateNotificationBadgeForNewInstall() {
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         boolean shownBefore = sharedPref.getBoolean(
-                BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
+                BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
         boolean shouldShow = mBraveRewardsNotificationsCount != null && !shownBefore;
         mIsInitialNotificationPosted = shouldShow; // initial notification
 

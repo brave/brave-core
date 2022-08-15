@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
@@ -24,7 +25,7 @@
 namespace {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-absl::optional<base::Value> GetChromeExtensionsList(
+absl::optional<base::Value::Dict> GetChromeExtensionsList(
     const base::FilePath& secured_preference_path) {
   if (!base::PathExists(secured_preference_path))
     return absl::nullopt;
@@ -33,9 +34,12 @@ absl::optional<base::Value> GetChromeExtensionsList(
   base::ReadFileToString(secured_preference_path, &secured_preference_content);
   absl::optional<base::Value> secured_preference =
       base::JSONReader::Read(secured_preference_content);
-  if (auto* extensions = secured_preference->FindPath(
+  DCHECK(secured_preference);
+  DCHECK(secured_preference->is_dict());
+
+  if (auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
           kChromeExtensionsListPath)) {
-    return extensions->Clone();
+    return std::move(*extensions);
   }
   return absl::nullopt;
 }
@@ -82,8 +86,8 @@ void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
 }
 
 void BraveExternalProcessImporterHost::OnGetChromeExtensionsList(
-    absl::optional<base::Value> extensions_list) {
-  if (!extensions_list || !extensions_list->is_dict()) {
+    absl::optional<base::Value::Dict> extensions_list) {
+  if (!extensions_list) {
     ExternalProcessImporterHost::NotifyImportEnded();
     return;
   }

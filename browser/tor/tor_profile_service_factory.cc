@@ -5,11 +5,12 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
-#include <memory>
-
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
+#include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
@@ -49,22 +50,45 @@ bool TorProfileServiceFactory::IsTorDisabled() {
   return false;
 }
 
+// static
+void TorProfileServiceFactory::SetTorBridgesConfig(
+    const tor::BridgesConfig& config) {
+  if (g_browser_process) {
+    g_browser_process->local_state()->SetDict(tor::prefs::kBridgesConfig,
+                                              config.ToDict());
+  }
+}
+
+// static
+tor::BridgesConfig TorProfileServiceFactory::GetTorBridgesConfig() {
+  if (!g_browser_process)
+    return {};
+  return tor::BridgesConfig::FromValue(
+             g_browser_process->local_state()->GetDictionary(
+                 tor::prefs::kBridgesConfig))
+      .value_or(tor::BridgesConfig());
+}
+
 TorProfileServiceFactory::TorProfileServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "TorProfileService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-TorProfileServiceFactory::~TorProfileServiceFactory() {}
+TorProfileServiceFactory::~TorProfileServiceFactory() = default;
 
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  std::unique_ptr<tor::TorProfileService> tor_profile_service(
-      new tor::TorProfileServiceImpl(
-          context, g_brave_browser_process
-                       ? g_brave_browser_process->tor_client_updater()
-                       : nullptr));
-
-  return tor_profile_service.release();
+  tor::BraveTorClientUpdater* tor_client_updater = nullptr;
+  tor::BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater =
+      nullptr;
+  if (g_brave_browser_process) {
+    tor_client_updater = g_brave_browser_process->tor_client_updater();
+    tor_pluggable_transport_updater =
+        g_brave_browser_process->tor_pluggable_transport_updater();
+  }
+  return new tor::TorProfileServiceImpl(
+      context, g_browser_process->local_state(), tor_client_updater,
+      tor_pluggable_transport_updater);
 }
 
 content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(

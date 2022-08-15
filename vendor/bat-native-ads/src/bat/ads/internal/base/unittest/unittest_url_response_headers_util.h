@@ -13,7 +13,7 @@
 
 namespace ads {
 
-base::flat_map<std::string, std::string> UrlResponseHeadersToMap(
+base::flat_map<std::string, std::string> ToUrlResponseHeaders(
     const std::vector<std::string>& headers);
 
 }  // namespace ads

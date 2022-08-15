@@ -17,7 +17,9 @@ import {
   SupportedTestNetworks,
   SendEthTransactionParams,
   SendFilTransactionParams,
-  SendSolTransactionParams
+  SendSolTransactionParams,
+  SolanaSerializedTransactionParams,
+  SupportedOnRampNetworks
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -25,6 +27,8 @@ import * as WalletActions from '../actions/wallet_actions'
 import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
+import { sortTransactionByDate } from '../../utils/tx-utils'
+import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -173,8 +177,8 @@ export async function getBuyAssetUrl (args: {
   amount: string
   currencyCode: string
 }) {
-  const { blockchainRegistry } = getAPIProxy()
-  const { url, error } = await blockchainRegistry.getBuyUrlV1(
+  const { assetRatioService } = getAPIProxy()
+  const { url, error } = await assetRatioService.getBuyUrlV1(
     args.onRampProvider,
     args.chainId,
     args.address,
@@ -187,6 +191,16 @@ export async function getBuyAssetUrl (args: {
     console.log(`Failed to get buy URL: ${error}`)
   }
 
+  // adjust Wyre on-ramp url for multichain
+  if (args.onRampProvider === BraveWallet.OnRampProvider.kWyre) {
+    if (args.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) {
+      return url.replace('dest=ethereum:', 'dest=avalanche:')
+    }
+    if (args.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) {
+      return url.replace('dest=ethereum:', 'dest=matic:')
+    }
+  }
+
   return url
 }
 
@@ -195,6 +209,69 @@ export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, 
   return (await blockchainRegistry.getBuyTokens(
     onRampProvider,
     chainId)).tokens
+}
+
+export const getAllBuyAssets = async (): Promise<{
+  rampAssetOptions: BraveWallet.BlockchainToken[]
+  wyreAssetOptions: BraveWallet.BlockchainToken[]
+  allAssetOptions: BraveWallet.BlockchainToken[]
+}> => {
+  const { blockchainRegistry } = getAPIProxy()
+  const { kRamp, kWyre } = BraveWallet.OnRampProvider
+
+  const rampAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kRamp, chainId))
+  )
+  const wyreAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kWyre, chainId))
+  )
+
+  // add token logos
+  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  const wyreAssetOptions: BraveWallet.BlockchainToken[] = wyreAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  // seperate native assets from tokens
+  const {
+    tokens: rampTokenOptions,
+    nativeAssets: rampNativeAssetOptions
+  } = getNativeTokensFromList(rampAssetOptions)
+
+  const {
+    tokens: wyreTokenOptions,
+    nativeAssets: wyreNativeAssetOptions
+  } = getNativeTokensFromList(wyreAssetOptions)
+
+  // seperate BAT from other tokens
+  const {
+    bat: rampBatTokens,
+    nonBat: rampNonBatTokens
+  } = getBatTokensFromList(rampTokenOptions)
+
+  const {
+    bat: wyreBatTokens,
+    nonBat: wyreNonBatTokens
+  } = getBatTokensFromList(wyreTokenOptions)
+
+  // sort lists
+  // Move Gas coins and BAT to front of list
+  const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
+  const sortedWyreOptions = [...wyreNativeAssetOptions, ...wyreBatTokens, ...wyreNonBatTokens]
+
+  const results = {
+    rampAssetOptions: sortedRampOptions,
+    wyreAssetOptions: sortedWyreOptions,
+    allAssetOptions: getUniqueAssets([
+      ...sortedRampOptions,
+      ...sortedWyreOptions
+    ])
+  }
+
+  return results
 }
 
 export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
@@ -495,7 +572,7 @@ export function refreshTransactionHistory (address?: string) {
     const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
       async (acc, account) => acc.then(async (obj) => {
         const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
-        obj[account.address] = transactionInfos
+        obj[account.address] = sortTransactionByDate(transactionInfos, 'descending')
         return obj
       }), Promise.resolve({}))
 
@@ -678,7 +755,7 @@ export function hasEIP1559Support (account: WalletAccountType, network: BraveWal
       keyringSupportsEIP1559 = false
   }
 
-  return keyringSupportsEIP1559 && (network.data?.ethData?.isEip1559 ?? false)
+  return keyringSupportsEIP1559 && network.isEip1559
 }
 
 export async function sendEthTransaction (store: Store, payload: SendEthTransactionParams) {
@@ -738,11 +815,11 @@ export async function sendEthTransaction (store: Store, payload: SendEthTransact
     }
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
     const txDataUnion: BraveWallet.TxDataUnion = { ethTxData1559: txData1559 }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.from, null)
+    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.from, null, null)
   } else {
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
     const txDataUnion: BraveWallet.TxDataUnion = { ethTxData: txData }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.from, null)
+    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.from, null, null)
   }
   return addResult
 }
@@ -760,18 +837,39 @@ export async function sendFilTransaction (payload: SendFilTransactionParams) {
     value: payload.value
   }
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-  return await apiProxy.txService.addUnapprovedTransaction({ filTxData: filTxData }, payload.from)
+  return await apiProxy.txService.addUnapprovedTransaction({ filTxData: filTxData }, payload.from, null, null)
 }
 
 export async function sendSolTransaction (payload: SendSolTransactionParams) {
   const { solanaTxManagerProxy, txService } = getAPIProxy()
   const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(payload.from, payload.to, BigInt(payload.value))
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-  return await txService.addUnapprovedTransaction({ solanaTxData: value.txData }, payload.from)
+  return await txService.addUnapprovedTransaction({ solanaTxData: value.txData }, payload.from, null, null)
 }
 
 export async function sendSPLTransaction (payload: BraveWallet.SolanaTxData) {
   const { txService } = getAPIProxy()
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-  return await txService.addUnapprovedTransaction({ solanaTxData: payload }, payload.feePayer)
+  return await txService.addUnapprovedTransaction({ solanaTxData: payload }, payload.feePayer, null, null)
+}
+
+export async function sendSolanaSerializedTransaction (payload: SolanaSerializedTransactionParams) {
+  const { solanaTxManagerProxy, txService } = getAPIProxy()
+  const result = await solanaTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
+    payload.encodedTransaction,
+    payload.txType,
+    payload.sendOptions || null
+  )
+  if (result.error !== BraveWallet.ProviderError.kSuccess) {
+    console.error(`Failed to sign Solana message: ${result.errorMessage}`)
+    return { success: false, errorMessage: result.errorMessage }
+  } else {
+    return await txService.addUnapprovedTransaction(
+      // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+      { solanaTxData: result.txData },
+      payload.from,
+      null,
+      payload.groupId || null
+    )
+  }
 }

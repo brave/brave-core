@@ -5,7 +5,9 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
@@ -44,6 +46,9 @@ std::string NonWriteableScriptMethod(const std::string& provider,
 }
 }  // namespace
 
+// TODO(darkdh): Move this browser test to //brave/browser/brave_wallet/ because
+// it has layer violation (//chrome/browser,
+// //brave/components/brave_wallet/browser and //brave/browser)
 class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
  public:
   JSEthereumProviderBrowserTest()
@@ -93,6 +98,11 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   void ReloadAndWaitForLoadStop() {
     chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+  }
+
+  brave_wallet::JsonRpcService* GetJsonRpcService() {
+    return brave_wallet::JsonRpcServiceFactory::GetInstance()
+        ->GetServiceForContext(browser()->profile());
   }
 
  protected:
@@ -165,14 +175,13 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // window.ethereum.* (properties)
-  for (const std::string& property :
-       {"_metamask", "chainId", "networkVersion", "selectedAddress"}) {
+  for (const std::string& property : {"isBraveWallet", "_metamask", "chainId",
+                                      "networkVersion", "selectedAddress"}) {
     SCOPED_TRACE(property);
     auto result = EvalJs(web_contents(), NonWriteableScriptProperty(property),
                          content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
     EXPECT_EQ(base::Value(true), result.value) << result.error;
   }
-
   // window.ethereum.* (methods)
   for (const std::string& method :
        {"on", "emit", "removeListener", "removeAllListeners", "request",
@@ -218,6 +227,41 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
        typeof window.ethereum === 'object'
     )";
   EXPECT_TRUE(content::EvalJs(main_frame(), overwrite).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWallet);
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  const std::string get_chain_id = "window.ethereum.chainId";
+
+  ASSERT_EQ(content::EvalJs(main_frame(), get_chain_id).ExtractString(), "0x1");
+
+  GetJsonRpcService()->SetNetwork("0x3", brave_wallet::mojom::CoinType::ETH,
+                                  false);
+  // Needed so ChainChangedEvent observers run
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(content::EvalJs(main_frame(), get_chain_id).ExtractString(), "0x3");
+
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop();
+  ASSERT_EQ(content::EvalJs(
+                main_frame(),
+                "window.ethereum = {chainId: '0x89'}; window.ethereum.chainId")
+                .ExtractString(),
+            "0x89");
+
+  GetJsonRpcService()->SetNetwork("0x4", brave_wallet::mojom::CoinType::ETH,
+                                  false);
+  // Needed so ChainChangedEvent observers run
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(content::EvalJs(main_frame(), get_chain_id).ExtractString(),
+            "0x89");
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {

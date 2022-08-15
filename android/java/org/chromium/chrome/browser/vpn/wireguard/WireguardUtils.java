@@ -33,6 +33,16 @@ public class WireguardUtils {
         return builder.build();
     }
 
+    public static Interface getInterface(Interface existingInterface) throws BadConfigException {
+        Interface.Builder builder = new Interface.Builder();
+        builder.addAddresses(existingInterface.getAddresses());
+        builder.parseDnsServers("1.1.1.1, 1.0.0.1");
+        builder.parseListenPort("51821");
+        builder.parsePrivateKey(existingInterface.getKeyPair().getPrivateKey().toBase64());
+        builder.excludeApplications(BraveVpnPrefUtils.getExcludedPackages());
+        return builder.build();
+    }
+
     public static List<Peer> getPeers(String host, String serverPublicKey)
             throws BadConfigException {
         List<Peer> peers = new ArrayList<>();

@@ -179,6 +179,7 @@ test("brave_unit_tests") {
     "//brave/browser/profiles:profiles",
     "//brave/browser/safebrowsing",
     "//brave/browser/search:unit_tests",
+    "//brave/browser/sync:unit_tests",
     "//brave/browser/themes",
     "//brave/browser/tor:unit_tests",
     "//brave/browser/ui",
@@ -247,6 +248,7 @@ test("brave_unit_tests") {
     "//brave/components/sidebar:unit_tests",
     "//brave/components/signin/public/identity_manager:unit_tests",
     "//brave/components/skus/browser:unit_tests",
+    "//brave/components/skus/renderer:unit_tests",
     "//brave/components/sync/driver:unit_tests",
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/time_period_storage",
@@ -306,6 +308,10 @@ test("brave_unit_tests") {
   }
   if (toolkit_views) {
     deps += [ "//chrome/browser/ui/views" ]
+  }
+
+  if (brave_adaptive_captcha_enabled) {
+    deps += [ "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests" ]
   }
 
   data = [ "data/" ]
@@ -368,6 +374,7 @@ test("brave_unit_tests") {
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/brave_wallet/common:test_support",
       "//components/favicon/content",
     ]
   }
@@ -426,10 +433,13 @@ test("brave_unit_tests") {
       "//brave:brave_pak_assets",
       "//chrome:chrome_android_core",
       "//chrome/android:chrome_apk_paks",
+      "//chrome/android:delegate_public_impl_java",
       "//chrome/test/android:chrome_java_test_support",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
     ]
-
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn/renderer/android:unit_tests" ]
+    }
     if (use_v8_context_snapshot) {
       deps += [ "//tools/v8_context_snapshot:v8_context_snapshot_assets" ]
     }
@@ -701,6 +711,7 @@ if (!is_android) {
       "//brave/browser/ui/toolbar/brave_app_menu_model_browsertest.cc",
       "//brave/browser/ui/views/bookmarks/bookmark_bar_browsertest.cc",
       "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc",
+      "//brave/browser/ui/views/brave_shields/cookie_list_opt_in_browsertest.cc",
       "//brave/browser/ui/views/frame/brave_tabs_search_button_browsertest.cc",
       "//brave/browser/ui/views/omnibox/brave_omnibox_view_views_browsertest.cc",
       "//brave/browser/ui/views/omnibox/omnibox_autocomplete_browsertest.cc",
@@ -763,6 +774,7 @@ if (!is_android) {
 
     deps = [
       "//brave/browser/autoplay:browser_tests",
+      "//brave/browser/brave_news:browser_tests",
       "//brave/browser/brave_rewards/rewards_panel",
       "//brave/browser/brave_wallet",
       "//brave/browser/brave_wallet:tab_helper",
@@ -780,6 +792,7 @@ if (!is_android) {
       "//brave/browser/ui/views/tabs:browser_tests",
       "//brave/browser/widevine:browser_tests",
       "//brave/common",
+      "//brave/components/adblock_rust_ffi",
       "//brave/components/brave_ads/browser",
       "//brave/components/brave_ads/browser:test_support",
       "//brave/components/brave_ads/common",
@@ -802,6 +815,7 @@ if (!is_android) {
       "//brave/components/brave_wallet/common:common_constants",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet/common:solana_utils",
+      "//brave/components/brave_wallet/common:test_support",
       "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
       "//brave/components/de_amp/browser/test:browser_tests",
       "//brave/components/de_amp/common:common",
@@ -813,6 +827,7 @@ if (!is_android) {
       "//brave/components/tor",
       "//brave/renderer/skus:browser_tests",
       "//brave/renderer/test:browser_tests",
+      "//brave/third_party/blink/renderer:renderer",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-ledger:publishers_proto",
@@ -835,7 +850,9 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
-
+    if (enable_brave_vpn) {
+      deps += [ "//brave/renderer/brave_vpn:browser_tests" ]
+    }
     if (is_mac) {
       sources += [
         "//chrome/browser/ui/test/test_browser_dialog_mac.h",
@@ -980,7 +997,6 @@ if (!is_android) {
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/browser",
       "//brave/components/tor",
-      "//brave/components/tor:utils",
       "//brave/components/tor/buildflags",
       "//build:chromeos_buildflags",
       "//chrome/app:command_ids",
@@ -1107,7 +1123,6 @@ if (!is_android) {
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/browser",
       "//brave/components/tor",
-      "//brave/components/tor:utils",
       "//brave/components/tor/buildflags",
       "//chrome:chrome_android_core",
       "//chrome/android:app_hooks_java",
@@ -1151,10 +1166,6 @@ if (!is_android) {
       "//testing/android/native_test:native_test_support",
     ]
 
-    if (enable_brave_vpn) {
-      deps += [ "//brave/components/brave_vpn" ]
-    }
-
     # There are three types of tests that need to be rewritten for Android:
     # 1. using extensions
     # 2. using desktop specific UI elements (e.g. TabStripModelObserver)
@@ -1175,6 +1186,10 @@ if (!is_android) {
       "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
       "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
     ]
+
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn" ]
+    }
 
     data = [
       "$root_out_dir/brave_100_percent.pak",
@@ -1283,6 +1298,7 @@ if (is_android) {
       "//components/browser_ui/site_settings/android:java",
       "//components/browser_ui/widget/android:java",
       "//components/embedder_support/android:browser_context_java",
+      "//components/omnibox/browser:browser_java",
       "//components/password_manager/core/browser:password_manager_java_enums",
       "//components/permissions/android:java",
       "//components/search_engines/android:java",

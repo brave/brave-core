@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
@@ -38,8 +39,8 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
 
 TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   const TextEmbeddingEventInfo& text_embedding_event =
       BuildTextEmbeddingEvent();

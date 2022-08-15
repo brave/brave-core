@@ -11,24 +11,25 @@
 
 namespace playlist {
 
-struct PlaylistItemChangeParams {
+struct PlaylistChangeParams {
   enum class Type {
     kNone,
-    kAdded,            // New playlist added but not ready state
-    kThumbnailReady,   // Thumbnail ready to use for playlist
-    kThumbnailFailed,  // Failed to fetch thumbnail
-    kPlayReady,        // Playlist ready to play
-    kDeleted,          // A playlist deleted
-    kAborted,          // Aborted during the creation process
+    kItemAdded,            // a new playlist item added but not ready state
+    kItemThumbnailReady,   // Thumbnail ready to use for playlist
+    kItemThumbnailFailed,  // Failed to fetch thumbnail
+    kItemPlayReady,        // Playlist ready to play
+    kItemDeleted,          // A playlist deleted
+    kItemAborted,          // Aborted during the creation process
 
-    // TODO(sko) This should be event of Playlist, not of PlaylistItem.
-    kAllDeleted,  // All playlist are deleted
+    kListCreated,  // A list is created
+    kListRemoved,  // A list is removed
+    kAllDeleted,   // All playlist are deleted
   };
   static std::string GetPlaylistChangeTypeAsString(Type type);
 
-  PlaylistItemChangeParams();
-  PlaylistItemChangeParams(Type type, const std::string& id);
-  ~PlaylistItemChangeParams();
+  PlaylistChangeParams();
+  PlaylistChangeParams(Type type, const std::string& id);
+  ~PlaylistChangeParams();
 
   Type change_type = Type::kNone;
   std::string playlist_id;
@@ -47,6 +48,19 @@ struct PlaylistItemInfo {
   std::string thumbnail_path;
   std::string media_file_path;
   bool ready{false};
+};
+
+struct PlaylistInfo {
+  PlaylistInfo();
+  PlaylistInfo(const PlaylistInfo& rhs);
+  PlaylistInfo& operator=(const PlaylistInfo& rhs);
+  PlaylistInfo(PlaylistInfo&& rhs) noexcept;
+  PlaylistInfo& operator=(PlaylistInfo&& rhs) noexcept;
+  ~PlaylistInfo();
+
+  std::string id;
+  std::string name;
+  std::vector<PlaylistItemInfo> items;
 };
 
 }  // namespace playlist

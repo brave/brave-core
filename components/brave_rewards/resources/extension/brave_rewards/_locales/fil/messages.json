@@ -335,19 +335,6 @@
     "message": "Kumonekta ulit",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Na-verify na ang iyong Mga Reward ng Brave!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Na-verify na ang iyong Mga Reward ng Brave sa $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "May available na token grant!",
     "description": ""

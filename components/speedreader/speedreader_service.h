@@ -6,7 +6,10 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_SERVICE_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_SERVICE_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefRegistrySimple;
@@ -26,6 +29,10 @@ class SpeedreaderService : public KeyedService {
   bool IsEnabled();
   bool ShouldPromptUserToEnable() const;
   void IncrementPromptCount();
+
+  void SetTheme(Theme theme_name);
+  Theme GetTheme() const;
+  std::string GetThemeName() const;
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;

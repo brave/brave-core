@@ -18,6 +18,7 @@
 #include "bat/ads/internal/history/history_unittest_util.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -46,10 +47,10 @@ class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLEndpointMap endpoints = {
+    const URLResponseMap responses = {
         {"/v9/catalog",
          {{net::HTTP_OK, "/catalog_with_inline_content_ad.json"}}}};
-    MockUrlRequest(ads_client_mock_, endpoints);
+    MockUrlResponses(ads_client_mock_, responses);
   }
 };
 
@@ -58,12 +59,12 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, Serve) {
 
   // Act
   GetAds()->MaybeServeInlineContentAd(
-      kDimensions, [](const bool success, const std::string& dimensions,
-                      const InlineContentAdInfo& ad) {
+      kDimensions, [](const std::string& dimensions,
+                      const absl::optional<InlineContentAdInfo>& ad) {
         // Assert
-        EXPECT_TRUE(success);
         EXPECT_EQ(kDimensions, dimensions);
-        EXPECT_TRUE(ad.IsValid());
+        EXPECT_TRUE(ad);
+        EXPECT_TRUE(ad->IsValid());
         EXPECT_EQ(1, GetAdEventCount(AdType::kInlineContentAd,
                                      ConfirmationType::kServed));
       });

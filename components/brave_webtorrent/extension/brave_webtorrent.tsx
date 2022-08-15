@@ -14,7 +14,7 @@ import { ThemeProvider } from 'styled-components'
 import App from './components/app'
 
 // Constants
-import { TorrentsState } from './constants/webtorrentState'
+import { ApplicationState } from './constants/webtorrentState'
 
 // This is a hack that's needed for lazy loading
 // Basically we need the browser to restart the navigation, so we redirect first
@@ -25,21 +25,26 @@ if (window.location.pathname === '/extension/brave_webtorrent2.html') {
     window.location.href.replace('brave_webtorrent2.html', 'brave_webtorrent.html')
 }
 
-const store: Store<TorrentsState> = new Store({
+const store: Store<ApplicationState> = new Store({
   portName: 'WEBTORRENT'
 })
 
-store.ready().then(
-  async () => {
+// This pattern is described in the webext-redux docs. When the proxy store is
+// ready, it doesn't necessarily have a value (and might be {}). If we want
+// the same store value as the background page, we should wait for the first
+// update and unsubscribe.
+// https://github.com/tshaddix/webext-redux/wiki/Advanced-Usage#initializing-ui-components
+const unsubscribe = store.subscribe(async () => {
+  unsubscribe()
+
+  try {
     const tab: any = await new Promise(resolve => chrome.tabs.getCurrent(resolve))
-    render(
-      <Provider store={store}>
-        <ThemeProvider theme={Theme}>
-          <App tabId={tab.id} />
-        </ThemeProvider>
-      </Provider>,
-      document.getElementById('root'))
-  })
-  .catch(() => {
-    console.error('Problem mounting webtorrent')
-  })
+    render(<Provider store={store}>
+      <ThemeProvider theme={Theme}>
+        <App tabId={tab.id} />
+      </ThemeProvider>
+    </Provider>, document.getElementById('root'))
+  } catch (err) {
+    console.log('Problem mounting webtorrent', err)
+  }
+})

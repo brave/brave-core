@@ -16,12 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveConfig;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
@@ -121,11 +121,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_set_as_default));
         }
 
-        MenuItem braveTalk = menu.add(Menu.NONE, R.id.brave_talk_id, 0, R.string.menu_brave_talk);
-        if (shouldShowIconBeforeItem()) {
-            braveTalk.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_brave_talk));
-        }
-
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             MenuItem rewards =
@@ -183,7 +178,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         super.onMenuDismissed();
 
         mMenu.removeItem(R.id.set_default_browser);
-        mMenu.removeItem(R.id.brave_talk_id);
         mMenu.removeItem(R.id.brave_rewards_id);
         mMenu.removeItem(R.id.brave_wallet_id);
         mMenu.removeItem(R.id.exit_id);

@@ -27,17 +27,8 @@ Polymer({
 
   properties: {
     showRestartToast_: Boolean,
-    disableTorOption_: Boolean,
     unstoppableDomainsResolveMethod_: Array,
     ensResolveMethod_: Array,
-    torEnabledPref_: {
-      type: Object,
-      value() {
-        // TODO(dbeam): this is basically only to appease PrefControlMixin.
-        // Maybe add a no-validate attribute instead? This makes little sense.
-        return {};
-      },
-    },
     widevineEnabledPref_: {
       type: Object,
       value() {
@@ -64,7 +55,6 @@ Polymer({
     this.openKeyboardShortcutsPage_ = this.openKeyboardShortcutsPage_.bind(this)
     this.onWidevineEnabledChange_ = this.onWidevineEnabledChange_.bind(this)
     this.restartBrowser_ = this.restartBrowser_.bind(this)
-    this.onTorEnabledChange_ = this.onTorEnabledChange_.bind(this)
 
     this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
       this.showRestartToast_ = needsRestart
@@ -73,9 +63,6 @@ Polymer({
     this.browserProxy_.getRestartNeeded().then(show => {
       this.showRestartToast_ = show;
     });
-    this.browserProxy_.isTorManaged().then(managed => {
-      this.disableTorOption_ = managed
-    })
     this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
         this.unstoppableDomainsResolveMethod_ = list
     })
@@ -85,10 +72,6 @@ Polymer({
 
     // PrefControlMixin checks for a pref being valid, so have to fake it,
     // same as upstream.
-    const setTorEnabledPref = (enabled) => this.setTorEnabledPref_(enabled);
-    this.addWebUIListener('tor-enabled-changed', setTorEnabledPref);
-    this.browserProxy_.isTorEnabled().then(setTorEnabledPref);
-
     const setWidevineEnabledPref = (enabled) => this.setWidevineEnabledPref_(enabled);
     this.addWebUIListener('widevine-enabled-changed', setWidevineEnabledPref);
     this.browserProxy_.isWidevineEnabled().then(setWidevineEnabledPref);
@@ -105,19 +88,6 @@ Polymer({
   restartBrowser_: function(e) {
     e.stopPropagation();
     window.open("chrome://restart", "_self");
-  },
-
-  setTorEnabledPref_: function (enabled) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
-    };
-    this.torEnabledPref_ = pref;
-  },
-
-  onTorEnabledChange_: function() {
-    this.browserProxy_.setTorEnabled(this.$.torEnabled.checked);
   },
 
   setWidevineEnabledPref_: function (enabled) {

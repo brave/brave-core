@@ -24,9 +24,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalisingConstantWithEmptyAds) {
       CalculateNormalisingConstant(creative_ad_predictors);
 
   // Assert
-  const double expected_normalising_constant = 0.0;
-  EXPECT_TRUE(
-      DoubleEquals(expected_normalising_constant, normalising_constant));
+  EXPECT_DOUBLE_EQ(0.0, normalising_constant);
 }
 
 TEST(BatAdsSampleAdsTest, CalculateNormalisingConstant) {
@@ -53,9 +51,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalisingConstant) {
       CalculateNormalisingConstant(creative_ad_predictors);
 
   // Assert
-  const double expected_normalising_constant = 6.6;
-  EXPECT_TRUE(
-      DoubleEquals(expected_normalising_constant, normalising_constant));
+  EXPECT_DOUBLE_EQ(6.6, normalising_constant);
 }
 
 TEST(BatAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
@@ -78,13 +74,11 @@ TEST(BatAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
       ad_predictor_3;
 
   // Act
-  const absl::optional<CreativeNotificationAdInfo> creative_ad_optional =
+  const absl::optional<CreativeNotificationAdInfo> creative_ad =
       SampleAdFromPredictors(creative_ad_predictors);
 
   // Assert
-  const absl::optional<CreativeNotificationAdInfo>
-      expected_creative_ad_optional = absl::nullopt;
-  EXPECT_EQ(expected_creative_ad_optional, creative_ad_optional);
+  EXPECT_FALSE(creative_ad);
 }
 
 TEST(BatAdsSampleAdsTest,
@@ -118,14 +112,11 @@ TEST(BatAdsSampleAdsTest,
 
   // Act
   for (int i = 0; i < 10; i++) {
-    const CreativeNotificationAdInfo expected_creative_ad = creative_ad_2;
-    const absl::optional<CreativeNotificationAdInfo> creative_ad_optional =
+    const absl::optional<CreativeNotificationAdInfo> creative_ad =
         SampleAdFromPredictors(creative_ad_predictors);
-    ASSERT_NE(absl::nullopt, creative_ad_optional);
+    ASSERT_TRUE(creative_ad);
 
-    const CreativeNotificationAdInfo creative_ad = creative_ad_optional.value();
-
-    EXPECT_EQ(expected_creative_ad, creative_ad);
+    EXPECT_EQ(creative_ad_2, *creative_ad);
   }
 
   // Assert
@@ -152,30 +143,27 @@ TEST(BatAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   creative_ad_predictors[creative_ad_2.creative_instance_id] = ad_predictor_2;
 
   // Act
-  int creative_notification_ad_1_count = 0;
-  int creative_notification_ad_2_count = 0;
+  int creative_ad_1_count = 0;
+  int creative_ad_2_count = 0;
 
   // P(X>1) > 0.99999999 with X~Bin(n=25, p=0.5), i.e. less than 1 in 100M tests
   // are expected to fail
   for (int i = 0; i < 25; i++) {
-    const absl::optional<CreativeNotificationAdInfo> creative_ad_optional =
+    const absl::optional<CreativeNotificationAdInfo> creative_ad =
         SampleAdFromPredictors(creative_ad_predictors);
-    ASSERT_NE(absl::nullopt, creative_ad_optional);
+    ASSERT_TRUE(creative_ad);
 
-    const CreativeNotificationAdInfo creative_ad = creative_ad_optional.value();
-
-    if (creative_ad.creative_instance_id ==
+    if (creative_ad->creative_instance_id ==
         creative_ad_1.creative_instance_id) {
-      creative_notification_ad_1_count++;
-    } else if (creative_ad.creative_instance_id ==
+      creative_ad_1_count++;
+    } else if (creative_ad->creative_instance_id ==
                creative_ad_2.creative_instance_id) {
-      creative_notification_ad_2_count++;
+      creative_ad_2_count++;
     }
   }
 
   // Assert
-  EXPECT_FALSE(creative_notification_ad_1_count == 0 ||
-               creative_notification_ad_2_count == 0);
+  EXPECT_FALSE(creative_ad_1_count == 0 || creative_ad_2_count == 0);
 }
 
 }  // namespace ads

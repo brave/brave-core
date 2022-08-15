@@ -7,9 +7,8 @@
 
 #include <string>
 
-#include "base/json/json_writer.h"
 #include "base/metrics/field_trial.h"
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "bat/ads/internal/studies/studies_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -18,29 +17,18 @@
 namespace ads {
 namespace user_data {
 
-namespace {
-
-std::string GetStudiesAsJson() {
-  const base::Value::Dict user_data = GetStudies();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
-}  // namespace
-
 TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
   // Arrange
 
   // Act
-  const std::string json = GetStudiesAsJson();
+  const base::Value::Dict user_data = GetStudies();
 
   // Assert
-  const std::string expected_json = R"({"studies":[]})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"studies":[]})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST(BatAdsStudiesUserDataTest, GetStudies) {
@@ -66,13 +54,14 @@ TEST(BatAdsStudiesUserDataTest, GetStudies) {
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
   // Act
-  const std::string json = GetStudiesAsJson();
+  const base::Value::Dict user_data = GetStudies();
 
   // Assert
-  const std::string expected_json =
-      R"({"studies":[{"group":"GroupB","name":"BarStudyForBraveAds"},{"group":"GroupA","name":"BraveAdsFooStudy"}]})";
+  const base::Value expected_user_data = base::test::ParseJson(
+      R"({"studies":[{"group":"GroupB","name":"BarStudyForBraveAds"},{"group":"GroupA","name":"BraveAdsFooStudy"}]})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

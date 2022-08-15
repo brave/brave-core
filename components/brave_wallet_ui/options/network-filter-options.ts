@@ -12,7 +12,7 @@ export const AllNetworksOption: BraveWallet.NetworkInfo = {
   rpcUrls: [],
   symbol: 'all',
   symbolName: 'all',
-  data: {} as BraveWallet.NetworkInfoData
+  isEip1559: false
 }
 
 export const SupportedTopLevelChainIds = [

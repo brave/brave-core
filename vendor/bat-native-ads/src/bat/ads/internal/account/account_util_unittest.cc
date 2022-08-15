@@ -51,20 +51,21 @@ TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
 TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   // Arrange
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 
-  const ConfirmationInfo& confirmation =
-      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
-                        "8b742869-6e4a-490c-ac31-31b49130098a",
-                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                        ConfirmationType::kViewed, AdType::kNotificationAd);
+  const ConfirmationInfo confirmation = BuildConfirmation(
+      /* id */ "d990ed8d-d739-49fb-811b-c2e02158fb60",
+      /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
+      /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+      ConfirmationType::kViewed, AdType::kNotificationAd);
+
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
       confirmation);
 
-  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetRandomUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
 
@@ -79,9 +80,9 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
           EXPECT_TRUE(transactions.empty());
         });
 
-    const ConfirmationList& confirmations =
+    const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
-    EXPECT_TRUE(confirmations.empty());
+    EXPECT_TRUE(failed_confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
         privacy::GetUnblindedPaymentTokens()->GetAllTokens();
@@ -105,9 +106,9 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
           EXPECT_TRUE(transactions.empty());
         });
 
-    const ConfirmationList& confirmations =
+    const ConfirmationList& failed_confirmations =
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
-    EXPECT_TRUE(confirmations.empty());
+    EXPECT_TRUE(failed_confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
         privacy::GetUnblindedPaymentTokens()->GetAllTokens();

@@ -313,27 +313,21 @@ void TopSitesMessageHandler::HandleEditTopSite(const base::Value::List& args) {
   if (title.empty())
     title = new_url.empty() ? url : new_url;
 
+  // when user modifies current top sites, change to favorite mode.
+  if (!most_visited_sites_->IsCustomLinksEnabled()) {
+    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
+    most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
+  }
+
   GURL gurl(url);
   GURL new_gurl(new_url);
   std::u16string title16 = base::UTF8ToUTF16(title);
 
-  if (most_visited_sites_->IsCustomLinksEnabled()) {
-    // similar to `MostVisitedHandler::UpdateMostVisitedTile`
-    most_visited_sites_->UpdateCustomLink(
-        gurl, new_gurl != gurl ? new_gurl : GURL(), title16);
-  } else {
-    // when user modifies current top sites, change to favorite mode.
-    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
-    most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
-
-    // When user tries to edit from frecency mode, try to edit an existing
-    // site, if one exists. If none exists, add a new custom link for the site.
-    bool updated = most_visited_sites_->UpdateCustomLink(
-        gurl, new_gurl, base::UTF8ToUTF16(title));
-    if (!updated) {
-      most_visited_sites_->AddCustomLink(new_url.empty() ? gurl : new_gurl,
-                                         title16);
-    }
+  const bool updated =
+      most_visited_sites_->UpdateCustomLink(gurl, new_gurl, title16);
+  if (!updated) {
+    most_visited_sites_->AddCustomLink(new_url.empty() ? gurl : new_gurl,
+                                       title16);
   }
 }
 
@@ -356,8 +350,12 @@ void TopSitesMessageHandler::HandleAddNewTopSite(
   if (!GetValidURLStringForTopSite(&url))
     return;
 
-  // similar to `MostVisitedHandler::AddMostVisitedTile`
-  if (most_visited_sites_->IsCustomLinksEnabled()) {
-    most_visited_sites_->AddCustomLink(GURL(url), base::UTF8ToUTF16(title));
+  // If the user tries to add a new site in top sites mode, change to favorite
+  // mode.
+  if (!most_visited_sites_->IsCustomLinksEnabled()) {
+    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
+    most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
   }
+
+  most_visited_sites_->AddCustomLink(GURL(url), base::UTF8ToUTF16(title));
 }

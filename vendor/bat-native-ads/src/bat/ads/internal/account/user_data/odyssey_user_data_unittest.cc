@@ -5,10 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "bat/ads/ads.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -17,30 +14,19 @@
 namespace ads {
 namespace user_data {
 
-namespace {
-
-std::string GetOdysseyAsJson() {
-  const base::Value::Dict user_data = GetOdyssey();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
-}  // namespace
-
 TEST(BatAdsOdysseyUserDataTest, GetOdysseyForGuest) {
   // Arrange
   SysInfo().is_uncertain_future = true;
 
   // Act
-  const std::string json = GetOdysseyAsJson();
+  const base::Value::Dict user_data = GetOdyssey();
 
   // Assert
-  const std::string expected_json = R"({"odyssey":"guest"})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"odyssey":"guest"})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST(BatAdsOdysseyUserDataTest, GetOdysseyForHost) {
@@ -48,12 +34,14 @@ TEST(BatAdsOdysseyUserDataTest, GetOdysseyForHost) {
   SysInfo().is_uncertain_future = false;
 
   // Act
-  const std::string json = GetOdysseyAsJson();
+  const base::Value::Dict user_data = GetOdyssey();
 
   // Assert
-  const std::string expected_json = R"({"odyssey":"host"})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"odyssey":"host"})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

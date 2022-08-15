@@ -11,9 +11,13 @@
 
 #include "base/bind.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/tor_utils.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -113,9 +117,13 @@ void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
 
 TorProfileServiceImpl::TorProfileServiceImpl(
     content::BrowserContext* context,
-    BraveTorClientUpdater* tor_client_updater)
+    PrefService* local_state,
+    BraveTorClientUpdater* tor_client_updater,
+    BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater)
     : context_(context),
+      local_state_(local_state),
       tor_client_updater_(tor_client_updater),
+      tor_pluggable_transport_updater_(tor_pluggable_transport_updater),
       tor_launcher_factory_(TorLauncherFactory::GetInstance()),
       weak_ptr_factory_(this) {
   if (tor_launcher_factory_) {
@@ -125,6 +133,12 @@ TorProfileServiceImpl::TorProfileServiceImpl(
   if (tor_client_updater_) {
     tor_client_updater_->AddObserver(this);
   }
+
+  if (tor_pluggable_transport_updater_) {
+    tor_pluggable_transport_updater_->AddObserver(this);
+  }
+
+  pref_change_registrar_.Init(local_state_.get());
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
@@ -135,6 +149,10 @@ TorProfileServiceImpl::~TorProfileServiceImpl() {
   if (tor_client_updater_) {
     tor_client_updater_->RemoveObserver(this);
   }
+
+  if (tor_pluggable_transport_updater_) {
+    tor_pluggable_transport_updater_->RemoveObserver(this);
+  }
 }
 
 void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
@@ -144,6 +162,37 @@ void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
   if (tor_launcher_factory_->GetTorPid() < 0) {
     LaunchTor();
   }
+}
+
+void TorProfileServiceImpl::OnPluggableTransportReady(bool success) {
+  if (!success || !tor_launcher_factory_)
+    return;
+  OnBridgesConfigChanged();
+}
+
+void TorProfileServiceImpl::OnBridgesConfigChanged() {
+  auto config = tor::BridgesConfig::FromValue(
+                    local_state_->GetDictionary(tor::prefs::kBridgesConfig))
+                    .value_or(tor::BridgesConfig());
+  if (!tor_pluggable_transport_updater_)
+    return;
+
+  if (!tor_pluggable_transport_updater_->IsReady()) {
+    if (config.use_bridges != tor::BridgesConfig::Usage::kNotUsed) {
+      tor_pluggable_transport_updater_->Register();
+      return;
+    } else {
+      tor_pluggable_transport_updater_->Unregister();
+    }
+  }
+  if (config.use_bridges == tor::BridgesConfig::Usage::kNotUsed) {
+    tor_pluggable_transport_updater_->Unregister();
+  }
+
+  tor_launcher_factory_->SetupPluggableTransport(
+      tor_pluggable_transport_updater_->GetSnowflakeExecutable(),
+      tor_pluggable_transport_updater_->GetObfs4Executable());
+  tor_launcher_factory_->SetupBridges(std::move(config));
 }
 
 void TorProfileServiceImpl::LaunchTor() {
@@ -176,11 +225,21 @@ void TorProfileServiceImpl::RegisterTorClientUpdater() {
   if (tor_client_updater_) {
     tor_client_updater_->Register();
   }
+  if (tor_pluggable_transport_updater_) {
+    pref_change_registrar_.Add(
+        tor::prefs::kBridgesConfig,
+        base::BindRepeating(&TorProfileServiceImpl::OnBridgesConfigChanged,
+                            base::Unretained(this)));
+    OnBridgesConfigChanged();
+  }
 }
 
 void TorProfileServiceImpl::UnregisterTorClientUpdater() {
   if (tor_client_updater_) {
     tor_client_updater_->Unregister();
+  }
+  if (tor_pluggable_transport_updater_) {
+    tor_pluggable_transport_updater_->Unregister();
   }
 }
 
@@ -213,6 +272,11 @@ void TorProfileServiceImpl::KillTor() {
   if (tor_launcher_factory_)
     tor_launcher_factory_->KillTorProcess();
   UnregisterTorClientUpdater();
+}
+
+void TorProfileServiceImpl::OnTorControlReady() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  OnBridgesConfigChanged();
 }
 
 void TorProfileServiceImpl::OnTorNewProxyURI(const std::string& uri) {

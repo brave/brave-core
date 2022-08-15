@@ -9,13 +9,14 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/ads/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
+#include "bat/ads/internal/segments/segment_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -33,7 +34,7 @@ class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
        GetSegmentsIfProcessorNeverInitialized) {
   // Arrange
-  SaveAllSegments();
+  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   // Act
   EpsilonGreedyBandit model;
@@ -61,7 +62,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   // Arrange
-  SaveAllSegments();
+  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -79,7 +80,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   // Arrange
-  SaveAllSegments();
+  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -103,7 +104,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Arrange
-  SaveAllSegments();
+  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -144,9 +145,8 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // Arrange
-  const std::vector<std::string> eligible_segments = {
-      "science", "technology & computing", "invalid_segment"};
-  SaveSegments(eligible_segments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(
+      {"science", "technology & computing", "invalid_segment"});
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(

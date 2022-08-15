@@ -335,19 +335,6 @@
     "message": "再接続",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "Braveリワードの認証が完了しました！",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Braveリワードが$provider$で認証されました。",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "トークンの付与が可能です！",
     "description": ""

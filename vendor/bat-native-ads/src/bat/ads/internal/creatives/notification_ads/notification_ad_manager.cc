@@ -20,7 +20,6 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -83,33 +82,29 @@ void NotificationAdManager::Initialize(InitializeCallback callback) {
   Load();
 }
 
-bool NotificationAdManager::GetForPlacementId(
-    const std::string& placement_id,
-    NotificationAdInfo* notification_ad) const {
+absl::optional<NotificationAdInfo>
+NotificationAdManager::MaybeGetForPlacementId(
+    const std::string& placement_id) const {
   DCHECK(is_initialized_);
-  DCHECK(notification_ad);
 
   auto iter =
       std::find_if(notification_ads_.cbegin(), notification_ads_.cend(),
                    [&placement_id](const NotificationAdInfo& notification) {
                      return notification.placement_id == placement_id;
                    });
-
   if (iter == notification_ads_.end()) {
-    return false;
+    return absl::nullopt;
   }
 
-  *notification_ad = *iter;
-
-  notification_ad->type = AdType::kNotificationAd;
-
-  return true;
+  NotificationAdInfo ad = *iter;
+  ad.type = AdType::kNotificationAd;
+  return ad;
 }
 
-void NotificationAdManager::PushBack(const NotificationAdInfo& info) {
+void NotificationAdManager::PushBack(const NotificationAdInfo& ad) {
   DCHECK(is_initialized_);
 
-  notification_ads_.push_back(info);
+  notification_ads_.push_back(ad);
 
   if (kMaximumNotificationAds > 0 && Count() > kMaximumNotificationAds) {
     PopFront(true);
@@ -214,7 +209,7 @@ void NotificationAdManager::RemoveAllAfterUpdate() {
   const std::string current_version_code =
       base::android::BuildInfo::GetInstance()->package_version_code();
 
-  const std::string last_version_code =
+  const std::string& last_version_code =
       ClientStateManager::GetInstance()->GetVersionCode();
 
   if (last_version_code == current_version_code) {
@@ -436,12 +431,11 @@ void NotificationAdManager::OnLoaded(const bool success,
 }
 
 bool NotificationAdManager::FromJson(const std::string& json) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return false;
   }
-
-  base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = root->GetDict();
 
   if (!GetNotificationsFromDictionary(dict)) {
     return false;

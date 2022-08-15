@@ -37,9 +37,14 @@ class VerificationSignature {
 
   bool has_value() const { return verification_signature_.has_value(); }
 
-  challenge_bypass_ristretto::VerificationSignature get() const {
-    DCHECK(has_value());
-    return verification_signature_.value();
+  challenge_bypass_ristretto::VerificationSignature& get() {
+    DCHECK(verification_signature_);
+    return *verification_signature_;
+  }
+
+  const challenge_bypass_ristretto::VerificationSignature& get() const {
+    DCHECK(verification_signature_);
+    return *verification_signature_;
   }
 
   static VerificationSignature DecodeBase64(

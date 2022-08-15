@@ -26,13 +26,13 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
 
   TransactionList transactions;
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
@@ -40,7 +40,7 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   const base::Time to_time = DistantFuture();
 
   // Act
-  const TransactionList& transactions_for_date_range =
+  const TransactionList transactions_for_date_range =
       GetTransactionsForDateRange(transactions, from_time, to_time);
 
   // Assert
@@ -56,11 +56,11 @@ TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
 
   TransactionList transactions;
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
@@ -70,7 +70,7 @@ TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   const base::Time to_time = DistantFuture();
 
   // Act
-  const TransactionList& transactions_for_date_range =
+  const TransactionList transactions_for_date_range =
       GetTransactionsForDateRange(transactions, from_time, to_time);
 
   // Assert

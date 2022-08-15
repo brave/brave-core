@@ -44,9 +44,14 @@ class BatchDLEQProof {
 
   bool has_value() const { return batch_dleq_proof_.has_value(); }
 
-  challenge_bypass_ristretto::BatchDLEQProof get() const {
-    DCHECK(has_value());
-    return batch_dleq_proof_.value();
+  challenge_bypass_ristretto::BatchDLEQProof& get() {
+    DCHECK(batch_dleq_proof_);
+    return *batch_dleq_proof_;
+  }
+
+  const challenge_bypass_ristretto::BatchDLEQProof& get() const {
+    DCHECK(batch_dleq_proof_);
+    return *batch_dleq_proof_;
   }
 
   static BatchDLEQProof DecodeBase64(

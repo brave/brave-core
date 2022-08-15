@@ -68,7 +68,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
   SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items =
+  const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
   database_table_->GetAll(
@@ -100,7 +100,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items = {info, info};
+  const ConversionQueueItemList expected_conversion_queue_items = {info, info};
 
   database_table_->GetAll(
       [&expected_conversion_queue_items](
@@ -149,7 +149,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items =
+  const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
   database_table_->GetAll(
@@ -189,9 +189,9 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Act
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
 
-  const std::string& creative_instance_id =
+  const std::string creative_instance_id =
       "eaa6224a-876d-4ef8-a384-9ac34f238631";
 
   database_table_->GetForCreativeInstanceId(
@@ -233,7 +233,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Act
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
 
   database_table_->GetUnprocessed(
       [&expected_conversion_queue_items](
@@ -281,7 +281,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Act
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items = {
+  const ConversionQueueItemList expected_conversion_queue_items = {
       info_2, info_3, info_1};
 
   database_table_->GetAll(
@@ -322,7 +322,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
                           [](const bool success) { ASSERT_TRUE(success); });
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
 
   database_table_->GetAll(
       [&expected_conversion_queue_items](
@@ -374,7 +374,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
                           [](const bool success) { ASSERT_TRUE(success); });
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items =
+  const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
   database_table_->GetAll(
@@ -415,7 +415,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
                           [](const bool success) { ASSERT_TRUE(success); });
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
 
   database_table_->GetUnprocessed(
       [&expected_conversion_queue_items](
@@ -467,7 +467,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
                           [](const bool success) { ASSERT_TRUE(success); });
 
   // Assert
-  const ConversionQueueItemList& expected_conversion_queue_items =
+  const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
   database_table_->GetAll(
@@ -486,7 +486,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, TableName) {
   const std::string& table_name = database_table_->GetTableName();
 
   // Assert
-  const std::string& expected_table_name = "conversion_queue";
+  const std::string expected_table_name = "conversion_queue";
   EXPECT_EQ(expected_table_name, table_name);
 }
 

@@ -35,7 +35,7 @@ class AntiTargetingExclusionRule final
 
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
-  std::string GetLastMessage() const override;
+  const std::string& GetLastMessage() const override;
 
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;

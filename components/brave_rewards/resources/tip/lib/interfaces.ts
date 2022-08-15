@@ -89,7 +89,7 @@ export enum ExternalWalletStatus {
 
 export interface ExternalWalletInfo {
   status: ExternalWalletStatus
-  type: 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
+  type: 'uphold' | 'bitflyer' | 'gemini'
 }
 
 export interface RewardsParameters {

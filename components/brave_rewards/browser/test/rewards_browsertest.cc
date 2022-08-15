@@ -287,8 +287,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        ZeroBalanceWalletClaimNotCalled_Gemini) {
   response_->SetVerifiedWallet(true);
-  auto* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_rewards::prefs::kFetchOldBalance, false);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->SetUpGeminiWallet(rewards_service_, 50.0);
 
@@ -315,47 +313,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
   rewards_service_->GetExternalWallet(
       base::BindLambdaForTesting(test_callback));
   run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNotice) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(), "[data-test-id='rewards-balance-text']", "30.000 BAT");
-
-  // Click the settings button and wait for the backup modal to appear
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=manage-wallet-button]");
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#modal");
-
-  // Ensure that verify link exists
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#backup-verify-link");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
-  response_->SetUserFundsBalance(20.0);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(), "[data-test-id=rewards-balance-text]", "20.000 BAT");
-
-  // Click the settings button and wait for the backup modal to appear
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=manage-wallet-button]");
-  rewards_browsertest_util::WaitForElementToAppear(contents(), "#modal");
-
-  // Presence of recovery key textarea indicates notice isn't
-  // displayed
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#backup-recovery-key");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {

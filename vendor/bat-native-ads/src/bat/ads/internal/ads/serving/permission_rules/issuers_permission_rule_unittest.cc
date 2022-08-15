@@ -23,7 +23,7 @@ class BatAdsIssuersPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BatAdsIssuersPermissionRuleTest, Issuers) {
   // Arrange
-  const IssuersInfo& issuers = BuildIssuers(
+  const IssuersInfo issuers = BuildIssuers(
       7200000, {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0}},
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0}});
 

@@ -498,7 +498,10 @@ class Generator(generator.Generator):
         typemap = MojoTypemapForKind(kind)
         if not field.default and mojom.IsNullableKind(kind):
             return False
-        if typemap.DefaultObjCValue(field.default) is None:
+        default = typemap.DefaultObjCValue(field.default)
+        if isinstance(typemap, EnumMojoTypemap) and default is None:
+            return True # Always give valid first case
+        if default is None:
             return False
         if typemap is NumberMojoTypemap and field.default == 0:
             # 0 by default anyways
@@ -510,7 +513,12 @@ class Generator(generator.Generator):
         typemap = MojoTypemapForKind(kind)
         if not field.default and mojom.IsNullableKind(kind):
             return 'nil'
-        return typemap.DefaultObjCValue(field.default)
+        default = typemap.DefaultObjCValue(field.default)
+        if (isinstance(typemap, EnumMojoTypemap) and default is None
+            and len(kind.fields) > 0):
+            return "%s%s" % (typemap.ObjCWrappedType(),
+                             self._ObjCEnumFormatter(kind.fields[0].name))
+        return default
 
     def _GetObjCUnionNullReturnValue(self, kind):
         typemap = MojoTypemapForKind(kind)

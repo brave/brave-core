@@ -13,6 +13,12 @@
 
 namespace p3a_utils {
 
+namespace {
+
+constexpr int kDaysInMonthBuckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
+
+}  // namespace
+
 void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
                                const char* first_use_time_pref_name,
                                const char* last_use_time_pref_name,
@@ -36,14 +42,23 @@ void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
 void RecordFeatureUsage(PrefService* prefs,
                         const char* first_use_time_pref_name,
                         const char* last_use_time_pref_name) {
+  RecordFeatureUsage(prefs, first_use_time_pref_name, last_use_time_pref_name,
+                     base::Time::Now());
+}
+
+void RecordFeatureUsage(PrefService* prefs,
+                        const char* first_use_time_pref_name,
+                        const char* last_use_time_pref_name,
+                        const base::Time& last_new_use_time) {
   DCHECK(prefs);
   DCHECK(first_use_time_pref_name);
   DCHECK(last_use_time_pref_name);
+  DCHECK(!last_new_use_time.is_null());
 
-  base::Time now_midnight = base::Time::Now().LocalMidnight();
-  prefs->SetTime(last_use_time_pref_name, now_midnight);
+  base::Time new_time_midnight = last_new_use_time.LocalMidnight();
+  prefs->SetTime(last_use_time_pref_name, new_time_midnight);
   if (prefs->GetTime(first_use_time_pref_name).is_null()) {
-    prefs->SetTime(first_use_time_pref_name, now_midnight);
+    prefs->SetTime(first_use_time_pref_name, new_time_midnight);
   }
 }
 
@@ -72,7 +87,8 @@ void RecordFeatureNewUserReturning(PrefService* prefs,
                                    const char* first_use_time_pref_name,
                                    const char* last_use_time_pref_name,
                                    const char* used_second_day_pref_name,
-                                   const char* histogram_name) {
+                                   const char* histogram_name,
+                                   bool write_to_histogram) {
   DCHECK(prefs);
   DCHECK(first_use_time_pref_name);
   DCHECK(last_use_time_pref_name);
@@ -81,6 +97,7 @@ void RecordFeatureNewUserReturning(PrefService* prefs,
 
   base::Time last_use_time = prefs->GetTime(last_use_time_pref_name);
   base::Time first_use_time = prefs->GetTime(first_use_time_pref_name);
+
   int answer = 0;
   if (!first_use_time.is_null()) {
     // If the first use time was set, we can assume that
@@ -109,14 +126,17 @@ void RecordFeatureNewUserReturning(PrefService* prefs,
       answer = 4;
     }
   }
-  base::UmaHistogramExactLinear(histogram_name, answer, 5);
+  if (write_to_histogram) {
+    base::UmaHistogramExactLinear(histogram_name, answer, 5);
+  }
 }
 
 void RecordFeatureDaysInMonthUsed(PrefService* prefs,
-                                  bool is_add,
+                                  const base::Time& add_date,
                                   const char* last_use_time_pref_name,
                                   const char* days_in_month_used_pref_name,
-                                  const char* histogram_name) {
+                                  const char* histogram_name,
+                                  bool write_to_histogram) {
   DCHECK(prefs);
   DCHECK(last_use_time_pref_name);
   DCHECK(days_in_month_used_pref_name);
@@ -126,13 +146,25 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
     // Don't report if feature was never used
     return;
   }
-  // How many days was the feature used in the last month?
-  constexpr int buckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
   MonthlyStorage storage(prefs, days_in_month_used_pref_name);
-  if (is_add) {
-    storage.ReplaceTodaysValueIfGreater(1);
+  if (!add_date.is_null()) {
+    storage.ReplaceIfGreaterForDate(add_date, 1);
   }
-  RecordToHistogramBucket(histogram_name, buckets, storage.GetMonthlySum());
+  if (write_to_histogram) {
+    RecordToHistogramBucket(histogram_name, kDaysInMonthBuckets,
+                            storage.GetMonthlySum());
+  }
+}
+
+void RecordFeatureDaysInMonthUsed(PrefService* prefs,
+                                  bool is_add,
+                                  const char* last_use_time_pref_name,
+                                  const char* days_in_month_used_pref_name,
+                                  const char* histogram_name,
+                                  bool write_to_histogram) {
+  RecordFeatureDaysInMonthUsed(
+      prefs, is_add ? base::Time::Now() : base::Time(), last_use_time_pref_name,
+      days_in_month_used_pref_name, histogram_name, write_to_histogram);
 }
 
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,

@@ -13,6 +13,7 @@ import '../brave_new_tab_page/brave_new_tab_page.m.js'
 import '../brave_rewards_page/brave_rewards_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
+import '../brave_tor_page/brave_tor_subpage.js'
 import '../brave_wallet_page/brave_wallet_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
@@ -53,6 +54,23 @@ function createSectionElement (sectionName, titleName, childName, childAttribute
     </settings-section>
   `
 }
+
+function createNestedSectionElement(sectionName, nestedUnder, titleName, childName, childAttributes) {
+  const childAttributesString = Object.keys(childAttributes).map(attribute =>
+    `${attribute}="${childAttributes[attribute]}"`)
+    .join(' ')
+  // This needs to be inside a template so that our components do not get created immediately.
+  // Otherwise the polymer bindings won't be setup correctly at first.
+  return html`
+    <settings-section page-title="${loadTimeData.getString(titleName)}" section="${sectionName}" nest-under-section="${nestedUnder}">
+      <${childName}
+        ${childAttributesString}
+      >
+      </${childName}>
+    </settings-section>
+  `
+}
+
 
 /**
  * Creates a settings-toggle-button element and returns it.
@@ -124,6 +142,19 @@ RegisterPolymerTemplateModifications({
         'ipfs',
         'braveIPFS',
         'settings-brave-ipfs-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+      const sectionTor = document.createElement('template')
+      sectionTor.setAttribute('is', 'dom-if')
+      sectionTor.setAttribute('restamp', true)
+      sectionTor.setAttribute('if', '[[showPage_(pageVisibility.braveTor)]]')
+      sectionTor.content.appendChild(createNestedSectionElement(
+        'tor',
+        'privacy',
+        'braveTor',
+        'settings-brave-tor-subpage',
         {
           prefs: '{{prefs}}'
         }
@@ -237,6 +268,8 @@ RegisterPolymerTemplateModifications({
       sectionExtensions.insertAdjacentElement('afterend', sectionWallet)
       // Insert IPFS
       sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
+      // Insert Tor
+      sectionWallet.insertAdjacentElement('afterend', sectionTor)
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {

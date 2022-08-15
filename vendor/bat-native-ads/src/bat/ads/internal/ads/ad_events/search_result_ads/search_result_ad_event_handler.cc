@@ -21,7 +21,6 @@
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace search_result_ads {
@@ -59,12 +58,12 @@ void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
 }
 
 void EventHandler::FireEvent(
-    const mojom::SearchResultAdPtr& ad_mojom,
+    const mojom::SearchResultAdInfoPtr& ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   if (!ad.IsValid()) {
     BLOG(1, "Failed to fire event due to an invalid search result ad");
@@ -110,14 +109,16 @@ void EventHandler::FireEvent(
 }
 
 void EventHandler::FireViewedEvent(
-    const mojom::SearchResultAdPtr& ad_mojom,
+    const mojom::SearchResultAdInfoPtr& ad_mojom,
     TriggerSearchResultAdEventCallback callback) const {
-  const DepositInfo& deposit = BuildDeposit(ad_mojom);
+  const DepositInfo deposit = BuildDeposit(ad_mojom);
 
-  const absl::optional<ConversionInfo>& conversion_optional =
-      BuildConversion(ad_mojom);
+  ConversionList conversions;
+  if (const auto conversion = BuildConversion(ad_mojom)) {
+    conversions.push_back(*conversion);
+  }
 
-  const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   database::table::Deposits deposits_database_table;
   deposits_database_table.Save(deposit, [=](const bool success) {
@@ -128,12 +129,6 @@ void EventHandler::FireViewedEvent(
     }
 
     BLOG(3, "Successfully saved deposits state");
-
-    ConversionList conversions;
-    if (conversion_optional) {
-      const ConversionInfo& conversion = conversion_optional.value();
-      conversions.push_back(conversion);
-    }
 
     database::table::Conversions conversion_database_table;
     conversion_database_table.Save(conversions, [=](const bool success) {

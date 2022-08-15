@@ -48,8 +48,6 @@
 <translation id="4309915981827077375">പൊതുവായ വിവരം</translation>
 <translation id="3368922792935385530">ബന്ധിപ്പിച്ചു</translation>
 <translation id="8874184842967597500">കണക്റ്റുചെയ്‌തിട്ടില്ല</translation>
-<translation id="8281886186245836920">ഉപേക്ഷിക്കുക</translation>
-<translation id="6518133107902771759">സ്ഥിരീകരിക്കുക</translation>
 <translation id="3587482841069643663">എല്ലാം</translation>
 <translation id="2631006050119455616">സംരക്ഷിച്ചു</translation>
 <translation id="3819257035322786455">ബാക്കപ്പ്</translation>
@@ -63,6 +61,7 @@
 <translation id="8428213095426709021">ക്രമീകരണങ്ങള്‍</translation>
 <translation id="1963227389609234879">എല്ലാം നീക്കംചെയ്യൂ</translation>
 <translation id="923467487918828349">എല്ലാം കാണിക്കുക</translation>
+<translation id="6518133107902771759">സ്ഥിരീകരിക്കുക</translation>
 <translation id="4804818685124855865">വിച്ഛേദിക്കുക</translation>
 <translation id="8151638057146502721">കോൺഫിഗർ ചെയ്യുക</translation>
 <translation id="5308380583665731573">കണക്‌റ്റുചെയ്യുക</translation>
@@ -83,6 +82,9 @@
 <translation id="1974060860693918893">നൂതനം</translation>
 <translation id="3340978935015468852">ക്രമീകരണങ്ങൾ</translation>
 <translation id="572392919096807438">എന്റെ തീരുമാനം ഓർക്കുക</translation>
+<translation id="6965382102122355670">ശരി</translation>
+<translation id="5234764350956374838">ബഹിഷ്‌ക്കരിക്കുക</translation>
+<translation id="8281886186245836920">ഉപേക്ഷിക്കുക</translation>
 <translation id="2805756323405976993">ആപ്സ്</translation>
 <translation id="1987317783729300807">അക്കൗണ്ടുകൾ‌</translation>
 <translation id="629730747756840877">അക്കൗണ്ട്</translation>
@@ -93,7 +95,6 @@
 <translation id="5486261815000869482">പാസ്‌വേഡ് സ്ഥിരീകരിക്കുക</translation>
 <translation id="9111102763498581341">അണ്‍ലോക്ക് ചെയ്യുക</translation>
 <translation id="5045550434625856497">ശരിയല്ലാത്ത രഹസ്യവാക്ക്</translation>
-<translation id="5234764350956374838">ബഹിഷ്‌ക്കരിക്കുക</translation>
 <translation id="7525067979554623046">സൃഷ്‌ടിക്കുക</translation>
 <translation id="7978412674231730200">സ്വകാര്യ കീ</translation>
 <translation id="4378551569595875038">കണക്റ്റുചെയ്യുന്നു...</translation>
@@ -103,8 +104,10 @@
 <translation id="9065203028668620118">എഡിറ്റ് ചെയ്യുക</translation>
 <translation id="6452181791372256707">നിരസിക്കുക</translation>
 <translation id="8030852056903932865">അംഗീകരിക്കുക</translation>
-<translation id="1165039591588034296">പിശക്</translation>
 <translation id="7982789257301363584">നെറ്റ്വര്‍ക്ക്</translation>
+<translation id="2391762656119864333">റദ്ദാക്കുക</translation>
+<translation id="5677928146339483299">തടഞ്ഞു</translation>
+<translation id="1165039591588034296">പിശക്</translation>
 <translation id="2941112035454246133">താഴ്ന്ന</translation>
 <translation id="9100765901046053179">വിപുലമായ ക്രമീകരണം</translation>
 <translation id="3380365263193509176">അജ്ഞാതമായ പിശക്</translation>

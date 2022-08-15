@@ -36,9 +36,14 @@ class Token {
 
   bool has_value() const { return token_.has_value(); }
 
-  challenge_bypass_ristretto::Token get() const {
-    DCHECK(has_value());
-    return token_.value();
+  challenge_bypass_ristretto::Token& get() {
+    DCHECK(token_);
+    return *token_;
+  }
+
+  const challenge_bypass_ristretto::Token& get() const {
+    DCHECK(token_);
+    return *token_;
   }
 
   static Token DecodeBase64(const std::string& token_base64);

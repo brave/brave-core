@@ -24,7 +24,7 @@ export const IconWrapper = styled.div<StyleProps>`
 export const PlaceholderText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   font-size: ${(p) => p.size === 'big' ? '16px' : '12px'};
-  font-weight: 600
+  font-weight: 600;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
 `

@@ -35,10 +35,11 @@ ConfirmationInfo BuildConfirmation(const std::string& id,
 
   privacy::UnblindedTokens* unblinded_tokens = privacy::GetUnblindedTokens();
   if (unblinded_tokens && !unblinded_tokens->IsEmpty()) {
-    const privacy::UnblindedTokenInfo& unblinded_token =
+    const privacy::UnblindedTokenInfo unblinded_token_copy =
         unblinded_tokens->GetToken();
-    confirmation.unblinded_token = unblinded_token;
-    unblinded_tokens->RemoveToken(unblinded_token);
+    unblinded_tokens->RemoveToken(unblinded_token_copy);
+
+    confirmation.unblinded_token = unblinded_token_copy;
 
     confirmation.payment_token = privacy::cbr::Token(
         R"(aXZNwft34oG2JAVBnpYh/ktTOzr2gi0lKosYNczUUz6ZS9gaDTJmU2FHFps9dIq+QoDwjSjctR5v0rRn+dYo+AHScVqFAgJ5t2s4KtSyawW10gk6hfWPQw16Q0+8u5AG)");
@@ -48,8 +49,10 @@ ConfirmationInfo BuildConfirmation(const std::string& id,
         "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=");
     DCHECK(confirmation.blinded_payment_token.has_value());
 
-    const std::string payload = CreateConfirmationRequestDTO(confirmation);
-    confirmation.credential = CreateCredential(unblinded_token, payload);
+    const std::string confirmation_request_dto =
+        CreateConfirmationRequestDTO(confirmation);
+    confirmation.credential =
+        CreateCredential(unblinded_token_copy, confirmation_request_dto);
   }
 
   confirmation.user_data = "";

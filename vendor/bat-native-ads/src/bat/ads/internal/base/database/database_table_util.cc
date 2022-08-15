@@ -42,58 +42,58 @@ std::string BuildInsertQuery(const std::string& from,
 
 }  // namespace
 
-void CreateTableIndex(mojom::DBTransaction* transaction,
+void CreateTableIndex(mojom::DBTransactionInfo* transaction,
                       const std::string& table_name,
                       const std::string& key) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
   DCHECK(!key.empty());
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "CREATE INDEX %s_%s_index ON %s (%s)", table_name.c_str(), key.c_str(),
       table_name.c_str(), key.c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void DropTable(mojom::DBTransaction* transaction,
+void DropTable(mojom::DBTransactionInfo* transaction,
                const std::string& table_name) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
-  const std::string& query = base::StringPrintf(
+  const std::string query = base::StringPrintf(
       "PRAGMA foreign_keys = off;"
       "DROP TABLE IF EXISTS %s;"
       "PRAGMA foreign_keys = on;",
       table_name.c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void DeleteTable(mojom::DBTransaction* transaction,
+void DeleteTable(mojom::DBTransactionInfo* transaction,
                  const std::string& table_name) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
-  const std::string& query =
+  const std::string query =
       base::StringPrintf("DELETE FROM %s", table_name.c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void CopyTableColumns(mojom::DBTransaction* transaction,
+void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
@@ -120,14 +120,14 @@ void CopyTableColumns(mojom::DBTransaction* transaction,
 
   query.append("PRAGMA foreign_keys = on;");
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void CopyTableColumns(mojom::DBTransaction* transaction,
+void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
@@ -143,7 +143,7 @@ void CopyTableColumns(mojom::DBTransaction* transaction,
                           group_by);
 }
 
-void RenameTable(mojom::DBTransaction* transaction,
+void RenameTable(mojom::DBTransactionInfo* transaction,
                  const std::string& from,
                  const std::string& to) {
   DCHECK(transaction);
@@ -151,11 +151,11 @@ void RenameTable(mojom::DBTransaction* transaction,
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
 
-  const std::string& query = base::StringPrintf("ALTER TABLE %s RENAME TO %s",
-                                                from.c_str(), to.c_str());
+  const std::string query = base::StringPrintf("ALTER TABLE %s RENAME TO %s",
+                                               from.c_str(), to.c_str());
 
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

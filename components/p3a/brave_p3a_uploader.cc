@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/base64.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -22,7 +21,7 @@ namespace {
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
     base::StringPiece upload_type) {
   if (upload_type == "p3a") {
-    return net::DefineNetworkTrafficAnnotation("metrics_report_uma", R"(
+    return net::DefineNetworkTrafficAnnotation("p3a", R"(
         semantics {
           sender: "Brave Privacy-Preserving Product Analytics Uploader"
           description:
@@ -32,7 +31,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
             "Reports are automatically generated on startup and at intervals "
             "while Brave is running."
           data:
-            "A protocol buffer with anonymized and encrypted usage data."
+            "A json document with anonymized usage data."
           destination: WEBSITE
         }
         policy {
@@ -44,24 +43,25 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
         })");
   }
   DCHECK_EQ(upload_type, "p2a");
-  return net::DefineNetworkTrafficAnnotation("metrics_report_uma", R"(
+  return net::DefineNetworkTrafficAnnotation("p2a", R"(
       semantics {
         sender: "Brave Privacy-Preserving Ad Analytics Uploader"
         description:
           "Report of anonymized usage statistics. For more info, see "
-          "https://brave.com/P2A"
+          "https://github.com/brave/brave-browser/wiki/"
+          "Randomized-Response-for-Private-Advertising-Analytics"
         trigger:
           "Reports are automatically generated on startup and at intervals "
           "while Brave is running."
         data:
-          "A protocol buffer with anonymized and encrypted usage data."
+          "A json document with anonymized usage data."
         destination: WEBSITE
       }
       policy {
         cookies_allowed: NO
         setting:
-          "Users can enable or disable it by enabling or disabling Brave rewards
-         or ads in brave://rewards"
+          "Users can enable or disable it by enabling or disabling Brave "
+          "rewards or ads in brave://rewards."
          policy_exception_justification:
            "Not implemented."
       })");
@@ -72,10 +72,12 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
 BraveP3AUploader::BraveP3AUploader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const GURL& p3a_endpoint,
-    const GURL& p2a_endpoint)
+    const GURL& p2a_endpoint,
+    const UploadCallback& on_upload_complete)
     : url_loader_factory_(url_loader_factory),
       p3a_endpoint_(p3a_endpoint),
-      p2a_endpoint_(p2a_endpoint) {}
+      p2a_endpoint_(p2a_endpoint),
+      on_upload_complete_(on_upload_complete) {}
 
 BraveP3AUploader::~BraveP3AUploader() = default;
 
@@ -88,8 +90,6 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
   } else if (upload_type == "p3a") {
     resource_request->url = p3a_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P3A", "?1");
-    // Don't actually send the older format.
-    return;
   } else {
     NOTREACHED();
   }
@@ -98,11 +98,8 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
   resource_request->method = "POST";
 
   url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request),
-      GetNetworkTrafficAnnotation(upload_type));
-  std::string base64;
-  base::Base64Encode(compressed_log_data, &base64);
-  url_loader_->AttachStringForUpload(base64, "application/base64");
+      std::move(resource_request), GetNetworkTrafficAnnotation(upload_type));
+  url_loader_->AttachStringForUpload(compressed_log_data, "application/json");
 
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
@@ -112,7 +109,15 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
 
 void BraveP3AUploader::OnUploadComplete(
     std::unique_ptr<std::string> response_body) {
+  int response_code = -1;
+  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
+    response_code = url_loader_->ResponseInfo()->headers->response_code();
+
+  int error_code = url_loader_->NetError();
+
+  bool was_https = url_loader_->GetFinalURL().SchemeIs(url::kHttpsScheme);
   url_loader_.reset();
+  on_upload_complete_.Run(response_code, error_code, was_https);
 }
 
 }  // namespace brave

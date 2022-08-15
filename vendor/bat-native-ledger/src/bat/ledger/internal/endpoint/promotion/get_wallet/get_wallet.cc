@@ -89,18 +89,13 @@ type::Result GetWallet::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
+  const base::Value::Dict& dict = value->GetDict();
   if (const auto* deposit_account_provider =
-          dictionary->FindDictKey("depositAccountProvider")) {
-    const std::string* name = deposit_account_provider->FindStringKey("name");
-    const std::string* id = deposit_account_provider->FindStringKey("id");
+          dict.FindDict("depositAccountProvider")) {
+    const std::string* name = deposit_account_provider->FindString("name");
+    const std::string* id = deposit_account_provider->FindString("id");
     const std::string* linking_id =
-        deposit_account_provider->FindStringKey("linkingId");
+        deposit_account_provider->FindString("linkingId");
 
     if (!name || !id || !linking_id) {
       return type::Result::LEDGER_ERROR;

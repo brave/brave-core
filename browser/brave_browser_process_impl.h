@@ -15,6 +15,7 @@
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
@@ -58,6 +59,7 @@ class NTPBackgroundImagesService;
 
 namespace tor {
 class BraveTorClientUpdater;
+class BraveTorPluggableTransportUpdater;
 }
 
 namespace ipfs {
@@ -102,6 +104,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       override;
 #if BUILDFLAG(ENABLE_TOR)
   tor::BraveTorClientUpdater* tor_client_updater() override;
+  tor::BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater()
+      override;
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
@@ -160,6 +164,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
+  std::unique_ptr<tor::BraveTorPluggableTransportUpdater>
+      tor_pluggable_transport_updater_;
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;

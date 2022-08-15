@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/child_process_monitor/child_process_monitor.h"
+#include "base/process/process.h"
+#include "base/process/process_handle.h"
+#include "base/process/process_iterator.h"
 
 #if BUILDFLAG(IS_POSIX)
 #include <errno.h>
@@ -150,7 +153,25 @@ ChildProcessMonitor::~ChildProcessMonitor() {
 #endif
 
   if (child_process_.IsValid()) {
+    class FindSpawnedProcesses : public base::ProcessFilter {
+     public:
+      explicit FindSpawnedProcesses(base::ProcessId main_process)
+          : main_process_(main_process) {}
+
+      bool Includes(const base::ProcessEntry& entry) const final {
+        return entry.parent_pid() == main_process_;
+      }
+
+     private:
+      base::ProcessId main_process_;
+    } find_spawned(child_process_.Pid());
+
     child_process_.Terminate(0, true);
+
+    base::ProcessIterator spawned_processes(&find_spawned);
+    while (const auto* entry = spawned_processes.NextProcessEntry()) {
+      base::Process::Open(entry->pid()).Terminate(0, true);
+    }
 #if BUILDFLAG(IS_MAC)
     // TODO(https://crbug.com/806451): The Mac implementation currently blocks
     // the calling thread for up to two seconds.

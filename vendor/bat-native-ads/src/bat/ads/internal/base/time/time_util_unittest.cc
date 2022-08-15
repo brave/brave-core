@@ -12,6 +12,7 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "build/build_config.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -35,7 +36,7 @@ class ScopedLibcTZ {
 
   ~ScopedLibcTZ() {
     auto env = base::Environment::Create();
-    if (old_timezone_.has_value()) {
+    if (old_timezone_) {
       CHECK(env->SetVar(kTZ, old_timezone_.value()));
     } else {
       CHECK(env->UnSetVar(kTZ));

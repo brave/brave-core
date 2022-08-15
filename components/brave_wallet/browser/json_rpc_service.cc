@@ -41,6 +41,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "net/http/http_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -109,13 +110,13 @@ JsonRpcService::JsonRpcService(
       weak_ptr_factory_(this) {
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::ETH),
                   mojom::CoinType::ETH))
-    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for ETH";
+    LOG(ERROR) << "Could not set network from JsonRpcService() for ETH";
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::SOL),
                   mojom::CoinType::SOL))
-    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for SOL";
+    LOG(ERROR) << "Could not set network from JsonRpcService() for SOL";
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::FIL),
                   mojom::CoinType::FIL))
-    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for FIL";
+    LOG(ERROR) << "Could not set network from JsonRpcService() for FIL";
 }
 
 void JsonRpcService::SetAPIRequestHelperForTesting(
@@ -181,11 +182,13 @@ void JsonRpcService::RequestInternal(
   base::flat_map<std::string, std::string> request_headers;
   std::string id, method, params;
   if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
-    request_headers["X-Eth-Method"] = method;
+    if (net::HttpUtil::IsValidHeaderValue(method))
+      request_headers["X-Eth-Method"] = method;
     if (method == kEthGetBlockByNumber) {
       std::string cleaned_params;
       base::RemoveChars(params, "\" []", &cleaned_params);
-      request_headers["X-eth-get-block"] = cleaned_params;
+      if (net::HttpUtil::IsValidHeaderValue(cleaned_params))
+        request_headers["X-eth-get-block"] = cleaned_params;
     } else if (method == kEthBlockNumber) {
       request_headers["X-Eth-Block"] = "true";
     }

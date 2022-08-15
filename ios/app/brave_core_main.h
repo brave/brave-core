@@ -11,10 +11,13 @@
 @class BraveBookmarksAPI;
 @class BraveHistoryAPI;
 @class BravePasswordAPI;
+@class BraveOpenTabsAPI;
+@class BraveSendTabAPI;
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
 @class BraveStats;
 @class AdblockService;
+@class BraveTabGeneratorAPI;
 
 @protocol BraveWalletBlockchainRegistry;
 @protocol BraveWalletEthereumProvider;
@@ -39,6 +42,16 @@ OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchVModule;
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSyncURL;
+/// Sets a number of overrides for the ads & ledger services such as which
+/// environment its using, debug mode, etc.
+///
+/// Expected value: A comma-separated list of flags, including:
+///     - staging={bool}
+////    - development={bool}
+///     - debug={bool}
+///     - reconcile-interval={int}
+///     - retry-interval={int}
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchRewardsFlags;
 
 typedef int BraveCoreLogSeverity NS_TYPED_ENUM;
 OBJC_EXPORT const BraveCoreLogSeverity BraveCoreLogSeverityFatal;
@@ -60,11 +73,17 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) BraveHistoryAPI* historyAPI;
 
+@property(nonatomic, readonly) BravePasswordAPI* passwordAPI;
+
+@property(nonatomic, readonly) BraveOpenTabsAPI* openTabsAPI;
+
+@property(nonatomic, readonly) BraveSendTabAPI* sendTabAPI;
+
 @property(nonatomic, readonly) BraveSyncAPI* syncAPI;
 
 @property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
 
-@property(nonatomic, readonly) BravePasswordAPI* passwordAPI;
+@property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///

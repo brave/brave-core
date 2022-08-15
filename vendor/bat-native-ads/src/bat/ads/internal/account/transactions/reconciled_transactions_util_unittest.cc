@@ -26,7 +26,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
@@ -44,7 +44,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
 
@@ -64,7 +64,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
@@ -84,7 +84,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
 
@@ -100,7 +100,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
 
   // Act
@@ -114,7 +114,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
 
   // Act
@@ -129,7 +129,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
 
   // Act
@@ -145,7 +145,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
 
   // Act

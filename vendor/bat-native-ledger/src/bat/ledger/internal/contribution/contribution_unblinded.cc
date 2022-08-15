@@ -477,8 +477,7 @@ void Unblinded::OnProcessTokens(
     redeem.contribution_id = contribution->contribution_id;
 
     if (redeem.processor == type::ContributionProcessor::UPHOLD ||
-        redeem.processor == type::ContributionProcessor::GEMINI ||
-        redeem.processor == type::ContributionProcessor::BRAVE_USER_FUNDS) {
+        redeem.processor == type::ContributionProcessor::GEMINI) {
       credentials_sku_->RedeemTokens(redeem, redeem_callback);
       return;
     }

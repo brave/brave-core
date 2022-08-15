@@ -259,6 +259,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3097089005389027085">Vaše data ve službě Brave, včetně potenciálních hesel, tak budou sdílena se zařízením, které tato kódová slova vygenerovalo.
 Zkontrolujte, zda byla tato kódová slova vygenerována zařízením, které vlastníte.
 Jste si jisti, že chcete tuto akci provést?</translation>
+<translation id="4550208292810542331">Povolení k použití kamery nebylo uděleno</translation>
 <translation id="597993392929850353">Licence Brave</translation>
 <translation id="6336451774241870485">Nová soukromá karta</translation>
 <translation id="6199596294742117349">Toto je soukromá karta</translation>
@@ -547,8 +548,9 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">VŠE</translation>
-<translation id="5071303414930953888">Účet <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Účet <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Přidat účet</translation>
+<translation id="318334680413773318">Přidejte/importujte účet</translation>
 <translation id="3448492834076427715">Aktualizovat účet</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Chete povolit odemykání otiskem prstu?</translation>
@@ -857,12 +859,14 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="4804818685124855865">Odpojit</translation>
 <translation id="8009571545960303544">Je vyžadován váš podpis</translation>
 <translation id="3484981968509595506">Váš veřejný šifrovací klíč je vyžadován ze strany DApp</translation>
+<translation id="2300240008330189182"><ph name="URL"/> žádá o veřejný šifrovací klíč vaší peněženky. Pokud s poskytnutím tohoto klíče souhlasíte, bude vám web moci sestavovat šifrované zprávy.</translation>
 <translation id="3340247553212049934">Poskytnout</translation>
 <translation id="1982257600591932657">Název sítě</translation>
 <translation id="5052727830821470769">Síťová adresa URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Symbol měny</translation>
 <translation id="7982789257301363584">Síť</translation>
+<translation id="6936860995365507185">To umožní používat tuto síť v rámci peněženky Brave. <ph name="CLICK_START"/>Více se dozvíte na<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Chcete tomuto webu povolit přidání sítě?</translation>
 <translation id="4857321293515555666">Tato decentralizovaná aplikace (DApp) chce přečíst tuto zprávu, aby dokončila vaši žádost.</translation>
 <translation id="714506544401754321">Dešifrovat zprávu</translation>
@@ -887,4 +891,14 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="5334952096674914470">\n\nCellular Carrier\n</translation>
 <translation id="5393042357629679588">\n\nOther Issue\n</translation>
 <translation id="8095666712177294104">\n\nPlatform\n</translation>
+<translation id="7080614857771109950">Podporuje aktiva kompatibilní s EVM na blockchainu Etherea (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Podporuje aktiva kompatibilní s SLP na blockchainu Solana</translation>
+<translation id="6575120282593094155">Zatím ještě nemáte účet <ph name="ACCOUNT_TYPE"/>. Chcete si jej vytvořit nyní?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Vyloučené aplikace</translation>
+<translation id="8463269357637177759">Povolené běžné aplikace</translation>
+<translation id="4554726425645556940">Povolené systémové aplikace</translation>
+<translation id="9023148942866814328">Zobrazit systémové aplikace</translation>
+<translation id="5472400694702418949">Přidání aplikací, které mají být vyloučeny z provozu VPN.</translation>
+<translation id="7002577172732106572">Dělené tunelování</translation>
 </translationbundle>

@@ -161,7 +161,7 @@ public class AssetDetailActivity
                         BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol);
             }
         });
-        if (mNativeInitialized) adjustButtonsVisibilities();
+        adjustButtonsVisibilities();
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
@@ -248,7 +248,8 @@ public class AssetDetailActivity
                 jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
                     WalletListItemModel thisAssetItemModel = new WalletListItemModel(
                             R.drawable.ic_eth, mAsset.name, mAsset.symbol, mAsset.tokenId, "", "");
-                    Utils.getTxExtraInfo(this, selectedNetwork, accountInfos, mAsset, false,
+                    Utils.getTxExtraInfo(this, selectedNetwork, accountInfos,
+                            new BlockchainToken[] {mAsset}, false,
                             (assetPrices, fullTokenList, nativeAssetsBalances,
                                     blockchainTokensBalances) -> {
                                 thisAssetItemModel.setBlockchainToken(mAsset);
@@ -330,7 +331,6 @@ public class AssetDetailActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         mNativeInitialized = true;
-        if (mBtnBuy != null && mBtnSwap != null) adjustButtonsVisibilities();
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         getBlockchainToken(() -> setUpAccountList());
@@ -353,7 +353,7 @@ public class AssetDetailActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mJsonRpcService, this, accountInfos);
+        Utils.openTransaction(txInfo, mJsonRpcService, this, accountInfos, mCoinType);
     }
 
     @Override
@@ -384,14 +384,12 @@ public class AssetDetailActivity
     }
 
     private void adjustButtonsVisibilities() {
-        Utils.isCustomNetwork(getJsonRpcService(), mCoinType, mChainId, isCustomNetwork -> {
-            if (!isCustomNetwork) {
-                mBtnBuy.setVisibility(View.VISIBLE);
-                mBtnSwap.setVisibility(View.VISIBLE);
-            } else {
-                mBtnBuy.setVisibility(View.GONE);
-                mBtnSwap.setVisibility(View.GONE);
-            }
-        });
+        if (Utils.allowBuyAndSwap(mChainId)) {
+            mBtnBuy.setVisibility(View.VISIBLE);
+            mBtnSwap.setVisibility(View.VISIBLE);
+        } else {
+            mBtnBuy.setVisibility(View.GONE);
+            mBtnSwap.setVisibility(View.GONE);
+        }
     }
 }

@@ -323,6 +323,9 @@
   <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL" desc="The text label for the description of subdivision-level ad targeting">
     This allows Brave to show you ads meant specifically for your region. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_APPEARANCE_TITLE" desc="The text label for the Rewards Appearance section">
+    Appearance
+  </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_TITLE" desc="The text label for the Rewards Auto-Contribute section">
     Auto-Contribute
   </message>
@@ -666,6 +669,60 @@
   </message>
   <message name="IDS_SETTINGS_ENABLE_TOR_DESC" desc="Text fragment for enabling tor component">
     Tor hides your IP address from the sites you visit.
+  </message>
+  <message name="IDS_SETTINGS_TOR_USE_BRIDGES_TITLE" desc="">
+    Use Bridges
+  </message>
+  <message name="IDS_SETTINGS_TOR_USE_BRIDGES_DESC" desc="">
+    Bridges help you access the Tor Network in place where Tor is blocked. Depending on where you are, one bridge may work better than another.
+  </message>
+  <message name="IDS_SETTINGS_TOR_CONNECTION_SETTINGS_TITLE" desc="">
+    Tor connection settings
+  </message>
+  <message name="IDS_SETTINGS_TOR_CONNECTION_SETTINGS_DESC" desc="">
+    Controls how Private Windows with Tor connect to the Tor network
+  </message>
+  <message name="IDS_SETTINGS_TOR_SELECT_BUILT_IN_RADIO" desc="">
+    Select a built-in bridge
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGES_RADIO" desc="">
+    Request a bridge from torproject.org
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_NEW_BRIDGE_BUTTON" desc="">
+    Request a New Bridge...
+  </message>
+  <message name="IDS_SETTINGS_TOR_PROVIDE_BRIDGES_RADIO" desc="">
+    Provide a bridge
+  </message>
+  <message name="IDS_SETTINGS_TOR_ENTER_BRIDGE_INFO_LABEL" desc="">
+    Enter bridge information from a trusted source.
+  </message>
+  <message name="IDS_SETTINGS_TOR_APPLY_CHANGES_BUTTON" desc="">
+    Apply changes
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUESTED_BRIDGES_PLACEHOLDER" desc="">
+    Click on 'Request a New Bridge...' to get bridges
+  </message>
+  <message name="IDS_SETTINGS_TOR_PROVIDED_BRIDGES_PLACEHOLDER" desc="">
+    Type address:port (one per line)
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_TITLE" desc="">
+    Request Bridge
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_WAITING" desc="">
+    Contacting BridgeDB. Please wait.
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_SOLVE" desc="">
+    Solve the CAPTCHA to request a bridge.
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_ERROR" desc="">
+    Can't request a CAPTCHA. Try again later.
+  </message>
+  <message name="IDS_SETTINGS_TOR_SUBMIT_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
+    Submit
+  </message>
+  <message name="IDS_SETTINGS_TOR_CANCEL_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
+    Cancel
   </message>
   <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE" desc="Text fragment for onion site component">
     Automatically redirect .onion sites

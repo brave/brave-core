@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/account/issuers/issuer_info.h"
 
 namespace ads {
 
@@ -41,10 +40,7 @@ class ConfirmationStateManager final {
   std::string ToJson();
   bool FromJson(const std::string& json);
 
-  void SetIssuers(const IssuerList& issuers);
-  IssuerList GetIssuers() const;
-
-  ConfirmationList GetFailedConfirmations() const;
+  const ConfirmationList& GetFailedConfirmations() const;
   void AppendFailedConfirmation(const ConfirmationInfo& confirmation);
   bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
   void reset_failed_confirmations() { failed_confirmations_ = {}; }
@@ -62,8 +58,6 @@ class ConfirmationStateManager final {
   bool is_mutated() const { return is_mutated_; }
 
  private:
-  bool ParseIssuersFromDictionary(const base::Value::Dict& dict);
-
   base::Value::Dict GetFailedConfirmationsAsDictionary(
       const ConfirmationList& confirmations) const;
   bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
@@ -78,8 +72,6 @@ class ConfirmationStateManager final {
 
   bool is_initialized_ = false;
   InitializeCallback callback_;
-
-  IssuerList issuers_;
 
   ConfirmationList failed_confirmations_;
 

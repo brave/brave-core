@@ -24,8 +24,6 @@ import { mockPageState } from '../../stories/mock-data/mock-page-state'
 import { LibContext } from '../context/lib.context'
 import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 
-jest.useFakeTimers()
-
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
   page: createPageReducer(mockPageState)
@@ -65,12 +63,20 @@ const mockQuote = {
 } as BraveWallet.SwapResponse
 
 describe('useSwap hook', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+  afterAll(() => {
+    jest.clearAllTimers()
+    jest.useRealTimers()
+  })
+
   it('should initialize From and To assets', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
 
     act(() => {
-      result.current.setFromAsset(mockEthToken)
-      result.current.setToAsset(mockBasicAttentionToken)
+      result.current.onSelectTransactAsset(mockEthToken, 'from')
+      result.current.onSelectTransactAsset(mockBasicAttentionToken, 'to')
     })
 
     await waitForNextUpdate()
@@ -79,7 +85,7 @@ describe('useSwap hook', () => {
 
     expect(result.current.toAsset).toEqual({
       coingeckoId: 'usd-coin',
-      contractAddress: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+      contractAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
       decimals: 6,
       isErc20: true,
       isErc721: false,
@@ -125,7 +131,7 @@ describe('useSwap hook', () => {
       const USDC = result.current.swapAssetOptions[1]
       act(() => {
         result.current.setSwapQuote(undefined)
-        result.current.setFromAsset(USDC)
+        result.current.onSelectTransactAsset(USDC, 'from')
       })
 
       await waitForNextUpdate()
@@ -149,7 +155,7 @@ describe('useSwap hook', () => {
       // set from-asset to a non-native asset
       const USDC = result.current.swapAssetOptions[1]
       await act(async () => {
-        result.current.setFromAsset(USDC)
+        result.current.onSelectTransactAsset(USDC, 'from')
         result.current.setSwapQuote(quote)
       })
 
@@ -196,7 +202,7 @@ describe('useSwap hook', () => {
       // Step 3: Set From amount without decimal overflow and wait for at least
       // 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetFromAmount('0.1')
+        result.current.onSwapInputChange('0.1', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -209,7 +215,7 @@ describe('useSwap hook', () => {
       // Step 4: Set From amount with decimal overflow and wait for at least
       // 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetFromAmount('0.1000000000000000000123')
+        result.current.onSwapInputChange('0.1000000000000000000123', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -232,7 +238,7 @@ describe('useSwap hook', () => {
       // Step 3: Set To amount and wait for at least 1000ms to avoid
       // debouncing.
       act(() => {
-        result.current.onSetToAmount('0.1')
+        result.current.onSwapInputChange('0.1', 'to')
         jest.advanceTimersByTime(1001)
       })
 
@@ -245,7 +251,7 @@ describe('useSwap hook', () => {
       // Step 4: Set To amount with a decimal overflow and wait for at least
       // 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetToAmount('0.1000000000000000000123')
+        result.current.onSwapInputChange('0.1000000000000000000123', 'to')
         jest.advanceTimersByTime(1001)
       })
 
@@ -269,7 +275,7 @@ describe('useSwap hook', () => {
       // Step 3: Set a From amount and wait for at least 1000ms to avoid
       // debouncing.
       act(() => {
-        result.current.onSetFromAmount('0.000000000000123456')
+        result.current.onSwapInputChange('0.000000000000123456', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -282,7 +288,7 @@ describe('useSwap hook', () => {
       // Step 4: Set a From amount greater than balance and wait for at least
       // 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetFromAmount('1')
+        result.current.onSwapInputChange('1', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -306,7 +312,7 @@ describe('useSwap hook', () => {
       // Step 3: Set a From amount and wait for at least 1000ms to avoid
       // debouncing.
       act(() => {
-        result.current.onSetFromAmount('0.000000000000123456')
+        result.current.onSwapInputChange('0.000000000000123456', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -319,7 +325,7 @@ describe('useSwap hook', () => {
       // Step 4: Set a From amount greater than balance and wait for at least
       // 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetFromAmount('1')
+        result.current.onSwapInputChange('1', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -356,7 +362,7 @@ describe('useSwap hook', () => {
       await waitForValueToChange(() => result.current.isSwapSupported)
 
       await act(async () => {
-        result.current.setFromAsset(mockEthToken) // From asset is ETH
+        result.current.onSelectTransactAsset(mockEthToken, 'from') // From asset is ETH
         result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',
@@ -393,7 +399,7 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptionsWithCustomStore(mockStore))
 
       act(() => {
-        result.current.setFromAsset(mockEthToken)
+        result.current.onSelectTransactAsset(mockEthToken, 'from')
         result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',
@@ -409,7 +415,7 @@ describe('useSwap hook', () => {
       // Step 3: Set a From amount, such that the value + fees is greater than
       // balance and wait for at least 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetFromAmount('0.000000000000234561')
+        result.current.onSwapInputChange('0.000000000000234561', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -529,7 +535,7 @@ describe('useSwap hook', () => {
       // Step 2: Set a From amount, such that there is no validation error,
       // and wait for at least 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetFromAmount('0.1')
+        result.current.onSwapInputChange('0.1', 'from')
         jest.advanceTimersByTime(1001)
       })
 
@@ -566,7 +572,7 @@ describe('useSwap hook', () => {
       // Step 2: Set a From amount, such that there is no validation error,
       // and wait for at least 1000ms to avoid debouncing.
       act(() => {
-        result.current.onSetFromAmount('0.1')
+        result.current.onSwapInputChange('0.1', 'from')
         jest.advanceTimersByTime(1001)
       })
 

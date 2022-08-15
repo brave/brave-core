@@ -112,7 +112,7 @@ const EditAllowance = (props: Props) => {
         <ButtonRow>
           <NavButton
             buttonType='secondary'
-            text={getLocale('braveWalletBackupButtonCancel')}
+            text={getLocale('braveWalletButtonCancel')}
             onSubmit={onCancel}
           />
           <NavButton

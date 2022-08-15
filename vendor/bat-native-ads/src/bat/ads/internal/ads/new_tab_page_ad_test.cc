@@ -17,6 +17,7 @@
 #include "bat/ads/internal/history/history_unittest_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -42,10 +43,10 @@ class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLEndpointMap endpoints = {
+    const URLResponseMap responses = {
         {"/v9/catalog",
          {{net::HTTP_OK, "/catalog_with_new_tab_page_ad.json"}}}};
-    MockUrlRequest(ads_client_mock_, endpoints);
+    MockUrlResponses(ads_client_mock_, responses);
   }
 };
 
@@ -53,14 +54,14 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
 
   // Act
-  GetAds()->MaybeServeNewTabPageAd([](const bool success,
-                                      const NewTabPageAdInfo& ad) {
-    // Assert
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(ad.IsValid());
-    EXPECT_EQ(
-        1, GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  });
+  GetAds()->MaybeServeNewTabPageAd(
+      [](const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        EXPECT_TRUE(ad);
+        EXPECT_TRUE(ad->IsValid());
+        EXPECT_EQ(1, GetAdEventCount(AdType::kNewTabPageAd,
+                                     ConfirmationType::kServed));
+      });
 }
 
 TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {

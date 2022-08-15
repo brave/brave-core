@@ -46,11 +46,9 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 }
 
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
-    const base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
+    const base::Value::Dict& dict) {
   // Timestamp
-  const std::string* timestamp_value = dictionary->FindStringKey(kTimestampKey);
+  const std::string* timestamp_value = dict.FindString(kTimestampKey);
   if (!timestamp_value) {
     return absl::nullopt;
   }
@@ -61,15 +59,14 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   }
 
   // Creative set id
-  const std::string* creative_set_id_value =
-      dictionary->FindStringKey(kCreativeSetIdKey);
+  const std::string* creative_set_id_value = dict.FindString(kCreativeSetIdKey);
   if (!creative_set_id_value) {
     return absl::nullopt;
   }
 
   // Creative instance id
   const auto* creative_instance_id_value =
-      dictionary->FindStringKey(kCreativeInstanceIdKey);
+      dict.FindString(kCreativeInstanceIdKey);
   if (!creative_instance_id_value) {
     return absl::nullopt;
   }
@@ -82,52 +79,41 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   return conversion_queue_item;
 }
 
-absl::optional<ConversionQueueItemList> GetFromList(const base::Value* list) {
-  DCHECK(list);
-  DCHECK(list->is_list());
-
+absl::optional<ConversionQueueItemList> GetFromList(
+    const base::Value::List& list) {
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& value : list->GetList()) {
-    if (!value.is_dict()) {
-      return absl::nullopt;
-    }
-
-    const base::DictionaryValue* dictionary = nullptr;
-    value.GetAsDictionary(&dictionary);
-    if (!dictionary) {
+  for (const auto& item : list) {
+    const base::Value::Dict* dict = item.GetIfDict();
+    if (!dict) {
       return absl::nullopt;
     }
 
     const absl::optional<ConversionQueueItemInfo> conversion_queue_item =
-        GetFromDictionary(dictionary);
+        GetFromDictionary(*dict);
     if (!conversion_queue_item) {
       return absl::nullopt;
     }
 
-    conversion_queue_items.push_back(conversion_queue_item.value());
+    conversion_queue_items.push_back(*conversion_queue_item);
   }
 
   return conversion_queue_items;
 }
 
 absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
-  const absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
+  const base::Value::Dict& dict = root->GetDict();
 
-  const base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return absl::nullopt;
-  }
-
-  const base::Value* list = dictionary->FindListKey(kListKey);
+  const base::Value::List* list = dict.FindList(kListKey);
   if (!list) {
     return absl::nullopt;
   }
 
-  return GetFromList(list);
+  return GetFromList(*list);
 }
 
 }  // namespace
@@ -148,22 +134,20 @@ void Migrate(InitializeCallback callback) {
           return;
         }
 
-        const absl::optional<ConversionQueueItemList>
-            conversion_queue_items_optional = FromJson(json);
-        if (!conversion_queue_items_optional) {
+        const absl::optional<ConversionQueueItemList> conversion_queue_items =
+            FromJson(json);
+        if (!conversion_queue_items) {
           BLOG(0, "Failed to parse conversion state");
           FailedToMigrate(callback);
           return;
         }
-        const ConversionQueueItemList& conversion_queue_items =
-            conversion_queue_items_optional.value();
 
         BLOG(3, "Successfully loaded conversion state");
 
         BLOG(1, "Migrating conversion state");
 
         database::table::ConversionQueue conversion_queue;
-        conversion_queue.Save(conversion_queue_items, [=](const bool success) {
+        conversion_queue.Save(*conversion_queue_items, [=](const bool success) {
           if (!success) {
             BLOG(0, "Failed to save conversion state");
             FailedToMigrate(callback);

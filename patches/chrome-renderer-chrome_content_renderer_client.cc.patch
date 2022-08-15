@@ -11,3 +11,11 @@ index 207bc78a7adf7a6357f64101b21c644b089d6005..68d74b4ab5a471b819444066797565b3
            render_frame, should_allow_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
+@@ -727,6 +727,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+         &RenderFrameFontFamilyAccessor::Bind, render_frame));
+   }
+ #endif
++  BRAVE_RENDER_FRAME_CREATED
+ }
+ 
+ void ChromeContentRendererClient::WebViewCreated(blink::WebView* web_view) {

@@ -13,12 +13,13 @@ export interface Props {
   children?: React.ReactNode
   onClose: () => void
   title: string
+  width?: string
 }
 
 const ESC_KEY = 'Escape'
 
 const PopupModal = (props: Props) => {
-  const { title, onClose, children } = props
+  const { title, width, onClose, children } = props
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === ESC_KEY) {
@@ -36,7 +37,7 @@ const PopupModal = (props: Props) => {
 
   return (
     <StyledWrapper>
-      <Modal>
+      <Modal width={width}>
         <Header>
           <Title>{title}</Title>
           <CloseButton onClick={onClose} />

@@ -37,10 +37,6 @@ type::ContributionProcessor GetProcessor(const std::string& wallet_type) {
     return type::ContributionProcessor::BRAVE_TOKENS;
   }
 
-  if (wallet_type == constant::kWalletAnonymous) {
-    return type::ContributionProcessor::BRAVE_USER_FUNDS;
-  }
-
   if (wallet_type == constant::kWalletUphold) {
     return type::ContributionProcessor::UPHOLD;
   }
@@ -58,10 +54,6 @@ type::ContributionProcessor GetProcessor(const std::string& wallet_type) {
 
 std::string GetNextProcessor(const std::string& current_processor) {
   if (current_processor == constant::kWalletUnBlinded) {
-    return constant::kWalletAnonymous;
-  }
-
-  if (current_processor == constant::kWalletAnonymous) {
     return constant::kWalletUphold;
   }
 

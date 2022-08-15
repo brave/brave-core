@@ -22,10 +22,6 @@ const char kACSKUDev[] = "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdS
 const char kACSKUStaging[] = "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOH4Li+rduCtFOfV8Lfa2o8h4SQjN5CuIwxmeQFjOk4W";  //NOLINT
 const char kACSKUProduction[] = "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOaNAUCBMKm0IaLqxefhvxOtAKB0OfoiPn0NPVfI602J";  //NOLINT
 
-const char kUserFundsSKUDev[] = "AgEJYnJhdmUuY29tAiFicmF2ZSBhbm9uLWNhcmQtdm90ZSBza3UgdG9rZW4gdjEAAhJza3U9YW5vbi1jYXJkLXZvdGUAAgpwcmljZT0wLjI1AAIMY3VycmVuY3k9QkFUAAIMZGVzY3JpcHRpb249AAIaY3JlZGVudGlhbF90eXBlPXNpbmdsZS11c2UAAAYgPpv+Al9jRgVCaR49/AoRrsjQqXGqkwaNfqVka00SJxQ=";  //NOLINT
-const char kUserFundsSKUStaging[] = "AgEJYnJhdmUuY29tAiFicmF2ZSBhbm9uLWNhcmQtdm90ZSBza3UgdG9rZW4gdjEAAhJza3U9YW5vbi1jYXJkLXZvdGUAAgpwcmljZT0wLjI1AAIMY3VycmVuY3k9QkFUAAIMZGVzY3JpcHRpb249AAIaY3JlZGVudGlhbF90eXBlPXNpbmdsZS11c2UAAAYgPV/WYY5pXhodMPvsilnrLzNH6MA8nFXwyg0qSWX477M=";  //NOLINT
-const char kUserFundsSKUProduction[] = "AgEJYnJhdmUuY29tAiFicmF2ZSBhbm9uLWNhcmQtdm90ZSBza3UgdG9rZW4gdjEAAhJza3U9YW5vbi1jYXJkLXZvdGUAAgpwcmljZT0wLjI1AAIMY3VycmVuY3k9QkFUAAIMZGVzY3JpcHRpb249AAIaY3JlZGVudGlhbF90eXBlPXNpbmdsZS11c2UAAAYgrMZm85YYwnmjPXcegy5pBM5C+ZLfrySZfYiSe13yp8o=";  //NOLINT
-
 std::string GetACSKU() {
   if (ledger::_environment == ledger::type::Environment::PRODUCTION) {
     return kACSKUProduction;
@@ -41,23 +37,6 @@ std::string GetACSKU() {
 
   NOTREACHED();
   return kACSKUDev;
-}
-
-std::string GetUserFundsSKU() {
-  if (ledger::_environment == ledger::type::Environment::PRODUCTION) {
-    return kUserFundsSKUProduction;
-  }
-
-  if (ledger::_environment == ledger::type::Environment::STAGING) {
-    return kUserFundsSKUStaging;
-  }
-
-  if (ledger::_environment == ledger::type::Environment::DEVELOPMENT) {
-    return kUserFundsSKUDev;
-  }
-
-  NOTREACHED();
-  return kUserFundsSKUDev;
 }
 
 void GetCredentialTrigger(
@@ -104,15 +83,6 @@ void ContributionSKU::AutoContribution(const std::string& contribution_id,
                                        ledger::LegacyResultCallback callback) {
   type::SKUOrderItem item;
   item.sku = GetACSKU();
-
-  Start(contribution_id, item, wallet_type, callback);
-}
-
-void ContributionSKU::AnonUserFunds(const std::string& contribution_id,
-                                    const std::string& wallet_type,
-                                    ledger::LegacyResultCallback callback) {
-  type::SKUOrderItem item;
-  item.sku = GetUserFundsSKU();
 
   Start(contribution_id, item, wallet_type, callback);
 }
@@ -402,9 +372,6 @@ void ContributionSKU::RetryStartStep(type::ContributionInfoPtr contribution,
 
   std::string wallet_type;
   switch (contribution->processor) {
-    case type::ContributionProcessor::BRAVE_USER_FUNDS:
-      wallet_type = constant::kWalletAnonymous;
-      break;
     case type::ContributionProcessor::UPHOLD:
       wallet_type = constant::kWalletUphold;
       break;
@@ -426,11 +393,9 @@ void ContributionSKU::RetryStartStep(type::ContributionInfoPtr contribution,
   // If an SKU order has not been created yet, then start the SKU order process
   // from the beginning.
   if (!order || order->order_id.empty()) {
-    if (wallet_type == constant::kWalletAnonymous) {
-      AnonUserFunds(contribution->contribution_id, wallet_type, callback);
-    } else {
-      AutoContribution(contribution->contribution_id, wallet_type, callback);
-    }
+    DCHECK(wallet_type == constant::kWalletUphold ||
+           wallet_type == constant::kWalletGemini);
+    AutoContribution(contribution->contribution_id, wallet_type, callback);
     return;
   }
 

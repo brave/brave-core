@@ -11,6 +11,7 @@
 #include "base/time/time.h"
 #include "bat/ads/notification_ad_info.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace bat_ads {
 
@@ -62,12 +63,12 @@ bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotificationAd(
-    const ads::NotificationAdInfo& info) {
+    const ads::NotificationAdInfo& ad) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ShowNotificationAd(info.ToJson());
+  bat_ads_client_->ShowNotificationAd(ad.ToValue());
 }
 
 bool BatAdsClientMojoBridge::CanShowNotificationAds() {
@@ -124,8 +125,8 @@ void BatAdsClientMojoBridge::ResetAdEventHistoryForId(
 }
 
 void OnUrlRequest(const ads::UrlRequestCallback& callback,
-                  const ads::mojom::UrlResponsePtr url_response_ptr) {
-  ads::mojom::UrlResponse url_response;
+                  const ads::mojom::UrlResponseInfoPtr url_response_ptr) {
+  ads::mojom::UrlResponseInfo url_response;
 
   if (!url_response_ptr) {
     url_response.status_code = -1;
@@ -140,10 +141,11 @@ void OnUrlRequest(const ads::UrlRequestCallback& callback,
   callback(url_response);
 }
 
-void BatAdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
-                                        ads::UrlRequestCallback callback) {
+void BatAdsClientMojoBridge::UrlRequest(
+    ads::mojom::UrlRequestInfoPtr url_request,
+    ads::UrlRequestCallback callback) {
   if (!connected()) {
-    ads::mojom::UrlResponse response;
+    ads::mojom::UrlResponseInfo response;
     response.url = url_request->url;
     response.status_code = -1;
     callback(response);
@@ -202,16 +204,16 @@ void BatAdsClientMojoBridge::GetBrowsingHistory(
 }
 
 void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
-                                            const std::string& value) {
+                                            base::Value::List value) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->RecordP2AEvent(name, value);
+  bat_ads_client_->RecordP2AEvent(name, std::move(value));
 }
 
 void BatAdsClientMojoBridge::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
   if (!connected()) {
     return;
   }
@@ -248,12 +250,12 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
 }
 
 void OnRunDBTransaction(const ads::RunDBTransactionCallback& callback,
-                        ads::mojom::DBCommandResponsePtr response) {
+                        ads::mojom::DBCommandResponseInfoPtr response) {
   callback(std::move(response));
 }
 
 void BatAdsClientMojoBridge::RunDBTransaction(
-    ads::mojom::DBTransactionPtr transaction,
+    ads::mojom::DBTransactionInfoPtr transaction,
     ads::RunDBTransactionCallback callback) {
   bat_ads_client_->RunDBTransaction(std::move(transaction),
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));
@@ -457,6 +459,46 @@ void BatAdsClientMojoBridge::SetTimePref(const std::string& path,
   }
 
   bat_ads_client_->SetTimePref(path, value);
+}
+
+absl::optional<base::Value::Dict> BatAdsClientMojoBridge::GetDictPref(
+    const std::string& path) const {
+  if (!connected()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value::Dict> value;
+  bat_ads_client_->GetDictPref(path, &value);
+  return value;
+}
+
+void BatAdsClientMojoBridge::SetDictPref(const std::string& path,
+                                         base::Value::Dict value) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->SetDictPref(path, std::move(value));
+}
+
+absl::optional<base::Value::List> BatAdsClientMojoBridge::GetListPref(
+    const std::string& path) const {
+  if (!connected()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value::List> value;
+  bat_ads_client_->GetListPref(path, &value);
+  return value;
+}
+
+void BatAdsClientMojoBridge::SetListPref(const std::string& path,
+                                         base::Value::List value) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->SetListPref(path, std::move(value));
 }
 
 void BatAdsClientMojoBridge::ClearPref(

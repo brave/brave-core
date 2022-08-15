@@ -2,8 +2,6 @@
   "confirmations": {
     "failed_confirmations": []
   },
-  "issuers": {
-  },
   "unblinded_payment_tokens": [
     {
       "transaction_id": "1ebe3c36-81cb-42c2-b12d-4a1627903f90",

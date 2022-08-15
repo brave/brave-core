@@ -5,10 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/mutated_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
@@ -18,19 +15,6 @@
 
 namespace ads {
 namespace user_data {
-
-namespace {
-
-std::string GetMutatedAsJson() {
-  const base::Value::Dict user_data = GetMutated();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
-}  // namespace
 
 class BatAdsMutatedUserDataTest : public UnitTestBase {
  protected:
@@ -46,12 +30,14 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
       /* data/test/confirmations.json has a hash of 3780921521 */ 1251290873);
 
   // Act
-  const std::string json = GetMutatedAsJson();
+  const base::Value::Dict user_data = GetMutated();
 
   // Assert
-  const std::string expected_json = R"({"mutated":true})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"mutated":true})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST_F(BatAdsMutatedUserDataTest, GetMutatedClient) {
@@ -61,12 +47,14 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedClient) {
       /* data/test/client.json has a hash of 2810715844 */ 4485170182);
 
   // Act
-  const std::string json = GetMutatedAsJson();
+  const base::Value::Dict user_data = GetMutated();
 
   // Assert
-  const std::string expected_json = R"({"mutated":true})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"mutated":true})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 
 #include <algorithm>
-#include <iterator>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
@@ -35,7 +34,7 @@ bool TotalMaxExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string TotalMaxExclusionRule::GetLastMessage() const {
+const std::string& TotalMaxExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

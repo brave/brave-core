@@ -50,7 +50,7 @@ class AdsClientMock : public AdsClient {
                     GetBrowsingHistoryCallback callback));
 
   MOCK_METHOD2(UrlRequest,
-               void(mojom::UrlRequestPtr url_request,
+               void(mojom::UrlRequestInfoPtr url_request,
                     UrlRequestCallback callback));
 
   MOCK_METHOD3(Save,
@@ -73,13 +73,13 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD0(ClearScheduledCaptcha, void());
 
   MOCK_METHOD2(RunDBTransaction,
-               void(mojom::DBTransactionPtr, RunDBTransactionCallback));
+               void(mojom::DBTransactionInfoPtr, RunDBTransactionCallback));
 
   MOCK_METHOD2(RecordP2AEvent,
-               void(const std::string& name, const std::string& value));
+               void(const std::string& name, base::Value::List value));
 
   MOCK_METHOD1(LogTrainingInstance,
-               void(const std::vector<brave_federated::mojom::CovariatePtr>
+               void(const std::vector<brave_federated::mojom::CovariateInfoPtr>
                         training_instance));
 
   MOCK_CONST_METHOD1(GetBooleanPref, bool(const std::string& path));
@@ -101,6 +101,16 @@ class AdsClientMock : public AdsClient {
   MOCK_CONST_METHOD1(GetTimePref, base::Time(const std::string& path));
   MOCK_METHOD2(SetTimePref,
                void(const std::string& path, const base::Time value));
+  MOCK_CONST_METHOD1(
+      GetDictPref,
+      absl::optional<base::Value::Dict>(const std::string& path));
+  MOCK_METHOD2(SetDictPref,
+               void(const std::string& path, base::Value::Dict value));
+  MOCK_CONST_METHOD1(
+      GetListPref,
+      absl::optional<base::Value::List>(const std::string& path));
+  MOCK_METHOD2(SetListPref,
+               void(const std::string& path, base::Value::List value));
   MOCK_METHOD1(ClearPref, void(const std::string& path));
   MOCK_CONST_METHOD1(HasPrefPath, bool(const std::string& path));
 

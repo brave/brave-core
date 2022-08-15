@@ -30,7 +30,8 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   void LaunchExtensionsImport();
-  void OnGetChromeExtensionsList(absl::optional<base::Value> extensions_list);
+  void OnGetChromeExtensionsList(
+      absl::optional<base::Value::Dict> extensions_list);
 #endif
 
   // Vends weak pointers for the importer to call us back.

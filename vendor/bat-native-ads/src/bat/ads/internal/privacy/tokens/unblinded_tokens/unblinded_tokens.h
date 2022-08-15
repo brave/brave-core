@@ -20,8 +20,8 @@ class UnblindedTokens final {
   UnblindedTokens(const UnblindedTokens&) = delete;
   UnblindedTokens& operator=(const UnblindedTokens&) = delete;
 
-  UnblindedTokenInfo GetToken() const;
-  UnblindedTokenList GetAllTokens() const;
+  const UnblindedTokenInfo& GetToken() const;
+  const UnblindedTokenList& GetAllTokens() const;
   base::Value::List GetTokensAsList();
 
   void SetTokens(const UnblindedTokenList& unblinded_tokens);

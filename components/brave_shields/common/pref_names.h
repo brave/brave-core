@@ -10,6 +10,7 @@ namespace brave_shields {
 namespace prefs {
 
 extern const char kAdBlockCheckedDefaultRegion[];
+extern const char kAdBlockCookieListOptInShown[];
 extern const char kAdBlockCookieListSettingTouched[];
 extern const char kAdBlockCustomFilters[];
 extern const char kAdBlockRegionalFilters[];

@@ -6,14 +6,15 @@
 #include "brave/components/tor/tor_launcher_factory.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/task/bind_post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_file_watcher.h"
 #include "brave/components/tor/tor_launcher_observer.h"
+#include "brave/components/tor/tor_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -24,6 +25,7 @@ constexpr char kTorProxyScheme[] = "socks5://";
 // tor::TorControlEvent::STATUS_CLIENT response
 constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
 constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
+constexpr char kStatusSummary[] = "SUMMARY=";
 constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
 constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
 }  // namespace
@@ -145,6 +147,35 @@ void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
   std::move(callback).Run(true, std::string(tor_log_));
 }
 
+void TorLauncherFactory::SetupPluggableTransport(
+    const base::FilePath& snowflake,
+    const base::FilePath& obfs4) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  control_->SetupPluggableTransport(snowflake, obfs4, base::DoNothing());
+}
+
+void TorLauncherFactory::SetupBridges(tor::BridgesConfig bridges_config) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  switch (bridges_config.use_bridges) {
+    case tor::BridgesConfig::Usage::kNotUsed:
+      control_->SetupBridges({}, base::DoNothing());
+      break;
+    case tor::BridgesConfig::Usage::kBuiltIn:
+      control_->SetupBridges(bridges_config.GetBuiltinBridges(),
+                             base::DoNothing());
+      break;
+    case tor::BridgesConfig::Usage::kRequest:
+      control_->SetupBridges(bridges_config.requested_bridges,
+                             base::DoNothing());
+      break;
+    case tor::BridgesConfig::Usage::kProvide:
+      control_->SetupBridges(bridges_config.provided_bridges,
+                             base::DoNothing());
+      break;
+  }
+}
+
 void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   observers_.AddObserver(observer);
@@ -220,6 +251,10 @@ void TorLauncherFactory::OnTorControlReady() {
   control_->Subscribe(tor::TorControlEvent::NOTICE, base::DoNothing());
   control_->Subscribe(tor::TorControlEvent::WARN, base::DoNothing());
   control_->Subscribe(tor::TorControlEvent::ERR, base::DoNothing());
+
+  for (auto& observer : observers_) {
+    observer.OnTorControlReady();
+  }
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
@@ -341,8 +376,16 @@ void TorLauncherFactory::OnTorEvent(
       const std::string percentage = initial.substr(
           progress_start + strlen(kStatusClientBootstrapProgress),
           progress_length - strlen(kStatusClientBootstrapProgress));
+
+      std::string message;
+      size_t summary_start = initial.find(kStatusSummary);
+      if (summary_start != std::string::npos) {
+        summary_start += strlen(kStatusSummary) + 1;
+        const size_t summary_end = initial.find("\"", summary_start);
+        message = initial.substr(summary_start, summary_end - summary_start);
+      }
       for (auto& observer : observers_)
-        observer.OnTorInitializing(percentage);
+        observer.OnTorInitializing(percentage, message);
     } else if (initial.find(kStatusClientCircuitEstablished) !=
                std::string::npos) {
       for (auto& observer : observers_)

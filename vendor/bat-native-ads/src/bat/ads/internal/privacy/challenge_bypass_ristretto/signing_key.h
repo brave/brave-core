@@ -41,9 +41,14 @@ class SigningKey {
 
   bool has_value() const { return signing_key_.has_value(); }
 
-  challenge_bypass_ristretto::SigningKey get() const {
-    DCHECK(has_value());
-    return signing_key_.value();
+  challenge_bypass_ristretto::SigningKey& get() {
+    DCHECK(signing_key_);
+    return *signing_key_;
+  }
+
+  const challenge_bypass_ristretto::SigningKey& get() const {
+    DCHECK(signing_key_);
+    return *signing_key_;
   }
 
   static SigningKey DecodeBase64(const std::string& signing_key_base64);

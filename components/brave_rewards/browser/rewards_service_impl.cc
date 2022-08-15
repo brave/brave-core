@@ -163,7 +163,6 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
     return result;
   }
 
-  p3a::ExtractAndLogStats(value->GetDict());
   result.second = std::move(*value);
 
   return result;
@@ -432,7 +431,6 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
       RecordBackendP3AStats();
     } else {
       p3a::RecordRewardsDisabledForSomeMetrics();
-      p3a::RecordWalletState({.wallet_created = true});
     }
     p3a::RecordAdsEnabledDuration(profile_->GetPrefs(), IsAdsEnabled());
   }
@@ -506,62 +504,6 @@ void RewardsServiceImpl::OnLedgerCreated() {
 void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
                                   ledger::type::Result result) {
   callback(result);
-}
-
-void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
-  PrefService* pref_service = profile_->GetPrefs();
-  const base::TimeDelta interval = pref_service->GetTimeDelta(
-      prefs::kBackupNotificationInterval);
-
-  // Don't display notification if it has already been shown or if
-  // the balance is zero.
-  if (interval.is_zero() ||
-      !pref_service->GetBoolean(prefs::kUserHasFunded)) {
-    return;
-  }
-
-  // Don't display notification if a backup has already succeeded.
-  if (pref_service->GetBoolean(prefs::kBackupSucceeded)) {
-    pref_service->SetTimeDelta(
-          prefs::kBackupNotificationInterval,
-          base::TimeDelta());
-    return;
-  }
-
-  auto callback = base::BindOnce(&RewardsServiceImpl::WalletBackupNotification,
-      AsWeakPtr(),
-      boot_stamp);
-
-  // Don't display notification if user has a verified wallet.
-  GetExternalWallet(std::move(callback));
-}
-
-void RewardsServiceImpl::WalletBackupNotification(
-    const uint64_t boot_stamp,
-    const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
-  if (wallet &&
-      (wallet->status == ledger::type::WalletStatus::VERIFIED ||
-      wallet->status == ledger::type::WalletStatus::DISCONNECTED_VERIFIED)) {
-    profile_->GetPrefs()->SetTimeDelta(
-        prefs::kBackupNotificationInterval,
-        base::TimeDelta());
-    return;
-  }
-
-  const auto boot_time = base::Time::FromDoubleT(boot_stamp);
-  const auto elapsed = base::Time::Now() - boot_time;
-  const auto interval = profile_->GetPrefs()->GetTimeDelta(
-      prefs::kBackupNotificationInterval);
-  if (elapsed > interval) {
-    profile_->GetPrefs()->SetTimeDelta(
-          prefs::kBackupNotificationInterval,
-          base::TimeDelta());
-    notification_service_->AddNotification(
-        RewardsNotificationService::REWARDS_NOTIFICATION_BACKUP_WALLET,
-        RewardsNotificationService::RewardsNotificationArgs(),
-        "rewards_notification_backup_wallet");
-  }
 }
 
 void RewardsServiceImpl::MaybeShowAddFundsNotification(
@@ -1326,9 +1268,6 @@ void RewardsServiceImpl::OnAttestPromotion(
     std::move(callback).Run(result, nullptr);
     return;
   }
-
-  PrefService* pref_service = profile_->GetPrefs();
-  pref_service->SetBoolean(prefs::kUserHasClaimedGrant, true);
 
   for (auto& observer : observers_) {
     observer.OnPromotionFinished(this, result, promotion->Clone());
@@ -2190,9 +2129,6 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
     return;
   }
 
-  bat_ledger_->GetCreationStamp(
-      base::BindOnce(&RewardsServiceImpl::MaybeShowBackupNotification,
-        AsWeakPtr()));
   GetReconcileStamp(base::BindOnce(
       &RewardsServiceImpl::MaybeShowAddFundsNotification, AsWeakPtr()));
   FetchPromotions();
@@ -2367,10 +2303,6 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
   if (flags.country_id) {
     country_id_ = *flags.country_id;
   }
-}
-
-void RewardsServiceImpl::SetBackupCompleted() {
-  profile_->GetPrefs()->SetBoolean(prefs::kBackupSucceeded, true);
 }
 
 void RewardsServiceImpl::GetRewardsInternalsInfo(
@@ -2716,30 +2648,9 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
   }
 }
 
-void RewardsServiceImpl::OnFetchBalance(
-    FetchBalanceCallback callback,
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance) {
-  // Record wallet P3A stats
-  if (IsRewardsEnabled()) {
-    PrefService* pref_service = profile_->GetPrefs();
-    const bool grants_claimed =
-        pref_service->GetBoolean(prefs::kUserHasClaimedGrant);
-    p3a::RecordWalletState({.wallet_created = true,
-                            .rewards_enabled = true,
-                            .grants_claimed = grants_claimed,
-                            .funds_added = balance && balance->user_funds > 0});
-    if (balance) {
-      if (balance->total > 0) {
-        pref_service->SetBoolean(prefs::kUserHasFunded, true);
-      }
-      double balance_minus_grant =
-          p3a::CalcWalletBalance(balance->wallets, balance->user_funds);
-      p3a::RecordWalletBalance(true, true,
-                               static_cast<size_t>(balance_minus_grant));
-    }
-  }
-
+void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
+                                        const ledger::type::Result result,
+                                        ledger::type::BalancePtr balance) {
   std::move(callback).Run(result, std::move(balance));
 }
 

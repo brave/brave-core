@@ -115,16 +115,15 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   tx_state_manager_->AddOrUpdateTx(meta);
   EXPECT_TRUE(prefs_.HasPrefPath(kBraveWalletTransactions));
   {
-    const auto* dict = prefs_.GetDictionary(kBraveWalletTransactions);
-    ASSERT_TRUE(dict);
-    EXPECT_EQ(dict->DictSize(), 1u);
-    const auto* ethereum_dict = dict->FindKey("ethereum");
+    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    EXPECT_EQ(dict.size(), 1u);
+    const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->DictSize(), 1u);
-    const auto* network_dict = ethereum_dict->FindKey("mainnet");
+    EXPECT_EQ(ethereum_dict->size(), 1u);
+    const auto* network_dict = ethereum_dict->FindDict("mainnet");
     ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->DictSize(), 1u);
-    const base::Value* value = network_dict->FindKey("001");
+    EXPECT_EQ(network_dict->size(), 1u);
+    const base::Value::Dict* value = network_dict->FindDict("001");
     ASSERT_TRUE(value);
     auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
     ASSERT_NE(meta_from_value, nullptr);
@@ -135,16 +134,15 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   // Update
   tx_state_manager_->AddOrUpdateTx(meta);
   {
-    const auto* dict = prefs_.GetDictionary(kBraveWalletTransactions);
-    ASSERT_TRUE(dict);
-    EXPECT_EQ(dict->DictSize(), 1u);
-    const auto* ethereum_dict = dict->FindKey("ethereum");
+    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    EXPECT_EQ(dict.size(), 1u);
+    const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->DictSize(), 1u);
-    const auto* network_dict = ethereum_dict->FindKey("mainnet");
+    EXPECT_EQ(ethereum_dict->size(), 1u);
+    const auto* network_dict = ethereum_dict->FindDict("mainnet");
     ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->DictSize(), 1u);
-    const base::Value* value = network_dict->FindKey("001");
+    EXPECT_EQ(network_dict->size(), 1u);
+    const base::Value::Dict* value = network_dict->FindDict("001");
     ASSERT_TRUE(value);
     auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
     ASSERT_NE(meta_from_value, nullptr);
@@ -156,15 +154,14 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   // Add another one
   tx_state_manager_->AddOrUpdateTx(meta);
   {
-    const auto* dict = prefs_.GetDictionary(kBraveWalletTransactions);
-    ASSERT_TRUE(dict);
-    EXPECT_EQ(dict->DictSize(), 1u);
-    const auto* ethereum_dict = dict->FindKey("ethereum");
+    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    EXPECT_EQ(dict.size(), 1u);
+    const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->DictSize(), 1u);
-    const auto* network_dict = ethereum_dict->FindKey("mainnet");
+    EXPECT_EQ(ethereum_dict->size(), 1u);
+    const auto* network_dict = ethereum_dict->FindDict("mainnet");
     ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->DictSize(), 2u);
+    EXPECT_EQ(network_dict->size(), 2u);
   }
 
   // Get
@@ -187,15 +184,14 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   // Delete
   tx_state_manager_->DeleteTx("001");
   {
-    const auto* dict = prefs_.GetDictionary(kBraveWalletTransactions);
-    ASSERT_TRUE(dict);
-    EXPECT_EQ(dict->DictSize(), 1u);
-    const auto* ethereum_dict = dict->FindKey("ethereum");
+    const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+    EXPECT_EQ(dict.size(), 1u);
+    const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->DictSize(), 1u);
-    const auto* network_dict = ethereum_dict->FindKey("mainnet");
+    EXPECT_EQ(ethereum_dict->size(), 1u);
+    const auto* network_dict = ethereum_dict->FindDict("mainnet");
     ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->DictSize(), 1u);
+    EXPECT_EQ(network_dict->size(), 1u);
   }
 
   // Purge
@@ -298,28 +294,27 @@ TEST_F(TxStateManagerUnitTest, SwitchNetwork) {
   EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  const auto* dict = prefs_.GetDictionary(kBraveWalletTransactions);
-  ASSERT_TRUE(dict);
-  EXPECT_EQ(dict->DictSize(), 1u);
-  const auto* ethereum_dict = dict->FindKey("ethereum");
+  const auto& dict = *prefs_.GetValueDict(kBraveWalletTransactions);
+  EXPECT_EQ(dict.size(), 1u);
+  const auto* ethereum_dict = dict.FindDict("ethereum");
   ASSERT_TRUE(ethereum_dict);
-  EXPECT_EQ(ethereum_dict->DictSize(), 3u);
-  const auto* mainnet_dict = ethereum_dict->FindKey("mainnet");
+  EXPECT_EQ(ethereum_dict->size(), 3u);
+  const auto* mainnet_dict = ethereum_dict->FindDict("mainnet");
   ASSERT_TRUE(mainnet_dict);
-  EXPECT_EQ(mainnet_dict->DictSize(), 1u);
-  EXPECT_TRUE(mainnet_dict->FindKey("001"));
-  const auto* ropsten_dict = ethereum_dict->FindKey("ropsten");
+  EXPECT_EQ(mainnet_dict->size(), 1u);
+  EXPECT_TRUE(mainnet_dict->FindDict("001"));
+  const auto* ropsten_dict = ethereum_dict->FindDict("ropsten");
   ASSERT_TRUE(ropsten_dict);
-  EXPECT_EQ(ropsten_dict->DictSize(), 1u);
-  EXPECT_TRUE(ropsten_dict->FindKey("001"));
+  EXPECT_EQ(ropsten_dict->size(), 1u);
+  EXPECT_TRUE(ropsten_dict->FindDict("001"));
   auto localhost_url_spec =
       brave_wallet::GetNetworkURL(&prefs_, mojom::kLocalhostChainId,
                                   mojom::CoinType::ETH)
           .spec();
-  const auto* localhost_dict = ethereum_dict->FindKey(localhost_url_spec);
+  const auto* localhost_dict = ethereum_dict->FindDict(localhost_url_spec);
   ASSERT_TRUE(localhost_dict);
-  EXPECT_EQ(localhost_dict->DictSize(), 1u);
-  EXPECT_TRUE(localhost_dict->FindKey("001"));
+  EXPECT_EQ(localhost_dict->size(), 1u);
+  EXPECT_TRUE(localhost_dict->FindDict("001"));
 }
 
 TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {

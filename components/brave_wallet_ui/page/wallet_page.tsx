@@ -7,20 +7,30 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
-import { loadTimeData } from '../../common/loadTimeData'
-import Container from './container'
-import * as WalletActions from '../common/actions/wallet_actions'
-import store from './store'
 import { BrowserRouter } from 'react-router-dom'
+
+// utils
+import { loadTimeData } from '../../common/loadTimeData'
+import * as Lib from '../common/async/lib'
+
+// actions
+import * as WalletActions from '../common/actions/wallet_actions'
+
+// contexts
+import { LibContext } from '../common/context/lib.context'
+import { ApiProxyContext } from '../common/context/api-proxy.context'
+
+// components
+import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
+import Container from './container'
+import { store, walletPageApiProxy } from './store'
+
+// style
+import walletDarkTheme from '../theme/wallet-dark'
+import walletLightTheme from '../theme/wallet-light'
 import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
-
-import * as Lib from '../common/async/lib'
-import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
-import walletDarkTheme from '../theme/wallet-dark'
-import walletLightTheme from '../theme/wallet-light'
-import { LibContext } from '../common/context/lib.context'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -36,9 +46,11 @@ function App () {
             dark={walletDarkTheme}
             light={walletLightTheme}
           >
-            <LibContext.Provider value={Lib}>
-              <Container />
-            </LibContext.Provider>
+            <ApiProxyContext.Provider value={walletPageApiProxy}>
+              <LibContext.Provider value={Lib}>
+                <Container />
+              </LibContext.Provider>
+            </ApiProxyContext.Provider>
           </BraveCoreThemeProvider>
         }
       </BrowserRouter>

@@ -39,9 +39,14 @@ class UnblindedToken {
 
   bool has_value() const { return unblinded_token_.has_value(); }
 
-  challenge_bypass_ristretto::UnblindedToken get() const {
-    DCHECK(has_value());
-    return unblinded_token_.value();
+  challenge_bypass_ristretto::UnblindedToken& get() {
+    DCHECK(unblinded_token_);
+    return *unblinded_token_;
+  }
+
+  const challenge_bypass_ristretto::UnblindedToken& get() const {
+    DCHECK(unblinded_token_);
+    return *unblinded_token_;
   }
 
   static UnblindedToken DecodeBase64(const std::string& unblinded_token_base64);

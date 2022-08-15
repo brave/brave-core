@@ -233,11 +233,11 @@ void TipMessageHandler::OnReconcileComplete(
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetIntKey("result", static_cast<int>(result));
-  data.SetIntKey("type", static_cast<int>(type));
+  base::Value::Dict data;
+  data.Set("result", static_cast<int>(result));
+  data.Set("type", static_cast<int>(type));
 
-  FireWebUIListener("reconcileCompleted", data);
+  FireWebUIListener("reconcileCompleted", base::Value(std::move(data)));
 }
 
 void TipMessageHandler::OnUnblindedTokensReady(
@@ -298,9 +298,9 @@ void TipMessageHandler::GetOnboardingStatus(const base::Value::List& args) {
     return;
   }
   AllowJavascript();
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetBoolKey("showOnboarding", rewards_service_->ShouldShowOnboarding());
-  FireWebUIListener("onboardingStatusUpdated", data);
+  base::Value::Dict data;
+  data.Set("showOnboarding", rewards_service_->ShouldShowOnboarding());
+  FireWebUIListener("onboardingStatusUpdated", base::Value(std::move(data)));
 }
 
 void TipMessageHandler::SaveOnboardingResult(const base::Value::List& args) {
@@ -454,36 +454,36 @@ void TipMessageHandler::GetRewardsParametersCallback(
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
+  base::Value::Dict data;
   if (parameters) {
-    base::Value tip_choices(base::Value::Type::LIST);
+    base::Value::List tip_choices;
     for (const auto& item : parameters->tip_choices) {
       tip_choices.Append(item);
     }
 
-    base::Value monthly_choices(base::Value::Type::LIST);
+    base::Value::List monthly_choices;
     for (const auto& item : parameters->monthly_tip_choices) {
       monthly_choices.Append(item);
     }
 
-    base::Value ac_choices(base::Value::Type::LIST);
+    base::Value::List ac_choices;
     for (const auto& item : parameters->auto_contribute_choices) {
       ac_choices.Append(item);
     }
 
-    base::Value payout_status(base::Value::Type::DICTIONARY);
+    base::Value::Dict payout_status;
     for (const auto& item : parameters->payout_status) {
-      payout_status.SetStringKey(item.first, item.second);
+      payout_status.Set(item.first, item.second);
     }
 
-    data.SetDoubleKey("rate", parameters->rate);
-    data.SetKey("tipChoices", std::move(tip_choices));
-    data.SetKey("monthlyTipChoices", std::move(monthly_choices));
-    data.SetKey("autoContributeChoices", std::move(ac_choices));
-    data.SetKey("payoutStatus", std::move(payout_status));
+    data.Set("rate", parameters->rate);
+    data.Set("tipChoices", std::move(tip_choices));
+    data.Set("monthlyTipChoices", std::move(monthly_choices));
+    data.Set("autoContributeChoices", std::move(ac_choices));
+    data.Set("payoutStatus", std::move(payout_status));
   }
 
-  FireWebUIListener("rewardsParametersUpdated", data);
+  FireWebUIListener("rewardsParametersUpdated", base::Value(std::move(data)));
 }
 
 void TipMessageHandler::GetRecurringTipsCallback(
@@ -492,15 +492,15 @@ void TipMessageHandler::GetRecurringTipsCallback(
     return;
   }
 
-  base::Value publishers(base::Value::Type::LIST);
+  base::Value::List publishers;
   for (const auto& item : list) {
-    base::Value publisher(base::Value::Type::DICTIONARY);
-    publisher.SetStringKey("publisherKey", item->id);
-    publisher.SetDoubleKey("amount", item->weight);
+    base::Value::Dict publisher;
+    publisher.Set("publisherKey", item->id);
+    publisher.Set("amount", item->weight);
     publishers.Append(std::move(publisher));
   }
 
-  FireWebUIListener("recurringTipsUpdated", publishers);
+  FireWebUIListener("recurringTipsUpdated", base::Value(std::move(publishers)));
 }
 
 void TipMessageHandler::GetPublisherBannerCallback(
@@ -509,32 +509,32 @@ void TipMessageHandler::GetPublisherBannerCallback(
     return;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
+  base::Value::Dict result;
 
   if (banner) {
-    result.SetStringKey("publisherKey", banner->publisher_key);
-    result.SetStringKey("title", banner->title);
-    result.SetStringKey("name", banner->name);
-    result.SetStringKey("description", banner->description);
-    result.SetStringKey("background", banner->background);
-    result.SetStringKey("logo", banner->logo);
-    result.SetStringKey("provider", banner->provider);
-    result.SetIntKey("status", static_cast<int>(banner->status));
+    result.Set("publisherKey", banner->publisher_key);
+    result.Set("title", banner->title);
+    result.Set("name", banner->name);
+    result.Set("description", banner->description);
+    result.Set("background", banner->background);
+    result.Set("logo", banner->logo);
+    result.Set("provider", banner->provider);
+    result.Set("status", static_cast<int>(banner->status));
 
-    base::Value amounts(base::Value::Type::LIST);
+    base::Value::List amounts;
     for (const auto& value : banner->amounts) {
       amounts.Append(value);
     }
-    result.SetKey("amounts", std::move(amounts));
+    result.Set("amounts", std::move(amounts));
 
-    base::Value links(base::Value::Type::DICTIONARY);
+    base::Value::Dict links;
     for (const auto& item : banner->links) {
-      links.SetStringKey(item.first, item.second);
+      links.Set(item.first, item.second);
     }
-    result.SetKey("links", std::move(links));
+    result.Set("links", std::move(links));
   }
 
-  FireWebUIListener("publisherBannerUpdated", result);
+  FireWebUIListener("publisherBannerUpdated", base::Value(std::move(result)));
 }
 
 void TipMessageHandler::OnTipCallback(double amount,
@@ -583,23 +583,23 @@ void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetIntKey("status", static_cast<int>(result));
+  base::Value::Dict data;
+  data.Set("status", static_cast<int>(result));
 
   if (result == ledger::type::Result::LEDGER_OK && balance) {
-    base::Value wallets(base::Value::Type::DICTIONARY);
+    base::Value::Dict wallets;
     for (const auto& wallet : balance->wallets) {
-      wallets.SetDoubleKey(wallet.first, wallet.second);
+      wallets.Set(wallet.first, wallet.second);
     }
 
-    base::Value balance_value(base::Value::Type::DICTIONARY);
-    balance_value.SetDoubleKey("total", balance->total);
-    balance_value.SetKey("wallets", std::move(wallets));
+    base::Value::Dict balance_value;
+    balance_value.Set("total", balance->total);
+    balance_value.Set("wallets", std::move(wallets));
 
-    data.SetKey("balance", std::move(balance_value));
+    data.Set("balance", std::move(balance_value));
   }
 
-  FireWebUIListener("balanceUpdated", data);
+  FireWebUIListener("balanceUpdated", base::Value(std::move(data)));
 }
 
 void TipMessageHandler::GetExternalWalletCallback(
@@ -609,13 +609,13 @@ void TipMessageHandler::GetExternalWalletCallback(
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
+  base::Value::Dict data;
   if (wallet) {
-    data.SetStringKey("type", wallet->type);
-    data.SetIntKey("status", static_cast<int>(wallet->status));
+    data.Set("type", wallet->type);
+    data.Set("status", static_cast<int>(wallet->status));
   }
 
-  FireWebUIListener("externalWalletUpdated", data);
+  FireWebUIListener("externalWalletUpdated", base::Value(std::move(data)));
 }
 
 }  // namespace

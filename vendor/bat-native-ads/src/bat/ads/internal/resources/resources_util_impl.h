@@ -38,20 +38,19 @@ std::unique_ptr<ParsingResult<T>> ReadFileAndParseResourceOnBackgroundThread(
     return {};
   }
 
-  absl::optional<base::Value> resource_value = base::JSONReader::Read(content);
-  if (!resource_value) {
+  absl::optional<base::Value> root = base::JSONReader::Read(content);
+  if (!root) {
     return {};
   }
 
   // Free memory in advance to optimize the peak memory consumption. |json| can
-  // be up to 10Mb and the following code allocates an extra memory few Mb of
-  // memory.
+  // be up to 10Mb and the following code allocates an extra few Mb of memory.
   content = std::string();
 
   std::unique_ptr<ParsingResult<T>> result =
       std::make_unique<ParsingResult<T>>();
   result->resource =
-      T::CreateFromValue(std::move(*resource_value), &result->error_message);
+      T::CreateFromValue(std::move(*root), &result->error_message);
 
   return result;
 }

@@ -22,7 +22,7 @@ bool AllowNotificationsPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string AllowNotificationsPermissionRule::GetLastMessage() const {
+const std::string& AllowNotificationsPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

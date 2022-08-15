@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -62,7 +63,7 @@ class BatAdsClientMojoBridge
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -82,13 +83,13 @@ class BatAdsClientMojoBridge
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
-                      const std::string& value) override;
+                      base::Value::List value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
                                training_instance) override;
 
   bool GetBooleanPref(const std::string& path) const override;
@@ -108,6 +109,12 @@ class BatAdsClientMojoBridge
       const uint64_t value) override;
   base::Time GetTimePref(const std::string& path) const override;
   void SetTimePref(const std::string& path, const base::Time value) override;
+  absl::optional<base::Value::Dict> GetDictPref(
+      const std::string& path) const override;
+  void SetDictPref(const std::string& path, base::Value::Dict value) override;
+  absl::optional<base::Value::List> GetListPref(
+      const std::string& path) const override;
+  void SetListPref(const std::string& path, base::Value::List value) override;
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
 

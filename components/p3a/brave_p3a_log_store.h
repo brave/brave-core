@@ -26,21 +26,11 @@ namespace brave {
 // for now persisted entries never expire.
 class BraveP3ALogStore : public metrics::LogStore {
  public:
-  struct LogForJsonMigration {
-    std::string legacy_log;
-    std::string json_log;
-
-    void clear() {
-      legacy_log.clear();
-      json_log.clear();
-    }
-  };
-
   class Delegate {
    public:
     // Prepares a string representaion of an entry.
-    virtual LogForJsonMigration Serialize(base::StringPiece histogram_name,
-                                          uint64_t value) = 0;
+    virtual std::string Serialize(base::StringPiece histogram_name,
+                                  uint64_t value) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
     virtual bool IsActualMetric(base::StringPiece histogram_name) const = 0;
     virtual ~Delegate() {}
@@ -63,8 +53,6 @@ class BraveP3ALogStore : public metrics::LogStore {
   bool has_unsent_logs() const override;
   bool has_staged_log() const override;
   const std::string& staged_log() const override;
-  // This will replace `staged_log` once we migrate to JSON pings.
-  const std::string& staged_json_log() const;
   std::string staged_log_type() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
@@ -105,7 +93,7 @@ class BraveP3ALogStore : public metrics::LogStore {
   base::flat_set<std::string> unsent_entries_;
 
   std::string staged_entry_key_;
-  LogForJsonMigration staged_log_;
+  std::string staged_log_;
 
   // Not used for now.
   std::string staged_log_hash_;

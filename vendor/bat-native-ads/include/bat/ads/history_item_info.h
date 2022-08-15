@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
@@ -26,7 +27,7 @@ struct ADS_EXPORT HistoryItemInfo final {
   bool operator!=(const HistoryItemInfo& rhs) const;
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& value);
 
   base::Time created_at;
   AdContentInfo ad_content;

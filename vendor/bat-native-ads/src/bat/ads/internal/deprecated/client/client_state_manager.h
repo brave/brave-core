@@ -51,9 +51,9 @@ class ClientStateManager final {
 
   void Initialize(InitializeCallback callback);
 
-  FilteredAdvertiserList GetFilteredAdvertisers() const;
-  FilteredCategoryList GetFilteredCategories() const;
-  FlaggedAdList GetFlaggedAds() const;
+  const FilteredAdvertiserList& GetFilteredAdvertisers() const;
+  const FilteredCategoryList& GetFilteredCategories() const;
+  const FlaggedAdList& GetFlaggedAds() const;
 
   void AppendHistory(const HistoryItemInfo& history_item);
   const base::circular_deque<HistoryItemInfo>& GetHistory() const;
@@ -93,15 +93,12 @@ class ClientStateManager final {
                                    const AdType& type);
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
-  void SetServeAdAt(const base::Time time);
-  base::Time GetServeAdAt();
-
   void AppendTextClassificationProbabilitiesToHistory(
       const targeting::TextClassificationProbabilityMap& probabilities);
   const targeting::TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory();
 
-  std::string GetVersionCode() const;
+  const std::string& GetVersionCode() const;
   void SetVersionCode(const std::string& value);
 
   void RemoveAllHistory();

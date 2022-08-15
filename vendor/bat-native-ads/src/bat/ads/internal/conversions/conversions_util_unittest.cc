@@ -39,12 +39,11 @@ TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithShortMessage) {
   verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          SealEnvelope(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope_optional);
+  EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithLongMessage) {
@@ -54,12 +53,11 @@ TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithLongMessage) {
   verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          SealEnvelope(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope_optional);
+  EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithInvalidMessage) {
@@ -69,12 +67,11 @@ TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithInvalidMessage) {
   verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          SealEnvelope(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope_optional);
+  EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest,
@@ -85,12 +82,11 @@ TEST(BatAdsSecurityConversionsUtilsTest,
   verifiable_conversion.public_key = kInvalidAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          SealEnvelope(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope_optional);
+  EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest, SealEnvelope) {
@@ -100,22 +96,16 @@ TEST(BatAdsSecurityConversionsUtilsTest, SealEnvelope) {
   verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>&
-      verifiable_conversion_envelope_optional =
-          SealEnvelope(verifiable_conversion);
-  ASSERT_TRUE(verifiable_conversion_envelope_optional);
-  const VerifiableConversionEnvelopeInfo verifiable_conversion_envelope =
-      verifiable_conversion_envelope_optional.value();
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
+  ASSERT_TRUE(verifiable_conversion_envelope);
 
-  const absl::optional<std::string>& message_optional =
-      OpenEnvelope(verifiable_conversion_envelope, kAdvertiserSecretKey);
-  ASSERT_TRUE(message_optional);
-  const std::string message = message_optional.value();
+  const absl::optional<std::string> message =
+      OpenEnvelope(*verifiable_conversion_envelope, kAdvertiserSecretKey);
+  ASSERT_TRUE(message);
 
   // Assert
-  const std::string expected_message = verifiable_conversion.id;
-
-  EXPECT_EQ(expected_message, message);
+  EXPECT_EQ(verifiable_conversion.id, *message);
 }
 
 }  // namespace security

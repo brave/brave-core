@@ -7,11 +7,18 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.SolanaTxData;
+import org.chromium.brave_wallet.mojom.TxData1559;
+import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WalletUtils {
@@ -38,5 +45,32 @@ public class WalletUtils {
             }
         }
         return accountName;
+    }
+
+    public static int getSelectedAccountIndex(
+            AccountInfo accountInfo, List<AccountInfo> accountInfos) {
+        if (accountInfo == null || accountInfos.size() == 0) return -1;
+        for (int i = 0; i < accountInfos.size(); i++) {
+            AccountInfo account = accountInfos.get(i);
+            if (account.address.equals(accountInfo.address) && account.coin == accountInfo.coin) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public static TxDataUnion toTxDataUnion(SolanaTxData solanaTxData) {
+        TxDataUnion txDataUnion = new TxDataUnion();
+        txDataUnion.setSolanaTxData(solanaTxData);
+        return txDataUnion;
+    }
+
+    @NonNull
+    public static List<AccountInfo> getAccountInfosFromKeyrings(KeyringInfo[] keyringInfos) {
+        List<AccountInfo> accountInfos = new ArrayList<>();
+        for (KeyringInfo keyringInfo : keyringInfos) {
+            accountInfos.addAll(Arrays.asList(keyringInfo.accountInfos));
+        }
+        return accountInfos;
     }
 }

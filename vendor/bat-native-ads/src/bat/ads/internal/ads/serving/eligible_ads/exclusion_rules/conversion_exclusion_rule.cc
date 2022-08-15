@@ -57,7 +57,7 @@ bool ConversionExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string ConversionExclusionRule::GetLastMessage() const {
+const std::string& ConversionExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

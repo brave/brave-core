@@ -3,6 +3,7 @@ package org.chromium.chrome.browser.app.domain;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.text.TextUtils;
+import android.util.Pair;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -13,12 +14,12 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.mojo.system.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,13 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<Pair<String, NetworkInfo[]>> _mPairChainAndNetwork;
     private MediatorLiveData<NetworkInfo> _mNeedToCreateAccountForNetwork;
     private final MediatorLiveData<NetworkInfo> _mDefaultNetwork;
+    private final MediatorLiveData<Triple<String, NetworkInfo, NetworkInfo[]>>
+            _mChainNetworkAllNetwork;
     private final Context mContext;
+    private final MediatorLiveData<String[]> _mCustomNetworkIds;
+    public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
+    public final LiveData<Triple<String, NetworkInfo, NetworkInfo[]>> mChainNetworkAllNetwork;
     public final LiveData<Pair<String, NetworkInfo[]>> mPairChainAndNetwork;
     public final LiveData<String> mChainId;
     public final LiveData<NetworkInfo[]> mDefaultCoinCryptoNetworks;
@@ -61,6 +67,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mDefaultNetwork = _mDefaultNetwork;
         _mNeedToCreateAccountForNetwork = new MediatorLiveData<>();
         mNeedToCreateAccountForNetwork = _mNeedToCreateAccountForNetwork;
+        _mChainNetworkAllNetwork = new MediatorLiveData<>();
+        mChainNetworkAllNetwork = _mChainNetworkAllNetwork;
+        _mCustomNetworkIds = new MediatorLiveData<>();
+        _mCustomNetworkIds.postValue(new String[0]);
+        mCustomNetworkIds = _mCustomNetworkIds;
         jsonRpcService.addObserver(this);
         _mPairChainAndNetwork.setValue(Pair.create("", new NetworkInfo[] {}));
         _mPairChainAndNetwork.addSource(_mChainId, chainId -> {
@@ -98,6 +109,19 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 _mDefaultCoinCryptoNetworks.postValue(stripDebugNetwork(context, networkInfos));
             });
         });
+
+        _mChainNetworkAllNetwork.addSource(_mDefaultNetwork, networkInfo -> {
+            _mChainNetworkAllNetwork.postValue(
+                    Triple.create(networkInfo.chainId, networkInfo, _mCryptoNetworks.getValue()));
+        });
+        _mChainNetworkAllNetwork.addSource(_mCryptoNetworks, networkInfos -> {
+            _mChainNetworkAllNetwork.postValue(
+                    Triple.create(_mChainId.getValue(), _mDefaultNetwork.getValue(), networkInfos));
+        });
+        _mCustomNetworkIds.addSource(mSharedData.getCoinTypeLd(), coinType -> {
+            mJsonRpcService.getCustomNetworks(
+                    coinType, customNetworks -> { _mCustomNetworkIds.postValue(customNetworks); });
+        });
     }
 
     public void setAccountInfosFromKeyRingModel(
@@ -107,6 +131,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     void setUpAccountObserver(LiveData<List<AccountInfo>> accounts) {
         // getAccounts can be null as it's being set via a setter
+        // clear the _mNeedToCreateAccountForNetwork state once a account has been created
+        // think we may not need this since it's being cleared with clearCreateAccountState anyway
         if (mSharedData.getAccounts() == null) return;
         _mNeedToCreateAccountForNetwork.addSource(accounts, accountInfos -> {
             if (_mNeedToCreateAccountForNetwork.getValue() == null) return;
@@ -146,7 +172,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         }
     }
 
-    public void setNetwork(
+    public void setNetworkWithAccountCheck(
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
         List<AccountInfo> accountInfos = mSharedData.getAccounts().getValue();
         boolean hasAccountOfNetworkType = false;
@@ -156,6 +182,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 break;
             }
         }
+        NetworkInfo selectedNetwork = _mDefaultNetwork.getValue();
+        if (selectedNetwork != null
+                && selectedNetwork.chainId.equals(networkToBeSetAsSelected.chainId)
+                && selectedNetwork.coin == networkToBeSetAsSelected.coin)
+            return;
         if (hasAccountOfNetworkType) {
             mJsonRpcService.setNetwork(
                     networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin, isSelected -> {
@@ -169,19 +200,39 @@ public class NetworkModel implements JsonRpcServiceObserver {
         }
     }
 
+    public void setNetwork(
+            NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
+        mJsonRpcService.setNetwork(
+                networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin, isSelected -> {
+                    callback.call(isSelected);
+                    mCryptoActions.updateCoinType();
+                    init();
+                });
+    }
+
     public void clearCreateAccountState() {
         _mNeedToCreateAccountForNetwork.postValue(null);
+    }
+
+    public NetworkInfo[] stripNoBuySwapNetworks(NetworkInfo[] networkInfos) {
+        List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
+        for (NetworkInfo networkInfo : networkInfos) {
+            if (Utils.allowBuyAndSwap(networkInfo.chainId)) {
+                networkInfosFiltered.add(networkInfo);
+            }
+        }
+
+        return networkInfosFiltered.toArray(new NetworkInfo[networkInfosFiltered.size()]);
     }
 
     private NetworkInfo[] stripDebugNetwork(Context context, NetworkInfo[] networkInfos) {
         if ((context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
             return networkInfos;
         } else {
-            String localHost = context.getString(R.string.localhost);
             List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
-            // strip localhost network
+            // remove localhost network
             for (NetworkInfo networkInfo : networkInfos) {
-                if (!networkInfo.chainName.equals(localHost)) {
+                if (!networkInfo.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
                     networkInfosFiltered.add(networkInfo);
                 }
             }

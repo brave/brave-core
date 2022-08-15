@@ -70,10 +70,12 @@ class AdBlockRegionalServiceManager
       const std::string& tab_host);
   void EnableTag(const std::string& tag, bool enabled);
   void AddResources(const std::string& resources);
+  bool IsFilterListAvailable(const std::string& uuid) const;
+  bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);
 
   absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
-  base::Value HiddenClassIdSelectors(
+  base::Value::List HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);

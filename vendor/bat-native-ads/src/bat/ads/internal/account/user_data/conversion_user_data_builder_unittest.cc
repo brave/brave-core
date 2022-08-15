@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/conversion_user_data_builder.h"
 
-#include "base/json/json_writer.h"
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
@@ -51,15 +50,13 @@ TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
 
   // Act
   BuildConversion(kCreativeInstanceId, [](base::Value::Dict user_data) {
-    const absl::optional<std::string> message_optional =
+    const absl::optional<std::string> message =
         security::OpenEvenlopeForUserDataAndAdvertiserSecretKey(
             user_data, kAdvertiserSecretKey);
-    ASSERT_TRUE(message_optional);
-    const std::string message = message_optional.value();
+    ASSERT_TRUE(message);
 
     const std::string expected_message = kConversionId;
-
-    EXPECT_EQ(expected_message, message);
+    EXPECT_EQ(expected_message, *message);
   });
 
   // Assert
@@ -72,12 +69,11 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
 
   // Act
   BuildConversion(kMissingCreativeInstanceId, [](base::Value::Dict user_data) {
-    std::string json;
-    base::JSONWriter::Write(user_data, &json);
+    // Assert
+    const base::Value expected_user_data = base::test::ParseJson("{}");
+    ASSERT_TRUE(expected_user_data.is_dict());
 
-    const std::string expected_json = "{}";
-
-    EXPECT_EQ(expected_json, json);
+    EXPECT_EQ(expected_user_data, user_data);
   });
 
   // Assert
@@ -91,12 +87,11 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
 
   // Act
   BuildConversion(kCreativeInstanceId, [](base::Value::Dict user_data) {
-    std::string json;
-    base::JSONWriter::Write(user_data, &json);
+    // Assert
+    const base::Value expected_user_data = base::test::ParseJson("{}");
+    ASSERT_TRUE(expected_user_data.is_dict());
 
-    const std::string expected_json = "{}";
-
-    EXPECT_EQ(expected_json, json);
+    EXPECT_EQ(expected_user_data, user_data);
   });
 
   // Assert

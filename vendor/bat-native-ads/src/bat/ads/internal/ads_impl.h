@@ -20,6 +20,7 @@
 #include "bat/ads/internal/history/history_manager_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -63,6 +64,7 @@ class Conversions;
 class CovariateManager;
 class DatabaseManager;
 class DiagnosticManager;
+class FlagManager;
 class HistoryManager;
 class IdleDetectionManager;
 class InlineContentAd;
@@ -150,8 +152,8 @@ class AdsImpl final : public Ads,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override;
 
-  bool GetNotificationAd(const std::string& placement_id,
-                         NotificationAdInfo* notification_ad) override;
+  absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
+      const std::string& placement_id) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) override;
@@ -162,7 +164,7 @@ class AdsImpl final : public Ads,
       const mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      mojom::SearchResultAdPtr ad_mojom,
+      mojom::SearchResultAdInfoPtr ad_mojom,
       const mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
@@ -228,6 +230,7 @@ class AdsImpl final : public Ads,
 
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ClientStateManager> client_state_manager_;
+  std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
   std::unique_ptr<CovariateManager> covariate_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;

@@ -6,7 +6,6 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 
 #include <algorithm>
-#include <iterator>
 #include <string>
 
 #include "base/check.h"
@@ -29,7 +28,7 @@ std::string GetFormattedBalanceDate(const base::Time time) {
 
 absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
                                                const base::Time time) {
-  const std::string& formatted_date = GetFormattedBalanceDate(time);
+  const std::string formatted_date = GetFormattedBalanceDate(time);
 
   const auto iter = std::find_if(payments.cbegin(), payments.cend(),
                                  [&formatted_date](const PaymentInfo& payment) {
@@ -39,7 +38,7 @@ absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
     return absl::nullopt;
   }
 
-  const PaymentInfo& payment = *iter;
+  const PaymentInfo payment = *iter;
 
   return payment;
 }

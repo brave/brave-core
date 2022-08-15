@@ -64,13 +64,13 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet.WalletStatus;
@@ -111,6 +111,11 @@ import java.util.TimerTask;
 
 public class BraveRewardsPanel
         implements BraveRewardsObserver, BraveRewardsHelper.LargeIconReadyCallback {
+    public static final String PREF_WAS_BRAVE_REWARDS_TURNED_ON = "brave_rewards_turned_on";
+    public static final String PREF_GRANTS_NOTIFICATION_RECEIVED = "grants_notification_received";
+    public static final String PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED =
+            "was_toolbar_bat_logo_button_pressed";
+
     private static final String TAG = "BraveRewards";
     private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
     private static final int PUBLISHER_INFO_FETCH_RETRY = 3 * 1000; // In milliseconds
@@ -424,7 +429,6 @@ public class BraveRewardsPanel
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_TIPS_PROCESSED:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_ADS_ONBOARDING:
             case REWARDS_NOTIFICATION_NO_INTERNET:
@@ -550,13 +554,6 @@ public class BraveRewardsPanel
                         R.string.brave_ui_insufficient_funds_msg);
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_insufficient_funds_desc);
-                break;
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET:
-                actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                notificationIcon = R.drawable.ic_info_rewards;
-                title = mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_msg);
-                description =
-                        mPopupView.getResources().getString(R.string.brave_ui_backup_wallet_desc);
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_TIPS_PROCESSED:
                 actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
@@ -1122,14 +1119,6 @@ public class BraveRewardsPanel
 
     @Override
     public void OnGetLatestNotification(String id, int type, long timestamp, String[] args) {
-        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET) {
-            if (mBraveRewardsNativeWorker != null) {
-                mBraveRewardsNativeWorker.DeleteNotification(id);
-                mBraveRewardsNativeWorker.GetAllNotifications();
-            }
-            return;
-        }
-
         if (!mCurrentNotificationId.equals(REWARDS_PROMOTION_CLAIM_ERROR_ID)) {
             showNotification(id, type, timestamp, args);
         }
@@ -1231,7 +1220,7 @@ public class BraveRewardsPanel
             case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
             case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
                 leftDrawable = getWalletIcon(walletType);
-                textId = R.string.brave_ui_wallet_button_disconnected;
+                textId = R.string.brave_ui_wallet_button_logged_out;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
                 btnVerifyWallet.setBackgroundDrawable(ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),

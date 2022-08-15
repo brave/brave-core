@@ -29,11 +29,8 @@ absl::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
 
 std::string GetShieldsSettingUserPrefsPath(const std::string& name);
 
-base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
-                                      const char* key);
-
 content_settings::SessionModel GetSessionModelFromDictionary(
-    const base::DictionaryValue* dictionary,
+    const base::Value::Dict& dict,
     const char* key);
 
 }  // namespace content_settings

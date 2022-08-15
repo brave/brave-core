@@ -87,14 +87,11 @@ TEST(BatAdsPublicKeyTest, EncodeBase64) {
   PublicKey public_key(kPublicKeyBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
-      public_key.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  const absl::optional<std::string> encoded_base64 = public_key.EncodeBase64();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kPublicKeyBase64, encoded_base64);
+  EXPECT_EQ(kPublicKeyBase64, *encoded_base64);
 }
 
 TEST(BatAdsPublicKeyTest, FailToEncodeBase64WhenUninitialized) {
@@ -102,11 +99,10 @@ TEST(BatAdsPublicKeyTest, FailToEncodeBase64WhenUninitialized) {
   PublicKey public_key;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
-      public_key.EncodeBase64();
+  const absl::optional<std::string> encoded_base64 = public_key.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsPublicKeyTest, IsEqual) {

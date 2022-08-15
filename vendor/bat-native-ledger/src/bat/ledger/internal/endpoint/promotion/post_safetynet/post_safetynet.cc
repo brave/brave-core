@@ -35,11 +35,11 @@ std::string PostSafetynet::GeneratePayload() {
     return "";
   }
 
-  base::Value payment_ids(base::Value::Type::LIST);
+  base::Value::List payment_ids;
   payment_ids.Append(base::Value(wallet->payment_id));
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("paymentIds", std::move(payment_ids));
+  base::Value::Dict body;
+  body.Set("paymentIds", std::move(payment_ids));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
@@ -77,13 +77,8 @@ type::Result PostSafetynet::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  auto* nonce_string = dictionary->FindStringKey("nonce");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* nonce_string = dict.FindString("nonce");
   if (!nonce_string) {
     BLOG(0, "Nonce is wrong");
     return type::Result::LEDGER_ERROR;

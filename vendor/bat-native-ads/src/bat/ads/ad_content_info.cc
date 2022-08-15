@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -54,27 +54,27 @@ AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
 }
 
 base::Value::Dict AdContentInfo::ToValue() const {
-  base::Value::Dict dictionary;
+  base::Value::Dict dict;
 
-  dictionary.Set("adType", static_cast<int>(type.value()));
-  dictionary.Set("uuid", placement_id);
-  dictionary.Set("creativeInstanceId", creative_instance_id);
-  dictionary.Set("creativeSetId", creative_set_id);
-  dictionary.Set("campaignId", campaign_id);
-  dictionary.Set("advertiserId", advertiser_id);
-  dictionary.Set("brand", brand);
-  dictionary.Set("brandInfo", brand_info);
-  dictionary.Set("brandDisplayUrl", brand_display_url);
-  dictionary.Set("brandUrl", brand_url.spec());
-  dictionary.Set("likeAction", static_cast<int>(like_action_type));
-  dictionary.Set("adAction", confirmation_type.ToString());
-  dictionary.Set("savedAd", is_saved);
-  dictionary.Set("flaggedAd", is_flagged);
+  dict.Set("adType", static_cast<int>(type.value()));
+  dict.Set("uuid", placement_id);
+  dict.Set("creativeInstanceId", creative_instance_id);
+  dict.Set("creativeSetId", creative_set_id);
+  dict.Set("campaignId", campaign_id);
+  dict.Set("advertiserId", advertiser_id);
+  dict.Set("brand", brand);
+  dict.Set("brandInfo", brand_info);
+  dict.Set("brandDisplayUrl", brand_display_url);
+  dict.Set("brandUrl", brand_url.spec());
+  dict.Set("likeAction", static_cast<int>(like_action_type));
+  dict.Set("adAction", confirmation_type.ToString());
+  dict.Set("savedAd", is_saved);
+  dict.Set("flaggedAd", is_flagged);
 
-  return dictionary;
+  return dict;
 }
 
-bool AdContentInfo::FromValue(const base::Value::Dict& root) {
+void AdContentInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindString("adType")) {
     type = AdType(*value);
   } else if (const auto* value = root.FindString("type")) {
@@ -168,8 +168,6 @@ bool AdContentInfo::FromValue(const base::Value::Dict& root) {
     // Migrate legacy
     is_flagged = *value;
   }
-
-  return true;
 }
 
 std::string AdContentInfo::ToJson() const {
@@ -179,15 +177,17 @@ std::string AdContentInfo::ToJson() const {
 }
 
 bool AdContentInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> document =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
 
-  if (!document.has_value() || !document->is_dict()) {
+  if (!root || !root->is_dict()) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  FromValue(root->GetDict());
+
+  return true;
 }
 
 }  // namespace ads

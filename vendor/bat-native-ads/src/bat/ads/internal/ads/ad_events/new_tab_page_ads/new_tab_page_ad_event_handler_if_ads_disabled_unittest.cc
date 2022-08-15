@@ -87,7 +87,7 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
 
   CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
     CreativeNewTabPageAdList creative_ads;
-    const CreativeNewTabPageAdInfo& creative_ad = BuildCreativeNewTabPageAd();
+    const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
     creative_ads.push_back(creative_ad);
 
     SaveCreativeAds(creative_ads);
@@ -108,7 +108,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   // Arrange
   ForcePermissionRules();
 
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -119,7 +119,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const NewTabPageAdInfo& expected_ad =
+  const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
   EXPECT_EQ(1,
@@ -130,7 +130,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRules();
 
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -141,7 +141,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   EXPECT_FALSE(did_view_ad_);
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const NewTabPageAdInfo& expected_ad =
+  const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
   EXPECT_EQ(1,
@@ -153,7 +153,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRules();
 
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::NewTabPageAdEventType::kViewed);
@@ -204,7 +204,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventWhenNotPermitted) {
   // Arrange
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -245,9 +245,9 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
-                                             ConfirmationType::kViewed, Now());
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_hour = features::GetMaximumNewTabPageAdsPerHour();
 
@@ -271,9 +271,9 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRules();
 
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
-                                             ConfirmationType::kViewed, Now());
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_hour = features::GetMaximumNewTabPageAdsPerHour();
 
@@ -296,9 +296,9 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRules();
 
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
-                                             ConfirmationType::kViewed, Now());
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_day = features::GetMaximumNewTabPageAdsPerDay();
 
@@ -323,9 +323,9 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRules();
 
-  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
-                                             ConfirmationType::kViewed, Now());
+  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                            ConfirmationType::kViewed, Now());
 
   const int ads_per_day = features::GetMaximumNewTabPageAdsPerDay();
 

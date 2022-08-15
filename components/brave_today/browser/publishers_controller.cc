@@ -5,21 +5,26 @@
 
 #include "brave/components/brave_today/browser/publishers_controller.h"
 
+#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/callback_forward.h"
+#include "base/location.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/browser/urls.h"
+#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "url/origin.h"
 
 namespace brave_news {
 
@@ -31,6 +36,34 @@ PublishersController::PublishersController(
       on_current_update_complete_(new base::OneShotEvent()) {}
 
 PublishersController::~PublishersController() = default;
+
+const mojom::Publisher* PublishersController::GetPublisherForSite(
+    const GURL& site_url) const {
+  if (publishers_.empty())
+    return nullptr;
+
+  const auto& site_origin = url::Origin::Create(site_url);
+  for (const auto& kv : publishers_) {
+    const auto& publisher_origin = url::Origin::Create(kv.second->site_url);
+    if (site_origin.IsSameOriginWith(publisher_origin)) {
+      return kv.second.get();
+    }
+  }
+
+  return nullptr;
+}
+
+const mojom::Publisher* PublishersController::GetPublisherForFeed(
+    const GURL& feed_url) const {
+  if (publishers_.empty())
+    return nullptr;
+
+  for (const auto& kv : publishers_) {
+    if (kv.second->feed_source == feed_url)
+      return kv.second.get();
+  }
+  return nullptr;
+}
 
 void PublishersController::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
@@ -93,7 +126,6 @@ void PublishersController::EnsurePublishersIsUpdating() {
       [](PublishersController* controller, const int status,
          const std::string& body,
          const base::flat_map<std::string, std::string>& headers) {
-        VLOG(1) << "Downloaded sources, status: " << status;
         // TODO(petemill): handle bad status or response
         Publishers publisher_list;
         ParseCombinedPublisherList(body, &publisher_list);

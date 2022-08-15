@@ -5,14 +5,12 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
-#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
 
 #include "base/check.h"
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/net/http/http_status_code.h"
@@ -25,6 +23,8 @@
 #include "bat/ads/internal/catalog/catalog_url_request_builder.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -73,7 +73,7 @@ void Catalog::Fetch() {
   is_processing_ = true;
 
   CatalogUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -82,7 +82,7 @@ void Catalog::Fetch() {
   AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
-void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
+void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnCatalog");
 
   BLOG(7, UrlResponseToString(url_response));
@@ -104,17 +104,16 @@ void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
   BLOG(1, "Successfully fetched catalog");
 
   BLOG(1, "Parsing catalog");
-  const absl::optional<CatalogInfo> catalog_optional =
+  const absl::optional<CatalogInfo> catalog =
       JSONReader::ReadCatalog(url_response.body);
-  if (!catalog_optional) {
+  if (!catalog) {
     BLOG(1, "Failed to parse catalog");
     NotifyFailedToUpdateCatalog();
     Retry();
     return;
   }
-  const CatalogInfo& catalog = catalog_optional.value();
 
-  if (catalog.version != kCatalogVersion) {
+  if (catalog->version != kCatalogVersion) {
     BLOG(1, "Catalog version mismatch");
     NotifyFailedToUpdateCatalog();
     Retry();
@@ -123,14 +122,14 @@ void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
 
   SetCatalogLastUpdated(base::Time::Now());
 
-  if (!HasCatalogChanged(catalog.id)) {
-    BLOG(1, "Catalog id " << catalog.id << " is up to date");
+  if (!HasCatalogChanged(catalog->id)) {
+    BLOG(1, "Catalog id " << catalog->id << " is up to date");
     FetchAfterDelay();
     return;
   }
 
-  SaveCatalog(catalog);
-  NotifyDidUpdateCatalog(catalog);
+  SaveCatalog(*catalog);
+  NotifyDidUpdateCatalog(*catalog);
   FetchAfterDelay();
 }
 
@@ -138,7 +137,7 @@ void Catalog::FetchAfterDelay() {
   retry_timer_.Stop();
 
   const base::TimeDelta delay =
-      g_is_debug ? kDebugCatalogPing : GetCatalogPing();
+      ShouldDebug() ? kDebugCatalogPing : GetCatalogPing();
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, delay,

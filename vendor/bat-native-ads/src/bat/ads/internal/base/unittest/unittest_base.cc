@@ -8,7 +8,10 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/values.h"
 #include "bat/ads/database.h"
+#include "bat/ads/internal/base/unittest/unittest_command_line_switch_util.h"
+#include "bat/ads/internal/base/unittest/unittest_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -42,6 +45,8 @@ void UnitTestBase::SetUp() {
 
 void UnitTestBase::TearDown() {
   teardown_called_ = true;
+
+  CleanupCommandLineSwitches();
 }
 
 void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
@@ -153,18 +158,16 @@ void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
+  InitializeCommandLineSwitches();
+
   SetDefaultMocks();
 
   SetDefaultPrefs();
 
-  if (is_integration_test_) {
-    SetUpMocks();
-    SetUpIntegrationTest();
-    return;
+  if (!is_integration_test_) {
+    ads_client_helper_ =
+        std::make_unique<AdsClientHelper>(ads_client_mock_.get());
   }
-
-  ads_client_helper_ =
-      std::make_unique<AdsClientHelper>(ads_client_mock_.get());
 
   SetUpMocks();
 
@@ -191,6 +194,8 @@ void UnitTestBase::Initialize() {
 
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
 
+  flag_manager_ = std::make_unique<FlagManager>();
+
   history_manager_ = std::make_unique<HistoryManager>();
 
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
@@ -210,13 +215,11 @@ void UnitTestBase::Initialize() {
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 
   // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
-  // tasks have fired before running tests
+  // tasks have fired before running tests.
   task_environment_.FastForwardUntilNoTasksRemain();
 }
 
 void UnitTestBase::SetDefaultMocks() {
-  MockEnvironment(mojom::Environment::kStaging);
-
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, kDefaultLocale);
@@ -263,6 +266,10 @@ void UnitTestBase::SetDefaultMocks() {
   MockSetUint64Pref(ads_client_mock_);
   MockGetTimePref(ads_client_mock_);
   MockSetTimePref(ads_client_mock_);
+  MockGetDictPref(ads_client_mock_);
+  MockSetDictPref(ads_client_mock_);
+  MockGetListPref(ads_client_mock_);
+  MockSetListPref(ads_client_mock_);
   MockClearPref(ads_client_mock_);
   MockHasPrefPath(ads_client_mock_);
 }
@@ -288,6 +295,14 @@ void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetTimePref(prefs::kCatalogLastUpdated, DistantPast());
 
   ads_client_mock_->SetInt64Pref(prefs::kIssuerPing, 0);
+  ads_client_mock_->SetListPref(prefs::kIssuers, base::Value::List());
+
+  ads_client_mock_->SetDictPref(prefs::kEpsilonGreedyBanditArms,
+                                base::Value::Dict());
+  ads_client_mock_->SetListPref(prefs::kEpsilonGreedyBanditEligibleSegments,
+                                base::Value::List());
+
+  ads_client_mock_->SetTimePref(prefs::kServeAdAt, Now());
 
   ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
 

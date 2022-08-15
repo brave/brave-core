@@ -8,12 +8,11 @@
 
 #include <functional>
 
+#include "bat/ads/public/interfaces/ads.mojom.h"
+
 namespace ads {
 
-struct StatementInfo;
-
-using BuildStatementCallback =
-    std::function<void(const bool, const StatementInfo&)>;
+using BuildStatementCallback = std::function<void(mojom::StatementInfoPtr)>;
 
 void BuildStatement(BuildStatementCallback callback);
 

@@ -15,6 +15,7 @@
         android:layout_height="24dp"
         android:layout_gravity="center_vertical"
         app:srcCompat="@drawable/ic_eth_24"
+        tools:srcCompat="@drawable/sol"
         android:layout_marginEnd="8dp"
         android:contentDescription="@null" />
 

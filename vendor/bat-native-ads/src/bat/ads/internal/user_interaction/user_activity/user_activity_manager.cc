@@ -146,7 +146,7 @@ void UserActivityManager::RecordEventForPageTransition(
     return;
   }
 
-  RecordEvent(event_type.value());
+  RecordEvent(*event_type);
 }
 
 void UserActivityManager::OnBrowserDidBecomeActive() {

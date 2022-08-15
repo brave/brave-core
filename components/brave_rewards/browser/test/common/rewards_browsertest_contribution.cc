@@ -355,8 +355,7 @@ void RewardsBrowserTestContribution::UpdateContributionBalance(
     const bool verified,
     const ledger::type::ContributionProcessor processor) {
   if (verified) {
-    if (processor == ledger::type::ContributionProcessor::BRAVE_TOKENS ||
-        processor == ledger::type::ContributionProcessor::BRAVE_USER_FUNDS) {
+    if (processor == ledger::type::ContributionProcessor::BRAVE_TOKENS) {
       balance_ -= amount;
       return;
     }

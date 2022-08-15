@@ -7,7 +7,6 @@ import { NotificationView } from './notification_view'
 
 import { AddFunds } from './add_funds'
 import { AutoContributeCompleted } from './auto_contribute_completed'
-import { BackupWallet } from './backup_wallet'
 import { MonthlyTipCompleted } from './monthly_tip_completed'
 import { MonthlyContributionFailed } from './monthly_contribution_failed'
 import { GrantAvailable } from './grant_available'
@@ -32,8 +31,6 @@ export function getNotificationView (
       return MonthlyContributionFailed
     case 'grant-available':
       return GrantAvailable
-    case 'backup-wallet':
-      return BackupWallet
     case 'pending-publisher-verified':
       return PendingPublisherVerified
     case 'pending-tip-failed':

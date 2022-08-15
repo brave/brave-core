@@ -220,7 +220,7 @@ TEST(RLPEncodeTest, MediumInt4) {
   input += static_cast<uint256_t>(9681528633);
   input *= ten_billion;
   input += static_cast<uint256_t>(1701780722);
-  std::string v = brave_wallet::RLPEncode(RLPUint256ToBlobValue(input));
+  std::string v = brave_wallet::RLPEncode(base::Value(RLPUint256ToBlob(input)));
   ASSERT_EQ(ToHex(v), "0x8f102030405060708090a0b0c0d0e0f2");
 }
 
@@ -240,7 +240,7 @@ TEST(RLPEncodeTest, MediumInt5) {
   input += static_cast<uint256_t>(6297482234);
   input *= ten_billion;
   input += static_cast<uint256_t>(7068935681);
-  std::string v = brave_wallet::RLPEncode(RLPUint256ToBlobValue(input));
+  std::string v = brave_wallet::RLPEncode(base::Value(RLPUint256ToBlob(input)));
   ASSERT_EQ(ToHex(v),
             "0x9c0100020003000400050006000700080009000a000b000c000d000e01");
 }
@@ -263,7 +263,7 @@ TEST(RLPEncodeTest, BigInt) {
   input += static_cast<uint256_t>(5758400791);
   input *= ten_billion;
   input += static_cast<uint256_t>(3129639935);
-  std::string v = brave_wallet::RLPEncode(RLPUint256ToBlobValue(input));
+  std::string v = brave_wallet::RLPEncode(base::Value(RLPUint256ToBlob(input)));
   ASSERT_EQ(
       ToHex(v),
       "0xa0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");

@@ -5,11 +5,10 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "bat/ads/statement_info.h"
-#include "bat/ads/transaction_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -28,26 +27,26 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](const bool success, const StatementInfo& statement) {
-    ASSERT_TRUE(success);
+  BuildStatement([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
 
-    StatementInfo expected_statement;
-    expected_statement.next_payment_date =
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.0;
+    expected_statement->earnings_this_month = 0.02;
+    expected_statement->next_payment_date =
         TimeFromString("5 December 2020 23:59:59.999", /* is_local */ false);
-    expected_statement.earnings_this_month = 0.02;
-    expected_statement.earnings_last_month = 0.0;
-    expected_statement.ads_received_this_month = 2;
+    expected_statement->ads_received_this_month = 2;
 
     EXPECT_EQ(expected_statement, statement);
   });
@@ -61,54 +60,54 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
 
   AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_3 =
+  const TransactionInfo transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo& transaction_4 =
+  const TransactionInfo transaction_4 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_5 =
+  const TransactionInfo transaction_5 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo& transaction_6 =
+  const TransactionInfo transaction_6 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_6);
 
-  const TransactionInfo& transaction_7 =
+  const TransactionInfo transaction_7 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_7);
 
-  const TransactionInfo& transaction_8 =
+  const TransactionInfo transaction_8 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_8);
 
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](const bool success, const StatementInfo& statement) {
-    ASSERT_TRUE(success);
+  BuildStatement([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
 
-    StatementInfo expected_statement;
-    expected_statement.next_payment_date =
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.01;
+    expected_statement->earnings_this_month = 0.05;
+    expected_statement->next_payment_date =
         TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-    expected_statement.earnings_this_month = 0.05;
-    expected_statement.earnings_last_month = 0.01;
-    expected_statement.ads_received_this_month = 3;
+    expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
   });
@@ -122,44 +121,44 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
   AdvanceClockTo(TimeFromString("31 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
 
-  const TransactionInfo& transaction_3 =
+  const TransactionInfo transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo& transaction_4 =
+  const TransactionInfo transaction_4 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  const TransactionInfo& transaction_5 =
+  const TransactionInfo transaction_5 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo& transaction_6 =
+  const TransactionInfo transaction_6 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_6);
 
   SaveTransactions(transactions);
 
   // Act
-  BuildStatement([](const bool success, const StatementInfo& statement) {
-    ASSERT_TRUE(success);
+  BuildStatement([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
 
-    StatementInfo expected_statement;
-    expected_statement.next_payment_date =
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.01;
+    expected_statement->earnings_this_month = 0.04;
+    expected_statement->next_payment_date =
         TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-    expected_statement.earnings_this_month = 0.04;
-    expected_statement.earnings_last_month = 0.01;
-    expected_statement.ads_received_this_month = 3;
+    expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
   });
@@ -172,15 +171,15 @@ TEST_F(BatAdsStatementTest, GetForNoTransactions) {
   AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   // Act
-  BuildStatement([](const bool success, const StatementInfo& statement) {
-    ASSERT_TRUE(success);
+  BuildStatement([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
 
-    StatementInfo expected_statement;
-    expected_statement.next_payment_date =
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.0;
+    expected_statement->earnings_this_month = 0.0;
+    expected_statement->next_payment_date =
         TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-    expected_statement.earnings_this_month = 0.0;
-    expected_statement.earnings_last_month = 0.0;
-    expected_statement.ads_received_this_month = 0;
+    expected_statement->ads_received_this_month = 0;
 
     EXPECT_EQ(expected_statement, statement);
   });

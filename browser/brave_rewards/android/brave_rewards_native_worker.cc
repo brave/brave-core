@@ -293,16 +293,20 @@ void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
-    bool success,
-    double next_payment_date,
-    int ads_received_this_month,
-    double earnings_this_month,
-    double earnings_last_month) {
+    ads::mojom::StatementInfoPtr statement) {
   JNIEnv* env = base::android::AttachCurrentThread();
+  if (!statement) {
+    Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
+        env, weak_java_brave_rewards_native_worker_.get(env),
+        /* success */ false, 0.0, 0, 0.0, 0.0);
+    return;
+  }
+
   Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
-      env, weak_java_brave_rewards_native_worker_.get(env), success,
-      next_payment_date * 1000, ads_received_this_month, earnings_this_month,
-      earnings_last_month);
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      /* success */ true, statement->next_payment_date.ToDoubleT() * 1000,
+      statement->ads_received_this_month, statement->earnings_this_month,
+      statement->earnings_last_month);
 }
 
 double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {

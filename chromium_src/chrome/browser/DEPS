@@ -10,6 +10,7 @@ include_rules = [
   "+brave/components/brave_rewards/browser",
   "+brave/components/brave_rewards/common",
   "+brave/components/brave_rewards/resources/extension/grit",
+  "+brave/components/brave_search_conversion",
   "+brave/components/brave_shields",
   "+brave/components/brave_sync",
   "+brave/components/brave_today",

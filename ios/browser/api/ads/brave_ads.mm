@@ -12,12 +12,15 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
@@ -31,10 +34,11 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/statement_info.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
+#include "build/build_config.h"
 #import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
 #import "notification_ad_ios.h"
@@ -85,12 +89,13 @@ static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
 
-ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
-    ads::mojom::DBTransactionPtr transaction,
+ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
+    ads::mojom::DBTransactionInfoPtr transaction,
     ads::Database* database) {
-  auto response = ads::mojom::DBCommandResponse::New();
+  auto response = ads::mojom::DBCommandResponseInfo::New();
   if (!database) {
-    response->status = ads::mojom::DBCommandResponse::Status::RESPONSE_ERROR;
+    response->status =
+        ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), response.get());
   }
@@ -221,43 +226,29 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
       stringWithFormat:@"%@_%@", locale.languageCode, locale.countryCode];
 }
 
-BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
-
-    + (AdsEnvironment)environment {
-  return static_cast<AdsEnvironment>(ads::g_environment);
-}
-
-+ (void)setEnvironment:(AdsEnvironment)environment {
-  ads::g_environment = static_cast<ads::mojom::Environment>(environment);
-}
-
 + (AdsSysInfo*)sysInfo {
   auto sys_info = [[AdsSysInfo alloc] init];
   sys_info.deviceId = base::SysUTF8ToNSString(ads::SysInfo().device_id);
-  sys_info.didOverrideCommandLineArgsFlag =
-      ads::SysInfo().did_override_command_line_args_flag;
   sys_info.isUncertainFuture = ads::SysInfo().is_uncertain_future;
   return sys_info;
 }
 
 + (void)setSysInfo:(AdsSysInfo*)sysInfo {
   ads::SysInfo().device_id = base::SysNSStringToUTF8(sysInfo.deviceId);
-  ads::SysInfo().did_override_command_line_args_flag =
-      sysInfo.didOverrideCommandLineArgsFlag;
   ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
-+ (AdsBuildChannel*)buildChannel {
-  auto build_channel = [[AdsBuildChannel alloc] init];
++ (AdsBuildChannelInfo*)buildChannelInfo {
+  auto build_channel = [[AdsBuildChannelInfo alloc] init];
   build_channel.isRelease = ads::BuildChannel().is_release;
   build_channel.name = base::SysUTF8ToNSString(ads::BuildChannel().name);
 
   return build_channel;
 }
 
-+ (void)setBuildChannel:(AdsBuildChannel*)buildChannel {
-  ads::BuildChannel().is_release = buildChannel.isRelease;
-  ads::BuildChannel().name = base::SysNSStringToUTF8(buildChannel.name);
++ (void)setBuildChannelInfo:(AdsBuildChannelInfo*)buildChannelInfo {
+  ads::BuildChannel().is_release = buildChannelInfo.isRelease;
+  ads::BuildChannel().name = base::SysNSStringToUTF8(buildChannelInfo.name);
 }
 
 #pragma mark - Initialization / Shutdown
@@ -617,20 +608,24 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
                             completion:
-                                (void (^)(BOOL success,
-                                          NSString* dimensions,
+                                (void (^)(NSString* dimensions,
                                           InlineContentAdIOS* ad))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->MaybeServeInlineContentAd(base::SysNSStringToUTF8(dimensions), ^(
-                                     const bool success,
-                                     const std::string& dimensions,
-                                     const ads::InlineContentAdInfo& ad) {
-    const auto inline_content_ad =
-        [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:ad];
-    completion(success, base::SysUTF8ToNSString(dimensions), inline_content_ad);
-  });
+  ads->MaybeServeInlineContentAd(
+      base::SysNSStringToUTF8(dimensions),
+      ^(const std::string& dimensions,
+        const absl::optional<ads::InlineContentAdInfo>& ad) {
+        if (!ad) {
+          completion(base::SysUTF8ToNSString(dimensions), nil);
+          return;
+        }
+
+        const auto inline_content_ad =
+            [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
+        completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
+      });
 }
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId
@@ -672,20 +667,20 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetStatementOfAccounts(^(const bool success,
-                                const ads::StatementInfo& list) {
-    if (!success) {
+  ads->GetStatementOfAccounts(^(ads::mojom::StatementInfoPtr statement) {
+    if (!statement) {
       completion(0, 0, nil);
       return;
     }
 
     NSDate* nextPaymentDate = nil;
-    if (!list.next_payment_date.is_null()) {
-      nextPaymentDate = [NSDate
-          dateWithTimeIntervalSince1970:list.next_payment_date.ToDoubleT()];
+    if (!statement->next_payment_date.is_null()) {
+      nextPaymentDate =
+          [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                    .ToDoubleT()];
     }
-    completion(list.ads_received_this_month, list.earnings_this_month,
-               nextPaymentDate);
+    completion(statement->ads_received_this_month,
+               statement->earnings_this_month, nextPaymentDate);
   });
 }
 
@@ -746,12 +741,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 #pragma mark - Network
 
-- (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
+- (void)UrlRequest:(ads::mojom::UrlRequestInfoPtr)url_request
           callback:(ads::UrlRequestCallback)callback {
-  std::map<ads::mojom::UrlRequestMethod, std::string> methodMap{
-      {ads::mojom::UrlRequestMethod::kGet, "GET"},
-      {ads::mojom::UrlRequestMethod::kPost, "POST"},
-      {ads::mojom::UrlRequestMethod::kPut, "PUT"}};
+  std::map<ads::mojom::UrlRequestMethodType, std::string> methodMap{
+      {ads::mojom::UrlRequestMethodType::kGet, "GET"},
+      {ads::mojom::UrlRequestMethodType::kPost, "POST"},
+      {ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
 
   const auto copiedURL = url_request->url;
 
@@ -770,7 +765,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
               if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
                 return;
               }
-              ads::mojom::UrlResponse url_response;
+              ads::mojom::UrlResponseInfo url_response;
               url_response.url = copiedURL;
               url_response.status_code = statusCode;
               url_response.body = response;
@@ -975,14 +970,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                    });
   };
 
-  NSString* baseUrl;
-  if (ads::g_environment == ads::mojom::Environment::kProduction) {
-    baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
-  } else {
-    baseUrl =
-        @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
+  NSString* baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
+  const auto flags = brave_rewards::RewardsFlags::ForCurrentProcess();
+  if (flags.environment) {
+    switch (*flags.environment) {
+      case brave_rewards::RewardsFlags::Environment::kDevelopment:
+      case brave_rewards::RewardsFlags::Environment::kStaging:
+        baseUrl = @"https://"
+                  @"brave-user-model-installer-input-dev.s3.bravesoftware.com";
+        break;
+      case brave_rewards::RewardsFlags::Environment::kProduction:
+        break;
+    }
   }
-
   baseUrl = [baseUrl stringByAppendingPathComponent:folderName];
 
   NSString* manifestUrl =
@@ -1233,11 +1233,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return nil;
   }
-  ads::NotificationAdInfo info;
-  if (ads->GetNotificationAd(identifier.UTF8String, &info)) {
-    return [[NotificationAdIOS alloc] initWithNotificationInfo:info];
+
+  const absl::optional<ads::NotificationAdInfo> ad =
+      ads->MaybeGetNotificationAd(identifier.UTF8String);
+  if (!ad) {
+    return nil;
   }
-  return nil;
+
+  return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
 }
 
 - (bool)canShowNotificationAds {
@@ -1315,14 +1318,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                          encoding:[NSString defaultCStringEncoding]];
 }
 
-- (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction
+- (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback {
   __weak BraveAds* weakSelf = self;
   base::PostTaskAndReplyWithResult(
       databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
-      base::BindOnce(^(ads::mojom::DBCommandResponsePtr response) {
+      base::BindOnce(^(ads::mojom::DBCommandResponseInfoPtr response) {
         const auto strongSelf = weakSelf;
         if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
           return;
@@ -1417,6 +1420,56 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (base::Time)getTimePref:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
   return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
+}
+
+- (void)setDictPref:(const std::string&)path value:(base::Value::Dict)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(path);
+    self.prefs[key] = base::SysUTF8ToNSString(json);
+    [self savePref:key];
+  }
+}
+
+- (absl::optional<base::Value::Dict>)getDictPref:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  const auto json = (NSString*)self.prefs[key];
+  if (!json) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value> value =
+      base::JSONReader::Read(base::SysNSStringToUTF8(json));
+  if (!value || !value->is_dict()) {
+    return absl::nullopt;
+  }
+
+  return value->GetDict().Clone();
+}
+
+- (void)setListPref:(const std::string&)path value:(base::Value::List)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(path);
+    self.prefs[key] = base::SysUTF8ToNSString(json);
+    [self savePref:key];
+  }
+}
+
+- (absl::optional<base::Value::List>)getListPref:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  const auto json = (NSString*)self.prefs[key];
+  if (!json) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value> value =
+      base::JSONReader::Read(base::SysNSStringToUTF8(json));
+  if (!value || !value->is_list()) {
+    return absl::nullopt;
+  }
+
+  return value->GetList().Clone();
 }
 
 - (void)clearPref:(const std::string&)path {
@@ -1877,13 +1930,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return _paths;
 }
 
-- (void)recordP2AEvent:(const std::string&)name
-                 value:(const std::string&)value {
+- (void)recordP2AEvent:(const std::string&)name value:(base::Value::List)value {
   // Not needed on iOS
 }
 
 - (void)logTrainingInstance:
-    (std::vector<brave_federated::mojom::CovariatePtr>)training_instance {
+    (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_instance {
   // Not needed on iOS
 }
 

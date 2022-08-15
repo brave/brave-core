@@ -11,6 +11,7 @@ import android.util.Pair;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
@@ -56,6 +57,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
     private double nativeCurrencyTotal; // Cannot format directly because format is in R
     private double value;
     private String symbol = "";
+    private BlockchainToken token;
     private int decimals;
     private boolean insufficientFundsForGasError;
     private boolean insufficientFundsError;
@@ -141,6 +143,10 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public String getSymbol() {
         return this.symbol;
+    }
+
+    public BlockchainToken getToken() {
+        return this.token;
     }
 
     public int getDecimals() {
@@ -236,7 +242,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public static ParsedTransaction parseTransaction(TransactionInfo txInfo,
             NetworkInfo selectedNetwork, AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices, BigInteger solFeeEstimatesFee,
+            HashMap<String, Double> assetPrices, long solFeeEstimatesFee,
             BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
         BlockchainToken nativeAsset = Utils.makeNetworkAsset(selectedNetwork);
@@ -245,11 +251,18 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         final ParsedTransactionFees feeDetails = ParsedTransactionFees.parseTransactionFees(
                 txInfo, selectedNetwork, networkSpotPrice, solFeeEstimatesFee);
-
         TxDataUnion txDataUnion = txInfo.txDataUnion;
-        TxData1559 txData = txDataUnion.getEthTxData1559();
-        SolanaTxData solTxData = null; // TODO: add with SOL
-        FilTxData filTxData = null; // TODO: add with FIL
+        TxData1559 txData = txInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                ? txInfo.txDataUnion.getEthTxData1559()
+                : null;
+        SolanaTxData solTxData = txInfo.txDataUnion.which() == TxDataUnion.Tag.SolanaTxData
+                ? txInfo.txDataUnion.getSolanaTxData()
+                : null;
+        ;
+        FilTxData filTxData = txInfo.txDataUnion.which() == TxDataUnion.Tag.FilTxData
+                ? txInfo.txDataUnion.getFilTxData()
+                : null;
+        ;
 
         final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction = txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
@@ -292,6 +305,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.hash = txInfo.txHash;
         parsedTransaction.type = txInfo.txType;
         parsedTransaction.nonce = nonce;
+        parsedTransaction.token = token;
         parsedTransaction.createdTime = txInfo.createdTime;
         parsedTransaction.status = txInfo.txStatus;
         parsedTransaction.sender = txInfo.fromAddress;
@@ -384,21 +398,21 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                    .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION) {
             final int decimals = token != null ? token.decimals : Utils.SOL_DEFAULT_DECIMALS;
             final double price = Utils.getOrDefault(assetPrices, tokenSymbolLower, 0.0d);
-            final double sendAmountFiat = Utils.fromHexWei(value, decimals) * price;
+            final double sendAmount = Utils.fromWei(value, decimals);
+            final double sendAmountFiat = sendAmount * price;
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
             final boolean insufficientNativeFunds =
                     parsedTransaction.getGasFee() > accountNativeBalance;
-            final boolean insufficientTokenFunds =
-                    Utils.fromHexWei(value, decimals) > accountTokenBalance;
+            final boolean insufficientTokenFunds = sendAmount > accountTokenBalance;
 
             parsedTransaction.recipient = to;
             parsedTransaction.recipientLabel = getAddressLabel(accounts, to);
             parsedTransaction.fiatValue = sendAmountFiat;
             parsedTransaction.fiatTotal = totalAmountFiat;
             parsedTransaction.nativeCurrencyTotal = sendAmountFiat / networkSpotPrice;
-            parsedTransaction.value = Utils.fromHexWei(value, decimals);
+            parsedTransaction.value = sendAmount;
             parsedTransaction.symbol = token != null ? token.symbol : "";
             parsedTransaction.decimals = decimals;
             parsedTransaction.insufficientFundsError = insufficientTokenFunds;
@@ -470,8 +484,14 @@ public class ParsedTransaction extends ParsedTransactionFees {
             for (String k : assetPrices.keySet()) {
                 String v = String.valueOf(assetPrices.get(k));
             }
+            double sendAmount = 0;
+            if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER) {
+                sendAmount = Utils.fromWei(value, selectedNetwork.decimals);
+            } else {
+                sendAmount = Utils.fromHexWei(value, selectedNetwork.decimals);
+            }
 
-            final double sendAmountFiat = Utils.fromHexWei(value, selectedNetwork.decimals) * price;
+            final double sendAmountFiat = sendAmount * price;
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
@@ -480,7 +500,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.fiatValue = sendAmountFiat;
             parsedTransaction.fiatTotal = totalAmountFiat;
             parsedTransaction.nativeCurrencyTotal = sendAmountFiat / networkSpotPrice;
-            parsedTransaction.value = Utils.fromHexWei(value, selectedNetwork.decimals);
+            parsedTransaction.value = sendAmount;
             parsedTransaction.symbol = selectedNetwork.symbol;
             parsedTransaction.decimals = selectedNetwork.decimals;
             parsedTransaction.insufficientFundsError =
@@ -522,8 +542,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         String action = "";
         String detailInfo = "";
+        String actionFiatValue = String.format(Locale.getDefault(), "%.2f", this.fiatValue);
         if (this.type == TransactionType.ERC20_TRANSFER) {
-            String actionFiatValue = String.format(Locale.getDefault(), "%.2f", this.fiatValue);
             action = String.format(context.getResources().getString(R.string.wallet_tx_info_sent),
                     this.senderLabel, this.formatValueToDisplay(), this.symbol, actionFiatValue,
                     strDate);
@@ -548,7 +568,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     + "0x Exchange Proxy";
         } else {
             action = String.format(context.getResources().getString(R.string.wallet_tx_info_sent),
-                    this.senderLabel, this.formatValueToDisplay(), this.symbol, "0.00", strDate);
+                    this.senderLabel, this.formatValueToDisplay(), this.symbol, actionFiatValue,
+                    strDate);
             detailInfo = this.senderLabel + " -> " + this.recipientLabel;
         }
 

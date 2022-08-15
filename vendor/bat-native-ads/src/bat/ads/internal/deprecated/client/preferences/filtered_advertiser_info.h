@@ -20,7 +20,7 @@ struct FilteredAdvertiserInfo final {
   ~FilteredAdvertiserInfo();
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& value);
 
   std::string id;
 };

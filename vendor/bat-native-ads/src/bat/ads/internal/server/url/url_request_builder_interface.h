@@ -14,7 +14,7 @@ class UrlRequestBuilderInterface {
  public:
   virtual ~UrlRequestBuilderInterface() = default;
 
-  virtual mojom::UrlRequestPtr Build() = 0;
+  virtual mojom::UrlRequestInfoPtr Build() = 0;
 };
 
 }  // namespace ads

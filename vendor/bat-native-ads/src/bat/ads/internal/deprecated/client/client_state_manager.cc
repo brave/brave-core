@@ -113,19 +113,20 @@ bool ClientStateManager::HasInstance() {
   return !!g_client_instance;
 }
 
-FilteredAdvertiserList ClientStateManager::GetFilteredAdvertisers() const {
+const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()
+    const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.filtered_advertisers;
 }
 
-FilteredCategoryList ClientStateManager::GetFilteredCategories() const {
+const FilteredCategoryList& ClientStateManager::GetFilteredCategories() const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.filtered_categories;
 }
 
-FlaggedAdList ClientStateManager::GetFlaggedAds() const {
+const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.flagged_ads;
@@ -480,20 +481,6 @@ void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
   Save();
 }
 
-void ClientStateManager::SetServeAdAt(const base::Time time) {
-  DCHECK(is_initialized_);
-
-  client_->serve_ad_at = time;
-
-  Save();
-}
-
-base::Time ClientStateManager::GetServeAdAt() {
-  DCHECK(is_initialized_);
-
-  return client_->serve_ad_at;
-}
-
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
     const targeting::TextClassificationProbabilityMap& probabilities) {
   DCHECK(is_initialized_);
@@ -526,7 +513,7 @@ void ClientStateManager::RemoveAllHistory() {
   Save();
 }
 
-std::string ClientStateManager::GetVersionCode() const {
+const std::string& ClientStateManager::GetVersionCode() const {
   DCHECK(is_initialized_);
 
   return client_->version_code;

@@ -80,9 +80,9 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
   }
 
   NotificationAdInfo BuildAndSaveNotificationAd() {
-    const CreativeNotificationAdInfo& creative_ad =
+    const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();
-    const NotificationAdInfo& ad = BuildNotificationAd(creative_ad);
+    const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
     NotificationAdManager::GetInstance()->PushBack(ad);
     return ad;
   }
@@ -100,7 +100,7 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
-  const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
   event_handler_->FireEvent(ad.placement_id,
@@ -120,7 +120,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
   event_handler_->FireEvent(ad.placement_id,
@@ -140,7 +140,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
   event_handler_->FireEvent(ad.placement_id,
@@ -160,7 +160,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
-  const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
   event_handler_->FireEvent(ad.placement_id,
@@ -180,7 +180,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
 
 TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
-  const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
   event_handler_->FireEvent(ad.placement_id,

@@ -36,13 +36,14 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private HashMap<String, Double> mNativeAssetsBalances;
     private HashMap<String, HashMap<String, Double>> mBlockchainTokensBalances;
     private boolean mUpdateTxObjectManually;
+    private long mSolanaEstimatedTxFee;
 
     public ApproveTxFragmentPageAdapter(FragmentManager fm, TransactionInfo txInfo,
             NetworkInfo selectedNetwork, AccountInfo[] accounts,
             HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
             HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances, Activity activity,
-            boolean updateTxObjectManually) {
+            boolean updateTxObjectManually, long solanaEstimatedTxFee) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mTxInfo = txInfo;
         mSelectedNetwork = selectedNetwork;
@@ -54,6 +55,7 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         mTitles = new ArrayList<>(Arrays.asList(activity.getText(R.string.transaction).toString(),
                 activity.getText(R.string.transaction_details).toString()));
         mUpdateTxObjectManually = updateTxObjectManually;
+        mSolanaEstimatedTxFee = solanaEstimatedTxFee;
     }
 
     @NonNull
@@ -62,7 +64,7 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         if (position == 0) {
             return TxFragment.newInstance(mTxInfo, mSelectedNetwork, mAccounts, mAssetPrices,
                     mFullTokenList, mNativeAssetsBalances, mBlockchainTokensBalances,
-                    mUpdateTxObjectManually);
+                    mUpdateTxObjectManually, mSolanaEstimatedTxFee);
         } else {
             return TxDetailsFragment.newInstance(mTxInfo);
         }

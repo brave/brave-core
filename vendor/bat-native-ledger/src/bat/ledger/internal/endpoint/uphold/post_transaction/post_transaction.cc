@@ -37,16 +37,14 @@ std::string PostTransaction::GetUrl(const std::string& address) {
 
 std::string PostTransaction::GeneratePayload(
     const ::ledger::uphold::Transaction& transaction) {
-  base::Value denomination(base::Value::Type::DICTIONARY);
-  denomination.SetStringKey(
-      "amount",
-      base::StringPrintf("%f", transaction.amount));
-  denomination.SetStringKey("currency", "BAT");
+  base::Value::Dict denomination;
+  denomination.Set("amount", base::StringPrintf("%f", transaction.amount));
+  denomination.Set("currency", "BAT");
 
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("destination", transaction.address);
-  payload.SetStringKey("message", transaction.message);
-  payload.SetKey("denomination", std::move(denomination));
+  base::Value::Dict payload;
+  payload.Set("destination", transaction.address);
+  payload.Set("message", transaction.message);
+  payload.Set("denomination", std::move(denomination));
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -78,13 +76,8 @@ type::Result PostTransaction::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* id_str = dictionary->FindStringKey("id");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* id_str = dict.FindString("id");
   if (!id_str) {
     BLOG(0, "Missing id");
     return type::Result::LEDGER_ERROR;

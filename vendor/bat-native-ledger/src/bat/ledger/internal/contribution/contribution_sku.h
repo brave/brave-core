@@ -27,10 +27,6 @@ class ContributionSKU {
                         const std::string& wallet_type,
                         ledger::LegacyResultCallback callback);
 
-  void AnonUserFunds(const std::string& contribution_id,
-                     const std::string& wallet_type,
-                     ledger::LegacyResultCallback callback);
-
   void Merchant(
       const type::SKUTransaction& transaction,
       client::TransactionCallback callback);

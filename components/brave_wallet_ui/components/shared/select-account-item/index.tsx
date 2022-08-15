@@ -1,9 +1,26 @@
 import * as React from 'react'
-import { UserAccountType } from '../../../constants/types'
+import { create } from 'ethereum-blockies'
+
+// types
+import { BraveWallet, UserAccountType } from '../../../constants/types'
+
+// utils
+import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { create } from 'ethereum-blockies'
-// Styled Components
+
+// components
+import { Tooltip } from '../tooltip/index'
+import { CreateNetworkIcon } from '../create-network-icon/index'
+
+// style
+import {
+  IconsWrapper,
+  NetworkIconWrapper,
+  SwitchAccountIcon,
+  Row,
+  HorizontalSpace
+} from '../style'
 import {
   StyledWrapper,
   AccountAddress,
@@ -16,27 +33,90 @@ import {
 
 export interface Props {
   account: UserAccountType
-  selectedAccount: UserAccountType
-  onSelectAccount: () => void
+  selectedAccount?: UserAccountType
+  selectedNetwork?: BraveWallet.NetworkInfo
+  onSelectAccount?: () => void
+  showTooltips?: boolean
+  fullAddress?: boolean
+  hideAddress?: boolean
+  showSwitchAccountsIcon?: boolean
 }
 
-function SelectAccountItem (props: Props) {
-  const { account, selectedAccount, onSelectAccount } = props
+export function SelectAccountItem ({
+  account,
+  selectedAccount,
+  onSelectAccount,
+  showTooltips,
+  fullAddress,
+  selectedNetwork,
+  hideAddress,
+  showSwitchAccountsIcon: showSwitchAccountsLink
+}: Props) {
+  // methods
+  const onKeyPress = React.useCallback(({ key }: React.KeyboardEvent) => {
+    // Invoke for space or enter, just like a regular input or button
+    if (onSelectAccount && [' ', 'Enter'].includes(key)) {
+      onSelectAccount()
+    }
+  }, [onSelectAccount])
 
+  // memos
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account])
 
+  const PossibleToolTip = React.useMemo(() => {
+    return showTooltips ? Tooltip : ({ children }: React.PropsWithChildren<{
+      text: string
+      isAddress?: boolean
+    }>) => <>{children}</>
+  }, [showTooltips])
+
+  // render
   return (
-    <StyledWrapper onClick={onSelectAccount}>
+    <StyledWrapper onKeyPress={onKeyPress}>
       <LeftSide>
-        <AccountCircle orb={orb} />
+        {!selectedNetwork && <AccountCircle orb={orb} onClick={onSelectAccount} />}
+        {selectedNetwork &&
+          <IconsWrapper onClick={onSelectAccount}>
+            <AccountCircle orb={orb} style={{ width: '36px', height: '36px' }} />
+            <NetworkIconWrapper>
+              <CreateNetworkIcon size='small' network={selectedNetwork} />
+            </NetworkIconWrapper>
+          </IconsWrapper>
+        }
         <AccountAndAddress>
-          <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
-          <AccountAddress>{reduceAddress(account.address)}</AccountAddress>
+
+          <PossibleToolTip
+            text={showSwitchAccountsLink
+              ? getLocale('braveWalletClickToSwitch')
+              : account.name
+            }
+            isAddress={!showSwitchAccountsLink}
+          >
+            <Row justifyContent={'flex-start'} onClick={onSelectAccount}>
+              <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
+              {showSwitchAccountsLink &&
+                <>
+                  <HorizontalSpace space='5px' />
+                  <SwitchAccountIcon />
+                </>
+              }
+            </Row>
+          </PossibleToolTip>
+
+          {!hideAddress &&
+            <PossibleToolTip text={account.address} isAddress>
+              <AccountAddress>{fullAddress
+                ? account.address
+                : reduceAddress(account.address)
+              }</AccountAddress>
+            </PossibleToolTip>
+          }
+
         </AccountAndAddress>
       </LeftSide>
-      {account.address.toLowerCase() === selectedAccount.address.toLowerCase() &&
+      {account.address.toLowerCase() === selectedAccount?.address.toLowerCase() &&
         <BigCheckMark />
       }
     </StyledWrapper>

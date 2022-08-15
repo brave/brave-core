@@ -19,7 +19,7 @@ struct CreativeAdInfo;
 
 template <typename T>
 T FilterSeenAdvertisersAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
-  const std::map<std::string, bool> seen_advertisers =
+  const std::map<std::string, bool>& seen_advertisers =
       ClientStateManager::GetInstance()->GetSeenAdvertisersForType(type);
 
   const T filtered_ads = FilterSeenAdvertisers(ads, seen_advertisers);

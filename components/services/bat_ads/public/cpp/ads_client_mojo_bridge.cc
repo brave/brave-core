@@ -46,12 +46,12 @@ void AdsClientMojoBridge::OnGetBrowsingHistory(
 // static
 void AdsClientMojoBridge::OnURLRequest(
     CallbackHolder<UrlRequestCallback>* callback_holder,
-    const ads::mojom::UrlResponse& url_response) {
+    const ads::mojom::UrlResponseInfo& url_response) {
   DCHECK(callback_holder);
 
   if (callback_holder->is_valid()) {
     std::move(callback_holder->get())
-        .Run(ads::mojom::UrlResponse::New(url_response));
+        .Run(ads::mojom::UrlResponseInfo::New(url_response));
   }
 
   delete callback_holder;
@@ -85,7 +85,7 @@ void AdsClientMojoBridge::OnLoad(CallbackHolder<LoadCallback>* callback_holder,
 // static
 void AdsClientMojoBridge::OnRunDBTransaction(
     CallbackHolder<RunDBTransactionCallback>* callback_holder,
-    ads::mojom::DBCommandResponsePtr response) {
+    ads::mojom::DBCommandResponseInfoPtr response) {
   DCHECK(callback_holder);
   if (callback_holder->is_valid()) {
     std::move(callback_holder->get()).Run(std::move(response));
@@ -149,11 +149,9 @@ void AdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded(
       ads_client_->CanShowNotificationAdsWhileBrowserIsBackgrounded());
 }
 
-void AdsClientMojoBridge::ShowNotificationAd(const std::string& json) {
+void AdsClientMojoBridge::ShowNotificationAd(base::Value::Dict dict) {
   ads::NotificationAdInfo notification_ad;
-  if (!notification_ad.FromJson(json)) {
-    return;
-  }
+  notification_ad.FromValue(dict);
 
   ads_client_->ShowNotificationAd(notification_ad);
 }
@@ -208,7 +206,7 @@ void AdsClientMojoBridge::GetBrowsingHistory(
                 _1));
 }
 
-void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
+void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                                      UrlRequestCallback callback) {
   // Callback holder gets deleted in |OnURLRequest|.
   auto* callback_holder =
@@ -272,7 +270,7 @@ void AdsClientMojoBridge::ClearScheduledCaptcha() {
 }
 
 void AdsClientMojoBridge::RunDBTransaction(
-    ads::mojom::DBTransactionPtr transaction,
+    ads::mojom::DBTransactionInfoPtr transaction,
     RunDBTransactionCallback callback) {
   auto* callback_holder = new CallbackHolder<RunDBTransactionCallback>(
       AsWeakPtr(), std::move(callback));
@@ -282,12 +280,12 @@ void AdsClientMojoBridge::RunDBTransaction(
 }
 
 void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
-                                         const std::string& out_value) {
-  ads_client_->RecordP2AEvent(name, out_value);
+                                         base::Value::List value) {
+  ads_client_->RecordP2AEvent(name, std::move(value));
 }
 
 void AdsClientMojoBridge::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
   ads_client_->LogTrainingInstance(std::move(training_instance));
 }
 
@@ -371,6 +369,28 @@ void AdsClientMojoBridge::GetTimePref(const std::string& path,
 void AdsClientMojoBridge::SetTimePref(const std::string& path,
                                       const base::Time value) {
   ads_client_->SetTimePref(path, value);
+}
+
+void AdsClientMojoBridge::GetDictPref(const std::string& path,
+                                      GetDictPrefCallback callback) {
+  absl::optional<base::Value::Dict> value = ads_client_->GetDictPref(path);
+  std::move(callback).Run(std::move(value));
+}
+
+void AdsClientMojoBridge::SetDictPref(const std::string& path,
+                                      base::Value::Dict value) {
+  ads_client_->SetDictPref(path, std::move(value));
+}
+
+void AdsClientMojoBridge::GetListPref(const std::string& path,
+                                      GetListPrefCallback callback) {
+  absl::optional<base::Value::List> value = ads_client_->GetListPref(path);
+  std::move(callback).Run(std::move(value));
+}
+
+void AdsClientMojoBridge::SetListPref(const std::string& path,
+                                      base::Value::List value) {
+  ads_client_->SetListPref(path, std::move(value));
 }
 
 void AdsClientMojoBridge::ClearPref(

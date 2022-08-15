@@ -56,6 +56,7 @@ import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
+import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
@@ -97,10 +98,15 @@ import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.omnibox.AutocompleteMatch;
+import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;
+import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modelutil.MVCListAdapter;
+import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.lang.reflect.Constructor;
@@ -245,6 +251,18 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager"));
     }
 
     @Test
@@ -381,6 +399,19 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
 
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                "createViewProvider", true, ViewProvider.class, Context.class,
+                MVCListAdapter.ModelList.class));
+
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "getVisibleSuggestionsCount", true, int.class, AutocompleteResult.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "getProcessorForSuggestion", true, SuggestionProcessor.class,
+                AutocompleteMatch.class, int.class));
+
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources",
@@ -422,6 +453,12 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "didSearchEnginesChange", true, boolean.class, List.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "computeStartIndexForRecentSearchEngines", true, int.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -572,6 +609,15 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
                 "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
+                Supplier.class, BookmarkState.class, ExploreIconProvider.class,
+                OmniboxPedalDelegate.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
+                ModelList.class, Context.class));
     }
 
     @Test
@@ -724,10 +770,30 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mNativeInitialized", true, boolean.class));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                        "mDropdownViewInfoListManager"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
+
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "mDropdownHeight"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
+                "mPriorityOrderedSuggestionProcessors"));
+
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "mPrepopulatedSearchEngines"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "mRecentSearchEngines"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "mSelectedSearchEnginePosition"));
     }
 
     @Test
@@ -783,6 +849,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName("org/chromium/chrome/browser/infobar/TranslateCompactInfoBar",
                         "org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));
     }
 
     private boolean classExists(String className) {

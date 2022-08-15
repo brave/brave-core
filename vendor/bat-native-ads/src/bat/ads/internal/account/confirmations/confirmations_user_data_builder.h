@@ -16,7 +16,7 @@ namespace ads {
 
 class ConfirmationsUserDataBuilder final : public UserDataBuilderInterface {
  public:
-  ConfirmationsUserDataBuilder(const base::Time time,
+  ConfirmationsUserDataBuilder(const base::Time created_at,
                                const std::string& creative_instance_id,
                                const ConfirmationType& confirmation_type);
 
@@ -29,7 +29,7 @@ class ConfirmationsUserDataBuilder final : public UserDataBuilderInterface {
   ConfirmationsUserDataBuilder& operator=(const ConfirmationsUserDataBuilder&) =
       delete;
 
-  base::Time time_;
+  base::Time created_at_;
   std::string creative_instance_id_;
   ConfirmationType confirmation_type_ = ConfirmationType::kUndefined;
 };

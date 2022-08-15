@@ -362,7 +362,7 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
       base::BindOnce(&SwapService::OnGetJupiterQuote,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  auto conversion_callback = base::BindOnce(&ConvertJupiterQuoteUint64ToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
 
   base::flat_map<std::string, std::string> request_headers;
   api_request_helper_.Request(
@@ -404,6 +404,13 @@ void SwapService::GetJupiterSwapTransactions(
     return;
   }
 
+  auto encoded_params = EncodeJupiterTransactionParams(std::move(params));
+  if (!encoded_params) {
+    std::move(callback).Run(
+        false, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&SwapService::OnGetJupiterSwapTransactions,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -412,8 +419,7 @@ void SwapService::GetJupiterSwapTransactions(
       "POST",
       GetJupiterSwapTransactionsURL(
           json_rpc_service_->GetChainId(mojom::CoinType::SOL)),
-      EncodeJupiterTransactionParams(std::move(params)), "application/json",
-      true, std::move(internal_callback));
+      *encoded_params, "application/json", true, std::move(internal_callback));
 }
 
 void SwapService::OnGetJupiterSwapTransactions(

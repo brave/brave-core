@@ -13,6 +13,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
+const char kTestExtensionsPreferencesFile[] =
+    "Secure_Preferences_for_extension_import";
 base::FilePath GetTestProfilePath() {
   base::FilePath test_dir;
   base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
@@ -24,12 +26,14 @@ base::FilePath GetTestProfilePath() {
 base::FilePath GetTestPreferencesPath() {
   base::FilePath test_dir;
   base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
-  return test_dir.AppendASCII("import").AppendASCII("chrome")
-      .AppendASCII("default").AppendASCII(kChromeExtensionsPreferencesFile);
+  return test_dir.AppendASCII("import")
+      .AppendASCII("chrome")
+      .AppendASCII("default")
+      .AppendASCII(kTestExtensionsPreferencesFile);
 }
 }  // namespace
 
-TEST(ChromeImporterUtilsTest, BasicTest) {
+TEST(ChromeImporterUtilsTest, ExtensionImportTest) {
   base::FilePath data_path;
   ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &data_path));
   base::FilePath secured_preference_path = GetTestPreferencesPath();
@@ -38,12 +42,17 @@ TEST(ChromeImporterUtilsTest, BasicTest) {
   base::ReadFileToString(secured_preference_path, &secured_preference_content);
   absl::optional<base::Value> secured_preference =
       base::JSONReader::Read(secured_preference_content);
-  auto* extensions = secured_preference->FindPath(kChromeExtensionsListPath);
+  ASSERT_TRUE(secured_preference);
+  ASSERT_TRUE(secured_preference->is_dict());
+  auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
+      kChromeExtensionsListPath);
+  ASSERT_TRUE(extensions);
   auto extensions_list =
       GetImportableListFromChromeExtensionsList(*extensions);
-  // Only 2 extensions installed from webstore are importing target extensions.
-  // We don't import theme, pre-installed extensions and installed by default.
-  EXPECT_EQ(2UL, extensions_list.size());
+  // Only 1 extension installed from webstore is importing target extension.
+  // We don't import theme, pre-installed extensions, disabled extensions and
+  // installed by default.
+  EXPECT_EQ(1UL, extensions_list.size());
 }
 
 TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {

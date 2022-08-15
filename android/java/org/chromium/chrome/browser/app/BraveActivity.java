@@ -66,11 +66,13 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
+import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
@@ -97,6 +99,7 @@ import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
@@ -148,7 +151,6 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -187,7 +189,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                    OnBraveSetDefaultBrowserListener, ConnectionErrorHandler {
     public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
-    private static final String BRAVE_TALK_URL = "https://talk.brave.com/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
@@ -224,6 +225,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
     private JsonRpcService mJsonRpcService;
+    private SwapService mSwapService;
     private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
     private TxService mTxService;
@@ -251,6 +253,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
             BraveVpnNativeWorker.getInstance().addObserver(this);
+
+            BraveVpnUtils.reportBackgroundUsageP3A();
         }
         Tab tab = getActivityTab();
         if (tab != null) {
@@ -310,8 +314,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             ApplicationLifetime.terminate(false);
         } else if (id == R.id.set_default_browser) {
             BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
-        } else if (id == R.id.brave_talk_id) {
-            TabUtils.openUrlInNewTab(false, BRAVE_TALK_URL);
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
@@ -1018,7 +1020,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void viewOnBlockExplorer(String address) {
-        Utils.openAddress("/address/" + address, mJsonRpcService, this);
+        // TODO(sergz): We will need to correct that while doing Solana DApps
+        Utils.openAddress("/address/" + address, mJsonRpcService, this, CoinType.ETH);
     }
 
     // should only be called if the wallet is setup and unlocked
@@ -1254,18 +1257,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         mWalletModel.resetServices(
-                getApplicationContext(), null, null, null, null, null, null, null, null);
+                getApplicationContext(), null, null, null, null, null, null, null, null, null);
     }
 
     private void setupWalletModel() {
         if (mWalletModel == null) {
             mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
                     mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService);
+                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
         } else {
             mWalletModel.resetServices(getApplicationContext(), mKeyringService,
                     mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
-                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService);
+                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService, mSwapService);
         }
         setupObservers();
     }
@@ -1297,18 +1300,30 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.wallet_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.getKeyringModel().addAccount(
-                                                        WalletUtils.getUniqueNextAccountName(this,
-                                                                mWalletModel.getKeyringModel()
-                                                                        .mAccountInfos.getValue()
-                                                                        .toArray(
-                                                                                new AccountInfo[0]),
-                                                                networkInfo.symbolName,
-                                                                networkInfo.coin),
-                                                        networkInfo.coin, isAccountAdded -> {});
                                                 mWalletModel.getCryptoModel()
                                                         .getNetworkModel()
-                                                        .clearCreateAccountState();
+                                                        .setNetwork(networkInfo, success -> {
+                                                            if (success) {
+                                                                mWalletModel.getKeyringModel().addAccount(
+                                                                        WalletUtils.getUniqueNextAccountName(
+                                                                                this,
+                                                                                mWalletModel
+                                                                                        .getKeyringModel()
+                                                                                        .mAccountInfos
+                                                                                        .getValue()
+                                                                                        .toArray(
+                                                                                                new AccountInfo
+                                                                                                        [0]),
+                                                                                networkInfo
+                                                                                        .symbolName,
+                                                                                networkInfo.coin),
+                                                                        networkInfo.coin,
+                                                                        isAccountAdded -> {});
+                                                            }
+                                                            mWalletModel.getCryptoModel()
+                                                                    .getNetworkModel()
+                                                                    .clearCreateAccountState();
+                                                        });
                                             })
                                     .setNegativeButton(
                                             R.string.wallet_action_no, (dialog, which) -> {
@@ -1602,6 +1617,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
+    private void initSwapService() {
+        if (mSwapService != null) {
+            return;
+        }
+        mSwapService = SwapServiceFactory.getInstance().getSwapService(this);
+    }
+
     private void initNativeServices() {
         InitBlockchainRegistry();
         InitTxService();
@@ -1611,6 +1633,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         InitBraveWalletService();
         InitKeyringService();
         InitJsonRpcService();
+        initSwapService();
         setupWalletModel();
     }
 

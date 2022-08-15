@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/account.h"
 
+#include <utility>
+
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
@@ -15,6 +17,7 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/statement/statement.h"
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
@@ -28,8 +31,7 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/statement_info.h"
-#include "bat/ads/transaction_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -124,14 +126,13 @@ void Account::Deposit(const std::string& creative_instance_id,
 
 void Account::GetStatement(GetStatementCallback callback) const {
   if (!ShouldRewardUser()) {
-    callback(/* success */ false, {});
+    callback(/* statement */ nullptr);
     return;
   }
 
-  return BuildStatement(
-      [callback](const bool success, const StatementInfo& statement) {
-        callback(success, statement);
-      });
+  return BuildStatement([callback](mojom::StatementInfoPtr statement) {
+    callback(std::move(statement));
+  });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -284,15 +285,14 @@ void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
 }
 
 void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
-  const absl::optional<IssuerInfo>& issuer_optional =
+  const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(issuers, IssuerType::kPayments);
-  if (!issuer_optional) {
+  if (!issuer) {
     BLOG(0, "Missing issuers");
     return;
   }
-  const IssuerInfo& issuer = issuer_optional.value();
 
-  if (!IsIssuerValid(issuer)) {
+  if (!IsIssuerValid(*issuer)) {
     BLOG(0, "Invalid issuers");
     return;
   }

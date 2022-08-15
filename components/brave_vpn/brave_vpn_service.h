@@ -21,8 +21,8 @@
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -37,7 +37,6 @@
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace network {
@@ -53,6 +52,10 @@ class BraveBrowserCommandControllerTest;
 
 namespace brave_vpn {
 
+constexpr char kNewUserReturningHistogramName[] = "Brave.VPN.NewUserReturning";
+constexpr char kDaysInMonthUsedHistogramName[] = "Brave.VPN.DaysInMonthUsed";
+constexpr char kLastUsageTimeHistogramName[] = "Brave.VPN.LastUsageTime";
+
 // This class is used by desktop and android.
 // However, it includes desktop specific impls and it's hidden
 // by IS_ANDROID ifdef.
@@ -66,7 +69,8 @@ class BraveVpnService :
  public:
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs,
+      PrefService* local_prefs,
+      PrefService* profile_prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
   ~BraveVpnService() override;
@@ -75,6 +79,11 @@ class BraveVpnService :
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
   std::string GetCurrentEnvironment() const;
+  bool is_purchased_user() const {
+    return purchased_state_ == mojom::PurchasedState::PURCHASED;
+  }
+  void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
+  void ReloadPurchasedState();
 
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
@@ -82,12 +91,7 @@ class BraveVpnService :
   bool is_connected() const {
     return connection_state_ == mojom::ConnectionState::CONNECTED;
   }
-  bool is_purchased_user() const {
-    return purchased_state_ == mojom::PurchasedState::PURCHASED;
-  }
   mojom::ConnectionState connection_state() const { return connection_state_; }
-  void ReloadPurchasedState();
-  void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
 
   // mojom::vpn::ServiceHandler
   void GetConnectionState(GetConnectionStateCallback callback) override;
@@ -109,6 +113,9 @@ class BraveVpnService :
   // base::PowerMonitor
   void OnSuspend() override;
   void OnResume() override;
+#else
+  // mojom::vpn::ServiceHandler
+  void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   using ResponseCallback =
@@ -156,8 +163,20 @@ class BraveVpnService :
                                   const std::string& payments_environment,
                                   const std::string& monthly_pass);
 
+  // new_usage should be set to true if a new VPN connection was just
+  // established.
+  void RecordP3A(bool new_usage);
+#if BUILDFLAG(IS_ANDROID)
+  void RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
+                                  int64_t session_end_time_ms);
+#endif
+
  private:
   friend class BraveVPNServiceTest;
+
+  void InitP3A();
+  void OnP3AInterval();
+
 #if !BUILDFLAG(IS_ANDROID)
   friend class ::BraveAppMenuBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
@@ -234,9 +253,6 @@ class BraveVpnService :
                      int status,
                      const std::string& body,
                      const base::flat_map<std::string, std::string>& headers);
-  void OnGetSanitizedJsonResponse(
-      ResponseCallback callback,
-      data_decoder::JsonSanitizer::Result sanitized_json_response);
 
   void OnGetSubscriberCredential(
       ResponseCallback callback,
@@ -254,7 +270,8 @@ class BraveVpnService :
       const std::string& domain,
       const std::string& credential_as_cookie);
 
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> local_prefs_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::Region> regions_;
   std::unique_ptr<Hostname> hostname_;
@@ -266,13 +283,14 @@ class BraveVpnService :
   base::ScopedObservation<BraveVPNOSConnectionAPI,
                           BraveVPNOSConnectionAPI::Observer>
       observed_{this};
-  mojo::ReceiverSet<mojom::ServiceHandler> receivers_;
   base::RepeatingTimer region_data_update_timer_;
 
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+  mojo::ReceiverSet<mojom::ServiceHandler> receivers_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
@@ -283,6 +301,7 @@ class BraveVpnService :
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::string skus_credential_;
+  base::RepeatingTimer p3a_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 

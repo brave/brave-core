@@ -94,7 +94,7 @@ void EventHandler::FireEvent(
           return;
         }
 
-        const PromotedContentAdInfo& ad =
+        const PromotedContentAdInfo ad =
             BuildPromotedContentAd(creative_ad, placement_id);
 
         FireEvent(ad, placement_id, creative_instance_id, event_type);

@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
@@ -83,21 +82,21 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
       GetUnblindedTokens()->GetAllTokens();
   EXPECT_EQ(list.size(), unblinded_tokens.size());
 
-  for (const auto& value : list) {
-    const base::Value::Dict* dictionary = value.GetIfDict();
-    ASSERT_TRUE(dictionary);
-    const std::string* unblinded_token_value =
-        dictionary->FindString("unblinded_token");
-    ASSERT_TRUE(unblinded_token_value);
-    const std::string unblinded_token_base64 = *unblinded_token_value;
-
-    const std::string* public_key_value = dictionary->FindString("public_key");
-    ASSERT_TRUE(public_key_value);
-    const std::string public_key_base64 = *public_key_value;
+  for (const auto& item : list) {
+    const base::Value::Dict* dict = item.GetIfDict();
+    ASSERT_TRUE(dict);
 
     UnblindedTokenInfo unblinded_token;
-    unblinded_token.value = cbr::UnblindedToken(unblinded_token_base64);
-    unblinded_token.public_key = cbr::PublicKey(public_key_base64);
+
+    const std::string* unblinded_token_base64 =
+        dict->FindString("unblinded_token");
+    ASSERT_TRUE(unblinded_token_base64);
+    unblinded_token.value = cbr::UnblindedToken(*unblinded_token_base64);
+
+    const std::string* public_key_base64 = dict->FindString("public_key");
+    ASSERT_TRUE(public_key_base64);
+    unblinded_token.public_key = cbr::PublicKey(*public_key_base64);
+
     ASSERT_TRUE(unblinded_token.is_valid());
 
     EXPECT_TRUE(GetUnblindedTokens()->TokenExists(unblinded_token));
@@ -114,7 +113,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsListWithEmptyList) {
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokens) {
   // Arrange
-  const UnblindedTokenList& unblinded_tokens = GetUnblindedTokens(10);
+  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(10);
 
   // Act
   GetUnblindedTokens()->SetTokens(unblinded_tokens);
@@ -128,7 +127,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokens) {
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokensWithEmptyList) {
   // Arrange
-  const UnblindedTokenList& unblinded_tokens = {};
+  const UnblindedTokenList unblinded_tokens = {};
 
   // Act
   GetUnblindedTokens()->SetTokens(unblinded_tokens);
@@ -139,7 +138,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensWithEmptyList) {
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokensFromList) {
   // Arrange
-  const base::Value& list = GetUnblindedTokensAsList(5);
+  const base::Value list = GetUnblindedTokensAsList(5);
 
   // Act
   GetUnblindedTokens()->SetTokensFromList(list.GetList());
@@ -176,7 +175,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensFromList) {
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokensFromListWithEmptyList) {
   // Arrange
-  const base::Value& list = GetUnblindedTokensAsList(0);
+  const base::Value list = GetUnblindedTokensAsList(0);
 
   // Act
   GetUnblindedTokens()->SetTokensFromList(list.GetList());
@@ -190,7 +189,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
   SetUnblindedTokens(3);
 
   // Act
-  const UnblindedTokenList& unblinded_tokens = GetRandomUnblindedTokens(5);
+  const UnblindedTokenList unblinded_tokens = GetRandomUnblindedTokens(5);
   GetUnblindedTokens()->AddTokens(unblinded_tokens);
 
   // Assert
@@ -204,7 +203,7 @@ TEST_F(BatAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
   SetUnblindedTokens(3);
 
   // Act
-  const UnblindedTokenList& duplicate_unblinded_tokens = GetUnblindedTokens(1);
+  const UnblindedTokenList duplicate_unblinded_tokens = GetUnblindedTokens(1);
   GetUnblindedTokens()->AddTokens(duplicate_unblinded_tokens);
 
   // Assert
@@ -217,7 +216,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokensCount) {
   SetUnblindedTokens(5);
 
   // Act
-  const UnblindedTokenList& random_unblinded_tokens =
+  const UnblindedTokenList random_unblinded_tokens =
       GetRandomUnblindedTokens(3);
   GetUnblindedTokens()->AddTokens(random_unblinded_tokens);
 
@@ -231,7 +230,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokensWithEmptyList) {
   SetUnblindedTokens(3);
 
   // Act
-  const UnblindedTokenList& empty_unblinded_tokens = {};
+  const UnblindedTokenList empty_unblinded_tokens = {};
   GetUnblindedTokens()->AddTokens(empty_unblinded_tokens);
 
   // Assert
@@ -248,7 +247,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveTokenCount) {
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
       "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
 
-  const UnblindedTokenInfo& unblinded_token =
+  const UnblindedTokenInfo unblinded_token =
       CreateUnblindedToken(unblinded_token_base64);
 
   GetUnblindedTokens()->RemoveToken(unblinded_token);
@@ -267,7 +266,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveToken) {
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
       "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
 
-  const UnblindedTokenInfo& unblinded_token =
+  const UnblindedTokenInfo unblinded_token =
       CreateUnblindedToken(unblinded_token_base64);
 
   GetUnblindedTokens()->RemoveToken(unblinded_token);
@@ -303,7 +302,7 @@ TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTheSameTokenTwice) {
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
       "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
 
-  const UnblindedTokenInfo& unblinded_token =
+  const UnblindedTokenInfo unblinded_token =
       CreateUnblindedToken(unblinded_token_base64);
 
   GetUnblindedTokens()->RemoveToken(unblinded_token);
@@ -327,7 +326,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveMatchingTokens) {
   const std::vector<std::string> expected_unblinded_tokens_base64 = {
       "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2"
       "AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa"};
-  const UnblindedTokenList& expected_unblinded_tokens =
+  const UnblindedTokenList expected_unblinded_tokens =
       CreateUnblindedTokens(expected_unblinded_tokens_base64);
 
   unblinded_tokens = GetUnblindedTokens()->GetAllTokens();
@@ -365,7 +364,7 @@ TEST_F(BatAdsUnblindedTokensTest, TokenExists) {
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
       "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
 
-  const UnblindedTokenInfo& unblinded_token =
+  const UnblindedTokenInfo unblinded_token =
       CreateUnblindedToken(unblinded_token_base64);
 
   // Assert

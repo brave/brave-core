@@ -262,6 +262,7 @@ Dubbelkolla att QR-koden genererades av en enhet som du äger.
 <translation id="3097089005389027085">Detta kommer att dela dina Brave-data inklusive eventuellt dina lösenord, med enheten som genererade kodorden.
 Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 Är du säker på att du vill göra detta?</translation>
+<translation id="4550208292810542331">Kameratillstånd beviljades inte</translation>
 <translation id="597993392929850353">Brave-licens</translation>
 <translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="6199596294742117349">Detta är en privat flik</translation>
@@ -550,8 +551,9 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Å</translation>
 <translation id="6895566650974550243">ALLA</translation>
-<translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Lägg till konto</translation>
+<translation id="318334680413773318">Lägg till/Importera konto</translation>
 <translation id="3448492834076427715">Uppdatera konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Vill du aktivera upplåsning med fingeravtryck?</translation>
@@ -892,4 +894,14 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5334952096674914470">\n\nMobilnätsleverantör\n</translation>
 <translation id="5393042357629679588">\n\nAnnat problem\n</translation>
 <translation id="8095666712177294104">\n\nPlattform\n</translation>
+<translation id="7080614857771109950">Stöder EVM-kompatibla tillgångar på Ethereum-blockkedjan (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="6577166808959668729">Stödjer SLP-kompatibla tillgångar på Solana-blockkedjan</translation>
+<translation id="6575120282593094155">Du har inte ett <ph name="ACCOUNT_TYPE"/>-konto. Vill du skapa ett nu?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Exkluderade appar</translation>
+<translation id="8463269357637177759">Tillåtna vanliga appar</translation>
+<translation id="4554726425645556940">Tillåtna systemappar</translation>
+<translation id="9023148942866814328">Visa systemappar</translation>
+<translation id="5472400694702418949">Lägg till appar som ska exkluderas från VPN-trafiken.</translation>
+<translation id="7002577172732106572">Split tunneling</translation>
 </translationbundle>

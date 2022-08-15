@@ -13,8 +13,10 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -22,7 +24,6 @@ namespace ads {
 class Ads;
 struct NewTabPageAdInfo;
 struct InlineContentAdInfo;
-struct StatementInfo;
 }  // namespace ads
 
 namespace bat_ads {
@@ -96,8 +97,8 @@ class BatAdsImpl :
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) override;
 
-  void GetNotificationAd(const std::string& placement_id,
-                         GetNotificationAdCallback callback) override;
+  void MaybeGetNotificationAd(const std::string& placement_id,
+                              MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       const ads::mojom::NotificationAdEventType event_type) override;
@@ -108,7 +109,7 @@ class BatAdsImpl :
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdPtr ad_mojom,
+      ads::mojom::SearchResultAdInfoPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
@@ -162,24 +163,20 @@ class BatAdsImpl :
                          const bool success);
 
   static void OnGetDiagnostics(CallbackHolder<GetDiagnosticsCallback>* holder,
-                               const bool success,
-                               const std::string& json);
+                               absl::optional<base::Value::List> value);
 
   static void OnGetStatementOfAccounts(
       CallbackHolder<GetStatementOfAccountsCallback>* holder,
-      const bool success,
-      const ads::StatementInfo& statement);
+      ads::mojom::StatementInfoPtr statement);
 
   static void OnMaybeServeInlineContentAd(
       CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
-      const bool success,
       const std::string& dimensions,
-      const ads::InlineContentAdInfo& ad);
+      const absl::optional<ads::InlineContentAdInfo>& ad);
 
   static void OnMaybeServeNewTabPageAd(
       CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-      const bool success,
-      const ads::NewTabPageAdInfo& ad);
+      const absl::optional<ads::NewTabPageAdInfo>& ad);
 
   static void OnTriggerSearchResultAdEvent(
       CallbackHolder<TriggerSearchResultAdEventCallback>* holder,

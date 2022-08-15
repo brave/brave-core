@@ -83,14 +83,11 @@ TEST(BatAdsSigningKeyTest, EncodeBase64) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
-      signing_key.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  const absl::optional<std::string> encoded_base64 = signing_key.EncodeBase64();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kSigningKeyBase64, encoded_base64);
+  EXPECT_EQ(kSigningKeyBase64, *encoded_base64);
 }
 
 TEST(BatAdsSigningKeyTest, Sign) {
@@ -98,13 +95,12 @@ TEST(BatAdsSigningKeyTest, Sign) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<SignedToken> signed_token_optional =
+  const absl::optional<SignedToken> signed_token =
       signing_key.Sign(GetBlindedToken());
-  ASSERT_TRUE(signed_token_optional);
-  const SignedToken& signed_token = signed_token_optional.value();
+  ASSERT_TRUE(signed_token);
 
   // Assert
-  EXPECT_EQ(GetSignedToken(), signed_token);
+  EXPECT_EQ(GetSignedToken(), *signed_token);
 }
 
 TEST(BatAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
@@ -112,11 +108,11 @@ TEST(BatAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<SignedToken> signed_token_optional =
+  const absl::optional<SignedToken> signed_token =
       signing_key.Sign(GetInvalidBlindedToken());
 
   // Assert
-  EXPECT_FALSE(signed_token_optional);
+  EXPECT_FALSE(signed_token);
 }
 
 TEST(BatAdsSigningKeyTest, RederiveUnblindedToken) {
@@ -124,13 +120,12 @@ TEST(BatAdsSigningKeyTest, RederiveUnblindedToken) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<UnblindedToken> unblinded_token_optional =
+  const absl::optional<UnblindedToken> unblinded_token =
       signing_key.RederiveUnblindedToken(GetTokenPreimage());
-  ASSERT_TRUE(unblinded_token_optional);
-  const UnblindedToken& unblinded_token = unblinded_token_optional.value();
+  ASSERT_TRUE(unblinded_token);
 
   // Assert
-  EXPECT_EQ(GetUnblindedToken(), unblinded_token);
+  EXPECT_EQ(GetUnblindedToken(), *unblinded_token);
 }
 
 TEST(BatAdsSigningKeyTest,
@@ -139,11 +134,11 @@ TEST(BatAdsSigningKeyTest,
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<UnblindedToken> unblinded_token_optional =
+  const absl::optional<UnblindedToken> unblinded_token =
       signing_key.RederiveUnblindedToken(GetInvalidTokenPreimage());
 
   // Assert
-  EXPECT_FALSE(unblinded_token_optional);
+  EXPECT_FALSE(unblinded_token);
 }
 
 TEST(BatAdsSigningKeyTest, GetPublicKey) {
@@ -151,13 +146,11 @@ TEST(BatAdsSigningKeyTest, GetPublicKey) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<PublicKey> public_key_optional =
-      signing_key.GetPublicKey();
-  ASSERT_TRUE(public_key_optional);
-  const PublicKey& public_key = public_key_optional.value();
+  const absl::optional<PublicKey> public_key = signing_key.GetPublicKey();
+  ASSERT_TRUE(public_key);
 
   // Assert
-  EXPECT_EQ(PublicKey(kPublicKeyBase64), public_key);
+  EXPECT_EQ(PublicKey(kPublicKeyBase64), *public_key);
 }
 
 TEST(BatAdsSigningKeyTest, IsEqual) {

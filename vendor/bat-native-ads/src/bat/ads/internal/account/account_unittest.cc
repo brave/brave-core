@@ -12,6 +12,7 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -22,11 +23,11 @@
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/statement_info.h"
-#include "bat/ads/transaction_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -165,9 +166,9 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -208,15 +209,16 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
@@ -225,16 +227,16 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
                     {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
                     {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -275,17 +277,18 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
   const IssuersInfo expected_issuers;
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
@@ -294,9 +297,9 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
   BuildAndSetIssuers();
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -341,22 +344,23 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
@@ -365,9 +369,9 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
 
   BuildAndSetIssuers();
 
-  const URLEndpointMap& endpoints = {{// Get issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -387,39 +391,40 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
           ]
         }
         )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
   // Act
-  const IssuersInfo& issuers = GetIssuers();
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo& expected_issuers =
+  const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_EQ(expected_issuers, issuers);
+  EXPECT_EQ(expected_issuers, *issuers);
 }
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLEndpointMap& endpoints = {
+  const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
             {
-              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
               "payload" : {},
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.717Z",
-              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520"
+              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
             }
           )"}}},
       {// Fetch payment token request
@@ -440,7 +445,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
               }
             }
           )"}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   BuildAndSetIssuers();
 
@@ -616,54 +621,53 @@ TEST_F(BatAdsAccountTest, GetStatement) {
 
   AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_3 =
+  const TransactionInfo transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo& transaction_4 =
+  const TransactionInfo transaction_4 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_5 =
+  const TransactionInfo transaction_5 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo& transaction_6 =
+  const TransactionInfo transaction_6 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_6);
 
-  const TransactionInfo& transaction_7 =
+  const TransactionInfo transaction_7 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_7);
 
   SaveTransactions(transactions);
 
   // Act
-  account_->GetStatement(
-      [](const bool success, const StatementInfo& statement) {
-        ASSERT_TRUE(success);
+  account_->GetStatement([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
 
-        StatementInfo expected_statement;
-        expected_statement.next_payment_date =
-            TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
-        expected_statement.earnings_this_month = 0.05;
-        expected_statement.earnings_last_month = 0.01;
-        expected_statement.ads_received_this_month = 3;
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.01;
+    expected_statement->earnings_this_month = 0.05;
+    expected_statement->next_payment_date =
+        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
+    expected_statement->ads_received_this_month = 3;
 
-        EXPECT_EQ(expected_statement, statement);
-      });
+    EXPECT_EQ(expected_statement, statement);
+  });
 
   // Assert
 }

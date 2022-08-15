@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/test/base/testing_profile.h"
@@ -47,12 +48,10 @@ namespace {
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value::Dict>* values) {
   DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* dict = update.Get();
-  ASSERT_TRUE(dict);
-  base::Value* list = dict->FindKey(brave_wallet::kEthereumPrefKey);
+  base::Value::Dict& dict = update.Get()->GetDict();
+  base::Value* list = dict.Find(brave_wallet::kEthereumPrefKey);
   if (!list) {
-    list = dict->SetKey(brave_wallet::kEthereumPrefKey,
-                        base::Value(base::Value::Type::LIST));
+    list = dict.Set(brave_wallet::kEthereumPrefKey, base::Value::List());
   }
   ASSERT_TRUE(list);
   auto& list_value = list->GetList();
@@ -148,29 +147,19 @@ TEST(TestBraveWalletHandler, RemoveEthereumChain) {
   TestBraveWalletHandler handler;
 
   std::vector<base::Value::Dict> values;
-  brave_wallet::mojom::NetworkInfo chain1(
-      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(false)));
+  brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain1));
 
-  brave_wallet::mojom::NetworkInfo chain2(
-      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(true)));
+  brave_wallet::mojom::NetworkInfo chain2 = brave_wallet::GetTestNetworkInfo2();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(handler.prefs(), &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
-  auto args = base::ListValue();
+  base::Value::List args;
   args.Append(base::Value("id"));
   args.Append(base::Value("chain_id"));
 
-  handler.RemoveEthereumChain(args.GetList());
+  handler.RemoveEthereumChain(args);
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg3()->is_bool());
   EXPECT_EQ(data.arg3()->GetBool(), true);
@@ -182,23 +171,19 @@ TEST(TestBraveWalletHandler, ResetEthereumChain) {
   TestBraveWalletHandler handler;
 
   std::vector<base::Value::Dict> values;
-  brave_wallet::mojom::NetworkInfo chain1(
-      brave_wallet::mojom::kPolygonMainnetChainId, "chain_name",
-      {"https://url1.com"}, {"https://url1.com"}, {"https://url1.com"},
-      "symbol_name", "symbol", 11, brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(false)));
+  brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1(
+      brave_wallet::mojom::kPolygonMainnetChainId);
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain1));
 
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
   UpdateCustomNetworks(handler.prefs(), &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 1u);
 
-  auto args = base::ListValue();
+  base::Value::List args;
   args.Append(base::Value("id"));
   args.Append(base::Value(brave_wallet::mojom::kPolygonMainnetChainId));
 
-  handler.ResetEthereumChain(args.GetList());
+  handler.ResetEthereumChain(args);
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg3()->is_bool());
   EXPECT_EQ(data.arg3()->GetBool(), true);
@@ -207,45 +192,40 @@ TEST(TestBraveWalletHandler, ResetEthereumChain) {
 
 TEST(TestBraveWalletHandler, AddEthereumChain) {
   TestBraveWalletHandler handler;
-  brave_wallet::mojom::NetworkInfo chain1(
-      "0x999", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol", "symbol_name", 11,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(false)));
+  brave_wallet::mojom::NetworkInfo chain1 =
+      brave_wallet::GetTestNetworkInfo1("0x999");
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
 
-  auto args = base::ListValue();
+  base::Value::List args;
   args.Append(base::Value("id"));
   args.Append(brave_wallet::EthNetworkInfoToValue(chain1));
   handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x999");
   base::RunLoop loop;
   handler.SetChainCallbackForTesting(loop.QuitClosure());
-  handler.AddEthereumChain(args.GetList());
+  handler.AddEthereumChain(args);
   loop.Run();
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 1u);
   EXPECT_EQ(handler.GetAllEthCustomChains()[0], chain1.Clone());
 
-  const base::Value* assets_pref =
-      handler.prefs()->GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref->FindPath("ethereum.0x999");
-  ASSERT_TRUE(list->is_list());
-  const base::Value::List& asset_list = list->GetList();
-  ASSERT_EQ(asset_list.size(), 1u);
+  const base::Value::Dict& assets_pref =
+      *handler.prefs()->GetValueDict(kBraveWalletUserAssets);
+  const base::Value::List& list =
+      *assets_pref.FindListByDottedPath("ethereum.0x999");
+  ASSERT_EQ(list.size(), 1u);
 
-  EXPECT_EQ(*asset_list[0].FindStringKey("address"), "");
-  EXPECT_EQ(*asset_list[0].FindStringKey("name"), "symbol_name");
-  EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
-  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
-  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 11);
-  EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
+  EXPECT_EQ(*list[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*list[0].GetDict().FindString("name"), "symbol_name");
+  EXPECT_EQ(*list[0].GetDict().FindString("symbol"), "symbol");
+  EXPECT_EQ(*list[0].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*list[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*list[0].GetDict().FindInt("decimals"), 11);
+  EXPECT_EQ(*list[0].GetDict().FindString("logo"), "https://url1.com");
+  EXPECT_EQ(*list[0].GetDict().FindBool("visible"), true);
 
-  auto args2 = base::ListValue();
+  base::Value::List args2;
   args2.Append(base::Value("id"));
   args2.Append(brave_wallet::EthNetworkInfoToValue(chain1));
-  handler.AddEthereumChain(args2.GetList());
+  handler.AddEthereumChain(args2);
   const auto& data = *handler.web_ui()->call_data()[1];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
@@ -262,22 +242,17 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
 
 TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
   TestBraveWalletHandler handler;
-  brave_wallet::mojom::NetworkInfo chain1(
-      "0x999", "chain_name", {"https://url1.com"}, {"https://url2.com"},
-      {"https://url3.com"}, "symbol", "symbol_name", 11,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(false)));
+  brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
 
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
 
-  auto args = base::ListValue();
+  base::Value::List args;
   args.Append(base::Value("id"));
   args.Append(brave_wallet::EthNetworkInfoToValue(chain1));
   handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x11");
   base::RunLoop loop;
   handler.SetChainCallbackForTesting(loop.QuitClosure());
-  handler.AddEthereumChain(args.GetList());
+  handler.AddEthereumChain(args);
   loop.Run();
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
@@ -296,17 +271,17 @@ TEST(TestBraveWalletHandler, AddEthereumChainFail) {
 
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
 
-  auto args = base::ListValue();
+  base::Value::List args;
   args.Append(base::Value("id"));
   args.Append(base::Value(""));
-  handler.AddEthereumChain(args.GetList());
+  handler.AddEthereumChain(args);
 
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
 
-  auto args2 = base::ListValue();
+  base::Value::List args2;
   args2.Append(base::Value("id"));
   args2.Append(base::Value(R"({"chain_name\":"a","rpcUrl":["http://u.c"]})"));
-  handler.AddEthereumChain(args2.GetList());
+  handler.AddEthereumChain(args2);
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
@@ -324,75 +299,54 @@ TEST(TestBraveWalletHandler, AddEthereumChainFail) {
 TEST(TestBraveWalletHandler, GetNetworkList) {
   TestBraveWalletHandler handler;
   std::vector<base::Value::Dict> values;
-  brave_wallet::mojom::NetworkInfo chain1(
-      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(false)));
+  brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain1));
 
-  brave_wallet::mojom::NetworkInfo chain2(
-      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(true)));
+  brave_wallet::mojom::NetworkInfo chain2 = brave_wallet::GetTestNetworkInfo2();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(handler.prefs(), &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
-  auto args = base::ListValue();
+  base::Value::List args;
   args.Append(base::Value("id"));
-  handler.GetNetworksList(args.GetList());
+  handler.GetNetworksList(args);
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
   ASSERT_TRUE(data.arg3()->is_dict());
-  auto& networks = data.arg3()->FindListKey("networks")->GetList();
+  const auto* networks = data.arg3()->GetDict().FindList("networks");
 
   size_t index = 0u;
   for (auto& known_chain :
        brave_wallet::GetAllKnownEthChains(handler.prefs())) {
-    EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[index++]),
+    EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo((*networks)[index++]),
               *known_chain);
   }
-  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[index++]), chain1);
-  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[index++]), chain2);
+  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo((*networks)[index++]), chain1);
+  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo((*networks)[index++]), chain2);
 }
 
 TEST(TestBraveWalletHandler, SetActiveNetwork) {
   TestBraveWalletHandler handler;
 
   std::vector<base::Value::Dict> values;
-  brave_wallet::mojom::NetworkInfo chain1(
-      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(false)));
+  brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain1));
 
-  brave_wallet::mojom::NetworkInfo chain2(
-      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22,
-      brave_wallet::mojom::CoinType::ETH,
-      brave_wallet::mojom::NetworkInfoData::NewEthData(
-          brave_wallet::mojom::NetworkInfoDataETH::New(true)));
+  brave_wallet::mojom::NetworkInfo chain2 = brave_wallet::GetTestNetworkInfo2();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(handler.prefs(), &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
   DictionaryPrefUpdate update(handler.prefs(), kBraveWalletSelectedNetworks);
-  base::Value* dict = update.Get();
-  DCHECK(dict);
-  dict->SetStringKey(brave_wallet::kEthereumPrefKey, "chain_id");
+  base::Value::Dict& dict = update.Get()->GetDict();
+  dict.Set(brave_wallet::kEthereumPrefKey, "chain_id");
   {
-    auto args = base::ListValue();
+    base::Value::List args;
     args.Append(base::Value("id"));
     args.Append(base::Value("chain_id2"));
 
-    handler.SetActiveNetwork(args.GetList());
+    handler.SetActiveNetwork(args);
     const auto& data = *handler.web_ui()->call_data()[0];
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), true);
@@ -402,11 +356,11 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
               "chain_id2");
   }
   {
-    auto args = base::ListValue();
+    base::Value::List args;
     args.Append(base::Value("id"));
     args.Append(base::Value("unknown_chain_id"));
 
-    handler.SetActiveNetwork(args.GetList());
+    handler.SetActiveNetwork(args);
     const auto& data = *handler.web_ui()->call_data()[1];
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), false);

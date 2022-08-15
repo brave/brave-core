@@ -10,18 +10,16 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
-
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
-#endif
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory.h"
@@ -42,7 +40,6 @@ BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
 }
 
 // static
-#if !BUILDFLAG(IS_ANDROID)
 void BraveVpnServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
@@ -52,7 +49,6 @@ void BraveVpnServiceFactory::BindForContext(
     service->BindInterface(std::move(receiver));
   }
 }
-#endif
 
 BraveVpnServiceFactory::BraveVpnServiceFactory()
     : BrowserContextKeyedServiceFactory(
@@ -68,25 +64,22 @@ BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  // TODO(simonhong): Can we use this check for android?
-  // For now, vpn is disabled by default on desktop but not sure on
-  // android.
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   if (!IsBraveVPNEnabled())
     return nullptr;
-#endif
 
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+  auto* local_state = g_browser_process->local_state();
 
   auto callback = base::BindRepeating(
       [](content::BrowserContext* context) {
         return skus::SkusServiceFactory::GetForContext(context);
       },
       context);
-  auto* vpn_service = new BraveVpnService(
-      shared_url_loader_factory, user_prefs::UserPrefs::Get(context), callback);
+  auto* vpn_service =
+      new BraveVpnService(shared_url_loader_factory, local_state,
+                          user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
   auto* dns_observer_service =
       brave_vpn::BraveVpnDnsObserverFactory::GetInstance()

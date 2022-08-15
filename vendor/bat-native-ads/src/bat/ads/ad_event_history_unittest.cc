@@ -47,11 +47,11 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
-  const std::vector<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
-  const std::vector<base::Time>& expected_history = {Now()};
+  const std::vector<base::Time> expected_history = {Now()};
   EXPECT_EQ(expected_history, history);
 }
 
@@ -61,11 +61,11 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
-  const std::vector<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
-  const std::vector<base::Time>& expected_history = {Now(), Now()};
+  const std::vector<base::Time> expected_history = {Now(), Now()};
   EXPECT_EQ(expected_history, history);
 }
 
@@ -75,11 +75,11 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
   RecordAdEvent(kID2, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
-  const std::vector<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
-  const std::vector<base::Time>& expected_history = {Now(), Now()};
+  const std::vector<base::Time> expected_history = {Now(), Now()};
   EXPECT_EQ(expected_history, history);
 }
 
@@ -89,11 +89,11 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
   RecordAdEvent(kID1, AdType::kNewTabPageAd, ConfirmationType::kClicked);
 
   // Act
-  const std::vector<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
-  const std::vector<base::Time>& expected_history = {Now()};
+  const std::vector<base::Time> expected_history = {Now()};
   EXPECT_EQ(expected_history, history);
 }
 
@@ -106,11 +106,11 @@ TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
-  const std::vector<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
-  const std::vector<base::Time>& expected_history = {Now()};
+  const std::vector<base::Time> expected_history = {Now()};
   EXPECT_EQ(expected_history, history);
 }
 

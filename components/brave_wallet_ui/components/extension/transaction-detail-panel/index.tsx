@@ -12,20 +12,20 @@ import { useExplorer, useTransactionParser } from '../../../common/hooks'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { getTransactionStatusString } from '../../../utils/tx-utils'
+import { getTransactionStatusString, isSolanaTransaction } from '../../../utils/tx-utils'
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 import { getNetworkFromTXDataUnion, getCoinFromTxDataUnion } from '../../../utils/network-utils'
-
 import { getLocale } from '../../../../common/locale'
+
+// Constants
 import {
   BraveWallet,
   WalletAccountType,
   DefaultCurrencies,
   WalletState
 } from '../../../constants/types'
-import Header from '../../buy-send-swap/select-header'
 
 // Styled Components
 import {
@@ -46,12 +46,11 @@ import {
   ArrowIcon,
   AlertIcon
 } from './style'
-
 import {
   DetailTextDarkBold,
   DetailTextDark
 } from '../shared-panel-styles'
-
+import Header from '../../buy-send-swap/select-header'
 import { StatusBubble } from '../../shared/style'
 import { TransactionStatusTooltip } from '../transaction-status-tooltip'
 import { Tooltip } from '../../shared'
@@ -166,13 +165,7 @@ const TransactionDetailPanel = (props: Props) => {
     return ''
   }, [transactionDetails, liveTransaction, defaultCurrencies])
 
-  const isSolanaTransaction =
-    liveTransaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
-    liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
-    liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation ||
-    liveTransaction.txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction ||
-    liveTransaction.txType === BraveWallet.TransactionType.SolanaDappSignTransaction
-
+  const isSolanaTxn = isSolanaTransaction(liveTransaction)
   const isFilecoinTransaction = getCoinFromTxDataUnion(liveTransaction.txDataUnion) === BraveWallet.CoinType.FIL
 
   return (
@@ -225,7 +218,7 @@ const TransactionDetailPanel = (props: Props) => {
         </StatusRow>
       </DetailRow>
       {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-      {!isSolanaTransaction &&
+      {!isSolanaTxn &&
         <DetailRow>
           <DetailTitle>
             {getLocale('braveWalletAllowSpendTransactionFee')}
@@ -275,19 +268,19 @@ const TransactionDetailPanel = (props: Props) => {
       </DetailRow>
 
       {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted].includes(transactionDetails.status) &&
-        !isSolanaTransaction &&
+        !isSolanaTxn &&
         !isFilecoinTransaction &&
         <DetailRow>
           <DetailTitle />
           <StatusRow>
             <DetailButton onClick={onClickSpeedupTransaction}>{getLocale('braveWalletTransactionDetailSpeedUp')}</DetailButton>
             <SpacerText>|</SpacerText>
-            <DetailButton onClick={onClickCancelTransaction}>{getLocale('braveWalletBackupButtonCancel')}</DetailButton>
+            <DetailButton onClick={onClickCancelTransaction}>{getLocale('braveWalletButtonCancel')}</DetailButton>
           </StatusRow>
         </DetailRow>
       }
       {transactionDetails.status === BraveWallet.TransactionStatus.Error &&
-        !isSolanaTransaction &&
+        !isSolanaTxn &&
         !isFilecoinTransaction &&
         <DetailRow>
           <DetailTitle />

@@ -61,6 +61,7 @@ class TxService : public KeyedService,
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
                                 const absl::optional<url::Origin>& origin,
+                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& tx_meta_id,
@@ -164,6 +165,12 @@ class TxService : public KeyedService,
       const std::string& to_wallet_address,
       uint64_t amount,
       MakeTokenProgramTransferTxDataCallback callback) override;
+  void MakeTxDataFromBase64EncodedTransaction(
+      const std::string& encoded_transaction,
+      const mojom::TransactionType tx_type,
+      mojom::SolanaSendTransactionOptionsPtr send_options,
+      MakeTxDataFromBase64EncodedTransactionCallback callback) override;
+
   void GetEstimatedTxFee(const std::string& tx_meta_id,
                          GetEstimatedTxFeeCallback callback) override;
   void ProcessSolanaHardwareSignature(

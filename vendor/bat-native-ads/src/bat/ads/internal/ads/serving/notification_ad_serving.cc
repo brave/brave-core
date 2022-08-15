@@ -5,25 +5,22 @@
 
 #include "bat/ads/internal/ads/serving/notification_ad_serving.h"
 
-#include <cstdint>
-
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
+#include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"
 #include "bat/ads/internal/ads/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -35,13 +32,7 @@ namespace ads {
 namespace notification_ads {
 
 namespace {
-
-constexpr base::TimeDelta kServeFirstAdAfterDelay = base::Minutes(2);
-
-constexpr base::TimeDelta kMinimumDelayBeforeServingAnAd = base::Minutes(1);
-
 constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
-
 }  // namespace
 
 Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
@@ -78,12 +69,6 @@ void Serving::StartServingAdsAtRegularIntervals() {
   BLOG(1, "Start serving notification ads at regular intervals");
 
   const base::TimeDelta delay = CalculateDelayBeforeServingAnAd();
-
-  if (!HasPreviouslyServedAnAd()) {
-    const base::Time serve_ad_at = base::Time::Now() + delay;
-    ClientStateManager::GetInstance()->SetServeAdAt(serve_ad_at);
-  }
-
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
   BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
@@ -100,7 +85,7 @@ void Serving::StopServingAdsAtRegularIntervals() {
 
 void Serving::MaybeServeAd() {
   if (is_serving_) {
-    BLOG(1, "Already serving ad");
+    BLOG(1, "Already serving notification ad");
     return;
   }
 
@@ -119,7 +104,7 @@ void Serving::MaybeServeAd() {
     return;
   }
 
-  const targeting::UserModelInfo& user_model = targeting::BuildUserModel();
+  const targeting::UserModelInfo user_model = targeting::BuildUserModel();
 
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
@@ -140,9 +125,9 @@ void Serving::MaybeServeAd() {
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeNotificationAdInfo& creative_ad = creative_ads.at(rand);
+        const CreativeNotificationAdInfo creative_ad = creative_ads.at(rand);
 
-        const NotificationAdInfo& ad = BuildNotificationAd(creative_ad);
+        const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
         ServeAd(ad);
       });
 }
@@ -157,54 +142,18 @@ bool Serving::IsSupported() const {
   return true;
 }
 
-bool Serving::ShouldServeAdsAtRegularIntervals() const {
-  return PlatformHelper::GetInstance()->IsMobile();
-}
-
-bool Serving::HasPreviouslyServedAnAd() const {
-  return !ClientStateManager::GetInstance()->GetServeAdAt().is_null();
-}
-
-bool Serving::ShouldServeAd() const {
-  const base::Time serve_ad_at =
-      ClientStateManager::GetInstance()->GetServeAdAt();
-  if (base::Time::Now() < serve_ad_at) {
-    return false;
-  }
-
-  return true;
-}
-
-base::TimeDelta Serving::CalculateDelayBeforeServingAnAd() const {
-  if (!HasPreviouslyServedAnAd()) {
-    return kServeFirstAdAfterDelay;
-  }
-
-  if (ShouldServeAd()) {
-    return kMinimumDelayBeforeServingAnAd;
-  }
-
-  base::TimeDelta delay =
-      ClientStateManager::GetInstance()->GetServeAdAt() - base::Time::Now();
-  if (delay.is_negative()) {
-    delay = base::TimeDelta();
-  }
-
-  return delay;
-}
-
 void Serving::MaybeServeAdAtNextRegularInterval() {
   if (!ShouldServeAdsAtRegularIntervals()) {
     return;
   }
 
-  const int64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }
 
-  const int64_t seconds = base::Time::kSecondsPerHour / ads_per_hour;
-  const base::TimeDelta delay = base::Seconds(seconds);
+  const base::TimeDelta delay =
+      base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
   BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
@@ -220,7 +169,7 @@ void Serving::RetryServingAdAtNextInterval() {
 
 base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
   const base::Time serve_ad_at = base::Time::Now() + delay;
-  ClientStateManager::GetInstance()->SetServeAdAt(serve_ad_at);
+  SetServeAdAt(serve_ad_at);
 
   return timer_.Start(
       FROM_HERE, delay,
@@ -248,9 +197,9 @@ void Serving::ServeAd(const NotificationAdInfo& ad) {
   DCHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
-  NotifyDidServeNotificationAd(ad);
-
   is_serving_ = false;
+
+  NotifyDidServeNotificationAd(ad);
 
   MaybeServeAdAtNextRegularInterval();
 }
@@ -289,7 +238,7 @@ void Serving::OnPrefChanged(const std::string& path) {
 }
 
 void Serving::OnAdsPerHourPrefChanged() {
-  const int64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetNotificationAdsPerHour();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {

@@ -1,53 +1,103 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
+// style
 import {
-  StyledWrapper,
+  TipWrapper,
   Tip,
   Pointer,
-  ActionNotification
+  ActionNotification,
+  TipAndChildrenWrapper
 } from './style'
 
 export interface Props {
   children?: React.ReactNode
   position?: 'left' | 'right'
-  text: string
   actionText?: string
-  isVisible: boolean
+  isVisible?: boolean
   isAddress?: boolean
   isActionVisible?: boolean
+  disableHoverEvents?: boolean
+  text: React.ReactNode
+  verticalPosition?: 'above' | 'below'
+  pointerPosition?: 'left' | 'right' | 'center'
 }
 
-function Tooltip (props: Props) {
-  const { children, actionText, text, position, isVisible, isAddress, isActionVisible } = props
-  const [active, setActive] = React.useState(false)
+export const Tooltip: React.FC<Props> = ({
+  actionText,
+  children,
+  disableHoverEvents,
+  isActionVisible,
+  isAddress,
+  isVisible = true,
+  pointerPosition,
+  position,
+  text,
+  verticalPosition = 'below'
+}) => {
+  // state
+  const [active, setActive] = React.useState(!!disableHoverEvents)
 
-  const showTip = () => {
-    setActive(true)
-  }
+  // methods
+  const showTip = React.useCallback(() => {
+    !disableHoverEvents && setActive(true)
+  }, [disableHoverEvents])
 
-  const hideTip = () => {
-    setActive(false)
-  }
+  const hideTip = React.useCallback(() => {
+    !disableHoverEvents && setActive(false)
+  }, [disableHoverEvents])
 
+  // memos
+  const toolTipPointer = React.useMemo(() => (
+    <Pointer
+      position={pointerPosition ?? 'center'}
+      verticalPosition={verticalPosition ?? 'below'}
+    />
+  ), [position, verticalPosition, pointerPosition])
+
+  const toolTip = React.useMemo(() => active && isVisible && (
+    <TipWrapper
+      position={position ?? 'center'}
+      verticalPosition={verticalPosition ?? 'below'}
+    >
+
+      {!isActionVisible && verticalPosition === 'below' && toolTipPointer}
+
+      {isActionVisible
+        ? <ActionNotification>
+            {actionText}
+          </ActionNotification>
+
+        : <Tip isAddress={isAddress}>
+            {text}
+          </Tip>
+      }
+      {!isActionVisible && verticalPosition === 'above' && toolTipPointer}
+    </TipWrapper>
+  ), [
+    active,
+    isVisible,
+    position,
+    verticalPosition,
+    isAddress,
+    text,
+    isActionVisible
+  ])
+
+  // render
   return (
-    <StyledWrapper
+    <TipAndChildrenWrapper
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
     >
+      {verticalPosition === 'above' && toolTip}
       {children}
-      {active && isVisible && !isActionVisible && (
-        <>
-          <Pointer position={position ?? 'center'} />
-          <Tip
-            isAddress={isAddress}
-            position={position ?? 'center'}
-          >
-            {text}
-          </Tip>
-        </>
-      )}
-      {isActionVisible && <ActionNotification position='center'>{actionText}</ActionNotification>}
-    </StyledWrapper>
+      {verticalPosition === 'below' && toolTip}
+    </TipAndChildrenWrapper>
   )
 }
 

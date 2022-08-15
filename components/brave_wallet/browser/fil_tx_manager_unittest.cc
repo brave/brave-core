@@ -154,15 +154,21 @@ class FilTxManagerUnitTest : public testing::Test {
 
   PrefService* prefs() { return &prefs_; }
 
-  void AddUnapprovedTransaction(mojom::FilTxDataPtr tx_data,
-                                const std::string& from,
-                                const absl::optional<url::Origin>& origin,
-                                std::string* meta_id) {
+  url::Origin GetOrigin() const {
+    return url::Origin::Create(GURL("https://brave.com"));
+  }
+
+  void AddUnapprovedTransaction(
+      mojom::FilTxDataPtr tx_data,
+      const std::string& from,
+      const absl::optional<url::Origin>& origin,
+      std::string* meta_id,
+      const absl::optional<std::string>& group_id = absl::nullopt) {
     auto tx_data_union = mojom::TxDataUnion::NewFilTxData(std::move(tx_data));
 
     base::RunLoop run_loop;
     fil_tx_manager()->AddUnapprovedTransaction(
-        std::move(tx_data_union), from, origin,
+        std::move(tx_data_union), from, origin, group_id,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -447,6 +453,30 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
+}
+
+TEST_F(FilTxManagerUnitTest, AddUnapprovedTransactionWithGroupId) {
+  const std::string from_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
+  const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
+  SetGasEstimateInterceptor(from_account, to_account);
+  auto tx_data = mojom::FilTxData::New(
+      "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
+      "" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+  std::string meta_id;
+
+  // Transaction with group_id
+  AddUnapprovedTransaction(tx_data.Clone(), from_account, absl::nullopt,
+                           &meta_id, "mockGroupId");
+  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
+
+  // Transaction with empty group_id
+  AddUnapprovedTransaction(tx_data.Clone(), from_account, absl::nullopt,
+                           &meta_id);
+  tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->group_id(), absl::nullopt);
 }
 
 TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {

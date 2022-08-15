@@ -127,21 +127,15 @@ targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
     const GURL& url) const {
   targeting::PurchaseIntentSignalInfo signal_info;
 
-  const absl::optional<std::string> search_query_optional =
+  const absl::optional<std::string> search_query =
       ExtractSearchTermQueryValue(url);
-  if (search_query_optional) {
-    const std::string& search_query = search_query_optional.value();
-
+  if (search_query) {
     const SegmentList keyword_segments =
-        GetSegmentsForSearchQuery(search_query);
-
+        GetSegmentsForSearchQuery(*search_query);
     if (!keyword_segments.empty()) {
-      const uint16_t keyword_weight =
-          GetFunnelWeightForSearchQuery(search_query);
-
       signal_info.created_at = base::Time::Now();
       signal_info.segments = keyword_segments;
-      signal_info.weight = keyword_weight;
+      signal_info.weight = GetFunnelWeightForSearchQuery(*search_query);
     }
   } else {
     targeting::PurchaseIntentSiteInfo info = GetSite(url);

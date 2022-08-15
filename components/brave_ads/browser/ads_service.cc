@@ -65,10 +65,14 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterTimePref(ads::prefs::kCatalogLastUpdated, base::Time());
 
   registry->RegisterIntegerPref(ads::prefs::kIssuerPing, 7'200'000);
+  registry->RegisterListPref(ads::prefs::kIssuers, base::Value::List());
 
-  registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditArms, "");
-  registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
-                               "");
+  registry->RegisterDictionaryPref(ads::prefs::kEpsilonGreedyBanditArms,
+                                   base::Value::Dict());
+  registry->RegisterListPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
+                             base::Value::List());
+
+  registry->RegisterTimePref(ads::prefs::kServeAdAt, base::Time());
 
   registry->RegisterTimePref(ads::prefs::kNextTokenRedemptionAt,
                              base::Time::Now());

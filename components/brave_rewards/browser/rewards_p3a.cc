@@ -7,65 +7,13 @@
 
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/values.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
-namespace {
-
-uint64_t RoundProbiToUint64(base::StringPiece probi) {
-  if (probi.size() < 18)
-    return 0;
-  uint64_t grant = 0;
-  base::StringToUint64(probi.substr(0, probi.size() - 18), &grant);
-  return grant;
-}
-
-}  // namespace
-
 namespace brave_rewards {
 namespace p3a {
-
-void RecordWalletState(const WalletState& state) {
-  int answer = 0;
-  if (state.wallet_created && !state.rewards_enabled) {
-    answer = 5;
-  } else if (state.rewards_enabled) {
-    DCHECK(state.wallet_created);
-    if (state.grants_claimed && state.funds_added) {
-      answer = 4;
-    } else if (state.funds_added) {
-      answer = 3;
-    } else if (state.grants_claimed) {
-      answer = 2;
-    } else {
-      answer = 1;
-    }
-  }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletState", answer, 6);
-}
-
-void RecordWalletBalance(bool wallet_created, bool rewards_enabled, size_t b) {
-  int answer = 0;
-  if (wallet_created && !rewards_enabled) {
-    answer = 1;
-  } else if (rewards_enabled) {
-    DCHECK(wallet_created);
-    if (b == 0) {
-      answer = 2;
-    } else if (b < 10) {
-      answer = 3;
-    } else if (10 <= b && b < 50) {
-      answer = 4;
-    } else if (50 <= b) {
-      answer = 5;
-    }
-  }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance.3", answer, 6);
-}
 
 void RecordAutoContributionsState(AutoContributionsState state, int count) {
   DCHECK_GE(count, 0);
@@ -151,35 +99,15 @@ void MaybeRecordInitialAdsState(PrefService* prefs) {
 }
 
 void RecordNoWalletCreatedForAllMetrics() {
-  RecordWalletState({});
-  RecordWalletBalance(false, false, 0);
   RecordAutoContributionsState(AutoContributionsState::kNoWallet, 0);
   RecordTipsState(false, false, 0, 0);
   RecordAdsState(AdsState::kNoWallet);
 }
 
 void RecordRewardsDisabledForSomeMetrics() {
-  RecordWalletBalance(true, false, 1);
   RecordAutoContributionsState(AutoContributionsState::kRewardsDisabled, 0);
   RecordTipsState(true, false, 0, 0);
   // Ads state is handled separately.
-}
-
-double CalcWalletBalance(base::flat_map<std::string, double> wallets,
-                         double user_funds) {
-  double balance_minus_grant = 0.0;
-  for (const auto& wallet : wallets) {
-    // Skip anonymous and unblinded wallets, since they can contain grants.
-    if (wallet.first == "anonymous" || wallet.first == "blinded") {
-      continue;
-    }
-    balance_minus_grant += static_cast<size_t>(wallet.second);
-  }
-
-  // |user_funds| is the amount of user-funded BAT in the anonymous
-  // wallet (ex: not grants).
-  balance_minus_grant += user_funds;
-  return balance_minus_grant;
 }
 
 void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
@@ -231,41 +159,6 @@ void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
 
   UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsEnabledDuration",
                             enabled_duration);
-}
-
-void ExtractAndLogStats(const base::Value::Dict& dict) {
-  const auto* probi_value =
-      dict.FindStringByDottedPath("walletProperties.probi_");
-  if (!probi_value) {
-    LOG(WARNING) << "Bad ledger state";
-    return;
-  }
-
-  // Get grants.
-  const auto* grants = dict.FindList("grants");
-  uint64_t total_grants = 0;
-  if (!grants) {
-    LOG(WARNING) << "Bad grant value in ledger_state.";
-  } else {
-    // Sum all grants.
-    for (const auto& grant : *grants) {
-      if (!grant.is_dict()) {
-        LOG(WARNING) << "Bad grant value in ledger_state.";
-        continue;
-      }
-      const auto* grant_amount = grant.GetDict().FindString("probi_");
-      const auto* grant_currency = grant.GetDict().FindString("altcurrency");
-      if (grant_amount && grant_currency && *grant_currency == "BAT") {
-        // Some kludge computations because we don't want to be very precise
-        // for P3A purposes. Assuming grants can't be negative and are
-        // greater than 1 BAT.
-        const std::string& grant_str = *grant_amount;
-        total_grants += RoundProbiToUint64(grant_str);
-      }
-    }
-  }
-  const uint64_t total = RoundProbiToUint64(*probi_value) - total_grants;
-  RecordWalletBalance(true, true, total);
 }
 
 }  // namespace p3a

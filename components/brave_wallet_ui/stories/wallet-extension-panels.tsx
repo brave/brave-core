@@ -121,7 +121,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5 * 1000) },
       submittedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
       confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -153,7 +154,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
@@ -185,7 +187,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -217,7 +220,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -249,7 +253,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     }
   ],
   [mockUserAccounts[1].id]: [
@@ -283,7 +288,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     },
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -315,7 +321,8 @@ const transactionDummyData: AccountTransactions = {
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
       confirmedTime: { microseconds: BigInt(0) },
-      originInfo: mockOriginInfo
+      originInfo: mockOriginInfo,
+      groupId: undefined
     }
   ]
 }
@@ -592,7 +599,6 @@ _ConnectWithSite.story = {
 
 export const _ConnectedPanel = (args: { locked: boolean }) => {
   const { locked } = args
-  const [inputValue, setInputValue] = React.useState<string>('')
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
@@ -603,7 +609,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
@@ -675,17 +680,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
-  const unlockWallet = () => {
-    if (inputValue !== 'password') {
-      setHasPasswordError(true)
-    } else {
-      setWalletLocked(false)
-    }
-  }
-
-  const handlePasswordChanged = (value: string) => {
-    setHasPasswordError(false)
-    setInputValue(value)
+  const unlockWallet = (_password: string) => {
+    setWalletLocked(false)
   }
 
   const onRestore = () => {
@@ -730,10 +726,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       <StyledExtensionWrapper>
         {walletLocked ? (
           <LockPanel
-            hasPasswordError={hasPasswordError}
             onSubmit={unlockWallet}
-            disabled={inputValue === ''}
-            onPasswordChanged={handlePasswordChanged}
             onClickRestore={onRestore}
           />
         ) : (

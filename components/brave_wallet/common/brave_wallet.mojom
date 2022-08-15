@@ -376,6 +376,7 @@ struct JupiterQuoteParams {
 struct JupiterSwapParams {
   JupiterRoute route;
   string user_public_key;
+  string output_mint;
 };
 
 struct JupiterSwapTransactions {
@@ -504,6 +505,7 @@ interface KeyringServiceObserver {
 enum OnRampProvider {
   kWyre = 0,
   kRamp = 1,
+  kSardine = 2,
 };
 
 // List of tokens and coins that are supported.
@@ -524,12 +526,9 @@ interface BlockchainRegistry {
   // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
 
- // Obtains the URL for buying assets specifying currency
-  GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
-  
   // Get currencies list
   GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
-  
+
   // Returns list of prepopulated networks.
   GetPrepopulatedNetworks() => (array<NetworkInfo> networks);
 };
@@ -659,6 +658,9 @@ interface KeyringService {
 
 // Used for cryptocurrency prices over time.
 interface AssetRatioService {
+  // Obtains the URL for buying assets specifying currency
+  GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
+
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
   // change as well.
@@ -760,14 +762,6 @@ enum CoinType {
   SOL = 501
 };
 
-struct NetworkInfoDataETH {
-  bool is_eip1559;
-};
-
-union NetworkInfoData {
-  NetworkInfoDataETH eth_data;
-};
-
 struct NetworkInfo {
   string chain_id;
   string chain_name;
@@ -778,7 +772,7 @@ struct NetworkInfo {
   string symbol_name;
   int32 decimals;
   CoinType coin;
-  NetworkInfoData? data;
+  bool is_eip1559; // only for ETH.
 };
 
 struct OriginInfo {
@@ -927,13 +921,14 @@ enum TransactionType {
   ERC721TransferFrom = 3,
   ERC721SafeTransferFrom = 4,
   Other = 5,
-  SolanaSystemTransfer = 6,  // transfering SOL
+  SolanaSystemTransfer = 6,  // transferring SOL
   SolanaSPLTokenTransfer = 7,
   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8,
   ERC1155SafeTransferFrom = 9,
   ETHSwap = 10,
   SolanaDappSignAndSendTransaction = 11,
-  SolanaDappSignTransaction = 12
+  SolanaDappSignTransaction = 12,
+  SolanaSwap = 13
 };
 
 struct FilTxData {
@@ -967,6 +962,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta submitted_time;
   mojo_base.mojom.TimeDelta confirmed_time;
   OriginInfo? origin_info;
+  string? group_id;
 };
 
 interface TxServiceObserver {
@@ -985,7 +981,7 @@ interface TxServiceObserver {
 // transactions.
 interface TxService {
   // Used to add a transaction. Missing origin is expected to come from chrome://wallet.
-  AddUnapprovedTransaction(TxDataUnion tx_data_union, string from, url.mojom.Origin? origin) => (bool success, string tx_meta_id, string error_message);
+  AddUnapprovedTransaction(TxDataUnion tx_data_union, string from, url.mojom.Origin? origin, string? group_id) => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
   ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderErrorUnion error_union, string error_message);
@@ -1055,7 +1051,7 @@ interface SolanaTxManagerProxy {
   // transaction will have one instruction which is the transfer instruction.
   // If the receiving associated token account is not created yet, the created
   // transaction will have two instructions, the first one is the instruction
-  // to create the associated token account for the receipient, and the second
+  // to create the associated token account for the recipient, and the second
   // instruction is the transfer instruction. Note that sender will fund the
   // creation (an additional cost) with the minimum balance for the new account
   // to be rent exempt.
@@ -1067,6 +1063,16 @@ interface SolanaTxManagerProxy {
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 
   GetEstimatedTxFee(string tx_meta_id) => (uint64 fee, SolanaProviderError error, string error_message);
+
+  // Get transaction data from transaction bytes encoded in base64 format.
+  //
+  // The client must set a TransactionType using the tx_type parameter, and
+  // optionally pass standard Solana send options.
+  MakeTxDataFromBase64EncodedTransaction(
+      string encoded_transaction,
+      TransactionType tx_type,
+      SolanaSendTransactionOptions? send_options)
+      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 };
 
 interface FilTxManagerProxy {

@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 
-#include <cstdint>
 #include <vector>
 
 #include "base/check_op.h"
@@ -16,6 +15,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_user_data_builder.h"
+#include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -31,7 +31,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/transaction_info.h"
 
 namespace ads {
 
@@ -59,13 +58,14 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
                         << transaction.id << " and creative instance id "
                         << transaction.creative_instance_id);
 
-  const base::Time now = base::Time::Now();
+  const base::Time created_at = base::Time::Now();
 
   const ConfirmationsUserDataBuilder user_data_builder(
-      now, transaction.creative_instance_id, transaction.confirmation_type);
+      created_at, transaction.creative_instance_id,
+      transaction.confirmation_type);
   user_data_builder.Build([=](const base::Value::Dict& user_data) {
-    const ConfirmationInfo& confirmation = CreateConfirmation(
-        now, transaction.id, transaction.creative_instance_id,
+    const ConfirmationInfo confirmation = CreateConfirmation(
+        created_at, transaction.id, transaction.creative_instance_id,
         transaction.confirmation_type, transaction.ad_type, user_data);
 
     redeem_unblinded_token_->Redeem(confirmation);
@@ -106,11 +106,11 @@ void Confirmations::OnRetry() {
 
   BLOG(1, "Retry sending failed confirmations");
 
-  const ConfirmationInfo& confirmation = failed_confirmations.front();
+  const ConfirmationInfo failed_confirmation_copy =
+      failed_confirmations.front();
+  RemoveFromRetryQueue(failed_confirmation_copy);
 
-  RemoveFromRetryQueue(confirmation);
-
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(failed_confirmation_copy);
 }
 
 void Confirmations::StopRetrying() {
@@ -118,7 +118,7 @@ void Confirmations::StopRetrying() {
 }
 
 ConfirmationInfo Confirmations::CreateConfirmation(
-    const base::Time time,
+    const base::Time created_at,
     const std::string& transaction_id,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
@@ -136,17 +136,17 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
   confirmation.ad_type = ad_type;
-  confirmation.created_at = time;
+  confirmation.created_at = created_at;
 
   if (ShouldRewardUser() && !ConfirmationStateManager::GetInstance()
                                  ->GetUnblindedTokens()
                                  ->IsEmpty()) {
-    const privacy::UnblindedTokenInfo& unblinded_token =
+    const privacy::UnblindedTokenInfo unblinded_token_copy =
         ConfirmationStateManager::GetInstance()
             ->GetUnblindedTokens()
             ->GetToken();
 
-    confirmation.unblinded_token = unblinded_token;
+    confirmation.unblinded_token = unblinded_token_copy;
 
     const std::vector<privacy::cbr::Token> tokens =
         token_generator_->Generate(1);
@@ -162,11 +162,13 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     base::JSONWriter::Write(user_data, &json);
     confirmation.user_data = json;
 
-    const std::string& payload = CreateConfirmationRequestDTO(confirmation);
-    confirmation.credential = CreateCredential(unblinded_token, payload);
+    const std::string confirmation_request_dto =
+        CreateConfirmationRequestDTO(confirmation);
+    confirmation.credential =
+        CreateCredential(unblinded_token_copy, confirmation_request_dto);
 
     ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->RemoveToken(
-        unblinded_token);
+        unblinded_token_copy);
     ConfirmationStateManager::GetInstance()->Save();
   }
 
@@ -188,7 +190,7 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
       confirmation.created_at, confirmation.creative_instance_id,
       confirmation.type);
   user_data_builder.Build([=](const base::Value::Dict& user_data) {
-    const ConfirmationInfo& new_confirmation =
+    const ConfirmationInfo new_confirmation =
         CreateConfirmation(confirmation.created_at, confirmation.transaction_id,
                            confirmation.creative_instance_id, confirmation.type,
                            confirmation.ad_type, user_data);

@@ -15,17 +15,12 @@ namespace JSONReader {
 
 absl::optional<privacy::UnblindedPaymentTokenList> ReadUnblindedPaymentTokens(
     const std::string& json) {
-  const absl::optional<base::Value>& value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
 
-  const absl::optional<privacy::UnblindedPaymentTokenList>&
-      unblinded_payment_tokens_optional = ParseUnblindedPaymentTokens(*value);
-  if (!unblinded_payment_tokens_optional) {
-    return absl::nullopt;
-  }
-  return unblinded_payment_tokens_optional.value();
+  return ParseUnblindedPaymentTokens(*root);
 }
 
 }  // namespace JSONReader

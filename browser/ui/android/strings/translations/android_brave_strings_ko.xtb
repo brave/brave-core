@@ -260,6 +260,7 @@
 <translation id="3097089005389027085">이러한 코드 단어를 생성하는 디바이스에 비밀번호 등, 귀하의 Brave 데이터가 공유됩니다.
 본인이 소유한 디바이스에서 생성된 코드 단어인지 주의하여 확인하시기 바랍니다.
 계속하시겠습니까?</translation>
+<translation id="4550208292810542331">카메라 권한이 부여되지 않음</translation>
 <translation id="597993392929850353">Brave 라이선스</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
 <translation id="6199596294742117349">이것은 비공개 탭입니다</translation>
@@ -548,8 +549,9 @@
 <translation id="6366007539108097840">3개월</translation>
 <translation id="6977728312178289892">1년</translation>
 <translation id="6895566650974550243">전체</translation>
-<translation id="5071303414930953888">계정 <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> 계정 <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">계정 추가</translation>
+<translation id="318334680413773318">계정 추가/가져오기</translation>
 <translation id="3448492834076427715">계정 업데이트</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">지문 잠금 해제를 활성화할까요?</translation>
@@ -858,12 +860,14 @@
 <translation id="4804818685124855865">연결 해제</translation>
 <translation id="8009571545960303544">서명을 요청 중입니다.</translation>
 <translation id="3484981968509595506">DApp이 공개 암호화 키를 요청합니다.</translation>
+<translation id="2300240008330189182"><ph name="URL"/>에서 월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
 <translation id="3340247553212049934">제공</translation>
 <translation id="1982257600591932657">네트워크 이름</translation>
 <translation id="5052727830821470769">네트워크 URL</translation>
 <translation id="4822132585477111396">체인 ID</translation>
 <translation id="7131971375297699539">통화 기호</translation>
 <translation id="7982789257301363584">네트워크</translation>
+<translation id="6936860995365507185">Brave 월렛 내에 이 네트워크가 사용됩니다. <ph name="CLICK_START"/>자세히 알아보기<ph name="CLICK_END"/></translation>
 <translation id="4717431746210146708">이 사이트가 네트워크를 추가할 수 있게 허용하시겠습니까?</translation>
 <translation id="4857321293515555666">이 DApp이 이 메시지를 읽고 요청을 완료하고자 합니다.</translation>
 <translation id="714506544401754321">메시지 암호 해독</translation>
@@ -888,4 +892,14 @@
 <translation id="5334952096674914470">\n\n이동통신사\n</translation>
 <translation id="5393042357629679588">\n\n기타 문제\n</translation>
 <translation id="8095666712177294104">\n\n플랫폼\n</translation>
+<translation id="7080614857771109950">이더리움 블록체인(ERC-20, ERC-721, ERC-1551, ERC-1155)에 EVM 호환 자산 지원</translation>
+<translation id="6577166808959668729">솔라나 블록체인에 SPL 호환 자산 지원</translation>
+<translation id="6575120282593094155">아직 <ph name="ACCOUNT_TYPE"/> 계정이 없습니다. 새로 만드시겠습니까?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">제외된 앱</translation>
+<translation id="8463269357637177759">허용된 일반 앱</translation>
+<translation id="4554726425645556940">허용된 시스템 앱</translation>
+<translation id="9023148942866814328">시스템 앱 표시</translation>
+<translation id="5472400694702418949">VPN 트래픽에서 제외될 앱을 추가합니다.</translation>
+<translation id="7002577172732106572">터널링 분할</translation>
 </translationbundle>

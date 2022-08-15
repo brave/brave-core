@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/base/unittest/unittest_url_response_util.h"
 
-#include <cstdint>
 #include <string>
 
 #include "base/check_op.h"
@@ -13,7 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
-#include "base/strings/string_piece.h"
+#include "base/strings/string_util.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_tag_parser_util.h"
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
@@ -24,20 +23,14 @@ namespace ads {
 
 namespace {
 
-// A list of endpoints where the response can be inline, i.e.
+// Mocked URL responses for the specified URL requests can be defined inline or
+// read from a file. Filenames should begin with a forward slash, i.e.
 //
 //    {
 //      "/foo/bar", {
 //        {
-//          net::HTTP_OK, "The quick brown fox jumps over the lazy dog"
-//        }
-//      }
-//    }
-//
-// or read from a file. Filenames should begin with forward slash. i.e.
-//
-//    {
-//      "/foo/bar", {
+//          net::HTTP_NOT_FOUND, "Not found"
+//        },
 //        {
 //          net::HTTP_OK, "/response.json"
 //        }
@@ -45,8 +38,8 @@ namespace {
 //    }
 //
 // Inline responses can contain |<time:period>| tags for mocking timestamps,
-// where |period| should be |now|, |distant_past|, |distant_future|, |+/-#
-// seconds|, |+/-# minutes|, |+/-# hours| or |+/-# days|. i.e.
+// where |period| can be |now|, |distant_past|, |distant_future|, |+/-#
+// seconds|, |+/-# minutes|, |+/-# hours| or |+/-# days|, i.e.
 //
 //    {
 //      "/foo/bar", {
@@ -56,13 +49,13 @@ namespace {
 //      }
 //    }
 //
-// The same endpoint can be added multiple times where responses are returned in
-// the specified order, i.e.
+// Multiple URL responses can be added for URL requests which will be returned
+// in the specified order, i.e.
 //
 //    {
 //      "/foo/bar", {
 //        {
-//           net::HTTP_OK, "/response.json"
+//           net::HTTP_INTERNAL_SERVER_ERROR, "Internal server error"
 //        },
 //        {
 //           net::HTTP_CREATED, "To me there's no creativity without boundaries"
@@ -70,103 +63,94 @@ namespace {
 //      }
 //    }
 
-base::flat_map<std::string, uint16_t>& GetUrlEndpointIndexes() {
-  static base::NoDestructor<base::flat_map<std::string, uint16_t>> indexes;
+base::flat_map<std::string, size_t>& UrlResponseIndexes() {
+  static base::NoDestructor<base::flat_map<std::string, size_t>> indexes;
   return *indexes;
 }
 
-URLEndpointResponseList GetUrlEndpointResponsesForPath(
-    const URLEndpointMap& endpoints,
-    const std::string& path) {
-  const auto iter = endpoints.find(path);
-  if (iter == endpoints.end()) {
+URLResponseList GetUrlResponsesForRequestPath(
+    const URLResponseMap& url_responses,
+    const std::string& request_path) {
+  const auto iter = url_responses.find(request_path);
+  if (iter == url_responses.end()) {
     return {};
   }
 
   return iter->second;
 }
 
-absl::optional<URLEndpointResponsePair> GetNextUrlEndpointResponse(
+absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
     const GURL& url,
-    const URLEndpointMap& endpoints) {
+    const URLResponseMap& url_responses) {
   CHECK(url.is_valid()) << "Invalid URL: " << url;
-  CHECK(!endpoints.empty()) << "Missing mock for " << url << " endpoint";
+  CHECK(!url_responses.empty()) << "Missing mock for " << url << " responses";
 
-  const std::string path = url.PathForRequest();
+  const std::string request_path = url.PathForRequest();
 
-  const URLEndpointResponseList url_endpoint_responses =
-      GetUrlEndpointResponsesForPath(endpoints, path);
-  if (url_endpoint_responses.empty()) {
-    // URL endpoint responses not found for given path
+  const URLResponseList url_responses_for_request_path =
+      GetUrlResponsesForRequestPath(url_responses, request_path);
+  if (url_responses_for_request_path.empty()) {
+    // URL responses not found for the given request path.
     return absl::nullopt;
   }
 
-  uint16_t url_endpoint_response_index = 0;
+  size_t index = 0;
 
-  const std::string uuid = GetUuidForCurrentTestSuiteAndName(path);
-  const auto url_endpoint_response_indexes_iter =
-      GetUrlEndpointIndexes().find(uuid);
+  const std::string uuid = GetUuidForCurrentTestAndValue(request_path);
 
-  if (url_endpoint_response_indexes_iter == GetUrlEndpointIndexes().end()) {
-    // uuid does not exist so insert a new index set to 0 for the endpoint
-    GetUrlEndpointIndexes()[uuid] = url_endpoint_response_index;
+  const auto iter = UrlResponseIndexes().find(uuid);
+  if (iter == UrlResponseIndexes().end()) {
+    // uuid does not exist so insert a new index set to 0 for the url responses.
+    UrlResponseIndexes()[uuid] = index;
   } else {
-    url_endpoint_response_indexes_iter->second++;
-    if (url_endpoint_response_indexes_iter->second ==
-        url_endpoint_responses.size()) {
-      url_endpoint_response_indexes_iter->second = 0;
+    iter->second++;
+    if (iter->second == url_responses_for_request_path.size()) {
+      iter->second = 0;
     }
 
-    url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
+    index = iter->second;
   }
 
-  CHECK_GE(url_endpoint_response_index, 0);
-  CHECK_LT(url_endpoint_response_index, url_endpoint_responses.size());
-  return url_endpoint_responses.at(url_endpoint_response_index);
+  CHECK_LT(index, url_responses_for_request_path.size());
+  return url_responses_for_request_path.at(index);
 }
 
-bool ShouldReadBodyFromFile(const std::string& body) {
-  return base::StartsWith(body, "/", base::CompareCase::INSENSITIVE_ASCII);
+bool ShouldReadResponseBodyFromFile(const std::string& response_body) {
+  return base::StartsWith(response_body, "/",
+                          base::CompareCase::INSENSITIVE_ASCII);
 }
 
-base::StringPiece GetFilenameFromBody(const std::string& body) {
-  return base::TrimString(body, "//", base::TrimPositions::TRIM_LEADING);
-}
-
-base::FilePath GetFilePath(const std::string& body) {
-  return GetTestPath().AppendASCII(GetFilenameFromBody(body));
+std::string ParseFilenameFromResponseBody(const std::string& response_body) {
+  return std::string(
+      base::TrimString(response_body, "//", base::TrimPositions::TRIM_LEADING));
 }
 
 }  // namespace
 
-absl::optional<mojom::UrlResponse> GetNextUrlResponse(
-    const mojom::UrlRequestPtr& url_request,
-    const URLEndpointMap& endpoints) {
-  const absl::optional<URLEndpointResponsePair> url_endpoint_response_optional =
-      GetNextUrlEndpointResponse(url_request->url, endpoints);
-  if (!url_endpoint_response_optional) {
+absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
+    const mojom::UrlRequestInfoPtr& url_request,
+    const URLResponseMap& url_responses) {
+  const absl::optional<URLResponsePair> url_response =
+      GetNextUrlResponseForUrl(url_request->url, url_responses);
+  if (!url_response) {
     return absl::nullopt;
   }
-  const URLEndpointResponsePair& url_endpoint_response =
-      url_endpoint_response_optional.value();
 
-  std::string body = url_endpoint_response.second;
-  if (ShouldReadBodyFromFile(body)) {
-    const base::FilePath file_path = GetFilePath(body);
-    if (!base::ReadFileToString(file_path, &body)) {
+  std::string response_body = url_response->second;
+  if (ShouldReadResponseBodyFromFile(response_body)) {
+    const std::string filename = ParseFilenameFromResponseBody(response_body);
+    const base::FilePath file_path = GetTestPath().AppendASCII(filename);
+    if (!base::ReadFileToString(file_path, &response_body)) {
       NOTREACHED() << file_path << " not found";
       return absl::nullopt;
     }
 
-    ParseAndReplaceTagsForText(&body);
+    ParseAndReplaceTags(&response_body);
   }
 
-  mojom::UrlResponse url_response;
-  url_response.url = url_request->url;
-  url_response.status_code = url_endpoint_response.first;
-  url_response.body = body;
-  url_response.headers = UrlResponseHeadersToMap(url_request->headers);
-  return url_response;
+  return mojom::UrlResponseInfo(url_request->url, url_response->first,
+                                response_body,
+                                ToUrlResponseHeaders(url_request->headers));
 }
 
 }  // namespace ads

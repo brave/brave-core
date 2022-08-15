@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -105,20 +106,17 @@ void InitializeUnsupportedShieldSettingInDictionary(
 }
 
 void CheckMigrationFromResourceIdentifierForDictionary(
-    const base::DictionaryValue* dictionary,
-    const std::string& patterns_string,
-    const base::Time& expected_last_modified,
-    int expected_setting_value) {
-  const base::DictionaryValue* settings_dict = nullptr;
-  dictionary->GetDictionaryWithoutPathExpansion(patterns_string,
-                                                &settings_dict);
+    const base::Value::Dict& dict,
+    base::StringPiece patterns_string,
+    const absl::optional<base::Time> expected_last_modified,
+    absl::optional<int> expected_setting_value) {
+  const base::Value::Dict* settings_dict = dict.FindDict(patterns_string);
   EXPECT_NE(settings_dict, nullptr);
 
-  int actual_value;
-  settings_dict->GetInteger(kSettingPath, &actual_value);
-  EXPECT_EQ(GetTimeStampFromDictionary(settings_dict, kLastModifiedPath),
+  auto actual_value = settings_dict->FindInt(kSettingPath);
+  EXPECT_EQ(base::ValueToTime(settings_dict->Find(kLastModifiedPath)),
             expected_last_modified);
-  EXPECT_EQ(GetSessionModelFromDictionary(settings_dict, kSessionModelPath),
+  EXPECT_EQ(GetSessionModelFromDictionary(*settings_dict, kSessionModelPath),
             content_settings::SessionModel::Durable);
   EXPECT_EQ(actual_value, expected_setting_value);
 }
@@ -493,11 +491,9 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
 
   // Check migration for all the settings has been properly done.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
-    const base::DictionaryValue* brave_shields_dict =
-        &base::Value::AsDictionaryValue(
-            *pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
-                GetShieldsContentTypeName(content_type))));
-    EXPECT_NE(brave_shields_dict, nullptr);
+    const base::Value::Dict& brave_shields_dict =
+        *pref_service->GetValueDict(GetShieldsSettingUserPrefsPath(
+            GetShieldsContentTypeName(content_type)));
 
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
       // We only changed the value of BRAVE_SHIELDS in www.brave.com.
@@ -634,7 +630,23 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   // Verify global has changed
   shields_enabled_settings.CheckSettingsWouldAllow(example_url);
   // Remove wildcards
-  provider.EnsureNoWildcardEntries();
+  provider.EnsureNoWildcardEntries(ContentSettingsType::BRAVE_SHIELDS);
+  // Verify global has reset
+  shields_enabled_settings.CheckSettingsAreDefault(example_url);
+
+  // Simulate sync updates pref directly.
+  base::Value::Dict value;
+  value.Set("expiration", "0");
+  value.Set("last_modified", "13304670271801570");
+  value.Set("model", 0);
+  value.Set("setting", 2);
+
+  base::Value::Dict update;
+  update.Set("*,*", std::move(value));
+
+  testing_profile()->GetPrefs()->SetDict(
+      "profile.content_settings.exceptions.braveShields", std::move(update));
+  base::RunLoop().RunUntilIdle();
   // Verify global has reset
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
   provider.ShutdownOnUIThread();

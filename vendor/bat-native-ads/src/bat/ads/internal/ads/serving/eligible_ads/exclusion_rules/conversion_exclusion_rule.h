@@ -28,7 +28,7 @@ class ConversionExclusionRule final
 
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
-  std::string GetLastMessage() const override;
+  const std::string& GetLastMessage() const override;
 
  private:
   bool ShouldAllow(const CreativeAdInfo& creative_ad);

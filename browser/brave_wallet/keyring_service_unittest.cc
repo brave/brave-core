@@ -1197,9 +1197,6 @@ TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {
   EXPECT_TRUE(callback_called);
 
   // invalid id or keyring is not yet created
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_TRUE(IsKeyringInfoEmpty(&service, mojom::kSolanaKeyringId));
-#endif
   EXPECT_TRUE(IsKeyringInfoEmpty(&service, "invalid_id"));
 }
 
@@ -1594,20 +1591,35 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   service.AddObserver(observer.GetReceiver());
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
+  for (const std::string invalid_private_key :
+       {"0x", "0x0", "0", "0x123abc", "123abc", "", "invalid"})
+    EXPECT_FALSE(ImportAccount(&service, "invalid account", invalid_private_key,
+                               mojom::CoinType::ETH));
+
   const struct {
     const char* name;
     const char* private_key;
     const char* address;
+    const char* encoded_private_key;
   } imported_accounts[] = {
-      {"Imported account1",
-       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
-       "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"},
-      {"Imported account2",
-       "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
-       "0x6D59205FADC892333cb945AD563e74F83f3dBA95"},
-      {"Imported account3",
-       "ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
-       "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"}};
+      {
+          "Imported account1",
+          "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+          "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976",
+          "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+      },
+      {
+          "Imported account2",
+          "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
+          "0x6D59205FADC892333cb945AD563e74F83f3dBA95",
+          "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
+      },
+      {
+          "Imported account3",
+          "0xddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
+          "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA",
+          "ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
+      }};
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     absl::optional<std::string> imported_account =
@@ -1619,7 +1631,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
     auto private_key = GetPrivateKeyForKeyringAccount(
         &service, imported_accounts[i].address, mojom::CoinType::ETH);
     EXPECT_TRUE(private_key);
-    EXPECT_EQ(imported_accounts[i].private_key, private_key);
+    EXPECT_EQ(imported_accounts[i].encoded_private_key, private_key);
   }
 
   observer.Reset();
@@ -1647,11 +1659,13 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
         EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
         EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
         EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
+        // import accounts
         EXPECT_EQ(keyring_info->account_infos[1]->address,
                   imported_accounts[0].address);
         EXPECT_EQ(keyring_info->account_infos[1]->name,
                   imported_accounts[0].name);
         EXPECT_TRUE(keyring_info->account_infos[1]->is_imported);
+
         EXPECT_EQ(keyring_info->account_infos[2]->address,
                   imported_accounts[2].address);
         EXPECT_EQ(keyring_info->account_infos[2]->name,
@@ -2391,12 +2405,8 @@ TEST_F(KeyringServiceUnitTest, SelectAddedAccount) {
   service.GetKeyringInfo(
       mojom::kSolanaKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-#if !BUILDFLAG(IS_ANDROID)
         ASSERT_EQ(GetSelectedAccount(&service, mojom::CoinType::SOL),
                   keyring_info->account_infos[2]->address);
-#else
-        ASSERT_FALSE(keyring_info->is_keyring_created);
-#endif  // !BUILDFLAG(IS_ANDROID)
       }));
 }
 
@@ -3340,11 +3350,10 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     KeyringService service(json_rpc_service(), GetPrefs());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
 #if BUILDFLAG(IS_ANDROID)
-    EXPECT_FALSE(service.encryptors_.contains(mojom::kSolanaKeyringId));
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
 #else
-    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
 #endif
   }
@@ -3367,11 +3376,10 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     KeyringService service(json_rpc_service(), GetPrefs());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
 #if BUILDFLAG(IS_ANDROID)
-    EXPECT_FALSE(service.encryptors_.contains(mojom::kSolanaKeyringId));
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
 #else
-    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
 #endif
     service.Lock();
@@ -3399,11 +3407,10 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     ASSERT_TRUE(
         RestoreWallet(&service, *mnemonic_to_be_restored, "brave", false));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
 #if BUILDFLAG(IS_ANDROID)
-    EXPECT_FALSE(service.encryptors_.contains(mojom::kSolanaKeyringId));
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
 #else
-    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
 #endif
 

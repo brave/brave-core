@@ -5,12 +5,18 @@ export function useTorObserver () {
   const [hasInit, setHasInit] = React.useState<boolean>(false)
   const [isConnected, setIsConnected] = React.useState(false)
   const [progress, setProgress] = React.useState<string | undefined>(undefined)
+  const [message, setMessage] = React.useState<string | undefined>(undefined)
+  const [connectionFailed, setFailed] = React.useState<boolean>(false)
 
   const isLoading = !hasInit && !isConnected
 
   React.useEffect(() => {
     getPageHandlerInstance().callbackRouter.onTorCircuitEstablished.addListener(setHasInit)
-    getPageHandlerInstance().callbackRouter.onTorInitializing.addListener(setProgress)
+    getPageHandlerInstance().callbackRouter.onTorInitializing.addListener((progress: string, message: string) => {
+      setProgress(progress)
+      setMessage(message)
+    })
+    getPageHandlerInstance().callbackRouter.onTorCircuitGetStuck.addListener(setFailed)
   }, [])
 
   React.useEffect(() => {
@@ -21,7 +27,9 @@ export function useTorObserver () {
   return {
     isConnected,
     isLoading,
-    progress
+    progress,
+    message,
+    connectionFailed
   }
 }
 

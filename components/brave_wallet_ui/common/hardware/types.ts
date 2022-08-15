@@ -1,4 +1,4 @@
-import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
+import { EthereumSignedTx } from './trezor/trezor-connect-types'
 import { BraveWallet } from '../../constants/types'
 import { SignedLotusMessage } from '@glif/filecoin-message'
 import { LedgerError } from './ledgerjs/ledger-messages'

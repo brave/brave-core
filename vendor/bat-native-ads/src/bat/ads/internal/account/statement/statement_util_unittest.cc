@@ -9,7 +9,6 @@
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/numbers/number_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
@@ -58,25 +57,25 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_3 =
+  const TransactionInfo transaction_3 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo& transaction_4 =
+  const TransactionInfo transaction_4 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
-  const TransactionInfo& transaction_5 =
+  const TransactionInfo transaction_5 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
@@ -84,8 +83,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
   const double earnings = GetEarningsForThisMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.07;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.07, earnings);
 }
 
 TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
@@ -94,25 +92,25 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.02, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_1);
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_3 =
+  const TransactionInfo transaction_3 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo& transaction_4 =
+  const TransactionInfo transaction_4 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
-  const TransactionInfo& transaction_5 =
+  const TransactionInfo transaction_5 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
@@ -120,8 +118,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
   const double earnings = GetEarningsForLastMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.02;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
+  EXPECT_DOUBLE_EQ(0.02, earnings);
 }
 
 TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
@@ -130,21 +127,21 @@ TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo& transaction_1 =
+  const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
-  const TransactionInfo& transaction_3 =
+  const TransactionInfo transaction_3 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo& transaction_4 =
+  const TransactionInfo transaction_4 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 

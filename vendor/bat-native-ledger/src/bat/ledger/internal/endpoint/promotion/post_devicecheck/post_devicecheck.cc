@@ -37,11 +37,11 @@ std::string PostDevicecheck::GeneratePayload(const std::string& key) {
     return "";
   }
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetStringKey("publicKeyHash", key);
-  dictionary.SetStringKey("paymentId", wallet->payment_id);
+  base::Value::Dict dict;
+  dict.Set("publicKeyHash", key);
+  dict.Set("paymentId", wallet->payment_id);
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
+  base::JSONWriter::Write(dict, &json);
 
   return json;
 }
@@ -76,13 +76,8 @@ type::Result PostDevicecheck::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  auto* nonce_string = dictionary->FindStringKey("nonce");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* nonce_string = dict.FindString("nonce");
   if (!nonce_string) {
     BLOG(0, "Nonce is wrong");
     return type::Result::LEDGER_ERROR;

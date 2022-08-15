@@ -262,6 +262,7 @@
 <translation id="3097089005389027085">Устройство, на котором были сгенерированы кодовые слова, получит доступ к вашим данным в Brave, в том числе к паролям.
 Убедитесь, что кодовые слова были созданы на вашем устройстве.
 Вы уверены, что хотите передать данные?</translation>
+<translation id="4550208292810542331">Доступ к камере запрещен</translation>
 <translation id="597993392929850353">Лицензия Brave</translation>
 <translation id="6336451774241870485">Новая приватная вкладка</translation>
 <translation id="6199596294742117349">Это приватная вкладка</translation>
@@ -550,8 +551,9 @@
 <translation id="6366007539108097840">3 мес.</translation>
 <translation id="6977728312178289892">1 г.</translation>
 <translation id="6895566650974550243">ВСЕ</translation>
-<translation id="5071303414930953888">Аккаунт <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Аккаунт <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Добавить аккаунт</translation>
+<translation id="318334680413773318">Добавить/импортировать аккаунт</translation>
 <translation id="3448492834076427715">Обновить аккаунт</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Включить распознавание отпечатка пальца?</translation>
@@ -860,12 +862,14 @@
 <translation id="4804818685124855865">Отключиться</translation>
 <translation id="8009571545960303544">Запрашивается ваша подпись</translation>
 <translation id="3484981968509595506">DApp запрашивает открытый ключ шифрования</translation>
+<translation id="2300240008330189182"><ph name="URL"/> запрашивает открытый ключ шифрования вашего кошелька. Если вы разрешите доступ, сайт сможет отправлять вам зашифрованные сообщения.</translation>
 <translation id="3340247553212049934">Предоставить</translation>
 <translation id="1982257600591932657">Название сети</translation>
 <translation id="5052727830821470769">URL сети</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Символ валюты</translation>
 <translation id="7982789257301363584">Сеть</translation>
+<translation id="6936860995365507185">Эта сеть будет использоваться для Brave Кошелька. <ph name="CLICK_START"/>Подробнее<ph name="CLICK_END"/>…</translation>
 <translation id="4717431746210146708">Разрешить сайту добавить сеть?</translation>
 <translation id="4857321293515555666">DApp необходимо прочесть это сообщение, чтобы выполнить ваш запрос.</translation>
 <translation id="714506544401754321">Расшифровать сообщение</translation>
@@ -890,4 +894,14 @@
 <translation id="5334952096674914470">\n\nОператор сотовой связи\n</translation>
 <translation id="5393042357629679588">\n\nДругая проблема\n</translation>
 <translation id="8095666712177294104">\n\nПлатформа\n</translation>
+<translation id="7080614857771109950">Поддерживает совместимые с EVM активы в сети Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155).</translation>
+<translation id="6577166808959668729">Поддерживает совместимые с SLP активы в блокчейне Solana.</translation>
+<translation id="6575120282593094155">У вас еще нет аккаунта <ph name="ACCOUNT_TYPE"/>. Создать?</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="1599766910146472906">Запрещенные приложения</translation>
+<translation id="8463269357637177759">Разрешенные cтандартные приложения</translation>
+<translation id="4554726425645556940">Разрешенные системные приложения</translation>
+<translation id="9023148942866814328">Показать системные приложения</translation>
+<translation id="5472400694702418949">Чтобы исключить приложения из VPN-трафика, добавьте их сюда.</translation>
+<translation id="7002577172732106572">Раздельное туннелирование</translation>
 </translationbundle>

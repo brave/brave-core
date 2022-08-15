@@ -41,7 +41,8 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
 
   // The API
   bool URLLooksReadable(const GURL& url);
-  std::unique_ptr<Rewriter> MakeRewriter(const GURL& url);
+  std::unique_ptr<Rewriter> MakeRewriter(const GURL& url,
+                                         const std::string& theme);
   const std::string& GetContentStylesheet();
 
  private:

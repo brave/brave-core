@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 
-#include "base/values.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
@@ -43,10 +42,10 @@ TEST_F(BatAdsConversionUserDataTest, GetForConversionConfirmationType) {
   GetConversion(
       kCreativeInstanceId, ConfirmationType::kConversion,
       [](base::Value::Dict user_data) {
-        const absl::optional<security::VerifiableConversionEnvelopeInfo>&
-            verifiable_conversion_envelope_optional =
+        const absl::optional<security::VerifiableConversionEnvelopeInfo>
+            verifiable_conversion_envelope =
                 security::GetVerifiableConversionEnvelopeForUserData(user_data);
-        ASSERT_TRUE(verifiable_conversion_envelope_optional);
+        ASSERT_TRUE(verifiable_conversion_envelope);
       });
 
   // Assert
@@ -60,10 +59,10 @@ TEST_F(BatAdsConversionUserDataTest, DoNotGetForNonConversionConfirmationType) {
   GetConversion(
       kCreativeInstanceId, ConfirmationType::kViewed,
       [](base::Value::Dict user_data) {
-        const absl::optional<security::VerifiableConversionEnvelopeInfo>&
-            verifiable_conversion_envelope_optional =
+        const absl::optional<security::VerifiableConversionEnvelopeInfo>
+            verifiable_conversion_envelope =
                 security::GetVerifiableConversionEnvelopeForUserData(user_data);
-        ASSERT_FALSE(verifiable_conversion_envelope_optional);
+        ASSERT_FALSE(verifiable_conversion_envelope);
       });
 
   // Assert

@@ -12,6 +12,7 @@ import {
   AmountPresetTypes,
   BraveWallet,
   ExpirationPresetObjectType,
+  JupiterErrorResponse,
   OrderTypes,
   SendTransactionParams,
   SlippagePresetObjectType,
@@ -21,7 +22,11 @@ import {
   WalletState
 } from '../../constants/types'
 import { SwapParamsPayloadType } from '../constants/action_types'
-import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magics'
+import {
+  MAX_UINT256,
+  NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+  WRAPPED_SOL_CONTRACT_ADDRESS
+} from '../constants/magics'
 
 // Options
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
@@ -76,6 +81,31 @@ const hasDecimalsOverflow = (amount: string, asset?: BraveWallet.BlockchainToken
   return amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces() > 0
 }
 
+export enum SwapProvider {
+  ZeroEx,
+  Jupiter
+}
+
+function getSwapProvider (network: BraveWallet.NetworkInfo): SwapProvider {
+  switch (network.coin) {
+    case BraveWallet.CoinType.ETH: return SwapProvider.ZeroEx
+    case BraveWallet.CoinType.SOL: return SwapProvider.Jupiter
+    default: return SwapProvider.ZeroEx
+  }
+}
+
+function makeSendOptions (maxRetries?: number, preflightCommitment?: string, skipPreflight?: boolean): BraveWallet.SolanaSendTransactionOptions {
+  return {
+    maxRetries: maxRetries !== undefined
+      ? { maxRetries: maxRetries } as unknown as BraveWallet.OptionalMaxRetries
+      : undefined,
+    preflightCommitment,
+    skipPreflight: skipPreflight !== undefined
+      ? { skipPreflight: skipPreflight }
+      : undefined
+  }
+}
+
 export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetProp }: Args = {}) {
   // redux
   const {
@@ -87,8 +117,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const dispatch = useDispatch()
 
-  // State
-  const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
+  const swapProvider = React.useMemo(() =>
+    getSwapProvider(selectedNetwork), [selectedNetwork])
+
+  // common state
   const [customSlippageTolerance, setCustomSlippageTolerance] = React.useState<string>('')
   const [exchangeRate, setExchangeRate] = React.useState('')
   const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>([])
@@ -99,18 +131,29 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>(undefined)
-  const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
-  const [swapError, setSwapError] = React.useState<SwapErrorResponse | undefined>(undefined)
-  const [swapQuote, setSwapQuote] = React.useState<BraveWallet.SwapResponse | undefined>(undefined)
+  const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(
+    swapProvider === SwapProvider.Jupiter
+      ? SlippagePresetOptions[1] // 1%
+      : SlippagePresetOptions[0] // 0.5%
+  )
   const [swapToOrFrom, setSwapToOrFrom] = React.useState<ToOrFromType>('from')
   const [toAmount, setToAmount] = React.useState('')
   const [toAsset, setToAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(toAssetProp)
+
+  // evm swaps (0x) state
+  const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
+  const [swapError, setSwapError] = React.useState<SwapErrorResponse | undefined>(undefined)
+  const [swapQuote, setSwapQuote] = React.useState<BraveWallet.SwapResponse | undefined>(undefined)
+
+  // solana swaps (jupiter) state
+  const [jupiterQuote, setJupiterQuote] = React.useState<BraveWallet.JupiterQuote | undefined>(undefined)
+  const [jupiterError, setJupiterError] = React.useState<JupiterErrorResponse | undefined>(undefined)
 
   // custom hooks
   const isMounted = useIsMounted()
   const getBalance = useBalance(networkList)
   const { makeTokenVisible } = useAssetManagement()
-  const { getIsSwapSupported, getERC20Allowance } = useLib()
+  const { getIsSwapSupported, getERC20Allowance, sendSolanaSerializedTransaction } = useLib()
 
   // memos
   const nativeAsset = React.useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
@@ -119,26 +162,32 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const toAssetBalance = getBalance(selectedAccount, toAsset)
 
   const feesWrapped = React.useMemo(() => {
-    if (!swapQuote) {
-      return new Amount('0')
+    if (swapProvider === SwapProvider.ZeroEx) {
+      if (!swapQuote) {
+        return new Amount('0')
+      }
+
+      // NOTE: Swap will eventually use EIP-1559 gas fields, but we rely on
+      // gasPrice as a fee-ceiling for validation of inputs.
+      const { gasPrice, gas } = swapQuote
+      const gasPriceWrapped = new Amount(gasPrice)
+      const gasWrapped = new Amount(gas)
+      return gasPriceWrapped.times(gasWrapped)
+    } else if (swapProvider === SwapProvider.Jupiter) {
+      // TODO: solana
     }
 
-    // NOTE: Swap will eventually use EIP-1559 gas fields, but we rely on
-    // gasPrice as a fee-ceiling for validation of inputs.
-    const { gasPrice, gas } = swapQuote
-    const gasPriceWrapped = new Amount(gasPrice)
-    const gasWrapped = new Amount(gas)
-    return gasPriceWrapped.times(gasWrapped)
-  }, [swapQuote])
+    return Amount.zero()
+  }, [swapQuote, swapProvider])
 
   const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return [
       nativeAsset,
-      ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'BAT'),
+      ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'USDC'),
       ...userVisibleTokensInfo
-        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
+        .filter(asset => !['USDC', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
       ...fullTokenList
-        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
+        .filter(asset => !['USDC', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
         .filter(asset => !userVisibleTokensInfo
           .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
     ].filter(asset => (
@@ -187,24 +236,41 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return 'insufficientFundsForGas'
     }
 
-    if (allowance !== undefined && new Amount(allowance).lt(fromAmountWeiWrapped)) {
-      return 'insufficientAllowance'
+    // 0x specific validations
+    if (swapProvider === SwapProvider.ZeroEx) {
+      if (allowance !== undefined &&
+          new Amount(allowance).lt(fromAmountWeiWrapped)) {
+        return 'insufficientAllowance'
+      }
+
+      if (swapError === undefined) {
+        return
+      }
+
+      const { code, validationErrors } = swapError
+      switch (code) {
+        case SWAP_VALIDATION_ERROR_CODE:
+          if (validationErrors?.find(err => err.reason === 'INSUFFICIENT_ASSET_LIQUIDITY')) {
+            return 'insufficientLiquidity'
+          }
+          break
+
+        default:
+          return 'unknownError'
+      }
     }
 
-    if (swapError === undefined) {
-      return
-    }
+    // Jupiter specific validations
+    if (swapProvider === SwapProvider.Jupiter) {
+      if (jupiterError === undefined) {
+        return
+      }
 
-    const { code, validationErrors } = swapError
-    switch (code) {
-      case SWAP_VALIDATION_ERROR_CODE:
-        if (validationErrors?.find(err => err.reason === 'INSUFFICIENT_ASSET_LIQUIDITY')) {
-          return 'insufficientLiquidity'
-        }
-        break
+      if (jupiterError.message.includes('No routes found for the input and output mints')) {
+        return 'insufficientLiquidity'
+      }
 
-      default:
-        return 'unknownError'
+      return 'unknownError'
     }
 
     return undefined
@@ -217,7 +283,9 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     nativeAssetBalance,
     feesWrapped,
     swapError,
-    allowance
+    allowance,
+    swapProvider,
+    jupiterError
   ])
 
   const isSwapButtonDisabled = React.useMemo(() => {
@@ -226,9 +294,13 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       // of a new quote is in progress.
       isLoading ||
 
-      // If swap quote is empty, there's nothing to create the swap transaction
-      // with, so Swap button must be disabled.
-      swapQuote === undefined ||
+      // If 0x swap quote is empty, there's nothing to create the swap
+      // transaction with, so Swap button must be disabled.
+      (swapProvider === SwapProvider.ZeroEx && swapQuote === undefined) ||
+
+      // If Jupiter quote is empty, there's nothing to create the swap
+      // transaction with, so Swap button must be disabled.
+      (swapProvider === SwapProvider.Jupiter && jupiterQuote === undefined) ||
 
       // FROM/TO assets may be undefined during initialization of the swap
       // assets list.
@@ -252,18 +324,21 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
       // Unless the validation error is insufficientAllowance, in which case
       // the transaction is an ERC20Approve, Swap button must be disabled.
-      (swapValidationError && swapValidationError !== 'insufficientAllowance')
+      (swapValidationError && (swapProvider === SwapProvider.ZeroEx &&
+          swapValidationError !== 'insufficientAllowance'))
     )
   }, [
     isLoading,
-    swapQuote,
     fromAsset,
     toAsset,
     fromAmount,
     toAmount,
     nativeAssetBalance,
     fromAssetBalance,
-    swapValidationError
+    swapValidationError,
+    swapProvider,
+    swapQuote,
+    jupiterQuote
   ])
 
   // Callbacks / methods
@@ -283,7 +358,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     }
   }, [makeTokenVisible])
 
-  const fetchSwapQuote = React.useCallback(async (payload: SwapParamsPayloadType) => {
+  const fetch0xSwapQuote = React.useCallback(async (payload: SwapParamsPayloadType) => {
     if (!isMounted) {
       return
     }
@@ -300,7 +375,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       full
     } = payload
 
-    const swapParams = {
+    const swapParams: BraveWallet.SwapParams = {
       takerAddress: accountAddress,
       sellAmount: fromAssetAmount || '',
       buyAmount: toAssetAmount || '',
@@ -308,7 +383,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       sellToken: fromAsset.contractAddress || NATIVE_ASSET_CONTRACT_ADDRESS_0X,
       slippagePercentage: slippageTolerance.slippage / 100,
       gasPrice: ''
-    }
+    } as BraveWallet.SwapParams
 
     const quote = await (
       full ? swapService.getTransactionPayload(swapParams) : swapService.getPriceQuote(swapParams)
@@ -378,6 +453,107 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       }
     }
   }, [isMounted])
+
+  const fetchJupiterSwapQuote = React.useCallback(async (payload: SwapParamsPayloadType) => {
+    if (!isMounted) {
+      return
+    }
+
+    const { swapService } = getAPIProxy()
+
+    const {
+      fromAsset,
+      fromAssetAmount,
+      toAsset,
+      accountAddress,
+      slippageTolerance,
+      full
+    } = payload
+
+    if (!full) {
+      const quote = await swapService.getJupiterQuote({
+        inputMint: fromAsset.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS,
+        outputMint: toAsset.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS,
+        amount: fromAssetAmount || '',
+        slippagePercentage: slippageTolerance.slippage
+      })
+
+      if (quote.success && quote.response) {
+        if (isMounted) {
+          setJupiterQuote(quote.response)
+          setJupiterError(undefined)
+        }
+      } else if (quote.errorResponse) {
+        try {
+          const err = JSON.parse(quote.errorResponse) as JupiterErrorResponse
+          if (isMounted) {
+            setJupiterError(err)
+          }
+        } catch (e) {
+          console.error(`[swap] error parsing Jupiter response: ${e}`)
+        } finally {
+          console.error(`[swap] error querying Jupiter API: ${quote.errorResponse}`)
+        }
+      }
+    } else {
+      if (!jupiterQuote || jupiterQuote?.routes.length === 0) {
+        return
+      }
+
+      const swapTransactions = await swapService.getJupiterSwapTransactions({
+        userPublicKey: accountAddress,
+        route: jupiterQuote.routes[0],
+        outputMint: toAsset.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS
+      })
+
+      if (swapTransactions.success && swapTransactions.response) {
+        const {
+          setupTransaction,
+          swapTransaction,
+          cleanupTransaction
+        } = swapTransactions.response
+        const serializedTransactions = [
+          setupTransaction,
+          swapTransaction,
+          cleanupTransaction
+        ].filter(txn => txn !== '')
+
+        const hasParts = serializedTransactions.length > 1
+        const groupId = hasParts
+          // @ts-expect-error
+          ? crypto.randomUUID()
+          : undefined
+
+        await Promise.all(serializedTransactions.map(async (each, idx) => {
+          await sendSolanaSerializedTransaction({
+            encodedTransaction: each,
+            from: accountAddress,
+            txType: !hasParts || idx === 1
+              ? BraveWallet.TransactionType.SolanaSwap
+              : BraveWallet.TransactionType.Other,
+            sendOptions: makeSendOptions(undefined, undefined, true),
+            groupId
+          })
+        }))
+
+        if (isMounted) {
+          setJupiterQuote(undefined)
+          setJupiterError(undefined)
+        }
+      } else if (swapTransactions.errorResponse) {
+        try {
+          const err = JSON.parse(swapTransactions.errorResponse) as JupiterErrorResponse
+          if (isMounted) {
+            setJupiterError(err)
+          }
+        } catch (e) {
+          console.error(`[swap] error parsing Jupiter response: ${e}`)
+        } finally {
+          console.error(`[swap] error querying Jupiter swap API: ${swapTransactions.errorResponse}`)
+        }
+      }
+    }
+  }, [isMounted, jupiterQuote])
 
   /**
    * onSwapParamsChange() is triggered whenever a change in the swap fields
@@ -486,7 +662,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
      * STEP 5: Fetch the swap quote asynchronously.
      */
     setIsLoading(true)
-    await fetchSwapQuote({
+    const params = {
       fromAsset: fromAssetNext,
       fromAssetAmount: fromAmountWeiWrapped?.format(),
       toAsset: toAssetNext,
@@ -495,8 +671,22 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       slippageTolerance: overrides.slippageTolerance ?? slippageTolerance,
       networkChainId: selectedNetwork.chainId,
       full
-    })
-  }, [selectedAccount, selectedNetwork, fromAsset, toAsset])
+    } as SwapParamsPayloadType
+
+    if (swapProvider === SwapProvider.ZeroEx) {
+      await fetch0xSwapQuote(params)
+    } else if (swapProvider === SwapProvider.Jupiter) {
+      await fetchJupiterSwapQuote(params)
+    }
+  }, [
+    selectedAccount,
+    selectedNetwork,
+    fromAsset,
+    toAsset,
+    swapProvider,
+    fetch0xSwapQuote,
+    fetchJupiterSwapQuote
+  ])
 
   const onSwapQuoteRefresh = React.useCallback(async () => {
     const customSlippage = {
@@ -584,37 +774,42 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   }, [orderType])
 
   const onSubmitSwap = React.useCallback(() => {
-    if (!swapQuote) {
-      return
-    }
-
     if (!fromAsset) {
       return
     }
 
-    if (swapValidationError === 'insufficientAllowance' && allowance) {
-      // IMPORTANT SECURITY NOTICE
-      //
-      // The token allowance suggested by Swap is always unlimited,
-      // i.e., max(uint256). While unlimited approvals are not safe from a
-      // security standpoint, and this puts the entire token balance at risk
-      // if 0x contracts are ever exploited, we still opted for this to give
-      // users a frictionless UX and save on gas fees.
-      //
-      // The transaction confirmation screen for ERC20 approve() shows a loud
-      // security notice, and still allows users to edit the default approval
-      // amount.
-      const allowanceHex = new Amount(MAX_UINT256)
-        .toHex()
+    if (swapProvider === SwapProvider.ZeroEx) {
+      if (!swapQuote) {
+        return
+      }
 
-      dispatch(WalletActions.approveERC20Allowance({
-        from: selectedAccount.address,
-        contractAddress: fromAsset.contractAddress,
-        spenderAddress: swapQuote.allowanceTarget,
-        allowance: allowanceHex
-      }))
+      if (swapValidationError === 'insufficientAllowance' && allowance) {
+        // IMPORTANT SECURITY NOTICE
+        //
+        // The token allowance suggested by Swap is always unlimited,
+        // i.e., max(uint256). While unlimited approvals are not safe from a
+        // security standpoint, and this puts the entire token balance at risk
+        // if 0x contracts are ever exploited, we still opted for this to give
+        // users a frictionless UX and save on gas fees.
+        //
+        // The transaction confirmation screen for ERC20 approve() shows a loud
+        // security notice, and still allows users to edit the default approval
+        // amount.
+        const allowanceHex = new Amount(MAX_UINT256)
+          .toHex()
 
-      return
+        dispatch(WalletActions.approveERC20Allowance({
+          from: selectedAccount.address,
+          contractAddress: fromAsset.contractAddress,
+          spenderAddress: swapQuote.allowanceTarget,
+          allowance: allowanceHex
+        }))
+        return
+      }
+    } else if (swapProvider === SwapProvider.Jupiter) {
+      if (!jupiterQuote) {
+        return
+      }
     }
 
     onSwapParamsChange({
@@ -622,7 +817,17 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       state: { fromAmount, toAmount },
       full: true
     })
-  }, [swapQuote, fromAsset, swapValidationError, allowance, selectedAccount, fromAmount, toAmount])
+  }, [
+    fromAsset,
+    swapValidationError,
+    allowance,
+    selectedAccount,
+    fromAmount,
+    toAmount,
+    swapProvider,
+    swapQuote,
+    jupiterQuote
+  ])
 
   const onSelectTransactAsset = React.useCallback((asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
@@ -654,7 +859,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     if (name === 'rate') {
       setExchangeRate(value)
     }
-  }, [onSetToAmount, onSetFromAmount])
+  }, [onSetToAmount, onSetFromAmount, setExchangeRate])
 
   const onFilterAssetList = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     const newList = swapAssetOptions.filter((assets) => assets !== asset)
@@ -715,6 +920,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   React.useEffect(() => {
     let isSubscribed = true // track if the component is mounted
 
+    if (swapProvider !== SwapProvider.ZeroEx) {
+      return
+    }
+
     if (!fromAsset) {
       return
     }
@@ -743,13 +952,17 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     return () => {
       isSubscribed = false
     }
-  }, [fromAsset, swapQuote, selectedAccount])
+  }, [fromAsset, swapQuote, selectedAccount, swapProvider])
 
   /**
-   * React effect to extract fields from the swap quote and write the relevant
+   * React effect to extract fields from the 0x swap quote and write the relevant
    * fields to the state.
    */
   React.useEffect(() => {
+    if (swapProvider !== SwapProvider.ZeroEx) {
+      return
+    }
+
     if (!swapQuote) {
       setFromAmount('')
       setToAmount('')
@@ -813,16 +1026,59 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
     const bestEstimatePrice = bestEstimatePriceWrapped.format(6)
     setExchangeRate(bestEstimatePrice)
-  }, [swapQuote])
+  }, [swapQuote, swapProvider])
+
+  /**
+   * React effect to extract fields from the Jupiter swap quote and write the
+   * relevant fields to the state.
+   */
+  React.useEffect(() => {
+    if (swapProvider !== SwapProvider.Jupiter) {
+      return
+    }
+
+    if (!jupiterQuote) {
+      setFromAmount('')
+      setToAmount('')
+      setExchangeRate('')
+      return
+    }
+
+    if (!fromAsset || !toAsset) {
+      return
+    }
+
+    const { routes } = jupiterQuote
+    if (routes.length === 0) {
+      return
+    }
+
+    const [{ inAmount, otherAmountThreshold }] = routes
+
+    const newFromAmountWrapped = new Amount(inAmount.toString())
+      .divideByDecimals(fromAsset.decimals)
+    setFromAmount(newFromAmountWrapped.format())
+
+    const newToAmountWrapped = new Amount(otherAmountThreshold.toString())
+      .divideByDecimals(toAsset.decimals)
+    setToAmount(newToAmountWrapped.format())
+
+    /**
+     * Price computation block
+     *
+     * No exchange rate is returned by Jupiter API, so we estimate it from the
+     * quote.
+     */
+    const priceWrapped = newToAmountWrapped.div(newFromAmountWrapped)
+    setExchangeRate(priceWrapped.format(6))
+  }, [jupiterQuote, swapProvider])
 
   // Set isLoading to false as soon as:
   //  - swap quote has been fetched.
   //  - error from 0x API is available in rawError.
-  React.useEffect(() => setIsLoading(false), [swapQuote, swapError])
+  React.useEffect(() => setIsLoading(false), [swapQuote, jupiterQuote, swapError, jupiterError])
 
   return {
-    allowance,
-    clearPreset,
     customSlippageTolerance,
     exchangeRate,
     filteredAssetList,
@@ -833,16 +1089,12 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     isFetchingSwapQuote: isLoading,
     isSwapButtonDisabled,
     isSwapSupported: isSupported,
-    nativeAssetBalance,
     onCustomSlippageToleranceChange,
     onFilterAssetList,
     setOrderExpiration,
     onSelectPresetAmount,
     onSelectSlippageTolerance,
     onSelectTransactAsset,
-    setExchangeRate,
-    onSetFromAmount,
-    onSetToAmount,
     onSubmitSwap,
     onSwapInputChange,
     onSwapQuoteRefresh,
@@ -850,22 +1102,21 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     orderExpiration,
     orderType,
     selectedPreset,
-    setAllowance,
-    setFromAmount,
-    setFromAsset,
     setSelectedPreset,
-    setSwapError,
-    setSwapQuote,
     setSwapToOrFrom,
-    setToAmount,
-    setToAsset,
     slippageTolerance,
     swapAssetOptions,
-    swapQuote,
     swapToOrFrom,
     swapValidationError,
     toAmount,
     toAsset,
-    toAssetBalance
+    toAssetBalance,
+    swapProvider,
+
+    // For use in unit-tests
+    setSwapError,
+    setSwapQuote,
+    allowance,
+    setAllowance
   }
 }

@@ -28,7 +28,7 @@ bool FullScreenModePermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string FullScreenModePermissionRule::GetLastMessage() const {
+const std::string& FullScreenModePermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

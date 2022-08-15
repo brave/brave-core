@@ -80,7 +80,7 @@ function AddSuggestedTokenPanel (props: Props) {
       <ButtonWrapper>
         <NavButton
           buttonType='secondary'
-          text={getLocale('braveWalletBackupButtonCancel')}
+          text={getLocale('braveWalletButtonCancel')}
           onSubmit={onCancel}
         />
         <NavButton

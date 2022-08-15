@@ -12,9 +12,9 @@
 
 namespace ads {
 
-base::flat_map<std::string, std::string> UrlResponseHeadersToMap(
+base::flat_map<std::string, std::string> ToUrlResponseHeaders(
     const std::vector<std::string>& headers) {
-  base::flat_map<std::string, std::string> normalized_headers;
+  base::flat_map<std::string, std::string> response_headers;
 
   for (const auto& header : headers) {
     const std::vector<std::string> components = base::SplitString(
@@ -24,10 +24,10 @@ base::flat_map<std::string, std::string> UrlResponseHeadersToMap(
     const std::string key = components.at(0);
     const std::string value = components.at(1);
 
-    normalized_headers[key] = value;
+    response_headers[key] = value;
   }
 
-  return normalized_headers;
+  return response_headers;
 }
 
 }  // namespace ads

@@ -24,25 +24,6 @@ export const StyledImport = styled('label')<{}>`
   cursor: pointer;
 `
 
-export const StyledButtonWrapper = styled('div')<{}>`
-  display: flex;
-  margin-top: 20px;
-  margin-bottom: 40px;
-`
-
-export const GroupedButton = styled(Button as ComponentType<ButtonProps>)`
-  margin: 0 4px;
-
-  @media (max-width: 410px) {
-    min-width: 74px;
-    font-size: 9px;
-  }
-  @media (max-width: 370px) {
-    min-width: 65px;
-    font-size: 9px;
-  }
-`
-
 export const StyledDoneWrapper = styled('div')<{}>`
   display: flex;
   justify-content: center;
@@ -78,12 +59,6 @@ export const StyledTitle = styled('span')<{}>`
   line-height: 40px;
   font-family: ${p => p.theme.fontFamily.heading};
   text-transform: capitalize;
-`
-
-export const StyledSafe = styled('span')<{}>`
-  font-weight: 700;
-  margin-right: 3px;
-  color: ${p => p.theme.color.brandBatInteracting};
 `
 
 export const StyledControlWrapper = styled('div')<{}>`

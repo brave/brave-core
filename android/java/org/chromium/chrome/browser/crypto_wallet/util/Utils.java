@@ -47,6 +47,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -625,6 +626,31 @@ public class Utils {
             return value;
     }
 
+    public static long toDecimalLamport(String amount, int decimals) {
+        try {
+            amount = removeHexPrefix(amount);
+            BigDecimal value = new BigDecimal(amount);
+
+            String resStr =
+                    value.multiply(new BigDecimal(getDecimalsDepNumber(decimals))).toPlainString();
+            int integerPlaces = resStr.indexOf('.');
+            if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+                resStr = resStr.substring(0, integerPlaces + 9);
+            }
+            return (long) Double.parseDouble(resStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String removeHexPrefix(String value) {
+        if (value.startsWith("0x")) {
+            return value.substring(2);
+        }
+        return value;
+    }
+
     public static TxData getTxData(
             String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
         TxData res = new TxData();
@@ -727,8 +753,7 @@ public class Utils {
             } catch (Exception exc) {
                 org.chromium.base.Log.e("Utils", exc.getMessage());
                 if (textView != null) {
-                    Drawable iconDrawable =
-                            ApiCompatibilityUtils.getDrawable(context.getResources(), iconId);
+                    Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
                     Bitmap bitmap = Bitmap.createBitmap(iconDrawable.getIntrinsicWidth(),
                             iconDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                     Canvas canvas = new Canvas(bitmap);
@@ -1057,7 +1082,7 @@ public class Utils {
     }
 
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
-            AppCompatActivity activity, String accountName) {
+            AppCompatActivity activity, String accountName, int coinType) {
         assert txInfo != null;
         if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
             if (activity instanceof ApprovedTxObserver) {
@@ -1069,39 +1094,40 @@ public class Utils {
             if (txInfo.txHash == null || txInfo.txHash.isEmpty()) {
                 return;
             }
-            openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity);
+            openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity, coinType);
         }
     }
 
-    public static void openAddress(
-            String toAppend, JsonRpcService jsonRpcService, AppCompatActivity activity) {
+    public static void openAddress(String toAppend, JsonRpcService jsonRpcService,
+            AppCompatActivity activity, int coinType) {
         assert jsonRpcService != null;
-        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
-                for (NetworkInfo network : networks) {
-                    if (!chainId.equals(network.chainId)) {
-                        continue;
-                    }
-                    String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
-                    if (blockExplorerUrl.length() > 2) {
-                        blockExplorerUrl =
-                                blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
-                                + toAppend;
-                        TabUtils.openUrlInNewTab(false, blockExplorerUrl);
-                        TabUtils.bringChromeTabbedActivityToTheTop(activity);
-                        break;
-                    }
+        jsonRpcService.getNetwork(coinType, network -> {
+            String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
+            if (blockExplorerUrl.length() > 2) {
+                blockExplorerUrl = blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1);
+            }
+            if (coinType == CoinType.ETH) {
+                blockExplorerUrl += toAppend;
+            } else if (coinType == CoinType.SOL) {
+                int iPos = blockExplorerUrl.indexOf("?cluster=");
+                if (iPos != -1) {
+                    blockExplorerUrl = blockExplorerUrl.substring(0, iPos - 1) + toAppend
+                            + blockExplorerUrl.substring(iPos);
+                } else {
+                    blockExplorerUrl += toAppend;
                 }
-            });
+            }
+            TabUtils.openUrlInNewTab(false, blockExplorerUrl);
+            TabUtils.bringChromeTabbedActivityToTheTop(activity);
         });
     }
 
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
-            AppCompatActivity activity, AccountInfo[] accountInfos) {
+            AppCompatActivity activity, AccountInfo[] accountInfos, int coinType) {
         assert txInfo != null;
         AccountInfo account = findAccount(accountInfos, txInfo.fromAddress);
         openTransaction(txInfo, jsonRpcService, activity,
-                account != null ? account.name : stripAccountAddress(txInfo.fromAddress));
+                account != null ? account.name : stripAccountAddress(txInfo.fromAddress), coinType);
     }
 
     public static void setUpTransactionList(BraveWalletBaseActivity activity,
@@ -1129,11 +1155,35 @@ public class Utils {
             pendingTxHelper.fetchTransactions(() -> {
                 HashMap<String, TransactionInfo[]> pendingTxInfos =
                         pendingTxHelper.getTransactions();
-                workWithTransactions(activity, selectedNetwork, pendingTxInfos, accounts,
-                        walletListItemModel, assetPrices, fullTokenList, nativeAssetsBalances,
-                        blockchainTokensBalances, rvTransactions, callback, walletTxCoinAdapter);
+                SolanaTransactionsGasHelper solanaTransactionsGasHelper =
+                        new SolanaTransactionsGasHelper(
+                                activity, getTransactionArray(pendingTxInfos));
+                solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
+                    workWithTransactions(activity, selectedNetwork, pendingTxInfos, accounts,
+                            walletListItemModel, assetPrices, fullTokenList, nativeAssetsBalances,
+                            blockchainTokensBalances, rvTransactions, callback, walletTxCoinAdapter,
+                            solanaTransactionsGasHelper.getPerTxFee());
+                });
             });
         });
+    }
+
+    private static TransactionInfo[] getTransactionArray(
+            HashMap<String, TransactionInfo[]> txInfos) {
+        TransactionInfo[] result = new TransactionInfo[0];
+        for (String key : txInfos.keySet()) {
+            TransactionInfo[] txs = txInfos.get(key);
+            result = concatWithArrayCopy(result, txs);
+        }
+
+        return result;
+    }
+
+    private static <T> T[] concatWithArrayCopy(T[] array1, T[] array2) {
+        T[] result = Arrays.copyOf(array1, array1.length + array2.length);
+        System.arraycopy(array2, 0, result, array1.length, array2.length);
+
+        return result;
     }
 
     private static void workWithTransactions(BraveWalletBaseActivity activity,
@@ -1143,7 +1193,7 @@ public class Utils {
             HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             RecyclerView rvTransactions, OnWalletListItemClick callback,
-            WalletCoinAdapter walletTxCoinAdapter) {
+            WalletCoinAdapter walletTxCoinAdapter, HashMap<String, Long> perTxSolanaFee) {
         walletTxCoinAdapter.setWalletCoinAdapterType(
                 WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -1153,8 +1203,12 @@ public class Utils {
         for (String accountName : pendingTxInfos.keySet()) {
             TransactionInfo[] txInfos = pendingTxInfos.get(accountName);
             for (TransactionInfo txInfo : txInfos) {
+                long solanaEstimatedTxFee = 0;
+                if (perTxSolanaFee.get(txInfo.id) != null) {
+                    solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
+                }
                 ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo,
-                        selectedNetwork, accounts, assetPrices, null, fullTokenList,
+                        selectedNetwork, accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);
                 WalletListItemModel itemModel =
                         makeWalletItem((Context) activity, txInfo, selectedNetwork, parsedTx);
@@ -1282,8 +1336,8 @@ public class Utils {
         Spannable spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
-            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(context,
-                    R.color.brave_theme_color, (view) -> { onClickListener.onClick(view); });
+            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
+                    context, (view) -> { onClickListener.onClick(view); });
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -1470,7 +1524,7 @@ public class Utils {
     }
 
     public static void getTxExtraInfo(BraveWalletBaseActivity activity, NetworkInfo selectedNetwork,
-            AccountInfo[] accountInfos, BlockchainToken filterByToken, boolean userAssetsOnly,
+            AccountInfo[] accountInfos, BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
         BraveWalletService braveWalletService = activity.getBraveWalletService();
@@ -1485,11 +1539,11 @@ public class Utils {
                 selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL, userAssetsOnly,
                 tokens -> {
                     final BlockchainToken[] fullTokenList = tokens;
-                    if (filterByToken != null) {
+                    if (filterByTokens != null) {
                         if (userAssetsOnly)
                             Log.w("Utils",
-                                    "userAssetsOnly usually shouldn't be used with filterByToken");
-                        tokens = new BlockchainToken[] {filterByToken};
+                                    "userAssetsOnly usually shouldn't be used with filterByTokens");
+                        tokens = filterByTokens;
                     }
 
                     AsyncUtils.FetchPricesResponseContext fetchPricesContext =
@@ -1562,5 +1616,42 @@ public class Utils {
         }
 
         return keyring;
+    }
+
+    // TODO(sergz): Move getCoinIcon, getKeyringForCoinType, getBalanceForCoinType
+    // to some kind of a separate Utils file that is related to diff networks only
+    public static double getBalanceForCoinType(int coinType, int decimals, String balance) {
+        double result = 0.0d;
+        switch (coinType) {
+            case CoinType.ETH:
+                result = Utils.fromHexWei(balance, decimals);
+                break;
+            case CoinType.SOL:
+                result = Utils.fromWei(balance, decimals);
+                break;
+            case CoinType.FIL:
+                // TODO(sergz): Add FIL asset balance
+                break;
+            default:
+                result = Utils.fromHexWei(balance, decimals);
+                break;
+        }
+
+        return result;
+    }
+
+    public static boolean allowBuyAndSwap(String chainId) {
+        switch (chainId) {
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
+                return true;
+            default:
+                break;
+        }
+
+        return false;
     }
 }

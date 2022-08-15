@@ -18,6 +18,7 @@
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -106,7 +107,7 @@ class AdsService : public KeyedService {
 
   // Called to get diagnostics to help identify issues. The callback takes two
   // arguments - |bool| is set to |true| if successful otherwise |false|.
-  // |std::string| containing info of the obtained diagnostics.
+  // |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   // Called when the user changes the locale of their operating system. This
@@ -227,7 +228,7 @@ class AdsService : public KeyedService {
   // must wait for the callback before calling another |kViewed| event to handle
   // frequency capping.
   virtual void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdPtr ad_mojom,
+      ads::mojom::SearchResultAdInfoPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 

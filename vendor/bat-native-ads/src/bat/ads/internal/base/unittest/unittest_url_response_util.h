@@ -12,9 +12,9 @@
 
 namespace ads {
 
-absl::optional<mojom::UrlResponse> GetNextUrlResponse(
-    const mojom::UrlRequestPtr& url_request,
-    const URLEndpointMap& endpoints);
+absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
+    const mojom::UrlRequestInfoPtr& url_request,
+    const URLResponseMap& url_responses);
 
 }  // namespace ads
 

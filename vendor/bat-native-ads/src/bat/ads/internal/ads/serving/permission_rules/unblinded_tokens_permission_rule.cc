@@ -28,7 +28,7 @@ bool UnblindedTokensPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string UnblindedTokensPermissionRule::GetLastMessage() const {
+const std::string& UnblindedTokensPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

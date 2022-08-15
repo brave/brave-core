@@ -46,11 +46,6 @@
 #include "extensions/common/constants.h"
 #include "extensions/common/feature_switch.h"
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/components/tor/pref_names.h"
-#endif
-
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #endif
@@ -140,18 +135,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(&BraveDefaultExtensionsHandler::GetRestartNeeded,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "setTorEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::SetTorEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "isTorEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "isTorManaged",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorManaged,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "setWidevineEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWidevineEnabled,
                           base::Unretained(this)));
@@ -170,15 +153,8 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
 }
 
 void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
-  local_state_change_registrar_.Init(g_browser_process->local_state());
-#if BUILDFLAG(ENABLE_TOR)
-  local_state_change_registrar_.Add(
-      tor::prefs::kTorDisabled,
-      base::BindRepeating(&BraveDefaultExtensionsHandler::OnTorEnabledChanged,
-                          base::Unretained(this)));
-#endif
-
 #if BUILDFLAG(ENABLE_WIDEVINE)
+  local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       kWidevineOptedIn,
       base::BindRepeating(
@@ -295,56 +271,6 @@ void BraveDefaultExtensionsHandler::OnRestartNeededChanged() {
     FireWebUIListener("brave-needs-restart-changed",
                       base::Value(IsRestartNeeded()));
   }
-}
-
-void BraveDefaultExtensionsHandler::SetTorEnabled(
-    const base::Value::List& args) {
-#if BUILDFLAG(ENABLE_TOR)
-  CHECK_EQ(args.size(), 1U);
-  bool enabled = args[0].GetBool();
-  AllowJavascript();
-  TorProfileServiceFactory::SetTorDisabled(!enabled);
-#endif
-}
-
-void BraveDefaultExtensionsHandler::IsTorEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  AllowJavascript();
-  ResolveJavascriptCallback(
-      args[0],
-#if BUILDFLAG(ENABLE_TOR)
-      base::Value(!TorProfileServiceFactory::IsTorDisabled()));
-#else
-      base::Value(false));
-#endif
-}
-
-void BraveDefaultExtensionsHandler::OnTorEnabledChanged() {
-  if (IsJavascriptAllowed()) {
-    FireWebUIListener("tor-enabled-changed",
-#if BUILDFLAG(ENABLE_TOR)
-                      base::Value(!TorProfileServiceFactory::IsTorDisabled()));
-#else
-                      base::Value(false));
-#endif
-  }
-}
-
-void BraveDefaultExtensionsHandler::IsTorManaged(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-
-#if BUILDFLAG(ENABLE_TOR)
-  const bool is_managed = g_browser_process->local_state()
-                              ->FindPreference(tor::prefs::kTorDisabled)
-                              ->IsManaged();
-#else
-  const bool is_managed = false;
-#endif
-
-  AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(is_managed));
 }
 
 void BraveDefaultExtensionsHandler::SetWidevineEnabled(
@@ -535,6 +461,8 @@ void BraveDefaultExtensionsHandler::FileSelected(const base::FilePath& path,
 
 void BraveDefaultExtensionsHandler::OnKeyExported(const std::string& key,
                                                   bool success) {
+  if (!IsJavascriptAllowed())
+    return;
   FireWebUIListener("brave-ipfs-key-exported", base::Value(key),
                     base::Value(success));
 }
@@ -542,6 +470,8 @@ void BraveDefaultExtensionsHandler::OnKeyExported(const std::string& key,
 void BraveDefaultExtensionsHandler::OnKeyImported(const std::string& key,
                                                   const std::string& value,
                                                   bool success) {
+  if (!IsJavascriptAllowed())
+    return;
   FireWebUIListener("brave-ipfs-key-imported", base::Value(key),
                     base::Value(value), base::Value(success));
 }
@@ -584,6 +514,8 @@ void BraveDefaultExtensionsHandler::CheckIpfsNodeStatus(
 void BraveDefaultExtensionsHandler::NotifyNodeStatus() {
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (!IsJavascriptAllowed())
+    return;
   bool launched = service && service->IsDaemonLaunched();
   FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
 }

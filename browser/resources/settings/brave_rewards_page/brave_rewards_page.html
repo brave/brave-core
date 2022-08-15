@@ -22,6 +22,13 @@
 </style>
 <template is="dom-if" if="[[prefs.brave.rewards.enabled.value]]" restamp>
   <div class="settings-box first">
+    <div class="label rewards-primary-title">$i18n{braveRewardsAppearanceTitle}</div>
+  </div>
+  <settings-toggle-button
+    label="$i18n{appearanceSettingsShowBraveRewardsButtonLabel}"
+    pref="{{prefs.brave.show_brave_rewards_button}}">
+  </settings-toggle-button>
+  <div class="settings-box continuation">
     <div class="label rewards-primary-title">$i18n{braveRewardsPrivateAdsTitle}</div>
   </div>
   <settings-toggle-button
@@ -148,4 +155,8 @@
       on-click="openRewardsPanel_" external>
     </cr-link-row>
   </div>
+  <settings-toggle-button
+    label="$i18n{appearanceSettingsShowBraveRewardsButtonLabel}"
+    pref="{{prefs.brave.show_brave_rewards_button}}">
+  </settings-toggle-button>
 </template>

@@ -5,11 +5,18 @@
 
 #include "brave/components/brave_vpn/pref_names.h"
 
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_vpn {
 namespace prefs {
+
+#if BUILDFLAG(IS_ANDROID)
+const char kBraveVPNPurchaseTokenAndroid[] =
+    "brave.brave_vpn.purchase_token_android";
+const char kBraveVPNPackageAndroid[] = "brave.brave_vpn.package_android";
+#endif
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
@@ -18,9 +25,18 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(kBraveVPNSelectedRegion, "");
   registry->RegisterBooleanPref(kBraveVPNShowDNSPolicyWarningDialog, true);
+#elif BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(kBraveVPNPurchaseTokenAndroid, "");
+  registry->RegisterStringPref(kBraveVPNPackageAndroid, "");
 #endif
   registry->RegisterStringPref(kBraveVPNEEnvironment,
                                skus::GetDefaultEnvironment());
+}
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  p3a_utils::RegisterFeatureUsagePrefs(
+      registry, kBraveVPNFirstUseTime, kBraveVPNLastUseTime,
+      kBraveVPNUsedSecondDay, kBraveVPNDaysInMonthUsed);
 }
 
 }  // namespace prefs

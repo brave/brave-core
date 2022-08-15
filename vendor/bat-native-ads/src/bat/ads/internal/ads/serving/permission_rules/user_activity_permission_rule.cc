@@ -24,7 +24,7 @@ bool UserActivityPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string UserActivityPermissionRule::GetLastMessage() const {
+const std::string& UserActivityPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

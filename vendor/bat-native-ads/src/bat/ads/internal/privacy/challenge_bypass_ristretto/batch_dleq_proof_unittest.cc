@@ -21,6 +21,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -142,14 +143,12 @@ TEST(BatAdsBatchDLEQProofTest, EncodeBase64) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       batch_dleq_proof.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kBatchDLEQProofBase64, encoded_base64);
+  EXPECT_EQ(kBatchDLEQProofBase64, *encoded_base64);
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
@@ -157,11 +156,11 @@ TEST(BatAdsBatchDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   BatchDLEQProof batch_dleq_proof;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       batch_dleq_proof.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsBatchDLEQProofTest, Verify) {
@@ -241,15 +240,13 @@ TEST(BatAdsBatchDLEQProofTest, VerifyAndUnblind) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
+  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
                                         GetSignedTokens(), GetPublicKey());
-  ASSERT_TRUE(unblinded_tokens_optional);
-  const std::vector<UnblindedToken>& unblinded_tokens =
-      unblinded_tokens_optional.value();
+  ASSERT_TRUE(unblinded_tokens);
 
   // Assert
-  EXPECT_EQ(GetUnblindedTokens(), unblinded_tokens);
+  EXPECT_EQ(GetUnblindedTokens(), *unblinded_tokens);
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWhenUninitialized) {
@@ -257,12 +254,12 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWhenUninitialized) {
   BatchDLEQProof batch_dleq_proof;
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
+  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
                                         GetSignedTokens(), GetPublicKey());
 
   // Assert
-  ASSERT_FALSE(unblinded_tokens_optional);
+  ASSERT_FALSE(unblinded_tokens);
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidTokens) {
@@ -270,12 +267,12 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidTokens) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
+  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(GetInvalidTokens(), GetBlindedTokens(),
                                         GetSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens_optional);
+  EXPECT_FALSE(unblinded_tokens);
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidBlindedTokens) {
@@ -283,12 +280,12 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidBlindedTokens) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
+  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetInvalidBlindedTokens(),
                                         GetSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens_optional);
+  EXPECT_FALSE(unblinded_tokens);
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidSignedTokens) {
@@ -296,13 +293,13 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidSignedTokens) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
+  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
                                         GetInvalidSignedTokens(),
                                         GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens_optional);
+  EXPECT_FALSE(unblinded_tokens);
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithMismatchingPublicKey) {
@@ -310,13 +307,13 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithMismatchingPublicKey) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
+  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
                                         GetSignedTokens(),
                                         GetMismatchingPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens_optional);
+  EXPECT_FALSE(unblinded_tokens);
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
@@ -324,13 +321,13 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
+  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
                                         GetSignedTokens(),
                                         GetInvalidPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens_optional);
+  EXPECT_FALSE(unblinded_tokens);
 }
 
 TEST(BatAdsBatchDLEQProofTest, IsEqual) {

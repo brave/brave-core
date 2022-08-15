@@ -26,9 +26,9 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/ipfs/ipfs_service.h"
@@ -520,20 +520,22 @@ class JsonRpcServiceUnitTest : public testing::Test {
         [&, expected_url, expected_method, expected_cache_header,
          content](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value(100, '\0');
-          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
-          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
-          EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+          std::string header_value;
+          EXPECT_EQ(request.headers.GetHeader("X-Eth-Method", &header_value),
+                    !expected_method.empty());
           EXPECT_EQ(expected_method, header_value);
           if (expected_method == "eth_blockNumber") {
             EXPECT_TRUE(
                 request.headers.GetHeader("X-Eth-Block", &header_value));
             EXPECT_EQ(expected_cache_header, header_value);
           } else if (expected_method == "eth_getBlockByNumber") {
-            EXPECT_TRUE(
-                request.headers.GetHeader("X-eth-get-block", &header_value));
+            EXPECT_EQ(
+                request.headers.GetHeader("X-eth-get-block", &header_value),
+                !expected_cache_header.empty());
             EXPECT_EQ(expected_cache_header, header_value);
           }
+          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
+          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
@@ -1034,17 +1036,10 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
 
 TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
   std::vector<base::Value::Dict> values;
-  mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
-                            {"https://url1.com"}, {"https://url1.com"},
-                            "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            mojom::NetworkInfoData::NewEthData(
-                                mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(EthNetworkInfoToValue(chain1));
 
-  brave_wallet::mojom::NetworkInfo chain2(
-      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
-      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
+  mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
   values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(prefs(), &values);
 
@@ -1075,17 +1070,10 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
 
 TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   std::vector<base::Value::Dict> values;
-  mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
-                            {"https://url1.com"}, {"https://url1.com"},
-                            "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            mojom::NetworkInfoData::NewEthData(
-                                mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(EthNetworkInfoToValue(chain1));
 
-  mojom::NetworkInfo chain2(
-      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
-      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
+  mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
   values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(prefs(), &values);
 
@@ -1123,18 +1111,10 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
 TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
   base::MockCallback<mojom::JsonRpcService::GetCustomNetworksCallback> callback;
   std::vector<base::Value::Dict> values;
-  mojom::NetworkInfo chain1(mojom::kMainnetChainId, "chain_name",
-                            {"https://url1.com"}, {"https://url1.com"},
-                            {"https://url1.com"}, "symbol_name", "symbol", 11,
-                            mojom::CoinType::ETH,
-                            mojom::NetworkInfoData::NewEthData(
-                                mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1(mojom::kMainnetChainId);
   values.push_back(EthNetworkInfoToValue(chain1));
 
-  mojom::NetworkInfo chain2(
-      "0x123456", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
-      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
+  mojom::NetworkInfo chain2 = GetTestNetworkInfo1("0x123456");
   values.push_back(EthNetworkInfoToValue(chain2));
   EXPECT_CALL(callback, Run(ElementsAreArray(std::vector<std::string>{})));
   json_rpc_service_->GetCustomNetworks(mojom::CoinType::ETH, callback.Get());
@@ -1149,12 +1129,7 @@ TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
 TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   base::MockCallback<mojom::JsonRpcService::GetKnownNetworksCallback> callback;
   std::vector<base::Value::Dict> values;
-  mojom::NetworkInfo chain1(mojom::kMainnetChainId, "chain_name",
-                            {"https://url1.com"}, {"https://url1.com"},
-                            {"https://url1.com"}, "symbol_name", "symbol", 11,
-                            mojom::CoinType::ETH,
-                            mojom::NetworkInfoData::NewEthData(
-                                mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1(mojom::kMainnetChainId);
   values.push_back(EthNetworkInfoToValue(chain1));
   UpdateCustomNetworks(prefs(), &values);
 
@@ -1245,12 +1220,7 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
-  mojom::NetworkInfo chain("0x111", "chain_name", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"}, "symbol",
-                           "symbol_name", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
-
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
   bool callback_is_called = false;
   mojom::ProviderError expected = mojom::ProviderError::kSuccess;
   ASSERT_FALSE(
@@ -1320,11 +1290,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
-  mojom::NetworkInfo chain("0x111", "chain_name", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"}, "symbol",
-                           "symbol_name", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
 
   base::RunLoop loop;
   std::unique_ptr<TestJsonRpcServiceObserver> observer(
@@ -1389,11 +1355,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginRejected) {
-  mojom::NetworkInfo chain("0x111", "chain_name", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"},
-                           "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
 
   base::RunLoop loop;
   std::unique_ptr<TestJsonRpcServiceObserver> observer(
@@ -1434,11 +1396,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginRejected) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
-  mojom::NetworkInfo chain("0x111", "chain_name", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"},
-                           "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
 
   bool callback_is_called = false;
   mojom::ProviderError expected = mojom::ProviderError::kSuccess;
@@ -1483,8 +1441,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   mojom::NetworkInfo chain4("0x444", "chain_name4", {"https://url4.com"},
                             {"https://url4.com"}, {"https://url4.com"},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            mojom::NetworkInfoData::NewEthData(
-                                mojom::NetworkInfoDataETH::New(false)));
+                            false);
   bool fourth_callback_is_called = false;
   mojom::ProviderError fourth_expected =
       mojom::ProviderError::kUserRejectedRequest;
@@ -1511,8 +1468,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   mojom::NetworkInfo chain5("0x444", "chain_name5", {"https://url5.com"},
                             {"https://url5.com"}, {"https://url5.com"},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            mojom::NetworkInfoData::NewEthData(
-                                mojom::NetworkInfoDataETH::New(false)));
+                            false);
   bool fifth_callback_is_called = false;
   mojom::ProviderError fifth_expected =
       mojom::ProviderError::kUserRejectedRequest;
@@ -1537,11 +1493,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginError) {
-  mojom::NetworkInfo chain("0x1", "chain_name", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"},
-                           "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x1");
   auto origin = url::Origin::Create(GURL("https://brave.com"));
 
   // Known eth chain should be rejected.
@@ -1675,6 +1627,28 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       request, true, base::Value(), mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, Request_BadHeaderValues) {
+  std::string request =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\n\","
+      "\"params\":"
+      "[]}";
+  std::string mock_response =
+      R"({"jsonrpc":"2.0",
+          "id":1,
+          "error":": {
+            "code": -32601,
+            "message": "unsupported method"
+          }})";
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH), "",
+                 "", mock_response);
+  bool callback_called = false;
+  json_rpc_service_->Request(
+      request, true, base::Value(), mojom::CoinType::ETH,
+      base::BindOnce(&OnRequestResponse, &callback_called, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -2428,17 +2402,10 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
 
 TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   std::vector<base::Value::Dict> values;
-  mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
-                            {"https://url1.com"}, {"https://url1.com"},
-                            "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            mojom::NetworkInfoData::NewEthData(
-                                mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain1));
 
-  mojom::NetworkInfo chain2(
-      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
-      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
+  mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(prefs(), &values);
 
@@ -3176,11 +3143,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
 
 TEST_F(JsonRpcServiceUnitTest, Reset) {
   std::vector<base::Value::Dict> values;
-  mojom::NetworkInfo chain("0x1", "chain_name", {"https://url1.com"},
-                           {"https://url1.com"}, {"https://url1.com"},
-                           "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                           mojom::NetworkInfoData::NewEthData(
-                               mojom::NetworkInfoDataETH::New(false)));
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x1");
   values.push_back(brave_wallet::EthNetworkInfoToValue(chain));
   UpdateCustomNetworks(prefs(), &values);
 

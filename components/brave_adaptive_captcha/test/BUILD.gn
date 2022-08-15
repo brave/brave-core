@@ -12,7 +12,10 @@ source_set("brave_adaptive_captcha_unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
+    "//net/traffic_annotation:test_support",
+    "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
   ]

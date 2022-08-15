@@ -79,20 +79,6 @@ OBJC_EXPORT
 /// Removes an interface from the list of observers
 - (void)removeObserver:(BraveLedgerObserver*)observer;
 
-#pragma mark - Global
-
-/// Whether or not to use staging servers. Defaults to false
-@property(nonatomic, class, getter=isDebug) BOOL debug;
-/// The environment that ledger is communicating with
-@property(nonatomic, class) LedgerEnvironment environment;
-/// Marks if this is being ran in a test environment. Defaults to false
-@property(nonatomic, class, getter=isTesting) BOOL testing;
-/// Number of minutes between reconciles override. Defaults to 0 (no override)
-@property(nonatomic, class) int reconcileInterval;
-/// Number of seconds between contribution retries override. Defaults to 0 (no
-/// override)
-@property(nonatomic, class) int retryInterval;
-
 #pragma mark - Wallet
 
 /// Whether or not the wallet is currently in the process of being created

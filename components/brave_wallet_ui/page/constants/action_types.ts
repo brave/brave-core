@@ -54,6 +54,7 @@ export type RestoreWalletPayloadType = {
   mnemonic: string
   password: string
   isLegacy: boolean
+  completeWalletSetup?: boolean
 }
 
 export type WalletCreatedPayloadType = {
@@ -94,4 +95,5 @@ export type ImportFromExternalWalletPayloadType = {
 export type ImportWalletErrorPayloadType = {
   hasError: boolean
   errorMessage?: string
+  incrementAttempts?: boolean
 }

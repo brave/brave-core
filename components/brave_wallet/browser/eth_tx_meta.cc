@@ -29,10 +29,10 @@ bool EthTxMeta::operator==(const EthTxMeta& meta) const {
          *tx_ == *meta.tx_;
 }
 
-base::Value EthTxMeta::ToValue() const {
-  base::Value dict = TxMeta::ToValue();
-  dict.SetKey("tx_receipt", TransactionReceiptToValue(tx_receipt_));
-  dict.SetKey("tx", tx_->ToValue());
+base::Value::Dict EthTxMeta::ToValue() const {
+  base::Value::Dict dict = TxMeta::ToValue();
+  dict.Set("tx_receipt", TransactionReceiptToValue(tx_receipt_));
+  dict.Set("tx", tx_->ToValue());
   return dict;
 }
 
@@ -88,7 +88,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr);
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_);
 }
 
 }  // namespace brave_wallet

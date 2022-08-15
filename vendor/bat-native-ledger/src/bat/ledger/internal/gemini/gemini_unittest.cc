@@ -53,11 +53,8 @@ absl::optional<type::WalletStatus> GetStatusFromJSON(
     const std::string& gemini_wallet) {
   auto value = base::JSONReader::Read(gemini_wallet);
   if (value && value->is_dict()) {
-    base::DictionaryValue* dictionary = nullptr;
-    if (value->GetAsDictionary(&dictionary)) {
-      if (auto status = dictionary->FindIntKey("status")) {
-        return static_cast<type::WalletStatus>(*status);
-      }
+    if (auto status = value->GetDict().FindInt("status")) {
+      return static_cast<type::WalletStatus>(*status);
     }
   }
 

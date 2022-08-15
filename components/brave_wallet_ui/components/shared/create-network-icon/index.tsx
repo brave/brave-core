@@ -20,25 +20,35 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 
 interface Props {
   network: BraveWallet.NetworkInfo
-  marginRight: number
+  marginRight?: number
   size?: 'big' | 'small'
 }
 
-function CreateNetworkIcon (props: Props) {
-  const { network, marginRight, size } = props
-  if (!network) {
-    return null
-  }
+export const CreateNetworkIcon = ({
+  network,
+  marginRight,
+  size
+}: Props) => {
+  // memos
+  const networkImageURL = React.useMemo(() => {
+    return stripERC20TokenImageURL(network?.iconUrls[0])
+  }, [network?.iconUrls[0]])
 
-  const nativeAsset = React.useMemo(
-    () => makeNetworkAsset(network),
-    [network]
-  )
+  const isRemoteURL = React.useMemo(() => {
+    return isRemoteImageURL(networkImageURL)
+  }, [networkImageURL])
 
-  const networkImageURL = stripERC20TokenImageURL(network?.iconUrls[0])
-  const isRemoteURL = isRemoteImageURL(networkImageURL)
-  const isDataURL = network.iconUrls[0]?.startsWith('chrome://erc-token-images/')
-  const isStorybook = network.iconUrls[0]?.startsWith('static/media/components/brave_wallet_ui/')
+  const isDataURL = React.useMemo(() => {
+    return network.iconUrls[0]?.startsWith('chrome://erc-token-images/')
+  }, [network.iconUrls[0]])
+
+  const isStorybook = React.useMemo(() => {
+    return network.iconUrls[0]?.startsWith('static/media/components/brave_wallet_ui/')
+  }, [network.iconUrls[0]])
+
+  const nativeAsset = React.useMemo(() => {
+    return makeNetworkAsset(network)
+  }, [network])
 
   const isValidIcon = React.useMemo(() => {
     if (isRemoteURL || isDataURL) {
@@ -52,13 +62,15 @@ function CreateNetworkIcon (props: Props) {
     return false
   }, [isRemoteURL, isDataURL, networkImageURL])
 
-  const needsPlaceholder = nativeAsset.logo === '' && (networkImageURL === '' || !isValidIcon)
+  const needsPlaceholder = React.useMemo(() => {
+    return !nativeAsset || (nativeAsset?.logo === '' && (networkImageURL === '' || !isValidIcon))
+  }, [nativeAsset, networkImageURL, isValidIcon])
 
   const orb = React.useMemo(() => {
     if (needsPlaceholder) {
       return create({ seed: network.chainName, size: 8, scale: 16 }).toDataURL()
     }
-  }, [network])
+  }, [network, needsPlaceholder])
 
   const remoteImage = React.useMemo(() => {
     if (isRemoteURL) {
@@ -67,18 +79,18 @@ function CreateNetworkIcon (props: Props) {
     return ''
   }, [networkImageURL])
 
+  // render
   if (needsPlaceholder) {
     return (
       <IconWrapper
         marginRight={marginRight ?? 0}
         isTestnet={false}
       >
-        <Placeholder
-          orb={orb}
-        />
+        <Placeholder orb={orb} />
       </IconWrapper>
     )
   }
+
   return (
     <IconWrapper
       marginRight={marginRight ?? 0}

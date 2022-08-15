@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 
 #include <algorithm>
-#include <memory>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/base/url/url_util.h"
@@ -59,7 +58,7 @@ bool AntiTargetingExclusionRule::ShouldExclude(
   return false;
 }
 
-std::string AntiTargetingExclusionRule::GetLastMessage() const {
+const std::string& AntiTargetingExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

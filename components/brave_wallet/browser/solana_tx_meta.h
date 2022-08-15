@@ -31,7 +31,7 @@ class SolanaTxMeta : public TxMeta {
   bool operator==(const SolanaTxMeta&) const;
 
   // TxMeta
-  base::Value ToValue() const override;
+  base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
 
   SolanaTransaction* tx() const { return tx_.get(); }

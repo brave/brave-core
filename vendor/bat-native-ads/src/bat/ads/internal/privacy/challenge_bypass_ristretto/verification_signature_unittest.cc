@@ -90,14 +90,12 @@ TEST(BatAdsVerificationSignatureTest, EncodeBase64) {
   VerificationSignature verification_signature(kVerificationSignatureBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       verification_signature.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kVerificationSignatureBase64, encoded_base64);
+  EXPECT_EQ(kVerificationSignatureBase64, *encoded_base64);
 }
 
 TEST(BatAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
@@ -105,11 +103,11 @@ TEST(BatAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
   VerificationSignature verification_signature;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       verification_signature.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsVerificationSignatureTest, IsEqual) {

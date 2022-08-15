@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_CONSTANTS_H_
 #define BRAVE_COMPONENTS_TOR_TOR_CONSTANTS_H_
 
-#include <stddef.h>
-
 #include "base/files/file_path.h"
 
 namespace tor {

@@ -24,7 +24,7 @@ namespace table {
 
 using GetDepositsCallback =
     std::function<void(const bool success,
-                       const absl::optional<DepositInfo>& deposit_optional)>;
+                       const absl::optional<DepositInfo>& deposit)>;
 
 class Deposits final : public TableInterface {
  public:
@@ -35,9 +35,9 @@ class Deposits final : public TableInterface {
 
   void Save(const DepositInfo& deposit, ResultCallback callback);
 
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const DepositInfo& deposit);
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
@@ -47,20 +47,20 @@ class Deposits final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const CreativeAdList& creative_ads);
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const DepositInfo& deposit);
 
-  void OnGetForCreativeInstanceId(mojom::DBCommandResponsePtr response,
+  void OnGetForCreativeInstanceId(mojom::DBCommandResponseInfoPtr response,
                                   const std::string& creative_instance_id,
                                   GetDepositsCallback callback);
 
-  void MigrateToV24(mojom::DBTransaction* transaction);
+  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace table

@@ -89,14 +89,12 @@ TEST(BatAdsTokenPreimageTest, EncodeBase64) {
   TokenPreimage token_preimage(kTokenPreimageBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       token_preimage.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kTokenPreimageBase64, encoded_base64);
+  EXPECT_EQ(kTokenPreimageBase64, *encoded_base64);
 }
 
 TEST(BatAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
@@ -104,11 +102,11 @@ TEST(BatAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
   TokenPreimage token_preimage;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       token_preimage.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsTokenPreimageTest, IsEqual) {

@@ -17,7 +17,7 @@ bool CatalogPermissionRule::ShouldAllow() {
   return DoesRespectCap();
 }
 
-std::string CatalogPermissionRule::GetLastMessage() const {
+const std::string& CatalogPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

@@ -14,7 +14,12 @@ import { getLocale } from '$web-common/locale'
 import { CreateAccountOptions } from '../../../../options/create-account-options'
 
 // types
-import { CreateAccountOptionsType, WalletRoutes, WalletState } from '../../../../constants/types'
+import {
+  CreateAccountOptionsType,
+  WalletRoutes,
+  WalletState,
+  ImportAccountErrorType
+} from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -57,14 +62,14 @@ export const AddHardwareAccountModal = () => {
   }, [createAccountOptions, accountTypeName])
 
   // methods
-  const setImportError = React.useCallback((hasError: boolean) => {
+  const setImportError = React.useCallback((hasError: ImportAccountErrorType) => {
     dispatch(WalletPageActions.setImportAccountError(hasError))
   }, [])
 
   const closeModal = React.useCallback(() => {
-    setImportError(false)
+    setImportError(undefined)
     history.push(WalletRoutes.Accounts)
-  }, [])
+  }, [setImportError])
 
   const onSelectAccountType = React.useCallback((accountType: CreateAccountOptionsType) => () => {
     history.push(WalletRoutes.AddHardwareAccountModal.replace(':accountTypeName?', accountType.name.toLowerCase()))

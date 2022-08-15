@@ -283,8 +283,8 @@ if (enable_tor) {
   brave_chrome_browser_deps += [
     "//brave/browser/tor",
     "//brave/components/tor",
+    "//brave/components/tor:common",
     "//brave/components/tor:pref_names",
-    "//brave/components/tor:utils",
   ]
 }
 

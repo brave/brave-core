@@ -17,6 +17,8 @@ import android.util.Pair;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.wireguard.config.Config;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
@@ -49,6 +52,7 @@ public class BraveVpnUtils {
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
 
     public static boolean mIsServerLocationChanged;
+    public static boolean mUpdateProfileAfterSplitTunnel;
     public static String selectedServerRegion;
     private static ProgressDialog mProgressDialog;
 
@@ -224,6 +228,21 @@ public class BraveVpnUtils {
         dismissProgressDialog();
     }
 
+    public static void updateProfileConfiguration(Activity activity) {
+        try {
+            Config existingConfig = WireguardConfigUtils.loadConfig(activity);
+            WireguardConfigUtils.deleteConfig(activity);
+            WireguardConfigUtils.createConfig(activity, existingConfig);
+        } catch (Exception ex) {
+            Log.e(TAG, "updateProfileConfiguration : " + ex.getMessage());
+        }
+        if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(activity)) {
+            BraveVpnProfileUtils.getInstance().stopVpn(activity);
+            BraveVpnProfileUtils.getInstance().startVpn(activity);
+        }
+        dismissProgressDialog();
+    }
+
     public static void showVpnAlwaysOnErrorDialog(Activity activity) {
         BraveVpnAlwaysOnErrorDialogFragment mBraveVpnAlwaysOnErrorDialogFragment =
                 new BraveVpnAlwaysOnErrorDialogFragment();
@@ -240,5 +259,14 @@ public class BraveVpnUtils {
         braveVpnConfirmDialogFragment.show(
                 ((FragmentActivity) activity).getSupportFragmentManager(),
                 "BraveVpnConfirmDialogFragment");
+    }
+
+    public static void reportBackgroundUsageP3A() {
+        // Will report previous/current session timestamps...
+        BraveVpnNativeWorker.getInstance().reportBackgroundP3A(
+                BraveVpnPrefUtils.getSessionStartTimeMs(), BraveVpnPrefUtils.getSessionEndTimeMs());
+        // ...and then reset the timestamps so we don't report the same session again.
+        BraveVpnPrefUtils.setSessionStartTimeMs(-1);
+        BraveVpnPrefUtils.setSessionEndTimeMs(-1);
     }
 }

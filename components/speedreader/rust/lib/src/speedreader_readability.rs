@@ -16,6 +16,7 @@ where
     O: OutputSink,
 {
     min_out_length: Option<i32>,
+    theme: Option<String>,
     parser: Option<Parser<Sink>>,
     url: Url,
     output_sink: O,
@@ -24,6 +25,10 @@ where
 impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
     fn set_min_out_length(&mut self, min_out_length: i32) {
         self.min_out_length = Some(min_out_length);
+    }
+
+    fn set_theme(&mut self, theme: &str) {
+        self.theme = Some(String::from(theme));
     }
 
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError> {
@@ -47,7 +52,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
             let mut dom: Sink = parser.finish();
             if let Some(features) = statistics::collect_statistics(&dom) {
                 if features.moz_score > 20.0 {
-                    let extracted = extractor::extract_dom(&mut dom, &self.url, self.min_out_length, &HashMap::new())?;
+                    let extracted = extractor::extract_dom(&mut dom, &self.url, self.min_out_length, self.theme.clone(), &HashMap::new())?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
                     Ok(())
                 } else {
@@ -77,6 +82,7 @@ impl<O: OutputSink> SpeedReaderReadability<O> {
             let parser = html5ever::parse_document(Sink::default(), ParseOpts::default());
             Ok(SpeedReaderReadability {
                 min_out_length: None,
+                theme: None,
                 parser: Some(parser),
                 url,
                 output_sink,

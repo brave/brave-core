@@ -96,6 +96,11 @@ struct Publisher {
   // a direct feed for a data source already contained in the combined-source
   // feed.
   url.mojom.Url feed_source;
+
+  // The url of the site. Used to determine whether the user is subscribed to
+  // a site when viewing a webcontents.
+  url.mojom.Url site_url;
+
   // Identifies whether the user has manually set the publisher on and off,
   // so that we may know if the source should follow the `is_enabled`
   // remote-provided value (which may change), or not.

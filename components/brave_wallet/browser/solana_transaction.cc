@@ -355,8 +355,8 @@ void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
           tx_type <=
               mojom::TransactionType::
                   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) ||
-         tx_type == mojom::TransactionType::SolanaDappSignAndSendTransaction ||
-         tx_type == mojom::TransactionType::SolanaDappSignTransaction);
+         (tx_type >= mojom::TransactionType::SolanaDappSignAndSendTransaction &&
+          tx_type <= mojom::TransactionType::SolanaSwap));
   tx_type_ = tx_type;
 }
 

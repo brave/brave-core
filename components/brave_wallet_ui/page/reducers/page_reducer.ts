@@ -8,14 +8,15 @@ import * as Actions from '../actions/wallet_page_actions'
 import {
   BraveWallet,
   PageState,
-  ImportWalletError,
-  NFTMetadataReturnType
+  NFTMetadataReturnType,
+  ImportAccountErrorType
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
   PrivateKeyAvailablePayloadType,
-  SelectAssetPayloadType
+  SelectAssetPayloadType,
+  ImportWalletErrorPayloadType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
@@ -23,7 +24,7 @@ const defaultState: PageState = {
   showAddModal: false,
   showRecoveryPhrase: false,
   invalidMnemonic: false,
-  importAccountError: false,
+  importAccountError: undefined,
   importWalletError: { hasError: false },
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
@@ -37,7 +38,10 @@ const defaultState: PageState = {
   showIsRestoring: false,
   setupStillInProgress: false,
   isCryptoWalletsInitialized: false,
-  isMetaMaskInitialized: false
+  isMetaMaskInitialized: false,
+  isImportWalletsCheckComplete: false,
+  importWalletAttempts: 0,
+  walletTermsAcknowledged: false
 }
 
 export const createPageReducer = (initialState: PageState) => {
@@ -70,13 +74,15 @@ export const createPageReducer = (initialState: PageState) => {
     return newState
   })
 
-  reducer.on(Actions.walletSetupComplete, (state: PageState) => {
-    const newState: PageState = {
+  reducer.on(Actions.walletSetupComplete, (state: PageState, payload?: boolean): PageState => {
+    // complete setup unless explicitly halted
+    const setupStillInProgress = !payload
+
+    return {
       ...state,
-      setupStillInProgress: false
+      mnemonic: undefined,
+      setupStillInProgress
     }
-    delete newState.mnemonic
-    return newState
   })
 
   reducer.on(Actions.walletBackupComplete, (state: PageState) => {
@@ -135,17 +141,22 @@ export const createPageReducer = (initialState: PageState) => {
     }
   })
 
-  reducer.on(Actions.setImportAccountError, (state: PageState, payload: boolean) => {
+  reducer.on(Actions.setImportAccountError, (state: PageState, payload: ImportAccountErrorType) => {
     return {
       ...state,
       importAccountError: payload
     }
   })
 
-  reducer.on(Actions.setImportWalletError, (state: PageState, payload: ImportWalletError) => {
+  reducer.on(Actions.setImportWalletError, (state: PageState, {
+    hasError,
+    errorMessage,
+    incrementAttempts
+  }: ImportWalletErrorPayloadType) => {
     return {
       ...state,
-      importWalletError: payload
+      importWalletError: { hasError, errorMessage },
+      importWalletAttempts: incrementAttempts ? state.importWalletAttempts + 1 : state.importWalletAttempts
     }
   })
 
@@ -181,6 +192,20 @@ export const createPageReducer = (initialState: PageState) => {
     return {
       ...state,
       isFetchingNFTMetadata: payload
+    }
+  })
+
+  reducer.on(Actions.setImportWalletsCheckComplete, (state: PageState, payload: boolean): PageState => {
+    return {
+      ...state,
+      isImportWalletsCheckComplete: payload
+    }
+  })
+
+  reducer.on(Actions.agreeToWalletTerms, (state: PageState): PageState => {
+    return {
+      ...state,
+      walletTermsAcknowledged: true
     }
   })
 

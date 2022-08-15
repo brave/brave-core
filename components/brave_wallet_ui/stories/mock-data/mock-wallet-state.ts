@@ -8,6 +8,7 @@ import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 // types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
 import { AllNetworksOption } from '../../options/network-filter-options'
+import { AllAssetsFilterOption } from '../../options/asset-filter-options'
 
 // mocks
 import { mockNetwork } from '../../common/constants/mocks'
@@ -20,7 +21,8 @@ const mockAccount: WalletAccountType = {
   id: '1',
   name: 'Account 1',
   tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346'
+    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
+    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
   },
   nativeBalanceRegistry: {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
@@ -29,7 +31,7 @@ const mockAccount: WalletAccountType = {
   keyringId: undefined
 }
 
-const mockNetworkList = [
+const mockNetworkList: BraveWallet.NetworkInfo[] = [
   {
     'chainId': '0x1',
     'chainName': 'Ethereum Mainnet',
@@ -44,11 +46,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x4',
@@ -64,11 +62,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x3',
@@ -84,11 +78,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x5',
@@ -104,11 +94,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x2a',
@@ -124,11 +110,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': true
-      }
-    }
+    'isEip1559': true
   },
   {
     'chainId': '0x539',
@@ -144,11 +126,7 @@ const mockNetworkList = [
     'symbolName': 'Ethereum',
     'decimals': 18,
     'coin': 60,
-    'data': {
-      'ethData': {
-        'isEip1559': false
-      }
-    }
+    'isEip1559': false
   }
 ]
 
@@ -330,6 +308,7 @@ export const mockWalletState: WalletState = {
   isTestNetworksEnabled: true,
   selectedCoin: BraveWallet.CoinType.ETH,
   selectedNetworkFilter: AllNetworksOption,
+  selectedAssetFilter: AllAssetsFilterOption,
   defaultAccounts: [
     {
       address: mockAccount.address,
@@ -341,5 +320,6 @@ export const mockWalletState: WalletState = {
     }
   ],
   onRampCurrencies: mockCurrencies,
-  selectedCurrency: mockCurrency
+  selectedCurrency: mockCurrency,
+  passwordAttempts: 0
 }

@@ -6,12 +6,11 @@
 #include "bat/ads/internal/conversions/conversions.h"
 
 #include <algorithm>
-#include <iterator>
 #include <set>
 
 #include "base/check.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
@@ -26,6 +25,7 @@
 #include "bat/ads/internal/conversions/conversions_features.h"
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
@@ -312,7 +312,7 @@ void Conversions::CheckRedirectChain(
 
       // Check for conversions
       for (const auto& conversion : filtered_conversions) {
-        const AdEventList& filtered_ad_events =
+        const AdEventList filtered_ad_events =
             FilterAdEventsForConversion(ad_events, conversion);
 
         for (const auto& ad_event : filtered_ad_events) {
@@ -415,7 +415,7 @@ void Conversions::AddItemToQueue(
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
   const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
-      g_is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
+      ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.process_at =
       base::Time::Now() + base::Seconds(rand_delay);
 

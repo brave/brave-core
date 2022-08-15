@@ -26,12 +26,11 @@ absl::optional<PaymentInfo> ParsePayment(const base::Value& value) {
   PaymentInfo payment;
 
   // Balance
-  const absl::optional<double> balance_optional =
-      value.FindDoubleKey(kBalanceKey);
-  if (!balance_optional) {
+  const absl::optional<double> balance = value.FindDoubleKey(kBalanceKey);
+  if (!balance) {
     return absl::nullopt;
   }
-  payment.balance = balance_optional.value();
+  payment.balance = *balance;
 
   // Month
   const std::string* const month = value.FindStringKey(kMonthKey);
@@ -61,19 +60,17 @@ absl::optional<PaymentList> GetPaymentsFromList(const base::Value& value) {
 
   PaymentList payments;
 
-  for (const auto& payment_value : value.GetList()) {
-    if (!payment_value.is_dict()) {
+  for (const auto& item : value.GetList()) {
+    if (!item.is_dict()) {
       return absl::nullopt;
     }
 
-    const absl::optional<PaymentInfo>& payment_optional =
-        ParsePayment(payment_value);
-    if (!payment_optional) {
+    const absl::optional<PaymentInfo> payment = ParsePayment(item);
+    if (!payment) {
       return absl::nullopt;
     }
-    const PaymentInfo& payment = payment_optional.value();
 
-    payments.push_back(payment);
+    payments.push_back(*payment);
   }
 
   return payments;
@@ -94,13 +91,13 @@ absl::optional<PaymentList> ParsePayments(const base::Value& value) {
     return absl::nullopt;
   }
 
-  const absl::optional<PaymentList>& payments_optional =
+  const absl::optional<PaymentList> payments =
       GetPaymentsFromList(*payments_value);
-  if (!payments_optional) {
+  if (!payments) {
     return absl::nullopt;
   }
 
-  return payments_optional.value();
+  return *payments;
 }
 
 }  // namespace JSONReader

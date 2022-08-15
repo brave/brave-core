@@ -335,19 +335,6 @@
     "message": "重新連線",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "您的 Brave 獎勵已驗證！",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "已成功向 $provider$ 驗證您的 Brave 獎勵。",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "獲得一枚代幣獎勵！",
     "description": ""

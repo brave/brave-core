@@ -12,13 +12,6 @@
 namespace ledger {
 namespace sku {
 
-const char kAnonCardDestinationDev[] =
-    "9094c3f2-b3ae-438f-bd59-92aaad92de5c";
-const char kAnonCardDestinationStaging[] =
-    "6654ecb0-6079-4f6c-ba58-791cc890a561";
-const char kAnonCardDestinationProduction[] =
-    "86f26f49-9d3b-4f97-9b56-d305ad7a856f";
-
 const char kUpholdDestinationDev[] =
     "9094c3f2-b3ae-438f-bd59-92aaad92de5c";
 const char kUpholdDestinationStaging[] =
@@ -40,29 +33,8 @@ std::string GetBraveDestination(const std::string& wallet_type) {
     return GetGeminiDestination();
   }
 
-  if (wallet_type == constant::kWalletAnonymous) {
-    return GetAnonCardDestination();
-  }
-
   NOTREACHED();
   return "";
-}
-
-std::string GetAnonCardDestination() {
-  if (ledger::_environment == type::Environment::PRODUCTION) {
-    return kAnonCardDestinationProduction;
-  }
-
-  if (ledger::_environment == type::Environment::STAGING) {
-    return kAnonCardDestinationStaging;
-  }
-
-  if (ledger::_environment == type::Environment::DEVELOPMENT) {
-    return kAnonCardDestinationDev;
-  }
-
-  NOTREACHED();
-  return kAnonCardDestinationDev;
 }
 
 std::string GetUpholdDestination() {

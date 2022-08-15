@@ -11,7 +11,10 @@ import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
+import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.Collections;
 import java.util.Set;
@@ -44,6 +47,8 @@ public class BraveVpnPrefUtils {
     public static final String PREF_BRAVE_VPN_SERVER_PUBLIC_KEY = "brave_vpn_server_public_key";
     public static final String PREF_BRAVE_VPN_IP_ADDRESS = "brave_vpn_ip_address";
     public static final String PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY = "brave_vpn_client_private_key";
+    public static final String PREF_SESSION_START_TIME = "brave_vpn_session_start_time";
+    public static final String PREF_SESSION_END_TIME = "brave_vpn_session_end_time";
 
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
@@ -132,6 +137,11 @@ public class BraveVpnPrefUtils {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putString(PREF_BRAVE_VPN_PURCHASE_TOKEN, value);
         sharedPreferencesEditor.apply();
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setString(BravePref.BRAVE_VPN_PURCHASE_TOKEN_ANDROID, value);
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setString(BravePref.BRAVE_VPN_PACKAGE_ANDROID,
+                        ContextUtils.getApplicationContext().getPackageName());
     }
 
     public static String getPurchaseToken() {
@@ -259,5 +269,25 @@ public class BraveVpnPrefUtils {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putStringSet(PREF_EXCLUDED_PACKAGES, packages);
         sharedPreferencesEditor.apply();
+    }
+
+    public static void setSessionEndTimeMs(long timeMs) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_SESSION_END_TIME, timeMs);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static long getSessionEndTimeMs() {
+        return mSharedPreferences.getLong(PREF_SESSION_END_TIME, -1);
+    }
+
+    public static void setSessionStartTimeMs(long timeMs) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_SESSION_START_TIME, timeMs);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static long getSessionStartTimeMs() {
+        return mSharedPreferences.getLong(PREF_SESSION_START_TIME, -1);
     }
 }

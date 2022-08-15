@@ -41,19 +41,14 @@ type::Result PostRecipientId::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* result = dictionary->FindStringKey("result");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* result = dict.FindString("result");
   if (!result || *result != "OK") {
     BLOG(0, "Failed creating recipient_id");
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* id = dictionary->FindStringKey("recipient_id");
+  const auto* id = dict.FindString("recipient_id");
   if (!id) {
     BLOG(0, "Response missing a recipient_id");
     return type::Result::LEDGER_ERROR;
@@ -64,8 +59,8 @@ type::Result PostRecipientId::ParseBody(const std::string& body,
 }
 
 std::string PostRecipientId::GeneratePayload() {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("label", base::GenerateGUID());
+  base::Value::Dict payload;
+  payload.Set("label", base::GenerateGUID());
 
   std::string json;
   base::JSONWriter::Write(payload, &json);

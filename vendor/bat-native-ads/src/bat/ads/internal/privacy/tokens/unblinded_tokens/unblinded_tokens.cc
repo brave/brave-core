@@ -23,13 +23,13 @@ UnblindedTokens::UnblindedTokens() = default;
 
 UnblindedTokens::~UnblindedTokens() = default;
 
-UnblindedTokenInfo UnblindedTokens::GetToken() const {
+const UnblindedTokenInfo& UnblindedTokens::GetToken() const {
   DCHECK_NE(Count(), 0);
 
   return unblinded_tokens_.front();
 }
 
-UnblindedTokenList UnblindedTokens::GetAllTokens() const {
+const UnblindedTokenList& UnblindedTokens::GetAllTokens() const {
   return unblinded_tokens_;
 }
 
@@ -66,19 +66,19 @@ void UnblindedTokens::SetTokens(const UnblindedTokenList& unblinded_tokens) {
 void UnblindedTokens::SetTokensFromList(const base::Value::List& list) {
   UnblindedTokenList unblinded_tokens;
 
-  for (const auto& value : list) {
+  for (const auto& item : list) {
     std::string unblinded_token_base64;
     std::string public_key_base64;
 
-    if (value.is_string()) {
+    if (item.is_string()) {
       // Migrate legacy tokens
-      unblinded_token_base64 = value.GetString();
+      unblinded_token_base64 = item.GetString();
     } else {
-      if (!value.is_dict()) {
+      if (!item.is_dict()) {
         BLOG(0, "Unblinded token should be a dictionary");
         continue;
       }
-      const base::Value::Dict& dict = value.GetDict();
+      const base::Value::Dict& dict = item.GetDict();
 
       // Unblinded token
       const std::string* unblinded_token = dict.FindString("unblinded_token");

@@ -7,6 +7,8 @@
 
 #include "base/values.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace targeting {
@@ -55,8 +57,8 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   std::vector<std::string> segments;
-  for (const auto& segment_value : list3->GetList()) {
-    const std::string segment = segment_value.GetString();
+  for (const auto& item : list3->GetList()) {
+    const std::string& segment = item.GetString();
     if (segment.empty()) {
       *error_message = "Failed to load from JSON, empty segment found";
       return {};

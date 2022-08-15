@@ -34,7 +34,7 @@ bool DailyCapExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string DailyCapExclusionRule::GetLastMessage() const {
+const std::string& DailyCapExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

@@ -175,14 +175,6 @@ void RewardsBrowserTestResponse::LoadMocks() {
       &parameters_));
 
   ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("balance_resp.json"),
-      &balance_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("user_funds_balance_resp.json"),
-      &user_funds_balance_resp_));
-
-  ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("uphold_auth_resp.json"),
       &uphold_auth_resp_));
 
@@ -223,18 +215,6 @@ void RewardsBrowserTestResponse::Get(
   if (url.find("/v3/wallet/brave") != std::string::npos) {
     *response = wallet_;
     *response_status_code = net::HTTP_CREATED;
-    return;
-  }
-
-  if (url.find("/v3/wallet/uphold") != std::string::npos) {
-    if (user_funds_balance_ == 0.0) {
-      *response = balance_;
-    } else {
-      *response = user_funds_balance_resp_;
-      base::ReplaceSubstringsAfterOffset(
-          response, 0, "${confirmed}",
-          base::NumberToString(user_funds_balance_));
-    }
     return;
   }
 
@@ -369,10 +349,6 @@ void RewardsBrowserTestResponse::SetVerifiedWallet(const bool verified) {
 void RewardsBrowserTestResponse::SetExternalBalance(
     const std::string& balance) {
   external_balance_ = balance;
-}
-
-void RewardsBrowserTestResponse::SetUserFundsBalance(const double user_funds) {
-  user_funds_balance_ = user_funds;
 }
 
 }  // namespace rewards_browsertest

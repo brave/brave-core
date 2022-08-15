@@ -32,14 +32,14 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
 
   void MaybeFetch();
 
-  std::string GetSubdivisionCode() const;
+  const std::string& GetSubdivisionCode() const;
 
  private:
   void OnAutoDetectedSubdivisionTargetingCodePrefChanged();
   void OnSubdivisionTargetingCodePrefChanged();
 
-  std::string GetLazyAutoDetectedSubdivisionCode() const;
-  std::string GetLazySubdivisionCode() const;
+  const std::string& GetLazyAutoDetectedSubdivisionCode() const;
+  const std::string& GetLazySubdivisionCode() const;
 
   bool IsSupportedLocale(const std::string& locale) const;
   void MaybeAllowForLocale(const std::string& locale) const;
@@ -48,7 +48,7 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
 
   void MaybeFetchForLocale(const std::string& locale);
   void Fetch();
-  void OnFetch(const mojom::UrlResponse& url_response);
+  void OnFetch(const mojom::UrlResponseInfo& url_response);
   bool ParseJson(const std::string& json);
   void Retry();
   void FetchAfterDelay();
@@ -62,8 +62,8 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   Timer timer_;
   BackoffTimer retry_timer_;
 
-  mutable absl::optional<std::string> auto_detected_subdivision_code_optional_;
-  mutable absl::optional<std::string> subdivision_code_optional_;
+  mutable absl::optional<std::string> auto_detected_subdivision_code_;
+  mutable absl::optional<std::string> subdivision_code_;
 };
 
 }  // namespace geographic

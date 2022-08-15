@@ -251,15 +251,6 @@
   <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TEXT" desc="">
     You've contributed <ph name="AMOUNT">$1<ex>2 BAT</ex></ph>.
   </message>
-  <message name="IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_TITLE" desc="">
-    Back up Brave Rewards
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_TEXT" desc="">
-    Please back up your Brave Rewards.
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_ACTION" desc="">
-    Back up now
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TITLE" desc="">
     You are logged out
   </message>

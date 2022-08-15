@@ -529,9 +529,6 @@ export function createHost (): Host {
         case 'open-link':
           openTab((action as OpenLinkAction).url)
           break
-        case 'backup-wallet':
-          openTab('chrome://rewards#manage-wallet')
-          break
         case 'claim-grant':
           loadGrantCaptcha((action as ClaimGrantAction).grantId, 'pending')
           break

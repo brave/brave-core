@@ -3,9 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import { loadTimeData } from '../../../../common/loadTimeData'
-import { Unsuccessful, EthereumSignTransaction, CommonParams, Success } from 'trezor-connect'
-import { HDNodeResponse } from 'trezor-connect/lib/typescript'
-import { EthereumSignedTx, EthereumSignMessage, EthereumSignTypedHash } from 'trezor-connect/lib/typescript/networks/ethereum'
+import {
+  Unsuccessful,
+  EthereumSignTransaction,
+  CommonParams,
+  Success,
+  HDNodeResponse,
+  EthereumSignedTx,
+  EthereumSignMessage,
+  EthereumSignTypedHash
+} from './trezor-connect-types'
 import { MessageSignature } from 'trezor-connect/lib/typescript/trezor/protobuf'
 export const kTrezorBridgeUrl = loadTimeData.getString('braveWalletTrezorBridgeUrl')
 

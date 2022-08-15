@@ -18,7 +18,8 @@ import {
   DefaultCurrencies,
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
-  SolFeeEstimates
+  SolFeeEstimates,
+  AssetFilterOption
 } from '../../constants/types'
 import {
   IsEip1559Changed,
@@ -36,6 +37,7 @@ import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
+import { AllAssetsFilterOption } from '../../options/asset-filter-options'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -58,11 +60,7 @@ const defaultState: WalletState = {
     symbolName: 'Ethereum',
     decimals: 18,
     coin: BraveWallet.CoinType.ETH,
-    data: {
-      ethData: {
-        isEip1559: true
-      }
-    }
+    isEip1559: true
   },
   accounts: [],
   userVisibleTokensInfo: [],
@@ -101,9 +99,11 @@ const defaultState: WalletState = {
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
+  selectedAssetFilter: AllAssetsFilterOption,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
-  selectedCurrency: undefined
+  selectedCurrency: undefined,
+  passwordAttempts: 0
 }
 
 const getAccountType = (info: AccountInfo) => {
@@ -409,11 +409,7 @@ export const createWalletReducer = (initialState: WalletState) => {
 
     const updatedNetwork: BraveWallet.NetworkInfo = {
       ...selectedNetwork,
-      data: {
-        ethData: {
-          isEip1559: payload.isEip1559
-        }
-      }
+      isEip1559: payload.isEip1559
     }
 
     return {
@@ -551,6 +547,20 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       selectedCurrency: payload
+    }
+  })
+
+  reducer.on(WalletActions.setPasswordAttempts, (state: WalletState, payload: number): WalletState => {
+    return {
+      ...state,
+      passwordAttempts: payload
+    }
+  })
+
+  reducer.on(WalletActions.setSelectedAssetFilterItem, (state: WalletState, payload: AssetFilterOption): WalletState => {
+    return {
+      ...state,
+      selectedAssetFilter: payload
     }
   })
 

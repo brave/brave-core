@@ -28,7 +28,7 @@ bool BrowserIsActivePermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string BrowserIsActivePermissionRule::GetLastMessage() const {
+const std::string& BrowserIsActivePermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

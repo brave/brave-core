@@ -17,6 +17,7 @@
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave/ios/browser/api/ledger/brave_ledger_observer.h"
 #import "brave/ios/browser/api/ledger/ledger.mojom.objc+private.h"
@@ -59,14 +60,6 @@
     ledger->__cpp_setter(newValue);                                         \
   }
 
-#define BATClassLedgerBridge(__type, __objc_getter, __objc_setter, __cpp_var) \
-  +(__type)__objc_getter {                                                    \
-    return ledger::__cpp_var;                                                 \
-  }                                                                           \
-  +(void)__objc_setter : (__type)newValue {                                   \
-    ledger::__cpp_var = newValue;                                             \
-  }
-
 NSString* const BraveLedgerErrorDomain = @"BraveLedgerErrorDomain";
 NSNotificationName const BraveLedgerNotificationAdded =
     @"BATBraveLedgerNotificationAdded";
@@ -77,12 +70,6 @@ BraveGeneralLedgerNotificationID const
 
 static NSString* const kNextAddFundsDateNotificationKey =
     @"BATNextAddFundsDateNotification";
-static NSString* const kBackupNotificationIntervalKey =
-    @"BATBackupNotificationInterval";
-static NSString* const kBackupNotificationFrequencyKey =
-    @"BATBackupNotificationFrequency";
-static NSString* const kUserHasFundedKey = @"BATRewardsUserHasFunded";
-static NSString* const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 static NSString* const kMigrationSucceeded = @"BATRewardsMigrationSucceeded";
 
 static NSString* const kContributionQueueAutoincrementID =
@@ -179,19 +166,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       // Setup defaults
       self.prefs[kNextAddFundsDateNotificationKey] =
           @([[NSDate date] timeIntervalSince1970]);
-      self.prefs[kBackupNotificationFrequencyKey] = @(7 * kOneDay);  // 7 days
-      self.prefs[kBackupNotificationIntervalKey] = @(7 * kOneDay);   // 7 days
-      self.prefs[kBackupSucceededKey] = @(NO);
-      self.prefs[kUserHasFundedKey] = @(NO);
       self.prefs[kMigrationSucceeded] = @(NO);
       [self savePrefs];
     }
 
-    const auto args = [NSProcessInfo processInfo].arguments;
-    const char* argv[args.count];
-    for (NSUInteger i = 0; i < args.count; i++) {
-      argv[i] = args[i].UTF8String;
-    }
+    [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
 
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -225,6 +204,34 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   [self.notificationStartupTimer invalidate];
   delete ledger;
   delete ledgerClient;
+}
+
+- (void)handleFlags:(const brave_rewards::RewardsFlags&)flags {
+  if (flags.environment) {
+    switch (*flags.environment) {
+      case brave_rewards::RewardsFlags::Environment::kDevelopment:
+        ledger::_environment = ledger::type::Environment::DEVELOPMENT;
+        break;
+      case brave_rewards::RewardsFlags::Environment::kStaging:
+        ledger::_environment = ledger::type::Environment::STAGING;
+        break;
+      case brave_rewards::RewardsFlags::Environment::kProduction:
+        ledger::_environment = ledger::type::Environment::PRODUCTION;
+        break;
+    }
+  }
+
+  if (flags.debug) {
+    ledger::is_debug = true;
+  }
+
+  if (flags.reconcile_interval) {
+    ledger::reconcile_interval = *flags.reconcile_interval;
+  }
+
+  if (flags.retry_interval) {
+    ledger::retry_interval = *flags.retry_interval;
+  }
 }
 
 - (void)initializeLedgerService:(nullable void (^)())completion {
@@ -422,27 +429,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)removeObserver:(BraveLedgerObserver*)observer {
   [self.observers removeObject:observer];
-}
-
-#pragma mark - Global
-
-BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
-        BATClassLedgerBridge(BOOL, isTesting, setTesting, is_testing)
-            BATClassLedgerBridge(int,
-                                 reconcileInterval,
-                                 setReconcileInterval,
-                                 reconcile_interval)
-                BATClassLedgerBridge(int,
-                                     retryInterval,
-                                     setRetryInterval,
-                                     retry_interval)
-
-    + (LedgerEnvironment)environment {
-  return static_cast<LedgerEnvironment>(ledger::_environment);
-}
-
-+ (void)setEnvironment:(LedgerEnvironment)environment {
-  ledger::_environment = static_cast<ledger::type::Environment>(environment);
 }
 
 #pragma mark - Wallet
@@ -1602,31 +1588,8 @@ BATLedgerBridge(BOOL,
 - (void)checkForNotificationsAndFetchGrants {
   self.lastNotificationCheckDate = [NSDate date];
 
-  [self showBackupNotificationIfNeccessary];
   [self showAddFundsNotificationIfNeccessary];
   [self fetchPromotions:nil];
-}
-
-- (void)showBackupNotificationIfNeccessary {
-  // This is currently not required as the user cannot manage their wallet on
-  // mobile... yet
-  /*
-  auto bootstamp = ledger->GetCreationStamp();
-  auto userFunded = [self.prefs[kUserHasFundedKey] boolValue];
-  auto backupSucceeded = [self.prefs[kBackupSucceededKey] boolValue];
-  if (userFunded && !backupSucceeded) {
-    auto frequency = 10; [self.prefs[kBackupNotificationFrequencyKey]
-  doubleValue]; auto interval = 10; [self.prefs[kBackupNotificationIntervalKey]
-  doubleValue]; auto delta = [[NSDate date] timeIntervalSinceDate:[NSDate
-  dateWithTimeIntervalSince1970:bootstamp]]; if (delta > interval) { auto
-  nextBackupNotificationInterval = frequency + interval;
-      self.prefs[kBackupNotificationIntervalKey] =
-  @(nextBackupNotificationInterval); [self savePrefs]; [self
-  addNotificationOfKind:RewardsNotificationKindBackupWallet arguments:nil
-                   notificationID:@"rewards_notification_backup_wallet"];
-    }
-  }
-  */
 }
 
 - (void)showAddFundsNotificationIfNeccessary {

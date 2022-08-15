@@ -9,6 +9,7 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -88,14 +89,12 @@ TEST(BatAdsBlindedTokenTest, EncodeBase64) {
   BlindedToken blinded_token(kBlindedTokenBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       blinded_token.EncodeBase64();
-  ASSERT_TRUE(encoded_base64_optional);
-
-  const std::string& encoded_base64 = encoded_base64_optional.value();
+  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kBlindedTokenBase64, encoded_base64);
+  EXPECT_EQ(kBlindedTokenBase64, *encoded_base64);
 }
 
 TEST(BatAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
@@ -103,11 +102,11 @@ TEST(BatAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   BlindedToken blinded_token;
 
   // Act
-  const absl::optional<std::string> encoded_base64_optional =
+  const absl::optional<std::string> encoded_base64 =
       blinded_token.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64_optional);
+  EXPECT_FALSE(encoded_base64);
 }
 
 TEST(BatAdsBlindedTokenTest, IsEqual) {

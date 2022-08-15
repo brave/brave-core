@@ -365,12 +365,13 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     toggleShowAddCustomToken()
   }
 
-  const onRemoveAsset = (token: BraveWallet.BlockchainToken) => {
-    const newUserList = updatedTokensList.filter((t) => t.contractAddress.toLowerCase() !== token.contractAddress.toLowerCase())
+  const onRemoveAsset = React.useCallback((token: BraveWallet.BlockchainToken) => {
+    const filterFn = (t: BraveWallet.BlockchainToken) => !(t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() && t.tokenId === token.tokenId)
+    const newUserList = updatedTokensList.filter(filterFn)
     setUpdatedTokensList(newUserList)
-    const newFilteredTokenList = filteredTokenList.filter((t) => t.contractAddress.toLowerCase() !== token.contractAddress.toLowerCase())
+    const newFilteredTokenList = filteredTokenList.filter(filterFn)
     setFilteredTokenList(newFilteredTokenList)
-  }
+  }, [updatedTokensList, filteredTokenList])
 
   const isDecimalDisabled = React.useMemo((): boolean => {
     return foundTokenInfoByContractAddress?.isErc721 ?? tokenID !== ''
@@ -540,7 +541,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
                 <ButtonRow>
                   <NavButton
                     onSubmit={onClickCancel}
-                    text={getLocale('braveWalletBackupButtonCancel')}
+                    text={getLocale('braveWalletButtonCancel')}
                     buttonType='secondary'
                   />
                   <NavButton

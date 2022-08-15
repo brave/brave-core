@@ -119,7 +119,7 @@ export const NftDetails = ({ selectedAsset, nftMetadata, tokenNetwork }: Props) 
                         : ''
                     }
                   </DetailSectionValue>
-                  <ExplorerButton onClick={onClickViewOnBlockExplorer('contract', selectedAsset.contractAddress, selectedAsset.tokenId)}>
+                  <ExplorerButton onClick={onClickViewOnBlockExplorer('nft', selectedAsset.contractAddress, selectedAsset.tokenId)}>
                     <ExplorerIcon />
                   </ExplorerButton>
                 </ProjectDetailIDRow>

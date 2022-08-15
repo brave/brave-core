@@ -13,7 +13,6 @@
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
-#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations_util.h"
@@ -72,7 +71,7 @@ void RedeemUnblindedToken::CreateConfirmation(
   BLOG(2, "POST /v2/confirmation/{confirmation_id}/{credential}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -82,7 +81,7 @@ void RedeemUnblindedToken::CreateConfirmation(
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
-    const mojom::UrlResponse& url_response,
+    const mojom::UrlResponseInfo& url_response,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "OnCreateConfirmation");
 
@@ -117,7 +116,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
   BLOG(2, "GET /v2/confirmation/{confirmation_id}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -127,7 +126,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
 }
 
 void RedeemUnblindedToken::OnFetchPaymentToken(
-    const mojom::UrlResponse& url_response,
+    const mojom::UrlResponseInfo& url_response,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "OnFetchPaymentToken");
 
@@ -168,9 +167,9 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Parse JSON response
-  absl::optional<base::Value> dictionary =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(url_response.body);
-  if (!dictionary || !dictionary->is_dict()) {
+  if (!root || !root->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
                                    /* should_backoff */ true);
@@ -178,7 +177,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get id
-  const std::string* id = dictionary->FindStringKey("id");
+  const std::string* id = root->FindStringKey("id");
   if (!id) {
     BLOG(0, "Response is missing id");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
@@ -196,9 +195,8 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Get payment token
-  base::Value* payment_token_dictionary =
-      dictionary->FindDictKey("paymentToken");
-  if (!payment_token_dictionary) {
+  const base::Value* payment_token = root->FindDictKey("paymentToken");
+  if (!payment_token) {
     BLOG(1, "Response is missing paymentToken");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
                                    /* should_backoff */ true);
@@ -207,7 +205,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
 
   // Get public key
   const std::string* public_key_base64 =
-      payment_token_dictionary->FindStringKey("publicKey");
+      payment_token->FindStringKey("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing publicKey in paymentToken dictionary");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
@@ -236,7 +234,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
 
   // Get batch dleq proof
   const std::string* batch_dleq_proof_base64 =
-      payment_token_dictionary->FindStringKey("batchProof");
+      payment_token->FindStringKey("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
@@ -255,7 +253,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
 
   // Get signed tokens
   const base::Value* signed_tokens_list =
-      payment_token_dictionary->FindListKey("signedTokens");
+      payment_token->FindListKey("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
@@ -271,9 +269,9 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   std::vector<privacy::cbr::SignedToken> signed_tokens;
-  for (const auto& value : signed_tokens_list->GetList()) {
-    DCHECK(value.is_string());
-    const std::string signed_token_base64 = value.GetString();
+  for (const auto& item : signed_tokens_list->GetList()) {
+    DCHECK(item.is_string());
+    const std::string& signed_token_base64 = item.GetString();
     const privacy::cbr::SignedToken signed_token =
         privacy::cbr::SignedToken(signed_token_base64);
     if (!signed_token.has_value()) {
@@ -292,10 +290,9 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
       confirmation.blinded_payment_token};
 
   const absl::optional<std::vector<privacy::cbr::UnblindedToken>>
-      batch_dleq_proof_unblinded_tokens_optional =
-          batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens,
-                                            signed_tokens, public_key);
-  if (!batch_dleq_proof_unblinded_tokens_optional) {
+      batch_dleq_proof_unblinded_tokens = batch_dleq_proof.VerifyAndUnblind(
+          tokens, blinded_tokens, signed_tokens, public_key);
+  if (!batch_dleq_proof_unblinded_tokens) {
     BLOG(1, "Failed to verify and unblind tokens");
     BLOG(1, "  Batch proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << *public_key_base64);
@@ -304,13 +301,10 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
                                    /* should_backoff */ true);
     return;
   }
-  const std::vector<privacy::cbr::UnblindedToken>&
-      batch_dleq_proof_unblinded_tokens =
-          batch_dleq_proof_unblinded_tokens_optional.value();
 
   privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
   unblinded_payment_token.transaction_id = confirmation.transaction_id;
-  unblinded_payment_token.value = batch_dleq_proof_unblinded_tokens.front();
+  unblinded_payment_token.value = batch_dleq_proof_unblinded_tokens->front();
   unblinded_payment_token.public_key = public_key;
   unblinded_payment_token.confirmation_type = confirmation.type;
   unblinded_payment_token.ad_type = confirmation.ad_type;

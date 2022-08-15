@@ -14,15 +14,15 @@ ConversionsDescendingSort::ConversionsDescendingSort() = default;
 ConversionsDescendingSort::~ConversionsDescendingSort() = default;
 
 ConversionList ConversionsDescendingSort::Apply(
-    const ConversionList& list) const {
-  auto sorted_list = list;
+    const ConversionList& conversions) const {
+  ConversionList sorted_conversions = conversions;
 
-  std::sort(sorted_list.begin(), sorted_list.end(),
+  std::sort(sorted_conversions.begin(), sorted_conversions.end(),
             [](const ConversionInfo& lhs, const ConversionInfo& rhs) {
               return lhs.type == "postclick" && rhs.type == "postview";
             });
 
-  return sorted_list;
+  return sorted_conversions;
 }
 
 }  // namespace ads

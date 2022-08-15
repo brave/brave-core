@@ -34,6 +34,7 @@
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 #include "bat/ads/internal/features/features_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
@@ -62,7 +63,6 @@
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
-#include "bat/ads/statement_info.h"
 #include "build/build_config.h"
 #include "url/gurl.h"
 
@@ -76,6 +76,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   covariate_manager_ = std::make_unique<CovariateManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
+  flag_manager_ = std::make_unique<FlagManager>();
   history_manager_ = std::make_unique<HistoryManager>();
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
   locale_manager_ = std::make_unique<LocaleManager>();
@@ -267,10 +268,10 @@ void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
   ResourceManager::GetInstance()->UpdateResource(id);
 }
 
-bool AdsImpl::GetNotificationAd(const std::string& placement_id,
-                                NotificationAdInfo* notification) {
-  return NotificationAdManager::GetInstance()->GetForPlacementId(placement_id,
-                                                                 notification);
+absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
+    const std::string& placement_id) {
+  return NotificationAdManager::GetInstance()->MaybeGetForPlacementId(
+      placement_id);
 }
 
 void AdsImpl::TriggerNotificationAdEvent(
@@ -281,7 +282,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, {});
+    callback(/* ads */ absl::nullopt);
     return;
   }
 
@@ -308,7 +309,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, dimensions, {});
+    callback(dimensions, absl::nullopt);
     return;
   }
 
@@ -324,7 +325,7 @@ void AdsImpl::TriggerInlineContentAdEvent(
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
-    mojom::SearchResultAdPtr ad_mojom,
+    mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
   if (!IsInitialized()) {
@@ -370,14 +371,13 @@ HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    callback(/* success */ false, {});
+    callback(/* statement */ nullptr);
     return;
   }
 
-  account_->GetStatement(
-      [callback](const bool success, const StatementInfo& statement) {
-        callback(success, statement);
-      });
+  account_->GetStatement([callback](mojom::StatementInfoPtr statement) {
+    callback(std::move(statement));
+  });
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

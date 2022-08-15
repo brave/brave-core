@@ -121,10 +121,10 @@ TEST(BatAdsSearchEngineUtilTest, ExtractSearchTermQueryValue) {
 
   // Act
   for (const auto& url : urls) {
-    const absl::optional<std::string> search_term_query_value_optional =
+    const absl::optional<std::string> search_term_query_value =
         ExtractSearchTermQueryValue(url);
-    if (search_term_query_value_optional) {
-      EXPECT_EQ("foobar", search_term_query_value_optional.value());
+    if (search_term_query_value) {
+      EXPECT_EQ("foobar", *search_term_query_value);
     }
   }
 
@@ -137,11 +137,11 @@ TEST(BatAdsSearchEngineUtilTest,
   const GURL url = GURL("https://google.com/");
 
   // Act
-  const absl::optional<std::string> search_term_query_value_optional =
+  const absl::optional<std::string> search_term_query_value =
       ExtractSearchTermQueryValue(url);
 
   // Assert
-  EXPECT_FALSE(search_term_query_value_optional);
+  EXPECT_FALSE(search_term_query_value);
 }
 
 TEST(BatAdsSearchEngineUtilTest,
@@ -150,11 +150,11 @@ TEST(BatAdsSearchEngineUtilTest,
   const GURL url = GURL("INVALID_URL");
 
   // Act
-  const absl::optional<std::string> search_term_query_value_optional =
+  const absl::optional<std::string> search_term_query_value =
       ExtractSearchTermQueryValue(url);
 
   // Assert
-  EXPECT_FALSE(search_term_query_value_optional);
+  EXPECT_FALSE(search_term_query_value);
 }
 
 }  // namespace ads

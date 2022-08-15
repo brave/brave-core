@@ -1,6 +1,6 @@
 {
   "summary": {
-    "message": "सारांश\n",
+    "message": "सारांश",
     "description": ""
   },
   "tip": {
@@ -335,19 +335,6 @@
     "message": "रिकनेक्ट",
     "description": ""
   },
-  "notificationWalletVerifiedTitle": {
-    "message": "आपका Brave Rewards वेरीफ़ाई किया गया है!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "आपके Brave Rewards को $provider$ द्वारा सफ़लतापूर्वक वेरीफ़ाई किया गया है.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
   "notificationTokenGrantTitle": {
     "message": "टोकन ग्रांट्स उपलब्ध है!",
     "description": ""
@@ -448,7 +435,7 @@
     "description": ""
   },
   "onboardingStartUsingRewards": {
-    "message": "ब्रेव रिवार्ड्स का उपयोग करना शुरू करें\n",
+    "message": "ब्रेव रिवार्ड्स का उपयोग करना शुरू करें",
     "description": ""
   },
   "onboardingTakeTour": {
@@ -522,7 +509,7 @@
     "description": ""
   },
   "onboardingPanelAcHeader": {
-    "message": "वापस देना सरल बना दिया गया है\n",
+    "message": "वापस देना सरल बना दिया गया है",
     "description": ""
   },
   "onboardingPanelAcText": {
@@ -538,7 +525,7 @@
     "description": ""
   },
   "onboardingPanelRedeemHeader": {
-    "message": "आप टोकन के साथ क्या कर सकते हैं?\n",
+    "message": "आप टोकन के साथ क्या कर सकते हैं?",
     "description": ""
   },
   "onboardingPanelRedeemText": {

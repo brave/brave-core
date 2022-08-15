@@ -9,6 +9,7 @@
 #include <numeric>
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "base/time/clock.h"
 #include "base/time/default_clock.h"
 #include "base/values.h"
@@ -67,6 +68,24 @@ void TimePeriodStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
   DailyValue& today = daily_values_.front();
   if (today.value < value) {
     today.value = value;
+  }
+  Save();
+}
+
+void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
+                                                uint64_t value) {
+  FilterToPeriod();
+  base::Time date_mn = date.LocalMidnight();
+  std::list<DailyValue>::iterator day_insert_it = base::ranges::find_if(
+      daily_values_.begin(), daily_values_.end(),
+      [date_mn](const DailyValue& val) { return val.day <= date_mn; });
+  if (day_insert_it != daily_values_.end() && day_insert_it->day == date_mn) {
+    // update daily value if it exists for date
+    if (value > day_insert_it->value) {
+      day_insert_it->value = value;
+    }
+  } else {
+    daily_values_.insert(day_insert_it, {date_mn, value});
   }
   Save();
 }

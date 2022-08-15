@@ -17,11 +17,10 @@ namespace {
 base::FilePath GetRootPath() {
   base::FilePath path;
   base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
-  path = path.AppendASCII("brave");
-  path = path.AppendASCII("vendor");
-  path = path.AppendASCII("bat-native-ads");
-  path = path.AppendASCII("data");
-  return path;
+  return path.AppendASCII("brave")
+      .AppendASCII("vendor")
+      .AppendASCII("bat-native-ads")
+      .AppendASCII("data");
 }
 
 absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
@@ -47,15 +46,14 @@ absl::optional<std::string> ReadFileFromTestPathToString(
 
 absl::optional<std::string> ReadFileFromTestPathAndParseTagsToString(
     const std::string& name) {
-  absl::optional<std::string> content_optional =
-      ReadFileFromTestPathToString(name);
-  if (!content_optional.has_value()) {
+  absl::optional<std::string> content = ReadFileFromTestPathToString(name);
+  if (!content) {
     return absl::nullopt;
   }
 
-  ParseAndReplaceTagsForText(&content_optional.value());
+  ParseAndReplaceTags(&(*content));
 
-  return content_optional.value();
+  return *content;
 }
 
 base::FilePath GetFileResourcePath() {

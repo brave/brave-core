@@ -62,6 +62,8 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
       params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
     for (const auto& entry : *explorerUrlsListValue) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.block_explorer_urls.push_back(entry.GetString());
     }
@@ -70,6 +72,8 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
   const auto* iconUrlsValue = params_dict->FindList("iconUrls");
   if (iconUrlsValue) {
     for (const auto& entry : *iconUrlsValue) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.icon_urls.push_back(entry.GetString());
     }
@@ -78,6 +82,8 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
   const auto* rpcUrlsValue = params_dict->FindList("rpcUrls");
   if (rpcUrlsValue) {
     for (const auto& entry : *rpcUrlsValue) {
+      if (!entry.is_string())
+        continue;
       if (!check_url || IsValidURL(entry.GetString()))
         chain.rpc_urls.push_back(entry.GetString());
     }
@@ -101,11 +107,7 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value,
 
   chain.coin = mojom::CoinType::ETH;
 
-  absl::optional<bool> is_eip1559 = params_dict->FindBool("is_eip1559");
-  if (is_eip1559) {
-    chain.data = mojom::NetworkInfoData::NewEthData(
-        mojom::NetworkInfoDataETH::New(*is_eip1559));
-  }
+  chain.is_eip1559 = params_dict->FindBool("is_eip1559").value_or(false);
 
   return chain.Clone();
 }
@@ -115,11 +117,7 @@ base::Value::Dict EthNetworkInfoToValue(const mojom::NetworkInfo& chain) {
   DCHECK_EQ(chain.coin, mojom::CoinType::ETH);
   dict.Set("chainId", chain.chain_id);
   dict.Set("chainName", chain.chain_name);
-  bool is_eip1559 = false;
-  if (chain.data && chain.data->is_eth_data()) {
-    is_eip1559 = chain.data->get_eth_data()->is_eip1559;
-  }
-  dict.Set("is_eip1559", is_eip1559);
+  dict.Set("is_eip1559", chain.is_eip1559);
 
   base::Value::List blockExplorerUrlsValue;
   if (!chain.block_explorer_urls.empty()) {

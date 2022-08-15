@@ -38,12 +38,12 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   const std::string client_secret = GetClientSecret();
   const std::string request_id = base::GenerateGUID();
 
-  base::DictionaryValue dict;
-  dict.SetStringKey("client_id", client_id);
-  dict.SetStringKey("client_secret", client_secret);
-  dict.SetStringKey("code", code);
-  dict.SetStringKey("redirect_uri", "rewards://gemini/authorization");
-  dict.SetStringKey("grant_type", "authorization_code");
+  base::Value::Dict dict;
+  dict.Set("client_id", client_id);
+  dict.Set("client_secret", client_secret);
+  dict.Set("code", code);
+  dict.Set("redirect_uri", "rewards://gemini/authorization");
+  dict.Set("grant_type", "authorization_code");
 
   std::string payload;
   base::JSONWriter::Write(dict, &payload);
@@ -59,13 +59,8 @@ type::Result PostOauth::ParseBody(const std::string& body, std::string* token) {
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* access_token = dictionary->FindStringKey("access_token");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
     BLOG(0, "Missing access token");
     return type::Result::LEDGER_ERROR;

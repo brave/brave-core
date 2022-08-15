@@ -37,8 +37,7 @@ bool IsRevivedAC(const ledger::type::ContributionInfo& contribution) {
   }
 
   // Only externally-funded ACs are considered "revived".
-  if (contribution.processor == ContributionProcessor::BRAVE_TOKENS ||
-      contribution.processor == ContributionProcessor::BRAVE_USER_FUNDS) {
+  if (contribution.processor == ContributionProcessor::BRAVE_TOKENS) {
     return false;
   }
 
@@ -85,15 +84,14 @@ ledger::type::ContributionStep ConvertResultIntoContributionStep(
 namespace ledger {
 namespace contribution {
 
-Contribution::Contribution(LedgerImpl* ledger) :
-    ledger_(ledger),
-    unverified_(std::make_unique<Unverified>(ledger)),
-    unblinded_(std::make_unique<Unblinded>(ledger)),
-    sku_(std::make_unique<ContributionSKU>(ledger)),
-    monthly_(std::make_unique<ContributionMonthly>(ledger)),
-    ac_(std::make_unique<ContributionAC>(ledger)),
-    tip_(std::make_unique<ContributionTip>(ledger)),
-    anon_card_(std::make_unique<ContributionAnonCard>(ledger)) {
+Contribution::Contribution(LedgerImpl* ledger)
+    : ledger_(ledger),
+      unverified_(std::make_unique<Unverified>(ledger)),
+      unblinded_(std::make_unique<Unblinded>(ledger)),
+      sku_(std::make_unique<ContributionSKU>(ledger)),
+      monthly_(std::make_unique<ContributionMonthly>(ledger)),
+      ac_(std::make_unique<ContributionAC>(ledger)),
+      tip_(std::make_unique<ContributionTip>(ledger)) {
   DCHECK(ledger_);
   external_wallet_ = std::make_unique<ContributionExternalWallet>(ledger);
 }
@@ -433,17 +431,8 @@ void Contribution::OnEntrySaved(
       _1,
       contribution_id);
 
-    StartUnblinded(
-        {type::CredsBatchType::PROMOTION},
-        contribution_id,
-        result_callback);
-  } else if (wallet_type == constant::kWalletAnonymous) {
-    auto result_callback = std::bind(&Contribution::Result,
-      this,
-      _1,
-      contribution_id);
-
-    sku_->AnonUserFunds(contribution_id, wallet_type, result_callback);
+    StartUnblinded({type::CredsBatchType::PROMOTION}, contribution_id,
+                   result_callback);
   } else if (wallet_type == constant::kWalletUphold ||
              wallet_type == constant::kWalletBitflyer ||
              wallet_type == constant::kWalletGemini) {
@@ -555,15 +544,6 @@ void Contribution::TransferFunds(
 
   if (wallet_type == constant::kWalletGemini) {
     ledger_->gemini()->TransferFunds(transaction.amount, destination, callback);
-    return;
-  }
-
-  if (wallet_type == constant::kWalletAnonymous) {
-    anon_card_->SendTransaction(
-        transaction.amount,
-        transaction.order_id,
-        destination,
-        callback);
     return;
   }
 
@@ -773,10 +753,6 @@ void Contribution::Retry(
       }
 
       external_wallet_->Retry((*shared_contribution)->Clone(), result_callback);
-      return;
-    }
-    case type::ContributionProcessor::BRAVE_USER_FUNDS: {
-      sku_->Retry((*shared_contribution)->Clone(), result_callback);
       return;
     }
     case type::ContributionProcessor::NONE: {

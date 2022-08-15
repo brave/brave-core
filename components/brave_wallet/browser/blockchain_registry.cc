@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "net/base/url_util.h"
 
 namespace brave_wallet {
 
@@ -119,6 +120,8 @@ void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
     buy_tokens = &GetWyreBuyTokens();
   else if (provider == mojom::OnRampProvider::kRamp)
     buy_tokens = &GetRampBuyTokens();
+  else if (provider == mojom::OnRampProvider::kSardine)
+    buy_tokens = &GetSardineBuyTokens();
 
   if (buy_tokens == nullptr) {
     std::move(callback).Run(std::move(blockchain_buy_tokens));
@@ -146,36 +149,22 @@ void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
   std::string url;
   const std::string default_currency = "USD";
   if (provider == mojom::OnRampProvider::kWyre) {
-    url = base::StringPrintf(kWyreBuyUrl, address.c_str(),
-                             default_currency.c_str(), symbol.c_str(),
-                             amount.c_str(), kWyreID);
-    std::move(callback).Run(std::move(url), absl::nullopt);
+    GURL url = GURL(kWyreBaseUrl);
+    url = net::AppendQueryParameter(url, "dest", "ethereum:" + address);
+    url = net::AppendQueryParameter(url, "sourceCurrency", default_currency);
+    url = net::AppendQueryParameter(url, "destCurrency", symbol);
+    url = net::AppendQueryParameter(url, "amount", amount);
+    url = net::AppendQueryParameter(url, "accountId", kWyreID);
+    url = net::AppendQueryParameter(url, "paymentMethod", "debit-card");
+    std::move(callback).Run(std::move(url.spec()), absl::nullopt);
   } else if (provider == mojom::OnRampProvider::kRamp) {
-    url = base::StringPrintf(kRampBuyUrl, address.c_str(), symbol.c_str(),
-                             amount.c_str(), default_currency.c_str(), kRampID);
-    std::move(callback).Run(std::move(url), absl::nullopt);
-  } else {
-    std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
-  }
-}
-
-void BlockchainRegistry::GetBuyUrlV1(mojom::OnRampProvider provider,
-                                     const std::string& chain_id,
-                                     const std::string& address,
-                                     const std::string& symbol,
-                                     const std::string& amount,
-                                     const std::string& currency_code,
-                                     GetBuyUrlV1Callback callback) {
-  std::string url;
-  if (provider == mojom::OnRampProvider::kWyre) {
-    url =
-        base::StringPrintf(kWyreBuyUrl, address.c_str(), currency_code.c_str(),
-                           symbol.c_str(), amount.c_str(), kWyreID);
-    std::move(callback).Run(std::move(url), absl::nullopt);
-  } else if (provider == mojom::OnRampProvider::kRamp) {
-    url = base::StringPrintf(kRampBuyUrl, address.c_str(), symbol.c_str(),
-                             amount.c_str(), currency_code.c_str(), kRampID);
-    std::move(callback).Run(std::move(url), absl::nullopt);
+    GURL url = GURL(kRampBaseUrl);
+    url = net::AppendQueryParameter(url, "userAddress", address);
+    url = net::AppendQueryParameter(url, "swapAsset", symbol);
+    url = net::AppendQueryParameter(url, "fiatValue", amount);
+    url = net::AppendQueryParameter(url, "fiatCurrency", default_currency);
+    url = net::AppendQueryParameter(url, "hostApiKey", kRampID);
+    std::move(callback).Run(std::move(url.spec()), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }

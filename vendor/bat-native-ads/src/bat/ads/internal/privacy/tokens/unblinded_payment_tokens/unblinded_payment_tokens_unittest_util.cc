@@ -24,7 +24,7 @@ UnblindedPaymentTokens* GetUnblindedPaymentTokens() {
 }
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {
-  const UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
   GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
   return unblinded_payment_tokens;
@@ -72,7 +72,7 @@ UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
 
   for (const auto& unblinded_payment_token_base64 :
        unblinded_payment_tokens_base64) {
-    const UnblindedPaymentTokenInfo& unblinded_payment_token =
+    const UnblindedPaymentTokenInfo unblinded_payment_token =
         CreateUnblindedPaymentToken(unblinded_payment_token_base64);
 
     unblinded_payment_tokens.push_back(unblinded_payment_token);
@@ -101,7 +101,7 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   for (int i = 0; i < count; i++) {
     const std::string& unblinded_payment_token_base64 =
         unblinded_payment_tokens_base64.at(i % modulo);
-    const UnblindedPaymentTokenInfo& unblinded_payment_token =
+    const UnblindedPaymentTokenInfo unblinded_payment_token =
         CreateUnblindedPaymentToken(unblinded_payment_token_base64);
 
     unblinded_payment_tokens.push_back(unblinded_payment_token);
@@ -114,14 +114,13 @@ UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count) {
   UnblindedPaymentTokenList unblinded_payment_tokens;
 
   TokenGenerator token_generator;
-  const std::vector<cbr::Token>& tokens = token_generator.Generate(count);
+  const std::vector<cbr::Token> tokens = token_generator.Generate(count);
   for (const auto& token : tokens) {
-    const absl::optional<std::string> token_base64_optional =
-        token.EncodeBase64();
-    DCHECK(token_base64_optional);
+    const absl::optional<std::string> token_base64 = token.EncodeBase64();
+    DCHECK(token_base64);
 
-    const UnblindedPaymentTokenInfo& unblinded_payment_token =
-        CreateUnblindedPaymentToken(token_base64_optional.value());
+    const UnblindedPaymentTokenInfo unblinded_payment_token =
+        CreateUnblindedPaymentToken(*token_base64);
 
     unblinded_payment_tokens.push_back(unblinded_payment_token);
   }
@@ -132,7 +131,7 @@ UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count) {
 base::Value::List GetUnblindedPaymentTokensAsList(const int count) {
   base::Value::List list;
 
-  const UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
 
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
@@ -140,15 +139,15 @@ base::Value::List GetUnblindedPaymentTokensAsList(const int count) {
 
     dict.Set("transaction_id", unblinded_payment_token.transaction_id);
 
-    const absl::optional<std::string> unblinded_token_base64_optional =
+    const absl::optional<std::string> unblinded_token_base64 =
         unblinded_payment_token.value.EncodeBase64();
-    DCHECK(unblinded_token_base64_optional);
-    dict.Set("unblinded_token", unblinded_token_base64_optional.value());
+    DCHECK(unblinded_token_base64);
+    dict.Set("unblinded_token", *unblinded_token_base64);
 
-    const absl::optional<std::string> public_key_base64_optional =
+    const absl::optional<std::string> public_key_base64 =
         unblinded_payment_token.public_key.EncodeBase64();
-    DCHECK(public_key_base64_optional);
-    dict.Set("public_key", public_key_base64_optional.value());
+    DCHECK(public_key_base64);
+    dict.Set("public_key", *public_key_base64);
 
     dict.Set("confirmation_type",
              unblinded_payment_token.confirmation_type.ToString());

@@ -31,7 +31,6 @@ class WalletRecover {
  private:
   void OnRecover(type::Result result,
                  const std::string& payment_id,
-                 bool legacy_wallet,
                  const std::vector<uint8_t>& new_seed,
                  ledger::LegacyResultCallback callback);
 

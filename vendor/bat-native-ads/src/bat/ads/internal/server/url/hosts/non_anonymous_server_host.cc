@@ -8,8 +8,8 @@
 #include <ostream>
 
 #include "base/notreached.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/internal/flags/environment/environment_types.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 
 namespace ads {
 
@@ -25,18 +25,20 @@ NonAnonymousServerHost::NonAnonymousServerHost() = default;
 NonAnonymousServerHost::~NonAnonymousServerHost() = default;
 
 std::string NonAnonymousServerHost::Get() const {
-  switch (g_environment) {
-    case mojom::Environment::kProduction: {
+  const EnvironmentType environment_type = GetEnvironmentType();
+
+  switch (environment_type) {
+    case EnvironmentType::kProduction: {
       return kProductionHost;
     }
 
-    case mojom::Environment::kStaging: {
+    case EnvironmentType::kStaging: {
       return kStagingHost;
     }
   }
 
-  NOTREACHED() << "Unexpected value for mojom::Environment: "
-               << static_cast<int>(g_environment);
+  NOTREACHED() << "Unexpected value for EnvironmentType: "
+               << static_cast<int>(environment_type);
   return kStagingHost;
 }
 

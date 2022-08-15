@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/memory/weak_ptr.h"
@@ -88,6 +89,8 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("showStats", prefs->GetBoolean(kNewTabPageShowStats));
   pref_data.Set("showToday",
                 prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
+  pref_data.Set("showBraveNewsButton",
+                prefs->GetBoolean(brave_news::prefs::kShouldShowToolbarButton));
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
@@ -316,9 +319,13 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowRewards,
+      brave_news::prefs::kShouldShowToolbarButton,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
+                          base::Unretained(this))),
+      pref_change_registrar_.Add(
+          kNewTabPageShowRewards,
+          base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                              base::Unretained(this)));
   pref_change_registrar_.Add(
       kBrandedWallpaperNotificationDismissed,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -454,6 +461,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
     settingsKey = brave_news::prefs::kNewTabPageShowToday;
+  } else if (settingsKeyInput == "showBraveNewsButton") {
+    settingsKey = brave_news::prefs::kShouldShowToolbarButton;
   } else if (settingsKeyInput == "isBraveTodayOptedIn") {
     settingsKey = brave_news::prefs::kBraveTodayOptedIn;
   } else if (settingsKeyInput == "showRewards") {

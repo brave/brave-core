@@ -41,7 +41,6 @@ enum ExtensionNotificationType {
   GRANT = 2,
   GRANT_ADS = 3,
   INSUFFICIENT_FUNDS = 6,
-  BACKUP_WALLET = 7,
   TIPS_PROCESSED = 8,
   VERIFIED_PUBLISHER = 10,
   PENDING_NOT_ENOUGH_FUNDS = 11,
@@ -105,15 +104,6 @@ export function mapNotification (
           ...parseGrantDetails(obj.args)
         }
       })
-    case ExtensionNotificationType.BACKUP_WALLET:
-      // Prior to the introduction of virtual BAT, backup notifications were
-      // used to remind the user to save a recovery key that would allow them to
-      // restore their anonymous wallet on a different device. After virtual BAT
-      // was introduced, this notification was retained to encourage the user to
-      // connect to an external wallet provider. As we move away from allowing
-      // anonymous users to accumulate virtual BAT, this notification is no
-      // longer required. It may be reintroduced in the future.
-      return null
     case ExtensionNotificationType.INSUFFICIENT_FUNDS:
       return {
         ...baseProps,

@@ -33,9 +33,14 @@ class PublicKey {
 
   bool has_value() const { return public_key_.has_value(); }
 
-  challenge_bypass_ristretto::PublicKey get() const {
-    DCHECK(has_value());
-    return public_key_.value();
+  challenge_bypass_ristretto::PublicKey& get() {
+    DCHECK(public_key_);
+    return *public_key_;
+  }
+
+  const challenge_bypass_ristretto::PublicKey& get() const {
+    DCHECK(public_key_);
+    return *public_key_;
   }
 
   static PublicKey DecodeBase64(const std::string& public_key_base64);

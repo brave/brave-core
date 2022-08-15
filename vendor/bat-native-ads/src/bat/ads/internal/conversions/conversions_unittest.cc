@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/conversions/conversions.h"
 
-#include <memory>
-
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
@@ -77,7 +75,7 @@ TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
   conversions_->MaybeConvert({GURL("https://www.foobar.com/signup")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -94,8 +92,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
@@ -113,7 +111,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -129,8 +127,8 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
@@ -148,7 +146,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -169,11 +167,11 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -191,7 +189,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -207,11 +205,11 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -229,7 +227,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -250,9 +248,9 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
-                                             ConfirmationType::kViewed, Now());
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                            ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
   ConversionList conversions;
@@ -269,7 +267,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -285,9 +283,9 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
-                                             ConfirmationType::kViewed, Now());
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
+                                            ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
   ConversionList conversions;
@@ -304,7 +302,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -325,11 +323,11 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -347,7 +345,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -363,11 +361,11 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -385,7 +383,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -406,8 +404,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event =
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -426,7 +424,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -442,8 +440,8 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event =
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -462,7 +460,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -483,12 +481,12 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 =
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 =
+  const AdEventInfo ad_event_2 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
@@ -507,7 +505,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -524,12 +522,12 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 =
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 =
+  const AdEventInfo ad_event_2 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
@@ -548,7 +546,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -569,8 +567,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
@@ -588,7 +586,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -605,8 +603,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
@@ -624,7 +622,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -640,11 +638,11 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -662,7 +660,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -682,11 +680,11 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -704,7 +702,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -725,8 +723,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
@@ -744,7 +742,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -760,8 +758,8 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
@@ -779,7 +777,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -800,11 +798,11 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -822,7 +820,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -838,11 +836,11 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo& creative_ad = BuildCreativeAd();
-  const AdEventInfo& ad_event_1 = BuildAdEvent(
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
@@ -860,7 +858,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -900,18 +898,18 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event_1 =
+  const AdEventInfo ad_event_1 =
       BuildAdEvent("7ee858e8-6306-4317-88c3-9e7d58afad26",
                    conversion_1.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_1);
 
   AdvanceClockBy(base::Minutes(1));
 
-  const AdEventInfo& ad_event_2 =
+  const AdEventInfo ad_event_2 =
       BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
                    conversion_2.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_2);
-  const AdEventInfo& ad_event_3 =
+  const AdEventInfo ad_event_3 =
       BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
                    conversion_2.creative_set_id, ConfirmationType::kClicked);
   FireAdEvent(ad_event_3);
@@ -922,7 +920,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "(creative_set_id = '%s' OR creative_set_id = '%s') AND "
       "confirmation_type = 'conversion'",
       conversion_1.creative_set_id.c_str(),
@@ -959,10 +957,10 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event_1 =
+  const AdEventInfo ad_event_1 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 =
+  const AdEventInfo ad_event_2 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
   FireAdEvent(ad_event_2);
 
@@ -970,7 +968,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/quxbarbaz")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1000,25 +998,25 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event_1 =
+  const AdEventInfo ad_event_1 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
   FireAdEvent(ad_event_1);
-  const AdEventInfo& ad_event_2 =
+  const AdEventInfo ad_event_2 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kServed);
   FireAdEvent(ad_event_2);
-  const AdEventInfo& ad_event_3 =
+  const AdEventInfo ad_event_3 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kTransferred);
   FireAdEvent(ad_event_3);
-  const AdEventInfo& ad_event_4 =
+  const AdEventInfo ad_event_4 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kFlagged);
   FireAdEvent(ad_event_4);
-  const AdEventInfo& ad_event_5 =
+  const AdEventInfo ad_event_5 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kSaved);
   FireAdEvent(ad_event_5);
-  const AdEventInfo& ad_event_6 =
+  const AdEventInfo ad_event_6 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kUpvoted);
   FireAdEvent(ad_event_6);
-  const AdEventInfo& ad_event_7 =
+  const AdEventInfo ad_event_7 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDownvoted);
   FireAdEvent(ad_event_7);
 
@@ -1026,7 +1024,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1052,7 +1050,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1060,7 +1058,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1074,9 +1072,9 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
 
 TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   // Arrange
-  const std::string& creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  const std::string creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1084,7 +1082,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition =
+  const std::string condition =
       "creative_set_id = 'foobar' AND "
       "confirmation_type = 'conversion'";
 
@@ -1111,7 +1109,7 @@ TEST_F(BatAdsConversionsTest,
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1121,7 +1119,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1152,7 +1150,7 @@ TEST_F(BatAdsConversionsTest,
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1160,7 +1158,7 @@ TEST_F(BatAdsConversionsTest,
   conversions_->MaybeConvert({GURL("https://www.foo.com/qux")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1186,7 +1184,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1196,7 +1194,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
   conversions_->MaybeConvert({GURL("https://foo.bar.com/qux")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1226,7 +1224,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1236,7 +1234,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/qux")}, "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1262,7 +1260,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1273,7 +1271,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
       "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1303,7 +1301,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1314,7 +1312,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
       "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1344,7 +1342,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1355,7 +1353,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
       "", {});
 
   // Assert
-  const std::string& condition = base::StringPrintf(
+  const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
@@ -1391,7 +1389,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1416,7 +1414,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
         ASSERT_EQ(conversion.advertiser_public_key,
                   conversion_queue_item.advertiser_public_key);
 
-        const std::string& expected_conversion_id = "abc123";
+        const std::string expected_conversion_id = "abc123";
         EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
       });
 }
@@ -1441,7 +1439,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1468,7 +1466,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
         ASSERT_EQ(conversion.advertiser_public_key,
                   conversion_queue_item.advertiser_public_key);
 
-        const std::string& expected_conversion_id = "abc123";
+        const std::string expected_conversion_id = "abc123";
         EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
       });
 }
@@ -1493,7 +1491,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
 
   database::SaveConversions(conversions);
 
-  const AdEventInfo& ad_event =
+  const AdEventInfo ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
@@ -1521,7 +1519,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
         ASSERT_EQ(conversion.advertiser_public_key,
                   conversion_queue_item.advertiser_public_key);
 
-        const std::string& expected_conversion_id = "abc123";
+        const std::string expected_conversion_id = "abc123";
         EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
       });
 }

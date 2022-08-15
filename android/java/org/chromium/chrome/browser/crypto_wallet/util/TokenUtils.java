@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class TokenUtils {
-    public enum TokenType { ERC20, ERC721, ALL }
+    public enum TokenType { ERC20, ERC721, SOL, ALL }
     ;
 
     /* Filter tokens by type and add native token.
@@ -55,6 +55,9 @@ public class TokenUtils {
                     break;
                 case ERC721:
                     typeFilter = !t.isErc721;
+                    break;
+                case SOL:
+                    typeFilter = t.coin != CoinType.SOL;
                     break;
                 case ALL:
                     typeFilter = false;
@@ -178,8 +181,8 @@ public class TokenUtils {
             NetworkInfo selectedNetwork, int coinType, String assetSymbol, String assetName,
             String assetId, String contractAddress, int assetDecimals,
             Callback<BlockchainToken> callback) {
-        getUserAssetsFiltered(braveWalletService, selectedNetwork, coinType,
-                TokenUtils.TokenType.ALL, userAssets -> {
+        getUserAssetsFiltered(
+                braveWalletService, selectedNetwork, coinType, TokenType.ALL, userAssets -> {
                     BlockchainToken resultToken = null;
                     for (BlockchainToken userAsset : userAssets) {
                         if (selectedNetwork.chainId.equals(userAsset.chainId)

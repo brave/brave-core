@@ -77,9 +77,9 @@ absl::optional<EthTransaction> EthTransaction::FromTxData(
 
 // static
 absl::optional<EthTransaction> EthTransaction::FromValue(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   EthTransaction tx;
-  const std::string* nonce = value.FindStringKey("nonce");
+  const std::string* nonce = value.FindString("nonce");
   if (!nonce)
     return absl::nullopt;
 
@@ -90,30 +90,30 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
     tx.nonce_ = nonce_uint;
   }
 
-  const std::string* gas_price = value.FindStringKey("gas_price");
+  const std::string* gas_price = value.FindString("gas_price");
   if (!gas_price)
     return absl::nullopt;
   if (!HexValueToUint256(*gas_price, &tx.gas_price_))
     return absl::nullopt;
 
-  const std::string* gas_limit = value.FindStringKey("gas_limit");
+  const std::string* gas_limit = value.FindString("gas_limit");
   if (!gas_limit)
     return absl::nullopt;
   if (!HexValueToUint256(*gas_limit, &tx.gas_limit_))
     return absl::nullopt;
 
-  const std::string* to = value.FindStringKey("to");
+  const std::string* to = value.FindString("to");
   if (!to)
     return absl::nullopt;
   tx.to_ = EthAddress::FromHex(*to);
 
-  const std::string* tx_value = value.FindStringKey("value");
+  const std::string* tx_value = value.FindString("value");
   if (!tx_value)
     return absl::nullopt;
   if (!HexValueToUint256(*tx_value, &tx.value_))
     return absl::nullopt;
 
-  const std::string* data = value.FindStringKey("data");
+  const std::string* data = value.FindString("data");
   if (!data)
     return absl::nullopt;
   std::string data_decoded;
@@ -121,12 +121,12 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
     return absl::nullopt;
   tx.data_ = std::vector<uint8_t>(data_decoded.begin(), data_decoded.end());
 
-  absl::optional<int> v = value.FindIntKey("v");
+  absl::optional<int> v = value.FindInt("v");
   if (!v)
     return absl::nullopt;
   tx.v_ = (uint8_t)*v;
 
-  const std::string* r = value.FindStringKey("r");
+  const std::string* r = value.FindString("r");
   if (!r)
     return absl::nullopt;
   std::string r_decoded;
@@ -134,7 +134,7 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
     return absl::nullopt;
   tx.r_ = std::vector<uint8_t>(r_decoded.begin(), r_decoded.end());
 
-  const std::string* s = value.FindStringKey("s");
+  const std::string* s = value.FindString("s");
   if (!s)
     return absl::nullopt;
   std::string s_decoded;
@@ -142,7 +142,7 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
     return absl::nullopt;
   tx.s_ = std::vector<uint8_t>(s_decoded.begin(), s_decoded.end());
 
-  absl::optional<int> type = value.FindIntKey("type");
+  absl::optional<int> type = value.FindInt("type");
   if (!type)
     return absl::nullopt;
   tx.type_ = (uint8_t)*type;
@@ -153,38 +153,38 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
 std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
                                                       bool hash) const {
   DCHECK(nonce_);
-  base::ListValue list;
-  list.Append(RLPUint256ToBlobValue(nonce_.value()));
-  list.Append(RLPUint256ToBlobValue(gas_price_));
-  list.Append(RLPUint256ToBlobValue(gas_limit_));
-  list.Append(base::Value(to_.bytes()));
-  list.Append(RLPUint256ToBlobValue(value_));
+  base::Value::List list;
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(to_.bytes());
+  list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   if (chain_id) {
-    list.Append(RLPUint256ToBlobValue(chain_id));
-    list.Append(RLPUint256ToBlobValue(0));
-    list.Append(RLPUint256ToBlobValue(0));
+    list.Append(RLPUint256ToBlob(chain_id));
+    list.Append(RLPUint256ToBlob(0));
+    list.Append(RLPUint256ToBlob(0));
   }
 
-  const std::string message = RLPEncode(std::move(list));
+  const std::string message = RLPEncode(base::Value(std::move(list)));
   auto result = std::vector<uint8_t>(message.begin(), message.end());
   return hash ? KeccakHash(result) : result;
 }
 
 std::string EthTransaction::GetSignedTransaction() const {
   DCHECK(nonce_);
-  base::ListValue list;
-  list.Append(RLPUint256ToBlobValue(nonce_.value()));
-  list.Append(RLPUint256ToBlobValue(gas_price_));
-  list.Append(RLPUint256ToBlobValue(gas_limit_));
-  list.Append(base::Value(to_.bytes()));
-  list.Append(RLPUint256ToBlobValue(value_));
+  base::Value::List list;
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(to_.bytes());
+  list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
-  list.Append(RLPUint256ToBlobValue(v_));
+  list.Append(RLPUint256ToBlob(v_));
   list.Append(base::Value(r_));
   list.Append(base::Value(s_));
 
-  return ToHex(RLPEncode(std::move(list)));
+  return ToHex(RLPEncode(base::Value(std::move(list))));
 }
 
 bool EthTransaction::ProcessVRS(const std::string& v,
@@ -242,18 +242,18 @@ bool EthTransaction::IsSigned() const {
   return v_ != (uint256_t)0 && r_.size() != 0 && s_.size() != 0;
 }
 
-base::Value EthTransaction::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("nonce", nonce_ ? Uint256ValueToHex(nonce_.value()) : "");
-  dict.SetStringKey("gas_price", Uint256ValueToHex(gas_price_));
-  dict.SetStringKey("gas_limit", Uint256ValueToHex(gas_limit_));
-  dict.SetStringKey("to", to_.ToHex());
-  dict.SetStringKey("value", Uint256ValueToHex(value_));
-  dict.SetStringKey("data", base::Base64Encode(data_));
-  dict.SetIntKey("v", static_cast<int>(v_));
-  dict.SetStringKey("r", base::Base64Encode(r_));
-  dict.SetStringKey("s", base::Base64Encode(s_));
-  dict.SetIntKey("type", static_cast<int>(type_));
+base::Value::Dict EthTransaction::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("nonce", nonce_ ? Uint256ValueToHex(nonce_.value()) : "");
+  dict.Set("gas_price", Uint256ValueToHex(gas_price_));
+  dict.Set("gas_limit", Uint256ValueToHex(gas_limit_));
+  dict.Set("to", to_.ToHex());
+  dict.Set("value", Uint256ValueToHex(value_));
+  dict.Set("data", base::Base64Encode(data_));
+  dict.Set("v", static_cast<int>(v_));
+  dict.Set("r", base::Base64Encode(r_));
+  dict.Set("s", base::Base64Encode(s_));
+  dict.Set("type", static_cast<int>(type_));
 
   return dict;
 }

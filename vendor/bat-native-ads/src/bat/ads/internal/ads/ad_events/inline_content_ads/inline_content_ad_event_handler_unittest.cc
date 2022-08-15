@@ -78,7 +78,7 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
 
   CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
     CreativeInlineContentAdList creative_ads;
-    const CreativeInlineContentAdInfo& creative_ad =
+    const CreativeInlineContentAdInfo creative_ad =
         BuildCreativeInlineContentAd();
     creative_ads.push_back(creative_ad);
 
@@ -98,7 +98,7 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  const CreativeInlineContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -109,7 +109,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const InlineContentAdInfo& expected_ad =
+  const InlineContentAdInfo expected_ad =
       BuildInlineContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
 
@@ -120,7 +120,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BatAdsInlineContentAdEventHandlerTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  const CreativeInlineContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::InlineContentAdEventType::kViewed);
@@ -136,7 +136,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
 
 TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  const CreativeInlineContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -147,7 +147,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   EXPECT_FALSE(did_view_ad_);
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const InlineContentAdInfo& expected_ad =
+  const InlineContentAdInfo expected_ad =
       BuildInlineContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
   EXPECT_EQ(
@@ -157,7 +157,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
 TEST_F(BatAdsInlineContentAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
-  const CreativeInlineContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
+  const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::InlineContentAdEventType::kClicked);

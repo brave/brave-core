@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -20,6 +20,7 @@
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
@@ -95,7 +96,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   user_data_builder.Build([=](const base::Value::Dict& user_data) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet_, unblinded_payment_tokens, user_data);
-    mojom::UrlRequestPtr url_request = url_request_builder.Build();
+    mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
     BLOG(6, UrlRequestToString(url_request));
     BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -108,7 +109,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeem(
-    const mojom::UrlResponse& url_response,
+    const mojom::UrlResponseInfo& url_response,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 
@@ -216,13 +217,8 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
 base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
   const base::Time now = base::Time::Now();
 
-  int64_t delay;
-
-  if (!g_is_debug) {
-    delay = kNextTokenRedemptionAfterSeconds;
-  } else {
-    delay = kDebugNextTokenRedemptionAfterSeconds;
-  }
+  const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
+                                      : kNextTokenRedemptionAfterSeconds;
 
   const int64_t rand_delay =
       static_cast<int64_t>(brave_base::random::Geometric(delay));

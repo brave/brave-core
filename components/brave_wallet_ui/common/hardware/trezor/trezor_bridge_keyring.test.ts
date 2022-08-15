@@ -25,7 +25,7 @@ import { TrezorBridgeTransport } from './trezor-bridge-transport'
 import { TrezorCommandHandler } from './trezor-command-handler'
 import { getMockedTransactionInfo } from '../../constants/mocks'
 import { HardwareOperationResult, SignHardwareOperationResult } from '../../hardware_operations'
-import { Unsuccessful } from 'trezor-connect'
+import { Unsuccessful } from './trezor-connect-types'
 import { SignHardwareMessageOperationResult, TrezorDerivationPaths } from '../types'
 
 let uuid = 0

@@ -61,9 +61,10 @@ bool DecodeStringArray(const std::string& input,
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
 
-base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
+base::Value::Dict TransactionReceiptToValue(
+    const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
-    const base::Value& value);
+    const base::Value::Dict& value);
 
 std::vector<mojom::NetworkInfoPtr> GetAllKnownEthChains(PrefService* prefs);
 std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();
@@ -78,6 +79,7 @@ GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id);
 GURL AddInfuraProjectId(const GURL& url);
 GURL MaybeAddInfuraProjectId(const GURL& url);
 mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,

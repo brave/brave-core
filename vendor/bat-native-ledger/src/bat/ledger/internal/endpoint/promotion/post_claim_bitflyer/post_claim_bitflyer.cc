@@ -50,8 +50,8 @@ std::string PostClaimBitflyer::GetUrl() {
 
 std::string PostClaimBitflyer::GeneratePayload(
     const std::string& linking_info) {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("linkingInfo", linking_info);
+  base::Value::Dict payload;
+  payload.Set("linkingInfo", linking_info);
   std::string json;
   base::JSONWriter::Write(payload, &json);
 
@@ -96,15 +96,14 @@ type::Result PostClaimBitflyer::ProcessResponse(
 }
 
 type::Result PostClaimBitflyer::ParseBody(const std::string& body) const {
-  base::DictionaryValue* root = nullptr;
   auto value = base::JSONReader::Read(body);
-  if (!value || !value->GetAsDictionary(&root)) {
+  if (!value || !value->is_dict()) {
     BLOG(0, "Invalid body!");
     return type::Result::LEDGER_ERROR;
   }
-  DCHECK(root);
 
-  auto* message = root->FindStringKey("message");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* message = dict.FindString("message");
   if (!message) {
     BLOG(0, "message is missing!");
     return type::Result::LEDGER_ERROR;
@@ -120,6 +119,9 @@ type::Result PostClaimBitflyer::ParseBody(const std::string& body) const {
     return type::Result::FLAGGED_WALLET;
   } else if (message->find("region not supported") != std::string::npos) {
     return type::Result::REGION_NOT_SUPPORTED;
+  } else if (message->find("mismatched provider account regions") !=
+             std::string::npos) {
+    return type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS;
   } else {
     BLOG(0, "Unknown message!");
     return type::Result::LEDGER_ERROR;

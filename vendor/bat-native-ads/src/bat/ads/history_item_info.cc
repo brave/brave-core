@@ -29,16 +29,17 @@ bool HistoryItemInfo::operator!=(const HistoryItemInfo& rhs) const {
 }
 
 base::Value::Dict HistoryItemInfo::ToValue() const {
-  base::Value::Dict dictionary;
+  base::Value::Dict dict;
 
-  dictionary.Set("timestamp_in_seconds",
-                 base::NumberToString(created_at.ToDoubleT()));
-  dictionary.Set("ad_content", ad_content.ToValue());
-  dictionary.Set("category_content", category_content.ToValue());
-  return dictionary;
+  dict.Set("timestamp_in_seconds",
+           base::NumberToString(created_at.ToDoubleT()));
+  dict.Set("ad_content", ad_content.ToValue());
+  dict.Set("category_content", category_content.ToValue());
+
+  return dict;
 }
 
-bool HistoryItemInfo::FromValue(const base::Value::Dict& root) {
+void HistoryItemInfo::FromValue(const base::Value::Dict& root) {
   if (const auto value = root.FindDouble("timestamp_in_seconds")) {
     // Migrate legacy timestamp
     created_at = base::Time::FromDoubleT(*value);
@@ -50,16 +51,12 @@ bool HistoryItemInfo::FromValue(const base::Value::Dict& root) {
   }
 
   if (const auto* value = root.FindDict("ad_content")) {
-    if (!ad_content.FromValue(*value)) {
-      return false;
-    }
+    ad_content.FromValue(*value);
   }
 
   if (const auto* value = root.FindDict("category_content")) {
     category_content.FromValue(*value);
   }
-
-  return true;
 }
 
 }  // namespace ads

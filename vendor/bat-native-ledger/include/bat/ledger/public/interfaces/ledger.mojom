@@ -24,7 +24,6 @@ enum ContributionProcessor {
   NONE = 0,
   BRAVE_TOKENS = 1,
   UPHOLD = 2,
-  BRAVE_USER_FUNDS = 3,
   BITFLYER = 4,
   GEMINI = 5
 };
@@ -124,7 +123,6 @@ struct RewardsParameters {
 
 struct Balance {
   double total;
-  double user_funds;
   map<string, double> wallets;
 };
 
@@ -247,7 +245,8 @@ enum Result {
   REQUEST_SIGNATURE_VERIFICATION_FAILURE = 42,
   UPHOLD_INSUFFICIENT_CAPABILITIES = 43,
   FLAGGED_WALLET = 44,
-  REGION_NOT_SUPPORTED = 45
+  REGION_NOT_SUPPORTED = 45,
+  MISMATCHED_PROVIDER_ACCOUNT_REGIONS = 46
 };
 
 enum PublisherStatus {
@@ -507,7 +506,6 @@ struct SKUOrderItem {
 enum SKUTransactionType {
   NONE = 0,
   UPHOLD = 1,
-  ANONYMOUS_CARD = 2,
   TOKENS = 3,
   GEMINI = 4
 };

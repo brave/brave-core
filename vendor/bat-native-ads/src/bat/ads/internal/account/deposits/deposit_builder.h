@@ -12,7 +12,7 @@ namespace ads {
 
 struct DepositInfo;
 
-DepositInfo BuildDeposit(const mojom::SearchResultAdPtr& ad_mojom);
+DepositInfo BuildDeposit(const mojom::SearchResultAdInfoPtr& ad_mojom);
 
 }  // namespace ads
 

@@ -11,7 +11,6 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
-#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
@@ -36,7 +35,6 @@ struct ClientInfo final {
   base::circular_deque<HistoryItemInfo> history;
   base::flat_map<std::string, std::map<std::string, bool>> seen_ads;
   base::flat_map<std::string, std::map<std::string, bool>> seen_advertisers;
-  base::Time serve_ad_at;
   targeting::TextClassificationProbabilityList
       text_classification_probabilities;
   targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;

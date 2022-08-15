@@ -68,31 +68,31 @@ class CreativePromotedContentAds final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransaction* transaction,
+  void Migrate(mojom::DBTransactionInfo* transaction,
                const int to_version) override;
 
  private:
   void InsertOrUpdate(
-      mojom::DBTransaction* transaction,
+      mojom::DBTransactionInfo* transaction,
       const CreativePromotedContentAdList& creative_promoted_content_ads);
 
   std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommand* command,
+      mojom::DBCommandInfo* command,
       const CreativePromotedContentAdList& creative_promoted_content_ads);
 
   void OnGetForCreativeInstanceId(
-      mojom::DBCommandResponsePtr response,
+      mojom::DBCommandResponseInfoPtr response,
       const std::string& creative_instance_id,
       GetCreativePromotedContentAdCallback callback);
 
-  void OnGetForSegments(mojom::DBCommandResponsePtr response,
+  void OnGetForSegments(mojom::DBCommandResponseInfoPtr response,
                         const SegmentList& segments,
                         GetCreativePromotedContentAdsCallback callback);
 
-  void OnGetAll(mojom::DBCommandResponsePtr response,
+  void OnGetAll(mojom::DBCommandResponseInfoPtr response,
                 GetCreativePromotedContentAdsCallback callback);
 
-  void MigrateToV24(mojom::DBTransaction* transaction);
+  void MigrateToV24(mojom::DBTransactionInfo* transaction);
 
   int batch_size_;
 

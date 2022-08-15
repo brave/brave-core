@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { getLocale } from '$web-common/locale'
 
 const Box = styled.div`
   display: flex;
@@ -163,7 +164,7 @@ function Search (props: Props) {
     <Box>
       <BraveSearchLogo />
       <Form onSubmit={handleSubmit} onClick={handleFormBoxClick} role="search" aria-label="Brave">
-        <input ref={inputRef} onChange={onInputChange} onKeyDown={handleKeyDown} type="text" placeholder="Search the web privately" value={value} autoCapitalize="off" autoComplete="off" autoCorrect="off" spellCheck="false" aria-label="Search" title="Search" aria-autocomplete="none" aria-haspopup="false" maxLength={2048} autoFocus />
+        <input ref={inputRef} onChange={onInputChange} onKeyDown={handleKeyDown} type="text" placeholder={getLocale('searchPlaceholderLabel')} value={value} autoCapitalize="off" autoComplete="off" autoCorrect="off" spellCheck="false" aria-label="Search" title="Search" aria-autocomplete="none" aria-haspopup="false" maxLength={2048} autoFocus />
         <IconButton data-test-id="submit_button" aria-label="Submit">
           <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M8 16a8 8 0 1 1 5.965-2.67l5.775 5.28a.8.8 0 1 1-1.08 1.18l-5.88-5.375A7.965 7.965 0 0 1 8 16Zm4.374-3.328a.802.802 0 0 0-.201.18 6.4 6.4 0 1 1 .202-.181Z" fill="url(#search_icon_gr)"/><defs><linearGradient id="search_icon_gr" x1="20" y1="20" x2="-2.294" y2="3.834" gradientUnits="userSpaceOnUse"><stop stopColor="#BF14A2"/><stop offset="1" stopColor="#F73A1C"/></linearGradient></defs></svg>
         </IconButton>

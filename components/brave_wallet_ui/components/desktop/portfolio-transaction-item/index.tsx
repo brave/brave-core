@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import * as EthereumBlockies from 'ethereum-blockies'
 
-import { getLocale } from '../../../../common/locale'
 import {
   BraveWallet,
   WalletAccountType,
@@ -18,6 +17,8 @@ import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
+import { getLocale } from '../../../../common/locale'
+import { isSolanaTransaction } from '../../../utils/tx-utils'
 
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
@@ -60,14 +61,12 @@ export interface Props {
   displayAccountName: boolean
 }
 
-const PortfolioTransactionItem = (props: Props) => {
-  const {
-    transaction,
-    account,
-    displayAccountName,
-    accounts
-  } = props
-
+export const PortfolioTransactionItem = ({
+  transaction,
+  account,
+  displayAccountName,
+  accounts
+}: Props) => {
   // routing
   const history = useHistory()
 
@@ -81,11 +80,7 @@ const PortfolioTransactionItem = (props: Props) => {
   // state
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
-  const isSolanaTransaction =
-    transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
-    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
-    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-
+  const isSolanaTxn = isSolanaTransaction(transaction)
   const isFilecoinTransaction = getCoinFromTxDataUnion(transaction.txDataUnion) === BraveWallet.CoinType.FIL
 
   // custom hooks
@@ -377,7 +372,7 @@ const PortfolioTransactionItem = (props: Props) => {
           <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
         </BalanceColumn>
         {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-        {!isSolanaTransaction &&
+        {!isSolanaTxn &&
           <TransactionFeesTooltip
             text={
               <>
@@ -429,7 +424,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
-              !isSolanaTransaction &&
+              !isSolanaTxn &&
               !isFilecoinTransaction &&
               <TransactionPopupItem
                 onClick={onClickSpeedupTransaction}
@@ -438,7 +433,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
-              !isSolanaTransaction &&
+              !isSolanaTxn &&
               !isFilecoinTransaction &&
               <TransactionPopupItem
                 onClick={onClickCancelTransaction}
@@ -447,7 +442,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
-              !isSolanaTransaction &&
+              !isSolanaTxn &&
               !isFilecoinTransaction &&
               <TransactionPopupItem
                 onClick={onClickRetryTransaction}

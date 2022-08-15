@@ -19,22 +19,25 @@ bool TxMeta::operator==(const TxMeta& meta) const {
          created_time_ == meta.created_time_ &&
          submitted_time_ == meta.submitted_time_ &&
          confirmed_time_ == meta.confirmed_time_ && tx_hash_ == meta.tx_hash_ &&
-         origin_ == meta.origin_;
+         origin_ == meta.origin_ && group_id_ == meta.group_id_;
 }
 
-base::Value TxMeta::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
+base::Value::Dict TxMeta::ToValue() const {
+  base::Value::Dict dict;
 
-  dict.SetStringKey("id", id_);
-  dict.SetIntKey("status", static_cast<int>(status_));
-  dict.SetStringKey("from", from_);
-  dict.SetKey("created_time", base::TimeToValue(created_time_));
-  dict.SetKey("submitted_time", base::TimeToValue(submitted_time_));
-  dict.SetKey("confirmed_time", base::TimeToValue(confirmed_time_));
-  dict.SetStringKey("tx_hash", tx_hash_);
+  dict.Set("id", id_);
+  dict.Set("status", static_cast<int>(status_));
+  dict.Set("from", from_);
+  dict.Set("created_time", base::TimeToValue(created_time_));
+  dict.Set("submitted_time", base::TimeToValue(submitted_time_));
+  dict.Set("confirmed_time", base::TimeToValue(confirmed_time_));
+  dict.Set("tx_hash", tx_hash_);
   if (origin_.has_value()) {
     DCHECK(!origin_->opaque());
-    dict.SetStringKey("origin", origin_->GetURL().spec());
+    dict.Set("origin", origin_->GetURL().spec());
+  }
+  if (group_id_.has_value()) {
+    dict.Set("group_id", *group_id_);
   }
 
   return dict;

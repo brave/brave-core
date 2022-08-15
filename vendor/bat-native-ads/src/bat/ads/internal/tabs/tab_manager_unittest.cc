@@ -172,13 +172,13 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
                                           false);
 
   // Assert
-  absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
   expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab.value());
+  EXPECT_EQ(expected_tab, *tab);
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -199,13 +199,13 @@ TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
                                           false, false);
 
   // Assert
-  absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
   expected_tab.url = GURL("https://brave.com/about");
   expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab.value());
+  EXPECT_EQ(expected_tab, *tab);
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_TRUE(tab_did_change_);
@@ -226,13 +226,13 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
                                           false);
 
   // Assert
-  absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
   expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab.value());
+  EXPECT_EQ(expected_tab, *tab);
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -253,13 +253,13 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
                                           true, false);
 
   // Assert
-  absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
   expected_tab.url = GURL("https://brave.com/about");
   expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab.value());
+  EXPECT_EQ(expected_tab, *tab);
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_TRUE(tab_did_change_);
@@ -360,18 +360,16 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo>& tab_optional =
+  const absl::optional<TabInfo> tab =
       TabManager::GetInstance()->GetVisibleTab();
 
   // Assert
-  const TabInfo& tab = tab_optional.value();
-
   TabInfo expected_tab;
   expected_tab.id = 2;
   expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
 
-  EXPECT_EQ(expected_tab, tab);
+  EXPECT_EQ(expected_tab, *tab);
 }
 
 TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
@@ -383,18 +381,16 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo>& tab_optional =
+  const absl::optional<TabInfo> tab =
       TabManager::GetInstance()->GetLastVisibleTab();
 
   // Assert
-  const TabInfo& tab = tab_optional.value();
-
   TabInfo expected_tab;
   expected_tab.id = 1;
   expected_tab.url = GURL("https://foobar.com");
   expected_tab.is_playing_media = false;
 
-  EXPECT_EQ(expected_tab, tab);
+  EXPECT_EQ(expected_tab, *tab);
 }
 
 TEST_F(BatAdsTabManagerTest, GetTabForId) {
@@ -404,18 +400,15 @@ TEST_F(BatAdsTabManagerTest, GetTabForId) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo>& tab_optional =
-      TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
 
   // Assert
-  const TabInfo& tab = tab_optional.value();
-
   TabInfo expected_tab;
   expected_tab.id = 1;
   expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
 
-  EXPECT_EQ(expected_tab, tab);
+  EXPECT_EQ(expected_tab, *tab);
 }
 
 TEST_F(BatAdsTabManagerTest, DoNotGetTabForMissingId) {

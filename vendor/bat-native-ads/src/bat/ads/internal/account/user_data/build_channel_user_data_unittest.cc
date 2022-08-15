@@ -5,10 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -17,26 +14,19 @@
 namespace ads {
 namespace user_data {
 
-std::string GetBuildChannelAsJson() {
-  const base::Value::Dict user_data = GetBuildChannel();
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
 TEST(BatAdsBuildChannelUserDataTest, GetBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
-  const std::string json = GetBuildChannelAsJson();
+  const base::Value::Dict user_data = GetBuildChannel();
 
   // Assert
-  const std::string expected_json = R"({"buildChannel":"release"})";
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"buildChannel":"release"})");
+  ASSERT_TRUE(expected_user_data.is_dict());
 
-  EXPECT_EQ(expected_json, json);
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 }  // namespace user_data

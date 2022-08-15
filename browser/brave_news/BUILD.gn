@@ -6,9 +6,14 @@ source_set("brave_news") {
 
   deps = [
     "//base",
+    "//brave/browser/profiles:util",
     "//brave/components/brave_today/browser",
     "//brave/components/brave_today/common",
+    "//brave/components/brave_today/common:common",
+    "//brave/components/brave_today/common:mojom",
+    "//chrome/browser:browser",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content",
     "//components/user_prefs",
     "//content/public/browser",
@@ -17,5 +22,29 @@ source_set("brave_news") {
   if (is_android) {
     sources += [ "android/brave_news_controller_factory_android.cc" ]
     deps += [ "//brave/build/android:jni_headers" ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  if (!is_android) {
+    sources = [ "brave_news_tab_helper_browsertest.cc" ]
+
+    deps = [
+      "//brave/components//brave_rewards/browser",
+      "//brave/components/brave_today/common:common",
+      "//brave/components/brave_today/common:mojom",
+      "//brave/components/constants",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profiles",
+      "//chrome/browser/ui:ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+      "//net:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
   }
 }

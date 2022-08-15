@@ -39,7 +39,7 @@ TEST_F(BatAdsHistoryUtilTest, AddHistory) {
   // Assert
   const base::circular_deque<HistoryItemInfo> expected_history = {history_item};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -65,7 +65,7 @@ TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   const base::circular_deque<HistoryItemInfo> expected_history = {
       history_item_2};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -92,7 +92,7 @@ TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
   const base::circular_deque<HistoryItemInfo> expected_history = {
       history_item_2, history_item_1};
 
-  const base::circular_deque<HistoryItemInfo> history =
+  const base::circular_deque<HistoryItemInfo>& history =
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));

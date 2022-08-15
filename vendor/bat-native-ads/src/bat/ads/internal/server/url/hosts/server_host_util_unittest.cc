@@ -5,16 +5,24 @@
 
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/environment/environment_types.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsServerHostUtilTest, GetStaticHost) {
+class BatAdsServerHostUtilTest : public UnitTestBase {
+ protected:
+  BatAdsServerHostUtilTest() = default;
+
+  ~BatAdsServerHostUtilTest() override = default;
+};
+
+TEST_F(BatAdsServerHostUtilTest, GetStaticHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
   // Act
   const std::string host = server::GetStaticHost();
@@ -24,9 +32,9 @@ TEST(BatAdsServerHostUtilTest, GetStaticHost) {
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsServerHostUtilTest, GetGeoHost) {
+TEST_F(BatAdsServerHostUtilTest, GetGeoHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
   // Act
   const std::string host = server::GetGeoHost();
@@ -36,9 +44,9 @@ TEST(BatAdsServerHostUtilTest, GetGeoHost) {
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsServerHostUtilTest, GetNonAnonymousHost) {
+TEST_F(BatAdsServerHostUtilTest, GetNonAnonymousHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
   // Act
   const std::string host = server::GetNonAnonymousHost();
@@ -48,9 +56,9 @@ TEST(BatAdsServerHostUtilTest, GetNonAnonymousHost) {
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsServerHostUtilTest, GetAnonymousHost) {
+TEST_F(BatAdsServerHostUtilTest, GetAnonymousHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
   // Act
   const std::string host = server::GetAnonymousHost();

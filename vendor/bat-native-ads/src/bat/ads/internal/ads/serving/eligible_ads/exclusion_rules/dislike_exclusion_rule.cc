@@ -35,7 +35,7 @@ bool DislikeExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-std::string DislikeExclusionRule::GetLastMessage() const {
+const std::string& DislikeExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

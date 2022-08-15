@@ -24,7 +24,8 @@ import {
 import {
   BraveWallet,
   NFTMetadataReturnType,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  ImportAccountErrorType
 } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
@@ -34,7 +35,7 @@ export const importFilecoinAccount = createAction<ImportFilecoinAccountPayloadTy
 export const importAccountFromJson = createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson')
 export const removeImportedAccount = createAction<RemoveImportedAccountPayloadType>('removeImportedAccount')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
-export const walletSetupComplete = createAction('walletSetupComplete')
+export const walletSetupComplete = createAction<boolean>('walletSetupComplete')
 export const showRecoveryPhrase = createAction<boolean>('showRecoveryPhrase')
 export const viewPrivateKey = createAction<ViewPrivateKeyPayloadType>('viewPrivateKey')
 export const doneViewingPrivateKey = createAction('doneViewingPrivateKey')
@@ -43,7 +44,7 @@ export const privateKeyAvailable = createAction<PrivateKeyAvailablePayloadType>(
 export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
 export const setShowAddModal = createAction<boolean>('setShowAddModal')
-export const setImportAccountError = createAction<boolean>('setImportAccountError')
+export const setImportAccountError = createAction<ImportAccountErrorType>('setImportAccountError')
 export const setImportWalletError = createAction<ImportWalletErrorPayloadType>('setImportWalletError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
@@ -56,6 +57,7 @@ export const removeHardwareAccount = createAction<RemoveHardwareAccountPayloadTy
 export const checkWalletsToImport = createAction('checkWalletsToImport')
 export const setCryptoWalletsInitialized = createAction<boolean>('setCryptoWalletsInitialized')
 export const setMetaMaskInitialized = createAction<boolean>('setMetaMaskInitialized')
+export const setImportWalletsCheckComplete = createAction<boolean>('setImportWalletsCheckComplete')
 export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets')
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')
@@ -63,3 +65,4 @@ export const getNFTMetadata = createAction<BraveWallet.BlockchainToken>('getNFTM
 export const setIsFetchingNFTMetadata = createAction<boolean>('setIsFetchingNFTMetadata')
 export const updateNFTMetadata = createAction<NFTMetadataReturnType | undefined>('updateNFTMetadata')
 export const onOnboardingShown = createAction('onOnboardingShown')
+export const agreeToWalletTerms = createAction('agreeToWalletTerms')

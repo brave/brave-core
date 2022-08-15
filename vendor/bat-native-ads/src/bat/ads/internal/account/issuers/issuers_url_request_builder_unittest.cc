@@ -5,25 +5,35 @@
 
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
+class BatAdsIssuersUrlRequestBuilderTest : public UnitTestBase {
+ protected:
+  BatAdsIssuersUrlRequestBuilderTest() = default;
+
+  ~BatAdsIssuersUrlRequestBuilderTest() override = default;
+};
+
+TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   // Arrange
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
   IssuersUrlRequestBuilder url_request_builder;
 
   // Act
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
+  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url =
       GURL(R"(https://static.ads.bravesoftware.com/v1/issuers/)");
-  expected_url_request->method = mojom::UrlRequestMethod::kGet;
+  expected_url_request->method = mojom::UrlRequestMethodType::kGet;
 
   EXPECT_EQ(expected_url_request, url_request);
 }

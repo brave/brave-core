@@ -6,6 +6,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
@@ -72,7 +73,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
                            const ConversionList& conversions) {
     ASSERT_TRUE(success);
 
-    const std::vector<std::string>& creative_set_ids = {
+    const std::vector<std::string> creative_set_ids = {
         "bfd4de55-92c1-4a29-98bb-e9462597d3de",
         "5007ed46-e961-4f31-9e53-c66b20fab25b",
         "131fd2bd-90d6-4212-9ed6-53672df8b5b2",
@@ -263,7 +264,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         "38bdca09-c2b5-46c7-a7d7-e5f88d0b9f90",
         "00627236-54f7-4bb1-a1a5-5cc6a6355381"};
 
-    const std::vector<std::string>& types = {
+    const std::vector<std::string> types = {
         "postview", "postview", "postview", "postview",  "postview",
         "postview", "postview", "postview", "postview",  "postview",
         "postview", "postview", "postview", "postview",  "postview",
@@ -303,7 +304,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         "postview", "postview", "postview", "postview",  "postview",
         "postview", "postview", "postview", "postview"};
 
-    const std::vector<std::string>& url_patterns = {
+    const std::vector<std::string> url_patterns = {
         "https://ambercrypto.com/",
         "https://ambercrypto.com/",
         "https://ambercrypto.com/",
@@ -503,7 +504,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         "https://www.fool.com/order/thank-you/",
         "https://buy.norton.com/estore/checkOutConfirmation*"};
 
-    const std::vector<int>& observation_windows = {
+    const std::vector<int> observation_windows = {
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
@@ -516,7 +517,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
         30, 30, 30, 30, 30, 30, 30, 30, 30};
 
-    const std::vector<double>& expiry_timestamps = {
+    const std::vector<double> expiry_timestamps = {
         1627577940, 1627577940, 1627577940, 1627577940, 1627577940, 1627577940,
         1627585140, 1627585140, 1627612200, 1627612440, 1627619580, 1627631040,
         1627657560, 1627657620, 1627657620, 1627657680, 1627657680, 1627657680,

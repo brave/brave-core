@@ -10,10 +10,12 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Time;
@@ -75,7 +77,7 @@ class ADS_EXPORT AdsClient {
   // asynchronously, so that the app remains responsive and should handle
   // incoming data or errors as they arrive. The callback takes 1 argument -
   // |URLResponse| containing the URL response.
-  virtual void UrlRequest(mojom::UrlRequestPtr url_request,
+  virtual void UrlRequest(mojom::UrlRequestInfoPtr url_request,
                           UrlRequestCallback callback) = 0;
 
   // Save a value for the specified |name| to persistent storage. The callback
@@ -118,21 +120,21 @@ class ADS_EXPORT AdsClient {
   virtual void ClearScheduledCaptcha() = 0;
 
   // Run a database transaction. The callback takes one argument -
-  // |mojom::DBCommandResponsePtr| containing the info of the transaction.
-  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
+  // |mojom::DBCommandResponseInfoPtr| containing the info of the transaction.
+  virtual void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                                 RunDBTransactionCallback callback) = 0;
 
   // Called to update brave://rewards.
   virtual void UpdateAdRewards() = 0;
 
-  // Record a P2A (Privacy Preserving Anonymous) event with |value| for the
-  // specfied |name|.
+  // Record a P2A (Privacy Preserving Anonymous) event with |base::Value::List|
+  // for the specified |name|.
   virtual void RecordP2AEvent(const std::string& name,
-                              const std::string& value) = 0;
+                              base::Value::List value) = 0;
 
   // Log |training_instance|.
   virtual void LogTrainingInstance(
-      const std::vector<brave_federated::mojom::CovariatePtr>
+      const std::vector<brave_federated::mojom::CovariateInfoPtr>
           training_instance) = 0;
 
   // Get the value from the specified preference |path|. Returns the default
@@ -144,6 +146,10 @@ class ADS_EXPORT AdsClient {
   virtual int64_t GetInt64Pref(const std::string& path) const = 0;
   virtual uint64_t GetUint64Pref(const std::string& path) const = 0;
   virtual base::Time GetTimePref(const std::string& path) const = 0;
+  virtual absl::optional<base::Value::Dict> GetDictPref(
+      const std::string& path) const = 0;
+  virtual absl::optional<base::Value::List> GetListPref(
+      const std::string& path) const = 0;
 
   // Update the value for the specified preference |path|.
   virtual void SetBooleanPref(const std::string& path, const bool value) = 0;
@@ -154,6 +160,10 @@ class ADS_EXPORT AdsClient {
   virtual void SetInt64Pref(const std::string& path, const int64_t value) = 0;
   virtual void SetUint64Pref(const std::string& path, const uint64_t value) = 0;
   virtual void SetTimePref(const std::string& path, const base::Time value) = 0;
+  virtual void SetDictPref(const std::string& path,
+                           base::Value::Dict value) = 0;
+  virtual void SetListPref(const std::string& path,
+                           base::Value::List value) = 0;
 
   // Remove the preference from the specified |path|.
   virtual void ClearPref(const std::string& path) = 0;

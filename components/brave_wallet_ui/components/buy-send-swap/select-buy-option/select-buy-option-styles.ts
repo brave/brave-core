@@ -3,12 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<{
+  layoutType?: 'loose' | 'tight'
+}>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  ${(p) => p?.layoutType === 'loose'
+    ? css`
+      width: 100%;
+      align-items: stretch;
+    `
+    : ''
+  }
 `
 
 export const SubDivider = styled.div`

@@ -34,6 +34,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/idle/idle.h"
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
@@ -109,11 +110,8 @@ class AdsServiceImpl : public AdsService,
   void InitializePrefChangeRegistrar();
 
   void SetSysInfo();
-  void SetEnvironment();
-  void SetBuildChannel();
-  void SetDebug();
 
-  void ParseCommandLineSwitches();
+  void SetBuildChannel();
 
   void MaybeStartOrStop(const bool should_restart);
   void StartBatAdsService();
@@ -128,8 +126,6 @@ class AdsServiceImpl : public AdsService,
   void DetectUncertainFuture(const uint32_t number_of_start);
   void OnDetectUncertainFuture(const uint32_t number_of_start,
                                const bool is_uncertain_future);
-
-  void DetectOverriddenCommandLineArgs(const uint32_t number_of_start);
 
   void EnsureBaseDirectoryExists(const uint32_t number_of_start);
   void OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
@@ -170,9 +166,8 @@ class AdsServiceImpl : public AdsService,
                         const base::TimeDelta idle_time);
 
   void OnMaybeServeInlineContentAd(MaybeServeInlineContentAdCallback callback,
-                                   const bool success,
                                    const std::string& dimensions,
-                                   const std::string& json);
+                                   absl::optional<base::Value::Dict> dict);
 
   absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
@@ -185,7 +180,7 @@ class AdsServiceImpl : public AdsService,
   void NotificationAdTimedOut(const std::string& placement_id);
 
   void PrefetchNewTabPageAd() override;
-  void OnPrefetchNewTabPageAd(bool success, const std::string& json);
+  void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
 
   void OnTriggerSearchResultAdEvent(
       TriggerSearchResultAdEventCallback callback,
@@ -198,7 +193,7 @@ class AdsServiceImpl : public AdsService,
   void OpenNewTabWithUrl(const GURL& url);
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnOpenNewTabWithAd(const std::string& json);
+  void OnGetNotificationAd(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   bool IsUpgradingFromPreBraveAdsBuild();
@@ -228,12 +223,10 @@ class AdsServiceImpl : public AdsService,
                           const std::string& message);
 
   void OnGetDiagnostics(GetDiagnosticsCallback callback,
-                        const bool success,
-                        const std::string& json);
+                        absl::optional<base::Value::List> value);
 
   void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
-                                const bool success,
-                                const std::string& json);
+                                ads::mojom::StatementInfoPtr statement);
 
   void OnGetHistory(GetHistoryCallback callback, const std::string& json);
 
@@ -265,7 +258,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
-                          ads::mojom::DBCommandResponsePtr response);
+                          ads::mojom::DBCommandResponseInfoPtr response);
 
   void OnLogTrainingInstance(bool success);
 
@@ -347,7 +340,7 @@ class AdsServiceImpl : public AdsService,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdPtr ad_mojom,
+      ads::mojom::SearchResultAdInfoPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
@@ -402,7 +395,7 @@ class AdsServiceImpl : public AdsService,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -420,31 +413,40 @@ class AdsServiceImpl : public AdsService,
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
-                      const std::string& value) override;
+                      base::Value::List value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
                                training_instance) override;
 
   bool GetBooleanPref(const std::string& path) const override;
-  void SetBooleanPref(const std::string& path, const bool value) override;
   int GetIntegerPref(const std::string& path) const override;
-  void SetIntegerPref(const std::string& path, const int value) override;
   double GetDoublePref(const std::string& path) const override;
-  void SetDoublePref(const std::string& path, const double value) override;
   std::string GetStringPref(const std::string& path) const override;
+  int64_t GetInt64Pref(const std::string& path) const override;
+  uint64_t GetUint64Pref(const std::string& path) const override;
+  base::Time GetTimePref(const std::string& path) const override;
+  absl::optional<base::Value::Dict> GetDictPref(
+      const std::string& path) const override;
+  absl::optional<base::Value::List> GetListPref(
+      const std::string& path) const override;
+
+  void SetBooleanPref(const std::string& path, const bool value) override;
+  void SetIntegerPref(const std::string& path, const int value) override;
+  void SetDoublePref(const std::string& path, const double value) override;
   void SetStringPref(const std::string& path,
                      const std::string& value) override;
-  int64_t GetInt64Pref(const std::string& path) const override;
   void SetInt64Pref(const std::string& path, const int64_t value) override;
-  uint64_t GetUint64Pref(const std::string& path) const override;
   void SetUint64Pref(const std::string& path, const uint64_t value) override;
-  base::Time GetTimePref(const std::string& path) const override;
   void SetTimePref(const std::string& path, const base::Time value) override;
+  void SetDictPref(const std::string& path, base::Value::Dict value) override;
+  void SetListPref(const std::string& path, base::Value::List value) override;
+
   void ClearPref(const std::string& path) override;
+
   bool HasPrefPath(const std::string& path) const override;
 
   void Log(const char* file,
@@ -483,7 +485,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_ad_timers_;
 
-  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
+  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_;
   bool need_purge_orphaned_new_tab_page_ad_events_ = false;
   bool prefetch_new_tab_page_ad_on_first_run_ = false;
 

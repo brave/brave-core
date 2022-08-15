@@ -55,13 +55,12 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
   plaintext.insert(plaintext.end(), kVacCipherTextLength - plaintext.size(), 0);
   DCHECK_EQ(kVacCipherTextLength, plaintext.size());
 
-  const absl::optional<std::vector<uint8_t>> public_key_optional =
+  const absl::optional<std::vector<uint8_t>> public_key =
       base::Base64Decode(public_key_base64);
-  if (!public_key_optional) {
+  if (!public_key) {
     return absl::nullopt;
   }
-  const std::vector<uint8_t>& public_key = public_key_optional.value();
-  if (public_key.size() != kCryptoBoxPublicKeyBytes) {
+  if (public_key->size() != kCryptoBoxPublicKeyBytes) {
     return absl::nullopt;
   }
 
@@ -73,7 +72,7 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
   const std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
 
   const std::vector<uint8_t> padded_ciphertext =
-      Encrypt(plaintext, nonce, public_key, ephemeral_key_pair.secret_key);
+      Encrypt(plaintext, nonce, *public_key, ephemeral_key_pair.secret_key);
 
   // The first 16 bytes of the resulting ciphertext is left as padding by the
   // C API and should be removed before sending out extraneously.

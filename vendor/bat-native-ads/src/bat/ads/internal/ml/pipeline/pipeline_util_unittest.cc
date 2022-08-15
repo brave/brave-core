@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/test/values_test_util.h"
-#include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
@@ -33,18 +32,18 @@ class BatAdsPipelineUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsPipelineUtilTest, ParsePipelineValueTest) {
   // Arrange
-  const absl::optional<std::string> opt_json =
+  const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
-  ASSERT_TRUE(opt_json.has_value());
-  const std::string json = opt_json.value();
+  ASSERT_TRUE(json);
+
+  base::Value value = base::test::ParseJson(*json);
 
   // Act
-  base::Value value = base::test::ParseJson(json);
-  const absl::optional<pipeline::PipelineInfo> pipeline_info =
+  const absl::optional<pipeline::PipelineInfo> pipeline =
       pipeline::ParsePipelineValue(std::move(value));
 
   // Assert
-  EXPECT_TRUE(pipeline_info.has_value());
+  EXPECT_TRUE(pipeline);
 }
 
 }  // namespace ml

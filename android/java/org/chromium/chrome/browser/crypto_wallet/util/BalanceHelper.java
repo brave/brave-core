@@ -69,7 +69,8 @@ public class BalanceHelper {
             final int networkDecimals = selectedNetwork.decimals;
             for (AsyncUtils.GetBalanceResponseBaseContext context : contexts) {
                 Double nativeAssetBalance = (context.error == ProviderError.SUCCESS)
-                        ? Utils.fromHexWei(context.balance, networkDecimals)
+                        ? Utils.getBalanceForCoinType(
+                                selectedNetwork.coin, networkDecimals, context.balance)
                         : 0.0d;
                 nativeAssetsBalances.put(context.accountAddress, nativeAssetBalance);
             }
@@ -152,7 +153,8 @@ public class BalanceHelper {
                 Double tokenBalance =
                         (context.error == ProviderError.SUCCESS && context.balance != null
                                 && !context.balance.isEmpty())
-                        ? Utils.fromHexWei(context.balance, decimals)
+                        ? Utils.getBalanceForCoinType(
+                                selectedNetwork.coin, decimals, context.balance)
                         : 0.0d;
                 if (blockchainTokensBalances.containsKey(context.accountAddress)) {
                     blockchainTokensBalances.get(context.accountAddress)

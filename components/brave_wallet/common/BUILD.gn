@@ -115,8 +115,19 @@ source_set("unit_tests") {
     ":common_constants",
     ":mojom",
     ":solana_utils",
+    ":test_support",
     "//base/test:test_support",
     "//testing/gtest",
     "//url",
   ]
-}  # source_set("brave_wallet_common_unit_tests")
+}  # source_set("unit_tests")
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test_utils.cc",
+    "test_utils.h",
+  ]
+
+  public_deps = [ ":mojom" ]
+}  # source_set("test_support")

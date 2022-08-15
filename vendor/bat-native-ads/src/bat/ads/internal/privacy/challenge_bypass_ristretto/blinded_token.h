@@ -36,9 +36,14 @@ class BlindedToken {
 
   bool has_value() const { return blinded_token_.has_value(); }
 
-  challenge_bypass_ristretto::BlindedToken get() const {
-    DCHECK(has_value());
-    return blinded_token_.value();
+  challenge_bypass_ristretto::BlindedToken& get() {
+    DCHECK(blinded_token_);
+    return *blinded_token_;
+  }
+
+  const challenge_bypass_ristretto::BlindedToken& get() const {
+    DCHECK(blinded_token_);
+    return *blinded_token_;
   }
 
   static BlindedToken DecodeBase64(const std::string& blinded_token_base64);

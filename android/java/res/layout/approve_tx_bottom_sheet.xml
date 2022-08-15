@@ -130,6 +130,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amount_asset" />
 
+    <TextView
+        android:id="@+id/tv_approve_dialog_additional_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:textColor="@color/wallet_text_color"
+        android:background="@color/brave_wallet_dn_error_text_bg_color"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_fiat" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
@@ -137,7 +151,8 @@
         android:background="@color/wallet_toolbar_bg_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_fiat"
+        app:layout_constraintTop_toBottomOf="@+id/tv_approve_dialog_additional_details"
+        android:layout_marginTop="8dp"
         app:tabGravity="fill"
         app:tabIndicator="@drawable/tab_gradient_separator"
         app:tabIndicatorHeight="@dimen/brave_wallet_tab_indicator_height"

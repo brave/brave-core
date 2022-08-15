@@ -59,13 +59,8 @@ type::Result PostWalletBrave::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* payment_id_string = dictionary->FindStringKey("paymentId");
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* payment_id_string = dict.FindString("paymentId");
   if (!payment_id_string || payment_id_string->empty()) {
     BLOG(1, "Payment id is wrong");
     return type::Result::LEDGER_ERROR;

@@ -68,7 +68,7 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
     return;
   }
 
-  const targeting::UserModelInfo& user_model = targeting::BuildUserModel();
+  const targeting::UserModelInfo user_model = targeting::BuildUserModel();
 
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
@@ -89,9 +89,9 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeNewTabPageAdInfo& creative_ad = creative_ads.at(rand);
+        const CreativeNewTabPageAdInfo creative_ad = creative_ads.at(rand);
 
-        const NewTabPageAdInfo& ad = BuildNewTabPageAd(creative_ad);
+        const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
         ServeAd(ad, callback);
       });
 }
@@ -116,7 +116,7 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
 
   if (ad.wallpapers.empty()) {
     BLOG(1, "Failed to serve new tab page ad due to missing wallpapers");
-    callback(/* success */ false, ad);
+    callback(/* ads */ absl::nullopt);
     return;
   }
 
@@ -142,13 +142,13 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
 
   NotifyDidServeNewTabPageAd(ad);
 
-  callback(/* success */ true, ad);
+  callback(ad);
 }
 
 void Serving::FailedToServeAd(MaybeServeNewTabPageAdCallback callback) {
   NotifyFailedToServeNewTabPageAd();
 
-  callback(/* success */ false, {});
+  callback(/* ads */ absl::nullopt);
 }
 
 void Serving::NotifyOpportunityAroseToServeNewTabPageAd(

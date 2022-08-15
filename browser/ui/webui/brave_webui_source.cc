@@ -183,11 +183,13 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "searchPromotionNTPPopupTitle2", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2},  // NOLINT
         { "searchPromotionNTPPopupDesc", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC},       // NOLINT
         { "searchPromotionNTPPopupBottom", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM},   // NOLINT
+        { "searchPromotionSearchBoxPlaceholderLabel", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER},   // NOLINT
 
         { "braveTodayTitle", IDS_BRAVE_TODAY_TITLE },
         { "braveTodayIntroTitle", IDS_BRAVE_TODAY_INTRO_TITLE },
         { "braveTodayIntroDescription", IDS_BRAVE_TODAY_INTRO_DESCRIPTION },
         { "braveTodayOptInActionLabel", IDS_BRAVE_TODAY_OPT_IN_ACTION_LABEL },
+        { "braveTodayShowToolbarButton", IDS_BRAVE_TODAY_SHOW_TOOLBAR_BUTTON },
         { "braveTodayOptOutActionLabel", IDS_BRAVE_TODAY_OPT_OUT_ACTION_LABEL },
         { "braveTodayStatusFetching", IDS_BRAVE_TODAY_STATUS_FETCHING},
         { "braveTodayActionRefresh", IDS_BRAVE_TODAY_ACTION_REFRESH},
@@ -245,15 +247,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         // Private Tab - Private Window - Tor Box
         { "boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2 },
         { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON },
-
-        // Private Tab - Private Window - Tor Status
-        { "torStatus", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS },
-        { "torStatusConnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED },         // NOLINT
-        { "torStatusDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED },   // NOLINT
-        { "torStatusInitializing", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING },   // NOLINT
-        { "torHelpConnecting", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING},
-        { "torHelpDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED},        // NOLINT
-        { "torHelpContactSupport", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT},   // NOLINT
 
         // Brave Talk prompt
         { "braveTalkPromptTitle", IDS_BRAVE_TALK_PROMPT_TITLE },
@@ -544,6 +537,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalFlaggedWalletTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_FLAGGED_WALLET_TITLE},   // NOLINT
         { "redirectModalKYCRequiredTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE },     // NOLINT
         { "redirectModalKYCRequiredText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT },     // NOLINT
+        { "redirectModalMismatchedProviderAccountRegionsText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TEXT},     // NOLINT
+        { "redirectModalMismatchedProviderAccountRegionsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE},     // NOLINT
         { "redirectModalMismatchedProviderAccountsText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT},     // NOLINT
         { "redirectModalMismatchedProviderAccountsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE},     // NOLINT
         { "redirectModalRegionNotSupportedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT},     // NOLINT
@@ -584,7 +579,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "category", IDS_BRAVE_UI_ADS_CATEGORY },
         { "claim", IDS_BRAVE_UI_CLAIM },
         { "contribute", IDS_BRAVE_UI_CONTRIBUTE },
-        { "copy", IDS_BRAVE_UI_COPY },
         { "date", IDS_BRAVE_UI_DATE },
         { "deposits", IDS_BRAVE_UI_DEPOSITS },
         { "description", IDS_BRAVE_UI_DESCRIPTION },
@@ -684,8 +678,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "processorUphold", IDS_BRAVE_UI_PROCESSOR_UPHOLD },
         { "processorBitflyer", IDS_BRAVE_UI_PROCESSOR_BITFLYER },
         { "processorGemini", IDS_BRAVE_UI_PROCESSOR_GEMINI },
-        { "processorBraveUserFunds", IDS_BRAVE_UI_PROCESSOR_BRAVE_USER_FUNDS },
-        { "recoveryKeys", IDS_BRAVE_UI_RECOVERY_KEYS },
         { "recurring", IDS_BRAVE_UI_RECURRING },
         { "recurringDonations", IDS_BRAVE_UI_RECURRING_DONATIONS },
         { "relaunch", IDS_BRAVE_UI_RELAUNCH },
@@ -702,10 +694,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsAdGrantTitle", IDS_REWARDS_WIDGET_AD_GRANT_TITLE },
         { "rewardsBackupNoticeText1", IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1 },                // NOLINT
         { "rewardsBackupNoticeText2", IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2 },                // NOLINT
-        { "rewardsBackupText1", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1 },
-        { "rewardsBackupText2", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2 },
-        { "rewardsBackupText3", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT3 },
-        { "rewardsBackupText4", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT4 },
         { "rewardsClaimRewards", IDS_REWARDS_WIDGET_CLAIM_REWARDS },
         { "rewardsClaimTokens", IDS_REWARDS_WIDGET_CLAIM_TOKENS },
         { "rewardsContribute", IDS_BRAVE_UI_REWARDS_CONTRIBUTE },
@@ -728,7 +716,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsSummary", IDS_BRAVE_UI_REWARDS_SUMMARY },
         { "saved", IDS_BRAVE_UI_ADS_SAVED },
         { "saveAd", IDS_BRAVE_UI_ADS_SAVE_AD },
-        { "saveAsFile", IDS_BRAVE_UI_SAVE_AS_FILE },
         { "seeAllItems", IDS_BRAVE_UI_SEE_ALL_ITEMS },
         { "sendTip", IDS_BRAVE_UI_SEND_TIP },
         { "settings", IDS_BRAVE_UI_SETTINGS },
@@ -1003,7 +990,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "processorUphold", IDS_BRAVE_UI_PROCESSOR_UPHOLD },
         { "processorBitflyer", IDS_BRAVE_UI_PROCESSOR_BITFLYER },
         { "processorGemini", IDS_BRAVE_UI_PROCESSOR_GEMINI },
-        { "processorBraveUserFunds", IDS_BRAVE_UI_PROCESSOR_BRAVE_USER_FUNDS },
         { "promotionAds", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS },
         { "promotionAmount", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT },
         { "promotionClaimedAt", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIMED_AT },              // NOLINT

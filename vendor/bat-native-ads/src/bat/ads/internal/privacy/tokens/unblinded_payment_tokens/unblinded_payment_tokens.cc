@@ -12,6 +12,7 @@
 
 #include "base/check_op.h"
 #include "base/guid.h"
+#include "base/notreached.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -23,13 +24,13 @@ UnblindedPaymentTokens::UnblindedPaymentTokens() = default;
 
 UnblindedPaymentTokens::~UnblindedPaymentTokens() = default;
 
-UnblindedPaymentTokenInfo UnblindedPaymentTokens::GetToken() const {
+const UnblindedPaymentTokenInfo& UnblindedPaymentTokens::GetToken() const {
   DCHECK_NE(Count(), 0);
 
   return unblinded_payment_tokens_.front();
 }
 
-UnblindedPaymentTokenList UnblindedPaymentTokens::GetAllTokens() const {
+const UnblindedPaymentTokenList& UnblindedPaymentTokens::GetAllTokens() const {
   return unblinded_payment_tokens_;
 }
 
@@ -72,12 +73,12 @@ void UnblindedPaymentTokens::SetTokens(
 void UnblindedPaymentTokens::SetTokensFromList(const base::Value::List& list) {
   UnblindedPaymentTokenList unblinded_payment_tokens;
 
-  for (const auto& value : list) {
-    if (!value.is_dict()) {
+  for (const auto& item : list) {
+    if (!item.is_dict()) {
       BLOG(0, "Unblinded payment token should be a dictionary");
       continue;
     }
-    const base::Value::Dict& dict = value.GetDict();
+    const base::Value::Dict& dict = item.GetDict();
 
     UnblindedPaymentTokenInfo unblinded_payment_token;
 

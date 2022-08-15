@@ -10,9 +10,9 @@
 
 namespace ads {
 
-std::string GetCurrentTestSuiteAndName();
+std::string GetNamespaceForCurrentTest();
 
-std::string GetUuidForCurrentTestSuiteAndName(const std::string& name);
+std::string GetUuidForCurrentTestAndValue(const std::string& value);
 
 }  // namespace ads
 

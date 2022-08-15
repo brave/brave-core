@@ -79,12 +79,6 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TEXT},
     {"notificationAutoContributeCompletedTitle",
      IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE},
-    {"notificationBackupWalletAction",
-     IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_ACTION},
-    {"notificationBackupWalletText",
-     IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_TEXT},
-    {"notificationBackupWalletTitle",
-     IDS_REWARDS_NOTIFICATION_BACKUP_WALLET_TITLE},
     {"notificationClaimRewards", IDS_REWARDS_NOTIFICATION_CLAIM_REWARDS},
     {"notificationClaimTokens", IDS_REWARDS_NOTIFICATION_CLAIM_TOKENS},
     {"notificationGrantDaysRemaining",
@@ -233,7 +227,9 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
   // frames can be loaded from the adaptive captcha server URL.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      "frame-src 'self' " + brave_adaptive_captcha::GetServerUrl("/") + ";");
+      "frame-src 'self' " +
+          brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl("/") +
+          ";");
 
   content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),
                                 source);

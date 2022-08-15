@@ -7,20 +7,21 @@ module ads.mojom;
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
-enum Environment {
-  kStaging = 0,
-  kProduction
-};
-
 struct SysInfo {
   string device_id;
-  bool did_override_command_line_args_flag;
   bool is_uncertain_future;
 };
 
-struct BuildChannel {
+struct BuildChannelInfo {
   bool is_release;
   string name;
+};
+
+struct StatementInfo {
+  double earnings_last_month;
+  double earnings_this_month;
+  mojo_base.mojom.Time next_payment_date;
+  int32 ads_received_this_month;
 };
 
 enum AdType {
@@ -32,7 +33,7 @@ enum AdType {
   kSearchResultAd
 };
 
-struct Conversion {
+struct ConversionInfo {
   string type;
   string url_pattern;
   string advertiser_public_key;
@@ -66,7 +67,7 @@ enum InlineContentAdEventType {
   kClicked
 };
 
-struct SearchResultAd {
+struct SearchResultAdInfo {
   AdType type = kSearchResultAd;
   string placement_id;
   string creative_instance_id;
@@ -77,7 +78,7 @@ struct SearchResultAd {
   string headline_text;
   string description;
   double value;
-  Conversion conversion;
+  ConversionInfo conversion;
 };
 
 enum SearchResultAdEventType {
@@ -86,21 +87,21 @@ enum SearchResultAdEventType {
   kClicked
 };
 
-enum UrlRequestMethod {
+enum UrlRequestMethodType {
   kGet = 0,
   kPut,
   kPost
 };
 
-struct UrlRequest {
+struct UrlRequestInfo {
   url.mojom.Url url;
   array<string> headers;
   string content;
   string content_type;
-  UrlRequestMethod method;
+  UrlRequestMethodType method;
 };
 
-struct UrlResponse {
+struct UrlResponseInfo {
   url.mojom.Url url;
   int32 status_code = -1;
   string body;
@@ -116,12 +117,12 @@ union DBValue {
   int8 null_value;
 };
 
-struct DBCommandBinding {
+struct DBCommandBindingInfo {
   int32 index;
   DBValue value;
 };
 
-struct DBCommand {
+struct DBCommandInfo {
   enum Type {
     INITIALIZE,
     READ,
@@ -140,27 +141,27 @@ struct DBCommand {
 
   Type type;
   string command;
-  array<DBCommandBinding> bindings;
+  array<DBCommandBindingInfo> bindings;
   array<RecordBindingType> record_bindings;
 };
 
-struct DBTransaction {
+struct DBTransactionInfo {
   int32 version;
   int32 compatible_version;
-  array<DBCommand> commands;
+  array<DBCommandInfo> commands;
 };
 
-struct DBRecord {
+struct DBRecordInfo {
   array<DBValue> fields;
 };
 
 union DBCommandResult {
-  array<DBRecord> records;
+  array<DBRecordInfo> records;
   DBValue value;
 };
 
-struct DBCommandResponse {
-  enum Status {
+struct DBCommandResponseInfo {
+  enum StatusType {
     RESPONSE_OK,
     INITIALIZATION_ERROR,
     TRANSACTION_ERROR,
@@ -169,5 +170,5 @@ struct DBCommandResponse {
   };
 
   DBCommandResult? result;
-  Status status;
+  StatusType status;
 };

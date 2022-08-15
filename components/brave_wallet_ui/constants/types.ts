@@ -236,9 +236,11 @@ export interface WalletState {
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]
   selectedNetworkFilter: BraveWallet.NetworkInfo
+  selectedAssetFilter: AssetFilterOption
   defaultAccounts: BraveWallet.AccountInfo[]
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
+  passwordAttempts: number
 }
 
 export interface PanelState {
@@ -276,11 +278,14 @@ export interface PageState {
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
-  importAccountError: boolean
+  importAccountError: ImportAccountErrorType
   importWalletError: ImportWalletError
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
+  isImportWalletsCheckComplete: boolean
+  importWalletAttempts: number
+  walletTermsAcknowledged: boolean
 }
 
 export interface WalletPageState {
@@ -327,6 +332,12 @@ export interface SwapErrorResponse {
   code: number
   reason: string
   validationErrors?: Array<{ field: string, code: number, reason: string }>
+}
+
+export interface JupiterErrorResponse {
+  statusCode: string
+  error: string
+  message: string
 }
 
 export type AmountValidationErrorType =
@@ -423,6 +434,14 @@ export interface SendSolTransactionParams extends BaseTransactionParams {
 
 export interface SPLTransferFromParams extends BaseTransactionParams {
   splTokenMintAddress: string
+}
+
+export interface SolanaSerializedTransactionParams {
+  encodedTransaction: string
+  from: string
+  txType: BraveWallet.TransactionType
+  sendOptions?: BraveWallet.SolanaSendTransactionOptions
+  groupId?: string
 }
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {
@@ -582,10 +601,29 @@ export enum WalletRoutes {
 
   // onboarding
   Onboarding = '/crypto/onboarding',
+  OnboardingWelcome = '/crypto/onboarding/welcome',
+
+  // onboarding (new wallet)
   OnboardingCreatePassword = '/crypto/onboarding/create-password',
   OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
+  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/explain-recovery-phrase',
+  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/backup-recovery-phrase',
+  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/verify-recovery-phrase',
+
+  // onboarding (import / restore)
+  OnboardingImportOrRestore = '/crypto/onboarding/import-or-restore',
   OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
+  OnboardingImportMetaMaskSeed = '/crypto/onboarding/import-metamask-seed',
+  OnboardingRestoreWallet = '/crypto/onboarding/restore-wallet',
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
+  OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
+
+  // onboarding complete
+  OnboardingComplete = '/crypto/onboarding/complete',
+
+  // fund wallet page
+  FundWalletPage = '/crypto/fund-wallet',
+  DepositFundsPage = '/crypto/deposit-funds',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -612,6 +650,7 @@ export enum WalletRoutes {
   // portfolio
   Portfolio = '/crypto/portfolio',
   PortfolioAsset = '/crypto/portfolio/:id/:tokenId?',
+  PortfolioSub = '/crypto/portfolio/:id?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
@@ -624,6 +663,7 @@ export type BlockExplorerUrlTypes =
   | 'address'
   | 'token'
   | 'contract'
+  | 'nft'
 
 export interface CreateAccountOptionsType {
   name: string
@@ -665,6 +705,15 @@ export const SupportedCoinTypes = [
   BraveWallet.CoinType.FIL
 ]
 
+export const SupportedOnRampNetworks = [
+  BraveWallet.SOLANA_MAINNET,
+  BraveWallet.MAINNET_CHAIN_ID, // ETH
+  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
+  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.CELO_MAINNET_CHAIN_ID,
+  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
+]
+
 export const SupportedTestNetworks = [
   BraveWallet.RINKEBY_CHAIN_ID,
   BraveWallet.ROPSTEN_CHAIN_ID,
@@ -694,3 +743,16 @@ export type OriginInfo = {
   origin: string
   eTldPlusOne: string
 }
+
+export type AssetFilterOptionIds =
+  | 'allAssets'
+  | 'nfts'
+  | 'highToLow'
+  | 'lowToHigh'
+
+export interface AssetFilterOption {
+  name: string
+  id: AssetFilterOptionIds
+}
+
+export type ImportAccountErrorType = boolean | undefined

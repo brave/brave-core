@@ -36,7 +36,7 @@ std::string RLPEncodeLength(size_t length, size_t offset) {
 
 namespace brave_wallet {
 
-base::Value RLPUint256ToBlobValue(uint256_t input) {
+base::Value::BlobStorage RLPUint256ToBlob(uint256_t input) {
   base::Value::BlobStorage output;
   while (input > static_cast<uint256_t>(0)) {
     uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0xFF));
@@ -45,13 +45,13 @@ base::Value RLPUint256ToBlobValue(uint256_t input) {
   }
   // Return the vector reversed (big endian)
   std::reverse(output.begin(), output.end());
-  return base::Value(output);
+  return output;
 }
 
 std::string RLPEncode(base::Value val) {
   if (val.is_int()) {
     int i = val.GetInt();
-    return RLPEncode(base::Value(RLPUint256ToBlobValue((uint256_t)i)));
+    return RLPEncode(base::Value(RLPUint256ToBlob((uint256_t)i)));
   } else if (val.is_blob()) {
     base::Value::BlobStorage blob = val.GetBlob();
     std::string s(blob.begin(), blob.end());

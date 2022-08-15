@@ -245,6 +245,24 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
       base::android::ConvertUTF8ToJavaString(env, json_response), success);
 }
 
+void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    // Reporting a new session to P3A functions.
+    brave_vpn_service->RecordP3A(true);
+  }
+}
+
+void BraveVpnNativeWorker::ReportBackgroundP3A(JNIEnv* env,
+                                               jlong session_start_time_ms,
+                                               jlong session_end_time_ms) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    brave_vpn_service->RecordAndroidBackgroundP3A(session_start_time_ms,
+                                                  session_end_time_ms);
+  }
+}
+
 static void JNI_BraveVpnNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {

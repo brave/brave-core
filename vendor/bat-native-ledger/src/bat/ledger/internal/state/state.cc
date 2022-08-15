@@ -360,15 +360,6 @@ base::flat_map<std::string, std::string> State::GetPayoutStatus() {
       ledger_->ledger_client()->GetStringState(kParametersPayoutStatus));
 }
 
-void State::SetFetchOldBalanceEnabled(bool enabled) {
-  ledger_->database()->SaveEventLog(kFetchOldBalance, std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(kFetchOldBalance, enabled);
-}
-
-bool State::GetFetchOldBalanceEnabled() {
-  return ledger_->ledger_client()->GetBooleanState(kFetchOldBalance);
-}
-
 void State::SetEmptyBalanceChecked(const bool checked) {
   ledger_->database()->SaveEventLog(
       kEmptyBalanceChecked,

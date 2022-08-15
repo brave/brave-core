@@ -43,19 +43,19 @@ std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(const std::string& id) {
 }
 
 std::unique_ptr<EthTxMeta> EthTxStateManager::ValueToEthTxMeta(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   return std::unique_ptr<EthTxMeta>{
       static_cast<EthTxMeta*>(ValueToTxMeta(value).release())};
 }
 
 std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   std::unique_ptr<EthTxMeta> meta = std::make_unique<EthTxMeta>();
 
   if (!TxStateManager::ValueToTxMeta(value, meta.get()))
     return nullptr;
 
-  const base::Value* tx_receipt = value.FindKey("tx_receipt");
+  const base::Value::Dict* tx_receipt = value.FindDict("tx_receipt");
   if (!tx_receipt)
     return nullptr;
   absl::optional<TransactionReceipt> tx_receipt_from_value =
@@ -64,10 +64,10 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     return nullptr;
   meta->set_tx_receipt(*tx_receipt_from_value);
 
-  const base::Value* tx = value.FindKey("tx");
+  const base::Value::Dict* tx = value.FindDict("tx");
   if (!tx)
     return nullptr;
-  absl::optional<int> type = tx->FindIntKey("type");
+  absl::optional<int> type = tx->FindInt("type");
   if (!type)
     return nullptr;
 

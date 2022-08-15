@@ -35,7 +35,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   AdvanceClockTo(TimeFromString("1 January 2020", /* is_local */ false));
 
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
@@ -94,7 +94,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   AdvanceClockTo(TimeFromString("31 January 2020", /* is_local */ false));
 
   TransactionList transactions;
-  const TransactionInfo& transaction =
+  const TransactionInfo transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 

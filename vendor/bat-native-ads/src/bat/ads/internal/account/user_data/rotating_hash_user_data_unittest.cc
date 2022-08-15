@@ -5,10 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/rotating_hash_user_data.h"
 
-#include <string>
-
-#include "base/json/json_writer.h"
-#include "base/values.h"
+#include "base/test/values_test_util.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
@@ -20,18 +17,7 @@ namespace ads {
 namespace user_data {
 
 namespace {
-
 constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-
-std::string GetRotatingHashAsJson() {
-  const base::Value::Dict user_data = GetRotatingHash(kCreativeInstanceId);
-
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-
-  return json;
-}
-
 }  // namespace
 
 class BatAdsRotatingHashUserDataTest : public UnitTestBase {
@@ -49,11 +35,14 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /* is_local */ false));
 
   // Act
-  const std::string json = GetRotatingHashAsJson();
+  const base::Value::Dict user_data = GetRotatingHash(kCreativeInstanceId);
 
   // Assert
-  const std::string expected_json = R"({"rotating_hash":"1748047652"})";
-  EXPECT_EQ(expected_json, json);
+  const base::Value expected_user_data =
+      base::test::ParseJson(R"({"rotating_hash":"1748047652"})");
+  ASSERT_TRUE(expected_user_data.is_dict());
+
+  EXPECT_EQ(expected_user_data, user_data);
 }
 
 TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
@@ -62,14 +51,17 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:000", /* is_local */ false));
-  const std::string json_before = GetRotatingHashAsJson();
+  const base::Value::Dict user_data_before =
+      GetRotatingHash(kCreativeInstanceId);
 
   // Act
   AdvanceClockBy(base::Hours(1) - base::Seconds(1));
-  const std::string json_after = GetRotatingHashAsJson();
+
+  const base::Value::Dict user_data_after =
+      GetRotatingHash(kCreativeInstanceId);
 
   // Assert
-  EXPECT_EQ(json_before, json_after);
+  EXPECT_EQ(user_data_before, user_data_after);
 }
 
 TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
@@ -78,14 +70,17 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /* is_local */ false));
-  const std::string json_before = GetRotatingHashAsJson();
+  const base::Value::Dict user_data_before =
+      GetRotatingHash(kCreativeInstanceId);
 
   // Act
   AdvanceClockBy(base::Hours(1));
-  const std::string json_after = GetRotatingHashAsJson();
+
+  const base::Value::Dict user_data_after =
+      GetRotatingHash(kCreativeInstanceId);
 
   // Assert
-  EXPECT_NE(json_before, json_after);
+  EXPECT_NE(user_data_before, user_data_after);
 }
 
 TEST_F(BatAdsRotatingHashUserDataTest,
@@ -95,14 +90,17 @@ TEST_F(BatAdsRotatingHashUserDataTest,
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /* is_local */ false));
-  const std::string json_before = GetRotatingHashAsJson();
+  const base::Value::Dict user_data_before =
+      GetRotatingHash(kCreativeInstanceId);
 
   // Act
   AdvanceClockBy(base::Days(1));
-  const std::string json_after = GetRotatingHashAsJson();
+
+  const base::Value::Dict user_data_after =
+      GetRotatingHash(kCreativeInstanceId);
 
   // Assert
-  EXPECT_NE(json_before, json_after);
+  EXPECT_NE(user_data_before, user_data_after);
 }
 
 }  // namespace user_data

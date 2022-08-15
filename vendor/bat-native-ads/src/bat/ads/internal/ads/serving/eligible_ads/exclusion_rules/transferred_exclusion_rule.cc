@@ -40,7 +40,7 @@ bool TransferredExclusionRule::ShouldExclude(
   return false;
 }
 
-std::string TransferredExclusionRule::GetLastMessage() const {
+const std::string& TransferredExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

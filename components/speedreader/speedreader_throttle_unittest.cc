@@ -74,7 +74,7 @@ class SpeedreaderThrottleTest : public testing::Test {
       bool check_disabled_sites = false) {
     auto runner = content::GetUIThreadTaskRunner({});
     return SpeedReaderThrottle::MaybeCreateThrottleFor(
-        nullptr, content_settings(),
+        nullptr, nullptr, content_settings(),
         base::WeakPtr<TestSpeedreaderResultDelegate>(), url,
         check_disabled_sites, runner);
   }

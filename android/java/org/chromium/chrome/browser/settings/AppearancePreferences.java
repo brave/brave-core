@@ -12,9 +12,10 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
@@ -161,7 +162,7 @@ public class AppearancePreferences extends BravePreferenceFragment
             sharedPreferencesEditor.apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BRAVE_NIGHT_MODE_ENABLED.equals(key)) {
-            BraveFeatureList.enableFeature(
+            BraveFeatureUtil.enableFeature(
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BRAVE_DISABLE_SHARING_HUB.equals(key)) {

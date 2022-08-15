@@ -119,6 +119,7 @@
     <file path="resources/brave_generated_resources_fil.xtb" lang="fil" />
     <file path="resources/brave_generated_resources_fr.xtb" lang="fr" />
     <file path="resources/brave_generated_resources_fr-CA.xtb" lang="fr-CA" />
+    <file path="resources/brave_generated_resources_gl.xtb" lang="gl" />
     <file path="resources/brave_generated_resources_gu.xtb" lang="gu" />
     <file path="resources/brave_generated_resources_hi.xtb" lang="hi" />
     <file path="resources/brave_generated_resources_hr.xtb" lang="hr" />
@@ -259,6 +260,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Tor -->
+      <message name="IDS_BRAVE_TOR_SETTINGS_SECTION" desc="Open Tor settings section">
+        Tor windows
+      </message>
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
       </message>
@@ -707,7 +711,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Speedreader settings
         </message>
         <message name="IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">
-          Show original page
+          View original
         </message>
       </if>
 

@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
-#include <cstdint>
 #include <functional>
 #include <utility>
 
@@ -13,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
@@ -123,7 +123,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(wallet_,
                                                            blinded_tokens_);
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -133,7 +133,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 }
 
 void RefillUnblindedTokens::OnRequestSignedTokens(
-    const mojom::UrlResponse& url_response) {
+    const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnRequestSignedTokens");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -150,16 +150,16 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
   }
 
   // Parse JSON response
-  absl::optional<base::Value> dictionary =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(url_response.body);
-  if (!dictionary || !dictionary->is_dict()) {
+  if (!root || !root->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
   }
 
   // Get nonce
-  const std::string* nonce = dictionary->FindStringKey("nonce");
+  const std::string* nonce = root->FindStringKey("nonce");
   if (!nonce) {
     BLOG(0, "Response is missing nonce");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -175,7 +175,7 @@ void RefillUnblindedTokens::GetSignedTokens() {
   BLOG(2, "GET /v2/confirmation/token/{payment_id}?nonce={nonce}");
 
   GetSignedTokensUrlRequestBuilder url_request_builder(wallet_, nonce_);
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -185,7 +185,7 @@ void RefillUnblindedTokens::GetSignedTokens() {
 }
 
 void RefillUnblindedTokens::OnGetSignedTokens(
-    const mojom::UrlResponse& url_response) {
+    const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnGetSignedTokens");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -203,9 +203,9 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   // Parse JSON response
-  absl::optional<base::Value> dictionary =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(url_response.body);
-  if (!dictionary || !dictionary->is_dict()) {
+  if (!root || !root->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
@@ -215,7 +215,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(1, "Captcha required");
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-    const std::string* captcha_id = dictionary->FindStringKey("captcha_id");
+    const std::string* captcha_id = root->FindStringKey("captcha_id");
     if (!captcha_id || captcha_id->empty()) {
       BLOG(0, "Response is missing captcha_id");
       OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -232,7 +232,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   // Get public key
-  const std::string* public_key_base64 = dictionary->FindStringKey("publicKey");
+  const std::string* public_key_base64 = root->FindStringKey("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing publicKey");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -259,7 +259,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   // Get batch dleq proof
   const std::string* batch_dleq_proof_base64 =
-      dictionary->FindStringKey("batchProof");
+      root->FindStringKey("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -276,8 +276,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   // Get signed tokens
-  const base::Value* signed_tokens_list =
-      dictionary->FindListKey("signedTokens");
+  const base::Value* signed_tokens_list = root->FindListKey("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -285,10 +284,9 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   std::vector<privacy::cbr::SignedToken> signed_tokens;
-  for (const auto& value : signed_tokens_list->GetList()) {
-    DCHECK(value.is_string());
-
-    const std::string signed_token_base64 = value.GetString();
+  for (const auto& item : signed_tokens_list->GetList()) {
+    DCHECK(item.is_string());
+    const std::string& signed_token_base64 = item.GetString();
     const privacy::cbr::SignedToken signed_token =
         privacy::cbr::SignedToken(signed_token_base64);
     if (!signed_token.has_value()) {
@@ -301,10 +299,9 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   // Verify and unblind tokens
   const absl::optional<std::vector<privacy::cbr::UnblindedToken>>
-      batch_dleq_proof_unblinded_tokens_optional =
-          batch_dleq_proof.VerifyAndUnblind(tokens_, blinded_tokens_,
-                                            signed_tokens, public_key);
-  if (!batch_dleq_proof_unblinded_tokens_optional) {
+      batch_dleq_proof_unblinded_tokens = batch_dleq_proof.VerifyAndUnblind(
+          tokens_, blinded_tokens_, signed_tokens, public_key);
+  if (!batch_dleq_proof_unblinded_tokens) {
     BLOG(1, "Failed to verify and unblind tokens");
     BLOG(1, "  Batch proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << public_key);
@@ -312,14 +309,11 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
   }
-  const std::vector<privacy::cbr::UnblindedToken>&
-      batch_dleq_proof_unblinded_tokens =
-          batch_dleq_proof_unblinded_tokens_optional.value();
 
   // Add unblinded tokens
   privacy::UnblindedTokenList unblinded_tokens;
   for (const auto& batch_dleq_proof_unblinded_token :
-       batch_dleq_proof_unblinded_tokens) {
+       *batch_dleq_proof_unblinded_tokens) {
     privacy::UnblindedTokenInfo unblinded_token;
     unblinded_token.value = batch_dleq_proof_unblinded_token;
     unblinded_token.public_key = public_key;

@@ -17,7 +17,6 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/brave_shields/reduce_language_navigation_throttle.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -70,7 +69,6 @@
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags.h"
-#include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -139,6 +137,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #endif
@@ -151,8 +150,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #endif
 
@@ -172,7 +173,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_drm_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
@@ -195,6 +196,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
+#include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -205,6 +207,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_rewards/common/brave_rewards_panel.mojom.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
+#include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
 #endif
@@ -381,7 +384,7 @@ void BindBraveSearchDefaultHost(
   }
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 void MaybeBindBraveVpnImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
@@ -559,7 +562,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(
       base::BindRepeating(&MaybeBindBraveVpnImpl));
 #endif
@@ -572,6 +575,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockCookieListOptIn)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        brave_shields::mojom::CookieListOptInPageHandlerFactory,
+        CookieListOptInUI>(map);
+  }
   if (base::FeatureList::IsEnabled(
           brave_rewards::features::kWebUIPanelFeature)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
@@ -744,11 +753,15 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         // Only check for disabled sites if we are in Speedreader mode
         const bool check_disabled_sites =
             state == speedreader::DistillState::kSpeedreaderModePending;
+        auto* speedreader_service =
+            speedreader::SpeedreaderServiceFactory::GetForProfile(
+                Profile::FromBrowserContext(browser_context));
         std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
             speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
                 g_brave_browser_process->speedreader_rewriter_service(),
-                settings_map, tab_helper->GetWeakPtr(), request.url,
-                check_disabled_sites, base::ThreadTaskRunnerHandle::Get());
+                speedreader_service, settings_map, tab_helper->GetWeakPtr(),
+                request.url, check_disabled_sites,
+                base::ThreadTaskRunnerHandle::Get());
         if (throttle)
           result.push_back(std::move(throttle));
       }
@@ -965,6 +978,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
+  throttles.insert(
+      throttles.begin(),
+      ipfs::IpfsSubframeNavigationThrottle::CreateThrottleFor(handle));
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
       ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
           handle, ipfs::IpfsServiceFactory::GetForContext(context),
@@ -993,13 +1009,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                   Profile::FromBrowserContext(context)),
               g_browser_process->GetApplicationLocale()))
     throttles.push_back(std::move(domain_block_navigation_throttle));
-
-  if (std::unique_ptr<content::NavigationThrottle>
-          reduce_language_navigation_throttle = brave_shields::
-              ReduceLanguageNavigationThrottle::MaybeCreateThrottleFor(
-                  handle, HostContentSettingsMapFactory::GetForProfile(
-                              Profile::FromBrowserContext(context))))
-    throttles.push_back(std::move(reduce_language_navigation_throttle));
 
   // Debounce
   if (auto debounce_throttle =

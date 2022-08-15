@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
-#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
@@ -27,19 +26,7 @@
 namespace ads {
 
 namespace {
-
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
-
-absl::optional<IssuersInfo> ParseJson(const std::string& json) {
-  const absl::optional<IssuersInfo>& issuers_optional =
-      JSONReader::ReadIssuers(json);
-  if (!issuers_optional) {
-    return absl::nullopt;
-  }
-
-  return issuers_optional;
-}
-
 }  // namespace
 
 Issuers::Issuers() = default;
@@ -67,7 +54,7 @@ void Issuers::Fetch() {
   BLOG(2, "GET /v1/issuers/");
 
   IssuersUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -76,7 +63,7 @@ void Issuers::Fetch() {
   AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
-void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
+void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnFetchIssuers");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -87,17 +74,15 @@ void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
     return;
   }
 
-  const absl::optional<IssuersInfo>& issuers_optional =
-      ParseJson(url_response.body);
-  if (!issuers_optional) {
+  const absl::optional<IssuersInfo> issuers =
+      JSONReader::ReadIssuers(url_response.body);
+  if (!issuers) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     FailedToFetchIssuers(/* should_retry */ true);
     return;
   }
 
-  const IssuersInfo& issuers = issuers_optional.value();
-
-  SuccessfullyFetchedIssuers(issuers);
+  SuccessfullyFetchedIssuers(*issuers);
 }
 
 void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {

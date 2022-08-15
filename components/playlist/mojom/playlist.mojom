@@ -52,6 +52,9 @@ interface PageHandler {
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
+
+  CreatePlaylist(Playlist playlist);
+  RemovePlaylist(string id);
 };
 
 // WebUI-side handler for requests from the browser.

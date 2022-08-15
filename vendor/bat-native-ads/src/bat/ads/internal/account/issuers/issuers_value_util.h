@@ -8,12 +8,11 @@
 
 #include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
-base::Value::List IssuerListToValue(const IssuerList& issuers);
-absl::optional<IssuerList> ValueToIssuerList(const base::Value::List& value);
+base::Value::List IssuersToValue(const IssuerList& issuers);
+absl::optional<IssuerList> ValueToIssuers(const base::Value::List& value);
 
 }  // namespace ads
 

@@ -1,66 +1,91 @@
-import styled from 'styled-components'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-interface StyleProps {
+import styled, { css } from 'styled-components'
+
+interface PositionProps {
   position: 'left' | 'right' | 'center'
-  isAddress?: boolean
+  verticalPosition: 'above' | 'below'
 }
 
-export const StyledWrapper = styled.div`
-  display: inline-block;
+export const TipAndChildrenWrapper = styled.div`
   position: relative;
   cursor: default;
+  display: inline-block flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 `
 
-export const Tip = styled.div<StyleProps>`
+export const TipWrapper = styled.div<PositionProps>`
   position: absolute;
+
+  left: ${(p) => p.position === 'left' ? 0 : 'unset'};
+  right: ${(p) => p.position === 'right' ? 0 : 'unset'};
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+
+  transform: 
+    translateY(${
+      (p) => p.verticalPosition === 'below'
+        ? '8px'
+        : '-105%'
+    });
+
+    z-index: 100;
+`
+
+export const Tip = styled.div<{ isAddress?: boolean }>`
   border-radius: 4px;
-  left: ${(p) =>
-    p.position === 'right'
-      ? 'unset'
-      : p.position === 'left'
-        ? '0px'
-        : '50%'};
-  right: ${(p) =>
-    p.position === 'right'
-      ? '0px'
-      : 'unset'};
-  transform: ${(p) =>
-    p.position === 'center'
-      ? 'translateX(-50%)'
-      : 'translateX(0)'} translateY(8px);
   padding: 6px;
-  color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.theme.palette.black};
-  z-index: 100;
-  white-space: ${(p) => p.isAddress ? 'pre-line' : 'nowrap'};
   font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;
+
+  color: ${(p) => p.theme.palette.white};
+  background: ${(p) => p.theme.palette.black};
+
+  white-space: ${(p) => p.isAddress ? 'pre-line' : 'nowrap'};
   width: ${(p) => p.isAddress ? '180px' : 'unset'};
   word-break: ${(p) => p.isAddress ? 'break-all' : 'unset'};
 `
 
-export const Pointer = styled.div<StyleProps>`
+export const Pointer = styled.div<PositionProps>`
   width: 0;
   height: 0;
   border-style: solid;
-  position: absolute;
-  left: ${(p) =>
-    p.position === 'right'
-      ? 'unset'
-      : p.position === 'left'
-        ? '25px'
-        : '50%'};
-  right: ${(p) =>
-    p.position === 'right'
-      ? '25px'
-      : 'unset'};
-  transform: ${(p) =>
-    p.position === 'center'
-      ? 'translateX(-50%)'
-      : 'translateX(0)'} translateY(25%);
   border-width: 0 7px 8px 7px;
+
   border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
+  
+  ${(p) => p.position === 'center' && css`
+    margin: 0 auto;
+  `}
+
+  transform: 
+    translateX(${(p) => p.position === 'center'
+      ? '0'
+      : p.position === 'right'
+        ? '-25px'
+        : '25px'
+    })
+    translateY(${(p) => p.verticalPosition === 'above'
+      ? '-1px'
+      : '1px'
+    })
+    rotate(${(p) => p.verticalPosition === 'below'
+      ? '0deg'
+      : '180deg'
+    });
+
 `
 
 export const ActionNotification = styled(Tip)`

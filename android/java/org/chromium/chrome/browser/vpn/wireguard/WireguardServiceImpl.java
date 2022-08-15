@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.vpn.DisconnectVpnBroadcastReceiver;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,6 +44,7 @@ public class WireguardServiceImpl
     private TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
     private Timer mVpnStatisticsTimer;
+    private Timer mRecordDaysUsedTimer;
     private static final int BRAVE_VPN_NOTIFICATION_ID = 801;
     private Context mContext = ContextUtils.getApplicationContext();
 
@@ -89,6 +91,8 @@ public class WireguardServiceImpl
         mTunnelModel = TunnelModel.createTunnel(config, this);
         mBackend.setState(mTunnelModel, Tunnel.State.UP, config);
         updateVpnStatisticsTimer();
+        recordSessionTimes();
+        updateRecordSessionTimesTimer();
     }
 
     private Notification getBraveVpnNotification(String notificationText) {
@@ -122,6 +126,39 @@ public class WireguardServiceImpl
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(BRAVE_VPN_NOTIFICATION_ID, notification);
+    }
+
+    private void recordSessionTimes() {
+        long sessionStartTimeMs = BraveVpnPrefUtils.getSessionStartTimeMs();
+        long sessionEndTimeMs = BraveVpnPrefUtils.getSessionEndTimeMs();
+
+        Calendar sessionEndTimeCal = Calendar.getInstance();
+        sessionEndTimeCal.setTimeInMillis(sessionEndTimeMs);
+        Calendar currDate = Calendar.getInstance();
+
+        long currTimeMs = System.currentTimeMillis();
+        if (sessionStartTimeMs < 0) {
+            BraveVpnPrefUtils.setSessionStartTimeMs(currTimeMs);
+        }
+
+        if (currDate.get(Calendar.YEAR) != sessionEndTimeCal.get(Calendar.YEAR)
+                || currDate.get(Calendar.MONTH) != sessionEndTimeCal.get(Calendar.MONTH)
+                || currDate.get(Calendar.DAY_OF_MONTH)
+                        != sessionEndTimeCal.get(Calendar.DAY_OF_MONTH)) {
+            BraveVpnPrefUtils.setSessionEndTimeMs(currTimeMs);
+        }
+    }
+
+    private void updateRecordSessionTimesTimer() {
+        // This timer will be active for the duration of the connection.
+        // It will become inactive when the connection is terminated/service destroyed.
+        mVpnStatisticsTimer = new Timer();
+        mVpnStatisticsTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                recordSessionTimes();
+            }
+        }, 0, 60000);
     }
 
     private void updateVpnStatisticsTimer() {

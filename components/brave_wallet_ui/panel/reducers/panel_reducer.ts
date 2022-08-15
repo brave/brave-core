@@ -45,11 +45,7 @@ const defaultState: PanelState = {
       symbolName: 'Ethereum',
       decimals: 18,
       coin: BraveWallet.CoinType.ETH,
-      data: {
-        ethData: {
-          isEip1559: true
-        }
-      }
+      isEip1559: true
     }
   },
   signMessageData: [{

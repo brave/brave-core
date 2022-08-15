@@ -42,7 +42,7 @@ bool AdsPerHourPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string AdsPerHourPermissionRule::GetLastMessage() const {
+const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 

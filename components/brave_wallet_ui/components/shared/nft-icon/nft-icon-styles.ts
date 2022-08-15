@@ -10,3 +10,15 @@ export const NftImageIframe = styled.iframe`
   width: ${p => p.width ? p.width : '40px'};
   height: ${p => p.height ? p.height : '40px'};
 `
+
+export const NftImageResponsiveIframe = styled.iframe`
+  border: none;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+`

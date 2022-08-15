@@ -18,24 +18,22 @@ import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
 import { useLib } from './useLib'
-import { useCopy } from './use-copy'
 
 export {
-  useAssets,
-  useSwap,
-  useBalance,
-  useTransactionParser,
-  useTransactionFeesParser,
-  usePricing,
   useAddressLabels,
-  useSend,
-  usePreset,
-  useTokenInfo,
-  useExplorer,
   useAssetManagement,
-  useLib,
+  useAssets,
+  useBalance,
+  useExplorer,
   useHasAccount,
+  useIsMounted,
+  useLib,
+  usePreset,
   usePrevNetwork,
-  useCopy,
-  useIsMounted
+  usePricing,
+  useSend,
+  useSwap,
+  useTokenInfo,
+  useTransactionFeesParser,
+  useTransactionParser
 }

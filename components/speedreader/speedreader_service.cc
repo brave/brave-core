@@ -84,6 +84,8 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);
   registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);
+  registry->RegisterIntegerPref(kSpeedreaderPrefTheme,
+                                static_cast<int>(Theme::kNone));
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
@@ -124,6 +126,29 @@ bool SpeedreaderService::ShouldPromptUserToEnable() const {
 void SpeedreaderService::IncrementPromptCount() {
   const int count = prefs_->GetInteger(kSpeedreaderPrefPromptCount);
   prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
+}
+
+void SpeedreaderService::SetTheme(Theme theme) {
+  prefs_->SetInteger(kSpeedreaderPrefTheme, static_cast<int>(theme));
+}
+
+Theme SpeedreaderService::GetTheme() const {
+  return static_cast<Theme>(prefs_->GetInteger(kSpeedreaderPrefTheme));
+}
+
+std::string SpeedreaderService::GetThemeName() const {
+  switch (GetTheme()) {
+    default:
+      return {};
+    case Theme::kNone:
+      return {};
+    case Theme::kLight:
+      return "light";
+    case Theme::kSepia:
+      return "sepia";
+    case Theme::kDark:
+      return "dark";
+  }
 }
 
 }  // namespace speedreader

@@ -33,14 +33,14 @@ RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
 
 // POST /v2/confirmation/token/{payment_id}
 
-mojom::UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
-  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
+mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
+  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
   url_request->url = BuildUrl();
   const std::string body = BuildBody();
   url_request->headers = BuildHeaders(body);
   url_request->content = body;
   url_request->content_type = "application/json";
-  url_request->method = mojom::UrlRequestMethod::kPost;
+  url_request->method = mojom::UrlRequestMethodType::kPost;
 
   return url_request;
 }
@@ -104,21 +104,17 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& blinded_token : blinded_tokens_) {
-    const absl::optional<std::string> blinded_token_base64_optional =
-        blinded_token.EncodeBase64();
-    if (!blinded_token_base64_optional) {
-      continue;
+    if (const auto blinded_token_base64 = blinded_token.EncodeBase64()) {
+      base::Value value = base::Value(*blinded_token_base64);
+      list.Append(std::move(value));
     }
-    base::Value blinded_token_base64_value =
-        base::Value(blinded_token_base64_optional.value());
-    list.Append(std::move(blinded_token_base64_value));
   }
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetKey("blindedTokens", base::Value(std::move(list)));
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetKey("blindedTokens", base::Value(std::move(list)));
 
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
+  base::JSONWriter::Write(dict, &json);
 
   return json;
 }

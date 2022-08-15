@@ -1,6 +1,16 @@
 import("//brave/build/config.gni")
 import("//build/config/features.gni")
 
+declare_args() {
+  sardine_client_id = ""
+  sardine_client_secret = ""
+}
+
+if (is_official_build) {
+  assert(sardine_client_id != "")
+  assert(sardine_client_secret != "")
+}
+
 static_library("browser") {
   sources = [
     "asset_ratio_response_parser.cc",
@@ -156,6 +166,8 @@ static_library("browser") {
     "//ui/base:base",
     "//url",
   ]
+
+  configs += [ ":sardine_config" ]
 }
 
 if (!is_ios) {
@@ -275,5 +287,12 @@ source_set("transaction") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:cxx",
     "//brave/components/json/rs:cxx",
+  ]
+}
+
+config("sardine_config") {
+  defines = [
+    "SARDINE_CLIENT_ID=\"$sardine_client_id\"",
+    "SARDINE_CLIENT_SECRET=\"$sardine_client_secret\"",
   ]
 }

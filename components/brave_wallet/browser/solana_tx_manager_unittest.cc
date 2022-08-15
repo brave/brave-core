@@ -226,19 +226,21 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                 const std::string& from,
                                 std::string* meta_id) {
     AddUnapprovedTransaction(std::move(solana_tx_data), from, GetOrigin(),
-                             meta_id);
+                             meta_id, absl::nullopt);
   }
 
-  void AddUnapprovedTransaction(mojom::SolanaTxDataPtr solana_tx_data,
-                                const std::string& from,
-                                const absl::optional<url::Origin>& origin,
-                                std::string* meta_id) {
+  void AddUnapprovedTransaction(
+      mojom::SolanaTxDataPtr solana_tx_data,
+      const std::string& from,
+      const absl::optional<url::Origin>& origin,
+      std::string* meta_id,
+      const absl::optional<std::string>& group_id = absl::nullopt) {
     auto tx_data_union =
         mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
 
     base::RunLoop run_loop;
     solana_tx_manager()->AddUnapprovedTransaction(
-        std::move(tx_data_union), from, origin,
+        std::move(tx_data_union), from, origin, group_id,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -303,6 +305,27 @@ class SolanaTxManagerUnitTest : public testing::Test {
     base::RunLoop run_loop;
     solana_tx_manager()->MakeTokenProgramTransferTxData(
         spl_token_mint_address, from_wallet_address, to_wallet_address, amount,
+        base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& err_message) {
+          EXPECT_EQ(expected_tx_data, tx_data);
+          EXPECT_EQ(expected_error, error);
+          EXPECT_EQ(expected_err_message, err_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestMakeTxDataFromBase64EncodedTransaction(
+      const std::string& encoded_transaction,
+      const mojom::TransactionType tx_type,
+      mojom::SolanaSendTransactionOptionsPtr send_options,
+      mojom::SolanaTxDataPtr expected_tx_data,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_err_message) {
+    base::RunLoop run_loop;
+    solana_tx_manager()->MakeTxDataFromBase64EncodedTransaction(
+        encoded_transaction, tx_type, std::move(send_options),
         base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
                                        mojom::SolanaProviderError error,
                                        const std::string& err_message) {
@@ -527,6 +550,24 @@ TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
             url::Origin::Create(GURL("https://some.site.com")));
 }
 
+TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithGroupId) {
+  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &system_transfer_data);
+  ASSERT_TRUE(system_transfer_data);
+
+  std::string meta_id;
+  AddUnapprovedTransaction(std::move(system_transfer_data), from, absl::nullopt,
+                           &meta_id, "mockGroupId");
+
+  auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
+}
+
 TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
@@ -703,6 +744,68 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
   TestMakeTokenProgramTransferTxData(
       from_wallet_address, to_wallet_address, "", 10000000, nullptr,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(SolanaTxManagerUnitTest, MakeTxDataFromBase64EncodedTransaction) {
+  // OK: TX data from base64-encoded transaction.
+  // Data from SolanaTransactionUnitTest.FromSignedTransactionBytes
+  const std::string& encoded_transaction =
+      "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAABAAEDoTNZW3PS2dRMn6vIKJadRsVHGCzRbI8EOvvXPsmsn8X/"
+      "4OT1Xu4XhM4oUvnby2eebttd+Y+"
+      "Gz6yzTEMGqaSVJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg79TyWzB3v+"
+      "wQ4jR2yoGqfCJjrmpBhFXewYqN6JAeFsBAgIAAQwCAAAAgJaYAAAAAAA=";
+  const std::string& from_account =
+      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const std::string& to_account =
+      "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  const std::string& recent_blockhash =
+      "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+  auto solana_account_meta1 =
+      mojom::SolanaAccountMeta::New(from_account, true, true);
+  auto solana_account_meta2 =
+      mojom::SolanaAccountMeta::New(to_account, false, true);
+  std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+  account_metas.push_back(std::move(solana_account_meta1));
+  account_metas.push_back(std::move(solana_account_meta2));
+  auto mojom_instruction = mojom::SolanaInstruction::New(
+      // Program ID
+      kSolanaSystemProgramId,
+      // Accounts
+      std::move(account_metas),
+      // Data
+      data);
+  std::vector<mojom::SolanaInstructionPtr> instructions;
+  instructions.push_back(std::move(mojom_instruction));
+  auto send_options =
+      SolanaTransaction::SendOptions(absl::nullopt, absl::nullopt, true);
+  auto tx_data = mojom::SolanaTxData::New(
+      recent_blockhash, 0, from_account, "", "", 0, 0,
+      mojom::TransactionType::SolanaSwap, std::move(instructions),
+      send_options.ToMojomSendOptions(), nullptr);
+  TestMakeTxDataFromBase64EncodedTransaction(
+      encoded_transaction, mojom::TransactionType::SolanaSwap,
+      send_options.ToMojomSendOptions(), std::move(tx_data),
+      mojom::SolanaProviderError::kSuccess, "");
+
+  // KO: empty message
+  TestMakeTxDataFromBase64EncodedTransaction(
+      "", mojom::TransactionType::SolanaSwap, nullptr, nullptr,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // KO: invalid base64 message
+  TestMakeTxDataFromBase64EncodedTransaction(
+      "not a base64 message", mojom::TransactionType::SolanaSwap, nullptr,
+      nullptr, mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // KO: valid base64 message, but invalid transaction bytes
+  TestMakeTxDataFromBase64EncodedTransaction(
+      "YW5p", mojom::TransactionType::SolanaSwap, nullptr, nullptr,
       mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }

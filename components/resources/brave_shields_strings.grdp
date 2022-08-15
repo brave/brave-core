@@ -17,7 +17,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button.">
-    If this site seems broken, try Shields down. 
+    If this site seems broken, try Shields down.
     <ph name="LINK_BEFORE">$1</ph>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER">$2</ph>
   </message>
 
@@ -128,5 +128,25 @@
 
   <message name="IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked scripts">
     Blocked scripts
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_TITLE" desc="Title for CookieList opt-in bubble">
+    Shields
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_HEADER" desc="Header text for CookieList opt-in bubble">
+    Tired of cookie consent notices?
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_TEXT" desc="Description text for CookieList opt-in bubble">
+    Brave already blocks third-party cookies. We can block cookie consent notices, too.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_BUTTON_TEXT" desc="Label for button to enable the CookieList filter">
+    Yes, block cookie consent notices
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_NO_THANKS" desc="Label for link to decline the CookieList filter">
+    No thanks
   </message>
 </grit-part>

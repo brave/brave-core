@@ -12,8 +12,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/base/logging_util.h"
 #include "build/build_config.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -67,8 +67,6 @@ base::Value::Dict ClientInfo::ToValue() const {
   }
   dict.Set("seenAdvertisers", std::move(advertisers));
 
-  dict.Set("nextCheckServeAd", base::NumberToString(serve_ad_at.ToDoubleT()));
-
   base::Value::List probabilities_history;
   for (const auto& probabilities : text_classification_probabilities) {
     base::Value::Dict classification_probabilities;
@@ -92,8 +90,7 @@ base::Value::Dict ClientInfo::ToValue() const {
 
 bool ClientInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value = root.FindDict("adPreferences")) {
-    if (!ad_preferences.FromValue(*value))
-      return false;
+    ad_preferences.FromValue(*value);
   }
 
 #if !BUILDFLAG(IS_IOS)
@@ -104,10 +101,10 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       if (!ad_shown.is_dict()) {
         continue;
       }
+
       HistoryItemInfo history_item;
-      if (history_item.FromValue(ad_shown.GetDict())) {
-        history.push_back(history_item);
-      }
+      history_item.FromValue(ad_shown.GetDict());
+      history.push_back(history_item);
     }
   }
 #endif
@@ -117,17 +114,18 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
       std::vector<targeting::PurchaseIntentSignalHistoryInfo> histories;
 
       const auto* segment_history_items = value.GetIfList();
-      if (!segment_history_items)
+      if (!segment_history_items) {
         continue;
+      }
 
       for (const auto& segment_history_item : *segment_history_items) {
-        if (!segment_history_item.is_dict())
+        if (!segment_history_item.is_dict()) {
           continue;
+        }
 
         targeting::PurchaseIntentSignalHistoryInfo history;
-        if (history.FromValue(segment_history_item.GetDict())) {
-          histories.push_back(history);
-        }
+        history.FromValue(segment_history_item.GetDict());
+        histories.push_back(history);
       }
 
       purchase_intent_signal_history.emplace(key, histories);
@@ -136,8 +134,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindDict("seenAds")) {
     for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict())
+      if (!list_value.is_dict()) {
         continue;
+      }
 
       for (const auto [key, value] : list_value.GetDict()) {
         seen_ads[list_key][key] = value.GetBool();
@@ -147,22 +146,13 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindDict("seenAdvertisers")) {
     for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict())
+      if (!list_value.is_dict()) {
         continue;
+      }
 
       for (const auto [key, value] : list_value.GetDict()) {
         seen_advertisers[list_key][key] = value.GetBool();
       }
-    }
-  }
-
-  if (const auto value = root.FindDouble("nextCheckServeAd")) {
-    // Migrate legacy timestamp
-    serve_ad_at = base::Time::FromDoubleT(*value);
-  } else if (const auto* value = root.FindString("nextCheckServeAd")) {
-    double timestamp = 0.0;
-    if (base::StringToDouble(*value, &timestamp)) {
-      serve_ad_at = base::Time::FromDoubleT(timestamp);
     }
   }
 
@@ -173,19 +163,22 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         continue;
       const auto* probability_list =
           probabilities.GetDict().FindList("textClassificationProbabilities");
-      if (!probability_list)
+      if (!probability_list) {
         continue;
+      }
 
       targeting::TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability : *probability_list) {
-        const auto* probability_dict = probability.GetIfDict();
-        if (!probability_dict)
+        const base::Value::Dict* dict = probability.GetIfDict();
+        if (!dict) {
           continue;
+        }
 
-        const std::string* segment = probability_dict->FindString("segment");
-        if (!segment)
+        const std::string* segment = dict->FindString("segment");
+        if (!segment) {
           continue;
+        }
 
         double page_score = 0.0;
         if (const auto value = root.FindDouble("pageScore")) {
@@ -217,15 +210,14 @@ std::string ClientInfo::ToJson() {
 }
 
 bool ClientInfo::FromJson(const std::string& json) {
-  absl::optional<base::Value> document =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!document.has_value() || !document->is_dict()) {
+  if (!root || !root->is_dict()) {
     return false;
   }
 
-  return FromValue(document->GetDict());
+  return FromValue(root->GetDict());
 }
 
 }  // namespace ads

@@ -31,7 +31,7 @@ pipeline {
                         SKIP = (prDetails.draft.equals(true) && prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-draft') }.equals(0)) || prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) || prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1)
                         RUN_NETWORK_AUDIT = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
                         RUN_AUDIT_DEPS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
-                        RUN_UPSTREAM_TESTS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-upstream-tests') }.equals(1)
+                        SKIP_UPSTREAM_TESTS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip-upstream-tests') }.equals(1)
                         STORYBOOK = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/storybook-url') }.equals(1)
                     }
 
@@ -60,7 +60,7 @@ pipeline {
                                 booleanParam('DCHECK_ALWAYS_ON', true)
                                 booleanParam('RUN_NETWORK_AUDIT', false)
                                 booleanParam('RUN_AUDIT_DEPS', false)
-                                booleanParam('RUN_UPSTREAM_TESTS', false)
+                                booleanParam('SKIP_UPSTREAM_TESTS', false)
                                 booleanParam('STORYBOOK', false)
                                 stringParam('BRANCH', '${CHANGE_BRANCH}')
                                 stringParam('NODE_LABEL', '')
@@ -92,7 +92,7 @@ pipeline {
                         booleanParam(name: 'DCHECK_ALWAYS_ON', value: params.DCHECK_ALWAYS_ON),
                         booleanParam(name: 'RUN_NETWORK_AUDIT', value: RUN_NETWORK_AUDIT),
                         booleanParam(name: 'RUN_AUDIT_DEPS', value: RUN_AUDIT_DEPS),
-                        booleanParam(name: 'RUN_UPSTREAM_TESTS', value: RUN_UPSTREAM_TESTS),
+                        booleanParam(name: 'SKIP_UPSTREAM_TESTS', value: SKIP_UPSTREAM_TESTS),
                         booleanParam(name: 'STORYBOOK', value: STORYBOOK),
                         string(name: 'BRANCH', value: CHANGE_BRANCH),
                         string(name: 'NODE_LABEL', value: params.NODE_LABEL),
