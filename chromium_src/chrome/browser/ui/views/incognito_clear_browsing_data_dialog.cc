@@ -5,6 +5,8 @@
 
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
-#define SetShowCloseButton(SHOW) SetShowCloseButton(false)
+#define SetShowCloseButton(...) SetShowCloseButton(false)
 
 #include "src/chrome/browser/ui/views/incognito_clear_browsing_data_dialog.cc"
+
+#undef SetShowCloseButton
