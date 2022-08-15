@@ -57,7 +57,7 @@ WebcompatReporterDialogDelegate::WebcompatReporterDialogDelegate(
     base::Value::Dict params)
     : params_(std::move(params)) {}
 
-WebcompatReporterDialogDelegate::~WebcompatReporterDialogDelegate() {}
+WebcompatReporterDialogDelegate::~WebcompatReporterDialogDelegate() = default;
 
 ui::ModalType WebcompatReporterDialogDelegate::GetDialogModalType() const {
   // Not used, returning dummy value.

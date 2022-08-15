@@ -56,8 +56,8 @@ namespace browser_sync {
 
 class BraveSyncClientTest : public testing::Test {
  public:
-  BraveSyncClientTest() {}
-  ~BraveSyncClientTest() override {}
+  BraveSyncClientTest() = default;
+  ~BraveSyncClientTest() override = default;
 
  protected:
   void SetUp() override {

@@ -43,7 +43,7 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
   BraveWindowNameBrowserTest& operator=(const BraveWindowNameBrowserTest&) =
       delete;
 
-  ~BraveWindowNameBrowserTest() override {}
+  ~BraveWindowNameBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();

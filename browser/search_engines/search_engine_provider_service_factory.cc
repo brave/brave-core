@@ -54,7 +54,8 @@ SearchEngineProviderServiceFactory::SearchEngineProviderServiceFactory()
   DependsOn(TemplateURLServiceFactory::GetInstance());
 }
 
-SearchEngineProviderServiceFactory::~SearchEngineProviderServiceFactory() {}
+SearchEngineProviderServiceFactory::~SearchEngineProviderServiceFactory() =
+    default;
 
 KeyedService* SearchEngineProviderServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

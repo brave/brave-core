@@ -33,7 +33,7 @@ BraveSyncServiceImplDelegate::BraveSyncServiceImplDelegate(
   device_info_observer_.Observe(device_info_tracker_);
 }
 
-BraveSyncServiceImplDelegate::~BraveSyncServiceImplDelegate() {}
+BraveSyncServiceImplDelegate::~BraveSyncServiceImplDelegate() = default;
 
 void BraveSyncServiceImplDelegate::OnDeviceInfoChange() {
   DCHECK(sync_service_impl_);

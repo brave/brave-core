@@ -24,9 +24,9 @@ BraveURLLoaderThrottleProvider::BraveURLLoaderThrottleProvider(
               type,
               chrome_content_renderer_client)) {}
 
-BraveURLLoaderThrottleProvider::~BraveURLLoaderThrottleProvider() {}
+BraveURLLoaderThrottleProvider::~BraveURLLoaderThrottleProvider() = default;
 
-BraveURLLoaderThrottleProvider::BraveURLLoaderThrottleProvider() {}
+BraveURLLoaderThrottleProvider::BraveURLLoaderThrottleProvider() = default;
 
 std::unique_ptr<blink::URLLoaderThrottleProvider>
 BraveURLLoaderThrottleProvider::Clone() {

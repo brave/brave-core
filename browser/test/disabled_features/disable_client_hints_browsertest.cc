@@ -82,7 +82,7 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 
   ClientHintsBrowserTest& operator=(const ClientHintsBrowserTest&) = delete;
 
-  ~ClientHintsBrowserTest() override {}
+  ~ClientHintsBrowserTest() override = default;
 
   bool IsClientHintHeaderEnabled() { return GetParam(); }
 

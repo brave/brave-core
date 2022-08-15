@@ -21,11 +21,11 @@ namespace net {
 
 class ProxyConfigServiceTorTest : public TestWithTaskEnvironment {
  public:
-  ProxyConfigServiceTorTest() {}
+  ProxyConfigServiceTorTest() = default;
   ProxyConfigServiceTorTest(const ProxyConfigServiceTorTest&) = delete;
   ProxyConfigServiceTorTest& operator=(const ProxyConfigServiceTorTest&) =
       delete;
-  ~ProxyConfigServiceTorTest() override {}
+  ~ProxyConfigServiceTorTest() override = default;
 
  private:
 };

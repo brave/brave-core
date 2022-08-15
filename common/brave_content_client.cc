@@ -59,9 +59,9 @@ void CreateDefaultWidevineCdmHintFile() {
 
 }  // namespace
 
-BraveContentClient::BraveContentClient() {}
+BraveContentClient::BraveContentClient() = default;
 
-BraveContentClient::~BraveContentClient() {}
+BraveContentClient::~BraveContentClient() = default;
 
 base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
     int resource_id) {

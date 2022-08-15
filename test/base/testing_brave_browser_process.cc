@@ -38,9 +38,9 @@ void TestingBraveBrowserProcess::DeleteInstance() {
   delete browser_process;
 }
 
-TestingBraveBrowserProcess::TestingBraveBrowserProcess() {}
+TestingBraveBrowserProcess::TestingBraveBrowserProcess() = default;
 
-TestingBraveBrowserProcess::~TestingBraveBrowserProcess() {}
+TestingBraveBrowserProcess::~TestingBraveBrowserProcess() = default;
 
 void TestingBraveBrowserProcess::StartBraveServices() {}
 

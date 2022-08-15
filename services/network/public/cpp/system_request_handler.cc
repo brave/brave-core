@@ -25,8 +25,8 @@ network::ResourceRequest SystemRequestHandler::OnBeforeSystemRequest(
   return on_before_system_request_callback_.Run(url_request);
 }
 
-SystemRequestHandler::SystemRequestHandler() {}
+SystemRequestHandler::SystemRequestHandler() = default;
 
-SystemRequestHandler::~SystemRequestHandler() {}
+SystemRequestHandler::~SystemRequestHandler() = default;
 
 }  // namespace network
