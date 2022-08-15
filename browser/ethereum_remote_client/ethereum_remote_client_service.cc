@@ -47,7 +47,7 @@ EthereumRemoteClientService::EthereumRemoteClientService(
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
 }
 
-EthereumRemoteClientService::~EthereumRemoteClientService() {}
+EthereumRemoteClientService::~EthereumRemoteClientService() = default;
 
 const size_t EthereumRemoteClientService::kNonceByteLength = 12;
 const size_t EthereumRemoteClientService::kSeedByteLength = 32;

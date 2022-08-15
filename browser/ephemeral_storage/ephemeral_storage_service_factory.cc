@@ -34,7 +34,7 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
   DependsOn(HostContentSettingsMapFactory::GetInstance());
 }
 
-EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() {}
+EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;
 
 KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

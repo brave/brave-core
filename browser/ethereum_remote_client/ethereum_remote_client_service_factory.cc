@@ -38,7 +38,8 @@ EthereumRemoteClientServiceFactory::EthereumRemoteClientServiceFactory()
       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
 }
 
-EthereumRemoteClientServiceFactory::~EthereumRemoteClientServiceFactory() {}
+EthereumRemoteClientServiceFactory::~EthereumRemoteClientServiceFactory() =
+    default;
 
 KeyedService* EthereumRemoteClientServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

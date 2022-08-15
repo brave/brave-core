@@ -26,7 +26,7 @@ using ::testing::ElementsAre;
 
 class BraveContentSettingsRegistryTest : public testing::Test {
  protected:
-  BraveContentSettingsRegistryTest() {}
+  BraveContentSettingsRegistryTest() = default;
 
   ContentSettingsRegistry* registry() {
     return ContentSettingsRegistry::GetInstance();

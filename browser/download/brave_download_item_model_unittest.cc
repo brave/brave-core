@@ -45,7 +45,7 @@ const base::FilePath::CharType kDefaultDisplayFileName[] =
 class BraveDownloadItemModelTest : public testing::Test {
  public:
   BraveDownloadItemModelTest() : model_(&item_), brave_model_(&model_) {}
-  ~BraveDownloadItemModelTest() override {}
+  ~BraveDownloadItemModelTest() override = default;
 
  protected:
   void SetupDownloadItemDefaults() {

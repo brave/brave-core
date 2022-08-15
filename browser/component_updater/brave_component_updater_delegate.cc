@@ -24,7 +24,7 @@ BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate()
           {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 
-BraveComponentUpdaterDelegate::~BraveComponentUpdaterDelegate() {}
+BraveComponentUpdaterDelegate::~BraveComponentUpdaterDelegate() = default;
 
 void BraveComponentUpdaterDelegate::Register(
     const std::string& component_name,

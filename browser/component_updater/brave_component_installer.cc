@@ -82,7 +82,7 @@ BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
   base::Base64Decode(base64_public_key, &public_key_);
 }
 
-BraveComponentInstallerPolicy::~BraveComponentInstallerPolicy() {}
+BraveComponentInstallerPolicy::~BraveComponentInstallerPolicy() = default;
 
 bool BraveComponentInstallerPolicy::VerifyInstallation(
     const base::Value& manifest,
