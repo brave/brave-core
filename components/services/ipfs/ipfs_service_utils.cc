@@ -59,6 +59,8 @@ bool UpdateConfigJSON(const std::string& source,
     base::Value::Dict dns_resolvers;
     dns_resolvers.Set(".", *config->doh_server_url);
     dict->SetByDottedPath("DNS.Resolvers", std::move(dns_resolvers));
+  } else {
+    dict->RemoveByDottedPath("DNS.Resolvers");
   }
 
   base::Value::List list;
