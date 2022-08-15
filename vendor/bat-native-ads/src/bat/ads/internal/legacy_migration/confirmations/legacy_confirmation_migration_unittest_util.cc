@@ -14,7 +14,7 @@ namespace ads {
 namespace confirmations {
 
 void Migrate(const bool should_migrate) {
-  Migrate([=](const bool success) {
+  Migrate([should_migrate](const bool success) {
     if (should_migrate) {
       ASSERT_TRUE(success);
     } else {

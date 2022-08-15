@@ -33,14 +33,15 @@ TransactionInfo Add(const std::string& creative_instance_id,
   transaction.value = value;
 
   database::table::Transactions database_table;
-  database_table.Save({transaction}, [=](const bool success) {
-    if (!success) {
-      callback(/* success */ false, {});
-      return;
-    }
+  database_table.Save({transaction},
+                      [callback, transaction](const bool success) {
+                        if (!success) {
+                          callback(/* success */ false, {});
+                          return;
+                        }
 
-    callback(/* success */ true, transaction);
-  });
+                        callback(/* success */ true, transaction);
+                      });
 
   return transaction;
 }
@@ -51,7 +52,7 @@ void GetForDateRange(const base::Time from_time,
   database::table::Transactions database_table;
   database_table.GetForDateRange(
       from_time, to_time,
-      [=](const bool success, const TransactionList& transactions) {
+      [callback](const bool success, const TransactionList& transactions) {
         if (!success) {
           callback(/* success */ false, {});
           return;

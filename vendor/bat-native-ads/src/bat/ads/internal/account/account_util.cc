@@ -19,7 +19,7 @@ bool ShouldRewardUser() {
 }
 
 void ResetRewards(ResetRewardsCallback callback) {
-  transactions::RemoveAll([=](const bool success) {
+  transactions::RemoveAll([callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to remove transactions");
       callback(/* success */ false);

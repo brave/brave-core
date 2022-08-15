@@ -60,7 +60,7 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
 TEST_F(BatAdsNotificationAdIntegrationTest, Serve) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
       }));

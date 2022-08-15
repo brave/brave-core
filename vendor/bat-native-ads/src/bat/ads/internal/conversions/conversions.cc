@@ -124,10 +124,11 @@ std::string ExtractConversionIdFromText(
   if (iter != conversion_id_patterns.end()) {
     const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
     if (conversion_id_pattern_info.search_in == kSearchInUrl) {
-      const auto url_iter = std::find_if(
-          redirect_chain.cbegin(), redirect_chain.cend(), [=](const GURL& url) {
-            return MatchUrlPattern(url, conversion_url_pattern);
-          });
+      const auto url_iter =
+          std::find_if(redirect_chain.cbegin(), redirect_chain.cend(),
+                       [&conversion_url_pattern](const GURL& url) {
+                         return MatchUrlPattern(url, conversion_url_pattern);
+                       });
 
       if (url_iter == redirect_chain.end()) {
         return conversion_id;
@@ -517,7 +518,7 @@ void Conversions::RemoveInvalidQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item,
     ResultCallback callback) {
   database::table::ConversionQueue database_table;
-  database_table.Delete(conversion_queue_item, [=](const bool success) {
+  database_table.Delete(conversion_queue_item, [callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete conversion from queue");
       callback(/* success */ false);
@@ -532,7 +533,7 @@ void Conversions::MarkQueueItemAsProcessed(
     const ConversionQueueItemInfo& conversion_queue_item,
     ResultCallback callback) {
   database::table::ConversionQueue database_table;
-  database_table.Update(conversion_queue_item, [=](const bool success) {
+  database_table.Update(conversion_queue_item, [callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to update conversion in queue");
       callback(/* success */ false);

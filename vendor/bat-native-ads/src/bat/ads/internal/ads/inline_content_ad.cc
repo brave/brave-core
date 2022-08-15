@@ -46,11 +46,11 @@ InlineContentAd::~InlineContentAd() {
 
 void InlineContentAd::MaybeServe(const std::string& dimensions,
                                  MaybeServeInlineContentAdCallback callback) {
-  serving_->MaybeServeAd(dimensions,
-                         [=](const std::string& dimensions,
+  serving_->MaybeServeAd(
+      dimensions, [callback](const std::string& dimensions,
                              const absl::optional<InlineContentAdInfo>& ad) {
-                           callback(dimensions, ad);
-                         });
+        callback(dimensions, ad);
+      });
 }
 
 void InlineContentAd::TriggerEvent(

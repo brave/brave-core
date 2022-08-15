@@ -21,7 +21,7 @@ void BuildStatement(BuildStatementCallback callback) {
 
   transactions::GetForDateRange(
       from_time, to_time,
-      [=](const bool success, const TransactionList& transactions) {
+      [callback](const bool success, const TransactionList& transactions) {
         if (!success) {
           BLOG(0, "Failed to get transactions");
           callback(/* statement */ nullptr);

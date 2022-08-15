@@ -45,7 +45,7 @@ NewTabPageAd::~NewTabPageAd() {
 
 void NewTabPageAd::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
   serving_->MaybeServeAd(
-      [=](const absl::optional<NewTabPageAdInfo>& ad) { callback(ad); });
+      [callback](const absl::optional<NewTabPageAdInfo>& ad) { callback(ad); });
 }
 
 void NewTabPageAd::TriggerEvent(const std::string& placement_id,

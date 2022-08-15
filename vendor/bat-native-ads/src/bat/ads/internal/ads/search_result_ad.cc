@@ -34,8 +34,8 @@ void SearchResultAd::TriggerEvent(
     TriggerSearchResultAdEventCallback callback) {
   event_handler_->FireEvent(
       ad_mojom, event_type,
-      [=](const bool success, const std::string& placement_id,
-          const mojom::SearchResultAdEventType event_type) {
+      [callback](const bool success, const std::string& placement_id,
+                 const mojom::SearchResultAdEventType event_type) {
         callback(success, placement_id, event_type);
       });
 }

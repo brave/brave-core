@@ -1401,8 +1401,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
 
   // Assert
   conversion_queue_database_table_->GetAll(
-      [=](const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+      [conversion](const bool success,
+                   const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
         ASSERT_EQ(1UL, conversion_queue_items.size());
@@ -1453,8 +1453,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
 
   // Assert
   conversion_queue_database_table_->GetAll(
-      [=](const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+      [conversion](const bool success,
+                   const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
         ASSERT_EQ(1UL, conversion_queue_items.size());
@@ -1506,8 +1506,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
 
   // Assert
   conversion_queue_database_table_->GetAll(
-      [=](const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+      [conversion](const bool success,
+                   const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
         ASSERT_EQ(1UL, conversion_queue_items.size());
