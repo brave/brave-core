@@ -43,8 +43,8 @@ namespace {
 
 class MockBrowserClient : public content::ContentBrowserClient {
  public:
-  MockBrowserClient() {}
-  ~MockBrowserClient() override {}
+  MockBrowserClient() = default;
+  ~MockBrowserClient() override = default;
 
   // Only construct an BraveWebTorrentNavigationThrottle so that we can test it
   // in isolation.

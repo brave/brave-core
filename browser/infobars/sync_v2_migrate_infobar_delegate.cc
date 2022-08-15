@@ -76,8 +76,7 @@ SyncV2MigrateInfoBarDelegate::SyncV2MigrateInfoBarDelegate(Browser* browser,
             browser_(browser) {
 }
 
-SyncV2MigrateInfoBarDelegate::~SyncV2MigrateInfoBarDelegate() {
-}
+SyncV2MigrateInfoBarDelegate::~SyncV2MigrateInfoBarDelegate() = default;
 
 infobars::InfoBarDelegate::InfoBarIdentifier
 SyncV2MigrateInfoBarDelegate::GetIdentifier() const {

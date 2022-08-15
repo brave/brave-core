@@ -32,8 +32,7 @@ GeminiServiceFactory::GeminiServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
 }
 
-GeminiServiceFactory::~GeminiServiceFactory() {
-}
+GeminiServiceFactory::~GeminiServiceFactory() = default;
 
 KeyedService* GeminiServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

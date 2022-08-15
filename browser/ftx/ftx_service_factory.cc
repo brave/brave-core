@@ -31,7 +31,7 @@ FTXServiceFactory::FTXServiceFactory()
           "FTXService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-FTXServiceFactory::~FTXServiceFactory() {}
+FTXServiceFactory::~FTXServiceFactory() = default;
 
 KeyedService* FTXServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
