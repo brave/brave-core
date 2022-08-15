@@ -248,7 +248,7 @@ export const PortfolioOverview = () => {
               defaultCurrencies={defaultCurrencies}
               action={() => onSelectAsset(item.asset)}
               key={
-                item.asset.isErc721
+                !item.asset.isErc721
                   ? `${item.asset.contractAddress}-${item.asset.symbol}-${item.asset.chainId}`
                   : `${item.asset.contractAddress}-${item.asset.tokenId}-${item.asset.chainId}`
               }

@@ -20,7 +20,7 @@ import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 
 // constants
-import { AssetFilterOption, BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../constants/types'
+import { BraveWallet, MarketAssetFilterOption, MarketDataTableColumnTypes, SortOrder } from '../constants/types'
 
 // utils
 import {
@@ -48,7 +48,7 @@ import { SearchBar } from '../components/shared'
 const App = () => {
   // State
   const [tableHeaders, setTableHeaders] = React.useState(marketDataTableHeaders)
-  const [currentFilter, setCurrentFilter] = React.useState<AssetFilterOption>('all')
+  const [currentFilter, setCurrentFilter] = React.useState<MarketAssetFilterOption>('all')
   const [sortOrder, setSortOrder] = React.useState<SortOrder>('desc')
   const [sortByColumnId, setSortByColumnId] = React.useState<MarketDataTableColumnTypes>('marketCap')
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -62,7 +62,7 @@ const App = () => {
     return [...sortCoinMarkets(filteredCoins, sortOrder, sortByColumnId)]
   }, [coinMarkets, sortOrder, sortByColumnId, searchTerm, currentFilter])
 
-  const onSelectFilter = (value: AssetFilterOption) => {
+  const onSelectFilter = (value: MarketAssetFilterOption) => {
     setCurrentFilter(value)
   }
 

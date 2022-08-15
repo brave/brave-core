@@ -370,11 +370,10 @@ void AssetRatioService::OnGetTokenInfo(
 // static
 GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
                                           const uint8_t limit) {
-
-  GURL url = GURL(base::StringPrintf(
-      "%sv2/market/provider/coingecko",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
-                                    : base_url_for_test_.spec().c_str()));
+  GURL url = GURL(base::StringPrintf("%sv2/market/provider/coingecko",
+                                     base_url_for_test_.is_empty()
+                                         ? kAssetRatioBaseURL
+                                         : base_url_for_test_.spec().c_str()));
   url = net::AppendQueryParameter(url, "vsCurrency", vs_asset);
   url = net::AppendQueryParameter(url, "limit", std::to_string(limit));
   return url;

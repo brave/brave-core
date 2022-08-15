@@ -6,8 +6,8 @@
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.h"
 
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "build/build_config.h"

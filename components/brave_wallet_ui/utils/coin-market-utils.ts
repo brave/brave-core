@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Fuse from 'fuse.js'
-import { AssetFilterOption, BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../constants/types'
+import { BraveWallet, MarketAssetFilterOption, MarketDataTableColumnTypes, SortOrder } from '../constants/types'
 
 const searchOptions: Fuse.IFuseOptions<BraveWallet.CoinMarket> = {
   shouldSort: true,
@@ -36,7 +36,7 @@ export const searchCoinMarkets = (searchList: BraveWallet.CoinMarket[], searchTe
     .map((result: Fuse.FuseResult<BraveWallet.CoinMarket>) => result.item)
 }
 
-export const filterCoinMarkets = (coins: BraveWallet.CoinMarket[], tradableAssets: BraveWallet.BlockchainToken[], filter: AssetFilterOption) => {
+export const filterCoinMarkets = (coins: BraveWallet.CoinMarket[], tradableAssets: BraveWallet.BlockchainToken[], filter: MarketAssetFilterOption) => {
   const tradableAssetsSymbols = tradableAssets.map(asset => asset.symbol.toLowerCase())
 
   if (filter === 'all') {

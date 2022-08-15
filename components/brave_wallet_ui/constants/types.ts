@@ -766,12 +766,12 @@ export interface AssetFilterOption {
 
 export type ImportAccountErrorType = boolean | undefined
 
-export type AssetFilterOption =
+export type MarketAssetFilterOption =
   | 'all'
   | 'tradable'
 
 export type AssetFilter = {
-  value: AssetFilterOption
+  value: MarketAssetFilterOption
   label: string
 }
 
