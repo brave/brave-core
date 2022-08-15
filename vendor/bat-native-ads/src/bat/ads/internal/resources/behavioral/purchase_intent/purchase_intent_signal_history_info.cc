@@ -42,7 +42,7 @@ base::Value::Dict PurchaseIntentSignalHistoryInfo::ToValue() const {
   dict.Set("timestamp_in_seconds",
            base::NumberToString(created_at.ToDoubleT()));
 
-  dict.Set("weight", static_cast<int>(weight));
+  dict.Set("weight", int{weight});
   return dict;
 }
 
