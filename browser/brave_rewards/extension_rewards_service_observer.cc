@@ -22,8 +22,7 @@ ExtensionRewardsServiceObserver::ExtensionRewardsServiceObserver(
     : profile_(profile) {
 }
 
-ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
-}
+ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() = default;
 
 void ExtensionRewardsServiceObserver::OnRewardsInitialized(
     RewardsService* rewards_service) {

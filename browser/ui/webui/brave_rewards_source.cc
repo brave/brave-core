@@ -28,8 +28,7 @@ scoped_refptr<base::RefCountedMemory> BitmapToMemory(const SkBitmap* image) {
 BraveRewardsSource::BraveRewardsSource(Profile* profile)
     : profile_(profile->GetOriginalProfile()) {}
 
-BraveRewardsSource::~BraveRewardsSource() {
-}
+BraveRewardsSource::~BraveRewardsSource() = default;
 
 std::string BraveRewardsSource::GetSource() {
   return "rewards-image";

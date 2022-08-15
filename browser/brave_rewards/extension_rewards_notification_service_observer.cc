@@ -21,8 +21,7 @@ ExtensionRewardsNotificationServiceObserver(Profile* profile)
 }
 
 ExtensionRewardsNotificationServiceObserver::
-~ExtensionRewardsNotificationServiceObserver() {
-}
+    ~ExtensionRewardsNotificationServiceObserver() = default;
 
 void ExtensionRewardsNotificationServiceObserver::OnNotificationAdded(
     RewardsNotificationService* rewards_notification_service,

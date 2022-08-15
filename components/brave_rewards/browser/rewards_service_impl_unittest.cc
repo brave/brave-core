@@ -61,8 +61,8 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
 
 class RewardsServiceTest : public testing::Test {
  public:
-  RewardsServiceTest() {}
-  ~RewardsServiceTest() override {}
+  RewardsServiceTest() = default;
+  ~RewardsServiceTest() override = default;
 
  protected:
   void SetMockLocale(const std::string& locale) {

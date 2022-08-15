@@ -20,8 +20,7 @@ namespace extensions {
 namespace api {
 
 RewardsNotificationsAddNotificationFunction::
-~RewardsNotificationsAddNotificationFunction() {
-}
+    ~RewardsNotificationsAddNotificationFunction() = default;
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsAddNotificationFunction::Run() {
@@ -40,7 +39,7 @@ RewardsNotificationsAddNotificationFunction::Run() {
 }
 
 RewardsNotificationsDeleteNotificationFunction::
-    ~RewardsNotificationsDeleteNotificationFunction() {}
+    ~RewardsNotificationsDeleteNotificationFunction() = default;
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsDeleteNotificationFunction::Run() {
@@ -56,8 +55,7 @@ RewardsNotificationsDeleteNotificationFunction::Run() {
 }
 
 RewardsNotificationsDeleteAllNotificationsFunction::
-~RewardsNotificationsDeleteAllNotificationsFunction() {
-}
+    ~RewardsNotificationsDeleteAllNotificationsFunction() = default;
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsDeleteAllNotificationsFunction::Run() {
@@ -71,8 +69,7 @@ RewardsNotificationsDeleteAllNotificationsFunction::Run() {
 }
 
 RewardsNotificationsGetNotificationFunction::
-~RewardsNotificationsGetNotificationFunction() {
-}
+    ~RewardsNotificationsGetNotificationFunction() = default;
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsGetNotificationFunction::Run() {
@@ -88,8 +85,7 @@ RewardsNotificationsGetNotificationFunction::Run() {
 }
 
 RewardsNotificationsGetAllNotificationsFunction::
-~RewardsNotificationsGetAllNotificationsFunction() {
-}
+    ~RewardsNotificationsGetAllNotificationsFunction() = default;
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsGetAllNotificationsFunction::Run() {
