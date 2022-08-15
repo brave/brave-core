@@ -38,7 +38,7 @@ class FakeHostResolver : public network::mojom::HostResolver {
  public:
   explicit FakeHostResolver(const std::string& expected_host)
       : expected_host_(expected_host) {}
-  ~FakeHostResolver() override {}
+  ~FakeHostResolver() override = default;
 
   // network::mojom::HostResolver
   void ResolveHost(const net::HostPortPair& host,
@@ -82,7 +82,7 @@ class FakeHostResolverFail : public FakeHostResolver {
  public:
   explicit FakeHostResolverFail(const std::string& expected_host)
       : FakeHostResolver(expected_host) {}
-  ~FakeHostResolverFail() override {}
+  ~FakeHostResolverFail() override = default;
 
   // network::mojom::HostResolver
   void ResolveHost(const net::HostPortPair& host,
@@ -99,8 +99,8 @@ class FakeHostResolverFail : public FakeHostResolver {
 
 class FakeNetworkContext : public network::TestNetworkContext {
  public:
-  FakeNetworkContext() {}
-  ~FakeNetworkContext() override {}
+  FakeNetworkContext() = default;
+  ~FakeNetworkContext() override = default;
 
   // network::mojom::HostResolver
   void ResolveHost(const net::HostPortPair& host,

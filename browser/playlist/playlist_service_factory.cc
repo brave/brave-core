@@ -73,7 +73,7 @@ PlaylistServiceFactory::PlaylistServiceFactory()
       ISOLATED_WORLD_ID_CHROME_INTERNAL);
 }
 
-PlaylistServiceFactory::~PlaylistServiceFactory() {}
+PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

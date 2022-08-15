@@ -82,7 +82,7 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
  public:
   explicit FakeIPFSHostResolver(network::mojom::NetworkContext* context)
       : ipfs::IPFSHostResolver(context) {}
-  ~FakeIPFSHostResolver() override {}
+  ~FakeIPFSHostResolver() override = default;
   void Resolve(const net::HostPortPair& host,
                const net::NetworkIsolationKey& isolation_key,
                net::DnsQueryType dns_query_type,

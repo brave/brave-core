@@ -24,7 +24,7 @@ namespace ipfs {
 
 class IpfsNetwrokUtilsUnitTest : public testing::Test {
  public:
-  IpfsNetwrokUtilsUnitTest() {}
+  IpfsNetwrokUtilsUnitTest() = default;
   ~IpfsNetwrokUtilsUnitTest() override = default;
 
   void SetUp() override {

@@ -39,7 +39,7 @@ void IpfsDnsResolverImpl::SetupDnsConfigChangeNotifications() {
       base::Unretained(this)));
 }
 
-IpfsDnsResolverImpl::~IpfsDnsResolverImpl() {}
+IpfsDnsResolverImpl::~IpfsDnsResolverImpl() = default;
 
 void IpfsDnsResolverImpl::OnDnsConfigChangeManagerConnectionError() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

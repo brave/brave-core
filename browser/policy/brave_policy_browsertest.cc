@@ -25,8 +25,8 @@ namespace policy {
 
 class BravePolicyTest : public InProcessBrowserTest {
  protected:
-  BravePolicyTest() {}
-  ~BravePolicyTest() override {}
+  BravePolicyTest() = default;
+  ~BravePolicyTest() override = default;
 
   void SetUpInProcessBrowserTestFixture() override {
     EXPECT_CALL(provider_, IsInitializationComplete(_))
@@ -42,8 +42,8 @@ class BravePolicyTest : public InProcessBrowserTest {
 // Sets the tor policy before the browser is started.
 class TorDisabledPolicyBrowserTest : public BravePolicyTest {
  public:
-  TorDisabledPolicyBrowserTest() {}
-  ~TorDisabledPolicyBrowserTest() override {}
+  TorDisabledPolicyBrowserTest() = default;
+  ~TorDisabledPolicyBrowserTest() override = default;
 
   void SetUpInProcessBrowserTestFixture() override {
     BravePolicyTest::SetUpInProcessBrowserTestFixture();
@@ -64,8 +64,8 @@ IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest, TorDisabledPrefValueTest) {
 
 class TorEnabledPolicyBrowserTest : public BravePolicyTest {
  public:
-  TorEnabledPolicyBrowserTest() {}
-  ~TorEnabledPolicyBrowserTest() override {}
+  TorEnabledPolicyBrowserTest() = default;
+  ~TorEnabledPolicyBrowserTest() override = default;
 
   void SetUpInProcessBrowserTestFixture() override {
     BravePolicyTest::SetUpInProcessBrowserTestFixture();

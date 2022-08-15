@@ -44,7 +44,7 @@ class FakeIpfsService : public ipfs::IpfsService {
                           user_dir,
                           channel,
                           std::make_unique<ipfs::IpfsDnsResolverImpl>()) {}
-  ~FakeIpfsService() override {}
+  ~FakeIpfsService() override = default;
   void ImportTextToIpfs(const std::string& text,
                         const std::string& host,
                         ipfs::ImportCompletedCallback callback) override {
@@ -99,7 +99,7 @@ namespace ipfs {
 
 class IpfsImportControllerBrowserTest : public InProcessBrowserTest {
  public:
-  IpfsImportControllerBrowserTest() {}
+  IpfsImportControllerBrowserTest() = default;
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     ASSERT_TRUE(embedded_test_server()->Start());
