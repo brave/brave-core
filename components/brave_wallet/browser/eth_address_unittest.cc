@@ -97,10 +97,9 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
       "0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb",
   };
 
-  for (size_t i = 0; i < sizeof(eip55_cases) / sizeof(eip55_cases[0]); ++i) {
-    EthAddress address =
-        EthAddress::FromHex(base::ToLowerASCII(eip55_cases[i]));
-    EXPECT_EQ(address.ToChecksumAddress(), eip55_cases[i]);
+  for (auto* eip55_case : eip55_cases) {
+    EthAddress address = EthAddress::FromHex(base::ToLowerASCII(eip55_case));
+    EXPECT_EQ(address.ToChecksumAddress(), eip55_case);
   }
 
   const struct {
@@ -165,12 +164,11 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
       {"0xFb6916095CA1dF60bb79CE92ce3Ea74C37c5D359", 31},
   };
 
-  for (size_t i = 0; i < sizeof(eip1191_cases) / sizeof(eip1191_cases[0]);
-       ++i) {
+  for (const auto& eip1191_case : eip1191_cases) {
     EthAddress address =
-        EthAddress::FromHex(base::ToLowerASCII(eip1191_cases[i].address));
-    EXPECT_EQ(address.ToChecksumAddress(eip1191_cases[i].chain_id),
-              eip1191_cases[i].address);
+        EthAddress::FromHex(base::ToLowerASCII(eip1191_case.address));
+    EXPECT_EQ(address.ToChecksumAddress(eip1191_case.chain_id),
+              eip1191_case.address);
   }
 }
 

@@ -98,13 +98,13 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
        "81aa03ada1474ff3ca4b86afb8e8c0f8b22791e156e706231a695ef8c51515ab"},
   };
 
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
-    EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
-        cases[i].nonce, cases[i].gas_price, cases[i].gas_limit, cases[i].to,
-        cases[i].value, std::vector<uint8_t>()));
+  for (const auto& entry : cases) {
+    EthTransaction tx = *EthTransaction::FromTxData(
+        mojom::TxData::New(entry.nonce, entry.gas_price, entry.gas_limit,
+                           entry.to, entry.value, std::vector<uint8_t>()));
     // with chain id (mainnet)
     EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign(1))),
-              cases[i].hash);
+              entry.hash);
   }
 }
 

@@ -198,17 +198,17 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
        "86a96776b91946ff06f8eac594dc6ee1d3e82a42dfe1b40fef6bcc3fd"},
   };
 
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+  for (const auto& entry : cases) {
     std::vector<uint8_t> bytes;
-    EXPECT_TRUE(base::HexStringToBytes(cases[i].entropy, &bytes));
+    EXPECT_TRUE(base::HexStringToBytes(entry.entropy, &bytes));
     std::unique_ptr<std::vector<uint8_t>> entropy =
-        MnemonicToEntropy(cases[i].mnemonic);
-    EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*entropy)), cases[i].entropy);
+        MnemonicToEntropy(entry.mnemonic);
+    EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*entropy)), entry.entropy);
 
-    EXPECT_EQ(GenerateMnemonicForTest(bytes), cases[i].mnemonic);
+    EXPECT_EQ(GenerateMnemonicForTest(bytes), entry.mnemonic);
     std::unique_ptr<std::vector<uint8_t>> seed =
-        MnemonicToSeed(cases[i].mnemonic, "TREZOR");
-    EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*seed)), cases[i].seed);
+        MnemonicToSeed(entry.mnemonic, "TREZOR");
+    EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*seed)), entry.seed);
   }
 
   for (size_t i = 15; i <= 33; i += 2) {

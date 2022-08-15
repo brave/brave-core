@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_private_cdn/private_cdn_helper.h"
+#include <string>
 
+#include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(BravePrivateCdnHelper, RemovePadding) {
@@ -23,10 +24,8 @@ TEST(BravePrivateCdnHelper, RemovePadding) {
       "ABCDPPP"s,
   };
 
-  constexpr size_t invalid_input_count =
-      sizeof(invalid_inputs) / sizeof(std::string);
-  for (size_t i = 0; i < invalid_input_count; i++) {
-    base::StringPiece padded_string(invalid_inputs[i]);
+  for (auto& invalid_input : invalid_inputs) {
+    base::StringPiece padded_string(invalid_input);
     EXPECT_FALSE(helper->RemovePadding(&padded_string));
   }
 

@@ -36,9 +36,9 @@ void SkusUrlLoaderImpl::BeginFetch(
   resource_request->load_flags =
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
 
-  for (size_t i = 0; i < req.headers.size(); i++) {
+  for (const auto& header : req.headers) {
     resource_request->headers.AddHeaderFromString(
-        static_cast<std::string>(req.headers[i]));
+        static_cast<std::string>(header));
   }
 
   simple_url_loader_ = network::SimpleURLLoader::Create(

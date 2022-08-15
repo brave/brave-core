@@ -846,9 +846,9 @@ bool EncodeStringArray(const std::vector<std::string>& input,
   }
 
   // Write count and encoding for array elements.
-  for (size_t i = 0; i < input.size(); i++) {
+  for (const auto& entry : input) {
     std::string encoded_string;
-    success = EncodeString(input[i], &encoded_string);
+    success = EncodeString(entry, &encoded_string);
     if (!success)
       return false;
     *output += encoded_string.substr(2);
