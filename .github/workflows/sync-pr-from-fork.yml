@@ -33,9 +33,9 @@ jobs:
 
           [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
 
-          git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
+          git remote add contributor "git@github.com:$headRepositoryOwnerLogin/$headRepositoryName.git" || :
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
           git fetch contributor +"$headRefName":"$contribHeadRefName"
-          git push origin "$contribHeadRefName"
+          git push -f origin "$contribHeadRefName"
           # TODO remove `-d` draft
           gh pr create -d -F ".github/PULL_REQUEST_TEMPLATE.md" -B "$baseRefName" -H "$contribHeadRefName" -t "Don't merge - this is a CI run for $url"
