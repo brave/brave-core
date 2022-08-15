@@ -103,13 +103,13 @@ const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::Minutes(10);
 
-ProxyConfigServiceTor::ProxyConfigServiceTor() {}
+ProxyConfigServiceTor::ProxyConfigServiceTor() = default;
 
 ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
   UpdateProxyURI(proxy_uri);
 }
 
-ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
+ProxyConfigServiceTor::~ProxyConfigServiceTor() = default;
 
 void ProxyConfigServiceTor::UpdateProxyURI(const std::string& uri) {
   ProxyServer proxy_server =

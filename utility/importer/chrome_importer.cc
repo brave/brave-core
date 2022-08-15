@@ -171,9 +171,9 @@ bool PasswordFormToImportedPasswordForm(
 
 }  // namespace
 
-ChromeImporter::ChromeImporter() {}
+ChromeImporter::ChromeImporter() = default;
 
-ChromeImporter::~ChromeImporter() {}
+ChromeImporter::~ChromeImporter() = default;
 
 void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
                                  uint16_t items,

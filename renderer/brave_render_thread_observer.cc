@@ -20,9 +20,9 @@ brave::mojom::DynamicParams* GetDynamicConfigParams() {
 
 }  // namespace
 
-BraveRenderThreadObserver::BraveRenderThreadObserver() {}
+BraveRenderThreadObserver::BraveRenderThreadObserver() = default;
 
-BraveRenderThreadObserver::~BraveRenderThreadObserver() {}
+BraveRenderThreadObserver::~BraveRenderThreadObserver() = default;
 
 // static
 const brave::mojom::DynamicParams&

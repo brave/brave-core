@@ -28,7 +28,7 @@ SpeedreaderServiceFactory::SpeedreaderServiceFactory()
           "SpeedreaderService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-SpeedreaderServiceFactory::~SpeedreaderServiceFactory() {}
+SpeedreaderServiceFactory::~SpeedreaderServiceFactory() = default;
 
 content::BrowserContext*
 SpeedreaderServiceFactory::GetBrowserContextToUse(

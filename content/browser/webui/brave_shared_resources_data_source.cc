@@ -76,7 +76,7 @@ BraveSharedResourcesDataSource::BraveSharedResourcesDataSource(
     bool is_untrusted)
     : is_untrusted_(is_untrusted) {}
 
-BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() {}
+BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() = default;
 
 std::string BraveSharedResourcesDataSource::GetSource() {
   if (is_untrusted_) {

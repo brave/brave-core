@@ -29,7 +29,7 @@ BraveMockRenderViewContextMenu::MockMenuItem::MockMenuItem()
 BraveMockRenderViewContextMenu::MockMenuItem::MockMenuItem(
     const MockMenuItem& other) = default;
 
-BraveMockRenderViewContextMenu::MockMenuItem::~MockMenuItem() {}
+BraveMockRenderViewContextMenu::MockMenuItem::~MockMenuItem() = default;
 
 BraveMockRenderViewContextMenu::MockMenuItem&
 BraveMockRenderViewContextMenu::MockMenuItem::operator=(
@@ -64,7 +64,7 @@ void BraveMockRenderViewContextMenu::MockMenuItem::PrintMockMenuItem(
 BraveMockRenderViewContextMenu::BraveMockRenderViewContextMenu(Profile* profile)
     : observer_(nullptr), profile_(profile), enable_print_menu_(false) {}
 
-BraveMockRenderViewContextMenu::~BraveMockRenderViewContextMenu() {}
+BraveMockRenderViewContextMenu::~BraveMockRenderViewContextMenu() = default;
 
 // SimpleMenuModel::Delegate implementation.
 

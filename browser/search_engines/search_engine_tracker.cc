@@ -101,7 +101,7 @@ SearchEngineTrackerFactory::SearchEngineTrackerFactory()
   DependsOn(TemplateURLServiceFactory::GetInstance());
 }
 
-SearchEngineTrackerFactory::~SearchEngineTrackerFactory() {}
+SearchEngineTrackerFactory::~SearchEngineTrackerFactory() = default;
 
 KeyedService* SearchEngineTrackerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
@@ -152,7 +152,7 @@ SearchEngineTracker::SearchEngineTracker(
   }
 }
 
-SearchEngineTracker::~SearchEngineTracker() {}
+SearchEngineTracker::~SearchEngineTracker() = default;
 
 void SearchEngineTracker::OnTemplateURLServiceChanged() {
   const TemplateURL* template_url =

@@ -23,7 +23,7 @@ BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
     : RenderFrameObserver(render_frame),
       get_dynamic_params_callback_(std::move(get_dynamic_params_callback)) {}
 
-BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() {}
+BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
 void BraveWalletRenderFrameObserver::DidStartNavigation(
     const GURL& url,

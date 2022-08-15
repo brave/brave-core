@@ -75,9 +75,9 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
   std::unique_ptr<BraveMockRenderViewContextMenu> menu_;
 };
 
-BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() {}
+BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() = default;
 
-BraveSpellingMenuObserverTest::~BraveSpellingMenuObserverTest() {}
+BraveSpellingMenuObserverTest::~BraveSpellingMenuObserverTest() = default;
 
 }  // namespace
 
