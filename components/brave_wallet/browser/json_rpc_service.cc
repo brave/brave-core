@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
-#include <iterator>
 #include <memory>
 #include <utility>
 
@@ -16,7 +15,6 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -91,29 +89,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
-}
-
-// https://tools.ietf.org/html/rfc1035#section-3.1
-absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name) {
-  std::vector<uint8_t> result;
-  result.resize(dotted_name.size() + 2);
-  result.front() = '.';  // Placeholder for first label length.
-  base::ranges::copy(dotted_name, result.begin() + 1);
-  result.back() = '.';  // Placeholder for terminal zero byte.
-
-  size_t last_dot_pos = 0;
-  for (size_t i = 1; i < result.size(); ++i) {
-    if (result[i] == '.') {
-      size_t label_len = i - last_dot_pos - 1;
-      if (label_len == 0 || label_len > 63)
-        return absl::nullopt;
-      result[last_dot_pos] = static_cast<uint8_t>(label_len);
-      last_dot_pos = i;
-    }
-  }
-  DCHECK_EQ(last_dot_pos, result.size() - 1);
-  result.back() = 0;
-  return result;
 }
 
 namespace solana {
@@ -1093,13 +1068,7 @@ void JsonRpcService::EnsRegistryGetResolver(const std::string& domain,
     return;
   }
 
-  std::string data;
-  if (!ens::Resolver(domain, &data)) {
-    std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
+  std::string data = ens::Resolver(domain);
 
   GURL network_url = GetNetworkURL(prefs_, brave_wallet::mojom::kMainnetChainId,
                                    mojom::CoinType::ETH);
@@ -1231,10 +1200,9 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
       }
     }
 
-    auto dns_encoded_name = DnsEncode(domain);
     GURL network_url = GetNetworkURL(
         prefs_, brave_wallet::mojom::kMainnetChainId, mojom::CoinType::ETH);
-    if (!network_url.is_valid() || !dns_encoded_name) {
+    if (!network_url.is_valid()) {
       std::move(callback).Run(
           "", mojom::ProviderError::kInvalidParams,
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1244,12 +1212,11 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
     // addr(bytes32)
     const uint8_t kAddrBytes32Hash[] = {0x3b, 0x3b, 0x57, 0xde};
 
-    auto ens_call =
-        EncodeCall(base::make_span(kAddrBytes32Hash), Namehash(domain));
+    auto ens_call = eth_abi::EncodeCall(base::make_span(kAddrBytes32Hash),
+                                        Namehash(domain));
 
     auto task = std::make_unique<EnsGetEthAddrTask>(
-        this, url_loader_factory_, std::move(ens_call), domain,
-        *dns_encoded_name, network_url);
+        this, url_loader_factory_, std::move(ens_call), domain, network_url);
     auto* task_ptr = task.get();
     std::vector<EnsGetEthAddrCallback> callbacks;
     callbacks.push_back(std::move(callback));
@@ -1275,7 +1242,7 @@ void JsonRpcService::OnEnsResolverTaskDone(EnsGetEthAddrTask* task,
   }
 
   std::string address;
-  EthAddress eth_address = ExtractAddress(resolved_result);
+  EthAddress eth_address = eth_abi::ExtractAddress(resolved_result);
   if (eth_address.IsValid()) {
     address = eth_address.ToHex();
   } else {

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ENS_RESOLVER_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ENS_RESOLVER_TASK_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -13,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -25,6 +27,11 @@ struct OffchainLookupData {
   OffchainLookupData& operator=(const OffchainLookupData&);
   OffchainLookupData& operator=(OffchainLookupData&&);
   ~OffchainLookupData();
+
+  static absl::optional<OffchainLookupData> ExtractFromJson(
+      const std::string& json);
+  static absl::optional<OffchainLookupData> ExtractFromEthAbiPayload(
+      eth_abi::Span bytes);
 
   EthAddress sender;
   std::vector<std::string> urls;
@@ -40,7 +47,6 @@ class EnsGetEthAddrTask {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::vector<uint8_t> ens_call,
       const std::string& domain,
-      const std::vector<uint8_t>& dns_encoded_name,
       const GURL& network_url);
   ~EnsGetEthAddrTask();
 
@@ -79,7 +85,7 @@ class EnsGetEthAddrTask {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::vector<uint8_t> ens_call_;
   std::string domain_;
-  std::vector<uint8_t> dns_encoded_name_;
+  absl::optional<std::vector<uint8_t>> dns_encoded_name_;
   GURL network_url_;
   int offchain_lookup_attemps_left_ = 4;
 

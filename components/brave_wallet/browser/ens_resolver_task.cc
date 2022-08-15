@@ -28,53 +28,9 @@
 
 namespace brave_wallet {
 namespace {
+
 // resolve(bytes32,bytes32)
 const uint8_t kResolveBytes32Bytes32Hash[] = {0x90, 0x61, 0xb9, 0x23};
-
-absl::optional<OffchainLookupData> ExtractOffchainLookup(
-    const std::string& json) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v || !records_v->is_dict()) {
-    return absl::nullopt;
-  }
-
-  auto* error_data = records_v->FindStringPath("error.data");
-  if (!error_data)
-    return absl::nullopt;
-
-  auto bytes = PrefixedHexStringToBytes(*error_data);
-  if (!bytes) {
-    return absl::nullopt;
-  }
-
-  auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(*bytes);
-
-  // error OffchainLookup(address sender, string[] urls, bytes callData,
-  // bytes4 callbackFunction, bytes extraData)
-  if (ToHex(selector) != "0x556f1830")
-    return absl::nullopt;
-  auto sender = ExtractAddressFromTuple(args, 0);
-  auto urls = ExtractStringArrayFromTuple(args, 1);
-  auto call_data = ExtractBytesFromTuple(args, 2);
-  auto callback_function = ExtractFixedBytesFromTuple(args, 4, 3);
-  auto extra_data = ExtractBytesFromTuple(args, 4);
-
-  if (!sender.IsValid() || !urls || !call_data || !callback_function ||
-      !extra_data) {
-    return absl::nullopt;
-  }
-
-  OffchainLookupData result;
-  result.sender = sender;
-  result.urls = urls.value();
-  result.call_data = call_data.value();
-  result.callback_function = callback_function.value();
-  result.extra_data = extra_data.value();
-  return result;
-}
 
 absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
     const std::string& json) {
@@ -146,6 +102,57 @@ OffchainLookupData& OffchainLookupData::operator=(OffchainLookupData&&) =
     default;
 OffchainLookupData::~OffchainLookupData() = default;
 
+absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
+    const std::string& json) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v || !records_v->is_dict()) {
+    return absl::nullopt;
+  }
+
+  auto* error_data = records_v->FindStringPath("error.data");
+  if (!error_data)
+    return absl::nullopt;
+
+  auto bytes = PrefixedHexStringToBytes(*error_data);
+  if (!bytes) {
+    return absl::nullopt;
+  }
+
+  return ExtractFromEthAbiPayload(*bytes);
+}
+
+absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
+    eth_abi::Span bytes) {
+  auto [selector, args] =
+      eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
+
+  // error OffchainLookup(address sender, string[] urls, bytes callData,
+  // bytes4 callbackFunction, bytes extraData)
+  if (ToHex(selector) != "0x556f1830")
+    return absl::nullopt;
+  auto sender = eth_abi::ExtractAddressFromTuple(args, 0);
+  auto urls = eth_abi::ExtractStringArrayFromTuple(args, 1);
+  auto call_data = eth_abi::ExtractBytesFromTuple(args, 2);
+  auto callback_function = eth_abi::ExtractFixedBytesFromTuple(args, 4, 3);
+  auto extra_data = eth_abi::ExtractBytesFromTuple(args, 4);
+
+  if (!sender.IsValid() || !urls || !call_data || !callback_function ||
+      !extra_data) {
+    return absl::nullopt;
+  }
+
+  OffchainLookupData result;
+  result.sender = sender;
+  result.urls = urls.value();
+  result.call_data = call_data.value();
+  result.callback_function = callback_function.value();
+  result.extra_data = extra_data.value();
+  return result;
+}
+
 class ScopedWorkOnTask {
  public:
   explicit ScopedWorkOnTask(EnsGetEthAddrTask* task) : task_(task) {}
@@ -160,13 +167,11 @@ EnsGetEthAddrTask::EnsGetEthAddrTask(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::vector<uint8_t> ens_call,
     const std::string& domain,
-    const std::vector<uint8_t>& dns_encoded_name,
     const GURL& network_url)
     : json_rpc_service_base_(json_rpc_service_base),
       url_loader_factory_(url_loader_factory),
       ens_call_(std::move(ens_call)),
       domain_(domain),
-      dns_encoded_name_(dns_encoded_name),
       network_url_(network_url) {}
 
 EnsGetEthAddrTask::~EnsGetEthAddrTask() = default;
@@ -333,10 +338,22 @@ void EnsGetEthAddrTask::FetchWithEnsip10Resolve() {
   DCHECK(supports_ensip_10_.value());
   DCHECK(!resolve_result_);
 
+  if (!dns_encoded_name_) {
+    dns_encoded_name_ = ens::DnsEncode(domain_);
+    if (!dns_encoded_name_) {
+      error_ = mojom::ProviderError::kInvalidParams;
+      error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+      base::SequencedTaskRunnerHandle::Get()->PostTask(
+          FROM_HERE, base::BindOnce(&EnsGetEthAddrTask::WorkOnTask,
+                                    weak_ptr_factory_.GetWeakPtr()));
+      return;
+    }
+  }
+
   if (ens_resolve_call_.empty()) {
-    ens_resolve_call_ = EncodeCall(base::make_span(kResolveBytes32Bytes32Hash),
-                                   base::make_span(dns_encoded_name_),
-                                   base::make_span(ens_call_));
+    ens_resolve_call_ = eth_abi::EncodeCall(
+        base::make_span(kResolveBytes32Bytes32Hash),
+        base::make_span(*dns_encoded_name_), base::make_span(ens_call_));
   }
 
   auto internal_callback =
@@ -359,7 +376,7 @@ void EnsGetEthAddrTask::OnFetchWithEnsip10ResolveDone(
     return;
   }
 
-  if (auto offchain_lookup = ExtractOffchainLookup(body)) {
+  if (auto offchain_lookup = OffchainLookupData::ExtractFromJson(body)) {
     offchain_lookup_data_ = std::move(offchain_lookup);
     return;
   }
@@ -373,7 +390,8 @@ void EnsGetEthAddrTask::OnFetchWithEnsip10ResolveDone(
 
   // Decoding as returned bytes[] per
   // https://github.com/ensdomains/docs/blob/e4da40003943dd25fdf7d4c5552335330a9ee915/ens-improvement-proposals/ensip-10-wildcard-resolution.md?plain=1#L70
-  auto decoded_resolve_result = ExtractBytesFromTuple(*bytes_result, 0);
+  auto decoded_resolve_result =
+      eth_abi::ExtractBytesFromTuple(*bytes_result, 0);
   if (!decoded_resolve_result) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -467,8 +485,8 @@ void EnsGetEthAddrTask::OnFetchOffchainDone(
   offchain_lookup_attemps_left_--;
   DCHECK_GE(offchain_lookup_attemps_left_, 0);
   ens_resolve_call_ =
-      EncodeCall(offchain_lookup_data_->callback_function, *bytes_result,
-                 offchain_lookup_data_->extra_data);
+      eth_abi::EncodeCall(offchain_lookup_data_->callback_function,
+                          *bytes_result, offchain_lookup_data_->extra_data);
   offchain_lookup_data_.reset();
 }
 

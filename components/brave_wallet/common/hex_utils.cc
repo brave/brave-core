@@ -20,20 +20,10 @@ std::string ToHex(const std::string& data) {
   return "0x" + base::ToLowerASCII(base::HexEncode(data.data(), data.size()));
 }
 
-std::string ToHex(const std::vector<uint8_t>& data) {
-  if (data.empty())
-    return "0x0";
-  return "0x" + base::ToLowerASCII(base::HexEncode(data));
-}
-
 std::string ToHex(base::span<const uint8_t> data) {
   if (data.empty())
     return "0x0";
   return "0x" + base::ToLowerASCII(base::HexEncode(data));
-}
-
-std::string ToHex(uint256_t input) {
-  return Uint256ValueToHex(input);
 }
 
 // Returns a hex string representation of a binary buffer. The returned hex
@@ -54,8 +44,7 @@ bool IsValidHexString(const std::string& hex_input) {
   if (!base::StartsWith(hex_input, "0x")) {
     return false;
   }
-
-  for (const auto& c : base::make_span(hex_input).subspan(2)) {
+  for (const auto& c : hex_input.substr(2)) {
     if (!base::IsHexDigit(c)) {
       return false;
     }
@@ -82,13 +71,6 @@ bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
 
   *out = "0x" + padding + hex_substr;
   return true;
-}
-
-std::string PadHexEncodedParameter(const std::string& hex_input) {
-  std::string padded;
-  bool result = PadHexEncodedParameter(hex_input, &padded);
-  DCHECK(result && IsValidHexString(padded));
-  return padded;
 }
 
 // Takes 2 inputs prefixed by 0x and combines them into an output with a single

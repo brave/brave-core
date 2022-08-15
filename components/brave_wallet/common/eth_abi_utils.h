@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ABI_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ABI_UTILS_H_
 
+#include <array>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,38 +15,35 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_wallet {
+namespace brave_wallet::eth_abi {
 
-using EthAbiSpan = base::span<const uint8_t>;
+using Span = base::span<const uint8_t>;
+using Bytes32 = std::array<uint8_t, 32>;
 
-uint256_t BytesToUint256(EthAbiSpan data);
+uint256_t BytesToUint256(Span data);
 
-std::pair<EthAbiSpan, EthAbiSpan> ExtractFunctionSelectorAndArgsFromCall(
-    EthAbiSpan data);
+std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data);
 
-EthAddress ExtractAddress(EthAbiSpan address_encoded);
-EthAddress ExtractAddressFromTuple(EthAbiSpan data, size_t tuple_pos);
-absl::optional<std::vector<uint8_t>> ExtractBytes(EthAbiSpan bytes_encoded);
-absl::optional<std::string> ExtractString(EthAbiSpan string_encoded);
+EthAddress ExtractAddress(Span address_encoded);
+EthAddress ExtractAddressFromTuple(Span data, size_t tuple_pos);
+absl::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded);
+absl::optional<std::string> ExtractString(Span string_encoded);
 absl::optional<std::vector<std::string>> ExtractStringArrayFromTuple(
-    EthAbiSpan data,
+    Span data,
     size_t tuple_pos);
-absl::optional<std::vector<uint8_t>> ExtractBytesFromTuple(EthAbiSpan data,
+absl::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
                                                            size_t tuple_pos);
-absl::optional<std::vector<uint8_t>> ExtractFixedBytesFromTuple(
-    EthAbiSpan data,
-    size_t fixed_size,
-    size_t tuple_pos);
+absl::optional<std::vector<uint8_t>>
+ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos);
 
 // f(bytes,bytes)
-std::vector<uint8_t> EncodeCall(EthAbiSpan function_selector,
-                                EthAbiSpan bytes_0,
-                                EthAbiSpan bytes_1);
+std::vector<uint8_t> EncodeCall(Span function_selector,
+                                Span bytes_0,
+                                Span bytes_1);
 
 // f(bytes32)
-std::vector<uint8_t> EncodeCall(EthAbiSpan function_selector,
-                                const uint256_t& arg_0);
+std::vector<uint8_t> EncodeCall(Span function_selector, const Bytes32& arg_0);
 
-}  // namespace brave_wallet
+}  // namespace brave_wallet::eth_abi
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ABI_UTILS_H_

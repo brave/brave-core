@@ -6,14 +6,27 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
 #include <algorithm>
+#include <array>
 
+#include "base/check.h"
+#include "base/containers/adapters.h"
 #include "base/containers/span.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 
 namespace brave_wallet {
+namespace {
+std::array<uint8_t, 64> ConcatArrays(const std::array<uint8_t, 32>& arr1,
+                                     const std::array<uint8_t, 32>& arr2) {
+  std::array<uint8_t, 64> result;
+  base::ranges::copy(arr1, result.begin());
+  base::ranges::copy(arr2, result.begin() + 32);
+  return result;
+}
+}  // namespace
 
 std::string KeccakHash(const std::string& input, bool to_hex) {
   std::vector<uint8_t> bytes(input.begin(), input.end());
@@ -27,22 +40,29 @@ std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input) {
   return std::vector<uint8_t>(hash.bytes, hash.bytes + 32);
 }
 
+eth_abi::Bytes32 KeccakHashBytes32(base::span<const uint8_t> input) {
+  auto hash = ethash_keccak256(input.data(), input.size());
+  eth_abi::Bytes32 result;
+  static_assert(sizeof(result) == sizeof(hash.bytes));
+  base::ranges::copy(hash.bytes, result.begin());
+  return result;
+}
+
 std::string GetFunctionHash(const std::string& input) {
   std::string result = KeccakHash(input);
   return result.substr(0, std::min(static_cast<size_t>(10), result.length()));
 }
 
-uint256_t Namehash(const std::string& name) {
-  std::string hash(32, '\0');
+eth_abi::Bytes32 Namehash(const std::string& name) {
+  eth_abi::Bytes32 hash = {};
   std::vector<std::string> labels =
       SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   for (const auto& label : base::Reversed(labels)) {
-    std::string label_hash = KeccakHash(label, false);
-    hash = KeccakHash(hash + label_hash, false);
+    auto label_hash = KeccakHashBytes32(base::as_bytes(base::make_span(label)));
+    hash = KeccakHashBytes32(ConcatArrays(hash, label_hash));
   }
-
-  return BytesToUint256(base::as_bytes(base::make_span(hash)));
+  return hash;
 }
 
 }  // namespace brave_wallet

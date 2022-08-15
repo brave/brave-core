@@ -9,13 +9,14 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 namespace brave_wallet {
 
 // Equivalent to web3.utils.keccak256(string)
 std::string KeccakHash(const std::string& input, bool to_hex = true);
 std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);
+eth_abi::Bytes32 KeccakHashBytes32(base::span<const uint8_t> input);
 
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
@@ -24,7 +25,7 @@ std::string GetFunctionHash(const std::string& input);
 // Implement namehash algorithm based on EIP-137 spec.
 // Used for converting domain names in the classic format (ex: brave.crypto) to
 // an ERC-721 token for ENS and Unstoppable Domains.
-uint256_t Namehash(const std::string& name);
+eth_abi::Bytes32 Namehash(const std::string& name);
 
 }  // namespace brave_wallet
 

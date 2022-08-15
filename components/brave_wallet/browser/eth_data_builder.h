@@ -89,14 +89,13 @@ absl::optional<std::string> Get(const std::string& key,
 
 namespace ens {
 
-bool Resolver(const std::string& domain, std::string* data);
 std::string Resolver(const std::string& domain);
 bool ContentHash(const std::string& domain, std::string* data);
 
 // Get Ethereum address from an ENS name.
 bool Addr(const std::string& domain, std::string* data);
 
-absl::optional<std::string> DnsEncode(const std::string& dotted_name);
+absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name);
 
 }  // namespace ens
 

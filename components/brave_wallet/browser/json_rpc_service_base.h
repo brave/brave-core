@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_BASE_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

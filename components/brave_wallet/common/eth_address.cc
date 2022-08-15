@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/eth_address.h"
 
+#include <utility>
+
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -26,11 +28,11 @@ EthAddress::EthAddress(const EthAddress& other) = default;
 EthAddress::~EthAddress() = default;
 
 bool EthAddress::operator==(const EthAddress& other) const {
-  return std::equal(bytes_.begin(), bytes_.end(), other.bytes_.begin());
+  return bytes_ == other.bytes_;
 }
 
 bool EthAddress::operator!=(const EthAddress& other) const {
-  return !std::equal(bytes_.begin(), bytes_.end(), other.bytes_.begin());
+  return !(*this == other);
 }
 
 // static

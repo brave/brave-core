@@ -56,7 +56,7 @@ namespace {
 // clang-format on
 }  // namespace
 
-namespace brave_wallet {
+namespace brave_wallet::eth_abi {
 TEST(EthAbiUtilsTest, OffchainLookup) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(kOffchainLookupResponse, &bytes));
@@ -115,4 +115,44 @@ TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
   }
 }
 
-}  // namespace brave_wallet
+TEST(EthAbiUtilsTest, DISABLED_BytesToUint256) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractFunctionSelectorAndArgsFromCall) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractAddress) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractAddressFromTuple) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractBytes) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractString) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractStringArrayFromTuple) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractBytesFromTuple) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_ExtractFixedBytesFromTuple) {
+  GTEST_FAIL();
+}
+
+TEST(EthAbiUtilsTest, DISABLED_EncodeCall) {
+  GTEST_FAIL();
+}
+
+}  // namespace brave_wallet::eth_abi

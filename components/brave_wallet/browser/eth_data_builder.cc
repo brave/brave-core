@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
+#include <algorithm>
+
 #include "base/check.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -12,6 +14,18 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
+
+namespace {
+bool IsValidHostLabelCharacter(char c, bool is_first_char) {
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+         (c >= '0' && c <= '9') || (!is_first_char && c == '-') || c == '_';
+}
+
+std::string NamehashPaddedHexString(const std::string& name) {
+  return ToHex(base::make_span(Namehash(name)));
+}
+
+}  // namespace
 
 namespace erc20 {
 
@@ -263,7 +277,7 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
     return absl::nullopt;
   }
 
-  std::string tokenID = ToHex(Namehash(domain));
+  std::string tokenID = NamehashPaddedHexString(domain);
 
   std::string encoded_keys;
   if (!EncodeStringArray(keys, &encoded_keys)) {
@@ -289,7 +303,7 @@ absl::optional<std::string> Get(const std::string& key,
     return absl::nullopt;
   }
 
-  std::string tokenID = ToHex(Namehash(domain));
+  std::string tokenID = NamehashPaddedHexString(domain);
 
   std::string encoded_key;
   if (!EncodeString(key, &encoded_key)) {
@@ -309,16 +323,9 @@ absl::optional<std::string> Get(const std::string& key,
 
 namespace ens {
 
-bool Resolver(const std::string& domain, std::string* data) {
-  const std::string function_hash = GetFunctionHash("resolver(bytes32)");
-  std::string tokenID = ToHex(Namehash(domain));
-  std::vector<std::string> hex_strings = {function_hash, tokenID};
-  return ConcatHexStrings(hex_strings, data);
-}
-
 std::string Resolver(const std::string& domain) {
   const std::string function_hash = GetFunctionHash("resolver(bytes32)");
-  std::string tokenID = ToHex(Namehash(domain));
+  std::string tokenID = NamehashPaddedHexString(domain);
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   std::string data;
   ConcatHexStrings(hex_strings, &data);
@@ -328,28 +335,38 @@ std::string Resolver(const std::string& domain) {
 
 bool ContentHash(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("contenthash(bytes32)");
-  std::string tokenID = ToHex(Namehash(domain));
+  std::string tokenID = NamehashPaddedHexString(domain);
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }
 
 bool Addr(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("addr(bytes32)");
-  std::string tokenID = ToHex(Namehash(domain));
+  std::string tokenID = NamehashPaddedHexString(domain);
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }
 
-absl::optional<std::string> DnsEncode(const std::string& dotted_name) {
-  std::string result = "." + dotted_name + ".";
+// https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
+// Similar to chromium's `DNSDomainFromDot` but without length limitation and
+// support of terminal dot.
+absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name) {
+  std::vector<uint8_t> result;
+  result.resize(dotted_name.size() + 2);
+  result.front() = '.';  // Placeholder for first label length.
+  base::ranges::copy(dotted_name, result.begin() + 1);
+  result.back() = '.';  // Placeholder for terminal zero byte.
+
   size_t last_dot_pos = 0;
   for (size_t i = 1; i < result.size(); ++i) {
     if (result[i] == '.') {
       size_t label_len = i - last_dot_pos - 1;
       if (label_len == 0 || label_len > 63)
         return absl::nullopt;
-      result[last_dot_pos] = static_cast<char>(label_len);
+      result[last_dot_pos] = static_cast<uint8_t>(label_len);
       last_dot_pos = i;
+    } else if (!IsValidHostLabelCharacter(result[i], i - last_dot_pos == 1)) {
+      return absl::nullopt;
     }
   }
   DCHECK_EQ(last_dot_pos, result.size() - 1);

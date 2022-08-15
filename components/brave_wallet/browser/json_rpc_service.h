@@ -651,9 +651,9 @@ class JsonRpcService : public JsonRpcServiceBase,
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
-  std::map<EnsGetEthAddrTask*,
-           std::pair<std::unique_ptr<EnsGetEthAddrTask>,
-                     std::vector<EnsGetEthAddrCallback>>>
+  base::flat_map<EnsGetEthAddrTask*,
+                 std::pair<std::unique_ptr<EnsGetEthAddrTask>,
+                           std::vector<EnsGetEthAddrCallback>>>
       ens_get_eth_add_tasks_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
