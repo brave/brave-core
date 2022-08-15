@@ -40,11 +40,12 @@ class EmbeddingProcessing final {
 
   bool SetEmbeddingPipeline(base::Value resource_value);
 
-  bool SetEmbeddingPipelineForTesting(const int version,
-                                const base::Time timestamp,
-                                const std::string& locale,
-                                const int dim,
-                                const std::map<std::string, VectorData>& embeddings);
+  bool SetEmbeddingPipelineForTesting(
+      const int version,
+      const base::Time timestamp,
+      const std::string& locale,
+      const int dim,
+      const std::map<std::string, VectorData>& embeddings);
 
   TextEmbeddingData EmbedText(const std::string& text) const;
 

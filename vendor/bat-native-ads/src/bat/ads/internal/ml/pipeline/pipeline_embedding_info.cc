@@ -24,8 +24,7 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
-bool EmbeddingPipelineInfo::FromValue(
-    base::Value value) {
+bool EmbeddingPipelineInfo::FromValue(base::Value value) {
   base::Value::Dict* resource = value.GetIfDict();
   if (!resource) {
     return false;

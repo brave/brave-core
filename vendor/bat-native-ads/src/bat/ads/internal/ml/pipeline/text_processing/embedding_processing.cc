@@ -63,19 +63,20 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
   return is_initialized_;
 }
 
-bool EmbeddingProcessing::SetEmbeddingPipelineForTesting(const int version,
-  const base::Time timestamp,
-  const std::string& locale,
-  const int dim,
-  const std::map<std::string, VectorData>& embeddings) {
-    embedding_pipeline_.version = version;
-    embedding_pipeline_.timestamp = timestamp;
-    embedding_pipeline_.locale = locale;
-    embedding_pipeline_.dim = dim;
-    embedding_pipeline_.embeddings = embeddings;
-    SetIsInitialized(true);
+bool EmbeddingProcessing::SetEmbeddingPipelineForTesting(
+    const int version,
+    const base::Time timestamp,
+    const std::string& locale,
+    const int dim,
+    const std::map<std::string, VectorData>& embeddings) {
+  embedding_pipeline_.version = version;
+  embedding_pipeline_.timestamp = timestamp;
+  embedding_pipeline_.locale = locale;
+  embedding_pipeline_.dim = dim;
+  embedding_pipeline_.embeddings = embeddings;
+  SetIsInitialized(true);
 
-    return is_initialized_;
+  return is_initialized_;
 }
 
 TextEmbeddingData EmbeddingProcessing::EmbedText(

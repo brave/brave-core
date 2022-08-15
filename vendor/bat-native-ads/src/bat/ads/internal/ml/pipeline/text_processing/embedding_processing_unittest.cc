@@ -38,11 +38,8 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
       {"unittest", VectorData({-0.2, 0.8, 1.0})},
       {"simple", VectorData({0.7, -0.1, 1.3})}};
 
-  embedding_processing.SetEmbeddingPipelineForTesting(version,
-                                timestamp,
-                                locale,
-                                dim,
-                                embeddings);
+  embedding_processing.SetEmbeddingPipelineForTesting(version, timestamp,
+                                                      locale, dim, embeddings);
 
   const std::map<std::string, VectorData> samples = {
       {"this simple unittest", VectorData({0.5, 0.4, 1.0})},
