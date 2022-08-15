@@ -47,7 +47,7 @@ IPFSHostResolver::IPFSHostResolver(
     : prefix_(prefix), network_context_(network_context) {
   DCHECK(network_context);
 }
-IPFSHostResolver::~IPFSHostResolver() {}
+IPFSHostResolver::~IPFSHostResolver() = default;
 
 void IPFSHostResolver::Resolve(const net::HostPortPair& host,
                                const net::NetworkIsolationKey& isolation_key,

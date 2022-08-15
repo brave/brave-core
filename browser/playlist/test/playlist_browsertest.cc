@@ -62,7 +62,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
   PlaylistBrowserTest() : weak_factory_(this) {
     scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
-  ~PlaylistBrowserTest() override {}
+  ~PlaylistBrowserTest() override = default;
 
   // PlatformBrowserTest overrides:
   void SetUpOnMainThread() override {

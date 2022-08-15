@@ -27,4 +27,4 @@ void BraveProfileAvatarDownloader::Start() {
   std::move(callback_).Run(gfx::Image(), "", base::FilePath());
 }
 
-BraveProfileAvatarDownloader::~BraveProfileAvatarDownloader() {}
+BraveProfileAvatarDownloader::~BraveProfileAvatarDownloader() = default;

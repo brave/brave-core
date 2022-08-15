@@ -21,7 +21,7 @@ class BraveProfileUtilTest : public testing::Test {
  public:
   BraveProfileUtilTest()
       : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {}
-  ~BraveProfileUtilTest() override {}
+  ~BraveProfileUtilTest() override = default;
 
  protected:
   void SetUp() override {

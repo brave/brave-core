@@ -47,7 +47,7 @@ BraveProfileImpl::BraveProfileImpl(
   }
 }
 
-BraveProfileImpl::~BraveProfileImpl() {}
+BraveProfileImpl::~BraveProfileImpl() = default;
 
 void BraveProfileImpl::OnProfileWillBeDestroyed(Profile* profile) {
   // this only happens when a profile is deleted because the profile manager

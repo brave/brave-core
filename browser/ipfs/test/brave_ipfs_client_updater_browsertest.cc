@@ -31,7 +31,7 @@ static const char kIpfsClientUpdaterComponentTestBase64PublicKey[] =
 
 class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
  public:
-  BraveIpfsClientUpdaterTest() {}
+  BraveIpfsClientUpdaterTest() = default;
 
   void SetUp() override {
     InitEmbeddedTestServer();
