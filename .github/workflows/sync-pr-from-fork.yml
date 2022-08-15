@@ -1,10 +1,14 @@
 name: Sync PR from fork
 
 on:
+  push:
+    branches:
+      - "aka/sync-pr-from-fork"
   workflow_dispatch:
     inputs:
       PR_NUMBER:
         required: true
+        default: "14619"
         description: "Number of the PR from the fork"
 
 jobs:
