@@ -115,12 +115,13 @@ public class WindowProtection {
     presentLocalAuthentication()
   }
 
-  private func updateVisibleStatusForForeground(_ determineLockWithPasscode: Bool = true) {
+  private func updateVisibleStatusForForeground(_ determineLockWithPasscode: Bool = true, completion: ((Bool) -> Void)? = nil) {
     var error: NSError?
     if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error),
       (error as? LAError)?.code == .passcodeNotSet {
       // User no longer has a passcode set so we can't evaluate the auth policy
       isVisible = false
+      completion?(false)
       return
     }
 
@@ -128,18 +129,24 @@ public class WindowProtection {
       let isLocked = Preferences.Privacy.lockWithPasscode.value
       isVisible = isLocked
       if isLocked {
-        presentLocalAuthentication()
+        presentLocalAuthentication() { status in
+          completion?(status)
+        }
       }
     } else {
       isVisible = true
-      presentLocalAuthentication()
+      presentLocalAuthentication() { status in
+        completion?(status)
+      }
     }
   }
 
-  private func presentLocalAuthentication() {
+  private func presentLocalAuthentication(completion: ((Bool) -> Void)? = nil) {
     if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
+      completion?(false)
       return
     }
+    
     lockedViewController.unlockButton.isHidden = true
     context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: Strings.authenticationLoginsTouchReason) { success, error in
       DispatchQueue.main.async { [self] in
@@ -152,9 +159,12 @@ public class WindowProtection {
             completion: { [self] _ in
               isVisible = false
               lockedViewController.view.alpha = 1.0
+              completion?(true)
             })
         } else {
           lockedViewController.unlockButton.isHidden = false
+          completion?(false)
+          
           if let error = error {
             log.error("Failed to unlock browser using local authentication: \(error.localizedDescription)")
           }
@@ -163,12 +173,14 @@ public class WindowProtection {
     }
   }
 
-  func presentAuthenticationForViewController(determineLockWithPasscode: Bool = true) {
+  func presentAuthenticationForViewController(determineLockWithPasscode: Bool = true, completion: ((Bool) -> Void)? = nil) {
     if isVisible {
       return
     }
 
     context = LAContext()
-    updateVisibleStatusForForeground(determineLockWithPasscode)
+    updateVisibleStatusForForeground(determineLockWithPasscode) { status in
+      completion?(status)
+    }
   }
 }
