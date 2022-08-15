@@ -20,6 +20,8 @@ jobs:
           PR_NUMBER: ${{ inputs.PR_NUMBER }}
         run: |
           set -x
+          git config --list
+          gh auth status
           JQ="jq -e -r"
 
           gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
