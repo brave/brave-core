@@ -19,7 +19,6 @@ jobs:
             SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           mkdir -p /home/runner/.ssh
-          ssh-keyscan github.com >> /home/runner/.ssh/known_hosts
           echo "${{ secrets.BRAVE_BUILDS_SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
@@ -52,8 +51,8 @@ jobs:
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
           git fetch contributor +"$headRefName":"$contribHeadRefName"
           git push -f origin "$contribHeadRefName"
-          # TODO remove `-d` draft
+
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
           if [[ "$existing_prs" = "[]" ]]; then
-            gh pr create -d -F ".github/PULL_REQUEST_TEMPLATE.md" -B "$baseRefName" -H "$contribHeadRefName" -t "Don't merge - this is a CI run for $url"
+            gh pr create -F ".github/PULL_REQUEST_TEMPLATE.md" -B "$baseRefName" -H "$contribHeadRefName" -t "Don't merge - this is a CI run for $url"
           fi
