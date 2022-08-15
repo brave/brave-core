@@ -210,7 +210,7 @@ BraveReferralsService::BraveReferralsService(PrefService* pref_service,
   }
 }
 
-BraveReferralsService::~BraveReferralsService() {}
+BraveReferralsService::~BraveReferralsService() = default;
 
 void BraveReferralsService::OnProfileAdded(Profile* profile) {
   if (profile == ProfileManager::GetPrimaryUserProfile()) {

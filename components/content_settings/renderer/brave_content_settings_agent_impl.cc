@@ -85,7 +85,7 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
           base::Unretained(this)));
 }
 
-BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {}
+BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() = default;
 
 bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
     const GURL& script_url) {

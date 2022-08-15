@@ -17,8 +17,7 @@ BraveComponent::BraveComponent(Delegate* delegate)
     : delegate_(delegate),
       weak_factory_(this) {}
 
-BraveComponent::~BraveComponent() {
-}
+BraveComponent::~BraveComponent() = default;
 
 void BraveComponent::Register(const std::string& component_name,
                               const std::string& component_id,

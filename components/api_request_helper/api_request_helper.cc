@@ -46,7 +46,7 @@ APIRequestHelper::APIRequestHelper(
     : annotation_tag_(annotation_tag),
       url_loader_factory_(url_loader_factory) {}
 
-APIRequestHelper::~APIRequestHelper() {}
+APIRequestHelper::~APIRequestHelper() = default;
 
 APIRequestHelper::Ticket APIRequestHelper::Request(
     const std::string& method,

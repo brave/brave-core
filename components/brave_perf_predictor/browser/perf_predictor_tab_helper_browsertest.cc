@@ -44,7 +44,7 @@ using brave_shields::TestFiltersProvider;
 
 class PerfPredictorTabHelperTest : public InProcessBrowserTest {
  public:
-  PerfPredictorTabHelperTest() {}
+  PerfPredictorTabHelperTest() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();

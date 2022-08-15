@@ -154,7 +154,7 @@ BraveVpnService::BraveVpnService(
   InitP3A();
 }
 
-BraveVpnService::~BraveVpnService() {}
+BraveVpnService::~BraveVpnService() = default;
 
 std::string BraveVpnService::GetCurrentEnvironment() const {
   return profile_prefs_->GetString(prefs::kBraveVPNEEnvironment);

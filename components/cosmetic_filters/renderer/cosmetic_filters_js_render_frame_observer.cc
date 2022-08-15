@@ -62,7 +62,8 @@ CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
       get_de_amp_enabled_closure_(std::move(get_de_amp_enabled_closure)),
       ready_(new base::OneShotEvent()) {}
 
-CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
+CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() =
+    default;
 
 void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
     const GURL& url,

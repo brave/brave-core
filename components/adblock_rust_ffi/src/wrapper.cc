@@ -38,9 +38,9 @@ FilterList::FilterList(const std::string& uuid,
 
 FilterList::FilterList(const FilterList& other) = default;
 
-FilterList::~FilterList() {}
+FilterList::~FilterList() = default;
 
-FilterListMetadata::FilterListMetadata() {}
+FilterListMetadata::FilterListMetadata() = default;
 
 FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {
   char* str_buffer;
@@ -56,7 +56,7 @@ FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {
   }
 }
 
-FilterListMetadata::~FilterListMetadata() {}
+FilterListMetadata::~FilterListMetadata() = default;
 
 FilterListMetadata::FilterListMetadata(FilterListMetadata&&) = default;
 

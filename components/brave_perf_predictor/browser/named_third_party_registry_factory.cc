@@ -27,7 +27,7 @@ NamedThirdPartyRegistryFactory::NamedThirdPartyRegistryFactory()
           "NamedThirdPartyRegistry",
           BrowserContextDependencyManager::GetInstance()) {}
 
-NamedThirdPartyRegistryFactory::~NamedThirdPartyRegistryFactory() {}
+NamedThirdPartyRegistryFactory::~NamedThirdPartyRegistryFactory() = default;
 
 KeyedService* NamedThirdPartyRegistryFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

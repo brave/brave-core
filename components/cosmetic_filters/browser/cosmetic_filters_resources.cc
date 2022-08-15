@@ -20,7 +20,7 @@ CosmeticFiltersResources::CosmeticFiltersResources(
     brave_shields::AdBlockService* ad_block_service)
     : ad_block_service_(ad_block_service) {}
 
-CosmeticFiltersResources::~CosmeticFiltersResources() {}
+CosmeticFiltersResources::~CosmeticFiltersResources() = default;
 
 void CosmeticFiltersResources::HiddenClassIdSelectors(
     const std::string& input,

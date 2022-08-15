@@ -15,7 +15,7 @@ LocalDataFilesObserver::LocalDataFilesObserver(
   local_data_files_observer_.Observe(local_data_files_service);
 }
 
-LocalDataFilesObserver::~LocalDataFilesObserver() {}
+LocalDataFilesObserver::~LocalDataFilesObserver() = default;
 
 void LocalDataFilesObserver::OnLocalDataFilesServiceDestroyed() {
   local_data_files_observer_.Reset();

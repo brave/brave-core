@@ -37,7 +37,7 @@ VpnRenderFrameObserver::VpnRenderFrameObserver(
     int32_t world_id)
     : RenderFrameObserver(render_frame), world_id_(world_id) {}
 
-VpnRenderFrameObserver::~VpnRenderFrameObserver() {}
+VpnRenderFrameObserver::~VpnRenderFrameObserver() = default;
 
 bool VpnRenderFrameObserver::EnsureConnected() {
   if (!vpn_service_.is_bound()) {
