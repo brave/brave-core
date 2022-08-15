@@ -129,12 +129,16 @@ extension BrowserViewController {
   }
 
   func claimPendingPromotions() {
-    guard let ledger = rewards.ledger else { return }
-    ledger.pendingPromotions.forEach { promo in
-      if promo.status == .active {
-        ledger.claimPromotion(promo) { success in
-          log.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
-        }
+    guard
+      let ledger = rewards.ledger,
+      case let promotions = ledger.pendingPromotions.filter({ $0.status == .active }),
+      !promotions.isEmpty else {
+      return
+    }
+    Task {
+      for promo in promotions {
+        let success = await ledger.claimPromotion(promo)
+        log.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
       }
     }
   }
@@ -318,5 +322,23 @@ extension Tab {
 
   func reportPageNavigation(to rewards: BraveRewards) {
     rewards.reportTabNavigation(tabId: self.rewardsId)
+  }
+}
+
+extension BrowserViewController: BraveAdsCaptchaHandler {
+  public func handleAdaptiveCaptcha(forPaymentId paymentId: String, captchaId: String) {
+    if Preferences.Rewards.adaptiveCaptchaFailureCount.value >= 10 {
+      log.info("Skipping adaptive captcha request as failure count exceeds threshold.")
+      return
+    }
+    Task {
+      do {
+        try await rewards.ledger?.solveAdaptiveCaptcha(paymentId: paymentId, captchaId: captchaId)
+      } catch {
+        // Increase failure count, stop attempting attestation altogether passed a specific count
+        Preferences.Rewards.adaptiveCaptchaFailureCount.value += 1
+        log.error("Failed to solve adaptive captcha: \(error.localizedDescription)")
+      }
+    }
   }
 }

@@ -224,7 +224,9 @@ class RewardsDebugSettingsViewController: TableViewController {
           Row(
             text: "Fetch & Claim Promotions",
             selection: { [unowned self] in
-              self.fetchAndClaimPromotions()
+              Task {
+                await self.fetchAndClaimPromotions()
+              }
             }, cellClass: ButtonCell.self),
         ]
       ),
@@ -258,6 +260,9 @@ class RewardsDebugSettingsViewController: TableViewController {
           Row(text: "Ads Received", detailText: adsInfo.map { "\($0.viewed)" } ?? "—"),
           Row(text: "Estimated Payout", detailText: adsInfo.map { "\($0.amount) BAT" } ?? "—"),
           Row(text: "Next Payment Date", detailText: adsInfo?.paymentDate.map { self.dateFormatter.string(from: $0) } ?? "—"),
+          Row(text: "Reset Adaptive Captcha Failure Count", selection: {
+            Preferences.Rewards.adaptiveCaptchaFailureCount.reset()
+          }, cellClass: ButtonCell.self)
         ]
       ),
       Section(
@@ -305,40 +310,37 @@ class RewardsDebugSettingsViewController: TableViewController {
     ]
   }
 
-  private func fetchAndClaimPromotions() {
+  private func fetchAndClaimPromotions() async {
     guard let ledger = rewards.ledger else { return }
-    ledger.fetchPromotions { [weak self] promotions in
-      guard let self = self else { return }
-      let activePromotions = promotions.filter { $0.status == .active }
-      if activePromotions.isEmpty {
-        let alert = UIAlertController(title: "Promotions", message: "No Active Promotions Found", preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true)
-        return
-      }
-      let group = DispatchGroup()
-      var successCount: Int = 0
-      var claimedAmount: Double = 0
-      var failuresCount: Int = 0
-      for promo in activePromotions {
-        group.enter()
-        ledger.claimPromotion(promo) { success in
-          if success {
-            successCount += 1
-            claimedAmount += promo.approximateValue
-          } else {
-            failuresCount += 1
-          }
-          group.leave()
-        }
-      }
-      group.notify(queue: .main) { [weak self] in
-        guard let self = self else { return }
-        let alert = UIAlertController(title: "Promotions", message: "Claimed: \(claimedAmount) BAT in \(successCount) Grants. (\(failuresCount) failures)", preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true)
+    let activePromotions: [Ledger.Promotion] = await withCheckedContinuation { c in
+      ledger.fetchPromotions { promotions in
+        c.resume(returning: promotions.filter { $0.status == .active })
       }
     }
+    if activePromotions.isEmpty {
+      let alert = UIAlertController(title: "Promotions", message: "No Active Promotions Found", preferredStyle: .alert)
+      alert.addAction(.init(title: "OK", style: .default, handler: nil))
+      self.present(alert, animated: true)
+      return
+    }
+    
+    var successCount: Int = 0
+    var claimedAmount: Double = 0
+    var failuresCount: Int = 0
+    
+    for promo in activePromotions {
+      let success = await ledger.claimPromotion(promo)
+      if success {
+        successCount += 1
+        claimedAmount += promo.approximateValue
+      } else {
+        failuresCount += 1
+      }
+    }
+    
+    let alert = UIAlertController(title: "Promotions", message: "Claimed: \(claimedAmount) BAT in \(successCount) Grants. (\(failuresCount) failures)", preferredStyle: .alert)
+    alert.addAction(.init(title: "OK", style: .default, handler: nil))
+    self.present(alert, animated: true)
   }
 
   private func createLegacyLedger() {
