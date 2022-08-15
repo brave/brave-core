@@ -33,4 +33,9 @@ extension String {
   public func toBase64() -> String {
     return Data(self.utf8).base64EncodedString()
   }
+  
+  /// Trim trailing and leading white space and new line characters to fetch better search suggestion text
+  public var preferredSearchSuggestionText: String {
+    return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+  }
 }

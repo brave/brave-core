@@ -13,6 +13,13 @@ class StringExtensionsTests: XCTestCase {
     XCTAssertEqual("foo456", "123foo456".stringByTrimmingLeadingCharactersInSet(.decimalDigits))
     XCTAssertEqual("", "123456".stringByTrimmingLeadingCharactersInSet(.decimalDigits))
   }
+  
+  func testPreferredSearchSuggestionText() {
+    XCTAssertEqual("brave", "   brave   ".preferredSearchSuggestionText)
+    XCTAssertEqual("bravesearch123", "bravesearch123".preferredSearchSuggestionText)
+    XCTAssertEqual("brave", "    brave".preferredSearchSuggestionText)
+    XCTAssertEqual("brave search talk- engine", "brave search talk- engine ".preferredSearchSuggestionText)
+  }
 
   func testPercentEscaping() {
     func roundtripTest(_ input: String, _ expected: String, file: StaticString = #file, line: UInt = #line) {
