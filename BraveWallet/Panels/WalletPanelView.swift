@@ -35,13 +35,20 @@ public struct WalletPanelContainerView: View {
 
   private var visibleScreen: VisibleScreen {
     let keyring = keyringStore.defaultKeyring
-    if keyringStore.defaultKeyring.id.isEmpty || keyringStore.selectedAccount.address.isEmpty {
+    // check if we are still fetching the `defaultKeyring`
+    if keyringStore.defaultKeyring.id.isEmpty {
       return .loading
     }
+    // keyring fetched, check if user has created a wallet
     if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
       return .onboarding
     }
-    if keyring.isLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {
+    // keyring fetched & wallet setup, but selected account not fetched
+    if keyringStore.selectedAccount.address.isEmpty {
+      return .loading
+    }
+    // keyring fetched & wallet setup, wallet is locked
+    if keyring.isLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible { // wallet is locked
       return .unlock
     }
     return .panel
