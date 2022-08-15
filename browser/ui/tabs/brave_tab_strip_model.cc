@@ -22,7 +22,7 @@ BraveTabStripModel::BraveTabStripModel(
     Profile* profile,
     TabGroupModelFactory* group_model_factory)
     : TabStripModel(delegate, profile, group_model_factory) {}
-BraveTabStripModel::~BraveTabStripModel() {}
+BraveTabStripModel::~BraveTabStripModel() = default;
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
                                            UserGestureDetails detail) {

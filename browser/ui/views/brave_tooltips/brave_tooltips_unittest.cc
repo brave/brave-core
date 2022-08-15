@@ -36,7 +36,7 @@ class MockBraveTooltipDelegate : public brave_tooltips::BraveTooltipDelegate {
 
 class BraveTooltipsTest : public ChromeViewsTestBase {
  public:
-  BraveTooltipsTest() {}
+  BraveTooltipsTest() = default;
 
  protected:
   void SetUp() override {

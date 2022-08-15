@@ -113,7 +113,7 @@ class OnionLocationButtonView : public views::LabelButton {
   OnionLocationButtonView(const OnionLocationButtonView&) = delete;
   OnionLocationButtonView& operator=(const OnionLocationButtonView&) = delete;
 
-  ~OnionLocationButtonView() override {}
+  ~OnionLocationButtonView() override = default;
 
   void SetOnionLocation(GURL location) { onion_location_ = location; }
 
@@ -157,7 +157,7 @@ OnionLocationView::OnionLocationView(Profile* profile) {
   AddChildView(button_);
 }
 
-OnionLocationView::~OnionLocationView() {}
+OnionLocationView::~OnionLocationView() = default;
 
 void OnionLocationView::Update(content::WebContents* web_contents) {
   if (!web_contents)

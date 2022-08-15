@@ -73,9 +73,9 @@ class AdblockDOMHandler
       service_observer_{this};
 };
 
-AdblockDOMHandler::AdblockDOMHandler() {}
+AdblockDOMHandler::AdblockDOMHandler() = default;
 
-AdblockDOMHandler::~AdblockDOMHandler() {}
+AdblockDOMHandler::~AdblockDOMHandler() = default;
 
 void AdblockDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(

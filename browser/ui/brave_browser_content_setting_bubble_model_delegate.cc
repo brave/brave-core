@@ -18,8 +18,7 @@ BraveBrowserContentSettingBubbleModelDelegate(Browser* browser) :
 }
 
 BraveBrowserContentSettingBubbleModelDelegate::
-~BraveBrowserContentSettingBubbleModelDelegate() {
-}
+    ~BraveBrowserContentSettingBubbleModelDelegate() = default;
 
 void
 BraveBrowserContentSettingBubbleModelDelegate::ShowWidevineLearnMorePage() {

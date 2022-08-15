@@ -23,9 +23,9 @@ const char RoundedSeparator::kViewClassName[] = "RoundedSeparator";
 // static
 const int RoundedSeparator::kThickness = 1;
 
-RoundedSeparator::RoundedSeparator() {}
+RoundedSeparator::RoundedSeparator() = default;
 
-RoundedSeparator::~RoundedSeparator() {}
+RoundedSeparator::~RoundedSeparator() = default;
 
 void RoundedSeparator::SetColor(SkColor color) {
   overridden_color_ = color;

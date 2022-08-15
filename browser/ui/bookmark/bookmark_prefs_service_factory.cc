@@ -29,7 +29,7 @@ BookmarkPrefsServiceFactory::BookmarkPrefsServiceFactory()
           "BookmarkPrefsService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-BookmarkPrefsServiceFactory::~BookmarkPrefsServiceFactory() {}
+BookmarkPrefsServiceFactory::~BookmarkPrefsServiceFactory() = default;
 
 KeyedService* BookmarkPrefsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

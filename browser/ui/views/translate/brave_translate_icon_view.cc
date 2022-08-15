@@ -27,8 +27,7 @@ BraveTranslateIconView::BraveTranslateIconView(
       weak_ptr_factory_(this) {
 }
 
-BraveTranslateIconView::~BraveTranslateIconView() {
-}
+BraveTranslateIconView::~BraveTranslateIconView() = default;
 
 void BraveTranslateIconView::InstallGoogleTranslate() {
   if (!GetWebContents())

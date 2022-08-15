@@ -38,8 +38,7 @@ BraveWaybackMachineInfoBarButtonContainer::
 }
 
 BraveWaybackMachineInfoBarButtonContainer::
-~BraveWaybackMachineInfoBarButtonContainer() {
-}
+    ~BraveWaybackMachineInfoBarButtonContainer() = default;
 
 void BraveWaybackMachineInfoBarButtonContainer::Layout() {
   if (throbber_->GetVisible()) {

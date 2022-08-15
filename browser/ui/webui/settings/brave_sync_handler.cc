@@ -60,7 +60,7 @@ std::string GetSyncCodeValidationString(
 
 BraveSyncHandler::BraveSyncHandler() : weak_ptr_factory_(this) {}
 
-BraveSyncHandler::~BraveSyncHandler() {}
+BraveSyncHandler::~BraveSyncHandler() = default;
 
 void BraveSyncHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());

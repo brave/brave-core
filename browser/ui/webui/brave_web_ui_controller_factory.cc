@@ -264,6 +264,6 @@ BraveWebUIControllerFactory* BraveWebUIControllerFactory::GetInstance() {
   return base::Singleton<BraveWebUIControllerFactory>::get();
 }
 
-BraveWebUIControllerFactory::BraveWebUIControllerFactory() {}
+BraveWebUIControllerFactory::BraveWebUIControllerFactory() = default;
 
-BraveWebUIControllerFactory::~BraveWebUIControllerFactory() {}
+BraveWebUIControllerFactory::~BraveWebUIControllerFactory() = default;

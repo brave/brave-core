@@ -77,4 +77,4 @@ WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui,
       profile->GetURLLoaderFactory()));
 }
 
-WebcompatReporterUI::~WebcompatReporterUI() {}
+WebcompatReporterUI::~WebcompatReporterUI() = default;
