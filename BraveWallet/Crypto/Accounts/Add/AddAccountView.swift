@@ -77,6 +77,7 @@ struct AddAccountView: View {
       }
       privateKeySection
     }
+    .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
     .navigationBarItems(
