@@ -49,7 +49,7 @@ jobs:
 
           git remote add contributor "git@github.com:$headRepositoryOwnerLogin/$headRepositoryName.git" || :
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
-          git fetch contributor +"$headRefName":"$contribHeadRefName"
+          git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
           git push -f origin "$contribHeadRefName"
 
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
