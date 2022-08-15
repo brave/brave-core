@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
@@ -127,37 +128,41 @@ void Migrate(InitializeCallback callback) {
   BLOG(3, "Loading conversion state");
 
   AdsClientHelper::GetInstance()->Load(
-      kFilename, [=](const bool success, const std::string& json) {
-        if (!success) {
-          // Conversion state does not exist
-          SuccessfullyMigrated(callback);
-          return;
-        }
+      kFilename, base::BindOnce(
+                     [](InitializeCallback callback, const bool success,
+                        const std::string& json) {
+                       if (!success) {
+                         // Conversion state does not exist
+                         SuccessfullyMigrated(callback);
+                         return;
+                       }
 
-        const absl::optional<ConversionQueueItemList> conversion_queue_items =
-            FromJson(json);
-        if (!conversion_queue_items) {
-          BLOG(0, "Failed to parse conversion state");
-          FailedToMigrate(callback);
-          return;
-        }
+                       const absl::optional<ConversionQueueItemList>
+                           conversion_queue_items = FromJson(json);
+                       if (!conversion_queue_items) {
+                         BLOG(0, "Failed to parse conversion state");
+                         FailedToMigrate(callback);
+                         return;
+                       }
 
-        BLOG(3, "Successfully loaded conversion state");
+                       BLOG(3, "Successfully loaded conversion state");
 
-        BLOG(1, "Migrating conversion state");
+                       BLOG(1, "Migrating conversion state");
 
-        database::table::ConversionQueue conversion_queue;
-        conversion_queue.Save(*conversion_queue_items, [=](const bool success) {
-          if (!success) {
-            BLOG(0, "Failed to save conversion state");
-            FailedToMigrate(callback);
-            return;
-          }
+                       database::table::ConversionQueue conversion_queue;
+                       conversion_queue.Save(
+                           *conversion_queue_items, [=](const bool success) {
+                             if (!success) {
+                               BLOG(0, "Failed to save conversion state");
+                               FailedToMigrate(callback);
+                               return;
+                             }
 
-          BLOG(3, "Successfully migrated conversion state");
-          SuccessfullyMigrated(callback);
-        });
-      });
+                             BLOG(3, "Successfully migrated conversion state");
+                             SuccessfullyMigrated(callback);
+                           });
+                     },
+                     callback));
 }
 
 }  // namespace conversions

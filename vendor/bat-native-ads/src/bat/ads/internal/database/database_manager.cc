@@ -64,34 +64,38 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), [=](mojom::DBCommandResponseInfoPtr response) {
-        DCHECK(response);
+      std::move(transaction), base::BindOnce(&DatabaseManager::OnCreateOrOpen,
+                                             base::Unretained(this), callback));
+}
 
-        if (response->status !=
-                mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
-            !response->result) {
-          BLOG(0, "Failed to open or create database");
-          NotifyFailedToCreateOrOpenDatabase();
-          callback(/* success */ false);
-          return;
-        }
+void DatabaseManager::OnCreateOrOpen(ResultCallback callback,
+                                     mojom::DBCommandResponseInfoPtr response) {
+  DCHECK(response);
 
-        NotifyDidCreateOrOpenDatabase();
+  if (response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
+      !response->result) {
+    BLOG(0, "Failed to open or create database");
+    NotifyFailedToCreateOrOpenDatabase();
+    callback(/* success */ false);
+    return;
+  }
 
-        DCHECK(response->result->get_value()->which() ==
-               mojom::DBValue::Tag::kIntValue);
-        const int from_version = response->result->get_value()->get_int_value();
-        MaybeMigrate(from_version, [=](const bool success) {
-          if (!success) {
-            callback(/* success */ false);
-            return;
-          }
+  NotifyDidCreateOrOpenDatabase();
 
-          NotifyDatabaseIsReady();
+  DCHECK(response->result->get_value()->which() ==
+         mojom::DBValue::Tag::kIntValue);
+  const int from_version = response->result->get_value()->get_int_value();
+  MaybeMigrate(from_version, [=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
+      return;
+    }
 
-          callback(/* success */ true);
-        });
-      });
+    NotifyDatabaseIsReady();
+
+    callback(/* success */ true);
+  });
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -8,8 +8,8 @@
 namespace ads {
 namespace database {
 
-void OnResultCallback(mojom::DBCommandResponseInfoPtr response,
-                      ResultCallback callback) {
+void OnResultCallback(ResultCallback callback,
+                      mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
   if (response->status !=

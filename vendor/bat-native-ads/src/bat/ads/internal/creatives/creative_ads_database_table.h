@@ -47,9 +47,9 @@ class CreativeAds final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
                                        const CreativeAdList& creative_ads);
 
-  void OnGetForCreativeInstanceId(mojom::DBCommandResponseInfoPtr response,
-                                  const std::string& creative_instance_id,
-                                  GetCreativeAdCallback callback);
+  void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
+                                  GetCreativeAdCallback callback,
+                                  mojom::DBCommandResponseInfoPtr response);
 
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };

@@ -58,9 +58,9 @@ void Issuers::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback =
-      std::bind(&Issuers::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&Issuers::OnFetch, base::Unretained(this)));
 }
 
 void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {

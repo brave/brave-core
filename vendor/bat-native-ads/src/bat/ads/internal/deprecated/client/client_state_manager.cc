@@ -542,9 +542,9 @@ void ClientStateManager::Save() {
     SetHash(json);
   }
 
-  auto callback =
-      std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(
+      kClientStateFilename, json,
+      base::BindOnce(&ClientStateManager::OnSaved, base::Unretained(this)));
 }
 
 void ClientStateManager::OnSaved(const bool success) {
@@ -560,9 +560,9 @@ void ClientStateManager::OnSaved(const bool success) {
 void ClientStateManager::Load() {
   BLOG(3, "Loading client state");
 
-  auto callback = std::bind(&ClientStateManager::OnLoaded, this,
-                            std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::GetInstance()->Load(kClientStateFilename, callback);
+  AdsClientHelper::GetInstance()->Load(
+      kClientStateFilename,
+      base::BindOnce(&ClientStateManager::OnLoaded, base::Unretained(this)));
 }
 
 void ClientStateManager::OnLoaded(const bool success, const std::string& json) {

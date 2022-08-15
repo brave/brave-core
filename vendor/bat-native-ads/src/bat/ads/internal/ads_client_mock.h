@@ -56,7 +56,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD3(Save,
                void(const std::string& name,
                     const std::string& value,
-                    ResultCallback callback));
+                    SaveCallback callback));
   MOCK_METHOD2(Load, void(const std::string& name, LoadCallback callback));
   MOCK_METHOD3(LoadFileResource,
                void(const std::string& id,
