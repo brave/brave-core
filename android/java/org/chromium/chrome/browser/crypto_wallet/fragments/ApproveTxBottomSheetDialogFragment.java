@@ -256,6 +256,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                 if (perTxFee.get(mTxInfo.id) != null) {
                                     mSolanaEstimatedTxFee = perTxFee.get(mTxInfo.id);
                                 }
+                                if (!canUpdateUi()) return;
                                 ParsedTransaction parsedTx = fillAssetDependentControls(view,
                                         selectedNetwork, accounts, new HashMap<String, Double>(),
                                         tokenList, new HashMap<String, Double>(),
@@ -278,6 +279,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                         selectedNetwork, accounts, filterByTokens, false,
                                         (assetPrices, fullTokenList, nativeAssetsBalances,
                                                 blockchainTokensBalances) -> {
+                                            if (!canUpdateUi()) return;
                                             fillAssetDependentControls(view, selectedNetwork,
                                                     accounts, assetPrices, fullTokenList,
                                                     nativeAssetsBalances, blockchainTokensBalances,
@@ -439,6 +441,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             }
             dismiss();
         });
+    }
+
+    private boolean canUpdateUi() {
+        return isAdded() && getActivity() != null;
     }
 
     @Override
