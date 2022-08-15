@@ -113,8 +113,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
-    new skus::SkusRenderFrameObserver(render_frame,
-                                      content::ISOLATED_WORLD_ID_GLOBAL);
+    new skus::SkusRenderFrameObserver(render_frame);
   }
 
 #if BUILDFLAG(IS_ANDROID)

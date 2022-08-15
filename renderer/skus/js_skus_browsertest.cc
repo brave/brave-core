@@ -32,8 +32,7 @@ class JsSkusBrowserTest : public content::RenderViewTest {
 };
 
 TEST_F(JsSkusBrowserTest, AttachSkus) {
-  SkusRenderFrameObserver observer(GetMainRenderFrame(),
-                                   content::ISOLATED_WORLD_ID_GLOBAL);
+  SkusRenderFrameObserver observer(GetMainRenderFrame());
   std::u16string command =
       u"Number((window.chrome  !== undefined) && (window.chrome.braveSkus !== "
       u"undefined) && "

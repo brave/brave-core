@@ -18,28 +18,16 @@
 namespace skus {
 
 SkusRenderFrameObserver::SkusRenderFrameObserver(
-    content::RenderFrame* render_frame,
-    int32_t world_id)
-    : RenderFrameObserver(render_frame), world_id_(world_id) {}
+    content::RenderFrame* render_frame)
+    : RenderFrameObserver(render_frame) {}
 
 SkusRenderFrameObserver::~SkusRenderFrameObserver() = default;
 
-void SkusRenderFrameObserver::DidCreateScriptContext(
-    v8::Local<v8::Context> context,
-    int32_t world_id) {
-  if (!render_frame()->IsMainFrame() || world_id_ != world_id)
-    return;
-
+void SkusRenderFrameObserver::DidClearWindowObject() {
   if (!IsAllowed())
     return;
 
-  if (!native_javascript_handle_) {
-    native_javascript_handle_ = std::make_unique<SkusJSHandler>(render_frame());
-  } else {
-    native_javascript_handle_->ResetRemote(render_frame());
-  }
-
-  native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+  SkusJSHandler::Install(render_frame());
 }
 
 bool SkusRenderFrameObserver::IsAllowed() {
