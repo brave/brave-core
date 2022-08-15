@@ -41,7 +41,7 @@ class BitflyerUtilTest : public testing::Test {
         std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
   }
 
-  ~BitflyerUtilTest() override {}
+  ~BitflyerUtilTest() override = default;
 };
 
 TEST_F(BitflyerUtilTest, GetClientId) {

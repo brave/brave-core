@@ -27,8 +27,7 @@ namespace braveledger_media {
 GitHub::GitHub(ledger::LedgerImpl* ledger) : ledger_(ledger) {
 }
 
-GitHub::~GitHub() {
-}
+GitHub::~GitHub() = default;
 
 // static
 std::string GitHub::GetLinkType(const std::string& url) {

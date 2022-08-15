@@ -41,7 +41,7 @@ Media::Media(ledger::LedgerImpl* ledger):
   media_github_(new braveledger_media::GitHub(ledger)) {
 }  // namespace braveledger_media
 
-Media::~Media() {}
+Media::~Media() = default;
 
 // static
 std::string Media::GetLinkType(

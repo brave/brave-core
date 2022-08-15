@@ -25,8 +25,7 @@ YouTube::YouTube(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 
-YouTube::~YouTube() {
-}
+YouTube::~YouTube() = default;
 
 // static
 std::string YouTube::GetMediaIdFromParts(

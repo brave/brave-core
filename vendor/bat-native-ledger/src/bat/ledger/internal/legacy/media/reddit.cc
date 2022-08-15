@@ -27,8 +27,7 @@ namespace braveledger_media {
 Reddit::Reddit(ledger::LedgerImpl* ledger): ledger_(ledger) {
 }
 
-Reddit::~Reddit() {
-}
+Reddit::~Reddit() = default;
 
 void Reddit::ProcessActivityFromUrl(
     uint64_t window_id,
