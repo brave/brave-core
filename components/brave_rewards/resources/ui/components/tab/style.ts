@@ -74,7 +74,9 @@ export const StyledText = styled('div')<StyleProps>`
   position: relative;
   font-size: 14px;
   width: 70%;
-  margin: 13px auto 0 auto;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
   text-overflow: ellipsis;
   display: block;
   overflow: hidden;
