@@ -31,13 +31,6 @@ import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import SolanaLedgerKeyring from '../hardware/ledgerjs/solana_ledger_keyring'
 import { SignedLotusMessage } from '@glif/filecoin-message'
 
-let uuid = 0
-window.crypto = {
-  randomUUID () {
-    return uuid++
-  }
-}
-
 const getMockedLedgerEthKeyring = (expectedPath: string, expectedData: string | BraveWallet.TransactionInfo, signed?: SignHardwareOperationResult) => {
   return {
     type: (): HardwareVendor => {
