@@ -6,7 +6,6 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 
 #include <algorithm>
-#include <string>
 
 #include "base/strings/string_util.h"
 #include "bat/ads/internal/base/strings/string_html_parse_util.h"
@@ -15,7 +14,7 @@
 namespace ads {
 namespace processor {
 
-std::string SanitizeText(const std::string& text, bool is_html) {
+std::string SanitizeText(const std::string& text, const bool is_html) {
   std::string sanitized_text = text;
   if (is_html) {
     sanitized_text = ParseTagAttribute(sanitized_text, "og:title", "content");

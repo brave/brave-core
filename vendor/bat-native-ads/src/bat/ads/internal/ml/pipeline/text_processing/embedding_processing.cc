@@ -31,13 +31,13 @@ std::unique_ptr<EmbeddingProcessing> EmbeddingProcessing::CreateFromValue(
     std::string* error_message) {
   DCHECK(error_message);
 
-  auto text_processing = std::make_unique<EmbeddingProcessing>();
-  if (!text_processing->SetEmbeddingPipeline(std::move(resource_value))) {
-    *error_message = "Failed to parse text embedding pipeline JSON";
+  auto embedding_processing = std::make_unique<EmbeddingProcessing>();
+  if (!embedding_processing->SetEmbeddingPipeline(std::move(resource_value))) {
+    *error_message = "Failed to parse embedding pipeline JSON";
     return {};
   }
 
-  return text_processing;
+  return embedding_processing;
 }
 
 bool EmbeddingProcessing::IsInitialized() const {

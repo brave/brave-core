@@ -6,15 +6,12 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
 #include <map>
-#include <string>
 #include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
-#include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
