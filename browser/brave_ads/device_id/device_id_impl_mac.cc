@@ -71,34 +71,34 @@ std::string GetVolumeUUIDFromBSDName(const std::string& bsd_name) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::MAY_BLOCK);
 
-  const CFAllocatorRef allocator = NULL;
+  const CFAllocatorRef allocator = nullptr;
 
   const base::ScopedCFTypeRef<DASessionRef> session(DASessionCreate(allocator));
-  if (session.get() == NULL) {
+  if (!session) {
     return {};
   }
 
   const base::ScopedCFTypeRef<DADiskRef> disk(
       DADiskCreateFromBSDName(allocator, session, bsd_name.c_str()));
-  if (disk.get() == NULL) {
+  if (!disk) {
     return {};
   }
 
   const base::ScopedCFTypeRef<CFDictionaryRef> disk_description(
       DADiskCopyDescription(disk));
-  if (disk_description.get() == NULL) {
+  if (!disk_description) {
     return {};
   }
 
   const CFUUIDRef volume_uuid = base::mac::GetValueFromDictionary<CFUUIDRef>(
       disk_description, kDADiskDescriptionVolumeUUIDKey);
-  if (volume_uuid == NULL) {
+  if (volume_uuid == nullptr) {
     return {};
   }
 
   const base::ScopedCFTypeRef<CFStringRef> volume_uuid_as_string(
       CFUUIDCreateString(allocator, volume_uuid));
-  if (volume_uuid_as_string.get() == NULL) {
+  if (!volume_uuid_as_string) {
     return {};
   }
 

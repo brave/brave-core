@@ -61,7 +61,7 @@ void ShowFirstRunDialog(Profile* profile) {
 void BraveFirstRunDialog::Show(base::RepeatingClosure quit_runloop) {
   BraveFirstRunDialog* dialog =
       new BraveFirstRunDialog(std::move(quit_runloop));
-  views::DialogDelegate::CreateDialogWidget(dialog, NULL, NULL)->Show();
+  views::DialogDelegate::CreateDialogWidget(dialog, nullptr, nullptr)->Show();
 }
 
 BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)

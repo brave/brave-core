@@ -44,7 +44,7 @@ std::string NEVPNStatusToString(NEVPNStatus status) {
 
 NSData* GetPasswordRefForAccount() {
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
-  CFTypeRef copy_result = NULL;
+  CFTypeRef copy_result = nullptr;
   NSDictionary* query = @{
     (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecAttrService : bundle_id,
@@ -79,7 +79,7 @@ OSStatus StorePassword(const NSString* password) {
     return errSecParam;
   }
 
-  CFTypeRef result = NULL;
+  CFTypeRef result = nullptr;
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
   NSData* password_data = [password dataUsingEncoding:NSUTF8StringEncoding];
   NSDictionary* sec_item = @{

@@ -73,39 +73,39 @@ const PrepopulatedEngine duckduckgo = {
     "https://duckduckgo.com/?q={searchTerms}&t=brave",
     "UTF-8",
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     0,
     SEARCH_ENGINE_DUCKDUCKGO,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 };
 
 const PrepopulatedEngine duckduckgo_de =
     ModifyEngineParams(duckduckgo,
-                       NULL,
-                       NULL,
+                       nullptr,
+                       nullptr,
                        "https://duckduckgo.com/?q={searchTerms}&t=bravened",
-                       NULL,
-                       NULL,
+                       nullptr,
+                       nullptr,
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE);
 
 const PrepopulatedEngine duckduckgo_au_nz_ie =
     ModifyEngineParams(duckduckgo,
-                       NULL,
-                       NULL,
+                       nullptr,
+                       nullptr,
                        "https://duckduckgo.com/?q={searchTerms}&t=braveed",
-                       NULL,
-                       NULL,
+                       nullptr,
+                       nullptr,
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE);
 
 #if BUILDFLAG(IS_ANDROID)
@@ -136,7 +136,7 @@ const PrepopulatedEngine duckduckgo_lite = {
 
 const PrepopulatedEngine brave_ecosia =
     ModifyEngineParams(ecosia,
-                       NULL,
+                       nullptr,
                        L":e",
                        "https://www.ecosia.org/search?tt="
 #if BUILDFLAG(IS_ANDROID)
@@ -146,7 +146,7 @@ const PrepopulatedEngine brave_ecosia =
 #endif
                        "&q={searchTerms}&addon=brave",
                        "https://ac.ecosia.org/?q={searchTerms}",
-                       NULL,
+                       nullptr,
                        PREPOPULATED_ENGINE_ID_ECOSIA);
 
 const PrepopulatedEngine qwant = {
@@ -156,20 +156,20 @@ const PrepopulatedEngine qwant = {
     "https://www.qwant.com/?q={searchTerms}&client=brz-brave",
     "UTF-8",
     "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     0,
     SEARCH_ENGINE_QWANT,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     PREPOPULATED_ENGINE_ID_QWANT,
 };
 
@@ -182,27 +182,27 @@ const PrepopulatedEngine startpage = {
     "UTF-8",
     "https://www.startpage.com/cgi-bin/"
     "csuggest?query={searchTerms}&limit=10&format=json",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     0,
     SEARCH_ENGINE_OTHER,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
 const PrepopulatedEngine brave_yandex =
     ModifyEngineParams(yandex_com,
                        L"Yandex",
-                       NULL,
+                       nullptr,
                        "https://yandex.ru/search/?clid="
 #if BUILDFLAG(IS_ANDROID)
                        "2423859"
@@ -212,7 +212,7 @@ const PrepopulatedEngine brave_yandex =
                        "&text={searchTerms}",
                        "https://suggest.yandex.ru/suggest-ff.cgi?"
                        "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
-                       NULL,
+                       nullptr,
                        PREPOPULATED_ENGINE_ID_YANDEX);
 
 const PrepopulatedEngine brave_search = {
@@ -227,26 +227,26 @@ const PrepopulatedEngine brave_search = {
 #endif
     "UTF-8",
     "https://search.brave.com/api/suggest?q={searchTerms}",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     0,
     SEARCH_ENGINE_OTHER,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     PREPOPULATED_ENGINE_ID_BRAVE,
 };
 
 const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
     brave_search,
-    NULL,
+    nullptr,
     L":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion",
     "https://"
     "search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/"
@@ -254,13 +254,13 @@ const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
     "https://"
     "search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/api/"
     "suggest?q={searchTerms}",
-    NULL,
+    nullptr,
     PREPOPULATED_ENGINE_ID_BRAVE_TOR);
 
 const PrepopulatedEngine brave_bing = ModifyEngineParams(
     bing,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     "https://www.bing.com/search?q={searchTerms}",
     "https://www.bing.com/osjson.aspx?query={searchTerms}&language={language}",
     "https://www.bing.com/images/detail/search?iss=sbiupload#enterInsights",

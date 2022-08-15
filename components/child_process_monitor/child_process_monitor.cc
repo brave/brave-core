@@ -80,7 +80,7 @@ void SetupPipeHack() {
   memset(&action, 0, sizeof(action));
   action.sa_handler = SIGCHLDHandler;
   action.sa_flags = SA_RESTART;
-  sigaction(SIGCHLD, &action, NULL);
+  sigaction(SIGCHLD, &action, nullptr);
 }
 
 void TearDownPipeHack() {
@@ -88,7 +88,7 @@ void TearDownPipeHack() {
   memset(&action, 0, sizeof(action));
   action.sa_handler = SIG_DFL;
   action.sa_flags = SA_RESTART;
-  sigaction(SIGCHLD, &action, NULL);
+  sigaction(SIGCHLD, &action, nullptr);
   close(pipehack[0]);
   close(pipehack[1]);
 }

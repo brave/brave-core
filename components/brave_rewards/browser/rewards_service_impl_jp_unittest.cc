@@ -50,7 +50,7 @@ class RewardsServiceJPTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     SetMockLocale("ja-JP");
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
-    ASSERT_TRUE(profile_.get() != NULL);
+    ASSERT_TRUE(profile_);
 #if BUILDFLAG(ENABLE_GREASELION)
     auto* rewards_ = new RewardsServiceImpl(profile(), nullptr);
 #else
@@ -59,8 +59,8 @@ class RewardsServiceJPTest : public testing::Test {
     RewardsServiceFactory::SetServiceForTesting(std::move(rewards_));
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile()));
-    ASSERT_TRUE(RewardsServiceFactory::GetInstance() != NULL);
-    ASSERT_TRUE(rewards_service() != NULL);
+    ASSERT_TRUE(RewardsServiceFactory::GetInstance());
+    ASSERT_TRUE(rewards_service());
 
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitchASCII("rewards", "countryid=19024");

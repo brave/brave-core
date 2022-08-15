@@ -63,7 +63,7 @@ class BraveSyncClientTest : public testing::Test {
   void SetUp() override {
     EXPECT_TRUE(temp_dir_.CreateUniqueTempDir());
     profile_ = CreateProfile(temp_dir_.GetPath());
-    EXPECT_TRUE(profile_.get() != NULL);
+    EXPECT_TRUE(profile_);
 
     SetupAdblockServiceForBraveBrowserProcess();
   }
