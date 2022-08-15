@@ -996,6 +996,8 @@ source_set("ads") {
     "src/bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h",
     "src/bat/ads/internal/processors/contextual/text_classification/text_classification_processor.cc",
     "src/bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h",
+    "src/bat/ads/internal/reactions/reactions.cc",
+    "src/bat/ads/internal/reactions/reactions.h",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.cc",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.cc",
