@@ -16,8 +16,8 @@
 
 class BraveMainDelegateRuntimeFlagsBrowserTest : public PlatformBrowserTest {
  public:
-  BraveMainDelegateRuntimeFlagsBrowserTest() {}
-  ~BraveMainDelegateRuntimeFlagsBrowserTest() override {}
+  BraveMainDelegateRuntimeFlagsBrowserTest() = default;
+  ~BraveMainDelegateRuntimeFlagsBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     command_line->AppendSwitch(switches::kDisableDnsOverHttps);

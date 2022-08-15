@@ -57,7 +57,7 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(
   LoadPrefs();
 }
 
-BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {}
+BraveStatsUpdaterParams::~BraveStatsUpdaterParams() = default;
 
 std::string BraveStatsUpdaterParams::GetDailyParam() const {
   return BooleanToString(

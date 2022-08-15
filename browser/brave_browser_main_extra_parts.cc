@@ -50,11 +50,9 @@ void RecordInitialP3AValues() {
 
 }  // namespace
 
-BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() {
-}
+BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() = default;
 
-BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() {
-}
+BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() = default;
 
 void BraveBrowserMainExtraParts::PostBrowserStart() {
   g_brave_browser_process->StartBraveServices();

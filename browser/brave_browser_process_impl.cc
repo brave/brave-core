@@ -105,7 +105,7 @@ void InitSystemRequestHandlerCallback() {
 
 using content::BrowserThread;
 
-BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {}
+BraveBrowserProcessImpl::~BraveBrowserProcessImpl() = default;
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
     : BrowserProcessImpl(startup_data) {

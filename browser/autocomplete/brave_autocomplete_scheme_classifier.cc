@@ -28,8 +28,8 @@ BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
 #endif
 }
 
-BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() {
-}
+BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() =
+    default;
 
 // Without this override, typing in brave:// URLs will search Google
 metrics::OmniboxInputType

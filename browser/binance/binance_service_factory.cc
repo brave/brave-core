@@ -27,8 +27,7 @@ BinanceServiceFactory::BinanceServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
 }
 
-BinanceServiceFactory::~BinanceServiceFactory() {
-}
+BinanceServiceFactory::~BinanceServiceFactory() = default;
 
 KeyedService* BinanceServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
