@@ -292,12 +292,15 @@ extension LoginInfoViewController {
 extension LoginInfoViewController {
 
   @objc private func edit() {
-    isEditingFieldData = true
-
-    cellForItem(InfoItem.usernameItem)?.descriptionTextField.becomeFirstResponder()
-
-    navigationItem.rightBarButtonItem =
-      UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+    askForAuthentication() { [weak self] status in
+      guard let self = self, status else { return }
+      
+      self.isEditingFieldData = true
+      self.cellForItem(InfoItem.usernameItem)?.descriptionTextField.becomeFirstResponder()
+      
+      self.navigationItem.rightBarButtonItem =
+        UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.done))
+    }
   }
 
   private func showActionMenu(for indexPath: IndexPath) {
@@ -314,10 +317,11 @@ extension LoginInfoViewController {
   }
 
   @objc private func done() {
+    isEditingFieldData = false
+    
     updateLoginInfo { [weak self] success in
       guard let self = self else { return }
 
-      self.isEditingFieldData = false
       if success {
         self.tableView.reloadData()
       }
@@ -374,6 +378,7 @@ extension LoginInfoViewController {
 // MARK: LoginInfoTableViewCellDelegate
 
 extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
+  
   func shouldReturnAfterEditingTextField(_ cell: LoginInfoTableViewCell) -> Bool {
     switch cell.tag {
     case InfoItem.usernameItem.rawValue:
@@ -409,8 +414,10 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
     dismiss(animated: true, completion: nil)
   }
 
-  func didSelectReveal(_ cell: LoginInfoTableViewCell) -> Bool {
-    askForAuthentication()
+  func didSelectReveal(_ cell: LoginInfoTableViewCell, completion: ((Bool) -> Void)?) {
+    askForAuthentication() { status in
+      completion?(status)
+    }
   }
 
   func textFieldDidEndEditing(_ cell: LoginInfoTableViewCell) {
