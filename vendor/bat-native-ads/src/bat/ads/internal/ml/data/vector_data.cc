@@ -144,8 +144,8 @@ void VectorData::Normalize() {
                         return lhs + static_cast<double>(v) * v;
                       }));
   if (vector_length > kMinimumVectorLength) {
-    for (size_t i = 0; i < storage_->values().size(); ++i) {
-      storage_->values()[i] /= vector_length;
+    for (float& entry : storage_->values()) {
+      entry /= vector_length;
     }
   }
 }

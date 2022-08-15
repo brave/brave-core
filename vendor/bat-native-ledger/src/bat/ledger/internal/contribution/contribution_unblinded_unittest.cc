@@ -130,11 +130,11 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
       {0.80, "publisher5"}, {0.90, "publisher5"},
   };
 
-  for (size_t i = 0; i < std::size(cases); i++) {
+  for (auto& entry : cases) {
     const std::string publisher_key =
-        unblinded_->GetStatisticalVotingWinnerForTesting(cases[i].dart, 100.0,
+        unblinded_->GetStatisticalVotingWinnerForTesting(entry.dart, 100.0,
                                                          publisher_list);
-    EXPECT_STREQ(publisher_key.c_str(), cases[i].publisher_key);
+    EXPECT_STREQ(publisher_key.c_str(), entry.publisher_key);
   }
 }
 
