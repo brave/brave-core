@@ -225,7 +225,7 @@ class TestNTPBackgroundImagesService : public NTPBackgroundImagesService {
 
 class NTPBackgroundImagesServiceTest : public testing::Test {
  public:
-  NTPBackgroundImagesServiceTest() {}
+  NTPBackgroundImagesServiceTest() = default;
 
   void SetUp() override {
     auto* registry = pref_service_.registry();

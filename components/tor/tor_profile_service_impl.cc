@@ -51,7 +51,7 @@ class NewTorCircuitTracker : public WebContentsObserver {
       : WebContentsObserver(web_contents) {}
   NewTorCircuitTracker(const NewTorCircuitTracker&) = delete;
   NewTorCircuitTracker& operator=(const NewTorCircuitTracker&) = delete;
-  ~NewTorCircuitTracker() override {}
+  ~NewTorCircuitTracker() override = default;
 
   void NewIdentityLoaded(bool success) {
     if (web_contents()) {

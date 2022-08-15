@@ -63,7 +63,7 @@ constexpr char kNormalControlport[] =
 
 class TorFileWatcherTest : public testing::Test {
  public:
-  TorFileWatcherTest() {}
+  TorFileWatcherTest() = default;
 
   void SetUp() override {
     testing::Test::SetUp();

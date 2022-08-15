@@ -60,8 +60,8 @@ sync_pb::EncryptedData MakeEncryptedData(
 
 class SyncServiceImplDelegateMock : public SyncServiceImplDelegate {
  public:
-  SyncServiceImplDelegateMock() {}
-  ~SyncServiceImplDelegateMock() override {}
+  SyncServiceImplDelegateMock() = default;
+  ~SyncServiceImplDelegateMock() override = default;
   void SuspendDeviceObserverForOwnReset() override {}
   void ResumeDeviceObserver() override {}
 };

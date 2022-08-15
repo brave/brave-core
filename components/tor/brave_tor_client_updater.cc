@@ -119,7 +119,7 @@ BraveTorClientUpdater::BraveTorClientUpdater(
   RemoveObsoleteFiles();
 }
 
-BraveTorClientUpdater::~BraveTorClientUpdater() {}
+BraveTorClientUpdater::~BraveTorClientUpdater() = default;
 
 void BraveTorClientUpdater::Register() {
   const base::CommandLine& command_line =
