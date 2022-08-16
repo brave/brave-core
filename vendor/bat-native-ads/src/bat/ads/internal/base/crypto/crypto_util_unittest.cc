@@ -46,7 +46,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
   // Arrange
-  const base::flat_map<std::string, std::string> headers = {};
+  const base::flat_map<std::string, std::string> headers;
 
   const std::string key_id = "primary";
 
@@ -58,7 +58,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
   const std::string signature = security::Sign(headers, key_id, secret_key);
 
   // Assert
-  const std::string expected_signature = "";
+  const std::string expected_signature;
 
   EXPECT_EQ(expected_signature, signature);
 }
@@ -68,7 +68,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
   const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
-  const std::string key_id = "";
+  const std::string key_id;
 
   const std::string secret_key =
       "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a56615650"
@@ -78,7 +78,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
   const std::string signature = security::Sign(headers, key_id, secret_key);
 
   // Assert
-  const std::string expected_signature = "";
+  const std::string expected_signature;
 
   EXPECT_EQ(expected_signature, signature);
 }
@@ -90,13 +90,13 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidSecretKey) {
 
   const std::string key_id = "primary";
 
-  const std::string secret_key = "";
+  const std::string secret_key;
 
   // Act
   const std::string signature = security::Sign(headers, key_id, secret_key);
 
   // Assert
-  const std::string expected_signature = "";
+  const std::string expected_signature;
 
   EXPECT_EQ(expected_signature, signature);
 }
@@ -173,7 +173,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sha256) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, Sha256WithEmptyString) {
   // Arrange
-  const std::string value = "";
+  const std::string value;
 
   // Act
   const std::vector<uint8_t> sha256 = security::Sha256(value);

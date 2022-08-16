@@ -78,7 +78,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history = {};
+  const base::circular_deque<HistoryItemInfo> expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
@@ -121,7 +121,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history = {};
+  const base::circular_deque<HistoryItemInfo> expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
@@ -168,7 +168,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history = {};
+  const base::circular_deque<HistoryItemInfo> expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
@@ -185,7 +185,7 @@ TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history = {};
+  const base::circular_deque<HistoryItemInfo> expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }

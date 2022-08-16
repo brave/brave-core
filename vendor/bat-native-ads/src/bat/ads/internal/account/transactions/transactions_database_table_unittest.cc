@@ -25,7 +25,7 @@ class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Arrange
-  const TransactionList transactions = {};
+  const TransactionList transactions;
 
   // Act
   SaveTransactions(transactions);

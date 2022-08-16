@@ -137,7 +137,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokens) {
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensWithEmptyList) {
   // Arrange
-  const UnblindedPaymentTokenList unblinded_payment_tokens = {};
+  const UnblindedPaymentTokenList unblinded_payment_tokens;
 
   // Act
   GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
@@ -251,8 +251,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, AddTokensWithEmptyList) {
   SetUnblindedPaymentTokens(3);
 
   // Act
-  const UnblindedPaymentTokenList empty_unblinded_payment_tokens = {};
-  GetUnblindedPaymentTokens()->AddTokens(empty_unblinded_payment_tokens);
+  GetUnblindedPaymentTokens()->AddTokens({});
 
   // Assert
   const int count = GetUnblindedPaymentTokens()->Count();

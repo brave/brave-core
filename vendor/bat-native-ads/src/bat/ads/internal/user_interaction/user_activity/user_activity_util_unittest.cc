@@ -232,7 +232,7 @@ TEST_F(BatAdsUserActivityUtilTest, ToUserActivityTriggersForInvalidTrigger) {
   const UserActivityTriggerList triggers = ToUserActivityTriggers("INVALID");
 
   // Assert
-  const UserActivityTriggerList expected_triggers = {};
+  const UserActivityTriggerList expected_triggers;
   EXPECT_EQ(expected_triggers, triggers);
 }
 
@@ -260,7 +260,7 @@ TEST_F(BatAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
   const UserActivityTriggerList triggers = ToUserActivityTriggers("");
 
   // Assert
-  const UserActivityTriggerList expected_triggers = {};
+  const UserActivityTriggerList expected_triggers;
   EXPECT_EQ(expected_triggers, triggers);
 }
 

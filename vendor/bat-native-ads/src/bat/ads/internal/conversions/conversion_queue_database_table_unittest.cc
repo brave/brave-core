@@ -34,7 +34,7 @@ class BatAdsConversionQueueDatabaseTableTest : public UnitTestBase {
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   // Arrange
-  const ConversionQueueItemList conversion_queue_items = {};
+  const ConversionQueueItemList conversion_queue_items;
 
   // Act
   SaveConversionQueueItems(conversion_queue_items);

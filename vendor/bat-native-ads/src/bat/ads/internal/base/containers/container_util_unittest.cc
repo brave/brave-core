@@ -76,7 +76,7 @@ TEST(BatAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
 
 TEST(BatAdsContainerUtilTest, SplitEmptyVector) {
   // Arrange
-  const std::vector<std::string> vector = {};
+  const std::vector<std::string> vector;
 
   // Act
   const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 5);
@@ -131,7 +131,7 @@ TEST(BatAdsContainerUtilTest, CompareNonMatchingMaps) {
 
 TEST(BatAdsContainerUtilTest, CompareEmptyMaps) {
   // Arrange
-  const base::flat_map<std::string, std::string> map = {};
+  const base::flat_map<std::string, std::string> map;
 
   // Act
   const bool does_equal = CompareMaps(map, map);
@@ -179,7 +179,7 @@ TEST(BatAdsContainerUtilTest, CompareNonMatchingSets) {
 
 TEST(BatAdsContainerUtilTest, CompareEmptySets) {
   // Arrange
-  const std::vector<std::string> vec = {};
+  const std::vector<std::string> vec;
 
   // Act
   const bool does_equal = CompareAsSets(vec, vec);
