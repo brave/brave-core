@@ -39,23 +39,23 @@ ipfs::IpfsService* GetIpfsService(content::BrowserContext* context) {
   return ipfs::IpfsServiceFactory::GetInstance()->GetForContext(context);
 }
 
-base::Value MakeSelectValue(const std::u16string& name,
-                            IPFSResolveMethodTypes value) {
-  base::Value item(base::Value::Type::DICTIONARY);
-  item.SetKey("value", base::Value(static_cast<int>(value)));
-  item.SetKey("name", base::Value(name));
+base::Value::Dict MakeSelectValue(const std::u16string& name,
+                                  IPFSResolveMethodTypes value) {
+  base::Value::Dict item;
+  item.Set("value", base::Value(static_cast<int>(value)));
+  item.Set("name", base::Value(name));
   return item;
 }
 
-base::Value MakeValue(const std::string& name, const std::string& value) {
-  base::Value item(base::Value::Type::DICTIONARY);
-  item.SetKey("value", base::Value(value));
-  item.SetKey("name", base::Value(name));
+base::Value::Dict MakeValue(const std::string& name, const std::string& value) {
+  base::Value::Dict item;
+  item.Set("value", base::Value(value));
+  item.Set("name", base::Value(name));
   return item;
 }
 
 base::Value MakeResponseFromMap(const ipfs::IpnsKeysManager::KeysMap& keys) {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   for (const auto& key : keys) {
     list.Append(MakeValue(key.first, key.second));
   }
@@ -66,7 +66,7 @@ base::Value MakeResponseFromMap(const ipfs::IpnsKeysManager::KeysMap& keys) {
 
 base::Value MakePeersResponseFromVector(
     const std::vector<std::string>& source) {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   for (const auto& item : source) {
     std::string id;
     std::string address;
@@ -320,7 +320,7 @@ void IpfsGetIpnsKeysListFunction::OnKeysLoaded(::ipfs::IpnsKeysManager* manager,
 }
 
 ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   list.Append(MakeSelectValue(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_RESOLVE_OPTION_ASK),
       IPFSResolveMethodTypes::IPFS_ASK));

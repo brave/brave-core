@@ -254,18 +254,18 @@ void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
     return;
   }
 
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("publisherKey", info->id);
-  dict.SetStringKey("name", info->name);
-  dict.SetIntKey("percentage", info->percent);
-  dict.SetIntKey("status", static_cast<int>(info->status));
-  dict.SetBoolKey("excluded",
-                  info->excluded == ledger::type::PublisherExclude::EXCLUDED);
-  dict.SetStringKey("url", info->url);
-  dict.SetStringKey("provider", info->provider);
-  dict.SetStringKey("favIconUrl", info->favicon_url);
+  base::Value::Dict dict;
+  dict.Set("publisherKey", info->id);
+  dict.Set("name", info->name);
+  dict.Set("percentage", static_cast<int>(info->percent));
+  dict.Set("status", static_cast<int>(info->status));
+  dict.Set("excluded",
+           info->excluded == ledger::type::PublisherExclude::EXCLUDED);
+  dict.Set("url", info->url);
+  dict.Set("provider", info->provider);
+  dict.Set("favIconUrl", info->favicon_url);
 
-  Respond(OneArgument(std::move(dict)));
+  Respond(OneArgument(base::Value(std::move(dict))));
 }
 
 BraveRewardsGetPublisherPanelInfoFunction::
@@ -1089,8 +1089,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetExternalWalletFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value data(base::Value::Type::DICTIONARY);
-    return RespondNow(OneArgument(std::move(data)));
+    base::Value::Dict data;
+    return RespondNow(OneArgument(base::Value(std::move(data))));
   }
 
   rewards_service->GetExternalWallet(base::BindOnce(
