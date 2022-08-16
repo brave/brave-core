@@ -59,6 +59,11 @@ const LoadingContainer = styled.div`
   flex-direction: column;
 `
 
+const SaveButton = styled(Button)`
+  --button-main-color: var(--text1);
+  --button-main-color-hover: var(--text2);
+`
+
 const tableHeader: Cell[] = [
   {
     content: '#'
@@ -98,7 +103,7 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
               : <span>{file.name}</span>
           },
           {
-            content: torrent.serverURL && <Button text="Save file"
+            content: torrent.serverURL && <SaveButton text="Save file"
               level="secondary"
               onClick={() => downloadFile(`${torrent.serverURL}/${index}/${file.name}`, file.name)}/>
           },
