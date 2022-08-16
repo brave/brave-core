@@ -16,7 +16,7 @@ namespace ads {
 
 TEST(BatAdsPriorityTest, PrioritizeNoCreativeAds) {
   // Arrange
-  const CreativeNotificationAdList creative_ads = {};
+  const CreativeNotificationAdList creative_ads;
 
   // Act
   const CreativeNotificationAdList prioritized_creative_ads =

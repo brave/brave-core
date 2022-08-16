@@ -37,7 +37,7 @@ class BatAdsCreativeNotificationAdsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
        SaveEmptyCreativeNotificationAds) {
   // Arrange
-  const CreativeNotificationAdList creative_ads = {};
+  const CreativeNotificationAdList creative_ads;
 
   // Act
   SaveCreativeNotificationAds(creative_ads);
@@ -370,9 +370,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeNotificationAdList expected_creative_ads = {};
+  const CreativeNotificationAdList expected_creative_ads;
 
-  const SegmentList segments = {};
+  const SegmentList segments;
 
   database_table_->GetForSegments(
       segments,
@@ -417,7 +417,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeNotificationAdList expected_creative_ads = {};
+  const CreativeNotificationAdList expected_creative_ads;
 
   const SegmentList segments = {"food & drink"};
 

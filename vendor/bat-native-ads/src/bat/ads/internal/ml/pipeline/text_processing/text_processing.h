@@ -51,7 +51,7 @@ class TextProcessing final {
  private:
   bool is_initialized_ = false;
   uint16_t version_ = 0;
-  std::string timestamp_ = "";
+  std::string timestamp_;
   std::string locale_ = "en";
   TransformationVector transformations_;
   model::Linear linear_model_;

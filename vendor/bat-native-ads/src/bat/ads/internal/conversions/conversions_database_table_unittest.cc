@@ -39,7 +39,7 @@ class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
 
 TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
   // Arrange
-  ConversionList conversions = {};
+  const ConversionList conversions;
 
   // Act
   SaveConversions(conversions);

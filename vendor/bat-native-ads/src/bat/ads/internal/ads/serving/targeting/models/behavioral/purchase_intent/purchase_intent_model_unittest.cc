@@ -36,7 +36,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {};
+  const SegmentList expected_segments;
 
   EXPECT_EQ(expected_segments, segments);
 }
@@ -62,7 +62,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {};
+  const SegmentList expected_segments;
 
   EXPECT_EQ(expected_segments, segments);
 }
@@ -78,7 +78,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {};
+  const SegmentList expected_segments;
 
   EXPECT_EQ(expected_segments, segments);
 }
@@ -100,7 +100,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {};
+  const SegmentList expected_segments;
 
   EXPECT_EQ(expected_segments, segments);
 }

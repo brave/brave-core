@@ -51,7 +51,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
 
 TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Act
-  const std::string text = "";
+  const std::string text;
   processor::TextClassification processor(&resource_);
   processor.Process(text);
 

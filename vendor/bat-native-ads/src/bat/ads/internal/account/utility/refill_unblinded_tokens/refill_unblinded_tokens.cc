@@ -107,7 +107,7 @@ void RefillUnblindedTokens::Refill() {
 
   is_processing_ = true;
 
-  nonce_ = "";
+  nonce_ = {};
 
   RequestSignedTokens();
 }

@@ -35,7 +35,7 @@ class BatAdsCreativePromotedContentAdsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
        SaveEmptyCreativePromotedContentAds) {
   // Arrange
-  CreativePromotedContentAdList creative_promoted_content_ads = {};
+  CreativePromotedContentAdList creative_promoted_content_ads;
 
   // Act
   SaveCreativePromotedContentAds(creative_promoted_content_ads);
@@ -477,7 +477,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   const CreativePromotedContentAdList expected_creative_promoted_content_ads =
       {};
 
-  const SegmentList segments = {};
+  const SegmentList segments;
 
   database_table_->GetForSegments(
       segments,

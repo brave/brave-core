@@ -34,7 +34,7 @@ TEST(BatAdsP2AAdOpportunityTest, CreateAdOpportunityQuestions) {
 
 TEST(BatAdsP2AAdOpportunityTest, CreateAdOpportunityQuestionsForEmptySegments) {
   // Arrange
-  const std::vector<std::string> segments = {};
+  const std::vector<std::string> segments;
 
   // Act
   const std::vector<std::string> questions =

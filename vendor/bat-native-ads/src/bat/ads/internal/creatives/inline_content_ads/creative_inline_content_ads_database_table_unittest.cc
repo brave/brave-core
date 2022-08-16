@@ -35,7 +35,7 @@ class BatAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveEmptyCreativeInlineContentAds) {
   // Arrange
-  const CreativeInlineContentAdList creative_ads = {};
+  const CreativeInlineContentAdList creative_ads;
 
   // Act
   SaveCreativeInlineContentAds(creative_ads);
@@ -460,9 +460,9 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads = {};
+  const CreativeInlineContentAdList expected_creative_ads;
 
-  const SegmentList segments = {};
+  const SegmentList segments;
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
@@ -509,7 +509,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_ads = {};
+  const CreativeInlineContentAdList expected_creative_ads;
 
   const SegmentList segments = {"technology & computing"};
 

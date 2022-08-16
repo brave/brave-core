@@ -108,7 +108,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
   const SegmentList parent_segments = GetParentSegments(segments);
 
   // Assert
-  const SegmentList expected_parent_segments = {};
+  const SegmentList expected_parent_segments;
 
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }

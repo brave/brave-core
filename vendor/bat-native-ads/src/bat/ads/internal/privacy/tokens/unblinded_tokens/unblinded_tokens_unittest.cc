@@ -127,7 +127,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokens) {
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokensWithEmptyList) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = {};
+  const UnblindedTokenList unblinded_tokens;
 
   // Act
   GetUnblindedTokens()->SetTokens(unblinded_tokens);
@@ -230,8 +230,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokensWithEmptyList) {
   SetUnblindedTokens(3);
 
   // Act
-  const UnblindedTokenList empty_unblinded_tokens = {};
-  GetUnblindedTokens()->AddTokens(empty_unblinded_tokens);
+  GetUnblindedTokens()->AddTokens({});
 
   // Assert
   const int count = GetUnblindedTokens()->Count();
