@@ -26,6 +26,8 @@ bool ShouldDebounceAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::PromotedContentAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (event_type == mojom::PromotedContentAdEventType::kViewed &&
       HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
     return true;
@@ -57,6 +59,8 @@ void EventHandler::FireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid placement "
@@ -108,6 +112,8 @@ void EventHandler::FireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kPromotedContentAd,
@@ -144,6 +150,8 @@ void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   BLOG(1, "Failed to fire promoted content ad "
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
@@ -200,6 +208,8 @@ void EventHandler::NotifyPromotedContentAdEventFailed(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   for (EventHandlerObserver& observer : observers_) {
     observer.OnPromotedContentAdEventFailed(placement_id, creative_instance_id,
                                             event_type);

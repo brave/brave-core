@@ -8,6 +8,7 @@
 #include <functional>
 #include <vector>
 
+#include "base/check.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/category_content_info.h"
@@ -143,6 +144,8 @@ void BatAdsImpl::MaybeGetNotificationAd(
 void BatAdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
     const ads::mojom::NotificationAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
 
@@ -160,6 +163,8 @@ void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::NewTabPageAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                  event_type);
 }
@@ -168,6 +173,8 @@ void BatAdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::PromotedContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
                                       event_type);
 }
@@ -188,6 +195,8 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::InlineContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                     event_type);
 }
@@ -196,6 +205,8 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
     ads::mojom::SearchResultAdInfoPtr ad_mojom,
     const ads::mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   auto* holder = new CallbackHolder<TriggerSearchResultAdEventCallback>(
       AsWeakPtr(), std::move(callback));
 
@@ -208,6 +219,8 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   auto* holder = new CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>(
       AsWeakPtr(), std::move(callback));
 
@@ -376,6 +389,8 @@ void BatAdsImpl::OnTriggerSearchResultAdEvent(
     const bool success,
     const std::string& placement_id,
     const ads::mojom::SearchResultAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (holder->is_valid()) {
     std::move(holder->get()).Run(success, placement_id, event_type);
   }

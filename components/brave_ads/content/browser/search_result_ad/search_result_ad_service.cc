@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/callback.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
@@ -224,6 +225,8 @@ void SearchResultAdService::OnTriggerSearchResultAdViewedEvent(
     const bool success,
     const std::string& placement_id,
     ads::mojom::SearchResultAdEventType ad_event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_event_type));
+
   trigger_ad_viewed_event_in_progress_ = false;
   TriggerSearchResultAdViewedEventFromQueue();
 

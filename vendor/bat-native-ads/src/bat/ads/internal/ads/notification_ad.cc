@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/notification_ad.h"
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -85,6 +86,8 @@ void NotificationAd::MaybeServeAtRegularIntervals() {
 void NotificationAd::TriggerEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   event_handler_->FireEvent(placement_id, event_type);
 }
 

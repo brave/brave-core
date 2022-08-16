@@ -26,6 +26,8 @@ namespace {
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::NewTabPageAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (event_type == mojom::NewTabPageAdEventType::kViewed &&
       HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
     return true;
@@ -56,6 +58,8 @@ void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
 void EventHandler::FireEvent(const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::NewTabPageAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire new tab page ad event due to an invalid placement id");
@@ -108,6 +112,8 @@ void EventHandler::FireEvent(const NewTabPageAdInfo& ad,
                              const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::NewTabPageAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
@@ -145,6 +151,8 @@ void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   BLOG(1, "Failed to fire new tab page ad "
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
@@ -197,6 +205,8 @@ void EventHandler::NotifyNewTabPageAdEventFailed(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   for (EventHandlerObserver& observer : observers_) {
     observer.OnNewTabPageAdEventFailed(placement_id, creative_instance_id,
                                        event_type);

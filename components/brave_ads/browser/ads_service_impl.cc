@@ -135,6 +135,8 @@ int GetDataResourceId(const std::string& name) {
 }
 
 std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
+  DCHECK(mojom::IsKnownEnumValue(method));
+
   switch (method) {
     case ads::mojom::UrlRequestMethodType::kGet: {
       return "GET";
@@ -1218,6 +1220,8 @@ void AdsServiceImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::InlineContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1251,6 +1255,8 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::NewTabPageAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1263,6 +1269,8 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::PromotedContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1275,6 +1283,8 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
     ads::mojom::SearchResultAdInfoPtr ad_mojom,
     const ads::mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
     std::move(callback).Run(/* success */ false, ad_mojom->placement_id,
                             event_type);
@@ -1290,6 +1300,8 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1974,6 +1986,8 @@ void AdsServiceImpl::OnTriggerSearchResultAdEvent(
     const bool success,
     const std::string& placement_id,
     const ads::mojom::SearchResultAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   std::move(callback).Run(success, placement_id, event_type);
 }
 
