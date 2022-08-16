@@ -5,42 +5,19 @@
 
 'use strict';
 
-Object.defineProperty(window.__firefox__, '$<brave-talk-helper>', {
+window.__firefox__.includeOnce("BraveTalkHelper", function() {
+  function sendMessage() {
+    return webkit.messageHandlers.$<brave-talk-helper>.postMessage({ 'securitytoken': '$<security_token>' });
+  }
+  
+  Object.defineProperty(window, 'chrome', {
     enumerable: false,
     configurable: true,
     writable: false,
     value: {
-        id: 1,
-        resolution_handlers: {},
-        resolve(id, data, error) {
-            if (error && window.__firefox__.$<brave-talk-helper>.resolution_handlers[id].reject) {
-                window.__firefox__.$<brave-talk-helper>.resolution_handlers[id].reject(error);
-            } else if (window.__firefox__.$<brave-talk-helper>.resolution_handlers[id].resolve) {
-                window.__firefox__.$<brave-talk-helper>.resolution_handlers[id].resolve(data);
-            } else if (window.__firefox__.$<brave-talk-helper>.resolution_handlers[id].reject) {
-                window.__firefox__.$<brave-talk-helper>.resolution_handlers[id].reject(new Error("Invalid Data!"));
-            } else {
-                console.log("Invalid Promise ID: ", id);
-            }
-            
-            delete window.__firefox__.$<brave-talk-helper>.resolution_handlers[id];
-        },
-        sendMessage() {
-            return new Promise((resolve, reject) => {
-               window.__firefox__.$<brave-talk-helper>.resolution_handlers[1] = { resolve, reject };
-               webkit.messageHandlers.BraveTalkHelper.postMessage({ 'securitytoken': '$<security_token>' });
-           });
-        }
+      braveRequestAdsEnabled() {
+        return sendMessage();
+      }
     }
-});
-
-Object.defineProperty(window, 'chrome', {
-enumerable: false,
-configurable: true,
-writable: false,
-    value: {
-    braveRequestAdsEnabled() {
-        return window.__firefox__.$<brave-talk-helper>.sendMessage();
-    }
-}
+  });
 });

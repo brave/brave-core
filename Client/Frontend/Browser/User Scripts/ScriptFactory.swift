@@ -70,7 +70,7 @@ class ScriptFactory {
     case .farblingProtection(let etld):
       let randomConfiguration = RandomConfiguration(etld: etld)
       let fakeParams = try FarblingProtectionHelper.makeFarblingParams(from: randomConfiguration)
-      source = "\(source)\nwindow.braveFarble(\(fakeParams))\ndelete window.braveFarble"
+      source = source.replacingOccurrences(of: "$<farbling_protection_args>", with: fakeParams)
       
     case .nacl:
       // No modifications needed
@@ -95,7 +95,7 @@ class ScriptFactory {
         
       case .braveSearchHelper:
         let securityToken = UserScriptManager.securityTokenString
-        let messageToken = "BSH\(UserScriptManager.messageHandlerTokenString)"
+        let messageToken = "BraveSearchHelper_\(UserScriptManager.messageHandlerTokenString)"
         
         source = source
           .replacingOccurrences(of: "$<brave-search-helper>", with: messageToken, options: .literal)
@@ -103,7 +103,7 @@ class ScriptFactory {
         
       case .braveTalkHelper:
         let securityToken = UserScriptManager.securityTokenString
-        let messageToken = "BT\(UserScriptManager.messageHandlerTokenString)"
+        let messageToken = "BraveTalkHelper_\(UserScriptManager.messageHandlerTokenString)"
         
         source = source
           .replacingOccurrences(of: "$<brave-talk-helper>", with: messageToken, options: .literal)

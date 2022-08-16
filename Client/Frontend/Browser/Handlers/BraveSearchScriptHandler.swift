@@ -32,7 +32,9 @@ class BraveSearchScriptHandler: TabContentScript {
 
   static func name() -> String { "BraveSearchHelper" }
 
-  func scriptMessageHandlerName() -> String? { BraveSearchScriptHandler.name() }
+  func scriptMessageHandlerName() -> String? {
+    "BraveSearchHelper_\(UserScriptManager.messageHandlerTokenString)"
+  }
 
   private enum Method: Int {
     case canSetBraveSearchAsDefault = 1
@@ -52,7 +54,6 @@ class BraveSearchScriptHandler: TabContentScript {
     didReceiveScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
-    defer { replyHandler(nil, nil) }
     let allowedHosts = DomainUserScript.braveSearchHelper.associatedDomains
 
     guard let requestHost = message.frameInfo.request.url?.host,
@@ -60,6 +61,7 @@ class BraveSearchScriptHandler: TabContentScript {
       message.frameInfo.isMainFrame
     else {
       log.error("Backup search request called from disallowed host")
+      replyHandler(nil, nil)
       return
     }
 
@@ -67,31 +69,31 @@ class BraveSearchScriptHandler: TabContentScript {
       let method = try? JSONDecoder().decode(MethodModel.self, from: data).methodId
     else {
       log.error("Failed to retrieve method id")
+      replyHandler(nil, nil)
       return
     }
 
     switch method {
     case Method.canSetBraveSearchAsDefault.rawValue:
-      handleCanSetBraveSearchAsDefault(methodId: method)
+      handleCanSetBraveSearchAsDefault(replyHandler: replyHandler)
     case Method.setBraveSearchDefault.rawValue:
-      handleSetBraveSearchDefault(methodId: method)
+      handleSetBraveSearchDefault(replyHandler: replyHandler)
     default:
       break
     }
   }
 
-  private func handleCanSetBraveSearchAsDefault(methodId: Int) {
-
+  private func handleCanSetBraveSearchAsDefault(replyHandler: (Any?, String?) -> Void) {
     if PrivateBrowsingManager.shared.isPrivateBrowsing {
       log.debug("Private mode detected, skipping setting Brave Search as a default")
-      callback(methodId: methodId, result: false)
+      replyHandler(false, nil)
       return
     }
 
     let maximumPromptCount = Preferences.Search.braveSearchDefaultBrowserPromptCount
     if Self.canSetAsDefaultCounter >= maxCountOfDefaultBrowserPromptsPerSession || maximumPromptCount.value >= maxCountOfDefaultBrowserPromptsTotal {
       log.debug("Maximum number of tries of Brave Search website prompts reached")
-      callback(methodId: methodId, result: false)
+      replyHandler(false, nil)
       return
     }
 
@@ -100,27 +102,11 @@ class BraveSearchScriptHandler: TabContentScript {
 
     let defaultEngine = profile.searchEngines.defaultEngine(forType: .standard).shortName
     let canSetAsDefault = defaultEngine != OpenSearchEngine.EngineNames.brave
-
-    callback(methodId: methodId, result: canSetAsDefault)
+    replyHandler(canSetAsDefault, nil)
   }
 
-  private func handleSetBraveSearchDefault(methodId: Int) {
+  private func handleSetBraveSearchDefault(replyHandler: (Any?, String?) -> Void) {
     profile.searchEngines.updateDefaultEngine(OpenSearchEngine.EngineNames.brave, forType: .standard)
-    callback(methodId: methodId, result: nil)
-  }
-
-  private func callback(methodId: Int, result: Bool?) {
-    let functionName =
-      "window.__firefox__.BSH\(UserScriptManager.messageHandlerTokenString).resolve"
-
-    var args: [Any] = [methodId]
-    if let result = result {
-      args.append(result)
-    }
-
-    self.tab?.webView?.evaluateSafeJavaScript(
-      functionName: functionName,
-      args: args,
-      contentWorld: .page)
+    replyHandler(nil, nil)
   }
 }

@@ -26,7 +26,7 @@ class BraveTalkScriptHandler: TabContentScript {
 
   static func name() -> String { "BraveTalkHelper" }
 
-  func scriptMessageHandlerName() -> String? { BraveTalkScriptHandler.name() }
+  func scriptMessageHandlerName() -> String? { "BraveTalkHelper_\(UserScriptManager.messageHandlerTokenString)" }
 
   func userContentController(
     _ userContentController: WKUserContentController,
