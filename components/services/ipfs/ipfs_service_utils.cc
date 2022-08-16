@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -57,7 +58,10 @@ bool UpdateConfigJSON(const std::string& source,
 
   if (config->doh_server_url) {
     base::Value::Dict dns_resolvers;
-    dns_resolvers.Set(".", *config->doh_server_url);
+    std::string doh_url = *(config->doh_server_url);
+    // Kubo doesn't support RFC-8484 DOH url format
+    base::ReplaceSubstringsAfterOffset(&doh_url, 0, "{?dns}", "");
+    dns_resolvers.Set(".", std::move(doh_url));
     dict->SetByDottedPath("DNS.Resolvers", std::move(dns_resolvers));
   } else {
     dict->RemoveByDottedPath("DNS.Resolvers");

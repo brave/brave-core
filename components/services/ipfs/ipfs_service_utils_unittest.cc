@@ -128,6 +128,26 @@ TEST_F(IPFSServiceUtils, DNSResolversUpdate) {
   EXPECT_EQ(updated, expect);
 }
 
+TEST_F(IPFSServiceUtils, DNSResolversUpdate_DnsHasRFC8484Template) {
+  std::string json = R"({})";
+  std::string updated;
+  auto config = ipfs::mojom::IpfsConfig::New(
+      base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
+      "APIPort", "SwarmPort", "StorageSize",
+      "https://cloudflare.com/dns-query{?dns}");
+
+  std::string expect =
+      "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
+      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
+      "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
+      "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
+      "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
+      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+      "\"HighWater\":40,\"LowWater\":20}}}";
+  ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
+  EXPECT_EQ(updated, expect);
+}
+
 TEST_F(IPFSServiceUtils, GetVerisonFromNodeFilename) {
   EXPECT_EQ(
       ipfs::GetVersionFromNodeFilename("go-ipfs_v0.9.0-rc1_windows-amd64"),
