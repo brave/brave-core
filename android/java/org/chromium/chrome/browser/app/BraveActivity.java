@@ -338,6 +338,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnUtils.dismissProgressDialog();
                 } else {
                     if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                        BraveVpnPrefUtils.setSubscriptionPurchase(true);
                         if (WireguardConfigUtils.isConfigExist(BraveActivity.this)) {
                             BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
                         } else {

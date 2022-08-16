@@ -43,7 +43,7 @@ public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
     private static final String TAG = "BraveVPN";
     public boolean mIsVerification;
-    private BraveVpnPrefModel mBraveVpnPrefModel;
+    protected BraveVpnPrefModel mBraveVpnPrefModel;
 
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();
@@ -136,7 +136,6 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
-        mBraveVpnPrefModel = new BraveVpnPrefModel();
         mBraveVpnPrefModel.setSubscriberCredential(subscriberCredential);
         BraveVpnApiResponseUtils.handleOnGetSubscriberCredential(
                 BraveVpnParentActivity.this, isSuccess);

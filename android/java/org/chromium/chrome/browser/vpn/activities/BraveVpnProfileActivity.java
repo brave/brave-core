@@ -23,6 +23,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
+import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
@@ -71,6 +72,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
                 BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
                         getResources().getString(R.string.vpn_connect_text));
                 if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                    mBraveVpnPrefModel = new BraveVpnPrefModel();
                     BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
                 } else {
                     verifySubscription();

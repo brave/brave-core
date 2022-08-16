@@ -105,6 +105,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                     BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
                 } else {
                     if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                        BraveVpnPrefUtils.setSubscriptionPurchase(true);
                         if (WireguardConfigUtils.isConfigExist(getActivity())) {
                             BraveVpnProfileUtils.getInstance().startVpn(getActivity());
                         } else {
@@ -215,7 +216,12 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         if (BraveVpnUtils.mIsServerLocationChanged) {
             BraveVpnUtils.showProgressDialog(
                     getActivity(), getResources().getString(R.string.vpn_connect_text));
-            verifyPurchase(false);
+            if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                mBraveVpnPrefModel = new BraveVpnPrefModel();
+                BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+            } else {
+                verifyPurchase(false);
+            }
         } else if (BraveVpnUtils.mUpdateProfileAfterSplitTunnel) {
             BraveVpnUtils.mUpdateProfileAfterSplitTunnel = false;
             BraveVpnUtils.showProgressDialog(
