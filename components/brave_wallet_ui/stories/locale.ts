@@ -700,6 +700,9 @@ provideStrings({
   braveWalletHelpCenter: 'Help Center',
   braveWalletHelpCenterText: 'Need help? See',
 
+  // Remove Account Modal
+  braveWalletRemoveAccountModalTitle: 'Are you sure you want to remove "$1"?',
+
   // Bridge to Aurora
   braveWalletAuroraModalTitle: 'Open rainbowbridge.app',
   braveWalletAuroraModalDescription: 'Bridging assets across networks allows you to use your crypto on other networks and other DApp' +

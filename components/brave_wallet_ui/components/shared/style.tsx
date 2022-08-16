@@ -372,3 +372,12 @@ export const HorizontalSpace = styled.div<{ space: string }>`
   min-height: 1px;
   width: ${(p) => p.space};
 `
+
+// Forms
+export const InputLabelText = styled.label`
+  display: block;
+  margin-bottom: 8px;
+  color: ${(p) => p.theme.color.text03};
+  text-align: left;
+  width: 100%;
+`

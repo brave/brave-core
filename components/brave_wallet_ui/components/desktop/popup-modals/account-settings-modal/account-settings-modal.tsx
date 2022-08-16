@@ -52,8 +52,7 @@ import {
   WarningWrapper,
   PrivateKeyBubble,
   ButtonWrapper,
-  ErrorText,
-  InputLabelText
+  ErrorText
 } from './account-settings-modal.style'
 
 interface Props {
@@ -268,10 +267,8 @@ export const AccountSettingsModal = ({
                   <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
                 </CopyTooltip>
               </>
-              : <>
-                <InputLabelText>{getLocale('braveWalletEnterYourPassword')}</InputLabelText>
-                <PasswordInput
-                  placeholder={getLocale('braveWalletCreatePasswordInput')}
+              : <PasswordInput
+                  placeholder={getLocale('braveWalletEnterYourPassword')}
                   onChange={onPasswordChange}
                   hasError={!!password && !isCorrectPassword}
                   error={getLocale('braveWalletLockScreenError')}
@@ -279,7 +276,6 @@ export const AccountSettingsModal = ({
                   value={password}
                   onKeyDown={handlePasswordKeyDown}
                 />
-              </>
             }
             <ButtonWrapper>
               <NavButton

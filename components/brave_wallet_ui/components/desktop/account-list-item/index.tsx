@@ -38,7 +38,12 @@ export interface Props {
   onClick: (account: WalletAccountType) => void
   account: WalletAccountType
   isHardwareWallet: boolean
-  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
+  onRemoveAccount: (
+    address: string,
+    hardware: boolean,
+    coin: BraveWallet.CoinType,
+    name: string
+  ) => void
 }
 
 export const AccountListItem = ({
@@ -53,10 +58,7 @@ export const AccountListItem = ({
   }, [onClick, account])
 
   const removeAccount = React.useCallback(() => {
-    let confirmAction = confirm(`Are you sure to remove ${account.name}?`)
-    if (confirmAction) {
-      onRemoveAccount(account.address, isHardwareWallet, account.coin)
-    }
+    onRemoveAccount(account.address, isHardwareWallet, account.coin, account.name)
   }, [account, isHardwareWallet, onRemoveAccount])
 
   // memos
