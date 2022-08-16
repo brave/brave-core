@@ -125,8 +125,8 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
         user_data_dir.AppendASCII(kPreTestDataFileName));
     auto value = deserializer.Deserialize(nullptr, nullptr);
     ASSERT_TRUE(value);
-    pre_test_data_ = std::move(*value);
-    ASSERT_TRUE(pre_test_data_.is_dict());
+    ASSERT_TRUE(value->is_dict());
+    pre_test_data_ = std::move(value->GetDict());
   }
 
   void WritePreTestData() {
@@ -147,7 +147,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<MockPermissionLifetimePromptFactory> prompt_factory_;
-  base::Value pre_test_data_{base::Value::Type::DICTIONARY};
+  base::Value::Dict pre_test_data_;
 };
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
@@ -211,14 +211,14 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  pre_test_data_.SetStringKey("url", url.spec());
+  pre_test_data_.Set("url", url.spec());
   WritePreTestData();
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        PermissionExpiredAfterRestart) {
   ReadPreTestData();
-  const GURL url(*pre_test_data_.FindStringKey("url"));
+  const GURL url(*pre_test_data_.FindString("url"));
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
@@ -461,14 +461,14 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
 
-  pre_test_data_.SetStringKey("url", url.spec());
+  pre_test_data_.Set("url", url.spec());
   WritePreTestData();
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        DomainPermissionResetAfterRestart) {
   ReadPreTestData();
-  const GURL url(*pre_test_data_.FindStringKey("url"));
+  const GURL url(*pre_test_data_.FindString("url"));
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
