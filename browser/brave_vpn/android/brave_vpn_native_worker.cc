@@ -245,6 +245,28 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
       base::android::ConvertUTF8ToJavaString(env, json_response), success);
 }
 
+jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    LOG(ERROR) << "BraveVPN : "
+               << "Inside condition";
+    return brave_vpn_service->is_purchased_user();
+  }
+
+  return false;
+}
+
+void BraveVpnNativeWorker::ReloadPurchasedState(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  LOG(ERROR) << "BraveVPN : "
+             << "ReloadPurchasedState";
+  if (brave_vpn_service) {
+    LOG(ERROR) << "BraveVPN : "
+               << "ReloadPurchasedState 2";
+    brave_vpn_service->ReloadPurchasedState();
+  }
+}
+
 void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {

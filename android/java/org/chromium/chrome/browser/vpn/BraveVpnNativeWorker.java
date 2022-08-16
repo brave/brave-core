@@ -172,6 +172,15 @@ public class BraveVpnNativeWorker {
                 mNativeBraveVpnNativeWorker, purchaseToken, productId, productType, packageName);
     }
 
+    // Desktop purchase methods
+    public void reloadPurchasedState() {
+        BraveVpnNativeWorkerJni.get().reloadPurchasedState(mNativeBraveVpnNativeWorker);
+    }
+
+    public boolean isPurchasedUser() {
+        return BraveVpnNativeWorkerJni.get().isPurchasedUser(mNativeBraveVpnNativeWorker);
+    }
+
     public void reportBackgroundP3A(long sessionStartTimeMs, long sessionEndTimeMs) {
         BraveVpnNativeWorkerJni.get().reportBackgroundP3A(
                 mNativeBraveVpnNativeWorker, sessionStartTimeMs, sessionEndTimeMs);
@@ -199,6 +208,8 @@ public class BraveVpnNativeWorker {
                 String packageName);
         void verifyPurchaseToken(long nativeBraveVpnNativeWorker, String purchaseToken,
                 String productId, String productType, String packageName);
+        void reloadPurchasedState(long nativeBraveVpnNativeWorker);
+        boolean isPurchasedUser(long nativeBraveVpnNativeWorker);
         void reportBackgroundP3A(
                 long nativeBraveVpnNativeWorker, long sessionStartTimeMs, long sessionEndTimeMs);
         void reportForegroundP3A(long nativeBraveVpnNativeWorker);

@@ -90,6 +90,10 @@ class BraveVpnNativeWorker {
 
   void OnVerifyPurchaseToken(const std::string& json_response, bool success);
 
+  void ReloadPurchasedState(JNIEnv* env);
+
+  jboolean IsPurchasedUser(JNIEnv* env);
+
   void ReportForegroundP3A(JNIEnv* env);
   void ReportBackgroundP3A(JNIEnv* env,
                            jlong session_start_time_ms,
