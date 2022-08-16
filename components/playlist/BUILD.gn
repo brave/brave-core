@@ -47,6 +47,7 @@ source_set("playlist") {
   ]
 
   deps = [
+    "renderer",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_component_updater/browser",
