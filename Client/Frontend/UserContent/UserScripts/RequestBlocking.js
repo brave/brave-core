@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-window.braveBlockRequests = (args) => {
+(function() {
   'use strict'
+  const args = $<request_blocking_args>;
   const messageHandler = webkit.messageHandlers[args.handlerName]
   const securityToken = args.securityToken
   const sendMessage = (resourceURL) => {
@@ -79,6 +80,4 @@ window.braveBlockRequests = (args) => {
       }
     })
   }
-}
-
-// Invoke window.braveBlockRequests then delete the function
+})();

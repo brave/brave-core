@@ -190,11 +190,7 @@ class UserScriptManager {
         return nil
       }
       
-      source = [
-        source,
-        "window.braveBlockRequests(\(fakeParams))",
-        "delete window.braveBlockRequests"
-      ].joined(separator: "\n")
+      source = source.replacingOccurrences(of: "$<request_blocking_args>", with: fakeParams)
 
       return WKUserScript.create(
         source: source,
@@ -225,12 +221,8 @@ class UserScriptManager {
         assertionFailure("A nil here is impossible")
         return nil
       }
-      
-      source = [
-        source,
-        "window.braveDeAmp(\(arguments))",
-        "delete window.braveDeAmp"
-      ].joined(separator: "\n")
+
+      source = source.replacingOccurrences(of: "$<deamp_args>", with: arguments, options: .literal)
 
       return WKUserScript.create(
         source: source,
