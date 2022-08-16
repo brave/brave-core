@@ -28,6 +28,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -918,6 +919,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             .contentView(R.layout.brave_onboarding_searchbox)
                             .build();
 
+            String countryCode = Locale.getDefault().getCountry();
+            if (countryCode.equals("IN")) {
+                TextView toolTipBody = popupWindowTooltip.findViewById(R.id.tv_tooltip_title);
+                toolTipBody.setText(getResources().getString(R.string.searchbox_onboarding_india));
+            }
             viewGroup.addView(highlightView);
             HighlightItem item = new HighlightItem(anchorView);
             highlightView.setHighlightTransparent(true);
