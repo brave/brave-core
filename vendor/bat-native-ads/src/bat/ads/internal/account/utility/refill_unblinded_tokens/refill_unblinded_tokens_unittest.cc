@@ -144,8 +144,8 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   // Arrange
-  const URLResponseMap responses = GetValidUrlResonses();
-  MockUrlResponses(ads_client_mock_, responses);
+  const URLResponseMap url_responses = GetValidUrlResonses();
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -178,7 +178,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -193,7 +193,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
                 "captcha_id": "captcha-id"
               }
             )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -230,8 +230,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   // Arrange
-  const URLResponseMap responses = GetValidUrlResonses();
-  MockUrlResponses(ads_client_mock_, responses);
+  const URLResponseMap url_responses = GetValidUrlResonses();
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -323,10 +323,10 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
 TEST_F(BatAdsRefillUnblindedTokensTest,
        RetryRequestSignedTokensAfterInternalServerError) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, ""}, {net::HTTP_CREATED, R"(
+       {{net::HTTP_INTERNAL_SERVER_ERROR, {}}, {net::HTTP_CREATED, R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -391,7 +391,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -424,10 +424,10 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
 
 TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_CREATED, ""}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+       {{net::HTTP_CREATED, {}}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -460,7 +460,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
 TEST_F(BatAdsRefillUnblindedTokensTest,
        RetryGetSignedTokensAfterInternalServerError) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -475,7 +475,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
           )"}}},
       {// Get signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, ""}, {net::HTTP_OK, R"(
+       {{net::HTTP_INTERNAL_SERVER_ERROR, {}}, {net::HTTP_OK, R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
               "signedTokens": [
@@ -533,7 +533,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -566,7 +566,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -577,7 +577,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
       {// Get signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, "invalid_json"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -609,7 +609,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -676,7 +676,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
               ]
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -708,7 +708,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -775,7 +775,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -807,7 +807,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -823,7 +823,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -855,7 +855,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   // Arrange
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -923,7 +923,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
@@ -987,7 +987,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   // Arrange
   privacy::SetUnblindedTokens(19);
 
-  const URLResponseMap responses = {
+  const URLResponseMap url_responses = {
       {// Request signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, R"(
@@ -1036,7 +1036,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<std::string> tokens_base64 = {
       R"(nDM8XFo2GzY/ekTtHm3MYTK9Rs80rot3eS1n+WAuzmRvf64rHFMAcMUydrqKi2pUhgjthd8SM9BW3ituHudFNC5fS1c1Z+pe1oW2P5UxNOb8KurYGGQj/OHsG8jWhGMD)",
