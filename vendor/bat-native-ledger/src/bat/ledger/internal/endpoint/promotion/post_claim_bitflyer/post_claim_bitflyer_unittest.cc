@@ -114,6 +114,28 @@ TEST_F(PostClaimBitflyerTest, ServerError400RegionNotSupported) {
                   });
 }
 
+TEST_F(PostClaimBitflyerTest, ServerError400MismatchedProviderAccountRegions) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "error linking wallet: mismatched provider account regions: geo reset is different",
+    "code": 400
+}
+            )";
+            std::move(callback).Run(response);
+          }));
+
+  claim_->Request(
+      "83b3b77b-e7c3-455b-adda-e476fa0656d2", [](type::Result result) {
+        EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS);
+      });
+}
+
 TEST_F(PostClaimBitflyerTest, ServerError400UnknownMessage) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(

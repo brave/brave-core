@@ -16,6 +16,8 @@ const char kDatabaseMigrated[] = "database_migrated";
 const char kDeviceLimitReached[] = "device_limit_reached";
 const char kFlaggedWallet[] = "flagged_wallet";
 const char kKYCRequired[] = "kyc_required";
+const char kMismatchedProviderAccountRegions[] =
+    "mismatched_provider_account_regions";
 const char kMismatchedProviderAccounts[] = "mismatched_provider_accounts";
 const char kPromotionVBATDrained[] = "promotion_vbat_drained";
 const char kRecurringTipAdded[] = "recurring_tip_added";

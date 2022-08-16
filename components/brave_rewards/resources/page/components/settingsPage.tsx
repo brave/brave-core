@@ -263,6 +263,17 @@ class SettingsPage extends React.Component<Props, State> {
             onClick={this.actions.hideRedirectModal}
           />
         )
+      case 'mismatchedProviderAccountRegionsModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-mismatched-provider-account-regions'}
+            errorText={[getLocale('redirectModalMismatchedProviderAccountRegionsText')]}
+            titleText={getLocale('redirectModalMismatchedProviderAccountRegionsTitle')}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
       case 'mismatchedProviderAccountsModal':
         return (
           <ModalRedirect
