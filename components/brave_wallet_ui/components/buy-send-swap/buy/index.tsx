@@ -78,7 +78,7 @@ export const Buy = ({
       }
     })
     .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
-  }, [selectedAsset, wyreAssetOptions, rampAssetOptions])
+  }, [selectedAsset, wyreAssetOptions, rampAssetOptions, sardineAssetOptions])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
     // Test networks are not supported in buy tab
