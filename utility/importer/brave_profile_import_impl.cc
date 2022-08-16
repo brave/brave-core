@@ -68,6 +68,8 @@ void BraveProfileImportImpl::StartImport(
     command_line->AppendSwitch("import-chromium");
   } else if (source_profile.importer_type == importer::TYPE_OPERA) {
     command_line->AppendSwitch("import-opera");
+  } else if (source_profile.importer_type == importer::TYPE_VIVALDI) {
+    command_line->AppendSwitch("import-vivaldi");
   }
 
   content::UtilityThread::Get()->EnsureBlinkInitialized();
