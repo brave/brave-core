@@ -48,6 +48,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
+#include "bat/ads/internal/reactions/reactions.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
@@ -124,10 +125,11 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   search_result_ad_ =
       std::make_unique<SearchResultAd>(account_.get(), transfer_.get());
 
+  reactions_ = std::make_unique<Reactions>(account_.get());
+
   account_->AddObserver(this);
   conversions_->AddObserver(this);
   database_manager_->AddObserver(this);
-  history_manager_->AddObserver(this);
   transfer_->AddObserver(this);
 }
 
@@ -135,7 +137,6 @@ AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   database_manager_->RemoveObserver(this);
-  history_manager_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
 }
 
@@ -563,26 +564,6 @@ void AdsImpl::OnConversion(
 
 void AdsImpl::OnDatabaseIsReady() {
   PurgeExpiredAdEvents();
-}
-
-void AdsImpl::OnDidLikeAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kUpvoted);
-}
-
-void AdsImpl::OnDidDislikeAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kDownvoted);
-}
-
-void AdsImpl::OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kFlagged);
-}
-
-void AdsImpl::OnDidSaveAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kSaved);
 }
 
 void AdsImpl::OnDidTransferAd(const AdInfo& ad) {
