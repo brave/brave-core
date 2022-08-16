@@ -1,0 +1,17 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/playlist/buildflags/buildflags.gni")
+
+brave_content_child_sources = [
+  "//brave/content/child/brave_runtime_features.cc",
+  "//brave/content/child/brave_runtime_features.h",
+]
+
+brave_content_child_deps = []
+if (enable_playlist) {
+  brave_content_child_deps +=
+      [ "//brave/components/playlist:playlist_features" ]
+}

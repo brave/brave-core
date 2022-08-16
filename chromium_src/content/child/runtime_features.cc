@@ -3,11 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/buildflags/buildflags.h"
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/features.h"
-#endif
+#include "brave/content/child/brave_runtime_features.h"
 
 #define SetRuntimeFeaturesDefaultsAndUpdateFromArgs \
   SetRuntimeFeaturesDefaultsAndUpdateFromArgs_ChromiumImpl
@@ -20,13 +16,7 @@ void SetRuntimeFeaturesDefaultsAndUpdateFromArgs(
     const base::CommandLine& command_line) {
   SetRuntimeFeaturesDefaultsAndUpdateFromArgs_ChromiumImpl(command_line);
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  SetRuntimeFeatureFromChromiumFeature(
-      playlist::features::kPlaylist, kDefault, [](bool enabled) {
-        WebRuntimeFeatures::EnableFeatureFromString("MediaSourceStable",
-                                                    !enabled);
-      });
-#endif
+  BraveSetRuntimeFeaturesDefaultsAndUpdateFromArgs(command_line);
 }
 
 }  // namespace content

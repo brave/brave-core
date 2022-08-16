@@ -1,12 +1,22 @@
 diff --git a/content/child/BUILD.gn b/content/child/BUILD.gn
-index 39264fc8a19083aeee6c65e1b4f3dd4d4da72aea..4b2bad00f3a4365eb7967eba2a73a228dedeced7 100644
+index 39264fc8a19083aeee6c65e1b4f3dd4d4da72aea..0aa341681db48a5658e56fc927e325780e31d153 100644
 --- a/content/child/BUILD.gn
 +++ b/content/child/BUILD.gn
-@@ -66,6 +66,7 @@ target(link_target_type, "child") {
-   deps = [
-     "//base",
-     "//build/config/compiler:compiler_buildflags",
-+    "//brave/components/playlist:playlist_features",
-     "//cc/paint",
-     "//components/autofill/core/common:features",
-     "//components/discardable_memory/client",
+@@ -10,6 +10,8 @@ if (is_android) {
+   import("//build/config/android/config.gni")
+ }
+ 
++import("//brave/content/child/sources.gni")
++
+ if (is_component_build) {
+   link_target_type = "source_set"
+ } else {
+@@ -159,6 +161,8 @@ target(link_target_type, "child") {
+   }
+ 
+   configs += [ "//content:content_implementation" ]
++
++  sources += brave_content_child_sources deps += brave_content_child_deps
+ }
+ 
+ # See comment at the top of //content/BUILD.gn for how this works.
