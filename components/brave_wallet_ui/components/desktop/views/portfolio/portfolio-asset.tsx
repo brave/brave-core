@@ -178,9 +178,10 @@ export const PortfolioAsset = () => {
 
   const isSelectedAssetBridgeSupported = React.useMemo(() => {
     if (!selectedAssetFromParams) return false
-    return auroraSupportedContractAddresses
-        .includes(selectedAssetFromParams.contractAddress.toLowerCase()) ||
-      selectedAssetFromParams.symbol.toUpperCase() === 'ETH'
+    const isBridgeAddress = auroraSupportedContractAddresses.includes(selectedAssetFromParams.contractAddress.toLowerCase())
+    const isNativeAsset = selectedAssetFromParams.contractAddress === ''
+
+    return (isBridgeAddress || isNativeAsset) && selectedAssetFromParams.chainId === BraveWallet.MAINNET_CHAIN_ID
   }, [selectedAssetFromParams])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
