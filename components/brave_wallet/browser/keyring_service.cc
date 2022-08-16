@@ -200,7 +200,10 @@ void SerializeHardwareAccounts(const std::string& device_id,
   }
 }
 
-int GetkPbkdf2Iterations() {
+// TODO(apaymyshev): Need to use much lesser value for unit tests where this
+// value is irrelevenat. Otherwise it takes too much time for tests to pass (44
+// seconds for *KeryingService* on my machine).
+int GetPbkdf2Iterations() {
   return KeyringService::GetPbkdf2IterationsForTesting().value_or(
       kPbkdf2Iterations);
 }
@@ -1715,7 +1718,7 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
     auto salt = GetOrCreateSaltForKeyring(keyring_id, /*force_create = */ true);
 
     auto encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-        password, salt, GetkPbkdf2Iterations(), kPbkdf2KeySize);
+        password, salt, GetPbkdf2Iterations(), kPbkdf2KeySize);
     if (!encryptor)
       continue;
 
@@ -1844,7 +1847,7 @@ bool KeyringService::CreateEncryptorForKeyring(const std::string& password,
   MaybeMigratePBKDF2Iterations(password);
 
   encryptors_[id] = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-      password, GetOrCreateSaltForKeyring(id), GetkPbkdf2Iterations(),
+      password, GetOrCreateSaltForKeyring(id), GetPbkdf2Iterations(),
       kPbkdf2KeySize);
   return encryptors_[id] != nullptr;
 }
@@ -2140,10 +2143,6 @@ void KeyringService::ValidatePassword(const std::string& password,
   }
 
   const std::string keyring_id = mojom::kDefaultKeyringId;
-  if (IsLocked(keyring_id)) {
-    std::move(callback).Run(false);
-    return;
-  }
 
   auto salt =
       GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, keyring_id);
@@ -2157,10 +2156,15 @@ void KeyringService::ValidatePassword(const std::string& password,
     return;
   }
 
+  auto iterations =
+      prefs_->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated)
+          ? GetPbkdf2Iterations()
+          : kPbkdf2IterationsLegacy;
+
   // TODO(apaymyshev): move this call(and other ones in this file) to
   // background thread.
   auto encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-      password, *salt, GetkPbkdf2Iterations(), kPbkdf2KeySize);
+      password, *salt, iterations, kPbkdf2KeySize);
 
   if (!encryptor) {
     std::move(callback).Run(false);

@@ -1202,7 +1202,7 @@ TEST_F(KeyringServiceUnitTest, ValidatePassword) {
   EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   service.Lock();
-  EXPECT_FALSE(ValidatePassword(&service, "brave"));
+  EXPECT_TRUE(ValidatePassword(&service, "brave"));
 }
 
 TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {
@@ -4108,7 +4108,13 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest,
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
 
   KeyringService service(json_rpc_service(), GetPrefs());
-  EXPECT_FALSE(ValidatePassword(&service, "brave"));
+
+  // Password is good, but no migration happens.
+  EXPECT_TRUE(ValidatePassword(&service, "brave"));
+  EXPECT_FALSE(
+      GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
+
+  // Unlock triggers migration, password is still good.
   EXPECT_TRUE(Unlock(&service, "brave"));
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
