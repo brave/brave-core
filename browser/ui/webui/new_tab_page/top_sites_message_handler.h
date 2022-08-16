@@ -63,7 +63,6 @@ class TopSitesMessageHandler : public content::WebUIMessageHandler,
   raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<ntp_tiles::MostVisitedSites> most_visited_sites_;
   GURL last_blocklisted_;
-  base::Value top_site_tiles_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_TOP_SITES_MESSAGE_HANDLER_H_
