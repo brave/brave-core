@@ -7,6 +7,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
+#include "chrome/browser/prefetch/prefetch_proxy/prefetch_proxy_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -82,12 +83,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
+    &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::kAutofillSaveCardUiExperiment,
     &autofill::features::kAutofillServerCommunication,
     &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
     &blink::features::kAdInterestGroupAPI,
-    &blink::features::kBrowsingTopics,
     &blink::features::kAllowURNsInIframes,
+    &blink::features::kBrowsingTopics,
+    &blink::features::kClientHintsMetaEquivDelegateCH,
     &blink::features::kComputePressure,
     &blink::features::kConversionMeasurement,
     &blink::features::kCssSelectorFragmentAnchor,
@@ -107,6 +110,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &commerce::kShoppingPDPMetrics,
     &commerce::kRetailCoupons,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
+#if BUILDFLAG(IS_WIN)
+    &features::kAppBoundEncryptionMetrics,
+#endif
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif
@@ -115,6 +121,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kFedCm,
     &features::kFirstPartySets,
     &features::kIdleDetection,
+    &features::kIsolatePrerenders,
     &features::kNavigationRequestPreconnect,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
