@@ -175,39 +175,31 @@ BraveDarkModeType GetBraveDarkModeType() {
   return type;
 }
 
-base::Value GetBraveDarkModeTypeList() {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List GetBraveDarkModeTypeList() {
+  base::Value::List list;
 
   if (SystemDarkModeEnabled()) {
-    base::Value system_type(base::Value::Type::DICTIONARY);
-    system_type.SetKey(
+    base::Value::Dict system_type;
+    system_type.Set(
         "value",
-        base::Value(static_cast<int>(
-            BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT)));
-    system_type.SetKey("name",
-                       base::Value(brave_l10n::GetLocalizedResourceUTF16String(
-                           IDS_BRAVE_THEME_TYPE_SYSTEM)));
+        static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT));
+    system_type.Set("name", brave_l10n::GetLocalizedResourceUTF16String(
+                                IDS_BRAVE_THEME_TYPE_SYSTEM));
     list.Append(std::move(system_type));
   }
 
-  base::Value dark_type(base::Value::Type::DICTIONARY);
-  dark_type.SetKey(
-      "value",
-      base::Value(static_cast<int>(
-          BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK)));
-  dark_type.SetKey("name",
-                   base::Value(brave_l10n::GetLocalizedResourceUTF16String(
-                       IDS_BRAVE_THEME_TYPE_DARK)));
+  base::Value::Dict dark_type;
+  dark_type.Set("value",
+                static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK));
+  dark_type.Set("name", brave_l10n::GetLocalizedResourceUTF16String(
+                            IDS_BRAVE_THEME_TYPE_DARK));
   list.Append(std::move(dark_type));
 
-  base::Value light_type(base::Value::Type::DICTIONARY);
-  light_type.SetKey(
-      "value",
-      base::Value(static_cast<int>(
-          BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT)));
-  light_type.SetKey("name",
-                    base::Value(brave_l10n::GetLocalizedResourceUTF16String(
-                        IDS_BRAVE_THEME_TYPE_LIGHT)));
+  base::Value::Dict light_type;
+  light_type.Set(
+      "value", static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT));
+  light_type.Set("name", brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_BRAVE_THEME_TYPE_LIGHT));
   list.Append(std::move(light_type));
 
   return list;
