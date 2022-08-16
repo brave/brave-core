@@ -11,6 +11,8 @@
 
 #include "base/bind.h"
 #include "base/check.h"
+#include "base/command_line.h"
+#include "base/files/file_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/task_traits.h"
@@ -116,7 +118,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   if (bytes_remaining_in_buffer_ > 0) {
     // Offload heavy distilling to another thread.
     base::ThreadPool::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::TaskPriority::USER_BLOCKING},
+        FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
         base::BindOnce(
             [](std::string data, std::unique_ptr<Rewriter> rewriter,
                const std::string& stylesheet) -> auto{
@@ -135,6 +137,17 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
               // found
               if (transformed.length() < 1024) {
                 return data;
+              }
+              constexpr const char kColllectSwitch[] =
+                  "speedreader-collect-test-data";
+              if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+                      kColllectSwitch)) {
+                const auto dir =
+                    base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
+                        kColllectSwitch);
+                base::CreateDirectory(dir);
+                base::WriteFile(dir.AppendASCII("original.html"), data);
+                base::WriteFile(dir.AppendASCII("distilled.html"), transformed);
               }
 
               return stylesheet + transformed;
