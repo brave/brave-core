@@ -77,6 +77,7 @@ export const Buy = ({
         default: return false
       }
     })
+    .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
   }, [selectedAsset, wyreAssetOptions, rampAssetOptions])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
