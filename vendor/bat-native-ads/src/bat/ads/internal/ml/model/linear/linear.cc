@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
@@ -50,10 +51,9 @@ PredictionMap Linear::GetTopPredictions(const VectorData& x,
   std::vector<std::pair<double, std::string>> prediction_order;
   prediction_order.reserve(prediction_map_softmax.size());
   for (const auto& prediction : prediction_map_softmax) {
-    prediction_order.push_back(
-        std::make_pair(prediction.second, prediction.first));
+    prediction_order.emplace_back(prediction.second, prediction.first);
   }
-  base::ranges::sort(base::Reversed(prediction_order));  // NOLINT
+  base::ranges::sort(base::Reversed(prediction_order));
   PredictionMap top_predictions;
   if (top_count > 0) {
     prediction_order.resize(top_count);
