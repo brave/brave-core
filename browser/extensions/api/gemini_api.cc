@@ -120,13 +120,14 @@ GeminiGetAccountBalancesFunction::Run() {
 void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
     const GeminiAccountBalances& balances,
     bool auth_invalid) {
-  base::Value result(base::Value::Type::DICTIONARY);
+  base::Value::Dict result;
 
   for (const auto& balance : balances) {
-    result.SetStringKey(balance.first, balance.second);
+    result.Set(balance.first, balance.second);
   }
 
-  Respond(TwoArguments(std::move(result), base::Value(auth_invalid)));
+  Respond(
+      TwoArguments(base::Value(std::move(result)), base::Value(auth_invalid)));
 }
 
 ExtensionFunction::ResponseAction
@@ -195,13 +196,13 @@ void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
     const std::string& quote_id, const std::string& quantity,
     const std::string& fee, const std::string& price,
     const std::string& total_price, const std::string& error) {
-  base::Value quote(base::Value::Type::DICTIONARY);
-  quote.SetStringKey("id", quote_id);
-  quote.SetStringKey("quantity", quantity);
-  quote.SetStringKey("fee", fee);
-  quote.SetStringKey("price", price);
-  quote.SetStringKey("totalPrice", total_price);
-  Respond(TwoArguments(std::move(quote), base::Value(error)));
+  base::Value::Dict quote;
+  quote.Set("id", quote_id);
+  quote.Set("quantity", quantity);
+  quote.Set("fee", fee);
+  quote.Set("price", price);
+  quote.Set("totalPrice", total_price);
+  Respond(TwoArguments(base::Value(std::move(quote)), base::Value(error)));
 }
 
 ExtensionFunction::ResponseAction
