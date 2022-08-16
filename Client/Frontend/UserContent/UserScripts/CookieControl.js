@@ -39,3 +39,24 @@ if (Object.getOwnPropertyDescriptor(window, 'sessionStorage')) {
         },
     });
 }
+
+(() => {
+  // Access to caches should be denied when user has blocked all Cookies.
+  const makeFailingPromiseFunction = () => {
+    return function () {
+      return Promise.reject(
+        new DOMException('An attempt was made to break through the security policy of the user agent.')
+      )
+    }
+  }
+
+  // We need to check that window.caches is defined as this API was only added in iOS 15
+  // Later on we can probably remove this check.
+  if (window.caches !== undefined) {
+    window.CacheStorage.prototype.match = makeFailingPromiseFunction()
+    window.CacheStorage.prototype.has = makeFailingPromiseFunction()
+    window.CacheStorage.prototype.delete = makeFailingPromiseFunction()
+    window.CacheStorage.prototype.open = makeFailingPromiseFunction()
+    window.CacheStorage.prototype.keys = makeFailingPromiseFunction()
+  }
+})()
