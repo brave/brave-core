@@ -210,7 +210,6 @@ export const createPageReducer = (initialState: PageState) => {
     }
   })
 
-
   reducer.on(Actions.selectCoinMarket, (state: PageState, payload: BraveWallet.CoinMarket) => {
     return {
       ...state,
