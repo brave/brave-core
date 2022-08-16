@@ -18,45 +18,48 @@ namespace skus {
 // A domain with product is used by the following SKU methods:
 // - `credential_summary`
 // - `prepare_credentials_presentation`
-constexpr char kProductTalk[] = "talk";
-constexpr char kProductVPN[] = "vpn";
+// constexpr char kProductTalk[] = "talk";
+// constexpr char kProductVPN[] = "vpn";
 
 std::string GetDefaultEnvironment() {
-#if defined(OFFICIAL_BUILD)
-    return kEnvProduction;
-#else
-    return kEnvDevelopment;
-#endif
+  // #if defined(OFFICIAL_BUILD)
+  //     return kEnvProduction;
+  // #else
+  //     return kEnvDevelopment;
+  // #endif
+  return kEnvStaging;
 }
 
 std::string GetDomain(const std::string& prefix,
                       const std::string& environment) {
-  DCHECK(prefix == kProductTalk || prefix == kProductVPN);
+  // DCHECK(prefix == kProductTalk || prefix == kProductVPN);
 
-  if (environment == kEnvProduction) {
-    return prefix + ".brave.com";
-  } else if (environment == kEnvStaging) {
-    return prefix + ".bravesoftware.com";
-  } else if (environment == kEnvDevelopment) {
-    return prefix + ".brave.software";
-  }
+  // if (environment == kEnvProduction) {
+  //   return prefix + ".brave.com";
+  // } else if (environment == kEnvStaging) {
+  //   return prefix + ".bravesoftware.com";
+  // } else if (environment == kEnvDevelopment) {
+  //   return prefix + ".brave.software";
+  // }
 
-  NOTREACHED();
+  // NOTREACHED();
 
-  return "";
+  // return "";
+  return prefix + ".bravesoftware.com";
 }
 
 std::string GetEnvironmentForDomain(const std::string& domain) {
-  auto base_domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      domain, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (base_domain == "brave.com")
-    return kEnvProduction;
-  if (base_domain == "bravesoftware.com")
-    return kEnvStaging;
-  if (base_domain == "brave.software")
-    return kEnvDevelopment;
-  NOTIMPLEMENTED();
-  return "";
+  // auto base_domain = net::registry_controlled_domains::GetDomainAndRegistry(
+  //     domain, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  // if (base_domain == "brave.com")
+  //   return kEnvProduction;
+  // if (base_domain == "bravesoftware.com")
+  //   return kEnvStaging;
+  // if (base_domain == "brave.software")
+  //   return kEnvDevelopment;
+  // NOTIMPLEMENTED();
+  // return "";
+  return kEnvStaging;
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
