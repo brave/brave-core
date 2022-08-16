@@ -119,7 +119,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
           if (!allow_fingerprinting && !IsFlagDisabled()) {
             EXPECT_GE(8, EvalJs(Contents(), test_screen_size_scripts_abs));
           } else {
-            EXPECT_LT(8, EvalJs(Contents(), test_screen_size_scripts_abs));
+            EXPECT_LE(8, EvalJs(Contents(), test_screen_size_scripts_abs));
           }
         }
       }
@@ -186,41 +186,38 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     }
   }
 
-  void FarbleScreenPopupPosition() {
-    for (int j = 0; j < static_cast<int>(std::size(kTestWindowBounds)); ++j) {
-      SetBounds(kTestWindowBounds[j]);
-      for (bool allow_fingerprinting : {false, true}) {
-        SetFingerprintingSetting(allow_fingerprinting);
-        NavigateToURLUntilLoadStop(FarblingUrl());
-        gfx::Rect parent_bounds = browser()->window()->GetBounds();
-        const char* script =
-            "open('http://d.test/', '', `"
-            "left=${screen.availLeft + 10},"
-            "top=${screen.availTop + 10},"
-            "width=${outerWidth + 200},"
-            "height=${outerHeight + 200}"
-            "`);";
-        Browser* popup = OpenPopup(script);
-        gfx::Rect child_bounds = popup->window()->GetBounds();
-        auto* parent_contents = Contents();
-        auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
-        const int popup_inner_width =
-            EvalJs(popup_contents, "innerWidth").value.GetInt();
-        const int popup_inner_height =
-            EvalJs(popup_contents, "innerHeight").value.GetInt();
-        if (!allow_fingerprinting && !IsFlagDisabled()) {
-          EXPECT_GE(child_bounds.x(), 10 + parent_bounds.x());
-          EXPECT_GE(child_bounds.y(), 10 + parent_bounds.y());
-          EXPECT_LE(popup_inner_width,
-                    EvalJs(parent_contents, "innerWidth + 8"));
-          EXPECT_LE(popup_inner_height,
-                    EvalJs(parent_contents, "Math.max(100, innerHeight + 8)"));
-        } else {
-          EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
-          EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
-          EXPECT_GE(popup_inner_width, EvalJs(parent_contents, "innerWidth"));
-          EXPECT_GE(popup_inner_height, EvalJs(parent_contents, "innerHeight"));
-        }
+  void FarbleScreenPopupPosition(int j) {
+    SetBounds(kTestWindowBounds[j]);
+    for (bool allow_fingerprinting : {false, true}) {
+      SetFingerprintingSetting(allow_fingerprinting);
+      NavigateToURLUntilLoadStop(FarblingUrl());
+      gfx::Rect parent_bounds = browser()->window()->GetBounds();
+      const char* script =
+          "open('http://d.test/', '', `"
+          "left=${screen.availLeft + 10},"
+          "top=${screen.availTop + 10},"
+          "width=${outerWidth + 200},"
+          "height=${outerHeight + 200}"
+          "`);";
+      Browser* popup = OpenPopup(script);
+      gfx::Rect child_bounds = popup->window()->GetBounds();
+      auto* parent_contents = Contents();
+      auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
+      const int popup_inner_width =
+          EvalJs(popup_contents, "innerWidth").value.GetInt();
+      const int popup_inner_height =
+          EvalJs(popup_contents, "innerHeight").value.GetInt();
+      if (!allow_fingerprinting && !IsFlagDisabled()) {
+        EXPECT_GE(child_bounds.x(), parent_bounds.x());
+        EXPECT_GE(child_bounds.y(), parent_bounds.y());
+        EXPECT_LE(popup_inner_width, EvalJs(parent_contents, "innerWidth + 8"));
+        EXPECT_LE(popup_inner_height,
+                  EvalJs(parent_contents, "Math.max(100, innerHeight + 8)"));
+      } else {
+        EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
+        EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
+        EXPECT_GE(popup_inner_width, EvalJs(parent_contents, "innerWidth"));
+        EXPECT_GE(popup_inner_height, EvalJs(parent_contents, "innerHeight"));
       }
     }
   }
@@ -287,12 +284,46 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
   FarbleScreenMediaQuery();
 }
 
+// Run each window size as a separate test because on linux
+// the browser window does not properly resized within
+// a single test.
+
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
-                       FarbleScreenPopupPosition_EnableFlag) {
-  FarbleScreenPopupPosition();
+                       FarbleScreenPopupPosition_EnableFlag_0) {
+  FarbleScreenPopupPosition(0);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
-                       FarbleScreenPopupPosition_DisableFlag) {
-  FarbleScreenPopupPosition();
+                       FarbleScreenPopupPosition_DisableFlag_0) {
+  FarbleScreenPopupPosition(0);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
+                       FarbleScreenPopupPosition_EnableFlag_1) {
+  FarbleScreenPopupPosition(1);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
+                       FarbleScreenPopupPosition_DisableFlag_1) {
+  FarbleScreenPopupPosition(1);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
+                       FarbleScreenPopupPosition_EnableFlag_2) {
+  FarbleScreenPopupPosition(2);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
+                       FarbleScreenPopupPosition_DisableFlag_2) {
+  FarbleScreenPopupPosition(2);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
+                       FarbleScreenPopupPosition_EnableFlag_3) {
+  FarbleScreenPopupPosition(3);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
+                       FarbleScreenPopupPosition_DisableFlag_3) {
+  FarbleScreenPopupPosition(3);
 }
