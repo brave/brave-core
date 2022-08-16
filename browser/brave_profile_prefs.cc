@@ -268,7 +268,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
   registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
   registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
-  registry->RegisterBooleanPref(kBraveShieldsFPSettingsMigration, false);
   // clear default popular sites
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));

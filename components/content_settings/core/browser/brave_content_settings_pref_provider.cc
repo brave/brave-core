@@ -45,6 +45,8 @@ namespace {
 
 constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
+constexpr char kBraveShieldsFPSettingsMigration[] =
+    "brave.shields_fp_settings_migration";
 
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
@@ -148,7 +150,7 @@ void BravePrefProvider::RegisterProfilePrefs(
         "profile.content_settings.exceptions.plugins");
   }
 #endif
-
+  registry->RegisterBooleanPref(kBraveShieldsFPSettingsMigration, false);
   registry->RegisterDictionaryPref(kObsoleteShieldCookies);
 }
 

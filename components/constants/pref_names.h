@@ -77,7 +77,6 @@ extern const char kPlayYTVideoInBrowserEnabled[];
 extern const char kBackgroundVideoPlaybackEnabled[];
 extern const char kSafetynetCheckFailed[];
 extern const char kSafetynetStatus[];
-extern const char kBraveShieldsFPSettingsMigration[];
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

@@ -90,8 +90,6 @@ const char kBackgroundVideoPlaybackEnabled[] =
     "brave.background_video_playback";
 const char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 const char kSafetynetStatus[] = "safetynet.status";
-const char kBraveShieldsFPSettingsMigration[] =
-    "brave.shields_fp_settings_migration";
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
