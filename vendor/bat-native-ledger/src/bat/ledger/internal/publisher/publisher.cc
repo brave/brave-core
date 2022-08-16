@@ -524,8 +524,8 @@ void Publisher::synopsisNormalizerInternal(
   }
 
   double totalScores = 0.0;
-  for (size_t i = 0; i < list->size(); i++) {
-    totalScores += (*list)[i]->score;
+  for (const auto& entry : *list) {
+    totalScores += entry->score;
   }
 
   std::vector<unsigned int> percents;
@@ -533,8 +533,8 @@ void Publisher::synopsisNormalizerInternal(
   std::vector<double> realPercents;
   std::vector<double> roundoffs;
   unsigned int totalPercents = 0;
-  for (size_t i = 0; i < list->size(); i++) {
-    double floatNumber = ((*list)[i]->score / totalScores) * 100.0;
+  for (const auto& entry : *list) {
+    double floatNumber = (entry->score / totalScores) * 100.0;
     double roundNumber = (unsigned int)std::lround(floatNumber);
     realPercents.push_back(floatNumber);
     percents.push_back(roundNumber);
@@ -575,12 +575,12 @@ void Publisher::synopsisNormalizerInternal(
     }
   }
   size_t currentValue = 0;
-  for (size_t i = 0; i < list->size(); i++) {
-    (*list)[i]->percent = percents[currentValue];
-    (*list)[i]->weight = weights[currentValue];
+  for (const auto& entry : *list) {
+    entry->percent = percents[currentValue];
+    entry->weight = weights[currentValue];
     currentValue++;
     if (newList) {
-      newList->push_back((*list)[i]->Clone());
+      newList->push_back(entry->Clone());
     }
   }
 }

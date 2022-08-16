@@ -105,9 +105,9 @@ std::vector<uint8_t> Security::GenerateSeed() {
 
 std::string Security::Uint8ToHex(const std::vector<uint8_t>& in) {
   std::ostringstream res;
-  for (size_t i = 0; i < in.size(); i++) {
-    res << std::setfill('0') << std::setw(sizeof(uint8_t) * 2)
-       << std::hex << static_cast<int>(in[i]);
+  for (unsigned char entry : in) {
+    res << std::setfill('0') << std::setw(sizeof(uint8_t) * 2) << std::hex
+        << static_cast<int>(entry);
   }
   return res.str();
 }

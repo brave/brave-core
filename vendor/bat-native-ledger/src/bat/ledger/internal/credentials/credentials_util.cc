@@ -51,8 +51,7 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& creds) {
   DCHECK_NE(creds.size(), 0UL);
 
   std::vector<BlindedToken> blinded_creds;
-  for (unsigned int i = 0; i < creds.size(); i++) {
-    auto cred = creds.at(i);
+  for (auto cred : creds) {
     auto blinded_cred = cred.blind();
 
     blinded_creds.push_back(blinded_cred);

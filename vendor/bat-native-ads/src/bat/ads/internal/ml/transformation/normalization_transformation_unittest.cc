@@ -78,8 +78,8 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   // Act
-  for (size_t i = 0; i < chain.size(); ++i) {
-    data = chain[i]->Apply(data);
+  for (auto& entry : chain) {
+    data = entry->Apply(data);
   }
 
   ASSERT_EQ(DataType::kVector, data->GetType());
