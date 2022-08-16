@@ -135,7 +135,7 @@ int GetDataResourceId(const std::string& name) {
 }
 
 std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
-  DCHECK(mojom::IsKnownEnumValue(method));
+  DCHECK(ads::mojom::IsKnownEnumValue(method));
 
   switch (method) {
     case ads::mojom::UrlRequestMethodType::kGet: {

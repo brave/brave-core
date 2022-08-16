@@ -71,8 +71,6 @@ void InlineContentAd::OnOpportunityAroseToServeInlineContentAd(
 }
 
 void InlineContentAd::OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
   TriggerEvent(ad.placement_id, ad.creative_instance_id,
                mojom::InlineContentAdEventType::kServed);
 }

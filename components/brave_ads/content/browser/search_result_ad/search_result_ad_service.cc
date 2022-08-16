@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/callback.h"
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
