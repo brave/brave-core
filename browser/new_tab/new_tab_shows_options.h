@@ -6,13 +6,10 @@
 #ifndef BRAVE_BROWSER_NEW_TAB_NEW_TAB_SHOWS_OPTIONS_H_
 #define BRAVE_BROWSER_NEW_TAB_NEW_TAB_SHOWS_OPTIONS_H_
 
+#include "base/values.h"
 #include "url/gurl.h"
 
 class Profile;
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave {
 
@@ -23,7 +20,7 @@ enum class NewTabPageShowsOptions {
 };
 
 GURL GetNewTabPageURL(Profile* profile);
-base::Value GetNewTabShowsOptionsList(Profile* profile);
+base::Value::List GetNewTabShowsOptionsList(Profile* profile);
 bool ShouldUseNewTabURLForNewTab(Profile* profile);
 bool ShouldNewTabShowDashboard(Profile* profile);
 bool ShouldNewTabShowBlankpage(Profile* profile);

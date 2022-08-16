@@ -117,8 +117,8 @@ void BraveAppearanceHandler::GetNewTabShowsOptionsList(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  ResolveJavascriptCallback(args[0],
-                            brave::GetNewTabShowsOptionsList(profile_));
+  ResolveJavascriptCallback(
+      args[0], base::Value(brave::GetNewTabShowsOptionsList(profile_)));
 }
 
 void BraveAppearanceHandler::ShouldShowNewTabDashboardSettings(
