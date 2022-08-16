@@ -373,7 +373,7 @@ void MockSetBooleanPref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, SetBooleanPref(_, _))
       .WillByDefault(Invoke([](const std::string& path, const bool value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
-        Prefs()[uuid] = base::NumberToString(static_cast<int>(value));
+        Prefs()[uuid] = base::NumberToString(int{value});
       }));
 }
 

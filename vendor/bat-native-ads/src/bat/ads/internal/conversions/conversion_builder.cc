@@ -23,8 +23,7 @@ absl::optional<ConversionInfo> BuildConversion(
   conversion.url_pattern = ad_mojom->conversion->url_pattern;
   conversion.advertiser_public_key =
       ad_mojom->conversion->advertiser_public_key;
-  conversion.observation_window =
-      static_cast<int>(ad_mojom->conversion->observation_window);
+  conversion.observation_window = int{ad_mojom->conversion->observation_window};
   conversion.expire_at = ad_mojom->conversion->expire_at;
 
   if (!conversion.IsValid()) {
