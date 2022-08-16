@@ -63,7 +63,8 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                   base::Unretained(this)));
 
-  BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(redeem_at));
+  BLOG(1, "Redeem unblinded payment tokens "
+              << FriendlyDateAndTime(redeem_at, /* use_sentence_style */ true));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -176,7 +177,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
                      base::Unretained(this)));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
-              << FriendlyDateAndTime(retry_at));
+              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
 
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);

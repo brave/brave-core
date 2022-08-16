@@ -24,7 +24,7 @@ class BatAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /* is_local */ false));
+      TimeFromString("Wed, 18 Nov 1970 12:34:56", /* is_local */ true));
 
   SetCatalogLastUpdated(Now());
 
@@ -36,7 +36,8 @@ TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   EXPECT_EQ(DiagnosticEntryType::kCatalogLastUpdated,
             diagnostic_entry.GetType());
   EXPECT_EQ("Catalog last updated", diagnostic_entry.GetName());
-  EXPECT_EQ("1970-11-18T12:34:56.000Z", diagnostic_entry.GetValue());
+  EXPECT_EQ("Wednesday, November 18, 1970 at 12:34:56 PM",
+            diagnostic_entry.GetValue());
 }
 
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogNeverUpdated) {

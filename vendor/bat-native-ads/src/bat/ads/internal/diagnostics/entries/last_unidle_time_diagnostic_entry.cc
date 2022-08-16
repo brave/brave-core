@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 
-#include "base/time/time_to_iso8601.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
 
 namespace ads {
 
@@ -37,7 +37,8 @@ std::string LastUnIdleTimeDiagnosticEntry::GetValue() const {
     return kNever;
   }
 
-  return base::TimeToISO8601(last_unidle_time_);
+  return LongFriendlyDateAndTime(last_unidle_time_,
+                                 /* use_sentence_style */ false);
 }
 
 }  // namespace ads
