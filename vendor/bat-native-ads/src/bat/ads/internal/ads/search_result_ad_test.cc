@@ -39,8 +39,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvent) {
   // Act
   GetAds()->TriggerSearchResultAdEvent(
       BuildSearchResultAd(), mojom::SearchResultAdEventType::kViewed,
-      [=](const bool success, const std::string& placement_id,
-          const mojom::SearchResultAdEventType event_type) {
+      [](const bool success, const std::string& placement_id,
+         const mojom::SearchResultAdEventType event_type) {
         // Assert
         ASSERT_TRUE(success);
 
@@ -75,8 +75,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   // Act
   GetAds()->TriggerSearchResultAdEvent(
       BuildSearchResultAd(), mojom::SearchResultAdEventType::kClicked,
-      [=](const bool success, const std::string& placement_id,
-          const mojom::SearchResultAdEventType event_type) {
+      [](const bool success, const std::string& placement_id,
+         const mojom::SearchResultAdEventType event_type) {
         // Assert
         ASSERT_TRUE(success);
 

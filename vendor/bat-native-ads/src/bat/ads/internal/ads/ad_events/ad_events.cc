@@ -68,7 +68,7 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
 
 void RebuildAdEventHistoryFromDatabase() {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
+  database_table.GetAll([](const bool success, const AdEventList& ad_events) {
     if (!success) {
       BLOG(1, "Failed to get ad events");
       return;
