@@ -87,67 +87,64 @@ void TopSitesMessageHandler::OnURLsAvailable(
   if (!most_visited_sites_)
     return;
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  base::Value tiles(base::Value::Type::LIST);
+  base::Value::Dict result;
+  base::Value::List tiles;
   int tile_id = 1;
 
   // Super Referral feature only present in regular tabs (not private tabs)
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
   if (service) {
     for (auto& top_site : service->GetTopSitesData()) {
-      base::Value tile_value(base::Value::Type::DICTIONARY);
+      base::Value::Dict tile_value;
       if (top_site.name.empty()) {
-        tile_value.SetStringKey("title", top_site.destination_url);
-        tile_value.SetIntKey("title_direction", base::i18n::LEFT_TO_RIGHT);
+        tile_value.Set("title", top_site.destination_url);
+        tile_value.Set("title_direction", base::i18n::LEFT_TO_RIGHT);
       } else {
-        tile_value.SetStringKey("title", top_site.name);
-        tile_value.SetIntKey("title_direction",
-                             base::i18n::GetFirstStrongCharacterDirection(
-                                 base::UTF8ToUTF16(top_site.name)));
+        tile_value.Set("title", top_site.name);
+        tile_value.Set("title_direction",
+                       base::i18n::GetFirstStrongCharacterDirection(
+                           base::UTF8ToUTF16(top_site.name)));
       }
-      tile_value.SetIntKey("id", tile_id++);
-      tile_value.SetStringKey("url", top_site.destination_url);
-      tile_value.SetStringKey("favicon", top_site.image_path);
-      tile_value.SetBoolKey("defaultSRTopSite", true);
-      tile_value.SetIntKey(
-          "source", static_cast<int32_t>(ntp_tiles::TileSource::ALLOWLIST));
-      tile_value.SetIntKey(
-          "title_source",
-          static_cast<int32_t>(ntp_tiles::TileTitleSource::INFERRED));
+      tile_value.Set("id", tile_id++);
+      tile_value.Set("url", top_site.destination_url);
+      tile_value.Set("favicon", top_site.image_path);
+      tile_value.Set("defaultSRTopSite", true);
+      tile_value.Set("source",
+                     static_cast<int32_t>(ntp_tiles::TileSource::ALLOWLIST));
+      tile_value.Set("title_source", static_cast<int32_t>(
+                                         ntp_tiles::TileTitleSource::INFERRED));
       tiles.Append(std::move(tile_value));
     }
   }
 
   for (auto& tile : sections.at(ntp_tiles::SectionType::PERSONALIZED)) {
-    base::Value tile_value(base::Value::Type::DICTIONARY);
+    base::Value::Dict tile_value;
     if (tile.title.empty()) {
-      tile_value.SetStringKey("title", tile.url.spec());
-      tile_value.SetIntKey("title_direction", base::i18n::LEFT_TO_RIGHT);
+      tile_value.Set("title", tile.url.spec());
+      tile_value.Set("title_direction", base::i18n::LEFT_TO_RIGHT);
     } else {
-      tile_value.SetStringKey("title", base::UTF16ToUTF8(tile.title));
-      tile_value.SetIntKey(
-          "title_direction",
-          base::i18n::GetFirstStrongCharacterDirection(tile.title));
+      tile_value.Set("title", base::UTF16ToUTF8(tile.title));
+      tile_value.Set("title_direction",
+                     base::i18n::GetFirstStrongCharacterDirection(tile.title));
     }
-    tile_value.SetIntKey("id", tile_id++);
-    tile_value.SetStringKey("url", tile.url.spec());
-    tile_value.SetStringKey("favicon", tile.favicon_url.spec());
-    tile_value.SetIntKey("source", static_cast<int32_t>(tile.source));
-    tile_value.SetIntKey("title_source",
-                         static_cast<int32_t>(tile.title_source));
+    tile_value.Set("id", tile_id++);
+    tile_value.Set("url", tile.url.spec());
+    tile_value.Set("favicon", tile.favicon_url.spec());
+    tile_value.Set("source", static_cast<int32_t>(tile.source));
+    tile_value.Set("title_source", static_cast<int32_t>(tile.title_source));
     tiles.Append(std::move(tile_value));
   }
 
-  result.SetKey("tiles", std::move(tiles));
-  result.SetBoolKey("custom_links_enabled",
-                    most_visited_sites_->IsCustomLinksEnabled());
-  result.SetBoolKey("visible", most_visited_sites_->IsShortcutsVisible());
-  result.SetIntKey("custom_links_num", GetCustomLinksNum());
-  top_site_tiles_ = std::move(result);
+  result.Set("tiles", std::move(tiles));
+  result.Set("custom_links_enabled",
+             most_visited_sites_->IsCustomLinksEnabled());
+  result.Set("visible", most_visited_sites_->IsShortcutsVisible());
+  result.Set("custom_links_num", GetCustomLinksNum());
 
   // Notify listeners of this update (ex: new tab page)
   if (IsJavascriptAllowed()) {
-    FireWebUIListener("most-visited-info-changed", top_site_tiles_);
+    FireWebUIListener("most-visited-info-changed",
+                      base::Value(std::move(result)));
   }
 }
 
