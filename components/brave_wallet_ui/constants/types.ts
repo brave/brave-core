@@ -115,6 +115,7 @@ export type PanelTypes =
   | 'switchEthereumChain'
   | 'transactionDetails'
   | 'transactions'
+  | 'currencies'
 
 export type NavTypes =
   | 'crypto'
