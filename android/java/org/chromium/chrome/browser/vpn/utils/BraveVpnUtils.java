@@ -50,6 +50,7 @@ public class BraveVpnUtils {
     public static final String SUBSCRIPTION_PARAM_TEXT = "subscription";
     public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
+    public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
     public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;

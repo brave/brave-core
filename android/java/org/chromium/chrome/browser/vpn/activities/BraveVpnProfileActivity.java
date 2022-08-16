@@ -70,7 +70,11 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             public void onClick(View v) {
                 BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
                         getResources().getString(R.string.vpn_connect_text));
-                verifySubscription();
+                if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                    BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+                } else {
+                    verifySubscription();
+                }
             }
         });
 
