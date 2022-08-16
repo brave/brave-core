@@ -278,10 +278,6 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           }
 
           creative_set.creative_promoted_content_ads.push_back(creative);
-        } else if (code == "in_page_all_v1") {
-          // TODO(https://github.com/brave/brave-browser/issues/7298): Implement
-          // Brave Publisher Ads
-          continue;
         } else {
           // Unknown type
           NOTREACHED();

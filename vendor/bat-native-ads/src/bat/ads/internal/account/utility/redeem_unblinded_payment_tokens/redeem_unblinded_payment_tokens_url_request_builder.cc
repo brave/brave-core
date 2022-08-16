@@ -83,8 +83,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
   base::Value payment_request_dto = CreatePaymentRequestDTO(payload);
   dict.Set("paymentCredentials", std::move(payment_request_dto));
   dict.Set("payload", payload);
-  // TODO(cdesouza): See if guarantees can be provided that this function is
-  // called only once for an instance, so this extra deep copy might be avoided.
+
   dict.Merge(user_data_.Clone());
 
   std::string json;
