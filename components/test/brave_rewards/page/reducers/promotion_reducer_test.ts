@@ -2,11 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import reducers from '../../../../brave_rewards/resources/page/reducers/index'
-import { types } from '../../../../brave_rewards/resources/page/constants/rewards_types'
-import { defaultState } from '../../../../brave_rewards/resources/page/storage'
+import { createReducer } from '../../../../brave_rewards/resources/page/reducers'
+import { types } from '../../../../brave_rewards/resources/page/actions/rewards_types'
+import { defaultState } from '../../../../brave_rewards/resources/page/reducers/default_state'
 
 describe('Promotion Reducer', () => {
+  const reducers = createReducer()
+
   describe('FETCH_PROMOTIONS', () => {
     it('does not modify state', () => {
       const assertion = reducers(undefined, {
@@ -114,160 +116,6 @@ describe('Promotion Reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-
-      expect(assertion).toEqual({
-        rewardsData: expectedState
-      })
-    })
-  })
-
-  describe('ON_CLAIM_PROMOTION', () => {
-    it('does not modify state if no promotions or current promotion', () => {
-      const assertion = reducers({
-        rewardsData: defaultState
-      }, {
-        type: types.ON_CLAIM_PROMOTION,
-        payload: {
-          properties: {
-            promotionId: 'test-id',
-            captchaImage: 'XXX',
-            captchaId: 'id',
-            hint: 'circle'
-          }
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-
-      expect(assertion).toEqual({
-        rewardsData: expectedState
-      })
-    })
-
-    it('modifies correct promotion with captcha information', () => {
-      const initialState = {
-        ...defaultState
-      }
-      initialState.promotions = [
-        {
-          promotionId: 'test-promotion-id',
-          status: 0,
-          type: 0,
-          createdAt: 100000,
-          claimableUntil: 140000,
-          expiresAt: 140000
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          status: 0,
-          type: 1,
-          createdAt: 100000,
-          claimableUntil: 140000,
-          expiresAt: 140000
-        }
-      ]
-
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.ON_CLAIM_PROMOTION,
-        payload: {
-          properties: {
-            promotionId: 'test-promotion-id-2',
-            captchaImage: 'XXX',
-            captchaId: 'id',
-            hint: 'circle'
-          }
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.promotions = [
-        {
-          promotionId: 'test-promotion-id',
-          status: 0,
-          type: 0,
-          createdAt: 100000,
-          claimableUntil: 140000,
-          expiresAt: 140000
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          status: 0,
-          type: 1,
-          createdAt: 100000,
-          claimableUntil: 140000,
-          expiresAt: 140000,
-          captchaImage: 'XXX',
-          captchaId: 'id',
-          hint: 'circle'
-        }
-      ]
-
-      expect(assertion).toEqual({
-        rewardsData: expectedState
-      })
-    })
-  })
-
-  describe('RESET_PROMOTION', () => {
-    it('resets current promotion', () => {
-      const initialState = {
-        ...defaultState
-      }
-      initialState.promotions = [
-        {
-          promotionId: 'test-promotion-id',
-          createdAt: 0,
-          claimableUntil: 0,
-          expiresAt: 0,
-          amount: 1.0,
-          type: 0
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          createdAt: 0,
-          claimableUntil: 0,
-          expiresAt: 0,
-          amount: 1.0,
-          type: 1,
-          captchaImage: 'XXX',
-          hint: 'blue'
-        }
-      ]
-
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.RESET_PROMOTION,
-        payload: {
-          promotionId: 'test-promotion-id-2'
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.promotions = [
-        {
-          promotionId: 'test-promotion-id',
-          createdAt: 0,
-          claimableUntil: 0,
-          expiresAt: 0,
-          amount: 1.0,
-          type: 0
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          amount: 1,
-          captchaId: '',
-          captchaImage: '',
-          captchaStatus: null,
-          createdAt: 0,
-          claimableUntil: 0,
-          expiresAt: 0,
-          hint: '',
-          type: 1
-        }
-      ]
 
       expect(assertion).toEqual({
         rewardsData: expectedState

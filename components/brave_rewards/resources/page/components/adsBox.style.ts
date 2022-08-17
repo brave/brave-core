@@ -4,15 +4,7 @@
 
 import styled from 'styled-components'
 
-export const TourPromoWrapper = styled('div')<{}>`
-  margin-top: 30px;
-`
-
-export const PageWalletWrapper = styled.div`
-  width: 373px;
-`
-
-export const PaymentStatus = styled.div`
+export const paymentStatus = styled.div`
   margin-bottom: 8px;
   color: var(--brave-palette-neutral900);
   font-size: 14px;
@@ -67,7 +59,7 @@ export const PaymentStatus = styled.div`
   }
 `
 
-export const NeedsBrowserUpdateView = styled.div`
+export const needsBrowserUpdateView = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
@@ -76,25 +68,25 @@ export const NeedsBrowserUpdateView = styled.div`
   border-radius: 6px;
 `
 
-export const NeedsBrowserUpdateIcon = styled.div`
+export const needsBrowserUpdateIcon = styled.div`
   width: 30px;
   height: 30px;
   margin: 8px;
-  color: ${p => p.theme.palette.red500};
+  color: var(--brave-palette-red500);
 `
 
-export const NeedsBrowserUpdateContent = styled.div`
+export const needsBrowserUpdateContent = styled.div`
   display: block;
 `
 
-export const NeedsBrowserUpdateContentHeader = styled.div`
+export const needsBrowserUpdateContentHeader = styled.div`
   margin: 5px;
   font-size: 16px;
   font-weight: 600;
   color: var(--brave-palette-neutral800);
 `
 
-export const NeedsBrowserUpdateContentBody = styled.div`
+export const needsBrowserUpdateContentBody = styled.div`
   margin: 5px;
   font-size: 15px;
   color: var(--brave-palette-neutral800);

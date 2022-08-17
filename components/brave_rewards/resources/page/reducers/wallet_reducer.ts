@@ -3,11 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
-
-import { getCurrentBalanceReport } from '../utils'
-
-// Constant
-import { types } from '../constants/rewards_types'
+import { types } from '../actions/rewards_types'
+import { getCurrentBalanceReport } from './utils'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -153,6 +150,14 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     }
     case types.GET_EXTERNAL_WALLET: {
       chrome.send('brave_rewards.getExternalWallet')
+      break
+    }
+    case types.GET_EXTERNAL_WALLET_PROVIDERS: {
+      chrome.send('brave_rewards.getExternalWalletProviders')
+      break
+    }
+    case types.SET_EXTERNAL_WALLET_TYPE: {
+      chrome.send('brave_rewards.setExternalWalletType', [action.payload.provider])
       break
     }
     case types.ON_EXTERNAL_WALLET: {

@@ -69,19 +69,21 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
     return (
       <>
         <StyledContent>
-          {getLocale('rewardsExcludedText1')} <StyledNum>{numExcludedSites}</StyledNum> {getLocale('rewardsExcludedText2')}
+          <div>
+            {getLocale('rewardsExcludedText1')} <StyledNum>{numExcludedSites}</StyledNum> {getLocale('rewardsExcludedText2')}
+          </div>
+          {
+            numExcludedSites > 0
+            ? <RestoreWrapper>
+                <RestoreSites
+                  showText={false}
+                  onRestore={onRestore}
+                  numExcludedSites={numExcludedSites}
+                />
+              </RestoreWrapper>
+            : null
+          }
         </StyledContent>
-        {
-          numExcludedSites > 0
-          ? <RestoreWrapper>
-              <RestoreSites
-                showText={false}
-                onRestore={onRestore}
-                numExcludedSites={numExcludedSites}
-              />
-            </RestoreWrapper>
-          : null
-        }
         <TableContribute
           rows={excludedRows}
           isExcluded={true}

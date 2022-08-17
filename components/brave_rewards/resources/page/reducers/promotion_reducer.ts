@@ -3,11 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
-
-// Constant
-// Temporary (ryanml)
-import { types } from '../constants/rewards_types'
-import { getCurrentBalanceReport } from '../utils'
+import { types } from '../actions/rewards_types'
+import { getCurrentBalanceReport } from './utils'
 
 const getPromotion = (id: string, promotions?: Rewards.Promotion[]) => {
   if (!promotions) {
@@ -86,83 +83,7 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       if (!promotionId) {
         break
       }
-
-      // The grant captcha "lives" in the Rewards panel. Open the Rewards panel
-      // with the grant ID specified in the URL.
-      chrome.braveRewards.showGrantCaptcha(promotionId)
-      break
-    }
-    case types.ON_CLAIM_PROMOTION: {
-      const promotionId = payload.properties.promotionId
-      if (!state.promotions || !promotionId) {
-        break
-      }
-
-      const hint = payload.properties.hint
-      const captchaImage = payload.properties.captchaImage
-      const captchaId = payload.properties.captchaId
-
-      const promotions = state.promotions.map((item: Rewards.Promotion) => {
-        if (promotionId === item.promotionId) {
-          item.captchaImage = captchaImage
-          item.captchaId = captchaId
-          item.hint = hint
-        }
-        return item
-      })
-
-      state = {
-        ...state,
-        promotions
-      }
-      break
-    }
-    case types.ATTEST_PROMOTION: {
-      const promotionId = payload.promotionId
-
-      if (!promotionId || !payload.x || !payload.y) {
-        break
-      }
-
-      const currentPromotion = getPromotion(promotionId, state.promotions)
-
-      if (!currentPromotion || !currentPromotion.captchaId) {
-        break
-      }
-
-      chrome.send('brave_rewards.attestPromotion', [promotionId, JSON.stringify({
-        captchaId: currentPromotion.captchaId,
-        x: parseInt(payload.x, 10),
-        y: parseInt(payload.y, 10)
-      })])
-      break
-    }
-    case types.RESET_PROMOTION: {
-      const promotionId = payload.promotionId
-      if (!state.promotions || !promotionId) {
-        break
-      }
-
-      const currentPromotion = getPromotion(promotionId, state.promotions)
-
-      if (!currentPromotion) {
-        break
-      }
-
-      const promotions = state.promotions.map((item: Rewards.Promotion) => {
-        if (currentPromotion.promotionId === item.promotionId) {
-          item.captchaStatus = null
-          item.captchaImage = ''
-          item.captchaId = ''
-          item.hint = ''
-        }
-        return item
-      })
-
-      state = {
-        ...state,
-        promotions
-      }
+      chrome.send('brave_rewards.claimPromotion', [promotionId])
       break
     }
     case types.DELETE_PROMOTION: {

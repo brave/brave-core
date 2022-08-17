@@ -6,7 +6,6 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-// Components
 import {
   Box,
   BoxAlert,
@@ -17,17 +16,18 @@ import {
   ShowAdsHistory,
   Tokens
 } from '../../ui/components'
+
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 
+import { LayoutKind } from '../lib/layout_context'
 import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
 
-import * as style from './style'
+import * as style from './adsBox.style'
 
-// Utils
-import * as utils from '../utils'
+import { convertBalance } from './utils'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
@@ -37,6 +37,7 @@ const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 interface Props extends Rewards.ComponentProps {
+  layout: LayoutKind
 }
 
 interface State {
@@ -71,19 +72,19 @@ class AdsBox extends React.Component<Props, State> {
 
   needsBrowserUpdateView = () => {
     return (
-      <style.NeedsBrowserUpdateView>
-        <style.NeedsBrowserUpdateIcon>
+      <style.needsBrowserUpdateView>
+        <style.needsBrowserUpdateIcon>
           <AlertCircleIcon />
-        </style.NeedsBrowserUpdateIcon>
-        <style.NeedsBrowserUpdateContent>
-          <style.NeedsBrowserUpdateContentHeader>
+        </style.needsBrowserUpdateIcon>
+        <style.needsBrowserUpdateContent>
+          <style.needsBrowserUpdateContentHeader>
             {getLocale('rewardsBrowserCannotReceiveAds')}
-          </style.NeedsBrowserUpdateContentHeader>
-          <style.NeedsBrowserUpdateContentBody>
+          </style.needsBrowserUpdateContentHeader>
+          <style.needsBrowserUpdateContentBody>
             {getLocale('rewardsBrowserNeedsUpdateToSeeAds')}
-          </style.NeedsBrowserUpdateContentBody>
-        </style.NeedsBrowserUpdateContent>
-      </style.NeedsBrowserUpdateView>
+          </style.needsBrowserUpdateContentBody>
+        </style.needsBrowserUpdateContent>
+      </style.needsBrowserUpdateView>
     )
   }
 
@@ -473,21 +474,21 @@ class AdsBox extends React.Component<Props, State> {
               : null
           }
         >
-          <style.PaymentStatus>
+          <style.paymentStatus>
             <PaymentStatusView
               earningsLastMonth={earningsLastMonth}
               earningsReceived={adEarningsReceived}
               nextPaymentDate={nextPaymentDate}
               providerPayoutStatus={providerPayoutStatus}
             />
-          </style.PaymentStatus>
+          </style.paymentStatus>
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
               value={new Intl.NumberFormat(undefined, {
                 minimumFractionDigits: 3,
                 maximumFractionDigits: 3
               }).format(earningsThisMonth)}
-              converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
+              converted={convertBalance(earningsThisMonth, parameters.rate)}
             />
           </List>
           <List title={getLocale('adsPaymentDate')}>
@@ -506,9 +507,8 @@ class AdsBox extends React.Component<Props, State> {
             />
           </List>
           {
-            <ShowAdsHistory
-              onAdsHistoryOpen={this.onAdsHistoryToggle}
-            />
+            this.props.layout === 'wide' &&
+              <ShowAdsHistory onAdsHistoryOpen={this.onAdsHistoryToggle} />
           }
         </Box>
         {

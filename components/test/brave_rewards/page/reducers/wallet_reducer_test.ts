@@ -3,12 +3,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global chrome */
 
-import reducers from '../../../../brave_rewards/resources/page/reducers/index'
-import { types } from '../../../../brave_rewards/resources/page/constants/rewards_types'
-import { defaultState } from '../../../../brave_rewards/resources/page/storage'
+import { createReducer } from '../../../../brave_rewards/resources/page/reducers'
+import { types } from '../../../../brave_rewards/resources/page/actions/rewards_types'
+import { defaultState } from '../../../../brave_rewards/resources/page/reducers/default_state'
 import { getMockChrome } from '../../../testData'
 
 describe('wallet reducer', () => {
+  const reducers = createReducer()
   const constantDate = new Date('2018-01-01T12:00:00')
 
   beforeAll(() => {

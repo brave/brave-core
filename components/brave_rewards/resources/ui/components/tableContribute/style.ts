@@ -12,7 +12,7 @@ export const StyledText = styled('div')<{}>`
 `
 
 export const StyledRemove = styled('button')<{}>`
-  margin: 0 8px;
+  margin: 4px 8px 0;
   background: none;
   border: none;
   cursor: pointer;

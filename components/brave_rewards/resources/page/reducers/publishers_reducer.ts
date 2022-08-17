@@ -3,9 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
-
-// Constant
-import { types } from '../constants/rewards_types'
+import { types } from '../actions/rewards_types'
 
 const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {

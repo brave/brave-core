@@ -2,11 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// Utils
-import { debounce } from '../../../common/debounce'
-
-const keyName = 'rewards-data'
-
 export const defaultState: Rewards.State = {
   version: 3,
   createdTimestamp: null,
@@ -83,41 +78,4 @@ export const defaultState: Rewards.State = {
   paymentId: '',
   recoveryKey: '',
   showOnboarding: false
-}
-
-export const load = (): Rewards.State => {
-  const data = window.localStorage.getItem(keyName)
-  if (!data) {
-    return defaultState
-  }
-
-  let parsedData: any
-  try {
-    parsedData = JSON.parse(data)
-  } catch {
-    parsedData = null
-  }
-
-  if (!parsedData || typeof parsedData !== 'object') {
-    console.error('Local storage data is not an object')
-    return defaultState
-  }
-
-  if (parsedData.version !== defaultState.version) {
-    console.error('Local storage state version does not match')
-    return defaultState
-  }
-
-  parsedData.initializing = true
-  return parsedData as Rewards.State
-}
-
-export const debouncedSave = debounce((data: Rewards.State) => {
-  if (data) {
-    window.localStorage.setItem(keyName, JSON.stringify(data))
-  }
-}, 150)
-
-export const save = (data: Rewards.State) => {
-  window.localStorage.setItem(keyName, JSON.stringify(data))
 }

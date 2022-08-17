@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { getWalletProviderName } from '../../page/utils'
+import { lookupExternalWalletProviderName } from '../../shared/lib/external_wallet'
 
 interface Props {
   info: RewardsInternals.ExternalWallet
@@ -57,7 +57,7 @@ export const ExternalWallet = (props: Props) => {
       {
         props.info.status !== 0 && props.info.type && props.info.type.length > 0
         ? <div>
-          {getLocale('custodian')} {getWalletProviderName(props.info.type)}
+          {getLocale('custodian')} {lookupExternalWalletProviderName(props.info.type)}
         </div>
         : null
       }

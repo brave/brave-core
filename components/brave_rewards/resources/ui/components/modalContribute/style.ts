@@ -20,6 +20,10 @@ export const StyledContent = styled('div')<{}>`
   font-size: 16px;
   color: #4b4c5c;
   margin: 30px 0px 20px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
 `
 
 export const StyledNum = styled('span')<{}>`
@@ -37,6 +41,5 @@ export const StyledControlWrapper = styled('div')<{}>`
 `
 
 export const RestoreWrapper = styled('div')<{}>`
-  float: right;
-  margin: -18px 0 -10px;
+  flex: 0 0 auto;
 `

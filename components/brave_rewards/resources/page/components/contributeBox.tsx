@@ -12,9 +12,9 @@ import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, N
 import { Provider } from '../../ui/components/profile'
 
 // Utils
+import { convertBalance, isPublisherConnectedOrVerified } from './utils'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-import * as utils from '../utils'
 
 interface State {
   modalContribute: boolean
@@ -25,6 +25,19 @@ interface State {
 interface MonthlyChoice {
   tokens: string
   converted: string
+}
+
+function generateContributionMonthly (properties: Rewards.RewardsParameters) {
+  if (!properties.autoContributeChoices) {
+    return []
+  }
+
+  return properties.autoContributeChoices.map((item: number) => {
+    return {
+      tokens: item.toFixed(3),
+      converted: convertBalance(item, properties.rate)
+    }
+  })
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -44,7 +57,7 @@ class ContributeBox extends React.Component<Props, State> {
     return list
       .sort((a, b) => b.percentage - a.percentage)
       .map((item: Rewards.Publisher) => {
-        const verified = utils.isPublisherConnectedOrVerified(item.status)
+        const verified = isPublisherConnectedOrVerified(item.status)
         let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
         if (item.favIcon && verified) {
           faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
@@ -70,7 +83,7 @@ class ContributeBox extends React.Component<Props, State> {
     }
 
     return list.map((item: Rewards.ExcludedPublisher) => {
-      const verified = utils.isPublisherConnectedOrVerified(item.status)
+      const verified = isPublisherConnectedOrVerified(item.status)
       let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
       if (item.favIcon && verified) {
         faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
@@ -213,7 +226,7 @@ class ContributeBox extends React.Component<Props, State> {
       excludedList,
       externalWallet
     } = this.props.rewardsData
-    const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(parameters)
+    const monthlyList: MonthlyChoice[] = generateContributionMonthly(parameters)
     const contributeRows = this.getContributeRows(autoContributeList)
     const excludedRows = this.getExcludedRows(excludedList)
     const topRows = contributeRows.slice(0, 5)

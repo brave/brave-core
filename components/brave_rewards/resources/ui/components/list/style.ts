@@ -21,5 +21,6 @@ export const StyledTitle = styled('div')<{}>`
 `
 
 export const StyledContentWrapper = styled('div')<{}>`
-display: flex;
+  display: flex;
+  text-align: right;
 `
