@@ -28,7 +28,8 @@ interface Props {
   actions: any
 }
 
-function BraveWebTorrentPage ({ actions, torrentState, torrentObj }: Props) {
+// Exported for tests.
+export function BraveWebTorrentPage ({ actions, torrentState, torrentObj }: Props) {
   const name = torrentObj?.name ?? torrentState?.name
   React.useEffect(() => {
     document.title = name ? `${name} - WebTorrent` : 'WebTorrent'
