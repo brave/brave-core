@@ -12,11 +12,14 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -27,6 +30,7 @@
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -35,18 +39,11 @@
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
+#include "ui/views/layout/fill_layout.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
-#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
-#include "ui/views/layout/fill_layout.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -177,14 +174,12 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   const bool can_have_vertical_tabs =
       browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs();
-  const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
-  bool need_to_wrap_contents_container = can_have_vertical_tabs;
-#if BUILDFLAG(ENABLE_SIDEBAR)
-  // Only normal window (tabbed) should have sidebar.
-  need_to_wrap_contents_container =
-      need_to_wrap_contents_container || can_have_sidebar;
-#endif  // BUILDFLAG(ENABLE_SIDEBAR)
 
+  // Only normal window (tabbed) should have sidebar.
+  const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
+
+  const bool need_to_wrap_contents_container =
+      can_have_vertical_tabs || can_have_sidebar;
   if (!need_to_wrap_contents_container)
     return;
 
@@ -195,7 +190,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
   right_aligned_side_panel_ = sidebar_container_view_->side_panel();
-
   if (can_have_vertical_tabs) {
     vertical_tabs_container_ = contents_container_->AddChildView(
         std::make_unique<VerticalTabStripContainer>(tab_strip_region_view_));
@@ -242,14 +236,12 @@ BraveBrowserView::~BraveBrowserView() {
   DCHECK(!tab_cycling_event_handler_);
 }
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
 sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
   return sidebar_container_view_;
 }
-#endif
 
 void BraveBrowserView::ShowBraveVPNBubble() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

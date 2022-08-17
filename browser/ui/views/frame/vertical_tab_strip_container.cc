@@ -149,8 +149,7 @@ VerticalTabStripContainer::VerticalTabStripContainer(
   scroll_view_header_ =
       scroll_view_->SetHeader(std::make_unique<ScrollHeaderView>(
           base::BindRepeating(
-              [](VerticalTabStripContainer* container,
-                 const ui::Event& event) {
+              [](VerticalTabStripContainer* container, const ui::Event& event) {
                 container->SetState(
                     container->state_ ==
                             VerticalTabStripContainer::State::kCollapsed
