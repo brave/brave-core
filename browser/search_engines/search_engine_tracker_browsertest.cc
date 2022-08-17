@@ -8,6 +8,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -142,4 +143,16 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 #endif
 
   histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 6);
+}
+
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
+  histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 1);
+
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(kWebDiscoveryEnabled, true);
+
+  histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 1, 1);
+
+  prefs->SetBoolean(kWebDiscoveryEnabled, false);
+  histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 2);
 }

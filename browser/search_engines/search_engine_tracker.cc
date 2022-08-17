@@ -5,9 +5,11 @@
 
 #include "brave/browser/search_engines/search_engine_tracker.h"
 
+#include "base/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_search_conversion/p3a.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -132,7 +134,12 @@ SearchEngineTracker::SearchEngineTracker(
     PrefService* local_state)
     : switch_record_(profile_prefs, kSwitchSearchEngineP3AStorage),
       local_state_(local_state),
+      profile_prefs_(profile_prefs),
       template_url_service_(template_url_service) {
+  DCHECK(template_url_service);
+  DCHECK(profile_prefs);
+  DCHECK(local_state);
+
   observer_.Observe(template_url_service_);
   const TemplateURL* template_url =
       template_url_service_->GetDefaultSearchProvider();
@@ -150,6 +157,15 @@ SearchEngineTracker::SearchEngineTracker(
       RecordSwitchP3A(url);
     }
   }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  RecordWebDiscoveryEnabledP3A();
+  pref_change_registrar_.Init(profile_prefs);
+  pref_change_registrar_.Add(
+      kWebDiscoveryEnabled,
+      base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
+                          base::Unretained(this)));
+#endif
 }
 
 SearchEngineTracker::~SearchEngineTracker() = default;
@@ -168,6 +184,13 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
     RecordSwitchP3A(url);
   }
 }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
+  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric,
+                        profile_prefs_->GetBoolean(kWebDiscoveryEnabled));
+}
+#endif
 
 void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
   // Default to the last recorded switch so when we're called
