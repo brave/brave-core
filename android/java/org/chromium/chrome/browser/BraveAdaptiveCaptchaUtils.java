@@ -28,9 +28,6 @@ import java.util.concurrent.Executors;
 
 public class BraveAdaptiveCaptchaUtils {
     private static final String TAG = "brave_adaptive_captcha_android";
-    // private static final String ADAPTIVE_CAPTCHA_URL =
-    //         "http://grant.rewards.bravesoftware.com/v3/captcha/solution/%s/%s";
-
     public static synchronized void solveCaptcha(String captchaId, String paymentId) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
@@ -41,7 +38,6 @@ public class BraveAdaptiveCaptchaUtils {
             Log.e(TAG, adaptiveCaptchaSolutionUrl);
             try {
                 URL url = new URL(String.format(adaptiveCaptchaSolutionUrl, paymentId, captchaId));
-                Log.e(TAG, url.toString());
                 urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
                         url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
                 urlConnection.setDoOutput(true);
@@ -99,5 +95,7 @@ public class BraveAdaptiveCaptchaUtils {
                 .setString(BravePref.SCHEDULED_CAPTCHA_ID, "");
         UserPrefs.get(Profile.getLastUsedRegularProfile())
                 .setString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID, "");
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, false);
     }
 }

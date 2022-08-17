@@ -21,4 +21,4 @@ const char kScheduledCaptchaPaused[] = "brave.rewards.scheduled_captcha.paused";
 
 }  // namespace brave_adaptive_captcha
 
-#endif  // BRAVE_COMPONENTS_BRAVE_TODAY_COMMON_PREF_NAMES_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADAPTIVE_CAPTCHA_PREF_NAMES_H_

@@ -1678,9 +1678,6 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
     return;
   }
 
-  LOG(ERROR) << "BraveCaptcha"
-             << "Captcha Id : " << captcha_id << "payment Id : " << payment_id;
-
 #if BUILDFLAG(IS_ANDROID)
   AdsServiceImpl::ShowScheduledCaptcha(payment_id, captcha_id);
 #else

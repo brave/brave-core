@@ -91,14 +91,19 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
           profile);
 
   std::unique_ptr<AdsServiceImpl> ads_service =
-      std::make_unique<AdsServiceImpl>(
-          profile,
+      std::make_unique<AdsServiceImpl>(profile,
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-          brave_adaptive_captcha_service,
-          std::make_unique<AdsTooltipsDelegateImpl>(profile),
+                                       brave_adaptive_captcha_service,
+#if BUILDFLAG(IS_ANDROID)
+                                       nullptr,
+#else
+                                       std::make_unique<
+                                           AdsTooltipsDelegateImpl>(profile),
 #endif
-          std::make_unique<DeviceIdImpl>(), history_service, rewards_service,
-          notification_ad_async_data_store);
+#endif
+                                       std::make_unique<DeviceIdImpl>(),
+                                       history_service, rewards_service,
+                                       notification_ad_async_data_store);
   return ads_service.release();
 }
 

@@ -52,23 +52,18 @@ void AdsTooltipsController::ShowCaptchaTooltip(
   // If there's no delegate, set one so that clicks go back to the appropriate
   // handler
   captcha_tooltip->set_delegate(AsWeakPtr());
-#if !BUILDFLAG(IS_ANDROID)
+
   brave_tooltips::BraveTooltipPopupHandler::Show(profile_,
                                                  std::move(captcha_tooltip));
-#endif
 }
 
 void AdsTooltipsController::CloseCaptchaTooltip() {
-#if !BUILDFLAG(IS_ANDROID)
   brave_tooltips::BraveTooltipPopupHandler::Close(kScheduledCaptchaTooltipId);
-#endif
 }
 
 void AdsTooltipsController::OnTooltipWidgetDestroyed(
     const std::string& tooltip_id) {
-#if !BUILDFLAG(IS_ANDROID)
   brave_tooltips::BraveTooltipPopupHandler::Destroy(kScheduledCaptchaTooltipId);
-#endif
 }
 
 }  // namespace brave_ads

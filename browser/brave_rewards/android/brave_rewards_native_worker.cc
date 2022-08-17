@@ -163,10 +163,6 @@ BraveRewardsNativeWorker::GetCaptchaSolutionURL(
   std::string captcha_solution_url =
       brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
 
-  // std::string captcha_solution_url =
-  // GetCaptchaSolutionUrl(base::android::ConvertJavaStringToUTF8(env,
-  // paymentId), base::android::ConvertJavaStringToUTF8(env, captchaId)); return
-  // base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
   return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
 }
 

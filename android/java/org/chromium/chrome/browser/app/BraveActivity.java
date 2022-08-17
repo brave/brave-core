@@ -727,10 +727,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void onPreferenceChange() {
-        Log.e("BraveCaptcha", "Pref changed");
-        Log.e("BraveCaptcha",
-                UserPrefs.get(Profile.getLastUsedRegularProfile())
-                        .getString(BravePref.SCHEDULED_CAPTCHA_ID));
         solveAdaptiveCaptcha();
     }
 
@@ -740,9 +736,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                    .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
         if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
-                && UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
-                        < 10
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             BraveAdaptiveCaptchaUtils.solveCaptcha(captchaID, paymentID);
         }
@@ -755,9 +748,19 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveHelper.maybeMigrateSettings();
 
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
-        mPrefChangeRegistrar.addObserver("brave.rewards.scheduled_captcha.id", this);
+        mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
 
-        solveAdaptiveCaptcha();
+        if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
+                == 10) {
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
+        }
+
+        if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
+            solveAdaptiveCaptcha();
+        }
 
         if (SharedPreferencesManager.getInstance().readBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
