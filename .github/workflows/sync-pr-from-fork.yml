@@ -1,0 +1,50 @@
+name: Sync PR from fork
+
+on:
+  workflow_dispatch:
+    inputs:
+      PR_NUMBER:
+        required: true
+        description: "Number of the PR from the fork"
+
+jobs:
+  sync-pr-from-fork:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Git
+        run: |
+          git config user.name brave-builds
+          git config user.email devops@brave.com
+          git config push.default simple
+
+      - name: Sync PR from fork
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PR_NUMBER: ${{ inputs.PR_NUMBER }}
+        run: |
+          set -x
+          JQ="jq -e -r"
+
+          gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+
+          baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
+          headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
+          headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
+          headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
+          isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
+          url=$($JQ ".url" <<<"$gh_pr_view")
+
+          [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
+
+          git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
+          contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
+          git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
+          git push -f origin "$contribHeadRefName"
+
+          existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
+          if [[ "$existing_prs" = "[]" ]]; then
+            gh pr create -F ".github/PULL_REQUEST_TEMPLATE.md" -B "$baseRefName" -H "$contribHeadRefName" -t "Don't merge - this is a CI run for $url"
+          fi
