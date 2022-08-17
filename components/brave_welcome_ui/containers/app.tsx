@@ -117,6 +117,14 @@ export class WelcomePage extends React.Component<Props, State> {
     const searchBoxIndex = welcomeData.showSearchCard ? ++lastBoxIndex : -1
     const rewardsBoxIndex = welcomeData.showRewardsCard ? ++lastBoxIndex : -1
 
+    const onNext = () => {
+      if (this.state.currentScreen === lastBoxIndex) {
+        this.onClickDone()
+      } else {
+        this.onClickNext()
+      }
+    }
+
     return (
       <>
         <Page
@@ -137,7 +145,7 @@ export class WelcomePage extends React.Component<Props, State> {
               <SearchBox
                 index={searchBoxIndex}
                 currentScreen={this.currentScreen}
-                onClick={this.onClickNext}
+                onClick={onNext}
                 changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
                 searchProviders={welcomeData.searchProviders}
               />
@@ -152,7 +160,7 @@ export class WelcomePage extends React.Component<Props, State> {
               currentScreen={this.currentScreen}
               onClickSkip={this.onClickSkip}
               onClickSlideBullet={this.onClickSlideBullet}
-              onClickNext={this.onClickNext}
+              onClickNext={onNext}
               onClickDone={this.onClickDone}
             />
           </Panel>
