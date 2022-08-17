@@ -173,7 +173,7 @@ constexpr char kExpectedEncodedSignature[] =
 
 class TestTxServiceObserver : public mojom::TxServiceObserver {
  public:
-  TestTxServiceObserver() {}
+  TestTxServiceObserver() = default;
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
     run_loop_new_unapproved_->Quit();

@@ -92,7 +92,7 @@ struct ImportData {
 class TestKeyringServiceObserver
     : public brave_wallet::mojom::KeyringServiceObserver {
  public:
-  TestKeyringServiceObserver() {}
+  TestKeyringServiceObserver() = default;
 
   void AutoLockMinutesChanged() override {
     auto_lock_minutes_changed_fired_ = true;

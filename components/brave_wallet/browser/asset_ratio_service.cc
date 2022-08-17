@@ -106,7 +106,7 @@ AssetRatioService::AssetRatioService(
           url_loader_factory)),
       weak_ptr_factory_(this) {}
 
-AssetRatioService::~AssetRatioService() {}
+AssetRatioService::~AssetRatioService() = default;
 
 void AssetRatioService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {

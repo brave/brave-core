@@ -126,7 +126,7 @@ void JsonRpcService::SetAPIRequestHelperForTesting(
       GetNetworkTrafficAnnotationTag(), url_loader_factory));
 }
 
-JsonRpcService::~JsonRpcService() {}
+JsonRpcService::~JsonRpcService() = default;
 
 // static
 void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {

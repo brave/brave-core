@@ -60,7 +60,7 @@ SwapServiceFactory::SwapServiceFactory()
   DependsOn(JsonRpcServiceFactory::GetInstance());
 }
 
-SwapServiceFactory::~SwapServiceFactory() {}
+SwapServiceFactory::~SwapServiceFactory() = default;
 
 KeyedService* SwapServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

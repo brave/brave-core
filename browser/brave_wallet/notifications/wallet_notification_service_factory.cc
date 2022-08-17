@@ -29,7 +29,7 @@ WalletNotificationServiceFactory::WalletNotificationServiceFactory()
   DependsOn(brave_wallet::TxServiceFactory::GetInstance());
 }
 
-WalletNotificationServiceFactory::~WalletNotificationServiceFactory() {}
+WalletNotificationServiceFactory::~WalletNotificationServiceFactory() = default;
 
 KeyedService* WalletNotificationServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

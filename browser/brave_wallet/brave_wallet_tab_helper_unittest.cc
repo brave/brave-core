@@ -44,7 +44,7 @@ namespace brave_wallet {
 
 class BraveWalletTabHelperUnitTest : public BrowserWithTestWindowTest {
  public:
-  BraveWalletTabHelperUnitTest() {}
+  BraveWalletTabHelperUnitTest() = default;
   ~BraveWalletTabHelperUnitTest() override = default;
 
   void SetUp() override {

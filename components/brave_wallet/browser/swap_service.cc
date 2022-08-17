@@ -127,7 +127,7 @@ SwapService::SwapService(
   DCHECK(json_rpc_service_);
 }
 
-SwapService::~SwapService() {}
+SwapService::~SwapService() = default;
 
 mojo::PendingRemote<mojom::SwapService> SwapService::MakeRemote() {
   mojo::PendingRemote<mojom::SwapService> remote;

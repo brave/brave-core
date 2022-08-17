@@ -75,7 +75,7 @@ WalletNotificationService::WalletNotificationService(
     content::BrowserContext* context)
     : context_(context) {}
 
-WalletNotificationService::~WalletNotificationService() {}
+WalletNotificationService::~WalletNotificationService() = default;
 
 bool WalletNotificationService::ShouldDisplayUserNotification(
     mojom::TransactionStatus status) {
