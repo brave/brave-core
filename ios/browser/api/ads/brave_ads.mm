@@ -568,13 +568,19 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL*)url
+      redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
               isSelected:(BOOL)isSelected
                isPrivate:(BOOL)isPrivate {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnTabUpdated((int32_t)tabId, net::GURLWithNSURL(url), isSelected,
-                    [self isBrowserActive], isPrivate);
+  std::vector<GURL> urls;
+  for (NSURL* redirectURL in redirectionURLs) {
+    urls.push_back(net::GURLWithNSURL(redirectURL));
+  }
+  urls.push_back(net::GURLWithNSURL(url));
+  ads->OnTabUpdated((int32_t)tabId, urls, isSelected, [self isBrowserActive],
+                    isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {

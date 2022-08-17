@@ -38,7 +38,7 @@ class TabManager final {
   bool IsTabVisible(const int32_t id) const;
 
   void OnTabUpdated(const int32_t id,
-                    const GURL& url,
+                    const std::vector<GURL>& redirect_chain,
                     const bool is_visible,
                     const bool is_incognito);
 

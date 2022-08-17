@@ -228,6 +228,8 @@ void Conversions::MaybeConvert(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns) {
+  DCHECK(!redirect_chain.empty());
+
   if (!ShouldAllow()) {
     BLOG(1, "Conversions are not allowed");
     return;
@@ -603,7 +605,7 @@ void Conversions::OnResourceDidUpdate(const std::string& id) {
 }
 
 void Conversions::OnHtmlContentDidChange(
-    const int32_t id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
   MaybeConvert(redirect_chain, content, resource_->get()->id_patterns);

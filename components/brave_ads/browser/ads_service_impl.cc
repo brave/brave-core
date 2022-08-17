@@ -1168,7 +1168,7 @@ void AdsServiceImpl::OnMediaStop(const SessionID& tab_id) {
 }
 
 void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,
-                                  const GURL& url,
+                                  const std::vector<GURL>& redirect_chain,
                                   const bool is_active,
                                   const bool is_browser_active) {
   if (!IsBatAdsBound()) {
@@ -1177,8 +1177,8 @@ void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,
 
   const bool is_incognito = !brave::IsRegularProfile(profile_);
 
-  bat_ads_->OnTabUpdated(tab_id.id(), url, is_active, is_browser_active,
-                         is_incognito);
+  bat_ads_->OnTabUpdated(tab_id.id(), redirect_chain, is_active,
+                         is_browser_active, is_incognito);
 }
 
 void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {

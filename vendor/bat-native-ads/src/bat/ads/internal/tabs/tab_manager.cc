@@ -57,7 +57,7 @@ bool TabManager::IsTabVisible(const int32_t id) const {
 }
 
 void TabManager::OnTabUpdated(const int32_t id,
-                              const GURL& url,
+                              const std::vector<GURL>& redirect_chain,
                               const bool is_visible,
                               const bool is_incognito) {
   if (is_incognito) {
@@ -72,16 +72,16 @@ void TabManager::OnTabUpdated(const int32_t id,
       // Re-add reloaded tabs when browser is restarted
       TabInfo tab;
       tab.id = id;
-      tab.url = url;
+      tab.redirect_chain = redirect_chain;
       AddTab(tab);
     } else {
-      if (tabs_[id].url == url) {
+      if (tabs_[id].redirect_chain == redirect_chain) {
         return;
       }
 
       BLOG(2, "Tab id " << id << " was updated");
 
-      tabs_[id].url = url;
+      tabs_[id].redirect_chain = redirect_chain;
 
       NotifyTabDidChange(tabs_[id]);
     }
@@ -90,13 +90,13 @@ void TabManager::OnTabUpdated(const int32_t id,
   }
 
   if (visible_tab_id_ == id) {
-    if (tabs_[id].url == url) {
+    if (tabs_[id].redirect_chain == redirect_chain) {
       return;
     }
 
     BLOG(2, "Tab id " << id << " was updated");
 
-    tabs_[id].url = url;
+    tabs_[id].redirect_chain = redirect_chain;
 
     NotifyTabDidChange(tabs_[id]);
 
@@ -121,7 +121,7 @@ void TabManager::OnTabUpdated(const int32_t id,
 
   TabInfo tab;
   tab.id = id;
-  tab.url = url;
+  tab.redirect_chain = redirect_chain;
   AddTab(tab);
 
   NotifyDidOpenNewTab(tab);

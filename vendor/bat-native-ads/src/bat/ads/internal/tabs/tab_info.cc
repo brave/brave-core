@@ -16,7 +16,7 @@ TabInfo& TabInfo::operator=(const TabInfo& info) = default;
 TabInfo::~TabInfo() = default;
 
 bool TabInfo::operator==(const TabInfo& rhs) const {
-  return id == rhs.id && url == rhs.url &&
+  return id == rhs.id && redirect_chain == rhs.redirect_chain &&
          is_playing_media == rhs.is_playing_media;
 }
 

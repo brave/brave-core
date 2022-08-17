@@ -231,7 +231,7 @@ void AdsImpl::OnMediaStopped(const int32_t tab_id) {
 }
 
 void AdsImpl::OnTabUpdated(const int32_t tab_id,
-                           const GURL& url,
+                           const std::vector<GURL>& redirect_chain,
                            const bool is_active,
                            const bool is_browser_active,
                            const bool is_incognito) {
@@ -246,7 +246,7 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
   }
 
   const bool is_visible = is_active && is_browser_active;
-  TabManager::GetInstance()->OnTabUpdated(tab_id, url, is_visible,
+  TabManager::GetInstance()->OnTabUpdated(tab_id, redirect_chain, is_visible,
                                           is_incognito);
 }
 

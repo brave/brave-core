@@ -224,9 +224,11 @@ void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
 }
 
 void PurchaseIntent::OnTextContentDidChange(
-    const int32_t id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
+  DCHECK(!redirect_chain.empty());
+
   const GURL& url = redirect_chain.back();
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
@@ -237,8 +239,12 @@ void PurchaseIntent::OnTextContentDidChange(
 
   const absl::optional<TabInfo> last_visible_tab =
       TabManager::GetInstance()->GetLastVisibleTab();
-  if (SameDomainOrHost(url,
-                       last_visible_tab ? last_visible_tab->url : GURL())) {
+  if (!last_visible_tab) {
+    return;
+  }
+
+  DCHECK(!last_visible_tab->redirect_chain.empty());
+  if (SameDomainOrHost(url, last_visible_tab->redirect_chain.back())) {
     return;
   }
 

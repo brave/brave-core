@@ -314,7 +314,7 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStop(const SessionID& tab_id) override;
 
   void OnTabUpdated(const SessionID& tab_id,
-                    const GURL& url,
+                    const std::vector<GURL>& redirect_chain,
                     const bool is_active,
                     const bool is_browser_active) override;
   void OnTabClosed(const SessionID& tab_id) override;
