@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/chrome/browser/prefetch/prefetch_proxy/prefetch_proxy_features.cc"
+#include "src/chrome/browser/preloading/prefetch/prefetch_proxy/prefetch_proxy_features.cc"
 
 #include "base/feature_override.h"
 
