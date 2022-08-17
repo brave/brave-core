@@ -49,7 +49,6 @@ class SearchQuickEnginesViewController: UITableViewController {
     navigationItem.title = Strings.quickSearchEngines
 
     tableView.do {
-      $0.isEditing = true
       $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier)
       #if swift(>=5.5)
@@ -58,6 +57,8 @@ class SearchQuickEnginesViewController: UITableViewController {
       }
       #endif
     }
+
+    navigationItem.rightBarButtonItem = editButtonItem
 
     let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight))
     tableView.tableFooterView = footer
@@ -99,7 +100,7 @@ class SearchQuickEnginesViewController: UITableViewController {
 
     let searchEngineCell = tableView.dequeueReusableCell(withIdentifier: Constants.quickSearchEngineRowIdentifier, for: indexPath).then {
       $0.showsReorderControl = true
-      $0.editingAccessoryView = toggle
+      $0.accessoryView = toggle
       $0.selectionStyle = .none
       $0.separatorInset = .zero
       $0.textLabel?.text = engine?.displayName
@@ -116,10 +117,6 @@ class SearchQuickEnginesViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return UX.headerHeight
-  }
-
-  override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-    return true
   }
 
   override func tableView(_ tableView: UITableView, moveRowAt indexPath: IndexPath, to newIndexPath: IndexPath) {
