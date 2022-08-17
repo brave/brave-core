@@ -61,7 +61,7 @@ const char kDuplicatedBookmarksMigrateVersion[] =
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
-Prefs::~Prefs() {}
+Prefs::~Prefs() = default;
 
 // static
 void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {

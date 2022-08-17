@@ -28,7 +28,7 @@ PrivateCDNRequestHelper::PrivateCDNRequestHelper(
     : annotation_tag_(annotation_tag),
       url_loader_factory_(std::move(url_loader_factory)) {}
 
-PrivateCDNRequestHelper::~PrivateCDNRequestHelper() {}
+PrivateCDNRequestHelper::~PrivateCDNRequestHelper() = default;
 
 void PrivateCDNRequestHelper::DownloadToString(
     const GURL& url,

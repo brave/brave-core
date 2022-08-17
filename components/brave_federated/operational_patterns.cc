@@ -74,7 +74,7 @@ OperationalPatterns::OperationalPatterns(
   DCHECK(url_loader_factory_);
 }
 
-OperationalPatterns::~OperationalPatterns() {}
+OperationalPatterns::~OperationalPatterns() = default;
 
 void OperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastSentSlotPrefName, kLastSentSlotInitValue);

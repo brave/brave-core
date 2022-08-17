@@ -96,7 +96,7 @@ FTXService::FTXService(content::BrowserContext* context)
   }
 }
 
-FTXService::~FTXService() {}
+FTXService::~FTXService() = default;
 
 void FTXService::Shutdown() {
   url_loaders_.clear();

@@ -159,7 +159,7 @@ const char kCryptoDotComAPIExistsScript[] =
 
 class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
  public:
-  CryptoDotComAPIBrowserTest() {}
+  CryptoDotComAPIBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -172,8 +172,7 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   }
 
-  ~CryptoDotComAPIBrowserTest() override {
-  }
+  ~CryptoDotComAPIBrowserTest() override = default;
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();

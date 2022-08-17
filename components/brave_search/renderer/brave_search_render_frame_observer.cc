@@ -19,7 +19,7 @@ BraveSearchRenderFrameObserver::BraveSearchRenderFrameObserver(
     int32_t world_id)
     : RenderFrameObserver(render_frame), world_id_(world_id) {}
 
-BraveSearchRenderFrameObserver::~BraveSearchRenderFrameObserver() {}
+BraveSearchRenderFrameObserver::~BraveSearchRenderFrameObserver() = default;
 
 void BraveSearchRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,

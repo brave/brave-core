@@ -9,7 +9,7 @@
 
 namespace brave_search {
 
-BraveSearchDefaultHostPrivate::~BraveSearchDefaultHostPrivate() {}
+BraveSearchDefaultHostPrivate::~BraveSearchDefaultHostPrivate() = default;
 
 void BraveSearchDefaultHostPrivate::SetCanAlwaysSetDefault() {}
 

@@ -75,8 +75,7 @@ CryptoDotComService::CryptoDotComService(content::BrowserContext* context)
                               ->GetURLLoaderFactoryForBrowserProcess()),
       weak_factory_(this) {}
 
-CryptoDotComService::~CryptoDotComService() {
-}
+CryptoDotComService::~CryptoDotComService() = default;
 
 bool CryptoDotComService::GetTickerInfo(const std::string& asset,
                                         GetTickerInfoCallback callback) {

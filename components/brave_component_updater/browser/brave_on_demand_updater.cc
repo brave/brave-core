@@ -15,9 +15,9 @@ BraveOnDemandUpdater* BraveOnDemandUpdater::GetInstance() {
   return base::Singleton<BraveOnDemandUpdater>::get();
 }
 
-BraveOnDemandUpdater::BraveOnDemandUpdater() {}
+BraveOnDemandUpdater::BraveOnDemandUpdater() = default;
 
-BraveOnDemandUpdater::~BraveOnDemandUpdater() {}
+BraveOnDemandUpdater::~BraveOnDemandUpdater() = default;
 
 void BraveOnDemandUpdater::OnDemandUpdate(const std::string& id) {
   DCHECK(!on_demand_update_callback_.is_null());

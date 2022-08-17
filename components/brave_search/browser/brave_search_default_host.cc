@@ -72,7 +72,7 @@ BraveSearchDefaultHost::BraveSearchDefaultHost(
     PrefService* prefs)
     : host_(host), template_url_service_(template_url_service), prefs_(prefs) {}
 
-BraveSearchDefaultHost::~BraveSearchDefaultHost() {}
+BraveSearchDefaultHost::~BraveSearchDefaultHost() = default;
 
 bool BraveSearchDefaultHost::CanSetDefaultSearchProvider(TemplateURL* provider,
                                                          bool is_historic) {

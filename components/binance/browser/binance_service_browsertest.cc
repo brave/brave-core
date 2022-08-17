@@ -221,8 +221,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   }
 
-  ~BinanceAPIBrowserTest() override {
-  }
+  ~BinanceAPIBrowserTest() override = default;
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
