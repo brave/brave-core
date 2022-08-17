@@ -21,8 +21,7 @@ BaseBraveShieldsService::BaseBraveShieldsService(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : initialized_(false), task_runner_(task_runner) {}
 
-BaseBraveShieldsService::~BaseBraveShieldsService() {
-}
+BaseBraveShieldsService::~BaseBraveShieldsService() = default;
 
 bool BaseBraveShieldsService::IsInitialized() const {
   return initialized_;

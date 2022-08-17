@@ -34,7 +34,7 @@ AdBlockRegionalFiltersProvider::AdBlockRegionalFiltersProvider(
   }
 }
 
-AdBlockRegionalFiltersProvider::~AdBlockRegionalFiltersProvider() {}
+AdBlockRegionalFiltersProvider::~AdBlockRegionalFiltersProvider() = default;
 
 void AdBlockRegionalFiltersProvider::OnComponentReady(
     const base::FilePath& path) {

@@ -99,7 +99,7 @@ namespace brave_shields {
 
 AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {}
 
-AdBlockEngine::~AdBlockEngine() {}
+AdBlockEngine::~AdBlockEngine() = default;
 
 void AdBlockEngine::ShouldStartRequest(const GURL& url,
                                        blink::mojom::ResourceType resource_type,

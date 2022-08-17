@@ -21,7 +21,8 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
     base::FilePath list_file)
     : list_file_(list_file) {}
 
-AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() {}
+AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
+    default;
 
 void AdBlockSubscriptionFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
