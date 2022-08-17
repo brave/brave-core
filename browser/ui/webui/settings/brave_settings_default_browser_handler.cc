@@ -21,7 +21,7 @@ void BraveDefaultBrowserHandler::SetAsDefaultBrowser(
 
 #if BUILDFLAG(IS_WIN)
   // Trying to pin when user ask this as a default browser.
-  shell_integration::win::PinToTaskbar(Profile::FromWebUI(web_ui()), true);
+  shell_integration::win::PinToTaskbar(Profile::FromWebUI(web_ui()));
 #endif
 }
 

@@ -22,7 +22,6 @@
 #include "base/task/thread_pool.h"
 #include "base/win/shortcut.h"
 #include "base/win/windows_version.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -31,7 +30,6 @@
 #include "chrome/browser/shell_integration_win.h"
 #include "chrome/installer/util/install_util.h"
 #include "chrome/installer/util/shell_util.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -327,47 +325,29 @@ bool CanPinToTaskbar() {
   return true;
 }
 
-bool ForceToPinToTaskbar() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-  // We pin current profile's shortcut only once even if taskbar has other
-  // profile's pinned shortcut.
-  if (g_browser_process->local_state()->GetBoolean(kForceToPinToTaskbar)) {
-    g_browser_process->local_state()->SetBoolean(kForceToPinToTaskbar, false);
-    return true;
-  }
-
-  return false;
-}
-
 }  // namespace
 
 namespace shell_integration::win {
 
-void PinToTaskbar(Profile* profile, bool check_existing_pinned_shortcut) {
+void PinToTaskbar(Profile* profile) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!CanPinToTaskbar())
     return;
 
   // At the very early stage, |g_browser_process| or its profile_manager
-  // are not initialzied yet. In that case, try to pin default shortcut
-  // as we can't check existing shortcuts from taskbar.
-  if (!check_existing_pinned_shortcut || !g_browser_process ||
-      !g_browser_process->profile_manager()) {
-    DoPinToTaskbar(profile);
-    return;
-  }
-
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  // are not initialzied yet. In that case, skip checking existing pin state.
   std::vector<std::tuple<base::FilePath, std::u16string, std::wstring>>
       profile_attrs;
   // Gather data that is available on UI thread and pass it.
-  for (const auto* entry : profile_manager->GetProfileAttributesStorage()
-                               .GetAllProfilesAttributes()) {
-    profile_attrs.push_back(
-        std::make_tuple(entry->GetPath(), entry->GetName(),
-                        win::GetAppUserModelIdForBrowser(entry->GetPath())));
+  if (g_browser_process && g_browser_process->profile_manager()) {
+    for (const auto* entry : g_browser_process->profile_manager()
+                                 ->GetProfileAttributesStorage()
+                                 .GetAllProfilesAttributes()) {
+      profile_attrs.push_back(
+          std::make_tuple(entry->GetPath(), entry->GetName(),
+                          win::GetAppUserModelIdForBrowser(entry->GetPath())));
+    }
   }
 
   base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
@@ -377,7 +357,7 @@ void PinToTaskbar(Profile* profile, bool check_existing_pinned_shortcut) {
                          std::move(profile_attrs)),
           base::BindOnce(
               [](Profile* profile, bool has_pin) {
-                if (has_pin && !ForceToPinToTaskbar()) {
+                if (has_pin) {
                   VLOG(2) << " Taskbar has already pinned brave shortcuts";
                   return;
                 }
