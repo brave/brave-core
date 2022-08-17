@@ -39,7 +39,7 @@ class GeminiUtilTest : public testing::Test {
         std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
   }
 
-  ~GeminiUtilTest() override {}
+  ~GeminiUtilTest() override = default;
 };
 
 TEST_F(GeminiUtilTest, GetClientId) {

@@ -39,7 +39,7 @@ class DatabaseBalanceReportTest : public ::testing::Test {
         std::make_unique<DatabaseBalanceReport>(mock_ledger_impl_.get());
   }
 
-  ~DatabaseBalanceReportTest() override {}
+  ~DatabaseBalanceReportTest() override = default;
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {

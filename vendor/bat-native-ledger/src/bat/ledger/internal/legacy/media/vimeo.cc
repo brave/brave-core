@@ -28,8 +28,7 @@ Vimeo::Vimeo(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 
-Vimeo::~Vimeo() {
-}
+Vimeo::~Vimeo() = default;
 
 // static
 std::string Vimeo::GetLinkType(const std::string& url) {

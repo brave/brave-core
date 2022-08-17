@@ -42,7 +42,7 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
         mock_ledger_impl_.get());
   }
 
-  ~DatabasePublisherPrefixListTest() override {}
+  ~DatabasePublisherPrefixListTest() override = default;
 
   std::unique_ptr<publisher::PrefixListReader>
   CreateReader(uint32_t prefix_count) {

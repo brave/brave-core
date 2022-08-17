@@ -37,8 +37,7 @@ Twitch::Twitch(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 
-Twitch::~Twitch() {
-}
+Twitch::~Twitch() = default;
 
 // static
 std::pair<std::string, std::string> Twitch::GetMediaIdFromParts(
