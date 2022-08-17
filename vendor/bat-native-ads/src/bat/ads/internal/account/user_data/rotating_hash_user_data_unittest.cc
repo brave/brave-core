@@ -52,7 +52,8 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   const std::string json = GetRotatingHashAsJson();
 
   // Assert
-  const std::string expected_json = R"({"rotating_hash":"1748047652"})";
+  const std::string expected_json =
+      R"({"rotating_hash":"06a6D0QCW5onYUDKqCBBXUoil02apd6pcJ47M3Li7hA="})";
   EXPECT_EQ(expected_json, json);
 }
 

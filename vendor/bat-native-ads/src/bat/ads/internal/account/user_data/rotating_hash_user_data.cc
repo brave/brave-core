@@ -5,12 +5,15 @@
 
 #include "bat/ads/internal/account/user_data/rotating_hash_user_data.h"
 
-#include "base/hash/hash.h"
+#include <cstdint>
+
+#include "base/base64.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/internal/base/crypto/crypto_util.h"
 
 namespace ads {
 namespace user_data {
@@ -32,8 +35,8 @@ base::DictionaryValue GetRotatingHash(const std::string& creative_instance_id) {
   const std::string timestamp =
       base::NumberToString(timestamp_rounded_to_nearest_hour);
 
-  const std::string rotating_hash = base::NumberToString(
-      base::Hash(base::StrCat({device_id, creative_instance_id, timestamp})));
+  const std::string rotating_hash = base::Base64Encode(security::Sha256(
+      base::StrCat({device_id, creative_instance_id, timestamp})));
   user_data.SetStringKey(kRotatingHashKey, rotating_hash);
 
   return user_data;
