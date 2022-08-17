@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 207bc78a7adf7a6357f64101b21c644b089d6005..68d74b4ab5a471b819444066797565b3f3c56055 100644
+index 207bc78a7adf7a6357f64101b21c644b089d6005..db73425d43a861e07059826fbd8b30dee912b8da 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -542,7 +542,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
@@ -11,7 +11,7 @@ index 207bc78a7adf7a6357f64101b21c644b089d6005..68d74b4ab5a471b819444066797565b3
            render_frame, should_allow_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
-@@ -727,6 +727,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -736,6 +736,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
          &RenderFrameFontFamilyAccessor::Bind, render_frame));
    }
  #endif
