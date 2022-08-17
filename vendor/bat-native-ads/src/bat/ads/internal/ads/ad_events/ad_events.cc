@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
@@ -56,6 +57,8 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
 
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   database::table::AdEvents database_table;
   database_table.PurgeOrphaned(ad_type, [callback](const bool success) {
     if (success) {

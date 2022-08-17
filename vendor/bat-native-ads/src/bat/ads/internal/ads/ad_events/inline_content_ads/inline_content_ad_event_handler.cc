@@ -24,6 +24,8 @@ namespace {
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::InlineContentAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (event_type == mojom::InlineContentAdEventType::kViewed &&
       HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
     return true;
@@ -54,6 +56,8 @@ void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
 void EventHandler::FireEvent(const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::InlineContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire inline content ad event due to an invalid placement "
@@ -97,6 +101,8 @@ void EventHandler::FireEvent(const InlineContentAdInfo& ad,
                              const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::InlineContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
@@ -126,6 +132,8 @@ void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   BLOG(1, "Failed to fire inline content ad "
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
@@ -182,6 +190,8 @@ void EventHandler::NotifyInlineContentAdEventFailed(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   for (EventHandlerObserver& observer : observers_) {
     observer.OnInlineContentAdEventFailed(placement_id, creative_instance_id,
                                           event_type);

@@ -119,6 +119,8 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   const std::string ad_type_as_string = AdType(ad_type).ToString();
 
   const std::string query = base::StringPrintf(
@@ -162,6 +164,8 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   const std::string ad_type_as_string = AdType(ad_type).ToString();
 
   const std::string query = base::StringPrintf(

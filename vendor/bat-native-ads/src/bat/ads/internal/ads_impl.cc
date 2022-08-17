@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
@@ -273,6 +274,8 @@ absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
 void AdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   notification_ad_->TriggerEvent(placement_id, event_type);
 }
 
@@ -289,6 +292,8 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   new_tab_page_ad_->TriggerEvent(placement_id, creative_instance_id,
                                  event_type);
 }
@@ -297,6 +302,8 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   promoted_content_ad_->TriggerEvent(placement_id, creative_instance_id,
                                      event_type);
 }
@@ -316,6 +323,8 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   inline_content_ad_->TriggerEvent(placement_id, creative_instance_id,
                                    event_type);
 }
@@ -324,6 +333,8 @@ void AdsImpl::TriggerSearchResultAdEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (!IsInitialized()) {
     callback(/* success */ false, ad_mojom->placement_id, event_type);
     return;
@@ -335,6 +346,8 @@ void AdsImpl::TriggerSearchResultAdEvent(
 void AdsImpl::PurgeOrphanedAdEventsForType(
     const mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   PurgeOrphanedAdEvents(ad_type, [ad_type, callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);

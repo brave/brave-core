@@ -30,6 +30,8 @@ namespace {
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (event_type == mojom::SearchResultAdEventType::kViewed &&
       HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
     return true;
@@ -102,6 +104,8 @@ void EventHandler::FireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
@@ -204,6 +208,8 @@ void EventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   BLOG(1, "Failed to fire search result ad "
               << event_type << " event for placement_id " << ad.placement_id
               << " and creative instance id " << ad.creative_instance_id);
@@ -262,6 +268,8 @@ void EventHandler::NotifySearchResultAdEventFailed(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   for (EventHandlerObserver& observer : observers_) {
     observer.OnSearchResultAdEventFailed(ad, event_type);
   }

@@ -7,6 +7,8 @@
 
 #include <sstream>
 
+#include "base/check.h"
+
 namespace ads {
 
 NotificationAdEvent::NotificationAdEvent() = default;
@@ -15,6 +17,8 @@ NotificationAdEvent::~NotificationAdEvent() = default;
 
 void NotificationAdEvent::SetEventType(
     const mojom::NotificationAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   event_type_ = event_type;
 }
 

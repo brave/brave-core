@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/search_result_ad.h"
 
+#include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
@@ -32,10 +33,14 @@ void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   event_handler_->FireEvent(
       ad_mojom, event_type,
       [callback](const bool success, const std::string& placement_id,
                  const mojom::SearchResultAdEventType event_type) {
+        DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
         callback(success, placement_id, event_type);
       });
 }

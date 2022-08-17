@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/promoted_content_ad.h"
 
+#include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
@@ -32,6 +33,8 @@ void PromotedContentAd::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   event_handler_->FireEvent(placement_id, creative_instance_id, event_type);
 }
 
