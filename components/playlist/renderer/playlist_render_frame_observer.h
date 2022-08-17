@@ -20,11 +20,6 @@ class PlaylistRenderFrameObserver
 
   void RunScriptsAtDocumentStart();
 
-  // RenderFrameObserver:
-  void DidStartNavigation(
-      const GURL& url,
-      absl::optional<blink::WebNavigationType> navigation_type) override;
-
  private:
   ~PlaylistRenderFrameObserver() override;
 
@@ -32,8 +27,6 @@ class PlaylistRenderFrameObserver
 
   // RenderFrameObserver:
   void OnDestruct() override;
-
-  GURL url_;
 };
 
 }  // namespace playlist

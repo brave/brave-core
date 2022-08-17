@@ -5,6 +5,9 @@
 
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 
+#include <vector>
+
+#include "base/no_destructor.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
@@ -19,20 +22,19 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() {}
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  if (!url_.SchemeIsHTTPOrHTTPS())
-    return;
-
   // TODO(sko) This list should be dynamically updated from browser process.
   // For now, we hardcode the list of domains that we want to run scripts at.
-  if (url_.host() == "www.youtube.com") {
+  static const base::NoDestructor<std::vector<blink::WebSecurityOrigin>>
+      origins{
+          {blink::WebSecurityOrigin::Create(GURL("https://www.youtube.com"))}};
+
+  const auto current_origin =
+      render_frame()->GetWebFrame()->GetSecurityOrigin();
+  if (base::ranges::any_of(*origins, [&current_origin](const auto& origin) {
+        return origin.IsSameOriginWith(current_origin);
+      })) {
     HideMediaSourceAPI();
   }
-}
-
-void PlaylistRenderFrameObserver::DidStartNavigation(
-    const GURL& url,
-    absl::optional<blink::WebNavigationType> navigation_type) {
-  url_ = url;
 }
 
 void PlaylistRenderFrameObserver::OnDestruct() {
