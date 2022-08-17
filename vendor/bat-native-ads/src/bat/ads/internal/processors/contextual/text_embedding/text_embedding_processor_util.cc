@@ -14,14 +14,17 @@
 namespace ads {
 namespace processor {
 
-std::string SanitizeText(const std::string& text, const bool is_html) {
+std::string SanitizeHtml(const std::string& html) {
+  std::string sanitized_html = html;
+  sanitized_html = ParseTagAttribute(sanitized_html, "og:title", "content");
+  sanitized_html = SanitizeText(sanitized_html);
+  return sanitized_html;
+}
+
+std::string SanitizeText(const std::string& text) {
   std::string sanitized_text = text;
-  if (is_html) {
-    sanitized_text = ParseTagAttribute(sanitized_text, "og:title", "content");
-  }
   sanitized_text = StripNonAlphaCharacters(sanitized_text);
-  std::transform(sanitized_text.begin(), sanitized_text.end(),
-                 sanitized_text.begin(), ::tolower);
+  sanitized_text = base::ToLowerASCII(sanitized_text);
   return sanitized_text;
 }
 

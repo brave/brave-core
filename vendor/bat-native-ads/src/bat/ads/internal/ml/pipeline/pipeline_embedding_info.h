@@ -24,12 +24,12 @@ struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& info) noexcept;
   ~EmbeddingPipelineInfo();
 
-  bool FromValue(base::Value resource_value);
+  bool FromValue(base::Value::Dict& value);
 
-  int version;
-  base::Time timestamp;
+  int version = 0;
+  base::Time time;
   std::string locale;
-  int dim;
+  int dim = 0;
   std::map<std::string, VectorData> embeddings;
 };
 

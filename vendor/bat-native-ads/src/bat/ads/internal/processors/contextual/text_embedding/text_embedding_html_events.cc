@@ -16,8 +16,8 @@
 
 namespace ads {
 
-void LogTextEmbeddingHtmlEvent(const std::string embedding_formatted,
-                               const std::string hashed_key,
+void LogTextEmbeddingHtmlEvent(const std::string& embedding_formatted,
+                               const std::string& hashed_key,
                                TextEmbeddingHtmlEventCallback callback) {
   TextEmbeddingEventInfo text_embedding_event_info;
   text_embedding_event_info.created_at = base::Time::Now();
@@ -46,7 +46,7 @@ void GetTextEmbeddingEventsFromDatabase(
       [=](const bool success,
           const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         if (!success) {
-          BLOG(1, "Failed to get embeddings");
+          BLOG(1, "Failed to get text embedding HTML events");
           callback(success, {});
           return;
         }

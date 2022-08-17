@@ -12,7 +12,6 @@
 #include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 namespace resource {
@@ -22,14 +21,14 @@ constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
 TextEmbedding::TextEmbedding()
-    : embedding_processing_pipeline_(
+    : embedding_processing_(
           std::make_unique<ml::pipeline::EmbeddingProcessing>()) {}
 
 TextEmbedding::~TextEmbedding() = default;
 
 bool TextEmbedding::IsInitialized() const {
-  return embedding_processing_pipeline_ &&
-         embedding_processing_pipeline_->IsInitialized();
+  return embedding_processing_ &&
+         embedding_processing_->IsInitialized();
 }
 
 void TextEmbedding::Load() {
@@ -54,14 +53,14 @@ void TextEmbedding::OnLoadAndParseResource(
     return;
   }
 
-  embedding_processing_pipeline_ = std::move(result->resource);
+  embedding_processing_ = std::move(result->resource);
 
   BLOG(1, "Successfully initialized " << kResourceId
                                       << " text embedding resource");
 }
 
 ml::pipeline::EmbeddingProcessing* TextEmbedding::Get() const {
-  return embedding_processing_pipeline_.get();
+  return embedding_processing_.get();
 }
 
 }  // namespace resource

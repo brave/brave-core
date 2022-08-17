@@ -44,7 +44,7 @@ class VectorData final : public Data {
   void Normalize();
 
   int GetDimensionCount() const;
-  int GetNonZeroElementsCount() const;
+  int GetNonZeroElementCount() const;
 
   const std::string GetVectorAsString() const;
   const std::vector<float>& GetValuesForTesting() const;

@@ -45,11 +45,11 @@ bool TextEmbedding::IsEmbeddingEnabled() {
 
 void TextEmbedding::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
-    BLOG(1, "Failed to process token embeddings as resource not initialized");
+    BLOG(1, "Failed to process text embeddings as resource not initialized");
     return;
   }
 
-  const std::string sanitized_text = SanitizeText(text, true);
+  const std::string sanitized_text = SanitizeHtml(text);
   if (sanitized_text.length() == 0) {
     BLOG(1, "No text available for embedding");
     return;
@@ -58,8 +58,8 @@ void TextEmbedding::Process(const std::string& text) {
   ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
   ml::pipeline::TextEmbeddingData text_embedding_data =
       embedding_proc_pipeline->EmbedText(sanitized_text);
-  if (text_embedding_data.embedding.GetNonZeroElementsCount() == 0) {
-    BLOG(1, "Failed to create text embedding");
+  if (text_embedding_data.embedding.GetNonZeroElementCount() == 0) {
+    BLOG(1, "Failed to embed text");
     return;
   }
 
@@ -70,13 +70,13 @@ void TextEmbedding::Process(const std::string& text) {
       embedding_formatted, text_embedding_data.text_hashed,
       [](const bool success) {
         if (!success) {
-          BLOG(1, "Failed to log text embedding html event");
+          BLOG(1, "Failed to log text embedding HTML event");
           return;
         }
 
         PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
           if (!success) {
-            BLOG(1, "Failed to purge stale text embedding html events");
+            BLOG(1, "Failed to purge stale text embedding HTML events");
             return;
           }
         });
@@ -96,19 +96,20 @@ void TextEmbedding::OnResourceDidUpdate(const std::string& id) {
 }
 
 void TextEmbedding::OnHtmlContentDidChange(
-    const int32_t id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   const GURL& url = redirect_chain.back();
+  DCHECK(!redirect_chain.empty());
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    BLOG(1, url.scheme() << " scheme is not supported for processing html");
+    BLOG(1, url.scheme() << " scheme is not supported for processing HTML");
     return;
   }
 
   if (IsSearchEngine(url) && !IsSearchEngineResultsPage(url)) {
     BLOG(1,
-         "Search engine landing pages are not supported for processing html");
+         "Search engine landing pages are not supported for processing HTML");
     return;
   }
 

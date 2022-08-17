@@ -197,7 +197,7 @@ int VectorData::GetDimensionCount() const {
   return storage_->DimensionCount();
 }
 
-int VectorData::GetNonZeroElementsCount() const {
+int VectorData::GetNonZeroElementCount() const {
   if (storage_->DimensionCount() == 0) {
     return 0;
   }

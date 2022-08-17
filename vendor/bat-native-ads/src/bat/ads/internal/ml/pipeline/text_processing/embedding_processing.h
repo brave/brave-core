@@ -10,12 +10,14 @@
 #include <memory>
 #include <string>
 
+#include "base/time/time.h"
+#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 
 namespace base {
 class Value;
-}
+} // namespace base
 
 namespace ads {
 namespace ml {
@@ -36,13 +38,11 @@ class EmbeddingProcessing final {
 
   bool IsInitialized() const;
 
-  void SetIsInitialized(bool is_initialized);
-
   bool SetEmbeddingPipeline(base::Value resource_value);
 
   bool SetEmbeddingPipelineForTesting(
       const int version,
-      const base::Time timestamp,
+      const base::Time time,
       const std::string& locale,
       const int dim,
       const std::map<std::string, VectorData>& embeddings);

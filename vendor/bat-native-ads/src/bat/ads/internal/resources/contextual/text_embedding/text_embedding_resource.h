@@ -39,7 +39,7 @@ class TextEmbedding final {
       ParsingResultPtr<ml::pipeline::EmbeddingProcessing> result);
 
   std::unique_ptr<ml::pipeline::EmbeddingProcessing>
-      embedding_processing_pipeline_;
+      embedding_processing_;
 
   base::WeakPtrFactory<TextEmbedding> weak_ptr_factory_{this};
 };

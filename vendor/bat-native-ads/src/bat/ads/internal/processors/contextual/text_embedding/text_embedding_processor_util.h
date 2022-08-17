@@ -15,7 +15,8 @@ class Value;
 namespace ads {
 namespace processor {
 
-std::string SanitizeText(const std::string& text, const bool is_html);
+std::string SanitizeHtml(const std::string& html);
+std::string SanitizeText(const std::string& text);
 
 }  // namespace processor
 }  // namespace ads

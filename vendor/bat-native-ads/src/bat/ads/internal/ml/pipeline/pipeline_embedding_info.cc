@@ -24,46 +24,39 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
-bool EmbeddingPipelineInfo::FromValue(base::Value value) {
-  base::Value::Dict* resource = value.GetIfDict();
-  if (!resource) {
-    return false;
-  }
-
-  absl::optional<int> version_value = resource->FindInt("version");
-  if (!version_value.has_value()) {
+bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& value) {
+  absl::optional<int> version_value = value.FindInt("version");
+  if (!version_value) {
     return false;
   }
   version = version_value.value();
 
-  std::string* timestamp_value = resource->FindString("timestamp");
+  std::string* timestamp_value = value.FindString("timestamp");
   if (!timestamp_value) {
     return false;
   }
-  base::Time timestamp;
-  bool success =
-      base::Time::FromUTCString((*timestamp_value).c_str(), &timestamp);
-  if (!success) {
+  base::Time time;
+  if (!base::Time::FromUTCString((*timestamp_value).c_str(), &time)) {
     return false;
   }
 
-  std::string* locale_value = resource->FindString("locale");
+  std::string* locale_value = value.FindString("locale");
   if (!locale_value) {
     return false;
   }
   locale = *locale_value;
 
-  base::Value::Dict* embeddings_value = resource->FindDict("embeddings");
+  base::Value::Dict* embeddings_value = value.FindDict("embeddings");
   if (!embeddings_value) {
     return false;
   }
 
   dim = 1;
   for (const auto item : *embeddings_value) {
-    const auto vector = std::move(item.second.GetList());
+    const auto list = std::move(item.second.GetList());
     std::vector<float> embedding;
-    embedding.reserve(vector.size());
-    for (const base::Value& v_raw : vector) {
+    embedding.reserve(list.size());
+    for (const base::Value& v_raw : list) {
       double v = v_raw.GetDouble();
       embedding.push_back(v);
     }

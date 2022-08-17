@@ -46,7 +46,7 @@ class TextEmbedding final : public LocaleManagerObserver,
   void OnResourceDidUpdate(const std::string& id) override;
 
   // TabManagerObserver:
-  void OnHtmlContentDidChange(const int32_t id,
+  void OnHtmlContentDidChange(const int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& html) override;
 

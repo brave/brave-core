@@ -30,7 +30,7 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   pipeline::EmbeddingProcessing embedding_processing;
 
   const int version = 1;
-  const base::Time timestamp = base::Time::Now();
+  const base::Time time = base::Time::Now();
   const std::string& locale = "en";
   const int dim = 3;
   const std::map<std::string, VectorData> embeddings = {
@@ -38,7 +38,7 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
       {"unittest", VectorData({-0.2, 0.8, 1.0})},
       {"simple", VectorData({0.7, -0.1, 1.3})}};
 
-  embedding_processing.SetEmbeddingPipelineForTesting(version, timestamp,
+  embedding_processing.SetEmbeddingPipelineForTesting(version, time,
                                                       locale, dim, embeddings);
 
   const std::map<std::string, VectorData> samples = {
@@ -48,11 +48,13 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
       {"this 54 is simple", VectorData({0.85, 0.2, 1.0})},
       {"", VectorData({0.0, 0.0, 0.0})}};
 
-  for (auto const& sample : samples) {
+  for (const auto& sample : samples) {
+    // Act
     pipeline::TextEmbeddingData embedding_data =
-        embedding_processing.EmbedText(sample.first);  // Act
+        embedding_processing.EmbedText(sample.first);
+    // Assert
     EXPECT_EQ(sample.second.GetValuesForTesting(),
-              embedding_data.embedding.GetValuesForTesting());  // Assert
+              embedding_data.embedding.GetValuesForTesting());
   }
 }
 
