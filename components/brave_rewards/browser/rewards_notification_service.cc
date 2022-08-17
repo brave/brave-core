@@ -9,13 +9,12 @@
 
 namespace brave_rewards {
 
-RewardsNotificationService::RewardsNotificationService() {
-}
+RewardsNotificationService::RewardsNotificationService() = default;
 
-RewardsNotificationService::~RewardsNotificationService() {
-}
+RewardsNotificationService::~RewardsNotificationService() = default;
 
-RewardsNotificationService::RewardsNotification::RewardsNotification() {}
+RewardsNotificationService::RewardsNotification::RewardsNotification() =
+    default;
 
 RewardsNotificationService::RewardsNotification::RewardsNotification(
     const RewardsNotificationService::RewardsNotification& prop) = default;
@@ -30,7 +29,8 @@ RewardsNotificationService::RewardsNotification::RewardsNotification(
       timestamp_(timestamp),
       args_(args) {}
 
-RewardsNotificationService::RewardsNotification::~RewardsNotification() {}
+RewardsNotificationService::RewardsNotification::~RewardsNotification() =
+    default;
 
 void RewardsNotificationService::AddObserver(
     RewardsNotificationServiceObserver* observer) {

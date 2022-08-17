@@ -36,8 +36,8 @@ using ::testing::Return;
 
 class RewardsServiceJPTest : public testing::Test {
  public:
-  RewardsServiceJPTest() {}
-  ~RewardsServiceJPTest() override {}
+  RewardsServiceJPTest() = default;
+  ~RewardsServiceJPTest() override = default;
 
  protected:
   void SetMockLocale(const std::string& locale) {

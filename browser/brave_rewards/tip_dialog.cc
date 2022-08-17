@@ -67,8 +67,7 @@ TipDialogDelegate::TipDialogDelegate(WebContents* initiator,
                                      base::Value::Dict params)
     : initiator_(initiator), params_(std::move(params)) {}
 
-TipDialogDelegate::~TipDialogDelegate() {
-}
+TipDialogDelegate::~TipDialogDelegate() = default;
 
 ui::ModalType TipDialogDelegate::GetDialogModalType() const {
   // Not used, returning dummy value.

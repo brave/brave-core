@@ -310,7 +310,7 @@ const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
 
 RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 
-RewardsDOMHandler::~RewardsDOMHandler() {}
+RewardsDOMHandler::~RewardsDOMHandler() = default;
 
 void RewardsDOMHandler::RegisterMessages() {
 #if BUILDFLAG(IS_ANDROID)
@@ -2087,4 +2087,4 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
   handler->Init();
 }
 
-BraveRewardsPageUI::~BraveRewardsPageUI() {}
+BraveRewardsPageUI::~BraveRewardsPageUI() = default;
