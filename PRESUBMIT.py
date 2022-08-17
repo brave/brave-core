@@ -8,7 +8,9 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckChangeLintsClean(input_api, output_api):
-    return input_api.canned_checks.CheckChangeLintsClean(input_api, output_api)
+    return input_api.canned_checks.CheckChangeLintsClean(input_api,
+                                                         output_api,
+                                                         lint_filters=[])
 
 
 def CheckPylint(input_api, output_api):
