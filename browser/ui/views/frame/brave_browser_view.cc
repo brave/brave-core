@@ -15,7 +15,7 @@
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
-#include "brave/browser/ui/views/frame/brave_tab_strip_region_container.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -198,7 +198,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   if (can_have_vertical_tabs) {
     vertical_tabs_container_ = contents_container_->AddChildView(
-        std::make_unique<BraveTabStripRegionContainer>(tab_strip_region_view_));
+        std::make_unique<VerticalTabStripContainer>(tab_strip_region_view_));
   }
 
   contents_container_->SetLayoutManager(

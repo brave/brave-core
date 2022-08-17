@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_CONTAINER_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_CONTAINER_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_CONTAINER_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_CONTAINER_H_
 
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 
@@ -13,14 +13,14 @@ class ScrollView;
 }
 
 // Wraps TabStripRegion and show it vertically.
-class BraveTabStripRegionContainer : public views::View {
+class VerticalTabStripContainer : public views::View {
  public:
-  METADATA_HEADER(BraveTabStripRegionContainer);
+  METADATA_HEADER(VerticalTabStripContainer);
 
   enum class State { kCollapsed, kExpanded };
 
-  explicit BraveTabStripRegionContainer(TabStripRegionView* region_view);
-  ~BraveTabStripRegionContainer() override;
+  explicit VerticalTabStripContainer(TabStripRegionView* region_view);
+  ~VerticalTabStripContainer() override;
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
@@ -48,4 +48,4 @@ class BraveTabStripRegionContainer : public views::View {
   State state_ = State::kExpanded;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_CONTAINER_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_CONTAINER_H_
