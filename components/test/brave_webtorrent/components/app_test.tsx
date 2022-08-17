@@ -8,6 +8,7 @@ import { applicationState, torrentState, torrentObj } from '../testData'
 import { TorrentState } from '../../../brave_webtorrent/extension/constants/webtorrentState'
 import { BraveWebTorrentPage, mapStateToProps } from '../../../brave_webtorrent/extension/components/app'
 import TorrentViewer from '../../../brave_webtorrent/extension/components/torrentViewer'
+import MediaViewer from '../../../brave_webtorrent/extension/components/mediaViewer'
 
 describe('BraveWebtorrentPage component', () => {
   describe('mapStateToProps', () => {
@@ -27,9 +28,9 @@ describe('BraveWebtorrentPage component', () => {
           torrentObj={torrentObj}
           actions={{}}
         />
-      ).dive()
+      )
 
-      const assertion = wrapper.find('.mediaViewer')
+      const assertion = wrapper.find(MediaViewer)
       expect(assertion.length).toBe(1)
     })
     it('renders the TorrentViewer component with a valid torrent state', () => {
@@ -38,7 +39,7 @@ describe('BraveWebtorrentPage component', () => {
           torrentState={torrentState}
           actions={{}}
         />
-      ).dive()
+      )
 
       expect(wrapper.find(TorrentViewer)).toHaveLength(1)
     })
