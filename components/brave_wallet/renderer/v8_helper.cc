@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_wallet/renderer/safe_builtins.h"
+#include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
@@ -132,7 +132,7 @@ void SetOwnPropertyNonWritable(v8::Local<v8::Context> context,
 }
 
 void InitSafeBuiltinsProtection(v8::Local<v8::Context> context) {
-  SafeBuiltins safe_builtins(context);
+  brave::SafeBuiltins safe_builtins(context);
   // Object
   v8::Local<v8::Value> object = safe_builtins.GetObjekt();
   FreezeAndSetGlobally("$Object", context, object);

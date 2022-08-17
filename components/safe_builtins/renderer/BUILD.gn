@@ -1,0 +1,11 @@
+source_set("renderer") {
+  sources = [
+    "safe_builtins.cc",
+    "safe_builtins.h",
+  ]
+
+  deps = [
+    "//base",
+    "//v8",
+  ]
+}

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/renderer/safe_builtins.h"
+#include "brave/components/safe_builtins/renderer/safe_builtins.h"
 
 #include <string>
 
@@ -21,11 +21,11 @@
 #include "v8/include/v8-primitive.h"
 #include "v8/include/v8-template.h"
 
-namespace brave_wallet {
+namespace brave {
 
 namespace {
 
-const char kClassName[] = "brave_wallet::SafeBuiltins";
+const char kClassName[] = "brave::SafeBuiltins";
 
 // see //extensions/renderer/safe_builtins.cc for details
 const char kScript[] =
@@ -213,4 +213,4 @@ v8::Local<v8::Object> SafeBuiltins::GetObjekt() const {
   return Load("Object", v8::Local<v8::Context>::New(isolate_, context_));
 }
 
-}  //  namespace brave_wallet
+}  //  namespace brave

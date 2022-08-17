@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_SAFE_BUILTINS_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_SAFE_BUILTINS_H_
+#ifndef BRAVE_COMPONENTS_SAFE_BUILTINS_RENDERER_SAFE_BUILTINS_H_
+#define BRAVE_COMPONENTS_SAFE_BUILTINS_RENDERER_SAFE_BUILTINS_H_
 
 #include <memory>
 
 #include "v8/include/v8-forward.h"
 #include "v8/include/v8-persistent-handle.h"
 
-namespace brave_wallet {
+namespace brave {
 
 // This is originated from extensions::SafeBuiltins
 // see //extensions/renderer/safe_builtins.h for details
@@ -31,12 +31,13 @@ class SafeBuiltins {
   // //brave/components/brave_wallt/resources for now.
   // see //extensions/renderer/safe_builtins.h for reason of the naming.
   v8::Local<v8::Object> GetObjekt() const;
+  // Add more safe builtins if needed.
 
  private:
   v8::Global<v8::Context> context_;
   v8::Isolate* isolate_;
 };
 
-}  //  namespace brave_wallet
+}  //  namespace brave
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_SAFE_BUILTINS_H_
+#endif  // BRAVE_COMPONENTS_SAFE_BUILTINS_RENDERER_SAFE_BUILTINS_H_
