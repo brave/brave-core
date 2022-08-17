@@ -16,11 +16,11 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet::eth_abi {
+constexpr size_t kRowLength = 32;
 
 using Span = base::span<const uint8_t>;
+using Span32 = base::span<const uint8_t, kRowLength>;
 using Bytes32 = std::array<uint8_t, 32>;
-
-uint256_t BytesToUint256(Span data);
 
 std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data);
 
@@ -42,7 +42,7 @@ std::vector<uint8_t> EncodeCall(Span function_selector,
                                 Span bytes_1);
 
 // f(bytes32)
-std::vector<uint8_t> EncodeCall(Span function_selector, const Bytes32& arg_0);
+std::vector<uint8_t> EncodeCall(Span function_selector, const Span32& arg_0);
 
 }  // namespace brave_wallet::eth_abi
 

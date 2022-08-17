@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -21,9 +22,10 @@ namespace {
 // bytes callData, bytes4 callbackFunction, bytes extraData)` for
 // offchainexample.eth. https://eips.ethereum.org/EIPS/eip-3668
 
-// clang-format off
+std::string GetOffchainLookupResponse() {
   constexpr char kOffchainLookupResponse[] =
-      "0x556f1830"
+      // clang-format off
+      "556f1830"
       "000000000000000000000000c1735677a60884abbcf72295e88d47764beda282"
       "00000000000000000000000000000000000000000000000000000000000000a0"
       "0000000000000000000000000000000000000000000000000000000000000160"
@@ -53,13 +55,18 @@ namespace {
       "000000243b3b57de42041b0018edd29d7c17154b0c671acc0502ea0b3693cafb"
       "eadf58e6beaaa16c000000000000000000000000000000000000000000000000"
       "0000000000000000000000000000000000000000000000000000000000000000";
-// clang-format on
+  // clang-format on
+  return kOffchainLookupResponse;
+}
+
+std::vector<uint8_t> ToBytes(const std::string& hex) {
+  return *brave_wallet::PrefixedHexStringToBytes("0x" + hex);
+}
 }  // namespace
 
 namespace brave_wallet::eth_abi {
 TEST(EthAbiUtilsTest, OffchainLookup) {
-  std::vector<uint8_t> bytes;
-  ASSERT_TRUE(PrefixedHexStringToBytes(kOffchainLookupResponse, &bytes));
+  auto bytes = ToBytes(GetOffchainLookupResponse());
 
   auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
 
@@ -95,8 +102,7 @@ TEST(EthAbiUtilsTest, OffchainLookup) {
 }
 
 TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
-  std::vector<uint8_t> bytes_base;
-  ASSERT_TRUE(PrefixedHexStringToBytes(kOffchainLookupResponse, &bytes_base));
+  std::vector<uint8_t> bytes_base = ToBytes(GetOffchainLookupResponse());
 
   // Try to alter each byte and expect no crashes.
   for (auto i = 0u; i < bytes_base.size(); ++i) {
@@ -115,44 +121,297 @@ TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
   }
 }
 
-TEST(EthAbiUtilsTest, DISABLED_BytesToUint256) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractFunctionSelectorAndArgsFromCall) {
+  {
+    std::vector<uint8_t> bytes = ToBytes(GetOffchainLookupResponse());
+    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    EXPECT_EQ(GetOffchainLookupResponse().substr(0, 8),
+              ToHex(selector).substr(2));
+    EXPECT_EQ(GetOffchainLookupResponse().substr(8), ToHex(args).substr(2));
+  }
+
+  {
+    // Only selector.
+    std::vector<uint8_t> bytes = {0x01, 0x02, 0x03, 0x04};
+    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    EXPECT_TRUE(base::ranges::equal(bytes, selector));
+    EXPECT_TRUE(args.empty());
+  }
+
+  {
+    // Not enough for selector.
+    std::vector<uint8_t> bytes = {0x01, 0x02, 0x03};
+    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    EXPECT_TRUE(selector.empty());
+    EXPECT_TRUE(args.empty());
+  }
+
+  {
+    // Bad args alignment.
+    std::vector<uint8_t> bytes = {0x01, 0x02, 0x03, 0x04, 0x05};
+    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    EXPECT_TRUE(selector.empty());
+    EXPECT_TRUE(args.empty());
+  }
+
+  {
+    // Empty case.
+    std::vector<uint8_t> bytes = {};
+    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    EXPECT_TRUE(selector.empty());
+    EXPECT_TRUE(args.empty());
+  }
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractFunctionSelectorAndArgsFromCall) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractAddress) {
+  {
+    auto bytes = ToBytes(
+        "000000000000000000000000c1735677a60884abbcf72295e88d47764beda282");
+    EXPECT_EQ(ExtractAddress(base::make_span(bytes)).ToHex(),
+              "0xc1735677a60884abbcf72295e88d47764beda282");
+  }
+
+  {
+    // Missing byte.
+    auto bytes = ToBytes(
+        "0000000000000000000000c1735677a60884abbcf72295e88d47764beda282");
+    EXPECT_TRUE(ExtractAddress(bytes).IsEmpty());
+  }
+
+  {
+    // Extra byte.
+    auto bytes = ToBytes(
+        "000000000000000000000000c1735677a60884abbcf72295e88d47764beda28200");
+    EXPECT_TRUE(ExtractAddress(bytes).IsEmpty());
+  }
+
+  {
+    // Zero address.
+    auto bytes = ToBytes(
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    EXPECT_EQ(ExtractAddress(base::make_span(bytes)).ToHex(),
+              "0x0000000000000000000000000000000000000000");
+  }
+
+  {  // Empty.
+    auto bytes = std::vector<uint8_t>{};
+    EXPECT_TRUE(ExtractAddress(base::make_span(bytes)).IsEmpty());
+  }
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractAddress) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractAddressFromTuple) {
+  auto bytes = ToBytes(
+      "000000000000000000000000c1735677a60884abbcf72295e88d47764beda282"
+      "00000000000000000000000000000000000000000000000000000000000000a0");
+  EXPECT_EQ(ExtractAddressFromTuple(bytes, 0).ToHex(),
+            "0xc1735677a60884abbcf72295e88d47764beda282");
+  EXPECT_EQ(ExtractAddressFromTuple(bytes, 1).ToHex(),
+            "0x00000000000000000000000000000000000000a0");
+  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 2).IsEmpty());
+
+  // Bad alignment.
+  bytes.push_back(0);
+  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 0).IsEmpty());
+  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 1).IsEmpty());
+  EXPECT_TRUE(ExtractAddressFromTuple(bytes, 2).IsEmpty());
+
+  // Empty.
+  EXPECT_TRUE(ExtractAddressFromTuple({}, 0).IsEmpty());
+  EXPECT_TRUE(ExtractAddressFromTuple({}, 1).IsEmpty());
+  EXPECT_TRUE(ExtractAddressFromTuple({}, 2).IsEmpty());
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractAddressFromTuple) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractBytes) {
+  std::vector<uint8_t> bytes = ToBytes(
+      "0000000000000000000000000000000000000000000000000000000000000047"
+      "68747470733a2f2f6f6666636861696e2d7265736f6c7665722d6578616d706c"
+      "652e75632e722e61707073706f742e636f6d2f7b73656e6465727d2f7b646174"
+      "617d2e6a736f6e00000000000000000000000000000000000000000000000000");
+  auto extracted_bytes = ExtractBytes(bytes);
+  EXPECT_EQ(size_t(0x47), extracted_bytes->size());
+  EXPECT_EQ(
+      "68747470733a2f2f6f6666636861696e2d7265736f6c7665722d6578616d706c"
+      "652e75632e722e61707073706f742e636f6d2f7b73656e6465727d2f7b646174"
+      "617d2e6a736f6e",
+      ToHex(*extracted_bytes).substr(2));
+
+  // Non-zero padding.
+  bytes.back() = 1;
+  EXPECT_FALSE(ExtractBytes(bytes));
+
+  // Empty case.
+  EXPECT_FALSE(ExtractBytes({}));
+
+  // Bad alignment.
+  EXPECT_FALSE(ExtractBytes(ToBytes(
+      "00000000000000000000000000000000000000000000000000000000000000")));
+
+  // Empty array.
+  {
+    auto empty = ToBytes(
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    EXPECT_TRUE(ExtractBytes(empty)->empty());
+  }
+
+  // One-byte array.
+  {
+    auto one_byte = ToBytes(
+        "0000000000000000000000000000000000000000000000000000000000000001"
+        "0100000000000000000000000000000000000000000000000000000000000000");
+
+    EXPECT_EQ(std::vector<uint8_t>{1}, *ExtractBytes(one_byte));
+  }
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractBytes) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractString) {
+  std::vector<uint8_t> bytes = ToBytes(
+      "0000000000000000000000000000000000000000000000000000000000000047"
+      "68747470733a2f2f6f6666636861696e2d7265736f6c7665722d6578616d706c"
+      "652e75632e722e61707073706f742e636f6d2f7b73656e6465727d2f7b646174"
+      "617d2e6a736f6e00000000000000000000000000000000000000000000000000");
+  auto extracted_string = ExtractString(bytes);
+  EXPECT_EQ(
+      "https://offchain-resolver-example.uc.r.appspot.com/"
+      "{sender}/{data}.json",
+      *extracted_string);
+
+  // Non-zero padding.
+  bytes.back() = 1;
+  EXPECT_FALSE(ExtractString(bytes));
+
+  // Empty case.
+  EXPECT_FALSE(ExtractString({}));
+
+  // Bad alignment.
+  EXPECT_FALSE(ExtractString(ToBytes(
+      "00000000000000000000000000000000000000000000000000000000000000")));
+
+  // Empty string.
+  {
+    auto empty = ToBytes(
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    EXPECT_TRUE(ExtractString(empty)->empty());
+  }
+
+  // One-char string.
+  {
+    auto one_byte = ToBytes(
+        "0000000000000000000000000000000000000000000000000000000000000001"
+        "4100000000000000000000000000000000000000000000000000000000000000");
+
+    EXPECT_EQ("A", *ExtractString(one_byte));
+  }
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractString) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractStringArrayFromTuple) {
+  auto bytes = ToBytes(GetOffchainLookupResponse());
+
+  auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+
+  EXPECT_THAT(
+      *ExtractStringArrayFromTuple(args, 1),
+      ElementsAreArray({"https://offchain-resolver-example.uc.r.appspot.com/"
+                        "{sender}/{data}.json"}));
+
+  // Bad tuple pos.
+  EXPECT_FALSE(ExtractStringArrayFromTuple(args, 0));
+  EXPECT_FALSE(ExtractStringArrayFromTuple(args, 10));
+  EXPECT_FALSE(ExtractStringArrayFromTuple(args, 1000));
+
+  // Empty data.
+  EXPECT_FALSE(ExtractStringArrayFromTuple({}, 0));
+
+  // Empty array.
+  auto empty_string_array = ToBytes(
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000000");
+  EXPECT_EQ(ExtractStringArrayFromTuple(empty_string_array, 0),
+            std::vector<std::string>());
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractStringArrayFromTuple) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractBytesFromTuple) {
+  auto bytes = ToBytes(GetOffchainLookupResponse());
+
+  auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+
+  EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 2)).substr(2),
+            "9061b92300000000000000000000000000000000000000000000000000000000"
+            "0000004000000000000000000000000000000000000000000000000000000000"
+            "0000008000000000000000000000000000000000000000000000000000000000"
+            "000000150f6f6666636861696e6578616d706c65036574680000000000000000"
+            "0000000000000000000000000000000000000000000000000000000000000000"
+            "000000243b3b57de42041b0018edd29d7c17154b0c671acc0502ea0b3693cafb"
+            "eadf58e6beaaa16c000000000000000000000000000000000000000000000000"
+            "00000000");
+
+  EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 4)).substr(2),
+            "9061b92300000000000000000000000000000000000000000000000000000000"
+            "0000004000000000000000000000000000000000000000000000000000000000"
+            "0000008000000000000000000000000000000000000000000000000000000000"
+            "000000150f6f6666636861696e6578616d706c65036574680000000000000000"
+            "0000000000000000000000000000000000000000000000000000000000000000"
+            "000000243b3b57de42041b0018edd29d7c17154b0c671acc0502ea0b3693cafb"
+            "eadf58e6beaaa16c000000000000000000000000000000000000000000000000"
+            "00000000");
+
+  // Bad tuple pos.
+  EXPECT_FALSE(ExtractBytesFromTuple(args, 0));
+  EXPECT_FALSE(ExtractBytesFromTuple(args, 10));
+  EXPECT_FALSE(ExtractBytesFromTuple(args, 1000));
+
+  // Empty data.
+  EXPECT_FALSE(ExtractBytesFromTuple({}, 0));
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractBytesFromTuple) {
-  GTEST_FAIL();
+TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
+  auto bytes = ToBytes(GetOffchainLookupResponse());
+
+  auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf4d4d2f8");
+
+  // Bad tuple pos.
+  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 0));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 1000));
+
+  // Empty data.
+  EXPECT_FALSE(ExtractFixedBytesFromTuple({}, 4, 0));
+
+  bytes[101] = 0;
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf400d2f8");
+
+  // Bad padding.
+  bytes[111] = 1;
+  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 3));
 }
 
-TEST(EthAbiUtilsTest, DISABLED_ExtractFixedBytesFromTuple) {
-  GTEST_FAIL();
-}
+TEST(EthAbiUtilsTest, EncodeCall) {
+  std::vector<uint8_t> data(33, 0xbb);
+  // f(bytes,bytes)
+  EXPECT_EQ(
+      "f400d2f8"
+      "0000000000000000000000000000000000000000000000000000000000000040"
+      "0000000000000000000000000000000000000000000000000000000000000080"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "aa00000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000021"
+      "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      "bb00000000000000000000000000000000000000000000000000000000000000",
+      ToHex(EncodeCall(ToBytes("f400d2f8"), ToBytes("aa"), data)).substr(2));
+  EXPECT_EQ(
+      "f400d2f8"
+      "0000000000000000000000000000000000000000000000000000000000000040"
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      ToHex(EncodeCall(ToBytes("f400d2f8"), {}, {})).substr(2));
 
-TEST(EthAbiUtilsTest, DISABLED_EncodeCall) {
-  GTEST_FAIL();
+  // f(bytes32)
+  EXPECT_EQ(
+      "f400d2f8"
+      "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      ToHex(EncodeCall(ToBytes("f400d2f8"), Span32(data.begin(), 32)))
+          .substr(2));
 }
 
 }  // namespace brave_wallet::eth_abi

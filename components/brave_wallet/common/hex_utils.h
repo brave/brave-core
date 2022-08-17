@@ -31,9 +31,11 @@ bool IsValidHexString(const std::string& hex_input);
 // Input must be prefixed with 0x
 bool PadHexEncodedParameter(const std::string& hex_input, std::string* out);
 std::string PadHexEncodedParameter(const std::string& hex_input);
-// Takes 2 inputs prefixed by 0x and combines them into an output with a
-// single 0x. For example 0x1 and 0x2 would return 0x12. Note thta this
-// doesn't do any special casing like 0x and 0x will make 0x00 and not 0x.
+
+// Takes 2 inputs prefixed by 0x and combines them into an output with a single
+// 0x. For example 0x1 and 0x2 would return 0x12.
+// Note thta this doesn't do any special casing like 0x and 0x will make 0x00
+// and not 0x.
 bool ConcatHexStrings(const std::string& hex_input1,
                       const std::string& hex_input2,
                       std::string* out);
