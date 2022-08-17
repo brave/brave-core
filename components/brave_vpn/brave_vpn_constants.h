@@ -71,12 +71,13 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveVpnConnectNotAllowed", IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED},
 };
 
-constexpr char kManageUrlProd[] = "http://account.brave.com/";
-constexpr char kManageUrlStaging[] = "http://account.bravesoftware.com/";
-constexpr char kManageUrlDev[] = "https://account.brave.software/";
+constexpr char kManageUrlProd[] = "https://account.brave.com/account/";
+constexpr char kManageUrlStaging[] =
+    "https://account.bravesoftware.com/account/";
+constexpr char kManageUrlDev[] = "https://account.brave.software/account/";
 
 // TODO(simonhong): Update when vpn feedback url is ready.
-constexpr char kFeedbackUrl[] = "http://support.brave.com/";
+constexpr char kFeedbackUrl[] = "https://support.brave.com/";
 constexpr char kAboutUrl[] = "https://brave.com/firewall-vpn/";
 
 constexpr char kBraveVPNEntryName[] = "BraveVPN";
