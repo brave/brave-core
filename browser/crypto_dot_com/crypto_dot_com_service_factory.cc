@@ -33,8 +33,7 @@ CryptoDotComServiceFactory::CryptoDotComServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
 }
 
-CryptoDotComServiceFactory::~CryptoDotComServiceFactory() {
-}
+CryptoDotComServiceFactory::~CryptoDotComServiceFactory() = default;
 
 KeyedService* CryptoDotComServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

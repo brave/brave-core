@@ -9,7 +9,7 @@
 #include "content/public/browser/browser_context.h"
 #include "extensions/browser/extension_system.h"
 
-EthereumRemoteClientDelegateImpl::~EthereumRemoteClientDelegateImpl() {}
+EthereumRemoteClientDelegateImpl::~EthereumRemoteClientDelegateImpl() = default;
 
 void EthereumRemoteClientDelegateImpl::MaybeLoadCryptoWalletsExtension(
     content::BrowserContext* context) {

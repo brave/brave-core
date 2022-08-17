@@ -29,7 +29,7 @@ class EphemeralStorage1pBrowserTest : public EphemeralStorageBrowserTest {
     scoped_feature_list_.InitAndEnableFeature(
         net::features::kBraveFirstPartyEphemeralStorage);
   }
-  ~EphemeralStorage1pBrowserTest() override {}
+  ~EphemeralStorage1pBrowserTest() override = default;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -42,7 +42,7 @@ class EphemeralStorage1pDisabledBrowserTest
     scoped_feature_list_.InitAndDisableFeature(
         net::features::kBraveFirstPartyEphemeralStorage);
   }
-  ~EphemeralStorage1pDisabledBrowserTest() override {}
+  ~EphemeralStorage1pDisabledBrowserTest() override = default;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;

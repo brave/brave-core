@@ -25,7 +25,7 @@ using download::DownloadItem;
 BraveDownloadItemModel::BraveDownloadItemModel(DownloadUIModel* model)
     : model_(model) {}
 
-BraveDownloadItemModel::~BraveDownloadItemModel() {}
+BraveDownloadItemModel::~BraveDownloadItemModel() = default;
 
 // Adds origin url to the tooltip text and "Not secure", if needed.
 std::u16string BraveDownloadItemModel::GetTooltipText() {
