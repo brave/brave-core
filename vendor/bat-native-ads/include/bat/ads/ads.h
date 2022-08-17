@@ -216,16 +216,10 @@ class ADS_EXPORT Ads {
       const mojom::PromotedContentAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
-  // |event_type| event for the ad specified in |ad_mojom|. The callback takes
-  // three arguments - |bool| is set to |true| if successful otherwise |false|,
-  // |std::string| containing the placement id and
-  // |mojom::SearchResultAdEventType| containing the event type. NOTE: You must
-  // wait for the callback before calling another |kViewed| event to handle
-  // frequency capping.
+  // |event_type| event for the ad specified in |ad_mojom|.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      const mojom::SearchResultAdEventType event_type,
-      TriggerSearchResultAdEventCallback callback) = 0;
+      const mojom::SearchResultAdEventType event_type) = 0;
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|.

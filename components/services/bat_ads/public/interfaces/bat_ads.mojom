@@ -151,7 +151,7 @@ interface BatAds {
 
   TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
 
-  TriggerSearchResultAdEvent(ads.mojom.SearchResultAdInfo ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
+  TriggerSearchResultAdEvent(ads.mojom.SearchResultAdInfo ad_mojom, ads.mojom.SearchResultAdEventType event_type);
 
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
 

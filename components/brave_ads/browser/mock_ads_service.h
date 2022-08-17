@@ -98,10 +98,9 @@ class MockAdsService : public AdsService {
                     const std::string&,
                     ads::mojom::PromotedContentAdEventType));
 
-  MOCK_METHOD3(TriggerSearchResultAdEvent,
+  MOCK_METHOD2(TriggerSearchResultAdEvent,
                void(ads::mojom::SearchResultAdInfoPtr,
-                    const ads::mojom::SearchResultAdEventType,
-                    TriggerSearchResultAdEventCallback));
+                    const ads::mojom::SearchResultAdEventType));
 
   MOCK_METHOD2(PurgeOrphanedAdEventsForType,
                void(ads::mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));

@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/ads/search_result_ad.h"
 
+#include <string>
+#include <utility>
+
 #include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
@@ -15,6 +18,13 @@
 #include "bat/ads/internal/transfer/transfer.h"
 
 namespace ads {
+
+namespace {
+
+SearchResultAd* g_deferred_search_result_ad_for_testing = nullptr;
+bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
+
+}  // namespace
 
 SearchResultAd::SearchResultAd(Account* account, Transfer* transfer)
     : account_(account), transfer_(transfer) {
@@ -31,21 +41,71 @@ SearchResultAd::~SearchResultAd() {
 
 void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    const mojom::SearchResultAdEventType event_type,
-    TriggerSearchResultAdEventCallback callback) {
+    const mojom::SearchResultAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  if (event_type == mojom::SearchResultAdEventType::kViewed) {
+    ad_viewed_event_queue_.push_front(std::move(ad_mojom));
+    MaybeTriggerAdViewedEventFromQueue();
+    return;
+  }
 
   event_handler_->FireEvent(
       ad_mojom, event_type,
-      [callback](const bool success, const std::string& placement_id,
-                 const mojom::SearchResultAdEventType event_type) {
-        DCHECK(ads::mojom::IsKnownEnumValue(event_type));
-
-        callback(success, placement_id, event_type);
+      [](const bool success, const std::string& placement_id,
+         const mojom::SearchResultAdEventType event_type) {
+        // Intentionally do nothing.
       });
 }
 
+// static
+void SearchResultAd::DeferTriggeringOfAdViewedEventForTesting() {
+  DCHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
+  g_defer_triggering_of_ad_viewed_event_for_testing = true;
+}
+
+// static
+void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
+  DCHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
+  DCHECK(g_deferred_search_result_ad_for_testing);
+  g_defer_triggering_of_ad_viewed_event_for_testing = false;
+  g_deferred_search_result_ad_for_testing
+      ->trigger_ad_viewed_event_in_progress_ = false;
+  g_deferred_search_result_ad_for_testing->MaybeTriggerAdViewedEventFromQueue();
+  g_deferred_search_result_ad_for_testing = nullptr;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
+
+void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
+  DCHECK(!ad_viewed_event_queue_.empty() ||
+         !trigger_ad_viewed_event_in_progress_);
+
+  if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
+    return;
+  }
+  trigger_ad_viewed_event_in_progress_ = true;
+
+  mojom::SearchResultAdInfoPtr ad_mojom =
+      std::move(ad_viewed_event_queue_.back());
+  ad_viewed_event_queue_.pop_back();
+
+  event_handler_->FireEvent(
+      ad_mojom, mojom::SearchResultAdEventType::kViewed,
+      [=](const bool success, const std::string& placement_id,
+          const mojom::SearchResultAdEventType event_type) {
+        DCHECK(mojom::IsKnownEnumValue(event_type));
+
+        if (event_type == mojom::SearchResultAdEventType::kViewed) {
+          if (g_defer_triggering_of_ad_viewed_event_for_testing) {
+            g_deferred_search_result_ad_for_testing = this;
+            return;
+          }
+          trigger_ad_viewed_event_in_progress_ = false;
+          MaybeTriggerAdViewedEventFromQueue();
+        }
+      });
+}
 
 void SearchResultAd::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);

@@ -7,10 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SEARCH_RESULT_AD_H_
 
 #include <memory>
-#include <string>
 
+#include "base/containers/circular_deque.h"
 #include "base/memory/raw_ptr.h"
-#include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -32,15 +31,23 @@ class SearchResultAd final : public search_result_ads::EventHandlerObserver {
   SearchResultAd& operator=(const SearchResultAd&) = delete;
 
   void TriggerEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                    const mojom::SearchResultAdEventType event_type,
-                    TriggerSearchResultAdEventCallback callback);
+                    const mojom::SearchResultAdEventType event_type);
+
+  static void DeferTriggeringOfAdViewedEventForTesting();
+  static void TriggerDeferredAdViewedEventForTesting();
 
  private:
+  void MaybeTriggerAdViewedEventFromQueue();
+
   // search_result_ads::EventHandlerObserver:
   void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
   void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
 
   std::unique_ptr<search_result_ads::EventHandler> event_handler_;
+
+  base::circular_deque<mojom::SearchResultAdInfoPtr> ad_viewed_event_queue_;
+
+  bool trigger_ad_viewed_event_in_progress_ = false;
 
   const raw_ptr<Account> account_ = nullptr;    // NOT OWNED
   const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED

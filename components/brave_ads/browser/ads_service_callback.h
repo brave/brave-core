@@ -25,11 +25,6 @@ using MaybeServeInlineContentAdCallback =
     base::OnceCallback<void(const std::string&,
                             absl::optional<base::Value::Dict>)>;
 
-using TriggerSearchResultAdEventCallback =
-    base::OnceCallback<void(const bool,
-                            const std::string&,
-                            const ads::mojom::SearchResultAdEventType)>;
-
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(const bool)>;
 

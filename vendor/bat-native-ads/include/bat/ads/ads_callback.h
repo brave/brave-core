@@ -30,11 +30,6 @@ using MaybeServeInlineContentAdCallback =
     std::function<void(const std::string&,
                        const absl::optional<InlineContentAdInfo>&)>;
 
-using TriggerSearchResultAdEventCallback =
-    std::function<void(const bool,
-                       const std::string&,
-                       const mojom::SearchResultAdEventType event_type)>;
-
 using GetStatementOfAccountsCallback =
     std::function<void(mojom::StatementInfoPtr statement)>;
 

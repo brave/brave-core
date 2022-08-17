@@ -38,12 +38,15 @@ namespace {
 constexpr char kAllowedDomain[] = "search.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
 
-void CheckSampleSearchAdMetadata(
+bool CheckSampleSearchAdMetadata(
     const ads::mojom::SearchResultAdInfoPtr& search_result_ad,
     size_t ad_index) {
   const std::string index = base::StrCat({"-", base::NumberToString(ad_index)});
-  EXPECT_EQ(search_result_ad->placement_id,
-            base::StrCat({"data-placement-id", index}));
+  if (search_result_ad->placement_id !=
+      base::StrCat({"data-placement-id", index})) {
+    return false;
+  }
+
   EXPECT_EQ(search_result_ad->creative_instance_id,
             base::StrCat({"data-creative-instance-id", index}));
   EXPECT_EQ(search_result_ad->creative_set_id,
@@ -58,7 +61,7 @@ void CheckSampleSearchAdMetadata(
             base::StrCat({"data-headline-text", index}));
   EXPECT_EQ(search_result_ad->description,
             base::StrCat({"data-description", index}));
-  EXPECT_EQ(search_result_ad->value, 0.5 + ad_index);
+  EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
 
   EXPECT_EQ(search_result_ad->conversion->type,
             base::StrCat({"data-conversion-type-value", index}));
@@ -70,6 +73,8 @@ void CheckSampleSearchAdMetadata(
   EXPECT_EQ(
       static_cast<size_t>(search_result_ad->conversion->observation_window),
       ad_index);
+
+  return true;
 }
 
 brave_ads::SearchResultAdService* GetSearchResultAdService(Profile* profile) {
@@ -209,49 +214,33 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, SampleSearchAdMetadata) {
   ScopedTestingAdsServiceSetter scoped_setter(profile(), &ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
-  brave_ads::TriggerSearchResultAdEventCallback trigger_callback;
-  auto run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _))
-      .WillOnce([&run_loop, &trigger_callback](
-                    ads::mojom::SearchResultAdInfoPtr ad_mojom,
-                    const ads::mojom::SearchResultAdEventType event_type,
-                    brave_ads::TriggerSearchResultAdEventCallback callback) {
-        CheckSampleSearchAdMetadata(ad_mojom, 1);
-        trigger_callback = std::move(callback);
-        run_loop->Quit();
-      });
+  auto run_loop1 = std::make_unique<base::RunLoop>();
+  auto run_loop2 = std::make_unique<base::RunLoop>();
+  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _))
+      .Times(2)
+      .WillRepeatedly(
+          [&run_loop1, &run_loop2](
+              ads::mojom::SearchResultAdInfoPtr ad_mojom,
+              const ads::mojom::SearchResultAdEventType event_type) {
+            const bool is_search_result_ad_1 =
+                CheckSampleSearchAdMetadata(ad_mojom, 1);
+            const bool is_search_result_ad_2 =
+                CheckSampleSearchAdMetadata(ad_mojom, 2);
+            EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
+
+            if (is_search_result_ad_1) {
+              run_loop1->Quit();
+            } else if (is_search_result_ad_2) {
+              run_loop2->Quit();
+            }
+          });
 
   SentViewedEventsWaiter sent_viewed_events_waiter(
       {"data-creative-instance-id-1", "not-existant"});
   LoadTestDataUrl(kAllowedDomain, "/brave_ads/search_result_ad_sample.html");
-  run_loop->Run();
-  Mock::VerifyAndClearExpectations(&ads_service);
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
-  run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _))
-      .WillOnce([&run_loop, &trigger_callback](
-                    ads::mojom::SearchResultAdInfoPtr ad_mojom,
-                    const ads::mojom::SearchResultAdEventType event_type,
-                    brave_ads::TriggerSearchResultAdEventCallback callback) {
-        CheckSampleSearchAdMetadata(ad_mojom, 2);
-        trigger_callback = std::move(callback);
-        run_loop->Quit();
-      });
-
-  // Continue to trigger ad viewed events even if one of them failed.
-  std::move(trigger_callback)
-      .Run(false, "placement-id-1",
-           ads::mojom::SearchResultAdEventType::kViewed);
-  run_loop->Run();
-  Mock::VerifyAndClearExpectations(&ads_service);
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
-
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _)).Times(0);
-  std::move(trigger_callback)
-      .Run(true, "placement-id-2",
-           ads::mojom::SearchResultAdEventType::kViewed);
-
+  run_loop1->Run();
+  run_loop2->Run();
   sent_viewed_events_waiter.WaitForViewedEvents();
 }
 
@@ -260,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
   ScopedTestingAdsServiceSetter scoped_setter(profile(), &ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(false));
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _)).Times(0);
+  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _)).Times(0);
 
   base::RunLoop run_loop;
   GetSearchResultAdService(profile())
@@ -284,7 +273,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
   ScopedTestingAdsServiceSetter scoped_setter(profile(), &ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _)).Times(0);
+  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _)).Times(0);
 
   base::RunLoop run_loop;
   GetSearchResultAdService(profile())
@@ -308,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NoSearchAdMetadata) {
   ScopedTestingAdsServiceSetter scoped_setter(profile(), &ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _)).Times(0);
+  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _)).Times(0);
 
   base::RunLoop run_loop;
   GetSearchResultAdService(profile())
@@ -328,7 +317,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
   ScopedTestingAdsServiceSetter scoped_setter(profile(), &ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _)).Times(0);
+  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _)).Times(0);
 
   base::RunLoop run_loop;
   GetSearchResultAdService(profile())

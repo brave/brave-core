@@ -114,7 +114,7 @@ void SearchResultAdService::MaybeTriggerSearchResultAdViewedEvent(
   }
 
   const bool event_triggered =
-      QueueSearchResultAdViewedEvent(creative_instance_id, tab_id);
+      TriggerSearchResultAdViewedEvent(creative_instance_id, tab_id);
   std::move(callback).Run(event_triggered);
 }
 
@@ -167,7 +167,7 @@ void SearchResultAdService::RunAdViewedEventPendingCallbacks(SessionID tab_id,
   for (auto& callback_info : ad_viewed_event_pending_callbacks_[tab_id]) {
     bool event_triggered = false;
     if (ads_fetched) {
-      event_triggered = QueueSearchResultAdViewedEvent(
+      event_triggered = TriggerSearchResultAdViewedEvent(
           callback_info.creative_instance_id, tab_id);
     }
     if (event_triggered) {
@@ -182,11 +182,12 @@ void SearchResultAdService::RunAdViewedEventPendingCallbacks(SessionID tab_id,
   ad_viewed_event_pending_callbacks_.erase(tab_id);
 }
 
-bool SearchResultAdService::QueueSearchResultAdViewedEvent(
+bool SearchResultAdService::TriggerSearchResultAdViewedEvent(
     const std::string& creative_instance_id,
     SessionID tab_id) {
   DCHECK(!creative_instance_id.empty());
   DCHECK(tab_id.is_valid());
+  DCHECK(ads_service_);
 
   SearchResultAdMap& ad_map = search_result_ads_[tab_id];
   auto it = ad_map.find(creative_instance_id);
@@ -194,46 +195,12 @@ bool SearchResultAdService::QueueSearchResultAdViewedEvent(
     return false;
   }
 
-  ad_viewed_event_queue_.push_front(std::move(it->second));
+  ads::mojom::SearchResultAdInfoPtr ad_mojom = std::move(it->second);
+  ads_service_->TriggerSearchResultAdEvent(
+      std::move(ad_mojom), ads::mojom::SearchResultAdEventType::kViewed);
   ad_map.erase(creative_instance_id);
-  TriggerSearchResultAdViewedEventFromQueue();
 
   return true;
-}
-
-void SearchResultAdService::TriggerSearchResultAdViewedEventFromQueue() {
-  DCHECK(ads_service_);
-  DCHECK(!ad_viewed_event_queue_.empty() ||
-         !trigger_ad_viewed_event_in_progress_);
-
-  if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
-    return;
-  }
-  trigger_ad_viewed_event_in_progress_ = true;
-
-  ads::mojom::SearchResultAdInfoPtr search_result_ad =
-      std::move(ad_viewed_event_queue_.back());
-  ad_viewed_event_queue_.pop_back();
-
-  ads_service_->TriggerSearchResultAdEvent(
-      std::move(search_result_ad), ads::mojom::SearchResultAdEventType::kViewed,
-      base::BindOnce(&SearchResultAdService::OnTriggerSearchResultAdViewedEvent,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void SearchResultAdService::OnTriggerSearchResultAdViewedEvent(
-    const bool success,
-    const std::string& placement_id,
-    ads::mojom::SearchResultAdEventType ad_event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_event_type));
-
-  trigger_ad_viewed_event_in_progress_ = false;
-  TriggerSearchResultAdViewedEventFromQueue();
-
-  if (!success) {
-    VLOG(1) << "Error during processing of search result ad event for "
-            << placement_id;
-  }
 }
 
 }  // namespace brave_ads
