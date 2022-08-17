@@ -325,11 +325,9 @@ HTTPSEverywhereService::recently_used_cache() {
 bool HTTPSEverywhereService::ShouldHTTPSERedirect(
     const uint64_t& request_identifier) {
   base::AutoLock auto_lock(httpse_get_urls_redirects_count_mutex_);
-  for (size_t i = 0; i < httpse_urls_redirects_count_.size(); i++) {
-    if (request_identifier ==
-            httpse_urls_redirects_count_[i].request_identifier_ &&
-        httpse_urls_redirects_count_[i].redirects_ >=
-            HTTPSE_URL_MAX_REDIRECTS_COUNT - 1) {
+  for (auto& redirect : httpse_urls_redirects_count_) {
+    if (request_identifier == redirect.request_identifier_ &&
+        redirect.redirects_ >= HTTPSE_URL_MAX_REDIRECTS_COUNT - 1) {
       return false;
     }
   }
@@ -342,11 +340,10 @@ void HTTPSEverywhereService::AddHTTPSEUrlToRedirectList(
   // Adding redirects count for the current request
   base::AutoLock auto_lock(httpse_get_urls_redirects_count_mutex_);
   bool hostFound = false;
-  for (size_t i = 0; i < httpse_urls_redirects_count_.size(); i++) {
-    if (request_identifier ==
-        httpse_urls_redirects_count_[i].request_identifier_) {
+  for (auto& redirect : httpse_urls_redirects_count_) {
+    if (request_identifier == redirect.request_identifier_) {
       // Found the host, just increment the redirects_count
-      httpse_urls_redirects_count_[i].redirects_++;
+      redirect.redirects_++;
       hostFound = true;
       break;
     }

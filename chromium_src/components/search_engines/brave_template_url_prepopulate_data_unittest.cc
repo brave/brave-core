@@ -114,15 +114,14 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
   const int kCountryIds[] = {'D' << 8 | 'E', 'F' << 8 | 'R', 'U' << 8 | 'S',
                              -1};
 
-  for (size_t i = 0; i < std::size(kCountryIds); ++i) {
-    prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);
+  for (int country_id : kCountryIds) {
+    prefs_.SetInteger(kCountryIDAtInstall, country_id);
     std::vector<std::unique_ptr<TemplateURLData>> urls =
         GetPrepopulatedEngines(&prefs_, nullptr);
     std::set<int> unique_ids;
-    for (size_t turl_i = 0; turl_i < urls.size(); ++turl_i) {
-      ASSERT_TRUE(unique_ids.find(urls[turl_i]->prepopulate_id) ==
-                  unique_ids.end());
-      unique_ids.insert(urls[turl_i]->prepopulate_id);
+    for (auto& url : urls) {
+      ASSERT_TRUE(unique_ids.find(url->prepopulate_id) == unique_ids.end());
+      unique_ids.insert(url->prepopulate_id);
     }
   }
 }

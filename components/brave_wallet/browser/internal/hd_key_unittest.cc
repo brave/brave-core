@@ -82,12 +82,12 @@ TEST(HDKeyUnitTest, TestVector1) {
 
   std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(bytes);
 
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+  for (const auto& entry : cases) {
     std::unique_ptr<HDKeyBase> key_base =
-        m_key->DeriveChildFromPath(cases[i].path);
+        m_key->DeriveChildFromPath(entry.path);
     HDKey* key = static_cast<HDKey*>(key_base.get());
-    EXPECT_EQ(key->GetPublicExtendedKey(), cases[i].ext_pub);
-    EXPECT_EQ(key->GetPrivateExtendedKey(), cases[i].ext_pri);
+    EXPECT_EQ(key->GetPublicExtendedKey(), entry.ext_pub);
+    EXPECT_EQ(key->GetPrivateExtendedKey(), entry.ext_pri);
   }
 }
 
@@ -136,12 +136,12 @@ TEST(HDKeyUnitTest, TestVector2) {
       &bytes));
 
   std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(bytes);
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+  for (const auto& entry : cases) {
     std::unique_ptr<HDKeyBase> key_base =
-        m_key->DeriveChildFromPath(cases[i].path);
+        m_key->DeriveChildFromPath(entry.path);
     HDKey* key = static_cast<HDKey*>(key_base.get());
-    EXPECT_EQ(key->GetPublicExtendedKey(), cases[i].ext_pub);
-    EXPECT_EQ(key->GetPrivateExtendedKey(), cases[i].ext_pri);
+    EXPECT_EQ(key->GetPublicExtendedKey(), entry.ext_pub);
+    EXPECT_EQ(key->GetPrivateExtendedKey(), entry.ext_pri);
   }
 }
 
@@ -170,12 +170,12 @@ TEST(HDKeyUnitTest, TestVector3) {
       &bytes));
 
   std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(bytes);
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+  for (const auto& entry : cases) {
     std::unique_ptr<HDKeyBase> key_base =
-        m_key->DeriveChildFromPath(cases[i].path);
+        m_key->DeriveChildFromPath(entry.path);
     HDKey* key = static_cast<HDKey*>(key_base.get());
-    EXPECT_EQ(key->GetPublicExtendedKey(), cases[i].ext_pub);
-    EXPECT_EQ(key->GetPrivateExtendedKey(), cases[i].ext_pri);
+    EXPECT_EQ(key->GetPublicExtendedKey(), entry.ext_pub);
+    EXPECT_EQ(key->GetPrivateExtendedKey(), entry.ext_pri);
   }
 }
 
@@ -347,9 +347,9 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
       "m/2147483648", "m/2147483648'", "m/2/2147483649",
   };
 
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+  for (auto* entry : cases) {
     std::unique_ptr<HDKeyBase> key;
-    key = m_key->DeriveChildFromPath(cases[i]);
+    key = m_key->DeriveChildFromPath(entry);
     EXPECT_EQ(key, nullptr);
   }
 

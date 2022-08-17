@@ -553,12 +553,11 @@ AdBlockSubscriptionServiceManager::UrlCosmeticResources(
   absl::optional<base::Value> first_value = absl::nullopt;
 
   base::AutoLock lock(subscription_services_lock_);
-  for (auto it = subscription_services_.begin();
-       it != subscription_services_.end(); it++) {
-    auto info = GetInfo(subscriptions_, it->first);
+  for (auto& subscription_service : subscription_services_) {
+    auto info = GetInfo(subscriptions_, subscription_service.first);
     if (info && info->enabled) {
       absl::optional<base::Value> next_value =
-          it->second->UrlCosmeticResources(url);
+          subscription_service.second->UrlCosmeticResources(url);
       if (first_value) {
         if (next_value) {
           MergeResourcesInto(std::move(next_value->GetDict()),
@@ -580,12 +579,12 @@ base::Value::List AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
   base::Value::List first_value;
 
   base::AutoLock lock(subscription_services_lock_);
-  for (auto it = subscription_services_.begin();
-       it != subscription_services_.end(); it++) {
-    auto info = GetInfo(subscriptions_, it->first);
+  for (auto& subscription_service : subscription_services_) {
+    auto info = GetInfo(subscriptions_, subscription_service.first);
     if (info && info->enabled) {
       base::Value::List next_value =
-          it->second->HiddenClassIdSelectors(classes, ids, exceptions);
+          subscription_service.second->HiddenClassIdSelectors(classes, ids,
+                                                              exceptions);
 
       for (auto& item : next_value) {
         first_value.Append(std::move(item));

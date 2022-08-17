@@ -110,7 +110,7 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransaction) {
        "000aaaa8403e6c7f380c001a05e40977f4064a2bc08785e422ed8a47b56aa219abe9325"
        "1d2b3b4d0cf937b8c0a071e600cd15589c3607bd9627314b99e9b5976bd427b774aa685"
        "bd0d036b1771e"}};
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+  for (const auto& entry : cases) {
     std::vector<uint8_t> private_key;
     EXPECT_TRUE(base::HexStringToBytes(
         "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
@@ -123,17 +123,17 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransaction) {
             SecureZeroVectorDeleter<uint8_t>()));
     Eip1559Transaction tx =
         *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
-            mojom::TxData::New(cases[i].nonce, "0x00", cases[i].gas_limit,
+            mojom::TxData::New(entry.nonce, "0x00", entry.gas_limit,
                                "0x000000000000000000000000000000000000aaaa",
-                               cases[i].value, std::vector<uint8_t>()),
-            "0x04", cases[i].max_priority_fee_per_gas, cases[i].max_fee_per_gas,
+                               entry.value, std::vector<uint8_t>()),
+            "0x04", entry.max_priority_fee_per_gas, entry.max_fee_per_gas,
             nullptr));
 
     int recid;
     const std::vector<uint8_t> signature =
         key.Sign(tx.GetMessageToSign(), &recid);
     tx.ProcessSignature(signature, recid);
-    EXPECT_EQ(tx.GetSignedTransaction(), cases[i].signed_tx);
+    EXPECT_EQ(tx.GetSignedTransaction(), entry.signed_tx);
   }
 }
 

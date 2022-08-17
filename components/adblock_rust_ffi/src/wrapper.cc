@@ -166,20 +166,20 @@ const std::string Engine::hiddenClassIdSelectors(
     const std::vector<std::string>& exceptions) {
   std::vector<const char*> classes_raw;
   classes_raw.reserve(classes.size());
-  for (size_t i = 0; i < classes.size(); i++) {
-    classes_raw.push_back(classes[i].c_str());
+  for (const auto& classe : classes) {
+    classes_raw.push_back(classe.c_str());
   }
 
   std::vector<const char*> ids_raw;
   ids_raw.reserve(ids.size());
-  for (size_t i = 0; i < ids.size(); i++) {
-    ids_raw.push_back(ids[i].c_str());
+  for (const auto& id : ids) {
+    ids_raw.push_back(id.c_str());
   }
 
   std::vector<const char*> exceptions_raw;
   exceptions_raw.reserve(exceptions.size());
-  for (size_t i = 0; i < exceptions.size(); i++) {
-    exceptions_raw.push_back(exceptions[i].c_str());
+  for (const auto& exception : exceptions) {
+    exceptions_raw.push_back(exception.c_str());
   }
 
   char* stylesheet_raw = engine_hidden_class_id_selectors(

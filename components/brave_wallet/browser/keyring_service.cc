@@ -2003,11 +2003,10 @@ void KeyringService::SetKeyringImportedAccountName(
   base::Value::List& imported_accounts_list = imported_accounts.GetList();
 
   bool name_updated = false;
-  for (size_t i = 0; i < imported_accounts_list.size(); ++i) {
-    const std::string* account_address =
-        imported_accounts_list[i].FindStringKey(kAccountAddress);
+  for (auto& entry : imported_accounts_list) {
+    const std::string* account_address = entry.FindStringKey(kAccountAddress);
     if (account_address && *account_address == address) {
-      imported_accounts_list[i].SetStringKey(kAccountName, name);
+      entry.SetStringKey(kAccountName, name);
       SetPrefForKeyring(prefs_, kImportedAccounts, std::move(imported_accounts),
                         keyring_id);
       NotifyAccountsChanged();

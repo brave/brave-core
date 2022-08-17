@@ -1288,8 +1288,8 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
         base::Value(PermissionRequestResponseToValue(origin, accounts));
   } else {
     base::Value::List list;
-    for (size_t i = 0; i < accounts.size(); i++) {
-      list.Append(accounts[i]);
+    for (const auto& account : accounts) {
+      list.Append(account);
     }
     formed_response = base::Value(std::move(list));
   }
@@ -1362,8 +1362,8 @@ void EthereumProviderImpl::OnContinueGetAllowedAccounts(
     formed_response = GetProviderErrorDictionary(error, error_message);
   } else if (method == kEthAccounts) {
     base::Value::List list;
-    for (size_t i = 0; i < accounts.size(); i++) {
-      list.Append(accounts[i]);
+    for (const auto& account : accounts) {
+      list.Append(account);
     }
     formed_response = base::Value(std::move(list));
     update_bindings = false;
