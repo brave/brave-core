@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 
 #define BRAVE_GM2_TAB_STYLE_H \
  protected:                   \
@@ -47,7 +47,7 @@ SkPath BraveGM2TabStyle::GetPath(PathType path_type,
                                  float scale,
                                  bool force_active,
                                  RenderUnits render_units) const {
-  if (!tabs::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs())
     return GM2TabStyle::GetPath(path_type, scale, force_active, render_units);
 
   const int stroke_thickness = GetStrokeThickness(force_active);
@@ -115,7 +115,7 @@ const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
 
 BraveGM2TabStyle::SeparatorBounds BraveGM2TabStyle::GetSeparatorBounds(
     float scale) const {
-  if (tabs::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs()) {
     return {};
   }
 

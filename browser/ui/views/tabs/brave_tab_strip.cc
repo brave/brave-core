@@ -11,7 +11,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/tabs/brave_tab_drag_context.h"
 #include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -58,7 +58,7 @@ void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
 }
 
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
-  if (tabs::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs())
     return SK_ColorTRANSPARENT;
 
   Profile* profile = controller()->GetProfile();

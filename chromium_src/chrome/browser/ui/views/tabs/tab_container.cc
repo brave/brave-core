@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 
 #include "src/chrome/browser/ui/views/tabs/tab_container.cc"
 
@@ -12,7 +12,7 @@
 // tab_container.cc, this method is defined here.
 void BraveTabContainer::StartRemoveTabAnimation(Tab* tab,
                                                 int former_model_index) {
-  if (!tabs::ShouldShowVerticalTabs()) {
+  if (!tabs::features::ShouldShowVerticalTabs()) {
     TabContainer::StartRemoveTabAnimation(tab, former_model_index);
     return;
   }

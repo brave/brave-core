@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -65,7 +65,7 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   // Difference
   const int h_offset = correct_h_offset - chromium_offset;
   // Shim base implementation's painting
-  if (tabs::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs()) {
     const int correct_v_offset = (GetContentsBounds().height() / 2);
     const int v_offset = correct_v_offset - chromium_offset;
     canvas->Translate(gfx::Vector2d(h_offset, v_offset));
@@ -77,7 +77,7 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
 }
 
 gfx::Insets BraveNewTabButton::GetInsets() const {
-  if (tabs::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs())
     return {};
 
   // Give an additional left margin to make more space from tab.

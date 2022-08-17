@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -21,13 +21,14 @@ BraveTabContainer::BraveTabContainer(
                    drag_context,
                    tab_slot_controller,
                    scroll_contents_view) {
-  layout_helper_->set_use_vertical_tabs(tabs::ShouldShowVerticalTabs());
+  layout_helper_->set_use_vertical_tabs(
+      tabs::features::ShouldShowVerticalTabs());
 }
 
 BraveTabContainer::~BraveTabContainer() = default;
 
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
-  if (tabs::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs()) {
     return gfx::Size(TabStyle::GetStandardWidth(),
                      GetLayoutConstant(TAB_HEIGHT) *
                          (tabs_view_model_.view_size() + group_views_.size()));
@@ -38,7 +39,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
                                                       bool was_active) {
-  if (tabs::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs())
     return;
 
   TabContainer::UpdateClosingModeOnRemovedTab(model_index, was_active);

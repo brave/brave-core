@@ -10,7 +10,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -189,7 +189,7 @@ void BraveTabStripRegionContainer::SetState(State state) {
 }
 
 gfx::Size BraveTabStripRegionContainer::CalculatePreferredSize() const {
-  if (!tabs::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs())
     return {};
 
   if (state_ == State::kExpanded) {
@@ -237,7 +237,7 @@ void BraveTabStripRegionContainer::Layout() {
 }
 
 void BraveTabStripRegionContainer::UpdateLayout() {
-  if (tabs::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs()) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
       original_parent_of_region_view_->RemoveChildView(region_view_);
@@ -275,7 +275,7 @@ void BraveTabStripRegionContainer::UpdateNewTabButtonVisibility() {
 }
 
 void BraveTabStripRegionContainer::UpdateTabSearchButtonVisibility() {
-  const bool is_vertical_tabs = tabs::ShouldShowVerticalTabs();
+  const bool is_vertical_tabs = tabs::features::ShouldShowVerticalTabs();
   if (auto* tab_search_button = region_view_->tab_search_button())
     tab_search_button->SetVisible(!is_vertical_tabs);
 }

@@ -15,6 +15,9 @@ namespace features {
 
 extern const base::Feature kBraveVerticalTabs;
 
+// Returns true when users chose to use vertical tabs
+bool ShouldShowVerticalTabs();
+
 }  // namespace features
 }  // namespace tabs
 

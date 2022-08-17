@@ -8,7 +8,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_non_client_frame_view_mac.h"
 
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/gfx/geometry/insets.h"
@@ -41,7 +41,7 @@ void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
-  if (tabs::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs()) {
     // Set minimum top inset to show traffic lights on frame
     return 18;
   }

@@ -9,7 +9,7 @@
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.cc"
 #undef TabDragController
 
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 
 TabDragController::~TabDragController() = default;
 
@@ -22,7 +22,7 @@ void TabDragController::Init(TabDragContext* source_context,
                              int source_view_offset,
                              ui::ListSelectionModel initial_selection_model,
                              EventSource event_source) {
-  if (!tabs::ShouldShowVerticalTabs()) {
+  if (!tabs::features::ShouldShowVerticalTabs()) {
     TabDragControllerChromium::Init(source_context, source_view, dragging_views,
                                     mouse_offset, source_view_offset,
                                     initial_selection_model, event_source);
@@ -107,7 +107,7 @@ void TabDragController::Init(TabDragContext* source_context,
 
 gfx::Point TabDragController::GetAttachedDragPoint(
     const gfx::Point& point_in_screen) {
-  if (!tabs::ShouldShowVerticalTabs())
+  if (!tabs::features::ShouldShowVerticalTabs())
     return TabDragControllerChromium::GetAttachedDragPoint(point_in_screen);
 
   DCHECK(attached_context_);  // The tab must be attached.
@@ -120,7 +120,7 @@ gfx::Point TabDragController::GetAttachedDragPoint(
 
 void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
                                      bool just_attached) {
-  if (!tabs::ShouldShowVerticalTabs()) {
+  if (!tabs::features::ShouldShowVerticalTabs()) {
     TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
     return;
   }

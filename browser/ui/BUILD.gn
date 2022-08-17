@@ -240,8 +240,6 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/tabs/brave_tab_strip_layout.cc",
       "views/tabs/brave_tab_strip_layout.h",
-      "views/tabs/brave_vertical_tab_utils.cc",
-      "views/tabs/brave_vertical_tab_utils.h",
       "views/tabs/features.cc",
       "views/tabs/features.h",
       "views/toolbar/bookmark_button.cc",

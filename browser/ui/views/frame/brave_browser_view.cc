@@ -17,7 +17,6 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -177,8 +176,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 #endif
 
   const bool can_have_vertical_tabs =
-      browser_->is_type_normal() &&
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs);
+      browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs();
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
   bool need_to_wrap_contents_container = can_have_vertical_tabs;
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -291,7 +289,7 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::ShouldShowVerticalTabs())
+  if (tabs::features::ShouldShowVerticalTabs())
     return false;
 
   return BrowserView::GetTabStripVisible();

@@ -9,7 +9,7 @@
 #include <limits>
 #include <utility>
 
-#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -154,12 +154,12 @@ int BraveTabDragContext::GetInsertionIndexForDraggedBounds(
     std::vector<TabSlotView*> dragged_views,
     int num_dragged_tabs,
     absl::optional<tab_groups::TabGroupId> group) const {
-  if (!tabs::ShouldShowVerticalTabs()) {
+  if (!tabs::features::ShouldShowVerticalTabs()) {
     return original_context_->GetInsertionIndexForDraggedBounds(
         dragged_bounds, dragged_views, num_dragged_tabs, group);
   }
 
-  // The implementation of this method is based on 
+  // The implementation of this method is based on
   // TabDragContext::GetInsertionIndexForDraggedBounds().
   if (!GetTabCount())
     return 0;
@@ -196,7 +196,7 @@ int BraveTabDragContext::GetInsertionIndexForDraggedBounds(
 
 std::vector<gfx::Rect> BraveTabDragContext::CalculateBoundsForDraggedViews(
     const std::vector<TabSlotView*>& views) {
-  if (tabs::ShouldShowVerticalTabs()) {
+  if (tabs::features::ShouldShowVerticalTabs()) {
     std::vector<gfx::Rect> bounds;
     int y = 0;
     for (const TabSlotView* view : views) {
@@ -215,7 +215,7 @@ int BraveTabDragContext::CalculateInsertionIndex(
     int first_dragged_tab_index,
     int num_dragged_tabs,
     absl::optional<tab_groups::TabGroupId> dragged_group) const {
-  DCHECK(tabs::ShouldShowVerticalTabs());
+  DCHECK(tabs::features::ShouldShowVerticalTabs());
 
   // Most of this logic is borrowed from TabDragContextImpl
   int min_distance_index = -1;

@@ -13,5 +13,10 @@ namespace features {
 const base::Feature kBraveVerticalTabs{"BraveVerticalTabs",
                                        base::FEATURE_DISABLED_BY_DEFAULT};
 
+bool ShouldShowVerticalTabs() {
+  // TODO(sangwoo.ko) This should consider pref too.
+  return base::FeatureList::IsEnabled(features::kBraveVerticalTabs);
+}
+
 }  // namespace features
 }  // namespace tabs
