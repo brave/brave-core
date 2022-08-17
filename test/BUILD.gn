@@ -619,14 +619,13 @@ static_library("browser_test_support") {
 static_library("browser_tests_runner") {
   testonly = true
 
+  deps = []
   if (is_win) {
-    deps = [ "//chrome/installer/util:strings" ]
+    deps += [ "//chrome/installer/util:strings" ]
   }
 
-  if (defined(deps)) {
+  if (enable_playlist) {
     deps += [ "//brave/components/playlist:playlist" ]
-  } else {
-    deps = [ "//brave/components/playlist:playlist" ]
   }
 
   public_deps = [ ":browser_test_support" ]

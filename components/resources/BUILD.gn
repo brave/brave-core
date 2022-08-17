@@ -43,6 +43,7 @@ brave_grit("static_resources") {
     "enable_ftx=$enable_ftx",
     "enable_ipfs=$enable_ipfs",
     "enable_playlist=$enable_playlist",
+    "enable_playlist_webui=$enable_playlist_webui",
     "enable_speedreader=$enable_speedreader",
   ]
 

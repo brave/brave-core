@@ -11,6 +11,9 @@ source_set("renderer") {
 
   deps = [
     "//content/public/renderer",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public/common",
     "//url",
+    "//v8",
   ]
 }
