@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.settings;
 
 import android.app.AlertDialog;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +37,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -90,6 +90,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_RATE_BRAVE = "rate_brave";
     private static final String PREF_BRAVE_STATS = "brave_stats";
     private static final String PREF_DOWNLOADS = "brave_downloads";
+    private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -226,6 +227,12 @@ public class BraveMainPreferencesBase
         if (preference != null) {
             preference.setOrder(++generalOrder);
         }
+
+        if (BraveSearchWidgetUtils.isRequestPinAppWidgetSupported())
+            findPreference(PREF_HOME_SCREEN_WIDGET).setOrder(++generalOrder);
+        else
+            removePreferenceIfPresent(PREF_HOME_SCREEN_WIDGET);
+
         findPreference(PREF_PASSWORDS).setOrder(++generalOrder);
         findPreference(PREF_SYNC).setOrder(++generalOrder);
         findPreference(PREF_BRAVE_STATS).setOrder(++generalOrder);
@@ -367,6 +374,18 @@ public class BraveMainPreferencesBase
                 return true;
             }
         });
+
+        Preference homeScreenWidgetPreference = findPreference(PREF_HOME_SCREEN_WIDGET);
+        if (homeScreenWidgetPreference != null) {
+            homeScreenWidgetPreference.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            BraveSearchWidgetUtils.requestPinAppWidget();
+                            return true;
+                        }
+                    });
+        }
     }
 
     // TODO(simonhong): Make this static public with proper class.

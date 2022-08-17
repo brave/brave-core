@@ -11,6 +11,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
@@ -64,6 +65,9 @@ public class BraveSearchEngineUtils {
 
     static public void setDSEPrefs(TemplateUrl templateUrl, boolean isPrivate) {
         BraveSearchEngineAdapter.setDSEPrefs(templateUrl, isPrivate);
+        if (!isPrivate && templateUrl != null)
+            QuickActionSearchAndBookmarkWidgetProvider.updateSearchEngine(
+                    templateUrl.getShortName());
     }
 
     static public void updateActiveDSE(boolean isPrivate) {
