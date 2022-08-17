@@ -35,6 +35,8 @@ source_set("net") {
     "brave_proxying_url_loader_factory.h",
     "brave_proxying_web_socket.cc",
     "brave_proxying_web_socket.h",
+    "brave_reduce_language_network_delegate_helper.cc",
+    "brave_reduce_language_network_delegate_helper.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
     "brave_service_key_network_delegate_helper.cc",
