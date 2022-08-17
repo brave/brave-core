@@ -1,0 +1,608 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>CBS News meets people living in the shadow of Ukraine's Zaporizhzhia nuclear plant, as Russian rockets rain down</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">CBS News meets people living in the shadow of Ukraine's Zaporizhzhia nuclear plant, as Russian rockets rain down</h1><p class="subhead metadata">Ukraine says Russia is using the Zaporizhzhia nuclear facility as a base to launch attacks on civilians, bringing heartache, and risking catastrophe.</p><div class=""><p class="metadata">By Charlie D'Agata</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+
+    
+
+<p><em>Marhenets, Ukraine</em>&nbsp;— It was a sweet little room, really. One of those cozy kitchen-dining rooms. The stovetop and oven were a little outdated, the countertop a bit tired and the wooden cabinets maybe could have used a lick of paint. But the top floor apartment faced a grand square in central Marhenets, with a view of the Cultural Palace next door and the fields beyond. </p><p>What a view. Bright summer afternoon sunlight poured into the room.</p><p>It was easy to imagine the meals, the laughter and joy shared between family members and friends in that room. There was a warmth about the place. </p>    
+  <p>A smiling woman, maybe in her early 70's, invited us in. She was sweeping up dust from the gaping, 25-foot hole in her wall left by a <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/ukraine-crisis/">Russian rocket that tore her home and her life to pieces</a></span> a few nights before.</p><figure class="embed embed--type-image is-image embed--float-none embed--size-medium"><span class="img embed__content"><img alt="marhenets-ukraine-shelling.jpg " class=" lazyload" data-srcset="https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/16/c13626be-5873-4b58-a812-7d686ad3cc6c/thumbnail/620x327/3591416e70d066ad463b139dd1f9f683/marhenets-ukraine-shelling.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/16/c13626be-5873-4b58-a812-7d686ad3cc6c/thumbnail/1240x654/c484691560f6335acc7c6792e3e316f4/marhenets-ukraine-shelling.jpg 2x" height="327" src="https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/16/c13626be-5873-4b58-a812-7d686ad3cc6c/thumbnail/620x327/3591416e70d066ad463b139dd1f9f683/marhenets-ukraine-shelling.jpg#" srcset="https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/16/c13626be-5873-4b58-a812-7d686ad3cc6c/thumbnail/620x327/3591416e70d066ad463b139dd1f9f683/marhenets-ukraine-shelling.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/16/c13626be-5873-4b58-a812-7d686ad3cc6c/thumbnail/1240x654/c484691560f6335acc7c6792e3e316f4/marhenets-ukraine-shelling.jpg 2x" width="620"></span>
+
+    
+          <figcaption class="embed__caption-container"><span class="embed__caption">CBS News senior foreign correspondent Charlie D'Agata is barely visible inside a heavily damaged apartment in Marhenets, Ukraine, several days after it was hit by a Russian rocket.&nbsp;</span>
+        
+                  <span class="embed__credit">
+            
+            CBS News
+
+                      </span>
+              </figcaption></figure><p>She warned us not to get too close to the edge. Not only was the entire wall missing, but so was much of the floor. What was left crumbled below our feet as plaster, from what was left of the ceiling, cascaded down from above. Falling 12 feet or so to the floor below would have hurt. Falling 70 feet or more to the ground below would have been much worse.</p>
+
+    
+
+<p>That top floor, with the marvelous view that made the apartment so special, also left it exposed and vulnerable to the Russian rockets that hit Marhenets and other towns the bank of the Dnipro River every night. Ukraine's military <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/ukraine-news-russia-war-zaporizhzhia-nuclear-plant-shelling-odesa-grain/">says Russian forces are firing them</a></span> from positions at the massive <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/blinken-russia-ukraine-nuclear-plant-zaporizhzhia-equivalent-of-a-human-shield/">Zaporizhzhia Nuclear Power Station</a></span>, just over the river. &nbsp;</p><figure class="embed embed--type-video embed--type-content_video is-video embed--float-left embed--size-medium ">
+          <figcaption class="embed__caption-container"><a class="embed__headline-link" data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/video/ukrainian-forces-prepare-for-assault-in-effort-to-retake-kherson/">
+          
+          
+
+          <span class="embed__headline">Ukrainian forces prepare for assault in effort to retake Kherson</span>
+
+          <span class="embed__video-duration">02:17</span>
+
+                      </a>
+                  
+        
+        
+              </figcaption></figure><p>Residents told us there's no doubt where they're coming from. They're close enough to hear the launches, and they say that when they do, they only have around seven seconds to try and take cover; not nearly enough time to trigger air raid alarms, let alone run for a shelter.</p><p>City officials showed us a destroyed building, one block over, where they say 13 people were killed that same night. A missile pierced the roof and blew up, killing people in their sleep.&nbsp;</p><p>There's a new bombardment every night, they say, typically, in the early hours, from around one to four in the morning. Some of the few residents left in cities like Marhenets and Nikopol along the Dnipro spend the nights in basements or stairwells for safety.</p>
+
+    
+    
+
+<p>Explosions rang out as we visited both of those places. At the shortest point, it's only about three miles across the river to the Zaporizhzhia nuclear plant. Some of it sounded like it outgoing rounds. Some definitely sounded like incoming. </p><figure class="embed embed--type-image is-image embed--float-none embed--size-medium"><span class="img embed__content"><img alt="UKRAINE-RUSSIA-CONFLICT " class=" lazyload" data-srcset="https://assets2.cbsnewsstatic.com/hub/i/r/2022/08/08/61386f94-1127-408e-8a58-e03e85ce605a/thumbnail/620x413/d248e7c31978ab459e4ea55fd536d342/zaporizhzhia-nuclear-1240384587.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/08/61386f94-1127-408e-8a58-e03e85ce605a/thumbnail/1240x826/ead20118e9973af0adda73810d7d7fa5/zaporizhzhia-nuclear-1240384587.jpg 2x" height="413" src="https://assets2.cbsnewsstatic.com/hub/i/r/2022/08/08/61386f94-1127-408e-8a58-e03e85ce605a/thumbnail/620x413/d248e7c31978ab459e4ea55fd536d342/zaporizhzhia-nuclear-1240384587.jpg#" srcset="https://assets2.cbsnewsstatic.com/hub/i/r/2022/08/08/61386f94-1127-408e-8a58-e03e85ce605a/thumbnail/620x413/d248e7c31978ab459e4ea55fd536d342/zaporizhzhia-nuclear-1240384587.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/08/61386f94-1127-408e-8a58-e03e85ce605a/thumbnail/1240x826/ead20118e9973af0adda73810d7d7fa5/zaporizhzhia-nuclear-1240384587.jpg 2x" width="620"></span>
+
+    
+          <figcaption class="embed__caption-container"><span class="embed__caption">A Russian serviceman stands guard outside the second reactor of the Zaporizhzhia Nuclear Power Station in Energodar, Ukraine, in a May 1, 2022 file photo.</span>
+        
+                  <span class="embed__credit">
+            
+            ANDREY BORODULIN/AFP/Getty
+
+                      </span>
+              </figcaption></figure><p>We probably should have been wearing our flak jackets. Maybe even our helmets. But it feels theatrical, even insensitive, in cities like this, where young families are out strolling with their children on a summer's day. Or where elderly residents sweep up the debris of their ruined homes. </p><p>The air raid sirens blare frequently, but nobody scrambles to take shelter. Boys ride by on bicycles, unfazed. But the many dogs roaming the streets are definitely jumpy.</p><p>Russian troops took over the nuclear plant in early March. I was in Kyiv at the time, reporting on its capture as part of what seemed then to be an unstoppable Russian offensive marching toward Kyiv. There was a pretty serious firefight, with thunderous explosions and tracer fire streaking across the sky. </p><p>International alarm bells rang, with experts warning of the risks of the battle triggering a possible nuclear disaster. They have continued to condemn the frankly reckless stupidity of engaging in ferocious gunbattles and launching heavy weapons at or around Europe's largest nuclear power plant.</p><p>When the smoke cleared, it was under Russian control, within Russian held-territory — if still run by the same team of Ukrainian technicians, under increasingly difficult circumstances.</p><p>Then it went quiet, aside from sporadic flareups and occasional explosions. Until a few weeks ago.</p><figure class="embed embed--type-video embed--type-content_video is-video embed--float-left embed--size-medium ">
+          <figcaption class="embed__caption-container"><a class="embed__headline-link" data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/video/shelling-reported-near-ukrainian-nuclear-plant-europes-largest/">
+          
+          
+
+          <span class="embed__headline">Shelling reported near Ukrainian nuclear plant, Europe's largest</span>
+
+          <span class="embed__video-duration">02:01</span>
+
+                      </a>
+                  
+        
+        
+              </figcaption></figure><p>Both sides blamed each other for turning the complex back into a battleground. Ukrainian officials tell us the Russians are using it as a giant shield — a military base for hundreds of troops and a launchpad for heavy weapons. Moscow accuses Kyiv of shelling the plant, putting it and thousands of people around it in peril. Ukraine says Russian forces have even shelled parts of the plant themselves, to make it look like Ukraine's troops are putting the entire region in danger. </p>
+
+    
+    
+
+<p>Meanwhile, stepped-up shelling in the surrounding towns and cities has triggered a mass-exodus of terrified residents.</p><p>The Ukrainian government doesn't deny that its troops target Russian forces, but they insist they don't do so anywhere risky.&nbsp;</p><p>United Nations Secretary-General Antonio Guterres said "any attack on nuclear power plants is a suicidal thing." The International Atomic Energy Agency (IAEA) has warned of grave consequences if the facility is hit and called on both sides to let it be made a formal demilitarized zone.</p><figure class="embed embed--type-twitter-tweet embed--float-none embed--size-medium lazyload" data-require="third-party/twitter-widgets"><div class="embed__content-wrapper">
+    <blockquote class="twitter-tweet"><p dir="ltr" lang="en">I’ve told <a href="https://twitter.com/hashtag/UNSC?src=hash&amp;ref_src=twsrc%5Etfw" rel="nofollow noopener">#UNSC</a> today that the situation at <a href="https://twitter.com/hashtag/Zaporizhzya?src=hash&amp;ref_src=twsrc%5Etfw" rel="nofollow noopener">#Zaporizhzya</a> NPP was alarming. Military actions jeopardizing nuclear safety and security must stop immediately. An <a href="https://twitter.com/iaeaorg?ref_src=twsrc%5Etfw" rel="nofollow noopener">@iaeaorg</a> mission would allow us to carry out needed technical activities and provide a stabilizing influence.</p>— Rafael MarianoGrossi (@rafaelmgrossi) <a href="https://twitter.com/rafaelmgrossi/status/1557833473934737408?ref_src=twsrc%5Etfw" rel="nofollow noopener">August 11, 2022</a></blockquote>
+
+  </div>
+</figure><p>At the moment, that looks like a long shot. It's on the very edge of Russian-held territory, right on the banks of the Dnipro River. It couldn't be more frontline. That's what makes the cities on the Ukrainian side so vulnerable.</p><p>Whether the fighting at and around the plant is truly flirting with Armageddon — whether a modern nuclear power station is capable of withstanding the blows of an active combat zone — are questions best left to the experts. Engineers have been quoted as saying that the three-foot-thick containment structures should protect the plant's reactors from even direct hits. But it's not clear if sustained shelling could damage the infrastructure, or shut down power supplies and backup generators, or spark a fire.</p><p>The unanswered questions have certainly put everyone living in the shadow of the plant on edge. </p><p>"People are afraid," Nikopol's Deputy Mayor, Natalia Horbolit, told us. "Everybody is afraid" of the worst happening.</p><figure class="embed embed--type-image is-image embed--float-none embed--size-medium"><span class="img embed__content"><img alt="Russia-Ukraine war " class=" lazyload" data-srcset="https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/15/d3dbdd86-67cd-4e90-9ec5-18d7798a2ec4/thumbnail/620x413/a4c9cc31e62d0ddc7dd22236afe594bd/ukraine-nikopol-1242436505.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/15/d3dbdd86-67cd-4e90-9ec5-18d7798a2ec4/thumbnail/1240x826/7f45a2d4388c25a2ea31a6c0bd8d5162/ukraine-nikopol-1242436505.jpg 2x" height="413" src="https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/15/d3dbdd86-67cd-4e90-9ec5-18d7798a2ec4/thumbnail/620x413/a4c9cc31e62d0ddc7dd22236afe594bd/ukraine-nikopol-1242436505.jpg#" srcset="https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/15/d3dbdd86-67cd-4e90-9ec5-18d7798a2ec4/thumbnail/620x413/a4c9cc31e62d0ddc7dd22236afe594bd/ukraine-nikopol-1242436505.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/15/d3dbdd86-67cd-4e90-9ec5-18d7798a2ec4/thumbnail/1240x826/7f45a2d4388c25a2ea31a6c0bd8d5162/ukraine-nikopol-1242436505.jpg 2x" width="620"></span>
+
+    
+          <figcaption class="embed__caption-container"><span class="embed__caption">Ludymila Siskina, 74, whose house was badly damaged and whose husband was killed in Russian missile strikes, is seen after the strikes in Nikopol, Dnipropetrovsk Oblast, Ukraine, August 11, 2022.</span>
+        
+                  <span class="embed__credit">
+            
+            Metin Aktas/Anadolu Agency/Getty
+
+                      </span>
+              </figcaption></figure><p>But there are more immediate concerns. Horbolit said around 40% of the city's residents had fled since the worst of the shelling began last month. &nbsp;</p>
+
+    
+    
+
+<p>"We are convinced [that the attacks are coming from the plant]," she told us. "We know exactly the weapons that are on that bank. At the range, the maximum is 7 kilometers (10 miles) from us."</p><p>In one of Marhenet's less affluent neighborhoods, we found a group of frightened elderly women sitting on benches, shell-shocked after Russian artillery rained down on their apartment buildings this week.</p><p>The blasts shattered windows and ripped through top floor apartments.</p><figure class="embed embed--type-image is-image embed--float-none embed--size-medium"><span class="img embed__content"><img alt="marhenets-ukraine-shelling-women.jpg " class=" lazyload" data-srcset="https://assets1.cbsnewsstatic.com/hub/i/r/2022/08/16/ad9f7bcd-d26d-420c-bdbd-8d656bd0b943/thumbnail/620x301/5da3067807dc948a3af19a6b4943628e/marhenets-ukraine-shelling-women.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/16/ad9f7bcd-d26d-420c-bdbd-8d656bd0b943/thumbnail/1240x602/4dd752a3f090a822140e9c158f9cbc4e/marhenets-ukraine-shelling-women.jpg 2x" height="301" src="https://assets1.cbsnewsstatic.com/hub/i/r/2022/08/16/ad9f7bcd-d26d-420c-bdbd-8d656bd0b943/thumbnail/620x301/5da3067807dc948a3af19a6b4943628e/marhenets-ukraine-shelling-women.jpg#" srcset="https://assets1.cbsnewsstatic.com/hub/i/r/2022/08/16/ad9f7bcd-d26d-420c-bdbd-8d656bd0b943/thumbnail/620x301/5da3067807dc948a3af19a6b4943628e/marhenets-ukraine-shelling-women.jpg 1x, https://assets3.cbsnewsstatic.com/hub/i/r/2022/08/16/ad9f7bcd-d26d-420c-bdbd-8d656bd0b943/thumbnail/1240x602/4dd752a3f090a822140e9c158f9cbc4e/marhenets-ukraine-shelling-women.jpg 2x" width="620"></span>
+
+    
+          <figcaption class="embed__caption-container"><span class="embed__caption">Women speak to CBS News senior foreign correspondent Charlie D'Agata outside their heavily-damaged apartment building in Marhenets, Ukraine, several days after it was struck by Russian artillery.</span>
+        
+                  <span class="embed__credit">
+            
+            CBS News
+
+                      </span>
+              </figcaption></figure><p>An 84-year-old visually-impaired woman (on the right in the photo above) told us she barely had time to jump into the bathroom for safety.</p><p>"The floor went straight up half a meter," she said. "I thought that the house was crumbling down on me."</p><p>Another woman pointed at the twisted metal of her destroyed balcony seven floors above us. She was with her daughter at the time of the attack. She told us she didn't want to stay with her daughter and her family, as it's a small apartment and there's no room for her there.</p><p>Besides, she doesn't want to leave the apartment she's called home for decades.</p>
+
+    
+    
+
+<p>"But it is too dangerous here," she said. "I can't stay here. Everything is full of rubbish in there<em>.</em>&nbsp;It is impossible to stay in the apartment."</p><p>They didn't want to speak with us at first. Even in the debris of their ruined homes, a few women blamed America and the West <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/ukraine-news-russia-war-us-weapons-mykolaiv-front-line/" target="_blank">for arming Ukraine</a></span> and prolonging the war, provoking Russia to launch attacks like these. Even now, in these regions in the east, there are Russia supporters.</p><p>When we asked the woman what she was going to do, she broke down in tears.</p><p>"I don't know," she said. "I don't know."</p><p>She managed a smile as we left, then thanked us.</p><p>"Please let the world what's happening here," she said.</p><p><em>CBS News producer Steve Berriman contributed to this report.</em></p>
+                
+      
+        
+    
+
+    <ul class="content__tags">In:
+          <li><a href="/tag/war/">War</a></li>
+          <li><a href="/tag/nuclear-power-plant/">Nuclear Power Plant</a></li>
+          <li><a href="/tag/ukraine/">Ukraine</a></li>
+          <li><a href="/tag/russia/">Russia</a></li>
+          <li><a href="/tag/nuclear-attack/">Nuclear Attack</a></li>
+          <li><a href="/tag/vladimir-putin/">Vladimir Putin</a></li>
+      </ul>
+  </body>

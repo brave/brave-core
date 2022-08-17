@@ -1,0 +1,566 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Olympian Robyn Stevens’ Sex Assault Allegations Spur Lifetime Ban of Ex-Coronado Coach</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Olympian Robyn Stevens’ Sex Assault Allegations Spur Lifetime Ban of Ex-Coronado Coach</h1><p class="subhead metadata">The U.S. Center for SafeSport provisionally suspended for "sexual misconduct" former world champion walker Andreas "Dre" Gustafsson. following a complaint from a woman he coached.</p><div class=""><p class="metadata">By Ken Stone</p><p class="metadata date">Updated Aug. 15, 2022 09:18 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+
+		
+		
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?ssl=1"><amp-img alt="Andreas Gustafsson and Robyn Stevens train together" class="wp-image-200116 amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="585" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 780px) 100vw, 780px" src="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=780%2C585&amp;ssl=1" srcset="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?w=800&amp;ssl=1 800w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=300%2C225&amp;ssl=1 300w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=768%2C576&amp;ssl=1 768w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=200%2C150&amp;ssl=1 200w" width="780"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="Andreas Gustafsson and Robyn Stevens train together" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" sizes="(max-width: 780px) 100vw, 780px" src="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=780%2C585&amp;ssl=1" srcset="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?w=800&amp;ssl=1 800w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=300%2C225&amp;ssl=1 300w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=768%2C576&amp;ssl=1 768w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/Race-Training.jpg?resize=200%2C150&amp;ssl=1 200w"></amp-img></a><figcaption>Andreas Gustafsson and Robyn Stevens trained together in April 2018 amid the alleged abuse. Image from Twitter post</figcaption></figure>
+
+<p>When <a href="https://www.teamusa.org/usa-track-and-field/athletes/Robyn-Stevens">Robyn Stevens</a> competed at the 2020 Olympic Trials race walk in Santee, she asked that her aid station be as far away as possible from that of her former coach, <a href="https://en.wikipedia.org/wiki/Andreas_Gustafsson">Andreas “Dre” Gustafsson.</a></p>
+
+<p>Organizers of the 50-kilometer walk that January complied but didn’t know exactly why.</p>
+
+<p>But lengthy exchanges with Times of San Diego reveal that Stevens, now 39, had cause to fear Gustafsson, a Coronado resident who <a href="https://timesofsandiego.com/sports/2020/01/25/new-american-goes-bananas-to-win-santee-50k-walk-shot-at-tokyo-games/">won the men’s race</a> that day.</p>
+
+<p>She said she had been repeatedly raped by Gustafsson over 2 1/2 years starting in February 2017.</p>
+
+<p>Stevens never reported the alleged assaults to authorities — saying she didn’t want to ruin Gustafsson’s marriage. But fearing that the former World Championships walker was victimizing other female athletes, she filed a complaint with the <a href="https://uscenterforsafesport.org/">U.S. Center for SafeSport</a> in late 2020.</p>
+
+
+<p>The center reviewed her claims — including a 7,000-word timeline of incidents and evidence supporting them. And in February 2021, it issued “temporary restrictions” against Gustafsson, who has since moved to the Salt Lake City area.</p>
+
+<p>He was ordered not to communicate with the “claimant” — Stevens.</p>
+
+<p>A week ago, SafeSport posted results of its probe.</p>
+
+<p>Gustafsson, who turned 41 Wednesday, is provisionally suspended for “sexual misconduct.” He faces a lifetime ban from all sports under the purview of the Denver-based Center for SafeSport. No coaching, competing or officiating. He has until Thursday to file an appeal.</p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://uscenterforsafesport.org/response-and-resolution/centralized-disciplinary-database/"><amp-img alt="" class="wp-image-199591 amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" disable-inline-width="" height="206" i-amphtml-layout="intrinsic" layout="intrinsic" sizes="(max-width: 780px) 100vw, 780px" src="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=780%2C206&amp;ssl=1" srcset="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1024%2C271&amp;ssl=1 1024w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=300%2C79&amp;ssl=1 300w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=768%2C203&amp;ssl=1 768w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1536%2C406&amp;ssl=1 1536w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=2048%2C541&amp;ssl=1 2048w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1200%2C317&amp;ssl=1 1200w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1568%2C414&amp;ssl=1 1568w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=400%2C106&amp;ssl=1 400w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?w=2340&amp;ssl=1 2340w" width="780"><img alt="" height="206" loading="lazy" sizes="(max-width: 780px) 100vw, 780px" src="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=780%2C206&amp;ssl=1" srcset="https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1024%2C271&amp;ssl=1 1024w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=300%2C79&amp;ssl=1 300w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=768%2C203&amp;ssl=1 768w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1536%2C406&amp;ssl=1 1536w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=2048%2C541&amp;ssl=1 2048w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1200%2C317&amp;ssl=1 1200w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=1568%2C414&amp;ssl=1 1568w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?resize=400%2C106&amp;ssl=1 400w, https://i0.wp.com/timesofsandiego.com/wp-content/uploads/2022/08/SAFESPORT-GUSTAFSSON.png?w=2340&amp;ssl=1 2340w" width="780"></amp-img></a><figcaption>SafeSport citation for Andreas Gustafsson. </figcaption></figure></div>
+<p>Last Thursday, <a href="https://www.usatf.org/">USA Track &amp; Field</a> emailed all members to say Gustafsson was&nbsp;prohibited&nbsp;“from participating, in any capacity, in any event, program, activity, or competition authorized by, organized by or under the auspices of the USOPC, the National Governing Bodies recognized by the USOPC, a Local Affiliated Organization as defined by the Code (including any USATF associations and clubs) or at a facility under the jurisdiction of the same.”</p>
+
+
+<p>The former world-class race walker, son of <a href="https://worldathletics.org/athletes/sweden/bo-gustafsson-14356107">Swedish Olympic medalist Bo Gustafsson</a>, didn’t respond to multiple phone and email requests for comment about the ruling. Stevens said she wasn’t ready to comment.</p>
+
+<p>But over the summer, both confirmed the existence of a SafeSport investigation.</p>
+
+<p>Under its <a href="https://uscenterforsafesport.org/response-and-resolution/safesport-code/">congressionally authorized code</a>, SafeSport won’t confirm Stevens is the claimant, or accuser. But its procedures include a chance at binding arbitration. If Gustafsson were to lose an appeal, he can’t go further.</p>
+
+
+<p>In a 36-page chronology submitted to SafeSport, Stevens claimed there were at least eight rapes or attempted assaults.</p>
+
+<p>Gustafsson, who spoke with Times of San Diego for over two hours via phone chat, confirmed that he had consensual sex with Stevens multiple times while still married to his wife of 15 years. He denied any coercion, or any power imbalance between coach and athlete, saying his affair with Stevens started before he began mentoring her.</p>
+
+
+<p>“She went to the [Tokyo] Olympics because of my coaching,” Gustafsson said in June. “I gave her tons of money and she loved the sex we had together. She loved it. So, you know, her coming up a victim later on, that’s on her.”</p>
+
+<ul><li><strong>Related: <a href="https://timesofsandiego.com/sports/2022/07/21/walkers-precedent-may-peril-practice-of-olympic-track-field-trials-picking-top-3/">Walker’s Precedent May Imperil System of Olymp</a></strong><a href="https://timesofsandiego.com/sports/2022/07/21/walkers-precedent-may-peril-practice-of-olympic-track-field-trials-picking-top-3/">ic Track Trials Picking the Top 3</a></li><li><strong>Related: <a href="https://timesofsandiego.com/sports/2022/06/08/race-walker-stevens-files-grievance-vs-usatf-seeks-to-compete-at-world-meet/">Race Walker Stevens Files Grievance vs. USATF, Seeks to Compete at World Meet</a></strong></li><li><strong>Related: <a href="https://timesofsandiego.com/sports/2022/06/03/race-walk-star-stevens-who-quit-santee-event-is-dropped-from-team-usa-roster/">Race Walk Star Stevens, Who Quit Santee Event, Is Dropped from Team USA Roster</a></strong></li><li><strong>Related: <a href="https://timesofsandiego.com/sports/2020/01/25/new-american-goes-bananas-to-win-santee-50k-walk-shot-at-tokyo-games/">New American Goes Bananas to Win Santee 50K Walk, Shot at Tokyo Games</a></strong></li></ul>
+
+<p>Gustafsson and his wife married in May 22, 2006, in Yorba Linda and separated about June 1, 2021, according to their divorce decree.</p>
+
+<p>“The parties share two minor children. … The parties are awarded joint legal custody of the minor children,” the decree said.</p>
+
+<p>On social media, Stevens hinted about the attacks and even the identity of her attacker, tweeting in June that the USATF Race Walk Committee proves “athlete safety is not protected or cared for.”</p>
+
+<p>Claudia Wilde, Stevens’ youth coach and still a close friend, called the SafeSport suspension “excellent news!”</p>
+
+
+<p>“The mental stress on Robyn was huge as he competed alongside her,” Wilde said Wednesday in a Facebook chat. “The lack of empathy by the RW committee was also appalling. Sexual abuse is always hard to report — and there are numerous girls and women in elite and regular sports that had to climb that wall.”</p>
+
+<p>She said Stevens has dealt with this “shadow over her” for more than five years.</p>
+
+<p>“I KNOW [this] has affected her,” Wilde wrote. “And yet, look how she has handled herself and still has competed at the highest level and has become our top race walker despite the bar getting higher as far as competition standards.”</p>
+
+<p>USATF race walk officials didn’t respond to requests for comment. But besides the email to members, USATF updated its <a href="https://www.usatf.org/safe-sport/disciplinary-records">disciplinary records</a> to add Gustafsson.</p>
+
+<p>Stevens and her fiancé, Karl George Hughes, are in Florida now, where she is training for the North American, Central American and Caribbean Athletic Association track championships this weekend in the Bahamas (known as <a href="https://www.athleticsnacac.org/2022/05/17/nacac-senior-championships-freeport-bah-2022/">NACAC</a>).</p>
+
+
+    
+    
+    
+	<amp-ad class="i-amphtml-layout-fixed i-amphtml-layout-size-defined" data-ad-client="ca-pub-6715500161951538" data-ad-slot="4372180035" data-auto-format="mcrspv" data-full-width="" height="320" i-amphtml-layout="fixed" type="adsense" width="100vw">
+  
+</amp-ad>
+		</body>

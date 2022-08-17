@@ -1,0 +1,515 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>She Spent a Decade Writing Fake Russian History. Wikipedia Just Noticed.</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">She Spent a Decade Writing Fake Russian History. Wikipedia Just Noticed.</h1><p class="subhead metadata">A Chinese woman created over 200 fictional articles on Chinese Wikipedia, writing millions of words of imagined history that went unnoticed for more than 10 years.</p><div class=""><p class="metadata">By Sixth Tone</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+                    
+                    <p>Yifan, a fantasy novelist, was browsing Chinese Wikipedia looking for inspiration in history, when he first learned of the great silver mine of Kashin. Originally opened by the principality of Tver, an independent state from the 13th to 15th centuries, it grew to be one of the world’s biggest, a city-sized early modern industry worked by some 30,000 slaves and 10,000 freedmen. Its fabulous wealth made it a vital resource to the princes of Tver, but also tempted the powerful dukes of Moscow, who attempted to seize the mine in a series of wars that sprawled across the land that is now Russia from 1305 to 1485. “After the fall of the Principality of Tver, it continued to be mined by the Grand Duchy of Moscow and its successor regime until the mine was closed in the mid-18th century due to being exhausted,” the entry said.</p><div>
+	<p><audio controls="" preload="auto">
+		<source src="https://audio.sixthtone.com/audio/0/0/135.mp3">
+	</audio></p><p>You can listen to an audio version of this article via “China Stories,” a SupChina-produced podcast sharing the best writing on China.</p>
+</div>
+
+
+
+
+<p>Yifan went down the rabbit hole on the Kashin mine and the Tver-Moscow War, learning about battles, the personalities of aristocrats and engineers, and more history surrounding the forgotten mine. There were hundreds of related articles describing this obscure period of Slavic history in the dull, sometimes suggestive, tone of the online encyclopedia.</p><p>It was only when he tried to go deeper that something started to seem off. Russian-language versions of articles related to the period were shorter than the Chinese equivalents, or nonexistent. The footnote supporting a passage on medieval mining methods referred to an academic paper on automated mining in the 21st century. Eventually, he realized that there was no such thing as the great silver mine of Kashin (which is an entirely real town in Tver Oblast, Russia). Yifan had uncovered one of the largest hoaxes in Wikipedia’s history.</p><div><p><img alt="The Chinese-language Wikipedia entry on the “Tver-Moscow War” edited by Zhemao, has been deleted. From Wikipedia" src="http://image5.sixthtone.com/image/5/55/281.jpg" width="100%"></p><p class="image_desc">The Chinese-language Wikipedia entry on the “Tver-Moscow War” edited by Zhemao, has been deleted. From Wikipedia</p></div><p>“Chinese Wikipedia entries that are more detailed than English Wikipedia and even Russian Wikipedia are all over the place,” Yifan wrote on&nbsp;<a href="https://www.zhihu.com/question/537968219" target="_blank">Zhihu</a>, a Quora-like Q&amp;A platform. “Characters that don’t exist in the English-Russian Wiki appear in the Chinese Wiki, and these characters are mixed together with real historical figures so that there’s no telling the real from the fake. Even a lengthy Moscow-Tver war revolves around the non-existent Kashin silver mine.”</p><p>An&nbsp;<a href="https://zh.wikipedia.org/wiki/Wikipedia:2022%E5%B9%B4%E6%AD%B7%E5%8F%B2%E7%9B%B8%E9%97%9C%E6%A2%9D%E7%9B%AE%E5%81%BD%E9%80%A0%E4%BA%8B%E4%BB%B6" target="_blank">investigation</a>&nbsp;by Wikipedia found that a contributor had used at least four “puppet accounts” to falsify the history of the Qing Dynasty and the history of Russia since 2010. Each of the four accounts lent the others credibility. All have now been banned from Chinese Wikipedia.</p><p>Over more than 10 years, the author wrote several million words of fake Russian history, creating 206 articles and contributing to hundreds more. She imagined richly detailed war stories and economic histories, and wove them into real events in language boring enough to fit seamlessly into the encyclopedia. Some netizens are calling her China’s Borges.</p><p>She’s come to be known as “Zhemao,” after one of her aliases. According to a now-deleted&nbsp;<a href="https://en.wikipedia.org/w/index.php?oldid=1093925020" target="_blank">profile</a>, Zhemao was the daughter of a diplomat stationed in Russia, has a degree in Russian history, and became a Russian citizen after marrying a Russian.</p><p>She began her career in fictional history in 2010, creating articles with false stories related to the real figure of Heshen, a famously corrupt Qing Dynasty official. She turned her attention to Russian history in 2012, editing existing articles on Czar Alexander I of Russia. From there, she gradually spread&nbsp;<a href="https://zh.wikipedia.org/w/index.php?title=Special:用户贡献/好學的菜鳥&amp;dir=prev&amp;target=好學的菜鳥" target="_blank">fabricated stories</a>&nbsp;throughout Chinese Wikipedia’s coverage of&nbsp;Russian history. She used a real, and often bloody, rivalry between the two early Slavic states as a basis for an elaborate fiction, mixing research with fantasy.</p><div><p><img alt="A map made by Zhemao, now deleted from Wikipedia. From Wikipedia" src="http://image5.sixthtone.com/image/5/55/280.jpg" width="100%"></p><p class="image_desc">A map made by Zhemao, now deleted from Wikipedia. From Wikipedia</p></div><p>Zhemao published an apology letter on her English Wikipedia account, writing that her motivation was to learn about history. She also wrote that she is in fact a full-time housewife with only a high-school degree.</p><p>Zhemao said she made most of her fake entries to fill the gaps left by her first couple of entries she edited. “As the saying goes, in order to tell a lie, you must tell more lies. I was reluctant to delete the hundreds of thousands of words I wrote, but as a result, I wound up losing millions of words, and a circle of academic friends collapsed,” she wrote. “The trouble I’ve caused is hard to make up for, so maybe a permanent ban is the only option. My current knowledge is not enough to make a living, so in the future I will learn a craft, work honestly, and not do nebulous things like this any more.”</p><p>While some Wikipedia&nbsp;editors&nbsp;<a href="http://www.zhihu.com/question/537968219" target="_blank">warned</a>&nbsp;that the incident had “shaken the credibility of the current Chinese Wikipedia as a whole,” most netizens praised Zhemao’s talent and persistence, encouraging her to publish a novel in future.</p><p>“It is really awesome to invent a self-contained historical logic with details like all kinds of clothing, money, and utensils,” one user&nbsp;<a href="https://weibo.com/2028810631/Lz2Dgxvas" target="_blank">wrote</a>&nbsp;on the microblogging platform Weibo.</p><p>As of June 17, most of the fictitious historical entries created by Zhemao on Chinese Wikipedia have been deleted, according to an official statement. A few entries have been improved by other contributors and thus remain. Zhemao’s edits on other existing entries have been withdrawn, the platform wrote.</p><p>Neither Zhemao nor the Wikimedia Foundation, which operates Wikipedia, replied to requests for comment by press time.</p><p>“This group of accounts have done their sabotage for a long time, so there may still be affected entries, and related false information may have spread to other platforms,” the notice said.</p><p><em>Correction: A previous version of this article misspelled the name of Kashin, the real town in Russia</em><em>’s Tver Oblast that was home to the fictional silver mines invented by Zhemao. In a Borgesian complication, we assumed the name of the place as well as the mine was fictional, and used Zhemao</em><em>’s pinyin spelling, “Kashen.” We learned of the error by reading an article following our own reporting on Russian-language news site Meduza.ru via Google Translate, which correctly identified the place intended.</em></p><p><em>Editor: David Cohen.</em></p><p><i>(Header image: Illustrations from ‘The Illustrated Chronicle of Ivan the Terrible,’ Book 7: 1290-1342. Courtesy of runivers.ru)</i></p><ul class="list-unstyled topic-list-1">
+                        <li class="175 first"><a class="btn btn-primary" href="/topics/10175/literature">literature</a></li>
+                            <li class="146"><a class="btn btn-primary" href="/topics/10153/media">media</a></li>
+                            <li class="146"><a class="btn btn-primary" href="/topics/10194/history">history</a></li>
+                            <li class="144 last"><a class="btn btn-primary" href="/topics/1001673/podcast">podcast</a></li>
+                            
+                    </ul>
+                    
+                    
+                </body>

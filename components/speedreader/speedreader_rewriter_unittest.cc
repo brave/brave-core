@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -13,6 +14,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
+#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -23,6 +25,7 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
   SpeedreaderRewriterTestBase() {
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     test_data_dir_ = test_data_dir_.AppendASCII("speedreader/rewriter");
+    set_current_process_dir(test_data_dir_);
   }
 
   ~SpeedreaderRewriterTestBase() override = default;
@@ -30,7 +33,7 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
   std::string GetFileContent(const std::string& filename) {
     std::string result;
 
-    const auto full_path = test_data_dir_.AppendASCII(filename);
+    const auto full_path = current_process_dir_.AppendASCII(filename);
     /* void() for assert */
     [&]() { ASSERT_TRUE(base::ReadFileToString(full_path, &result)); }();
     return result;
@@ -53,9 +56,16 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
     EXPECT_EQ(GetFileContent(filename), expected_content) << expected_content;
   }
 
+  const base::FilePath& test_data_dir() const { return test_data_dir_; }
+
+  void set_current_process_dir(const base::FilePath& path) {
+    current_process_dir_ = path;
+  }
+
  private:
   SpeedReader speedreader_;
   base::FilePath test_data_dir_;
+  base::FilePath current_process_dir_;
 };
 
 class SpeedreaderRewriterTest
@@ -90,6 +100,38 @@ TEST_F(SpeedreaderRewriterThemeTest, SetTheme) {
   const std::string expected_file = "meta_name_shortest_desc.themed.html";
   const auto out = ProcessPage(input_file, "dark");
   CheckContent(out, expected_file);
+}
+
+class SpeedreaderRewriterPagesTest : public SpeedreaderRewriterTestBase {};
+
+TEST_F(SpeedreaderRewriterPagesTest, GoodPages_News) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::FileEnumerator enumerator(
+      test_data_dir().AppendASCII("pages/news_pages"), false,
+      base::FileEnumerator::DIRECTORIES);
+
+  base::FilePath domain;
+  while (!(domain = enumerator.Next()).empty()) {
+    SCOPED_TRACE(domain.BaseName());
+    set_current_process_dir(domain);
+    const auto out = ProcessPage("original.html");
+    CheckContent(out, "distilled.html");
+  }
+}
+
+TEST_F(SpeedreaderRewriterPagesTest, BadPages) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::FileEnumerator enumerator(
+      test_data_dir().AppendASCII("pages/issues_pages"), false,
+      base::FileEnumerator::DIRECTORIES);
+
+  base::FilePath domain;
+  while (!(domain = enumerator.Next()).empty()) {
+    SCOPED_TRACE(domain.BaseName());
+    set_current_process_dir(domain);
+    const auto out = ProcessPage("original.html");
+    CheckContent(out, "distilled.html");
+  }
 }
 
 }  // namespace speedreader
