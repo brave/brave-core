@@ -5,7 +5,7 @@ import {
 export const mockNetworks: BraveWallet.NetworkInfo[] = [
   {
     chainId: '0x1',
-    chainName: 'Ethereum Main Net',
+    chainName: 'Ethereum Mainnet',
     activeRpcEndpointIndex: 0,
     rpcEndpoints: [{ url: 'https://mainnet.infura.io/v3/' }],
     blockExplorerUrls: ['https://etherscan.io', 'https://etherchain.org'],
