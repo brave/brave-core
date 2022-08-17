@@ -29,12 +29,12 @@ class BraveActionAPIDependencyManager : public DependencyManager {
     static base::NoDestructor<BraveActionAPIDependencyManager> factory;
     return factory.get();
   }
-  BraveActionAPIDependencyManager() {}
+  BraveActionAPIDependencyManager() = default;
   BraveActionAPIDependencyManager(const BraveActionAPIDependencyManager&) =
       delete;
   BraveActionAPIDependencyManager& operator=(
       const BraveActionAPIDependencyManager&) = delete;
-  ~BraveActionAPIDependencyManager() override {}
+  ~BraveActionAPIDependencyManager() override = default;
 
 #ifndef NDEBUG
 void DumpContextDependencies(void* context) const override {}
@@ -83,9 +83,9 @@ namespace extensions {
 //
 // BraveActionAPI::Observer
 //
-BraveActionAPI::Observer::Observer() { }
+BraveActionAPI::Observer::Observer() = default;
 
-BraveActionAPI::Observer::~Observer() { }
+BraveActionAPI::Observer::~Observer() = default;
 
 //
 // BraveActionAPI
@@ -146,10 +146,9 @@ bool BraveActionAPI::ShowActionUI(
   return true;
 }
 
-BraveActionAPI::BraveActionAPI() {}
+BraveActionAPI::BraveActionAPI() = default;
 
-BraveActionAPI::~BraveActionAPI() {
-}
+BraveActionAPI::~BraveActionAPI() = default;
 
 void BraveActionAPI::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);

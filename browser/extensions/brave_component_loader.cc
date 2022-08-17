@@ -58,7 +58,7 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
                           base::Unretained(this)));
 }
 
-BraveComponentLoader::~BraveComponentLoader() {}
+BraveComponentLoader::~BraveComponentLoader() = default;
 
 void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(

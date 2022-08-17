@@ -41,9 +41,9 @@ bool IsBlacklisted(const extensions::Extension* extension) {
 
 namespace extensions {
 
-BraveExtensionProvider::BraveExtensionProvider() {}
+BraveExtensionProvider::BraveExtensionProvider() = default;
 
-BraveExtensionProvider::~BraveExtensionProvider() {}
+BraveExtensionProvider::~BraveExtensionProvider() = default;
 
 std::string BraveExtensionProvider::GetDebugPolicyProviderName() const {
 #if defined(NDEBUG)

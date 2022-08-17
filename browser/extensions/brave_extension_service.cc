@@ -28,8 +28,7 @@ BraveExtensionService::BraveExtensionService(Profile* profile,
         blocklist, autoupdate_enabled, extensions_enabled, ready) {
 }
 
-BraveExtensionService::~BraveExtensionService() {
-}
+BraveExtensionService::~BraveExtensionService() = default;
 
 void BraveExtensionService::AddComponentExtension(const Extension* extension) {
   ExtensionService::AddComponentExtension(extension);

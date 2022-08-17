@@ -51,7 +51,7 @@ class WebstoreInstallerForImporting
   using WebstoreInstallWithPrompt::WebstoreInstallWithPrompt;
 
  private:
-  ~WebstoreInstallerForImporting() override {}
+  ~WebstoreInstallerForImporting() override = default;
 
   std::unique_ptr<ExtensionInstallPrompt::Prompt>
       CreateInstallPrompt() const override {

@@ -48,7 +48,7 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
   BraveDeviceMemoryFarblingBrowserTest& operator=(
       const BraveDeviceMemoryFarblingBrowserTest&) = delete;
 
-  ~BraveDeviceMemoryFarblingBrowserTest() override {}
+  ~BraveDeviceMemoryFarblingBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();

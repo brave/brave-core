@@ -58,7 +58,7 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
   BraveEnumerateDevicesFarblingBrowserTest& operator=(
       const BraveEnumerateDevicesFarblingBrowserTest&) = delete;
 
-  ~BraveEnumerateDevicesFarblingBrowserTest() override {}
+  ~BraveEnumerateDevicesFarblingBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
