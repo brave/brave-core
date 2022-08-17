@@ -5,6 +5,7 @@
 
 #include "brave/components/speedreader/renderer/speedreader_js_handler.h"
 
+#include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/converter.h"
@@ -14,6 +15,11 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/web/blink.h"
+#include "third_party/blink/public/web/web_local_frame.h"
+
+namespace {
+constexpr const char kSpeedreader[] = "speedreader";
+}
 
 namespace speedreader {
 
@@ -24,30 +30,39 @@ SpeedreaderJSHandler::SpeedreaderJSHandler(content::RenderFrame* render_frame)
 
 SpeedreaderJSHandler::~SpeedreaderJSHandler() = default;
 
-void SpeedreaderJSHandler::AddJavaScriptObjectToFrame(
-    v8::Local<v8::Context> context) {
+// static
+void SpeedreaderJSHandler::Install(content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
+
+  v8::Local<v8::Context> context =
+      render_frame->GetWebFrame()->GetScriptContextFromWorldId(
+          isolate, kIsolatedWorldId);
   if (context.IsEmpty())
     return;
 
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Object> global = context->Global();
 
-  gin::Handle<SpeedreaderJSHandler> handler = gin::CreateHandle(isolate, this);
+  // check object existence
+  v8::Local<v8::Value> speedreader_value =
+      global->Get(context, gin::StringToV8(isolate, kSpeedreader))
+          .ToLocalChecked();
+  if (!speedreader_value->IsUndefined())
+    return;
+
+  gin::Handle<SpeedreaderJSHandler> handler =
+      gin::CreateHandle(isolate, new SpeedreaderJSHandler(render_frame));
   if (handler.IsEmpty())
     return;
 
   v8::PropertyDescriptor desc(handler.ToV8(), false);
   desc.set_configurable(false);
 
-  std::ignore =
-      global->DefineProperty(isolate->GetCurrentContext(),
-                             gin::StringToV8(isolate, "speedreader"), desc);
-}
-
-void SpeedreaderJSHandler::ResetRemote(content::RenderFrame* render_frame) {
-  render_frame_ = render_frame;
+  global
+      ->DefineProperty(isolate->GetCurrentContext(),
+                       gin::StringToV8(isolate, kSpeedreader), desc)
+      .Check();
 }
 
 gin::ObjectTemplateBuilder SpeedreaderJSHandler::GetObjectTemplateBuilder(

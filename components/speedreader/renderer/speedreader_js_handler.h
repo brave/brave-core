@@ -12,22 +12,22 @@
 
 namespace speedreader {
 
-class SpeedreaderJSHandler : public gin::Wrappable<SpeedreaderJSHandler> {
+class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
  public:
   static gin::WrapperInfo kWrapperInfo;
 
-  explicit SpeedreaderJSHandler(content::RenderFrame* render_frame);
   SpeedreaderJSHandler(const SpeedreaderJSHandler&) = delete;
   SpeedreaderJSHandler& operator=(const SpeedreaderJSHandler&) = delete;
-  ~SpeedreaderJSHandler() override;
 
-  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
-  void ResetRemote(content::RenderFrame* render_frame);
+  static void Install(content::RenderFrame* render_frame);
 
  private:
+  explicit SpeedreaderJSHandler(content::RenderFrame* render_frame);
+  ~SpeedreaderJSHandler() final;
+
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
-      v8::Isolate* isolate) override;
+      v8::Isolate* isolate) final;
 
   // A function to be called from JS
   void ShowOriginalPage(v8::Isolate* isolate);
