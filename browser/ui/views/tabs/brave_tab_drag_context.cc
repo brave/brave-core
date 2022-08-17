@@ -159,7 +159,8 @@ int BraveTabDragContext::GetInsertionIndexForDraggedBounds(
         dragged_bounds, dragged_views, num_dragged_tabs, group);
   }
 
-  // If the strip has no tabs, the only position to insert at is 0.
+  // The implementation of this method is based on 
+  // TabDragContext::GetInsertionIndexForDraggedBounds().
   if (!GetTabCount())
     return 0;
 
@@ -168,16 +169,7 @@ int BraveTabDragContext::GetInsertionIndexForDraggedBounds(
   // |dragged_views| is a group header, and the second one is the first tab
   // in that group.
   int first_dragged_tab_index = group.has_value() ? 1 : 0;
-  if (static_cast<size_t>(first_dragged_tab_index) >= dragged_views.size()) {
-    // TODO(tbergquist): This shouldn't happen, but we're getting crashes
-    // that indicate that it might be anyways. This logging might help
-    // narrow down exactly which cases it's happening in.
-    NOTREACHED()
-        << "Calculating a drag insertion index from invalid dependencies: "
-        << "Dragging a group: " << group.has_value()
-        << ", dragged_views.size(): " << dragged_views.size()
-        << ", num_dragged_tabs: " << num_dragged_tabs;
-  } else {
+  if (static_cast<size_t>(first_dragged_tab_index) < dragged_views.size()) {
     int first_dragged_tab_model_index =
         tab_strip_->GetModelIndexOf(dragged_views[first_dragged_tab_index]);
     index =

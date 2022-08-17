@@ -17,6 +17,7 @@ void BraveTabContainer::StartRemoveTabAnimation(Tab* tab,
     return;
   }
 
+  // This implementation is based on TabContainer::StartRemoveTabAnimation.
   if (in_tab_close_ && GetTabCount() > 0 &&
       override_available_width_for_tabs_ >
           tabs_view_model_.ideal_bounds(GetTabCount() - 1).right()) {
@@ -30,14 +31,6 @@ void BraveTabContainer::StartRemoveTabAnimation(Tab* tab,
 
   const int tab_overlap = TabStyle::GetTabOverlap();
 
-  // TODO(pkasting): When closing multiple tabs, we get repeated RemoveTabAt()
-  // calls, each of which closes a new tab and thus generates different ideal
-  // bounds.  We should update the animations of any other tabs that are
-  // currently being closed to reflect the new ideal bounds, or else change from
-  // removing one tab at a time to animating the removal of all tabs at once.
-
-  // Compute the target bounds for animating this tab closed.  The tab's left
-  // edge should stay joined to the right edge of the previous tab, if any.
   gfx::Rect target_bounds = tab->bounds();
   target_bounds.set_y(
       (former_model_index > 0)
