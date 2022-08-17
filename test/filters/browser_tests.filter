@@ -768,6 +768,7 @@
 -TabUsageScenarioTrackerBrowserTest.FullScreenVideoCrash
 -TaskManagerBrowserTest.*
 -TemplateURLScraperTest.*
+-ThemeServiceBrowserTest.GetColorForToolbarButton
 -ThirdPartyAcceptChUaReducedOriginTrialBrowserTest.*
 -ThirdPartyDataRemoverFallbackTest.*
 -ThirdPartyDataRemoverTest.*
