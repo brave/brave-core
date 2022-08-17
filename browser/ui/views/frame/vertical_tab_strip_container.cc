@@ -35,6 +35,7 @@ class ScrollHeaderView : public views::Button {
       : Button(std::move(callback)), tab_strip_(tab_strip) {
     // TODO(sangwoo.ko) Temporary workaround before we have a proper tooltip
     // text.
+    // https://github.com/brave/brave-browser/issues/24717
     SetProperty(views::kSkipAccessibilityPaintChecks, true);
   }
   ~ScrollHeaderView() override = default;
