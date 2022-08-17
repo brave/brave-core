@@ -19,7 +19,7 @@ namespace brave_wallet {
 
 namespace {
 
-void FreezeAndSetGlobally(const char* name,
+void FreezeAndSetGlobally(const base::StringPiece& name,
                           v8::Local<v8::Context> context,
                           v8::Local<v8::Value> value) {
   v8::Local<v8::Object> object = v8::Local<v8::Object>::Cast(value);
@@ -34,10 +34,8 @@ void FreezeAndSetGlobally(const char* name,
 
 v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
                                       v8::Local<v8::Value> object,
-                                      const std::u16string& name) {
-  v8::Isolate* isolate = context->GetIsolate();
-  v8::Local<v8::String> name_str =
-      gin::ConvertToV8(isolate, name).As<v8::String>();
+                                      const base::StringPiece& name) {
+  v8::Local<v8::String> name_str = gin::StringToV8(context->GetIsolate(), name);
   v8::Local<v8::Object> object_obj;
   if (!object->ToObject(context).ToLocal(&object_obj)) {
     return v8::MaybeLocal<v8::Value>();
@@ -48,19 +46,17 @@ v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
 
 v8::Maybe<bool> CreateDataProperty(v8::Local<v8::Context> context,
                                    v8::Local<v8::Object> object,
-                                   const std::u16string& name,
+                                   const base::StringPiece& name,
                                    v8::Local<v8::Value> value) {
-  v8::Isolate* isolate = context->GetIsolate();
-  v8::Local<v8::String> name_str =
-      gin::ConvertToV8(isolate, name).As<v8::String>();
+  v8::Local<v8::String> name_str = gin::StringToV8(context->GetIsolate(), name);
 
   return object->CreateDataProperty(context, name_str, value);
 }
 
 v8::MaybeLocal<v8::Value> CallMethodOfObject(
     blink::WebLocalFrame* web_frame,
-    const std::u16string& object_name,
-    const std::u16string& method_name,
+    const base::StringPiece& object_name,
+    const base::StringPiece& method_name,
     std::vector<v8::Local<v8::Value>>&& args) {
   if (web_frame->IsProvisional())
     return v8::Local<v8::Value>();
@@ -79,7 +75,7 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
 v8::MaybeLocal<v8::Value> CallMethodOfObject(
     blink::WebLocalFrame* web_frame,
     v8::Local<v8::Value> object,
-    const std::u16string& method_name,
+    const base::StringPiece& method_name,
     std::vector<v8::Local<v8::Value>>&& args) {
   if (web_frame->IsProvisional())
     return v8::Local<v8::Value>();

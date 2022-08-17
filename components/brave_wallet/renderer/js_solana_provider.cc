@@ -38,6 +38,18 @@ namespace {
 static base::NoDestructor<std::string> g_provider_script("");
 static base::NoDestructor<std::string> g_provider_internal_script("");
 
+constexpr char kBraveSolana[] = "braveSolana";
+constexpr char kBraveSolanaInternal[] = "_brave_solana";
+constexpr char kCreatePublicKey[] = "createPublickey";
+constexpr char kCreateTransaction[] = "createTransaction";
+constexpr char kEmit[] = "emit";
+constexpr char kPublicKey[] = "publicKey";
+constexpr char kSerializeMessage[] = "serializeMessage";
+constexpr char kSolana[] = "solana";
+constexpr char kSignature[] = "signature";
+constexpr char kSignatures[] = "signatures";
+constexpr char kToString[] = "toString";
+
 }  // namespace
 
 JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
@@ -100,7 +112,7 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   // check window.braveSolana existence
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Value> brave_solana_value =
-      global->Get(context, gin::StringToV8(isolate, "braveSolana"))
+      global->Get(context, gin::StringToV8(isolate, kBraveSolana))
           .ToLocalChecked();
   if (!brave_solana_value->IsUndefined())
     return;
@@ -113,26 +125,26 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   v8::Local<v8::Value> provider_value = provider.ToV8();
 
   SetProviderNonWritable(context, global, provider_value,
-                         gin::StringToV8(isolate, "braveSolana"), true);
+                         gin::StringToV8(isolate, kBraveSolana), true);
 
   // This is to prevent window._brave_solana from being defined and set
   // non-configurable before we call our internal functions.
   v8::Local<v8::Object> internal_solana_obj = v8::Object::New(isolate);
   SetProviderNonWritable(context, global, internal_solana_obj,
-                         gin::StringToV8(isolate, "_brave_solana"), false);
+                         gin::StringToV8(isolate, kBraveSolanaInternal), false);
 
   // window.solana will be removed in the future, we use window.braveSolana
   // mainly from now on and keep window.solana for compatibility
   v8::Local<v8::Value> solana_value;
-  if (!global->Get(context, gin::StringToV8(isolate, "solana"))
+  if (!global->Get(context, gin::StringToV8(isolate, kSolana))
            .ToLocal(&solana_value) ||
       !solana_value->IsObject()) {
     if (!allow_overwrite_window_solana) {
       SetProviderNonWritable(context, global, provider_value,
-                             gin::StringToV8(isolate, "solana"), true);
+                             gin::StringToV8(isolate, kSolana), true);
     } else {
       global
-          ->Set(context, gin::StringToSymbol(isolate, "solana"), provider_value)
+          ->Set(context, gin::StringToSymbol(isolate, kSolana), provider_value)
           .Check();
     }
   } else {
@@ -547,7 +559,7 @@ void JSSolanaProvider::FireEvent(
   const base::Value event_value(event);
   args.push_back(v8_value_converter_->ToV8Value(event_value, context));
   args.insert(args.end(), event_args.begin(), event_args.end());
-  CallMethodOfObject(render_frame()->GetWebFrame(), u"braveSolana", u"emit",
+  CallMethodOfObject(render_frame()->GetWebFrame(), kBraveSolana, kEmit,
                      std::move(args));
 }
 
@@ -568,7 +580,7 @@ void JSSolanaProvider::OnConnect(
   if (error == mojom::SolanaProviderError::kSuccess) {
     v8_public_key = CreatePublicKey(context, public_key);
     v8::Local<v8::Object> object = v8::Object::New(isolate);
-    CHECK(CreateDataProperty(context, object, u"publicKey", v8_public_key)
+    CHECK(CreateDataProperty(context, object, kPublicKey, v8_public_key)
               .ToChecked());
     result = object;
 
@@ -626,8 +638,8 @@ void JSSolanaProvider::OnSignMessage(
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    const std::string* public_key = result.FindString("publicKey");
-    const std::string* signature = result.FindString("signature");
+    const std::string* public_key = result.FindString(kPublicKey);
+    const std::string* signature = result.FindString(kSignature);
     DCHECK(public_key && signature);
     v8::Local<v8::Value> v8_public_key = CreatePublicKey(context, *public_key);
     std::vector<uint8_t> signature_bytes(kSolanaSignatureSize);
@@ -641,9 +653,9 @@ void JSSolanaProvider::OnSignMessage(
                             (kSolanaSignatureSize));
 
     v8::Local<v8::Object> object = v8::Object::New(isolate);
-    CHECK(CreateDataProperty(context, object, u"publicKey", v8_public_key)
+    CHECK(CreateDataProperty(context, object, kPublicKey, v8_public_key)
               .ToChecked());
-    CHECK(CreateDataProperty(context, object, u"signature", v8_signature)
+    CHECK(CreateDataProperty(context, object, kSignature, v8_signature)
               .ToChecked());
     v8_result = object;
   } else {
@@ -731,13 +743,13 @@ void JSSolanaProvider::OnRequest(
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     if (method == "connect") {
-      const std::string* public_key = result.FindString("publicKey");
+      const std::string* public_key = result.FindString(kPublicKey);
       DCHECK(public_key);
 
       v8::Local<v8::Value> v8_public_key =
           CreatePublicKey(context, *public_key);
       v8::Local<v8::Object> object = v8::Object::New(isolate);
-      CHECK(CreateDataProperty(context, object, u"publicKey", v8_public_key)
+      CHECK(CreateDataProperty(context, object, kPublicKey, v8_public_key)
                 .ToChecked());
       v8_result = object;
     } else {
@@ -782,7 +794,7 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
   v8::Isolate* isolate = blink::MainThreadIsolate();
 
   v8::MaybeLocal<v8::Value> serialized_msg = CallMethodOfObject(
-      render_frame()->GetWebFrame(), transaction, u"serializeMessage",
+      render_frame()->GetWebFrame(), transaction, kSerializeMessage,
       std::vector<v8::Local<v8::Value>>());
   if (serialized_msg.IsEmpty())
     return absl::nullopt;
@@ -800,7 +812,7 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
 
   v8::Local<v8::Value> signatures;
-  CHECK(GetProperty(context, transaction, u"signatures").ToLocal(&signatures));
+  CHECK(GetProperty(context, transaction, kSignatures).ToLocal(&signatures));
   v8::Local<v8::Array> signatures_array = signatures.As<v8::Array>();
   uint32_t signatures_count = signatures_array->Length();
   std::vector<mojom::SignaturePubkeyPairPtr> sig_pubkey_pairs;
@@ -811,7 +823,7 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
     v8::Local<v8::Value> v8_signature;
     v8::Local<v8::Value> v8_sig_pubkey_pair =
         signatures_array->Get(context, i).ToLocalChecked();
-    CHECK(GetProperty(context, v8_sig_pubkey_pair, u"signature")
+    CHECK(GetProperty(context, v8_sig_pubkey_pair, kSignature)
               .ToLocal(&v8_signature));
 
     absl::optional<std::vector<uint8_t>> signature = absl::nullopt;
@@ -824,11 +836,11 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
     }
 
     v8::Local<v8::Value> v8_pubkey_object;
-    CHECK(GetProperty(context, v8_sig_pubkey_pair, u"publicKey")
+    CHECK(GetProperty(context, v8_sig_pubkey_pair, kPublicKey)
               .ToLocal(&v8_pubkey_object));
     v8::MaybeLocal<v8::Value> v8_pubkey =
         CallMethodOfObject(render_frame()->GetWebFrame(), v8_pubkey_object,
-                           u"toString", std::vector<v8::Local<v8::Value>>());
+                           kToString, std::vector<v8::Local<v8::Value>>());
     if (v8_pubkey.IsEmpty())
       return absl::nullopt;
 
@@ -867,8 +879,8 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(public_key_value, context));
   v8::MaybeLocal<v8::Value> public_key_result =
-      CallMethodOfObject(render_frame()->GetWebFrame(), u"_brave_solana",
-                         u"createPublickey", std::move(args));
+      CallMethodOfObject(render_frame()->GetWebFrame(), kBraveSolanaInternal,
+                         kCreatePublicKey, std::move(args));
 
   return public_key_result.ToLocalChecked();
 }
@@ -883,8 +895,8 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
   args.push_back(v8_value_converter_->ToV8Value(serialized_tx_value, context));
 
   v8::MaybeLocal<v8::Value> transaction_result =
-      CallMethodOfObject(render_frame()->GetWebFrame(), u"_brave_solana",
-                         u"createTransaction", std::move(args));
+      CallMethodOfObject(render_frame()->GetWebFrame(), kBraveSolanaInternal,
+                         kCreateTransaction, std::move(args));
 
   return transaction_result.ToLocalChecked();
 }

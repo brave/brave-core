@@ -35,6 +35,10 @@ namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
 
+constexpr char kEthereum[] = "ethereum";
+constexpr char kEmit[] = "emit";
+constexpr char kIsBraveWallet[] = "isBraveWallet";
+
 }  // namespace
 
 namespace brave_wallet {
@@ -151,7 +155,7 @@ void JSEthereumProvider::CreateEthereumObject(
   v8::Local<v8::Value> ethereum_value;
   v8::Local<v8::Proxy> ethereum_proxy;
   v8::Local<v8::Object> ethereum_proxy_handler_obj;
-  if (!global->Get(context, gin::StringToV8(isolate, "ethereum"))
+  if (!global->Get(context, gin::StringToV8(isolate, kEthereum))
            .ToLocal(&ethereum_value) ||
       !ethereum_value->IsObject()) {
     ethereum_proxy_handler_obj = v8::Object::New(isolate);
@@ -169,16 +173,16 @@ void JSEthereumProvider::CreateEthereumObject(
     metamask_obj = v8::Object::New(isolate);
     if (!allow_overwrite_window_ethereum) {
       SetProviderNonWritable(context, global, ethereum_proxy,
-                             gin::StringToV8(isolate, "ethereum"), true);
+                             gin::StringToV8(isolate, kEthereum), true);
     } else {
       global
-          ->Set(context, gin::StringToSymbol(isolate, "ethereum"),
+          ->Set(context, gin::StringToSymbol(isolate, kEthereum),
                 ethereum_proxy)
           .Check();
     }
     ethereum_obj
         ->DefineOwnProperty(context,
-                            gin::StringToSymbol(isolate, "isBraveWallet"),
+                            gin::StringToSymbol(isolate, kIsBraveWallet),
                             v8::True(isolate), v8::ReadOnly)
         .Check();
     // isMetaMask shuld be writable because of
@@ -217,7 +221,7 @@ void JSEthereumProvider::UpdateAndBindJSProperties() {
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> ethereum_value;
   v8::Local<v8::Object> ethereum_obj;
-  if (!GetProperty(context, context->Global(), u"ethereum")
+  if (!GetProperty(context, context->Global(), kEthereum)
            .ToLocal(&ethereum_value))
     return;
   if (ethereum_value->ToObject(context).ToLocal(&ethereum_obj)) {
@@ -237,7 +241,7 @@ void JSEthereumProvider::UpdateAndBindJSProperties(
   // window.ethereum from global space to update properties and provider object
   // owned property getter will be bound to a native function.
   v8::Local<v8::Value> is_brave_wallet;
-  if (!GetProperty(context, ethereum_obj, u"isBraveWallet")
+  if (!GetProperty(context, ethereum_obj, kIsBraveWallet)
            .ToLocal(&is_brave_wallet) ||
       !is_brave_wallet->BooleanValue(isolate)) {
     return;
@@ -595,7 +599,7 @@ void JSEthereumProvider::FireEvent(const std::string& event,
     args.push_back(
         content::V8ValueConverter::Create()->ToV8Value(argument, context));
   }
-  CallMethodOfObject(render_frame_->GetWebFrame(), u"ethereum", u"emit",
+  CallMethodOfObject(render_frame_->GetWebFrame(), kEthereum, kEmit,
                      std::move(args));
 }
 
