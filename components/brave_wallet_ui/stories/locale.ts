@@ -730,5 +730,8 @@ provideStrings({
   braveWalletCancelHidingToken: 'Cancel',
 
   // Request feature button
-  braveWalletRequestFeatureButtonText: 'Request feature'
+  braveWalletRequestFeatureButtonText: 'Request feature',
+
+  // Warnings
+  braveWalletNonAsciiCharactersInMessageWarning: 'Warning: This message contains non-ASCII characters!'
 })

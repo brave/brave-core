@@ -61,3 +61,12 @@ export const isValidateUrl = (url: string) => {
   const re = /^\s*https?:\/\//
   return re.test(url)
 }
+
+export function hasUnicode (str: string) {
+  for (let i = 0; i < str.length; i++) {
+    if (str.charCodeAt(i) > 127) {
+      return true
+    }
+  }
+  return false
+}
