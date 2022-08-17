@@ -281,7 +281,6 @@ let package = Package(
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
       ],
-      path: "BraveWallet",
       plugins: ["CurrentBundleGenPlugin"]
     ),
     .target(
