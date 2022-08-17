@@ -112,7 +112,6 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 
   DCHECK(callback_for_current_request_.is_null());
   callback_for_current_request_ = std::move(request.callback);
-  DCHECK(!callback_for_current_request_.is_null());
 
   if (absl::holds_alternative<std::string>(request.url_or_contents)) {
     CreateWebContents();
@@ -167,7 +166,6 @@ void PlaylistDownloadRequestManager::OnGetMedia(
 
   DCHECK(!callback_for_current_request_.is_null()) << " callback already ran";
   auto callback = std::move(callback_for_current_request_);
-  DCHECK(callback_for_current_request_.is_null());
 
   DCHECK_GT(in_progress_urls_count_, 0);
   in_progress_urls_count_--;
@@ -197,7 +195,7 @@ void PlaylistDownloadRequestManager::OnGetMedia(
 
   if (!value.is_list()) {
     LOG(ERROR) << __func__
-               << " Got invalid value after running media detector script:";
+               << " Got invalid value after running media detector script";
     return;
   }
 

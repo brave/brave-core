@@ -46,7 +46,7 @@ void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
   // Otherwise, we get "blob: " url which we can't handle.
   // This script is from
   // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/PlaylistSwizzler.js
-  static const std::u16string kScriptToHideMediaSourceAPI =
+  static const char16_t kScriptToHideMediaSourceAPI[] =
       uR"-(
     (function() {
       // Stub out the MediaSource API so video players do not attempt to use `blob` for streaming
