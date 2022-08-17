@@ -1741,7 +1741,7 @@ Are you sure you want to do this?
       Use biometrics to quickly unlock your wallet without entering your password.
     </message>
     <message name="IDS_MENU_BRAVE_WALLET" desc="Brave Wallet menu item text">
-      Wallet
+      Playlist
     </message>
     <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
       Enter your recovery phrase to restore your Brave Wallet crypto account.

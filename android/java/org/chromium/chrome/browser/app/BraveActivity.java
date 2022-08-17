@@ -186,7 +186,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-//import com.brave.braveandroidplaylist.activity.PlaylistOnboardingActivity;
+import com.brave.braveandroidplaylist.activity.PlaylistOnboardingActivity;
 
 /**
  * Brave's extension for ChromeActivity
@@ -1115,10 +1115,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void openBraveWallet(boolean fromDapp) {
-        // Intent braveWalletIntent = new Intent(this, PlaylistOnboardingActivity.class);
-        // braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
-        // braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        // startActivity(braveWalletIntent);
+        Intent braveWalletIntent = new Intent(this, PlaylistOnboardingActivity.class);
+        braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
+        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(braveWalletIntent);
     }
 
     public void viewOnBlockExplorer(String address, @CoinType.EnumType int coinType) {
