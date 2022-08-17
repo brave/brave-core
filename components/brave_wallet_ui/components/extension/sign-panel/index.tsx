@@ -6,7 +6,7 @@ import { SignMessagePayload } from '../../../panel/constants/action_types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { hasUnicode } from '../../../utils/string-utils'
+import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
 
 // Components
 import { NavButton, PanelTab } from '../'
@@ -40,9 +40,9 @@ import {
   WarningTitle,
   WarningText,
   LearnMoreButton,
-  URLText,
-  WarningBoxTitleRow
+  URLText
 } from '../shared-panel-styles'
+// import { Row } from '../../shared/style'
 
 export interface Props {
   accounts: WalletAccountType[]
@@ -77,6 +77,7 @@ export const SignPanel = (props: Props) => {
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
   const [selectedQueueData, setSelectedQueueData] = React.useState<SignMessagePayload>(signMessageData[0])
+  const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
   // memos
   const orb = React.useMemo(() => {
@@ -177,16 +178,35 @@ export const SignPanel = (props: Props) => {
 
           {hasUnicode(selectedQueueData.message) &&
             <WarningBox warningType='warning'>
-              <WarningBoxTitleRow>
+              <WarningTitleRow>
+                <WarningIcon color={'warningIcon'} />
                 <WarningTitle warningType='warning'>
-                  {getLocale('braveWalletNonAsciiCharactersInMessageWarning')}
+                  {
+                    'Non-ASCII characters detected!' // TODO
+                  }
                 </WarningTitle>
-              </WarningBoxTitleRow>
+              </WarningTitleRow>
+              <LearnMoreButton
+                onClick={() => setRenderUnicode(prev => !prev)}
+              >
+                {
+                 renderUnicode
+                  ? 'View decoded message' // TODO: Locale
+                  : 'View encoded message' // TODO: Locale
+                  // getLocale('braveWalletAllowAddNetworkLearnMoreButton')
+                }
+              </LearnMoreButton>
             </WarningBox>
           }
 
           <MessageBox>
-            <MessageText>{selectedQueueData.message}</MessageText>
+            <MessageText>
+              {
+                renderUnicode
+                  ? selectedQueueData.message
+                  : unicodeEscape(selectedQueueData.message)
+              }
+            </MessageText>
           </MessageBox>
         </>
       }
