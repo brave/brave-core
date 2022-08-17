@@ -12,6 +12,8 @@ static_library("brave_vpn") {
     "brave_vpn_constants.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
+    "brave_vpn_service_helper.cc",
+    "brave_vpn_service_helper.h",
     "brave_vpn_service_observer.cc",
     "brave_vpn_service_observer.h",
     "brave_vpn_utils.cc",
@@ -53,8 +55,6 @@ static_library("brave_vpn") {
       "brave_vpn_os_connection_api.h",
       "brave_vpn_os_connection_api_sim.cc",
       "brave_vpn_os_connection_api_sim.h",
-      "brave_vpn_service_helper.cc",
-      "brave_vpn_service_helper.h",
       "switches.h",
     ]
 

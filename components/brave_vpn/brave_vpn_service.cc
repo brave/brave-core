@@ -24,6 +24,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/url_util.h"
 
+#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -33,7 +34,6 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
-#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/switches.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -782,10 +782,8 @@ void BraveVpnService::ParseAndCacheHostnames(
   // OS VPN entry.
   VLOG(2) << __func__ << " : request subscriber credential:"
           << GetBraveVPNPaymentsEnv(GetCurrentEnvironment());
-  GetSubscriberCredentialV12(
-      base::BindOnce(&BraveVpnService::OnGetSubscriberCredentialV12,
-                     base::Unretained(this)),
-      GetBraveVPNPaymentsEnv(GetCurrentEnvironment()), skus_credential_);
+  GetSubscriberCredentialV12(base::BindOnce(
+      &BraveVpnService::OnGetSubscriberCredentialV12, base::Unretained(this)));
 }
 
 void BraveVpnService::OnGetSubscriberCredentialV12(
@@ -1350,10 +1348,7 @@ void BraveVpnService::OnGetSubscriberCredential(
   std::move(callback).Run(subscriber_credential, success);
 }
 
-void BraveVpnService::GetSubscriberCredentialV12(
-    ResponseCallback callback,
-    const std::string& payments_environment,
-    const std::string& monthly_pass) {
+void BraveVpnService::GetSubscriberCredentialV12(ResponseCallback callback) {
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnGetSubscriberCredential,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -1362,10 +1357,11 @@ void BraveVpnService::GetSubscriberCredentialV12(
       GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
   base::Value::Dict dict;
   dict.Set("validation-method", "brave-premium");
-  dict.Set("brave-vpn-premium-monthly-pass", monthly_pass);
+  dict.Set("brave-vpn-premium-monthly-pass", skus_credential_);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
-               {{"Brave-Payments-Environment", payments_environment}});
+               {{"Brave-Payments-Environment",
+                 GetBraveVPNPaymentsEnv(GetCurrentEnvironment())}});
 }
 
 }  // namespace brave_vpn
