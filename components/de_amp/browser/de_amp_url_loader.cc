@@ -18,8 +18,7 @@ namespace de_amp {
 namespace {
 
 constexpr uint32_t kReadBufferSizeBytes = 65536;
-constexpr uint32_t kMaxBytesToCheck =
-    kReadBufferSizeBytes * 3;  // Should always be a multiple
+constexpr uint32_t kMaxBytesToCheck = kReadBufferSizeBytes * 3;
 
 }  // namespace
 
@@ -69,17 +68,18 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
     ForwardBodyToClient();
     return;
   }
-  if (!CheckBufferedBody(kReadBufferSizeBytes)) {
+  if (!CheckBufferedBody(kMaxBytesToCheck - buffered_body_.size())) {
     return;
   }
-  const bool redirected = MaybeRedirectToCanonicalLink();
-  const bool found_amp_but_not_canonical_link = !redirected && found_amp_;
-
-  // If we were not redirected (navigation is cancelled) and we didn't find AMP,
-  // or if we did find AMP previously and we've already read more bytes than
+  if (MaybeRedirectToCanonicalLink()) {
+    // Only abort if we know we're successfully going to the canonical URL
+    Abort();
+    return;
+  }
+  // If we were not redirected and we didn't find AMP, or
+  // if we did find AMP previously and we've already read more bytes than
   // max, complete the load.
-  if ((!redirected && !found_amp_) ||
-      (found_amp_but_not_canonical_link && read_bytes_ >= kMaxBytesToCheck)) {
+  if (!found_amp_ || read_bytes_ >= kMaxBytesToCheck) {
     found_amp_ = false;  // reset
     CompleteLoading(std::move(buffered_body_));
     return;
@@ -105,23 +105,24 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
     return false;
   }
 
+  bool redirected = false;
   const GURL canonical_url(canonical_link.value());
   // Validate the found canonical AMP URL
-  if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
-    VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
-    found_amp_ = false;  // reset
-    return false;
+  if (VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
+    // Attempt to go to the canonical URL
+    VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
+    if (de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
+      redirected = true;
+    } else {
+      VLOG(2) << __func__ << " failed to open canonical url: " << canonical_url;
+    }
+  } else {
+    VLOG(2) << __func__ << " canonical link verification failed "
+            << canonical_url;
   }
-  // Attempt to go to the canonical URL
-  VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
-  if (!de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
-    found_amp_ = false;  // reset
-    return false;
-  }
-  // Only abort if we know we're successfully going to the canonical URL
-  Abort();
-  found_amp_ = false;  // reset for the new navigation
-  return true;
+  // At this point we've either redirected, or we should stop trying
+  found_amp_ = false;
+  return redirected;
 }
 
 void DeAmpURLLoader::OnBodyWritable(MojoResult r) {

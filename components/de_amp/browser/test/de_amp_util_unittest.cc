@@ -125,7 +125,6 @@ TEST(DeAmpUtilUnitTest, NegativeDetectAmp) {
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpButNoCanonicalLink) {
-  // Put AMP attribute in a different tag than html
   const std::string body =
       "<html amp xyzzy>"
       "<head>"
