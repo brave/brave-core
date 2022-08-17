@@ -51,7 +51,7 @@ class TestBraveShieldsWebContentsObserver
 
 class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
  public:
-  BraveShieldsWebContentsObserverBrowserTest() {}
+  BraveShieldsWebContentsObserverBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();

@@ -80,7 +80,8 @@ BraveAdaptiveCaptchaServiceFactory::BraveAdaptiveCaptchaServiceFactory()
   DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
 }
 
-BraveAdaptiveCaptchaServiceFactory::~BraveAdaptiveCaptchaServiceFactory() {}
+BraveAdaptiveCaptchaServiceFactory::~BraveAdaptiveCaptchaServiceFactory() =
+    default;
 
 KeyedService* BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

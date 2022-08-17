@@ -33,7 +33,7 @@ namespace extensions {
 class BraveWalleBrowserClientUnitTest
     : public ChromeRenderViewHostTestHarness {
  public:
-  BraveWalleBrowserClientUnitTest() {}
+  BraveWalleBrowserClientUnitTest() = default;
   BraveWalleBrowserClientUnitTest(const BraveWalleBrowserClientUnitTest&) =
       delete;
   BraveWalleBrowserClientUnitTest& operator=(

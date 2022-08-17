@@ -74,7 +74,7 @@ BackgroundHelperMac::BackgroundHelperMac() {
   delegate_ = std::make_unique<BackgroundHelperDelegate>(this);
 }
 
-BackgroundHelperMac::~BackgroundHelperMac() {}
+BackgroundHelperMac::~BackgroundHelperMac() = default;
 
 bool BackgroundHelperMac::IsForeground() const {
   return [[NSApplication sharedApplication] isActive];

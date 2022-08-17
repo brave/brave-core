@@ -38,7 +38,7 @@ BraveFederatedServiceFactory::BraveFederatedServiceFactory()
           "BraveFederatedService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-BraveFederatedServiceFactory::~BraveFederatedServiceFactory() {}
+BraveFederatedServiceFactory::~BraveFederatedServiceFactory() = default;
 
 KeyedService* BraveFederatedServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

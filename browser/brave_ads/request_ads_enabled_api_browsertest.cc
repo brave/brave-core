@@ -59,7 +59,7 @@ constexpr char kUserGestureRejectReason[] =
 
 class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
  public:
-  RequestAdsEnabledApiTestBase() {}
+  RequestAdsEnabledApiTestBase() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();

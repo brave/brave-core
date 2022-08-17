@@ -402,9 +402,9 @@ void MaybeBindSkusSdkImpl(
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient() {}
+BraveContentBrowserClient::BraveContentBrowserClient() = default;
 
-BraveContentBrowserClient::~BraveContentBrowserClient() {}
+BraveContentBrowserClient::~BraveContentBrowserClient() = default;
 
 std::unique_ptr<content::BrowserMainParts>
 BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {

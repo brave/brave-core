@@ -55,7 +55,7 @@ class BraveStatsUpdaterTest : public testing::Test {
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
-  ~BraveStatsUpdaterTest() override {}
+  ~BraveStatsUpdaterTest() override = default;
 
   void SetUp() override {
 #if BUILDFLAG(IS_ANDROID)
