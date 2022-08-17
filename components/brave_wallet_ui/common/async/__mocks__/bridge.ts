@@ -1,6 +1,38 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+// redux
+import { createStore, combineReducers } from 'redux'
+import { createWalletReducer } from '../../reducers/wallet_reducer'
+
+// types
 import { BraveWallet } from '../../../constants/types'
-import WalletApiProxy from '../../wallet_api_proxy'
+import { WalletActions } from '../../actions'
+import type WalletApiProxy from '../../wallet_api_proxy'
+
+// mocks
+import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
+
+export const makeMockedStoreWithSpy = () => {
+  const store = createStore(combineReducers({
+    wallet: createWalletReducer(mockWalletState)
+  }))
+
+  const dispatchSpy = jest.fn(store.dispatch)
+  const ogDispatch = store.dispatch
+  store.dispatch = ((args: any) => {
+    ogDispatch(args)
+    dispatchSpy(args)
+  }) as any
+
+  return { store, dispatchSpy }
+}
+
 export class MockedWalletApiProxy {
+  store = makeMockedStoreWithSpy().store
+
   mockQuote = {
     price: '1705.399509',
     guaranteedPrice: '',
@@ -72,7 +104,10 @@ export class MockedWalletApiProxy {
 
   keyringService: Partial<InstanceType<typeof BraveWallet.KeyringServiceInterface>> = {
     validatePassword: async (password: string) => ({ result: password === 'password' }),
-    lock: () => alert('wallet locked')
+    lock: () => {
+      this.store.dispatch(WalletActions.locked())
+      alert('wallet locked')
+    }
   }
 
   ethTxManagerProxy: Partial<InstanceType<typeof BraveWallet.EthTxManagerProxyInterface>> = {
@@ -98,14 +133,18 @@ export class MockedWalletApiProxy {
   setMockedTransactionPayload (newTx: typeof this.mockQuote) {
     this.mockTransaction = newTx
   }
+
+  setMockedStore = (newStore: typeof this.store) => {
+    this.store = newStore
+  }
 }
 
 export function getAPIProxy (): Partial<WalletApiProxy> {
   return new MockedWalletApiProxy() as unknown as Partial<WalletApiProxy> & MockedWalletApiProxy
 }
 
-export function getMockedAPIProxy (): WalletApiProxy {
-  return new MockedWalletApiProxy() as unknown as WalletApiProxy
+export function getMockedAPIProxy (): WalletApiProxy & MockedWalletApiProxy {
+  return new MockedWalletApiProxy() as unknown as WalletApiProxy & MockedWalletApiProxy
 }
 
 export default getAPIProxy
