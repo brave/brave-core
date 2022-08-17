@@ -146,13 +146,13 @@ private extension WidgetShortcut {
     case .newPrivateTab:
       return shortcutsImage(with: "brave.shades")
     case .bookmarks:
-      return Image(uiImage: UIImage(named: "menu_bookmarks")!)
+      return Image(uiImage: UIImage(named: "menu_bookmarks")!.template)
     case .history:
-      return Image(uiImage: UIImage(named: "brave.history")!)
+      return Image(uiImage: UIImage(named: "brave.history")!.template)
     case .downloads:
-      return Image(uiImage: UIImage(named: "brave.downloads")!)
+      return Image(uiImage: UIImage(named: "brave.downloads")!.template)
     case .playlist:
-      return Image(uiImage: UIImage(named: "brave.playlist")!)
+      return Image(uiImage: UIImage(named: "brave.playlist")!.template)
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")
