@@ -6,6 +6,9 @@
 import contextlib
 import inspect
 import types
+import os
+
+_gn_args = None
 
 
 def override_function(scope, name=None, condition=True):
@@ -98,3 +101,23 @@ def override_scope_variable(scope,
             setattr(scope, name, original_value)
         else:
             delattr(scope, name)
+
+
+def get_gn_arg(arg, output_dir=os.getcwd()):
+    """Returns GN arg from args.gn in output_dir."""
+    global _gn_args  # pylint: disable=global-statement
+    if _gn_args is None:
+        ARGS_GN = "args.gn"
+        args_gn_filename = os.path.join(output_dir, ARGS_GN)
+        if not os.path.exists(args_gn_filename):
+            raise FileNotFoundError(f"{ARGS_GN} not found in {output_dir}")
+        with open(args_gn_filename, "r") as f:
+            import gn_helpers  # pylint: disable=import-outside-toplevel
+            _gn_args = gn_helpers.FromGNArgs(f.read())
+
+    if arg not in _gn_args:
+        raise RuntimeError(
+            f"Python-checked gn arg should be explicitly set during gn gen: "
+            f"{arg} gn arg not found")
+
+    return _gn_args[arg]
