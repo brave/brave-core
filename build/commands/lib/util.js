@@ -457,7 +457,7 @@ const util = {
     const sig_generator = config.signature_generator
     let src_dir = path.join(config.outputDir, 'signed_binaries')
 
-    if (config.skip_signing || process.env.CERT === undefined || process.env.SIGNTOOL_ARGS === undefined)
+    if (!config.shouldSign())
       src_dir = config.outputDir
 
     console.log('generate Widevine sig files...')
