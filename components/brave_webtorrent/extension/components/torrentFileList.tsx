@@ -127,7 +127,7 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
       </HeaderRow>
       <FilesContainer>
         <Table header={tableHeader} rows={rows}>
-            {torrent && torrent.files
+            {torrent && !torrent.files
               ? <LoadingContainer>
                 <Spinner/>
                 Loading the torrent file list

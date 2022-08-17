@@ -6,6 +6,8 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { torrentObj } from '../testData'
 import TorrentFileList from '../../../brave_webtorrent/extension/components/torrentFileList'
+import Spinner from '../../../brave_webtorrent/extension/components/spinner'
+import { Table } from 'brave-ui/components'
 
 const torrentId = 'id'
 describe('torrentFileList component', () => {
@@ -16,17 +18,20 @@ describe('torrentFileList component', () => {
           torrentId={torrentId}
         />
       )
-      expect(wrapper.html()).toEqual(expect.stringContaining('Start Torrent'))
+
+      expect(wrapper.find(Table).dive().text())
+        .toEqual(expect.stringContaining('Start Torrent'))
     })
 
-    it('renders the start torrent message if no files', () => {
+    it('renders the spinner while loading files', () => {
       const wrapper = shallow(
         <TorrentFileList
           torrentId={torrentId}
           torrent={torrentObj}
         />
       )
-      expect(wrapper.html()).toEqual(expect.stringContaining('Start Torrent'))
+      const assertion = wrapper.find(Spinner)
+      expect(assertion.length).toBe(1)
     })
   })
 })
