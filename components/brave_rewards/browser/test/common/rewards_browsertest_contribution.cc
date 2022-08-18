@@ -456,12 +456,11 @@ void RewardsBrowserTestContribution::SetUpGeminiWallet(
 
   external_balance_ = balance;
 
-  base::Value wallet(base::Value::Type::DICTIONARY);
-  wallet.SetStringKey("token", "token");
-  wallet.SetStringKey("address",
-                      rewards_browsertest_util::GetGeminiExternalAddress());
-  wallet.SetIntKey("status", static_cast<int>(status));
-  wallet.SetStringKey("user_name", "Brave Test");
+  base::Value::Dict wallet;
+  wallet.Set("token", "token");
+  wallet.Set("address", rewards_browsertest_util::GetGeminiExternalAddress());
+  wallet.Set("status", static_cast<int>(status));
+  wallet.Set("user_name", "Brave Test");
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
@@ -489,13 +488,11 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
 
   external_balance_ = balance;
 
-  base::Value wallet(base::Value::Type::DICTIONARY);
-  wallet.SetStringKey("token", "token");
-  wallet.SetStringKey(
-      "address",
-      rewards_browsertest_util::GetUpholdExternalAddress());
-  wallet.SetIntKey("status", static_cast<int>(status));
-  wallet.SetStringKey("user_name", "Brave Test");
+  base::Value::Dict wallet;
+  wallet.Set("token", "token");
+  wallet.Set("address", rewards_browsertest_util::GetUpholdExternalAddress());
+  wallet.Set("status", static_cast<int>(status));
+  wallet.Set("user_name", "Brave Test");
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);

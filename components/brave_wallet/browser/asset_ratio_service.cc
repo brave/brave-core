@@ -208,9 +208,9 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     const std::string sardine_client_id(SARDINE_CLIENT_ID);
     const std::string sardine_client_secret(SARDINE_CLIENT_SECRET);
 
-    base::Value payload_value(base::Value::Type::DICTIONARY);
-    payload_value.SetKey("clientId", base::Value(sardine_client_id));
-    payload_value.SetKey("clientSecret", base::Value(sardine_client_id));
+    base::Value::Dict payload_value;
+    payload_value.Set("clientId", sardine_client_id);
+    payload_value.Set("clientSecret", sardine_client_id);
     std::string payload;
     base::JSONWriter::Write(payload_value, &payload);
     base::flat_map<std::string, std::string> request_headers;

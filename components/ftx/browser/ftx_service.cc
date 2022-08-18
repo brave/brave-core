@@ -240,10 +240,10 @@ bool FTXService::GetConvertQuote(
   auto internal_callback = base::BindOnce(&FTXService::OnGetConvertQuote,
       base::Unretained(this), std::move(callback));
   GURL url = GetOAuthURL(oauth_quote_path);
-  base::Value request_data(base::Value::Type::DICTIONARY);
-  request_data.SetStringKey("fromCoin", from);
-  request_data.SetStringKey("toCoin", to);
-  request_data.SetStringKey("size", amount);
+  base::Value::Dict request_data;
+  request_data.Set("fromCoin", from);
+  request_data.Set("toCoin", to);
+  request_data.Set("size", amount);
   std::string body;
   if (!base::JSONWriter::Write(request_data, &body)) {
     LOG(ERROR) << "FTX: Could not serialize convert quote body data!";

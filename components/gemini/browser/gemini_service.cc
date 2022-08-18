@@ -72,7 +72,7 @@ namespace {
     return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
   }
 
-  std::string CreateJSONRequestBody(const base::Value& dict) {
+  std::string CreateJSONRequestBody(const base::Value::Dict& dict) {
     std::string json;
     base::JSONWriter::Write(dict, &json);
     return json;
@@ -81,8 +81,8 @@ namespace {
   std::string GetEncodedRequestPayload(std::string payload) {
     std::string json;
     std::string encoded_payload;
-    base::Value dict(base::Value::Type::DICTIONARY);
-    dict.SetStringKey("request", payload);
+    base::Value::Dict dict;
+    dict.Set("request", payload);
     base::JSONWriter::Write(dict, &json);
     base::Base64Encode(json, &encoded_payload);
     return encoded_payload;
@@ -96,15 +96,14 @@ namespace {
                                        int quote_id) {
     std::string json;
     std::string encoded_payload;
-    base::Value dict(base::Value::Type::DICTIONARY);
-    dict.SetStringKey("request",
-      std::string(api_path_execute_quote));
-    dict.SetStringKey("symbol", symbol);
-    dict.SetStringKey("side", side);
-    dict.SetStringKey("quantity", quantity);
-    dict.SetStringKey("price", price);
-    dict.SetStringKey("fee", fee);
-    dict.SetIntKey("quoteId", quote_id);
+    base::Value::Dict dict;
+    dict.Set("request", std::string(api_path_execute_quote));
+    dict.Set("symbol", symbol);
+    dict.Set("side", side);
+    dict.Set("quantity", quantity);
+    dict.Set("price", price);
+    dict.Set("fee", fee);
+    dict.Set("quoteId", quote_id);
     base::JSONWriter::Write(dict, &json);
     base::Base64Encode(json, &encoded_payload);
     return encoded_payload;
@@ -173,13 +172,13 @@ bool GeminiService::GetAccessToken(AccessTokenCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(oauth_host_, auth_path_access_token);
 
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("client_id", client_id_);
-  dict.SetStringKey("client_secret", client_secret_);
-  dict.SetStringKey("code", auth_token_);
-  dict.SetStringKey("redirect_uri", oauth_callback);
-  dict.SetStringKey("code_verifier", code_verifier_);
-  dict.SetStringKey("grant_type", "authorization_code");
+  base::Value::Dict dict;
+  dict.Set("client_id", client_id_);
+  dict.Set("client_secret", client_secret_);
+  dict.Set("code", auth_token_);
+  dict.Set("redirect_uri", oauth_callback);
+  dict.Set("code_verifier", code_verifier_);
+  dict.Set("grant_type", "authorization_code");
   std::string request_body = CreateJSONRequestBody(dict);
 
   auth_token_.clear();
@@ -193,11 +192,11 @@ bool GeminiService::RefreshAccessToken(AccessTokenCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(oauth_host_, auth_path_access_token);
 
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("client_id", client_id_);
-  dict.SetStringKey("client_secret", client_secret_);
-  dict.SetStringKey("refresh_token", refresh_token_);
-  dict.SetStringKey("grant_type", "refresh_token");
+  base::Value::Dict dict;
+  dict.Set("client_id", client_id_);
+  dict.Set("client_secret", client_secret_);
+  dict.Set("refresh_token", refresh_token_);
+  dict.Set("grant_type", "refresh_token");
   std::string request_body = CreateJSONRequestBody(dict);
 
   auth_token_.clear();
