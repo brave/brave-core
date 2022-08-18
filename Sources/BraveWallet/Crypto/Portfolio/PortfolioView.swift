@@ -73,33 +73,35 @@ struct PortfolioView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
-        ForEach(portfolioStore.userVisibleAssets) { asset in
-          Button(action: {
-            selectedToken = asset.token
-          }) {
-            PortfolioAssetView(
-              image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
-              title: asset.token.name,
-              symbol: asset.token.symbol,
-              amount: portfolioStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
-              quantity: String(format: "%.04f", asset.decimalBalance)
-            )
+        Group {
+          ForEach(portfolioStore.userVisibleAssets) { asset in
+            Button(action: {
+              selectedToken = asset.token
+            }) {
+              PortfolioAssetView(
+                image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
+                title: asset.token.name,
+                symbol: asset.token.symbol,
+                amount: portfolioStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
+                quantity: String(format: "%.04f", asset.decimalBalance)
+              )
+            }
+          }
+          Button(action: { isPresentingEditUserAssets = true }) {
+            Text(Strings.Wallet.editVisibleAssetsButtonTitle)
+              .multilineTextAlignment(.center)
+              .font(.footnote.weight(.semibold))
+              .foregroundColor(Color(.bravePrimary))
+              .frame(maxWidth: .infinity)
+          }
+          .sheet(isPresented: $isPresentingEditUserAssets) {
+            EditUserAssetsView(userAssetsStore: portfolioStore.userAssetsStore) {
+              portfolioStore.update()
+            }
           }
         }
-        Button(action: { isPresentingEditUserAssets = true }) {
-          Text(Strings.Wallet.editVisibleAssetsButtonTitle)
-            .multilineTextAlignment(.center)
-            .font(.footnote.weight(.semibold))
-            .foregroundColor(Color(.bravePrimary))
-            .frame(maxWidth: .infinity)
-        }
-        .sheet(isPresented: $isPresentingEditUserAssets) {
-          EditUserAssetsView(userAssetsStore: portfolioStore.userAssetsStore) {
-            portfolioStore.update()
-          }
-        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .background(
       NavigationLink(

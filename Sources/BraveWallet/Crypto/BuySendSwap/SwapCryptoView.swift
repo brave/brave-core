@@ -246,8 +246,8 @@ struct SwapCryptoView: View {
         }
         .padding(.vertical, 8)
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       header: WalletListHeaderView(
         title: Text(
@@ -284,8 +284,8 @@ struct SwapCryptoView: View {
         text: $swapTokensStore.sellAmount
       )
       .keyboardType(.decimalPad)
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
     ) {
@@ -310,8 +310,8 @@ struct SwapCryptoView: View {
         }
         .padding(.vertical, 8)
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       header: WalletListHeaderView(
         title: Text(
@@ -327,8 +327,8 @@ struct SwapCryptoView: View {
         text: $swapTokensStore.buyAmount
       )
       .keyboardType(.decimalPad)
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       /*
        MVP only supports market price swap. Ref: https://github.com/brave/brave-browser/issues/18307
@@ -383,8 +383,8 @@ struct SwapCryptoView: View {
       .accessibilityLabel(Strings.Wallet.swapCryptoSlippageTitle)
       .accessibilityValue(formatSlippage)
       .accessibility(addTraits: .isButton)
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       header:
         VStack(spacing: 16) {

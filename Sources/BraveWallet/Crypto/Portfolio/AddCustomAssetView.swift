@@ -30,8 +30,8 @@ struct AddCustomAssetView: View {
               ProgressView()
             }
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenContractAddress))
         ) {
@@ -54,8 +54,8 @@ struct AddCustomAssetView: View {
               }
             }
             .disabled(userAssetStore.isSearchingToken)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenSymbol))
         ) {
@@ -66,8 +66,8 @@ struct AddCustomAssetView: View {
               ProgressView()
             }
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.decimalsPrecision))
         ) {
@@ -79,8 +79,8 @@ struct AddCustomAssetView: View {
               ProgressView()
             }
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .navigationTitle(Strings.Wallet.customTokenTitle)
       .navigationBarTitleDisplayMode(.inline)

@@ -32,8 +32,8 @@ struct AccountListView: View {
               }
             }
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .listStyle(InsetGroupedListStyle())
       .navigationTitle(Strings.Wallet.selectAccountTitle)

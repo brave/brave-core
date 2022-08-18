@@ -204,8 +204,8 @@ private struct SiteConnectionDetailView: View {
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
     .navigationTitle(siteConnection.url)

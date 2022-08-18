@@ -209,8 +209,8 @@ struct AddAccountView: View {
       )
     ) {
       SecureField(Strings.Wallet.passwordPlaceholder, text: $originPassword)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
   
   private var isJsonImportSupported: Bool {
@@ -226,41 +226,43 @@ struct AddAccountView: View {
           .foregroundColor(Color(.bravePrimary))
       )
     ) {
-      TextEditor(text: $privateKey)
-        .autocapitalization(.none)
-        .font(.system(.body, design: .monospaced))
-        .frame(height: privateKeyFieldHeight)
-        .background(
-          Text(isJsonImportSupported ? Strings.Wallet.importAccountPlaceholder : Strings.Wallet.importNonEthAccountPlaceholder)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 4)  // To match the TextEditor's editing insets
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundColor(Color(.placeholderText))
-            .opacity(privateKey.isEmpty ? 1 : 0)
-            .accessibilityHidden(true),
-          alignment: .top
-        )
-        .introspectTextView { textView in
-          textView.smartQuotesType = .no
-        }
-        .accessibilityValue(privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey)
-      if isJsonImportSupported {
-        Button(action: { isPresentingImport = true }) {
-          HStack {
-            Text(Strings.Wallet.importButtonTitle)
-              .foregroundColor(.accentColor)
-              .font(.callout)
-            if isLoadingFile {
-              ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
-            }
+      Group {
+        TextEditor(text: $privateKey)
+          .autocapitalization(.none)
+          .font(.system(.body, design: .monospaced))
+          .frame(height: privateKeyFieldHeight)
+          .background(
+            Text(isJsonImportSupported ? Strings.Wallet.importAccountPlaceholder : Strings.Wallet.importNonEthAccountPlaceholder)
+              .padding(.vertical, 8)
+              .padding(.horizontal, 4)  // To match the TextEditor's editing insets
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .foregroundColor(Color(.placeholderText))
+              .opacity(privateKey.isEmpty ? 1 : 0)
+              .accessibilityHidden(true),
+            alignment: .top
+          )
+          .introspectTextView { textView in
+            textView.smartQuotesType = .no
           }
-          .frame(maxWidth: .infinity)
+          .accessibilityValue(privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey)
+        if isJsonImportSupported {
+          Button(action: { isPresentingImport = true }) {
+            HStack {
+              Text(Strings.Wallet.importButtonTitle)
+                .foregroundColor(.accentColor)
+                .font(.callout)
+              if isLoadingFile {
+                ProgressView()
+                  .progressViewStyle(CircularProgressViewStyle())
+              }
+            }
+            .frame(maxWidth: .infinity)
+          }
+          .disabled(isLoadingFile)
         }
-        .disabled(isLoadingFile)
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
   
   private func defaultAccountName(for coin: BraveWallet.CoinType, isPrimary: Bool) -> String {

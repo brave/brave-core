@@ -81,8 +81,8 @@ public struct NewSiteConnectionView: View {
       List {
         Section {
           headerView
+            .listRowBackground(Color(.braveGroupedBackground))
         }
-        .listRowBackground(Color(.braveGroupedBackground))
         Section {
           ForEach(keyringStore.defaultKeyring.accountInfos) { account in
             Button {
@@ -111,12 +111,12 @@ public struct NewSiteConnectionView: View {
               }
             }
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
         } footer: {
           cautionFooterView
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section {
           Button {
             isConfirmationViewVisible = true
@@ -135,8 +135,8 @@ public struct NewSiteConnectionView: View {
             })
             .hidden()
           )
+          .listRowBackground(Color(.braveGroupedBackground))
         }
-        .listRowBackground(Color(.braveGroupedBackground))
       }
       .listStyle(InsetGroupedListStyle())
       .navigationBarTitleDisplayMode(.inline)
@@ -183,8 +183,8 @@ public struct NewSiteConnectionView: View {
             .font(.footnote)
             .foregroundColor(Color(.braveLabel))
         }
+        .listRowBackground(Color(.braveGroupedBackground))
       }
-      .listRowBackground(Color(.braveGroupedBackground))
       Section {
         HStack(spacing: 12) {
           Image(braveSystemName: "brave.checkmark.circle.fill")
@@ -195,10 +195,10 @@ public struct NewSiteConnectionView: View {
         .foregroundColor(Color(.braveLabel))
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
+        .listRowBackground(Color(.braveGroupedBackground))
       } footer: {
         cautionFooterView
       }
-      .listRowBackground(Color(.braveGroupedBackground))
       Section {
         Button {
           let accounts = keyringStore.defaultKeyring.accountInfos
@@ -210,8 +210,8 @@ public struct NewSiteConnectionView: View {
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
         .frame(maxWidth: .infinity)
+        .listRowBackground(Color(.braveGroupedBackground))
       }
-      .listRowBackground(Color(.braveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
     .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)

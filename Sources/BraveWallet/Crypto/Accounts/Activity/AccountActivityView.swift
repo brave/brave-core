@@ -58,49 +58,53 @@ struct AccountActivityView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
-        if activityStore.assets.isEmpty {
-          emptyTextView(Strings.Wallet.noAssets)
-        } else {
-          ForEach(activityStore.assets) { asset in
-            PortfolioAssetView(
-              image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
-              title: asset.token.name,
-              symbol: asset.token.symbol,
-              amount: activityStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
-              quantity: String(format: "%.04f", asset.decimalBalance)
-            )
+        Group {
+          if activityStore.assets.isEmpty {
+            emptyTextView(Strings.Wallet.noAssets)
+          } else {
+            ForEach(activityStore.assets) { asset in
+              PortfolioAssetView(
+                image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
+                title: asset.token.name,
+                symbol: asset.token.symbol,
+                amount: activityStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
+                quantity: String(format: "%.04f", asset.decimalBalance)
+              )
+            }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        if activityStore.transactionSummaries.isEmpty {
-          emptyTextView(Strings.Wallet.noTransactions)
-        } else {
-          ForEach(activityStore.transactionSummaries) { txSummary in
-            Button(action: {
-              self.transactionDetails = activityStore.transactionDetailsStore(for: txSummary.txInfo)
-            }) {
-              TransactionSummaryView(summary: txSummary)
-            }
-            .contextMenu {
-              if !txSummary.txHash.isEmpty {
-                Button(action: {
-                  if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                     let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
-                    openWalletURL?(url)
+        Group {
+          if activityStore.transactionSummaries.isEmpty {
+            emptyTextView(Strings.Wallet.noTransactions)
+          } else {
+            ForEach(activityStore.transactionSummaries) { txSummary in
+              Button(action: {
+                self.transactionDetails = activityStore.transactionDetailsStore(for: txSummary.txInfo)
+              }) {
+                TransactionSummaryView(summary: txSummary)
+              }
+              .contextMenu {
+                if !txSummary.txHash.isEmpty {
+                  Button(action: {
+                    if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                       let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
+                      openWalletURL?(url)
+                    }
+                  }) {
+                    Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                   }
-                }) {
-                  Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                 }
               }
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
     .background(

@@ -80,8 +80,8 @@ struct SendTokenView: View {
             }
             .padding(.vertical, 8)
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header:
             WalletListHeaderView(
@@ -104,8 +104,8 @@ struct SendTokenView: View {
             text: $sendTokenStore.sendAmount
           )
           .keyboardType(.decimalPad)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoToTitle)),
           footer: Group {
@@ -151,8 +151,8 @@ struct SendTokenView: View {
             }
             .buttonStyle(PlainButtonStyle())
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header:
             WalletLoadingButton(
@@ -176,7 +176,6 @@ struct SendTokenView: View {
             .listRowBackground(Color(.clear))
         ) {
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .alert(isPresented: $isShowingError) {
         Alert(
