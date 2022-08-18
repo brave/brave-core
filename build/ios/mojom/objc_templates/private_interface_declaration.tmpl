@@ -7,12 +7,6 @@
 - (instancetype)init NS_UNAVAILABLE;
 @end
 
-@interface {{objc_name}}Impl : NSObject <{{objc_name}}>
-{{- interface_macros.objc_methods(interface) }}
-- (instancetype)initWith{{interface.name}}:({{cpp_namespace}}::{{interface.name}}*)obj;
-- (instancetype)init NS_UNAVAILABLE;
-@end
-
 @interface {{objc_name}}OwnedImpl : NSObject <{{objc_name}}>
 {{- interface_macros.objc_methods(interface) }}
 - (instancetype)initWith{{interface.name}}:(std::unique_ptr<{{cpp_namespace}}::{{interface.name}}>)obj;

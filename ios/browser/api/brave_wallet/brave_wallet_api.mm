@@ -50,8 +50,8 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaInternal =
 
 + (id<BraveWalletBlockchainRegistry>)blockchainRegistry {
   auto* registry = brave_wallet::BlockchainRegistry::GetInstance();
-  return [[BraveWalletBlockchainRegistryImpl alloc]
-      initWithBlockchainRegistry:registry];
+  return [[BraveWalletBlockchainRegistryMojoImpl alloc]
+      initWithBlockchainRegistry:registry->MakeRemote()];
 }
 
 - (nullable id<BraveWalletEthereumProvider>)
