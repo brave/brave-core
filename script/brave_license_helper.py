@@ -28,6 +28,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
         os.path.join('brave', 'third_party', 'android_deps'),
         os.path.join('brave', 'third_party', 'blink'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
+        os.path.join('brave', 'patches', 'third_party'),
 
         # Build dependencies which don't end up in the binaries.
         os.path.join('brave', 'vendor', 'depot_tools'),
