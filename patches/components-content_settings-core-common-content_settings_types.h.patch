@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 9c6728a428ba0ec1fd058a7f29661c8e55a4bf9c..30f6bcc5b913e4ababb4dd3c63a3d0b4d98ddac0 100644
+index cd92cee23aa9a692ec6732e79ce8794667692024..e42630b21e2452eacf3e2dd6cd4fe042c054267b 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -287,6 +287,7 @@ enum class ContentSettingsType : int32_t {
-   // in local time.
-   NOTIFICATION_INTERACTIONS,
+@@ -291,6 +291,7 @@ enum class ContentSettingsType : int32_t {
+   // for a given origin, to be used on future visits to the origin.
+   REDUCED_ACCEPT_LANGUAGE,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,

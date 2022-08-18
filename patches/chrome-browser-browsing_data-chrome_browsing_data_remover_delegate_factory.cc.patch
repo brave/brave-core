@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-index 975ba6c5b267d7f1dc9b4772c55e1976d84f72de..9f592931f898870a8e7a9b993c467e81c37822e8 100644
+index 234a1d74e0805f9b693e48c532c86785693e904c..a970d0567cfe36d50640163a5b4148c5cd96a912 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-@@ -98,5 +98,5 @@ ChromeBrowsingDataRemoverDelegateFactory::GetBrowserContextToUse(
- 
- KeyedService* ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceFor(
-     content::BrowserContext* context) const {
+@@ -90,5 +90,5 @@ KeyedService* ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceFor(
+   // For guest profiles the browsing data is in the OTR profile.
+   Profile* profile = static_cast<Profile*>(context);
+   DCHECK(!profile->IsGuestSession() || profile->IsOffTheRecord());
 -  return new ChromeBrowsingDataRemoverDelegate(context);
 +  return new BraveBrowsingDataRemoverDelegate(context);
  }
