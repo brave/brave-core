@@ -10,6 +10,7 @@
 import copy
 
 import lib.chromium_presubmit_utils as chromium_presubmit_utils
+import lib.override_utils as override_utils
 
 _BRAVE_DEFAULT_FILES_TO_SKIP = (r'win_build_output[\\/].*', )
 
@@ -101,9 +102,9 @@ def _modify_canned_checks(canned_checks):
                 for f in input_api.AffectedSourceFiles(src_filter)
             ]
 
-        with chromium_presubmit_utils.override_scope_function(
-                input_api.canned_checks, _FetchAllFiles):
-            with chromium_presubmit_utils.override_scope_variable(
+        with override_utils.override_scope_function(input_api.canned_checks,
+                                                    _FetchAllFiles):
+            with override_utils.override_scope_variable(
                     input_api, 'is_committing', True):
                 return original_check(input_api, *args, **kwargs)
 
@@ -152,8 +153,8 @@ def CheckForIncludeGuards(original_check, input_api, output_api):
                                             original_method(source_file))
         ]
 
-    with chromium_presubmit_utils.override_scope_function(
-            input_api, AffectedSourceFiles):
+    with override_utils.override_scope_function(input_api,
+                                                AffectedSourceFiles):
         return original_check(input_api, output_api)
 
 
@@ -176,8 +177,7 @@ def CheckMPArchApiUsage(original_check, input_api, output_api):
         kwargs['file_filter'] = self.FilterSourceFile
         return original_method(*args, **kwargs)
 
-    with chromium_presubmit_utils.override_scope_function(
-            input_api, AffectedFiles):
+    with override_utils.override_scope_function(input_api, AffectedFiles):
         return original_check(input_api, output_api)
 
 
@@ -193,8 +193,7 @@ def CheckForRelativeIncludes(original_check, input_api, output_api):
         kwargs['file_filter'] = file_filter
         return original_method(*args, **kwargs)
 
-    with chromium_presubmit_utils.override_scope_function(
-            input_api, AffectedFiles):
+    with override_utils.override_scope_function(input_api, AffectedFiles):
         return original_check(input_api, output_api)
 
 
@@ -210,8 +209,7 @@ def CheckForCcIncludes(original_check, input_api, output_api):
         kwargs['file_filter'] = file_filter
         return original_method(*args, **kwargs)
 
-    with chromium_presubmit_utils.override_scope_function(
-            input_api, AffectedFiles):
+    with override_utils.override_scope_function(input_api, AffectedFiles):
         return original_check(input_api, output_api)
 
 
@@ -226,6 +224,5 @@ def CheckUnwantedDependencies(original_check, input_api, output_api):
         kwargs['file_filter'] = file_filter
         return original_method(*args, **kwargs)
 
-    with chromium_presubmit_utils.override_scope_function(
-            input_api, AffectedFiles):
+    with override_utils.override_scope_function(input_api, AffectedFiles):
         return original_check(input_api, output_api)
