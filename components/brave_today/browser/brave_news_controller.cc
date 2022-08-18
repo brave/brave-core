@@ -183,12 +183,10 @@ void BraveNewsController::SubscribeToNewDirectFeed(
             DictionaryPrefUpdate update(controller->prefs_,
                                         prefs::kBraveTodayDirectFeeds);
             // Get is valid and name
-            base::Value value = base::Value(base::Value::Type::DICTIONARY);
-            value.SetStringKey(prefs::kBraveTodayDirectFeedsKeySource,
-                               feed_url.spec());
-            value.SetStringKey(prefs::kBraveTodayDirectFeedsKeyTitle,
-                               entry_feed_title);
-            update->SetPath(id, std::move(value));
+            base::Value::Dict value;
+            value.Set(prefs::kBraveTodayDirectFeedsKeySource, feed_url.spec());
+            value.Set(prefs::kBraveTodayDirectFeedsKeyTitle, entry_feed_title);
+            update->SetPath(id, base::Value(std::move(value)));
             // Mark feed as requiring update
             // TODO(petemill): expose function to mark direct feeds as dirty
             // and not require re-download of sources.json
