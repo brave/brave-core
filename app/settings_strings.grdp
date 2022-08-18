@@ -272,6 +272,18 @@
   </message>
 
   <!-- Autofill Page -->
+  <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before revealing plaintext passwords on the password page.">
+    show passwords
+  </message>
+  <message name="IDS_PASSWORDS_PAGE_COPY_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before copying plaintext passwords into the clipboard.">
+    copy passwords
+  </message>
+  <message name="IDS_PASSWORDS_PAGE_EDIT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before editing plaintext passwords on the password page.">
+    edit passwords
+  </message>
+  <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before exporting passwords to a file.">
+    export passwords
+  </message>
   <message name="IDS_SETTINGS_AUTOFILL" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
     Autofill
   </message>
@@ -608,8 +620,8 @@
   <message name="IDS_SETTINGS_PASSWORD_ADD_FOOTNOTE" desc="A footnote for the dialog which allows the user to add a new password.">
     Make sure you're saving your current password for this site
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_ADD_STORE_OPTION_ACCOUNT" desc="An option of the store picker shown in the add password dialog if saving to the account">
-    Save in your Brave sync chain (<ph name="EMAIL">$1<ex>username@gmail.com</ex></ph>)
+  <message name="IDS_SETTINGS_PASSWORD_STORE_PICKER_OPTION_ACCOUNT" desc="An option of the store picker shown in the add password dialog if saving to the Brave Password Manager">
+    Save to Brave Password Manager (<ph name="EMAIL">$1<ex>username@gmail.com</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_PASSWORD_COPY" desc="Label for a context menu item that allows to copy the selected password into clipboard.">
     Copy password
@@ -772,13 +784,27 @@
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CHOOSE_FILE" desc="A button in the dialog for importing passwords from Brave. Passwords will be imported from the file, which the user will be asked to choose after initiating this action.">
     Choose file
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_GENERIC" desc="Text shown to the user on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
-    To import passwords, select a CSV file.
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_ACCOUNT_STORE_USERS" desc="Text shown to the account store users (who has the option to store passwords localy or in Brave Password manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
+    To import passwords, select a CSV file
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_SYNCING_USERS" desc="Text shown to the signed in user (whose passwords are synced with Brave Password Manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
+    To import passwords to your Brave Password Manager, select a CSV file
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_SIGNEDOUT_USERS" desc="Text shown to the user (whose passwords are store locally on their device) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
+    To import passwords to this device, select a CSV file
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_SUMMARY_DEVICE" desc="Text on the dialog for importing passwords that shows how many passwords have been stored on the user device, after the user has chosen the file to import passwords from.">
     {NUM_PASSWORDS, plural,
      =1 {1 password imported to this device}
      other {{NUM_PASSWORDS} passwords imported to this device}}
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_SUMMARY_ACCOUNT" desc="Text on the dialog for importing passwords that shows how many passwords have been saved to Brave Password Manager, after the user has chosen the file to import passwords from.">
+    {NUM_PASSWORDS, plural,
+     =1 {1 password imported to your Brave Password Manager (<ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>)}
+     other {{NUM_PASSWORDS} passwords imported to your Brave Password Manager (<ph name="USER_EMAIL"><ex>elisa.g.becket@gmail.com</ex>$1</ph>)}}
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_STORE_PICKER_ACCESSIBLE_NAME" desc="Accessible name of destination dropdown in the passwords import dialog">
+    Select where to import your passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_TIP" desc="Message is shown on the dialog for importing passwords, after a successful import. It is an advice for the user, that they should consider deleting the file, which they used for importing passwords from.">
     Consider deleting <ph name="FILENAME"><ex>file_name.csv</ex>$1</ph>, so others who use this device can't see your passwords.
@@ -812,6 +838,9 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_FAILURES_SUMMARY" desc="Message is shown on the dialog for importing passwords if some passwords weren't imported.">
     Passwords not imported (<ph name="COUNT"><ex>42</ex>$1</ph>)
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ALREADY_ACTIVE" desc="Message is shown on the dialog for importing passwords if there is the import process is already running in another tab.">
+    You're already importing passwords in another tab
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can export their passwords outside of Brave.">
     Export passwords...
@@ -1842,11 +1871,14 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_ICON_WARNING_ARIA_LABEL" desc="Accessibility text for a safety check child icon, that indicates a warning for the child check.">
     Warning
   </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSIONS_PRIMARY_LABEL" translateable="false" desc="The placeholder title for 'Notification Permissions' module. It is an element in safety check that shows the websites with high volume notification permissions.">
+    Review sites that recently sent a lot of notifications
+  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW" desc="Text for a button that allows users to review safety check findings, such as compromised passwords or blocklisted extensions.">
     Review
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_PRIMARY_LABEL" translateable="false" desc="The placeholder title for 'Unused Site Permissions' module. It is an element in safety check that shows the revoked permissions of unused websites.">
-    Permissions removed from unused websites.
+    Permissions removed from unused websites
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_PRIMARY_LABEL" desc="'Updates' is an element in safety check that shows the update status of Brave.">
     Updates
@@ -3080,20 +3112,20 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOAD_ASK_RECOMMENDED" desc="The allow label for automatic download in site settings (with the 'recommended' suffix).">
     Ask when a site tries to download files automatically after the first file (recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_DESCRIPTION" desc="Description of the window placement site setting.">
-    Sites usually open and place windows to show additional documents or fullscreen content on your screens
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_MANAGEMENT_DESCRIPTION" desc="Description of the window management site setting.">
+    Sites usually ask for information about your displays so they can open and place windows intelligently, like showing documents or full-screen content side by side
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_ASK" desc="Label for the enabled option of the window placement site setting.">
-    Sites can ask to use info about your screens to open and place windows
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_MANAGEMENT_ASK" desc="Label for the enabled option of the window management site setting.">
+    Sites can ask to manage windows on all your displays
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCKED" desc="Label for the disabled option of the window placement site setting.">
-    Don't allow sites use info about your screens to open and place windows
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_MANAGEMENT_BLOCKED" desc="Label for the disabled option of the window management site setting.">
+    Don't allow sites to manage windows on all your displays
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_ASK_EXCEPTIONS" desc="Label for the enabled exceptions site list of the window placement site setting.">
-    Allowed to use info about your screens to open and place windows
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_MANAGEMENT_ASK_EXCEPTIONS" desc="Label for the enabled exceptions site list of the window management site setting.">
+    Allowed to manage windows on all your displays
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the window placement site setting.">
-    Not allowed to use info about your screens to open and place windows
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_MANAGEMENT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the window management site setting.">
+    Not allowed to manage windows on all your displays
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_BLOCK" desc="The block label for the idle detection site settings.">
     Block sites from knowing when you're actively using this device

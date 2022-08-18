@@ -448,8 +448,8 @@
     <message name="IDS_PAGE_INFO_STATE_TEXT_IDLE_DETECTION_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the idle detection permission is in the ask state and the site can prompt the user to ask if they allow the site to know when you're actively using this device.">
       Can ask to know when you're actively using this device
     </message>
-    <message name="IDS_PAGE_INFO_STATE_TEXT_WINDOW_PLACEMENT_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the window placement permission is in the ask state and the site can prompt the user to ask if they allow the site to use info about your screens to open and place windows.">
-      Can ask to use info about your screens
+    <message name="IDS_PAGE_INFO_STATE_TEXT_WINDOW_MANAGEMENT_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the window management permission is in the ask state and the site can prompt the user to ask if they allow the site to manage windows on all your displays.">
+      Can ask to manage windows on all your displays
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_BLUETOOTH_SCANNING_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the bluetooth scanning permission is in the ask state and the site can prompt the user to ask if they allow the site to discover nearby Bluetooth devices.">
       Can ask to discover nearby Bluetooth devices
@@ -696,6 +696,9 @@
   <message name="IDS_PAGE_INFO_ABOUT_THIS_PAGE_TITLE" desc="The title of the 'About this page' row in the Page Info bubble.">
     About this page
   </message>
+  <message name="IDS_PAGE_INFO_ABOUT_THIS_PAGE_DESCRIPTION_PLACEHOLDER" desc="The description of the 'About this page' row in the Page Info bubble if no more detailed description is available. 'It' refers to the page the user is currently visiting.">
+    Learn about its source and topic
+  </message>
   <message name="IDS_PAGE_INFO_ABOUT_THIS_SITE_TOOLTIP" desc="The tooltip of the button that opens 'About this site' subpage in Page Info bubble.">
     Show information from the web
   </message>
@@ -724,6 +727,12 @@
   </message>
   <message name="IDS_PAGE_INFO_COOKIES_ALLOWED_SITES_COUNT" desc="The label of the count for sites with allowed cookies on the page. This text will be shown on the cookies dialog button." translateable="false">
         {NUM_COOKIES, plural, =1 {1 site allowed} other {# sites allowed}}
+  </message>
+  <message name="IDS_PAGE_FPS_BUTTON_TITLE" desc="The title of first-party sets button in Cookies Subpage with place holder for name of the owner of this set." translateable="false">
+    See sites related to <ph name="SET_OWNER">$1<ex>gannett.com</ex></ph>
+  </message>
+  <message name="IDS_PAGE_FPS_BUTTON_SUBTITLE" desc="The subtitle of first-party sets button in Cookies Subpage with place holder for name of the owner of this set." translateable="false">
+    <ph name="SET_OWNER">$1<ex>gannett.com</ex></ph> says these sites are related
   </message>
 
   <!-- History strings -->
