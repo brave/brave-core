@@ -1205,14 +1205,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return std::string(contents.UTF8String);
 }
 
-- (void)reset:(const std::string&)name callback:(ads::ResultCallback)callback {
-  if ([self.commonOps removeFileWithName:name]) {
-    callback(/* success */ true);
-  } else {
-    callback(/* success */ false);
-  }
-}
-
 - (void)save:(const std::string&)name
        value:(const std::string&)value
     callback:(ads::SaveCallback)callback {
