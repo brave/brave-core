@@ -24,8 +24,9 @@
 
 namespace blink {
 
+using brave::BlockScreenFingerprinting;
+using brave::FarbleInteger;
 using brave::FarbleKey;
-using brave::MaybeFarbleScreenInteger;
 
 void LocalDOMWindow::SetEphemeralStorageOrigin(
     const SecurityOrigin* ephemeral_storage_origin) {
@@ -51,34 +52,40 @@ LocalDOMWindow::GetEphemeralStorageOriginOrSecurityOrigin() const {
              : GetSecurityOrigin();
 }
 
-int LocalDOMWindow::outerHeight() const {
-  // Prevent fingerprinter use of outerHeight by returning a farbled value near
-  // innerHeight instead:
-  return MaybeFarbleScreenInteger(
-      GetExecutionContext(), brave::FarbleKey::kWindowInnerHeight,
-      innerHeight(), 0, 8, outerHeight_ChromiumImpl());
-}
-
 int LocalDOMWindow::outerWidth() const {
   // Prevent fingerprinter use of outerWidth by returning a farbled value near
   // innerWidth instead:
-  return MaybeFarbleScreenInteger(
-      GetExecutionContext(), brave::FarbleKey::kWindowInnerWidth, innerWidth(),
-      0, 8, outerWidth_ChromiumImpl());
+  ExecutionContext* context = GetExecutionContext();
+  return BlockScreenFingerprinting(context)
+             ? FarbleInteger(context, brave::FarbleKey::kWindowInnerWidth,
+                             innerWidth(), 0, 8)
+             : outerWidth_ChromiumImpl();
+}
+
+int LocalDOMWindow::outerHeight() const {
+  // Prevent fingerprinter use of outerHeight by returning a farbled value near
+  // innerHeight instead:
+  ExecutionContext* context = GetExecutionContext();
+  return BlockScreenFingerprinting(context)
+             ? FarbleInteger(context, brave::FarbleKey::kWindowInnerHeight,
+                             innerHeight(), 0, 8)
+             : outerHeight_ChromiumImpl();
 }
 
 int LocalDOMWindow::screenX() const {
   // Prevent fingerprinter use of screenX, screenLeft by returning value near 0:
-  return MaybeFarbleScreenInteger(GetExecutionContext(),
-                                  brave::FarbleKey::kWindowScreenX, 0, 0, 8,
-                                  screenX_ChromiumImpl());
+  ExecutionContext* context = GetExecutionContext();
+  return BlockScreenFingerprinting(context)
+             ? FarbleInteger(context, brave::FarbleKey::kWindowScreenX, 0, 0, 8)
+             : screenX_ChromiumImpl();
 }
 
 int LocalDOMWindow::screenY() const {
   // Prevent fingerprinter use of screenY, screenTop by returning value near 0:
-  return MaybeFarbleScreenInteger(GetExecutionContext(),
-                                  brave::FarbleKey::kWindowScreenY, 0, 0, 8,
-                                  screenY_ChromiumImpl());
+  ExecutionContext* context = GetExecutionContext();
+  return BlockScreenFingerprinting(context)
+             ? FarbleInteger(context, brave::FarbleKey::kWindowScreenY, 0, 0, 8)
+             : screenY_ChromiumImpl();
 }
 
 }  // namespace blink

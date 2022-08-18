@@ -51,12 +51,11 @@ GetBraveFarblingLevelFor(ExecutionContext* context,
 CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context);
 CORE_EXPORT bool AllowFontFamily(ExecutionContext* context,
                                  const AtomicString& family_name);
-CORE_EXPORT int MaybeFarbleScreenInteger(ExecutionContext* context,
-                                         brave::FarbleKey key,
-                                         int spoof_value,
-                                         int min_value,
-                                         int max_value,
-                                         int default_value);
+CORE_EXPORT int FarbleInteger(ExecutionContext* context,
+                              brave::FarbleKey key,
+                              int spoof_value,
+                              int min_value,
+                              int max_value);
 CORE_EXPORT bool BlockScreenFingerprinting(ExecutionContext* context);
 CORE_EXPORT int FarbledPointerScreenCoordinate(const DOMWindow* view,
                                                FarbleKey key,

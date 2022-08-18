@@ -139,15 +139,11 @@ bool AllowFontFamily(ExecutionContext* context,
   return true;
 }
 
-int MaybeFarbleScreenInteger(ExecutionContext* context,
-                             brave::FarbleKey key,
-                             int spoof_value,
-                             int min_value,
-                             int max_value,
-                             int default_value) {
-  if (!brave::BlockScreenFingerprinting(context)) {
-    return default_value;
-  }
+int FarbleInteger(ExecutionContext* context,
+                  brave::FarbleKey key,
+                  int spoof_value,
+                  int min_value,
+                  int max_value) {
   BraveSessionCache& cache = BraveSessionCache::From(*context);
   return cache.FarbledInteger(key, spoof_value, min_value, max_value);
 }
@@ -172,9 +168,11 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
     return true_screen_coordinate;
   }
   ExecutionContext* context = local_dom_window->GetExecutionContext();
+  if (!BlockScreenFingerprinting(context)) {
+    return true_screen_coordinate;
+  }
   double zoom_factor = local_dom_window->GetFrame()->PageZoomFactor();
-  return MaybeFarbleScreenInteger(context, key, zoom_factor * client_coordinate,
-                                  0, 8, true_screen_coordinate);
+  return FarbleInteger(context, key, zoom_factor * client_coordinate, 0, 8);
 }
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
