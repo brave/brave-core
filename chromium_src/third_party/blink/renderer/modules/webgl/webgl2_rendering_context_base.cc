@@ -4,12 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.h"
-#include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #include <algorithm>
 
-using blink::ExecutionContext;
 using blink::ScriptState;
 using blink::ScriptValue;
 using blink::WebGL2RenderingContextBase;
