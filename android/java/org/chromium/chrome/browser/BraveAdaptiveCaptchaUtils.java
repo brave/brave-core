@@ -36,6 +36,7 @@ public class BraveAdaptiveCaptchaUtils {
                     BraveRewardsNativeWorker.getInstance().getCaptchaSolutionURL(
                             paymentId, captchaId);
             Log.e(TAG, adaptiveCaptchaSolutionUrl);
+            String logMessage = "";
             try {
                 URL url = new URL(String.format(adaptiveCaptchaSolutionUrl, paymentId, captchaId));
                 urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
@@ -55,8 +56,8 @@ public class BraveAdaptiveCaptchaUtils {
                 outputStream.flush();
                 outputStream.close();
 
-                int HttpResult = urlConnection.getResponseCode();
-                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                int responseCode = urlConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(
                             urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
                     StringBuilder sb = new StringBuilder();
@@ -65,6 +66,7 @@ public class BraveAdaptiveCaptchaUtils {
                         sb.append(line + "\n");
                     }
                     clearCaptchaPrefs();
+                    logMessage = "Captcha has been solved.";
                     br.close();
                 } else {
                     UserPrefs.get(Profile.getLastUsedRegularProfile())
@@ -74,7 +76,7 @@ public class BraveAdaptiveCaptchaUtils {
                                                             BravePref
                                                                     .SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
                                             + 1);
-                    Log.e(TAG, urlConnection.getResponseMessage());
+                    logMessage = "Captcha solution failed with " + responseCode+ " : " + urlConnection.getResponseMessage();
                 }
             } catch (MalformedURLException e) {
                 Log.e(TAG, e.getMessage());
@@ -84,6 +86,7 @@ public class BraveAdaptiveCaptchaUtils {
                 Log.e(TAG, e.getMessage());
             } finally {
                 if (urlConnection != null) urlConnection.disconnect();
+                Log.e(TAG, logMessage);
             }
         });
     }

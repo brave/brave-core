@@ -757,6 +757,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
         }
 
+        Log.e("adaptive captcha", "Failed attempts : "+ UserPrefs.get(Profile.getLastUsedRegularProfile()).getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
         if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
             solveAdaptiveCaptcha();
