@@ -80,6 +80,10 @@ extern const char kSafetynetCheckFailed[];
 extern const char kSafetynetStatus[];
 #endif
 
+#if BUILDFLAG(IS_WIN)
+extern const char kTryToPinForExistingUsers[];
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
 extern const char kEnableWindowClosingConfirm[];
 extern const char kEnableClosingLastTab[];
