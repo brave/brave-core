@@ -7,13 +7,71 @@
 import sys
 import os
 import logging
-
 import subprocess
+import json
+import shutil
+import sys
+import re
 
 from typing import List
-import json
+
+from urllib.request import urlopen
+from io import BytesIO
+from zipfile import ZipFile
+from distutils.dir_util import copy_tree
 
 from components import path_util
+from components.perf_test_utils import GetProcessOutput
+
+
+def _DownloadArchiveAndUnpack(output_directory: str, url: str) -> str:
+  logging.info('Downloading archive %s', url)
+  resp = urlopen(url)
+  zipfile = ZipFile(BytesIO(resp.read()))
+  zipfile.extractall(output_directory)
+  return os.path.join(output_directory,
+                      path_util.GetBinaryPath(output_directory))
+
+
+def _DownloadWinInstallerAndExtract(out_dir: str,
+                                    url: str,
+                                    expected_install_path: str,
+                                    binary_name: str) -> str:
+  if not os.path.exists(out_dir):
+    os.makedirs(out_dir)
+  installer_filename = os.path.join(out_dir, os.pardir, 'temp_installer.exe')
+  logging.info('Downloading %s', url)
+  f = urlopen(url)
+  data = f.read()
+  with open(installer_filename, 'wb') as output_file:
+    output_file.write(data)
+  GetProcessOutput([installer_filename, '--chrome-sxs',
+                    '--do-not-launch-chrome'], None, True)
+
+  GetProcessOutput(['taskkill.exe', '/f', '/im', binary_name], None, True)
+
+  if not os.path.exists(expected_install_path):
+    raise RuntimeError(f'No files found in {expected_install_path}')
+
+  full_version = None
+  logging.info('Copy files to %s', out_dir)
+  copy_tree(expected_install_path, out_dir)
+  for file in os.listdir(expected_install_path):
+    if re.match(r'\d+\.\d+\.\d+.\d+', file):
+      assert (full_version is None)
+      full_version = file
+  assert (full_version is not None)
+  logging.info('Detected version %s', full_version)
+  setup_filename = os.path.join(expected_install_path, full_version,
+                                'Installer', 'setup.exe')
+  logging.info('Run uninstall')
+
+  GetProcessOutput([setup_filename, '--uninstall',
+                    '--force-uninstall', '--chrome-sxs'])
+  shutil.rmtree(expected_install_path, True)
+
+  return os.path.join(out_dir, binary_name)
+
 
 class BrowserType:
   _name: str
@@ -43,16 +101,7 @@ class BrowserType:
   def ReportAsReference(self) -> bool:
     return self._report_as_reference
 
-  def GetInstallPath(self) -> str:
-    raise NotImplementedError()
-
-  def GetBinaryName(self) -> str:
-    raise NotImplementedError()
-
-  def GetSetupDownloadUrl(self, tag) -> str:
-    raise NotImplementedError()
-
-  def GetZipDownloadUrl(self, tag) -> str:
+  def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
     raise NotImplementedError()
 
 
@@ -67,30 +116,37 @@ class BraveBrowserTypeImpl(BrowserType):
     super().__init__(name, extra_browser_args, extra_benchmark_args, False)
     self._channel = channel
 
-  def GetInstallPath(self) -> str:
-    if sys.platform == 'win32':
-      return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
-                          'BraveSoftware', 'Brave-Browser-' + self._channel,
-                          'Application')
-
-    raise NotImplementedError()
-
-  def GetBinaryName(self) -> str:
-    if sys.platform == 'win32':
-      return 'brave.exe'
-
-    raise NotImplementedError()
-
-  def GetSetupDownloadUrl(self, tag) -> str:
+  @classmethod
+  def _GetSetupDownloadUrl(cls, tag) -> str:
     return ('https://github.com/brave/brave-browser/releases/download/' +
             f'{tag}/BraveBrowserStandaloneSilentNightlySetup.exe')
 
-  def GetZipDownloadUrl(self, tag) -> str:
+  def _GetWinInstallPath(self) -> str:
+    return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
+                        'BraveSoftware', 'Brave-Browser-' + self._channel,
+                        'Application')
+
+  @classmethod
+  def _GetZipDownloadUrl(cls, tag) -> str:
     if sys.platform == 'win32':
       platform = 'win32-x64'
       return ('https://github.com/brave/brave-browser/releases/' +
               f'download/{tag}/brave-{tag}-{platform}.zip')
     raise NotImplementedError()
+
+  def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
+    m = re.match(r'^v(\d+)\.(\d+)\.\d+$', tag)
+    if not m:
+      raise RuntimeError(f'Failed to parse tag "{tag}"')
+    if (sys.platform == 'win32' and int(m.group(1)) == 1
+            and int(m.group(2)) < 35):
+      return _DownloadWinInstallerAndExtract(
+          out_dir,
+          self._GetSetupDownloadUrl(tag),
+          self._GetWinInstallPath(),
+          'brave.exe')
+
+    return _DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag))
 
 
 def _ParseVersion(version_string) -> List[str]:
@@ -142,25 +198,21 @@ class ChromeBrowserTypeImpl(BrowserType):
                      report_as_reference)
     self._channel = channel
 
-  def GetInstallPath(self) -> str:
+  def _GetWinInstallPath(self) -> str:
+    return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
+                        'Google', 'Chrome ' + self._channel,
+                        'Application')
+
+  def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
     if sys.platform == 'win32':
-      return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
-                          'Google', 'Chrome ' + self._channel,
-                          'Application')
+      return _DownloadWinInstallerAndExtract(
+          out_dir,
+          _GetNearestChromiumUrl(tag),
+          self._GetWinInstallPath(),
+          'chrome.exe')
 
     raise NotImplementedError()
 
-  def GetBinaryName(self) -> str:
-    if sys.platform == 'win32':
-      return 'chrome.exe'
-
-    raise NotImplementedError()
-
-  def GetSetupDownloadUrl(self, tag) -> str:
-    return _GetNearestChromiumUrl(tag)
-
-  def GetZipDownloadUrl(self, tag) -> str:
-    raise NotImplementedError()
 
 def ParseBrowserType(string_type: str) -> BrowserType:
   if string_type == 'chrome':
