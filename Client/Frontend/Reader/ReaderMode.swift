@@ -223,7 +223,7 @@ struct ReadabilityResult {
 }
 
 /// Delegate that contains callbacks that we have added on top of the built-in WKWebViewDelegate
-protocol ReaderModeDelegate {
+protocol ReaderModeDelegate: AnyObject {
   func readerMode(_ readerMode: ReaderMode, didChangeReaderModeState state: ReaderModeState, forTab tab: Tab)
   func readerMode(_ readerMode: ReaderMode, didDisplayReaderizedContentForTab tab: Tab)
   func readerMode(_ readerMode: ReaderMode, didParseReadabilityResult readabilityResult: ReadabilityResult, forTab tab: Tab)
@@ -232,7 +232,7 @@ protocol ReaderModeDelegate {
 let ReaderModeNamespace = "window.__firefox__.reader"
 
 class ReaderMode: TabContentScript {
-  var delegate: ReaderModeDelegate?
+  weak var delegate: ReaderModeDelegate?
 
   fileprivate weak var tab: Tab?
   var state: ReaderModeState = ReaderModeState.unavailable
