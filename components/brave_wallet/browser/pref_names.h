@@ -39,17 +39,12 @@ extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
 
 extern const char kBraveWalletWasOnboardingShown[];
+extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
 
 // DEPRECATED
 extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];
 extern const char kDefaultWalletDeprecated[];
-extern const char kBraveWalletPasswordEncryptorSalt[];
-extern const char kBraveWalletPasswordEncryptorNonce[];
-extern const char kBraveWalletEncryptedMnemonic[];
-extern const char kBraveWalletDefaultKeyringAccountNum[];
-extern const char kBraveWalletAccountNames[];
-extern const char kBraveWalletBackupComplete[];
 extern const char kBraveWalletCustomNetworksDeprecated[];
 extern const char kBraveWalletCurrentChainId[];
 extern const char kBraveWalletUserAssetsDeprecated[];

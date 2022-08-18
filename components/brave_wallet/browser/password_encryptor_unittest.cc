@@ -11,8 +11,11 @@
 namespace brave_wallet {
 
 namespace {
-static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
+base::span<const uint8_t> ToSpan(base::StringPiece sp) {
   return base::as_bytes(base::make_span(sp));
+}
+std::string ToString(const std::vector<uint8_t>& v) {
+  return std::string(v.begin(), v.end());
 }
 }  // namespace
 
@@ -36,47 +39,36 @@ TEST(PasswordEncryptorUnitTest, EncryptAndDecrypt) {
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
           "password", ToSpan("salt"), 100, 256);
   const std::vector<uint8_t> nonce(12, 0xAB);
-  EXPECT_FALSE(encryptor->Encrypt(ToSpan("bravo"), nonce, nullptr));
-  std::vector<uint8_t> ciphertext;
-  EXPECT_TRUE(encryptor->Encrypt(ToSpan("bravo"), nonce, &ciphertext));
-  EXPECT_FALSE(encryptor->Decrypt(ciphertext, nonce, nullptr));
-  std::vector<uint8_t> plaintext;
-  EXPECT_TRUE(encryptor->Decrypt(ciphertext, nonce, &plaintext));
-  EXPECT_EQ(std::string(plaintext.begin(), plaintext.end()), "bravo");
+  auto ciphertext = encryptor->Encrypt(ToSpan("bravo"), nonce);
+  EXPECT_EQ("bravo", ToString(*encryptor->Decrypt(ciphertext, nonce)));
 
   // nonce mismatch
-  plaintext.clear();
   const std::vector<uint8_t> nonce_ff(12, 0xFF);
-  EXPECT_FALSE(encryptor->Decrypt(ciphertext, nonce_ff, &plaintext));
+  EXPECT_FALSE(encryptor->Decrypt(ciphertext, nonce_ff));
 
   // empty ciphertext
-  plaintext.clear();
-  EXPECT_FALSE(encryptor->Decrypt(std::vector<uint8_t>(), nonce, &plaintext));
+  EXPECT_FALSE(encryptor->Decrypt(std::vector<uint8_t>(), nonce));
 
-  // weong ciphertext
-  plaintext.clear();
-  EXPECT_FALSE(encryptor->Decrypt(ToSpan("wrongcipher"), nonce, &plaintext));
+  // wrong ciphertext
+  EXPECT_FALSE(encryptor->Decrypt(ToSpan("wrongcipher"), nonce));
 
   // password mismatch
-  plaintext.clear();
   std::unique_ptr<PasswordEncryptor> encryptor2 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
           "password2", ToSpan("salt"), 100, 256);
-  EXPECT_FALSE(encryptor2->Decrypt(ciphertext, nonce, &plaintext));
+  EXPECT_FALSE(encryptor2->Decrypt(ciphertext, nonce));
 
   // salt mismatch
-  plaintext.clear();
   std::unique_ptr<PasswordEncryptor> encryptor3 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
           "password", ToSpan("salt2"), 100, 256);
-  EXPECT_FALSE(encryptor3->Decrypt(ciphertext, nonce, &plaintext));
+  EXPECT_FALSE(encryptor3->Decrypt(ciphertext, nonce));
 
   // iteration mismatch
-  plaintext.clear();
   std::unique_ptr<PasswordEncryptor> encryptor4 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
           "password", ToSpan("salt"), 200, 256);
-  EXPECT_FALSE(encryptor4->Decrypt(ciphertext, nonce, &plaintext));
+  EXPECT_FALSE(encryptor4->Decrypt(ciphertext, nonce));
 }
 
 TEST(PasswordEncryptorUnitTest, DecryptForImporter) {
@@ -91,17 +83,16 @@ TEST(PasswordEncryptorUnitTest, DecryptForImporter) {
   std::vector<uint8_t> ciphertext;
   ciphertext =
       aead.Seal(ToSpan("importer12"), nonce_12, std::vector<uint8_t>());
-  std::vector<uint8_t> plaintext;
-  EXPECT_TRUE(encryptor->DecryptForImporter(ciphertext, nonce_12, &plaintext));
-  EXPECT_EQ(std::string(plaintext.begin(), plaintext.end()), "importer12");
+  auto plaintext = encryptor->DecryptForImporter(ciphertext, nonce_12);
+  ASSERT_TRUE(plaintext);
+  EXPECT_EQ(ToString(*plaintext), "importer12");
 
-  ciphertext.clear();
-  plaintext.clear();
   aead.OverrideNonceLength(16);
   ciphertext =
       aead.Seal(ToSpan("importer16"), nonce_16, std::vector<uint8_t>());
-  EXPECT_TRUE(encryptor->DecryptForImporter(ciphertext, nonce_16, &plaintext));
-  EXPECT_EQ(std::string(plaintext.begin(), plaintext.end()), "importer16");
+  plaintext = encryptor->DecryptForImporter(ciphertext, nonce_16);
+  ASSERT_TRUE(plaintext);
+  EXPECT_EQ(ToString(*plaintext), "importer16");
 }
 
 }  // namespace brave_wallet

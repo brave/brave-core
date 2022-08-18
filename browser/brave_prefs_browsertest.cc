@@ -128,8 +128,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
             chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
                 kBraveWalletSelectedCoin));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kBraveWalletBackupComplete));
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kMRUCyclingEnabled));
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
