@@ -25,6 +25,49 @@ bool IsValidURL(const std::string& url_string) {
           (net::IsLocalhost(url) && url.SchemeIs(url::kHttpScheme)));
 }
 
+// Common parts of base::Value parsing shared between Eip3085 payload spec and
+// brave settings pserstence.
+// IMPORTANT: When adding something here please make sure it is valid for
+// https://eips.ethereum.org/EIPS/eip-3085.
+bool ValueToEthNetworkInfoCommon(const base::Value& value,
+                                 brave_wallet::mojom::NetworkInfo* chain) {
+  const base::Value::Dict* params_dict = value.GetIfDict();
+  if (!params_dict)
+    return false;
+
+  const std::string* chain_id = params_dict->FindString("chainId");
+  if (!chain_id) {
+    return false;
+  }
+  chain->chain_id = *chain_id;
+
+  const std::string* chain_name = params_dict->FindString("chainName");
+  if (chain_name) {
+    chain->chain_name = *chain_name;
+  }
+
+  const auto* nativeCurrencyValue = params_dict->FindDict("nativeCurrency");
+  chain->decimals = 0;
+  if (nativeCurrencyValue) {
+    const std::string* symbol_name = nativeCurrencyValue->FindString("name");
+    if (symbol_name) {
+      chain->symbol_name = *symbol_name;
+    }
+    const std::string* symbol = nativeCurrencyValue->FindString("symbol");
+    if (symbol) {
+      chain->symbol = *symbol;
+    }
+    absl::optional<int> decimals = nativeCurrencyValue->FindInt("decimals");
+    if (decimals) {
+      chain->decimals = decimals.value();
+    }
+  }
+
+  chain->coin = brave_wallet::mojom::CoinType::ETH;
+
+  return true;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -43,20 +86,13 @@ absl::optional<std::string> ExtractChainIdFromValue(
 
 mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   mojom::NetworkInfo chain;
+
+  if (!ValueToEthNetworkInfoCommon(value, &chain))
+    return nullptr;
+
   const base::Value::Dict* params_dict = value.GetIfDict();
   if (!params_dict)
     return nullptr;
-
-  const std::string* chain_id = params_dict->FindString("chainId");
-  if (!chain_id) {
-    return nullptr;
-  }
-  chain.chain_id = *chain_id;
-
-  const std::string* chain_name = params_dict->FindString("chainName");
-  if (chain_name) {
-    chain.chain_name = *chain_name;
-  }
 
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");
@@ -99,25 +135,6 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
   }
 
-  const auto* nativeCurrencyValue = params_dict->FindDict("nativeCurrency");
-  chain.decimals = 0;
-  if (nativeCurrencyValue) {
-    const std::string* symbol_name = nativeCurrencyValue->FindString("name");
-    if (symbol_name) {
-      chain.symbol_name = *symbol_name;
-    }
-    const std::string* symbol = nativeCurrencyValue->FindString("symbol");
-    if (symbol) {
-      chain.symbol = *symbol;
-    }
-    absl::optional<int> decimals = nativeCurrencyValue->FindInt("decimals");
-    if (decimals) {
-      chain.decimals = decimals.value();
-    }
-  }
-
-  chain.coin = mojom::CoinType::ETH;
-
   chain.is_eip1559 = params_dict->FindBool("is_eip1559").value_or(false);
 
   return chain.Clone();
@@ -125,20 +142,13 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
 
 mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   mojom::NetworkInfo chain;
+
+  if (!ValueToEthNetworkInfoCommon(value, &chain))
+    return nullptr;
+
   const base::Value::Dict* params_dict = value.GetIfDict();
   if (!params_dict)
     return nullptr;
-
-  const std::string* chain_id = params_dict->FindString("chainId");
-  if (!chain_id) {
-    return nullptr;
-  }
-  chain.chain_id = *chain_id;
-
-  const std::string* chain_name = params_dict->FindString("chainName");
-  if (chain_name) {
-    chain.chain_name = *chain_name;
-  }
 
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");
@@ -170,25 +180,6 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
 
   chain.active_rpc_endpoint_index =
       GetFirstValidChainURLIndex(chain.rpc_endpoints);
-
-  const auto* nativeCurrencyValue = params_dict->FindDict("nativeCurrency");
-  chain.decimals = 0;
-  if (nativeCurrencyValue) {
-    const std::string* symbol_name = nativeCurrencyValue->FindString("name");
-    if (symbol_name) {
-      chain.symbol_name = *symbol_name;
-    }
-    const std::string* symbol = nativeCurrencyValue->FindString("symbol");
-    if (symbol) {
-      chain.symbol = *symbol;
-    }
-    absl::optional<int> decimals = nativeCurrencyValue->FindInt("decimals");
-    if (decimals) {
-      chain.decimals = decimals.value();
-    }
-  }
-
-  chain.coin = mojom::CoinType::ETH;
 
   chain.is_eip1559 = false;
 
