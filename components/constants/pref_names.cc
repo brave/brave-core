@@ -100,6 +100,12 @@ const char kEnableWindowClosingConfirm[] =
 const char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
 #endif
 
+#if BUILDFLAG(IS_WIN)
+// For existing users, we'll try once to pin when Brave is set as a default
+// browser.
+const char kTryToPinForExistingUsers[] = "brave.try_to_pin_for_existing_users";
+#endif
+
 const char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
 
