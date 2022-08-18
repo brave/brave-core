@@ -5,9 +5,12 @@
 
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
+#include "brave/browser/ui/webui/settings/brave_settings_default_browser_handler.h"
 
 #define ImportDataHandler BraveImportDataHandler
 #define SearchEnginesHandler BraveSearchEnginesHandler
+#define DefaultBrowserHandler BraveDefaultBrowserHandler
 #include "src/chrome/browser/ui/webui/settings/settings_ui.cc"
+#undef DefaultBrowserHandler
 #undef ImportDataHandler
 #undef SearchEnginesHandler

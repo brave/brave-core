@@ -145,6 +145,8 @@ source_set("ui") {
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_search_engines_handler.cc",
       "webui/settings/brave_search_engines_handler.h",
+      "webui/settings/brave_settings_default_browser_handler.cc",
+      "webui/settings/brave_settings_default_browser_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
       "webui/settings/brave_sync_handler.cc",
