@@ -520,7 +520,10 @@ export const createWalletReducer = (initialState: WalletState) => {
   reducer.on(WalletActions.setCoinMarkets, (state: WalletState, payload: GetCoinMarketsResponse): WalletState => {
     return {
       ...state,
-      coinMarketData: payload.success ? payload.values : [],
+      coinMarketData: payload.success ? payload.values.map(coin => {
+        coin.image = coin.image.replace('https://assets.coingecko.com', ' https://assets.cgproxy.brave.com')
+        return coin
+      }) : [],
       isLoadingCoinMarketData: false
     }
   })
