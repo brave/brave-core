@@ -160,7 +160,7 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
 
     if (src && src !== "") {
       tagNode(node);
-      return {
+      return [{
         "name": name,
         "src": src,
         "pageSrc": window.location.href,
@@ -170,14 +170,15 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
         "detected": true,
         "tagId": node.tagUUID,
         thumbnail
-      };
+      }];
     } else {
-      var target = node;
+      let target = node;
+      let sources = []
       document.querySelectorAll('source').forEach(function(node) {
         if (node.src !== "") {
           if (node.closest('video') === target) {
             tagNode(target);
-            return {
+            sources.push({
               "name": name,
               "src": node.src,
               "pageSrc": window.location.href,
@@ -187,12 +188,12 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
               "detected": true,
               "tagId": target.tagUUID,
               thumbnail
-            };
+            });
           }
 
           if (node.closest('audio') === target) {
             tagNode(target);
-            return {
+            sources.push({
               "name": name,
               "src": node.src,
               "pageSrc": window.location.href,
@@ -202,10 +203,12 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
               "detected": true,
               "tagId": target.tagUUID,
               thumbnail
-            };
+            });
           }
         }
+        
       });
+      return sources;
     }
   }
 
@@ -225,24 +228,13 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
     return document.querySelector('meta[property="og:image"]')?.content
   }
 
-  let videoElements = getAllVideoElements();
-  let audioElements = getAllAudioElements();
-  if (!videoElements) {
-    videoElements = [];
-  }
-
-  if (!audioElements) {
-    audioElements = [];
-  }
-  
-
+  let videoElements = getAllVideoElements() ?? [];
+  let audioElements = getAllAudioElements() ?? [];
   const thumbnail = getOGTagImage();
-  let medias = [...videoElements].map(e => getNodeData(e, thumbnail));
-  medias = medias.concat([...audioElements].map(e => getNodeData(e, thumbnail)));
-  if (medias.length)
+  let medias = []
+  videoElements.forEach(e => medias = medias.concat( getNodeData(e, thumbnail)));
+  audioElements.forEach(e => medias = medias.concat( getNodeData(e, thumbnail)));
     return medias;
-
-  return videoElements;
 })();
   )-";
 

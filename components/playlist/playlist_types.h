@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/types/strong_alias.h"
+
 namespace playlist {
 
 struct PlaylistChangeParams {
@@ -36,7 +38,19 @@ struct PlaylistChangeParams {
 };
 
 struct PlaylistItemInfo {
+  struct TitleTag {};
+  using Title = base::StrongAlias<struct TitleTag, std::string>;
+
+  struct ThumbnailPathTag {};
+  using ThumbnailPath = base::StrongAlias<struct ThumbnailPathTag, std::string>;
+
+  struct MediaFilePathTag {};
+  using MediaFilePath = base::StrongAlias<struct MediaFilePathTag, std::string>;
+
   PlaylistItemInfo();
+  PlaylistItemInfo(const Title& title,
+                   const ThumbnailPath& thumbnail_path,
+                   const MediaFilePath& media_file_path);
   PlaylistItemInfo(const PlaylistItemInfo& rhs);
   PlaylistItemInfo& operator=(const PlaylistItemInfo& rhs);
   PlaylistItemInfo(PlaylistItemInfo&& rhs) noexcept;
