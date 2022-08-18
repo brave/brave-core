@@ -187,3 +187,8 @@
         <action android:name="android.net.VpnService" />
     </intent-filter>
 </service>
+
+<!-- This activity alias is for search provider widget -->
+<activity-alias android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
+    android:targetActivity="org.chromium.chrome.browser.searchwidget.SearchActivity"
+    android:exported="true" />
