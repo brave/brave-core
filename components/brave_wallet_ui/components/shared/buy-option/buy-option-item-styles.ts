@@ -15,7 +15,7 @@ interface LayoutProps {
 export const StyledWrapper = styled.div<LayoutProps>`
   display: flex;
   flex-direction: row;
-  padding: 16px 0;
+  padding: 10px 0;
   align-items: flex-start;
   
   ${(p) => p?.layoutType === 'loose'
@@ -25,7 +25,7 @@ export const StyledWrapper = styled.div<LayoutProps>`
       margin-bottom: 4px;
       border: 1px solid ${(p) => p.theme.color.divider01};
       border-radius: 4px;
-      padding: 16px;
+      padding: 12px;
     `
     : ''
   }
@@ -34,13 +34,14 @@ export const StyledWrapper = styled.div<LayoutProps>`
 export const Logo = styled.img`
   width: 46px;
   height: auto;
-  margin-right: 20px;
+  margin-right: 16px;
   margin-top: 16px;
 `
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 `
 
 export const Name = styled.span`
@@ -51,7 +52,6 @@ export const Name = styled.span`
   font-weight: 600;
   letter-spacing: 0.02em;
   color: ${p => p.theme.color.text01};
-  padding-bottom: 2px;
 `
 
 export const Description = styled.span`
@@ -59,9 +59,8 @@ export const Description = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text01};
-  margin-bottom: 12px;
+  color: ${p => p.theme.color.text02};
+  margin-bottom: 4px;
 `
 
 export const StyledButton = styled(WalletButton)`
@@ -70,7 +69,7 @@ export const StyledButton = styled(WalletButton)`
   justify-content: center;
   cursor: pointer;
   border-radius: 44px;
-  padding: 10px 20px;
+  padding: 6px 18px;
   outline: none;
   background-color: transparent;
   border: ${p => `1px solid ${p.theme.color.interactive08}`};
