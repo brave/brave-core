@@ -17,7 +17,8 @@ namespace de_amp {
 
 namespace {
 
-constexpr uint32_t kReadBufferSize = 65536;
+constexpr uint32_t kReadBufferSizeBytes = 65536;
+constexpr uint32_t kMaxBytesToCheck = kReadBufferSizeBytes * 3;
 
 }  // namespace
 
@@ -67,49 +68,73 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
     ForwardBodyToClient();
     return;
   }
-  if (!CheckBufferedBody(kReadBufferSize)) {
+  if (!CheckBufferedBody(kMaxBytesToCheck - buffered_body_.size())) {
     return;
   }
-
-  if (!MaybeRedirectToCanonicalLink()) {
-    CompleteLoading(std::move(buffered_body_));
+  if (MaybeRedirectToCanonicalLink()) {
+    // Only abort if we know we're successfully going to the canonical URL
+    Abort();
+    return;
   }
-
+  // If we were not redirected and we didn't find AMP, or
+  // if we did find AMP previously and we've already read more bytes than
+  // max, complete the load.
+  if (!found_amp_ || read_bytes_ >= kMaxBytesToCheck) {
+    found_amp_ = false;  // reset
+    CompleteLoading(std::move(buffered_body_));
+    return;
+  }
   body_consumer_watcher_.ArmOrNotify();
 }
 
 bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
-  std::string canonical_link;
-
-  if (de_amp_throttle_ &&
-      MaybeFindCanonicalAmpUrl(buffered_body_, &canonical_link)) {
-    const GURL canonical_url(canonical_link);
-    if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
-      VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
-      return false;
-    }
-    VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
-    if (!de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
-      return false;
-    }
-    // Only abort if we know we're successfully going to the canonical URL
-    Abort();
-    return true;
-  } else {
-    // Did not find AMP page and/or canonical link, load original
+  if (!de_amp_throttle_) {
     return false;
   }
+
+  // If we are not already on an AMP page, check if this chunk has the AMP HTML
+  if (!found_amp_ && !CheckIfAmpPage(buffered_body_)) {
+    return false;
+  }
+
+  found_amp_ = true;  // If we get to this point, we know we have an AMP page
+
+  auto canonical_link = FindCanonicalAmpUrl(buffered_body_);
+  if (!canonical_link.has_value()) {
+    VLOG(2) << __func__ << canonical_link.error();
+    return false;
+  }
+
+  bool redirected = false;
+  const GURL canonical_url(canonical_link.value());
+  // Validate the found canonical AMP URL
+  if (VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
+    // Attempt to go to the canonical URL
+    VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
+    if (de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
+      redirected = true;
+    } else {
+      VLOG(2) << __func__ << " failed to open canonical url: " << canonical_url;
+    }
+  } else {
+    VLOG(2) << __func__ << " canonical link verification failed "
+            << canonical_url;
+  }
+  // At this point we've either redirected, or we should stop trying
+  found_amp_ = false;
+  return redirected;
 }
 
 void DeAmpURLLoader::OnBodyWritable(MojoResult r) {
   DCHECK_EQ(State::kSending, state_);
   if (bytes_remaining_in_buffer_ > 0) {
-    SendReceivedBodyToClient();
+    SendBufferedBodyToClient();
   } else {
     ForwardBodyToClient();
   }
 }
 
+// No buffered data to be sent, read and forward data to producer
 void DeAmpURLLoader::ForwardBodyToClient() {
   DCHECK_EQ(0u, bytes_remaining_in_buffer_);
   // Send the body from the consumer to the producer.

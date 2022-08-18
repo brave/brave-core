@@ -11,12 +11,17 @@ namespace de_amp {
 /** Test helpers */
 void CheckFindCanonicalLinkResult(const std::string& expected_link,
                                   const std::string& body,
-                                  const bool expected_detect_amp) {
-  std::string canonical_url;
-  const bool actual_detect_amp = MaybeFindCanonicalAmpUrl(body, &canonical_url);
+                                  const bool expected_detect_amp,
+                                  const bool expected_find_canonical) {
+  const bool actual_detect_amp = CheckIfAmpPage(body);
   EXPECT_EQ(expected_detect_amp, actual_detect_amp);
-  if (expected_detect_amp) {
-    EXPECT_EQ(expected_link, canonical_url);
+  if (expected_detect_amp) {  // Only check for canonical link if this is an AMP
+                              // page
+    auto canonical_link = FindCanonicalAmpUrl(body);
+    EXPECT_EQ(expected_find_canonical, canonical_link.has_value());
+    if (expected_find_canonical) {
+      EXPECT_EQ(expected_link, canonical_link.value());
+    }
   }
 }
 void CheckCheckCanonicalLinkResult(const std::string& canonical_link,
@@ -35,7 +40,7 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithEmoji) {
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmp) {
@@ -47,7 +52,7 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmp) {
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmpNotAtEnd) {
@@ -59,7 +64,7 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmpNotAtEnd) {
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpWithAmpEmptyAttribute) {
@@ -70,7 +75,7 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithAmpEmptyAttribute) {
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpWithEmojiEmptyAttribute) {
@@ -81,7 +86,7 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithEmojiEmptyAttribute) {
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpWithEmojiEmptyAttributeSingleQuotes) {
@@ -92,7 +97,7 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithEmojiEmptyAttributeSingleQuotes) {
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpMixedCase) {
@@ -103,7 +108,7 @@ TEST(DeAmpUtilUnitTest, DetectAmpMixedCase) {
       "<link rel=\"author\" href=\"https://xyz.com\"/>\n"
       "<link rel=\"canonical\" "
       "href=\"https://abc.com\"/></head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NegativeDetectAmp) {
@@ -116,20 +121,18 @@ TEST(DeAmpUtilUnitTest, NegativeDetectAmp) {
       "</head>\n"
       "<body></body>\n"
       "</html>";
-  CheckFindCanonicalLinkResult("", body, false);
+  CheckFindCanonicalLinkResult("", body, false, false);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpButNoCanonicalLink) {
-  // Put AMP attribute in a different tag than html
   const std::string body =
-      "<html xyzzy>"
+      "<html amp xyzzy>"
       "<head>"
       "<link amp rel=\"author\" href=\"https://xyz.com\"/>\n"
-      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("", body, false);
+  CheckFindCanonicalLinkResult("", body, true, false);
 }
 
 TEST(DeAmpUtilUnitTest, MalformedHtmlDoc) {
@@ -139,7 +142,7 @@ TEST(DeAmpUtilUnitTest, MalformedHtmlDoc) {
       "<link amp rel=\"author\" href=\"https://xyz.com\"/>\n"
       "<link rel=\"canonical\" href=\"https://abc.com\"/>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("", body, false);
+  CheckFindCanonicalLinkResult("", body, false, false);
 }
 
 TEST(DeAmpUtilUnitTest, LinkRelNotInSameTag) {
@@ -151,7 +154,7 @@ TEST(DeAmpUtilUnitTest, LinkRelNotInSameTag) {
       "<body>"
       "\"canonical\"> href=\"https://abc.com\"/>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("", body, false);
+  CheckFindCanonicalLinkResult("", body, true, false);
 }
 
 TEST(DeAmpUtilUnitTest, SingleQuotes) {
@@ -161,7 +164,7 @@ TEST(DeAmpUtilUnitTest, SingleQuotes) {
       "<head><link rel='author' href='https://xyz.com'/>\n"
       "<link rel='canonical' href='https://abc.com'>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotes) {
@@ -171,7 +174,7 @@ TEST(DeAmpUtilUnitTest, NoQuotes) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link href=https://abc.com rel=canonical>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithHref) {
@@ -181,7 +184,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithHref) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link rel=canonical href=https://abc.com/>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceSlashAngleBracket) {
@@ -191,7 +194,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceSlashAngleBracket) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link rel=canonical href=https://abc.com />"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithAngleBracket) {
@@ -201,7 +204,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithAngleBracket) {
       "<head><link rel=author href=https://xyz.com/>\n"
       "<link rel=canonical href=https://abc.com>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceAngleBracket) {
@@ -211,7 +214,7 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceAngleBracket) {
       "<head>\n<link rel=canonical href=https://abc.com ><link rel=author "
       "href=https://xyz.com/>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
 TEST(DeAmpUtilUnitTest, CanonicalLinkMissingScheme) {

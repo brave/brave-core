@@ -42,15 +42,13 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
                  mojo::PendingRemote<network::mojom::URLLoaderClient>
                      destination_url_loader_client,
                  scoped_refptr<base::SequencedTaskRunner> task_runner);
-
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
-
   bool MaybeRedirectToCanonicalLink();
-
   void ForwardBodyToClient();
 
   base::WeakPtr<DeAmpThrottle> de_amp_throttle_;
+  bool found_amp_ = false;
 };
 
 }  // namespace de_amp
