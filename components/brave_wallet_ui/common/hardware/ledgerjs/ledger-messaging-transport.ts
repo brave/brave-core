@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import {
-  LedgerErrorsCodes,
+  LedgerBridgeErrorCodes,
   LedgerFrameCommand,
   LedgerFrameResponse,
   LedgerCommandHandlerUnion
@@ -15,7 +15,7 @@ import {
 // to a window object at a targetUrl and subscribing of responses, and (2)
 // the definition of handlers to be run when a different LedgerMessagingTransport
 // instance at a different Window sends messages to it.
-export abstract class LedgerMessagingTransport {
+export class LedgerMessagingTransport {
   protected targetWindow: Window
   protected targetUrl: string
   protected handlers: Map<string, Function>
@@ -27,13 +27,13 @@ export abstract class LedgerMessagingTransport {
   }
 
   // T is response type, e.g. GetAccountResponse
-  sendCommand = <T> (command: LedgerFrameCommand): Promise<T | LedgerErrorsCodes> => {
-    return new Promise<T | LedgerErrorsCodes>(async (resolve) => {
+  sendCommand = <T> (command: LedgerFrameCommand): Promise<T | LedgerBridgeErrorCodes> => {
+    return new Promise<T | LedgerBridgeErrorCodes>(async (resolve) => {
       // Set handler for the response by passing the resolve function to be run
       // when targetWindow responds using the same command.id.
       // This allows us to simply `await` the sendCommand response
       if (!this.addCommandHandler<T>(command.id, resolve)) {
-        resolve(LedgerErrorsCodes.CommandInProgress)
+        resolve(LedgerBridgeErrorCodes.CommandInProgress)
         return
       }
       this.targetWindow.postMessage(command, this.targetUrl)

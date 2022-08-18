@@ -95,7 +95,7 @@ export const ConnectHardwareWalletPanel = ({
       <PageIcon />
       {
         hardwareWalletCode !== 'deviceBusy' && (hardwareWalletCode === 'unauthorized'
-          ? <AuthorizeHardwareDeviceIFrame />
+          ? <AuthorizeHardwareDeviceIFrame coinType={coinType}/>
           : <ButtonWrapper>
               <NavButton
                 buttonType='secondary'
