@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 
-#include "base/values.h"
-
 namespace brave_wallet {
 
 SolanaAccountMeta::SolanaAccountMeta(const std::string& pubkey,
@@ -28,27 +26,24 @@ mojom::SolanaAccountMetaPtr SolanaAccountMeta::ToMojomSolanaAccountMeta()
   return mojom::SolanaAccountMeta::New(pubkey, is_signer, is_writable);
 }
 
-base::Value SolanaAccountMeta::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("pubkey", pubkey);
-  dict.SetBoolKey("is_signer", is_signer);
-  dict.SetBoolKey("is_writable", is_writable);
+base::Value::Dict SolanaAccountMeta::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("pubkey", pubkey);
+  dict.Set("is_signer", is_signer);
+  dict.Set("is_writable", is_writable);
   return dict;
 }
 
 // static
 absl::optional<SolanaAccountMeta> SolanaAccountMeta::FromValue(
-    const base::Value& value) {
-  if (!value.is_dict())
-    return absl::nullopt;
-
-  const std::string* pubkey = value.FindStringKey("pubkey");
+    const base::Value::Dict& value) {
+  const std::string* pubkey = value.FindString("pubkey");
   if (!pubkey)
     return absl::nullopt;
-  absl::optional<bool> is_signer = value.FindBoolKey("is_signer");
+  absl::optional<bool> is_signer = value.FindBool("is_signer");
   if (!is_signer)
     return absl::nullopt;
-  absl::optional<bool> is_writable = value.FindBoolKey("is_writable");
+  absl::optional<bool> is_writable = value.FindBool("is_writable");
   if (!is_writable)
     return absl::nullopt;
 

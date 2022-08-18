@@ -283,50 +283,50 @@ mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
   return solana_tx_data;
 }
 
-base::Value SolanaMessage::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("recent_blockhash", recent_blockhash_);
-  dict.SetStringKey("last_valid_block_height",
-                    base::NumberToString(last_valid_block_height_));
-  dict.SetStringKey("fee_payer", fee_payer_);
+base::Value::Dict SolanaMessage::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("recent_blockhash", recent_blockhash_);
+  dict.Set("last_valid_block_height",
+           base::NumberToString(last_valid_block_height_));
+  dict.Set("fee_payer", fee_payer_);
 
-  base::Value instruction_list(base::Value::Type::LIST);
+  base::Value::List instruction_list;
   for (const auto& instruction : instructions_)
     instruction_list.Append(instruction.ToValue());
-  dict.SetKey("instructions", std::move(instruction_list));
+  dict.Set("instructions", std::move(instruction_list));
 
   return dict;
 }
 
 // static
 absl::optional<SolanaMessage> SolanaMessage::FromValue(
-    const base::Value& value) {
-  if (!value.is_dict())
-    return absl::nullopt;
-
-  const std::string* recent_blockhash = value.FindStringKey("recent_blockhash");
+    const base::Value::Dict& value) {
+  const std::string* recent_blockhash = value.FindString("recent_blockhash");
   if (!recent_blockhash)
     return absl::nullopt;
 
   const std::string* last_valid_block_height_string =
-      value.FindStringKey("last_valid_block_height");
+      value.FindString("last_valid_block_height");
   uint64_t last_valid_block_height = 0;
   if (!last_valid_block_height_string ||
       !base::StringToUint64(*last_valid_block_height_string,
                             &last_valid_block_height))
     return absl::nullopt;
 
-  const std::string* fee_payer = value.FindStringKey("fee_payer");
+  const std::string* fee_payer = value.FindString("fee_payer");
   if (!fee_payer)
     return absl::nullopt;
 
-  const base::Value* instruction_list = value.FindKey("instructions");
-  if (!instruction_list || !instruction_list->is_list())
+  const base::Value::List* instruction_list = value.FindList("instructions");
+  if (!instruction_list)
     return absl::nullopt;
   std::vector<SolanaInstruction> instructions;
-  for (const auto& instruction_value : instruction_list->GetList()) {
+  for (const auto& instruction_value : *instruction_list) {
+    if (!instruction_value.is_dict())
+      return absl::nullopt;
+
     absl::optional<SolanaInstruction> instruction =
-        SolanaInstruction::FromValue(instruction_value);
+        SolanaInstruction::FromValue(instruction_value.GetDict());
     if (!instruction)
       return absl::nullopt;
     instructions.push_back(*instruction);

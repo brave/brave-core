@@ -141,42 +141,41 @@ mojom::SolanaInstructionPtr SolanaInstruction::ToMojomSolanaInstruction()
                                        std::move(mojom_account_metas), data_);
 }
 
-base::Value SolanaInstruction::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("program_id", program_id_);
+base::Value::Dict SolanaInstruction::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("program_id", program_id_);
 
-  base::Value account_list(base::Value::Type::LIST);
+  base::Value::List account_list;
   for (const auto& account : accounts_)
     account_list.Append(account.ToValue());
-  dict.SetKey("accounts", std::move(account_list));
-  dict.SetStringKey("data", base::Base64Encode(data_));
+  dict.Set("accounts", std::move(account_list));
+  dict.Set("data", base::Base64Encode(data_));
 
   return dict;
 }
 
 // static
 absl::optional<SolanaInstruction> SolanaInstruction::FromValue(
-    const base::Value& value) {
-  if (!value.is_dict())
-    return absl::nullopt;
-
-  const std::string* program_id = value.FindStringKey("program_id");
+    const base::Value::Dict& value) {
+  const std::string* program_id = value.FindString("program_id");
   if (!program_id)
     return absl::nullopt;
 
-  const base::Value* account_list = value.FindKey("accounts");
-  if (!account_list || !account_list->is_list())
+  const base::Value::List* account_list = value.FindList("accounts");
+  if (!account_list)
     return absl::nullopt;
   std::vector<SolanaAccountMeta> accounts;
-  for (const auto& account_value : account_list->GetList()) {
+  for (const auto& account_value : *account_list) {
+    if (!account_value.is_dict())
+      return absl::nullopt;
     absl::optional<SolanaAccountMeta> account =
-        SolanaAccountMeta::FromValue(account_value);
+        SolanaAccountMeta::FromValue(account_value.GetDict());
     if (!account)
       return absl::nullopt;
     accounts.push_back(*account);
   }
 
-  const std::string* data_base64_encoded = value.FindStringKey("data");
+  const std::string* data_base64_encoded = value.FindString("data");
   if (!data_base64_encoded)
     return absl::nullopt;
   std::string data_decoded;

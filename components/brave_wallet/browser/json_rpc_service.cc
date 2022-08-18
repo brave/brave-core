@@ -135,10 +135,11 @@ void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
     const base::Value* custom_networks =
         prefs->GetList(kBraveWalletCustomNetworksDeprecated);
     if (custom_networks) {
-      base::Value new_custom_networks(base::Value::Type::DICTIONARY);
-      new_custom_networks.SetKey(kEthereumPrefKey, custom_networks->Clone());
+      base::Value::Dict new_custom_networks;
+      new_custom_networks.Set(kEthereumPrefKey, custom_networks->Clone());
 
-      prefs->Set(kBraveWalletCustomNetworks, new_custom_networks);
+      prefs->Set(kBraveWalletCustomNetworks,
+                 base::Value(std::move(new_custom_networks)));
 
       prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
     }

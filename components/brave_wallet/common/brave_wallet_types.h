@@ -10,12 +10,9 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "boost/multiprecision/cpp_int.hpp"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_wallet {
 
@@ -137,9 +134,9 @@ struct SolanaSignatureStatus {
   bool operator==(const SolanaSignatureStatus&) const;
   bool operator!=(const SolanaSignatureStatus&) const;
 
-  base::Value ToValue() const;
+  base::Value::Dict ToValue() const;
   static absl::optional<SolanaSignatureStatus> FromValue(
-      const base::Value& value);
+      const base::Value::Dict& value);
 
   // The slot the transaction was processed.
   uint64_t slot = 0;

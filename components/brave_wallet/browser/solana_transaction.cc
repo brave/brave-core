@@ -65,7 +65,8 @@ bool SolanaTransaction::SendOptions::operator!=(
 
 // static
 absl::optional<SolanaTransaction::SendOptions>
-SolanaTransaction::SendOptions::FromValue(absl::optional<base::Value> value) {
+SolanaTransaction::SendOptions::FromValue(
+    absl::optional<base::Value::Dict> value) {
   if (!value)
     return absl::nullopt;
   return FromValue(*value);
@@ -73,20 +74,16 @@ SolanaTransaction::SendOptions::FromValue(absl::optional<base::Value> value) {
 
 // static
 absl::optional<SolanaTransaction::SendOptions>
-SolanaTransaction::SendOptions::FromValue(const base::Value& value) {
-  const base::Value::Dict* options_dict = value.GetIfDict();
-  if (!options_dict)
-    return absl::nullopt;
-
+SolanaTransaction::SendOptions::FromValue(const base::Value::Dict& dict) {
   SolanaTransaction::SendOptions options;
 
-  if (auto* max_retries_string = options_dict->FindString(kMaxRetries)) {
+  if (auto* max_retries_string = dict.FindString(kMaxRetries)) {
     // Type of maxRetries is string when it's from preference values.
     uint64_t max_retries = 0;
     if (base::StringToUint64(*max_retries_string, &max_retries)) {
       options.max_retries = max_retries;
     }
-  } else if (auto max_retries_number = options_dict->FindDouble(kMaxRetries)) {
+  } else if (auto max_retries_number = dict.FindDouble(kMaxRetries)) {
     // Type of maxRetries is number when it's from dApp requests.
     // We cap the maximum to 2^53-1 here for double precision, it's safe here
     // because it does not make sense for dApps to set maxRetries that large.
@@ -96,23 +93,23 @@ SolanaTransaction::SendOptions::FromValue(const base::Value& value) {
     }
   }
 
-  auto* commitment = options_dict->FindString(kPreflightCommitment);
+  auto* commitment = dict.FindString(kPreflightCommitment);
   if (commitment && IsValidCommitmentString(*commitment)) {
     options.preflight_commitment = *commitment;
   }
-  options.skip_preflight = options_dict->FindBool(kSkipPreflight);
+  options.skip_preflight = dict.FindBool(kSkipPreflight);
 
   return options;
 }
 
-base::Value SolanaTransaction::SendOptions::ToValue() const {
-  base::Value options(base::Value::Type::DICTIONARY);
+base::Value::Dict SolanaTransaction::SendOptions::ToValue() const {
+  base::Value::Dict options;
   if (max_retries)
-    options.SetStringKey(kMaxRetries, base::NumberToString(*max_retries));
+    options.Set(kMaxRetries, base::NumberToString(*max_retries));
   if (preflight_commitment)
-    options.SetStringKey(kPreflightCommitment, *preflight_commitment);
+    options.Set(kPreflightCommitment, *preflight_commitment);
   if (skip_preflight)
-    options.SetBoolKey(kSkipPreflight, *skip_preflight);
+    options.Set(kSkipPreflight, *skip_preflight);
   return options;
 }
 
@@ -315,7 +312,7 @@ mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
   return solana_tx_data;
 }
 
-base::Value SolanaTransaction::ToValue() const {
+base::Value::Dict SolanaTransaction::ToValue() const {
   base::Value::Dict dict;
   dict.Set("message", message_.ToValue());
 
@@ -347,7 +344,7 @@ base::Value SolanaTransaction::ToValue() const {
     dict.Set(kSignTxParam, std::move(sign_tx_param_dict));
   }
 
-  return base::Value(std::move(dict));
+  return dict;
 }
 
 void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
@@ -362,11 +359,9 @@ void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
 
 // static
 std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
-    const base::Value& value) {
-  if (!value.is_dict())
-    return nullptr;
-  const base::Value* message_dict = value.FindKey("message");
-  if (!message_dict || !message_dict->is_dict())
+    const base::Value::Dict& value) {
+  const base::Value::Dict* message_dict = value.FindDict("message");
+  if (!message_dict)
     return nullptr;
 
   absl::optional<SolanaMessage> message =
@@ -376,48 +371,47 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
 
   auto tx = std::make_unique<SolanaTransaction>(std::move(*message));
 
-  const auto* to_wallet_address = value.FindStringKey("to_wallet_address");
+  const auto* to_wallet_address = value.FindString("to_wallet_address");
   if (!to_wallet_address)
     return nullptr;
   tx->set_to_wallet_address(*to_wallet_address);
 
   const auto* spl_token_mint_address =
-      value.FindStringKey("spl_token_mint_address");
+      value.FindString("spl_token_mint_address");
   if (!spl_token_mint_address)
     return nullptr;
   tx->set_spl_token_mint_address(*spl_token_mint_address);
 
-  auto tx_type = value.FindIntKey("tx_type");
+  auto tx_type = value.FindInt("tx_type");
   if (!tx_type)
     return nullptr;
   tx->set_tx_type(static_cast<mojom::TransactionType>(*tx_type));
 
-  const auto* lamports_string = value.FindStringKey("lamports");
+  const auto* lamports_string = value.FindString("lamports");
   uint64_t lamports = 0;
   if (!lamports_string || !base::StringToUint64(*lamports_string, &lamports))
     return nullptr;
   tx->set_lamports(lamports);
 
-  const auto* amount_string = value.FindStringKey("amount");
+  const auto* amount_string = value.FindString("amount");
   uint64_t amount = 0;
   if (!amount_string || !base::StringToUint64(*amount_string, &amount))
     return nullptr;
   tx->set_amount(amount);
-  const base::Value* send_options_value = value.FindDictKey(kSendOptions);
+  const base::Value::Dict* send_options_value = value.FindDict(kSendOptions);
   if (send_options_value)
     tx->set_send_options(SendOptions::FromValue(*send_options_value));
 
-  const base::Value* sign_tx_param_value = value.FindDictKey(kSignTxParam);
+  const base::Value::Dict* sign_tx_param_value = value.FindDict(kSignTxParam);
   if (sign_tx_param_value) {
     auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
     const auto* encoded_serialized_msg =
-        sign_tx_param_value->GetDict().FindString(kEncodedSerializedMsg);
+        sign_tx_param_value->FindString(kEncodedSerializedMsg);
     if (!encoded_serialized_msg || encoded_serialized_msg->empty())
       return nullptr;
 
     sign_tx_param->encoded_serialized_msg = *encoded_serialized_msg;
-    const auto* signatures_value =
-        sign_tx_param_value->GetDict().FindList(kSignatures);
+    const auto* signatures_value = sign_tx_param_value->FindList(kSignatures);
     if (!signatures_value)
       return nullptr;
 

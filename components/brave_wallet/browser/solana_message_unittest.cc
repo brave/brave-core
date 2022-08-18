@@ -284,7 +284,7 @@ TEST(SolanaMessageUnitTest, FromToValue) {
   SolanaMessage message(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
                         {instruction});
 
-  base::Value value = message.ToValue();
+  base::Value::Dict value = message.ToValue();
   auto expect_message_value = base::JSONReader::Read(R"(
     {
       "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
@@ -311,13 +311,13 @@ TEST(SolanaMessageUnitTest, FromToValue) {
     }
   )");
   ASSERT_TRUE(expect_message_value);
-  EXPECT_EQ(value, *expect_message_value);
+  EXPECT_EQ(value, expect_message_value->GetDict());
 
   auto message_from_value = SolanaMessage::FromValue(value);
   EXPECT_EQ(message, message_from_value);
 
   std::vector<std::string> invalid_value_strings = {
-      "{}", "[]",
+      "{}",
       R"({"recent_blockhash": "recent blockhash", "fee_payer": "fee payer"})",
       R"({"recent_blockhash": "recent blockhash", "instructions": []})",
       R"({"fee_payer": "fee payer", "instructions": []})"};
@@ -326,7 +326,7 @@ TEST(SolanaMessageUnitTest, FromToValue) {
     absl::optional<base::Value> invalid_value =
         base::JSONReader::Read(invalid_value_string);
     ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
-    EXPECT_FALSE(SolanaMessage::FromValue(*invalid_value))
+    EXPECT_FALSE(SolanaMessage::FromValue(invalid_value->GetDict()))
         << ":" << invalid_value_string;
   }
 }
