@@ -6,6 +6,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { torrentObj } from '../testData'
 import MediaViewer from '../../../brave_webtorrent/extension/components/mediaViewer'
+import Spinner from '../../../brave_webtorrent/extension/components/spinner'
 
 describe('mediaViewer component', () => {
   describe('mediaViewer dumb component', () => {
@@ -17,7 +18,7 @@ describe('mediaViewer component', () => {
           ix={ix}
         />
       )
-      const assertion = wrapper.find('.loading')
+      const assertion = wrapper.find(Spinner)
       expect(assertion.length).toBe(1)
     })
 

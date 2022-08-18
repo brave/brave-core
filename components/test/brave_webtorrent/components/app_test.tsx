@@ -6,8 +6,9 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { applicationState, torrentState, torrentObj } from '../testData'
 import { TorrentState } from '../../../brave_webtorrent/extension/constants/webtorrentState'
-import { BraveWebtorrentPage, mapStateToProps } from '../../../brave_webtorrent/extension/components/app'
-import { StyledTorrentViewer } from '../../../brave_webtorrent/extension/styles/styles'
+import { BraveWebTorrentPage, mapStateToProps } from '../../../brave_webtorrent/extension/components/app'
+import TorrentViewer from '../../../brave_webtorrent/extension/components/torrentViewer'
+import MediaViewer from '../../../brave_webtorrent/extension/components/mediaViewer'
 
 describe('BraveWebtorrentPage component', () => {
   describe('mapStateToProps', () => {
@@ -22,25 +23,25 @@ describe('BraveWebtorrentPage component', () => {
     it('renders the MediaViewer component with a torrent and ix', () => {
       const torrentStateWithIx: TorrentState = { ...torrentState, ix: 1 }
       const wrapper = shallow(
-        <BraveWebtorrentPage
+        <BraveWebTorrentPage
           torrentState={torrentStateWithIx}
           torrentObj={torrentObj}
           actions={{}}
         />
-      ).dive()
+      )
 
-      const assertion = wrapper.find('.mediaViewer')
+      const assertion = wrapper.find(MediaViewer)
       expect(assertion.length).toBe(1)
     })
     it('renders the TorrentViewer component with a valid torrent state', () => {
       const wrapper = shallow(
-        <BraveWebtorrentPage
+        <BraveWebTorrentPage
           torrentState={torrentState}
           actions={{}}
         />
-      ).dive()
+      )
 
-      expect(wrapper.find(StyledTorrentViewer)).toHaveLength(1)
+      expect(wrapper.find(TorrentViewer)).toHaveLength(1)
     })
   })
 })

@@ -6,16 +6,15 @@ import * as React from 'react'
 
 // Assets
 require('../../../../ui/webui/resources/fonts/muli.css')
-require('../styles/styles.css')
 
 // Components
-import { StyledTorrentViewer } from '../styles/styles'
-import TorrentViewerHeader from './torrentViewerHeader'
-import TorrentStatus from './torrentStatus'
 import TorrentFileList from './torrentFileList'
+import TorrentStatus from './torrentStatus'
 import TorrentViewerFooter from './torrentViewerFooter'
+import TorrentViewerHeader from './torrentViewerHeader'
 
 // Constants
+import styled from 'styled-components'
 import { TorrentObj, TorrentState } from '../constants/webtorrentState'
 
 interface Props {
@@ -25,31 +24,40 @@ interface Props {
   torrentState: TorrentState
 }
 
-export default class TorrentViewer extends React.PureComponent<Props, {}> {
-  render () {
-    const { actions, name, torrent, torrentState } = this.props
+const StyledTorrentViewer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  min-height: 100%;
+  padding: 50px;
+  font-family: Muli, sans-serif;
+
+  max-width: 1280px;
+  margin: 0 auto;
+
+  color: var(--text1);
+
+  button > div {
+    font-weight: 600;
+  }
+`
+
+export default function TorrentViewer ({ actions, name, torrent, torrentState }: Props) {
     const { torrentId, tabId, errorMsg, infoHash } = torrentState
-
-    const onSaveAllFiles = () => actions.saveAllFiles(infoHash)
-
-    return (
-      <StyledTorrentViewer>
+    return <StyledTorrentViewer>
         <TorrentViewerHeader
           name={name}
           torrent={torrent}
           torrentId={torrentId}
           tabId={tabId}
           onStartTorrent={actions.startTorrent}
-          onStopDownload={actions.stopDownload}
-        />
+          onStopDownload={actions.stopDownload} />
         <TorrentStatus torrent={torrent} errorMsg={errorMsg} />
         <TorrentFileList
           torrentId={torrentId}
           torrent={torrent}
-          onSaveAllFiles={onSaveAllFiles}
-        />
+          onSaveAllFiles={() => actions.saveAllFiles(infoHash)} />
         <TorrentViewerFooter torrent={torrent} />
       </StyledTorrentViewer>
-    )
-  }
 }

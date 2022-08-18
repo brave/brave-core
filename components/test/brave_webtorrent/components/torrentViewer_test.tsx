@@ -6,7 +6,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { torrentObj } from '../testData'
 import TorrentViewer from '../../../brave_webtorrent/extension/components/torrentViewer'
-import { StyledTorrentViewer } from '../../../brave_webtorrent/extension/styles/styles'
+import TorrentFileList from '../../../brave_webtorrent/extension/components/torrentFileList'
+import TorrentStatus from '../../../brave_webtorrent/extension/components/torrentStatus'
+import TorrentViewerFooter from '../../../brave_webtorrent/extension/components/torrentViewerFooter'
+import TorrentViewerHeader from '../../../brave_webtorrent/extension/components/torrentViewerHeader'
 
 describe('torrentViewer component', () => {
   describe('torrentViewer dumb component', () => {
@@ -24,7 +27,10 @@ describe('torrentViewer component', () => {
           torrentState={torrentState}
         />
       )
-      expect(wrapper.find(StyledTorrentViewer)).toHaveLength(1)
+      expect(wrapper.find(TorrentViewerHeader)).toHaveLength(1)
+      expect(wrapper.find(TorrentStatus)).toHaveLength(1)
+      expect(wrapper.find(TorrentFileList)).toHaveLength(1)
+      expect(wrapper.find(TorrentViewerFooter)).toHaveLength(1)
     })
   })
 })
