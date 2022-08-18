@@ -78,8 +78,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   private var postSetupTasks: [() -> Void] = []
   private var setupTasksCompleted: Bool = false
 
-  lazy var mailtoLinkHandler: MailtoLinkHandler = MailtoLinkHandler()
-
   private var privateModeCancellable: AnyCancellable?
   var onPendingRequestUpdatedCancellable: AnyCancellable?
 

@@ -49,6 +49,9 @@ class TabManager: NSObject {
   fileprivate var delegates = [WeakTabManagerDelegate]()
   fileprivate let tabEventHandlers: [TabEventHandler]
   weak var stateDelegate: TabManagerStateDelegate?
+  
+  /// Internal url to access the new tab page.
+  private let ntpInteralURL = URL(string: "\(InternalURL.baseUrl)/\(AboutHomeHandler.path)#panel=0")!
 
   func addDelegate(_ delegate: TabManagerDelegate) {
     assert(Thread.isMainThread)
@@ -476,24 +479,9 @@ class TabManager: NSObject {
     if let request = request {
       tab.loadRequest(request)
     } else if !isPopup {
-      let newTabChoice = NewTabAccessors.getNewTabPage()
-      switch newTabChoice {
-      case .homePage:
-        // We definitely have a homepage if we've got here
-        // (so we can safely dereference it).
-        let url = HomePageAccessors.getHomePage(prefs)!
-        tab.loadRequest(URLRequest(url: url))
-      case .blankPage:
-        // Do nothing: we're already seeing a blank page.
-        break
-      default:
-        // The common case, where the NewTabPage enum defines
-        // one of the about:home pages.
-        if let url = newTabChoice.url {
-          tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
-          tab.url = url
-        }
-      }
+      
+      tab.loadRequest(PrivilegedRequest(url: ntpInteralURL) as URLRequest)
+      tab.url = ntpInteralURL
     }
 
     // Ignore on restore.
