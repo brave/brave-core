@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale } from '$web-common/locale'
+import { getLocale } from '../../../../common/locale'
 
 const Box = styled.div`
   display: flex;
