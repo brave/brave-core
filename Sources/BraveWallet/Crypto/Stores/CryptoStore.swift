@@ -236,7 +236,7 @@ public class CryptoStore: ObservableObject {
     return store
   }
   
-  private(set) lazy var settingsStore = SettingsStore(
+  public private(set) lazy var settingsStore = SettingsStore(
     keyringService: keyringService,
     walletService: walletService,
     txService: txService
@@ -367,6 +367,8 @@ extension CryptoStore: BraveWalletTxServiceObserver {
 
 extension CryptoStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
+    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests()
+    rejectAllPendingWebpageRequests()
   }
   public func keyringCreated(_ keyringId: String) {
   }
