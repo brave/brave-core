@@ -53,7 +53,7 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
       std::string("font-src 'self' data:;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      std::string("img-src 'self' https:;"));
+      std::string("img-src 'self' https://assets.cgproxy.brave.com;"));
 
   untrusted_source->AddResourcePath("load_time_data.js",
                                     IDR_WEBUI_JS_LOAD_TIME_DATA_JS);
