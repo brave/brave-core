@@ -181,8 +181,8 @@ struct EditPriorityFeeView: View {
         .accentColor(Color(.braveBlurpleTint))
         .pickerStyle(.inline)
         .foregroundColor(Color(.braveLabel))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       if gasFeeKind == .custom {
         Section(
           header: VStack {
@@ -198,35 +198,37 @@ struct EditPriorityFeeView: View {
           .padding(.bottom, 12)
           .resetListHeaderStyle()
         ) {
-          VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Wallet.gasAmountLimit)
-              .foregroundColor(Color(.bravePrimary))
-              .font(.footnote.weight(.semibold))
-            TextField("", text: $gasLimit)
-              .keyboardType(.numberPad)
-              .foregroundColor(Color(.braveLabel))
+          Group {
+            VStack(alignment: .leading, spacing: 4) {
+              Text(Strings.Wallet.gasAmountLimit)
+                .foregroundColor(Color(.bravePrimary))
+                .font(.footnote.weight(.semibold))
+              TextField("", text: $gasLimit)
+                .keyboardType(.numberPad)
+                .foregroundColor(Color(.braveLabel))
+            }
+            .padding(.vertical, 6)
+            VStack(alignment: .leading, spacing: 4) {
+              Text(Strings.Wallet.perGasTipLimit)
+                .font(.footnote.weight(.semibold))
+                .foregroundColor(Color(.bravePrimary))
+              TextField("", text: maximumPriorityFeeBinding)
+                .keyboardType(.numberPad)
+                .foregroundColor(Color(.braveLabel))
+            }
+            .padding(.vertical, 6)
+            VStack(alignment: .leading, spacing: 4) {
+              Text(Strings.Wallet.perGasPriceLimit)
+                .font(.footnote.weight(.semibold))
+                .foregroundColor(Color(.bravePrimary))
+              TextField("", text: $maximumGasPrice)
+                .keyboardType(.numberPad)
+                .foregroundColor(Color(.braveLabel))
+            }
+            .padding(.vertical, 6)
           }
-          .padding(.vertical, 6)
-          VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Wallet.perGasTipLimit)
-              .font(.footnote.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
-            TextField("", text: maximumPriorityFeeBinding)
-              .keyboardType(.numberPad)
-              .foregroundColor(Color(.braveLabel))
-          }
-          .padding(.vertical, 6)
-          VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Wallet.perGasPriceLimit)
-              .font(.footnote.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
-            TextField("", text: $maximumGasPrice)
-              .keyboardType(.numberPad)
-              .foregroundColor(Color(.braveLabel))
-          }
-          .padding(.vertical, 6)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {
         VStack {

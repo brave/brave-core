@@ -29,31 +29,33 @@ struct AccountTransactionListView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        if activityStore.transactionSummaries.isEmpty {
-          emptyTextView(Strings.Wallet.noTransactions)
-        } else {
-          ForEach(activityStore.transactionSummaries) { txSummary in
-            Button(action: {
-              self.transactionDetails = activityStore.transactionDetailsStore(for: txSummary.txInfo)
-            }) {
-              TransactionSummaryView(summary: txSummary)
-            }
-            .contextMenu {
-              if !txSummary.txHash.isEmpty {
-                Button(action: {
-                  if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                     let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
-                    openWalletURL?(url)
+        Group {
+          if activityStore.transactionSummaries.isEmpty {
+            emptyTextView(Strings.Wallet.noTransactions)
+          } else {
+            ForEach(activityStore.transactionSummaries) { txSummary in
+              Button(action: {
+                self.transactionDetails = activityStore.transactionDetailsStore(for: txSummary.txInfo)
+              }) {
+                TransactionSummaryView(summary: txSummary)
+              }
+              .contextMenu {
+                if !txSummary.txHash.isEmpty {
+                  Button(action: {
+                    if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                       let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
+                      openWalletURL?(url)
+                    }
+                  }) {
+                    Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                   }
-                }) {
-                  Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                 }
               }
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
     .navigationTitle(Strings.Wallet.transactionsTitle)

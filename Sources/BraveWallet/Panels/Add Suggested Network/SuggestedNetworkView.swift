@@ -166,40 +166,42 @@ struct SuggestedNetworkView: View {
   var body: some View {
     List {
       Section {
-        if let chain = chain {
-          VStack(alignment: .leading) {
-            Text(Strings.Wallet.networkNameTitle)
-              .fontWeight(.semibold)
-            Text(chain.chainName)
-          }
-          .padding(.vertical, 6)
-          .accessibilityElement(children: .combine)
-          if let networkURL = chain.rpcUrls.first {
+        Group {
+          if let chain = chain {
             VStack(alignment: .leading) {
-              Text(Strings.Wallet.networkURLTitle)
+              Text(Strings.Wallet.networkNameTitle)
                 .fontWeight(.semibold)
-              Text(URL(string: networkURL)?.absoluteDisplayString ?? networkURL)
+              Text(chain.chainName)
             }
             .padding(.vertical, 6)
-          }
-          Button {
-            isPresentingNetworkDetails = .init(from: chain, mode: .view)
-          } label: {
-            Text(Strings.Wallet.viewDetails)
-              .foregroundColor(Color(.braveBlurpleTint))
+            .accessibilityElement(children: .combine)
+            if let networkURL = chain.rpcUrls.first {
+              VStack(alignment: .leading) {
+                Text(Strings.Wallet.networkURLTitle)
+                  .fontWeight(.semibold)
+                Text(URL(string: networkURL)?.absoluteDisplayString ?? networkURL)
+              }
+              .padding(.vertical, 6)
+            }
+            Button {
+              isPresentingNetworkDetails = .init(from: chain, mode: .view)
+            } label: {
+              Text(Strings.Wallet.viewDetails)
+                .foregroundColor(Color(.braveBlurpleTint))
+            }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         headerView
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .font(.footnote)
       
       Section {
         actionButtonContainer
           .frame(maxWidth: .infinity)
+          .listRowBackground(Color(.braveGroupedBackground))
       }
-      .listRowBackground(Color(.braveGroupedBackground))
       .listRowInsets(.zero)
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)

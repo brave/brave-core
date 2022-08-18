@@ -58,8 +58,8 @@ public struct WalletSettingsView: View {
             .foregroundColor(Color(.braveLabel))
             .padding(.vertical, 4)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         Picker(selection: $settingsStore.currencyCode) {
           ForEach(CurrencyCode.allCurrencyCodes) { currencyCode in
@@ -72,8 +72,8 @@ public struct WalletSettingsView: View {
             .foregroundColor(Color(.braveLabel))
             .padding(.vertical, 4)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       if settingsStore.isBiometricsAvailable, keyringStore.defaultKeyring.isKeyringCreated {
         Section(
           footer: Text(Strings.Wallet.settingsEnableBiometricsFooter)
@@ -86,8 +86,8 @@ public struct WalletSettingsView: View {
           )
             .foregroundColor(Color(.braveLabel))
             .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         footer: Text(Strings.Wallet.networkFooter)
@@ -97,49 +97,51 @@ public struct WalletSettingsView: View {
           Text(Strings.Wallet.settingsNetworkButtonTitle)
             .foregroundColor(Color(.braveLabel))
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: Text(Strings.Wallet.web3PreferencesSectionTitle)
           .foregroundColor(Color(.secondaryBraveLabel))
       ) {
-        HStack {
-          Text(Strings.Wallet.web3PreferencesDefaultWallet)
-            .foregroundColor(Color(.braveLabel))
-          Spacer()
-          Menu {
-            Picker("", selection: $defaultWallet.value) {
-              ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
-                Text(walletType.name)
-                  .tag(walletType)
+        Group {
+          HStack {
+            Text(Strings.Wallet.web3PreferencesDefaultWallet)
+              .foregroundColor(Color(.braveLabel))
+            Spacer()
+            Menu {
+              Picker("", selection: $defaultWallet.value) {
+                ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
+                  Text(walletType.name)
+                    .tag(walletType)
+                }
               }
+              .pickerStyle(.inline)
+            } label: {
+              let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
+              Text(wallet.name)
+                .foregroundColor(Color(.braveBlurpleTint))
             }
-            .pickerStyle(.inline)
-          } label: {
-            let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
-            Text(wallet.name)
-              .foregroundColor(Color(.braveBlurpleTint))
           }
-        }
-        Toggle(Strings.Wallet.web3PreferencesAllowSiteToRequestAccounts, isOn: $allowDappsRequestAccounts.value)
-          .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-        Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
-          .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-        NavigationLink(
-          destination: ManageSiteConnectionsView(
-            siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
-          )
-          .onDisappear {
-            settingsStore.closeManageSiteConnectionStore()
-          }
-        ) {
-          Text(Strings.Wallet.web3PreferencesManageSiteConnections)
+          Toggle(Strings.Wallet.web3PreferencesAllowSiteToRequestAccounts, isOn: $allowDappsRequestAccounts.value)
             .foregroundColor(Color(.braveLabel))
+            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+          Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
+            .foregroundColor(Color(.braveLabel))
+            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+          NavigationLink(
+            destination: ManageSiteConnectionsView(
+              siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
+            )
+            .onDisappear {
+              settingsStore.closeManageSiteConnectionStore()
+            }
+          ) {
+            Text(Strings.Wallet.web3PreferencesManageSiteConnections)
+              .foregroundColor(Color(.braveLabel))
+          }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         footer: Text(Strings.Wallet.settingsResetTransactionFooter)
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -148,16 +150,15 @@ public struct WalletSettingsView: View {
           Text(Strings.Wallet.settingsResetTransactionTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         Button(action: { isShowingResetWalletAlert = true }) {
           Text(Strings.Wallet.settingsResetButtonTitle)
             .foregroundColor(.red)
-        }
-        // iOS 15: .role(.destructive)
+        } // iOS 15: .role(.destructive)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
     .navigationTitle(Strings.Wallet.braveWallet)

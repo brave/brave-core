@@ -48,34 +48,36 @@ struct AccountsView: View {
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(
           title: Text(Strings.Wallet.secondaryCryptoAccountsTitle),
           subtitle: Text(Strings.Wallet.secondaryCryptoAccountsSubtitle)
         )
       ) {
-        let accounts = secondaryAccounts
-        if accounts.isEmpty {
-          Text(Strings.Wallet.noSecondaryAccounts)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity)
-            .font(.footnote.weight(.medium))
-        } else {
-          ForEach(accounts) { account in
-            Button {
-              selectedAccount = account
-            } label: {
-              AddressView(address: account.address) {
-                AccountView(address: account.address, name: account.name)
+        Group {
+          let accounts = secondaryAccounts
+          if accounts.isEmpty {
+            Text(Strings.Wallet.noSecondaryAccounts)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .multilineTextAlignment(.center)
+              .frame(maxWidth: .infinity)
+              .font(.footnote.weight(.medium))
+          } else {
+            ForEach(accounts) { account in
+              Button {
+                selectedAccount = account
+              } label: {
+                AddressView(address: account.address) {
+                  AccountView(address: account.address, name: account.name)
+                }
               }
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .background(
       NavigationLink(

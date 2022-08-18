@@ -59,14 +59,14 @@ struct AccountDetailsView: View {
                 isFieldFocused = tf.becomeFirstResponder()
               }
             }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section {
           NavigationLink(destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)) {
             Text(Strings.Wallet.accountPrivateKey)
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         if account.isImported {
           Section {
             Button(action: { isPresentingRemoveConfirmation = true }) {
@@ -83,8 +83,8 @@ struct AccountDetailsView: View {
                 secondaryButton: .cancel(Text(Strings.no))
               )
             }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       .listStyle(InsetGroupedListStyle())

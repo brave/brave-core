@@ -46,19 +46,21 @@ struct TokenList<Content: View>: View {
           }
         }
       ) {
-        if filteredTokens.isEmpty {
-          Text(Strings.Wallet.assetSearchEmpty)
-            .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity)
-        } else {
-          ForEach(filteredTokens) { token in
-            content(token)
+        Group {
+          if filteredTokens.isEmpty {
+            Text(Strings.Wallet.assetSearchEmpty)
+              .font(.footnote)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .multilineTextAlignment(.center)
+              .frame(maxWidth: .infinity)
+          } else {
+            ForEach(filteredTokens) { token in
+              content(token)
+            }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
     .animation(nil, value: query)

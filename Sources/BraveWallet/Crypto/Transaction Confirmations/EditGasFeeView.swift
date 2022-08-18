@@ -86,16 +86,16 @@ struct EditGasFeeView: View {
         TextField("", text: $perGasPrice)
           .keyboardType(.numberPad)
           .foregroundColor(Color(.braveLabel))
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.gasAmountLimit))
       ) {
         TextField("", text: $gasLimit)
           .keyboardType(.numberPad)
           .foregroundColor(Color(.braveLabel))
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         Button(action: save) {
           Text(Strings.Wallet.saveButtonTitle)

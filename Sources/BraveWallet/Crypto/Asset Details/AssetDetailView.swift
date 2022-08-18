@@ -48,63 +48,67 @@ struct AssetDetailView: View {
         .buttonStyle(BraveOutlineButtonStyle(size: .small))
         .padding(.vertical, 8)
       ) {
-        if assetDetailStore.accounts.isEmpty {
-          Text(Strings.Wallet.noAccounts)
-            .redacted(reason: assetDetailStore.isLoadingAccountBalances ? .placeholder : [])
-            .shimmer(assetDetailStore.isLoadingAccountBalances)
-            .font(.footnote)
-        } else {
-          ForEach(assetDetailStore.accounts) { viewModel in
-            HStack {
-              AddressView(address: viewModel.account.address) {
-                AccountView(address: viewModel.account.address, name: viewModel.account.name)
-              }
-              let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
-              let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
-              VStack(alignment: .trailing) {
-                Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
-                  .redacted(reason: showFiatPlaceholder ? .placeholder : [])
-                  .shimmer(assetDetailStore.isLoadingPrice)
-                Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
-                  .redacted(reason: showBalancePlaceholder ? .placeholder : [])
-                  .shimmer(assetDetailStore.isLoadingAccountBalances)
-              }
+        Group {
+          if assetDetailStore.accounts.isEmpty {
+            Text(Strings.Wallet.noAccounts)
+              .redacted(reason: assetDetailStore.isLoadingAccountBalances ? .placeholder : [])
+              .shimmer(assetDetailStore.isLoadingAccountBalances)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+          } else {
+            ForEach(assetDetailStore.accounts) { viewModel in
+              HStack {
+                AddressView(address: viewModel.account.address) {
+                  AccountView(address: viewModel.account.address, name: viewModel.account.name)
+                }
+                let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
+                let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
+                VStack(alignment: .trailing) {
+                  Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
+                    .redacted(reason: showFiatPlaceholder ? .placeholder : [])
+                    .shimmer(assetDetailStore.isLoadingPrice)
+                  Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
+                    .redacted(reason: showBalancePlaceholder ? .placeholder : [])
+                    .shimmer(assetDetailStore.isLoadingAccountBalances)
+                }
+                .font(.footnote)
+                .foregroundColor(Color(.secondaryBraveLabel))
+              }
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        if assetDetailStore.transactionSummaries.isEmpty {
-          Text(Strings.Wallet.noTransactions)
-            .font(.footnote)
-        } else {
-          ForEach(assetDetailStore.transactionSummaries) { txSummary in
-            Button(action: {
-              self.transactionDetails = assetDetailStore.transactionDetailsStore(for: txSummary.txInfo)
-            }) {
-              TransactionSummaryView(summary: txSummary, displayAccountCreator: true)
-            }
-            .contextMenu {
-              if !txSummary.txHash.isEmpty {
-                Button(action: {
-                  if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                     let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
-                    openWalletURL?(url)
+        Group {
+          if assetDetailStore.transactionSummaries.isEmpty {
+            Text(Strings.Wallet.noTransactions)
+              .font(.footnote)
+          } else {
+            ForEach(assetDetailStore.transactionSummaries) { txSummary in
+              Button(action: {
+                self.transactionDetails = assetDetailStore.transactionDetailsStore(for: txSummary.txInfo)
+              }) {
+                TransactionSummaryView(summary: txSummary, displayAccountCreator: true)
+              }
+              .contextMenu {
+                if !txSummary.txHash.isEmpty {
+                  Button(action: {
+                    if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                       let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
+                      openWalletURL?(url)
+                    }
+                  }) {
+                    Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                   }
-                }) {
-                  Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                 }
               }
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         EmptyView()
       } header: {

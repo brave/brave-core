@@ -298,8 +298,8 @@ struct CustomNetworkDetailsView: View {
         )
         .keyboardType(.numberPad)
         .disabled(model.mode.isEditMode)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkChainNameTitle))
       ) {
@@ -307,8 +307,8 @@ struct CustomNetworkDetailsView: View {
           placeholder: Strings.Wallet.customNetworkChainNamePlaceholder,
           item: $model.networkName
         )
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolNameTitle))
       ) {
@@ -316,8 +316,8 @@ struct CustomNetworkDetailsView: View {
           placeholder: Strings.Wallet.customNetworkSymbolNamePlaceholder,
           item: $model.networkSymbolName
         )
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolTitle))
       ) {
@@ -325,8 +325,8 @@ struct CustomNetworkDetailsView: View {
           placeholder: Strings.Wallet.customNetworkSymbolPlaceholder,
           item: $model.networkSymbol
         )
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkCurrencyDecimalTitle))
       ) {
@@ -335,8 +335,8 @@ struct CustomNetworkDetailsView: View {
           item: $model.networkDecimals
         )
         .keyboardType(.numberPad)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       if !model.rpcUrls.isEmpty {
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkRpcUrlsTitle))
@@ -347,8 +347,8 @@ struct CustomNetworkDetailsView: View {
               item: $url
             )
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if !model.iconUrls.isEmpty {
         Section(
@@ -360,8 +360,8 @@ struct CustomNetworkDetailsView: View {
               item: $url
             )
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if !model.blockUrls.isEmpty {
         Section(
@@ -373,8 +373,8 @@ struct CustomNetworkDetailsView: View {
               item: $url
             )
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .navigationBarTitle(navigationTitle)

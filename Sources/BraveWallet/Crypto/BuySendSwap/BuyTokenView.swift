@@ -62,8 +62,8 @@ struct BuyTokenView: View {
               TextField(String.localizedStringWithFormat(Strings.Wallet.amountInCurrency, "USD"), text: $amountInput)
                 .keyboardType(.decimalPad)
             }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           Section(
             header: HStack {
               Button(action: {
@@ -87,7 +87,6 @@ struct BuyTokenView: View {
               .listRowBackground(Color(.clear))
           ) {
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       .navigationTitle(Strings.Wallet.buy)
