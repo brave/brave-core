@@ -47,12 +47,12 @@ void EqualJSONs(const std::string& current_string,
 }
 std::string GetSignedMessage(const std::string& message,
                              const std::string& data) {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("Message", "{message}");
-  base::Value signature(base::Value::Type::DICTIONARY);
-  signature.SetStringKey("Data", data);
-  signature.SetIntKey("Type", 1);
-  dict.SetKey("Signature", std::move(signature));
+  base::Value::Dict dict;
+  dict.Set("Message", "{message}");
+  base::Value::Dict signature;
+  signature.Set("Data", data);
+  signature.Set("Type", 1);
+  dict.Set("Signature", std::move(signature));
   std::string json;
   EXPECT_TRUE(base::JSONWriter::Write(dict, &json));
   base::ReplaceFirstSubstringAfterOffset(&json, 0, "\"{message}\"", message);

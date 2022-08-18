@@ -9,11 +9,11 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -449,8 +449,8 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
       std::vector<uint8_t>(2, 1), "public_key2"));
   transaction.set_sign_tx_param(sign_tx_param->Clone());
 
-  base::Value value = transaction.ToValue();
-  auto expect_tx_value = base::JSONReader::Read(R"(
+  base::Value::Dict value = transaction.ToValue();
+  auto expect_tx_value = base::test::ParseJson(R"(
       {
         "message": {
           "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
@@ -495,37 +495,38 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
       }
   )");
 
-  ASSERT_TRUE(expect_tx_value);
-  EXPECT_EQ(value, *expect_tx_value);
+  EXPECT_EQ(value, expect_tx_value.GetDict());
   auto tx_from_value = SolanaTransaction::FromValue(value);
   EXPECT_EQ(*tx_from_value, transaction);
 
-  std::vector<std::string> invalid_value_strings = {"{}", "[]"};
+  std::vector<std::string> invalid_value_strings = {"{}"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    absl::optional<base::Value> invalid_value =
-        base::JSONReader::Read(invalid_value_string);
-    ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
-    EXPECT_FALSE(SolanaMessage::FromValue(*invalid_value))
+    auto invalid_value = base::test::ParseJson(invalid_value_string);
+    EXPECT_FALSE(SolanaMessage::FromValue(invalid_value.GetDict()))
         << ":" << invalid_value_string;
   }
 }
 
 TEST_F(SolanaTransactionUnitTest, SendOptionsFromValueMaxRetries) {
   auto value =
-      base::JSONReader::Read(R"({"maxRetries": "18446744073709551615"})");
-  auto options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+      base::test::ParseJson(R"({"maxRetries": "18446744073709551615"})");
+  auto options =
+      SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
   EXPECT_EQ(options->max_retries, UINT64_MAX);
-  value = base::JSONReader::Read(R"({"maxRetries": 9007199254740991})");
-  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  value = base::test::ParseJson(R"({"maxRetries": 9007199254740991})");
+  options =
+      SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
   EXPECT_EQ(options->max_retries, kMaxSafeIntegerUint64);
 
   // Unexpected type or no maxRetries.
-  value = base::JSONReader::Read(R"({"maxRetries": {}})");
-  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  value = base::test::ParseJson(R"({"maxRetries": {}})");
+  options =
+      SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
   EXPECT_FALSE(options->max_retries);
-  value = base::JSONReader::Read(R"({})");
-  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  value = base::test::ParseJson(R"({})");
+  options =
+      SolanaTransaction::SendOptions::FromValue(std::move(value.GetDict()));
   EXPECT_FALSE(options->max_retries);
 }
 

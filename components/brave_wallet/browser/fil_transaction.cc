@@ -112,25 +112,24 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
   return tx;
 }
 
-base::Value FilTransaction::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("Nonce",
-                    nonce_ ? base::NumberToString(nonce_.value()) : "");
-  dict.SetStringKey("GasPremium", gas_premium_);
-  dict.SetStringKey("GasFeeCap", gas_fee_cap_);
-  dict.SetStringKey("MaxFee", max_fee_);
-  dict.SetStringKey("GasLimit", base::NumberToString(gas_limit_));
-  dict.SetStringKey("To", to_.EncodeAsString());
-  dict.SetStringKey("From", from_.EncodeAsString());
-  dict.SetStringKey("Value", value_);
+base::Value::Dict FilTransaction::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("Nonce", nonce_ ? base::NumberToString(nonce_.value()) : "");
+  dict.Set("GasPremium", gas_premium_);
+  dict.Set("GasFeeCap", gas_fee_cap_);
+  dict.Set("MaxFee", max_fee_);
+  dict.Set("GasLimit", base::NumberToString(gas_limit_));
+  dict.Set("To", to_.EncodeAsString());
+  dict.Set("From", from_.EncodeAsString());
+  dict.Set("Value", value_);
   return dict;
 }
 
 // static
 absl::optional<FilTransaction> FilTransaction::FromValue(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   FilTransaction tx;
-  const std::string* nonce_value = value.FindStringKey("Nonce");
+  const std::string* nonce_value = value.FindString("Nonce");
   if (!nonce_value)
     return absl::nullopt;
 
@@ -141,36 +140,36 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
     tx.nonce_ = nonce;
   }
 
-  const std::string* gas_premium = value.FindStringKey("GasPremium");
+  const std::string* gas_premium = value.FindString("GasPremium");
   if (!gas_premium)
     return absl::nullopt;
   tx.gas_premium_ = *gas_premium;
 
-  const std::string* gas_fee_cap = value.FindStringKey("GasFeeCap");
+  const std::string* gas_fee_cap = value.FindString("GasFeeCap");
   if (!gas_fee_cap)
     return absl::nullopt;
   tx.gas_fee_cap_ = *gas_fee_cap;
 
-  const std::string* max_fee = value.FindStringKey("MaxFee");
+  const std::string* max_fee = value.FindString("MaxFee");
   if (!max_fee)
     return absl::nullopt;
   tx.max_fee_ = *max_fee;
 
-  const std::string* gas_limit = value.FindStringKey("GasLimit");
+  const std::string* gas_limit = value.FindString("GasLimit");
   if (!gas_limit || !base::StringToInt64(*gas_limit, &tx.gas_limit_))
     return absl::nullopt;
 
-  const std::string* from = value.FindStringKey("From");
+  const std::string* from = value.FindString("From");
   if (!from)
     return absl::nullopt;
   tx.from_ = FilAddress::FromAddress(*from);
 
-  const std::string* to = value.FindStringKey("To");
+  const std::string* to = value.FindString("To");
   if (!to)
     return absl::nullopt;
   tx.to_ = FilAddress::FromAddress(*to);
 
-  const std::string* tx_value = value.FindStringKey("Value");
+  const std::string* tx_value = value.FindString("Value");
   if (!tx_value)
     return absl::nullopt;
   tx.value_ = *tx_value;
@@ -179,16 +178,16 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
 
 absl::optional<std::string> FilTransaction::GetMessageToSign() const {
   auto value = ToValue();
-  value.RemoveKey("MaxFee");
-  value.SetIntKey("Method", 0);
-  value.SetIntKey("Version", 0);
-  value.SetStringKey("Params", "");
-  const std::string* nonce_value = value.FindStringKey("Nonce");
+  value.Remove("MaxFee");
+  value.Set("Method", 0);
+  value.Set("Version", 0);
+  value.Set("Params", "");
+  const std::string* nonce_value = value.FindString("Nonce");
   bool nonce_empty = nonce_value && nonce_value->empty();
   // Nonce is empty usually for first transactions. We set it to 0 and skip
   // conversion bellow to get correct signature.
   if (nonce_empty) {
-    value.SetIntKey("Nonce", 0);
+    value.Set("Nonce", 0);
   }
   std::string json;
   base::JSONWriter::Write(value, &json);
@@ -212,24 +211,24 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
   auto message = GetMessageToSign();
   if (!message)
     return absl::nullopt;
-  base::Value signature(base::Value::Type::DICTIONARY);
+  base::Value::Dict signature;
   {
     std::string data(filecoin::transaction_sign(
         *message,
         rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
     if (data.empty())
       return absl::nullopt;
-    signature.SetStringKey("Data", data);
+    signature.Set("Data", data);
   }
   // Set signature type based on protocol.
   // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures.signature-types
   auto sig_type = from().protocol() == mojom::FilecoinAddressProtocol::SECP256K1
                       ? SigType::ECDSASigType
                       : SigType::BLSSigType;
-  signature.SetIntKey("Type", sig_type);
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("Message", "{message}");
-  dict.SetKey("Signature", std::move(signature));
+  signature.Set("Type", sig_type);
+  base::Value::Dict dict;
+  dict.Set("Message", "{message}");
+  dict.Set("Signature", std::move(signature));
   std::string json;
   if (!base::JSONWriter::Write(dict, &json))
     return absl::nullopt;
