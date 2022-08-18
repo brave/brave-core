@@ -13,7 +13,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//components/sync:sync",
-    "//components/sync:test_support_engine",
+    "//components/sync:test_support",
     "//testing/gmock",
     "//testing/gtest",
     "//third_party/protobuf:protobuf_lite",
