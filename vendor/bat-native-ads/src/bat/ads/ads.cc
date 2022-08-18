@@ -8,24 +8,11 @@
 #include <algorithm>
 
 #include "base/check.h"
-#include "base/no_destructor.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/geographic/country/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
-
-mojom::SysInfo& SysInfo() {
-  static base::NoDestructor<mojom::SysInfo> sys_info;
-  return *sys_info;
-}
-
-mojom::BuildChannelInfo& BuildChannel() {
-  static base::NoDestructor<mojom::BuildChannelInfo> build_channel;
-  return *build_channel;
-}
-
-const char g_catalog_json_schema_data_resource_name[] = "catalog-schema.json";
 
 bool IsSupportedLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);

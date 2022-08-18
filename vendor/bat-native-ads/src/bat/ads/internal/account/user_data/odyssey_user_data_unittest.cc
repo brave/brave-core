@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/sys_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

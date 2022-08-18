@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
+#include "bat/ads/sys_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

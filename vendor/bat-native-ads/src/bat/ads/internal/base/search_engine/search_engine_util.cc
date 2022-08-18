@@ -7,8 +7,8 @@
 
 #include <vector>
 
+#include "bat/ads/internal/base/search_engine/search_engine_constants.h"
 #include "bat/ads/internal/base/search_engine/search_engine_info.h"
-#include "bat/ads/internal/base/search_engine/search_engines.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"

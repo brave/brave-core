@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/base/search_engine/search_engine_url_pattern_util.h"
+#include "bat/ads/internal/base/search_engine/search_engine_results_page_url_pattern_constants.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -11,25 +11,27 @@
 
 namespace ads {
 
-TEST(BatAdsSearchEngineUrlPatternUtilTest, GetAmazonUrlPattern) {
+TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+     GetAmazonResultsPageUrlPattern) {
   // Arrange
 
   // Act
-  const std::string& url_pattern = GetAmazonUrlPattern();
+  const std::string& url_pattern = GetAmazonResultsPageUrlPattern();
 
   // Assert
   EXPECT_EQ(
       "https://"
       "www.amazon.(ae|ca|cn|co.jp|co.uk|com|com.au|com.br|com.mx|de|eg|es|fr|"
-      "in|it|nl|pl|sa|se|sp|tr)/",
+      "in|it|nl|pl|sa|se|sp|tr)/s",
       url_pattern);
 }
 
-TEST(BatAdsSearchEngineUrlPatternUtilTest, GetGoogleUrlPattern) {
+TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+     GetGoogleResultsPageUrlPattern) {
   // Arrange
 
   // Act
-  const std::string& url_pattern = GetGoogleUrlPattern();
+  const std::string& url_pattern = GetGoogleResultsPageUrlPattern();
 
   // Assert
   EXPECT_EQ(
@@ -46,25 +48,27 @@ TEST(BatAdsSearchEngineUrlPatternUtilTest, GetGoogleUrlPattern) {
       "com.uy|com.vc|com.vn|com|cv|cz|de|dj|dk|dm|dz|ee|es|fi|fm|fr|ga|ge|gg|"
       "gl|gm|gp|gr|gy|hn|hr|ht|hu|ie|iq|is|it.ao|it|jo|ki|kz|la|li|lk|lt|lu|lv|"
       "md|me|mg|mk|ml|mn|ms|mu|mv|mw|ne|nl|no|nr|nu|pl|pn|ps|pt|ro|rs|ru|rw|sc|"
-      "se|sh|si|sk|sm|sn|so|sr|st|td|tg|tk|tl|tm|tn|to|tt|vg|vu|ws)/",
+      "se|sh|si|sk|sm|sn|so|sr|st|td|tg|tk|tl|tm|tn|to|tt|vg|vu|ws)/search",
       url_pattern);
 }
 
-TEST(BatAdsSearchEngineUrlPatternUtilTest, GetMojeekUrlPattern) {
+TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+     GetMojeekResultsPageUrlPattern) {
   // Arrange
 
   // Act
-  const std::string& url_pattern = GetMojeekUrlPattern();
+  const std::string& url_pattern = GetMojeekResultsPageUrlPattern();
 
   // Assert
-  EXPECT_EQ("https://www.mojeek.(co.uk|com)/", url_pattern);
+  EXPECT_EQ("https://www.mojeek.(co.uk|com)/search", url_pattern);
 }
 
-TEST(BatAdsSearchEngineUrlPatternUtilTest, GetWikipediaUrlPattern) {
+TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+     GetWikipediaResultsPageUrlPattern) {
   // Arrange
 
   // Act
-  const std::string& url_pattern = GetWikipediaUrlPattern();
+  const std::string& url_pattern = GetWikipediaResultsPageUrlPattern();
 
   // Assert
   EXPECT_EQ(
@@ -72,22 +76,23 @@ TEST(BatAdsSearchEngineUrlPatternUtilTest, GetWikipediaUrlPattern) {
       "(af|ar|arz|ast|az|azb|be|bg|bn|ca|ce|ceb|cs|cy|da|de|el|en|eo|es|et|eu|"
       "fa|fi|fr|gl|he|hi|hr|hu|hy|id|it|ja|ka|kk|ko|la|lt|lv|min|mk|ms|my|nan|"
       "nl|nn|no|pl|pt|ro|ru|sh|simple|sk|sl|sr|sv|ta|tg|th|tr|tt|uk|ur|uz|vi|"
-      "vo|war|zh|zh-yue).wikipedia.org/",
+      "vo|war|zh|zh-yue).wikipedia.org/wiki/(.*)",
       url_pattern);
 }
 
-TEST(BatAdsSearchEngineUrlPatternUtilTest, GetYahooUrlPattern) {
+TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+     GetYahooResultsPageUrlPattern) {
   // Arrange
 
   // Act
-  const std::string& url_pattern = GetYahooUrlPattern();
+  const std::string& url_pattern = GetYahooResultsPageUrlPattern();
 
   // Assert
   EXPECT_EQ(
       "https://"
       "((au|be|br|ca|de|en-maktoob|es|espanol|fr|fr-be|gr|hk|id|ie|in|it|"
       "malaysia|nz|ph|qc|ro|se|sg|tw|uk|vn|www|za).search.yahoo.com/"
-      "|search.yahoo.com/)",
+      "|search.yahoo.com/)search(.*)",
       url_pattern);
 }
 

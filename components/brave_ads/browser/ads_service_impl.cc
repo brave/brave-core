@@ -30,6 +30,7 @@
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_constants.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
@@ -125,7 +126,7 @@ constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 const base::Feature kServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
 
 int GetDataResourceId(const std::string& name) {
-  if (name == ads::g_catalog_json_schema_data_resource_name) {
+  if (name == ads::resource::data::g_catalog_json_schema_name) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 

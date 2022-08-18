@@ -11,7 +11,6 @@
 #include "base/callback.h"
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/notification_ad_info.h"
 #include "url/gurl.h"
 
