@@ -86,3 +86,22 @@ base::BindOnce(callback)
 {{ objc_methods_impls(interface) }}
 
 @end
+
+
+@implementation {{class_prefix}}{{interface.name}}OwnedImpl {
+  std::unique_ptr<{{cpp_namespace}}::{{interface.name}}> _wrappedValue;
+{%- for bridge in interface|interface_remote_sets %}
+  std::vector<std::unique_ptr<{{bridge}}>> _{{bridge|under_to_lower_camel}}Receivers;
+{%- endfor %}
+}
+
+- (instancetype)initWith{{interface.name}}:(std::unique_ptr<{{cpp_namespace}}::{{interface.name}}>)obj {
+  if ((self = [super init])) {
+    _wrappedValue = std::move(obj);
+  }
+  return self;
+}
+
+{{ objc_methods_impls(interface) }}
+
+@end
