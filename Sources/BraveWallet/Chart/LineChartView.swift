@@ -54,7 +54,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
     self.points = data.enumerated().map { index, dataPoint -> CGPoint in
       // Swift needs this pre-definition where the type is specified on lhs to compile in a
       // reasonable time (because of CGPoint generics)
-      let x: CGFloat = CGFloat(index) / CGFloat(numberOfColumns - 1)
+      let x: CGFloat = numberOfColumns > 1 ? CGFloat(index) / CGFloat(numberOfColumns - 1) : 0
       let y: CGFloat = CGFloat(1.0) - (CGFloat(1.0) * ((dataPoint.value - min) / (max - min)))
       return .init(x: x, y: y)
     }
