@@ -154,8 +154,7 @@ void RewardsBrowserTestContextHelper::VisitPublisher(
   // granularity is seconds), so wait for just over 2 seconds to elapse
   base::PlatformThread::Sleep(base::Milliseconds(2100));
 
-  // Load rewards page
-  rewards_browsertest_util::ActivateTabAtIndex(browser_, 0);
+  LoadRewardsPage();
 
   auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
   // Make sure site appears in auto-contribute table
@@ -201,7 +200,7 @@ void RewardsBrowserTestContextHelper::LoadRewardsPage() {
   bool found = false;
   for (int index = 0; index < tab_strip->count(); ++index) {
     auto* contents = tab_strip->GetWebContentsAt(index);
-    if (contents->GetLastCommittedURL() == url) {
+    if (contents->GetLastCommittedURL().host_piece() == url.host_piece()) {
       found = true;
       tab_strip->ActivateTabAt(index);
       break;
