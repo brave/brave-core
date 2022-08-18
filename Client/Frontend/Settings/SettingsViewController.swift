@@ -45,9 +45,8 @@ class SettingsViewController: TableViewController {
   private let passwordAPI: BravePasswordAPI
   private let syncAPI: BraveSyncAPI
   private let syncProfileServices: BraveSyncProfileServiceIOS
-  private let walletSettingsStore: SettingsStore?
-  private let walletNetworkStore: NetworkStore?
   private let keyringStore: KeyringStore?
+  private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
 
   private let featureSectionUUID: UUID = .init()
@@ -61,9 +60,8 @@ class SettingsViewController: TableViewController {
     legacyWallet: BraveLedger? = nil,
     windowProtection: WindowProtection?,
     braveCore: BraveCoreMain,
-    walletSettingsStore: SettingsStore? = nil,
-    walletNetworkStore: NetworkStore? = nil,
-    keyringStore: KeyringStore? = nil
+    keyringStore: KeyringStore? = nil,
+    cryptoStore: CryptoStore? = nil
   ) {
     self.profile = profile
     self.tabManager = tabManager
@@ -75,9 +73,8 @@ class SettingsViewController: TableViewController {
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
     self.syncProfileServices = braveCore.syncProfileService
-    self.walletSettingsStore = walletSettingsStore
-    self.walletNetworkStore = walletNetworkStore
     self.keyringStore = keyringStore
+    self.cryptoStore = cryptoStore
 
     super.init(style: .insetGrouped)
   }
@@ -676,7 +673,8 @@ class SettingsViewController: TableViewController {
   }()
 
   private func setUpSections() {
-    if let settingsStore = walletSettingsStore, let networkStore = walletNetworkStore, let keyringStore = keyringStore {
+    if let cryptoStore = cryptoStore, let keyringStore = keyringStore {
+      let settingsStore = cryptoStore.settingsStore
       settingsStore.isDefaultKeyringCreated { [weak self] created in
         guard let self = self else { return }
         var copyOfSections = self.sections
@@ -694,7 +692,7 @@ class SettingsViewController: TableViewController {
                 selection: { [unowned self] in
                   let walletSettingsView = WalletSettingsView(
                     settingsStore: settingsStore,
-                    networkStore: networkStore,
+                    networkStore: cryptoStore.networkStore,
                     keyringStore: keyringStore
                   )
                   let vc = UIHostingController(rootView: walletSettingsView)
@@ -710,6 +708,8 @@ class SettingsViewController: TableViewController {
         }
         self.dataSource.sections = copyOfSections
       }
+    } else {
+      self.dataSource.sections = sections
     }
   }
 
