@@ -41,11 +41,11 @@ std::string CreateCollectionId() {
 
 std::string BuildCollectionPingPayload(const std::string collection_id,
                                        int slot) {
-  base::Value root(base::Value::Type::DICTIONARY);
-  root.SetKey("collection_id", base::Value(collection_id));
-  root.SetKey("platform", base::Value(brave_stats::GetPlatformIdentifier()));
-  root.SetKey("collection_slot", base::Value(slot));
-  root.SetKey("wiki-link", base::Value(kWikiUrl));
+  base::Value::Dict root;
+  root.Set("collection_id", collection_id);
+  root.Set("platform", brave_stats::GetPlatformIdentifier());
+  root.Set("collection_slot", slot);
+  root.Set("wiki-link", kWikiUrl);
 
   std::string result;
   base::JSONWriter::Write(root, &result);
@@ -54,9 +54,9 @@ std::string BuildCollectionPingPayload(const std::string collection_id,
 }
 
 std::string BuildDeletePingPayload(const std::string collection_id) {
-  base::Value root(base::Value::Type::DICTIONARY);
-  root.SetKey("collection_id", base::Value(collection_id));
-  root.SetKey("wiki-link", base::Value(kWikiUrl));
+  base::Value::Dict root;
+  root.Set("collection_id", collection_id);
+  root.Set("wiki-link", kWikiUrl);
 
   std::string result;
   base::JSONWriter::Write(root, &result);
