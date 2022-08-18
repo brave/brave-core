@@ -934,7 +934,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
                         true
                     } else {
-                        false
+                        is_useless(&handle)
                     }
                 }
                 local_name!("form")

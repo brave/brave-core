@@ -14,7 +14,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
-#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -130,7 +129,10 @@ TEST_F(SpeedreaderRewriterPagesTest, BadPages) {
     SCOPED_TRACE(domain.BaseName());
     set_current_process_dir(domain);
     const auto out = ProcessPage("original.html");
-    CheckContent(out, "distilled.html");
+
+    if (GetFileContent("distilled.html") != out) {
+      FAIL();
+    }
   }
 }
 
