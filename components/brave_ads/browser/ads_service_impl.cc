@@ -1009,8 +1009,9 @@ void AdsServiceImpl::SetEnabled(const bool is_enabled) {
   SetBooleanPref(ads::prefs::kEnabled, is_enabled);
 }
 
-int64_t AdsServiceImpl::GetNotificationAdsPerHour() const {
-  int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
+  int64_t ads_per_hour =
+      GetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
         kServing, "default_ad_notifications_per_hour",
@@ -1022,10 +1023,11 @@ int64_t AdsServiceImpl::GetNotificationAdsPerHour() const {
                      static_cast<int64_t>(ads::kMaximumNotificationAdsPerHour));
 }
 
-void AdsServiceImpl::SetNotificationAdsPerHour(const int64_t ads_per_hour) {
+void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
+    const int64_t ads_per_hour) {
   DCHECK(ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
          ads_per_hour <= ads::kMaximumNotificationAdsPerHour);
-  SetInt64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
+  SetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 
 void AdsServiceImpl::SetAllowConversionTracking(const bool should_allow) {
@@ -2351,29 +2353,31 @@ void AdsServiceImpl::MigratePrefsVersion8To9() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion9To10() {
-  if (!HasPrefPath(ads::prefs::kAdsPerHour)) {
+  if (!HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour)) {
     return;
   }
 
-  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  const int64_t ads_per_hour =
+      GetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1 || ads_per_hour == 2) {
     // The user did not change the ads per hour setting from the legacy default
     // value of 2 so we should clear the preference to transition to
     // |kDefaultNotificationAdsPerHour|
-    profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
+    profile_->GetPrefs()->ClearPref(ads::prefs::kMaximumNotificationAdsPerHour);
   }
 }
 
 void AdsServiceImpl::MigratePrefsVersion10To11() {
-  if (!HasPrefPath(ads::prefs::kAdsPerHour)) {
+  if (!HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour)) {
     return;
   }
 
-  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  const int64_t ads_per_hour =
+      GetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == 0 || ads_per_hour == -1) {
     // Clear the ads per hour preference to transition to
     // |kDefaultNotificationAdsPerHour|
-    profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
+    profile_->GetPrefs()->ClearPref(ads::prefs::kMaximumNotificationAdsPerHour);
   }
 }
 

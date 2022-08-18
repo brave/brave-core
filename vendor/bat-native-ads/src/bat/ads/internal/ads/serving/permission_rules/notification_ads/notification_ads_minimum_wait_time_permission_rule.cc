@@ -49,7 +49,7 @@ const std::string& MinimumWaitTimePermissionRule::GetLastMessage() const {
 
 bool MinimumWaitTimePermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  const int ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return false;
   }

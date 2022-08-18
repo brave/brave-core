@@ -80,7 +80,7 @@ static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
 static NSString* const kAdsEnabledPrefKey =
     base::SysUTF8ToNSString(ads::prefs::kEnabled);
 static NSString* const kNumberOfAdsPerHourKey =
-    base::SysUTF8ToNSString(ads::prefs::kAdsPerHour);
+    base::SysUTF8ToNSString(ads::prefs::kMaximumNotificationAdsPerHour);
 static NSString* const kShouldAllowAdsSubdivisionTargetingPrefKey =
     base::SysUTF8ToNSString(ads::prefs::kShouldAllowSubdivisionTargeting);
 static NSString* const kAdsSubdivisionTargetingCodePrefKey =

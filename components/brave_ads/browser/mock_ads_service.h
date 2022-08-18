@@ -26,8 +26,8 @@ class MockAdsService : public AdsService {
   MOCK_CONST_METHOD0(IsEnabled, bool());
   MOCK_METHOD1(SetEnabled, void(bool));
 
-  MOCK_CONST_METHOD0(GetNotificationAdsPerHour, int64_t());
-  MOCK_METHOD1(SetNotificationAdsPerHour, void(int64_t));
+  MOCK_CONST_METHOD0(GetMaximumNotificationAdsPerHour, int64_t());
+  MOCK_METHOD1(SetMaximumNotificationAdsPerHour, void(int64_t));
 
   MOCK_METHOD1(SetAllowConversionTracking, void(bool));
 

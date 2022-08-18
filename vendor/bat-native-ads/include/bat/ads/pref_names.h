@@ -21,7 +21,7 @@ extern const char kEnabled[];
 
 extern const char kShouldAllowConversionTracking[];
 
-extern const char kAdsPerHour[];
+extern const char kMaximumNotificationAdsPerHour[];
 
 extern const char kIdleTimeThreshold[];
 
