@@ -61,26 +61,26 @@ BraveSyncAPIQrCodeDataValidationResult const
         static_cast<NSInteger>(
             brave_sync::QrCodeDataValidationResult::kValidForTooLong);
 
-// MARK: - WordsValidationStatus
+// MARK: - TimeLimitedWords::ValidationStatus
 
 OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
-    BraveSyncAPIWordsValidationStatusValid =
-        static_cast<NSInteger>(brave_sync::WordsValidationStatus::kValid);
+    BraveSyncAPIWordsValidationStatusValid = static_cast<NSInteger>(
+        brave_sync::TimeLimitedWords::ValidationStatus::kValid);
 OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusNotValidPureWords = static_cast<NSInteger>(
-        brave_sync::WordsValidationStatus::kNotValidPureWords);
+        brave_sync::TimeLimitedWords::ValidationStatus::kNotValidPureWords);
 OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusVersionDeprecated = static_cast<NSInteger>(
-        brave_sync::WordsValidationStatus::kVersionDeprecated);
+        brave_sync::TimeLimitedWords::ValidationStatus::kVersionDeprecated);
 OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
-    BraveSyncAPIWordsValidationStatusExpired =
-        static_cast<NSInteger>(brave_sync::WordsValidationStatus::kExpired);
+    BraveSyncAPIWordsValidationStatusExpired = static_cast<NSInteger>(
+        brave_sync::TimeLimitedWords::ValidationStatus::kExpired);
 OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusValidForTooLong = static_cast<NSInteger>(
-        brave_sync::WordsValidationStatus::kValidForTooLong);
+        brave_sync::TimeLimitedWords::ValidationStatus::kValidForTooLong);
 OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
-        brave_sync::WordsValidationStatus::kWrongWordsNumber);
+        brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
 // MARK: - BraveSyncDeviceObserver
 

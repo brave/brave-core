@@ -11,18 +11,10 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_sync {
-
-enum class WordsValidationStatus {
-  kValid = 0,
-  kNotValidPureWords = 1,
-  kVersionDeprecated = 2,
-  kExpired = 3,
-  kValidForTooLong = 4,
-  kWrongWordsNumber = 5,
-};
 
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GenerateForDate);
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetIndexByWord);
@@ -32,25 +24,27 @@ FORWARD_DECLARE_TEST(TimeLimitedWordsTest, Parse);
 
 class TimeLimitedWords {
  public:
-  struct PureWordsWithStatus {
-    PureWordsWithStatus();
-    PureWordsWithStatus(PureWordsWithStatus&& other);
-    PureWordsWithStatus& operator=(PureWordsWithStatus&& other);
-
-    PureWordsWithStatus(const PureWordsWithStatus&) = delete;
-    PureWordsWithStatus& operator=(const PureWordsWithStatus&) = delete;
-
-    ~PureWordsWithStatus();
-
-    absl::optional<std::string> pure_words;
-    WordsValidationStatus status;
+  enum class ValidationStatus {
+    kValid = 0,  // for iOS and Android compatibility
+    kNotValidPureWords = 1,
+    kVersionDeprecated = 2,
+    kExpired = 3,
+    kValidForTooLong = 4,
+    kWrongWordsNumber = 5,
   };
 
-  static std::string GenerateForNow(const std::string& pure_words);
-  static PureWordsWithStatus Parse(const std::string& time_limited_words);
+  enum class GenerateResult {
+    kEmptyPureWords = 1,
+    kNotAfterEarlierThanEpoch = 2,
+  };
 
-  static base::Time GetWordsV1SunsetDay();
-  static base::Time GetWordsV2Epoch();
+  static base::expected<std::string, GenerateResult> GenerateForNow(
+      const std::string& pure_words);
+  static base::expected<std::string, ValidationStatus> Parse(
+      const std::string& time_limited_words);
+
+  static std::string GenerateResultToText(
+      const GenerateResult& generate_result);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GenerateForDate);
@@ -59,11 +53,16 @@ class TimeLimitedWords {
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetWordByIndex);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, Parse);
 
-  static WordsValidationStatus Validate(const std::string& time_limited_words,
-                                        std::string* pure_words);
+  static base::Time GetWordsV1SunsetDay();
+  static base::Time GetWordsV2Epoch();
 
-  static std::string GenerateForDate(const std::string& pure_words,
-                                     const base::Time& not_after);
+  static ValidationStatus Validate(const std::string& time_limited_words,
+                                   std::string* pure_words);
+
+  static base::expected<std::string, GenerateResult> GenerateForDate(
+      const std::string& pure_words,
+      const base::Time& not_after);
+
   static int GetRoundedDaysDiff(const base::Time& time1,
                                 const base::Time& time2);
 
