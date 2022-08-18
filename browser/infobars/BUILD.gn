@@ -8,6 +8,8 @@ source_set("infobars") {
   sources = [
     "brave_confirm_p3a_infobar_delegate.cc",
     "brave_confirm_p3a_infobar_delegate.h",
+    "sync_cannot_run_infobar_delegate.cc",
+    "sync_cannot_run_infobar_delegate.h",
     "sync_v2_migrate_infobar_delegate.cc",
     "sync_v2_migrate_infobar_delegate.h",
   ]

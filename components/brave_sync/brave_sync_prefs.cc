@@ -27,6 +27,8 @@ const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
 // Has dismissed message about migration to sync v2
 const char kSyncV2MigrateNoticeDismissed[] =
     "brave_sync_v2.migrate_notice_dismissed";
+const char kSyncFailedDecryptSeedNoticeDismissed[] =
+    "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
 // Deprecated
 // ============================================================================
 const char kSyncSeed[] = "brave_sync.seed";
@@ -69,9 +71,10 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSyncV1Migrated, false);
   registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);
   registry->RegisterBooleanPref(kSyncV2MigrateNoticeDismissed, false);
+  registry->RegisterBooleanPref(kSyncFailedDecryptSeedNoticeDismissed, false);
 
-// Deprecated
-// ============================================================================
+  // Deprecated
+  // ============================================================================
   registry->RegisterStringPref(kSyncSeed, std::string());
   registry->RegisterBooleanPref(kSyncEnabled, false);
   registry->RegisterStringPref(kSyncDeviceId, std::string());
@@ -176,8 +179,17 @@ void Prefs::SetDismissSyncMigrateNotice(bool is_dismissed) {
   pref_service_->SetBoolean(kSyncV2MigrateNoticeDismissed, is_dismissed);
 }
 
+bool Prefs::IsFailedDecryptSeedNoticeDismissed() const {
+  return pref_service_->GetBoolean(kSyncFailedDecryptSeedNoticeDismissed);
+}
+
+void Prefs::DismissFailedDecryptSeedNotice() {
+  pref_service_->SetBoolean(kSyncFailedDecryptSeedNoticeDismissed, true);
+}
+
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
+  pref_service_->ClearPref(kSyncFailedDecryptSeedNoticeDismissed);
 }
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {
