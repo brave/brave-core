@@ -403,7 +403,8 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
-  ResolveJavascriptCallback(args[0], decentralized_dns::GetResolveMethodList());
+  ResolveJavascriptCallback(
+      args[0], base::Value(decentralized_dns::GetResolveMethodList()));
 }
 
 #if BUILDFLAG(ENABLE_IPFS)
