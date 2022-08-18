@@ -155,8 +155,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   }
 
-  ~GeminiAPIBrowserTest() override {
-  }
+  ~GeminiAPIBrowserTest() override = default;
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();

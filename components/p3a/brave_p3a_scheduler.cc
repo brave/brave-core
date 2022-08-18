@@ -51,7 +51,7 @@ BraveP3AScheduler::BraveP3AScheduler(
       initial_backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)),
       backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)) {}
 
-BraveP3AScheduler::~BraveP3AScheduler() {}
+BraveP3AScheduler::~BraveP3AScheduler() = default;
 
 void BraveP3AScheduler::UploadFinished(bool ok) {
   if (!ok) {

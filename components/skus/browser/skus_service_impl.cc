@@ -66,7 +66,7 @@ SkusServiceImpl::SkusServiceImpl(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
 
-SkusServiceImpl::~SkusServiceImpl() {}
+SkusServiceImpl::~SkusServiceImpl() = default;
 
 void SkusServiceImpl::Shutdown() {}
 

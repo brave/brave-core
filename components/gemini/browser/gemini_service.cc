@@ -147,8 +147,7 @@ GeminiService::GeminiService(content::BrowserContext* context)
   LoadTokensFromPrefs();
 }
 
-GeminiService::~GeminiService() {
-}
+GeminiService::~GeminiService() = default;
 
 std::string GeminiService::GetOAuthClientUrl() {
   GURL url(oauth_url);

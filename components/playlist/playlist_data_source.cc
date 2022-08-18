@@ -42,7 +42,7 @@ scoped_refptr<base::RefCountedMemory> ReadFileToString(
 PlaylistDataSource::PlaylistDataSource(PlaylistService* service)
     : service_(service) {}
 
-PlaylistDataSource::~PlaylistDataSource() {}
+PlaylistDataSource::~PlaylistDataSource() = default;
 
 std::string PlaylistDataSource::GetSource() {
   return "playlist-data";

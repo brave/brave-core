@@ -22,7 +22,7 @@ SkusRenderFrameObserver::SkusRenderFrameObserver(
     int32_t world_id)
     : RenderFrameObserver(render_frame), world_id_(world_id) {}
 
-SkusRenderFrameObserver::~SkusRenderFrameObserver() {}
+SkusRenderFrameObserver::~SkusRenderFrameObserver() = default;
 
 void SkusRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,

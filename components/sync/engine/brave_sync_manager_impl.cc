@@ -12,7 +12,7 @@ BraveSyncManagerImpl::BraveSyncManagerImpl(
     network::NetworkConnectionTracker* network_connection_tracker)
     : SyncManagerImpl(name, network_connection_tracker) {}
 
-BraveSyncManagerImpl::~BraveSyncManagerImpl() {}
+BraveSyncManagerImpl::~BraveSyncManagerImpl() = default;
 
 void BraveSyncManagerImpl::StartSyncingNormally(base::Time last_poll_time) {
   SyncManagerImpl::StartSyncingNormally(last_poll_time);

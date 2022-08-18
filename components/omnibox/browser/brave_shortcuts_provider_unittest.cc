@@ -34,7 +34,7 @@ class MockHistoryService : public history::HistoryService {
 
 class BraveShortcutsProviderTest : public testing::Test {
  public:
-  BraveShortcutsProviderTest() {}
+  BraveShortcutsProviderTest() = default;
 
   AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),

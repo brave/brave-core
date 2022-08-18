@@ -62,7 +62,7 @@ PermissionLifetimeManager::PermissionLifetimeManager(
   host_content_settings_map_observation_.Observe(host_content_settings_map_);
 }
 
-PermissionLifetimeManager::~PermissionLifetimeManager() {}
+PermissionLifetimeManager::~PermissionLifetimeManager() = default;
 
 void PermissionLifetimeManager::Shutdown() {
   host_content_settings_map_observation_.Reset();

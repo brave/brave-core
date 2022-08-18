@@ -85,7 +85,7 @@ constexpr base::StringPiece kTwoTypesOneExpirationPrefValue = R"({
 
 class PermissionExpirationsTest : public testing::Test {
  public:
-  PermissionExpirationsTest() {}
+  PermissionExpirationsTest() = default;
   PermissionExpirationsTest(const PermissionExpirationsTest&) = delete;
   PermissionExpirationsTest& operator=(const PermissionExpirationsTest&) =
       delete;
