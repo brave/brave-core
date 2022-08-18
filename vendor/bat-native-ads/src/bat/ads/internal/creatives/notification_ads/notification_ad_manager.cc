@@ -9,6 +9,7 @@
 #include <functional>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"

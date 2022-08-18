@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
@@ -310,14 +311,15 @@ void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
 void Account::OnDidRedeemUnblindedPaymentTokens(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   database::table::Transactions database_table;
-  database_table.Update(unblinded_payment_tokens, [](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to update transactions");
-      return;
-    }
+  database_table.Update(unblinded_payment_tokens,
+                        base::BindOnce([](const bool success) {
+                          if (!success) {
+                            BLOG(0, "Failed to update transactions");
+                            return;
+                          }
 
-    BLOG(3, "Successfully updated transactions");
-  });
+                          BLOG(3, "Successfully updated transactions");
+                        }));
 }
 
 void Account::OnDidRefillUnblindedTokens() {

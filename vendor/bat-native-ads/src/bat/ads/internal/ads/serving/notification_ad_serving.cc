@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/notification_ad_serving.h"
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"

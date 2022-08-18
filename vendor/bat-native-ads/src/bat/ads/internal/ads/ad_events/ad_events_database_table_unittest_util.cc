@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -32,15 +33,15 @@ void Reset(ResultCallback callback) {
                 command_response->status !=
                     mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
               DCHECK(false);
-              callback(/* success */ false);
+              std::move(callback).Run(/* success */ false);
               return;
             }
 
             RebuildAdEventHistoryFromDatabase();
 
-            callback(/* success */ true);
+            std::move(callback).Run(/* success */ true);
           },
-          callback));
+          std::move(callback)));
 }
 
 }  // namespace ad_events

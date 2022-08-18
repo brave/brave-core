@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -76,7 +77,8 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
   InsertOrUpdate(transaction.get(), {ad_event});
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void AdEvents::GetIf(const std::string& condition,
@@ -159,7 +161,8 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
@@ -185,7 +188,8 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string AdEvents::GetTableName() const {

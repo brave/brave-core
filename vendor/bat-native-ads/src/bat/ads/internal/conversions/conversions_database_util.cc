@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversions_database_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 
@@ -13,26 +14,26 @@ namespace database {
 
 void PurgeExpiredConversions() {
   table::Conversions database_table;
-  database_table.PurgeExpired([](const bool success) {
+  database_table.PurgeExpired(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge expired conversions");
       return;
     }
 
     BLOG(3, "Successfully purged expired conversions");
-  });
+  }));
 }
 
 void SaveConversions(const ConversionList& conversions) {
   table::Conversions database_table;
-  database_table.Save(conversions, [](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to save conversions");
-      return;
-    }
+  database_table.Save(conversions, base::BindOnce([](const bool success) {
+                        if (!success) {
+                          BLOG(0, "Failed to save conversions");
+                          return;
+                        }
 
-    BLOG(3, "Successfully saved conversions");
-  });
+                        BLOG(3, "Successfully saved conversions");
+                      }));
 }
 
 }  // namespace database

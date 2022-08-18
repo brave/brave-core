@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_info.h"
@@ -432,15 +433,19 @@ bool AdsImpl::ToggleSavedAd(const std::string& json) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsImpl::CreateOrOpenDatabase(InitializeCallback callback) {
-  DatabaseManager::GetInstance()->CreateOrOpen([=](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to create or open database");
-      FailedToInitialize(callback);
-      return;
-    }
+  DatabaseManager::GetInstance()->CreateOrOpen(base::BindOnce(
+      &AdsImpl::OnCreateOrOpenDatabase, base::Unretained(this), callback));
+}
 
-    MigrateConversions(callback);
-  });
+void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
+                                     const bool success) {
+  if (!success) {
+    BLOG(0, "Failed to create or open database");
+    FailedToInitialize(callback);
+    return;
+  }
+
+  MigrateConversions(callback);
 }
 
 void AdsImpl::MigrateConversions(InitializeCallback callback) {

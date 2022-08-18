@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -190,7 +191,7 @@ void UnitTestBase::Initialize() {
 
   database_manager_ = std::make_unique<DatabaseManager>();
   database_manager_->CreateOrOpen(
-      [](const bool success) { ASSERT_TRUE(success); });
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
 

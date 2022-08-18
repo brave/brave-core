@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
@@ -13,27 +14,28 @@ namespace database {
 
 void DeleteCreativeInlineContentAds() {
   table::CreativeInlineContentAds database_table;
-  database_table.Delete([](const bool success) {
+  database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative inline content ads");
       return;
     }
 
     BLOG(3, "Successfully deleted creative inline content ads");
-  });
+  }));
 }
 
 void SaveCreativeInlineContentAds(
     const CreativeInlineContentAdList& creative_ads) {
   table::CreativeInlineContentAds database_table;
-  database_table.Save(creative_ads, [](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to save creative inline content ads");
-      return;
-    }
+  database_table.Save(creative_ads, base::BindOnce([](const bool success) {
+                        if (!success) {
+                          BLOG(0, "Failed to save creative inline content ads");
+                          return;
+                        }
 
-    BLOG(3, "Successfully saved creative inline content ads");
-  });
+                        BLOG(3,
+                             "Successfully saved creative inline content ads");
+                      }));
 }
 
 }  // namespace database

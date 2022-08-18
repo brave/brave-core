@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/geo_targets_database_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/geo_targets_database_table.h"
 
@@ -13,14 +14,14 @@ namespace database {
 
 void DeleteGeoTargets() {
   table::GeoTargets database_table;
-  database_table.Delete([](const bool success) {
+  database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete geo targets");
       return;
     }
 
     BLOG(3, "Successfully deleted geo targets");
-  });
+  }));
 }
 
 }  // namespace database
