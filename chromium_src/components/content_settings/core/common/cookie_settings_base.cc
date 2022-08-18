@@ -72,8 +72,6 @@ bool IsSessionOnlyExplicit(
 
 }  // namespace
 
-CookieSettingsBase::CookieSettingsBase() = default;
-
 CookieSettingsBase::~CookieSettingsBase() = default;
 
 CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata() = default;
