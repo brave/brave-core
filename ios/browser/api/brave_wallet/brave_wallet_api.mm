@@ -86,14 +86,14 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaInternal =
     return nil;
   }
 
-  auto* provider = new brave_wallet::EthereumProviderImpl(
+  auto provider = std::make_unique<brave_wallet::EthereumProviderImpl>(
       ios::HostContentSettingsMapFactory::GetForBrowserState(browserState),
       json_rpc_service, tx_service, keyring_service, brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate),
       browserState->GetPrefs());
-  return [[BraveWalletEthereumProviderImpl alloc]
-      initWithEthereumProvider:provider];
+  return [[BraveWalletEthereumProviderOwnedImpl alloc]
+      initWithEthereumProvider:std::move(provider)];
 }
 
 - (nullable id<BraveWalletSolanaProvider>)
@@ -122,12 +122,12 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaInternal =
     return nil;
   }
 
-  auto* provider = new brave_wallet::SolanaProviderImpl(
+  auto provider = std::make_unique<brave_wallet::SolanaProviderImpl>(
       keyring_service, brave_wallet_service, tx_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate));
-  return
-      [[BraveWalletSolanaProviderImpl alloc] initWithSolanaProvider:provider];
+  return [[BraveWalletSolanaProviderOwnedImpl alloc]
+      initWithSolanaProvider:std::move(provider)];
 }
 
 - (NSString*)resourceForID:(int)resource_id {
