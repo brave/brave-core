@@ -107,7 +107,8 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
 
 handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, payload: boolean) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.getMnemonicForDefaultKeyring()
+  // TODO (JL): Pass password here.
+  const result = await keyringService.getMnemonicForDefaultKeyring("")
   store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: result.mnemonic }))
 })
 

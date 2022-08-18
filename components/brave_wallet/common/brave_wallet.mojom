@@ -542,7 +542,7 @@ interface KeyringService {
   // Obtains the mnemonic code words for an already existing wallet
   // TODO(darkdh): make result optional instead of using empty string indicated
   // failure
-  GetMnemonicForDefaultKeyring() => (string mnemonic);
+  GetMnemonicForDefaultKeyring(string password) => (string mnemonic);
 
   // Restores a wallet with the specified mnemonic and encrypts it with the
   // new password provided. isLegacyBraveWallet can be used to restore the
