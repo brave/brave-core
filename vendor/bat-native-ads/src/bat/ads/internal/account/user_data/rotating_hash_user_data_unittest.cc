@@ -38,8 +38,8 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   const base::Value::Dict user_data = GetRotatingHash(kCreativeInstanceId);
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"rotating_hash":"1748047652"})");
+  const base::Value expected_user_data = base::test::ParseJson(
+      R"({"rotating_hash":"06a6D0QCW5onYUDKqCBBXUoil02apd6pcJ47M3Li7hA="})");
   ASSERT_TRUE(expected_user_data.is_dict());
 
   EXPECT_EQ(expected_user_data, user_data);
