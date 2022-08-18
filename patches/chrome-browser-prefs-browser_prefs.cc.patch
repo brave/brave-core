@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index d7978004bf0da7eeff94b31891dbef8913cd5471..8bc748faf5a038bcf80b9842faaec6edd83571aa 100644
+index 69ee59f8d955cf295abbbfd05bea904c80bba898..287f6326752054beccd1ab2c8861bd3ed99fa0c5 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1213,6 +1213,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1224,6 +1224,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,7 +11,7 @@ index d7978004bf0da7eeff94b31891dbef8913cd5471..8bc748faf5a038bcf80b9842faaec6ed
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1569,6 +1571,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1580,6 +1582,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);
