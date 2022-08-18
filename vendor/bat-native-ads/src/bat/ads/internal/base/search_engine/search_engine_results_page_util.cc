@@ -7,8 +7,8 @@
 
 #include <vector>
 
+#include "bat/ads/internal/base/search_engine/search_engine_constants.h"
 #include "bat/ads/internal/base/search_engine/search_engine_info.h"
-#include "bat/ads/internal/base/search_engine/search_engines.h"
 #include "bat/ads/internal/base/url/url_util.h"
 #include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"

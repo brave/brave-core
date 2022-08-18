@@ -15,7 +15,7 @@
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/instance_id_util.h"
+#include "bat/ads/internal/base/instance_id_constants.h"
 #include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {

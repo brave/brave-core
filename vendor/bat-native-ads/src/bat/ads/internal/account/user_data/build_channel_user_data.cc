@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
 
 #include "base/check.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/build_channel.h"
 
 namespace ads {
 namespace user_data {

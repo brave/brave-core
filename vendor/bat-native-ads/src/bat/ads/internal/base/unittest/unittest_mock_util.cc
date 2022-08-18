@@ -23,7 +23,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/build_channel.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"

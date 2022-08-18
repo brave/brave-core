@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/base/search_engine/search_engine_subdomains_util.h"
+#include "bat/ads/internal/base/search_engine/search_engine_subdomain_constants.h"
 
 #include "base/no_destructor.h"
 

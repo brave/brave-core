@@ -6,7 +6,7 @@
 #include "bat/ads/internal/server/headers/via_header_util.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/sys_info.h"
 
 namespace ads {
 namespace server {
