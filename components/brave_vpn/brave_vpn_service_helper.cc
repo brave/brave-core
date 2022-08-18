@@ -76,12 +76,12 @@ bool ValidateCachedRegionData(const base::Value::List& region_value) {
   return true;
 }
 
-base::Value GetValueFromRegion(const mojom::Region& region) {
-  base::Value region_dict(base::Value::Type::DICTIONARY);
-  region_dict.SetStringKey(kRegionContinentKey, region.continent);
-  region_dict.SetStringKey(kRegionNameKey, region.name);
-  region_dict.SetStringKey(kRegionNamePrettyKey, region.name_pretty);
-  region_dict.SetStringKey(kRegionCountryIsoCodeKey, region.country_iso_code);
+base::Value::Dict GetValueFromRegion(const mojom::Region& region) {
+  base::Value::Dict region_dict;
+  region_dict.Set(kRegionContinentKey, region.continent);
+  region_dict.Set(kRegionNameKey, region.name);
+  region_dict.Set(kRegionNamePrettyKey, region.name_pretty);
+  region_dict.Set(kRegionCountryIsoCodeKey, region.country_iso_code);
   return region_dict;
 }
 
