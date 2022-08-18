@@ -21,11 +21,11 @@ namespace decentralized_dns {
 
 namespace {
 
-base::Value MakeSelectValue(ResolveMethodTypes value,
-                            const std::u16string& name) {
-  base::Value item(base::Value::Type::DICTIONARY);
-  item.SetKey("value", base::Value(static_cast<int>(value)));
-  item.SetKey("name", base::Value(name));
+base::Value::Dict MakeSelectValue(ResolveMethodTypes value,
+                                  const std::u16string& name) {
+  base::Value::Dict item;
+  item.Set("value", base::Value(static_cast<int>(value)));
+  item.Set("name", base::Value(name));
   return item;
 }
 
@@ -99,8 +99,8 @@ bool IsENSResolveMethodEthereum(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ETHEREUM);
 }
 
-base::Value GetResolveMethodList() {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List GetResolveMethodList() {
+  base::Value::List list;
   list.Append(MakeSelectValue(ResolveMethodTypes::ASK,
                               brave_l10n::GetLocalizedResourceUTF16String(
                                   IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
