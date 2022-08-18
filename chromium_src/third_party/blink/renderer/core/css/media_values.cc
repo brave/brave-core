@@ -13,19 +13,18 @@
   CalculateDeviceWidth(LocalFrame* frame) {                                    \
     return MaybeFarbleScreenInteger(frame->DomWindow()->GetExecutionContext(), \
                                     brave::FarbleKey::kWindowInnerWidth,       \
-                                    frame->DomWindow()->innerWidth(), 0, 8,    \
+                                    CalculateViewportWidth(frame), 0, 8,       \
                                     CalculateDeviceWidth_ChromiumImpl(frame)); \
   }                                                                            \
   int MediaValues::CalculateDeviceWidth_ChromiumImpl
 
-#define CalculateDeviceHeight                       \
-  CalculateDeviceHeight(LocalFrame* frame) {        \
-    return MaybeFarbleScreenInteger(                \
-        frame->DomWindow()->GetExecutionContext(),  \
-        brave::FarbleKey::kWindowInnerHeight,       \
-        frame->DomWindow()->innerHeight(), 0, 8,    \
-        CalculateDeviceHeight_ChromiumImpl(frame)); \
-  }                                                 \
+#define CalculateDeviceHeight                                                 \
+  CalculateDeviceHeight(LocalFrame* frame) {                                  \
+    return MaybeFarbleScreenInteger(                                          \
+        frame->DomWindow()->GetExecutionContext(),                            \
+        brave::FarbleKey::kWindowInnerHeight, CalculateViewportHeight(frame), \
+        0, 8, CalculateDeviceHeight_ChromiumImpl(frame));                     \
+  }                                                                           \
   int MediaValues::CalculateDeviceHeight_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/css/media_values.cc"
