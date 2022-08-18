@@ -294,8 +294,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             animation.setDuration(800);
             leafAlignView.startAnimation(animation);
         }
-
-        leafView.animate().scaleX(scale).scaleY(scale).setDuration(800);
+        if (leafView != null) {
+            leafView.animate().scaleX(scale).scaleY(scale).setDuration(800);
+        }
     }
 
     @Override
