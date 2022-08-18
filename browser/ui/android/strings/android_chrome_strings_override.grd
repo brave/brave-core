@@ -187,6 +187,9 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
      <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Brave level Private lock setting after a re-authentication.">
        Turn on Private lock
      </message>
+     <message name="IDS_INCOGNITO_REAUTH_SNACKBAR_TEXT" desc="The label of the snackbar notification which appears after the private re-authentication is turned on from the promo card shown inside the Private grid tab switcher.">
+        Private tabs will be locked when you leave Brave
+     </message>
 
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the benefits users will get if they turn on the metrics sharing option.">
         Help make Brave better for profiles who use it the way you do
