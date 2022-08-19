@@ -100,6 +100,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_ui_browser_interface_broker_registry.h"
+#include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
@@ -559,28 +560,28 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       base::BindRepeating(&MaybeBindBraveVpnImpl));
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+  content::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
-  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+  content::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
-  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+  content::RegisterWebUIControllerInterfaceBinder<
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
-  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+  content::RegisterWebUIControllerInterfaceBinder<
       brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCookieListOptIn)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+    content::RegisterWebUIControllerInterfaceBinder<
         brave_shields::mojom::CookieListOptInPageHandlerFactory,
         CookieListOptInUI>(map);
   }
   if (base::FeatureList::IsEnabled(
           brave_rewards::features::kWebUIPanelFeature)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+    content::RegisterWebUIControllerInterfaceBinder<
         brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
   }
   if (base::FeatureList::IsEnabled(
           brave_federated::features::kFederatedLearning)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+    content::RegisterWebUIControllerInterfaceBinder<
         federated_internals::mojom::PageHandlerFactory,
         brave_federated::FederatedInternalsUI>(map);
   }
@@ -589,13 +590,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 // Brave News
 #if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+    content::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
   }
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+  content::RegisterWebUIControllerInterfaceBinder<
       brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
 }
