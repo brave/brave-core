@@ -5,6 +5,7 @@
 
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
+import("//net/features.gni")
 
 source_set("net") {
   configs += [ "//build/config/compiler:enable_arc" ]
@@ -20,6 +21,10 @@ source_set("net") {
     "//third_party/boringssl",
     "//url",
   ]
+
+  if (include_transport_security_state_preload_list) {
+    deps += [ "//net/http:generate_transport_security_state" ]
+  }
 
   frameworks = [
     "Foundation.framework",
