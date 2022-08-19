@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
+index 8d61ad299f7f652de8b3293aab957f35f62eb97f..3ddea4a5bbbab58870ef683589bb1428ee059dd6 100644
+--- a/third_party/blink/renderer/core/script/script_loader.cc
++++ b/third_party/blink/renderer/core/script/script_loader.cc
+@@ -536,6 +536,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position) {
+       nonce, integrity_metadata, integrity_attr, parser_state, credentials_mode,
+       referrer_policy, fetch_priority_hint, render_blocking_behavior,
+       RejectCoepUnsafeNone(false), attribution_reporting_eligibility);
++  BRAVE_SCRIPT_LOADER_PREPARE_SCRIPT
+ 
+   // <spec step="23">Let settings object be the element's node document's
+   // relevant settings object.</spec>

@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+index 3188fe65d9319d5d08db626b5e97be046390201a..22aaa5e4495b8ad47d3f766fce21517d89f67cf4 100644
+--- a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
++++ b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+@@ -89,6 +89,7 @@ ScheduledAction::ScheduledAction(ScriptState* script_state,
+   } else {
+     UseCounter::Count(target, WebFeature::kScheduledActionIgnored);
+   }
++  BRAVE_SCHEDULED_ACTION_STRING_HANDLER_CONSTRUCTOR
+ }
+ 
+ ScheduledAction::~ScheduledAction() {
