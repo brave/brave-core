@@ -524,12 +524,12 @@ constexpr char kBraveVerticalTabsDescription[] =
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY \
-    {"brave-vertical-tabs",  \
-    flag_descriptions::kBraveVerticalTabsName, \
-    flag_descriptions::kBraveVerticalTabsDescription, \
-    kOsWin | kOsMac | kOsLinux, \
-    FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs)},
+#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY                   \
+    {"brave-vertical-tabs",                                 \
+     flag_descriptions::kBraveVerticalTabsName,             \
+     flag_descriptions::kBraveVerticalTabsDescription,      \
+     kOsWin | kOsMac | kOsLinux,                            \
+     FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs)},
 #else
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
 #endif  // defined(TOOLKIT_VIEWS)

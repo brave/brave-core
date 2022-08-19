@@ -100,7 +100,6 @@ class BraveBrowserView : public BrowserView {
 
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
-
   raw_ptr<views::View> vertical_tabs_container_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

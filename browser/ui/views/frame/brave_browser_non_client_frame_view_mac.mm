@@ -42,7 +42,7 @@ void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
 
 int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
   if (tabs::features::ShouldShowVerticalTabs()) {
-    // Set minimum top inset to show traffic lights on frame
+    // Set minimum top inset to show caption buttons on frame.
     return 18;
   }
 

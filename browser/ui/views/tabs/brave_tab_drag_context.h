@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "chrome/browser/ui/tabs/tab_group.h"  // tab_drg_context.h missing this.
+#include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 
 class BraveTabDragContext : public TabDragContext {
