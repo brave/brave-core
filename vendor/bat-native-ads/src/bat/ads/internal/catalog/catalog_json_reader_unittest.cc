@@ -12,6 +12,7 @@
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
+#include "bat/ads/internal/catalog/catalog_type_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
