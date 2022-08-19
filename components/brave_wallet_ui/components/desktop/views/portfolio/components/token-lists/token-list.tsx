@@ -31,7 +31,7 @@ import { NFTGridView } from '../nft-grid-view/nft-grid-view'
 import usePricing from '../../../../../../common/hooks/pricing'
 
 // Styled Components
-import { ScrollableColumn } from '../../../../../shared/style'
+// import { ScrollableColumn } from '../../../../../shared/style'
 import {
   ButtonRow,
   DividerText,
@@ -39,6 +39,8 @@ import {
   Spacer,
   FilterTokenRow
 } from '../../style'
+import { VirtualizedTokensList } from './virtualized-tokens-list'
+import { ScrollableColumn } from '../../../../../shared/style'
 
 type ViewMode = 'list' | 'grid'
 
@@ -138,7 +140,12 @@ export const TokenLists = ({
     return <>
       {selectedAssetFilter.id !== 'nfts' ? (
           <>
-            {sortedFungibleTokensList.map((token) => renderToken(token, 'list'))}
+            {/* {sortedFungibleTokensList.map((token) => renderToken(token, 'list'))} */}
+            <VirtualizedTokensList
+              renderToken={renderToken}
+              userAssetList={sortedFungibleTokensList}
+            />
+
             {nonFungibleTokens.length !== 0 &&
               <>
                 <Spacer />
@@ -184,6 +191,8 @@ export const TokenLists = ({
           </ScrollableColumn>
         : listUi
       }
+
+      {/* {listUi} */}
 
       {!hideAddButton &&
         <ButtonRow>
