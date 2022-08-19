@@ -1,0 +1,12 @@
+diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
+index 936a1fd08e1d41ee4f1630e93ca1b102340ecea6..b3af6b0d00a0be4be71d7aa2ffbef36008663d98 100644
+--- a/src/codegen/compiler.cc
++++ b/src/codegen/compiler.cc
+@@ -2457,6 +2457,7 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+     }
+   }
+   DCHECK(is_compiled_scope.is_compiled());
++  BRAVE_COMPILER_GET_FUNCTION_FROM_EVAL
+ 
+   return result;
+ }
