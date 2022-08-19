@@ -469,6 +469,7 @@ public class PortfolioFragment
         PendingTxHelper pendingTxHelper = new PendingTxHelper(getTxService(), accountInfos, false);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
+            pendingTxHelper.destroy();
             if (callback != null) callback.run();
         });
     }

@@ -23,15 +23,10 @@ import com.google.zxing.common.BitMatrix;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.List;

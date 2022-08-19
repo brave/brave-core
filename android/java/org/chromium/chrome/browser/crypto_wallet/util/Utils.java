@@ -1155,6 +1155,7 @@ public class Utils {
             pendingTxHelper.fetchTransactions(() -> {
                 HashMap<String, TransactionInfo[]> pendingTxInfos =
                         pendingTxHelper.getTransactions();
+                pendingTxHelper.destroy();
                 SolanaTransactionsGasHelper solanaTransactionsGasHelper =
                         new SolanaTransactionsGasHelper(
                                 activity, getTransactionArray(pendingTxInfos));

@@ -14,7 +14,8 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl;
+import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl.TxServiceObserverImplDelegate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class PendingTxHelper implements TxServiceObserver {
+public class PendingTxHelper implements TxServiceObserverImplDelegate {
     private TxService mTxService;
     private AccountInfo[] mAccountInfos;
     private HashMap<String, TransactionInfo[]> mTxInfos;
@@ -43,6 +44,7 @@ public class PendingTxHelper implements TxServiceObserver {
     public LiveData<List<TransactionInfo>> mTransactionInfoLd;
     public LiveData<TransactionInfo> mSelectedPendingRequest;
     public LiveData<Boolean> mHasNoPendingTxAfterProcessing;
+    private TxServiceObserverImpl mTxServiceObserver;
 
     public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll) {
         assert txService != null;
@@ -67,7 +69,16 @@ public class PendingTxHelper implements TxServiceObserver {
             boolean shouldObserveTxUpdates) {
         this(txService, accountInfos, returnAll);
         if (shouldObserveTxUpdates) {
-            txService.addObserver(this);
+            mTxServiceObserver = new TxServiceObserverImpl(this);
+            txService.addObserver(mTxServiceObserver);
+        }
+    }
+
+    public void destroy() {
+        if (mTxServiceObserver != null) {
+            mTxServiceObserver.close();
+            mTxServiceObserver.destroy();
+            mTxServiceObserver = null;
         }
     }
 
