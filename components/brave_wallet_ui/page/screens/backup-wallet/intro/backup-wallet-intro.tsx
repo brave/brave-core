@@ -27,6 +27,8 @@ import {
   PasswordColumn
 } from './backup-wallet-intro.style'
 import { InputLabelText } from '../../../../components/desktop/popup-modals/account-settings-modal/account-settings-modal.style'
+import { useDispatch } from 'react-redux'
+import { WalletPageActions } from '../../../actions'
 
 export interface Props {
   onSubmit: () => void
@@ -45,6 +47,9 @@ export const BackupWalletIntroStep = ({
   onCancel,
   recoveryPhraseLength
 }: Props) => {
+  // redux
+  const dispatch = useDispatch()
+
   // state
   const [password, setPassword] = React.useState<string>('')
   const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
@@ -83,6 +88,9 @@ export const BackupWalletIntroStep = ({
     // clear entered password & error
     setPassword('')
     setIsCorrectPassword(true)
+
+    // reveal recovery phrase
+    dispatch(WalletPageActions.showRecoveryPhrase({ show: true, password }))
 
     // continue on
     onSubmit()
