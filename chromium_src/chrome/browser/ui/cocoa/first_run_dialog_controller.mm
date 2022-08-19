@@ -23,8 +23,7 @@
   BOOL _setAsDefaultBrowser;
 }
 
-- (instancetype)initWithStatsCheckboxInitiallyChecked:(BOOL)checked
-                        defaultBrowserCheckboxVisible:(BOOL)visible {
+- (instancetype)initWithStatsCheckboxInitiallyChecked:(BOOL)checked {
   if ((self = [super init])) {
     _setAsDefaultBrowser = NO;
   }
