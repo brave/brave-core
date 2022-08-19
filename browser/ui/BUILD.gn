@@ -380,6 +380,8 @@ source_set("ui") {
   # need it
   if (is_android) {
     deps += [ ":favicon_source" ]
+  } else {
+    deps += [ "//brave/components/brave_rewards/common" ]
   }
 
   if (enable_brave_wayback_machine) {
