@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/common/policy_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -104,14 +105,18 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(OS_ANDROID)
-  } else if (host == kRewardsPageHost) {
+  } else if (host == kRewardsPageHost &&
+             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
     return new BraveRewardsPageUI(web_ui, url.host());
-  } else if (host == kRewardsInternalsHost) {
+  } else if (host == kRewardsInternalsHost &&
+             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kTipHost) {
+  } else if (host == kTipHost &&
+             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
     return new BraveTipUI(web_ui, url.host());
-  } else if (host == kBraveRewardsPanelHost) {
+  } else if (host == kBraveRewardsPanelHost &&
+             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
     return new RewardsPanelUI(web_ui);
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(IS_ANDROID)
@@ -191,35 +196,48 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
   return nullptr;
 }
 
-#if BUILDFLAG(IS_ANDROID)
 bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
                              const GURL& url) {
   if (url.host_piece() != kRewardsPageHost &&
+#if !BUILDFLAG(IS_ANDROID)
+      url.host_piece() != kTipHost &&
+      url.host_piece() != kBraveRewardsPanelHost &&
+#endif  // !BUILDFLAG(IS_ANDROID)
       url.host_piece() != kRewardsInternalsHost) {
     return false;
   }
+#if BUILDFLAG(IS_ANDROID)
   if (!base::FeatureList::IsEnabled(brave_rewards::features::kBraveRewards)) {
     return true;
   }
+#endif  // BUILDFLAG(IS_ANDROID)
+
   Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (profile && profile->GetPrefs() &&
-      profile->GetPrefs()->GetBoolean(kSafetynetCheckFailed)) {
-    return true;
+  if (profile) {
+    auto* prefs = profile->GetPrefs();
+    if (prefs) {
+#if BUILDFLAG(IS_ANDROID)
+      if (prefs->GetBoolean(kSafetynetCheckFailed)) {
+        return true;
+      }
+#else
+      if (brave_rewards::IsDisabledByPolicy(prefs)) {
+        return true;
+      }
+#endif  // BUILDFLAG(IS_ANDROID)
+    }
   }
   return false;
 }
-#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     content::BrowserContext* browser_context,
     const GURL& url) {
-#if BUILDFLAG(IS_ANDROID)
   if (ShouldBlockRewardsWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;
   }
-#endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url))
     return WebUI::kNoWebUI;
