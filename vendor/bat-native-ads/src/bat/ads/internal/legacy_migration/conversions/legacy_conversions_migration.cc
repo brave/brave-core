@@ -117,6 +117,44 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
   return GetFromList(*list);
 }
 
+void OnMigrate(InitializeCallback callback,
+               const bool success,
+               const std::string& json) {
+  if (!success) {
+    // Conversion state does not exist
+    SuccessfullyMigrated(callback);
+    return;
+  }
+
+  const absl::optional<ConversionQueueItemList> conversion_queue_items =
+      FromJson(json);
+  if (!conversion_queue_items) {
+    BLOG(0, "Failed to parse conversion state");
+    FailedToMigrate(callback);
+    return;
+  }
+
+  BLOG(3, "Successfully loaded conversion state");
+
+  BLOG(1, "Migrating conversion state");
+
+  database::table::ConversionQueue conversion_queue;
+  conversion_queue.Save(
+      *conversion_queue_items,
+      base::BindOnce(
+          [](InitializeCallback callback, const bool success) {
+            if (!success) {
+              BLOG(0, "Failed to save conversion state");
+              FailedToMigrate(callback);
+              return;
+            }
+
+            BLOG(3, "Successfully migrated conversion state");
+            SuccessfullyMigrated(callback);
+          },
+          callback));
+}
+
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
@@ -127,42 +165,8 @@ void Migrate(InitializeCallback callback) {
 
   BLOG(3, "Loading conversion state");
 
-  AdsClientHelper::GetInstance()->Load(
-      kFilename, base::BindOnce(
-                     [](InitializeCallback callback, const bool success,
-                        const std::string& json) {
-                       if (!success) {
-                         // Conversion state does not exist
-                         SuccessfullyMigrated(callback);
-                         return;
-                       }
-
-                       const absl::optional<ConversionQueueItemList>
-                           conversion_queue_items = FromJson(json);
-                       if (!conversion_queue_items) {
-                         BLOG(0, "Failed to parse conversion state");
-                         FailedToMigrate(callback);
-                         return;
-                       }
-
-                       BLOG(3, "Successfully loaded conversion state");
-
-                       BLOG(1, "Migrating conversion state");
-
-                       database::table::ConversionQueue conversion_queue;
-                       conversion_queue.Save(
-                           *conversion_queue_items, [=](const bool success) {
-                             if (!success) {
-                               BLOG(0, "Failed to save conversion state");
-                               FailedToMigrate(callback);
-                               return;
-                             }
-
-                             BLOG(3, "Successfully migrated conversion state");
-                             SuccessfullyMigrated(callback);
-                           });
-                     },
-                     callback));
+  AdsClientHelper::GetInstance()->Load(kFilename,
+                                       base::BindOnce(&OnMigrate, callback));
 }
 
 }  // namespace conversions

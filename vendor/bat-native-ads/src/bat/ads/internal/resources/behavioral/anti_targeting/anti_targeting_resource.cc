@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"

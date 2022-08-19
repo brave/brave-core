@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_CALLBACK_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_CALLBACK_H_
 
-#include <functional>
 #include <string>
 #include <vector>
 
@@ -21,7 +20,7 @@ class File;
 
 namespace ads {
 
-using ResultCallback = std::function<void(const bool)>;
+using ResultCallback = base::OnceCallback<void(const bool)>;
 
 using SaveCallback = base::OnceCallback<void(const bool)>;
 

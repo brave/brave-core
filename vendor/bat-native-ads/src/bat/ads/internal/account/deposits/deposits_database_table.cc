@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
@@ -72,7 +73,7 @@ Deposits::~Deposits() = default;
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
     return;
   }
 
@@ -81,7 +82,8 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   InsertOrUpdate(transaction.get(), deposit);
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -161,7 +163,8 @@ void Deposits::PurgeExpired(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string Deposits::GetTableName() const {

@@ -187,6 +187,7 @@ class AdsImpl final : public Ads,
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);
+  void OnCreateOrOpenDatabase(InitializeCallback callback, const bool success);
   void MigrateConversions(InitializeCallback callback);
   void MigrateRewards(InitializeCallback callback);
   void MigrateClientState(InitializeCallback callback);

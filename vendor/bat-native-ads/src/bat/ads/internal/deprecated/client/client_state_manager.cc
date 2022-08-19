@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <functional>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/hash/hash.h"
 #include "base/time/time.h"

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -147,8 +148,9 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
 
   // Act
   Transactions database_table;
-  database_table.Update(unblinded_payment_tokens,
-                        [](const bool success) { ASSERT_TRUE(success); });
+  database_table.Update(
+      unblinded_payment_tokens,
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
   info_2.reconciled_at = Now();
@@ -179,7 +181,8 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   Transactions database_table;
 
   // Act
-  database_table.Delete([](const bool success) { ASSERT_TRUE(success); });
+  database_table.Delete(
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
   database_table.GetAll(

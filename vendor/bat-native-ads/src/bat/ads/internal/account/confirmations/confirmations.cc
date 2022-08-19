@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/guid.h"
 #include "base/json/json_writer.h"

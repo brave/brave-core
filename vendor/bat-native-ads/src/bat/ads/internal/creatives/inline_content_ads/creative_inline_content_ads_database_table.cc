@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -175,7 +176,7 @@ void CreativeInlineContentAds::Save(
     const CreativeInlineContentAdList& creative_ads,
     ResultCallback callback) {
   if (creative_ads.empty()) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
     return;
   }
 
@@ -199,7 +200,8 @@ void CreativeInlineContentAds::Save(
   }
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void CreativeInlineContentAds::Delete(ResultCallback callback) {
@@ -208,7 +210,8 @@ void CreativeInlineContentAds::Delete(ResultCallback callback) {
   DeleteTable(transaction.get(), GetTableName());
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void CreativeInlineContentAds::GetForCreativeInstanceId(
