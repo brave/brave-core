@@ -10,6 +10,7 @@ namespace ads {
 
 // Diagnostic entries should be visually sorted based on the enum order.
 enum class DiagnosticEntryType {
+  kDeviceId,
   kEnabled,
   kLocale,
   kCatalogId,

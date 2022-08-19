@@ -23,7 +23,7 @@ class BatAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {
 TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Mon, 8 June 1996 12:34:56", /* is_local */ false));
+      TimeFromString("Mon, 8 July 1996 12:34:56", /* is_local */ false));
 
   LastUnIdleTimeDiagnosticEntry diagnostic_entry;
 
@@ -33,10 +33,10 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
   EXPECT_EQ("Last unidle time", diagnostic_entry.GetName());
-  EXPECT_EQ("1996-06-08T12:34:56.000Z", diagnostic_entry.GetValue());
+  EXPECT_EQ("1996-07-08T12:34:56.000Z", diagnostic_entry.GetValue());
 }
 
-TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, NeverUnIdleTime) {
+TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {
   // Arrange
   LastUnIdleTimeDiagnosticEntry diagnostic_entry;
 
@@ -45,7 +45,7 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, NeverUnIdleTime) {
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
   EXPECT_EQ("Last unidle time", diagnostic_entry.GetName());
-  EXPECT_EQ("", diagnostic_entry.GetValue());
+  EXPECT_EQ("Never", diagnostic_entry.GetValue());
 }
 
 }  // namespace ads

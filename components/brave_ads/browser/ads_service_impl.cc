@@ -50,6 +50,7 @@
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
+#include "brave/components/brave_ads/browser/device_id.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/brave_ads/common/features.h"
@@ -222,6 +223,7 @@ AdsServiceImpl::AdsServiceImpl(
         adaptive_captcha_service,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
 #endif
+    std::unique_ptr<DeviceId> device_id,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service,
     brave_federated::AsyncDataStore<
@@ -234,6 +236,7 @@ AdsServiceImpl::AdsServiceImpl(
       adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
 #endif
+      device_id_(std::move(device_id)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
@@ -248,6 +251,7 @@ AdsServiceImpl::AdsServiceImpl(
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   DCHECK(adaptive_captcha_service_);
 #endif
+  DCHECK(device_id_);
   DCHECK(history_service_);
   DCHECK(brave::IsRegularProfile(profile_));
 
@@ -799,7 +803,8 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
 }
 
 void AdsServiceImpl::Start(const uint32_t number_of_start) {
-  DetectUncertainFuture(number_of_start);
+  device_id_->GetDeviceId(base::BindOnce(&AdsServiceImpl::DetectUncertainFuture,
+                                         AsWeakPtr(), number_of_start));
 }
 
 void AdsServiceImpl::Stop() {
@@ -853,15 +858,20 @@ void AdsServiceImpl::OnResetAllState(const bool success) {
   VLOG(1) << "Successfully reset ads state";
 }
 
-void AdsServiceImpl::DetectUncertainFuture(const uint32_t number_of_start) {
-  auto callback = base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture,
-                                 AsWeakPtr(), number_of_start);
+void AdsServiceImpl::DetectUncertainFuture(const uint32_t number_of_start,
+                                           std::string device_id) {
+  auto callback =
+      base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture, AsWeakPtr(),
+                     number_of_start, std::move(device_id));
   brave_rpill::DetectUncertainFuture(base::BindOnce(std::move(callback)));
 }
 
 void AdsServiceImpl::OnDetectUncertainFuture(const uint32_t number_of_start,
+                                             std::string device_id,
                                              const bool is_uncertain_future) {
   ads::mojom::SysInfoPtr sys_info = ads::mojom::SysInfo::New();
+
+  sys_info->device_id = std::move(device_id);
 
   // TODO(https://github.com/brave/brave-browser/issues/13793): Transition ads
   // to components which will then provide access to |kFeatureName| and

@@ -72,6 +72,7 @@ class SimpleURLLoader;
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
+class DeviceId;
 
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
@@ -90,6 +91,7 @@ class AdsServiceImpl : public AdsService,
           adaptive_captcha_service,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
 #endif
+      std::unique_ptr<DeviceId> device_id,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
       brave_federated::AsyncDataStore<
@@ -247,8 +249,10 @@ class AdsServiceImpl : public AdsService,
   void OnShutdownAndResetBatAds(const bool success);
   void OnResetAllState(const bool success);
 
-  void DetectUncertainFuture(const uint32_t number_of_start);
+  void DetectUncertainFuture(const uint32_t number_of_start,
+                             std::string device_id);
   void OnDetectUncertainFuture(const uint32_t number_of_start,
+                               std::string device_id,
                                const bool is_uncertain_future);
 
   void EnsureBaseDirectoryExists(const uint32_t number_of_start);
@@ -492,6 +496,8 @@ class AdsServiceImpl : public AdsService,
       adaptive_captcha_service_ = nullptr;  // NOT OWNED
   std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 #endif
+
+  std::unique_ptr<DeviceId> device_id_;
 
   bool is_initialized_ = false;
 

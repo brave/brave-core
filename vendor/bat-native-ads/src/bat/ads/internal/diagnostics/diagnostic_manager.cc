@@ -13,6 +13,7 @@
 #include "bat/ads/internal/diagnostics/diagnostics_util.h"
 #include "bat/ads/internal/diagnostics/entries/catalog_id_diagnostic_entry.h"
 #include "bat/ads/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
+#include "bat/ads/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 #include "bat/ads/internal/diagnostics/entries/enabled_diagnostic_entry.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 #include "bat/ads/internal/diagnostics/entries/locale_diagnostic_entry.h"
@@ -28,6 +29,7 @@ DiagnosticManager::DiagnosticManager() {
   g_diagnostic_manager_instance = this;
 
   SetEntry(std::make_unique<EnabledDiagnosticEntry>());
+  SetEntry(std::make_unique<DeviceIdDiagnosticEntry>());
   SetEntry(std::make_unique<LocaleDiagnosticEntry>());
   SetEntry(std::make_unique<CatalogIdDiagnosticEntry>());
   SetEntry(std::make_unique<CatalogLastUpdatedDiagnosticEntry>());

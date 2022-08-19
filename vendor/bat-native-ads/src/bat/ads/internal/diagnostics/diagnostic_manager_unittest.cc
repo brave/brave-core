@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
@@ -33,6 +34,9 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
 
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
+  SysInfo().device_id =
+      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
   SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
@@ -46,7 +50,7 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
     ASSERT_TRUE(success);
 
     const std::string expected_json =
-        R"([{"name":"Enabled","value":"true"},{"name":"Locale","value":"en-KY"},{"name":"Catalog ID","value":"da5dd0e8-71e9-4607-a45b-13e28b607a81"},{"name":"Catalog last updated","value":"1970-11-18T12:34:56.000Z"},{"name":"Last unidle time","value":"1970-11-18T12:34:56.000Z"}])";
+        R"([{"name":"Device Id","value":"21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"},{"name":"Enabled","value":"true"},{"name":"Locale","value":"en-KY"},{"name":"Catalog ID","value":"da5dd0e8-71e9-4607-a45b-13e28b607a81"},{"name":"Catalog last updated","value":"1970-11-18T12:34:56.000Z"},{"name":"Last unidle time","value":"1970-11-18T12:34:56.000Z"}])";
     EXPECT_EQ(expected_json, json);
   });
 

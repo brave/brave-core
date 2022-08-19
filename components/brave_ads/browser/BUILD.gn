@@ -55,6 +55,8 @@ source_set("browser") {
   sources += [
     "ads_service_impl.cc",
     "ads_service_impl.h",
+    "device_id.cc",
+    "device_id.h",
     "service_sandbox_type.h",
   ]
 
