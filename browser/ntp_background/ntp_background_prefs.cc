@@ -5,12 +5,15 @@
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/notreached.h"
 #include "brave/components/constants/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "services/preferences/public/cpp/dictionary_value_update.h"
+#include "services/preferences/public/cpp/scoped_pref_update.h"
 
 namespace {
 
@@ -82,9 +85,8 @@ void NTPBackgroundPrefs::SetType(Type type) {
   if (type == GetType())
     return;
 
-  auto new_value = GetPrefValue()->Clone();
-  new_value.Set(kTypeKey, TypeToString(type));
-  service_->SetDict(kPrefName, std::move(new_value));
+  prefs::ScopedDictionaryPrefUpdate update(service_, kPrefName);
+  update->Set(kTypeKey, std::make_unique<base::Value>(TypeToString(type)));
 }
 
 bool NTPBackgroundPrefs::IsBraveType() const {
@@ -114,9 +116,8 @@ void NTPBackgroundPrefs::SetShouldUseRandomValue(bool random) {
 }
 
 void NTPBackgroundPrefs::SetSelectedValue(const std::string& value) {
-  auto new_value = GetPrefValue()->Clone();
-  new_value.Set(kSelectedValueKey, value);
-  service_->SetDict(kPrefName, std::move(new_value));
+  prefs::ScopedDictionaryPrefUpdate update(service_, kPrefName);
+  update->Set(kSelectedValueKey, std::make_unique<base::Value>(value));
 }
 
 absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
