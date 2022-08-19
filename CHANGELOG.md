@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.42](https://github.com/brave/brave-ios/releases/tag/v1.42)
+
+- Added Solana support for account creation, sending SOL and sending SPL tokens with Brave Wallet. ([#5716](https://github.com/brave/brave-ios/issues/5716))
+- Added support for Dynamic Type on the URL bar & toolbar enhancement. ([#5683](https://github.com/brave/brave-ios/issues/5683))
+- [Security] Fixed security tokens leak as reported on HackerOne by nishimunea. ([#5859](https://github.com/brave/brave-ios/issues/5859))
+- [Security] Fixed persistent user tracking via "window.cache" as reported on HackerOne by nishimunea.([#5860](https://github.com/brave/brave-ios/issues/5860))
+- Implemented tapping near bottom of screen when URL bar and bottom toolbar are collapsed during page scroll. ([#5695](https://github.com/brave/brave-ios/issues/5695))
+- Implemented hiding of recovery seed phrase in Brave Wallet when the app is backgrounded. ([#5744](https://github.com/brave/brave-ios/issues/5744))
+- Updated placeholder text from "Send Token" screen on Brave Wallet to only mentioned of address. ([#5786](https://github.com/brave/brave-ios/issues/5786))
+
 ## [1.41.1](https://github.com/brave/brave-ios/releases/tag/v1.41.1)
 
 - Fixed usage ping from reporting week of install as Sunday instead of Monday. ([#5750](https://github.com/brave/brave-ios/issues/5750))
