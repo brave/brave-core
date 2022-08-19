@@ -404,7 +404,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     screenshotHelper = ScreenshotHelper(tabManager: tabManager)
     tabManager.addDelegate(self)
     tabManager.addNavigationDelegate(self)
-    tabManager.makeWalletProvider = { [weak self] tab in
+    tabManager.makeWalletEthProvider = { [weak self] tab in
       guard let self = self,
             let provider = self.braveCore.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
         return nil
@@ -444,7 +444,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
-    Preferences.Wallet.defaultWallet.observe(from: self)
+    Preferences.Wallet.defaultEthWallet.observe(from: self)
     
     // Lists need to be compiled before attempting tab restoration
     
@@ -3479,7 +3479,7 @@ extension BrowserViewController: PreferencesObserver {
       PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
-    case Preferences.Wallet.defaultWallet.key:
+    case Preferences.Wallet.defaultEthWallet.key:
       tabManager.reset()
       tabManager.reloadSelectedTab()
       notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)

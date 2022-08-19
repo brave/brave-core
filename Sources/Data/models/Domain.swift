@@ -366,13 +366,14 @@ extension Domain {
         let domain = Domain.getOrCreateInternal(
           url, context: context,
           saveStrategy: .persistentStore)
-        domain.setWalletDappPermission(account: account, grant: grant, context: context)
+        domain.setWalletEthDappPermission(account: account, grant: grant, context: context)
       }
     }
   }
   
-  private func setWalletDappPermission(
-    account: String, grant: Bool,
+  private func setWalletEthDappPermission(
+    account: String,
+    grant: Bool,
     context: NSManagedObjectContext
   ) {
     if grant {

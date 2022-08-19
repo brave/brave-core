@@ -12,8 +12,9 @@ public struct WalletSettingsView: View {
   @ObservedObject var settingsStore: SettingsStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var defaultWallet = Preferences.Wallet.defaultWallet
-  @ObservedObject var allowDappsRequestAccounts = Preferences.Wallet.allowEthereumProviderAccountRequests
+  @ObservedObject var defaultEthWallet = Preferences.Wallet.defaultEthWallet
+  @ObservedObject var defaultSolWallet = Preferences.Wallet.defaultSolWallet
+  @ObservedObject var allowDappsRequestAccounts = Preferences.Wallet.allowDappProviderAccountRequests
   @ObservedObject var displayDappsNotifications = Preferences.Wallet.displayWeb3Notifications
 
   @State private var isShowingResetWalletAlert = false
@@ -105,11 +106,11 @@ public struct WalletSettingsView: View {
       ) {
         Group {
           HStack {
-            Text(Strings.Wallet.web3PreferencesDefaultWallet)
+            Text(Strings.Wallet.web3PreferencesDefaultEthWallet)
               .foregroundColor(Color(.braveLabel))
             Spacer()
             Menu {
-              Picker("", selection: $defaultWallet.value) {
+              Picker("", selection: $defaultEthWallet.value) {
                 ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
                   Text(walletType.name)
                     .tag(walletType)
@@ -117,9 +118,29 @@ public struct WalletSettingsView: View {
               }
               .pickerStyle(.inline)
             } label: {
-              let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
+              let wallet = Preferences.Wallet.WalletType(rawValue: defaultEthWallet.value) ?? .none
               Text(wallet.name)
                 .foregroundColor(Color(.braveBlurpleTint))
+            }
+          }
+          if WalletDebugFlags.isSolanaDappsEnabled {
+            HStack {
+              Text(Strings.Wallet.web3PreferencesDefaultSolWallet)
+                .foregroundColor(Color(.braveLabel))
+              Spacer()
+              Menu {
+                Picker("", selection: $defaultSolWallet.value) {
+                  ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
+                    Text(walletType.name)
+                      .tag(walletType)
+                  }
+                }
+                .pickerStyle(.inline)
+              } label: {
+                let wallet = Preferences.Wallet.WalletType(rawValue: defaultSolWallet.value) ?? .none
+                Text(wallet.name)
+                  .foregroundColor(Color(.braveBlurpleTint))
+              }
             }
           }
           Toggle(Strings.Wallet.web3PreferencesAllowSiteToRequestAccounts, isOn: $allowDappsRequestAccounts.value)

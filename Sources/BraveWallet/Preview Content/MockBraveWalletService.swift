@@ -97,7 +97,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func add(_ observer: BraveWalletBraveWalletServiceObserver) {
   }
 
-  func setDefaultWallet(_ defaultWallet: BraveWallet.DefaultWallet) {
+  func setDefaultWallet(_ defaultEthWallet: BraveWallet.DefaultWallet) {
   }
 
   func notifySignMessageRequestProcessed(_ approved: Bool, id: Int32, signature: BraveWallet.ByteArrayStringUnion?, error: String?) {
@@ -203,10 +203,10 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(.braveWallet)
   }
   
-  func setDefaultEthereumWallet(_ defaultWallet: BraveWallet.DefaultWallet) {
+  func setDefaultEthereumWallet(_ defaultEthWallet: BraveWallet.DefaultWallet) {
   }
   
-  func setDefaultSolanaWallet(_ defaultWallet: BraveWallet.DefaultWallet) {
+  func setDefaultSolanaWallet(_ defaultEthWallet: BraveWallet.DefaultWallet) {
   }
 }
 #endif

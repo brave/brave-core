@@ -65,8 +65,8 @@ public class SettingsStore: ObservableObject {
     walletService.reset()
     keychain.resetPasswordInKeychain(key: KeyringStore.passwordKeychainKey)
     Domain.clearAllEthereumPermissions()
-    Preferences.Wallet.defaultWallet.reset()
-    Preferences.Wallet.allowEthereumProviderAccountRequests.reset()
+    Preferences.Wallet.defaultEthWallet.reset()
+    Preferences.Wallet.allowDappProviderAccountRequests.reset()
     Preferences.Wallet.displayWeb3Notifications.reset()
   }
 

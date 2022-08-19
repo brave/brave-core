@@ -118,7 +118,7 @@ class UserScriptManager {
     isMediaBackgroundPlaybackEnabled: Bool,
     isNightModeEnabled: Bool,
     isDeAMPEnabled: Bool,
-    walletProviderJS: String?
+    walletEthProviderJS: String?
   ) {
     self.tab = tab
     self.isCookieBlockingEnabled = isCookieBlockingEnabled
@@ -129,7 +129,7 @@ class UserScriptManager {
     self.isNightModeEnabled = isNightModeEnabled
     self.isDeAMPEnabled = isDeAMPEnabled
     self.userScriptTypes = []
-    self.walletProviderJS = walletProviderJS
+    self.walletEthProviderJS = walletEthProviderJS
     self.isRequestBlockingEnabled = true
     
     reloadUserScripts()
@@ -428,7 +428,7 @@ class UserScriptManager {
       in: .page)
   }()
 
-  private let walletProviderScript: WKUserScript? = {
+  private let walletEthProviderScript: WKUserScript? = {
     guard let path = Bundle.current.path(forResource: "WalletEthereumProvider", ofType: "js"),
           let source = try? String(contentsOfFile: path) else {
       return nil
@@ -451,7 +451,7 @@ class UserScriptManager {
                         in: .page)
   }()
 
-  private var walletProviderJS: String?
+  private var walletEthProviderJS: String?
     
   private func reloadUserScripts() {
     tab?.webView?.configuration.userContentController.do {
@@ -514,11 +514,11 @@ class UserScriptManager {
         }
       }
 
-      if let script = walletProviderScript,
+      if let script = walletEthProviderScript,
          tab?.isPrivate == false,
-         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultWallet.value) == .brave {
+         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultEthWallet.value) == .brave {
         $0.addUserScript(script)
-        if var providerJS = walletProviderJS {
+        if var providerJS = walletEthProviderJS {
           providerJS = """
             (function() {
               if (window.isSecureContext) {
