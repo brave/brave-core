@@ -23,6 +23,8 @@ bool ParseAssetPrice(const std::string& json,
                      std::vector<mojom::AssetPricePtr>* values);
 bool ParseAssetPriceHistory(const std::string& json,
                             std::vector<mojom::AssetTimePricePtr>* values);
+bool ParseCoinMarkets(const std::string& json,
+                      std::vector<mojom::CoinMarketPtr>* values);
 
 std::string ParseEstimatedTime(const std::string& json);
 mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,

@@ -30,7 +30,7 @@ import {
   UpdateSelectedAssetMessage, UpdateTokenNetworkMessage
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
-
+import { getLocale } from '../../../../../common/locale'
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
@@ -55,7 +55,8 @@ import {
   AssetIcon,
   AssetNameText,
   AssetRow,
-  BalanceRow, BridgeToAuroraButton,
+  BalanceRow,
+  BridgeToAuroraButton,
   DetailText,
   InfoColumn,
   NetworkDescription,
@@ -66,18 +67,27 @@ import {
   PriceText,
   ShowBalanceButton,
   StyledWrapper,
-  TopRow
+  TopRow,
+  SubDivider,
+  NotSupportedText
 } from './style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
+import { CoinStats } from './components/coin-stats/coin-stats'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
 const bridgeToAuroraWarningShownKey = 'bridgeToAuroraWarningShown'
 
-export const PortfolioAsset = () => {
+interface Props {
+  isShowingMarketData?: boolean
+}
+
+export const PortfolioAsset = (props: Props) => {
+  const { isShowingMarketData } = props
   // state
   const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
   const [bridgeToAuroraWarningShown, setBridgeToAuroraWarningShown] = React.useState<boolean>()
+  const [isTokenSupported, setIsTokenSupported] = React.useState<boolean>()
   // routing
   const history = useHistory()
   const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
@@ -96,7 +106,9 @@ export const PortfolioAsset = () => {
     transactions,
     isFetchingPortfolioPriceHistory,
     transactionSpotPrices,
-    selectedNetworkFilter
+    selectedNetworkFilter,
+    coinMarketData,
+    fullTokenList
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   const {
@@ -107,7 +119,8 @@ export const PortfolioAsset = () => {
     selectedAssetPriceHistory,
     selectedTimeline,
     isFetchingNFTMetadata,
-    nftMetadata
+    nftMetadata,
+    selectedCoinMarket
   } = useSelector(({ page }: { page: PageState }) => page)
   // custom hooks
   const getAccountBalance = useBalance(networkList)
@@ -131,6 +144,10 @@ export const PortfolioAsset = () => {
         : ''
     })
   }, [accounts, networkList, getAccountBalance])
+
+  const tokensWithCoingeckoId = React.useMemo(() => {
+    return fullTokenList.filter(token => token.coingeckoId !== '')
+  }, [fullTokenList])
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
@@ -176,9 +193,27 @@ export const PortfolioAsset = () => {
     }
 
     // If the id length is greater than 15 assumes it's a contractAddress
-    return assetId.length > 15
+    let token = assetId.length > 15
       ? userVisibleTokensInfo.find((token) => tokenId ? token.contractAddress === assetId && token.tokenId === tokenId : token.contractAddress === assetId)
       : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase())
+
+    if (!token && assetId.length < 15) {
+      const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === assetId?.toLowerCase())
+      if (coinMarket) {
+        token = new BraveWallet.BlockchainToken()
+        token.coingeckoId = coinMarket.id
+        token.name = coinMarket.name
+        token.contractAddress = ''
+        token.symbol = coinMarket.symbol.toUpperCase()
+        token.logo = coinMarket.image
+      }
+      const foundToken = tokensWithCoingeckoId?.find(token => token.coingeckoId.toLowerCase() === coinMarket?.id?.toLowerCase())
+      setIsTokenSupported(foundToken !== undefined)
+    } else {
+      setIsTokenSupported(true)
+    }
+
+    return token
   }, [assetId, userVisibleTokensInfo, selectedTimeline, tokenId])
 
   const isSelectedAssetBridgeSupported = React.useMemo(() => {
@@ -293,8 +328,13 @@ export const PortfolioAsset = () => {
 
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
-    history.push(WalletRoutes.Portfolio)
+    dispatch(WalletPageActions.selectCoinMarket(undefined))
     setfilteredAssetList(userAssetList)
+    if (isShowingMarketData) {
+      history.push(WalletRoutes.Market)
+    } else {
+      history.push(WalletRoutes.Portfolio)
+    }
   }, [
     userAssetList,
     selectedTimeline
@@ -428,7 +468,7 @@ export const PortfolioAsset = () => {
             <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
             <AssetColumn>
               <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
-              <NetworkDescription>{selectedAssetFromParams.symbol} on {selectedAssetsNetwork?.chainName ?? ''}</NetworkDescription>
+              <NetworkDescription>{selectedAssetFromParams.symbol} { selectedAssetsNetwork?.chainName && `on ${selectedAssetsNetwork?.chainName}`}</NetworkDescription>
             </AssetColumn>
           </AssetRow>
 
@@ -490,15 +530,29 @@ export const PortfolioAsset = () => {
         src='chrome-untrusted://nft-display'
       />
 
-      <AccountsAndTransactionsList
-        formattedFullAssetBalance={formattedFullAssetBalance}
-        fullAssetFiatBalance={fullAssetFiatBalance}
-        selectedAsset={selectedAsset}
-        selectedAssetTransactions={selectedAssetTransactions}
-        onClickAddAccount={onClickAddAccount}
-        hideBalances={hideBalances}
-        networkList={networkList}
-      />
+      {isTokenSupported
+        ? <AccountsAndTransactionsList
+            formattedFullAssetBalance={formattedFullAssetBalance}
+            fullAssetFiatBalance={fullAssetFiatBalance}
+            selectedAsset={selectedAsset}
+            selectedAssetTransactions={selectedAssetTransactions}
+            onClickAddAccount={onClickAddAccount}
+            hideBalances={hideBalances}
+            networkList={networkList}
+          />
+        : <>
+          <SubDivider />
+          <NotSupportedText>{getLocale('braveWalletMarketDataCoinNotSupported')}</NotSupportedText>
+        </>
+      }
+
+      {isShowingMarketData && selectedCoinMarket &&
+        <CoinStats
+          marketCapRank={selectedCoinMarket.marketCapRank}
+          volume={selectedCoinMarket.totalVolume}
+          marketCap={selectedCoinMarket.marketCap}
+        />
+      }
     </StyledWrapper>
   )
 }

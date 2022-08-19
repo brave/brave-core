@@ -42,6 +42,8 @@ extern const char kUntrustedLedgerHost[];
 extern const char kUntrustedLedgerURL[];
 extern const char kUntrustedNftHost[];
 extern const char kUntrustedNftURL[];
+extern const char kUntrustedMarketHost[];
+extern const char kUntrustedMarketURL[];
 extern const char kUntrustedTrezorHost[];
 extern const char kUntrustedTrezorURL[];
 extern const char kShieldsPanelURL[];

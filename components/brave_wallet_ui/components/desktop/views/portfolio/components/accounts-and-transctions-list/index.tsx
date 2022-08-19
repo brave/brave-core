@@ -12,6 +12,7 @@ import {
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
+import { getTokensCoinType, getTokensNetwork } from '../../../../../../utils/network-utils'
 
 // Components
 import {
@@ -32,10 +33,8 @@ import {
   EmptyTransactionContainer,
   TransactionPlaceholderText,
   AssetBalanceDisplay,
-  DividerRow,
-  CoinGeckoText
+  DividerRow
 } from '../../style'
-import { getTokensCoinType, getTokensNetwork } from '../../../../../../utils/network-utils'
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
@@ -152,7 +151,6 @@ const AccountsAndTransactionsList = (props: Props) => {
               <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
             </EmptyTransactionContainer>
           )}
-          <CoinGeckoText>{getLocale('braveWalletPoweredByCoinGecko')}</CoinGeckoText>
         </>
       }
     </>

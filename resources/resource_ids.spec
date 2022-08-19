@@ -188,25 +188,30 @@
     "includes": [58750]
   },
   # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-market_display/market_display.grd": {
+    "META": {"sizes": {"includes": [250]}},
+    "includes": [59000]
+  },
+  # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_private_new_tab/brave_private_new_tab.grd": {
     "META": {"sizes": {"includes": [20]}},
-    "includes": [59000]
+    "includes": [59020]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-playlist/playlist.grd": {
     "META": {"sizes": {"includes": [250]}},
-    "includes": [59020]
+    "includes": [59270]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ledger_bridge/ledger_bridge.grd": {
     "META": {"sizes": {"includes": [250]}},
-    "includes": [59270]
+    "includes": [59520]
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-nft_display/nft_display.grd": {
     "META": {"sizes": {"includes": [250]}},
-    "includes": [59520]
+    "includes": [59770]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-cookie_list_opt_in/cookie_list_opt_in.grd": {
     "META": {"sizes": {"includes": [30]}},
-    "includes": [59770]
+    "includes": [59800]
   }
 }

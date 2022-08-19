@@ -11,6 +11,11 @@
   <script src="/brave_wallet_page.bundle.js"></script>
   <script type="module" src="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.js"></script>
   <style>
+    html {
+      /* Prevent layout shift when a vertical scrollbar is added  */
+      overflow-y: scroll;
+    }
+
     #root {
       display: flex;
       min-height: calc(100vh - 56px);
