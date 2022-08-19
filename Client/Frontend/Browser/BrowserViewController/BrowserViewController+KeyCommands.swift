@@ -259,12 +259,17 @@ extension BrowserViewController {
       UIKeyCommand(title: Strings.shareWithTitle, action: #selector(shareWithKeyCommand), input: "s", modifierFlags: .command)
     ]
 
-    var keyCommandList = navigationCommands + tabNavigationCommands + bookmarkEditingCommands + shareCommands + findTextCommands
+    // Additional Commands which will have priority over system
+    let additionalPriorityCommandKeys = [
+      UIKeyCommand(input: "\t", modifierFlags: .control, action: #selector(newTabKeyCommand))
+    ]
+    
+    var keyCommandList = navigationCommands + tabNavigationCommands + bookmarkEditingCommands + shareCommands + findTextCommands + additionalPriorityCommandKeys
 
     // URL completion and Override Key commands
     let searchLocationCommands = [
       UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(moveURLCompletionKeyCommand(sender:))),
-      UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(moveURLCompletionKeyCommand(sender:))),
+      UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(moveURLCompletionKeyCommand(sender:)))
     ]
 
     // In iOS 15+, certain keys events are delivered to the text input or focus systems first, unless specified otherwise
@@ -272,6 +277,7 @@ extension BrowserViewController {
       searchLocationCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
       tabMovementCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
       tabNavigationKeyCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
+      additionalPriorityCommandKeys.forEach { $0.wantsPriorityOverSystemBehavior = true }
     }
 
     if topToolbar.inOverlayMode {
