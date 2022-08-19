@@ -69,7 +69,8 @@ class AdsClientMock : public AdsClient {
                     GetScheduledCaptchaCallback callback));
   MOCK_METHOD2(ShowScheduledCaptchaNotification,
                void(const std::string& payment_id,
-                    const std::string& captcha_id));
+                    const std::string& captcha_id,
+                    const bool should_show_notification));
   MOCK_METHOD0(ClearScheduledCaptcha, void());
 
   MOCK_METHOD2(RunDBTransaction,

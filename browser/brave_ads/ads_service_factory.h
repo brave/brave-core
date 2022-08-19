@@ -6,9 +6,14 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
 
+#include <memory>
 #include "base/memory/singleton.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
+#endif
 
 class Profile;
 
@@ -34,6 +39,8 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
+  std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate(
+      Profile* profile) const;
 };
 
 }  // namespace brave_ads

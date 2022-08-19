@@ -102,6 +102,7 @@
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #endif
 
@@ -1669,26 +1670,27 @@ void AdsServiceImpl::GetScheduledCaptcha(
 
 void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
-    const std::string& captcha_id) {
+    const std::string& captcha_id,
+    const bool should_show_notification) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   PrefService* pref_service = profile_->GetPrefs();
-  if (pref_service->GetBoolean(
-          brave_adaptive_captcha::kScheduledCaptchaPaused)) {
-    VLOG(0) << "Ads paused; support intervention required";
-    return;
+  if (should_show_notification) {
+    if (pref_service->GetBoolean(
+            brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
+      VLOG(0) << "Ads paused; support intervention required";
+      return;
+    }
+
+    const int snooze_count = pref_service->GetInteger(
+        brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
+
+    ads_tooltips_delegate_->ShowCaptchaTooltip(
+        payment_id, captcha_id, snooze_count == 0,
+        base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
+        base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
+  } else {
+    AdsServiceImpl::ShowScheduledCaptcha(payment_id, captcha_id);
   }
-
-#if BUILDFLAG(IS_ANDROID)
-  AdsServiceImpl::ShowScheduledCaptcha(payment_id, captcha_id);
-#else
-  const int snooze_count = pref_service->GetInteger(
-      brave_adaptive_captcha::kScheduledCaptchaSnoozeCount);
-
-  ads_tooltips_delegate_->ShowCaptchaTooltip(
-      payment_id, captcha_id, snooze_count == 0,
-      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
-      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
-#endif
 #endif
 }
 

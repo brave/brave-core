@@ -8,6 +8,7 @@
 
 namespace brave_adaptive_captcha {
 namespace prefs {
+
 extern const char kScheduledCaptchaId[];
 extern const char kScheduledCaptchaPaymentId[];
 extern const char kScheduledCaptchaSnoozeCount[];
@@ -15,7 +16,6 @@ extern const char kScheduledCaptchaFailedAttempts[];
 extern const char kScheduledCaptchaPaused[];
 
 }  // namespace prefs
-
 }  // namespace brave_adaptive_captcha
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADAPTIVE_CAPTCHA_PREF_NAMES_H_

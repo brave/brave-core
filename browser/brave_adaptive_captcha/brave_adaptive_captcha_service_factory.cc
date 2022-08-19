@@ -34,7 +34,9 @@ class CaptchaDelegate
 
   bool ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override {
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
+    return true;
+#else
     // Because this is triggered from the adaptive captcha tooltip, this call
     // isn't associated with any particular `Browser` instance and we can use
     // the last active browser for this profile.
@@ -50,7 +52,6 @@ class CaptchaDelegate
     }
     return coordinator->ShowAdaptiveCaptcha();
 #endif
-    return true;
   }
 
  private:

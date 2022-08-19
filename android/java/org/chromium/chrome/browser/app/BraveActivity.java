@@ -727,10 +727,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void onPreferenceChange() {
-        solveAdaptiveCaptcha();
+        maybeSolveAdaptiveCaptcha();
     }
 
-    public void solveAdaptiveCaptcha() {
+    public void maybeSolveAdaptiveCaptcha() {
         String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                    .getString(BravePref.SCHEDULED_CAPTCHA_ID);
         String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
@@ -752,15 +752,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
-                == 10) {
+                >= 10) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
         }
 
-        Log.e("adaptive captcha", "Failed attempts : "+ UserPrefs.get(Profile.getLastUsedRegularProfile()).getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+        Log.e("adaptive captcha",
+                "Failed attempts : "
+                        + UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                  .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
         if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
-            solveAdaptiveCaptcha();
+            maybeSolveAdaptiveCaptcha();
         }
 
         if (SharedPreferencesManager.getInstance().readBoolean(

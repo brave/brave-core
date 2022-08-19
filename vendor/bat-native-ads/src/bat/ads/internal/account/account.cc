@@ -329,8 +329,13 @@ void Account::OnDidRefillUnblindedTokens() {
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
   const WalletInfo& wallet = GetWallet();
-  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(wallet.id,
-                                                                   captcha_id);
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
+      wallet.id, captcha_id, false);
+#else
+  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
+      wallet.id, captcha_id, true);
+#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
 }
 
 }  // namespace ads

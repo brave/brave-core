@@ -36,11 +36,27 @@ public class BraveAdaptiveCaptchaUtils {
                     BraveRewardsNativeWorker.getInstance().getCaptchaSolutionURL(
                             paymentId, captchaId);
             Log.e(TAG, adaptiveCaptchaSolutionUrl);
+            NetworkTrafficAnnotationTag annotation = NetworkTrafficAnnotationTag.createComplete(
+                    "Brave adaptive captcha solution android",
+                    "semantics {"
+                            + "  sender: 'Brave Andrioid app'"
+                            + "  description: "
+                            + "    'This api solves the scheduled captcha for to refill unblinded tokens '"
+                            + "  trigger: 'When paymenyt id as captcha scheduled'"
+                            + "  data:"
+                            + "    'payment id'"
+                            + "  destination: Brave grant endpoint"
+                            + "}"
+                            + "policy {"
+                            + "  cookies_allowed: NO"
+                            + "  policy_exception_justification: 'Not implemented.'"
+                            + "}");
+
             String logMessage = "";
             try {
                 URL url = new URL(String.format(adaptiveCaptchaSolutionUrl, paymentId, captchaId));
-                urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
-                        url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
+                urlConnection =
+                        (HttpURLConnection) ChromiumNetworkAdapter.openConnection(url, annotation);
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setUseCaches(false);
@@ -76,7 +92,8 @@ public class BraveAdaptiveCaptchaUtils {
                                                             BravePref
                                                                     .SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
                                             + 1);
-                    logMessage = "Captcha solution failed with " + responseCode+ " : " + urlConnection.getResponseMessage();
+                    logMessage = "Captcha solution failed with " + responseCode + " : "
+                            + urlConnection.getResponseMessage();
                 }
             } catch (MalformedURLException e) {
                 Log.e(TAG, e.getMessage());
