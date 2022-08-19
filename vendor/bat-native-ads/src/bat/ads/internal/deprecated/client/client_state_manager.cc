@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <functional>
+#include <memory>
 
 #include "base/bind.h"
 #include "base/check_op.h"
@@ -509,7 +510,7 @@ void ClientStateManager::RemoveAllHistory() {
 
   BLOG(1, "Successfully reset client state");
 
-  client_.reset(new ClientInfo());
+  client_ = std::make_unique<ClientInfo>();
 
   Save();
 }
@@ -572,7 +573,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
 
     is_initialized_ = true;
 
-    client_.reset(new ClientInfo());
+    client_ = std::make_unique<ClientInfo>();
     Save();
   } else {
     if (!FromJson(json)) {
@@ -603,7 +604,7 @@ bool ClientStateManager::FromJson(const std::string& json) {
     return false;
   }
 
-  client_.reset(new ClientInfo(client));
+  client_ = std::make_unique<ClientInfo>(client);
 
   return true;
 }

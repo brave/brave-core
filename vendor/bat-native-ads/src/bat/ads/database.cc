@@ -5,6 +5,7 @@
 
 #include "bat/ads/database.h"
 
+#include <memory>
 #include <vector>
 
 #include "base/bind.h"
@@ -118,9 +119,9 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
     }
 
     is_initialized_ = true;
-    memory_pressure_listener_.reset(new base::MemoryPressureListener(
+    memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
         FROM_HERE, base::BindRepeating(&Database::OnMemoryPressure,
-                                       base::Unretained(this))));
+                                       base::Unretained(this)));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
