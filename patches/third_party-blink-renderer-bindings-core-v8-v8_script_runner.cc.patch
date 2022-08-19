@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
+index e66de826d06ad6ced223e7d2cad3102f3988c550..ca967de09c0e82a64889835be81875c1a390099a 100644
+--- a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
++++ b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
+@@ -223,7 +223,7 @@ int GetMicrotasksScopeDepth(v8::Isolate* isolate,
+ 
+ }  // namespace
+ 
+-v8::MaybeLocal<v8::Script> V8ScriptRunner::CompileScript(
++static v8::MaybeLocal<v8::Script> V8ScriptRunner_CompileScript_ChromiumImpl(
+     ScriptState* script_state,
+     const ClassicScript& classic_script,
+     v8::ScriptOrigin origin,
+@@ -267,7 +267,7 @@ v8::MaybeLocal<v8::Script> V8ScriptRunner::CompileScript(
+   return script;
+ }
+ 
+-v8::MaybeLocal<v8::Module> V8ScriptRunner::CompileModule(
++static v8::MaybeLocal<v8::Module> V8ScriptRunner_CompileModule_ChromiumImpl(
+     v8::Isolate* isolate,
+     const ModuleScriptCreationParams& params,
+     const TextPosition& start_position,

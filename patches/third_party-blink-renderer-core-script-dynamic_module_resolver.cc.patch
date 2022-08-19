@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
+index a0d413af87827f659d2277eb906402fd99db3981..797530272b108a101e9e559067a7d878e6f57dbc 100644
+--- a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
++++ b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
+@@ -285,6 +285,7 @@ void DynamicModuleResolver::ResolveDynamically(
+       referrer_info.ParserState(), referrer_info.CredentialsMode(),
+       referrer_info.GetReferrerPolicy(), mojom::blink::FetchPriorityHint::kAuto,
+       RenderBlockingBehavior::kNonBlocking);
++  BRAVE_DYNAMIC_MODULE_RESOLVER_RESOLVE_DYNAMICALLY
+ 
+   // <spec label="fetch-an-import()-module-script-graph" step="3">Fetch a single
+   // module script given url, settings object, "script", options, settings
