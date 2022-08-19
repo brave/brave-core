@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/version_number_user_data.h"
 
-#include "brave/components/version_info/version_info.h"
+#include "bat/ads/internal/browser/browser_util.h"
 
 namespace ads {
 namespace user_data {
@@ -16,8 +16,7 @@ constexpr char kVersionNumberKey[] = "versionNumber";
 
 base::Value::Dict GetVersionNumber() {
   base::Value::Dict user_data;
-  user_data.Set(kVersionNumberKey,
-                version_info::GetBraveChromiumVersionNumber());
+  user_data.Set(kVersionNumberKey, GetBrowserVersionNumber());
 
   return user_data;
 }

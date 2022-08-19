@@ -84,7 +84,6 @@ base::Value::Dict ClientInfo::ToValue() const {
   }
   dict.Set("textClassificationProbabilitiesHistory",
            std::move(probabilities_history));
-  dict.Set("version_code", version_code);
   return dict;
 }
 
@@ -194,10 +193,6 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
       text_classification_probabilities.push_back(new_probabilities);
     }
-  }
-
-  if (const auto* value = root.FindString("version_code")) {
-    version_code = *value;
   }
 
   return true;
