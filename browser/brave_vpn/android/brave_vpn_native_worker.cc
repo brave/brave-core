@@ -211,8 +211,6 @@ void BraveVpnNativeWorker::GetSubscriberCredential(
 void BraveVpnNativeWorker::GetSubscriberCredentialV12(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
-    LOG(ERROR) << "BraveVPN : "
-               << "GetSubscriberCredentialV12";
     brave_vpn_service->GetSubscriberCredentialV12(
         base::BindOnce(&BraveVpnNativeWorker::OnGetSubscriberCredential,
                        weak_factory_.GetWeakPtr()));
@@ -222,8 +220,6 @@ void BraveVpnNativeWorker::GetSubscriberCredentialV12(JNIEnv* env) {
 void BraveVpnNativeWorker::OnGetSubscriberCredential(
     const std::string& subscriber_credential,
     bool success) {
-  LOG(ERROR) << "BraveVPN : "
-             << "subscriber credential : " << subscriber_credential;
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveVpnNativeWorker_onGetSubscriberCredential(
       env, weak_java_brave_vpn_native_worker_.get(env),
@@ -261,8 +257,6 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
 jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
-    LOG(ERROR) << "BraveVPN : "
-               << "Inside condition";
     return brave_vpn_service->is_purchased_user();
   }
 
@@ -271,11 +265,7 @@ jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
 
 void BraveVpnNativeWorker::ReloadPurchasedState(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
-  LOG(ERROR) << "BraveVPN : "
-             << "ReloadPurchasedState";
   if (brave_vpn_service) {
-    LOG(ERROR) << "BraveVPN : "
-               << "ReloadPurchasedState 2";
     brave_vpn_service->ReloadPurchasedState();
   }
 }
