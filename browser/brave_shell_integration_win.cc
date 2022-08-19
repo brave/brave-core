@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/callback.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
@@ -255,6 +256,11 @@ void PinToTaskbarImpl(const base::FilePath& profile_path,
     return;
   }
 
+  if (base::win::GetVersion() < base::win::Version::WIN10) {
+    base::win::PinShortcutToTaskbar(shortcut_path->file_path());
+    return;
+  }
+
   // Check pin state with newly created shortcut.
   auto pinned = IsShortcutPinnedWin10(shortcut_path->file_path());
   if (!pinned) {
@@ -319,14 +325,7 @@ void DoPinToTaskbar(Profile* profile) {
 
 bool CanPinToTaskbar() {
   base::FilePath chrome_exe;
-  if (!base::PathService::Get(base::FILE_EXE, &chrome_exe))
-    return false;
-
-  // TODO(simonhong): Support win7/8
-  if (base::win::GetVersion() < base::win::Version::WIN10_RS5)
-    return false;
-
-  return true;
+  return base::PathService::Get(base::FILE_EXE, &chrome_exe);
 }
 
 }  // namespace
@@ -338,6 +337,26 @@ void PinToTaskbar(Profile* profile) {
 
   if (!CanPinToTaskbar())
     return;
+
+  // TODO(simonhong): Use upstream api on Win10 when it's available.
+  if (base::win::GetVersion() < base::win::Version::WIN10) {
+    GetIsPinnedToTaskbarState(
+        base::NullCallback(),  // Ignore error state.
+        base::BindOnce(
+            [](Profile* profile, bool success, bool is_pinned_to_taskbar,
+               bool is_pinned_to_taskbar_verb_check) {
+              // Try to pin when we confirm that there is no pinned brave
+              // shortcut.
+              if (!success)
+                return;
+              if (is_pinned_to_taskbar || is_pinned_to_taskbar_verb_check)
+                return;
+
+              DoPinToTaskbar(profile);
+            },
+            profile));
+    return;
+  }
 
   // At the very early stage, |g_browser_process| or its profile_manager
   // are not initialzied yet. In that case, skip checking existing pin state.
@@ -372,11 +391,6 @@ void PinToTaskbar(Profile* profile) {
 }
 
 void PinDefaultShortcutForExistingUsers() {
-  // TODO(simonhong): Support win7/8
-  // Below win::PinToTaskbar() doesn't work for win7/8.
-  if (base::win::GetVersion() < base::win::Version::WIN10_RS5)
-    return;
-
   if (first_run::IsChromeFirstRun())
     return;
 
