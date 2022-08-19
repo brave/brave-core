@@ -71,8 +71,9 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
         void updateNetworkInfo(NetworkInfo item, boolean activeNetwork) {
             mTitle.setText(item.chainName);
             String description = item.chainId;
-            if (item.rpcUrls.length > 0) {
-                description += " " + item.rpcUrls[0];
+            if (item.activeRpcEndpointIndex >= 0
+                    && item.activeRpcEndpointIndex < item.rpcEndpoints.length) {
+                description += " " + item.rpcEndpoints[item.activeRpcEndpointIndex].url;
             }
             mDescription.setText(description);
 

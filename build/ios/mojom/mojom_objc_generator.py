@@ -83,7 +83,7 @@ class URLMojoTypemap(MojoTypemap):
     def ObjCWrappedType(self):
         return "NSURL*"
     def ExpectedCppType(self):
-        return "net::GURL"
+        return "GURL"
     def DefaultObjCValue(self, default):
         return "[[NSURL alloc] init]"
     def ObjCToCpp(self, accessor):

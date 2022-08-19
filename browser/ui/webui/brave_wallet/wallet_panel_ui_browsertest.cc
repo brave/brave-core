@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
@@ -15,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,10 +25,6 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/javascript_dialogs/app_modal_dialog_controller.h"
-#include "components/javascript_dialogs/app_modal_dialog_view.h"
-#include "components/javascript_dialogs/tab_modal_dialog_manager.h"
-#include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -35,6 +33,8 @@
 using content::EvalJsResult;
 
 namespace {
+
+constexpr char kSomeEndpoint[] = "https://some.endpoint.com/";
 
 std::string SelectInNetworkList(const std::string& selector) {
   return base::StringPrintf("window.testing.walletNetworks.querySelector(`%s`)",
@@ -112,14 +112,9 @@ bool WaitAndClickElement(content::WebContents* web_contents,
   return EvalJs(web_contents, selector + ".click()").value.is_none();
 }
 
-bool ClickElementAsync(content::WebContents* web_contents,
-                       const std::string& selector) {
-  auto script =
-      base::StringPrintf("setTimeout(() =>{%s.click()}, 0)", selector.c_str());
-  return EvalJs(web_contents, script).value.is_none();
-}
-
 }  // namespace
+
+namespace brave_wallet {
 
 class WalletPanelUIBrowserTest : public InProcessBrowserTest {
  public:
@@ -131,22 +126,22 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
     WalletPanelUI::ShouldDisableCSPForTesting() = true;
 
+    auto* profile = browser()->profile();
+
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
-    brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-        browser()->profile())
+    JsonRpcServiceFactory::GetServiceForContext(profile)
         ->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
 
-    brave_wallet::KeyringServiceFactory::GetServiceForContext(
-        browser()->profile())
-        ->CreateWallet("password_123", base::DoNothing());
+    KeyringServiceFactory::GetServiceForContext(profile)->CreateWallet(
+        "password_123", base::DoNothing());
 
     SetEthChainIdInterceptor(
-        brave_wallet::GetKnownEthChain(browser()->profile()->GetPrefs(),
-                                       brave_wallet::mojom::kCeloMainnetChainId)
-            ->rpc_urls.front(),
-        brave_wallet::mojom::kCeloMainnetChainId);
+        {GURL(kSomeEndpoint),
+         GetKnownEthChain(profile->GetPrefs(), mojom::kCeloMainnetChainId)
+             ->rpc_endpoints.front()},
+        mojom::kCeloMainnetChainId);
 
     CreateWalletTab();
   }
@@ -165,6 +160,9 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     settings_ = browser()->tab_strip_model()->GetActiveWebContents();
+    // Overriding native confirmation dialog so it always confirms.
+    EXPECT_TRUE(
+        EvalJs(settings_, "window.confirm = () => true").value.is_none());
   }
 
   void ActivateSettingsTab() {
@@ -178,12 +176,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   }
 
   WalletPanelUI* GetWebUIController() {
-    return wallet_->GetWebUI()
-        ->GetController()
-        ->template GetAs<WalletPanelUI>();
+    return wallet_->GetWebUI()->GetController()->GetAs<WalletPanelUI>();
   }
 
-  void SetEthChainIdInterceptor(const std::string& network_url,
+  void SetEthChainIdInterceptor(const std::vector<GURL>& network_urls,
                                 const std::string& chain_id) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [=](const network::ResourceRequest& request) {
@@ -193,12 +189,33 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
                                                .AsStringPiece());
           url_loader_factory_.ClearResponses();
           if (request_string.find("eth_chainId") != std::string::npos) {
-            url_loader_factory_.AddResponse(
-                network_url,
-                base::StringPrintf(R"({"jsonrpc":"2.0","id":1,"result":"%s"})",
-                                   chain_id.c_str()));
+            const std::string response = base::StringPrintf(
+                R"({"jsonrpc":"2.0","id":1,"result":"%s"})", chain_id.c_str());
+            for (auto& url : network_urls)
+              url_loader_factory_.AddResponse(url.spec(), response);
           }
         }));
+  }
+
+  void WaitForCeloNetworkUrl(const GURL& url) {
+    auto* prefs = browser()->profile()->GetPrefs();
+
+    if (GetNetworkURL(prefs, mojom::kCeloMainnetChainId,
+                      mojom::CoinType::ETH) == url) {
+      return;
+    }
+
+    base::RunLoop run_loop;
+    PrefChangeRegistrar pref_change_registrar;
+    pref_change_registrar.Init(prefs);
+    pref_change_registrar.Add(
+        kBraveWalletCustomNetworks,
+        base::BindLambdaForTesting([&run_loop, &prefs, &url] {
+          if (GetNetworkURL(prefs, mojom::kCeloMainnetChainId,
+                            mojom::CoinType::ETH) == url)
+            run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
   content::WebContents* wallet() { return wallet_; }
@@ -277,20 +294,8 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
                 .ExtractString());
 
   // Click on submit button.
-  // TODO(apaymyshev): should do js confirm dialog instead of native one:
-  // https://github.com/brave/brave-browser/issues/23472
-  auto* js_dialog_manager =
-      javascript_dialogs::TabModalDialogManager::FromWebContents(settings());
-  base::RunLoop dialog_wait;
-  js_dialog_manager->SetDialogShownCallbackForTesting(
-      dialog_wait.QuitClosure());
-
-  ClickElementAsync(settings(),
-                    SelectInAddNetworkDialog("cr-button.action-button"));
-  dialog_wait.Run();
-  js_dialog_manager->ClickDialogButtonForTesting(true, {});
-  web_modal::WebContentsModalDialogManager::FromWebContents(settings())
-      ->CloseAllDialogs();
+  ASSERT_TRUE(WaitAndClickElement(
+      settings(), SelectInAddNetworkDialog("cr-button.action-button")));
 
   // Chain name for Celo changes to 'Custom Network' in settings.
   ASSERT_TRUE(WaitFor(settings(), SelectInNetworkList(CeloNetworkChainName()) +
@@ -301,3 +306,77 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
   ASSERT_TRUE(WaitFor(wallet(), Select(CeloNetwork(), NetworkNameSpan()) +
                                     "?.innerText === 'Custom Network'"));
 }
+
+IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
+  CreateSettingsTab();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  auto known_celo_rpc = GetKnownEthChain(prefs, mojom::kCeloMainnetChainId)
+                            ->rpc_endpoints.front();
+  // Celo rpc is from known info.
+  WaitForCeloNetworkUrl(known_celo_rpc);
+
+  // Go to wallet network settings and wait for Celo network to appear.
+  ActivateSettingsTab();
+  ASSERT_TRUE(WaitFor(settings(), SelectInNetworkList(CeloNetworkChainName()) +
+                                      "?.innerText === 'Celo Mainnet'"));
+
+  // Double click on Celo network.
+  ASSERT_TRUE(
+      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(CeloNetwork())))
+          .ExtractBool());
+
+  // Wait for edit network dialog with Celo Mainnet as chain name.
+  ASSERT_TRUE(WaitFor(settings(), SelectInAddNetworkDialog("#chainName") +
+                                      "?.value === 'Celo Mainnet'"));
+
+  // Click rpc + button.
+  ASSERT_TRUE(WaitAndClickElement(
+      settings(), SelectInAddNetworkDialog("#rpc-plus-button")));
+
+  // Click on added input.
+  ASSERT_TRUE(WaitAndClickElement(
+      settings(),
+      SelectInAddNetworkDialog(
+          "#rpcRadioGroup cr-radio-button:nth-of-type(1) cr-input")));
+
+  // Set value to added input.
+  ASSERT_TRUE(
+      WaitFor(settings(),
+              SelectInAddNetworkDialog(
+                  "#rpcRadioGroup cr-radio-button:nth-of-type(1) cr-input") +
+                  ".value='" + kSomeEndpoint + "'"));
+
+  // Submit changes.
+  ASSERT_TRUE(WaitAndClickElement(
+      settings(), SelectInAddNetworkDialog("cr-button.action-button")));
+
+  // Wait for custom endpoint for Celo.
+  WaitForCeloNetworkUrl(GURL(kSomeEndpoint));
+
+  // Wait for custom endpoint listed for Celo.
+  ASSERT_TRUE(WaitFor(
+      settings(), SelectInNetworkList(CeloNetwork() + " .secondary") +
+                      "?.innerText === '0xa4ec https://some.endpoint.com/'"));
+
+  // Double click on Celo network.
+  ASSERT_TRUE(
+      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(CeloNetwork())))
+          .ExtractBool());
+  // Wait for edit network dialog with Celo Mainnet as chain name.
+  ASSERT_TRUE(WaitFor(settings(), SelectInAddNetworkDialog("#chainName") +
+                                      "?.value === 'Celo Mainnet'"));
+  // Click on second item(known rpc) in rpc list.
+  ASSERT_TRUE(WaitAndClickElement(
+      settings(),
+      SelectInAddNetworkDialog(
+          "#rpcRadioGroup cr-radio-button:nth-of-type(2) cr-input")));
+  // Sumbit changes.
+  ASSERT_TRUE(WaitAndClickElement(
+      settings(), SelectInAddNetworkDialog("cr-button.action-button")));
+
+  // Wait for endpoint to become known one.
+  WaitForCeloNetworkUrl(known_celo_rpc);
+}
+
+}  // namespace brave_wallet

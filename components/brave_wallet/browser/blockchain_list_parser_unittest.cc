@@ -226,11 +226,12 @@ TEST(ParseChainListUnitTest, ParseChainList) {
   EXPECT_EQ("0x1", chain1->chain_id);
   EXPECT_EQ("Ethereum Mainnet", chain1->chain_name);
   EXPECT_THAT(
-      chain1->rpc_urls,
-      ElementsAreArray({"https://mainnet.infura.io/v3/${INFURA_API_KEY}",
-                        "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
-                        "https://api.mycryptoapi.com/eth",
-                        "https://cloudflare-eth.com"}));
+      chain1->rpc_endpoints,
+      ElementsAreArray({GURL("https://mainnet.infura.io/v3/${INFURA_API_KEY}"),
+                        GURL("wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}"),
+                        GURL("https://api.mycryptoapi.com/eth"),
+                        GURL("https://cloudflare-eth.com")}));
+  EXPECT_EQ(2, chain1->active_rpc_endpoint_index);
   EXPECT_THAT(chain1->block_explorer_urls,
               ElementsAreArray({"https://etherscan.io"}));
   EXPECT_EQ("Ether", chain1->symbol_name);
@@ -245,13 +246,14 @@ TEST(ParseChainListUnitTest, ParseChainList) {
   EXPECT_EQ("0x89", chain2->chain_id);
   EXPECT_EQ("Polygon Mainnet", chain2->chain_name);
   EXPECT_THAT(
-      chain2->rpc_urls,
-      ElementsAreArray({"https://polygon-rpc.com/",
-                        "https://rpc-mainnet.matic.network",
-                        "https://matic-mainnet.chainstacklabs.com",
-                        "https://rpc-mainnet.maticvigil.com",
-                        "https://rpc-mainnet.matic.quiknode.pro",
-                        "https://matic-mainnet-full-rpc.bwarelabs.com"}));
+      chain2->rpc_endpoints,
+      ElementsAreArray({GURL("https://polygon-rpc.com/"),
+                        GURL("https://rpc-mainnet.matic.network"),
+                        GURL("https://matic-mainnet.chainstacklabs.com"),
+                        GURL("https://rpc-mainnet.maticvigil.com"),
+                        GURL("https://rpc-mainnet.matic.quiknode.pro"),
+                        GURL("https://matic-mainnet-full-rpc.bwarelabs.com")}));
+  EXPECT_EQ(0, chain2->active_rpc_endpoint_index);
   EXPECT_THAT(chain2->block_explorer_urls,
               ElementsAreArray({"https://polygonscan.com"}));
   EXPECT_EQ("MATIC", chain2->symbol_name);

@@ -152,7 +152,9 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   }
 
   getItemDescritionText(item) {
-    const url = (item.rpcUrls && item.rpcUrls.length) ?  item.rpcUrls[0] : ''
+    const url = (item.rpcUrls && item.rpcUrls[item.activeRpcEndpointIndex])
+      ? item.rpcUrls[item.activeRpcEndpointIndex]
+      : ''
     return item.chainId + ' ' + url
   }
 

@@ -54,7 +54,8 @@ const defaultState: WalletState = {
   selectedNetwork: {
     chainId: BraveWallet.MAINNET_CHAIN_ID,
     chainName: 'Ethereum Mainnet',
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [],
     blockExplorerUrls: [],
     iconUrls: [],
     symbol: 'ETH',

@@ -89,7 +89,7 @@ class TestBraveWalletHandler : public BraveWalletHandler {
     // unbind it from the base class before the derived class is destroyed.
     set_web_ui(nullptr);
   }
-  void SetEthChainIdInterceptor(const std::string& network_url,
+  void SetEthChainIdInterceptor(const GURL& network_url,
                                 const std::string& chain_id) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, network_url, chain_id](const network::ResourceRequest& request) {
@@ -100,8 +100,9 @@ class TestBraveWalletHandler : public BraveWalletHandler {
           url_loader_factory_.ClearResponses();
           if (request_string.find("eth_chainId") != std::string::npos) {
             url_loader_factory_.AddResponse(
-                network_url, "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" +
-                                 chain_id + "\"}");
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + chain_id +
+                    "\"}");
           }
         }));
   }
@@ -199,7 +200,8 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   base::Value::List args;
   args.Append(base::Value("id"));
   args.Append(brave_wallet::EthNetworkInfoToValue(chain1));
-  handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x999");
+  handler.SetEthChainIdInterceptor(brave_wallet::GetActiveEndpointUrl(chain1),
+                                   "0x999");
   base::RunLoop loop;
   handler.SetChainCallbackForTesting(loop.QuitClosure());
   handler.AddEthereumChain(args);
@@ -249,7 +251,8 @@ TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
   base::Value::List args;
   args.Append(base::Value("id"));
   args.Append(brave_wallet::EthNetworkInfoToValue(chain1));
-  handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x11");
+  handler.SetEthChainIdInterceptor(brave_wallet::GetActiveEndpointUrl(chain1),
+                                   "0x11");
   base::RunLoop loop;
   handler.SetChainCallbackForTesting(loop.QuitClosure());
   handler.AddEthereumChain(args);
@@ -263,7 +266,7 @@ TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
   EXPECT_EQ(arg3_list[0].GetBool(), false);
   std::string error_message = l10n_util::GetStringFUTF8(
       IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-      base::ASCIIToUTF16(GURL(chain1.rpc_urls.front()).spec()));
+      base::ASCIIToUTF16(brave_wallet::GetActiveEndpointUrl(chain1).spec()));
   EXPECT_EQ(arg3_list[1].GetString(), error_message);
 }
 TEST(TestBraveWalletHandler, AddEthereumChainFail) {

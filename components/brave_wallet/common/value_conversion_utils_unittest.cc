@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -30,13 +31,10 @@ void TestValueToBlockchainTokenFailCases(const base::Value::Dict& value,
   }
 }
 
-}  // namespace
-
-TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
-  {
-    auto value = base::JSONReader::Read(R"({
+constexpr char kNetworkDataValue[] = R"({
       "chainId": "0x5",
       "chainName": "Goerli",
+      "activeRpcEndpointIndex": 3,
       "rpcUrls": [
         "ftp://bar/",
         "ftp://localhost/",
@@ -72,36 +70,27 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
         2
       ],
       "is_eip1559": true
-    })")
-                     .value();
-    mojom::NetworkInfoPtr chain =
-        brave_wallet::ValueToEthNetworkInfo(value, true);
-    mojom::NetworkInfoPtr chain2 =
-        brave_wallet::ValueToEthNetworkInfo(value, false);
+    })";
+
+}  // namespace
+
+TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
+  {
+    auto value = base::JSONReader::Read(kNetworkDataValue).value();
+    mojom::NetworkInfoPtr chain = ParseEip3085Payload(value);
     ASSERT_TRUE(chain);
-    ASSERT_TRUE(chain2);
     EXPECT_EQ("0x5", chain->chain_id);
     EXPECT_EQ("Goerli", chain->chain_name);
-    EXPECT_EQ(chain->rpc_urls,
-              std::vector<std::string>(
-                  {"http://localhost/", "http://127.0.0.1/",
-                   "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
-                   "https://second.infura.io/"}));
-    EXPECT_EQ(chain2->rpc_urls,
-              std::vector<std::string>(
-                  {"ftp://bar/", "ftp://localhost/", "http://bar/",
-                   "http://localhost/", "http://127.0.0.1/",
-                   "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
-                   "https://second.infura.io/"}));
+    EXPECT_EQ(0, chain->active_rpc_endpoint_index);
+    EXPECT_EQ(chain->rpc_endpoints,
+              std::vector<GURL>(
+                  {GURL("http://localhost/"), GURL("http://127.0.0.1/"),
+                   GURL("https://goerli.infura.io/v3/INSERT_API_KEY_HERE"),
+                   GURL("https://second.infura.io/")}));
     EXPECT_EQ(
         chain->block_explorer_urls,
         std::vector<std::string>({"http://localhost/", "http://127.0.0.1/",
                                   "https://goerli.etherscan.io"}));
-    EXPECT_EQ(chain2->block_explorer_urls,
-              std::vector<std::string>({"ftp://bar/", "ftp://localhost/",
-                                        "http://bar/", "http://localhost/",
-                                        "http://127.0.0.1/",
-                                        "https://goerli.etherscan.io"}));
     EXPECT_EQ("Goerli ETH", chain->symbol_name);
     EXPECT_EQ("gorETH", chain->symbol);
     EXPECT_EQ(18, chain->decimals);
@@ -110,25 +99,21 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
                   {"http://localhost/", "http://127.0.0.1/",
                    "https://xdaichain.com/fake/example/url/xdai.svg",
                    "https://xdaichain.com/fake/example/url/xdai.png"}));
-    EXPECT_EQ(chain2->icon_urls,
-              std::vector<std::string>(
-                  {"ftp://bar/", "ftp://localhost/", "http://bar/",
-                   "http://localhost/", "http://127.0.0.1/",
-                   "https://xdaichain.com/fake/example/url/xdai.svg",
-                   "https://xdaichain.com/fake/example/url/xdai.png"}));
-    ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
-    ASSERT_TRUE(chain->is_eip1559);
+
+    EXPECT_EQ(chain->coin, mojom::CoinType::ETH);
+    EXPECT_FALSE(chain->is_eip1559);
   }
   {
     mojom::NetworkInfoPtr chain =
-        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"({
+        ParseEip3085Payload(base::JSONReader::Read(R"({
       "chainId": "0x5"
     })")
-                                                .value());
+                                .value());
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
     ASSERT_TRUE(chain->chain_name.empty());
-    ASSERT_TRUE(chain->rpc_urls.empty());
+    ASSERT_EQ(0, chain->active_rpc_endpoint_index);
+    ASSERT_TRUE(chain->rpc_endpoints.empty());
     ASSERT_TRUE(chain->icon_urls.empty());
     ASSERT_TRUE(chain->block_explorer_urls.empty());
     ASSERT_TRUE(chain->symbol_name.empty());
@@ -140,16 +125,76 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
 
   {
     mojom::NetworkInfoPtr chain =
-        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"({
-    })")
-                                                .value());
+        ParseEip3085Payload(base::JSONReader::Read(R"({})").value());
     ASSERT_FALSE(chain);
   }
   {
     mojom::NetworkInfoPtr chain =
-        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"([
-          ])")
-                                                .value());
+        ParseEip3085Payload(base::JSONReader::Read(R"([])").value());
+    ASSERT_FALSE(chain);
+  }
+}
+
+TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
+  {
+    auto value = base::JSONReader::Read(kNetworkDataValue).value();
+    mojom::NetworkInfoPtr chain = ValueToEthNetworkInfo(value);
+    ASSERT_TRUE(chain);
+    EXPECT_EQ("0x5", chain->chain_id);
+    EXPECT_EQ("Goerli", chain->chain_name);
+    EXPECT_EQ(3, chain->active_rpc_endpoint_index);
+    EXPECT_EQ(
+        chain->rpc_endpoints,
+        std::vector<GURL>(
+            {GURL("ftp://bar/"), GURL("ftp://localhost/"), GURL("http://bar/"),
+             GURL("http://localhost/"), GURL("http://127.0.0.1/"),
+             GURL("https://goerli.infura.io/v3/INSERT_API_KEY_HERE"),
+             GURL("https://second.infura.io/")}));
+    EXPECT_EQ(chain->block_explorer_urls,
+              std::vector<std::string>({"ftp://bar/", "ftp://localhost/",
+                                        "http://bar/", "http://localhost/",
+                                        "http://127.0.0.1/",
+                                        "https://goerli.etherscan.io"}));
+    EXPECT_EQ("Goerli ETH", chain->symbol_name);
+    EXPECT_EQ("gorETH", chain->symbol);
+    EXPECT_EQ(18, chain->decimals);
+    EXPECT_EQ(chain->icon_urls,
+              std::vector<std::string>(
+                  {"ftp://bar/", "ftp://localhost/", "http://bar/",
+                   "http://localhost/", "http://127.0.0.1/",
+                   "https://xdaichain.com/fake/example/url/xdai.svg",
+                   "https://xdaichain.com/fake/example/url/xdai.png"}));
+    EXPECT_EQ(chain->coin, mojom::CoinType::ETH);
+    EXPECT_TRUE(chain->is_eip1559);
+  }
+  {
+    mojom::NetworkInfoPtr chain =
+        ValueToEthNetworkInfo(base::JSONReader::Read(R"({
+      "chainId": "0x5"
+    })")
+                                  .value());
+    ASSERT_TRUE(chain);
+    EXPECT_EQ("0x5", chain->chain_id);
+    ASSERT_TRUE(chain->chain_name.empty());
+    ASSERT_EQ(0, chain->active_rpc_endpoint_index);
+    ASSERT_TRUE(chain->rpc_endpoints.empty());
+    ASSERT_TRUE(chain->icon_urls.empty());
+    ASSERT_TRUE(chain->block_explorer_urls.empty());
+    ASSERT_TRUE(chain->symbol_name.empty());
+    ASSERT_TRUE(chain->symbol.empty());
+    ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
+    ASSERT_FALSE(chain->is_eip1559);
+    EXPECT_EQ(chain->decimals, 0);
+  }
+
+  {
+    mojom::NetworkInfoPtr chain =
+        ValueToEthNetworkInfo(base::JSONReader::Read(R"({})").value());
+    ASSERT_FALSE(chain);
+  }
+  {
+    mojom::NetworkInfoPtr chain =
+        ValueToEthNetworkInfo(base::JSONReader::Read(R"([])").value());
     ASSERT_FALSE(chain);
   }
 }
@@ -168,9 +213,7 @@ TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
   EXPECT_EQ(value.FindBool("is_eip1559").value(), false);
   auto* rpc_urls = value.FindList("rpcUrls");
   for (const auto& entry : *rpc_urls) {
-    ASSERT_NE(std::find(chain.rpc_urls.begin(), chain.rpc_urls.end(),
-                        entry.GetString()),
-              chain.rpc_urls.end());
+    ASSERT_TRUE(base::Contains(chain.rpc_endpoints, entry.GetString()));
   }
 
   for (const auto& entry : *value.FindList("iconUrls")) {
@@ -304,6 +347,28 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   std::string* parent_capability = param0.FindString("parentCapability");
   ASSERT_NE(parent_capability, nullptr);
   EXPECT_EQ(*parent_capability, "eth_accounts");
+}
+
+TEST(ValueConversionUtilsUnitTest, GetFirstValidChainURL) {
+  std::vector<GURL> urls = {
+      GURL("https://goerli.infura.io/v3/${INFURA_API_KEY}"),
+      GURL("https://goerli.alchemy.io/v3/${ALCHEMY_API_KEY}"),
+      GURL("https://goerli.apikey.io/v3/${API_KEY}"),
+      GURL("https://goerli.apikey.io/v3/${PULSECHAIN_API_KEY}"),
+      GURL("wss://goerli.infura.io/v3/")};
+
+  // Uses the first URL when a good URL is not available
+  auto index = GetFirstValidChainURLIndex(urls);
+  EXPECT_EQ(index, 0);
+
+  urls.emplace_back("https://goerli.infura.io/v3/rpc");
+  urls.emplace_back("https://goerli.infura.io/v3/rpc2");
+  // Uses the first HTTP(S) URL without a variable when possible
+  index = GetFirstValidChainURLIndex(urls);
+  EXPECT_EQ(index, 5);
+
+  // Empty URL spec list returns 0
+  EXPECT_EQ(GetFirstValidChainURLIndex(std::vector<GURL>()), 0);
 }
 
 }  // namespace brave_wallet

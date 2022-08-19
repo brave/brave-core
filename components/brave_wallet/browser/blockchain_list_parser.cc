@@ -12,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
 namespace {
 
@@ -224,13 +225,15 @@ bool ParseChainList(const std::string& json, ChainList* result) {
       for (auto& item : *rpc_list) {
         if (auto* url = item.GetIfString()) {
           if (GURL(*url).is_valid()) {
-            network->rpc_urls.push_back(*url);
+            network->rpc_endpoints.emplace_back(*url);
           }
         }
       }
     }
-    if (network->rpc_urls.empty())
+    if (network->rpc_endpoints.empty())
       continue;
+    network->active_rpc_endpoint_index =
+        GetFirstValidChainURLIndex(network->rpc_endpoints);
 
     network->symbol = EmptyIfNull(
         chain_item->FindStringByDottedPath("nativeCurrency.symbol"));

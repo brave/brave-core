@@ -250,13 +250,21 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         }
     }
 
+    private String getActiveRpcEndpointUrl(NetworkInfo networkInfo) {
+        if (networkInfo.activeRpcEndpointIndex >= 0
+                && networkInfo.activeRpcEndpointIndex < networkInfo.rpcEndpoints.length) {
+            return networkInfo.rpcEndpoints[networkInfo.activeRpcEndpointIndex].url;
+        }
+        return "";
+    }
+
     private void addDetailsTabInfo(NetworkInfo networkInfo) {
         networks.clear();
         networks.add(new TwoLineItemDataSource(
                 getString(R.string.brave_wallet_allow_add_network_name), networkInfo.chainName));
         networks.add(
                 new TwoLineItemDataSource(getString(R.string.brave_wallet_allow_add_network_url),
-                        networkInfo.rpcUrls.length > 0 ? networkInfo.rpcUrls[0] : ""));
+                        getActiveRpcEndpointUrl(networkInfo)));
     }
 
     private void addNetworkTabInfo(NetworkInfo networkInfo) {
@@ -265,7 +273,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                 getString(R.string.brave_wallet_allow_add_network_name), networkInfo.chainName));
         details.add(
                 new TwoLineItemDataSource(getString(R.string.brave_wallet_allow_add_network_url),
-                        networkInfo.rpcUrls.length > 0 ? networkInfo.rpcUrls[0] : ""));
+                        getActiveRpcEndpointUrl(networkInfo)));
         details.add(new TwoLineItemDataSource(
                 getString(R.string.brave_wallet_allow_add_network_chain_id), networkInfo.chainId));
         details.add(new TwoLineItemDataSource(

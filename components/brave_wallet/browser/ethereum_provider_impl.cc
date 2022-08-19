@@ -156,7 +156,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
-  auto chain = brave_wallet::ValueToEthNetworkInfo(*list.begin(), true);
+  auto chain = ParseEip3085Payload(*list.begin());
   if (!chain) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -182,7 +182,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
   // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
   // we expect chain name and rpc urls as well at this time
   // https://github.com/brave/brave-browser/issues/17637
-  if (chain->chain_id.empty() || chain->rpc_urls.empty() ||
+  if (chain->chain_id.empty() || chain->rpc_endpoints.empty() ||
       chain->chain_name.empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
