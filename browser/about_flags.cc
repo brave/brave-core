@@ -348,6 +348,12 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
 constexpr char kPlaylistName[] = "Playlist";
 constexpr char kPlaylistDescription[] = "Enables Playlist";
 
+constexpr char kAllowCertainClientHintsName[] =
+    "Allow certain request client hints";
+constexpr char kAllowCertainClientHintsDescription[] =
+    "Allows setting certain request client hints (sec-ch-ua, sec-ch-ua-mobile, "
+    "sec-ch-ua-platform)";
+
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -503,6 +509,10 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
      flag_descriptions::kUseDevUpdaterUrlName,                              \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,               \
      FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl)},       \
+    {"allow-certain-client-hints",                                          \
+      flag_descriptions::kAllowCertainClientHintsName,                      \
+      flag_descriptions::kAllowCertainClientHintsDescription, kOsAll,       \
+      FEATURE_VALUE_TYPE(blink::features::kAllowCertainClientHints)},       \
     {"brave-ntp-branded-wallpaper-demo",                                    \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                  \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,   \

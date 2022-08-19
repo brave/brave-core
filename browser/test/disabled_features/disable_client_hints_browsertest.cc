@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <functional>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/containers/contains.h"
@@ -21,6 +22,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "services/network/public/cpp/client_hints.h"
+#include "services/network/public/mojom/web_client_hints_types.mojom-shared.h"
 #include "third_party/blink/public/common/client_hints/client_hints.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -52,8 +54,9 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
 
 }  // namespace
 
-class ClientHintsBrowserTest : public InProcessBrowserTest,
-                               public ::testing::WithParamInterface<bool> {
+class ClientHintsBrowserTest
+    : public InProcessBrowserTest,
+      public ::testing::WithParamInterface<std::tuple<bool, bool>> {
  public:
   ClientHintsBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS),
@@ -84,7 +87,8 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 
   ~ClientHintsBrowserTest() override = default;
 
-  bool IsClientHintHeaderEnabled() { return GetParam(); }
+  bool IsClientHintHeaderEnabled() { return std::get<0>(GetParam()); }
+  bool IsBraveClientHintFeatureEnabled() { return std::get<1>(GetParam()); }
 
   void SetUp() override {
     // Test that even with CH features enabled, there is no header.
@@ -98,7 +102,17 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
       }
     }
 
+    if (IsBraveClientHintFeatureEnabled()) {
+      enabled_features.push_back(blink::features::kAllowCertainClientHints);
+    } else {
+      disabled_features.push_back(blink::features::kAllowCertainClientHints);
+    }
+
     scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
+
+    if (IsBraveClientHintFeatureEnabled()) {
+      PopulateAllowedClientHints();
+    }
     InProcessBrowserTest::SetUp();
   }
 
@@ -131,10 +145,24 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   }
 
  private:
+  void PopulateAllowedClientHints() {
+    const auto& hints_map = network::GetClientHintToNameMap();
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUA));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAMobile));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAPlatform));
+  }
+
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
     for (const auto& elem : network::GetClientHintToNameMap()) {
       const auto& header = elem.second;
       if (base::Contains(request.headers, header)) {
+        if (IsBraveClientHintFeatureEnabled() &&
+            base::Contains(allowed_hints_, header)) {
+          continue;
+        }
         count_client_hints_headers_seen_++;
       }
     }
@@ -146,6 +174,7 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   GURL client_hints_meta_name_accept_ch_url_;
   GURL client_hints_url_;
   size_t count_client_hints_headers_seen_;
+  std::vector<std::string> allowed_hints_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
@@ -154,6 +183,9 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
     EXPECT_EQ(IsClientHintHeaderEnabled(),
               base::FeatureList::IsEnabled(feature));
   }
+  EXPECT_EQ(
+      IsBraveClientHintFeatureEnabled(),
+      base::FeatureList::IsEnabled(blink::features::kAllowCertainClientHints));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), client_hints_url()));
   EXPECT_EQ(0u, count_client_hints_headers_seen());
 
@@ -173,6 +205,15 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   EXPECT_EQ(0u, count_client_hints_headers_seen());
 }
 
-INSTANTIATE_TEST_SUITE_P(ClientHintsBrowserTest,
-                         ClientHintsBrowserTest,
-                         ::testing::Bool());
+INSTANTIATE_TEST_SUITE_P(
+    ClientHintsBrowserTest,
+    ClientHintsBrowserTest,
+    ::testing::Combine(::testing::Bool(), ::testing::Bool()),
+    [](const testing::TestParamInfo<ClientHintsBrowserTest::ParamType>& info) {
+      bool chromium_features_enabled = std::get<0>(info.param);
+      bool brave_feature_enabled = std::get<1>(info.param);
+      return base::StringPrintf(
+          "ChromiumCHFeatures%s_BraveCHFeature%s",
+          chromium_features_enabled ? "Enabled" : "Disabled",
+          brave_feature_enabled ? "Enabled" : "Disabled");
+    });
