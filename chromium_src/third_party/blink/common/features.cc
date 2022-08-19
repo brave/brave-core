@@ -36,7 +36,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 
 // Allow certain client hints in request header.
 const base::Feature kAllowCertainClientHints{"AllowCertainClientHints",
-                                             base::FEATURE_ENABLED_BY_DEFAULT};
+                                             base::FEATURE_DISABLED_BY_DEFAULT};
 
 const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
                                          base::FEATURE_DISABLED_BY_DEFAULT};
