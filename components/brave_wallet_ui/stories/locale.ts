@@ -733,5 +733,9 @@ provideStrings({
   braveWalletRequestFeatureButtonText: 'Request feature',
 
   // Warnings
-  braveWalletNonAsciiCharactersInMessageWarning: 'Warning: This message contains non-ASCII characters!'
+  braveWalletNonAsciiCharactersInMessageWarning: 'Non-ASCII characters detected!',
+
+  // ASCII toggles
+  braveWalletViewEncodedMessage: 'View original message',
+  braveWalletViewDecodedMessage: 'View message in ASCII encoding'
 })

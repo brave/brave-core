@@ -42,7 +42,6 @@ import {
   LearnMoreButton,
   URLText
 } from '../shared-panel-styles'
-// import { Row } from '../../shared/style'
 
 export interface Props {
   accounts: WalletAccountType[]
@@ -182,7 +181,7 @@ export const SignPanel = (props: Props) => {
                 <WarningIcon color={'warningIcon'} />
                 <WarningTitle warningType='warning'>
                   {
-                    'Non-ASCII characters detected!' // TODO
+                    getLocale('braveWalletNonAsciiCharactersInMessageWarning')
                   }
                 </WarningTitle>
               </WarningTitleRow>
@@ -191,9 +190,8 @@ export const SignPanel = (props: Props) => {
               >
                 {
                  renderUnicode
-                  ? 'View decoded message' // TODO: Locale
-                  : 'View encoded message' // TODO: Locale
-                  // getLocale('braveWalletAllowAddNetworkLearnMoreButton')
+                  ? getLocale('braveWalletViewDecodedMessage')
+                  : getLocale('braveWalletViewEncodedMessage')
                 }
               </LearnMoreButton>
             </WarningBox>
