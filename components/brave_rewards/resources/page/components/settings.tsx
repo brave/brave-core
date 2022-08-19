@@ -173,7 +173,7 @@ export function Settings () {
           <style.settingGroup>
             <AdsBox layout={layoutKind} />
           </style.settingGroup>
-          <style.settingGroup>
+          <style.settingGroup data-test-id='auto-contribute-settings'>
             <ContributeBox />
           </style.settingGroup>
           <style.settingGroup>

@@ -157,6 +157,18 @@ void RewardsBrowserTestContextHelper::VisitPublisher(
   LoadRewardsPage();
 
   auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
+
+  // Ensure that we are on the Rewards page.
+  EXPECT_EQ(contents->GetLastCommittedURL().host_piece(), "rewards");
+
+  // Ensure that the AC box is displayed.
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents, "[data-test-id=auto-contribute-settings]");
+
+  // Ensure that the AC sites table is displayed.
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents, "[data-test-id=autoContribute]");
+
   // Make sure site appears in auto-contribute table
   rewards_browsertest_util::WaitForElementToEqual(
       contents,
