@@ -1,0 +1,12 @@
+diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
+index 5f1e5ad662895e0be14918b833e30e2deda464cc..33c5c4d9e684f0e4f303c73cadd5acb927c80789 100644
+--- a/components/permissions/permission_util.cc
++++ b/components/permissions/permission_util.cc
+@@ -364,6 +364,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingTypeSafe(
+       return ContentSettingsType::DISPLAY_CAPTURE;
+     case PermissionType::NUM:
+       break;
++    PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
+   }
+ 
+   return ContentSettingsType::DEFAULT;

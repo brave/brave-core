@@ -21,10 +21,6 @@ class BravePermissionManager : public PermissionManager {
   BravePermissionManager(const BravePermissionManager&) = delete;
   BravePermissionManager& operator=(const BravePermissionManager&) = delete;
 
-  GURL GetCanonicalOrigin(ContentSettingsType permission,
-                          const GURL& requesting_origin,
-                          const GURL& embedding_origin) const override;
-
   void RequestPermissionsForOrigin(
       const std::vector<blink::PermissionType>& permissions,
       content::RenderFrameHost* render_frame_host,
