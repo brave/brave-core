@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {define, RegisterPolymerComponentReplacement} from 'chrome://brave-resources/polymer_overriding.js'
+import {define, RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {ContentSettingsTypes} from '../site_settings/constants.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
 import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
 import {routes} from '../route.js'
 import './config.js'
@@ -16,6 +17,23 @@ const PERMISSIONS_BASIC_REMOVE_IDS = [
 const CONTENT_ADVANCED_REMOVE_IDS = [
   ContentSettingsTypes.ADS,
 ]
+
+RegisterPolymerTemplateModifications({
+  'settings-site-settings-page': (templateContent) => {
+    const allSites = templateContent.querySelector('#allSites')
+    if (!allSites) {
+      console.error('[Brave Settings Overrides] Could not find all sites list')
+      return
+    }
+    allSites.insertAdjacentHTML('afterend', `
+      <div class="cr-row first line-only"><h2>${I18nBehavior.i18n('siteSettingsShields')}</h2></div>
+      <settings-site-settings-list id="basicShieldsList"
+          category-list="[[lists_.shieldsBasic]]"
+          focus-config="[[focusConfig]]">
+      </settings-site-settings-list>
+    `)
+  }
+})
 
 RegisterPolymerComponentReplacement(
   'settings-site-settings-page',
@@ -28,7 +46,7 @@ RegisterPolymerComponentReplacement(
       }
       const oldListsGetter = properties.lists_.value
       properties.lists_.value = function () {
-        const lists_ = oldListsGetter()
+        let lists_ = oldListsGetter()
         if (!lists_) {
           console.error('[Brave Settings Overrides] did not get lists_ data')
           return
@@ -93,6 +111,25 @@ RegisterPolymerComponentReplacement(
             }
           }
         }
+        lists_.shieldsBasic = [
+          {
+            route: routes.SITE_SETTINGS_SHIELDS_STATUS,
+            id: 'shields',
+            label: 'siteSettingsShieldsStatus',
+            icon: 'cr:extension',
+            enabledLabel: 'siteSettingsShieldsUp',
+            disabledLabel: 'siteSettingsShieldsDown'
+          },
+          {
+            route: routes.SITE_SETTINGS_HTTPS_EVERYWHERE,
+            id: 'shields_https',
+            label: 'siteSettingsShieldsUpgradeToHttps',
+            icon: 'cr:extension',
+            enabledLabel: 'siteSettingsHttpsEverywhereEnabled',
+            disabledLabel: 'siteSettingsHttpsEverywhereDisabled'
+          }
+        ]
+
         return lists_
       }
       return properties

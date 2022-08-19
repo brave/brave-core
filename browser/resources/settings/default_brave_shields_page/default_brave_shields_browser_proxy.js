@@ -49,7 +49,10 @@ cr.define('settings', function() {
      * @param {string} value name.
      */
     setHTTPSEverywhereEnabled(value) {}
-
+    /**
+     * @param {string} value name.
+     */
+    getHTTPSEverywhereEnabled() {}
     /**
      * @param {string} value name.
      */
@@ -104,7 +107,10 @@ cr.define('settings', function() {
     setHTTPSEverywhereEnabled(value) {
       chrome.send('setHTTPSEverywhereEnabled', [value]);
     }
-
+    /** @override */
+    getHTTPSEverywhereEnabled() {
+      return cr.sendWithPromise('getHTTPSEverywhereEnabled');
+    }
     /** @override */
     setNoScriptControlType(value) {
       chrome.send('setNoScriptControlType', [value]);

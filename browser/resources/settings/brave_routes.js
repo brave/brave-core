@@ -55,6 +55,8 @@ export default function addBraveRoutes(r) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
       r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
     }
+    r.SITE_SETTINGS_SHIELDS_STATUS = r.SITE_SETTINGS.createChild('shields')
+    r.SITE_SETTINGS_HTTPS_EVERYWHERE = r.SITE_SETTINGS.createChild('shields_https')
     if (r.SITE_SETTINGS_ADS) {
       delete r.SITE_SETTINGS_ADS
     } else {

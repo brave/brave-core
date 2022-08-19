@@ -32,7 +32,11 @@
   if (name == "ethereum")                                                \
     return ContentSettingsType::BRAVE_ETHEREUM;                          \
   if (name == "solana")                                                  \
-    return ContentSettingsType::BRAVE_SOLANA;
+    return ContentSettingsType::BRAVE_SOLANA;                            \
+  if (name == "shields")                                                 \
+    return ContentSettingsType::BRAVE_SHIELDS;                           \
+  if (name == "shields_https")                                           \
+    return ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES;
 
 #include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"
 
@@ -51,6 +55,10 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
     return true;
   if (type == ContentSettingsType::BRAVE_SOLANA)
     return true;
+  if (type == ContentSettingsType::BRAVE_SHIELDS)
+    return true;
+  if (type == ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)
+    return true;
   return HasRegisteredGroupName_ChromiumImpl(type);
 }
 
@@ -61,15 +69,17 @@ base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
     return "ethereum";
   if (type == ContentSettingsType::BRAVE_SOLANA)
     return "solana";
+  if (type == ContentSettingsType::BRAVE_SHIELDS)
+    return "shields";
+  if (type == ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)
+    return "shields_https";
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 
 const std::vector<ContentSettingsType>& GetVisiblePermissionCategories() {
-  static base::NoDestructor<std::vector<ContentSettingsType>> types{{
-      ContentSettingsType::AUTOPLAY,
-      ContentSettingsType::BRAVE_ETHEREUM,
-      ContentSettingsType::BRAVE_SOLANA,
-  }};
+  static base::NoDestructor<std::vector<ContentSettingsType>> types{
+      {ContentSettingsType::AUTOPLAY, ContentSettingsType::BRAVE_ETHEREUM,
+       ContentSettingsType::BRAVE_SOLANA}};
   static bool initialized = false;
   if (!initialized) {
     auto& base_types = GetVisiblePermissionCategories_ChromiumImpl();

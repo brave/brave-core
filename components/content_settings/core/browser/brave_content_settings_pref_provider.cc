@@ -177,6 +177,7 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // https://github.com/brave/brave-browser/issues/23113
   constexpr const ContentSettingsType kNoWildcardTypes[] = {
       ContentSettingsType::BRAVE_SHIELDS,
+      ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
   };
 
   auto* content_settings =
@@ -589,9 +590,13 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
       // brave::SetDefaultThirdPartyCookieBlockValue).
       return false;
     }
+    if (content_type == ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES) {
+      return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
+                                             content_type, std::move(in_value),
+                                             constraints);
+    }
     base::Time modified_time =
         store_last_modified_ ? base::Time::Now() : base::Time();
-
     GetPref(content_type)
         ->SetWebsiteSetting(primary_pattern, secondary_pattern, modified_time,
                             std::move(in_value), constraints);

@@ -6,7 +6,7 @@ index 306b03008c00e43d7cea89ec0af003c488e37f71..d0a0d9b7d37eb8b36653dcf052ababc5
       */
      switch (this.category) {
        case ContentSettingsTypes.ADS:
-+      case ContentSettingsTypes.AUTOPLAY:
++      case ContentSettingsTypes.AUTOPLAY: case ContentSettingsTypes.SHIELDS: case ContentSettingsTypes.HTTP_UPGRADABLE_RESOURCES:
        case ContentSettingsTypes.BACKGROUND_SYNC:
        case ContentSettingsTypes.FEDERATED_IDENTITY_API:
        case ContentSettingsTypes.IMAGES:

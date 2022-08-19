@@ -74,6 +74,28 @@ RegisterPolymerTemplateModifications({
           </template>
         `)
       }
+      pages.insertAdjacentHTML('beforeend', `
+        <template is="dom-if" route-path="/content/shields" no-search>
+        <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
+        <category-setting-exceptions
+        category="[[contentSettingsTypesEnum_.SHIELDS]]"
+        block-header="${I18nBehavior.i18n('siteSettingsShieldsDown')}"
+        allow-header="${I18nBehavior.i18n('siteSettingsShieldsUp')}">
+        </category-setting-exceptions>
+        </settings-subpage>
+        </template>
+      `)
+      pages.insertAdjacentHTML('beforeend', `
+        <template is="dom-if" route-path="/content/shields_https" no-search>
+        <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsShieldsUpgradeToHttps')}">
+        <category-setting-exceptions
+        category="[[contentSettingsTypesEnum_.HTTP_UPGRADABLE_RESOURCES]]"
+        block-header="${I18nBehavior.i18n('siteSettingsHttpsEverywhereDisabled')}"
+        allow-header="${I18nBehavior.i18n('siteSettingsHttpsEverywhereEnabled')}">
+        </category-setting-exceptions>
+        </settings-subpage>
+        </template>
+      `)
     }
 
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {

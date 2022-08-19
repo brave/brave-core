@@ -43,5 +43,23 @@ RegisterPolymerTemplateModifications({
         `)
       }
     }
+    const usageSection = templateContent.querySelector('div#usage')    
+    usageSection.insertAdjacentHTML('afterend', `
+      <div id="shields">
+        <div id="shieldsHeader" style="padding: 0 var(--cr-section-padding);">
+          <h2 class="first">${I18nBehavior.i18n('siteSettingsShields')}</h2>
+        </div>
+        <div class="list-frame">
+          <site-details-permission
+              category="[[contentSettingsTypesEnum_.SHIELDS]]"
+              icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
+          </site-details-permission>
+          <site-details-permission
+              category="[[contentSettingsTypesEnum_.HTTP_UPGRADABLE_RESOURCES]]"
+              icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsShieldsUpgradeToHttps')}">
+          </site-details-permission>
+        </div>
+      </div>
+    `)
   },
 })

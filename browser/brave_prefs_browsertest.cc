@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
@@ -63,6 +64,14 @@
 using BraveProfilePrefsBrowserTest = PlatformBrowserTest;
 using BraveLocalStatePrefsBrowserTest = PlatformBrowserTest;
 
+namespace {
+const std::string& GetPrefName(ContentSettingsType type) {
+  return content_settings::WebsiteSettingsRegistry::GetInstance()
+      ->Get(type)
+      ->default_value_pref_name();
+}
+}  // namespace
+
 // Check download prompt preference is set to true by default.
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
@@ -70,8 +79,10 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kHTTPSEVerywhereControlType));
+  EXPECT_EQ(
+      chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+          GetPrefName(ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)),
+      static_cast<int>(ContentSetting::CONTENT_SETTING_BLOCK));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kNoScriptControlType));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(

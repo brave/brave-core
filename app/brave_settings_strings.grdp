@@ -154,6 +154,18 @@
   </if>
 
   <!-- Settings / Shields -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS" desc="Label for shields site settings.">
+    Shields settings
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS" desc="Label for shields status site settings.">
+    Shields status
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
+    Up
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN" desc="Label for shields status down site settings.">
+    Down
+  </message>  
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
     Shields
   </message>
@@ -198,6 +210,12 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
     Upgrade connections to HTTPS
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL_ENABLED" desc="Lable for Brave upgrade connections to HTTPS control setting enabled">
+    Disabled
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL_DISABLED" desc="Lable for Brave upgrade connections to HTTPS control setting disabled">
+    Enabled
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
     Block scripts

@@ -15,6 +15,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "url/gurl.h"
 
@@ -59,6 +60,11 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setFingerprintingControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetFingerprintingControlType,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getHTTPSEverywhereEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetHTTPSEverywhereEnabled,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setHTTPSEverywhereEnabled",
@@ -176,10 +182,21 @@ void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();
-
   brave_shields::SetHTTPSEverywhereEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
       g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetHTTPSEverywhereEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  auto value = brave_shields::GetHTTPSEverywhereEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(value));
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(

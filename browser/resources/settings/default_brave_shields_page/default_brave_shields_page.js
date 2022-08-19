@@ -74,6 +74,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       adControlType_: String,
       cookieControlType_: String,
       fingerprintingControlType_: String,
+      httpsEverywhereEnabled_: {
+        type: Boolean,
+        value: false
+      },
       isAdBlockRoute_: {
         type: Boolean,
         value: false
@@ -100,11 +104,15 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           this.adControlType_ = 'allow'
       }
     })
-    
+  }
+
+  refreshState() {
+    this.browserProxy_.getHTTPSEverywhereEnabled().then(value => {
+      this.httpsEverywhereEnabled_ = value
+    })
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value
     })
-
     this.browserProxy_.getFingerprintingControlType().then(value => {
       this.fingerprintingControlType_ = value
     })
@@ -114,6 +122,9 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   currentRouteChanged() {
     const router = Router.getInstance()
     this.isAdBlockRoute_ = (router.getCurrentRoute() == router.getRoutes().SHIELDS_ADBLOCK)
+    if (router.getCurrentRoute() == router.getRoutes().SHIELDS) {
+      this.refreshState();
+    }
   }
 
   onAdblockPageClick_() {
@@ -141,7 +152,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onHTTPSEverywhereControlChange_ () {
-    this.browserProxy_.setHTTPSEverywhereEnabled(this.$.httpsEverywhereControlType.checked)
+    this.browserProxy_.setHTTPSEverywhereEnabled(this.httpsEverywhereEnabled_)
   }
 
   onNoScriptControlChange_ () {
