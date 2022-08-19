@@ -330,6 +330,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
 
+  constexpr const char kCheckNoApiInMainWorld[] =
+      R"js(
+        document.speedreader === undefined
+      )js";
+  EXPECT_TRUE(content::EvalJs(web_contents, kCheckNoApiInMainWorld,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS)
+                  .ExtractBool());
+
   constexpr const char kClickLinkAndGetTitle[] =
       R"js(
     (function() {
