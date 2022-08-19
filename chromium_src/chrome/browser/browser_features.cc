@@ -14,6 +14,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCopyLinkToText, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kDestroyProfileOnBrowserClose, base::FEATURE_DISABLED_BY_DEFAULT},
+    // Google has asked embedders not to enforce these pins:
+    // https://groups.google.com/a/chromium.org/g/embedder-dev/c/XsNTwEiN1lI/m/TMXh-ZvOAAAJ
+    {kKeyPinningComponentUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features
