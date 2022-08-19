@@ -27,7 +27,7 @@ TEST(BatAdsUnblindedTokenUtilTest, RawTokensToTokens) {
   // Assert
   std::vector<UnblindedToken> expected_tokens;
   for (const auto& raw_token : raw_tokens) {
-    expected_tokens.push_back(UnblindedToken(raw_token));
+    expected_tokens.emplace_back(raw_token);
   }
 
   EXPECT_EQ(expected_tokens, tokens);

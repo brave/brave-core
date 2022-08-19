@@ -30,7 +30,7 @@ TEST_F(BatAdsIdleTimeTest, WasLocked) {
   const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
   parameters[kShouldDetectWasLockedParameter] = "true";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -51,7 +51,7 @@ TEST_F(BatAdsIdleTimeTest, WasLockedIfShouldDetectWasLocked) {
   const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
   parameters[kShouldDetectWasLockedParameter] = "true";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -72,7 +72,7 @@ TEST_F(BatAdsIdleTimeTest, WasNotLocked) {
   const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
   parameters[kShouldDetectWasLockedParameter] = "true";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -93,7 +93,7 @@ TEST_F(BatAdsIdleTimeTest, WasNotLockedIfShouldNotDetectWasLocked) {
   const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
   parameters[kShouldDetectWasLockedParameter] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -114,7 +114,7 @@ TEST_F(BatAdsIdleTimeTest, HasNotExceededMaximumIdleTime) {
   const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
   parameters[kMaximumIdleTimeParameter] = "10s";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -136,7 +136,7 @@ TEST_F(BatAdsIdleTimeTest, HasNotExceededInfiniteMaximumIdleTime) {
   const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
   parameters[kMaximumIdleTimeParameter] = "0s";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -158,7 +158,7 @@ TEST_F(BatAdsIdleTimeTest, HasExceededMaximumIdleTime) {
   const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
   parameters[kMaximumIdleTimeParameter] = "10s";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -180,7 +180,7 @@ TEST_F(BatAdsIdleTimeTest, UpdateIdleTimeThreshold) {
   const char kIdleTimeThresholdParameter[] = "idle_time_threshold";
   parameters[kIdleTimeThresholdParameter] = "5s";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -207,7 +207,7 @@ TEST_F(BatAdsIdleTimeTest, DoNotUpdateIdleTimeThreshold) {
   const char kIdleTimeThresholdParameter[] = "idle_time_threshold";
   parameters[kIdleTimeThresholdParameter] = "10s";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({user_activity::features::kFeature, parameters});
+  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
