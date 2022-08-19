@@ -183,6 +183,74 @@ TEST(DebounceRuleUnitTest, ParamCapturesNonURLWithPrependScheme) {
   }
 }
 
+TEST(DebounceRuleUnitTest, TwoCaptureGroups) {
+  const std::string contents = R"json(
+
+      [{
+          "include": [
+              "*://test.com/*"
+          ],
+          "exclude": [
+          ],
+          "action": "regex-path",
+          "prepend_scheme": "https",
+          "param": "^/([^/]+)/xyz(/.*)$"
+      }]
+      
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL("https://test.com/brave.com/xyz/abc.jpg"),
+                     "https://brave.com/abc.jpg", false);
+  }
+}
+
+TEST(DebounceRuleUnitTest, CurlyBracesInRegexGetParseError) {
+  const std::string contents = R"json(
+
+      [{
+          "include": [
+              "*://test.com/*"
+          ],
+          "exclude": [
+          ],
+          "action": "regex-path",
+          "prepend_scheme": "https",
+          "param": "^/turbo/([^/]+)/xyz(/\d{4})/xyzzy(/.*)$"
+      }]
+      
+      )json";
+
+  auto parsed = DebounceRule::ParseRules(contents);
+  EXPECT_FALSE(parsed.has_value());
+}
+
+TEST(DebounceRuleUnitTest, ThreeCaptureGroups) {
+  const std::string contents = R"json(
+
+      [{
+          "include": [
+              "*://test.com/*"
+          ],
+          "exclude": [
+          ],
+          "action": "regex-path",
+          "prepend_scheme": "https",
+          "param": "^/turbo/([^/]+)/xyz(/[0-9]+)/xyzzy(/.*)$"
+      }]
+      
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(
+        rule.get(),
+        GURL("https://test.com/turbo/brave.com/xyz/2022/xyzzy/abc.jpg"),
+        "https://brave.com/2022/abc.jpg", false);
+  }
+}
+
 TEST(DebounceRuleUnitTest, ParamCapturesURLWithPrependScheme) {
   const std::string contents = R"json(
 
