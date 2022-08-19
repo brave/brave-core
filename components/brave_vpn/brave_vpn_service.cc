@@ -1363,7 +1363,8 @@ void BraveVpnService::GetSubscriberCredentialV12(ResponseCallback callback) {
   dict.Set("brave-vpn-premium-monthly-pass", skus_credential_);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
-               {{"Brave-Payments-Environment", "staging"}});
+               {{"Brave-Payments-Environment",
+                 GetBraveVPNPaymentsEnv(GetCurrentEnvironment())}});
 }
 
 }  // namespace brave_vpn
