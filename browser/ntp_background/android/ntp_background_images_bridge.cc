@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ntp_background_images/android/ntp_background_images_bridge.h"
+#include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -18,7 +18,7 @@
 #include "base/files/file_util.h"
 #include "base/guid.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -49,8 +49,8 @@ NTPBackgroundImagesBridgeFactory::NTPBackgroundImagesBridgeFactory()
 NTPBackgroundImagesBridgeFactory::~NTPBackgroundImagesBridgeFactory() {}
 
 // static
-NTPBackgroundImagesBridge*
-NTPBackgroundImagesBridgeFactory::GetForProfile(Profile* profile) {
+NTPBackgroundImagesBridge* NTPBackgroundImagesBridgeFactory::GetForProfile(
+    Profile* profile) {
   return static_cast<NTPBackgroundImagesBridge*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -62,12 +62,12 @@ NTPBackgroundImagesBridgeFactory::GetInstance() {
 }
 
 KeyedService* NTPBackgroundImagesBridgeFactory::BuildServiceInstanceFor(
-      content::BrowserContext* context) const {
+    content::BrowserContext* context) const {
   return new NTPBackgroundImagesBridge(Profile::FromBrowserContext(context));
 }
 
-bool
-NTPBackgroundImagesBridgeFactory::ServiceIsCreatedWithBrowserContext() const {
+bool NTPBackgroundImagesBridgeFactory::ServiceIsCreatedWithBrowserContext()
+    const {
   return true;
 }
 
@@ -94,11 +94,13 @@ NTPBackgroundImagesBridge::~NTPBackgroundImagesBridge() {
 }
 
 static base::android::ScopedJavaLocalRef<jobject>
-JNI_NTPBackgroundImagesBridge_GetInstance(JNIEnv* env,
-                                      const JavaParamRef<jobject>& j_profile) {
+JNI_NTPBackgroundImagesBridge_GetInstance(
+    JNIEnv* env,
+    const JavaParamRef<jobject>& j_profile) {
   auto* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance()
-             ->GetForProfile(profile)->GetJavaObject();
+      ->GetForProfile(profile)
+      ->GetJavaObject();
 }
 
 base::android::ScopedJavaLocalRef<jobject>
@@ -107,7 +109,8 @@ NTPBackgroundImagesBridge::GetJavaObject() {
 }
 
 void NTPBackgroundImagesBridge::RegisterPageView(
-    JNIEnv* env, const JavaParamRef<jobject>& obj) {
+    JNIEnv* env,
+    const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (view_counter_service_)
     view_counter_service_->RegisterPageView();
@@ -184,26 +187,26 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(base::Value* data) {
       ConvertUTF8ToJavaString(env, wallpaper_id ? *wallpaper_id : ""));
 }
 
-void NTPBackgroundImagesBridge::GetTopSites(
-  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+void NTPBackgroundImagesBridge::GetTopSites(JNIEnv* env,
+                                            const JavaParamRef<jobject>& obj) {
   std::vector<ntp_background_images::TopSite> top_sites =
       view_counter_service_ ? view_counter_service_->GetTopSitesData()
                             : std::vector<ntp_background_images::TopSite>{};
 
   for (const auto& top_site : top_sites) {
     Java_NTPBackgroundImagesBridge_loadTopSitesData(
-      env,
-      ConvertUTF8ToJavaString(env, top_site.name),
-      ConvertUTF8ToJavaString(env, top_site.destination_url),
-      ConvertUTF8ToJavaString(env, top_site.background_color),
-      ConvertUTF8ToJavaString(env, top_site.image_file.AsUTF8Unsafe()));
+        env, ConvertUTF8ToJavaString(env, top_site.name),
+        ConvertUTF8ToJavaString(env, top_site.destination_url),
+        ConvertUTF8ToJavaString(env, top_site.background_color),
+        ConvertUTF8ToJavaString(env, top_site.image_file.AsUTF8Unsafe()));
   }
 
   Java_NTPBackgroundImagesBridge_topSitesLoaded(env);
 }
 
 bool NTPBackgroundImagesBridge::IsSuperReferral(
-  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+    JNIEnv* env,
+    const JavaParamRef<jobject>& obj) {
   if (view_counter_service_)
     return view_counter_service_->IsSuperReferral();
   return false;
@@ -211,32 +214,34 @@ bool NTPBackgroundImagesBridge::IsSuperReferral(
 
 base::android::ScopedJavaLocalRef<jstring>
 NTPBackgroundImagesBridge::GetSuperReferralThemeName(
-  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+    JNIEnv* env,
+    const JavaParamRef<jobject>& obj) {
   if (view_counter_service_)
-    return ConvertUTF8ToJavaString(env,
-      view_counter_service_->GetSuperReferralThemeName());
+    return ConvertUTF8ToJavaString(
+        env, view_counter_service_->GetSuperReferralThemeName());
   return ConvertUTF8ToJavaString(env, "");
 }
 
 base::android::ScopedJavaLocalRef<jstring>
 NTPBackgroundImagesBridge::GetSuperReferralCode(
-  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+    JNIEnv* env,
+    const JavaParamRef<jobject>& obj) {
   if (view_counter_service_)
-    return ConvertUTF8ToJavaString(env,
-      view_counter_service_->GetSuperReferralCode());
+    return ConvertUTF8ToJavaString(
+        env, view_counter_service_->GetSuperReferralCode());
   return ConvertUTF8ToJavaString(env, "");
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-NTPBackgroundImagesBridge::GetReferralApiKey(
-  JNIEnv* env, const JavaParamRef<jobject>& obj) {
-  return ConvertUTF8ToJavaString(env,
-      brave_stats::GetAPIKey());
+NTPBackgroundImagesBridge::GetReferralApiKey(JNIEnv* env,
+                                             const JavaParamRef<jobject>& obj) {
+  return ConvertUTF8ToJavaString(env, brave_stats::GetAPIKey());
 }
 
 base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::GetCurrentWallpaper(
-    JNIEnv* env, const JavaParamRef<jobject>& obj) {
+    JNIEnv* env,
+    const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   auto data = view_counter_service_

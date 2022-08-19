@@ -12,7 +12,7 @@
 
 #include "base/i18n/rtl.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_utils.h"

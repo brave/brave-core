@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
-#define BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
+#ifndef BRAVE_BROWSER_NTP_BACKGROUND_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
+#define BRAVE_BROWSER_NTP_BACKGROUND_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
 
 #include <memory>
 #include <string>
@@ -24,7 +24,7 @@ namespace ntp_background_images {
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
 class ViewCounterService;
-}
+}  // namespace ntp_background_images
 
 using ntp_background_images::NTPBackgroundImagesData;
 using ntp_background_images::NTPBackgroundImagesService;
@@ -32,7 +32,7 @@ using ntp_background_images::NTPSponsoredImagesData;
 using ntp_background_images::ViewCounterService;
 
 class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
-                                 public KeyedService {
+                                  public KeyedService {
  public:
   explicit NTPBackgroundImagesBridge(Profile* profile);
   NTPBackgroundImagesBridge(const NTPBackgroundImagesBridge&) = delete;
@@ -49,18 +49,21 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
       const base::android::JavaParamRef<jstring>& jdestinationUrl,
       const base::android::JavaParamRef<jstring>& jwallpaperId);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
-      JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& obj);
   void GetTopSites(JNIEnv* env,
-                        const base::android::JavaParamRef<jobject>& obj);
+                   const base::android::JavaParamRef<jobject>& obj);
   bool IsSuperReferral(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj);
-  base::android::ScopedJavaLocalRef<jstring>
-  GetSuperReferralThemeName(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj);
-  base::android::ScopedJavaLocalRef<jstring> GetSuperReferralCode(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj);
-  base::android::ScopedJavaLocalRef<jstring> GetReferralApiKey(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj);
+                       const base::android::JavaParamRef<jobject>& obj);
+  base::android::ScopedJavaLocalRef<jstring> GetSuperReferralThemeName(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& obj);
+  base::android::ScopedJavaLocalRef<jstring> GetSuperReferralCode(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& obj);
+  base::android::ScopedJavaLocalRef<jstring> GetReferralApiKey(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& obj);
 
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 
@@ -106,4 +109,4 @@ class NTPBackgroundImagesBridgeFactory
 
 }  // namespace ntp_background_images
 
-#endif  // BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
+#endif  // BRAVE_BROWSER_NTP_BACKGROUND_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_

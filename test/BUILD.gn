@@ -332,6 +332,7 @@ test("brave_unit_tests") {
     sources += [
       "../utility/importer/chrome_importer_unittest.cc",
       "//brave/app/brave_command_line_helper_unittest.cc",
+      "//brave/browser/ntp_background/ntp_background_prefs_unittest.cc",
       "//brave/browser/profiles/brave_profile_manager_unittest.cc",
       "//brave/browser/resources/settings/brandcode_config_fetcher_unittest.cc",
       "//brave/browser/resources/settings/reset_report_uploader_unittest.cc",
@@ -822,6 +823,7 @@ if (!is_android) {
       "//brave/components/debounce/browser",
       "//brave/components/debounce/common",
       "//brave/components/l10n/common",
+      "//brave/components/ntp_background_images/buildflags",
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/common",
       "//brave/components/tor",
@@ -1122,6 +1124,7 @@ if (!is_android) {
       "//brave/components/ipfs",
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/browser",
+      "//brave/components/ntp_background_images/buildflags",
       "//brave/components/tor",
       "//brave/components/tor/buildflags",
       "//chrome:chrome_android_core",
