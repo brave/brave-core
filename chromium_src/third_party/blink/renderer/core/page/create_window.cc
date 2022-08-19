@@ -10,6 +10,7 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/screen.h"
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 // Because we are spoofing screenX and screenY, we need to offset the position
@@ -22,9 +23,10 @@ namespace {
 
 blink::WebWindowFeatures MaybeFarbleWindowFeatures(
     const String& feature_string,
-    blink::LocalDOMWindow* dom_window) {
+    blink::LocalDOMWindow* dom_window,
+    const blink::KURL& url) {
   blink::WebWindowFeatures window_features =
-      GetWindowFeaturesFromString_ChromiumImpl(feature_string, dom_window);
+      GetWindowFeaturesFromString_ChromiumImpl(feature_string, dom_window, url);
   blink::ExecutionContext* context = dom_window->GetExecutionContext();
   if (brave::BlockScreenFingerprinting(context)) {
     if (window_features.x_set) {
@@ -51,11 +53,11 @@ blink::WebWindowFeatures MaybeFarbleWindowFeatures(
 
 }  // namespace
 
-#define GetWindowFeaturesFromString                               \
-  GetWindowFeaturesFromString(const String& feature_string,       \
-                              LocalDOMWindow* dom_window) {       \
-    return MaybeFarbleWindowFeatures(feature_string, dom_window); \
-  }                                                               \
+#define GetWindowFeaturesFromString                                          \
+  GetWindowFeaturesFromString(const String& feature_string,                  \
+                              LocalDOMWindow* dom_window, const KURL& url) { \
+    return MaybeFarbleWindowFeatures(feature_string, dom_window, url);       \
+  }                                                                          \
   WebWindowFeatures GetWindowFeaturesFromString_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/page/create_window.cc"
