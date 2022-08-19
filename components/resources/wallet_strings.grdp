@@ -555,7 +555,7 @@
   <message name="IDS_BRAVE_WALLET_METAMASK_EXTENSION_DETECTED" desc="Detected MetaMask Extension for import title">We detected the MetaMask extension in your browser</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_EXTENSION_IMPORT_DESCRIPTION" desc="Detected MetaMask Extension import description">Enter your MetaMask wallet password to easily import to Brave Wallet.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_WALLET_TITLE" desc="Title to Import or Restore Wallet onboarding screen">Connect to your existing wallet</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION" desc="Description of Import or Restore Wallet onboarding screen">To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum wallets.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION" desc="Description of Import or Restore Wallet onboarding screen">To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum and Solana wallets.</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET" desc="Button text to restore from an existing Brave Wallet">Restore from seed phrase</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET_DESCRIPTION" desc="Secondary button text to restore from an existing Brave Wallet">12-24 words</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET_INSTRUCTIONS" desc="Instruction text to restore from an existing Brave Wallet seed">Type your Brave Wallet 12-word recovery phrase.</message>
