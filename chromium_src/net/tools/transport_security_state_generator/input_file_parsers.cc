@@ -20,8 +20,6 @@ bool ParseCertificatesFile(base::StringPiece certs_input,
 # Last updated: Thu 04 Aug 2022 03:28:41 PM PDT
 PinsListTimestamp
 1659652121
-TestSPKI
-sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
@@ -369,27 +367,18 @@ bool ParseJSON(base::StringPiece json,
     return false;
 
   for (auto& entry : chromium_entries) {
-    // leave test entries
-    if (entry->pinset != "test") {
-      // Google has asked us not to include the pins that ship with Chrome.
-      entry->pinset = "";
-    }
-
-    if (!entry->force_https && entry->pinset.empty() && !entry->expect_ct)
+    // Google has asked us not to include the pins that ship with Chrome,
+    // but we do want the preloaded HSTS and Expect CT entries.
+    entry->pinset = "";
+    if (!entry->force_https && !entry->expect_ct) {
       continue;
+    }
 
     entries->push_back(std::move(entry));
   }
 
   base::StringPiece brave_json = R"brave_json({
     "pinsets": [
-      {
-        "name": "test",
-        "static_spki_hashes": [
-          "TestSPKI"
-        ],
-        "report_uri": "http://report-example.test/test"
-      },
       {
         "name": "brave",
         "static_spki_hashes": [
