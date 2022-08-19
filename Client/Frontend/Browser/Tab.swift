@@ -68,8 +68,8 @@ class Tab: NSObject {
 
   var secureContentState: TabSecureContentState = .unknown
 
-  var walletProvider: BraveWalletEthereumProvider?
-  var walletProviderJS: String?
+  var walletEthProvider: BraveWalletEthereumProvider?
+  var walletEthProviderJS: String?
   var isWalletIconVisible: Bool = false {
     didSet {
       tabDelegate?.updateURLBarWalletButton()
@@ -333,7 +333,7 @@ class Tab: NSObject {
         isMediaBackgroundPlaybackEnabled: Preferences.General.mediaAutoBackgrounding.value,
         isNightModeEnabled: Preferences.General.nightModeEnabled.value,
         isDeAMPEnabled: Preferences.Shields.autoRedirectAMPPages.value,
-        walletProviderJS: walletProviderJS
+        walletEthProviderJS: walletEthProviderJS
       )
       tabDelegate?.tab(self, didCreateWebView: webView)
 

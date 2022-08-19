@@ -567,7 +567,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
       tabsBar.reloadDataAndRestoreSelectedTab()
       
-      if tab.walletProvider != nil {
+      if tab.walletEthProvider != nil {
         tab.emitEthereumEvent(.connect)
       }
     }

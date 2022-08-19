@@ -2297,12 +2297,19 @@ extension Strings {
       value: "Web3 preferences",
       comment: "The section title for users to set up preferences for interation with web3 sites."
     )
-    public static let web3PreferencesDefaultWallet = NSLocalizedString(
-      "wallet.web3PreferencesDefaultWallet",
+    public static let web3PreferencesDefaultEthWallet = NSLocalizedString(
+      "wallet.web3PreferencesDefaultEthWallet",
       tableName: "BraveWallet",
       bundle: .strings,
-      value: "Default Wallet",
-      comment: "The title for the entry displaying the current preferred default wallet is."
+      value: "Default Ethereum Wallet",
+      comment: "The title for the entry displaying the current preferred default Ethereum wallet is."
+    )
+    public static let web3PreferencesDefaultSolWallet = NSLocalizedString(
+      "wallet.web3PreferencesDefaultSolWallet",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Default Solana Wallet",
+      comment: "The title for the entry displaying the current preferred default Solana wallet is."
     )
     public static let web3PreferencesAllowSiteToRequestAccounts = NSLocalizedString(
       "wallet.web3PreferencesAllowSiteToRequestAccounts",

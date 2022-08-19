@@ -54,3 +54,7 @@ struct WalletConstants {
     BraveWallet.MainnetChainId
   ]
 }
+
+struct WalletDebugFlags {
+  static var isSolanaDappsEnabled: Bool = false
+}

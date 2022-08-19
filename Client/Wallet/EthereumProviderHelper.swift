@@ -68,7 +68,7 @@ class EthereumProviderHelper: TabContentScript {
   ) {
     guard let tab = tab,
           !tab.isPrivate,
-          let provider = tab.walletProvider,
+          let provider = tab.walletEthProvider,
           !message.frameInfo.securityOrigin.host.isEmpty, // Fail if there is no last committed URL yet
           message.frameInfo.isMainFrame, // Fail the request came from 3p origin
           JSONSerialization.isValidJSONObject(message.body),

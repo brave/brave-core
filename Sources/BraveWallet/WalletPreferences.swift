@@ -25,10 +25,12 @@ extension Preferences {
         }
       }
     }
-    /// The options of wallet to be communicate with web3
-    public static let defaultWallet = Option<Int>(key: "wallet.default-wallet", default: WalletType.brave.rawValue)
-    /// Whether or not webpages can use the Ethereum Provider API to communicate with users ethereum wallet
-    public static let allowEthereumProviderAccountRequests: Option<Bool> = .init(
+    /// The default wallet to use for Ethereum to be communicate with web3
+    public static let defaultEthWallet = Option<Int>(key: "wallet.default-wallet", default: WalletType.brave.rawValue)
+    /// The default wallet to use for Solana to be communicate with web3
+    public static let defaultSolWallet = Option<Int>(key: "wallet.default-sol-wallet", default: WalletType.brave.rawValue)
+    /// Whether or not webpages can use the Ethereum/Solana Provider API to communicate with users Ethereum/Solana wallet
+    public static let allowDappProviderAccountRequests: Option<Bool> = .init(
       key: "wallet.allow-eth-provider-account-requests",
       default: true
     )

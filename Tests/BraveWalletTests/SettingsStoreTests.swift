@@ -82,17 +82,17 @@ class SettingsStoreTests: XCTestCase {
     }
 
     assert(
-      Preferences.Wallet.WalletType.none.rawValue != Preferences.Wallet.defaultWallet.defaultValue,
+      Preferences.Wallet.WalletType.none.rawValue != Preferences.Wallet.defaultEthWallet.defaultValue,
       "Test assumes default wallet value is not `none`") 
-    Preferences.Wallet.defaultWallet.value = Preferences.Wallet.WalletType.none.rawValue
+    Preferences.Wallet.defaultEthWallet.value = Preferences.Wallet.WalletType.none.rawValue
     XCTAssertEqual(
-      Preferences.Wallet.defaultWallet.value,
+      Preferences.Wallet.defaultEthWallet.value,
       Preferences.Wallet.WalletType.none.rawValue,
       "Failed to update default wallet")
-    Preferences.Wallet.allowEthereumProviderAccountRequests.value = !Preferences.Wallet.allowEthereumProviderAccountRequests.defaultValue
+    Preferences.Wallet.allowDappProviderAccountRequests.value = !Preferences.Wallet.allowDappProviderAccountRequests.defaultValue
     XCTAssertEqual(
-      Preferences.Wallet.allowEthereumProviderAccountRequests.value,
-      !Preferences.Wallet.allowEthereumProviderAccountRequests.defaultValue,
+      Preferences.Wallet.allowDappProviderAccountRequests.value,
+      !Preferences.Wallet.allowDappProviderAccountRequests.defaultValue,
       "Failed to update allow ethereum requests")
     Preferences.Wallet.displayWeb3Notifications.value = !Preferences.Wallet.displayWeb3Notifications.defaultValue
     XCTAssertEqual(
@@ -127,12 +127,12 @@ class SettingsStoreTests: XCTestCase {
       walletServiceResetCalled,
       "WalletService reset() not called")
     XCTAssertEqual(
-      Preferences.Wallet.defaultWallet.value,
-      Preferences.Wallet.defaultWallet.defaultValue,
+      Preferences.Wallet.defaultEthWallet.value,
+      Preferences.Wallet.defaultEthWallet.defaultValue,
       "Default Wallet was not reset to default")
     XCTAssertEqual(
-      Preferences.Wallet.allowEthereumProviderAccountRequests.value,
-      Preferences.Wallet.allowEthereumProviderAccountRequests.defaultValue,
+      Preferences.Wallet.allowDappProviderAccountRequests.value,
+      Preferences.Wallet.allowDappProviderAccountRequests.defaultValue,
       "Allow ethereum requests was not reset to default")
     XCTAssertEqual(
       Preferences.Wallet.displayWeb3Notifications.value,
