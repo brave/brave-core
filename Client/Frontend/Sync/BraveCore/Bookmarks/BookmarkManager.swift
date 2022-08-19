@@ -217,12 +217,9 @@ class BookmarkManager {
     if let node = frc.object(at: sourceIndexPath)?.bookmarkNode,
       let parent = node.parent ?? bookmarksAPI.mobileNode {
 
-      // Moving to the very last index.. same as appending..
-      if destinationIndexPath.row == parent.children.count - 1 {
-        node.move(toParent: parent)
-      } else {
-        node.move(toParent: parent, index: UInt(destinationIndexPath.row))
-      }
+      // Moving down in the list the node destination index should be increased by 1
+      let destinationIndex = sourceIndexPath.row > destinationIndexPath.row ? destinationIndexPath.row : destinationIndexPath.row + 1
+      node.move(toParent: parent, index: UInt(destinationIndex))
 
       // Notify the delegate that items did move..
       // This is already done automatically in `Bookmarkv2Fetcher` listener.
