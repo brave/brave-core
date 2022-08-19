@@ -12,29 +12,18 @@ import {
 import { Toggle } from '../../../components/toggle'
 
 import { getLocale } from '../../../../common/locale'
+import { useNewTabPref } from '../../../hooks/usePref'
 
-interface Props {
-  toggleShowStats: () => void
-  showStats: boolean
+export default function BraveStatsSettings () {
+  const [showStats, setShowStats] = useNewTabPref('showStats')
+  return <div>
+    <SettingsRow>
+      <SettingsText>{getLocale('showBraveStats')}</SettingsText>
+      <Toggle
+        onChange={() => setShowStats(!showStats)}
+        checked={showStats}
+        size='large'
+      />
+    </SettingsRow>
+  </div>
 }
-
-class BraveStatsSettings extends React.PureComponent<Props, {}> {
-  render () {
-    const { toggleShowStats, showStats } = this.props
-
-    return (
-      <div>
-        <SettingsRow>
-          <SettingsText>{getLocale('showBraveStats')}</SettingsText>
-          <Toggle
-            onChange={toggleShowStats}
-            checked={showStats}
-            size='large'
-          />
-        </SettingsRow>
-      </div>
-    )
-  }
-}
-
-export default BraveStatsSettings
