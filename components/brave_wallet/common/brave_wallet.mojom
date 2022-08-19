@@ -580,7 +580,7 @@ interface KeyringService {
   AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
 
   // Obtains the private key for the keyring.
-  GetPrivateKeyForKeyringAccount(string address, CoinType coin)
+  GetPrivateKeyForKeyringAccount(string address, string password, CoinType coin)
     => (bool success, string privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring

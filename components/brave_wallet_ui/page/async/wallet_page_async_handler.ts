@@ -194,7 +194,8 @@ handler.on(WalletPageActions.removeImportedAccount.getType(), async (
 
 handler.on(WalletPageActions.viewPrivateKey.getType(), async (store: Store, payload: ViewPrivateKeyPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.getPrivateKeyForKeyringAccount(payload.address, payload.coin)
+  // TODO (JL): Pass password here.
+  const result = await keyringService.getPrivateKeyForKeyringAccount(payload.address, '', payload.coin)
   store.dispatch(WalletPageActions.privateKeyAvailable({ privateKey: result.privateKey }))
 })
 
