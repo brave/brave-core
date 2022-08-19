@@ -48,7 +48,7 @@ const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
 
 bool AdsPerHourPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  const int ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     // Never respect cap if set to 0
     return false;

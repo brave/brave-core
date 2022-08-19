@@ -95,8 +95,8 @@ class BatAdsNotificationAdUtilServeAtRegularIntervalsTest
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour,
-                                                 param.ads_per_hour);
+    AdsClientHelper::GetInstance()->SetInt64Pref(
+        prefs::kMaximumNotificationAdsPerHour, param.ads_per_hour);
   }
 };
 

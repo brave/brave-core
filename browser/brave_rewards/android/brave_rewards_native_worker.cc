@@ -647,7 +647,7 @@ int BraveRewardsNativeWorker::GetAdsPerHour(JNIEnv* env) {
   if (!ads_service_) {
     return DEFAULT_ADS_PER_HOUR;
   }
-  return ads_service_->GetNotificationAdsPerHour();
+  return ads_service_->GetMaximumNotificationAdsPerHour();
 }
 
 void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
@@ -656,7 +656,7 @@ void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
   if (!ads_service_) {
     return;
   }
-  ads_service_->SetNotificationAdsPerHour(value);
+  ads_service_->SetMaximumNotificationAdsPerHour(value);
 }
 
 void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,

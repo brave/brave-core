@@ -149,7 +149,7 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }
@@ -236,13 +236,13 @@ void Serving::NotifyFailedToServeNotificationAd() const {
 }
 
 void Serving::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAdsPerHour) {
+  if (path == prefs::kMaximumNotificationAdsPerHour) {
     OnAdsPerHourPrefChanged();
   }
 }
 
 void Serving::OnAdsPerHourPrefChanged() {
-  const int ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {

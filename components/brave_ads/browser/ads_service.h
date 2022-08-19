@@ -50,11 +50,12 @@ class AdsService : public KeyedService {
   // Called to enable or disable ads.
   virtual void SetEnabled(const bool is_enabled) = 0;
 
-  // Returns the number of notification ads that can be served per hour.
-  virtual int64_t GetNotificationAdsPerHour() const = 0;
+  // Returns the maximum number of notification ads that can be served per hour.
+  virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 
-  // Called to set the number of notification ads that can be served per hour.
-  virtual void SetNotificationAdsPerHour(const int64_t ads_per_hour) = 0;
+  // Called to set the maximum number of notification ads that can be served per
+  // hour.
+  virtual void SetMaximumNotificationAdsPerHour(const int64_t ads_per_hour) = 0;
 
   // Called to allow or disallow conversion tracking.
   virtual void SetAllowConversionTracking(const bool should_allow) = 0;

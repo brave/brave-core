@@ -265,8 +265,8 @@ class AdsServiceImpl : public AdsService,
   bool IsEnabled() const override;
   void SetEnabled(const bool is_enabled) override;
 
-  int64_t GetNotificationAdsPerHour() const override;
-  void SetNotificationAdsPerHour(const int64_t ads_per_hour) override;
+  int64_t GetMaximumNotificationAdsPerHour() const override;
+  void SetMaximumNotificationAdsPerHour(const int64_t ads_per_hour) override;
 
   void SetAllowConversionTracking(const bool should_allow) override;
 

@@ -278,7 +278,7 @@ void UnitTestBase::SetDefaultMocks() {
 void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, true);
 
-  ads_client_mock_->SetInt64Pref(prefs::kAdsPerHour, -1);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
   ads_client_mock_->SetIntegerPref(prefs::kIdleTimeThreshold, 15);
 

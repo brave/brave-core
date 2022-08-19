@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/settings/settings.h"
 
-#include <cstdint>
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
@@ -30,7 +29,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
-  enabled_features.push_back({features::kServing, kParameters});
+  enabled_features.emplace_back(features::kServing, kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -38,15 +37,14 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour, 3);
+  AdsClientHelper::GetInstance()->SetInt64Pref(
+      prefs::kMaximumNotificationAdsPerHour, 3);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 3;
-
-  EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
+  EXPECT_EQ(3, ads_per_hour);
 }
 
 TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
@@ -54,7 +52,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
-  enabled_features.push_back({features::kServing, kParameters});
+  enabled_features.emplace_back(features::kServing, kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -63,12 +61,10 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 2;
-
-  EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
+  EXPECT_EQ(2, ads_per_hour);
 }
 
 TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
@@ -76,7 +72,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "-1";
-  enabled_features.push_back({features::kServing, kParameters});
+  enabled_features.emplace_back(features::kServing, kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -85,12 +81,10 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 0;
-
-  EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
+  EXPECT_EQ(0, ads_per_hour);
 }
 
 TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
@@ -98,7 +92,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "11";
-  enabled_features.push_back({features::kServing, kParameters});
+  enabled_features.emplace_back(features::kServing, kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -107,12 +101,10 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 10;
-
-  EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
+  EXPECT_EQ(10, ads_per_hour);
 }
 
 }  // namespace ads
