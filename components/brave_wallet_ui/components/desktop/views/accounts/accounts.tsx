@@ -90,7 +90,7 @@ export const Accounts = () => {
     })
   }, [])
 
-  const onConfirmRemoveAccount = React.useCallback(() => {
+  const onConfirmRemoveAccount = React.useCallback((password: string) => {
     if (!accountToRemove) {
       return
     }
@@ -98,11 +98,11 @@ export const Accounts = () => {
     const { address, coin, hardware } = accountToRemove
 
     if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin, password }))
     }
 
     if (!hardware) {
-      dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
+      dispatch(WalletPageActions.removeImportedAccount({ address, coin, password }))
     }
 
     setAccountToRemove(undefined) // close modal

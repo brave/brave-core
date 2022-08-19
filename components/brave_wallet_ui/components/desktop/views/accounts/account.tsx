@@ -151,12 +151,17 @@ export const Account = ({
     setEditTab('details')
   }, [])
 
-  const onRemoveAccount = React.useCallback((address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
+  const onRemoveAccount = React.useCallback((
+    address: string,
+    hardware: boolean,
+    coin: BraveWallet.CoinType,
+    password: string
+  ) => {
     if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin, password }))
       return
     }
-    dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
+    dispatch(WalletPageActions.removeImportedAccount({ address, coin, password }))
   }, [])
 
   // redirect (asset not found)

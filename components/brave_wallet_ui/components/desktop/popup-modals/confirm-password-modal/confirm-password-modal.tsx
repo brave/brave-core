@@ -30,7 +30,7 @@ import {
 interface Props {
   title: string
   onClose: () => void
-  onSuccess: () => void
+  onSuccess: (password: string) => void
 }
 
 export const ConfirmPasswordModal = ({
@@ -63,7 +63,7 @@ export const ConfirmPasswordModal = ({
     setPassword('')
     setIsCorrectPassword(true)
 
-    onSuccess()
+    onSuccess(password)
   }, [
     attemptPasswordEntry,
     password,
