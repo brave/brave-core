@@ -1163,9 +1163,10 @@ void KeyringService::RemoveSelectedAccountForCoin(
 
 void KeyringService::RemoveImportedAccount(
     const std::string& address,
+    const std::string& password,
     mojom::CoinType coin,
     RemoveImportedAccountCallback callback) {
-  if (address.empty()) {
+  if (address.empty() || !ValidatePasswordInternal(password)) {
     std::move(callback).Run(false);
     return;
   }
@@ -1409,8 +1410,16 @@ void KeyringService::AddHardwareAccounts(
   NotifyAccountsChanged();
 }
 
-void KeyringService::RemoveHardwareAccount(const std::string& address,
-                                           mojom::CoinType coin) {
+void KeyringService::RemoveHardwareAccount(
+    const std::string& address,
+    const std::string& password,
+    mojom::CoinType coin,
+    RemoveHardwareAccountCallback callback) {
+  if (address.empty() || !ValidatePasswordInternal(password)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   auto keyring_id = GetHardwareKeyringId(coin, address);
   base::Value* hardware_keyrings =
       GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
@@ -1431,9 +1440,12 @@ void KeyringService::RemoveHardwareAccount(const std::string& address,
         GetPrefForKeyring(prefs_, kSelectedAccount, keyring_id);
     if (value && address == value->GetString()) {
       RemoveSelectedAccountForCoin(coin, keyring_id);
-      return;
     }
+    std::move(callback).Run(true);
+    return;
   }
+
+  std::move(callback).Run(false);
 }
 
 absl::optional<std::string> KeyringService::SignTransactionByFilecoinKeyring(

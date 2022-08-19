@@ -598,7 +598,7 @@ interface KeyringService {
     => (bool success, string address);
 
   // Removes an imported account
-  RemoveImportedAccount(string address, CoinType coin) => (bool success);
+  RemoveImportedAccount(string address, string password, CoinType coin) => (bool success);
 
   // Determines if the keyring has been backed up
   IsWalletBackedUp() => (bool backed_up);
@@ -627,7 +627,7 @@ interface KeyringService {
   AddHardwareAccounts(array<HardwareWalletAccount> info);
 
   // Removes a hardware account
-  RemoveHardwareAccount(string address, CoinType coin);
+  RemoveHardwareAccount(string address, string password, CoinType coin) => (bool success);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();
