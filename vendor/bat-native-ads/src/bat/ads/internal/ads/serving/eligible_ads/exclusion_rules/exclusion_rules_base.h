@@ -33,7 +33,6 @@ class DislikeExclusionRule;
 class MarkedAsInappropriateExclusionRule;
 class MarkedToNoLongerReceiveExclusionRule;
 class PerDayExclusionRule;
-class PerHourExclusionRule;
 class PerMonthExclusionRule;
 class PerWeekExclusionRule;
 class SplitTestExclusionRule;
@@ -77,7 +76,6 @@ class ExclusionRulesBase {
   std::unique_ptr<MarkedToNoLongerReceiveExclusionRule>
       marked_to_no_longer_receive_exclusion_rule_;
   std::unique_ptr<PerDayExclusionRule> per_day_exclusion_rule_;
-  std::unique_ptr<PerHourExclusionRule> per_hour_exclusion_rule_;
   std::unique_ptr<PerMonthExclusionRule> per_month_exclusion_rule_;
   std::unique_ptr<PerWeekExclusionRule> per_week_exclusion_rule_;
   std::unique_ptr<SplitTestExclusionRule> split_test_exclusion_rule_;
