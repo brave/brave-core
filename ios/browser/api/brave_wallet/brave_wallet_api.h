@@ -25,6 +25,7 @@ OBJC_EXPORT BraveWalletProviderScriptKey const
 OBJC_EXPORT BraveWalletProviderScriptKey const
     BraveWalletProviderScriptKeySolanaInternal;
 
+OBJC_EXPORT
 @interface BraveWalletAPI : NSObject
 
 @property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
