@@ -349,7 +349,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
         GetLastCommitedOrigin(), cases[i].addresses, &origin))
         << "case: " << i;
 
-    EXPECT_EQ(origin.GetURL(), permission_manager()->GetCanonicalOrigin(
+    EXPECT_EQ(origin.GetURL(), permissions::PermissionUtil::GetCanonicalOrigin(
                                    cases[i].type, origin.GetURL(),
                                    GetLastCommitedOrigin().GetURL()))
         << "GetCanonicalOrigin should return requesting_origin for Ethereum "
