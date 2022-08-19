@@ -45,5 +45,23 @@ RegisterPolymerTemplateModifications({
         `)
       }
     }
+    const usageSection = templateContent.querySelector('div#usage')    
+    if (!usageSection) {
+      console.error(`[Brave Settings Overrides] Couldn't find usageSection item`)
+    } else {
+      usageSection.insertAdjacentHTML('afterend', `
+        <div id="shields">
+          <div id="shieldsHeader" style="padding: 0 var(--cr-section-padding);">
+            <h2 class="first">${I18nBehavior.i18n('siteSettingsShields')}</h2>
+          </div>
+          <div class="list-frame">
+            <site-details-permission
+                category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]"
+                icon="brave_settings:shields" label="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
+            </site-details-permission>
+          </div>
+        </div>
+      `)
+    }
   },
 })

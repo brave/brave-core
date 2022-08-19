@@ -154,6 +154,21 @@
   </if>
 
   <!-- Settings / Shields -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS" desc="Label for shields site settings.">
+    Shields settings
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS" desc="Label for shields status site settings.">
+    Shields status
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
+    Sites can block trackers, ads, and fingerprinting using Shields
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
+    Shields Up
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN" desc="Label for shields status down site settings.">
+    Shields Down
+  </message>  
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
     Shields
   </message>
@@ -195,9 +210,6 @@
   </message>
   <message name="IDS_SETTINGS_ALLOW_ADS_TRACKERS" desc="Select value">
     Disabled
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
-    Upgrade connections to HTTPS
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
     Block scripts
