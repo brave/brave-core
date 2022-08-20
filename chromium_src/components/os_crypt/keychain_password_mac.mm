@@ -33,10 +33,16 @@ std::pair<std::string, std::string> GetServiceAndAccountName() {
   if (command_line->HasSwitch("import-chrome")) {
     service_name = std::string("Chrome Safe Storage");
     account_name = std::string("Chrome");
+  } else if (command_line->HasSwitch("import-vivaldi")) {
+    service_name = std::string("Vivaldi Safe Storage");
+    account_name = std::string("Vivaldi");
   } else if (command_line->HasSwitch("import-chromium") ||
              command_line->HasSwitch("import-brave")) {
     service_name = std::string("Chromium Safe Storage");
     account_name = std::string("Chromium");
+  } else if (command_line->HasSwitch("import-opera")) {
+    service_name = std::string("Opera Safe Storage");
+    account_name = std::string("Opera");
   } else {
     service_name = std::string(kBraveDefaultServiceName);
     account_name = std::string(kBraveDefaultAccountName);

@@ -18,6 +18,7 @@
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "brave/utility/importer/chrome_importer.h"
 #include "build/build_config.h"
+#include "chrome/common/importer/importer_type.h"
 #include "chrome/common/importer/profile_import.mojom.h"
 #include "chrome/utility/importer/external_process_importer_bridge.h"
 #include "chrome/utility/importer/importer.h"
@@ -65,6 +66,10 @@ void BraveProfileImportImpl::StartImport(
   } else if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
                               "Chromium", base::CompareCase::SENSITIVE)) {
     command_line->AppendSwitch("import-chromium");
+  } else if (source_profile.importer_type == importer::TYPE_OPERA) {
+    command_line->AppendSwitch("import-opera");
+  } else if (source_profile.importer_type == importer::TYPE_VIVALDI) {
+    command_line->AppendSwitch("import-vivaldi");
   }
 
   content::UtilityThread::Get()->EnsureBlinkInitialized();
