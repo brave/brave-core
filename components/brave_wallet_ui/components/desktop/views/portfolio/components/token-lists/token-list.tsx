@@ -31,7 +31,7 @@ import { NFTGridView } from '../nft-grid-view/nft-grid-view'
 import usePricing from '../../../../../../common/hooks/pricing'
 
 // Styled Components
-// import { ScrollableColumn } from '../../../../../shared/style'
+import { ScrollableColumn } from '../../../../../shared/style'
 import {
   ButtonRow,
   DividerText,
@@ -39,19 +39,17 @@ import {
   Spacer,
   FilterTokenRow
 } from '../../style'
-import { VirtualizedTokensList } from './virtualized-tokens-list'
-import { ScrollableColumn } from '../../../../../shared/style'
-
-type ViewMode = 'list' | 'grid'
+import { RenderTokenFunc, VirtualizedTokensList } from './virtualized-tokens-list'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
   networks: BraveWallet.NetworkInfo[]
-  renderToken: (item: UserAssetInfoType, viewMode: ViewMode) => JSX.Element
+  renderToken: RenderTokenFunc
   hideAddButton?: boolean
   hideAssetFilter?: boolean
   enableScroll?: boolean
   maxListHeight?: string
+  estimatedItemSize: number
 }
 
 export const TokenLists = ({
@@ -61,7 +59,8 @@ export const TokenLists = ({
   hideAddButton,
   enableScroll,
   maxListHeight,
-  hideAssetFilter
+  hideAssetFilter,
+  estimatedItemSize = 58
 }: Props) => {
   // routing
   const history = useHistory()
@@ -76,7 +75,7 @@ export const TokenLists = ({
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
 
-   // methods
+  // methods
 
   // This filters a list of assets when the user types in search bar
   const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,33 +135,47 @@ export const TokenLists = ({
     return fungibleTokens
   }, [fungibleTokens, selectedAssetFilter, computeFiatAmount])
 
-  const listUi = React.useMemo(() => {
-    return <>
-      {selectedAssetFilter.id !== 'nfts' ? (
-          <>
-            {/* {sortedFungibleTokensList.map((token) => renderToken(token, 'list'))} */}
-            <VirtualizedTokensList
-              renderToken={renderToken}
-              userAssetList={sortedFungibleTokensList}
-            />
+  // computed
+  // length of fungible tokens list is first NFT index
+  const firstNftIndex = sortedFungibleTokensList.length || undefined
 
-            {nonFungibleTokens.length !== 0 &&
-              <>
-                <Spacer />
-                <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-                <SubDivider />
-                {nonFungibleTokens.map((token) => renderToken(token, 'list'))}
-              </>
-            }
-          </>
-        ) : (
-          <NFTGridView
-            nonFungibleTokens={nonFungibleTokens}
-            renderToken={(token) => renderToken(token, 'grid')}
-          />
-        )}
-    </>
-  }, [selectedAssetFilter, sortedFungibleTokensList, nonFungibleTokens, renderToken])
+  const sortedFungibleTokensAndNftsList: UserAssetInfoType[] = React.useMemo(() => {
+    return sortedFungibleTokensList.concat(nonFungibleTokens)
+  }, [sortedFungibleTokensList, nonFungibleTokens])
+
+  const listUi = React.useMemo(() => {
+    return selectedAssetFilter.id !== 'nfts' ? (
+      <VirtualizedTokensList
+        renderToken={(args) => {
+          if (args.index === firstNftIndex) {
+            return <div>
+              <Spacer />
+              <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+              <SubDivider />
+              {renderToken(args)}
+            </div>
+          }
+          return renderToken(args)
+        }}
+        userAssetList={sortedFungibleTokensAndNftsList}
+        estimatedItemSize={estimatedItemSize}
+      />
+    ) : (
+      <NFTGridView
+        nonFungibleTokens={nonFungibleTokens}
+        renderToken={(token, index) => renderToken({
+          index,
+          item: token,
+          viewMode: 'grid'
+        })}
+      />
+    )
+  }, [
+    selectedAssetFilter,
+    sortedFungibleTokensAndNftsList,
+    nonFungibleTokens,
+    renderToken
+  ])
 
   // effects
   React.useEffect(() => {
@@ -186,13 +199,13 @@ export const TokenLists = ({
       </FilterTokenRow>
 
       {enableScroll
-        ? <ScrollableColumn maxHeight={maxListHeight}>
+        ? (
+          <ScrollableColumn maxHeight={maxListHeight}>
             {listUi}
           </ScrollableColumn>
+        )
         : listUi
       }
-
-      {/* {listUi} */}
 
       {!hideAddButton &&
         <ButtonRow>

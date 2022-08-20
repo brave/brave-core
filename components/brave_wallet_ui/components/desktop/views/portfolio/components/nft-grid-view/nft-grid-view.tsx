@@ -15,7 +15,7 @@ import {
 
 interface Props {
   nonFungibleTokens: UserAssetInfoType[]
-  renderToken: (item: UserAssetInfoType) => JSX.Element
+  renderToken: (item: UserAssetInfoType, index: number) => JSX.Element
 }
 
 export const NFTGridView = ({

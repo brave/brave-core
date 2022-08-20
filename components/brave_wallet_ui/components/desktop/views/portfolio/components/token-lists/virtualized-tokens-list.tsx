@@ -4,34 +4,39 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import AutoSizer from '@brave/react-virtualized-auto-sizer'
-import {
-  // FixedSizeList,
-  VariableSizeList as List
-} from 'react-window'
+import { VariableSizeList as List } from 'react-window'
+
 import { BraveWallet, UserAssetInfoType } from '../../../../../../constants/types'
+
+type ViewMode = 'list' | 'grid'
+
+type RenderTokenProps = {
+  item: UserAssetInfoType
+  viewMode: ViewMode
+  index: number
+}
+
+export type RenderTokenFunc = (props: RenderTokenProps) => JSX.Element
+
+type VirtualizedTokensListProps = {
+  userAssetList: UserAssetInfoType[]
+  renderToken: RenderTokenFunc
+  estimatedItemSize: number
+}
+
+type ListItemProps<T extends UserAssetInfoType | BraveWallet.BlockchainToken = UserAssetInfoType> = {
+  index: number
+  data: T
+  style: React.CSSProperties
+  renderToken: RenderTokenFunc
+}
 
 export const DynamicListContext = React.createContext<
   Partial<{ setSize: (index: number, size: number) => void }>
 >({})
 
-type ViewMode = 'list' | 'grid'
-
-type VirtualizedTokensListProps<T extends UserAssetInfoType | BraveWallet.BlockchainToken = UserAssetInfoType> = {
-  userAssetList: T[]
-  renderToken: (item: T, viewMode: ViewMode) => JSX.Element
-}
-
-type ListItemProps<T extends UserAssetInfoType | BraveWallet.BlockchainToken = UserAssetInfoType> = {
-  index: number
-  // width: number
-  data: T
-  style: React.CSSProperties
-  renderToken: (item: T, viewMode: ViewMode) => JSX.Element
-}
-
-// Component for each item. Measures height to let virtual
-// list know.
+// Component for each item.
+// Measures height to let virtual list know.
 const ListItem = ({
   data,
   index,
@@ -42,10 +47,9 @@ const ListItem = ({
   const rowRoot = React.useRef<null | HTMLDivElement>(null)
 
   React.useEffect(() => {
-    if (rowRoot.current) {
-      const marginBottom = parseFloat(getComputedStyle(rowRoot.current).marginBottom || '0')
-
-      setSize && setSize(index, rowRoot.current.getBoundingClientRect().height + marginBottom)
+    if (rowRoot.current && setSize) {
+      const height = rowRoot.current.getBoundingClientRect().height
+      setSize(index, height)
     }
   }, [
     rowRoot,
@@ -53,12 +57,7 @@ const ListItem = ({
     setSize
   ])
 
-  const token = data[index]
-
-  console.log({
-    data,
-    token
-  })
+  const token = data[index] as UserAssetInfoType
 
   if (!token) {
     console.warn('Token was null at index',
@@ -69,71 +68,62 @@ const ListItem = ({
   }
 
   return (
-    <div ref={rowRoot} key={`token.asset.tokenId-${index}`}>
-      <div style={style}>
-        {renderToken(token, 'list')}
-      </div>
+    <div ref={rowRoot} key={`${token.asset.contractAddress}-${token.asset.chainId}-${token.asset.tokenId}`} style={style}>
+      {renderToken({ index, item: token, viewMode: 'list' })}
     </div>
   )
 }
 
 export const VirtualizedTokensList = ({
   renderToken,
-  userAssetList
+  userAssetList,
+  estimatedItemSize
 }: VirtualizedTokensListProps) => {
   // refs
   const listRef = React.useRef<List | null>(null)
-  const sizeMap = React.useRef<{ [key: string]: number }>({})
+  const sizeMap = React.useRef<number[]>(
+    Array(userAssetList.length).fill(estimatedItemSize) // assume estimated size at first
+  )
 
   // methods
   const setSize = React.useCallback((index: number, size: number) => {
     // Performance: Only update the sizeMap and reset cache if an actual value changed
-    if (sizeMap.current[index] !== size) {
-      sizeMap.current = { ...sizeMap.current, [index]: size }
+    if (!isNaN(size) && sizeMap.current[index] !== size) {
+      sizeMap.current[index] = size
       if (listRef.current) {
         // Clear cached data and rerender
         listRef.current.resetAfterIndex(0)
       }
     }
-  }, [sizeMap.current, listRef.current])
+  }, [sizeMap, listRef])
 
-  const getSize = React.useCallback((index) => {
-    const size = sizeMap.current[index] || 42
-    alert(`size: ${size}`)
-    return size
-  }, [sizeMap.current])
+  const getSize = React.useCallback((index: number) => sizeMap.current[index], [])
+
+  // computed
+  const minimumItems = (Math.min(10, userAssetList.length || 1)) // min: 1, max: 10
+  const listHeight = estimatedItemSize * minimumItems
 
   // render
   return (
     <DynamicListContext.Provider
       value={{ setSize }}
     >
-      <AutoSizer
-        defaultHeight={150}
-        defaultWidth={450}
-        children={({ height, width }) => (
-          <List
-            ref={listRef}
-            // width={width}
-            height={height}
-            width={'100%'}
-            // height={100}
-            itemSize={getSize}
-            itemData={userAssetList}
-            itemCount={userAssetList.length}
-            // itemSize={42}
-            overscanCount={1}
-            style={{
-              overscrollBehavior: 'contain'
-            }}
-            children={(itemProps) => (
-              <ListItem
-                {...itemProps}
-                // width={width}
-                // width={'100%'}
-                renderToken={renderToken}
-              />
-            )}
+      <List
+        ref={listRef}
+        width='100%'
+        height={listHeight}
+        itemSize={getSize}
+        itemData={userAssetList}
+        itemCount={userAssetList.length}
+        estimatedItemSize={estimatedItemSize}
+        overscanCount={20}
+        style={{
+          overscrollBehavior: 'contain'
+        }}
+        children={(itemProps) => (
+          <ListItem
+            {...itemProps}
+            renderToken={renderToken}
           />
         )}
       />
