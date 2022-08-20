@@ -4,9 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { VariableSizeList as List } from 'react-window'
+import { VariableSizeList } from 'react-window'
 
+// types
 import { BraveWallet, UserAssetInfoType } from '../../../../../../constants/types'
+
+// styles
+import { StyledDiv } from './virtualized-tokens-list.styles'
 
 type ViewMode = 'list' | 'grid'
 
@@ -52,7 +56,7 @@ const ListItem = ({
       setSize(index, height)
     }
   }, [
-    rowRoot,
+    rowRoot.current,
     index,
     setSize
   ])
@@ -64,12 +68,33 @@ const ListItem = ({
       index,
       data
     )
-    return null
   }
 
+  const isTopStyleBroken = typeof style.top !== 'string' && isNaN(Number(style.top))
+  const isHeightBroken = typeof style.height !== 'string' && isNaN(Number(style.height))
+
+  // prevent CSS NaN error
+  let _style = style
+  if (isTopStyleBroken || isHeightBroken) {
+    if (isTopStyleBroken) {
+      _style.top = '0px'
+    }
+    if (isHeightBroken) {
+      _style.height = 'auto'
+    }
+  }
+
+  const key = `${token?.asset.contractAddress
+    }-${token?.asset.chainId
+    }-${token?.asset.tokenId}`
+
   return (
-    <div ref={rowRoot} key={`${token.asset.contractAddress}-${token.asset.chainId}-${token.asset.tokenId}`} style={style}>
-      {renderToken({ index, item: token, viewMode: 'list' })}
+    <div
+      ref={rowRoot}
+      key={key}
+      style={_style}
+    >
+      {token && renderToken({ index, item: token, viewMode: 'list' })}
     </div>
   )
 }
@@ -80,7 +105,7 @@ export const VirtualizedTokensList = ({
   estimatedItemSize
 }: VirtualizedTokensListProps) => {
   // refs
-  const listRef = React.useRef<List | null>(null)
+  const listRef = React.useRef<VariableSizeList | null>(null)
   const sizeMap = React.useRef<number[]>(
     Array(userAssetList.length).fill(estimatedItemSize) // assume estimated size at first
   )
@@ -100,7 +125,7 @@ export const VirtualizedTokensList = ({
   const getSize = React.useCallback((index: number) => sizeMap.current[index], [])
 
   // computed
-  const minimumItems = (Math.min(10, userAssetList.length || 1)) // min: 1, max: 10
+  const minimumItems = (Math.min(5, userAssetList.length || 1)) // min: 1, max: 5
   const listHeight = estimatedItemSize * minimumItems
 
   // render
@@ -108,15 +133,16 @@ export const VirtualizedTokensList = ({
     <DynamicListContext.Provider
       value={{ setSize }}
     >
-      <List
+      <VariableSizeList
         ref={listRef}
-        width='100%'
+        width={'100%'}
         height={listHeight}
         itemSize={getSize}
         itemData={userAssetList}
         itemCount={userAssetList.length}
         estimatedItemSize={estimatedItemSize}
         overscanCount={20}
+        innerElementType={StyledDiv} // Needed a custom div to suppress NaN CSS error
         style={{
           overscrollBehavior: 'contain'
         }}

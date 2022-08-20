@@ -146,6 +146,7 @@ export const TokenLists = ({
   const listUi = React.useMemo(() => {
     return selectedAssetFilter.id !== 'nfts' ? (
       <VirtualizedTokensList
+        key={selectedAssetFilter.id}
         renderToken={(args) => {
           if (args.index === firstNftIndex) {
             return <div>
@@ -162,6 +163,7 @@ export const TokenLists = ({
       />
     ) : (
       <NFTGridView
+        key={selectedAssetFilter.id}
         nonFungibleTokens={nonFungibleTokens}
         renderToken={(token, index) => renderToken({
           index,
@@ -171,7 +173,7 @@ export const TokenLists = ({
       />
     )
   }, [
-    selectedAssetFilter,
+    selectedAssetFilter.id,
     sortedFungibleTokensAndNftsList,
     nonFungibleTokens,
     renderToken
