@@ -172,15 +172,13 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
 #endif
 
-  const bool can_have_vertical_tabs =
+  const bool show_vertical_tabs =
       browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs();
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
 
-  const bool need_to_wrap_contents_container =
-      can_have_vertical_tabs || can_have_sidebar;
-  if (!need_to_wrap_contents_container)
+  if (!show_vertical_tabs && !can_have_sidebar)
     return;
 
   // Wrap chromium side panel with our sidebar container
