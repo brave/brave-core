@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
+index 4bf1b901d96ba62687db62e15ca85e2fbd7c29f5..158a25ae87b8f76f767bf43af24b47e5c17d5e26 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip.cc
+@@ -415,6 +415,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext {
+ 
+   std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
+       const std::vector<TabSlotView*>& views) override {
++    TAB_DRAG_CONTEXT_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS_VERTICAL_TABS
+     DCHECK(!views.empty());
+ 
+     std::vector<gfx::Rect> bounds;
+@@ -570,6 +571,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext {
+         continue;
+       }
+ 
++      TAB_DRAG_CONTEXT_CALCULATE_INSERTION_INDEX_FOR_VERTICAL_TABS
+       // If there's a group header here, and we're dragging a group, we might
+       // end up on either side of that header. Check both cases to find the
+       // best option.

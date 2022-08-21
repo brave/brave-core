@@ -11,8 +11,6 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 class Tab;
-class BraveTabDragContext;
-
 class BraveTabStrip : public TabStrip {
  public:
   METADATA_HEADER(BraveTabStrip);
@@ -32,9 +30,6 @@ class BraveTabStrip : public TabStrip {
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.2797f;
-  TabDragContext* GetDragContext() override;
-
-  std::unique_ptr<BraveTabDragContext> brave_drag_context_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_

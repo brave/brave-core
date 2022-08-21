@@ -9,7 +9,6 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/ui/views/tabs/brave_tab_drag_context.h"
 #include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,10 +20,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
-    : TabStrip(std::move(controller)),
-      brave_drag_context_(std::make_unique<BraveTabDragContext>(
-          this,
-          reinterpret_cast<TabDragContext*>(drag_context_.get()))) {}
+    : TabStrip(std::move(controller)) {}
 
 BraveTabStrip::~BraveTabStrip() = default;
 
@@ -79,10 +75,6 @@ SkColor BraveTabStrip::GetTabSeparatorColor() const {
                    dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
   return dark_mode ? SkColorSetRGB(0x39, 0x38, 0x38)
                    : SkColorSetRGB(0xBE, 0xBF, 0xBF);
-}
-
-TabDragContext* BraveTabStrip::GetDragContext() {
-  return brave_drag_context_.get();
 }
 
 BEGIN_METADATA(BraveTabStrip, TabStrip)
