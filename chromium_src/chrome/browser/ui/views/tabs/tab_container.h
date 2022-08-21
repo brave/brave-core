@@ -12,11 +12,9 @@
   void PrepareForAnimation
 
 #define UpdateClosingModeOnRemovedTab virtual UpdateClosingModeOnRemovedTab
-#define StartRemoveTabAnimation virtual StartRemoveTabAnimation
 
 #include "src/chrome/browser/ui/views/tabs/tab_container.h"
 
-#undef StartRemoveTabAnimation
 #undef UpdateClosingModeOnRemovedTab
 #undef PrepareForAnimation
 

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_container.cc b/chrome/browser/ui/views/tabs/tab_container.cc
+index 0cabdf4e4608153e3e01a4f06e8c989ba5de98e6..2b9fd26241f8d1d6ec453c0d81215cd204eaa6ee 100644
+--- a/chrome/browser/ui/views/tabs/tab_container.cc
++++ b/chrome/browser/ui/views/tabs/tab_container.cc
+@@ -1119,6 +1119,7 @@ void TabContainer::StartRemoveTabAnimation(Tab* tab, int former_model_index) {
+   // Compute the target bounds for animating this tab closed.  The tab's left
+   // edge should stay joined to the right edge of the previous tab, if any.
+   gfx::Rect target_bounds = tab->bounds();
++  TAB_CONTAINER_START_REMOVE_TAB_ANIMATION_FOR_VERTICAL_TABS
+   target_bounds.set_x(
+       (former_model_index > 0)
+           ? (tabs_view_model_.ideal_bounds(former_model_index - 1).right() -
