@@ -674,7 +674,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     if let tab = tabManager.selectedTab, tab.isPrivate {
       webViewContainerBackdrop.alpha = 1
       webViewContainer.alpha = 0
-      topToolbar.locationContainer.alpha = 0
+      header.contentView.alpha = 0
       presentedViewController?.popoverPresentationController?.containerView?.alpha = 0
       presentedViewController?.view.alpha = 0
     }
@@ -686,13 +686,16 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   }
 
   @objc func appDidBecomeActiveNotification() {
+    guard let tab = tabManager.selectedTab, tab.isPrivate else {
+      return
+    }
     // Re-show any components that might have been hidden because they were being displayed
     // as part of a private mode tab
     UIView.animate(
       withDuration: 0.2, delay: 0, options: UIView.AnimationOptions(),
       animations: {
         self.webViewContainer.alpha = 1
-        self.topToolbar.locationContainer.alpha = 1
+        self.header.contentView.alpha = 1
         self.presentedViewController?.popoverPresentationController?.containerView?.alpha = 1
         self.presentedViewController?.view.alpha = 1
         self.view.backgroundColor = .clear
@@ -700,9 +703,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       completion: { _ in
         self.webViewContainerBackdrop.alpha = 0
       })
-
-    // Re-show toolbar which might have been hidden during scrolling (prior to app moving into the background)
-    toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
   override public func viewDidLoad() {
