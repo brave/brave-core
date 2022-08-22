@@ -95,8 +95,7 @@ PredictionMap TextProcessing::Apply(
   return linear_model_.GetTopPredictions(*vector_data);
 }
 
-const PredictionMap TextProcessing::GetTopPredictions(
-    const std::string& html) const {
+PredictionMap TextProcessing::GetTopPredictions(const std::string& html) const {
   std::string stripped_html = StripNonAlphaCharacters(html);
   PredictionMap predictions =
       Apply(std::make_unique<TextData>(std::move(stripped_html)));
@@ -111,8 +110,7 @@ const PredictionMap TextProcessing::GetTopPredictions(
   return rtn;
 }
 
-const PredictionMap TextProcessing::ClassifyPage(
-    const std::string& content) const {
+PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
   if (!IsInitialized()) {
     return PredictionMap();
   }
