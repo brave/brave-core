@@ -98,9 +98,6 @@ class ClientStateManager final {
   const targeting::TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory();
 
-  const std::string& GetVersionCode() const;
-  void SetVersionCode(const std::string& value);
-
   void RemoveAllHistory();
 
   bool is_mutated() const { return is_mutated_; }

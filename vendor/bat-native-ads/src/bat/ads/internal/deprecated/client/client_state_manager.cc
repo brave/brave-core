@@ -515,20 +515,6 @@ void ClientStateManager::RemoveAllHistory() {
   Save();
 }
 
-const std::string& ClientStateManager::GetVersionCode() const {
-  DCHECK(is_initialized_);
-
-  return client_->version_code;
-}
-
-void ClientStateManager::SetVersionCode(const std::string& value) {
-  DCHECK(is_initialized_);
-
-  client_->version_code = value;
-
-  Save();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void ClientStateManager::Save() {
