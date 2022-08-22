@@ -31,8 +31,7 @@ def collect_data(browser, out_dir, url):
   process = subprocess.Popen([browser, url, "--user-data-dir=" + temp_dir, "--speedreader-collect-test-data=" + out])
   
   time_counter = 0
-  while not os.path.exists(out + "/distilled.html"):
-    print("waiting")
+  while not os.path.exists(out + "/distilled.html") and process.poll() == None:
     time.sleep(1)
 
   if ticket != '':
