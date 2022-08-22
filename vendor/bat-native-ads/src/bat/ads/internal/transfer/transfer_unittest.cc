@@ -39,7 +39,7 @@ class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
 
   int GetTransferCount() { return transfer_count_; }
 
-  AdInfo BuildAdForType(const AdType type) {
+  AdInfo BuildAdForType(const AdType& type) {
     AdInfo ad;
 
     ad.type = type;
