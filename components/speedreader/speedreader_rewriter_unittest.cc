@@ -14,7 +14,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
-#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

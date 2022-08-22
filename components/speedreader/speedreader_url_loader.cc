@@ -31,16 +31,16 @@ namespace {
 
 constexpr uint32_t kReadBufferSize = 32768;
 
-void SaveDistilledDataForTests(const GURL& url,
-                               const std::string& data,
-                               const std::string& stylesheet,
-                               const std::string& transformed) {
+void MaybeSaveDistilledDataForDebug(const GURL& url,
+                                    const std::string& data,
+                                    const std::string& stylesheet,
+                                    const std::string& transformed) {
 #if DCHECK_IS_ON()
-  constexpr const char kColllectSwitch[] = "speedreader-collect-test-data";
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(kColllectSwitch))
+  constexpr const char kCollectSwitch[] = "speedreader-collect-test-data";
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(kCollectSwitch))
     return;
   const auto dir = base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
-      kColllectSwitch);
+      kCollectSwitch);
   base::CreateDirectory(dir);
   base::WriteFile(dir.AppendASCII("page.url"), url.spec());
   base::WriteFile(dir.AppendASCII("original.html"), data);
@@ -158,8 +158,8 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
               if (transformed.length() < 1024) {
                 return data;
               }
-              SaveDistilledDataForTests(response_url, data, stylesheet,
-                                        transformed);
+              MaybeSaveDistilledDataForDebug(response_url, data, stylesheet,
+                                             transformed);
               return stylesheet + transformed;
             },
             response_url_, std::move(body),
