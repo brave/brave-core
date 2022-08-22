@@ -731,6 +731,7 @@ if (!is_android) {
       "//brave/chromium_src/chrome/browser/ui/hats/hats_service_browsertest.cc",
       "//brave/chromium_src/chrome/browser/ui/views/location_bar/location_bar_view_browsertest.cc",
       "//brave/chromium_src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc",
+      "//brave/chromium_src/services/network/cookie_expiry_browsertest.cc",
       "//brave/common/brave_channel_info_browsertest.cc",
       "//brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper_browsertest.cc",
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.cc",

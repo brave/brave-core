@@ -1,0 +1,179 @@
+// Copyright (c) 2012 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include <string>
+
+#include "base/bind.h"
+#include "base/test/bind.h"
+
+#include "base/path_service.h"
+#include "base/strings/stringprintf.h"
+#include "brave/components/constants/brave_paths.h"
+#include "build/build_config.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/storage_partition.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+
+constexpr base::TimeDelta k4YearsInDays = base::Days(1461);
+
+class CookieExpirationTest : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    host_resolver()->AddRule("*", "127.0.0.1");
+    https_server_.reset(new net::EmbeddedTestServer(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_->ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(https_server_->Start());
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  }
+
+ protected:
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+
+ private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
+};
+
+// Set a cookie with JavaScript.
+void JSDocumentCookieWriteCookie(Browser* browser, std::string age) {
+  bool rv = content::ExecuteScript(
+      browser->tab_strip_model()->GetActiveWebContents(),
+      base::StringPrintf("document.cookie = 'name=Test; %s'", age.c_str()));
+  CHECK(rv);
+}
+
+void JSCookieStoreWriteCookie(Browser* browser, std::string expires_in_ms) {
+  content::EvalJsResult result = content::EvalJs(
+      browser->tab_strip_model()->GetActiveWebContents(),
+      base::StringPrintf("async function doSet() {"
+                         "  await window.cookieStore.set("
+                         "       { name: 'name',"
+                         "         value: 'Good',"
+                         "         expires: Date.now() + %s,"
+                         "          });"
+                         "  window.domAutomationController.send(true);"
+                         "}"
+                         "doSet()",
+                         expires_in_ms.c_str()),
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+}
+
+void SetCookieDirect(Browser* browser,
+                     const GURL& url,
+                     const std::string& cookie_line) {
+  net::CookieOptions options;
+  options.set_include_httponly();
+  options.set_same_site_cookie_context(
+      net::CookieOptions::SameSiteCookieContext::MakeInclusive());
+
+  auto cookie_obj = net::CanonicalCookie::Create(
+      url, cookie_line, base::Time::Now(), absl::nullopt /* server_time */,
+      absl::nullopt /* cookie_partition_key */);
+
+  base::RunLoop run_loop;
+  browser->tab_strip_model()
+      ->GetActiveWebContents()
+      ->GetBrowserContext()
+      ->GetDefaultStoragePartition()
+      ->GetCookieManagerForBrowserProcess()
+      ->SetCanonicalCookie(
+          *cookie_obj, url, options,
+          base::BindLambdaForTesting(
+              [&](net::CookieAccessResult status) { run_loop.Quit(); }));
+  run_loop.Run();
+}
+
+std::vector<net::CanonicalCookie> GetAllCookiesDirect(Browser* browser) {
+  base::RunLoop run_loop;
+  std::vector<net::CanonicalCookie> cookies_out;
+  browser->tab_strip_model()
+      ->GetActiveWebContents()
+      ->GetBrowserContext()
+      ->GetDefaultStoragePartition()
+      ->GetCookieManagerForBrowserProcess()
+      ->GetAllCookies(base::BindLambdaForTesting(
+          [&run_loop,
+           &cookies_out](const std::vector<net::CanonicalCookie>& cookies) {
+            cookies_out = cookies;
+            run_loop.Quit();
+          }));
+  run_loop.Run();
+  return cookies_out;
+}
+
+IN_PROC_BROWSER_TEST_F(CookieExpirationTest, CheckExpirationTimeForJSCookie) {
+  GURL url = https_server_->GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  std::cout << "cookie long expiry in days "
+            << std::to_string(k4YearsInDays.InSeconds());
+  JSDocumentCookieWriteCookie(
+      browser(), "max-age=" + std::to_string(k4YearsInDays.InSeconds()));
+  std::vector<net::CanonicalCookie> all_cookies =
+      GetAllCookiesDirect(browser());
+  EXPECT_EQ(1u, all_cookies.size());
+  for (const net::CanonicalCookie& cookie : all_cookies) {
+    EXPECT_EQ((cookie.ExpiryDate().ToDeltaSinceWindowsEpoch().InDays() -
+               cookie.CreationDate().ToDeltaSinceWindowsEpoch().InDays()),
+              7);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
+                       CheckExpirationTimeForCookieStore) {
+  GURL url = https_server_->GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  JSCookieStoreWriteCookie(browser(),
+                           std::to_string(k4YearsInDays.InMilliseconds()));
+
+  std::vector<net::CanonicalCookie> all_cookies =
+      GetAllCookiesDirect(browser());
+  EXPECT_EQ(1u, all_cookies.size());
+  for (const net::CanonicalCookie& cookie : all_cookies) {
+    EXPECT_EQ((cookie.ExpiryDate().ToDeltaSinceWindowsEpoch().InDays() -
+               cookie.CreationDate().ToDeltaSinceWindowsEpoch().InDays()),
+              7);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
+                       CheckExpirationTimeForHttpCookies) {
+  GURL url = https_server_->GetURL("a.com", "/simple.html");
+  SetCookieDirect(
+      browser(), url,
+      "test=http;max-age=" + std::to_string(k4YearsInDays.InSeconds()));
+
+  std::vector<net::CanonicalCookie> all_cookies =
+      GetAllCookiesDirect(browser());
+  EXPECT_EQ(1u, all_cookies.size());
+  for (const net::CanonicalCookie& cookie : all_cookies) {
+    EXPECT_EQ((cookie.ExpiryDate().ToDeltaSinceWindowsEpoch().InDays() -
+               cookie.CreationDate().ToDeltaSinceWindowsEpoch().InDays()),
+              180);
+  }
+}
