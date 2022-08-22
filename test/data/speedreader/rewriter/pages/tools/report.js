@@ -1,0 +1,46 @@
+import { visualDomDiff } from 'visual-dom-diff'
+import './report.css'
+import * as data from '../report/reports.json'
+
+async function loadDocument(dir, doc) {
+   let response = await new Promise(resolve => {
+      var xhr = new XMLHttpRequest()
+      xhr.open("GET", '/report/' + dir +"/" + doc, true)
+      xhr.responseType = "document"
+      xhr.onload = function(e) {
+        resolve(xhr.response)
+      };
+      xhr.onerror = function () {
+        resolve(undefined);
+      };
+      xhr.send()
+   })
+   return response
+}
+
+async function showReport(val) {
+  const original = await loadDocument(val, 'original.html')
+  const originalNode = document.getElementById('original')
+  originalNode.replaceChildren(original.firstChild)
+
+  const changed = await loadDocument(val, 'changed.html')
+  const changedNode = document.getElementById('changed')
+  changedNode.replaceChildren(changed.firstChild)
+
+  const diffNode = document.getElementById('diff')
+  diffNode.replaceChildren(visualDomDiff(originalNode.firstChild, changedNode.firstChild))
+}
+
+window.addEventListener('load', function () {
+    console.log(data)
+    const reportsSelect = document.getElementById('reports')
+    for (const r of data.default.reports) {
+        const opt = document.createElement('option')
+        opt.value = r
+        opt.text = r
+        reportsSelect.appendChild(opt)
+    }
+    reportsSelect.onchange = (e) => showReport(e.target.value)
+
+    showReport(reportsSelect.value)
+})
