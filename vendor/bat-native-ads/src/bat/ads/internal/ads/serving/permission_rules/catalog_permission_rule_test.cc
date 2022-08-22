@@ -14,11 +14,11 @@
 
 namespace ads {
 
-class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
+class BatAdsCatalogPermissionRuleTest : public UnitTestBase {
  protected:
-  BatAdsCatalogPermissionRuleIntegrationTest() = default;
+  BatAdsCatalogPermissionRuleTest() = default;
 
-  ~BatAdsCatalogPermissionRuleIntegrationTest() override = default;
+  ~BatAdsCatalogPermissionRuleTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -31,7 +31,7 @@ class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
+TEST_F(BatAdsCatalogPermissionRuleTest, AllowAd) {
   // Arrange
 
   // Act
@@ -42,7 +42,7 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
+TEST_F(BatAdsCatalogPermissionRuleTest,
        AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
   AdvanceClockBy(base::Days(1) - base::Seconds(1));
@@ -55,7 +55,7 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
+TEST_F(BatAdsCatalogPermissionRuleTest,
        DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
   AdvanceClockBy(base::Days(1));
@@ -68,8 +68,7 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
   EXPECT_FALSE(is_allowed);
 }
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
-       DoNotAllowAdIfCatalogDoesNotExist) {
+TEST_F(BatAdsCatalogPermissionRuleTest, DoNotAllowAdIfCatalogDoesNotExist) {
   // Arrange
   SetCatalogVersion(0);
 

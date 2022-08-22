@@ -22,11 +22,11 @@ using testing::_;
 
 namespace ads {
 
-class BatAdsSearchResultAdIntegrationTest : public UnitTestBase {
+class BatAdsSearchResultAdTest : public UnitTestBase {
  protected:
-  BatAdsSearchResultAdIntegrationTest() = default;
+  BatAdsSearchResultAdTest() = default;
 
-  ~BatAdsSearchResultAdIntegrationTest() override = default;
+  ~BatAdsSearchResultAdTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -38,7 +38,7 @@ class BatAdsSearchResultAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
+TEST_F(BatAdsSearchResultAdTest, TriggerViewedEvents) {
   // Arrange
 
   // Act
@@ -57,7 +57,7 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   EXPECT_EQ(2, GetTransactionCount());
 }
 
-TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
+TEST_F(BatAdsSearchResultAdTest, TriggerQueuedViewedEvents) {
   // Arrange
 
   // Act
@@ -90,7 +90,7 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   EXPECT_EQ(2, GetTransactionCount());
 }
 
-TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BatAdsSearchResultAdTest, TriggerClickedEvent) {
   // Arrange
 
   // Act

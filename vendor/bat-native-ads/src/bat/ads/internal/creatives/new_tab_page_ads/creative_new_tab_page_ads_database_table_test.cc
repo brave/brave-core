@@ -13,12 +13,11 @@
 
 namespace ads {
 
-class BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest
-    : public UnitTestBase {
+class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest() = default;
+  BatAdsCreativeNewTabPageAdsDatabaseTableTest() = default;
 
-  ~BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest() override = default;
+  ~BatAdsCreativeNewTabPageAdsDatabaseTableTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -31,7 +30,7 @@ class BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest
   }
 };
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
+TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsFromCatalogResponse) {
   // Arrange
 

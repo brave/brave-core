@@ -34,11 +34,11 @@ constexpr char kCreativeInstanceIdId[] = "30db5f7b-dba3-48a3-b299-c9bd9c67da65";
 
 }  // namespace
 
-class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
+class BatAdsInlineContentAdTest : public UnitTestBase {
  protected:
-  BatAdsInlineContentAdIntegrationTest() = default;
+  BatAdsInlineContentAdTest() = default;
 
-  ~BatAdsInlineContentAdIntegrationTest() override = default;
+  ~BatAdsInlineContentAdTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -54,7 +54,7 @@ class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, Serve) {
+TEST_F(BatAdsInlineContentAdTest, Serve) {
   // Arrange
 
   // Act
@@ -70,7 +70,7 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, Serve) {
       });
 }
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
+TEST_F(BatAdsInlineContentAdTest, TriggerServedEvent) {
   // Arrange
 
   // Act
@@ -85,7 +85,7 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
   EXPECT_EQ(0, GetTransactionCount());
 }
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BatAdsInlineContentAdTest, TriggerViewedEvent) {
   // Arrange
   const std::string name =
       privacy::p2a::GetAdImpressionNameForAdType(AdType::kInlineContentAd);
@@ -103,7 +103,7 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1, GetTransactionCount());
 }
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BatAdsInlineContentAdTest, TriggerClickedEvent) {
   // Arrange
 
   // Act

@@ -13,11 +13,11 @@
 
 namespace ads {
 
-class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
+class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsConversionsDatabaseTableIntegrationTest() = default;
+  BatAdsConversionsDatabaseTableTest() = default;
 
-  ~BatAdsConversionsDatabaseTableIntegrationTest() override = default;
+  ~BatAdsConversionsDatabaseTableTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -30,8 +30,7 @@ class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
-       GetConversionsFromCatalogResponse) {
+TEST_F(BatAdsConversionsDatabaseTableTest, GetConversionsFromCatalogResponse) {
   // Arrange
 
   // Act

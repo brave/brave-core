@@ -28,11 +28,11 @@ constexpr char kCreativeInstanceIdId[] = "75d4cbac-b661-4126-9ccb-7bbb6ee56ef3";
 
 }  // namespace
 
-class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
+class BatAdsPromotedContentAdTest : public UnitTestBase {
  protected:
-  BatAdsPromotedContentAdIntegrationTest() = default;
+  BatAdsPromotedContentAdTest() = default;
 
-  ~BatAdsPromotedContentAdIntegrationTest() override = default;
+  ~BatAdsPromotedContentAdTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -47,7 +47,7 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BatAdsPromotedContentAdTest, TriggerViewedEvent) {
   // Arrange
 
   // Act
@@ -64,7 +64,7 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1, GetTransactionCount());
 }
 
-TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BatAdsPromotedContentAdTest, TriggerClickedEvent) {
   // Arrange
 
   // Act

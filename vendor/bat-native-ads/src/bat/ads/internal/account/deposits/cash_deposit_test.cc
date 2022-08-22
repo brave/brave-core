@@ -21,11 +21,11 @@ constexpr char kMissingCreativeInstanceId[] =
 
 }  // namespace
 
-class BatAdsCashDepositIntegrationTest : public UnitTestBase {
+class BatAdsCashDepositTest : public UnitTestBase {
  protected:
-  BatAdsCashDepositIntegrationTest() = default;
+  BatAdsCashDepositTest() = default;
 
-  ~BatAdsCashDepositIntegrationTest() override = default;
+  ~BatAdsCashDepositTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -38,7 +38,7 @@ class BatAdsCashDepositIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsCashDepositIntegrationTest, GetValue) {
+TEST_F(BatAdsCashDepositTest, GetValue) {
   // Arrange
   CashDeposit deposit;
 
@@ -52,8 +52,7 @@ TEST_F(BatAdsCashDepositIntegrationTest, GetValue) {
                    });
 }
 
-TEST_F(BatAdsCashDepositIntegrationTest,
-       DoNotGetValueForMissingCreativeInstanceId) {
+TEST_F(BatAdsCashDepositTest, DoNotGetValueForMissingCreativeInstanceId) {
   // Arrange
   CashDeposit deposit;
 

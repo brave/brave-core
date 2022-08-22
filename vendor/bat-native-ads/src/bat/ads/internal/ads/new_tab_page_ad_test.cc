@@ -30,11 +30,11 @@ constexpr char kCreativeInstanceIdId[] = "7ff400b9-7f8a-46a8-89f1-cb386612edcf";
 
 }  // namespace
 
-class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
+class BatAdsNewTabPageAdTest : public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdIntegrationTest() = default;
+  BatAdsNewTabPageAdTest() = default;
 
-  ~BatAdsNewTabPageAdIntegrationTest() override = default;
+  ~BatAdsNewTabPageAdTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -50,7 +50,7 @@ class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
+TEST_F(BatAdsNewTabPageAdTest, Serve) {
   // Arrange
 
   // Act
@@ -64,7 +64,7 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
       });
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
+TEST_F(BatAdsNewTabPageAdTest, TriggerServedEvent) {
   // Arrange
 
   // Act
@@ -78,7 +78,7 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
   EXPECT_EQ(0, GetTransactionCount());
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BatAdsNewTabPageAdTest, TriggerViewedEvent) {
   // Arrange
 
   // Act
@@ -92,7 +92,7 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1, GetTransactionCount());
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BatAdsNewTabPageAdTest, TriggerClickedEvent) {
   // Arrange
 
   // Act

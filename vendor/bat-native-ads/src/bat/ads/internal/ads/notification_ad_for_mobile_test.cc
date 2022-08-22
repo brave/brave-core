@@ -29,11 +29,11 @@ using ::testing::Invoke;
 
 namespace ads {
 
-class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
+class BatAdsNotificationAdForMobileTest : public UnitTestBase {
  protected:
-  BatAdsNotificationAdForMobileIntegrationTest() = default;
+  BatAdsNotificationAdForMobileTest() = default;
 
-  ~BatAdsNotificationAdForMobileIntegrationTest() override = default;
+  ~BatAdsNotificationAdForMobileTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -65,7 +65,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsNotificationAdForMobileIntegrationTest, ServeAtRegularIntervals) {
+TEST_F(BatAdsNotificationAdForMobileTest, ServeAtRegularIntervals) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([](const NotificationAdInfo& ad) {
@@ -83,8 +83,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, ServeAtRegularIntervals) {
   EXPECT_EQ(0, GetTransactionCount());
 }
 
-TEST_F(BatAdsNotificationAdForMobileIntegrationTest,
-       DoNotServeWhenUserBecomesActive) {
+TEST_F(BatAdsNotificationAdForMobileTest, DoNotServeWhenUserBecomesActive) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd(_)).Times(0);
 
@@ -96,7 +95,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest,
       0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerServedEvent) {
+TEST_F(BatAdsNotificationAdForMobileTest, TriggerServedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -119,7 +118,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerServedEvent) {
   ServeNextAd();
 }
 
-TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
+TEST_F(BatAdsNotificationAdForMobileTest, TriggerViewedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -146,7 +145,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   ServeNextAd();
 }
 
-TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
+TEST_F(BatAdsNotificationAdForMobileTest, TriggerClickedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -170,7 +169,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   ServeNextAd();
 }
 
-TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
+TEST_F(BatAdsNotificationAdForMobileTest, TriggerDismissedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -195,7 +194,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   ServeNextAd();
 }
 
-TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
+TEST_F(BatAdsNotificationAdForMobileTest, TriggerTimedOutEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
