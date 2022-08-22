@@ -32,8 +32,7 @@ def _DownloadArchiveAndUnpack(output_directory: str, url: str) -> str:
                       path_util.GetBinaryPath(output_directory))
 
 
-def _DownloadWinInstallerAndExtract(out_dir: str,
-                                    url: str,
+def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
                                     expected_install_path: str,
                                     binary_name: str) -> str:
   if not os.path.exists(out_dir):
@@ -44,8 +43,9 @@ def _DownloadWinInstallerAndExtract(out_dir: str,
   data = f.read()
   with open(installer_filename, 'wb') as output_file:
     output_file.write(data)
-  GetProcessOutput([installer_filename, '--chrome-sxs',
-                    '--do-not-launch-chrome'], None, True)
+  GetProcessOutput(
+      [installer_filename, '--chrome-sxs', '--do-not-launch-chrome'], None,
+      True)
 
   # Sometimes the binary is launched despite passing --do-not-launch-chrome.
   # Force kill it by taskkill.exe
@@ -67,8 +67,8 @@ def _DownloadWinInstallerAndExtract(out_dir: str,
                                 'Installer', 'setup.exe')
   logging.info('Run uninstall')
 
-  GetProcessOutput([setup_filename, '--uninstall',
-                    '--force-uninstall', '--chrome-sxs'])
+  GetProcessOutput(
+      [setup_filename, '--uninstall', '--force-uninstall', '--chrome-sxs'])
   shutil.rmtree(expected_install_path, True)
 
   return os.path.join(out_dir, binary_name)
@@ -80,11 +80,8 @@ class BrowserType:
   _extra_benchmark_args: List[str] = []
   _report_as_reference = False
 
-  def __init__(self,
-               name: str,
-               extra_browser_args: List[str],
-               extra_benchmark_args: List[str],
-               report_as_reference: bool):
+  def __init__(self, name: str, extra_browser_args: List[str],
+               extra_benchmark_args: List[str], report_as_reference: bool):
     self._name = name
     self._extra_browser_args = extra_browser_args
     self._extra_benchmark_args = extra_benchmark_args
@@ -109,10 +106,7 @@ class BrowserType:
 class BraveBrowserTypeImpl(BrowserType):
   _channel: str
 
-  def __init__(self,
-               name: str,
-               channel: str,
-               extra_browser_args: List[str],
+  def __init__(self, name: str, channel: str, extra_browser_args: List[str],
                extra_benchmark_args: List[str]):
     super().__init__(name, extra_browser_args, extra_benchmark_args, False)
     self._channel = channel
@@ -140,12 +134,11 @@ class BraveBrowserTypeImpl(BrowserType):
     if not m:
       raise RuntimeError(f'Failed to parse tag "{tag}"')
     if (sys.platform == 'win32' and int(m.group(1)) == 1
-            and int(m.group(2)) < 35):
-      return _DownloadWinInstallerAndExtract(
-          out_dir,
-          self._GetSetupDownloadUrl(tag),
-          self._GetWinInstallPath(),
-          'brave.exe')
+        and int(m.group(2)) < 35):
+      return _DownloadWinInstallerAndExtract(out_dir,
+                                             self._GetSetupDownloadUrl(tag),
+                                             self._GetWinInstallPath(),
+                                             'brave.exe')
 
     return _DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag))
 
@@ -173,7 +166,7 @@ def _GetNearestChromiumUrl(tag: str) -> str:
   for version in chrome_versions:
     parsed_version = _ParseVersion(version)
     if parsed_version[0] == parsed_requested_version[
-            0] and parsed_version >= parsed_requested_version:
+        0] and parsed_version >= parsed_requested_version:
       if not best_candidate or best_candidate > parsed_version:
         best_candidate = parsed_version
 
@@ -189,39 +182,32 @@ def _GetNearestChromiumUrl(tag: str) -> str:
 class ChromeBrowserTypeImpl(BrowserType):
   _channel: str
 
-  def __init__(self,
-               name: str,
-               channel: str,
-               extra_browser_args: List[str],
-               extra_benchmark_args: List[str],
-               report_as_reference: bool):
+  def __init__(self, name: str, channel: str, extra_browser_args: List[str],
+               extra_benchmark_args: List[str], report_as_reference: bool):
     super().__init__(name, extra_browser_args, extra_benchmark_args,
                      report_as_reference)
     self._channel = channel
 
   def _GetWinInstallPath(self) -> str:
-    return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
-                        'Google', 'Chrome ' + self._channel,
-                        'Application')
+    return os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Google',
+                        'Chrome ' + self._channel, 'Application')
 
   def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
     if sys.platform == 'win32':
-      return _DownloadWinInstallerAndExtract(
-          out_dir,
-          _GetNearestChromiumUrl(tag),
-          self._GetWinInstallPath(),
-          'chrome.exe')
+      return _DownloadWinInstallerAndExtract(out_dir,
+                                             _GetNearestChromiumUrl(tag),
+                                             self._GetWinInstallPath(),
+                                             'chrome.exe')
 
     raise NotImplementedError()
 
 
 def ParseBrowserType(string_type: str) -> BrowserType:
   if string_type == 'chrome':
-    return ChromeBrowserTypeImpl('chrome', 'SxS',
-                                 ['--restore-last-session'], [], True)
+    return ChromeBrowserTypeImpl('chrome', 'SxS', ['--restore-last-session'],
+                                 [], True)
   if string_type == 'chrome_no_trials':
-    return ChromeBrowserTypeImpl('chrome', 'SxS',
-                                 ['--restore-last-session'],
+    return ChromeBrowserTypeImpl('chrome', 'SxS', ['--restore-last-session'],
                                  ['--compatibility-mode=no-field-trials'],
                                  False)
   if string_type == 'brave':

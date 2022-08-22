@@ -16,6 +16,7 @@ from components import path_util
 with path_util.SysPath(path_util.GetDepotToolsDir()):
   import download_from_google_storage  # pylint: disable=import-error
 
+
 def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
   """Download a file from brave perf bucket.
 
@@ -30,14 +31,14 @@ def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
   if exit_code:
     raise RuntimeError(f'Failed to download: {gs_path}')
 
+
 def GetProfileHash(profile: str, binary: str) -> str:
   binary_path_hash = hashlib.sha1(binary.encode("utf-8")).hexdigest()[:6]
   return profile + '-' + binary_path_hash
 
 
-def GetProfilePath(profile: str,
-                   work_directory: str) -> str:
-  assert(profile != 'clean')
+def GetProfilePath(profile: str, work_directory: str) -> str:
+  assert (profile != 'clean')
 
   profile_dir = None
   if os.path.isdir(profile):  # local profile

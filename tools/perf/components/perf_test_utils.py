@@ -16,15 +16,12 @@ with path_util.SysPath(path_util.GetPyJson5Dir()):
   import json5  # pylint: disable=import-error
 
 
-def GetProcessOutput(args: List[str],
-                     cwd: str = None,
+def GetProcessOutput(args: List[str], cwd: str = None,
                      check=False) -> Tuple[bool, str]:
   try:
     logging.debug('Run binary: %s, cwd = %s', ' '.join(args), cwd)
 
-    output = subprocess.check_output(args,
-                                     stderr=subprocess.STDOUT,
-                                     cwd=cwd)
+    output = subprocess.check_output(args, stderr=subprocess.STDOUT, cwd=cwd)
     decoded_output = output.decode()
     logging.debug('Binary output: %s', decoded_output)
     return True, decoded_output
@@ -62,12 +59,13 @@ def GetRevisionNumberAndHash(revision: str) -> tuple[str, str]:
 
   # Fetch the revision first:
   GetProcessOutput(['git', 'fetch', 'origin', revision],
-                   cwd=path_util.GetBraveDir(), check=True)
+                   cwd=path_util.GetBraveDir(),
+                   check=True)
 
   # Fetch git hash of the revision:
-  _, git_hash_output = GetProcessOutput(
-      ['git', 'rev-parse', 'FETCH_HEAD'], cwd=path_util.GetBraveDir(),
-      check=True)
+  _, git_hash_output = GetProcessOutput(['git', 'rev-parse', 'FETCH_HEAD'],
+                                        cwd=path_util.GetBraveDir(),
+                                        check=True)
 
   rev_number_args = [
       'git', 'rev-list', '--topo-order', '--first-parent', '--count',
@@ -75,7 +73,8 @@ def GetRevisionNumberAndHash(revision: str) -> tuple[str, str]:
   ]
 
   # Get the revision number:
-  _, rev_number_output = GetProcessOutput(
-      rev_number_args, cwd=path_util.GetBraveDir(), check=True)
+  _, rev_number_output = GetProcessOutput(rev_number_args,
+                                          cwd=path_util.GetBraveDir(),
+                                          check=True)
 
   return (rev_number_output.rstrip(), git_hash_output.rstrip())

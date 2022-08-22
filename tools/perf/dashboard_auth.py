@@ -98,7 +98,6 @@ with path_util.SysPath(path_util.GetGoogleAuthDir(), 0):
   from google_auth_oauthlib.flow import InstalledAppFlow
 # pylint: enable=no-name-in-module,import-error
 
-
 SCOPES = ['openid', 'https://www.googleapis.com/auth/userinfo.email']
 CLIENT_ID_FILE = os.path.join(os.path.expanduser("~"),
                               '.perf_dashboard_client_id.json')
@@ -160,6 +159,7 @@ def GetDashboardToken(can_be_interactive=False):
 def main():
   token = GetDashboardToken(can_be_interactive=True)
   print(token)
+
 
 if __name__ == '__main__':
   sys.exit(main())

@@ -46,32 +46,27 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
 
 
 class BraveLoadingDesktopStorySet(story.StorySet):
-
   """ Brave version of LoadingDesktopStorySet.
 
   See loading_desktop.py for details.
   """
 
   def __init__(self, cache_temperatures=None):
-    super(BraveLoadingDesktopStorySet, self).__init__(
-        archive_data_file='data/brave_loading_desktop.json',
-        cloud_storage_bucket=story.PARTNER_BUCKET)
+    super(BraveLoadingDesktopStorySet,
+          self).__init__(archive_data_file='data/brave_loading_desktop.json',
+                         cloud_storage_bucket=story.PARTNER_BUCKET)
 
     if cache_temperatures is None:
       cache_temperatures = [
           cache_temperature_module.COLD, cache_temperature_module.WARM
       ]
     # Passed as (story, name) tuple.
-    self.AddStories(
-        ['typical'],
-        [
-            ('https://example.com/', 'example.com'),
-            ('https://search.brave.com/', 'BraveSearch'),
-            ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
-            ('https://www.economist.com/', 'Economist'),
-            ('https://www.ign.com/', 'IGN')
-        ],
-        cache_temperatures)
+    self.AddStories(['typical'],
+                    [('https://example.com/', 'example.com'),
+                     ('https://search.brave.com/', 'BraveSearch'),
+                     ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
+                     ('https://www.economist.com/', 'Economist'),
+                     ('https://www.ign.com/', 'IGN')], cache_temperatures)
 
   def AddStories(self, tags, urls, cache_temperatures):
     for url, name in urls:

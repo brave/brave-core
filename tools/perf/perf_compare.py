@@ -25,6 +25,7 @@ import components.perf_test_utils as perf_test_utils
 import components.perf_test_runner as perf_test_runner
 import components.perf_config as perf_config
 
+
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--working-directory', required=True, type=str)
@@ -43,7 +44,7 @@ def main():
       args.working_directory, args.verbose, config.benchmarks)
 
   return 0 if perf_test_runner.RunConfigurations(config.runners,
-                                                common_options) else 1
+                                                 common_options) else 1
 
 
 if __name__ == '__main__':

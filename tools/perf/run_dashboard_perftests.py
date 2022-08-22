@@ -56,7 +56,7 @@ def main():
       args, config.benchmarks)
 
   if len(config.runners) != 1:
-   raise RuntimeError('Only one configuration should be specified.')
+    raise RuntimeError('Only one configuration should be specified.')
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
       targets, config.runners[0])

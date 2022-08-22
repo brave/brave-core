@@ -34,9 +34,7 @@ class CommonOptions:
   benchmarks: List[BenchmarkConfig]
 
   @classmethod
-  def make_local(cls,
-                 working_directory: str,
-                 verbose: bool,
+  def make_local(cls, working_directory: str, verbose: bool,
                  benchmarks: List[BenchmarkConfig]) -> CommonOptions:
     options = CommonOptions()
     options.verbose = verbose
@@ -58,11 +56,9 @@ class CommonOptions:
     return options
 
 
-def ReportToDashboardImpl(
-        browser_type: BrowserType,
-        dashboard_bot_name: str,
-        revision: str,
-        output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
+def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
+                          revision: str, output_dir: str
+                          ) -> Tuple[bool, List[str], Optional[str]]:
   args = [
       path_util.GetVpython2Path(),
       os.path.join(path_util.GetChromiumPerfDir(), 'process_perf_results.py')
@@ -113,11 +109,8 @@ class RunableConfiguration:
   status_line: str = ''
   logs: List[str] = []
 
-  def __init__(self,
-               config: RunnerConfig,
-               binary_path: Optional[str],
-               out_dir: str,
-               common_options: CommonOptions):
+  def __init__(self, config: RunnerConfig, binary_path: Optional[str],
+               out_dir: str, common_options: CommonOptions):
     self.config = config
     self.binary_path = binary_path
     self.out_dir = out_dir
@@ -127,8 +120,7 @@ class RunableConfiguration:
     start_time = time.time()
     if self.config.profile != 'clean':
       self.profile_dir = perf_profile.GetProfilePath(
-          self.config.profile,
-          self.common_options.working_directory)
+          self.config.profile, self.common_options.working_directory)
       if self.config.rebase_profile:
         if not self.RebaseProfile():
           return False
@@ -136,7 +128,7 @@ class RunableConfiguration:
     return True
 
   def RebaseProfile(self) -> bool:
-    assert(self.binary_path is not None)
+    assert (self.binary_path is not None)
     logging.info('Rebasing dir %s using binary %s', self.profile_dir,
                  self.binary_path)
     rebase_runner_config = deepcopy(self.config)
@@ -147,18 +139,14 @@ class RunableConfiguration:
     rebase_benchmark.stories = ['BraveSearch_cold']
     rebase_benchmark.pageset_repeat = 1
 
-    return self.RunSingleTest(
-        self.profile_dir, self.binary_path, rebase_runner_config,
-        rebase_benchmark, None, True, self.common_options.verbose)
+    return self.RunSingleTest(self.profile_dir, self.binary_path,
+                              rebase_runner_config, rebase_benchmark, None,
+                              True, self.common_options.verbose)
 
   @classmethod
-  def RunSingleTest(cls,
-                    profile_dir: Optional[str],
-                    binary_path: str,
-                    config: RunnerConfig,
-                    benchmark_config: BenchmarkConfig,
-                    out_dir: Optional[str],
-                    local_run: bool,
+  def RunSingleTest(cls, profile_dir: Optional[str], binary_path: str,
+                    config: RunnerConfig, benchmark_config: BenchmarkConfig,
+                    out_dir: Optional[str], local_run: bool,
                     verbose: bool) -> bool:
     args = [sys.executable]
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
@@ -175,8 +163,10 @@ class RunableConfiguration:
         args.append('--output-format=none')
 
     else:
-      args.insert(1, os.path.join(path_util.GetSrcDir(), 'testing', 'scripts',
-                                  'run_performance_tests.py'))
+      args.insert(
+          1,
+          os.path.join(path_util.GetSrcDir(), 'testing', 'scripts',
+                       'run_performance_tests.py'))
 
       benchmark_report_name = benchmark_name
 
@@ -188,8 +178,7 @@ class RunableConfiguration:
       args.append(f'--benchmarks={benchmark_name}')
       if out_dir:
         args.append('--isolated-script-test-output=' +
-                    os.path.join(out_dir, benchmark_name,
-                                 'output.json'))
+                    os.path.join(out_dir, benchmark_name, 'output.json'))
       else:
         args.append('--output-format=none')
 
@@ -225,7 +214,7 @@ class RunableConfiguration:
     return status_line
 
   def RunTests(self) -> bool:
-    assert(self.binary_path is not None)
+    assert (self.binary_path is not None)
     has_failure = False
 
     if not self.PrepareProfile():
@@ -234,16 +223,15 @@ class RunableConfiguration:
     start_time = time.time()
     for benchmark in self.common_options.benchmarks:
       if self.common_options.local_run:
-        test_out_dir = os.path.join(self.out_dir, os.pardir,
-                                    benchmark.name)
+        test_out_dir = os.path.join(self.out_dir, os.pardir, benchmark.name)
       else:
         test_out_dir = os.path.join(self.out_dir, 'results')
       logging.info('Running test %s', benchmark.name)
 
-      test_success = self.RunSingleTest(
-          self.profile_dir, self.binary_path, self.config, benchmark,
-          test_out_dir, self.common_options.local_run,
-          self.common_options.verbose)
+      test_success = self.RunSingleTest(self.profile_dir, self.binary_path,
+                                        self.config, benchmark, test_out_dir,
+                                        self.common_options.local_run,
+                                        self.common_options.verbose)
 
       if not test_success:
         has_failure = True
@@ -297,12 +285,12 @@ class RunableConfiguration:
     return run_tests_ok and report_ok, self.logs
 
 
-def PrepareBinariesAndDirectories(
-        configurations: list[RunnerConfig],
-        common_options: CommonOptions) -> list[RunableConfiguration]:
+def PrepareBinariesAndDirectories(configurations: list[RunnerConfig],
+                                  common_options: CommonOptions
+                                  ) -> list[RunableConfiguration]:
   runable_configurations: list[RunableConfiguration] = []
   for config in configurations:
-    assert(config.tag is not None)
+    assert (config.tag is not None)
     if config.tag == config.label:
       description = config.tag
     else:
@@ -312,22 +300,21 @@ def PrepareBinariesAndDirectories(
 
     if common_options.do_run_tests:
       shutil.rmtree(out_dir, True)
-      binary_path = PrepareBinary(
-          out_dir, config.tag, config.location, config.browser_type)
+      binary_path = PrepareBinary(out_dir, config.tag, config.location,
+                                  config.browser_type)
       logging.info('%s : %s directory %s', description, binary_path, out_dir)
     runable_configurations.append(
         RunableConfiguration(config, binary_path, out_dir, common_options))
   return runable_configurations
 
 
-def SpawnConfigurationsFromTargetList(
-        target_list: List[str],
-        base_configuration: RunnerConfig) -> list[RunnerConfig]:
+def SpawnConfigurationsFromTargetList(target_list: List[str],
+                                      base_configuration: RunnerConfig
+                                      ) -> list[RunnerConfig]:
   configurations: list[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)
-    config.tag, location = ParseTarget(
-        target_string)
+    config.tag, location = ParseTarget(target_string)
     if not config.location:
       config.location = location
     if not config.tag:

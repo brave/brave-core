@@ -47,37 +47,36 @@ def GetPyJson5Dir() -> str:
 
 
 def GetGoogleAuthDir() -> str:
-  return os.path.join(GetSrcDir(), 'third_party', 'catapult',
-                      'third_party', 'google-auth')
+  return os.path.join(GetSrcDir(), 'third_party', 'catapult', 'third_party',
+                      'google-auth')
 
 
 def GetVpython2Path() -> str:
-  return os.path.join(
-      GetDepotToolsDir(),
-      'vpython.bat' if sys.platform == 'win32' else 'vpython')
+  return os.path.join(GetDepotToolsDir(),
+                      'vpython.bat' if sys.platform == 'win32' else 'vpython')
 
 
 def GetChromeReleasesJsonPath() -> str:
-  return os.path.join(GetBravePerfDir(),  'chrome_releases.json')
+  return os.path.join(GetBravePerfDir(), 'chrome_releases.json')
 
 
 @contextlib.contextmanager
 def SysPath(path, position=None):
   if position is None:
-      sys.path.append(path)
+    sys.path.append(path)
   else:
-      sys.path.insert(position, path)
+    sys.path.insert(position, path)
   try:
-      yield
+    yield
   finally:
-      if sys.path[-1] == path:
-          sys.path.pop()
-      else:
-          sys.path.remove(path)
+    if sys.path[-1] == path:
+      sys.path.pop()
+    else:
+      sys.path.remove(path)
 
 
 def GetBinaryPath(browser_dir) -> str:
   if sys.platform == 'win32':
-      return os.path.join(browser_dir, 'brave.exe')
+    return os.path.join(browser_dir, 'brave.exe')
 
   raise RuntimeError(f'Unsupported platfrom {sys.platform}')
