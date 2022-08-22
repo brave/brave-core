@@ -22,7 +22,7 @@ struct SendTokenView: View {
   var onDismiss: () -> Void
 
   private var isSendDisabled: Bool {
-    guard let sendAmount = BDouble(sendTokenStore.sendAmount),
+    guard let sendAmount = BDouble(sendTokenStore.sendAmount.normalizedDecimals),
       let balance = sendTokenStore.selectedSendTokenBalance,
       let token = sendTokenStore.selectedSendToken,
       !sendTokenStore.isMakingTx
@@ -31,7 +31,7 @@ struct SendTokenView: View {
     }
 
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
-    if weiFormatter.weiString(from: sendTokenStore.sendAmount, radix: .decimal, decimals: Int(token.decimals)) == nil {
+    if weiFormatter.weiString(from: sendTokenStore.sendAmount.normalizedDecimals, radix: .decimal, decimals: Int(token.decimals)) == nil {
       return true
     }
 
