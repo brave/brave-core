@@ -621,10 +621,14 @@ const util = {
     const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
     const prevBuildArgs = fs.existsSync(buildArgsFile) ?
       fs.readFileSync(buildArgsFile) : undefined
+    const extraGnGenOptsFile = path.join(config.outputDir, 'brave_extra_gn_gen_opts.txt')
+    const prevExtraGnGenOpts = fs.existsSync(extraGnGenOptsFile) ?
+      fs.readFileSync(extraGnGenOptsFile) : undefined
 
     const shouldRunGnGen = config.force_gn_gen ||
       !fs.existsSync(buildNinjaFile) || !prevBuildArgs ||
-      prevBuildArgs != buildArgsStr
+      prevBuildArgs != buildArgsStr || !prevExtraGnGenOpts ||
+      prevExtraGnGenOpts != config.extraGnGenOpts
 
     if (shouldRunGnGen) {
       // `gn gen` can modify args.gn even if it's failed.
@@ -633,8 +637,9 @@ const util = {
       if (prevBuildArgs)
         fs.removeSync(buildArgsFile)
 
-      util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'], options)
+      util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"', config.extraGnGenOpts], options)
       fs.writeFileSync(buildArgsFile, buildArgsStr)
+      fs.writeFileSync(extraGnGenOptsFile, config.extraGnGenOpts)
     }
   },
 
