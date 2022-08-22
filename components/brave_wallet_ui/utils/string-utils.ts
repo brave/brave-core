@@ -71,11 +71,11 @@ export function hasUnicode (str: string) {
   return false
 }
 
-function padWithLeadingZeros (string: string) {
+export function padWithLeadingZeros (string: string) {
   return new Array(5 - string.length).join('0') + string
 }
 
-function unicodeCharEscape (charCode: number) {
+export function unicodeCharEscape (charCode: number) {
   return '\\u' + padWithLeadingZeros(charCode.toString(16))
 }
 

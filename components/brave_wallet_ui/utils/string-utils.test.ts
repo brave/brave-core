@@ -1,4 +1,16 @@
-import { isRemoteImageURL, isValidIconExtension, formatAsDouble } from './string-utils'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import {
+  isRemoteImageURL,
+  isValidIconExtension,
+  formatAsDouble,
+  hasUnicode,
+  padWithLeadingZeros,
+  unicodeCharEscape
+} from './string-utils'
 
 describe('Checking URL is remote image or not', () => {
   test('HTTP URL should return true', () => {
@@ -50,5 +62,38 @@ describe('Check toDouble values', () => {
   })
   test('Value with a Euro symbol, should remove the Euro symbol', () => {
     expect(formatAsDouble('689,16€')).toEqual('689,16')
+  })
+})
+
+describe('hasUnicode', () => {
+  it('returns "true" when Non-ASCII characters are detected', () => {
+    expect(hasUnicode('Sign into \u202E EVIL')).toBe(true)
+  })
+
+  it('returns "false" when Non-ASCII characters are not detected', () => {
+    expect(hasUnicode('Sign into LIVE')).toBe(false)
+  })
+})
+
+describe('padWithLeadingZeros', () => {
+  it('should add three zeros to the beginning of a single character string', () => {
+    expect(padWithLeadingZeros('Z')).toBe('000Z')
+  })
+  it('should add two zeros to the beginning of a 2-character string', () => {
+    expect(padWithLeadingZeros('AB')).toBe('00AB')
+  })
+  it('should add one zero to the beginning of a 3-character string', () => {
+    expect(padWithLeadingZeros('ABC')).toBe('0ABC')
+  })
+  it('should not add zeros to the beginning of a 4+ character string', () => {
+    expect(padWithLeadingZeros('ABCD')).toBe('ABCD')
+  })
+})
+
+describe('unicodeCharEscape', () => {
+  it('should return the escaped unicode value string of a unicode character', () => {
+    expect(unicodeCharEscape(300)).toBe('\\u012c')
+    expect(unicodeCharEscape(550)).toBe('\\u0226')
+    expect(unicodeCharEscape(1550)).toBe('\\u060e')
   })
 })
