@@ -130,7 +130,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(
   }
 
   const std::string country_code = brave_l10n::GetCountryCode(locale);
-  const SupportedSubdivisionCodesSet subdivision_codes =
+  const SupportedSubdivisionCodesSet& subdivision_codes =
       kSupportedSubdivisionCodes.at(country_code);
 
   const std::string& subdivision_code = GetSubdivisionCode();
