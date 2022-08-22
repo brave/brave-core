@@ -49,7 +49,7 @@ public class SwapTokenStore: ObservableObject {
   /// The sell amount in this swap
   @Published var sellAmount = "" {
     didSet {
-      guard !sellAmount.isEmpty, BDouble(sellAmount) != nil else {
+      guard !sellAmount.isEmpty, BDouble(sellAmount.normalizedDecimals) != nil else {
         state = .idle
         return
       }
@@ -66,7 +66,7 @@ public class SwapTokenStore: ObservableObject {
   /// The buy amount in this swap
   @Published var buyAmount = "" {
     didSet {
-      guard !buyAmount.isEmpty, BDouble(buyAmount) != nil else {
+      guard !buyAmount.isEmpty, BDouble(buyAmount.normalizedDecimals) != nil else {
         state = .idle
         return
       }
@@ -205,18 +205,18 @@ public class SwapTokenStore: ObservableObject {
     case .perSellAsset:
       // make sure the base value should not be zero, otherwise, it will always return insufficient liquidity error.
       // following desktop to make a idle state
-      if let sellAmountValue = BDouble(sellAmount), sellAmountValue == 0 {
+      if let sellAmountValue = BDouble(sellAmount.normalizedDecimals), sellAmountValue == 0 {
         return nil
       }
-      sellAmountInWei = weiFormatter.weiString(from: sellAmount, radix: .decimal, decimals: Int(sellToken.decimals)) ?? "0"
+      sellAmountInWei = weiFormatter.weiString(from: sellAmount.normalizedDecimals, radix: .decimal, decimals: Int(sellToken.decimals)) ?? "0"
       buyAmountInWei = ""
     case .perBuyAsset:
       // same as sell amount. make sure base value should not be zero
-      if let buyAmountValue = BDouble(buyAmount), buyAmountValue == 0 {
+      if let buyAmountValue = BDouble(buyAmount.normalizedDecimals), buyAmountValue == 0 {
         return nil
       }
       sellAmountInWei = ""
-      buyAmountInWei = weiFormatter.weiString(from: buyAmount, radix: .decimal, decimals: Int(buyToken.decimals)) ?? "0"
+      buyAmountInWei = weiFormatter.weiString(from: buyAmount.normalizedDecimals, radix: .decimal, decimals: Int(buyToken.decimals)) ?? "0"
     }
     let swapParams = BraveWallet.SwapParams(
       takerAddress: accountInfo.address,
@@ -478,7 +478,7 @@ public class SwapTokenStore: ObservableObject {
   private func checkBalanceShowError(swapResponse: BraveWallet.SwapResponse) {
     guard
       let accountInfo = accountInfo,
-      let sellAmountValue = BDouble(sellAmount),
+      let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
       let gasLimit = BDouble(swapResponse.estimatedGas),
       let gasPrice = BDouble(swapResponse.gasPrice, over: "1000000000000000000"),
       let fromToken = selectedFromToken,
@@ -599,7 +599,7 @@ public class SwapTokenStore: ObservableObject {
             
             // check balance first because error can cause by insufficient balance
             if let sellTokenBalance = self.selectedFromTokenBalance,
-               let sellAmountValue = BDouble(self.sellAmount),
+               let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
                sellTokenBalance < sellAmountValue {
               self.state = .error(Strings.Wallet.insufficientBalance)
               return

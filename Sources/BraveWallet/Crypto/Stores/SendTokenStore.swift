@@ -264,7 +264,7 @@ public class SendTokenStore: ObservableObject {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
       let token = selectedSendToken,
-      let weiHexString = weiFormatter.weiString(from: amount, radix: .hex, decimals: Int(token.decimals)),
+      let weiHexString = weiFormatter.weiString(from: amount.normalizedDecimals, radix: .hex, decimals: Int(token.decimals)),
       let fromAddress = currentAccountAddress
     else { return }
 
@@ -315,7 +315,7 @@ public class SendTokenStore: ObservableObject {
   ) {
     guard let token = selectedSendToken,
           let fromAddress = currentAccountAddress,
-          let amount = WeiFormatter.decimalToAmount(amount, tokenDecimals: Int(token.decimals))
+          let amount = WeiFormatter.decimalToAmount(amount.normalizedDecimals, tokenDecimals: Int(token.decimals))
     else {
       completion(false, "An Internal Error")
       return
