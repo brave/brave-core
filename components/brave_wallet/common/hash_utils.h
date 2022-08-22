@@ -21,6 +21,7 @@ eth_abi::Bytes32 KeccakHashBytes32(base::span<const uint8_t> input);
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
 std::string GetFunctionHash(const std::string& input);
+eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input);
 
 // Implement namehash algorithm based on EIP-137 spec.
 // Used for converting domain names in the classic format (ex: brave.crypto) to

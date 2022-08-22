@@ -33,7 +33,7 @@ class EthAddress {
 
   bool IsEmpty() const { return bytes_.empty(); }
   bool IsValid() const { return !bytes_.empty(); }
-  std::vector<uint8_t> bytes() const { return bytes_; }
+  const std::vector<uint8_t>& bytes() const { return bytes_; }
 
   std::string ToHex() const;
   // EIP55 + EIP1191

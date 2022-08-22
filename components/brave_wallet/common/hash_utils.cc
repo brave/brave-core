@@ -53,6 +53,13 @@ std::string GetFunctionHash(const std::string& input) {
   return result.substr(0, std::min(static_cast<size_t>(10), result.length()));
 }
 
+eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input) {
+  auto full_hash = KeccakHashBytes32(base::as_bytes(base::make_span(input)));
+  eth_abi::Bytes4 bytes_result;
+  base::ranges::copy(base::make_span(full_hash).first(4), bytes_result.begin());
+  return bytes_result;
+}
+
 eth_abi::Bytes32 Namehash(const std::string& name) {
   eth_abi::Bytes32 hash = {};
   std::vector<std::string> labels =

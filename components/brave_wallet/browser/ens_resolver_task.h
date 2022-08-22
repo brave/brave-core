@@ -20,6 +20,9 @@
 
 namespace brave_wallet {
 
+// Selector for "OffchainLookup(address,string[],bytes,bytes4,bytes)"
+const uint8_t kOffchainLookupSelector[] = {0x55, 0x6f, 0x18, 0x30};
+
 struct OffchainLookupData {
   OffchainLookupData();
   OffchainLookupData(const OffchainLookupData&);
@@ -40,15 +43,15 @@ struct OffchainLookupData {
   std::vector<uint8_t> extra_data;
 };
 
-class EnsGetEthAddrTask {
+class EnsResolverTask {
  public:
-  EnsGetEthAddrTask(
+  EnsResolverTask(
       JsonRpcServiceBase* json_rpc_service_base,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::vector<uint8_t> ens_call,
       const std::string& domain,
       const GURL& network_url);
-  ~EnsGetEthAddrTask();
+  ~EnsResolverTask();
 
   const std::string& domain() const { return domain_; }
 
@@ -99,7 +102,7 @@ class EnsGetEthAddrTask {
   absl::optional<OffchainLookupData> offchain_lookup_data_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
 
-  base::WeakPtrFactory<EnsGetEthAddrTask> weak_ptr_factory_{this};
+  base::WeakPtrFactory<EnsResolverTask> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

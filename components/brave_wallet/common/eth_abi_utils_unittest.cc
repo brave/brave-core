@@ -385,7 +385,7 @@ TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
   EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 3));
 }
 
-TEST(EthAbiUtilsTest, EncodeCall) {
+TEST(EthAbiTupleEncoderTest, EncodeCall) {
   std::vector<uint8_t> data(33, 0xbb);
   // f(bytes,bytes)
   EXPECT_EQ(
@@ -397,20 +397,28 @@ TEST(EthAbiUtilsTest, EncodeCall) {
       "0000000000000000000000000000000000000000000000000000000000000021"
       "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
       "bb00000000000000000000000000000000000000000000000000000000000000",
-      ToHex(EncodeCall(ToBytes("f400d2f8"), ToBytes("aa"), data)).substr(2));
+      ToHex(TupleEncoder()
+                .AddBytes(ToBytes("aa"))
+                .AddBytes(data)
+                .EncodeWithSelector(ToBytes("f400d2f8")))
+          .substr(2));
   EXPECT_EQ(
       "f400d2f8"
       "0000000000000000000000000000000000000000000000000000000000000040"
       "0000000000000000000000000000000000000000000000000000000000000060"
       "0000000000000000000000000000000000000000000000000000000000000000"
       "0000000000000000000000000000000000000000000000000000000000000000",
-      ToHex(EncodeCall(ToBytes("f400d2f8"), {}, {})).substr(2));
+      ToHex(TupleEncoder().AddBytes({}).AddBytes({}).EncodeWithSelector(
+                ToBytes("f400d2f8")))
+          .substr(2));
 
   // f(bytes32)
   EXPECT_EQ(
       "f400d2f8"
       "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      ToHex(EncodeCall(ToBytes("f400d2f8"), Span32(data.begin(), 32)))
+      ToHex(TupleEncoder()
+                .AddFixedBytes(Span32(data.begin(), 32))
+                .EncodeWithSelector(ToBytes("f400d2f8")))
           .substr(2));
 }
 

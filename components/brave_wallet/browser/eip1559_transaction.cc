@@ -256,7 +256,7 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
   list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));
   list.Append(RLPUint256ToBlob(max_fee_per_gas_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(to_.bytes());
+  list.Append(base::Value::BlobStorage(to_.bytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
@@ -276,7 +276,7 @@ std::string Eip1559Transaction::GetSignedTransaction() const {
   list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));
   list.Append(RLPUint256ToBlob(max_fee_per_gas_));
   list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(to_.bytes());
+  list.Append(base::Value::BlobStorage(to_.bytes()));
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));

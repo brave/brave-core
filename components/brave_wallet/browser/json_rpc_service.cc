@@ -1212,10 +1212,11 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
     // addr(bytes32)
     const uint8_t kAddrBytes32Hash[] = {0x3b, 0x3b, 0x57, 0xde};
 
-    auto ens_call = eth_abi::EncodeCall(base::make_span(kAddrBytes32Hash),
-                                        Namehash(domain));
+    auto ens_call = eth_abi::TupleEncoder()
+                        .AddFixedBytes(Namehash(domain))
+                        .EncodeWithSelector(base::make_span(kAddrBytes32Hash));
 
-    auto task = std::make_unique<EnsGetEthAddrTask>(
+    auto task = std::make_unique<EnsResolverTask>(
         this, url_loader_factory_, std::move(ens_call), domain, network_url);
     auto* task_ptr = task.get();
     std::vector<EnsGetEthAddrCallback> callbacks;
@@ -1232,7 +1233,7 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
   EnsRegistryGetResolver(domain, std::move(internal_callback));
 }
 
-void JsonRpcService::OnEnsResolverTaskDone(EnsGetEthAddrTask* task,
+void JsonRpcService::OnEnsResolverTaskDone(EnsResolverTask* task,
                                            std::vector<uint8_t> resolved_result,
                                            mojom::ProviderError error,
                                            std::string error_message) {

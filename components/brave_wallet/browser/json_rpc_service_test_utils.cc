@@ -7,6 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -33,12 +34,27 @@ std::string MakeJsonRpcStringResponse(const std::string& str) {
                             (encoded_head + encoded_string).c_str());
 }
 
+std::string MakeJsonRpcTupleResponse(const eth_abi::TupleEncoder& tuple) {
+  return base::StringPrintf(R"({"jsonrpc":"2.0", "id":1, "result":"%s"})",
+                            ToHex(tuple.Encode()).c_str());
+}
+
 std::string MakeJsonRpcErrorResponse(int error,
                                      const std::string& error_message) {
   return base::StringPrintf(R"({"jsonrpc":"2.0", "id":1,)"
                             R"("error": {"code":%d, "message": "%s"})"
                             R"(})",
                             error, error_message.c_str());
+}
+
+std::string MakeJsonRpcErrorResponseWithData(int error,
+                                             const std::string& error_message,
+                                             const std::string& data) {
+  return base::StringPrintf(
+      R"({"jsonrpc":"2.0", "id":1, )"
+      R"("error": {"code":%d, "message": "%s", "data": "%s"})"
+      R"(})",
+      error, error_message.c_str(), data.c_str());
 }
 
 }  // namespace brave_wallet

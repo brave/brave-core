@@ -41,7 +41,7 @@ class PrefService;
 
 namespace brave_wallet {
 
-class EnsGetEthAddrTask;
+class EnsResolverTask;
 
 namespace unstoppable_domains {
 template <class ResultType>
@@ -484,7 +484,7 @@ class JsonRpcService : public JsonRpcServiceBase,
                              mojom::ProviderError error,
                              const std::string& error_message);
 
-  void OnEnsResolverTaskDone(EnsGetEthAddrTask* task,
+  void OnEnsResolverTaskDone(EnsResolverTask* task,
                              std::vector<uint8_t> resolved_result,
                              mojom::ProviderError error,
                              std::string error_message) override;
@@ -651,8 +651,8 @@ class JsonRpcService : public JsonRpcServiceBase,
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
-  base::flat_map<EnsGetEthAddrTask*,
-                 std::pair<std::unique_ptr<EnsGetEthAddrTask>,
+  base::flat_map<EnsResolverTask*,
+                 std::pair<std::unique_ptr<EnsResolverTask>,
                            std::vector<EnsGetEthAddrCallback>>>
       ens_get_eth_add_tasks_;
 

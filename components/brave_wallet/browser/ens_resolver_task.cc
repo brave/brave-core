@@ -11,6 +11,7 @@
 #include "base/callback_helpers.h"
 #include "base/containers/contains.h"
 #include "base/json/json_writer.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
@@ -58,7 +59,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
         description:
           "Fetches ENS offchain data."
         trigger:
-          "Triggerer by ENS offchain lookup."
+          "Triggered by ENS offchain lookup."
         data:
           "Offchain lookup info."
         destination: WEBSITE
@@ -131,7 +132,7 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
 
   // error OffchainLookup(address sender, string[] urls, bytes callData,
   // bytes4 callbackFunction, bytes extraData)
-  if (ToHex(selector) != "0x556f1830")
+  if (!base::ranges::equal(selector, kOffchainLookupSelector))
     return absl::nullopt;
   auto sender = eth_abi::ExtractAddressFromTuple(args, 0);
   auto urls = eth_abi::ExtractStringArrayFromTuple(args, 1);
@@ -155,14 +156,14 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
 
 class ScopedWorkOnTask {
  public:
-  explicit ScopedWorkOnTask(EnsGetEthAddrTask* task) : task_(task) {}
+  explicit ScopedWorkOnTask(EnsResolverTask* task) : task_(task) {}
   ~ScopedWorkOnTask() { task_->WorkOnTask(); }
 
  private:
-  raw_ptr<EnsGetEthAddrTask> task_ = nullptr;
+  raw_ptr<EnsResolverTask> task_ = nullptr;
 };
 
-EnsGetEthAddrTask::EnsGetEthAddrTask(
+EnsResolverTask::EnsResolverTask(
     JsonRpcServiceBase* json_rpc_service_base,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::vector<uint8_t> ens_call,
@@ -174,9 +175,9 @@ EnsGetEthAddrTask::EnsGetEthAddrTask(
       domain_(domain),
       network_url_(network_url) {}
 
-EnsGetEthAddrTask::~EnsGetEthAddrTask() = default;
+EnsResolverTask::~EnsResolverTask() = default;
 
-void EnsGetEthAddrTask::WorkOnTask() {
+void EnsResolverTask::WorkOnTask() {
   if (resolve_result_) {
     json_rpc_service_base_->OnEnsResolverTaskDone(
         this, std::move(resolve_result_.value()),
@@ -223,22 +224,21 @@ void EnsGetEthAddrTask::WorkOnTask() {
   // `this` is not valid here.
 }
 
-void EnsGetEthAddrTask::FetchEnsResolver() {
+void EnsResolverTask::FetchEnsResolver() {
   DCHECK(!resolver_);
   const std::string contract_address =
       GetEnsRegistryContractAddress(brave_wallet::mojom::kMainnetChainId);
 
   std::string call_data = ens::Resolver(domain_);
 
-  auto internal_callback =
-      base::BindOnce(&EnsGetEthAddrTask::OnFetchEnsResolverDone,
-                     weak_ptr_factory_.GetWeakPtr());
+  auto internal_callback = base::BindOnce(
+      &EnsResolverTask::OnFetchEnsResolverDone, weak_ptr_factory_.GetWeakPtr());
   json_rpc_service_base_->RequestInternal(
       eth::eth_call(contract_address, call_data), true, network_url_,
       std::move(internal_callback), base::NullCallback());
 }
 
-void EnsGetEthAddrTask::OnFetchEnsResolverDone(
+void EnsResolverTask::OnFetchEnsResolverDone(
     int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
@@ -261,21 +261,21 @@ void EnsGetEthAddrTask::OnFetchEnsResolverDone(
   resolver_ = resolver_address;
 }
 
-void EnsGetEthAddrTask::FetchEnsip10Support() {
+void EnsResolverTask::FetchEnsip10Support() {
   DCHECK(resolver_);
 
   // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
   std::string data = erc165::SupportsInterface("0x9061b923");
 
   auto internal_callback =
-      base::BindOnce(&EnsGetEthAddrTask::OnFetchEnsip10SupportDone,
+      base::BindOnce(&EnsResolverTask::OnFetchEnsip10SupportDone,
                      weak_ptr_factory_.GetWeakPtr());
   json_rpc_service_base_->RequestInternal(
       eth::eth_call(*resolver_, data), true, network_url_,
       std::move(internal_callback), base::NullCallback());
 }
 
-void EnsGetEthAddrTask::OnFetchEnsip10SupportDone(
+void EnsResolverTask::OnFetchEnsip10SupportDone(
     int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
@@ -297,20 +297,20 @@ void EnsGetEthAddrTask::OnFetchEnsip10SupportDone(
   supports_ensip_10_ = is_supported;
 }
 
-void EnsGetEthAddrTask::FetchEnsRecord() {
+void EnsResolverTask::FetchEnsRecord() {
   DCHECK(resolver_);
   DCHECK(supports_ensip_10_);
   DCHECK(!supports_ensip_10_.value());
   DCHECK(!resolve_result_);
 
   auto internal_callback = base::BindOnce(
-      &EnsGetEthAddrTask::OnFetchEnsRecordDone, weak_ptr_factory_.GetWeakPtr());
+      &EnsResolverTask::OnFetchEnsRecordDone, weak_ptr_factory_.GetWeakPtr());
   json_rpc_service_base_->RequestInternal(
       eth::eth_call(*resolver_, ToHex(ens_call_)), true, network_url_,
       std::move(internal_callback), base::NullCallback());
 }
 
-void EnsGetEthAddrTask::OnFetchEnsRecordDone(
+void EnsResolverTask::OnFetchEnsRecordDone(
     int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
@@ -332,7 +332,7 @@ void EnsGetEthAddrTask::OnFetchEnsRecordDone(
   resolve_result_ = std::move(bytes_result);
 }
 
-void EnsGetEthAddrTask::FetchWithEnsip10Resolve() {
+void EnsResolverTask::FetchWithEnsip10Resolve() {
   DCHECK(resolver_);
   DCHECK(supports_ensip_10_);
   DCHECK(supports_ensip_10_.value());
@@ -344,27 +344,28 @@ void EnsGetEthAddrTask::FetchWithEnsip10Resolve() {
       error_ = mojom::ProviderError::kInvalidParams;
       error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
       base::SequencedTaskRunnerHandle::Get()->PostTask(
-          FROM_HERE, base::BindOnce(&EnsGetEthAddrTask::WorkOnTask,
+          FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
                                     weak_ptr_factory_.GetWeakPtr()));
       return;
     }
   }
 
   if (ens_resolve_call_.empty()) {
-    ens_resolve_call_ = eth_abi::EncodeCall(
-        base::make_span(kResolveBytes32Bytes32Hash),
-        base::make_span(*dns_encoded_name_), base::make_span(ens_call_));
+    ens_resolve_call_ = eth_abi::TupleEncoder()
+                            .AddBytes(*dns_encoded_name_)
+                            .AddBytes(ens_call_)
+                            .EncodeWithSelector(kResolveBytes32Bytes32Hash);
   }
 
   auto internal_callback =
-      base::BindOnce(&EnsGetEthAddrTask::OnFetchWithEnsip10ResolveDone,
+      base::BindOnce(&EnsResolverTask::OnFetchWithEnsip10ResolveDone,
                      weak_ptr_factory_.GetWeakPtr());
   json_rpc_service_base_->RequestInternal(
       eth::eth_call(*resolver_, ToHex(ens_resolve_call_)), true, network_url_,
       std::move(internal_callback), base::NullCallback());
 }
 
-void EnsGetEthAddrTask::OnFetchWithEnsip10ResolveDone(
+void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
     int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
@@ -401,7 +402,7 @@ void EnsGetEthAddrTask::OnFetchWithEnsip10ResolveDone(
   resolve_result_ = std::move(*decoded_resolve_result);
 }
 
-void EnsGetEthAddrTask::FetchOffchainData() {
+void EnsResolverTask::FetchOffchainData() {
   DCHECK(offchain_lookup_data_);
 
   GURL offchain_url;
@@ -436,7 +437,7 @@ void EnsGetEthAddrTask::FetchOffchainData() {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     base::SequencedTaskRunnerHandle::Get()->PostTask(
-        FROM_HERE, base::BindOnce(&EnsGetEthAddrTask::WorkOnTask,
+        FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
                                   weak_ptr_factory_.GetWeakPtr()));
     return;
   }
@@ -452,11 +453,11 @@ void EnsGetEthAddrTask::FetchOffchainData() {
   url_loader_ = CreateLoader(offchain_url, payload);
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&EnsGetEthAddrTask::OnFetchOffchainDone,
+      base::BindOnce(&EnsResolverTask::OnFetchOffchainDone,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void EnsGetEthAddrTask::OnFetchOffchainDone(
+void EnsResolverTask::OnFetchOffchainDone(
     std::unique_ptr<std::string> response_body) {
   ScopedWorkOnTask work_on_task(this);
 
@@ -484,9 +485,13 @@ void EnsGetEthAddrTask::OnFetchOffchainDone(
 
   offchain_lookup_attemps_left_--;
   DCHECK_GE(offchain_lookup_attemps_left_, 0);
+
   ens_resolve_call_ =
-      eth_abi::EncodeCall(offchain_lookup_data_->callback_function,
-                          *bytes_result, offchain_lookup_data_->extra_data);
+      eth_abi::TupleEncoder()
+          .AddBytes(*bytes_result)
+          .AddBytes(offchain_lookup_data_->extra_data)
+          .EncodeWithSelector(offchain_lookup_data_->callback_function);
+
   offchain_lookup_data_.reset();
 }
 

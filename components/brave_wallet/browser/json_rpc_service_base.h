@@ -13,7 +13,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
-class EnsGetEthAddrTask;
+class EnsResolverTask;
 
 class JsonRpcServiceBase {
  public:
@@ -24,7 +24,7 @@ class JsonRpcServiceBase {
 
   virtual ~JsonRpcServiceBase() = 0;
 
-  virtual void OnEnsResolverTaskDone(EnsGetEthAddrTask* task,
+  virtual void OnEnsResolverTaskDone(EnsResolverTask* task,
                                      std::vector<uint8_t> resolved_result,
                                      mojom::ProviderError error,
                                      std::string error_message) = 0;
