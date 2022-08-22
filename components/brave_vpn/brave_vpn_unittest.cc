@@ -183,8 +183,8 @@ class BraveVPNServiceTest : public testing::Test {
       task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
     }
     skus::RegisterProfilePrefs(profile_pref_service_.registry());
-    prefs::RegisterProfilePrefs(profile_pref_service_.registry());
-    prefs::RegisterLocalStatePrefs(local_pref_service_.registry());
+    brave_vpn::RegisterProfilePrefs(profile_pref_service_.registry());
+    brave_vpn::RegisterLocalStatePrefs(local_pref_service_.registry());
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);

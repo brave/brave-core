@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "bat/ads/ads.h"
+#include "bat/ads/sys_info.h"
 
 namespace ads {
 namespace user_data {

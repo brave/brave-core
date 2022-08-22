@@ -30,7 +30,7 @@ class BraveWalletUnitTest : public testing::Test {
  public:
   BraveWalletUnitTest()
       : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {}
-  ~BraveWalletUnitTest() override {}
+  ~BraveWalletUnitTest() override = default;
 
  protected:
   void SetUp() override {

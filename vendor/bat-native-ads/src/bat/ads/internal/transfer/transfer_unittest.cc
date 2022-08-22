@@ -65,7 +65,7 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   const AdInfo ad = BuildAdForType(AdType::kPromotedContentAd);
   transfer_->SetLastClickedAd(ad);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 
@@ -83,7 +83,7 @@ TEST_F(BatAdsTransferTest,
   const AdInfo ad = BuildAdForType(AdType::kNewTabPageAd);
   transfer_->SetLastClickedAd(ad);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 
@@ -100,7 +100,7 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   const AdInfo ad = BuildAdForType(AdType::kNotificationAd);
   transfer_->SetLastClickedAd(ad);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 
@@ -120,17 +120,17 @@ TEST_F(BatAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   const AdInfo ad = BuildAdForType(AdType::kSearchResultAd);
   transfer_->SetLastClickedAd(ad);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 
   transfer_->MaybeTransferAd(1, {GURL("https://foobar.com")});
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")},
                                           /* is_visible */ false,
                                           /* is_incognito */ false);
 
-  TabManager::GetInstance()->OnTabUpdated(2, GURL("https://brave.com"),
+  TabManager::GetInstance()->OnTabUpdated(2, {GURL("https://brave.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 
@@ -149,7 +149,7 @@ TEST_F(BatAdsTransferTest,
   const AdInfo ad = BuildAdForType(AdType::kNewTabPageAd);
   transfer_->SetLastClickedAd(ad);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 
@@ -167,7 +167,7 @@ TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
   const AdInfo ad = BuildAdForType(AdType::kNotificationAd);
   transfer_->SetLastClickedAd(ad);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")},
                                           /* is_visible */ false,
                                           /* is_incognito */ false);
 
@@ -186,14 +186,14 @@ TEST_F(BatAdsTransferTest,
   const AdInfo ad = BuildAdForType(AdType::kInlineContentAd);
   transfer_->SetLastClickedAd(ad);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")},
                                           /* is_visible */ true,
                                           /* is_incognito */ false);
 

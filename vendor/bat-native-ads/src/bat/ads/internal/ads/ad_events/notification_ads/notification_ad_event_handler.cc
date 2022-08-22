@@ -32,6 +32,7 @@ void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
 void EventHandler::FireEvent(const std::string& placement_id,
                              const mojom::NotificationAdEventType event_type) {
   DCHECK(!placement_id.empty());
+  DCHECK(mojom::IsKnownEnumValue(event_type));
 
   const absl::optional<NotificationAdInfo> ad =
       NotificationAdManager::GetInstance()->MaybeGetForPlacementId(
@@ -54,6 +55,8 @@ void EventHandler::FireEvent(const std::string& placement_id,
 void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   BLOG(1, "Failed to fire notification ad "
               << event_type << " event for placement id " << placement_id);
 
@@ -131,6 +134,8 @@ void EventHandler::NotifyNotificationAdTimedOut(
 void EventHandler::NotifyNotificationAdEventFailed(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   for (EventHandlerObserver& observer : observers_) {
     observer.OnNotificationAdEventFailed(placement_id, event_type);
   }

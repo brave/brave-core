@@ -12,14 +12,18 @@
 #include "brave/components/time_period_storage/weekly_event_storage.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
+#include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
 
 // Exposed for tests.
 constexpr char kDefaultSearchEngineMetric[] = "Brave.Search.DefaultEngine.4";
 constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
+constexpr char kWebDiscoveryEnabledMetric[] =
+    "Brave.Search.WebDiscoveryEnabled";
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
@@ -88,6 +92,10 @@ class SearchEngineTracker : public KeyedService,
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  void RecordWebDiscoveryEnabledP3A();
+#endif
+
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observer_{this};
 
@@ -99,8 +107,13 @@ class SearchEngineTracker : public KeyedService,
   WeeklyEventStorage switch_record_;
 
   raw_ptr<PrefService> local_state_;
+  raw_ptr<PrefService> profile_prefs_;
 
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  PrefChangeRegistrar pref_change_registrar_;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_TRACKER_H_

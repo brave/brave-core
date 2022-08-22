@@ -2,7 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { localeStrings as onboardingStrings } from '../../shared/components/onboarding/stories/locale_strings'
+
 export const localeStrings = {
+  ...onboardingStrings,
+
   claim: 'Claim',
   connectWalletChooseHeader: 'Choose a wallet service',
   connectWalletChooseText: 'Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.',
@@ -18,5 +22,9 @@ export const localeStrings = {
   minimumBalanceWarning: '$1 requires a minimum balance of $2 BAT to create an account. If you connected an account previously,',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',
-  rewardsTokenGrantTitle: 'A token grant is available!'
+  rewardsTokenGrantTitle: 'A token grant is available!',
+
+  braveRewards: 'Brave Rewards',
+  pendingContributions: 'Pending Contributions',
+  on: 'on'
 }

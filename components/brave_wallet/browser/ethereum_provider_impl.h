@@ -313,7 +313,7 @@ class EthereumProviderImpl final
   void AutoLockMinutesChanged() override {}
   void SelectedAccountChanged(mojom::CoinType coin) override;
 
-  void CommonRequestOrSendAsync(base::Value input_value,
+  void CommonRequestOrSendAsync(base::ValueView input_value,
                                 RequestCallback callback);
 
   void RequestEthereumPermissions(RequestCallback callback,

@@ -31,8 +31,8 @@ NetworkTimeHelper* NetworkTimeHelper::GetInstance() {
   return base::Singleton<NetworkTimeHelper>::get();
 }
 
-NetworkTimeHelper::NetworkTimeHelper() {}
-NetworkTimeHelper::~NetworkTimeHelper() {}
+NetworkTimeHelper::NetworkTimeHelper() = default;
+NetworkTimeHelper::~NetworkTimeHelper() = default;
 
 void NetworkTimeHelper::SetNetworkTimeTracker(
     network_time::NetworkTimeTracker* tracker) {

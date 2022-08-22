@@ -237,7 +237,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
             </DisclaimerText>
           </HardwareInfoColumn>
         </HardwareInfoRow>
-        <AuthorizeHardwareDeviceIFrame />
+        <AuthorizeHardwareDeviceIFrame coinType={selectedAccountType.coin} />
       </>
     )
   }

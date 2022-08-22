@@ -31,24 +31,22 @@
 #include "ui/base/webui/web_ui_util.h"
 
 using brave_sync::TimeLimitedWords;
-using brave_sync::WordsValidationStatus;
 
 namespace {
 
 std::string GetSyncCodeValidationString(
-    WordsValidationStatus validation_result) {
+    TimeLimitedWords::ValidationStatus validation_result) {
+  using ValidationStatus = TimeLimitedWords::ValidationStatus;
   switch (validation_result) {
-    case WordsValidationStatus::kValid:
-      return "";
-    case WordsValidationStatus::kWrongWordsNumber:
-    case WordsValidationStatus::kNotValidPureWords:
+    case ValidationStatus::kWrongWordsNumber:
+    case ValidationStatus::kNotValidPureWords:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_INVALID);
-    case WordsValidationStatus::kVersionDeprecated:
+    case ValidationStatus::kVersionDeprecated:
       return l10n_util::GetStringUTF8(
           IDS_BRAVE_SYNC_CODE_FROM_DEPRECATED_VERSION);
-    case WordsValidationStatus::kExpired:
+    case ValidationStatus::kExpired:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_EXPIRED);
-    case WordsValidationStatus::kValidForTooLong:
+    case ValidationStatus::kValidForTooLong:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_VALID_FOR_TOO_LONG);
     default:
       NOTREACHED();
@@ -60,7 +58,7 @@ std::string GetSyncCodeValidationString(
 
 BraveSyncHandler::BraveSyncHandler() : weak_ptr_factory_(this) {}
 
-BraveSyncHandler::~BraveSyncHandler() {}
+BraveSyncHandler::~BraveSyncHandler() = default;
 
 void BraveSyncHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -126,11 +124,16 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
 
-  std::string time_limited_sync_code =
-      TimeLimitedWords::GenerateForNow(sync_code);
-
-  ResolveJavascriptCallback(args[0].Clone(),
-                            base::Value(time_limited_sync_code));
+  auto time_limited_sync_code = TimeLimitedWords::GenerateForNow(sync_code);
+  if (time_limited_sync_code.has_value()) {
+    ResolveJavascriptCallback(args[0].Clone(),
+                              base::Value(time_limited_sync_code.value()));
+  } else {
+    LOG(ERROR) << "Failed to generate time limited sync code, "
+               << TimeLimitedWords::GenerateResultToText(
+                      time_limited_sync_code.error());
+    RejectJavascriptCallback(args[0].Clone(), base::Value());
+  }
 }
 
 void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
@@ -154,13 +157,12 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   // Sync code arrives here with time-limit 25th word, remove it to get proper
   // pure seed for QR generation  (QR codes have their own expiry)
   auto pure_words_with_status = TimeLimitedWords::Parse(time_limited_sync_code);
-  CHECK_EQ(pure_words_with_status.status, WordsValidationStatus::kValid);
-  CHECK(pure_words_with_status.pure_words);
-  CHECK_NE(pure_words_with_status.pure_words.value().size(), 0u);
+  CHECK(pure_words_with_status.has_value());
+  CHECK_NE(pure_words_with_status.value().size(), 0u);
 
   std::vector<uint8_t> seed;
-  if (!brave_sync::crypto::PassphraseToBytes32(
-          pure_words_with_status.pure_words.value(), &seed)) {
+  if (!brave_sync::crypto::PassphraseToBytes32(pure_words_with_status.value(),
+                                               &seed)) {
     LOG(ERROR) << "invalid sync code when generating qr code";
     RejectJavascriptCallback(args[0].Clone(), base::Value("invalid sync code"));
     return;
@@ -212,22 +214,21 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
 
   auto pure_words_with_status = TimeLimitedWords::Parse(time_limited_sync_code);
 
-  if (pure_words_with_status.status != WordsValidationStatus::kValid) {
+  if (!pure_words_with_status.has_value()) {
     LOG(ERROR) << "Could not validate a sync code, validation_result="
-               << static_cast<int>(pure_words_with_status.status) << " "
-               << GetSyncCodeValidationString(pure_words_with_status.status);
+               << static_cast<int>(pure_words_with_status.error()) << " "
+               << GetSyncCodeValidationString(pure_words_with_status.error());
     RejectJavascriptCallback(args[0].Clone(),
                              base::Value(GetSyncCodeValidationString(
-                                 pure_words_with_status.status)));
+                                 pure_words_with_status.error())));
     return;
   }
 
-  CHECK(pure_words_with_status.pure_words);
-  CHECK(!pure_words_with_status.pure_words.value().empty());
+  CHECK(!pure_words_with_status.value().empty());
 
   auto* sync_service = GetSyncService();
   if (!sync_service ||
-      !sync_service->SetSyncCode(pure_words_with_status.pure_words.value())) {
+      !sync_service->SetSyncCode(pure_words_with_status.value())) {
     RejectJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/deposits/deposits_database_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/base/logging_util.h"
 
@@ -13,14 +14,14 @@ namespace database {
 
 void PurgeExpiredDeposits() {
   database::table::Deposits database_table;
-  database_table.PurgeExpired([](const bool success) {
+  database_table.PurgeExpired(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge expired deposits");
       return;
     }
 
     BLOG(3, "Successfully purged expired deposits");
-  });
+  }));
 }
 
 }  // namespace database

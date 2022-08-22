@@ -41,7 +41,7 @@ class UpholdUtilTest : public testing::Test {
         std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
   }
 
-  ~UpholdUtilTest() override {}
+  ~UpholdUtilTest() override = default;
 };
 
 TEST_F(UpholdUtilTest, GetClientId) {

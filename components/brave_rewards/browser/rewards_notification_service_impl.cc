@@ -179,22 +179,22 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
 
 void RewardsNotificationServiceImpl::ReadRewardsNotifications(
     const base::Value::List& root) {
-  for (auto it = root.cbegin(); it != root.cend(); ++it) {
-    if (!it->is_dict())
+  for (const auto& item : root) {
+    if (!item.is_dict())
       continue;
     std::string notification_id;
-    const std::string* notification_id_opt = it->FindStringKey("id");
+    const std::string* notification_id_opt = item.FindStringKey("id");
     if (notification_id_opt)
       notification_id = *notification_id_opt;
-    int notification_type = it->FindIntKey("type").value_or(0);
-    int notification_timestamp = it->FindIntKey("timestamp").value_or(0);
+    int notification_type = item.FindIntKey("type").value_or(0);
+    int notification_timestamp = item.FindIntKey("timestamp").value_or(0);
     RewardsNotificationArgs notification_args;
 
     // The notification ID was originally an integer, but now it's a
     // string. For backwards compatibility, we need to handle the
     // case where the ID contains an invalid string or integer
     if (notification_id.empty()) {
-      int old_id = it->FindIntKey("id").value_or(0);
+      int old_id = item.FindIntKey("id").value_or(0);
       if (old_id == 0 && notification_type == 2)
         notification_id = "rewards_notification_grant";
       else
@@ -204,7 +204,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
     }
 
     const base::Value* args =
-        it->FindKeyOfType("args", base::Value::Type::LIST);
+        item.FindKeyOfType("args", base::Value::Type::LIST);
     if (args) {
       for (auto& arg : args->GetList()) {
         std::string arg_string = arg.GetString();

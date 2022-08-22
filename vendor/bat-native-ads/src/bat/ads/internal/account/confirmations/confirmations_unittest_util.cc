@@ -55,7 +55,7 @@ ConfirmationInfo BuildConfirmation(const std::string& id,
         CreateCredential(unblinded_token_copy, confirmation_request_dto);
   }
 
-  confirmation.user_data = "";
+  confirmation.user_data = {};
 
   confirmation.created_at = Now();
 

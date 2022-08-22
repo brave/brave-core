@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -64,34 +65,30 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), [=](mojom::DBCommandResponseInfoPtr response) {
-        DCHECK(response);
+      std::move(transaction),
+      base::BindOnce(&DatabaseManager::OnCreateOrOpen, base::Unretained(this),
+                     std::move(callback)));
+}
 
-        if (response->status !=
-                mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
-            !response->result) {
-          BLOG(0, "Failed to open or create database");
-          NotifyFailedToCreateOrOpenDatabase();
-          callback(/* success */ false);
-          return;
-        }
+void DatabaseManager::OnCreateOrOpen(ResultCallback callback,
+                                     mojom::DBCommandResponseInfoPtr response) {
+  DCHECK(response);
 
-        NotifyDidCreateOrOpenDatabase();
+  if (response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
+      !response->result) {
+    BLOG(0, "Failed to open or create database");
+    NotifyFailedToCreateOrOpenDatabase();
+    std::move(callback).Run(/* success */ false);
+    return;
+  }
 
-        DCHECK(response->result->get_value()->which() ==
-               mojom::DBValue::Tag::kIntValue);
-        const int from_version = response->result->get_value()->get_int_value();
-        MaybeMigrate(from_version, [=](const bool success) {
-          if (!success) {
-            callback(/* success */ false);
-            return;
-          }
+  NotifyDidCreateOrOpenDatabase();
 
-          NotifyDatabaseIsReady();
-
-          callback(/* success */ true);
-        });
-      });
+  DCHECK(response->result->get_value()->which() ==
+         mojom::DBValue::Tag::kIntValue);
+  const int from_version = response->result->get_value()->get_int_value();
+  MaybeMigrate(from_version, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -102,7 +99,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   DCHECK(from_version <= to_version);
 
   if (from_version == to_version) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
     return;
   }
 
@@ -112,22 +109,32 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   NotifyWillMigrateDatabase(from_version, to_version);
 
   database::Migration database_migration;
-  database_migration.FromVersion(from_version, [=](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to migrate database from schema version "
-                  << from_version << " to schema version " << to_version);
-      NotifyFailedToMigrateDatabase(from_version, to_version);
-      callback(/* success */ false);
-      return;
-    }
+  database_migration.FromVersion(
+      from_version,
+      base::BindOnce(&DatabaseManager::OnMigrate, base::Unretained(this),
+                     from_version, std::move(callback)));
+}
 
-    BLOG(1, "Migrated database from schema version "
+void DatabaseManager::OnMigrate(const int from_version,
+                                ResultCallback callback,
+                                const bool success) const {
+  const int to_version = database::kVersion;
+  if (!success) {
+    BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
+    NotifyFailedToMigrateDatabase(from_version, to_version);
+    std::move(callback).Run(/* success */ false);
+    return;
+  }
 
-    NotifyDidMigrateDatabase(from_version, to_version);
+  BLOG(1, "Migrated database from schema version "
+              << from_version << " to schema version " << to_version);
 
-    callback(/* success */ true);
-  });
+  NotifyDidMigrateDatabase(from_version, to_version);
+
+  NotifyDatabaseIsReady();
+
+  std::move(callback).Run(/* success */ true);
 }
 
 void DatabaseManager::NotifyWillCreateOrOpenDatabase() const {

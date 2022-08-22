@@ -26,17 +26,13 @@ class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
   void DidStartNavigation(
       const GURL& url,
       absl::optional<blink::WebNavigationType> navigation_type) override;
-  void DidCreateScriptContext(v8::Local<v8::Context> context,
-                              int32_t world_id) override;
+  void DidClearWindowObject() override;
 
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
   bool is_speedreadable_url_ = false;
-
-  // Handle to "handler" JavaScript object functionality.
-  std::unique_ptr<class SpeedreaderJSHandler> native_javascript_handle_;
 };
 
 }  // namespace speedreader

@@ -72,7 +72,7 @@ TEST(BatConversionsSortTest, DescendingSortOrder) {
 
 TEST(BatConversionsSortTest, DescendingSortOrderForEmptyList) {
   // Arrange
-  ConversionList conversions = {};
+  ConversionList conversions;
 
   const auto sort =
       ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
@@ -81,7 +81,7 @@ TEST(BatConversionsSortTest, DescendingSortOrderForEmptyList) {
   conversions = sort->Apply(conversions);
 
   // Assert
-  const ConversionList expected_conversions = {};
+  const ConversionList expected_conversions;
 
   EXPECT_EQ(expected_conversions, conversions);
 }
@@ -115,7 +115,7 @@ TEST(BatConversionsSortTest, AscendingSortOrder) {
 
 TEST(BatConversionsSortTest, AscendingSortOrderForEmptyList) {
   // Arrange
-  ConversionList conversions = {};
+  ConversionList conversions;
 
   const auto sort =
       ConversionsSortFactory::Build(ConversionSortType::kAscendingOrder);
@@ -124,7 +124,7 @@ TEST(BatConversionsSortTest, AscendingSortOrderForEmptyList) {
   conversions = sort->Apply(conversions);
 
   // Assert
-  const ConversionList expected_conversions = {};
+  const ConversionList expected_conversions;
 
   EXPECT_EQ(expected_conversions, conversions);
 }

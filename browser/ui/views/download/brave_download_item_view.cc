@@ -71,7 +71,7 @@ BraveDownloadItemView::BraveDownloadItemView(
       rb.GetFontList(ui::ResourceBundle::BaseFont).DeriveWithSizeDelta(-1);
 }
 
-BraveDownloadItemView::~BraveDownloadItemView() {}
+BraveDownloadItemView::~BraveDownloadItemView() = default;
 
 // View overrides.
 

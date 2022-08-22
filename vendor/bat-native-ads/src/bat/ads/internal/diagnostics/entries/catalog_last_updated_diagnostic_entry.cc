@@ -6,7 +6,7 @@
 #include "bat/ads/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 
 #include "base/time/time.h"
-#include "base/time/time_to_iso8601.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {
@@ -35,7 +35,8 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
     return {};
   }
 
-  return base::TimeToISO8601(catalog_last_updated);
+  return LongFriendlyDateAndTime(catalog_last_updated,
+                                 /* use_sentence_style */ false);
 }
 
 }  // namespace ads

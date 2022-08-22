@@ -33,7 +33,7 @@ BraveAdsHost::BraveAdsHost(Profile* profile, content::WebContents* web_contents)
   }
 }
 
-BraveAdsHost::~BraveAdsHost() {}
+BraveAdsHost::~BraveAdsHost() = default;
 
 void BraveAdsHost::MaybeTriggerAdViewedEvent(
     const std::string& creative_instance_id,

@@ -6,24 +6,21 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
-import { bindActionCreators } from 'redux'
-require('emptykit.css')
+import { ThemeProvider } from 'styled-components'
+import Theme from 'brave-ui/theme/brave-default'
+import { createStore, bindActionCreators } from 'redux'
 
+import { loadTimeData } from '../../../common/loadTimeData'
 import { LocaleContext } from '../shared/lib/locale_context'
 import { WithThemeVariables } from '../shared/components/with_theme_variables'
-
-// Components
-import App from './components/app'
-require('../../../../ui/webui/resources/fonts/muli.css')
-require('../../../../ui/webui/resources/fonts/poppins.css')
-
-// Utils
-import { ThemeProvider } from 'styled-components'
-import { loadTimeData } from '../../../common/loadTimeData'
-import store from './store'
-import Theme from 'brave-ui/theme/brave-default'
-import { getActions as getUtilActions, setActions, getCurrentBalanceReport } from './utils'
+import { createReducer } from './reducers'
+import { getCurrentBalanceReport } from './reducers/utils'
 import * as rewardsActions from './actions/rewards_actions'
+
+import { App } from './components/app'
+
+const store = createStore(createReducer())
+const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
 
 function initialize () {
   initLocale(loadTimeData.data_)
@@ -45,153 +42,140 @@ function initialize () {
     document.getElementById('root'))
 }
 
-function getActions () {
-  const actions: any = getUtilActions()
-  if (actions) {
-    return actions
-  }
-  const newActions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
-  setActions(newActions)
-  return newActions
-}
-
 function rewardsParameters (properties: Rewards.RewardsParameters) {
-  getActions().onRewardsParameters(properties)
+  actions.onRewardsParameters(properties)
   // Get the current AC amount after rewards parameters have been
   // updated, as the default AC amount may have been changed.
-  getActions().getContributionAmount()
+  actions.getContributionAmount()
 }
 
 function promotions (properties: Rewards.PromotionResponse) {
-  getActions().onPromotions(properties)
-}
-
-function claimPromotion (properties: Rewards.Captcha) {
-  getActions().onClaimPromotion(properties)
+  actions.onPromotions(properties)
 }
 
 function recoverWalletData (result: number) {
-  getActions().onRecoverWalletData(result)
+  actions.onRecoverWalletData(result)
 }
 
 function promotionFinish (properties: Rewards.PromotionFinish) {
-  getActions().onPromotionFinish(properties)
+  actions.onPromotionFinish(properties)
 }
 
 function reconcileStamp (stamp: number) {
-  getActions().onReconcileStamp(stamp)
+  actions.onReconcileStamp(stamp)
 }
 
 function contributeList (list: Rewards.Publisher[]) {
-  getActions().onContributeList(list)
+  actions.onContributeList(list)
 }
 
 function excludedList (list: Rewards.ExcludedPublisher[]) {
-  getActions().onExcludedList(list)
+  actions.onExcludedList(list)
 }
 
 function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
-  getActions().onBalanceReport(properties)
+  actions.onBalanceReport(properties)
 }
 
 function contributionAmount (amount: number) {
-  getActions().onContributionAmount(amount)
+  actions.onContributionAmount(amount)
 }
 
 function recurringTips (list: Rewards.Publisher[]) {
-  getActions().onRecurringTips(list)
+  actions.onRecurringTips(list)
 }
 
 function currentTips (list: Rewards.Publisher[]) {
-  getActions().onCurrentTips(list)
+  actions.onCurrentTips(list)
 }
 
 function autoContributeProperties (properties: any) {
-  getActions().onAutoContributeProperties(properties)
+  actions.onAutoContributeProperties(properties)
 }
 
 function adsData (adsData: Rewards.AdsData) {
-  getActions().onAdsData(adsData)
+  actions.onAdsData(adsData)
 }
 
 function adsHistory (adsHistory: Rewards.AdsHistory[]) {
-  getActions().onAdsHistory(adsHistory)
+  actions.onAdsHistory(adsHistory)
 }
 
 function onToggleAdThumbUp (result: Rewards.ToggleLikeAction) {
-  getActions().onToggleAdThumbUp(result)
+  actions.onToggleAdThumbUp(result)
 }
 
 function onToggleAdThumbDown (result: Rewards.ToggleLikeAction) {
-  getActions().onToggleAdThumbDown(result)
+  actions.onToggleAdThumbDown(result)
 }
 
 function onToggleAdOptIn (result: Rewards.ToggleOptAction) {
-  getActions().onToggleAdOptIn(result)
+  actions.onToggleAdOptIn(result)
 }
 
 function onToggleAdOptOut (result: Rewards.ToggleOptAction) {
-  getActions().onToggleAdOptOut(result)
+  actions.onToggleAdOptOut(result)
 }
 
 function onToggleSavedAd (result: Rewards.ToggleSavedAd) {
-  getActions().onToggleSavedAd(result)
+  actions.onToggleSavedAd(result)
 }
 
 function onToggleFlaggedAd (result: Rewards.ToggleFlaggedAd) {
-  getActions().onToggleFlaggedAd(result)
+  actions.onToggleFlaggedAd(result)
 }
 
 function onPendingContributionSaved (result: number) {
   if (result === 0) {
-    getActions().getPendingContributions()
+    actions.getPendingContributions()
   }
 }
 
 function statement (data: any) {
-  getActions().onStatement(data)
+  actions.onStatement(data)
 }
 
 function statementChanged () {
-  getActions().onStatementChanged()
+  actions.onStatementChanged()
 }
 
 function recurringTipSaved (success: boolean) {
-  getActions().onRecurringTipSaved(success)
+  actions.onRecurringTipSaved(success)
 }
 
 function recurringTipRemoved (success: boolean) {
-  getActions().onRecurringTipRemoved(success)
+  actions.onRecurringTipRemoved(success)
 }
 
 function externalWalletProviderList (list: Rewards.ExternalWalletProvider[]) {
-  getActions().onExternalWalletProviderList(list)
+  actions.onExternalWalletProviderList(list)
 }
 
 function pendingContributions (list: Rewards.PendingContribution[]) {
-  getActions().onPendingContributions(list)
+  actions.onPendingContributions(list)
 }
 
 function onRemovePendingContribution (result: number) {
   if (result === 0) {
-    getActions().getPendingContributions()
+    actions.getPendingContributions()
   }
 }
 
 function excludedSiteChanged () {
-  getActions().getExcludedSites()
-  getActions().getContributeList()
+  actions.getExcludedSites()
+  actions.getContributeList()
 }
 
 function balance (properties: {status: number, balance: Rewards.Balance}) {
-  getActions().onBalance(properties.status, properties.balance)
+  actions.onBalance(properties.status, properties.balance)
 }
 
 function reconcileComplete (properties: {type: number, result: number}) {
   chrome.send('brave_rewards.getReconcileStamp')
-  getActions().getContributeList()
-  getActions().getBalance()
-  getActions().getRewardsParameters()
+  actions.getContributeList()
+  actions.getBalance()
+  actions.getRewardsParameters()
+
   getCurrentBalanceReport()
 
   if (properties.type === 8) { // Rewards.RewardsType.ONE_TIME_TIP
@@ -200,73 +184,69 @@ function reconcileComplete (properties: {type: number, result: number}) {
 
   // EXPIRED TOKEN
   if (properties.result === 24) {
-    getActions().getExternalWallet()
+    actions.getExternalWallet()
   }
 }
 
 function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
-  getActions().onExternalWallet(properties.result, properties.wallet)
+  actions.onExternalWallet(properties.result, properties.wallet)
 }
 
 function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {
-  getActions().onProcessRewardsPageUrl(data)
+  actions.onProcessRewardsPageUrl(data)
 }
 
 function disconnectWallet (properties: {result: number}) {
   if (properties.result === 0) {
-    getActions().getExternalWallet()
-    getActions().getBalance()
+    actions.getExternalWallet()
+    actions.getBalance()
     return
   }
-  getActions().disconnectWalletError()
-}
-
-function onlyAnonWallet (only: boolean) {
-  getActions().onOnlyAnonWallet(only)
+  actions.disconnectWalletError()
 }
 
 function unblindedTokensReady () {
-  getActions().getBalance()
+  actions.getBalance()
 }
 
 function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport}) {
-  getActions().onMonthlyReport(properties)
+  actions.onMonthlyReport(properties)
 }
 
 function reconcileStampReset () {
-  getActions().onReconcileStampReset()
+  actions.onReconcileStampReset()
 }
 
 function monthlyReportIds (ids: string[]) {
-  getActions().onMonthlyReportIds(ids)
+  actions.onMonthlyReportIds(ids)
 }
 
 function countryCode (countryCode: string) {
-  getActions().onCountryCode(countryCode)
+  actions.onCountryCode(countryCode)
 }
 
-function initialized (result: number) {
-  getActions().onInitialized(result)
+function initialized () {
+  actions.onInitialized()
 }
 
 function completeReset (success: boolean) {
-  getActions().onCompleteReset(success)
+  actions.onCompleteReset(success)
 }
 
 function paymentId (paymentId: string) {
-  getActions().onPaymentId(paymentId)
+  actions.onPaymentId(paymentId)
 }
 
 function walletPassphrase (passphrase: string) {
-  getActions().onWalletPassphrase(passphrase)
+  actions.onWalletPassphrase(passphrase)
 }
 
 function onboardingStatus (result: { showOnboarding: boolean }) {
-  getActions().onOnboardingStatus(result.showOnboarding)
+  actions.onOnboardingStatus(result.showOnboarding)
 }
 
 function enabledInlineTippingPlatforms (list: string[]) {
-  getActions().onEnabledInlineTippingPlatforms(list)
+  actions.onEnabledInlineTippingPlatforms(list)
 }
 
 function externalWalletLogin (url: string) {
@@ -274,62 +254,61 @@ function externalWalletLogin (url: string) {
 }
 
 function onPrefChanged (key: string) {
-  getActions().onPrefChanged(key)
+  actions.onPrefChanged(key)
 }
 
 // Expose functions to Page Handlers.
-// TODO(petemill): Use event listeners instead.
-// @ts-expect-error
-window.brave_rewards = {
-  rewardsParameters,
-  promotions,
-  claimPromotion,
-  recoverWalletData,
-  promotionFinish,
-  reconcileStamp,
-  contributeList,
-  externalWalletProviderList,
-  excludedList,
-  balanceReport,
-  contributionAmount,
-  recurringTips,
-  currentTips,
-  autoContributeProperties,
-  adsData,
-  adsHistory,
-  onToggleAdThumbUp,
-  onToggleAdThumbDown,
-  onToggleAdOptIn,
-  onToggleAdOptOut,
-  onToggleSavedAd,
-  onToggleFlaggedAd,
-  pendingContributions,
-  onPendingContributionSaved,
-  statement,
-  statementChanged,
-  recurringTipSaved,
-  recurringTipRemoved,
-  onRemovePendingContribution,
-  excludedSiteChanged,
-  balance,
-  reconcileComplete,
-  externalWallet,
-  processRewardsPageUrl,
-  disconnectWallet,
-  onlyAnonWallet,
-  unblindedTokensReady,
-  monthlyReport,
-  reconcileStampReset,
-  monthlyReportIds,
-  countryCode,
-  initialized,
-  completeReset,
-  paymentId,
-  walletPassphrase,
-  onboardingStatus,
-  enabledInlineTippingPlatforms,
-  externalWalletLogin,
-  onPrefChanged
-}
+Object.defineProperty(window, 'brave_rewards', {
+  configurable: true,
+  value: {
+    rewardsParameters,
+    promotions,
+    recoverWalletData,
+    promotionFinish,
+    reconcileStamp,
+    contributeList,
+    externalWalletProviderList,
+    excludedList,
+    balanceReport,
+    contributionAmount,
+    recurringTips,
+    currentTips,
+    autoContributeProperties,
+    adsData,
+    adsHistory,
+    onToggleAdThumbUp,
+    onToggleAdThumbDown,
+    onToggleAdOptIn,
+    onToggleAdOptOut,
+    onToggleSavedAd,
+    onToggleFlaggedAd,
+    pendingContributions,
+    onPendingContributionSaved,
+    statement,
+    statementChanged,
+    recurringTipSaved,
+    recurringTipRemoved,
+    onRemovePendingContribution,
+    excludedSiteChanged,
+    balance,
+    reconcileComplete,
+    externalWallet,
+    processRewardsPageUrl,
+    disconnectWallet,
+    unblindedTokensReady,
+    monthlyReport,
+    reconcileStampReset,
+    monthlyReportIds,
+    countryCode,
+    initialized,
+    completeReset,
+    paymentId,
+    walletPassphrase,
+    onboardingStatus,
+    enabledInlineTippingPlatforms,
+    externalWalletLogin,
+    onPrefChanged
+  }
+})
 
 document.addEventListener('DOMContentLoaded', initialize)

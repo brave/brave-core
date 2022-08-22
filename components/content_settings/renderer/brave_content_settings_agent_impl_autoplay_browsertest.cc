@@ -64,7 +64,7 @@ class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
   MockContentSettingsAgentImpl(const MockContentSettingsAgentImpl&) = delete;
   MockContentSettingsAgentImpl& operator=(const MockContentSettingsAgentImpl&) =
       delete;
-  ~MockContentSettingsAgentImpl() override {}
+  ~MockContentSettingsAgentImpl() override = default;
 
   // ContentSettingAgentImpl methods:
   void BindContentSettingsManager(

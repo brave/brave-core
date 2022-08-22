@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/transactions/transactions.h"
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/guid.h"
 #include "base/time/time.h"
@@ -33,14 +34,18 @@ TransactionInfo Add(const std::string& creative_instance_id,
   transaction.value = value;
 
   database::table::Transactions database_table;
-  database_table.Save({transaction}, [=](const bool success) {
-    if (!success) {
-      callback(/* success */ false, {});
-      return;
-    }
+  database_table.Save({transaction},
+                      base::BindOnce(
+                          [](AddCallback callback, TransactionInfo transaction,
+                             const bool success) {
+                            if (!success) {
+                              callback(/* success */ false, {});
+                              return;
+                            }
 
-    callback(/* success */ true, transaction);
-  });
+                            callback(/* success */ true, transaction);
+                          },
+                          callback, transaction));
 
   return transaction;
 }
@@ -51,7 +56,7 @@ void GetForDateRange(const base::Time from_time,
   database::table::Transactions database_table;
   database_table.GetForDateRange(
       from_time, to_time,
-      [=](const bool success, const TransactionList& transactions) {
+      [callback](const bool success, const TransactionList& transactions) {
         if (!success) {
           callback(/* success */ false, {});
           return;
@@ -63,14 +68,16 @@ void GetForDateRange(const base::Time from_time,
 
 void RemoveAll(RemoveAllCallback callback) {
   database::table::Transactions database_table;
-  database_table.Delete([callback](const bool success) {
-    if (!success) {
-      callback(/* success */ false);
-      return;
-    }
+  database_table.Delete(base::BindOnce(
+      [](RemoveAllCallback callback, const bool success) {
+        if (!success) {
+          callback(/* success */ false);
+          return;
+        }
 
-    callback(/* success */ true);
-  });
+        callback(/* success */ true);
+      },
+      callback));
 }
 
 }  // namespace transactions

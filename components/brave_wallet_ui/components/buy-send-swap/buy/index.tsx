@@ -12,8 +12,8 @@ import {
   BuyOption,
   BuySendSwapViewTypes,
   ToOrFromType,
-  SupportedTestNetworks,
-  WalletState
+  WalletState,
+  SupportedTestNetworks
 } from '../../../constants/types'
 
 // utils
@@ -42,11 +42,13 @@ import {
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken
   onChangeBuyView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
+  onShowCurrencySelection: () => void
 }
 
 export const Buy = ({
   selectedAsset,
-  onChangeBuyView
+  onChangeBuyView,
+  onShowCurrencySelection
 }: Props) => {
   // state
   const [buyAmount, setBuyAmount] = React.useState('')
@@ -67,15 +69,16 @@ export const Buy = ({
 
   // memos
   const supportedBuyOptions: BuyOption[] = React.useMemo(() => {
+    const onRampAssetMap = {
+      [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
+      [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
+      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions
+    }
     return BuyOptions.filter(buyOption => {
-      switch (buyOption.id) {
-        case BraveWallet.OnRampProvider.kWyre: return isSelectedAssetInAssetOptions(selectedAsset, wyreAssetOptions)
-        case BraveWallet.OnRampProvider.kRamp: return isSelectedAssetInAssetOptions(selectedAsset, rampAssetOptions)
-        case BraveWallet.OnRampProvider.kSardine: return isSelectedAssetInAssetOptions(selectedAsset, sardineAssetOptions)
-        default: return false
-      }
+      return isSelectedAssetInAssetOptions(selectedAsset, onRampAssetMap[buyOption.id])
     })
-  }, [selectedAsset, wyreAssetOptions, rampAssetOptions])
+    .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
+  }, [selectedAsset, wyreAssetOptions, rampAssetOptions, sardineAssetOptions])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
     // Test networks are not supported in buy tab
@@ -133,10 +136,6 @@ export const Buy = ({
   const onBack = React.useCallback(() => {
     setShowBuyOptions(false)
   }, [])
-
-  const onShowCurrencySelection = React.useCallback(() => {
-    onChangeBuyView('currencies', 'from')
-  }, [onChangeBuyView])
 
   // render
   return (

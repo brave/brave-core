@@ -28,8 +28,8 @@ TEST(BraveResourcesUtil, CheckIds) {
     {"IDR_PRODUCT_LOGO_32_DEVELOPMENT", IDR_PRODUCT_LOGO_32_DEVELOPMENT},
   };
 
-  for (size_t i = 0; i < std::size(kCases); ++i)
-    EXPECT_EQ(kCases[i].id, ResourcesUtil::GetThemeResourceId(kCases[i].name));
+  for (auto kCase : kCases)
+    EXPECT_EQ(kCase.id, ResourcesUtil::GetThemeResourceId(kCase.name));
 }
 
 #if BUILDFLAG(IS_WIN)

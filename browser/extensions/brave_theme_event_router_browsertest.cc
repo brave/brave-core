@@ -22,7 +22,7 @@ namespace extensions {
 class MockBraveThemeEventRouter : public BraveThemeEventRouter {
  public:
   using BraveThemeEventRouter::BraveThemeEventRouter;
-  ~MockBraveThemeEventRouter() override {}
+  ~MockBraveThemeEventRouter() override = default;
 
   MOCK_METHOD0(Notify, void());
 };

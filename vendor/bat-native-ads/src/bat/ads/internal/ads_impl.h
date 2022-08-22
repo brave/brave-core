@@ -17,7 +17,6 @@
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
-#include "bat/ads/internal/history/history_manager_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -74,6 +73,7 @@ class NotificationAd;
 class NotificationAdManager;
 class PrefManager;
 class PromotedContentAd;
+class Reactions;
 class ResourceManager;
 class SearchResultAd;
 class TabManager;
@@ -88,7 +88,6 @@ class AdsImpl final : public Ads,
                       public AccountObserver,
                       public ConversionsObserver,
                       public DatabaseManagerObserver,
-                      public HistoryManagerObserver,
                       public TransferObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
@@ -128,7 +127,7 @@ class AdsImpl final : public Ads,
   void OnMediaStopped(const int32_t tab_id) override;
 
   void OnTabUpdated(const int32_t tab_id,
-                    const GURL& url,
+                    const std::vector<GURL>& redirect_chain,
                     const bool is_active,
                     const bool is_browser_active,
                     const bool is_incognito) override;
@@ -165,8 +164,7 @@ class AdsImpl final : public Ads,
 
   void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      const mojom::SearchResultAdEventType event_type,
-      TriggerSearchResultAdEventCallback callback) override;
+      const mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
       const mojom::AdType ad_type,
@@ -191,6 +189,7 @@ class AdsImpl final : public Ads,
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);
+  void OnCreateOrOpenDatabase(InitializeCallback callback, const bool success);
   void MigrateConversions(InitializeCallback callback);
   void MigrateRewards(InitializeCallback callback);
   void MigrateClientState(InitializeCallback callback);
@@ -214,12 +213,6 @@ class AdsImpl final : public Ads,
 
   // DatabaseManagerObserver:
   void OnDatabaseIsReady() override;
-
-  // HistoryManagerObserver:
-  void OnDidLikeAd(const AdContentInfo& ad_content) override;
-  void OnDidDislikeAd(const AdContentInfo& ad_content) override;
-  void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) override;
-  void OnDidSaveAd(const AdContentInfo& ad_content) override;
 
   // TransferObserver:
   void OnDidTransferAd(const AdInfo& ad) override;
@@ -273,6 +266,8 @@ class AdsImpl final : public Ads,
   std::unique_ptr<NotificationAd> notification_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
   std::unique_ptr<SearchResultAd> search_result_ad_;
+
+  std::unique_ptr<Reactions> reactions_;
 };
 
 }  // namespace ads

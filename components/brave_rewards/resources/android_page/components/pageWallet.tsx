@@ -13,7 +13,6 @@ import {
 } from '../../ui/components'
 import { PendingContributionsModal } from './pending_contributions_modal'
 import { WalletCard, ExternalWalletAction } from '../../shared/components/wallet_card'
-import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { ExternalWallet, ExternalWalletProvider, ExternalWalletStatus } from '../../shared/lib/external_wallet'
 import { Provider } from '../../ui/components/profile'
 import { DetailRow as PendingDetailRow, PendingType } from '../../ui/components/tablePending'
@@ -709,10 +708,6 @@ class PageWallet extends React.Component<Props, State> {
       }
     }
 
-    const providerPayoutStatus = getProviderPayoutStatus(
-      parameters.payoutStatus,
-      walletProvider && walletStatus ? walletProvider : null)
-
     const summaryData = {
       adEarnings: balanceReport && balanceReport.ads || 0,
       autoContributions: balanceReport && balanceReport.contribute || 0,
@@ -726,7 +721,7 @@ class PageWallet extends React.Component<Props, State> {
         <WalletCard
           balance={total}
           externalWallet={externalWalletInfo}
-          providerPayoutStatus={providerPayoutStatus}
+          providerPayoutStatus={'off'}
           earningsThisMonth={adsData.adsEarningsThisMonth || 0}
           earningsLastMonth={adsData.adsEarningsLastMonth || 0}
           nextPaymentDate={0}

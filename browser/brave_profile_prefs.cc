@@ -144,11 +144,15 @@ using extensions::FeatureSwitch;
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+#include "brave/browser/ntp_background/ntp_background_prefs.h"
 #endif
 
 namespace brave {
@@ -199,7 +203,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::prefs::RegisterProfilePrefs(registry);
+  brave_vpn::RegisterProfilePrefs(registry);
 #endif
 
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
@@ -355,7 +359,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       static_cast<int>(NewTabPageShowsOptions::kDashboard));
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  registry->RegisterBooleanPref(kNewTabPageCustomBackgroundEnabled, false);
+  NTPBackgroundPrefs::RegisterPref(registry);
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

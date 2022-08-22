@@ -79,7 +79,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
 RewardsInternalsDOMHandler::RewardsInternalsDOMHandler()
     : rewards_service_(nullptr), profile_(nullptr), weak_ptr_factory_(this) {}
 
-RewardsInternalsDOMHandler::~RewardsInternalsDOMHandler() {}
+RewardsInternalsDOMHandler::~RewardsInternalsDOMHandler() = default;
 
 void RewardsInternalsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(

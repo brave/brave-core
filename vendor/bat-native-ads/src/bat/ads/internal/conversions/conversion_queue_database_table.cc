@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -44,8 +45,7 @@ int BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, conversion_queue_item.conversion_id);
     BindString(command, index++, conversion_queue_item.advertiser_public_key);
     BindDouble(command, index++, conversion_queue_item.process_at.ToDoubleT());
-    BindInt(command, index++,
-            static_cast<int>(conversion_queue_item.was_processed));
+    BindInt(command, index++, int{conversion_queue_item.was_processed});
 
     count++;
   }
@@ -82,7 +82,7 @@ void ConversionQueue::Save(
     const ConversionQueueItemList& conversion_queue_items,
     ResultCallback callback) {
   if (conversion_queue_items.empty()) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
     return;
   }
 
@@ -97,7 +97,7 @@ void ConversionQueue::Save(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void ConversionQueue::Delete(
@@ -118,7 +118,7 @@ void ConversionQueue::Delete(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void ConversionQueue::Update(
@@ -141,7 +141,7 @@ void ConversionQueue::Update(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
@@ -182,8 +182,8 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&ConversionQueue::OnGetAll, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&ConversionQueue::OnGetAll,
+                                             base::Unretained(this), callback));
 }
 
 void ConversionQueue::GetUnprocessed(GetConversionQueueCallback callback) {
@@ -225,8 +225,8 @@ void ConversionQueue::GetUnprocessed(GetConversionQueueCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&ConversionQueue::OnGetAll, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&ConversionQueue::OnGetAll,
+                                             base::Unretained(this), callback));
 }
 
 void ConversionQueue::GetForCreativeInstanceId(
@@ -276,8 +276,8 @@ void ConversionQueue::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&ConversionQueue::OnGetForCreativeInstanceId, this,
-                std::placeholders::_1, creative_instance_id, callback));
+      base::BindOnce(&ConversionQueue::OnGetForCreativeInstanceId,
+                     base::Unretained(this), creative_instance_id, callback));
 }
 
 std::string ConversionQueue::GetTableName() const {
@@ -356,8 +356,8 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(9, count).c_str());
 }
 
-void ConversionQueue::OnGetAll(mojom::DBCommandResponseInfoPtr response,
-                               GetConversionQueueCallback callback) {
+void ConversionQueue::OnGetAll(GetConversionQueueCallback callback,
+                               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
@@ -377,9 +377,9 @@ void ConversionQueue::OnGetAll(mojom::DBCommandResponseInfoPtr response,
 }
 
 void ConversionQueue::OnGetForCreativeInstanceId(
-    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
-    GetConversionQueueForCreativeInstanceIdCallback callback) {
+    GetConversionQueueForCreativeInstanceIdCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");

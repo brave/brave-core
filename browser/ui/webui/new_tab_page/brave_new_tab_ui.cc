@@ -10,7 +10,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
-#include "brave/browser/ntp_background_images/ntp_custom_background_images_service_factory.h"
+#include "brave/browser/ntp_background/ntp_custom_background_images_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
@@ -28,7 +28,6 @@
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui_data_source.h"
 
-using ntp_background_images::NTPCustomBackgroundImagesServiceFactory;
 using ntp_background_images::NTPCustomImagesSource;
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)

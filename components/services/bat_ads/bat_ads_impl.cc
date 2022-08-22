@@ -6,8 +6,8 @@
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
 #include <functional>
-#include <vector>
 
+#include "base/check.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/category_content_info.h"
@@ -114,11 +114,12 @@ void BatAdsImpl::OnMediaStopped(
 }
 
 void BatAdsImpl::OnTabUpdated(const int32_t tab_id,
-                              const GURL& url,
+                              const std::vector<GURL>& redirect_chain,
                               const bool is_active,
                               const bool is_browser_active,
                               const bool is_incognito) {
-  ads_->OnTabUpdated(tab_id, url, is_active, is_browser_active, is_incognito);
+  ads_->OnTabUpdated(tab_id, redirect_chain, is_active, is_browser_active,
+                     is_incognito);
 }
 
 void BatAdsImpl::OnTabClosed(
@@ -143,6 +144,8 @@ void BatAdsImpl::MaybeGetNotificationAd(
 void BatAdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
     const ads::mojom::NotificationAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
 
@@ -160,6 +163,8 @@ void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::NewTabPageAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                  event_type);
 }
@@ -168,6 +173,8 @@ void BatAdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::PromotedContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
                                       event_type);
 }
@@ -188,26 +195,25 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::InlineContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                     event_type);
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
     ads::mojom::SearchResultAdInfoPtr ad_mojom,
-    const ads::mojom::SearchResultAdEventType event_type,
-    TriggerSearchResultAdEventCallback callback) {
-  auto* holder = new CallbackHolder<TriggerSearchResultAdEventCallback>(
-      AsWeakPtr(), std::move(callback));
+    const ads::mojom::SearchResultAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
 
-  auto on_search_result_ad_event_callback =
-      std::bind(BatAdsImpl::OnTriggerSearchResultAdEvent, holder, _1, _2, _3);
-  ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
-                                   on_search_result_ad_event_callback);
+  ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
 }
 
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   auto* holder = new CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>(
       AsWeakPtr(), std::move(callback));
 
@@ -366,18 +372,6 @@ void BatAdsImpl::OnMaybeServeInlineContentAd(
     }
 
     std::move(holder->get()).Run(dimensions, std::move(dict));
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::OnTriggerSearchResultAdEvent(
-    CallbackHolder<TriggerSearchResultAdEventCallback>* holder,
-    const bool success,
-    const std::string& placement_id,
-    const ads::mojom::SearchResultAdEventType event_type) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, placement_id, event_type);
   }
 
   delete holder;

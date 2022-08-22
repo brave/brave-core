@@ -44,9 +44,9 @@ class BatAdsIssuersTest : public UnitTestBase {
 
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Arrange
-  const URLResponseMap responses = {{// Issuers request
-                                     R"(/v1/issuers/)",
-                                     {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{// Issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -79,7 +79,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
           ]
         }
         )"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const IssuersInfo expected_issuers =
       BuildIssuers(7200000,
@@ -101,10 +101,10 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
-  const URLResponseMap responses = {{// Issuers request
-                                     R"(/v1/issuers/)",
-                                     {{net::HTTP_OK, "FOOBAR"}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  const URLResponseMap url_responses = {{// Issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, "FOOBAR"}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
@@ -126,10 +126,10 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
-  const URLResponseMap responses = {{// Issuers request
-                                     R"(/v1/issuers/)",
-                                     {{net::HTTP_NOT_FOUND, ""}}}};
-  MockUrlResponses(ads_client_mock_, responses);
+  const URLResponseMap url_responses = {{// Issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_NOT_FOUND, {}}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);

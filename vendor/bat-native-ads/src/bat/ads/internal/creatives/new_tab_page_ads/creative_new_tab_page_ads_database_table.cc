@@ -9,6 +9,7 @@
 #include <map>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -185,7 +186,7 @@ CreativeNewTabPageAds::~CreativeNewTabPageAds() = default;
 void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
                                  ResultCallback callback) {
   if (creative_ads.empty()) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
     return;
   }
 
@@ -212,7 +213,7 @@ void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void CreativeNewTabPageAds::Delete(ResultCallback callback) {
@@ -222,7 +223,7 @@ void CreativeNewTabPageAds::Delete(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void CreativeNewTabPageAds::GetForCreativeInstanceId(
@@ -323,8 +324,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&CreativeNewTabPageAds::OnGetForCreativeInstanceId, this,
-                std::placeholders::_1, creative_instance_id, callback));
+      base::BindOnce(&CreativeNewTabPageAds::OnGetForCreativeInstanceId,
+                     base::Unretained(this), creative_instance_id, callback));
 }
 
 void CreativeNewTabPageAds::GetForSegments(
@@ -434,8 +435,8 @@ void CreativeNewTabPageAds::GetForSegments(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&CreativeNewTabPageAds::OnGetForSegments, this,
-                std::placeholders::_1, segments, callback));
+      base::BindOnce(&CreativeNewTabPageAds::OnGetForSegments,
+                     base::Unretained(this), segments, callback));
 }
 
 void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
@@ -528,8 +529,8 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&CreativeNewTabPageAds::OnGetAll, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&CreativeNewTabPageAds::OnGetAll,
+                                             base::Unretained(this), callback));
 }
 
 std::string CreativeNewTabPageAds::GetTableName() const {
@@ -590,9 +591,9 @@ std::string CreativeNewTabPageAds::BuildInsertOrUpdateQuery(
 }
 
 void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
-    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
-    GetCreativeNewTabPageAdCallback callback) {
+    GetCreativeNewTabPageAdCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ad");
@@ -615,9 +616,9 @@ void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
 }
 
 void CreativeNewTabPageAds::OnGetForSegments(
-    mojom::DBCommandResponseInfoPtr response,
     const SegmentList& segments,
-    GetCreativeNewTabPageAdsCallback callback) {
+    GetCreativeNewTabPageAdsCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ads");
@@ -631,9 +632,8 @@ void CreativeNewTabPageAds::OnGetForSegments(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeNewTabPageAds::OnGetAll(
-    mojom::DBCommandResponseInfoPtr response,
-    GetCreativeNewTabPageAdsCallback callback) {
+void CreativeNewTabPageAds::OnGetAll(GetCreativeNewTabPageAdsCallback callback,
+                                     mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative new tab page ads");

@@ -15,7 +15,7 @@ BraveRendererUpdaterFactory::BraveRendererUpdaterFactory()
           "BraveRendererUpdater",
           BrowserContextDependencyManager::GetInstance()) {}
 
-BraveRendererUpdaterFactory::~BraveRendererUpdaterFactory() {}
+BraveRendererUpdaterFactory::~BraveRendererUpdaterFactory() = default;
 
 // static
 BraveRendererUpdaterFactory* BraveRendererUpdaterFactory::GetInstance() {

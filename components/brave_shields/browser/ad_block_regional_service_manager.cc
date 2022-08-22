@@ -318,10 +318,10 @@ base::Value::List AdBlockRegionalServiceManager::HiddenClassIdSelectors(
   base::Value::List first_value;
 
   base::AutoLock lock(regional_services_lock_);
-  for (auto it = regional_services_.begin(); it != regional_services_.end();
-       it++) {
+  for (auto& regional_service : regional_services_) {
     base::Value::List next_value =
-        it->second->HiddenClassIdSelectors(classes, ids, exceptions);
+        regional_service.second->HiddenClassIdSelectors(classes, ids,
+                                                        exceptions);
 
     for (auto& value : next_value) {
       first_value.Append(std::move(value));

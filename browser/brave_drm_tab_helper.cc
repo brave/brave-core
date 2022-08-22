@@ -56,7 +56,7 @@ BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
     observer_.Observe(updater);
 }
 
-BraveDrmTabHelper::~BraveDrmTabHelper() {}
+BraveDrmTabHelper::~BraveDrmTabHelper() = default;
 
 // static
 void BraveDrmTabHelper::BindBraveDRM(

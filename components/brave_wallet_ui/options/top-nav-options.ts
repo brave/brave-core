@@ -4,12 +4,16 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { TopTabNavObjectType } from '../constants/types'
-import { getLocale } from '../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 export const TopNavOptions = (): TopTabNavObjectType[] => [
   {
     id: 'portfolio',
     name: getLocale('braveWalletTopNavPortfolio')
+  },
+  {
+    id: 'market',
+    name: getLocale('braveWalletTopNavMarket')
   },
   {
     id: 'accounts',

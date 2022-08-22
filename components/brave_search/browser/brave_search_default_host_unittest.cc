@@ -65,7 +65,7 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
          {brave_search::features::kBraveSearchDefaultAPITotalLimitName, "10"}});
   }
 
-  ~BraveSearchDefaultHostTest() override {}
+  ~BraveSearchDefaultHostTest() override = default;
 
   void SetUp() override {
     pref_service_.registry()->RegisterListPref(prefs::kDailyAsked);

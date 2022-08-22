@@ -1110,7 +1110,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
 class EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest
     : public EphemeralStorageKeepAliveDisabledBrowserTest {
  public:
-  EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest() {}
+  EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest() = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     EphemeralStorageKeepAliveDisabledBrowserTest::SetUpCommandLine(

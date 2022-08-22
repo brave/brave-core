@@ -187,17 +187,36 @@ bool DebounceRule::ValidateAndParsePatternRegex(
             << " which is an invalid regex pattern";
     return false;
   }
-  if (pattern_regex.NumberOfCapturingGroups() != 1) {
+  if (pattern_regex.NumberOfCapturingGroups() < 1) {
     VLOG(1) << "Debounce rule has param: " << pattern
-            << " which captures != 1 groups";
+            << " which captures < 1 groups";
     return false;
   }
 
-  if (!RE2::PartialMatch(path, pattern_regex, parsed_value)) {
+  // Get matching capture groups by applying regex to the path
+  size_t number_of_capturing_groups =
+      pattern_regex.NumberOfCapturingGroups() + 1;
+  std::vector<re2::StringPiece> match_results(number_of_capturing_groups);
+
+  if (!pattern_regex.Match(path, 0, path.size(), RE2::UNANCHORED,
+                           match_results.data(), match_results.size())) {
     VLOG(1) << "Debounce rule with param: " << param_
             << " was unable to capture string";
     return false;
   }
+
+  // This will always be at least 2: the first one is the full match
+  DCHECK_GT(match_results.size(), 1u);
+
+  // Build parsed_value string by appending matches, ignoring the first match
+  // which will be the whole match
+  std::for_each(std::begin(match_results) + 1, std::end(match_results),
+                [parsed_value](re2::StringPiece matched_string) {
+                  if (!matched_string.empty()) {
+                    matched_string.AppendToString(parsed_value);
+                  }
+                });
+
   return true;
 }
 
@@ -212,12 +231,14 @@ bool DebounceRule::Apply(const GURL& original_url,
       action_ != kDebounceRegexPath)
     return false;
   // If URL matches an explicitly excluded pattern, this rule does not apply.
-  if (exclude_pattern_set_.MatchesURL(original_url))
+  if (exclude_pattern_set_.MatchesURL(original_url)) {
     return false;
+  }
   // If URL does not match an explicitly included pattern, this rule does not
   // apply.
-  if (!include_pattern_set_.MatchesURL(original_url))
+  if (!include_pattern_set_.MatchesURL(original_url)) {
     return false;
+  }
 
   if (!DebounceRule::CheckPrefForRule(prefs)) {
     return false;

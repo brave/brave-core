@@ -21,7 +21,7 @@ namespace {
 EthAddress::EthAddress(const std::vector<uint8_t>& bytes) : bytes_(bytes) {}
 EthAddress::EthAddress() = default;
 EthAddress::EthAddress(const EthAddress& other) = default;
-EthAddress::~EthAddress() {}
+EthAddress::~EthAddress() = default;
 
 bool EthAddress::operator==(const EthAddress& other) const {
   return std::equal(bytes_.begin(), bytes_.end(), other.bytes_.begin());

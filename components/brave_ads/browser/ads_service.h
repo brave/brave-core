@@ -50,11 +50,12 @@ class AdsService : public KeyedService {
   // Called to enable or disable ads.
   virtual void SetEnabled(const bool is_enabled) = 0;
 
-  // Returns the number of notification ads that can be served per hour.
-  virtual int64_t GetNotificationAdsPerHour() const = 0;
+  // Returns the maximum number of notification ads that can be served per hour.
+  virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 
-  // Called to set the number of notification ads that can be served per hour.
-  virtual void SetNotificationAdsPerHour(const int64_t ads_per_hour) = 0;
+  // Called to set the maximum number of notification ads that can be served per
+  // hour.
+  virtual void SetMaximumNotificationAdsPerHour(const int64_t ads_per_hour) = 0;
 
   // Called to allow or disallow conversion tracking.
   virtual void SetAllowConversionTracking(const bool should_allow) = 0;
@@ -120,15 +121,19 @@ class AdsService : public KeyedService {
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
   // Called when the page for |tab_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a chain of redirect URLs that
-  // occurred for this navigation. |html| containing the page content as HTML.
+  // for analysis. |redirect_chain| containing a list of redirect URLs that
+  // occurred on the way to the current page. The current page is the last one
+  // in the list (so even when there's no redirect, there should be one entry in
+  // the list). |html| containing the page content as HTML.
   virtual void OnHtmlLoaded(const SessionID& tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& html) = 0;
 
   // Called when the page for |tab_id| has loaded and the content is available
-  // for analysis. |redirect_chain| containing a chain of redirect URLs that
-  // occurred for this navigation. |text| containing the page content as text.
+  // for analysis. |redirect_chain| containing a list of redirect URLs that
+  // occurred on the way to the current page. The current page is the last one
+  // in the list (so even when there's no redirect, there should be one entry in
+  // the list). |text| containing the page content as text.
   virtual void OnTextLoaded(const SessionID& tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& text) = 0;
@@ -146,12 +151,15 @@ class AdsService : public KeyedService {
   // |tab_id|.
   virtual void OnMediaStop(const SessionID& tab_id) = 0;
 
-  // Called when a browser tab is updated with the specified |url|. |is_active|
-  // is set to |true| if |tab_id| refers to the currently active tab otherwise
-  // is set to |false|. |is_browser_active| is set to |true| if the browser
-  // window is active otherwise |false|.
+  // Called when a browser tab is updated with the specified |redirect_chain|
+  // containing a list of redirect URLs that occurred on the way to the current
+  // page. The current page is the last one in the list (so even when there's no
+  // redirect, there should be one entry in the list). |is_active| is set to
+  // |true| if |tab_id| refers to the currently active tab otherwise is set to
+  // |false|. |is_browser_active| is set to |true| if the browser window is
+  // active otherwise |false|.
   virtual void OnTabUpdated(const SessionID& tab_id,
-                            const GURL& url,
+                            const std::vector<GURL>& redirect_chain,
                             const bool is_active,
                             const bool is_browser_active) = 0;
 
@@ -221,16 +229,10 @@ class AdsService : public KeyedService {
       const ads::mojom::PromotedContentAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
-  // |event_type| event for the ad specified in |ad_mojom|. The callback takes
-  // three arguments - |bool| is set to |true| if successful otherwise |false|,
-  // |std::string| containing the placement id and
-  // |ads::mojom::SearchResultAdEventType| containing the event type. NOTE: You
-  // must wait for the callback before calling another |kViewed| event to handle
-  // frequency capping.
+  // |event_type| event for the ad specified in |ad_mojom|.
   virtual void TriggerSearchResultAdEvent(
       ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      const ads::mojom::SearchResultAdEventType event_type,
-      TriggerSearchResultAdEventCallback callback) = 0;
+      const ads::mojom::SearchResultAdEventType event_type) = 0;
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|. The callback takes

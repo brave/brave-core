@@ -36,7 +36,7 @@ class SystemNetworkContextManagerBrowsertest : public PlatformBrowserTest {
         base::Unretained(this)));
   }
 
-  ~SystemNetworkContextManagerBrowsertest() override {}
+  ~SystemNetworkContextManagerBrowsertest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     PlatformBrowserTest::SetUpCommandLine(command_line);

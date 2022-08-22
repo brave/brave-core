@@ -44,10 +44,10 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   void SetUpMocks() override {
     MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-    const URLResponseMap responses = {
+    const URLResponseMap url_responses = {
         {"/v9/catalog",
          {{net::HTTP_OK, "/catalog_with_notification_ad.json"}}}};
-    MockUrlResponses(ads_client_mock_, responses);
+    MockUrlResponses(ads_client_mock_, url_responses);
   }
 
   void ServeNextAd() {
@@ -68,7 +68,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, ServeAtRegularIntervals) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
       }));

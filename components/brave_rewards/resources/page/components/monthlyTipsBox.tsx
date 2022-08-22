@@ -16,9 +16,9 @@ import {
 } from '../../ui/components'
 import { Provider } from '../../ui/components/profile'
 
+import { convertBalance, isPublisherConnectedOrVerified } from './utils'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-import * as utils from '../utils'
 import { DetailRow } from '../../ui/components/tableDonation'
 
 interface Props extends Rewards.ComponentProps {
@@ -50,7 +50,7 @@ class MonthlyTipsBox extends React.Component<Props, State> {
 
     return recurringList.map((item: Rewards.Publisher) => {
       let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
-      const verified = utils.isPublisherConnectedOrVerified(item.status)
+      const verified = isPublisherConnectedOrVerified(item.status)
 
       if (item.favIcon && verified) {
         faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
@@ -65,7 +65,7 @@ class MonthlyTipsBox extends React.Component<Props, State> {
         },
         contribute: {
           tokens: item.percentage.toFixed(3),
-          converted: utils.convertBalance(item.percentage, parameters.rate)
+          converted: convertBalance(item.percentage, parameters.rate)
         },
         url: item.url,
         type: 'recurring' as any,
@@ -90,8 +90,8 @@ class MonthlyTipsBox extends React.Component<Props, State> {
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
-    const total = utils.tipsListTotal(recurringList)
-    const converted = utils.convertBalance(total, parameters.rate)
+    const total = recurringList.reduce((val, item) => val + item.percentage, 0)
+    const converted = convertBalance(total, parameters.rate)
 
     return (
       <Box

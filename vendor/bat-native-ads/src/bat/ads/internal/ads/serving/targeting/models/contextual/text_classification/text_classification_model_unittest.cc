@@ -48,13 +48,13 @@ TEST_F(BatAdsTextClassificationModelTest,
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {};
+  const SegmentList expected_segments;
 
   EXPECT_EQ(expected_segments, segments);
 }
 
 TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
-  const std::string text = "";
+  const std::string text;
   processor::TextClassification processor(&resource_);
   processor.Process(text);
 
@@ -63,7 +63,7 @@ TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {};
+  const SegmentList expected_segments;
 
   EXPECT_EQ(expected_segments, segments);
 }
@@ -264,7 +264,7 @@ TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {};
+  const SegmentList expected_segments;
 
   EXPECT_EQ(expected_segments, segments);
 }

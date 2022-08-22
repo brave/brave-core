@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/bind.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -36,6 +37,43 @@ void SuccessfullyMigrated(InitializeCallback callback) {
   callback(/* success */ true);
 }
 
+void OnMigrate(InitializeCallback callback,
+               const bool success,
+               const std::string& json) {
+  if (!success) {
+    // Confirmations state does not exist
+    SuccessfullyMigrated(callback);
+    return;
+  }
+
+  BLOG(3, "Successfully loaded confirmations state");
+
+  BLOG(3, "Migrating rewards state");
+
+  const absl::optional<TransactionList> transactions =
+      BuildTransactionsFromJson(json);
+  if (!transactions) {
+    BLOG(0, "Failed to parse rewards state");
+    FailedToMigrate(callback);
+    return;
+  }
+
+  database::table::Transactions database_table;
+  database_table.Save(*transactions,
+                      base::BindOnce(
+                          [](InitializeCallback callback, const bool success) {
+                            if (!success) {
+                              BLOG(0, "Failed to save rewards state");
+                              FailedToMigrate(callback);
+                              return;
+                            }
+
+                            BLOG(3, "Successfully migrated rewards state");
+                            SuccessfullyMigrated(callback);
+                          },
+                          callback));
+}
+
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
@@ -46,39 +84,8 @@ void Migrate(InitializeCallback callback) {
 
   BLOG(3, "Loading confirmations state");
 
-  AdsClientHelper::GetInstance()->Load(
-      kConfirmationStateFilename,
-      [=](const bool success, const std::string& json) {
-        if (!success) {
-          // Confirmations state does not exist
-          SuccessfullyMigrated(callback);
-          return;
-        }
-
-        BLOG(3, "Successfully loaded confirmations state");
-
-        BLOG(3, "Migrating rewards state");
-
-        const absl::optional<TransactionList> transactions =
-            BuildTransactionsFromJson(json);
-        if (!transactions) {
-          BLOG(0, "Failed to parse rewards state");
-          FailedToMigrate(callback);
-          return;
-        }
-
-        database::table::Transactions database_table;
-        database_table.Save(*transactions, [=](const bool success) {
-          if (!success) {
-            BLOG(0, "Failed to save rewards state");
-            FailedToMigrate(callback);
-            return;
-          }
-
-          BLOG(3, "Successfully migrated rewards state");
-          SuccessfullyMigrated(callback);
-        });
-      });
+  AdsClientHelper::GetInstance()->Load(kConfirmationStateFilename,
+                                       base::BindOnce(&OnMigrate, callback));
 }
 
 }  // namespace rewards

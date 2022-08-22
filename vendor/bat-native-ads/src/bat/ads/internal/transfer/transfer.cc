@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/transfer/transfer.h"
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
@@ -73,8 +74,10 @@ void Transfer::TransferAd(const int32_t tab_id,
       base::BindOnce(&Transfer::OnTransferAd, base::Unretained(this), tab_id,
                      redirect_chain));
 
-  BLOG(1, "Transfer ad for " << last_clicked_ad_.target_url << " "
-                             << FriendlyDateAndTime(transfer_ad_at));
+  BLOG(1, "Transfer ad for "
+              << last_clicked_ad_.target_url << " "
+              << FriendlyDateAndTime(transfer_ad_at,
+                                     /* use_sentence_style */ true));
 
   NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }
@@ -82,6 +85,7 @@ void Transfer::TransferAd(const int32_t tab_id,
 void Transfer::OnTransferAd(const int32_t tab_id,
                             const std::vector<GURL>& redirect_chain) {
   const AdInfo ad = last_clicked_ad_;
+
   last_clicked_ad_ = {};
 
   transferring_ad_tab_id_ = 0;
@@ -98,7 +102,8 @@ void Transfer::OnTransferAd(const int32_t tab_id,
     return;
   }
 
-  if (!DomainOrHostExists(redirect_chain, tab->url)) {
+  DCHECK(!tab->redirect_chain.empty());
+  if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
     FailedToTransferAd(ad);
     return;
   }
@@ -166,14 +171,12 @@ void Transfer::NotifyFailedToTransferAd(const AdInfo& ad) const {
   }
 }
 
-void Transfer::OnHtmlContentDidChange(const int32_t id,
-                                      const std::vector<GURL>& redirect_chain,
-                                      const std::string& content) {
-  MaybeTransferAd(id, redirect_chain);
+void Transfer::OnTabDidChange(const TabInfo& tab) {
+  MaybeTransferAd(tab.id, tab.redirect_chain);
 }
 
-void Transfer::OnDidCloseTab(const int32_t id) {
-  Cancel(id);
+void Transfer::OnDidCloseTab(const int32_t tab_id) {
+  Cancel(tab_id);
 }
 
 }  // namespace ads

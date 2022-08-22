@@ -9,7 +9,8 @@ export const AllNetworksOption: BraveWallet.NetworkInfo = {
   coin: 0,
   decimals: 0,
   iconUrls: [AllNetworksIcon],
-  rpcUrls: [],
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [],
   symbol: 'all',
   symbolName: 'all',
   isEip1559: false

@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -77,9 +78,9 @@ void Catalog::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback =
-      std::bind(&Catalog::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&Catalog::OnFetch, base::Unretained(this)));
 }
 
 void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
@@ -143,7 +144,8 @@ void Catalog::FetchAfterDelay() {
       FROM_HERE, delay,
       base::BindOnce(&Catalog::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
+  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(
+              fetch_at, /* use_sentence_style */ true));
 }
 
 void Catalog::Retry() {
@@ -151,7 +153,8 @@ void Catalog::Retry() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&Catalog::OnRetry, base::Unretained(this)));
 
-  BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(retry_at));
+  BLOG(1, "Retry fetching catalog "
+              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
 }
 
 void Catalog::OnRetry() {

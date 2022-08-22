@@ -16,15 +16,9 @@
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
 @class BraveStats;
+@class BraveWalletAPI;
 @class AdblockService;
 @class BraveTabGeneratorAPI;
-
-@protocol BraveWalletBlockchainRegistry;
-@protocol BraveWalletEthereumProvider;
-@protocol BraveWalletProviderDelegate;
-@protocol BraveWalletSolanaProvider;
-
-typedef NS_ENUM(NSInteger, BraveWalletCoinType);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -102,17 +96,7 @@ OBJC_EXPORT
 
 - (void)scheduleLowPriorityStartupTasks;
 
-@property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
-
-- (nullable id<BraveWalletEthereumProvider>)
-    ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-               isPrivateBrowsing:(bool)isPrivateBrowsing;
-
-- (nullable id<BraveWalletSolanaProvider>)
-    solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-             isPrivateBrowsing:(bool)isPrivateBrowsing;
-
-- (NSString*)providerScriptForCoinType:(BraveWalletCoinType)coinType;
+@property(readonly) BraveWalletAPI* braveWalletAPI;
 
 @property(readonly) BraveStats* braveStats;
 

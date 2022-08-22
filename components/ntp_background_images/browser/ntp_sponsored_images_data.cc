@@ -387,8 +387,8 @@ void NTPSponsoredImagesData::PrintCampaignsParsingResult() const {
   VLOG(2) << __func__ << ": This is "
           << (IsSuperReferral() ? " NTP SR Data" : " NTP SI Data");
 
-  for (size_t i = 0; i < campaigns.size(); ++i) {
-    const auto& backgrounds = campaigns[i].backgrounds;
+  for (const auto& campaign : campaigns) {
+    const auto& backgrounds = campaign.backgrounds;
     for (size_t j = 0; j < backgrounds.size(); ++j) {
       const auto& background = backgrounds[j];
       VLOG(2) << __func__ << ": background(" << j << " - "

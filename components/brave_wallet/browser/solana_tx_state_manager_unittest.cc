@@ -32,7 +32,7 @@ class SolanaTxStateManagerUnitTest : public testing::Test {
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
-  ~SolanaTxStateManagerUnitTest() override {}
+  ~SolanaTxStateManagerUnitTest() override = default;
 
  protected:
   void SetUp() override {

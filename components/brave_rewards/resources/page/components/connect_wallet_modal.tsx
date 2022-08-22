@@ -202,11 +202,13 @@ export function ConnectWalletModal (props: Props) {
   return (
     <Modal>
       <style.root>
+        <style.close>
+          <ModalCloseButton onClick={props.onClose} />
+        </style.close>
         <style.leftPanel>
           {left}
         </style.leftPanel>
         <style.rightPanel>
-          <ModalCloseButton onClick={props.onClose} />
           {right}
         </style.rightPanel>
       </style.root>

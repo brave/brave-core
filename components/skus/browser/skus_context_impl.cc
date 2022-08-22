@@ -45,19 +45,21 @@ logging::LogSeverity getLogSeverity(skus::TracingLevel level) {
 
 namespace skus {
 
-FetchOrderCredentialsCallbackState::FetchOrderCredentialsCallbackState() {}
-FetchOrderCredentialsCallbackState::~FetchOrderCredentialsCallbackState() {}
+FetchOrderCredentialsCallbackState::FetchOrderCredentialsCallbackState() =
+    default;
+FetchOrderCredentialsCallbackState::~FetchOrderCredentialsCallbackState() =
+    default;
 
 PrepareCredentialsPresentationCallbackState::
-    PrepareCredentialsPresentationCallbackState() {}
+    PrepareCredentialsPresentationCallbackState() = default;
 PrepareCredentialsPresentationCallbackState::
-    ~PrepareCredentialsPresentationCallbackState() {}
+    ~PrepareCredentialsPresentationCallbackState() = default;
 
-CredentialSummaryCallbackState::CredentialSummaryCallbackState() {}
-CredentialSummaryCallbackState::~CredentialSummaryCallbackState() {}
+CredentialSummaryCallbackState::CredentialSummaryCallbackState() = default;
+CredentialSummaryCallbackState::~CredentialSummaryCallbackState() = default;
 
-RefreshOrderCallbackState::RefreshOrderCallbackState() {}
-RefreshOrderCallbackState::~RefreshOrderCallbackState() {}
+RefreshOrderCallbackState::RefreshOrderCallbackState() = default;
+RefreshOrderCallbackState::~RefreshOrderCallbackState() = default;
 
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,
@@ -116,7 +118,7 @@ SkusContextImpl::SkusContextImpl(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
 
-SkusContextImpl::~SkusContextImpl() {}
+SkusContextImpl::~SkusContextImpl() = default;
 
 std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
   return std::make_unique<SkusUrlLoaderImpl>(url_loader_factory_);

@@ -182,12 +182,6 @@ class AdsServiceImpl : public AdsService,
   void PrefetchNewTabPageAd() override;
   void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
 
-  void OnTriggerSearchResultAdEvent(
-      TriggerSearchResultAdEventCallback callback,
-      const bool success,
-      const std::string& placement_id,
-      const ads::mojom::SearchResultAdEventType event_type);
-
   void OnPurgeOrphanedNewTabPageAdEvents(const bool success);
 
   void OpenNewTabWithUrl(const GURL& url);
@@ -251,8 +245,8 @@ class AdsServiceImpl : public AdsService,
                     ads::UrlRequestCallback callback,
                     const std::unique_ptr<std::string> response_body);
 
-  void OnSave(const ads::ResultCallback& callback, const bool success);
-  void OnLoad(const ads::LoadCallback& callback, const std::string& value);
+  void OnSave(ads::SaveCallback callback, const bool success);
+  void OnLoad(ads::LoadCallback callback, const std::string& value);
   void OnLoadFileResource(
       ads::LoadFileCallback callback,
       std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
@@ -271,8 +265,8 @@ class AdsServiceImpl : public AdsService,
   bool IsEnabled() const override;
   void SetEnabled(const bool is_enabled) override;
 
-  int64_t GetNotificationAdsPerHour() const override;
-  void SetNotificationAdsPerHour(const int64_t ads_per_hour) override;
+  int64_t GetMaximumNotificationAdsPerHour() const override;
+  void SetMaximumNotificationAdsPerHour(const int64_t ads_per_hour) override;
 
   void SetAllowConversionTracking(const bool should_allow) override;
 
@@ -314,7 +308,7 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStop(const SessionID& tab_id) override;
 
   void OnTabUpdated(const SessionID& tab_id,
-                    const GURL& url,
+                    const std::vector<GURL>& redirect_chain,
                     const bool is_active,
                     const bool is_browser_active) override;
   void OnTabClosed(const SessionID& tab_id) override;
@@ -341,8 +335,7 @@ class AdsServiceImpl : public AdsService,
 
   void TriggerSearchResultAdEvent(
       ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      const ads::mojom::SearchResultAdEventType event_type,
-      TriggerSearchResultAdEventCallback callback) override;
+      const ads::mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type,
@@ -400,7 +393,7 @@ class AdsServiceImpl : public AdsService,
 
   void Save(const std::string& name,
             const std::string& value,
-            ads::ResultCallback callback) override;
+            ads::SaveCallback callback) override;
   void Load(const std::string& name, ads::LoadCallback callback) override;
   void LoadFileResource(const std::string& id,
                         const int version,

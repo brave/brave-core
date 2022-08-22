@@ -39,11 +39,11 @@ EthereumRemoteClientService* GetEthereumRemoteClientService(
       context);
 }
 
-base::Value MakeSelectValue(const std::u16string& name,
-                            ::brave_wallet::mojom::DefaultWallet value) {
-  base::Value item(base::Value::Type::DICTIONARY);
-  item.SetKey("value", base::Value(static_cast<int>(value)));
-  item.SetKey("name", base::Value(name));
+base::Value::Dict MakeSelectValue(const std::u16string& name,
+                                  ::brave_wallet::mojom::DefaultWallet value) {
+  base::Value::Dict item;
+  item.Set("value", base::Value(static_cast<int>(value)));
+  item.Set("name", base::Value(name));
   return item;
 }
 
@@ -166,7 +166,7 @@ BraveWalletGetWeb3ProviderFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderListFunction::Run() {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   list.Append(MakeSelectValue(
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),

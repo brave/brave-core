@@ -12,11 +12,11 @@
 
 class BraveRandomDeterministicTest : public testing::Test {
  public:
-  BraveRandomDeterministicTest() {}
+  BraveRandomDeterministicTest() = default;
   BraveRandomDeterministicTest(const BraveRandomDeterministicTest&) = delete;
   BraveRandomDeterministicTest& operator=(const BraveRandomDeterministicTest&) =
       delete;
-  ~BraveRandomDeterministicTest() override {}
+  ~BraveRandomDeterministicTest() override = default;
 
  private:
 };

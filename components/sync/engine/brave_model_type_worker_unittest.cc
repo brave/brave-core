@@ -33,7 +33,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
   explicit BraveModelTypeWorkerTest(ModelType model_type = PREFERENCES)
       : model_type_(model_type), is_processor_disconnected_(false) {}
 
-  ~BraveModelTypeWorkerTest() override {}
+  ~BraveModelTypeWorkerTest() override = default;
 
   void NormalInitialize() {
     ModelTypeState initial_state;

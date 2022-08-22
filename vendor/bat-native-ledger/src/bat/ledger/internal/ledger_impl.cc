@@ -405,8 +405,8 @@ void LedgerImpl::OnPostData(
   if (type == TWITCH_MEDIA_TYPE) {
     std::vector<base::flat_map<std::string, std::string>> twitchParts;
     braveledger_media::GetTwitchParts(post_data, &twitchParts);
-    for (size_t i = 0; i < twitchParts.size(); i++) {
-      media()->ProcessMedia(twitchParts[i], type, std::move(visit_data));
+    for (auto& twitchPart : twitchParts) {
+      media()->ProcessMedia(twitchPart, type, std::move(visit_data));
     }
     return;
   }
@@ -415,8 +415,8 @@ void LedgerImpl::OnPostData(
     std::vector<base::flat_map<std::string, std::string>> parts;
     braveledger_media::GetVimeoParts(post_data, &parts);
 
-    for (auto part = parts.begin(); part != parts.end(); part++) {
-      media()->ProcessMedia(*part, type, std::move(visit_data));
+    for (auto& part : parts) {
+      media()->ProcessMedia(part, type, std::move(visit_data));
     }
     return;
   }

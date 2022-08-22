@@ -21,7 +21,7 @@ class TestWalletBubbleFocusObserver : public WalletBubbleFocusObserver {
     Subscribe();
   }
 
-  ~TestWalletBubbleFocusObserver() override {}
+  ~TestWalletBubbleFocusObserver() override = default;
 
   void Subscribe() override { subscribed_ = true; }
   void Unsubscribe() override { subscribed_ = false; }

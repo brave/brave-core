@@ -131,7 +131,7 @@ interface BatAds {
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
 
-  OnTabUpdated(int32 tab_id, url.mojom.Url url, bool is_active, bool is_browser_active, bool is_incognito);
+  OnTabUpdated(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
 
   // Account
@@ -151,7 +151,7 @@ interface BatAds {
 
   TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
 
-  TriggerSearchResultAdEvent(ads.mojom.SearchResultAdInfo ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
+  TriggerSearchResultAdEvent(ads.mojom.SearchResultAdInfo ad_mojom, ads.mojom.SearchResultAdEventType event_type);
 
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
 

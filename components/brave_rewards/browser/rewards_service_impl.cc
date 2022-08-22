@@ -1159,9 +1159,9 @@ void RewardsServiceImpl::OnAttestationAndroid(
     return;
   }
 
-  base::Value solution(base::Value::Type::DICTIONARY);
-  solution.SetStringKey("nonce", nonce);
-  solution.SetStringKey("token", token);
+  base::Value::Dict solution;
+  solution.Set("nonce", nonce);
+  solution.Set("token", token);
 
   std::string json;
   base::JSONWriter::Write(solution, &json);

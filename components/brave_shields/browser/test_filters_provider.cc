@@ -24,7 +24,7 @@ TestFiltersProvider::TestFiltersProvider(const base::FilePath& dat_location,
   CHECK(!dat_buffer_.empty());
 }
 
-TestFiltersProvider::~TestFiltersProvider() {}
+TestFiltersProvider::~TestFiltersProvider() = default;
 
 void TestFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>

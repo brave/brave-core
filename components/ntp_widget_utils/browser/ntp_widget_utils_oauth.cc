@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
-
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 
+#include <string>
+
 #include "base/base64.h"
+#include "base/containers/adapters.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "crypto/random.h"
 #include "crypto/sha2.h"
@@ -41,10 +43,10 @@ std::string GetCodeChallenge(
     std::replace(code_challenge.begin(), code_challenge.end(), '+', '-');
     std::replace(code_challenge.begin(), code_challenge.end(), '/', '_');
 
-    code_challenge.erase(std::find_if(code_challenge.rbegin(),
-        code_challenge.rend(), [](int ch) {
-      return ch != '=';
-    }).base(), code_challenge.end());
+    code_challenge.erase(base::ranges::find_if(base::Reversed(code_challenge),
+                                               [](int ch) { return ch != '='; })
+                             .base(),
+                         code_challenge.end());
   }
 
   return code_challenge;

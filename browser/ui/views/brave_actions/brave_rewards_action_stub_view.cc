@@ -125,7 +125,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
       std::make_unique<BraveRewardsActionStubViewHighlightPathGenerator>());
 }
 
-BraveRewardsActionStubView::~BraveRewardsActionStubView() {}
+BraveRewardsActionStubView::~BraveRewardsActionStubView() = default;
 
 SkPath BraveRewardsActionStubView::GetHighlightPath() const {
   // Set the highlight path for the toolbar button,

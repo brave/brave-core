@@ -51,11 +51,17 @@ export const Tip = styled.div<{ isAddress?: boolean }>`
   letter-spacing: 0.01em;
 
   color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.theme.palette.black};
-
+  
   white-space: ${(p) => p.isAddress ? 'pre-line' : 'nowrap'};
   width: ${(p) => p.isAddress ? '180px' : 'unset'};
   word-break: ${(p) => p.isAddress ? 'break-all' : 'unset'};
+  
+
+  background-color: ${(p) => p.theme.palette.black};
+  
+  @media (prefers-color-scheme: dark) {
+    border: 1px ${(p) => p.theme.color.divider01} solid;
+  }
 `
 
 export const Pointer = styled.div<PositionProps>`
@@ -65,6 +71,10 @@ export const Pointer = styled.div<PositionProps>`
   border-width: 0 7px 8px 7px;
 
   border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
+
+  @media (prefers-color-scheme: dark) {
+    border-color: transparent transparent ${(p) => p.theme.color.divider01} transparent;
+  }
   
   ${(p) => p.position === 'center' && css`
     margin: 0 auto;

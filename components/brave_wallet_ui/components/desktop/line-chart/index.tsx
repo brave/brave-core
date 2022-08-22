@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { CSSProperties } from 'styled-components'
+
 import {
   AreaChart,
   Area,
@@ -27,6 +29,9 @@ export interface Props {
   isDown: boolean
   isLoading: boolean
   isDisabled: boolean
+  showPulsatingDot?: boolean
+  customStyle?: CSSProperties
+  showTooltip?: boolean
 }
 
 const EmptyChartData = [
@@ -50,7 +55,10 @@ function LineChart ({
   isAsset,
   isDown,
   isLoading,
-  isDisabled
+  isDisabled,
+  customStyle,
+  showPulsatingDot,
+  showTooltip
 }: Props) {
   // state
   const [position, setPosition] = React.useState<number>(0)
@@ -71,7 +79,7 @@ function LineChart ({
 
   // render
   return (
-    <StyledWrapper>
+    <StyledWrapper style={customStyle}>
       <LoadingOverlay isLoading={isLoading}>
         <LoadIcon />
       </LoadingOverlay>
@@ -90,7 +98,7 @@ function LineChart ({
           </defs>
           <YAxis hide={true} domain={['auto', 'auto']} />
           <XAxis hide={true} dataKey='date' />
-          {priceData.length > 0 && !isDisabled &&
+          {priceData.length > 0 && !isDisabled && showTooltip &&
             <Tooltip
               isAnimationActive={false}
               position={{ x: position, y: 0 }}
@@ -110,22 +118,29 @@ function LineChart ({
             stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : 'url(#lineGradient)'}
             fill='none'
           />
-          <ReferenceDot
-            x={chartData[lastPoint].date.toString()}
-            y={chartData[lastPoint].close}
-            shape={
-              <CustomReferenceDot
-                cx={chartData[lastPoint].date.toString()}
-                cy={chartData[lastPoint].close}
-                isAsset={isAsset}
-                isDown={isDown}
-              />
-            }
-          />
+          {showPulsatingDot &&
+            <ReferenceDot
+              x={chartData[lastPoint].date.toString()}
+              y={chartData[lastPoint].close}
+              shape={
+                <CustomReferenceDot
+                  cx={chartData[lastPoint].date.toString()}
+                  cy={chartData[lastPoint].close}
+                  isAsset={isAsset}
+                  isDown={isDown}
+                />
+              }
+            />
+          }
         </AreaChart>
       </ResponsiveContainer>
     </StyledWrapper>
   )
+}
+
+LineChart.defaultProps = {
+  showPulsatingDot: true,
+  showTooltip: true
 }
 
 export default LineChart

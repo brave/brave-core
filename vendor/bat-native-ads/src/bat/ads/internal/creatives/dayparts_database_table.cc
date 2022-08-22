@@ -8,6 +8,7 @@
 #include <functional>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
@@ -74,7 +75,7 @@ void Dayparts::Delete(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string Dayparts::GetTableName() const {

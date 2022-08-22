@@ -26,8 +26,8 @@ class MockAdsService : public AdsService {
   MOCK_CONST_METHOD0(IsEnabled, bool());
   MOCK_METHOD1(SetEnabled, void(bool));
 
-  MOCK_CONST_METHOD0(GetNotificationAdsPerHour, int64_t());
-  MOCK_METHOD1(SetNotificationAdsPerHour, void(int64_t));
+  MOCK_CONST_METHOD0(GetMaximumNotificationAdsPerHour, int64_t());
+  MOCK_METHOD1(SetMaximumNotificationAdsPerHour, void(int64_t));
 
   MOCK_METHOD1(SetAllowConversionTracking, void(bool));
 
@@ -70,7 +70,8 @@ class MockAdsService : public AdsService {
   MOCK_METHOD1(OnMediaStart, void(const SessionID&));
   MOCK_METHOD1(OnMediaStop, void(const SessionID&));
 
-  MOCK_METHOD4(OnTabUpdated, void(const SessionID&, const GURL&, bool, bool));
+  MOCK_METHOD4(OnTabUpdated,
+               void(const SessionID&, const std::vector<GURL>&, bool, bool));
   MOCK_METHOD1(OnTabClosed, void(const SessionID&));
 
   MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
@@ -97,10 +98,9 @@ class MockAdsService : public AdsService {
                     const std::string&,
                     ads::mojom::PromotedContentAdEventType));
 
-  MOCK_METHOD3(TriggerSearchResultAdEvent,
+  MOCK_METHOD2(TriggerSearchResultAdEvent,
                void(ads::mojom::SearchResultAdInfoPtr,
-                    const ads::mojom::SearchResultAdEventType,
-                    TriggerSearchResultAdEventCallback));
+                    const ads::mojom::SearchResultAdEventType));
 
   MOCK_METHOD2(PurgeOrphanedAdEventsForType,
                void(ads::mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));

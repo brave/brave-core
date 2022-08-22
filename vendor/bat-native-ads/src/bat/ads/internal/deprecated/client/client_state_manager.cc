@@ -8,7 +8,9 @@
 #include <algorithm>
 #include <cstdint>
 #include <functional>
+#include <memory>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/hash/hash.h"
 #include "base/time/time.h"
@@ -508,7 +510,7 @@ void ClientStateManager::RemoveAllHistory() {
 
   BLOG(1, "Successfully reset client state");
 
-  client_.reset(new ClientInfo());
+  client_ = std::make_unique<ClientInfo>();
 
   Save();
 }
@@ -542,9 +544,9 @@ void ClientStateManager::Save() {
     SetHash(json);
   }
 
-  auto callback =
-      std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(
+      kClientStateFilename, json,
+      base::BindOnce(&ClientStateManager::OnSaved, base::Unretained(this)));
 }
 
 void ClientStateManager::OnSaved(const bool success) {
@@ -560,9 +562,9 @@ void ClientStateManager::OnSaved(const bool success) {
 void ClientStateManager::Load() {
   BLOG(3, "Loading client state");
 
-  auto callback = std::bind(&ClientStateManager::OnLoaded, this,
-                            std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::GetInstance()->Load(kClientStateFilename, callback);
+  AdsClientHelper::GetInstance()->Load(
+      kClientStateFilename,
+      base::BindOnce(&ClientStateManager::OnLoaded, base::Unretained(this)));
 }
 
 void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
@@ -571,7 +573,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
 
     is_initialized_ = true;
 
-    client_.reset(new ClientInfo());
+    client_ = std::make_unique<ClientInfo>();
     Save();
   } else {
     if (!FromJson(json)) {
@@ -602,7 +604,7 @@ bool ClientStateManager::FromJson(const std::string& json) {
     return false;
   }
 
-  client_.reset(new ClientInfo(client));
+  client_ = std::make_unique<ClientInfo>(client);
 
   return true;
 }

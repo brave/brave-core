@@ -20,7 +20,7 @@ IpfsBlobContextGetterFactory::IpfsBlobContextGetterFactory(
   DCHECK(getter_callback_);
 }
 
-IpfsBlobContextGetterFactory::~IpfsBlobContextGetterFactory() {}
+IpfsBlobContextGetterFactory::~IpfsBlobContextGetterFactory() = default;
 
 base::WeakPtr<storage::BlobStorageContext>
 IpfsBlobContextGetterFactory::RetrieveStorageContext() {

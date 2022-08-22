@@ -160,14 +160,11 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
         RegisterBlobs(b_site_ephemeral_storage_url_);
 
     // Ensure no blobs from a.com are available to fetch in b.com iframes.
-    for (size_t idx = 0; idx < b_com_registered_blobs.size(); ++idx) {
-      auto* rfh = b_com_registered_blobs[idx].rfh;
+    for (auto& b_com_registered_blob : b_com_registered_blobs) {
+      auto* rfh = b_com_registered_blob.rfh;
       // No blobs from a.com should be available.
-      for (size_t a_com_blob_idx = 0;
-           a_com_blob_idx < a_com_registered_blobs.size(); ++a_com_blob_idx) {
-        EXPECT_EQ(
-            "error",
-            FetchBlob(rfh, a_com_registered_blobs[a_com_blob_idx].blob_url));
+      for (auto& a_com_registered_blob : a_com_registered_blobs) {
+        EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blob.blob_url));
       }
     }
 
@@ -182,11 +179,8 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
                 FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
 
       // No blobs from b.com should be available.
-      for (size_t b_com_blob_idx = 0;
-           b_com_blob_idx < b_com_registered_blobs.size(); ++b_com_blob_idx) {
-        EXPECT_EQ(
-            "error",
-            FetchBlob(rfh, b_com_registered_blobs[b_com_blob_idx].blob_url));
+      for (auto& b_com_registered_blob : b_com_registered_blobs) {
+        EXPECT_EQ("error", FetchBlob(rfh, b_com_registered_blob.blob_url));
       }
     }
 

@@ -3,144 +3,83 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// import { BraveWallet } from '../../../constants/types'
-import { getLocale } from '../../../../common/locale'
 import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'
+import { MockLedgerTransport } from './ledger_bridge_keyring.test'
+import { BraveWallet } from '../../../constants/types'
+import { GetAccountsHardwareOperationResult, SignHardwareOperationResult } from '../types'
+import { LedgerCommand, LedgerError, UnlockResponse } from './ledger-messages'
 import {
-  LedgerErrorsCodes,
-  LedgerFrameCommand,
-  LedgerFrameResponse
-} from './ledger-messages'
+  SolGetAccountResponse,
+  SolGetAccountResponsePayload,
+  SolSignTransactionResponse
+} from './sol-ledger-messages'
 
-let uuid = 0
-window.crypto = {
-  randomUUID () {
-    return uuid++
-  }
-}
-
-class MockLedgerTransport {
-  sendCommandResponses: LedgeFramerResponse[] // queue
-
-  constructor () {
-    this.sendCommandResponses = []
-  }
-
-  addSendCommandResponse = (response: LedgerFrameResponse) => {
-    this.sendCommandResponses.unshift(response) // appends to the left of the list
-  }
-
-  sendCommand = async (command: LedgerFrameCommand): Promise<LedgerFrameResponse> => {
-    if (this.sendCommandResponses.length === 0) {
-      throw new Error('No mock ledger transport responses remaining. More sendCommand calls were made than mocked responses added.')
-    }
-    return this.sendCommandResponses.pop()
-  }
-}
-
+// To use the MockLedgerTransport, we must overwrite
+// the protected `transport` attribute, which yields a typescript
+// error unless we use bracket notation, i.e. keyring['transport']
+// instead of keyring.transport. As a result we silence the dot-notation
+// tslint rule for the file.
+//
+/* eslint-disable @typescript-eslint/dot-notation */
 const createKeyring = () => {
-  const keyring = new SolanaLedgerBridgeKeyring()
-  const transport = new MockLedgerTransport()
-  keyring.transport = transport
+  let keyring = new SolanaLedgerBridgeKeyring()
+  const transport = new MockLedgerTransport(window, window.origin)
+  keyring['transport'] = transport
   const iframe = document.createElement('iframe')
   document.body.appendChild(iframe)
-  keyring.bridge = iframe
+  keyring['bridge'] = iframe
 
   return keyring
 }
 
-test('unlock successful', async () => {
-  const keyring = createKeyring()
-  const sendCommandResponse: UnlockResponsePayload = {
-    payload: { success: true }
-  }
-  keyring.transport.addSendCommandResponse(sendCommandResponse)
-  const result: HardwareOperationResult = await keyring.unlock()
-  const expectedResult: HardwareOperationResult = sendCommandResponse.payload
-  expect(result).toEqual(expectedResult)
-})
-
-test('unlock ledger error', async () => {
-  const keyring = createKeyring()
-  const sendCommandResponse: UnlockResponsePayload = {
-    payload: {
-      message: 'LedgerError',
-      statusCode: 101
-    }
-  }
-  keyring.transport.addSendCommandResponse(sendCommandResponse)
-  const result: HardwareOperationResult = await keyring.unlock()
-  const expectedResult: HardwareOperationResult = sendCommandResponse.payload
-  expect(result).toEqual(expectedResult)
-})
-
-test('unlock unauthorized error', async () => {
-  const keyring = createKeyring()
-  const sendCommandResponse: UnlockResponsePayload = {
-    payload: {
-      success: false,
-      error: 'unauthorized',
-      code: undefined
-    }
-  }
-  keyring.transport.addSendCommandResponse(sendCommandResponse)
-  const result: HardwareOperationResult = await keyring.unlock()
-  const expectedResult: HardwareOperationResult = sendCommandResponse.payload
-  expect(result).toEqual(expectedResult)
-})
-
-test('unlock bridge error', async () => {
-  const keyring = createKeyring()
-  keyring.transport.addSendCommandResponse(LedgerErrorsCodes.BridgeNotReady)
-  let result: HardwareOperationResult = await keyring.unlock()
-  let expectedResult: HardwareOperationResult = {
+const unlockErrorResponse: UnlockResponse = {
+  id: LedgerCommand.Unlock,
+  origin: window.origin,
+  command: LedgerCommand.Unlock,
+  payload: {
     success: false,
-    error: getLocale('braveWalletBridgeNotReady'),
-    code: 0
+    message: 'LedgerError',
+    statusCode: 101
   }
-  expect(result).toEqual(expectedResult)
+}
 
-  keyring.transport.addSendCommandResponse(LedgerErrorsCodes.CommandInProgress)
-  result = await keyring.unlock()
-  expectedResult = {
-    success: false,
-    error: getLocale('braveWalletBridgeCommandInProgress'),
-    code: 1
-  }
-  expect(result).toEqual(expectedResult)
+const unlockSuccessResponse: UnlockResponse = {
+  id: LedgerCommand.Unlock,
+  origin: window.origin,
+  command: LedgerCommand.Unlock,
+  payload: { success: true }
+}
+
+test('Check ledger bridge type', () => {
+  const keyring = createKeyring()
+  if (!keyring['transport']) { fail('transport should be defined') }
+  return expect(keyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
 })
 
 test('getAccounts unlock error', async () => {
   const keyring = createKeyring()
-  const sendCommandResponse: GetAccountsHardwareOperationResult = {
-    payload: {
-      message: 'LedgerError',
-      statusCode: 101
-    }
-  }
-  keyring.transport.addSendCommandResponse(sendCommandResponse)
+  if (!keyring['transport']) { fail('transport should be defined') }
+  keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
   const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1)
-  const expectedResult: GetAccountsHardwareOperationResult = sendCommandResponse.payload
+  const expectedResult: GetAccountsHardwareOperationResult = unlockErrorResponse.payload
   expect(result).toEqual(expectedResult)
 })
 
 test('getAccounts success', async () => {
   const keyring = createKeyring()
-  const unlockSuccessReponse: UnlockResponsePayload = {
-    payload: { success: true }
-  }
-  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
+  if (!keyring['transport']) { fail('transport should be defined') }
+  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
 
-  const getAccountsResponsePayload1: GetAccountsResponsePayload = {
+  const getAccountsResponsePayload1: SolGetAccountResponsePayload = {
     success: true,
     address: Buffer.from('address for 44\'/501\'/0\'/0\'')
   }
-  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload1 })
-  const getAccountsResponsePayload2: GetAccountsResponsePayload = {
+  keyring['transport']['addSendCommandResponse']({ payload: getAccountsResponsePayload1 })
+  const getAccountsResponsePayload2: SolGetAccountResponsePayload = {
     success: true,
     address: Buffer.from('address for 44\'/501\'/1\'/0\'')
   }
-  keyring.transport.addSendCommandResponse({ payload: getAccountsResponsePayload2 })
+  keyring['transport']['addSendCommandResponse']({ payload: getAccountsResponsePayload2 })
 
   const result = await keyring.getAccounts(-2, 1)
   expect(result).toEqual({
@@ -153,7 +92,7 @@ test('getAccounts success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: 501,
+        coin: BraveWallet.CoinType.SOL,
         network: undefined
       },
       {
@@ -163,7 +102,7 @@ test('getAccounts success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: 501,
+        coin: BraveWallet.CoinType.SOL,
         network: undefined
       }
     ]
@@ -172,55 +111,59 @@ test('getAccounts success', async () => {
 
 test('getAccounts ledger error after successful unlock', async () => {
   const keyring = createKeyring()
-  const unlockSuccessReponse: UnlockResponsePayload = {
-    payload: { success: true }
-  }
-  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
-
-  const getAccountResponseLedgerError: GetAccountsResponsePayload = {
+  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) { fail('transport should be defined') }
+  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
+  const getAccountResponseLedgerError: SolGetAccountResponse = {
+    id: LedgerCommand.GetAccount,
+    origin: window.origin,
+    command: LedgerCommand.GetAccount,
     payload: {
+      success: false,
       message: 'LedgerError',
       statusCode: 101
     }
   }
 
-  keyring.transport.addSendCommandResponse({ payload: getAccountResponseLedgerError })
+  keyring['transport']['addSendCommandResponse']({ payload: getAccountResponseLedgerError })
   const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(-2, 1)
 
+  // TODO why is this different from the eth counterpart test
   expect(result).toEqual({
     success: false,
-    error: { payload: { message: 'LedgerError', statusCode: 101 } },
+    error: {
+      id: LedgerCommand.GetAccount,
+      origin: window.origin,
+      command: LedgerCommand.GetAccount,
+      payload: { success: false, message: 'LedgerError', statusCode: 101 }
+    },
     code: undefined
   })
 })
 
 test('signTransaction unlock error', async () => {
   const keyring = createKeyring()
-  const ledgerErrorUnlockResponse: GetAccountsHardwareOperationResult = {
-    payload: {
-      message: 'LedgerError',
-      statusCode: 101
-    }
-  }
-  keyring.transport.addSendCommandResponse(ledgerErrorUnlockResponse)
+  if (!keyring['transport']) { fail('transport should be defined') }
+  keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
   const result = await keyring.signTransaction('44\'/501\'/1\'/0\'', Buffer.from('transaction'))
-  const expectedResult: SignHardwareOperationResult = ledgerErrorUnlockResponse.payload
+  const expectedResult: SignHardwareOperationResult = unlockErrorResponse.payload
   expect(result).toEqual(expectedResult)
 })
 
 test('signTransaction success', async () => {
   const keyring = createKeyring()
-  const unlockSuccessReponse: UnlockResponsePayload = {
-    payload: { success: true }
-  }
-  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
-  const signTransactionResponse: SignTransactionResponsePayload = {
+  if (!keyring['transport']) { fail('transport should be defined') }
+  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
+  const signTransactionResponse: SolSignTransactionResponse = {
+    id: LedgerCommand.SignTransaction,
+    origin: window.origin,
+    command: LedgerCommand.SignTransaction,
     payload: {
       success: true,
       signature: Buffer.from('signature')
     }
   }
-  keyring.transport.addSendCommandResponse(signTransactionResponse)
+  keyring['transport']['addSendCommandResponse'](signTransactionResponse)
   const result: SignHardwareOperationResult = await keyring.signTransaction(
     '44\'/501\'/1\'/0\'',
     Buffer.from('transaction')
@@ -228,24 +171,27 @@ test('signTransaction success', async () => {
 
   const expectedResult: SignHardwareOperationResult = {
     success: true,
-    payload: signTransactionResponse.payload.signature
+    payload: Buffer.from('signature')
   }
   expect(result).toEqual(expectedResult)
 })
 
 test('signTransaction ledger error after successful unlock', async () => {
   const keyring = createKeyring()
-  const unlockSuccessReponse: UnlockResponsePayload = {
-    payload: { success: true }
+  if (!keyring['transport']) { fail('transport should be defined') }
+  keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
+  const ledgerError: LedgerError = {
+    success: false,
+    message: 'LedgerError',
+    statusCode: 101
   }
-  keyring.transport.addSendCommandResponse(unlockSuccessReponse)
-  const signTransactionResponseLedgerError: SignTransactionResponsePayload = {
-    payload: {
-      message: 'LedgerError',
-      statusCode: 101
-    }
+  const signTransactionResponseLedgerError: SolSignTransactionResponse = {
+    id: LedgerCommand.SignTransaction,
+    origin: window.origin,
+    command: LedgerCommand.SignTransaction,
+    payload: ledgerError
   }
-  keyring.transport.addSendCommandResponse(signTransactionResponseLedgerError)
+  keyring['transport']['addSendCommandResponse'](signTransactionResponseLedgerError)
   const result: SignHardwareOperationResult = await keyring.signTransaction(
     '44\'/501\'/1\'/0\'',
     Buffer.from('transaction')

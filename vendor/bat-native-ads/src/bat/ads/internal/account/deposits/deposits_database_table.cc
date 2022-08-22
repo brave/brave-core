@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
@@ -72,7 +73,7 @@ Deposits::~Deposits() = default;
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
     return;
   }
 
@@ -82,7 +83,7 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -144,8 +145,8 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&Deposits::OnGetForCreativeInstanceId, this,
-                std::placeholders::_1, creative_instance_id, callback));
+      base::BindOnce(&Deposits::OnGetForCreativeInstanceId,
+                     base::Unretained(this), creative_instance_id, callback));
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) {
@@ -163,7 +164,7 @@ void Deposits::PurgeExpired(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string Deposits::GetTableName() const {
@@ -220,9 +221,9 @@ std::string Deposits::BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
 }
 
 void Deposits::OnGetForCreativeInstanceId(
-    mojom::DBCommandResponseInfoPtr response,
     const std::string& creative_instance_id,
-    GetDepositsCallback callback) {
+    GetDepositsCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");

@@ -30,7 +30,7 @@ using content::BraveClearBrowsingData;
 class BrowsingDataRemovalWatcher
     : public content::BrowsingDataRemover::Observer {
  public:
-  BrowsingDataRemovalWatcher() {}
+  BrowsingDataRemovalWatcher() = default;
 
   void ClearBrowsingDataForLoadedProfiles(
       BraveClearBrowsingData::OnExitTestingCallback* testing_callback);

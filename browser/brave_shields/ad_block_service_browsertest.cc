@@ -87,7 +87,7 @@ AdBlockServiceTest::AdBlockServiceTest() {
   brave_shields::SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
       kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
 }
-AdBlockServiceTest::~AdBlockServiceTest() {}
+AdBlockServiceTest::~AdBlockServiceTest() = default;
 
 void AdBlockServiceTest::SetUpOnMainThread() {
   ExtensionBrowserTest::SetUpOnMainThread();
@@ -2363,7 +2363,7 @@ class CookieListPrefObserver {
         base::BindRepeating(&CookieListPrefObserver::OnUpdated,
                             base::Unretained(this)));
   }
-  ~CookieListPrefObserver() {}
+  ~CookieListPrefObserver() = default;
 
   CookieListPrefObserver(const CookieListPrefObserver& other) = delete;
   CookieListPrefObserver& operator=(const CookieListPrefObserver& other) =

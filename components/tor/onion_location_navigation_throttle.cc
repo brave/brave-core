@@ -64,7 +64,7 @@ OnionLocationNavigationThrottle::OnionLocationNavigationThrottle(
   pref_service_ = user_prefs::UserPrefs::Get(context);
 }
 
-OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() {}
+OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() = default;
 
 content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillProcessResponse() {

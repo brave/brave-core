@@ -26,6 +26,7 @@
 #include "bat/ads/ad_event_history.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_callback.h"
+#include "bat/ads/build_channel.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_info.h"
@@ -34,6 +35,7 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/sys_info.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -78,7 +80,7 @@ static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
 static NSString* const kAdsEnabledPrefKey =
     base::SysUTF8ToNSString(ads::prefs::kEnabled);
 static NSString* const kNumberOfAdsPerHourKey =
-    base::SysUTF8ToNSString(ads::prefs::kAdsPerHour);
+    base::SysUTF8ToNSString(ads::prefs::kMaximumNotificationAdsPerHour);
 static NSString* const kShouldAllowAdsSubdivisionTargetingPrefKey =
     base::SysUTF8ToNSString(ads::prefs::kShouldAllowSubdivisionTargeting);
 static NSString* const kAdsSubdivisionTargetingCodePrefKey =
@@ -568,13 +570,19 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL*)url
+      redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
               isSelected:(BOOL)isSelected
                isPrivate:(BOOL)isPrivate {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnTabUpdated((int32_t)tabId, net::GURLWithNSURL(url), isSelected,
-                    [self isBrowserActive], isPrivate);
+  std::vector<GURL> urls;
+  for (NSURL* redirectURL in redirectionURLs) {
+    urls.push_back(net::GURLWithNSURL(redirectURL));
+  }
+  urls.push_back(net::GURLWithNSURL(url));
+  ads->OnTabUpdated((int32_t)tabId, urls, isSelected, [self isBrowserActive],
+                    isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {
@@ -750,6 +758,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   const auto copiedURL = url_request->url;
 
+  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
   const auto __weak weakSelf = self;
   return [self.commonOps
       loadURLRequest:url_request->url.spec()
@@ -770,7 +779,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
               url_response.status_code = statusCode;
               url_response.body = response;
               url_response.headers = headers;
-              callback(url_response);
+              if (cb) {
+                std::move(*cb).Run(url_response);
+              }
             }];
 }
 
@@ -1133,7 +1144,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    forDays:(const int)days_ago
                   callback:(ads::GetBrowsingHistoryCallback)callback {
   // To be implemented https://github.com/brave/brave-ios/issues/3499
-  callback({});
+  std::move(callback).Run({});
 }
 
 - (void)loadFileResource:(const std::string&)id
@@ -1173,9 +1184,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    callback(/* success */ false, "");
+    std::move(callback).Run(/* success */ false, "");
   } else {
-    callback(/* success */ true, contents);
+    std::move(callback).Run(/* success */ true, contents);
   }
 }
 
@@ -1196,21 +1207,13 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return std::string(contents.UTF8String);
 }
 
-- (void)reset:(const std::string&)name callback:(ads::ResultCallback)callback {
-  if ([self.commonOps removeFileWithName:name]) {
-    callback(/* success */ true);
-  } else {
-    callback(/* success */ false);
-  }
-}
-
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(ads::ResultCallback)callback {
+    callback:(ads::SaveCallback)callback {
   if ([self.commonOps saveContents:value name:name]) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
   } else {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
   }
 }
 
@@ -1325,13 +1328,16 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
-      base::BindOnce(^(ads::mojom::DBCommandResponseInfoPtr response) {
-        const auto strongSelf = weakSelf;
-        if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
-          return;
-        }
-        callback(std::move(response));
-      }));
+      base::BindOnce(
+          ^(ads::RunDBTransactionCallback callback,
+            ads::mojom::DBCommandResponseInfoPtr response) {
+            const auto strongSelf = weakSelf;
+            if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+              return;
+            }
+            std::move(callback).Run(std::move(response));
+          },
+          std::move(callback)));
 }
 
 - (void)updateAdRewards {

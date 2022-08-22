@@ -6,11 +6,13 @@
 import { Account, Accounts } from './accounts'
 import CryptoView from './crypto'
 import { PortfolioAsset, PortfolioOverview } from './portfolio'
+import { MarketView } from './market'
 
 export {
   Account,
   Accounts,
   CryptoView,
   PortfolioAsset,
-  PortfolioOverview
+  PortfolioOverview,
+  MarketView
 }

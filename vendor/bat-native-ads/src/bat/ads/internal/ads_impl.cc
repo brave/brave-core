@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/bind.h"
+#include "base/check.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
@@ -49,6 +51,7 @@
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
+#include "bat/ads/internal/reactions/reactions.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
@@ -129,10 +132,11 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   search_result_ad_ =
       std::make_unique<SearchResultAd>(account_.get(), transfer_.get());
 
+  reactions_ = std::make_unique<Reactions>(account_.get());
+
   account_->AddObserver(this);
   conversions_->AddObserver(this);
   database_manager_->AddObserver(this);
-  history_manager_->AddObserver(this);
   transfer_->AddObserver(this);
 }
 
@@ -140,7 +144,6 @@ AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   database_manager_->RemoveObserver(this);
-  history_manager_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
 }
 
@@ -235,7 +238,7 @@ void AdsImpl::OnMediaStopped(const int32_t tab_id) {
 }
 
 void AdsImpl::OnTabUpdated(const int32_t tab_id,
-                           const GURL& url,
+                           const std::vector<GURL>& redirect_chain,
                            const bool is_active,
                            const bool is_browser_active,
                            const bool is_incognito) {
@@ -250,7 +253,7 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
   }
 
   const bool is_visible = is_active && is_browser_active;
-  TabManager::GetInstance()->OnTabUpdated(tab_id, url, is_visible,
+  TabManager::GetInstance()->OnTabUpdated(tab_id, redirect_chain, is_visible,
                                           is_incognito);
 }
 
@@ -277,6 +280,8 @@ absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
 void AdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   notification_ad_->TriggerEvent(placement_id, event_type);
 }
 
@@ -293,6 +298,8 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   new_tab_page_ad_->TriggerEvent(placement_id, creative_instance_id,
                                  event_type);
 }
@@ -301,6 +308,8 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   promoted_content_ad_->TriggerEvent(placement_id, creative_instance_id,
                                      event_type);
 }
@@ -320,25 +329,29 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   inline_content_ad_->TriggerEvent(placement_id, creative_instance_id,
                                    event_type);
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    const mojom::SearchResultAdEventType event_type,
-    TriggerSearchResultAdEventCallback callback) {
+    const mojom::SearchResultAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   if (!IsInitialized()) {
-    callback(/* success */ false, ad_mojom->placement_id, event_type);
     return;
   }
 
-  search_result_ad_->TriggerEvent(std::move(ad_mojom), event_type, callback);
+  search_result_ad_->TriggerEvent(std::move(ad_mojom), event_type);
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(
     const mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   PurgeOrphanedAdEvents(ad_type, [ad_type, callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
@@ -425,15 +438,19 @@ bool AdsImpl::ToggleSavedAd(const std::string& json) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsImpl::CreateOrOpenDatabase(InitializeCallback callback) {
-  DatabaseManager::GetInstance()->CreateOrOpen([=](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to create or open database");
-      FailedToInitialize(callback);
-      return;
-    }
+  DatabaseManager::GetInstance()->CreateOrOpen(base::BindOnce(
+      &AdsImpl::OnCreateOrOpenDatabase, base::Unretained(this), callback));
+}
 
-    MigrateConversions(callback);
-  });
+void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
+                                     const bool success) {
+  if (!success) {
+    BLOG(0, "Failed to create or open database");
+    FailedToInitialize(callback);
+    return;
+  }
+
+  MigrateConversions(callback);
 }
 
 void AdsImpl::MigrateConversions(InitializeCallback callback) {
@@ -568,26 +585,6 @@ void AdsImpl::OnConversion(
 
 void AdsImpl::OnDatabaseIsReady() {
   PurgeExpiredAdEvents();
-}
-
-void AdsImpl::OnDidLikeAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kUpvoted);
-}
-
-void AdsImpl::OnDidDislikeAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kDownvoted);
-}
-
-void AdsImpl::OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kFlagged);
-}
-
-void AdsImpl::OnDidSaveAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ConfirmationType::kSaved);
 }
 
 void AdsImpl::OnDidTransferAd(const AdInfo& ad) {

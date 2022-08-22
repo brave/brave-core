@@ -58,9 +58,9 @@ void Issuers::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback =
-      std::bind(&Issuers::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&Issuers::OnFetch, base::Unretained(this)));
 }
 
 void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
@@ -118,7 +118,8 @@ void Issuers::FetchAfterDelay() {
       FROM_HERE, GetFetchDelay(),
       base::BindOnce(&Issuers::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
+  BLOG(1, "Fetch issuers " << FriendlyDateAndTime(
+              fetch_at, /* use_sentence_style */ true));
 }
 
 base::TimeDelta Issuers::GetFetchDelay() const {
@@ -134,7 +135,8 @@ void Issuers::RetryAfterDelay() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
 
-  BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
+  BLOG(1, "Retry fetching issuers "
+              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
 
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);

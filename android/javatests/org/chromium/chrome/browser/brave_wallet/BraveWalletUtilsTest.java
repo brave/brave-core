@@ -27,6 +27,7 @@ import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.url.mojom.Url;
 
 import java.util.Arrays;
 import java.util.List;
@@ -550,8 +551,9 @@ public class BraveWalletUtilsTest {
                     String varName = f.getName();
                     if (varName.equals("chainId") || varName.equals("chainName")
                             || varName.equals("blockExplorerUrls") || varName.equals("iconUrls")
-                            || varName.equals("rpcUrls") || varName.equals("symbol")
-                            || varName.equals("symbolName") || varName.equals("data")) {
+                            || varName.equals("rpcEndpoints")
+                            || varName.equals("activeRpcEndpointIndex") || varName.equals("symbol")
+                            || varName.equals("symbolName") || varName.equals("isEip1559")) {
                         continue;
                     }
                     if (v == null) {
@@ -571,7 +573,8 @@ public class BraveWalletUtilsTest {
         testStruct.chainName = "";
         testStruct.blockExplorerUrls = new String[0];
         testStruct.iconUrls = new String[0];
-        testStruct.rpcUrls = new String[0];
+        testStruct.rpcEndpoints = new Url[0];
+        testStruct.activeRpcEndpointIndex = 0;
         testStruct.symbol = "";
         testStruct.symbolName = "";
         testStruct.coin = CoinType.ETH;

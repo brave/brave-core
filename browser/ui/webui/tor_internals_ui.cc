@@ -42,15 +42,14 @@ void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
   if (!web_ui()->CanCallJavascript())
     return;
 
-  base::Value info(base::Value::Type::DICTIONARY);
+  base::Value::Dict info;
 
-  info.SetStringKey("torVersion", tor_launcher_factory_->GetTorVersion());
-  info.SetIntKey("torPid",
-                 static_cast<int>(tor_launcher_factory_->GetTorPid()));
-  info.SetStringKey("torProxyURI", tor_launcher_factory_->GetTorProxyURI());
-  info.SetBoolKey("isTorConnected", tor_launcher_factory_->IsTorConnected());
+  info.Set("torVersion", tor_launcher_factory_->GetTorVersion());
+  info.Set("torPid", static_cast<int>(tor_launcher_factory_->GetTorPid()));
+  info.Set("torProxyURI", tor_launcher_factory_->GetTorProxyURI());
+  info.Set("isTorConnected", tor_launcher_factory_->IsTorConnected());
   web_ui()->CallJavascriptFunctionUnsafe("tor_internals.onGetTorGeneralInfo",
-                                         std::move(info));
+                                         base::Value(std::move(info)));
 }
 
 void TorInternalsDOMHandler::HandleGetTorLog(const base::Value::List& args) {
@@ -96,4 +95,4 @@ TorInternalsUI::TorInternalsUI(content::WebUI* web_ui, const std::string& name)
   web_ui->AddMessageHandler(std::make_unique<TorInternalsDOMHandler>());
 }
 
-TorInternalsUI::~TorInternalsUI() {}
+TorInternalsUI::~TorInternalsUI() = default;

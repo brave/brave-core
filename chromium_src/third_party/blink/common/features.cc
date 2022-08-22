@@ -34,6 +34,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
+// Allow certain client hints in request header.
+const base::Feature kAllowCertainClientHints{"AllowCertainClientHints",
+                                             base::FEATURE_DISABLED_BY_DEFAULT};
+
 const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
                                          base::FEATURE_DISABLED_BY_DEFAULT};
 

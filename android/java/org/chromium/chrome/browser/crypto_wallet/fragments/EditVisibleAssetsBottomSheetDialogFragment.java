@@ -359,29 +359,43 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private TextWatcherImpl filterAddCustomAssetTextWatcher = new TextWatcherImpl();
 
     private class TextWatcherImpl implements TextWatcher {
-        Dialog mDialog;
-        boolean selfChange;
+        private Dialog mDialog;
+        private boolean selfChange;
+        private EditText tokenNameEdit;
+        private EditText tokenContractAddressEdit;
+        private EditText tokenSymbolEdit;
+        private EditText tokenDecimalsEdit;
+        private EditText tokenIdEdit;
+        private Button addButton;
 
         public void setDialog(Dialog dialog) {
             mDialog = dialog;
             selfChange = false;
+            tokenNameEdit = mDialog.findViewById(R.id.token_name);
+            tokenContractAddressEdit = mDialog.findViewById(R.id.token_contract_address);
+            tokenSymbolEdit = mDialog.findViewById(R.id.token_symbol);
+            tokenDecimalsEdit = mDialog.findViewById(R.id.token_decimals);
+            tokenIdEdit = mDialog.findViewById(R.id.token_id);
+            addButton = mDialog.findViewById(R.id.add);
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (selfChange) return;
-            EditText tokenNameEdit = mDialog.findViewById(R.id.token_name);
-            EditText tokenContractAddressEdit = mDialog.findViewById(R.id.token_contract_address);
-            EditText tokenSymbolEdit = mDialog.findViewById(R.id.token_symbol);
-            EditText tokenDecimalsEdit = mDialog.findViewById(R.id.token_decimals);
-            EditText tokenIdEdit = mDialog.findViewById(R.id.token_id);
-            tokenIdEdit.setEnabled(true);
-            Button addButton = mDialog.findViewById(R.id.add);
+            String contractAddress = tokenContractAddressEdit.getText().toString();
+            String contractAddressTrimmed = contractAddress.trim();
+            if (!contractAddress.equals(contractAddressTrimmed)) {
+                // update the contractAddress and process it within the next onTextChanged pass
+                tokenContractAddressEdit.setText(
+                        contractAddressTrimmed, TextView.BufferType.EDITABLE);
+                return;
+            }
             String tokenName = tokenNameEdit.getText().toString();
             String tokenSymbol = tokenSymbolEdit.getText().toString();
-            String contractAddress = tokenContractAddressEdit.getText().toString();
 
+            tokenIdEdit.setEnabled(true);
             addButton.setEnabled(false);
+
             boolean checked = false;
             for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
                 // We can have multiple ERC721 tokens with the same name
@@ -398,7 +412,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
             AssetRatioService assetRatioService = getAssetRatioService();
             // Do not assert here, service can be null when backed from dialog
-            if (assetRatioService != null) {
+            if (assetRatioService != null && !contractAddress.isEmpty()) {
                 assetRatioService.getTokenInfo(contractAddress, token -> {
                     if (token != null) {
                         selfChange = true;

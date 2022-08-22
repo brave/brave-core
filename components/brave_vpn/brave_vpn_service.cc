@@ -154,7 +154,7 @@ BraveVpnService::BraveVpnService(
   InitP3A();
 }
 
-BraveVpnService::~BraveVpnService() {}
+BraveVpnService::~BraveVpnService() = default;
 
 std::string BraveVpnService::GetCurrentEnvironment() const {
   return profile_prefs_->GetString(prefs::kBraveVPNEEnvironment);
@@ -908,11 +908,11 @@ void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
     package_string = profile_prefs_->GetString(prefs::kBraveVPNPackageAndroid);
   }
 
-  base::Value response(base::Value::Type::DICTIONARY);
-  response.SetStringKey("type", "android");
-  response.SetStringKey("raw_receipt", purchase_token_string);
-  response.SetStringKey("package", package_string);
-  response.SetStringKey("subscription_id", "brave-firewall-vpn-premium");
+  base::Value::Dict response;
+  response.Set("type", "android");
+  response.Set("raw_receipt", purchase_token_string);
+  response.Set("package", package_string);
+  response.Set("subscription_id", "brave-firewall-vpn-premium");
 
   std::string response_json;
   base::JSONWriter::Write(response, &response_json);

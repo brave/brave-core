@@ -26,7 +26,6 @@ source_set("app") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/components/constants",
     "//brave/components/skus/browser",
     "//brave/components/update_client:buildflags",
@@ -45,7 +44,6 @@ source_set("app") {
     "//brave/ios/browser/api/qr_code",
     "//brave/ios/browser/api/skus:skus_mojom_wrappers",
     "//brave/ios/browser/api/sync/driver",
-    "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/component_updater",
     "//brave/ios/browser/skus",
     "//components/browser_sync",
@@ -64,7 +62,6 @@ source_set("app") {
     "//ios/chrome/browser",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
-    "//ios/chrome/browser/content_settings",
     "//ios/chrome/browser/history",
     "//ios/chrome/browser/main",
     "//ios/chrome/browser/passwords:store_factory",
@@ -79,7 +76,6 @@ source_set("app") {
     "//ios/public/provider/chrome/browser/ui_utils:ui_utils_api",
     "//ios/web/public/init",
     "//ios/web/public/webui",
-    "//ui/base",
 
     # Use the provider API controlled by args.gn.
     ios_provider_target,

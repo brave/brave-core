@@ -8,6 +8,7 @@
 #include <functional>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
@@ -54,7 +55,7 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void Migration::ToVersion(mojom::DBTransactionInfo* transaction,

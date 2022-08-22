@@ -29,8 +29,7 @@ BraveTabMenuModel::BraveTabMenuModel(
   Build();
 }
 
-BraveTabMenuModel::~BraveTabMenuModel() {
-}
+BraveTabMenuModel::~BraveTabMenuModel() = default;
 
 int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   int id = IDS_RESTORE_TAB;

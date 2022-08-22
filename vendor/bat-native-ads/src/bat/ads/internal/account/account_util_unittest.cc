@@ -101,7 +101,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
 
     database::table::Transactions database_table;
     database_table.GetAll(
-        [=](const bool success, const TransactionList& transactions) {
+        [](const bool success, const TransactionList& transactions) {
           ASSERT_TRUE(success);
           EXPECT_TRUE(transactions.empty());
         });

@@ -8,6 +8,7 @@
 #include <functional>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -192,9 +193,9 @@ void SubdivisionTargeting::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback =
-      std::bind(&SubdivisionTargeting::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&SubdivisionTargeting::OnFetch, base::Unretained(this)));
 }
 
 void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
@@ -256,8 +257,8 @@ void SubdivisionTargeting::Retry() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
-  BLOG(1,
-       "Retry fetching subdivision target " << FriendlyDateAndTime(retry_at));
+  BLOG(1, "Retry fetching subdivision target "
+              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
@@ -269,7 +270,8 @@ void SubdivisionTargeting::FetchAfterDelay() {
       FROM_HERE, delay,
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch ads subdivision target " << FriendlyDateAndTime(fetch_at));
+  BLOG(1, "Fetch ads subdivision target "
+              << FriendlyDateAndTime(fetch_at, /* use_sentence_style */ true));
 }
 
 void SubdivisionTargeting::OnLocaleDidChange(const std::string& locale) {

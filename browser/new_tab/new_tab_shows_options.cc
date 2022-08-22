@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -47,37 +46,31 @@ GURL GetNewTabPageURL(Profile* profile) {
   return GURL();
 }
 
-base::Value GetNewTabShowsOptionsList(Profile* profile) {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List GetNewTabShowsOptionsList(Profile* profile) {
+  base::Value::List list;
 
-  base::Value dashboard_option(base::Value::Type::DICTIONARY);
-  dashboard_option.SetIntKey(
-      "value",
-      static_cast<int>(NewTabPageShowsOptions::kDashboard));
-  dashboard_option.SetStringKey(
-      "name",
-      l10n_util::GetStringUTF8(
-          IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD));
+  base::Value::Dict dashboard_option;
+  dashboard_option.Set("value",
+                       static_cast<int>(NewTabPageShowsOptions::kDashboard));
+  dashboard_option.Set("name",
+                       l10n_util::GetStringUTF8(
+                           IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD));
   list.Append(std::move(dashboard_option));
 
-  base::Value homepage_option(base::Value::Type::DICTIONARY);
-  homepage_option.SetIntKey(
-      "value",
-      static_cast<int>(NewTabPageShowsOptions::kHomepage));
-  homepage_option.SetStringKey(
-      "name",
-      l10n_util::GetStringUTF8(
-          IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE));
+  base::Value::Dict homepage_option;
+  homepage_option.Set("value",
+                      static_cast<int>(NewTabPageShowsOptions::kHomepage));
+  homepage_option.Set("name",
+                      l10n_util::GetStringUTF8(
+                          IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE));
   list.Append(std::move(homepage_option));
 
-  base::Value blankpage_option(base::Value::Type::DICTIONARY);
-  blankpage_option.SetIntKey(
-      "value",
-      static_cast<int>(NewTabPageShowsOptions::kBlankpage));
-  blankpage_option.SetStringKey(
-      "name",
-      l10n_util::GetStringUTF8(
-          IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE));
+  base::Value::Dict blankpage_option;
+  blankpage_option.Set("value",
+                       static_cast<int>(NewTabPageShowsOptions::kBlankpage));
+  blankpage_option.Set("name",
+                       l10n_util::GetStringUTF8(
+                           IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE));
   list.Append(std::move(blankpage_option));
   return list;
 }

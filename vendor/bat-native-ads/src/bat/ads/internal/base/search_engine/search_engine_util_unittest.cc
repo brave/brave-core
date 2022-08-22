@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "base/strings/strcat.h"
-#include "bat/ads/internal/base/search_engine/search_engine_domain_extensions_util.h"
-#include "bat/ads/internal/base/search_engine/search_engine_subdomains_util.h"
+#include "bat/ads/internal/base/search_engine/search_engine_domain_extension_constants.h"
+#include "bat/ads/internal/base/search_engine/search_engine_subdomain_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

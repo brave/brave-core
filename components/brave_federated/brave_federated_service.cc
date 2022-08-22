@@ -34,7 +34,7 @@ BraveFederatedService::BraveFederatedService(
   Init();
 }
 
-BraveFederatedService::~BraveFederatedService() {}
+BraveFederatedService::~BraveFederatedService() = default;
 
 void BraveFederatedService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   OperationalPatterns::RegisterPrefs(registry);

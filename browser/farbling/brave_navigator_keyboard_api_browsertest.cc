@@ -47,7 +47,7 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
   BraveNavigatorKeyboardAPIBrowserTest& operator=(
       const BraveNavigatorKeyboardAPIBrowserTest&) = delete;
 
-  ~BraveNavigatorKeyboardAPIBrowserTest() override {}
+  ~BraveNavigatorKeyboardAPIBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
@@ -13,27 +14,27 @@ namespace database {
 
 void DeleteCreativeNotificationAds() {
   table::CreativeNotificationAds database_table;
-  database_table.Delete([](const bool success) {
+  database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative notification ads");
       return;
     }
 
     BLOG(3, "Successfully deleted creative notification ads");
-  });
+  }));
 }
 
 void SaveCreativeNotificationAds(
     const CreativeNotificationAdList& creative_ads) {
   table::CreativeNotificationAds database_table;
-  database_table.Save(creative_ads, [](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to save creative notification ads");
-      return;
-    }
+  database_table.Save(creative_ads, base::BindOnce([](const bool success) {
+                        if (!success) {
+                          BLOG(0, "Failed to save creative notification ads");
+                          return;
+                        }
 
-    BLOG(3, "Successfully saved creative notification ads");
-  });
+                        BLOG(3, "Successfully saved creative notification ads");
+                      }));
 }
 
 }  // namespace database

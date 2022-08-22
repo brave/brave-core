@@ -62,7 +62,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
   PlaylistBrowserTest() : weak_factory_(this) {
     scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
-  ~PlaylistBrowserTest() override {}
+  ~PlaylistBrowserTest() override = default;
 
   // PlatformBrowserTest overrides:
   void SetUpOnMainThread() override {
@@ -305,18 +305,18 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ApiFunctions) {
   ResetStatus();
 
   VLOG(2) << "recover item and should succeed";
-  base::Value item_value(base::Value::Type::DICTIONARY);
-  item_value.SetStringPath(kPlaylistItemIDKey, item.id);
-  item_value.SetStringPath(kPlaylistItemTitleKey, item.title);
-  item_value.SetStringPath(
+  base::Value::Dict item_value;
+  item_value.Set(kPlaylistItemIDKey, item.id);
+  item_value.Set(kPlaylistItemTitleKey, item.title);
+  item_value.Set(
       kPlaylistItemMediaFilePathKey,
       https_server()->GetURL("song.com", "/valid_media_file_1").spec());
-  item_value.SetStringPath(kPlaylistItemThumbnailPathKey, item.thumbnail_path);
-  item_value.SetBoolPath(kPlaylistItemReadyKey, item.ready);
+  item_value.Set(kPlaylistItemThumbnailPathKey, item.thumbnail_path);
+  item_value.Set(kPlaylistItemReadyKey, item.ready);
   GURL thumbnail_url(item.thumbnail_path);
 
   service->UpdatePlaylistItemValue(lastly_added_playlist_id_,
-                                   std::move(item_value));
+                                   base::Value(std::move(item_value)));
   service->RecoverPlaylistItem(lastly_added_playlist_id_);
 
   if (thumbnail_url.SchemeIsFile() || !thumbnail_url.is_valid()) {

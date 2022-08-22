@@ -47,12 +47,13 @@ class SolanaInstruction {
   const std::string& GetProgramId() const { return program_id_; }
 
   mojom::SolanaInstructionPtr ToMojomSolanaInstruction() const;
-  base::Value ToValue() const;
+  base::Value::Dict ToValue() const;
 
   static void FromMojomSolanaInstructions(
       const std::vector<mojom::SolanaInstructionPtr>& mojom_instructions,
       std::vector<SolanaInstruction>* instructions);
-  static absl::optional<SolanaInstruction> FromValue(const base::Value& value);
+  static absl::optional<SolanaInstruction> FromValue(
+      const base::Value::Dict& value);
 
  private:
   std::string program_id_;

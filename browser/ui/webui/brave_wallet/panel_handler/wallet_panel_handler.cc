@@ -27,7 +27,7 @@ WalletPanelHandler::WalletPanelHandler(
   DCHECK(active_web_contents_);
 }
 
-WalletPanelHandler::~WalletPanelHandler() {}
+WalletPanelHandler::~WalletPanelHandler() = default;
 
 void WalletPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();

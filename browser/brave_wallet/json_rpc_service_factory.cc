@@ -60,7 +60,7 @@ JsonRpcServiceFactory::JsonRpcServiceFactory()
           "JsonRpcService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-JsonRpcServiceFactory::~JsonRpcServiceFactory() {}
+JsonRpcServiceFactory::~JsonRpcServiceFactory() = default;
 
 KeyedService* JsonRpcServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

@@ -13,9 +13,9 @@
 
 namespace content_settings {
 
-BraveGlobalValueMap::BraveGlobalValueMap() {}
+BraveGlobalValueMap::BraveGlobalValueMap() = default;
 
-BraveGlobalValueMap::~BraveGlobalValueMap() {}
+BraveGlobalValueMap::~BraveGlobalValueMap() = default;
 
 std::unique_ptr<RuleIterator> BraveGlobalValueMap::GetRuleIterator(
     ContentSettingsType content_type) const {

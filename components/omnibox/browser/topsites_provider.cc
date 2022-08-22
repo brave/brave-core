@@ -68,7 +68,7 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
   }
 }
 
-TopSitesProvider::~TopSitesProvider() {}
+TopSitesProvider::~TopSitesProvider() = default;
 
 // static
 ACMatchClassifications TopSitesProvider::StylesForSingleMatch(

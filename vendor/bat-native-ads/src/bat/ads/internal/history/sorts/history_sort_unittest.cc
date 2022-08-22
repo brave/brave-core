@@ -81,13 +81,13 @@ TEST(BatAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   const auto sort =
       HistorySortFactory::Build(HistorySortType::kDescendingOrder);
 
-  base::circular_deque<HistoryItemInfo> history = {};
+  base::circular_deque<HistoryItemInfo> history;
 
   // Act
   history = sort->Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history = {};
+  const base::circular_deque<HistoryItemInfo> expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }

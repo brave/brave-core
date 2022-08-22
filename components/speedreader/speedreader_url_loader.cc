@@ -97,7 +97,7 @@ void SpeedReaderURLLoader::OnBodyReadable(MojoResult) {
 void SpeedReaderURLLoader::OnBodyWritable(MojoResult r) {
   DCHECK_EQ(State::kSending, state_);
   if (bytes_remaining_in_buffer_ > 0) {
-    SendReceivedBodyToClient();
+    SendBufferedBodyToClient();
   } else {
     CompleteSending();
   }

@@ -18,7 +18,7 @@
 class BraveNewTabTest : public testing::Test {
  public:
   BraveNewTabTest() : manager_(TestingBrowserProcess::GetGlobal()) {}
-  ~BraveNewTabTest() override {}
+  ~BraveNewTabTest() override = default;
 
  protected:
   void SetUp() override {

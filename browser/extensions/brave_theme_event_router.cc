@@ -22,7 +22,7 @@ BraveThemeEventRouter::BraveThemeEventRouter(Profile* profile)
   observer_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
 }
 
-BraveThemeEventRouter::~BraveThemeEventRouter() {}
+BraveThemeEventRouter::~BraveThemeEventRouter() = default;
 
 void BraveThemeEventRouter::OnNativeThemeUpdated(
     ui::NativeTheme* observed_theme) {

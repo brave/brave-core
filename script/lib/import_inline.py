@@ -3,7 +3,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import importlib
+import importlib.util
+import os.path
+
+
+def _find_src_dir():
+    """Searches for src/ dir which includes brave/ dir."""
+    path = os.getcwd()
+    while True:
+        if os.path.basename(path) == 'src' and os.path.isdir(
+                os.path.join(path, 'brave')):
+            return path
+        parent_dir = os.path.dirname(path)
+        if parent_dir == path:
+            # We hit the system root directory.
+            raise RuntimeError("Can't find src/ directory")
+        path = parent_dir
+
+
+def _inline_file(location, _globals, _locals):
+    """Inlines file by executing it using passed scopes."""
+    with open(location, "r") as f:
+        # pylint: disable=exec-used
+        exec(f.read(), _globals, _locals)
 
 
 def inline_module(module_name, _globals, _locals):
@@ -15,3 +37,9 @@ def inline_module(module_name, _globals, _locals):
     # pylint: disable=exec-used
     exec(module_spec.loader.get_data(module_spec.loader.path), _globals,
          _locals)
+
+
+def inline_file_from_src(location, _globals, _locals):
+    """Locates src/ dir and inlines relative file by executing it using passed
+    scopes."""
+    _inline_file(os.path.join(_find_src_dir(), location), _globals, _locals)

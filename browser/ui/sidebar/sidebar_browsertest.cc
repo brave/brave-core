@@ -29,7 +29,7 @@ namespace sidebar {
 class SidebarBrowserTest : public InProcessBrowserTest,
                            public SidebarModel::Observer {
  public:
-  SidebarBrowserTest() {}
+  SidebarBrowserTest() = default;
   ~SidebarBrowserTest() override = default;
 
   void PreRunTestOnMainThread() override {

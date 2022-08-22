@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -77,7 +78,7 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void AdEvents::GetIf(const std::string& condition,
@@ -120,6 +121,8 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   const std::string ad_type_as_string = AdType(ad_type).ToString();
 
   const std::string query = base::StringPrintf(
@@ -159,11 +162,13 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   const std::string ad_type_as_string = AdType(ad_type).ToString();
 
   const std::string query = base::StringPrintf(
@@ -184,7 +189,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string AdEvents::GetTableName() const {
@@ -242,8 +247,8 @@ void AdEvents::RunTransaction(const std::string& query,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&AdEvents::OnGetAdEvents, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&AdEvents::OnGetAdEvents,
+                                             base::Unretained(this), callback));
 }
 
 void AdEvents::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -281,8 +286,8 @@ std::string AdEvents::BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
       BuildBindingParameterPlaceholders(8, count).c_str());
 }
 
-void AdEvents::OnGetAdEvents(mojom::DBCommandResponseInfoPtr response,
-                             GetAdEventsCallback callback) {
+void AdEvents::OnGetAdEvents(GetAdEventsCallback callback,
+                             mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");

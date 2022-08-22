@@ -63,7 +63,8 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                   base::Unretained(this)));
 
-  BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(redeem_at));
+  BLOG(1, "Redeem unblinded payment tokens "
+              << FriendlyDateAndTime(redeem_at, /* use_sentence_style */ true));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,17 +101,16 @@ void RedeemUnblindedPaymentTokens::Redeem() {
     BLOG(6, UrlRequestToString(url_request));
     BLOG(7, UrlRequestHeadersToString(url_request));
 
-    const auto callback =
-        std::bind(&RedeemUnblindedPaymentTokens::OnRedeem, this,
-                  std::placeholders::_1, unblinded_payment_tokens);
-    AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request),
-                                               callback);
+    AdsClientHelper::GetInstance()->UrlRequest(
+        std::move(url_request),
+        base::BindOnce(&RedeemUnblindedPaymentTokens::OnRedeem,
+                       base::Unretained(this), unblinded_payment_tokens));
   });
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeem(
-    const mojom::UrlResponseInfo& url_response,
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
+    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+    const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -177,7 +177,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
                      base::Unretained(this)));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
-              << FriendlyDateAndTime(retry_at));
+              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
 
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);

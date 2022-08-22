@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/containers/adapters.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
@@ -35,8 +36,8 @@ std::string Namehash(const std::string& name) {
   std::vector<std::string> labels =
       SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-  for (auto rit = labels.rbegin(); rit != labels.rend(); rit++) {
-    std::string label_hash = KeccakHash(*rit, false);
+  for (const auto& label : base::Reversed(labels)) {
+    std::string label_hash = KeccakHash(label, false);
     hash = KeccakHash(hash + label_hash, false);
   }
 

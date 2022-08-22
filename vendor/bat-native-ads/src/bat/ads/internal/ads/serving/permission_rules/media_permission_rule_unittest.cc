@@ -36,7 +36,7 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"), true,
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
                                           false);
 
   TabManager::GetInstance()->OnMediaPlaying(1);
@@ -52,7 +52,7 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"), true,
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
                                           false);
 
   TabManager::GetInstance()->OnMediaPlaying(1);
@@ -71,7 +71,7 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
 TEST_F(BatAdsMediaPermissionRuleTest,
        AllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"), true,
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
                                           false);
 
   TabManager::GetInstance()->OnMediaPlaying(1);
@@ -89,7 +89,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 TEST_F(BatAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnVisibleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"), true,
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
                                           false);
 
   TabManager::GetInstance()->OnMediaPlaying(1);
@@ -117,7 +117,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"), true,
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
                                           false);
 
   TabManager::GetInstance()->OnMediaPlaying(1);
@@ -133,7 +133,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 TEST_F(BatAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"), true,
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
                                           false);
 
   TabManager::GetInstance()->OnMediaPlaying(1);
@@ -150,7 +150,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 TEST_F(BatAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"), true,
+  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
                                           false);
 
   TabManager::GetInstance()->OnMediaPlaying(1);

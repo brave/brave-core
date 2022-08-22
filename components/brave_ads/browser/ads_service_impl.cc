@@ -30,6 +30,7 @@
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_constants.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
@@ -125,7 +126,7 @@ constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 const base::Feature kServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
 
 int GetDataResourceId(const std::string& name) {
-  if (name == ads::g_catalog_json_schema_data_resource_name) {
+  if (name == ads::resource::data::g_catalog_json_schema_name) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
@@ -135,6 +136,8 @@ int GetDataResourceId(const std::string& name) {
 }
 
 std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
+  DCHECK(ads::mojom::IsKnownEnumValue(method));
+
   switch (method) {
     case ads::mojom::UrlRequestMethodType::kGet: {
       return "GET";
@@ -974,6 +977,10 @@ void AdsServiceImpl::Shutdown() {
 
   is_bat_ads_initialized_ = false;
 
+  bat_ads_.reset();
+  bat_ads_client_.reset();
+  bat_ads_service_.reset();
+
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
   g_brave_browser_process->resource_component()->RemoveObserver(this);
@@ -981,10 +988,6 @@ void AdsServiceImpl::Shutdown() {
   url_loaders_.clear();
 
   idle_state_timer_.Stop();
-
-  bat_ads_.reset();
-  bat_ads_client_.reset();
-  bat_ads_service_.reset();
 
   const bool success =
       file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
@@ -1006,8 +1009,9 @@ void AdsServiceImpl::SetEnabled(const bool is_enabled) {
   SetBooleanPref(ads::prefs::kEnabled, is_enabled);
 }
 
-int64_t AdsServiceImpl::GetNotificationAdsPerHour() const {
-  int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
+  int64_t ads_per_hour =
+      GetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
         kServing, "default_ad_notifications_per_hour",
@@ -1019,10 +1023,11 @@ int64_t AdsServiceImpl::GetNotificationAdsPerHour() const {
                      static_cast<int64_t>(ads::kMaximumNotificationAdsPerHour));
 }
 
-void AdsServiceImpl::SetNotificationAdsPerHour(const int64_t ads_per_hour) {
+void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
+    const int64_t ads_per_hour) {
   DCHECK(ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
          ads_per_hour <= ads::kMaximumNotificationAdsPerHour);
-  SetInt64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
+  SetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 
 void AdsServiceImpl::SetAllowConversionTracking(const bool should_allow) {
@@ -1168,7 +1173,7 @@ void AdsServiceImpl::OnMediaStop(const SessionID& tab_id) {
 }
 
 void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,
-                                  const GURL& url,
+                                  const std::vector<GURL>& redirect_chain,
                                   const bool is_active,
                                   const bool is_browser_active) {
   if (!IsBatAdsBound()) {
@@ -1177,8 +1182,8 @@ void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,
 
   const bool is_incognito = !brave::IsRegularProfile(profile_);
 
-  bat_ads_->OnTabUpdated(tab_id.id(), url, is_active, is_browser_active,
-                         is_incognito);
+  bat_ads_->OnTabUpdated(tab_id.id(), redirect_chain, is_active,
+                         is_browser_active, is_incognito);
 }
 
 void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
@@ -1218,6 +1223,8 @@ void AdsServiceImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::InlineContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1251,6 +1258,8 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::NewTabPageAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1263,6 +1272,8 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::PromotedContentAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1273,23 +1284,21 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     ads::mojom::SearchResultAdInfoPtr ad_mojom,
-    const ads::mojom::SearchResultAdEventType event_type,
-    TriggerSearchResultAdEventCallback callback) {
+    const ads::mojom::SearchResultAdEventType event_type) {
+  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* success */ false, ad_mojom->placement_id,
-                            event_type);
     return;
   }
 
-  bat_ads_->TriggerSearchResultAdEvent(
-      std::move(ad_mojom), event_type,
-      base::BindOnce(&AdsServiceImpl::OnTriggerSearchResultAdEvent, AsWeakPtr(),
-                     std::move(callback)));
+  bat_ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+
   if (!IsBatAdsBound()) {
     return;
   }
@@ -1582,12 +1591,12 @@ void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
           ->GetURLLoaderFactoryForBrowserProcess()
           .get(),
       base::BindOnce(&AdsServiceImpl::OnURLRequest, base::Unretained(this),
-                     url_loader_iter, callback));
+                     url_loader_iter, std::move(callback)));
 }
 
 void AdsServiceImpl::Save(const std::string& name,
                           const std::string& value,
-                          ads::ResultCallback callback) {
+                          ads::SaveCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
@@ -1922,10 +1931,6 @@ void AdsServiceImpl::OnURLRequest(
   auto url_loader = std::move(*url_loader_iter);
   url_loaders_.erase(url_loader_iter);
 
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   int response_code = -1;
 
   base::flat_map<std::string, std::string> headers;
@@ -1963,7 +1968,7 @@ void AdsServiceImpl::OnURLRequest(
   url_response.body = response_body ? *response_body : "";
   url_response.headers = headers;
 
-  callback(url_response);
+  std::move(callback).Run(url_response);
 }
 
 void AdsServiceImpl::OnMaybeServeInlineContentAd(
@@ -1971,14 +1976,6 @@ void AdsServiceImpl::OnMaybeServeInlineContentAd(
     const std::string& dimensions,
     absl::optional<base::Value::Dict> dict) {
   std::move(callback).Run(dimensions, std::move(dict));
-}
-
-void AdsServiceImpl::OnTriggerSearchResultAdEvent(
-    TriggerSearchResultAdEventCallback callback,
-    const bool success,
-    const std::string& placement_id,
-    const ads::mojom::SearchResultAdEventType event_type) {
-  std::move(callback).Run(success, placement_id, event_type);
 }
 
 void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
@@ -2066,36 +2063,23 @@ void AdsServiceImpl::OnToggleFlaggedAd(ToggleFlaggedAdCallback callback,
   std::move(callback).Run(json);
 }
 
-void AdsServiceImpl::OnLoad(const ads::LoadCallback& callback,
+void AdsServiceImpl::OnLoad(ads::LoadCallback callback,
                             const std::string& value) {
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   if (value.empty())
-    callback(/* success */ false, value);
+    std::move(callback).Run(/* success */ false, value);
   else
-    callback(/* success */ true, value);
+    std::move(callback).Run(/* success */ true, value);
 }
 
 void AdsServiceImpl::OnLoadFileResource(
     ads::LoadFileCallback callback,
     std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file) {
   DCHECK(file);
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   std::move(callback).Run(std::move(*file));
 }
 
-void AdsServiceImpl::OnSave(const ads::ResultCallback& callback,
-                            const bool success) {
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
-  callback(success);
+void AdsServiceImpl::OnSave(ads::SaveCallback callback, const bool success) {
+  std::move(callback).Run(success);
 }
 
 void AdsServiceImpl::MigratePrefs() {
@@ -2369,29 +2353,31 @@ void AdsServiceImpl::MigratePrefsVersion8To9() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion9To10() {
-  if (!HasPrefPath(ads::prefs::kAdsPerHour)) {
+  if (!HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour)) {
     return;
   }
 
-  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  const int64_t ads_per_hour =
+      GetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1 || ads_per_hour == 2) {
     // The user did not change the ads per hour setting from the legacy default
     // value of 2 so we should clear the preference to transition to
     // |kDefaultNotificationAdsPerHour|
-    profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
+    profile_->GetPrefs()->ClearPref(ads::prefs::kMaximumNotificationAdsPerHour);
   }
 }
 
 void AdsServiceImpl::MigratePrefsVersion10To11() {
-  if (!HasPrefPath(ads::prefs::kAdsPerHour)) {
+  if (!HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour)) {
     return;
   }
 
-  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  const int64_t ads_per_hour =
+      GetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == 0 || ads_per_hour == -1) {
     // Clear the ads per hour preference to transition to
     // |kDefaultNotificationAdsPerHour|
-    profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
+    profile_->GetPrefs()->ClearPref(ads::prefs::kMaximumNotificationAdsPerHour);
   }
 }
 
@@ -2472,10 +2458,6 @@ bool AdsServiceImpl::ShouldShowOnboardingNotification() {
 void AdsServiceImpl::OnBrowsingHistorySearchComplete(
     ads::GetBrowsingHistoryCallback callback,
     history::QueryResults results) {
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
   std::vector<GURL> history;
   for (const auto& result : results) {
     history.push_back(result.url().GetWithEmptyPath());
@@ -2484,7 +2466,7 @@ void AdsServiceImpl::OnBrowsingHistorySearchComplete(
   std::sort(history.begin(), history.end());
   history.erase(std::unique(history.begin(), history.end()), history.end());
 
-  callback(history);
+  std::move(callback).Run(history);
 }
 
 void AdsServiceImpl::OnLogTrainingInstance(bool success) {
@@ -2499,7 +2481,7 @@ void AdsServiceImpl::OnLogTrainingInstance(bool success) {
 void AdsServiceImpl::OnRunDBTransaction(
     ads::RunDBTransactionCallback callback,
     ads::mojom::DBCommandResponseInfoPtr response) {
-  callback(std::move(response));
+  std::move(callback).Run(std::move(response));
 }
 
 void AdsServiceImpl::WriteDiagnosticLog(const std::string& file,

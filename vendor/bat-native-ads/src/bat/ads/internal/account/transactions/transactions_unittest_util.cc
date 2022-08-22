@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 
+#include "base/bind.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -18,8 +19,9 @@ namespace ads {
 
 void SaveTransactions(const TransactionList& transactions) {
   database::table::Transactions database_table;
-  database_table.Save(transactions,
-                      [](const bool success) { ASSERT_TRUE(success); });
+  database_table.Save(transactions, base::BindOnce([](const bool success) {
+                        ASSERT_TRUE(success);
+                      }));
 }
 
 TransactionInfo BuildTransaction(const double value,

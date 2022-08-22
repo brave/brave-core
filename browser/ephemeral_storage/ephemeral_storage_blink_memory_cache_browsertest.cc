@@ -26,7 +26,7 @@ struct BlinkMemoryCachePartitionTestCase {
 class EphemeralStorageBlinkMemoryCacheBrowserTestBase
     : public EphemeralStorageBrowserTest {
  public:
-  EphemeralStorageBlinkMemoryCacheBrowserTestBase() {}
+  EphemeralStorageBlinkMemoryCacheBrowserTestBase() = default;
 
   void NavigateAndWaitForImgLoad(Browser* browser,
                                  const GURL& url,

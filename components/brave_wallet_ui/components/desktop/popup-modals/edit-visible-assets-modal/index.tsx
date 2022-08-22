@@ -88,11 +88,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
   const [coingeckoID, setCoingeckoID] = React.useState<string>('')
   const [iconURL, setIconURL] = React.useState<string>('')
-  const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<BraveWallet.NetworkInfo>(networkList[0])
-
-  React.useEffect(() => {
-    setCustomAssetsNetwork(networkList[0])
-  }, [networkList])
+  const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<BraveWallet.NetworkInfo>()
 
   // If a user removes all of their assets from the userVisibleTokenInfo list,
   // there is a check in the async/lib.ts folder that will still return the networks
@@ -252,7 +248,9 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     setSearchValue(search)
   }, [tokenList])
 
-  const onClickAddCustomToken = () => {
+  const onClickAddCustomToken = React.useCallback(() => {
+    if (!customAssetsNetwork) return
+
     if (foundTokenInfoByContractAddress) {
       if (foundTokenInfoByContractAddress.isErc721) {
         let token = foundTokenInfoByContractAddress
@@ -286,7 +284,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       onAddCustomAsset(newToken)
     }
     setIsLoading(true)
-  }
+  }, [tokenContractAddress, foundTokenInfoByContractAddress, customAssetsNetwork, iconURL, tokenDecimals, tokenName, tokenSymbol, tokenID, coingeckoID])
 
   const findUpdatedTokenInfo = (token: BraveWallet.BlockchainToken) => {
     return updatedTokensList.find((t) =>
@@ -404,7 +402,8 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       (tokenDecimals === '0' && tokenID === '') ||
       tokenDecimals === '' ||
       tokenContractAddress === '' ||
-      (customAssetsNetwork.coin !== BraveWallet.CoinType.SOL &&
+      !customAssetsNetwork ||
+      (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
         !tokenContractAddress.toLowerCase().startsWith('0x'))
   }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress, customAssetsNetwork])
 
@@ -519,7 +518,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
                       value={coingeckoID}
                       onChange={handleCoingeckoIDChanged}
                     />
-                    {customAssetsNetwork.coin !== BraveWallet.CoinType.SOL &&
+                    {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
                       <>
                         <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
                         <Input

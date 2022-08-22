@@ -123,7 +123,7 @@ std::vector<uint8_t> DecodeHexHash(const std::string& hash_hex) {
 
 class TestEventsListener : public brave_wallet::mojom::EventsListener {
  public:
-  TestEventsListener() {}
+  TestEventsListener() = default;
 
   void ChainChangedEvent(const std::string& chain_id) override {
     chain_id_ = chain_id;
@@ -627,8 +627,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     keyring_service_->GetKeyringInfo(
         brave_wallet::mojom::kDefaultKeyringId,
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          for (size_t i = 0; i < keyring_info->account_infos.size(); ++i) {
-            result.push_back(keyring_info->account_infos[i]->address);
+          for (auto& account_info : keyring_info->account_infos) {
+            result.push_back(account_info->address);
           }
           run_loop.Quit();
         }));

@@ -81,9 +81,9 @@ std::string BinanceNativeWorker::ConvertAssetsToJsonString(
 std::string BinanceNativeWorker::StdStrStrMapToJsonString(
     const std::map<std::string, std::string>& args) {
   std::string json_args;
-  base::Value dict(base::Value::Type::DICTIONARY);
+  base::Value::Dict dict;
   for (const auto& item : args) {
-    dict.SetStringKey(item.first, item.second);
+    dict.Set(item.first, item.second);
   }
   base::JSONWriter::Write(dict, &json_args);
   return json_args;

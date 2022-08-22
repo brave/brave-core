@@ -73,7 +73,7 @@ IpfsServiceFactory::IpfsServiceFactory()
 #endif
 }
 
-IpfsServiceFactory::~IpfsServiceFactory() {}
+IpfsServiceFactory::~IpfsServiceFactory() = default;
 
 KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

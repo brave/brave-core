@@ -171,9 +171,9 @@ bool PasswordFormToImportedPasswordForm(
 
 }  // namespace
 
-ChromeImporter::ChromeImporter() {}
+ChromeImporter::ChromeImporter() = default;
 
-ChromeImporter::~ChromeImporter() {}
+ChromeImporter::~ChromeImporter() = default;
 
 void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
                                  uint16_t items,
@@ -366,9 +366,8 @@ void ChromeImporter::LoadFaviconData(
   if (!s.is_valid())
     return;
 
-  for (FaviconMap::const_iterator i = favicon_map.begin();
-       i != favicon_map.end(); ++i) {
-    s.BindInt64(0, i->first);
+  for (const auto& entry : favicon_map) {
+    s.BindInt64(0, entry.first);
     if (s.Step()) {
       favicon_base::FaviconUsageData usage;
 
@@ -384,7 +383,7 @@ void ChromeImporter::LoadFaviconData(
       if (!importer::ReencodeFavicon(&data[0], data.size(), &usage.png_data))
         continue;  // Unable to decode.
 
-      usage.urls = i->second;
+      usage.urls = entry.second;
       favicons->push_back(usage);
     }
     s.Reset(true);
@@ -466,18 +465,18 @@ void ChromeImporter::ImportPasswords() {
   std::vector<std::unique_ptr<password_manager::PasswordForm>> forms;
   bool success = database.GetAutofillableLogins(&forms);
   if (success) {
-    for (size_t i = 0; i < forms.size(); ++i) {
+    for (auto& entry : forms) {
       importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(forms[i].get(), &form))
+      if (PasswordFormToImportedPasswordForm(entry.get(), &form))
         bridge_->SetPasswordForm(form);
     }
   }
   std::vector<std::unique_ptr<password_manager::PasswordForm>> blocklist;
   success = database.GetBlocklistLogins(&blocklist);
   if (success) {
-    for (size_t i = 0; i < blocklist.size(); ++i) {
+    for (auto& entry : blocklist) {
       importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(blocklist[i].get(), &form))
+      if (PasswordFormToImportedPasswordForm(entry.get(), &form))
         bridge_->SetPasswordForm(form);
     }
   }

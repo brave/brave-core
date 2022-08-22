@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -190,7 +191,7 @@ void UnitTestBase::Initialize() {
 
   database_manager_ = std::make_unique<DatabaseManager>();
   database_manager_->CreateOrOpen(
-      [](const bool success) { ASSERT_TRUE(success); });
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
 
@@ -277,7 +278,7 @@ void UnitTestBase::SetDefaultMocks() {
 void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, true);
 
-  ads_client_mock_->SetInt64Pref(prefs::kAdsPerHour, -1);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
   ads_client_mock_->SetIntegerPref(prefs::kIdleTimeThreshold, 15);
 

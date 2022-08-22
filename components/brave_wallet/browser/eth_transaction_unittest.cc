@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -97,13 +98,13 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
        "81aa03ada1474ff3ca4b86afb8e8c0f8b22791e156e706231a695ef8c51515ab"},
   };
 
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
-    EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
-        cases[i].nonce, cases[i].gas_price, cases[i].gas_limit, cases[i].to,
-        cases[i].value, std::vector<uint8_t>()));
+  for (const auto& entry : cases) {
+    EthTransaction tx = *EthTransaction::FromTxData(
+        mojom::TxData::New(entry.nonce, entry.gas_price, entry.gas_limit,
+                           entry.to, entry.value, std::vector<uint8_t>()));
     // with chain id (mainnet)
     EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign(1))),
-              cases[i].hash);
+              entry.hash);
   }
 }
 
@@ -114,7 +115,10 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
       &private_key));
 
   HDKey key;
-  key.SetPrivateKey(private_key);
+  key.SetPrivateKey(
+      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
+          new std::vector<uint8_t>(private_key),
+          SecureZeroVectorDeleter<uint8_t>()));
   EthTransaction tx = *EthTransaction::FromTxData(
       mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",

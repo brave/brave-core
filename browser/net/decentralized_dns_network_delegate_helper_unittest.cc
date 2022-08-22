@@ -150,9 +150,9 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       {"https://brave.888", true},
       {"https://brave.blockchain", true},
       {"https://brave.bitcoin", true},
+      {"https://brave.zil", true},
       {"https://brave", false},
       {"https://brave.com", false},
-      {"https://brave.zil", false},
       {"", false},
   };
 

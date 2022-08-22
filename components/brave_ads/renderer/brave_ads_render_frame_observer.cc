@@ -40,7 +40,7 @@ BraveAdsRenderFrameObserver::BraveAdsRenderFrameObserver(
   native_javascript_handle_ = std::make_unique<BraveAdsJSHandler>(render_frame);
 }
 
-BraveAdsRenderFrameObserver::~BraveAdsRenderFrameObserver() {}
+BraveAdsRenderFrameObserver::~BraveAdsRenderFrameObserver() = default;
 
 void BraveAdsRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,

@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "base/values.h"
 
 namespace brave_wallet {
 
@@ -54,39 +53,35 @@ bool SolanaSignatureStatus::operator!=(
   return !operator==(sig_status);
 }
 
-base::Value SolanaSignatureStatus::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("slot", base::NumberToString(slot));
-  dict.SetStringKey("confirmations", base::NumberToString(confirmations));
-  dict.SetStringKey("err", err);
-  dict.SetStringKey("confirmation_status", confirmation_status);
+base::Value::Dict SolanaSignatureStatus::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("slot", base::NumberToString(slot));
+  dict.Set("confirmations", base::NumberToString(confirmations));
+  dict.Set("err", err);
+  dict.Set("confirmation_status", confirmation_status);
   return dict;
 }
 
 // static
 absl::optional<SolanaSignatureStatus> SolanaSignatureStatus::FromValue(
-    const base::Value& value) {
-  if (!value.is_dict())
-    return absl::nullopt;
-
+    const base::Value::Dict& value) {
   SolanaSignatureStatus status;
-  const std::string* slot_string = value.FindStringKey("slot");
+  const std::string* slot_string = value.FindString("slot");
   if (!slot_string || !base::StringToUint64(*slot_string, &status.slot))
     return absl::nullopt;
 
-  const std::string* confirmations_string =
-      value.FindStringKey("confirmations");
+  const std::string* confirmations_string = value.FindString("confirmations");
   if (!confirmations_string ||
       !base::StringToUint64(*confirmations_string, &status.confirmations))
     return absl::nullopt;
 
-  const std::string* err = value.FindStringKey("err");
+  const std::string* err = value.FindString("err");
   if (!err)
     return absl::nullopt;
   status.err = *err;
 
   const std::string* confirmation_status =
-      value.FindStringKey("confirmation_status");
+      value.FindString("confirmation_status");
   if (!confirmation_status)
     return absl::nullopt;
   status.confirmation_status = *confirmation_status;

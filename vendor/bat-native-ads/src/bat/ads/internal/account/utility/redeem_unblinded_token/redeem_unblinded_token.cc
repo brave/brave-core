@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
@@ -75,14 +76,15 @@ void RedeemUnblindedToken::CreateConfirmation(
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation,
-                                  this, std::placeholders::_1, confirmation);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&RedeemUnblindedToken::OnCreateConfirmation,
+                     base::Unretained(this), confirmation));
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
-    const mojom::UrlResponseInfo& url_response,
-    const ConfirmationInfo& confirmation) {
+    const ConfirmationInfo& confirmation,
+    const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnCreateConfirmation");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -120,14 +122,15 @@ void RedeemUnblindedToken::FetchPaymentToken(
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken,
-                                  this, std::placeholders::_1, confirmation);
-  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&RedeemUnblindedToken::OnFetchPaymentToken,
+                     base::Unretained(this), confirmation));
 }
 
 void RedeemUnblindedToken::OnFetchPaymentToken(
-    const mojom::UrlResponseInfo& url_response,
-    const ConfirmationInfo& confirmation) {
+    const ConfirmationInfo& confirmation,
+    const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnFetchPaymentToken");
 
   BLOG(6, UrlResponseToString(url_response));

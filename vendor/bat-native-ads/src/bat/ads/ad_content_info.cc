@@ -56,7 +56,7 @@ AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
 base::Value::Dict AdContentInfo::ToValue() const {
   base::Value::Dict dict;
 
-  dict.Set("adType", static_cast<int>(type.value()));
+  dict.Set("adType", int{type.value()});
   dict.Set("uuid", placement_id);
   dict.Set("creativeInstanceId", creative_instance_id);
   dict.Set("creativeSetId", creative_set_id);

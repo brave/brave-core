@@ -68,7 +68,7 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
     return false;
   }
   std::vector<uint8_t> bytes;
-  char* data = NULL;
+  char* data = nullptr;
   size_t data_length = 0;
   gin::ArrayBufferView view;
   if (gin::ConvertFromV8(isolate, value.As<v8::ArrayBufferView>(), &view)) {

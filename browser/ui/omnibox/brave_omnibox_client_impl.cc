@@ -70,7 +70,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(
   }
 }
 
-BraveOmniboxClientImpl::~BraveOmniboxClientImpl() {}
+BraveOmniboxClientImpl::~BraveOmniboxClientImpl() = default;
 
 void BraveOmniboxClientImpl::RegisterProfilePrefs(
     PrefRegistrySimple* registry) {

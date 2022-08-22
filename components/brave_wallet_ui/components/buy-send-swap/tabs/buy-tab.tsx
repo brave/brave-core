@@ -35,28 +35,32 @@ function BuyTab (props: Props) {
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
-  const onChangeBuyView = (view: BuySendSwapViewTypes) => {
+  const onChangeBuyView = React.useCallback((view: BuySendSwapViewTypes) => {
     setBuyView(view)
-  }
+  }, [])
 
-  const onClickSelectAccount = (account: UserAccountType) => () => {
+  const onClickSelectAccount = React.useCallback((account: UserAccountType) => () => {
     onSelectAccount(account)
     setBuyView('buy')
-  }
+  }, [onSelectAccount])
 
-  const onSelectedAsset = (asset: BraveWallet.BlockchainToken) => () => {
+  const onSelectedAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => () => {
     setSelectedAsset(asset)
     setBuyView('buy')
-  }
+  }, [])
 
   const onSelectCurrency = React.useCallback(() => {
     // hide currency selection view
     setBuyView('buy')
   }, [setBuyView])
 
-  const goBack = () => {
+  const goBack = React.useCallback(() => {
     setBuyView('buy')
-  }
+  }, [])
+
+  const onShowCurrencySelection = React.useCallback(() => {
+    onChangeBuyView('currencies')
+  }, [onChangeBuyView])
 
   // Memos
   const filteredAssetOptions = React.useMemo(() => {
@@ -81,6 +85,7 @@ function BuyTab (props: Props) {
           <Buy
             selectedAsset={selectedAsset}
             onChangeBuyView={onChangeBuyView}
+            onShowCurrencySelection={onShowCurrencySelection}
           />
         </>
       }

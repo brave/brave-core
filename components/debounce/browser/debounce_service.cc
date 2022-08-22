@@ -23,7 +23,7 @@ DebounceService::DebounceService(
     PrefService* prefs)
     : component_installer_(component_installer), prefs_(prefs) {}
 
-DebounceService::~DebounceService() {}
+DebounceService::~DebounceService() = default;
 
 bool DebounceService::Debounce(const GURL& original_url,
                                GURL* final_url) const {

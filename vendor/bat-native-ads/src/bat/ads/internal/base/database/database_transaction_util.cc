@@ -5,20 +5,22 @@
 
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 
+#include <utility>
+
 namespace ads {
 namespace database {
 
-void OnResultCallback(mojom::DBCommandResponseInfoPtr response,
-                      ResultCallback callback) {
+void OnResultCallback(ResultCallback callback,
+                      mojom::DBCommandResponseInfoPtr response) {
   DCHECK(response);
 
   if (response->status !=
       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
     return;
   }
 
-  callback(/* success */ true);
+  std::move(callback).Run(/* success */ true);
 }
 
 }  // namespace database

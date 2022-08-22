@@ -122,7 +122,10 @@ function SwapInputComponent (props: Props) {
   const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
 
   // redux
-  const { selectedCurrency } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const {
+    selectedCurrency: reduxSelectedCurrency,
+    onRampCurrencies: currencies
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const toggleExpandSelector = () => {
     setExpandSelector(!expandSelector)
@@ -198,6 +201,10 @@ function SwapInputComponent (props: Props) {
     }
     setShowSlippageWarning(false)
   }, [customSlippageTolerance])
+
+  const selectedCurrency = React.useMemo(() => {
+    return reduxSelectedCurrency || currencies[0]
+  }, [reduxSelectedCurrency, currencies])
 
   const handleCustomSlippageToleranceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onCustomSlippageToleranceChange) {
@@ -291,7 +298,7 @@ function SwapInputComponent (props: Props) {
           <Row componentType={componentType}>
             {componentType === 'buyAmount' &&
               <AssetButton onClick={onShowCurrencySelection}>
-                <AssetTicker>{CurrencySymbols[selectedCurrency?.currencyCode ?? 'USD']}</AssetTicker>
+                <AssetTicker>{CurrencySymbols[selectedCurrency?.currencyCode]}</AssetTicker>
                 <CaratDownIcon />
                 <Spacer />
               </AssetButton>

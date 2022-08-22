@@ -52,7 +52,7 @@ BraveSearchFallbackHost::BraveSearchFallbackHost(
     scoped_refptr<network::SharedURLLoaderFactory> factory)
     : shared_url_loader_factory_(std::move(factory)), weak_factory_(this) {}
 
-BraveSearchFallbackHost::~BraveSearchFallbackHost() {}
+BraveSearchFallbackHost::~BraveSearchFallbackHost() = default;
 
 // [static]
 GURL BraveSearchFallbackHost::GetBackupResultURL(const GURL& baseURL,

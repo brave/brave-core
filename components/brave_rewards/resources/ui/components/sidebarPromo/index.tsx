@@ -16,9 +16,9 @@ import { CloseStrokeIcon } from 'brave-ui/components/icons'
 
 export interface Props {
   title: string
-  copy: JSX.Element
+  copy: React.ReactNode
   imagePath: string
-  disclaimer?: string | JSX.Element
+  disclaimer?: React.ReactNode
   onDismissPromo: (event: React.MouseEvent<HTMLDivElement>) => void
   link: string
 }

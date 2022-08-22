@@ -17,7 +17,7 @@ namespace ipfs {
 
 class IPFSP3ATest : public testing::Test {
  public:
-  IPFSP3ATest() {}
+  IPFSP3ATest() = default;
 
  protected:
   void SetUp() override {

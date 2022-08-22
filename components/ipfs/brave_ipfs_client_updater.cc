@@ -32,7 +32,7 @@ BraveIpfsClientUpdater::BraveIpfsClientUpdater(
       user_data_dir_(user_data_dir),
       weak_ptr_factory_(this) {}
 
-BraveIpfsClientUpdater::~BraveIpfsClientUpdater() {}
+BraveIpfsClientUpdater::~BraveIpfsClientUpdater() = default;
 
 void BraveIpfsClientUpdater::Register() {
   if (registered_)

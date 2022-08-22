@@ -65,10 +65,10 @@ CryptoDotComGetTickerInfoFunction::Run() {
 
 void CryptoDotComGetTickerInfoFunction::OnInfoResult(
     const CryptoDotComTickerInfo& info) {
-  base::Value result(base::Value::Type::DICTIONARY);
+  base::Value::Dict result;
 
   for (const auto& att : info) {
-    result.SetStringKey(att.first, att.second);
+    result.Set(att.first, att.second);
   }
 
   Respond(OneArgument(base::Value(std::move(result))));

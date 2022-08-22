@@ -124,13 +124,13 @@ void BatAdsClientMojoBridge::ResetAdEventHistoryForId(
   bat_ads_client_->ResetAdEventHistoryForId(id);
 }
 
-void OnUrlRequest(const ads::UrlRequestCallback& callback,
+void OnUrlRequest(ads::UrlRequestCallback callback,
                   const ads::mojom::UrlResponseInfoPtr url_response_ptr) {
   ads::mojom::UrlResponseInfo url_response;
 
   if (!url_response_ptr) {
     url_response.status_code = -1;
-    callback(url_response);
+    std::move(callback).Run(url_response);
     return;
   }
 
@@ -138,7 +138,7 @@ void OnUrlRequest(const ads::UrlRequestCallback& callback,
   url_response.status_code = url_response_ptr->status_code;
   url_response.body = url_response_ptr->body;
   url_response.headers = url_response_ptr->headers;
-  callback(url_response);
+  std::move(callback).Run(url_response);
 }
 
 void BatAdsClientMojoBridge::UrlRequest(
@@ -148,7 +148,7 @@ void BatAdsClientMojoBridge::UrlRequest(
     ads::mojom::UrlResponseInfo response;
     response.url = url_request->url;
     response.status_code = -1;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 
@@ -156,21 +156,15 @@ void BatAdsClientMojoBridge::UrlRequest(
       base::BindOnce(&OnUrlRequest, std::move(callback)));
 }
 
-void OnSave(const ads::ResultCallback& callback, const bool success) {
-  callback(success);
-}
-
-void BatAdsClientMojoBridge::Save(
-    const std::string& name,
-    const std::string& value,
-    ads::ResultCallback callback) {
+void BatAdsClientMojoBridge::Save(const std::string& name,
+                                  const std::string& value,
+                                  ads::SaveCallback callback) {
   if (!connected()) {
-    callback(/* success */ false);
+    std::move(callback).Run(/* success */ false);
     return;
   }
 
-  bat_ads_client_->Save(name, value, base::BindOnce(&OnSave,
-      std::move(callback)));
+  bat_ads_client_->Save(name, value, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
@@ -184,23 +178,16 @@ void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
   bat_ads_client_->LoadFileResource(id, version, std::move(callback));
 }
 
-void OnGetBrowsingHistory(const ads::GetBrowsingHistoryCallback& callback,
-                          const std::vector<GURL>& history) {
-  callback(history);
-}
-
 void BatAdsClientMojoBridge::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
   if (!connected()) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
-  bat_ads_client_->GetBrowsingHistory(
-      max_count, days_ago,
-      base::BindOnce(&OnGetBrowsingHistory, std::move(callback)));
+  bat_ads_client_->GetBrowsingHistory(max_count, days_ago, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
@@ -221,21 +208,15 @@ void BatAdsClientMojoBridge::LogTrainingInstance(
   bat_ads_client_->LogTrainingInstance(std::move(training_instance));
 }
 
-void OnLoad(const ads::LoadCallback& callback,
-            const bool success,
-            const std::string& value) {
-  callback(success, value);
-}
-
 void BatAdsClientMojoBridge::Load(
     const std::string& name,
     ads::LoadCallback callback) {
   if (!connected()) {
-    callback(/* success */ false, "");
+    std::move(callback).Run(/* success */ false, "");
     return;
   }
 
-  bat_ads_client_->Load(name, base::BindOnce(&OnLoad, std::move(callback)));
+  bat_ads_client_->Load(name, std::move(callback));
 }
 
 std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
@@ -249,16 +230,11 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
   return value;
 }
 
-void OnRunDBTransaction(const ads::RunDBTransactionCallback& callback,
-                        ads::mojom::DBCommandResponseInfoPtr response) {
-  callback(std::move(response));
-}
-
 void BatAdsClientMojoBridge::RunDBTransaction(
     ads::mojom::DBTransactionInfoPtr transaction,
     ads::RunDBTransactionCallback callback) {
   bat_ads_client_->RunDBTransaction(std::move(transaction),
-      base::BindOnce(&OnRunDBTransaction, std::move(callback)));
+                                    std::move(callback));
 }
 
 void BatAdsClientMojoBridge::ClearScheduledCaptcha() {

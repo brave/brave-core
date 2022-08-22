@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/account.h"
 
-#include <vector>
-
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
@@ -23,8 +21,8 @@
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -449,15 +447,8 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   BuildAndSetIssuers();
 
-  const std::vector<std::string> tokens_base64 = {
-      R"(nDM8XFo2GzY/ekTtHm3MYTK9Rs80rot3eS1n+WAuzmRvf64rHFMAcMUydrqKi2pUhgjthd8SM9BW3ituHudFNC5fS1c1Z+pe1oW2P5UxNOb8KurYGGQj/OHsG8jWhGMD)"};
-  std::vector<privacy::cbr::Token> tokens;
-  for (const auto& token_base64 : tokens_base64) {
-    const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
-    ASSERT_TRUE(token.has_value());
-    tokens.push_back(token);
-  }
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
 
   privacy::SetUnblindedTokens(1);
 
@@ -518,15 +509,8 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
 TEST_F(BatAdsAccountTest, DepositForNonCash) {
   // Arrange
-  const std::vector<std::string> tokens_base64 = {
-      R"(nDM8XFo2GzY/ekTtHm3MYTK9Rs80rot3eS1n+WAuzmRvf64rHFMAcMUydrqKi2pUhgjthd8SM9BW3ituHudFNC5fS1c1Z+pe1oW2P5UxNOb8KurYGGQj/OHsG8jWhGMD)"};
-  std::vector<privacy::cbr::Token> tokens;
-  for (const auto& token_base64 : tokens_base64) {
-    const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
-    ASSERT_TRUE(token.has_value());
-    tokens.push_back(token);
-  }
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
 
   privacy::SetUnblindedTokens(1);
 
@@ -561,15 +545,8 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
 
 TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
-  const std::vector<std::string> tokens_base64 = {
-      R"(nDM8XFo2GzY/ekTtHm3MYTK9Rs80rot3eS1n+WAuzmRvf64rHFMAcMUydrqKi2pUhgjthd8SM9BW3ituHudFNC5fS1c1Z+pe1oW2P5UxNOb8KurYGGQj/OHsG8jWhGMD)"};
-  std::vector<privacy::cbr::Token> tokens;
-  for (const auto& token_base64 : tokens_base64) {
-    const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
-    ASSERT_TRUE(token.has_value());
-    tokens.push_back(token);
-  }
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
 
   CreativeNotificationAdList creative_ads;
   CreativeDaypartInfo daypart_info;

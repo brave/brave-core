@@ -52,6 +52,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void Initialize() override;
 
+  const brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
+
  private:
   friend class BraveSyncServiceImplTest;
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,

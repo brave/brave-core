@@ -64,7 +64,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   SpeedReaderBrowserTest(const SpeedReaderBrowserTest&) = delete;
   SpeedReaderBrowserTest& operator=(const SpeedReaderBrowserTest&) = delete;
 
-  ~SpeedReaderBrowserTest() override {}
+  ~SpeedReaderBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -330,6 +330,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
+
+  constexpr const char kCheckNoApiInMainWorld[] =
+      R"js(
+        document.speedreader === undefined
+      )js";
+  EXPECT_TRUE(content::EvalJs(web_contents, kCheckNoApiInMainWorld,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS)
+                  .ExtractBool());
 
   constexpr const char kClickLinkAndGetTitle[] =
       R"js(

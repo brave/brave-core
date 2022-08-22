@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/notification_ad_serving.h"
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
@@ -70,7 +71,8 @@ void Serving::StartServingAdsAtRegularIntervals() {
 
   const base::TimeDelta delay = CalculateDelayBeforeServingAnAd();
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
+              serve_ad_at, /* use_sentence_style */ true));
 }
 
 void Serving::StopServingAdsAtRegularIntervals() {
@@ -147,7 +149,7 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }
@@ -155,7 +157,8 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
   const base::TimeDelta delay =
       base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
+              serve_ad_at, /* use_sentence_style */ true));
 }
 
 void Serving::RetryServingAdAtNextInterval() {
@@ -164,7 +167,8 @@ void Serving::RetryServingAdAtNextInterval() {
   }
 
   const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfterDelay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
+              serve_ad_at, /* use_sentence_style */ true));
 }
 
 base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
@@ -232,13 +236,13 @@ void Serving::NotifyFailedToServeNotificationAd() const {
 }
 
 void Serving::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAdsPerHour) {
+  if (path == prefs::kMaximumNotificationAdsPerHour) {
     OnAdsPerHourPrefChanged();
   }
 }
 
 void Serving::OnAdsPerHourPrefChanged() {
-  const int ads_per_hour = settings::GetNotificationAdsPerHour();
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {

@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/guid.h"
 #include "base/json/json_writer.h"
@@ -95,8 +96,8 @@ void Confirmations::Retry() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
 
-  BLOG(1,
-       "Retry sending failed confirmations " << FriendlyDateAndTime(retry_at));
+  BLOG(1, "Retry sending failed confirmations "
+              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
 }
 
 void Confirmations::OnRetry() {
@@ -293,7 +294,8 @@ void Confirmations::OnDidRedeemUnblindedToken(
 
   BLOG(1, "You have " << unblinded_payment_tokens_count
                       << " unblinded payment tokens which will be redeemed "
-                      << FriendlyDateAndTime(next_token_redemption_at));
+                      << FriendlyDateAndTime(next_token_redemption_at,
+                                             /* use_sentence_style */ true));
 
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);

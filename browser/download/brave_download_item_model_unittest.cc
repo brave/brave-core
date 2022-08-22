@@ -45,7 +45,7 @@ const base::FilePath::CharType kDefaultDisplayFileName[] =
 class BraveDownloadItemModelTest : public testing::Test {
  public:
   BraveDownloadItemModelTest() : model_(&item_), brave_model_(&model_) {}
-  ~BraveDownloadItemModelTest() override {}
+  ~BraveDownloadItemModelTest() override = default;
 
  protected:
   void SetupDownloadItemDefaults() {
@@ -107,8 +107,7 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
   };
 
   SetupDownloadItemDefaults();
-  for (unsigned i = 0; i < std::size(kTestCases); ++i) {
-    const TestCase& test_case = kTestCases[i];
+  for (const auto& test_case : kTestCases) {
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
     bool is_secure = false;
@@ -133,8 +132,7 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
   };
 
   SetupDownloadItemDefaults();
-  for (unsigned i = 0; i < std::size(kTestCases); ++i) {
-    const TestCase& test_case = kTestCases[i];
+  for (auto test_case : kTestCases) {
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
     EXPECT_EQ(base::ToLowerASCII(base::UTF16ToUTF8(model().GetTooltipText())),

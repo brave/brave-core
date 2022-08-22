@@ -122,7 +122,7 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
          rhs_index < rhs.storage_->GetSize()) {
     if (lhs.storage_->GetPointAt(lhs_index) ==
         rhs.storage_->GetPointAt(rhs_index)) {
-      dot_product += static_cast<double>(lhs.storage_->values()[lhs_index]) *
+      dot_product += double{lhs.storage_->values()[lhs_index]} *
                      rhs.storage_->values()[rhs_index];
       ++lhs_index;
       ++rhs_index;
@@ -184,11 +184,11 @@ void VectorData::Normalize() {
   const auto vector_length = sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
                       0.0, [](const double& lhs, float v) -> double {
-                        return lhs + static_cast<double>(v) * v;
+                        return lhs + double{v} * v;
                       }));
   if (vector_length > kMinimumVectorLength) {
-    for (size_t i = 0; i < storage_->values().size(); ++i) {
-      storage_->values()[i] /= vector_length;
+    for (float& entry : storage_->values()) {
+      entry /= vector_length;
     }
   }
 }

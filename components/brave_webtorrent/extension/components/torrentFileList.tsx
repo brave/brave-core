@@ -2,14 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
-import { Heading, Table } from 'brave-ui/components'
+import { Button, Table } from 'brave-ui/components'
 import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
-import { LoaderIcon } from 'brave-ui/components/icons'
 import * as prettierBytes from 'prettier-bytes'
-
-// Constants
+import * as React from 'react'
+import styled from 'styled-components'
 import { File, TorrentObj } from '../constants/webtorrentState'
+import { getFileType } from '../utils/fileType'
+import { Header } from './header'
+import { Link } from './link'
+import Spinner from './spinner'
 
 interface Props {
   torrentId: string
@@ -17,105 +19,121 @@ interface Props {
   onSaveAllFiles: () => void
 }
 
-export default class TorrentFileList extends React.PureComponent<Props, {}> {
-  render () {
-    const { torrent, torrentId, onSaveAllFiles } = this.props
-    if (!torrent || !torrent.files) {
-      return (
-        <div className='torrentSubhead'>
-          <p className='starterText'>
-            Click "Start Torrent" to begin your download.
-          </p>
-        </div>
-      )
-    }
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
 
-    const header: Cell[] = [
-      {
-        content: '#'
-      },
-      {
-        content: 'Name'
-      },
-      {
-        content: 'Save File'
-      },
-      {
-        content: 'Size'
-      }
-    ]
+const HeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
-    const renderFileLink = (file: File, ix: number, isDownload: boolean) => {
-      if (isDownload) {
-        if (torrent.serverURL) {
-          const url = `${torrent.serverURL}/${ix}/${file.name}`
-          return (
-            <a href={url} download={file.name}>
-              ⇩
-            </a>
-          )
-        } else {
-          return <div /> // No download links until the server is ready
-        }
-      } else {
-        // use # for .torrent links, since query params might cause the remote
-        // server to return 404
-        const suffix = /^https?:/.test(torrentId) ? '#ix=' + ix : '&ix=' + ix
-        const href = torrentId + suffix
-        return (
-          <a href={href} target='_blank' rel='noopener'>
-            {' '}
-            {file.name}{' '}
-          </a>
-        )
-      }
-    }
+const FilesContainer = styled.div`
+  background: var(--background1);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0px 0.5px 1.5px 0px rgb(0 0 0 / 15%);
+  
+  td {
+    border: none;
+    color: var(--text1);
+  }
 
-    const rows: Row[] = torrent.files.map((file: File, index: number) => {
-      return {
+  th {
+    border-top: none;
+    border-color: var(--divider1);
+    border-width: 2px;
+    color: var(--text3);
+  }
+
+  table {
+    margin: 0;
+    padding: 0;
+  }
+`
+
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const SaveButton = styled(Button)`
+  --button-main-color: var(--text1);
+  --button-main-color-hover: var(--text2);
+`
+
+const tableHeader: Cell[] = [
+  {
+    content: '#'
+  },
+  {
+    content: 'Name'
+  },
+  {
+    content: 'Save file'
+  },
+  {
+    content: 'Size'
+  }
+]
+
+const downloadFile = (url: string, filename: string) => {
+  const anchor = document.createElement('a')
+  anchor.setAttribute('href', url)
+  anchor.setAttribute('download', filename)
+  anchor.click()
+}
+
+export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }: Props) {
+    const rows = React.useMemo<Row[] | undefined>(() => torrent?.files?.map((file: File, index: number) => ({
         content: [
           {
             content: index + 1
           },
           {
-            content: renderFileLink(file, index, false)
+            content: getFileType(file) !== 'unknown'
+              ? <Link target='_blank' rel='noopener'
+                href={torrentId + (/^https?:/.test(torrentId)
+                  ? '#ix='
+                  : '&ix=') + index}>
+                {file.name}
+              </Link>
+              : <span>{file.name}</span>
           },
           {
-            content: renderFileLink(file, index, true)
+            content: torrent.serverURL && <SaveButton text="Save file"
+              level="secondary"
+              onClick={() => downloadFile(`${torrent.serverURL}/${index}/${file.name}`, file.name)}/>
           },
           {
             content: prettierBytes(file.length)
           }
         ]
-      }
-    })
+      })), [torrent?.files, torrentId])
 
     const saveAllFiles = () => {
-      if (!torrent.serverURL || !torrent.files || torrent.progress !== 1) {
+      if (!torrent?.serverURL || !torrent?.files || torrent?.progress !== 1) {
         return
       }
       onSaveAllFiles()
     }
 
-    return (
-      <div>
-        <Heading children='Files' level={2} className='torrentHeading' />
-        <a
-          href='#'
-          onClick={saveAllFiles}
-          className={torrent.progress === 1 ? 'active' : 'inactive'}
-        >
-          Save All Files...
-        </a>
-        <Table header={header} rows={rows}>
-          <div className='loadingContainer'>
-            <div className='__icon'>
-              <LoaderIcon />
-            </div>
-            Loading the torrent file list
-          </div>
-        </Table>
-      </div>
-    )
-  }
+    return <Container>
+      <HeaderRow>
+        <Header>Files</Header>
+        <Button onClick={saveAllFiles} text="Save all files"/>
+      </HeaderRow>
+      <FilesContainer>
+        <Table header={tableHeader} rows={rows}>
+            {torrent && !torrent.files
+              ? <LoadingContainer>
+                <Spinner/>
+                Loading the torrent file list
+              </LoadingContainer>
+              : 'Click "Start Torrent" to begin your download.'}
+          </Table>
+      </FilesContainer>
+    </Container>
 }

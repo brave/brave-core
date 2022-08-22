@@ -31,7 +31,7 @@ AdBlockPrefServiceFactory::AdBlockPrefServiceFactory()
           "AdBlockPrefService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-AdBlockPrefServiceFactory::~AdBlockPrefServiceFactory() {}
+AdBlockPrefServiceFactory::~AdBlockPrefServiceFactory() = default;
 
 KeyedService* AdBlockPrefServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

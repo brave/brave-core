@@ -53,6 +53,7 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 // NTP features
 import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
+import { saveShowStats } from '../../api/preferences'
 
 interface Props {
   newTabData: NewTab.State
@@ -62,7 +63,6 @@ interface Props {
   actions: NewTabActions
   getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
-  saveShowStats: (value: boolean) => void
   saveShowToday: (value: boolean) => any
   saveShowBraveNewsButton: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
@@ -289,12 +289,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.clockWidgetUpdated(
       this.props.newTabData.showClock,
       newFormat)
-  }
-
-  toggleShowStats = () => {
-    this.props.saveShowStats(
-      !this.props.newTabData.showStats
-    )
   }
 
   toggleShowToday = () => {
@@ -1207,7 +1201,7 @@ class NewTabPage extends React.Component<Props, State> {
               widgetTitle={getLocale('statsTitle')}
               textDirection={newTabData.textDirection}
               stats={newTabData.stats}
-              hideWidget={this.toggleShowStats}
+              hideWidget={() => saveShowStats(false)}
               menuPosition={'right'}
             />
           </Page.GridItemStats>
@@ -1325,7 +1319,6 @@ class NewTabPage extends React.Component<Props, State> {
           onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowClock={this.toggleShowClock}
-          toggleShowStats={this.toggleShowStats}
           toggleShowToday={this.toggleShowToday}
           toggleShowBraveNewsButton={this.toggleShowBraveNewsButton}
           toggleShowTopSites={this.toggleShowTopSites}
@@ -1335,7 +1328,6 @@ class NewTabPage extends React.Component<Props, State> {
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
-          showStats={newTabData.showStats}
           showToday={newTabData.showToday}
           showBraveNewsButton={newTabData.showBraveNewsButton}
           showTopSites={newTabData.showTopSites}

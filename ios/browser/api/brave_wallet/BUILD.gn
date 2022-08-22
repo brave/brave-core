@@ -21,6 +21,9 @@ source_set("brave_wallet") {
     "//build/config/compiler:enable_arc",
   ]
   sources = [
+    "brave_wallet_api+private.h",
+    "brave_wallet_api.h",
+    "brave_wallet_api.mm",
     "brave_wallet_provider_delegate_ios+private.h",
     "brave_wallet_provider_delegate_ios.h",
     "brave_wallet_provider_delegate_ios.mm",
@@ -33,9 +36,14 @@ source_set("brave_wallet") {
     "//brave/base/mac",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/ios/browser/api/url",
+    "//brave/ios/browser/brave_wallet",
     "//ios/chrome/browser",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/content_settings",
     "//net",
+    "//ui/base",
   ]
 }
 

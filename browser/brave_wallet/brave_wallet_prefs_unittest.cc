@@ -166,13 +166,13 @@ TEST_F(BraveWalletPrefsUnitTest,
   GetPrefs()->ClearPref(kBraveWalletTransactions);
   ASSERT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
-  base::Value tx1(base::Value::Type::DICTIONARY);
-  tx1.SetStringKey("id", "0x1");
-  tx1.SetIntKey("status", 1);
+  base::Value::Dict tx1;
+  tx1.Set("id", "0x1");
+  tx1.Set("status", 1);
 
-  base::Value tx2(base::Value::Type::DICTIONARY);
-  tx2.SetStringKey("id", "0x2");
-  tx2.SetIntKey("status", 2);
+  base::Value::Dict tx2;
+  tx2.Set("id", "0x2");
+  tx2.Set("status", 2);
 
   {
     DictionaryPrefUpdate update(GetPrefs(), kBraveWalletTransactions);

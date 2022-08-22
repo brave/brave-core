@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.url.mojom.Url;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -139,9 +140,10 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         EditText chainCurrencySymbol = view.findViewById(R.id.chain_currency_symbol);
         chainCurrencySymbol.setText(chain.symbol);
 
-        if (chain.rpcUrls.length > 0) {
+        if (chain.activeRpcEndpointIndex >= 0
+                && chain.activeRpcEndpointIndex < chain.rpcEndpoints.length) {
             EditText rpcUrls = view.findViewById(R.id.rpc_urls);
-            rpcUrls.setText(chain.rpcUrls[0]);
+            rpcUrls.setText(chain.rpcEndpoints[chain.activeRpcEndpointIndex].toString());
         }
 
         if (chain.iconUrls.length > 0) {
@@ -235,7 +237,10 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
 
                 return false;
             }
-            chain.rpcUrls = new String[] {strRpcUrls};
+            org.chromium.url.mojom.Url mojourl = new Url();
+            mojourl.url = strRpcUrls;
+            chain.rpcEndpoints = new Url[] {mojourl};
+            chain.activeRpcEndpointIndex = 0;
 
         } catch (MalformedURLException exc) {
             rpcUrls.setError(getString(R.string.brave_wallet_add_network_urls_error));

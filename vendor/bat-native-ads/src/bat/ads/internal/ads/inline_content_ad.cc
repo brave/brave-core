@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/inline_content_ad.h"
 
+#include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
@@ -46,17 +47,19 @@ InlineContentAd::~InlineContentAd() {
 
 void InlineContentAd::MaybeServe(const std::string& dimensions,
                                  MaybeServeInlineContentAdCallback callback) {
-  serving_->MaybeServeAd(dimensions,
-                         [=](const std::string& dimensions,
+  serving_->MaybeServeAd(
+      dimensions, [callback](const std::string& dimensions,
                              const absl::optional<InlineContentAdInfo>& ad) {
-                           callback(dimensions, ad);
-                         });
+        callback(dimensions, ad);
+      });
 }
 
 void InlineContentAd::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   event_handler_->FireEvent(placement_id, creative_instance_id, event_type);
 }
 

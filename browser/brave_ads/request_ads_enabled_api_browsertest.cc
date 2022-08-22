@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/containers/flat_map.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
@@ -59,15 +61,15 @@ constexpr char kUserGestureRejectReason[] =
 
 class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
  public:
-  RequestAdsEnabledApiTestBase() {}
+  RequestAdsEnabledApiTestBase() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;

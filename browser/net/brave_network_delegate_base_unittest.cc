@@ -47,7 +47,7 @@ class BraveNetworkDelegateBaseTest : public testing::Test {
  public:
   BraveNetworkDelegateBaseTest()
       : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP) {}
-  ~BraveNetworkDelegateBaseTest() override {}
+  ~BraveNetworkDelegateBaseTest() override = default;
   void SetUp() override {
     context_ = net::CreateTestURLRequestContextBuilder()->Build();
   }

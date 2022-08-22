@@ -7,9 +7,9 @@
 
 namespace ipfs {
 
-IpfsDnsResolver::IpfsDnsResolver() {}
+IpfsDnsResolver::IpfsDnsResolver() = default;
 
-IpfsDnsResolver::~IpfsDnsResolver() {}
+IpfsDnsResolver::~IpfsDnsResolver() = default;
 
 void IpfsDnsResolver::Notify(absl::optional<std::string> value) {
   observers_.Notify(value);

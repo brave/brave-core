@@ -55,7 +55,7 @@ BraveConfigurator::BraveConfigurator(
   DCHECK(pref_service_);
 }
 
-BraveConfigurator::~BraveConfigurator() {}
+BraveConfigurator::~BraveConfigurator() = default;
 
 double BraveConfigurator::InitialDelay() const {
   return configurator_impl_.InitialDelay();

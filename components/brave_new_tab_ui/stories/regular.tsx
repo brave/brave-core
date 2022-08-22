@@ -9,7 +9,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import NewTabPage from '../containers/newTab'
 import { getActionsForDispatch } from '../api/getActions'
 import store from '../store'
-import { getNewTabData, getGridSitesData } from './default/data/storybookState'
+import { useNewTabData, getGridSitesData } from './default/data/storybookState'
 import getTodayState from './default/data/todayStorybookState'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import { getDataUrl, getUnpaddedAsDataUrl } from '../../common/privateCDN'
@@ -51,9 +51,10 @@ export default {
 export const Regular = () => {
   const doNothing = (value: boolean) => value
   const state = store.getState()
-  const newTabData = getNewTabData(state.newTabData)
+  const newTabData = useNewTabData(state.newTabData)
   const gridSitesData = getGridSitesData(state.gridSitesData)
   const todayState = getTodayState()
+
   return (
     <NewTabPage
       ftx={getFTXStorybookState()}
@@ -62,7 +63,6 @@ export const Regular = () => {
       gridSitesData={gridSitesData}
       actions={getActions()}
       saveShowBackgroundImage={doNothing}
-      saveShowStats={doNothing}
       saveShowToday={doNothing}
       saveShowBraveNewsButton={doNothing}
       saveShowRewards={doNothing}

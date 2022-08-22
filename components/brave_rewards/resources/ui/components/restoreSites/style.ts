@@ -11,8 +11,6 @@ export const StyledExcludedText = styled('div')<{}>`
   font-weight: 300;
   text-align: left;
   letter-spacing: 0;
-  margin-top: -20px;
-  margin-bottom: 32px;
 `
 
 export const StyledRestore = styled('a')<{}>`
@@ -22,5 +20,4 @@ export const StyledRestore = styled('a')<{}>`
   font-weight: normal;
   letter-spacing: 0;
   cursor: pointer;
-  margin-left: 8px;
 `

@@ -169,8 +169,7 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
                                  std::move(on_closing)),
         install_google_translate_called_(false) {}
 
-  ~MockBraveTranslateBubbleView() override {
-  }
+  ~MockBraveTranslateBubbleView() override = default;
 
   bool install_google_translate_called() {
     return install_google_translate_called_;

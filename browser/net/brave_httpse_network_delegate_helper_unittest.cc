@@ -23,7 +23,7 @@ class BraveHTTPSENetworkDelegateHelperTest: public testing::Test {
  public:
   BraveHTTPSENetworkDelegateHelperTest()
       : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP) {}
-  ~BraveHTTPSENetworkDelegateHelperTest() override {}
+  ~BraveHTTPSENetworkDelegateHelperTest() override = default;
   void SetUp() override {
     context_ = net::CreateTestURLRequestContextBuilder()->Build();
   }

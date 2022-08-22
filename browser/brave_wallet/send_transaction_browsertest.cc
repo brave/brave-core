@@ -69,7 +69,7 @@ namespace brave_wallet {
 
 class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
  public:
-  TestTxServiceObserver() {}
+  TestTxServiceObserver() = default;
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
     ASSERT_TRUE(tx->tx_data_union->is_eth_tx_data_1559());

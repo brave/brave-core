@@ -6,7 +6,7 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 
 interface Props {
   onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
-  selectedNetwork?: BraveWallet.NetworkInfo
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
 }
 
 function SelectNetwork ({
@@ -14,16 +14,13 @@ function SelectNetwork ({
   selectedNetwork
 }: Props) {
   // redux
-  const {
-    networkList: networks,
-    selectedNetwork: reduxSelectedNetwork
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   return (
     <>
       {networks.map((network) =>
         <SelectNetworkItem
-          selectedNetwork={selectedNetwork || reduxSelectedNetwork}
+          selectedNetwork={selectedNetwork}
           key={`${network.chainId}-${network.coin}`}
           network={network}
           onSelectCustomNetwork={onSelectCustomNetwork}

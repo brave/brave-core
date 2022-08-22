@@ -40,7 +40,7 @@ BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
 }
 
 BraveAutoplayContentSettingBubbleModel::
-~BraveAutoplayContentSettingBubbleModel() {}
+    ~BraveAutoplayContentSettingBubbleModel() = default;
 
 void BraveAutoplayContentSettingBubbleModel::CommitChanges() {
   if (settings_changed()) {

@@ -68,6 +68,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
+  registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
+                                false);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
@@ -85,14 +87,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-  // Added 08/2021
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorSalt, "");
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorNonce, "");
-  registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
-  registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
-  registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
-  registry->RegisterListPref(kBraveWalletAccountNames);
-
   // Added 10/2021
   registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
                                 false);

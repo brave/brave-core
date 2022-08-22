@@ -30,8 +30,8 @@ HashVectorizer::~HashVectorizer() = default;
 
 HashVectorizer::HashVectorizer(const int bucket_count,
                                const std::vector<int>& subgrams) {
-  for (size_t i = 0; i < subgrams.size(); ++i) {
-    substring_sizes_.push_back(subgrams[i]);
+  for (int subgram : subgrams) {
+    substring_sizes_.push_back(subgram);
   }
   bucket_count_ = bucket_count;
 }

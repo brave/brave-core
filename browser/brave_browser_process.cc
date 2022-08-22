@@ -7,8 +7,8 @@
 
 #include <cstddef>
 
-BraveBrowserProcess* g_brave_browser_process = NULL;
+BraveBrowserProcess* g_brave_browser_process = nullptr;
 
-BraveBrowserProcess::BraveBrowserProcess() {}
+BraveBrowserProcess::BraveBrowserProcess() = default;
 
-BraveBrowserProcess::~BraveBrowserProcess() {}
+BraveBrowserProcess::~BraveBrowserProcess() = default;

@@ -95,7 +95,7 @@ TEST_F(BatAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
 TEST_F(BatAdsNotificationAdUtilTest, ShowNotificationAd) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         // Act
 
         // Assert
@@ -109,7 +109,7 @@ TEST_F(BatAdsNotificationAdUtilTest, ShowNotificationAd) {
 TEST_F(BatAdsNotificationAdUtilTest, DismissNotificationAd) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -127,7 +127,7 @@ TEST_F(BatAdsNotificationAdUtilTest, DismissNotificationAd) {
 TEST_F(BatAdsNotificationAdUtilTest, CloseNotificationAd) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, CloseNotificationAd)
-      .WillOnce(Invoke([=](const std::string& placement_id) {
+      .WillOnce(Invoke([](const std::string& placement_id) {
         // Act
 
         // Assert
@@ -136,7 +136,7 @@ TEST_F(BatAdsNotificationAdUtilTest, CloseNotificationAd) {
       }));
 
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -154,7 +154,7 @@ TEST_F(BatAdsNotificationAdUtilTest, CloseNotificationAd) {
 TEST_F(BatAdsNotificationAdUtilTest, NotificationAdTimedOut) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 

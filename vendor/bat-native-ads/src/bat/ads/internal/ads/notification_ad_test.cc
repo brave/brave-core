@@ -42,10 +42,10 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLResponseMap responses = {
+    const URLResponseMap url_responses = {
         {"/v9/catalog",
          {{net::HTTP_OK, "/catalog_with_notification_ad.json"}}}};
-    MockUrlResponses(ads_client_mock_, responses);
+    MockUrlResponses(ads_client_mock_, url_responses);
   }
 
   void ServeAd() {
@@ -60,7 +60,7 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
 TEST_F(BatAdsNotificationAdIntegrationTest, Serve) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
       }));

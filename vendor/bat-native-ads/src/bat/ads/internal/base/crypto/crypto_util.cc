@@ -80,8 +80,8 @@ std::string Sign(const base::flat_map<std::string, std::string>& headers,
     return "";
   }
 
-  std::string concatenated_header = "";
-  std::string concatenated_message = "";
+  std::string concatenated_header;
+  std::string concatenated_message;
 
   unsigned int index = 0;
   for (const auto& header : headers) {

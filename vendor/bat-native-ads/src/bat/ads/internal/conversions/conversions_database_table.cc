@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -71,7 +72,7 @@ Conversions::~Conversions() = default;
 void Conversions::Save(const ConversionList& conversions,
                        ResultCallback callback) {
   if (conversions.empty()) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
     return;
   }
 
@@ -81,7 +82,7 @@ void Conversions::Save(const ConversionList& conversions,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void Conversions::GetAll(GetConversionsCallback callback) {
@@ -115,8 +116,8 @@ void Conversions::GetAll(GetConversionsCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), std::bind(&Conversions::OnGetConversions, this,
-                                        std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&Conversions::OnGetConversions,
+                                             base::Unretained(this), callback));
 }
 
 void Conversions::PurgeExpired(ResultCallback callback) {
@@ -135,7 +136,7 @@ void Conversions::PurgeExpired(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string Conversions::GetTableName() const {
@@ -194,8 +195,8 @@ std::string Conversions::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(6, count).c_str());
 }
 
-void Conversions::OnGetConversions(mojom::DBCommandResponseInfoPtr response,
-                                   GetConversionsCallback callback) {
+void Conversions::OnGetConversions(GetConversionsCallback callback,
+                                   mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");

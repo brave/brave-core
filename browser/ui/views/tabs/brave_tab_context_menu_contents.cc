@@ -33,8 +33,7 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
       views::MenuRunner::HAS_MNEMONICS | views::MenuRunner::CONTEXT_MENU);
 }
 
-BraveTabContextMenuContents::~BraveTabContextMenuContents() {
-}
+BraveTabContextMenuContents::~BraveTabContextMenuContents() = default;
 
 void BraveTabContextMenuContents::Cancel() {
   controller_ = nullptr;

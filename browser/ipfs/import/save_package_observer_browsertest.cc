@@ -21,7 +21,7 @@
 
 class SavePackageFinishedObserverBrowserTest : public InProcessBrowserTest {
  public:
-  SavePackageFinishedObserverBrowserTest() {}
+  SavePackageFinishedObserverBrowserTest() = default;
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     ASSERT_TRUE(embedded_test_server()->Start());
@@ -45,8 +45,8 @@ class SavePackageFinishedObserverBrowserTest : public InProcessBrowserTest {
 
 class FakePackageDownloadItem : public content::FakeDownloadItem {
  public:
-  FakePackageDownloadItem() {}
-  ~FakePackageDownloadItem() override {}
+  FakePackageDownloadItem() = default;
+  ~FakePackageDownloadItem() override = default;
 
   download::DownloadItem::DownloadCreationType GetDownloadCreationType()
       const override {

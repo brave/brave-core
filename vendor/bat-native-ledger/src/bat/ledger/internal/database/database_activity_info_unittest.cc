@@ -42,7 +42,7 @@ class DatabaseActivityInfoTest : public ::testing::Test {
         mock_ledger_impl_.get());
   }
 
-  ~DatabaseActivityInfoTest() override {}
+  ~DatabaseActivityInfoTest() override = default;
 
   void SetUp() override {
     ON_CALL(*mock_ledger_impl_, database())

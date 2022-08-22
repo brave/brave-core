@@ -13,7 +13,7 @@ import { WalletActions } from '../../../common/actions'
 import { PanelActions } from '../../../panel/actions'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   network: BraveWallet.NetworkInfo
   onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
@@ -42,8 +42,8 @@ function SelectNetworkItem (props: Props) {
         <NetworkName>{network.chainName}</NetworkName>
       </LeftSide>
       {
-        selectedNetwork.chainId === network.chainId &&
-        selectedNetwork.coin === network.coin &&
+        selectedNetwork?.chainId === network.chainId &&
+        selectedNetwork?.coin === network.coin &&
         <BigCheckMark />
       }
     </StyledWrapper>

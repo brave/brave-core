@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "base/bind.h"
+#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
@@ -14,7 +16,7 @@
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/instance_id_util.h"
+#include "bat/ads/internal/base/instance_id_constants.h"
 #include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
@@ -40,35 +42,44 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
 
   database::table::AdEvents database_table;
   database_table.LogEvent(
-      ad_event, [callback](const bool success) { callback(success); });
+      ad_event, base::BindOnce([](AdEventCallback callback,
+                                  const bool success) { callback(success); },
+                               callback));
 }
 
 void PurgeExpiredAdEvents(AdEventCallback callback) {
   database::table::AdEvents database_table;
-  database_table.PurgeExpired([callback](const bool success) {
-    if (success) {
-      RebuildAdEventHistoryFromDatabase();
-    }
+  database_table.PurgeExpired(base::BindOnce(
+      [](AdEventCallback callback, const bool success) {
+        if (success) {
+          RebuildAdEventHistoryFromDatabase();
+        }
 
-    callback(success);
-  });
+        callback(success);
+      },
+      callback));
 }
 
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
-  database::table::AdEvents database_table;
-  database_table.PurgeOrphaned(ad_type, [callback](const bool success) {
-    if (success) {
-      RebuildAdEventHistoryFromDatabase();
-    }
+  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
 
-    callback(success);
-  });
+  database::table::AdEvents database_table;
+  database_table.PurgeOrphaned(
+      ad_type, base::BindOnce(
+                   [](AdEventCallback callback, const bool success) {
+                     if (success) {
+                       RebuildAdEventHistoryFromDatabase();
+                     }
+
+                     callback(success);
+                   },
+                   callback));
 }
 
 void RebuildAdEventHistoryFromDatabase() {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
+  database_table.GetAll([](const bool success, const AdEventList& ad_events) {
     if (!success) {
       BLOG(1, "Failed to get ad events");
       return;

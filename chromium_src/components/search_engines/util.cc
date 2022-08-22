@@ -8,6 +8,9 @@
 #include "src/components/search_engines/util.cc"
 #undef GetSearchProvidersUsingKeywordResult
 
+#include "base/containers/adapters.h"
+#include "base/ranges/algorithm.h"
+
 void GetSearchProvidersUsingKeywordResult(
     const WDTypedResult& result,
     KeywordWebDataService* service,
@@ -27,12 +30,12 @@ void GetSearchProvidersUsingKeywordResult(
   if (template_urls && !template_urls->empty()) {
     std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =
         TemplateURLPrepopulateData::GetPrepopulatedEngines(prefs, nullptr);
-    for (auto crit = prepopulated_urls.crbegin();
-         crit != prepopulated_urls.crend(); ++crit) {
-      auto it = find_if(
-          begin(*template_urls), end(*template_urls),
-          [&crit](std::unique_ptr<TemplateURL>& t_url1) {
-            return (t_url1->prepopulate_id() == (*crit)->prepopulate_id);
+    for (const auto& template_url_data : base::Reversed(prepopulated_urls)) {
+      auto it = base::ranges::find_if(
+          *template_urls,
+          [&template_url_data](std::unique_ptr<TemplateURL>& t_url1) {
+            return (t_url1->prepopulate_id() ==
+                    template_url_data->prepopulate_id);
           });
       if (it != end(*template_urls))
         std::rotate(begin(*template_urls), it, it + 1);

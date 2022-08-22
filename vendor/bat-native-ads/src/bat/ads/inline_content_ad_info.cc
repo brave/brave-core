@@ -43,7 +43,7 @@ bool InlineContentAdInfo::IsValid() const {
 base::Value::Dict InlineContentAdInfo::ToValue() const {
   base::Value::Dict dict;
 
-  dict.Set("type", static_cast<int>(type.value()));
+  dict.Set("type", int{type.value()});
   dict.Set("uuid", placement_id);
   dict.Set("creativeInstanceId", creative_instance_id);
   dict.Set("creativeSetId", creative_set_id);

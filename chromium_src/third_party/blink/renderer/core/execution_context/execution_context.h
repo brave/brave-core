@@ -66,6 +66,7 @@ class CORE_EXPORT BraveSessionCache final
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };
+
 }  // namespace brave
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_

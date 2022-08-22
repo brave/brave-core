@@ -34,8 +34,7 @@ BraveTranslateBubbleView::BraveTranslateBubbleView(
                           web_contents,
                           std::move(on_closing)) {}
 
-BraveTranslateBubbleView::~BraveTranslateBubbleView() {
-}
+BraveTranslateBubbleView::~BraveTranslateBubbleView() = default;
 
 std::unique_ptr<views::View>
 BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {

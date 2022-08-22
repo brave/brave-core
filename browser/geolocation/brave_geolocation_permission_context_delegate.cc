@@ -20,7 +20,7 @@ BraveGeolocationPermissionContextDelegate::
       profile_(Profile::FromBrowserContext(browser_context)) {}
 
 BraveGeolocationPermissionContextDelegate::
-    ~BraveGeolocationPermissionContextDelegate() {}
+    ~BraveGeolocationPermissionContextDelegate() = default;
 
 bool BraveGeolocationPermissionContextDelegate::DecidePermission(
     const permissions::PermissionRequestID& id,

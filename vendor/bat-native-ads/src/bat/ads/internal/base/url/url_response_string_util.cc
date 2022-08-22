@@ -20,7 +20,7 @@ std::string HeadersToString(
     const int indent = 4) {
   std::vector<std::string> formatted_headers;
 
-  const std::string spaces = std::string(' ', indent);
+  const std::string spaces = std::string(indent, ' ');
 
   for (const auto& header : headers) {
     const std::string key = header.first;

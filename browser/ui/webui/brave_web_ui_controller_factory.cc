@@ -240,7 +240,7 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url))
     return WebUI::kNoWebUI;
 #endif
-  WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
+  WebUIFactoryFunction function = GetWebUIFactoryFunction(nullptr, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);
   }
@@ -264,6 +264,6 @@ BraveWebUIControllerFactory* BraveWebUIControllerFactory::GetInstance() {
   return base::Singleton<BraveWebUIControllerFactory>::get();
 }
 
-BraveWebUIControllerFactory::BraveWebUIControllerFactory() {}
+BraveWebUIControllerFactory::BraveWebUIControllerFactory() = default;
 
-BraveWebUIControllerFactory::~BraveWebUIControllerFactory() {}
+BraveWebUIControllerFactory::~BraveWebUIControllerFactory() = default;

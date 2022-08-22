@@ -43,7 +43,7 @@ FederatedInternalsUI::FederatedInternalsUI(content::WebUI* web_ui)
   content::WebUIDataSource::Add(browser_context, source);
 }
 
-FederatedInternalsUI::~FederatedInternalsUI() {}
+FederatedInternalsUI::~FederatedInternalsUI() = default;
 
 WEB_UI_CONTROLLER_TYPE_IMPL(FederatedInternalsUI)
 

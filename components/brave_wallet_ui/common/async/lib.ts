@@ -34,7 +34,7 @@ import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult } from '../hardware/types'
-import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
+import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
@@ -64,7 +64,7 @@ export const getERC20Allowance = (
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
     const keyring = getHardwareKeyring(opts.hardware, opts.coin, opts.onAuthorized)
-    if ((keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) && opts.scheme) {
+    if ((keyring instanceof EthereumLedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) && opts.scheme) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {

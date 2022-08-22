@@ -50,6 +50,7 @@ void BodySnifferURLLoader::Start(
   if (body) {
     VLOG(2) << __func__ << " " << response_url_;
     state_ = State::kLoading;
+    read_bytes_ = 0;
     body_consumer_handle_ = std::move(body);
     body_consumer_watcher_.Watch(
         body_consumer_handle_.get(),
@@ -159,14 +160,16 @@ void BodySnifferURLLoader::ResumeReadingBodyFromNet() {
 
 // Only returns true if MOJO_RESULT_OK
 bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
-  size_t start_size = buffered_body_.size();
+  size_t start_size = buffered_body_.size();  // Where to start reading from
   uint32_t read_bytes = readBufferSize;
+  // Increase size of the buffer to accommodate new bytes to read
   buffered_body_.resize(start_size + read_bytes);
 
   auto result = body_consumer_handle_->ReadData(
       &buffered_body_[0] + start_size, &read_bytes, MOJO_READ_DATA_FLAG_NONE);
   switch (result) {
     case MOJO_RESULT_OK:
+      read_bytes_ += read_bytes;
       buffered_body_.resize(start_size + read_bytes);
       return true;
     case MOJO_RESULT_FAILED_PRECONDITION:
@@ -179,10 +182,12 @@ bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
     default:
       NOTREACHED();
   }
+
   return false;
 }
 
 void BodySnifferURLLoader::CompleteLoading(std::string body) {
+  read_bytes_ = 0;
   DCHECK_EQ(State::kLoading, state_);
   state_ = State::kSending;
 
@@ -202,7 +207,7 @@ void BodySnifferURLLoader::CompleteLoading(std::string body) {
                           base::Unretained(this)));
 
   if (bytes_remaining_in_buffer_) {
-    SendReceivedBodyToClient();
+    SendBufferedBodyToClient();
     return;
   }
 
@@ -230,7 +235,7 @@ void BodySnifferURLLoader::CancelAndResetHandles() {
   body_producer_handle_.reset();
 }
 
-void BodySnifferURLLoader::SendReceivedBodyToClient() {
+void BodySnifferURLLoader::SendBufferedBodyToClient() {
   DCHECK_EQ(State::kSending, state_);
   // Send the buffered data first.
   DCHECK_GT(bytes_remaining_in_buffer_, 0u);

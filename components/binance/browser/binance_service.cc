@@ -89,8 +89,7 @@ BinanceService::BinanceService(content::BrowserContext* context)
   LoadTokensFromPrefs();
 }
 
-BinanceService::~BinanceService() {
-}
+BinanceService::~BinanceService() = default;
 
 std::string BinanceService::GetOAuthClientUrl() {
   // The code_challenge_ value is derived from the code_verifier value.

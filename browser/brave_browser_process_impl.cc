@@ -79,6 +79,10 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/brave_shell_integration_win.h"
+#endif
+
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
@@ -105,7 +109,7 @@ void InitSystemRequestHandlerCallback() {
 
 using content::BrowserThread;
 
-BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {}
+BraveBrowserProcessImpl::~BraveBrowserProcessImpl() = default;
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
     : BrowserProcessImpl(startup_data) {
@@ -153,6 +157,10 @@ void BraveBrowserProcessImpl::Init() {
 #endif
 
   InitSystemRequestHandlerCallback();
+
+#if BUILDFLAG(IS_WIN)
+  shell_integration::win::PinDefaultShortcutForExistingUsers();
+#endif
 }
 
 brave_component_updater::BraveComponent::Delegate*

@@ -46,17 +46,15 @@ struct WebUISimpleItem {
 
 void AddLocalizedStringsBulk(content::WebUIDataSource* html_source,
                              const std::vector<WebUISimpleItem>& simple_items) {
-  for (size_t i = 0; i < simple_items.size(); i++) {
-    html_source->AddLocalizedString(simple_items[i].name,
-                                    simple_items[i].id);
+  for (auto simple_item : simple_items) {
+    html_source->AddLocalizedString(simple_item.name, simple_item.id);
   }
 }
 
 void AddResourcePaths(content::WebUIDataSource* html_source,
                       const std::vector<WebUISimpleItem>& simple_items) {
-  for (size_t i = 0; i < simple_items.size(); i++) {
-    html_source->AddResourcePath(simple_items[i].name,
-                                 simple_items[i].id);
+  for (auto simple_item : simple_items) {
+    html_source->AddResourcePath(simple_item.name, simple_item.id);
   }
 }
 
@@ -90,10 +88,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }, {
       std::string("rewards"), {
         { "favicon.ico", IDR_BRAVE_REWARDS_FAVICON },
-        { "6dd79d472f9c73429b26dae4ef14575e.svg", IDR_BRAVE_REWARDS_IMG_WALLET_BG },             // NOLINT
-        { "c9255cc2aa3d81ca6328e82d25a95766.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT },           // NOLINT
-        { "1bb9aa85741c6d1c077f043324aae835.svg", IDR_BRAVE_REWARDS_IMG_WELCOME_BG },            // NOLINT
-        { "dcaf489409ca7908aef96547c9aad274.svg", IDR_BRAVE_REWARDS_IMG_TAP },                   // NOLINT
       }
 #endif
     }, {

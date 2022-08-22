@@ -38,8 +38,8 @@ namespace {
 
 class TestNativeThemeObserver : public ui::NativeThemeObserver {
  public:
-  TestNativeThemeObserver() {}
-  ~TestNativeThemeObserver() override {}
+  TestNativeThemeObserver() = default;
+  ~TestNativeThemeObserver() override = default;
 
   MOCK_METHOD1(OnNativeThemeUpdated, void(ui::NativeTheme*));
 };

@@ -326,5 +326,20 @@ describe('Amount class', () => {
     ])('should format fiat amount %s with currency %s as %s', (value, currency, expected) => {
       expect(new Amount(value).formatAsFiat(currency)).toBe(expected)
     })
+
+    it.each([
+      ['122', 2, 'USD', '$122.00'],
+      ['567', 2, undefined, '567.00'],
+      ['1234', 2, 'USD', '$1.23k'],
+      ['1234', 2, undefined, '1.23k'],
+      ['1361000', 3, 'USD', '$1.361M'],
+      ['1361000', 2, undefined, '1.36M'],
+      ['1361500000', 3, 'USD', '$1.362B'],
+      ['1361500000', 2, undefined, '1.36B'],
+      ['1358900000000', 3, 'USD', '$1.359T'],
+      ['1358900000000000', 3, 'USD', '$1,358.900T']
+    ])('should abbreviate amount %s to have %s decimal places with currency %s as %s', (value: string, decimals: number, currency: string, expected: string) => {
+      expect(new Amount(value).abbreviate(decimals, currency)).toBe(expected)
+    })
   })
 })

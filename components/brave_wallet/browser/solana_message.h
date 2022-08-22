@@ -52,9 +52,10 @@ class SolanaMessage {
   std::string fee_payer() const { return fee_payer_; }
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
-  base::Value ToValue() const;
+  base::Value::Dict ToValue() const;
 
-  static absl::optional<SolanaMessage> FromValue(const base::Value& value);
+  static absl::optional<SolanaMessage> FromValue(
+      const base::Value::Dict& value);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);

@@ -86,7 +86,7 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
       net::URLToEphemeralStorageDomain(url), url);
 }
 
-EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
+EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {
   keep_alive_tld_ephemeral_lifetime_list_.clear();

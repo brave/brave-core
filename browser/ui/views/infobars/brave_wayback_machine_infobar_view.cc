@@ -30,8 +30,7 @@ BraveWaybackMachineInfoBarView::BraveWaybackMachineInfoBarView(
   AddChildView(sub_views_);
 }
 
-BraveWaybackMachineInfoBarView::~BraveWaybackMachineInfoBarView() {
-}
+BraveWaybackMachineInfoBarView::~BraveWaybackMachineInfoBarView() = default;
 
 void BraveWaybackMachineInfoBarView::Layout() {
   InfoBarView::Layout();

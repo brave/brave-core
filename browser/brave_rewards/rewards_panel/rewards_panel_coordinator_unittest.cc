@@ -23,7 +23,7 @@ template <typename F>
 class PanelObserver : public RewardsPanelCoordinator::Observer {
  public:
   explicit PanelObserver(F f) : f_(std::move(f)) {}
-  ~PanelObserver() override {}
+  ~PanelObserver() override = default;
 
   void OnRewardsPanelRequested(const mojom::RewardsPanelArgs& args) override {
     f_(args);

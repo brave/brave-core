@@ -48,7 +48,7 @@ std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
 
   if (!TxStateManager::ValueToTxMeta(value, meta.get()))
     return nullptr;
-  const base::Value* tx = value.Find("tx");
+  const base::Value::Dict* tx = value.FindDict("tx");
   if (!tx)
     return nullptr;
   absl::optional<FilTransaction> tx_from_value = FilTransaction::FromValue(*tx);

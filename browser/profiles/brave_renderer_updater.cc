@@ -45,7 +45,7 @@ BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
                           base::Unretained(this)));
 }
 
-BraveRendererUpdater::~BraveRendererUpdater() {}
+BraveRendererUpdater::~BraveRendererUpdater() = default;
 
 void BraveRendererUpdater::InitializeRenderer(
     content::RenderProcessHost* render_process_host) {

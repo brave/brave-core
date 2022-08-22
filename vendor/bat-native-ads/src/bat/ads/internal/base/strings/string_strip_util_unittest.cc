@@ -13,13 +13,13 @@ namespace ads {
 
 TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
-  const std::string content = "";
+  const std::string content;
 
   // Act
   const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
-  const std::string expected_stripped_content = "";
+  const std::string expected_stripped_content;
 
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
@@ -32,7 +32,7 @@ TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromWhitespace) {
   const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
-  const std::string expected_stripped_content = "";
+  const std::string expected_stripped_content;
 
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
@@ -66,13 +66,13 @@ TEST(BatAdsStringUtilTest, StripNonAlphaCharacters) {
 
 TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
-  const std::string content = "";
+  const std::string content;
 
   // Act
   const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
-  const std::string expected_stripped_content = "";
+  const std::string expected_stripped_content;
 
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
@@ -85,7 +85,7 @@ TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
   const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
-  const std::string expected_stripped_content = "";
+  const std::string expected_stripped_content;
 
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }

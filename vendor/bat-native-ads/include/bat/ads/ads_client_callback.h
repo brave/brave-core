@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_CALLBACK_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_CALLBACK_H_
 
-#include <functional>
 #include <string>
 #include <vector>
 
@@ -21,19 +20,22 @@ class File;
 
 namespace ads {
 
-using ResultCallback = std::function<void(const bool)>;
+using ResultCallback = base::OnceCallback<void(const bool)>;
 
-using LoadCallback = std::function<void(const bool, const std::string&)>;
+using SaveCallback = base::OnceCallback<void(const bool)>;
+
+using LoadCallback = base::OnceCallback<void(const bool, const std::string&)>;
 
 using LoadFileCallback = base::OnceCallback<void(base::File)>;
 
-using UrlRequestCallback = std::function<void(const mojom::UrlResponseInfo&)>;
+using UrlRequestCallback =
+    base::OnceCallback<void(const mojom::UrlResponseInfo&)>;
 
 using RunDBTransactionCallback =
-    std::function<void(mojom::DBCommandResponseInfoPtr)>;
+    base::OnceCallback<void(mojom::DBCommandResponseInfoPtr)>;
 
 using GetBrowsingHistoryCallback =
-    std::function<void(const std::vector<GURL>&)>;
+    base::OnceCallback<void(const std::vector<GURL>&)>;
 
 using GetScheduledCaptchaCallback =
     base::OnceCallback<void(const std::string&)>;

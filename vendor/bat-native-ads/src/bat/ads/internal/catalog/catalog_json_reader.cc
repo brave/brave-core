@@ -11,7 +11,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/ads_constants.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
@@ -29,7 +29,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
   const std::string json_schema =
       AdsClientHelper::GetInstance()->LoadDataResource(
-          g_catalog_json_schema_data_resource_name);
+          resource::data::g_catalog_json_schema_name);
 
   if (!helper::JSON::Validate(&document, json_schema)) {
     BLOG(1, helper::JSON::GetLastError(&document));
@@ -278,10 +278,6 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           }
 
           creative_set.creative_promoted_content_ads.push_back(creative);
-        } else if (code == "in_page_all_v1") {
-          // TODO(https://github.com/brave/brave-browser/issues/7298): Implement
-          // Brave Publisher Ads
-          continue;
         } else {
           // Unknown type
           NOTREACHED();

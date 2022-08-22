@@ -30,7 +30,7 @@ WebcompatReportUploader::WebcompatReportUploader(
     scoped_refptr<network::SharedURLLoaderFactory> factory)
     : shared_url_loader_factory_(std::move(factory)) {}
 
-WebcompatReportUploader::~WebcompatReportUploader() {}
+WebcompatReportUploader::~WebcompatReportUploader() = default;
 
 void WebcompatReportUploader::SubmitReport(const GURL& report_url,
                                            const base::Value& details,

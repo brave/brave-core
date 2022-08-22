@@ -22,7 +22,7 @@ namespace ntp_background_images {
 
 class NTPBackgroundImagesSourceTest : public testing::Test {
  public:
-  NTPBackgroundImagesSourceTest() {}
+  NTPBackgroundImagesSourceTest() = default;
 
   void SetUp() override {
     auto* registry = local_pref_.registry();

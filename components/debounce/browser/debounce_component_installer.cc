@@ -32,7 +32,7 @@ DebounceComponentInstaller::DebounceComponentInstaller(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service) {}
 
-DebounceComponentInstaller::~DebounceComponentInstaller() {}
+DebounceComponentInstaller::~DebounceComponentInstaller() = default;
 
 void DebounceComponentInstaller::LoadDirectlyFromResourcePath() {
   base::FilePath dat_file_path = resource_dir_.AppendASCII(kDebounceConfigFile);

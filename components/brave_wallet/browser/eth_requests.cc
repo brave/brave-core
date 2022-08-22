@@ -74,8 +74,8 @@ std::string eth_feeHistory(const std::string& num_blocks,
                            const std::string& head,
                            const std::vector<double>& reward_percentiles) {
   base::Value::List percentile_values;
-  for (size_t i = 0; i < reward_percentiles.size(); ++i) {
-    percentile_values.Append(base::Value(reward_percentiles[i]));
+  for (double reward_percentile : reward_percentiles) {
+    percentile_values.Append(base::Value(reward_percentile));
   }
 
   base::Value::List params;

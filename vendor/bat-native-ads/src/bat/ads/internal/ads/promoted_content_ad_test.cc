@@ -41,9 +41,9 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLResponseMap responses = {
+    const URLResponseMap url_responses = {
         {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
-    MockUrlResponses(ads_client_mock_, responses);
+    MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
 

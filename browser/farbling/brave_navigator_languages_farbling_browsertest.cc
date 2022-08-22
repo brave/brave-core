@@ -66,7 +66,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   BraveNavigatorLanguagesFarblingBrowserTest& operator=(
       const BraveNavigatorLanguagesFarblingBrowserTest&) = delete;
 
-  ~BraveNavigatorLanguagesFarblingBrowserTest() override {}
+  ~BraveNavigatorLanguagesFarblingBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();

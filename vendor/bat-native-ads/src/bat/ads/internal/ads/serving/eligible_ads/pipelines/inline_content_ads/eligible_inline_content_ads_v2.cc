@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v2.h"
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
@@ -48,25 +49,31 @@ void EligibleAdsV2::GetForUserModel(
           return;
         }
 
-        const int max_count = features::GetBrowsingHistoryMaxCount();
-        const int days_ago = features::GetBrowsingHistoryDaysAgo();
-        AdsClientHelper::GetInstance()->GetBrowsingHistory(
-            max_count, days_ago,
-            [=](const BrowsingHistoryList& browsing_history) {
-              GetEligibleAds(user_model, ad_events, browsing_history,
-                             dimensions, callback);
-            });
+        GetBrowsingHistory(user_model, ad_events, dimensions, callback);
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void EligibleAdsV2::GetBrowsingHistory(
+    const targeting::UserModelInfo& user_model,
+    const AdEventList& ad_events,
+    const std::string& dimensions,
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+  const int max_count = features::GetBrowsingHistoryMaxCount();
+  const int days_ago = features::GetBrowsingHistoryDaysAgo();
+  AdsClientHelper::GetInstance()->GetBrowsingHistory(
+      max_count, days_ago,
+      base::BindOnce(&EligibleAdsV2::GetEligibleAds, base::Unretained(this),
+                     user_model, ad_events, dimensions, callback));
+}
+
 void EligibleAdsV2::GetEligibleAds(
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    const BrowsingHistoryList& browsing_history) {
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForDimensions(
       dimensions,

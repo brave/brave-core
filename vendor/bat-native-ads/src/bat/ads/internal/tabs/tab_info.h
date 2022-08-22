@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TABS_TAB_INFO_H_
 
 #include <cstdint>
+#include <vector>
 
 #include "url/gurl.h"
 
@@ -22,7 +23,7 @@ struct TabInfo final {
   bool operator!=(const TabInfo& rhs) const;
 
   int32_t id = 0;
-  GURL url;
+  std::vector<GURL> redirect_chain;
   bool is_playing_media = false;
 };
 

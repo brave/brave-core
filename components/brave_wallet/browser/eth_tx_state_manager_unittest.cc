@@ -36,7 +36,7 @@ class EthTxStateManagerUnitTest : public testing::Test {
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
-  ~EthTxStateManagerUnitTest() override {}
+  ~EthTxStateManagerUnitTest() override = default;
 
  protected:
   void SetUp() override {

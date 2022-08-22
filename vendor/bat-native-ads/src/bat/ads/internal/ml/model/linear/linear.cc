@@ -9,6 +9,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/adapters.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ml/ml_prediction_util.h"
 
 namespace ads {
@@ -49,10 +51,9 @@ PredictionMap Linear::GetTopPredictions(const VectorData& x,
   std::vector<std::pair<double, std::string>> prediction_order;
   prediction_order.reserve(prediction_map_softmax.size());
   for (const auto& prediction : prediction_map_softmax) {
-    prediction_order.push_back(
-        std::make_pair(prediction.second, prediction.first));
+    prediction_order.emplace_back(prediction.second, prediction.first);
   }
-  std::sort(prediction_order.rbegin(), prediction_order.rend());
+  base::ranges::sort(base::Reversed(prediction_order));
   PredictionMap top_predictions;
   if (top_count > 0) {
     prediction_order.resize(top_count);

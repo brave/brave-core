@@ -38,7 +38,7 @@ void RegisterBraveDarkModePrefsForMigration(
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry);
 
 std::string GetStringFromBraveDarkModeType(BraveDarkModeType type);
-base::Value GetBraveDarkModeTypeList();
+base::Value::List GetBraveDarkModeTypeList();
 void SetBraveDarkModeType(const std::string& type);
 void SetBraveDarkModeType(BraveDarkModeType type);
 // Returns current effective theme type. dark or light.

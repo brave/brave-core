@@ -6,13 +6,11 @@
 #ifndef BRAVE_COMPONENTS_DECENTRALIZED_DNS_UTILS_H_
 #define BRAVE_COMPONENTS_DECENTRALIZED_DNS_UTILS_H_
 
+#include "base/values.h"
+
 class GURL;
 class PrefService;
 class PrefRegistrySimple;
-
-namespace base {
-class Value;
-}
 
 namespace decentralized_dns {
 
@@ -26,7 +24,7 @@ bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state);
 bool IsENSTLD(const GURL& url);
 bool IsENSResolveMethodAsk(PrefService* local_state);
 bool IsENSResolveMethodEthereum(PrefService* local_state);
-base::Value GetResolveMethodList();
+base::Value::List GetResolveMethodList();
 
 }  // namespace decentralized_dns
 

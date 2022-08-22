@@ -20,7 +20,7 @@ IpfsSubframeNavigationThrottle::IpfsSubframeNavigationThrottle(
     content::NavigationHandle* navigation_handle)
     : content::NavigationThrottle(navigation_handle) {}
 
-IpfsSubframeNavigationThrottle::~IpfsSubframeNavigationThrottle() {}
+IpfsSubframeNavigationThrottle::~IpfsSubframeNavigationThrottle() = default;
 
 // content::NavigationThrottle implementation:
 content::NavigationThrottle::ThrottleCheckResult

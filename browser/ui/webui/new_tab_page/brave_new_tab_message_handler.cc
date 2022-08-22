@@ -17,7 +17,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -539,17 +539,17 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   AllowJavascript();
 
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  base::Value wallpaper(base::Value::Type::DICTIONARY);
+  base::Value::Dict wallpaper;
 
   if (!service) {
-    ResolveJavascriptCallback(args[0], std::move(wallpaper));
+    ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
     return;
   }
 
   base::Value data = service->GetCurrentWallpaperForDisplay();
 
   if (!data.is_dict()) {
-    ResolveJavascriptCallback(args[0], std::move(wallpaper));
+    ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
     return;
   }
 
@@ -559,8 +559,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 
   if (is_background.value()) {
     constexpr char kBackgroundWallpaperKey[] = "backgroundWallpaper";
-    wallpaper.SetKey(kBackgroundWallpaperKey, std::move(data));
-    ResolveJavascriptCallback(args[0], std::move(wallpaper));
+    wallpaper.Set(kBackgroundWallpaperKey, std::move(data));
+    ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
     return;
   }
 
@@ -571,8 +571,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   service->BrandedWallpaperWillBeDisplayed(wallpaper_id, creative_instance_id);
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
-  wallpaper.SetKey(kBrandedWallpaperKey, std::move(data));
-  ResolveJavascriptCallback(args[0], std::move(wallpaper));
+  wallpaper.Set(kBrandedWallpaperKey, std::move(data));
+  ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
 }
 
 void BraveNewTabMessageHandler::HandleCustomizeClicked(

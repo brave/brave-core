@@ -9,6 +9,7 @@
 #include <functional>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -381,9 +382,9 @@ void NotificationAdManager::Save() {
   BLOG(9, "Saving notification ads state");
 
   std::string json = ToJson();
-  auto callback =
-      std::bind(&NotificationAdManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->Save(kNotificationsFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(
+      kNotificationsFilename, json,
+      base::BindOnce(&NotificationAdManager::OnSaved, base::Unretained(this)));
 }
 
 void NotificationAdManager::OnSaved(const bool success) {
@@ -398,9 +399,9 @@ void NotificationAdManager::OnSaved(const bool success) {
 void NotificationAdManager::Load() {
   BLOG(3, "Loading notification ads state");
 
-  auto callback = std::bind(&NotificationAdManager::OnLoaded, this,
-                            std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::GetInstance()->Load(kNotificationsFilename, callback);
+  AdsClientHelper::GetInstance()->Load(
+      kNotificationsFilename,
+      base::BindOnce(&NotificationAdManager::OnLoaded, base::Unretained(this)));
 }
 
 void NotificationAdManager::OnLoaded(const bool success,

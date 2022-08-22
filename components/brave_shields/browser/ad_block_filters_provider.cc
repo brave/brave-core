@@ -7,9 +7,9 @@
 
 namespace brave_shields {
 
-AdBlockFiltersProvider::AdBlockFiltersProvider() {}
+AdBlockFiltersProvider::AdBlockFiltersProvider() = default;
 
-AdBlockFiltersProvider::~AdBlockFiltersProvider() {}
+AdBlockFiltersProvider::~AdBlockFiltersProvider() = default;
 
 void AdBlockFiltersProvider::AddObserver(
     AdBlockFiltersProvider::Observer* observer) {

@@ -8,6 +8,7 @@
 #include <functional>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -59,7 +60,7 @@ void Campaigns::Delete(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void Campaigns::InsertOrUpdate(mojom::DBTransactionInfo* transaction,

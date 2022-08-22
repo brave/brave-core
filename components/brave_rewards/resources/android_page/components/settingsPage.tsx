@@ -24,7 +24,7 @@ import MonthlyTipsBox from './monthlyTipsBox'
 import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
-import { getActivePromos, getPromo, PromoType } from '../../page/promos'
+import { getActivePromos, getPromo, PromoType } from '../../page/components/promos'
 import { getWalletProviderName } from '../utils'
 
 export interface Props extends Rewards.ComponentProps {
@@ -333,17 +333,17 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   renderPromos = () => {
-    const { currentCountryCode, ui } = this.props.rewardsData
+    const { currentCountryCode, externalWallet, ui } = this.props.rewardsData
     const { promosDismissed } = ui
 
     return (
       <>
-        {getActivePromos(this.props.rewardsData, true).map((key: PromoType) => {
+        {getActivePromos(externalWallet, true).map((key: PromoType) => {
            if (promosDismissed && promosDismissed[key]) {
              return null
            }
 
-           const promo = getPromo(key, this.props.rewardsData)
+           const promo = getPromo(key)
            if (!promo) {
              return null
            }

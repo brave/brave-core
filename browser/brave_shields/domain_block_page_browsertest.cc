@@ -33,7 +33,7 @@ using brave_shields::features::kBraveDomainBlock;
 
 class DomainBlockTestBase : public AdBlockServiceTest {
  public:
-  DomainBlockTestBase() {}
+  DomainBlockTestBase() = default;
   DomainBlockTestBase(const DomainBlockTestBase&) = delete;
   DomainBlockTestBase& operator=(const DomainBlockTestBase&) = delete;
 
