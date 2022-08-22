@@ -40,17 +40,17 @@ bool AdContentInfo::operator!=(const AdContentInfo& rhs) const {
 AdContentLikeActionType AdContentInfo::ToggleThumbUpActionType() const {
   if (like_action_type == AdContentLikeActionType::kThumbsUp) {
     return AdContentLikeActionType::kNeutral;
-  } else {
-    return AdContentLikeActionType::kThumbsUp;
   }
+
+  return AdContentLikeActionType::kThumbsUp;
 }
 
 AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
   if (like_action_type == AdContentLikeActionType::kThumbsDown) {
     return AdContentLikeActionType::kNeutral;
-  } else {
-    return AdContentLikeActionType::kThumbsDown;
   }
+
+  return AdContentLikeActionType::kThumbsDown;
 }
 
 base::Value::Dict AdContentInfo::ToValue() const {
