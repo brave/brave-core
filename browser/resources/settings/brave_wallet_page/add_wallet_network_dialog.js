@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
-import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
+import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
 import 'chrome://resources/cr_elements/cr_searchable_drop_down/cr_searchable_drop_down.js';
 import 'chrome://resources/cr_elements/cr_radio_button/cr_radio_button.m.js';
