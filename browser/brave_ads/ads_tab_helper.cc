@@ -59,7 +59,7 @@ AdsTabHelper::~AdsTabHelper() {
 }
 
 void AdsTabHelper::TabUpdated() {
-  if (!ads_service_) {
+  if (!ads_service_ || redirect_chain_.empty()) {
     return;
   }
 
