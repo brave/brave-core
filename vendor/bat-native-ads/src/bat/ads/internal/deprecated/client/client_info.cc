@@ -158,8 +158,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value =
           root.FindList("textClassificationProbabilitiesHistory")) {
     for (const auto& probabilities : *value) {
-      if (!probabilities.is_dict())
+      if (!probabilities.is_dict()) {
         continue;
+      }
       const auto* probability_list =
           probabilities.GetDict().FindList("textClassificationProbabilities");
       if (!probability_list) {

@@ -287,8 +287,9 @@ base::Value::Dict ConfirmationStateManager::GetFailedConfirmationsAsDictionary(
 
     absl::optional<base::Value> user_data =
         base::JSONReader::Read(confirmation.user_data);
-    if (user_data && user_data->is_dict())
+    if (user_data && user_data->is_dict()) {
       confirmation_dict.Set("user_data", std::move(*user_data));
+    }
 
     list.Append(std::move(confirmation_dict));
   }
