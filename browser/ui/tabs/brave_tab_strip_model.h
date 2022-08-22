@@ -24,8 +24,6 @@ class BraveTabStripModel : public TabStripModel {
   void SelectRelativeTab(TabRelativeDirection direction,
                          UserGestureDetails detail) override;
 
-  bool IsReadLaterSupportedForAny(const std::vector<int>& indices) override;
-
   // Set the next tab when doing a MRU cycling with Ctrl-tab
   void SelectMRUTab(
       TabRelativeDirection direction,

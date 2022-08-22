@@ -39,7 +39,14 @@ class SidebarControlView : public views::View,
                            public sidebar::SidebarModel::Observer {
  public:
   METADATA_HEADER(SidebarControlView);
-  explicit SidebarControlView(BraveBrowser* browser);
+  class Delegate {
+   public:
+    virtual void MenuClosed() {}
+
+   protected:
+    ~Delegate() = default;
+  };
+  SidebarControlView(Delegate* delegate, BraveBrowser* browser);
   ~SidebarControlView() override;
 
   SidebarControlView(const SidebarControlView&) = delete;
@@ -58,6 +65,7 @@ class SidebarControlView : public views::View,
   // ui::SimpleMenuModel::Delegate overrides:
   void ExecuteCommand(int command_id, int event_flags) override;
   bool IsCommandIdChecked(int command_id) const override;
+  void MenuClosed(ui::SimpleMenuModel* source) override;
 
   // SidebarButtonView::Delegate overrides:
   std::u16string GetTooltipTextFor(const views::View* view) const override;
@@ -85,6 +93,7 @@ class SidebarControlView : public views::View,
   void UpdateSettingsButtonState();
   void UpdateBackgroundAndBorder();
 
+  raw_ptr<Delegate> delegate_ = nullptr;
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidebarItemsScrollView> sidebar_items_view_ = nullptr;
   raw_ptr<SidebarItemAddButton> sidebar_item_add_view_ = nullptr;

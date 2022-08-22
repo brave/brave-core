@@ -202,6 +202,8 @@ source_set("ui") {
       "views/frame/brave_browser_frame.h",
       "views/frame/brave_browser_view.cc",
       "views/frame/brave_browser_view.h",
+      "views/frame/brave_browser_view_layout.cc",
+      "views/frame/brave_browser_view_layout.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
@@ -212,6 +214,8 @@ source_set("ui") {
       "views/omnibox/brave_search_conversion_promotion_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
+      "views/side_panel/brave_side_panel.cc",
+      "views/side_panel/brave_side_panel.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_tab.cc",
@@ -416,16 +420,10 @@ source_set("ui") {
 
   if (enable_sidebar) {
     deps += [
-      "//brave/browser/resources/sidebar:resources",
       "//brave/browser/ui/sidebar",
-      "//brave/browser/ui/webui/sidebar:mojo_bindings",
       "//brave/components/sidebar",
       "//chrome/app:generated_resources",
-      "//components/bookmarks/browser",
       "//components/favicon_base",
-      "//mojo/public/cpp/bindings",
-      "//ui/base/mojom",
-      "//ui/webui",
     ]
 
     sources += [
@@ -455,14 +453,10 @@ source_set("ui") {
       "views/sidebar/sidebar_items_contents_view.h",
       "views/sidebar/sidebar_items_scroll_view.cc",
       "views/sidebar/sidebar_items_scroll_view.h",
-      "views/sidebar/sidebar_panel_webview.cc",
-      "views/sidebar/sidebar_panel_webview.h",
       "views/sidebar/sidebar_show_options_event_detect_widget.cc",
       "views/sidebar/sidebar_show_options_event_detect_widget.h",
-      "webui/sidebar/sidebar_bookmarks_page_handler.cc",
-      "webui/sidebar/sidebar_bookmarks_page_handler.h",
-      "webui/sidebar/sidebar_bookmarks_ui.cc",
-      "webui/sidebar/sidebar_bookmarks_ui.h",
+      "views/sidebar/sidebar_side_panel_utils.cc",
+      "views/sidebar/sidebar_side_panel_utils.h",
     ]
   }
 

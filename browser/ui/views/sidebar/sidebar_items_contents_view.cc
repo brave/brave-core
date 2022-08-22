@@ -103,7 +103,7 @@ void SidebarItemsContentsView::Update() {
 }
 
 void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
-  const auto items = sidebar_model_->GetAllSidebarItems();
+  const auto& items = sidebar_model_->GetAllSidebarItems();
   // It's not initialized yet if child view count and items size are different.
   if (children().size() != items.size())
     return;
@@ -138,7 +138,7 @@ std::u16string SidebarItemsContentsView::GetTooltipTextFor(
   if (index == -1)
     return std::u16string();
 
-  auto item = sidebar_model_->GetAllSidebarItems()[index];
+  auto& item = sidebar_model_->GetAllSidebarItems()[index];
   if (!item.title.empty())
     return item.title;
 
@@ -373,7 +373,7 @@ SidebarItemView* SidebarItemsContentsView::GetItemViewAt(int index) {
 }
 
 void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
-  const auto item = sidebar_model_->GetAllSidebarItems()[index];
+  const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
   if (item.open_in_panel)
@@ -432,6 +432,10 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
     case sidebar::SidebarItem::BuiltInItemType::kBookmarks:
       focused_image_resource = IDR_SIDEBAR_BOOKMARKS_FOCUSED;
       normal_image_icon = &kSidebarBookmarksIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kReadingList:
+      focused_image_resource = IDR_SIDEBAR_READING_LIST_FOCUSED;
+      normal_image_icon = &kSidebarReadingListIcon;
       break;
     case sidebar::SidebarItem::BuiltInItemType::kHistory:
       focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;
