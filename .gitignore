@@ -2,6 +2,7 @@
 !/vendor/bat-native-ledger
 !/vendor/bat-native-ads
 .DS_Store
+.gclient_*
 .tags*
 /.idea/
 /components/brave_new_tab_ui/data/LICENSE
