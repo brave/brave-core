@@ -582,6 +582,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     toolbar?.removeFromSuperview()
     toolbar?.tabToolbarDelegate = nil
     toolbar = nil
+    bottomTouchArea.isEnabled = showToolbar
 
     if showToolbar {
       toolbar = BottomToolbarView()
