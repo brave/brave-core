@@ -1,0 +1,22 @@
+
+source_set("url_sanitizer") {
+  sources = [
+    "url_sanitizer.cc",
+    "url_sanitizer.h"
+  ]
+  deps = [
+    "//base",
+    "//third_party/re2"
+  ]
+}
+
+source_set("unittests") {
+  testonly = true
+
+  sources = [ "url_sanitizer_unittest.cc" ]
+
+  deps = [
+    ":url_sanitizer",
+     "//testing/gtest"
+  ]
+}
