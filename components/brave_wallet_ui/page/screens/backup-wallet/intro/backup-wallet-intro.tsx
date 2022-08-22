@@ -62,12 +62,12 @@ export const BackupWalletIntroStep = ({
   const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
-  const onPasswordChange = (value: string): void => {
+  const onPasswordChange = React.useCallback((value: string): void => {
     setIsCorrectPassword(true) // clear error
     setPassword(value)
-  }
+  }, [])
 
-  const onContinue = async () => {
+  const onContinue = React.useCallback(async () => {
     // not password-protected during onboarding
     if (isOnboarding) {
       return onSubmit()
@@ -94,13 +94,18 @@ export const BackupWalletIntroStep = ({
 
     // continue on
     onSubmit()
-  }
+  }, [
+    onSubmit,
+    isOnboarding,
+    password,
+    attemptPasswordEntry
+  ])
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       onContinue()
     }
-  }
+  }, [onContinue])
 
   // render
   return (
