@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
-index 8f17a4a1123bbd98ce252e0aa4166f2e2d622da8..5806a502d6cd033effed0c667b3e17a00343cdc6 100644
+index 8f17a4a1123bbd98ce252e0aa4166f2e2d622da8..bee5df68ce92beb4d20240dc8802b8e46e6c98ef 100644
 --- a/chrome/browser/ui/webui/history/history_ui.cc
 +++ b/chrome/browser/ui/webui/history/history_ui.cc
 @@ -64,6 +64,7 @@ content::WebUIDataSource* CreateHistoryUIHTMLSource(Profile* profile) {
    content::WebUIDataSource* source =
        content::WebUIDataSource::Create(chrome::kChromeUIHistoryHost);
  
-+  BraveCustomizeHistoryDataSource(source);
++  BRAVE_CREATE_HISTORY_UI_HTML_SOURCE
    static constexpr webui::LocalizedString kStrings[] = {
        // Localized strings (alphabetical order).
        {"actionMenuDescription", IDS_HISTORY_ACTION_MENU_DESCRIPTION},

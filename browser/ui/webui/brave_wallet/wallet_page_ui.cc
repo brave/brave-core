@@ -51,7 +51,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
-  NavigationBarDataProvider::Initialize(source);
+  auto* profile = Profile::FromWebUI(web_ui);
+  NavigationBarDataProvider::Initialize(source, profile);
   webui::SetupWebUIDataSource(
       source,
       base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
@@ -65,7 +66,6 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
-  auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));

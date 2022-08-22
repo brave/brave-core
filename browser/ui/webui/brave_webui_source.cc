@@ -58,11 +58,12 @@ void AddResourcePaths(content::WebUIDataSource* html_source,
   }
 }
 
-void CustomizeWebUIHTMLSource(const std::string &name,
-    content::WebUIDataSource* source) {
+void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
+                              const std::string& name,
+                              content::WebUIDataSource* source) {
 #if !BUILDFLAG(IS_ANDROID)
   if (name == "rewards" || name == "wallet") {
-    NavigationBarDataProvider::Initialize(source);
+    NavigationBarDataProvider::Initialize(source, Profile::FromWebUI(web_ui));
   }
 #endif
 
@@ -1066,6 +1067,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 }  // NOLINT(readability/fn_size)
 
 content::WebUIDataSource* CreateWebUIDataSource(
+    content::WebUI* web_ui,
     const std::string& name,
     const webui::ResourcePath* resource_map,
     size_t resource_map_size,
@@ -1095,7 +1097,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
   for (size_t i = 0; i < resource_map_size; ++i) {
     source->AddResourcePath(resource_map[i].path, resource_map[i].id);
   }
-  CustomizeWebUIHTMLSource(name, source);
+  CustomizeWebUIHTMLSource(web_ui, name, source);
   return source;
 }
 
@@ -1109,7 +1111,7 @@ content::WebUIDataSource* CreateAndAddWebUIDataSource(
     int html_resource_id,
     bool disable_trusted_types_csp) {
   content::WebUIDataSource* data_source =
-      CreateWebUIDataSource(name, resource_map, resource_map_size,
+      CreateWebUIDataSource(web_ui, name, resource_map, resource_map_size,
                             html_resource_id, disable_trusted_types_csp);
   content::WebUIDataSource::Add(Profile::FromWebUI(web_ui), data_source);
   return data_source;

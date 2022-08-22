@@ -20,6 +20,7 @@
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/components/brave_rewards/common/policy_util.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -79,7 +80,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddString(
       "braveProductVersion",
       version_info::GetBraveVersionWithoutChromiumMajorVersion());
-  NavigationBarDataProvider::Initialize(html_source);
+  NavigationBarDataProvider::Initialize(html_source, profile);
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile))
     service->InitializeWebUIDataSource(html_source);
   html_source->AddBoolean(
@@ -101,6 +102,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isDeAmpFeatureEnabled",
       base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+  html_source->AddBoolean(
+      "isBraveRewardsSupported",
+      !brave_rewards::IsDisabledByPolicy(profile->GetPrefs()));
 
   if (ShouldDisableCSPForTesting()) {
     html_source->DisableContentSecurityPolicy();

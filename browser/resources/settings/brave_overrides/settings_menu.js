@@ -248,13 +248,17 @@ RegisterPolymerTemplateModifications({
     )
     newTabEl.insertAdjacentElement('afterend', shieldsEl)
     // Add Rewards item
-    const rewardsEl = createMenuElement(
-      loadTimeData.getString('braveRewards'),
-      '/rewards',
-      'brave_settings:rewards',
-      'rewards',
-    )
-    shieldsEl.insertAdjacentElement('afterend', rewardsEl)
+    const isBraveRewardsSupported = loadTimeData.getBoolean('isBraveRewardsSupported')
+    let rewardsEl = undefined
+    if (isBraveRewardsSupported) {
+      rewardsEl = createMenuElement(
+        loadTimeData.getString('braveRewards'),
+        '/rewards',
+        'brave_settings:rewards',
+        'rewards',
+      )
+      shieldsEl.insertAdjacentElement('afterend', rewardsEl)
+    }
     // Add Embed Blocking item
     const embedEl = createMenuElement(
       loadTimeData.getString('socialBlocking'),
@@ -262,7 +266,11 @@ RegisterPolymerTemplateModifications({
       'brave_settings:social-permissions',
       'socialBlocking',
     )
-    rewardsEl.insertAdjacentElement('afterend', embedEl)
+    if (isBraveRewardsSupported) {
+      rewardsEl.insertAdjacentElement('afterend', embedEl)
+    } else {
+      shieldsEl.insertAdjacentElement('afterend', embedEl)
+    }
     // Add privacy
     const privacyEl = getMenuElement(templateContent, '/privacy')
     embedEl.insertAdjacentElement('afterend', privacyEl)

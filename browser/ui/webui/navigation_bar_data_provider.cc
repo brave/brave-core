@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 
+#include "brave/components/brave_rewards/common/policy_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -12,7 +14,8 @@
 #include "components/grit/brave_components_strings.h"
 
 // static
-void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source) {
+void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source,
+                                           Profile* profile) {
   source->AddLocalizedString(
     "brToolbarSettingsTitle", IDS_SETTINGS_SETTINGS);
   source->AddLocalizedString(
@@ -23,7 +26,8 @@ void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source) {
     "brToolbarHistoryTitle", IDS_HISTORY_TITLE);
   source->AddLocalizedString(
     "brToolbarRewardsTitle", IDS_BRAVE_UI_BRAVE_REWARDS);
-  source->AddLocalizedString(
-    "brToolbarWalletsTitle", IDS_WALLETS_TITLE);
-}
+  source->AddLocalizedString("brToolbarWalletsTitle", IDS_WALLETS_TITLE);
 
+  source->AddBoolean("isBraveRewardsSupported",
+                     !brave_rewards::IsDisabledByPolicy(profile->GetPrefs()));
+}

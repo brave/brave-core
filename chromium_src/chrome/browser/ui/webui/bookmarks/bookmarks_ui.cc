@@ -7,13 +7,15 @@
 #include "brave/browser/resources/bookmarks/grit/brave_bookmarks_resources_map.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 namespace {
 
-void BraveAddBookmarksResources(content::WebUIDataSource* source) {
-  NavigationBarDataProvider::Initialize(source);
+void BraveAddBookmarksResources(content::WebUIDataSource* source,
+                                Profile* profile) {
+  NavigationBarDataProvider::Initialize(source, profile);
 #if !BUILDFLAG(OPTIMIZE_WEBUI)
   for (size_t i = 0; i < kBraveBookmarksResourcesSize; ++i) {
     source->AddResourcePath(kBraveBookmarksResources[i].path,
@@ -27,7 +29,7 @@ void BraveAddBookmarksResources(content::WebUIDataSource* source) {
 }  // namespace
 
 #define BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE \
-  BraveAddBookmarksResources(source);
+  BraveAddBookmarksResources(source, profile);
 
 #include "src/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
 
