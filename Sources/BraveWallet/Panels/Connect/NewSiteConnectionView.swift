@@ -13,6 +13,7 @@ import BraveCore
 public struct NewSiteConnectionView: View {
   @ObservedObject var keyringStore: KeyringStore
   var origin: URLOrigin
+  var coin: BraveWallet.CoinType
   var onConnect: (_ addresses: [String]) -> Void
   
   @available(iOS, introduced: 14.0, deprecated: 15.0, message: "Use PresentationMode on iOS 15")
@@ -20,11 +21,13 @@ public struct NewSiteConnectionView: View {
   
   public init(
     origin: URLOrigin,
+    coin: BraveWallet.CoinType,
     keyringStore: KeyringStore,
     onConnect: @escaping (_ addresses: [String]) -> Void,
     onDismiss: @escaping () -> Void
   ) {
     self.origin = origin
+    self.coin = coin
     self.keyringStore = keyringStore
     self.onConnect = onConnect
     self.onDismiss = onDismiss
@@ -34,6 +37,10 @@ public struct NewSiteConnectionView: View {
   private let maxFaviconSize: CGFloat = 96
   @State private var selectedAccounts: Set<BraveWallet.AccountInfo.ID> = []
   @State private var isConfirmationViewVisible: Bool = false
+  
+  private var accountInfos: [BraveWallet.AccountInfo] {
+    keyringStore.allKeyrings.first(where: { $0.coin == coin })?.accountInfos ?? []
+  }
   
   @ViewBuilder private func originAndFavicon(urlOrigin: URLOrigin) -> some View {
     urlOrigin.url.map { url in
@@ -84,7 +91,7 @@ public struct NewSiteConnectionView: View {
             .listRowBackground(Color(.braveGroupedBackground))
         }
         Section {
-          ForEach(keyringStore.defaultKeyring.accountInfos) { account in
+          ForEach(accountInfos) { account in
             Button {
               if selectedAccounts.contains(account.id) {
                 selectedAccounts.remove(account.id)
@@ -154,12 +161,12 @@ public struct NewSiteConnectionView: View {
     }
     .navigationViewStyle(.stack)
     .onAppear {
-      if keyringStore.selectedAccount.coin == .eth {
+      if keyringStore.selectedAccount.coin == coin {
         selectedAccounts.insert(keyringStore.selectedAccount.id)
-      } else { // fetch selected account for `.eth` coin type
+      } else { // Need to fetch selected account for coin
         Task { @MainActor in
-          if let selectedEthAccount = await keyringStore.selectedAccount(for: .eth) {
-            selectedAccounts.insert(selectedEthAccount.id)
+          if let selectedAccount = await keyringStore.selectedAccount(for: coin) {
+            selectedAccounts.insert(selectedAccount.id)
           }
         }
       }
@@ -201,7 +208,7 @@ public struct NewSiteConnectionView: View {
       }
       Section {
         Button {
-          let accounts = keyringStore.defaultKeyring.accountInfos
+          let accounts = keyringStore.allKeyrings.flatMap(\.accountInfos)
             .filter { selectedAccounts.contains($0.id) }
             .map(\.address)
           onConnect(accounts)
@@ -224,6 +231,7 @@ struct NewSiteConnectionView_Previews: PreviewProvider {
   static var previews: some View {
     NewSiteConnectionView(
       origin: .init(url: URL(string: "https://app.uniswap.org")!),
+      coin: .eth,
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
         store.addPrimaryAccount("Account 2", coin: .eth, completion: nil)
