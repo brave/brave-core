@@ -10,7 +10,6 @@ import logging
 import subprocess
 import json
 import shutil
-import sys
 import re
 
 from typing import List
