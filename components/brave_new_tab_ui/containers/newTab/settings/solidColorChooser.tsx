@@ -17,7 +17,7 @@ interface Props {
   onBack: () => void
 }
 
-function SolidColorChooser(props: Props) {
+function SolidColorChooser (props: Props) {
   const { onBack, useSolidColorBackground, currentColor } = props
 
   const containerEl = React.useRef<HTMLDivElement>(null)

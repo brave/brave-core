@@ -83,7 +83,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
     const usingCustomBackground = newTabData.backgroundWallpaper?.type === 'image' &&
         !!newTabData.backgroundWallpaper.wallpaperImageUrl &&
         !newTabData.backgroundWallpaper.author && !newTabData.backgroundWallpaper.link
-    const selectedSolidBackgroundColor = newTabData.backgroundWallpaper?.type === 'solidColor' ? newTabData.backgroundWallpaper.wallpaperSolidColor : undefined 
+    const selectedSolidBackgroundColor = newTabData.backgroundWallpaper?.type === 'solidColor' ? newTabData.backgroundWallpaper.wallpaperSolidColor : undefined
     const usingBraveBackground = !usingCustomBackground && !selectedSolidBackgroundColor
 
     return (

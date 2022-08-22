@@ -15,7 +15,7 @@ import favoritesUnselectedDark from './assets/favorites-unselected-dark.png'
 import frecencySelectedDark from './assets/frecency-selected-dark.png'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
-import checkCircle from './assets/check-circle.png'
+import CheckedCircle from './assets/checked-circle.svg'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
@@ -621,11 +621,11 @@ export const StyledSelectionBorder = styled('div')<SelectionProps>`
     padding: 2px;
     border-radius: 10px;
     &:after {
-      content: url(${checkCircle});
+      content: url(${CheckedCircle});
       position:absolute;
       top: 10px;
       right: 10px;
-      z-ordder: 1;
+      z-order: 1;
     }
   `}
 `
