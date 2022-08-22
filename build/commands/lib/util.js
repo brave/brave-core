@@ -1,4 +1,5 @@
 const path = require('path')
+const chalk = require('chalk')
 const { spawn, spawnSync } = require('child_process')
 const config = require('./config')
 const fs = require('fs-extra')
@@ -6,6 +7,18 @@ const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./sync/logging')
 const assert = require('assert')
+
+const runGClient = (args, options = {}) => {
+  if (config.gClientVerbose) args.push('--verbose')
+  options.cwd = options.cwd || config.rootDir
+  options = mergeWithDefault(options)
+  options.env.GCLIENT_FILE = config.gClientFile
+  util.run('gclient', args, options)
+}
+
+const mergeWithDefault = (options) => {
+  return Object.assign({}, config.defaultOptions, options)
+}
 
 async function applyPatches() {
   const GitPatcher = require('./gitPatcher')
@@ -76,9 +89,6 @@ const getAdditionalGenLocation = () => {
 }
 
 const util = {
-  mergeOptionsWithDefault: (options) => {
-    return Object.assign({}, config.defaultOptions, options)
-  },
 
   runProcess: (cmd, args = [], options = {}) => {
     Log.command(options.cwd, cmd, args)
@@ -165,6 +175,50 @@ const util = {
 
   getGitReadableLocalRef: (repoDir) => {
     return util.runGit(repoDir, ['log', '-n', '1', '--pretty=format:%h%d'], true)
+  },
+
+  buildGClientConfig: () => {
+    function replacer(key, value) {
+      return value;
+    }
+
+    const solutions = [
+      {
+        managed: "%False%",
+        name: "src",
+        url: config.chromiumRepo,
+        custom_deps: {
+          "src/third_party/WebKit/LayoutTests": "%None%",
+          "src/chrome_frame/tools/test/reference_build/chrome": "%None%",
+          "src/chrome_frame/tools/test/reference_build/chrome_win": "%None%",
+          "src/chrome/tools/test/reference_build/chrome": "%None%",
+          "src/chrome/tools/test/reference_build/chrome_linux": "%None%",
+          "src/chrome/tools/test/reference_build/chrome_mac": "%None%",
+          "src/chrome/tools/test/reference_build/chrome_win": "%None%"
+        },
+        custom_vars: {
+          "checkout_pgo_profiles": config.isBraveReleaseBuild() ? "%True%" : "%False%"
+        }
+      },
+      {
+        managed: "%False%",
+        name: "src/brave",
+        // We do not use gclient to manage brave-core, so this should
+        // not actually get used.
+        url: 'https://github.com/brave/brave-core.git'
+      }
+    ]
+
+    let cache_dir = process.env.GIT_CACHE_PATH ? ('\ncache_dir = "' + process.env.GIT_CACHE_PATH + '"\n') : '\n'
+
+    let out = 'solutions = ' + JSON.stringify(solutions, replacer, 2)
+      .replace(/"%None%"/g, "None").replace(/"%False%"/g, "False").replace(/"%True%"/g, "True") + cache_dir
+
+    if (config.targetOS) {
+      out = out + "target_os = [ '" + config.targetOS + "' ]"
+    }
+
+    fs.writeFileSync(config.defaultGClientFile, out)
   },
 
   calculateFileChecksum: (filename) => {
@@ -558,9 +612,7 @@ const util = {
     const buildArgsStr = util.buildArgsToString(gnArgs)
     util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
 
-    util.buildTarget(
-        'brave/tools/redirect_cc',
-        util.mergeOptionsWithDefault({outputDir: config.nativeRedirectCCDir}))
+    util.buildTarget('brave/tools/redirect_cc', mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
   },
 
   runGnGen: (options) => {
@@ -674,7 +726,9 @@ const util = {
     if (!options.base) {
       options.base = 'origin/master'
     }
-    const cmd_options = util.mergeOptionsWithDefault({cwd: config.braveCoreDir})
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    cmd_options = mergeWithDefault(cmd_options)
     util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'lint.py'),
         '--project_root=' + config.srcDir,
         '--base_branch=' + options.base], cmd_options)
@@ -688,7 +742,9 @@ const util = {
     // 'gerrit.host' from their brave checkout.
     util.runGit(
         config.braveCoreDir, ['config', '--unset-all', 'gerrit.host'], true)
-    const cmd_options = util.mergeOptionsWithDefault({cwd: config.braveCoreDir})
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    cmd_options = mergeWithDefault(cmd_options)
     cmd = 'git'
     args = ['cl', 'presubmit', options.base, '--force']
     if (options.all)
@@ -702,7 +758,9 @@ const util = {
     if (!options.base) {
       options.base = 'origin/master'
     }
-    const cmd_options = util.mergeOptionsWithDefault({cwd: config.braveCoreDir})
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    cmd_options = mergeWithDefault(cmd_options)
     cmd = 'git'
     args = ['cl', 'format', '--upstream=' + options.base]
     if (options.full)
@@ -724,16 +782,68 @@ const util = {
     util.run('python3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmd_options)
   },
 
-  runGClient: (args, options, gClientFile) => {
-    if (config.gClientVerbose) {
-      args.push('--verbose')
+  shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
+    const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
+    const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
+    const needsUpdate = ((targetSHA !== headSHA) || (!headSHA && !targetSHA))
+    if (needsUpdate) {
+      const currentRef = util.getGitReadableLocalRef(config.srcDir)
+      console.log(`Chromium repo ${chalk.blue.bold('needs update')}. Target is ${chalk.italic(chromiumRef)} at commit ${targetSHA || '[missing]'} but current commit is ${chalk.italic(currentRef || '[unknown]')} at commit ${chalk.inverse(headSHA || '[missing]')}.`)
+    } else {
+      console.log(chalk.green.bold(`Chromium repo does not need update as it is already ${chalk.italic(chromiumRef)} at commit ${targetSHA || '[missing]'}.`))
     }
-    options.cwd = options.cwd || config.rootDir
-    options = util.mergeOptionsWithDefault(options)
-    if (gClientFile) {
-      options.env.GCLIENT_FILE = gClientFile
+    return needsUpdate
+  },
+
+  gclientSync: (forceReset = false, cleanup = false, shouldCheckChromiumVersion = true, options = {}) => {
+    let reset = forceReset
+
+    // base args
+    const initialArgs = ['sync', '--nohooks']
+    const chromiumArgs = ['--revision', 'src@' + config.getProjectRef('chrome')]
+    const resetArgs = ['--reset', '--with_tags', '--with_branch_heads', '--upstream']
+
+    let args = [...initialArgs]
+    let didUpdateChromium = false
+
+    if (!shouldCheckChromiumVersion) {
+      const chromiumNeedsUpdate = util.shouldUpdateChromium()
+      if (chromiumNeedsUpdate) {
+        console.warn(chalk.yellow.bold('Chromium needed update but received the flag to skip performing the update. Working directory may not compile correctly.'))
+      }
+    } else if (forceReset || util.shouldUpdateChromium()) {
+      args = [...args, ...chromiumArgs]
+      reset = true
+      didUpdateChromium = true
     }
-    util.run('gclient', args, options)
+
+    if (forceReset) {
+      args = args.concat(['--force'])
+      if (cleanup) {
+        // temporarily ignored until we can figure out how not to delete src/brave in the process
+        // args = args.concat(['-D'])
+      }
+    }
+
+    if (reset) {
+      args = [...args, ...resetArgs]
+    }
+
+    runGClient(args, options)
+
+    return {
+      didUpdateChromium
+    }
+  },
+
+  gclientRunhooks: (options = {}) => {
+    Log.progress('Running gclient hooks...')
+    runGClient(['runhooks'], options)
+    Log.progress('Done running gclient hooks.')
+  },
+
+  runGClient: (args, options) => {
+    runGClient(args, options)
   },
 
   applyPatches: () => {
@@ -771,40 +881,7 @@ const util = {
     if (process.platform === 'win32')
       input += '.exe'
     return input
-  },
-
-  isGitExclusionExists: (dir, exclusion) => {
-    const excludeFile = path.join(dir, '.git', 'info', 'exclude')
-    if (!fs.existsSync(excludeFile)) {
-      return false
-    }
-    const lines = fs.readFileSync(excludeFile).toString().split(/\r?\n/)
-    for (const line of lines) {
-      if (line === exclusion) {
-        return true
-      }
-    }
-    return false
-  },
-
-  addGitExclusion: (dir, exclusion) => {
-    if (util.isGitExclusionExists(dir, exclusion)) {
-      return
-    }
-    const excludeFile = path.join(dir, '.git', 'info', 'exclude')
-    fs.appendFileSync(excludeFile, '\n' + exclusion)
-  },
-
-  readJSON: (file, default_value={}) => {
-    if (!fs.existsSync(file)) {
-      return default_value
-    }
-    return fs.readJSONSync(file)
-  },
-
-  writeJSON: (file, value) => {
-    return fs.writeJSONSync(file, value, {spaces: 2})
-  },
+  }
 }
 
 module.exports = util
