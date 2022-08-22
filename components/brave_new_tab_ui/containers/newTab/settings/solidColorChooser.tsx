@@ -13,12 +13,12 @@ import { getLocale } from '$web-common/locale'
 
 interface Props {
   currentColor?: string
-  useSolidColorBackground: (color: string) => void
+  setSolidColorBackground: (color: string) => void
   onBack: () => void
 }
 
 function SolidColorChooser (props: Props) {
-  const { onBack, useSolidColorBackground, currentColor } = props
+  const { onBack, setSolidColorBackground, currentColor } = props
 
   const containerEl = React.useRef<HTMLDivElement>(null)
   React.useEffect(() => {
@@ -29,7 +29,7 @@ function SolidColorChooser (props: Props) {
       <div ref={containerEl}>
         <NavigateBack onBack={onBack} title={getLocale('solidColorTitle')} />
         <StyledCustomBackgroundSettings>
-          {solidColorsForBackground.map(color => <SolidColorBackgroundOption key={color} color={color} useSolidColorBackground={useSolidColorBackground} selected={currentColor === color} />)}
+          {solidColorsForBackground.map(color => <SolidColorBackgroundOption key={color} color={color} onSelectColor={setSolidColorBackground} selected={currentColor === color} />)}
         </StyledCustomBackgroundSettings>
       </div>
   )

@@ -31,7 +31,7 @@ interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBackgroundImage: () => void
   useCustomBackgroundImage: (useCustom: boolean) => void
-  useSolidColorBackground: (color: string) => void
+  setSolidColorBackground: (color: string) => void
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
@@ -156,7 +156,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
         {this.state.location === Location.SOLID_COLORS &&
           <SolidColorChooser
             currentColor={selectedSolidBackgroundColor}
-            useSolidColorBackground={this.props.useSolidColorBackground}
+            setSolidColorBackground={this.props.setSolidColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
         }

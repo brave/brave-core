@@ -14,14 +14,13 @@ import {
 interface Props {
   color: string
   selected: boolean
-  useSolidColorBackground: (color: string) => void
+  onSelectColor: (color: string) => void
 }
 
-function SolidColorBackgroundOption (props: Props) {
-  const { color, selected, useSolidColorBackground } = props
-
+export default function SolidColorBackgroundOption (props: Props) {
+  const { color, selected, onSelectColor } = props
   return (
-    <StyledCustomBackgroundOption onClick={_ => useSolidColorBackground(color)}>
+    <StyledCustomBackgroundOption onClick={_ => onSelectColor(color)}>
       <StyledSelectionBorder selected={selected}>
           <StyledCustomBackgroundOptionSolidColor
             color={color}
@@ -30,5 +29,3 @@ function SolidColorBackgroundOption (props: Props) {
     </StyledCustomBackgroundOption>
   )
 }
-
-export default SolidColorBackgroundOption

@@ -145,7 +145,6 @@ class NewTabPage extends React.Component<Props, State> {
   braveNewsPromptTimerId: number
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
-  solidBackgroundColor?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
@@ -475,7 +474,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  useSolidColorBackground = (color: string) => {
+  setSolidColorBackground = (color: string) => {
     getNTPBrowserAPI().pageHandler.useSolidColorBackground(color)
   }
 
@@ -1335,7 +1334,7 @@ class NewTabPage extends React.Component<Props, State> {
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           useCustomBackgroundImage={this.useCustomBackgroundImage}
-          useSolidColorBackground={this.useSolidColorBackground}
+          setSolidColorBackground={this.setSolidColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
