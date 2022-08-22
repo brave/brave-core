@@ -26,6 +26,7 @@ TEST(BatAdsUnblindedTokenUtilTest, RawTokensToTokens) {
 
   // Assert
   std::vector<UnblindedToken> expected_tokens;
+  expected_tokens.reserve(raw_tokens.size());
   for (const auto& raw_token : raw_tokens) {
     expected_tokens.emplace_back(raw_token);
   }
