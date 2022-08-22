@@ -48,7 +48,9 @@ def _DownloadWinInstallerAndExtract(out_dir: str,
   GetProcessOutput([installer_filename, '--chrome-sxs',
                     '--do-not-launch-chrome'], None, True)
 
-  GetProcessOutput(['taskkill.exe', '/f', '/im', binary_name], None, True)
+  # Sometimes the binary is launched despite passing --do-not-launch-chrome.
+  # Force kill it by taskkill.exe
+  GetProcessOutput(['taskkill.exe', '/f', '/im', binary_name], None, False)
 
   if not os.path.exists(expected_install_path):
     raise RuntimeError(f'No files found in {expected_install_path}')
