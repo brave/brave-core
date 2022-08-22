@@ -127,7 +127,7 @@ bool UnblindedTokens::RemoveToken(const UnblindedTokenInfo& unblinded_token) {
                              return unblinded_token == value;
                            });
 
-  if (iter == unblinded_tokens_.end()) {
+  if (iter == unblinded_tokens_.cend()) {
     return false;
   }
 
@@ -141,10 +141,10 @@ void UnblindedTokens::RemoveTokens(const UnblindedTokenList& unblinded_tokens) {
       unblinded_tokens_.begin(), unblinded_tokens_.end(),
       [&unblinded_tokens](const UnblindedTokenInfo& unblinded_token) {
         return std::find(unblinded_tokens.cbegin(), unblinded_tokens.cend(),
-                         unblinded_token) != unblinded_tokens.end();
+                         unblinded_token) != unblinded_tokens.cend();
       });
 
-  unblinded_tokens_.erase(iter, unblinded_tokens_.end());
+  unblinded_tokens_.erase(iter, unblinded_tokens_.cend());
 }
 
 void UnblindedTokens::RemoveAllTokens() {
@@ -157,7 +157,7 @@ bool UnblindedTokens::TokenExists(const UnblindedTokenInfo& unblinded_token) {
                              return unblinded_token == value;
                            });
 
-  if (iter == unblinded_tokens_.end()) {
+  if (iter == unblinded_tokens_.cend()) {
     return false;
   }
 

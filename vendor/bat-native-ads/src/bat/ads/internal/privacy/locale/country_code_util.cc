@@ -17,7 +17,7 @@ bool IsMemberOfAnonymitySet(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   const auto iter = kCountryCodeAnonymitySet.find(country_code);
-  if (iter == kCountryCodeAnonymitySet.end()) {
+  if (iter == kCountryCodeAnonymitySet.cend()) {
     return false;
   }
 
@@ -28,7 +28,7 @@ bool ShouldClassifyAsOther(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   const auto iter = kOtherCountryCodes.find(country_code);
-  if (iter == kOtherCountryCodes.end()) {
+  if (iter == kOtherCountryCodes.cend()) {
     return false;
   }
 

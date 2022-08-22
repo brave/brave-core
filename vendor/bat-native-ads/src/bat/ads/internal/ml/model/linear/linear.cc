@@ -36,7 +36,7 @@ PredictionMap Linear::Predict(const VectorData& x) const {
   for (const auto& kv : weights_) {
     double prediction = kv.second * x;
     const auto iter = biases_.find(kv.first);
-    if (iter != biases_.end()) {
+    if (iter != biases_.cend()) {
       prediction += iter->second;
     }
     predictions[kv.first] = prediction;

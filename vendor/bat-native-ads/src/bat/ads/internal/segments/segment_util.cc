@@ -32,9 +32,9 @@ void RemoveDuplicates(SegmentList* segments) {
 
   std::set<std::string> seen;  // log(n) existence check
 
-  auto iter = segments->begin();
-  while (iter != segments->end()) {
-    if (seen.find(*iter) != seen.end()) {
+  auto iter = segments->cbegin();
+  while (iter != segments->cend()) {
+    if (seen.find(*iter) != seen.cend()) {
       iter = segments->erase(iter);
     } else {
       seen.insert(*iter);
@@ -130,7 +130,7 @@ bool ShouldFilterSegment(const std::string& segment) {
         }
       });
 
-  if (iter == filtered_segments.end()) {
+  if (iter == filtered_segments.cend()) {
     return false;
   }
 

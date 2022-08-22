@@ -38,7 +38,7 @@ CreativeAdPredictorMap<T> GroupCreativeAdsByCreativeInstanceId(
   for (const auto& creative_ad : creative_ads) {
     const auto iter =
         creative_ad_predictors.find(creative_ad.creative_instance_id);
-    if (iter != creative_ad_predictors.end()) {
+    if (iter != creative_ad_predictors.cend()) {
       iter->second.segments.push_back(creative_ad.segment);
       continue;
     }

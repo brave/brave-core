@@ -22,7 +22,7 @@ T FilterSeenAds(const T& ads, const std::map<std::string, bool>& seen_ads) {
   std::copy_if(ads.cbegin(), ads.cend(), std::back_inserter(unseen_ads),
                [&seen_ads](const CreativeAdInfo& creative_ad) {
                  return seen_ads.find(creative_ad.creative_instance_id) ==
-                        seen_ads.end();
+                        seen_ads.cend();
                });
 
   return unseen_ads;

@@ -26,9 +26,9 @@ bool DoesAdSupportSubdivisionTargetingCode(
       locale::GetCountryCode(subdivision_targeting_code);
 
   return creative_ad.geo_targets.find(subdivision_targeting_code) !=
-             creative_ad.geo_targets.end() ||
+             creative_ad.geo_targets.cend() ||
          creative_ad.geo_targets.find(country_code) !=
-             creative_ad.geo_targets.end();
+             creative_ad.geo_targets.cend();
 }
 
 bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
@@ -41,7 +41,7 @@ bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
         return components.size() == 2;
       });
 
-  if (iter == creative_ad.geo_targets.end()) {
+  if (iter == creative_ad.geo_targets.cend()) {
     return false;
   }
 

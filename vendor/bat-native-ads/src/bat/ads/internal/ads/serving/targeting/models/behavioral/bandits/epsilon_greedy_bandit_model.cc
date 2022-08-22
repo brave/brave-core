@@ -57,7 +57,7 @@ ArmBucketMap BucketSortArms(const ArmList& arms) {
 
   for (const auto& arm : arms) {
     const auto iter = buckets.find(arm.value);
-    if (iter == buckets.end()) {
+    if (iter == buckets.cend()) {
       buckets.insert({arm.value, {arm}});
       continue;
     }
@@ -80,7 +80,7 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
 
   for (const auto& arm : arms) {
     if (std::find(segments.cbegin(), segments.cend(), arm.first) ==
-        segments.end()) {
+        segments.cend()) {
       continue;
     }
 

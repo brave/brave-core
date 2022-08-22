@@ -122,7 +122,7 @@ std::string ExtractConversionIdFromText(
   std::string text = html;
 
   const auto iter = conversion_id_patterns.find(conversion_url_pattern);
-  if (iter != conversion_id_patterns.end()) {
+  if (iter != conversion_id_patterns.cend()) {
     const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
     if (conversion_id_pattern_info.search_in == kSearchInUrl) {
       const auto url_iter =
@@ -131,7 +131,7 @@ std::string ExtractConversionIdFromText(
                          return MatchUrlPattern(url, conversion_url_pattern);
                        });
 
-      if (url_iter == redirect_chain.end()) {
+      if (url_iter == redirect_chain.cend()) {
         return conversion_id;
       }
 
@@ -157,7 +157,7 @@ std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
     }
 
     if (creative_set_ids.find(ad_event.creative_set_id) !=
-        creative_set_ids.end()) {
+        creative_set_ids.cend()) {
       continue;
     }
 
@@ -321,7 +321,7 @@ void Conversions::CheckRedirectChain(
 
         for (const auto& ad_event : filtered_ad_events) {
           if (creative_set_ids.find(conversion.creative_set_id) !=
-              creative_set_ids.end()) {
+              creative_set_ids.cend()) {
             // Creative set id has already been converted
             continue;
           }
@@ -370,12 +370,12 @@ ConversionList Conversions::FilterConversions(
                std::back_inserter(filtered_conversions),
                [&redirect_chain](const ConversionInfo& conversion) {
                  const auto iter = std::find_if(
-                     redirect_chain.begin(), redirect_chain.end(),
+                     redirect_chain.cbegin(), redirect_chain.cend(),
                      [&conversion](const GURL& url) {
                        return MatchUrlPattern(url, conversion.url_pattern);
                      });
 
-                 if (iter == redirect_chain.end()) {
+                 if (iter == redirect_chain.cend()) {
                    return false;
                  }
 
@@ -599,7 +599,7 @@ void Conversions::OnLocaleDidChange(const std::string& locale) {
 }
 
 void Conversions::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.end()) {
+  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
     resource_->Load();
   }
 }

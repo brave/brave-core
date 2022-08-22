@@ -63,7 +63,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   const targeting::EpsilonGreedyBanditArmMap arms =
       targeting::GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
-  ASSERT_TRUE(iter != arms.end());
+  ASSERT_TRUE(iter != arms.cend());
   const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
 
   targeting::EpsilonGreedyBanditArmInfo expected_arm;
@@ -90,7 +90,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const targeting::EpsilonGreedyBanditArmMap arms =
       targeting::GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
-  ASSERT_TRUE(iter != arms.end());
+  ASSERT_TRUE(iter != arms.cend());
   const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
 
   targeting::EpsilonGreedyBanditArmInfo expected_arm;
@@ -117,7 +117,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const targeting::EpsilonGreedyBanditArmMap arms =
       targeting::GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
-  ASSERT_TRUE(iter != arms.end());
+  ASSERT_TRUE(iter != arms.cend());
   const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
 
   targeting::EpsilonGreedyBanditArmInfo expected_arm;
@@ -144,7 +144,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   const targeting::EpsilonGreedyBanditArmMap arms =
       targeting::GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
-  ASSERT_TRUE(iter != arms.end());
+  ASSERT_TRUE(iter != arms.cend());
   const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
 
   targeting::EpsilonGreedyBanditArmInfo expected_arm;
@@ -167,7 +167,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   const targeting::EpsilonGreedyBanditArmMap arms =
       targeting::GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
-  EXPECT_TRUE(iter == arms.end());
+  EXPECT_TRUE(iter == arms.cend());
 }
 
 TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
@@ -183,7 +183,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   const targeting::EpsilonGreedyBanditArmMap arms =
       targeting::GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(parent_segment);
-  ASSERT_TRUE(iter != arms.end());
+  ASSERT_TRUE(iter != arms.cend());
   const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
 
   targeting::EpsilonGreedyBanditArmInfo expected_arm;

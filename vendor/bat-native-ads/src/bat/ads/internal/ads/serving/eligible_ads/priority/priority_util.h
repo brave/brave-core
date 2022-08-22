@@ -24,7 +24,7 @@ base::flat_map<unsigned int, T> SortCreativeAdsIntoPrioritizedBuckets(
     }
 
     const auto iter = buckets.find(creative_ad.priority);
-    if (iter == buckets.end()) {
+    if (iter == buckets.cend()) {
       buckets.insert({creative_ad.priority, {creative_ad}});
       continue;
     }
