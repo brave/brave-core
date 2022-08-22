@@ -38,10 +38,10 @@ class ConversionQueue final : public TableInterface {
             ResultCallback callback);
 
   void Delete(const ConversionQueueItemInfo& conversion_queue_item,
-              ResultCallback callback);
+              ResultCallback callback) const;
 
   void Update(const ConversionQueueItemInfo& conversion_queue_item,
-              ResultCallback callback);
+              ResultCallback callback) const;
 
   void GetAll(GetConversionQueueCallback callback);
 
@@ -68,7 +68,7 @@ class ConversionQueue final : public TableInterface {
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const ConversionQueueItemList& conversion_queue_items);
+      const ConversionQueueItemList& conversion_queue_items) const;
 
   void OnGetAll(GetConversionQueueCallback callback,
                 mojom::DBCommandResponseInfoPtr response);

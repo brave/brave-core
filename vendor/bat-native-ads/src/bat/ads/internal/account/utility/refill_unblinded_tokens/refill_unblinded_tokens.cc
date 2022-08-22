@@ -199,8 +199,10 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     BLOG(1, "Failed to get signed tokens as a browser upgrade is required");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
-  } else if (url_response.status_code != net::HTTP_OK &&
-             url_response.status_code != net::HTTP_UNAUTHORIZED) {
+  }
+
+  if (url_response.status_code != net::HTTP_OK &&
+      url_response.status_code != net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Failed to get signed tokens");
     OnFailedToRefillUnblindedTokens(/* should_retry */ true);
     return;

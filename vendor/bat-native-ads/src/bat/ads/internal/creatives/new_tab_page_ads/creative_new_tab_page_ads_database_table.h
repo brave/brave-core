@@ -50,7 +50,7 @@ class CreativeNewTabPageAds final : public TableInterface {
   void Save(const CreativeNewTabPageAdList& creative_ads,
             ResultCallback callback);
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetCreativeNewTabPageAdCallback callback);
@@ -77,7 +77,7 @@ class CreativeNewTabPageAds final : public TableInterface {
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const CreativeNewTabPageAdList& creative_ads);
+      const CreativeNewTabPageAdList& creative_ads) const;
 
   void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
                                   GetCreativeNewTabPageAdCallback callback,

@@ -198,7 +198,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
   return true;
 }
 
-std::string ClientInfo::ToJson() {
+std::string ClientInfo::ToJson() const {
   std::string json;
   CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;

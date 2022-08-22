@@ -149,7 +149,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                      base::Unretained(this), creative_instance_id, callback));
 }
 
-void Deposits::PurgeExpired(ResultCallback callback) {
+void Deposits::PurgeExpired(ResultCallback callback) const {
   const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE DATETIME('now') >= DATETIME(expire_at, 'unixepoch')",
@@ -191,7 +191,7 @@ void Deposits::Migrate(mojom::DBTransactionInfo* transaction,
 
 std::string Deposits::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeAdList& creative_ads) {
+    const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);
@@ -205,8 +205,9 @@ std::string Deposits::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(3, count).c_str());
 }
 
-std::string Deposits::BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                               const DepositInfo& deposit) {
+std::string Deposits::BuildInsertOrUpdateQuery(
+    mojom::DBCommandInfo* command,
+    const DepositInfo& deposit) const {
   DCHECK(command);
   DCHECK(deposit.IsValid());
 

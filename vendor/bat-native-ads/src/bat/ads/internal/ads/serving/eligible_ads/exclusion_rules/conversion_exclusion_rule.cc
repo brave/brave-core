@@ -61,7 +61,8 @@ const std::string& ConversionExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool ConversionExclusionRule::ShouldAllow(const CreativeAdInfo& creative_ad) {
+bool ConversionExclusionRule::ShouldAllow(
+    const CreativeAdInfo& creative_ad) const {
   if (creative_ad.conversion && !should_allow_conversion_tracking_) {
     return false;
   }

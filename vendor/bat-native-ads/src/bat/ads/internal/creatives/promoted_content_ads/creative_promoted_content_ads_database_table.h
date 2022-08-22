@@ -50,7 +50,7 @@ class CreativePromotedContentAds final : public TableInterface {
   void Save(const CreativePromotedContentAdList& creative_promoted_content_ads,
             ResultCallback callback);
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetCreativePromotedContentAdCallback callback);
@@ -78,7 +78,7 @@ class CreativePromotedContentAds final : public TableInterface {
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const CreativePromotedContentAdList& creative_promoted_content_ads);
+      const CreativePromotedContentAdList& creative_promoted_content_ads) const;
 
   void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
                                   GetCreativePromotedContentAdCallback callback,

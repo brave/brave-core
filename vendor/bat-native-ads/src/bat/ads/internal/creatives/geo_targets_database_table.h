@@ -27,7 +27,7 @@ class GeoTargets final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
@@ -35,8 +35,9 @@ class GeoTargets final : public TableInterface {
                const int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const CreativeAdList& creative_ads);
+  std::string BuildInsertOrUpdateQuery(
+      mojom::DBCommandInfo* command,
+      const CreativeAdList& creative_ads) const;
 
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };

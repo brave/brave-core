@@ -38,8 +38,10 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
   if (event_type == mojom::SearchResultAdEventType::kViewed &&
       HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
     return true;
-  } else if (event_type == mojom::SearchResultAdEventType::kClicked &&
-             HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
+  }
+
+  if (event_type == mojom::SearchResultAdEventType::kClicked &&
+      HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
     return true;
   }
 

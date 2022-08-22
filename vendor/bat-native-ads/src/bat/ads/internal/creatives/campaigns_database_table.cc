@@ -53,7 +53,7 @@ Campaigns::Campaigns() = default;
 
 Campaigns::~Campaigns() = default;
 
-void Campaigns::Delete(ResultCallback callback) {
+void Campaigns::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -102,7 +102,7 @@ void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
 
 std::string Campaigns::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeAdList& creative_ads) {
+    const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);

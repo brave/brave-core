@@ -143,7 +143,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
   RunTransaction(query, std::move(callback));
 }
 
-void AdEvents::PurgeExpired(ResultCallback callback) {
+void AdEvents::PurgeExpired(ResultCallback callback) const {
   const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE creative_set_id NOT IN "
@@ -166,7 +166,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
 }
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
-                             ResultCallback callback) {
+                             ResultCallback callback) const {
   DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
 
   const std::string ad_type_as_string = AdType(ad_type).ToString();
@@ -266,8 +266,9 @@ void AdEvents::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-std::string AdEvents::BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                               const AdEventList& ad_events) {
+std::string AdEvents::BuildInsertOrUpdateQuery(
+    mojom::DBCommandInfo* command,
+    const AdEventList& ad_events) const {
   DCHECK(command);
 
   const int count = BindParameters(command, ad_events);

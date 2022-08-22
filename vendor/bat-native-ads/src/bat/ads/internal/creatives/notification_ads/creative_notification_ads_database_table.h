@@ -44,7 +44,7 @@ class CreativeNotificationAds final : public TableInterface {
   void Save(const CreativeNotificationAdList& creative_notification_ads,
             ResultCallback callback);
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   void GetForSegments(const SegmentList& segments,
                       GetCreativeNotificationAdsCallback callback);
@@ -69,7 +69,7 @@ class CreativeNotificationAds final : public TableInterface {
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const CreativeNotificationAdList& creative_notification_ads);
+      const CreativeNotificationAdList& creative_notification_ads) const;
 
   void OnGetForSegments(const SegmentList& segments,
                         GetCreativeNotificationAdsCallback callback,
