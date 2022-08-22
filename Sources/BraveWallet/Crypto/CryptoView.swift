@@ -94,6 +94,7 @@ public struct CryptoView: View {
             case .requestEthererumPermissions(let request, let onPermittedAccountsUpdated):
               NewSiteConnectionView(
                 origin: request.requestingOrigin,
+                coin: request.coinType,
                 keyringStore: keyringStore,
                 onConnect: {
                   request.decisionHandler(.granted(accounts: $0))
