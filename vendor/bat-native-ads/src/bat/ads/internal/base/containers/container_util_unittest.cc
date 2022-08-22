@@ -23,7 +23,7 @@ TEST(BatAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 6);
 
   // Assert
-  const std::vector<std::vector<std::string>> expected_vectors = {vectors};
+  const std::vector<std::vector<std::string>>& expected_vectors = {vectors};
 
   EXPECT_EQ(expected_vectors, vectors);
 }
@@ -38,7 +38,7 @@ TEST(BatAdsContainerUtilTest,
   const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 7);
 
   // Assert
-  const std::vector<std::vector<std::string>> expected_vectors = {vectors};
+  const std::vector<std::vector<std::string>> expected_vectors = {vector};
 
   EXPECT_EQ(expected_vectors, vectors);
 }
@@ -82,7 +82,7 @@ TEST(BatAdsContainerUtilTest, SplitEmptyVector) {
   const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 5);
 
   // Assert
-  const std::vector<std::vector<std::string>> expected_vectors = {vectors};
+  const std::vector<std::vector<std::string>>& expected_vectors = {vectors};
 
   EXPECT_EQ(expected_vectors, vectors);
 }
