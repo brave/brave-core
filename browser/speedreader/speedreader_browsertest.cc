@@ -41,6 +41,7 @@
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestXml[] = "/article/rss.xml";
 
 constexpr char kSpeedreaderToggleUMAHistogramName[] =
     "Brave.SpeedReader.ToggleCount";
@@ -427,4 +428,18 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                     speedreader::kIsolatedWorldId)
                         .ExtractString());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestXml);
+
+  EXPECT_FALSE(GetReaderButton()->GetVisible());
+
+  const std::string kNoStyleInjected =
+      R"js(document.getElementById('brave_speedreader_style'))js";
+
+  EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kNoStyleInjected,
+                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                     speedreader::kIsolatedWorldId));
 }
