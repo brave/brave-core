@@ -53,8 +53,8 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
       const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
   void OnGetTextEmbeddingHtmlEvents(
-      mojom::DBCommandResponseInfoPtr response,
-      GetTextEmbeddingHtmlEventsCallback callback);
+      GetTextEmbeddingHtmlEventsCallback callback,
+      mojom::DBCommandResponseInfoPtr response);
 
   void MigrateToV25(mojom::DBTransactionInfo* transaction);
 };

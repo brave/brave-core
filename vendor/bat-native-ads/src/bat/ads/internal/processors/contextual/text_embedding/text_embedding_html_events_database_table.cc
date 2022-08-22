@@ -77,7 +77,7 @@ void TextEmbeddingHtmlEvents::LogEvent(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void TextEmbeddingHtmlEvents::GetAll(
@@ -114,7 +114,7 @@ void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string TextEmbeddingHtmlEvents::GetTableName() const {
@@ -158,9 +158,8 @@ void TextEmbeddingHtmlEvents::RunTransaction(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents, this,
-                std::placeholders::_1, callback));
+      std::move(transaction), base::BindOnce(&TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents,
+                                            base::Unretained(this), callback));
 }
 
 void TextEmbeddingHtmlEvents::InsertOrUpdate(
@@ -199,8 +198,8 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
 }
 
 void TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents(
-    mojom::DBCommandResponseInfoPtr response,
-    GetTextEmbeddingHtmlEventsCallback callback) {
+    GetTextEmbeddingHtmlEventsCallback callback,
+    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get embeddings");
