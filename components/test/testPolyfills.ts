@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { randomFillSync, randomUUID } from 'crypto'
 import { JSDOM } from 'jsdom'
 import { getMockChrome } from './testData'
 
@@ -36,6 +37,13 @@ window.loadTimeData = {
     return key
   }
 }
+
+Object.defineProperty(window, 'crypto', {
+  value: {
+    getRandomValues: (buffer: any) => randomFillSync(buffer),
+    randomUUID
+  }
+})
 
 console.timeStamp = function (key: string) { }
 

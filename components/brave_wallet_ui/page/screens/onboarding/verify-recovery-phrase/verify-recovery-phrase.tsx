@@ -9,6 +9,11 @@ import { useHistory } from 'react-router'
 
 // utils
 import { getLocale, getLocaleWithTags } from '../../../../../common/locale'
+import {
+  formatOrdinals,
+  getWordIndicesToVerfy,
+  ORDINALS
+} from '../../../../utils/ordinal-utils'
 
 // routes
 import { PageState, WalletRoutes } from '../../../../constants/types'
@@ -51,11 +56,8 @@ export const OnboardingVerifyRecoveryPhrase = () => {
   const history = useHistory()
 
   // methods
-  const onSelectedWordsUpdated = React.useCallback((words: any[]) => {
+  const onSelectedWordsUpdated = React.useCallback((words: any[], doesWordOrderMatch: boolean) => {
     setHasSelectedWords(words.length === 3)
-  }, [])
-
-  const onPhraseVerificationUpdated = React.useCallback((doesWordOrderMatch: boolean) => {
     setNextStepEnabled(doesWordOrderMatch)
   }, [])
 
@@ -74,6 +76,12 @@ export const OnboardingVerifyRecoveryPhrase = () => {
   const recoveryPhrase = React.useMemo(() => {
     return (mnemonic || '').split(' ')
   }, [mnemonic])
+
+  // memos
+  const verificationIndices = React.useMemo(
+    () => getWordIndicesToVerfy(recoveryPhrase.length),
+    [recoveryPhrase.length]
+  )
 
   // render
   return (
@@ -96,9 +104,13 @@ export const OnboardingVerifyRecoveryPhrase = () => {
                     {text.beforeTag}
                     <strong>
                       {
-                        text.duringTag?.replace(
-                        '$7',
-                        recoveryPhrase.length.toString())
+                        text.duringTag
+                          ?.replace('$7', ORDINALS[verificationIndices[0]])
+                          ?.replace('$8', formatOrdinals(verificationIndices[0] + 1))
+                          ?.replace('$9', ORDINALS[verificationIndices[1]])
+                          ?.replace('$10', formatOrdinals(verificationIndices[1] + 1))
+                          ?.replace('$11', ORDINALS[verificationIndices[2]])
+                          ?.replace('$12', formatOrdinals(verificationIndices[2] + 1))
                       }
                     </strong>
                     {text.afterTag}
@@ -111,10 +123,10 @@ export const OnboardingVerifyRecoveryPhrase = () => {
           <PhraseCard>
             <PhraseCardBody>
               <RecoveryPhrase
+                verificationIndices={verificationIndices}
                 verificationModeEnabled={true}
                 hidden={false}
                 recoveryPhrase={recoveryPhrase}
-                onVerifyUpdate={onPhraseVerificationUpdated}
                 onSelectedWordListChange={onSelectedWordsUpdated}
               />
             </PhraseCardBody>

@@ -157,7 +157,7 @@ provideStrings({
 
   // Onboarding - Backup Wallet - Verify Recovery Phrase
   braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
-  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1first (1st)$2, $3third (3rd)$4, and $5last ($7th)$6 words of your recovery phrase.',
+  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1$7 ($8)$2, $3$9 ($10)$4, and $5$11 ($12)$6 words of your recovery phrase.',
   braveWalletVerifyPhraseError: 'Recovery phrase didn\'t match',
 
   // Recovery Phrase Backup - Intro
@@ -325,8 +325,33 @@ provideStrings({
 
   // Ordinals
   braveWalletOrdinalFirst: 'First',
+  braveWalletOrdinalSecond: 'Second',
   braveWalletOrdinalThird: 'Third',
-  braveWalletOrdinalLast: 'Last',
+  braveWalletOrdinalFourth: 'Fourth',
+  braveWalletOrdinalFifth: 'Fifth',
+  braveWalletOrdinalSixth: 'Sixth',
+  braveWalletOrdinalSeventh: 'Seventh',
+  braveWalletOrdinalEighth: 'Eighth',
+  braveWalletOrdinalNinth: 'Ninth',
+  braveWalletOrdinalTenth: 'Tenth',
+  braveWalletOrdinalEleventh: 'Eleventh',
+  braveWalletOrdinalTwelfth: 'Twelfth',
+  braveWalletOridinalThirteenth: 'Thirteenth',
+  braveWalletOrdinalFourteenth: 'Fourteenth',
+  braveWalletOrdinalFifteenth: 'Fifteenth',
+  braveWalletOrdinalSixteenth: 'Sixteenth',
+  braveWalletOrdinalSeventeenth: 'Seventeenth',
+  braveWalletOrdinalEighteenth: 'Eighteenth',
+  braveWalletOrdinalNineteenth: 'Nineteenth',
+  braveWalletOrdinalTwentieth: 'Twentieth',
+  braveWalletOrdinalTwentyFirst: 'Twenty-first',
+  braveWalletOrdinalTwentySecond: 'Twenty-second',
+  braveWalletOrdinalTwentyThird: 'Twenty-third',
+  braveWalletOrdinalTwentyFourth: 'Twenty-fourth',
+  braveWalletOrdinalSuffixOne: 'st',
+  braveWalletOrdinalSuffixTwo: 'nd',
+  braveWalletOrdinalSuffixFew: 'rd',
+  braveWalletOrdinalSuffixOther: 'th',
 
   // Networks
   braveWalletNetworkETH: 'Ethereum',
