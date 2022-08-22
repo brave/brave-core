@@ -82,7 +82,10 @@ class TabManager: NSObject {
   fileprivate let imageStore: DiskImageStore?
 
   fileprivate let prefs: Prefs
-  var selectedIndex: Int { return _selectedIndex }
+  var selectedIndex: Int {
+    return _selectedIndex
+  }
+  var normalTabSelectedIndex: Int = 0
   var tempTabs: [Tab]?
   private weak var rewards: BraveRewards?
   var makeWalletEthProvider: ((Tab) -> (BraveWalletEthereumProvider, js: String)?)?
