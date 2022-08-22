@@ -110,17 +110,19 @@ class SpeedreaderRewriterPagesTest
     : public SpeedreaderRewriterTestBase,
       public ::testing::WithParamInterface<const char*> {
  public:
-  bool CheckAndUpdateReport(const base::FilePath& domain) {
+  bool CheckAndUpdateReport(const base::FilePath& domain_dir) {
     base::FilePath report_dir = test_data_dir().AppendASCII("pages/report");
 
     const auto original = GetFileContent("distilled.html");
     const auto changed = ProcessPage("original.html");
-    const base::FilePath page_dir = report_dir.Append(domain);
+    const base::FilePath page_dir = report_dir.Append(domain_dir.BaseName());
 
     if (original != changed) {
       base::CreateDirectory(page_dir);
       base::WriteFile(page_dir.AppendASCII("original.html"), original);
       base::WriteFile(page_dir.AppendASCII("changed.html"), changed);
+      base::WriteFile(page_dir.AppendASCII("page.url"),
+                      GetFileContent("page.url"));
       return false;
     } else {
       base::DeletePathRecursively(page_dir);
@@ -151,7 +153,7 @@ TEST_P(SpeedreaderRewriterPagesTest, CheckPages) {
     SCOPED_TRACE(domain.BaseName());
     set_current_process_dir(domain);
 
-    if (!CheckAndUpdateReport(domain.BaseName())) {
+    if (!CheckAndUpdateReport(domain)) {
       ADD_FAILURE();
     }
   }

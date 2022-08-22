@@ -1,11 +1,11 @@
 import { visualDomDiff } from 'visual-dom-diff'
 import * as data from '../report/reports.json'
 
-async function loadDocument(dir, doc) {
+async function loadDocument(dir, doc, type) {
    let response = await new Promise(resolve => {
       var xhr = new XMLHttpRequest()
       xhr.open("GET", '/report/' + dir +"/" + doc, true)
-      xhr.responseType = "document"
+      xhr.responseType = type
       xhr.onload = function(e) {
         resolve(xhr.response)
       };
@@ -18,13 +18,18 @@ async function loadDocument(dir, doc) {
 }
 
 async function showReport(val) {
-  const original = await loadDocument(val, 'original.html')
+  const original = await loadDocument(val, 'original.html', 'document')
   const originalNode = document.getElementById('original')
   originalNode.replaceChildren(original.firstChild)
 
-  const changed = await loadDocument(val, 'changed.html')
+  const changed = await loadDocument(val, 'changed.html', 'document')
   const changedNode = document.getElementById('changed')
   changedNode.replaceChildren(changed.firstChild)
+
+  const pageUrl = await loadDocument(val, 'page.url', 'text')
+  const pageUrlNode = document.getElementById('page_url')
+  pageUrlNode.href = pageUrl
+  pageUrlNode.text = pageUrl
 
   const diffNode = document.getElementById('diff')
   diffNode.replaceChildren(visualDomDiff(originalNode.firstChild, changedNode.firstChild))
