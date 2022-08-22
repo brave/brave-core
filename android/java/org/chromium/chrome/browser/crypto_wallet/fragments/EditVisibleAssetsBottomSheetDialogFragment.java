@@ -56,7 +56,8 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -66,7 +67,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialogFragment
-        implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserver {
+        implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserverImplDelegate {
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
@@ -76,6 +77,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private Boolean mIsAssetsListChanged;
     private static final String TAG = "EditVisibleAssetsBottomSheetDialogFragment";
     private WalletModel mWalletModel;
+    private KeyringServiceObserverImpl mKeyringServiceObserver;
 
     public interface DismissListener {
         void onDismiss(Boolean isAssetsListChanged);
@@ -191,6 +193,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         if (mDismissListener != null) {
             mDismissListener.onDismiss(mIsAssetsListChanged);
         }
+        if (mKeyringServiceObserver != null) {
+            mKeyringServiceObserver.close();
+            mKeyringServiceObserver.destroy();
+            mKeyringServiceObserver = null;
+        }
     }
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
@@ -277,7 +284,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         }
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
-        keyringService.addObserver(this);
+        mKeyringServiceObserver = new KeyringServiceObserverImpl(this);
+        keyringService.addObserver(mKeyringServiceObserver);
     }
 
     private void showAddAssetDialog() {
