@@ -8,6 +8,7 @@ import { VariableSizeList } from 'react-window'
 
 // types
 import { BraveWallet, UserAssetInfoType } from '../../../../../../constants/types'
+import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
 // styles
 import { StyledDiv } from './virtualized-tokens-list.styles'
@@ -142,6 +143,7 @@ export const VirtualizedTokensList = ({
         itemCount={userAssetList.length}
         estimatedItemSize={estimatedItemSize}
         overscanCount={20}
+        itemKey={(i, data: UserAssetInfoType[]) => getAssetIdKey(data[i].asset)}
         innerElementType={StyledDiv} // Needed a custom div to suppress NaN CSS error
         style={{
           overscrollBehavior: 'contain'
