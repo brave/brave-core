@@ -2453,6 +2453,7 @@ void RewardsServiceImpl::GetPendingContributionsTotal(
 
 void RewardsServiceImpl::PublisherListNormalized(
     ledger::type::PublisherInfoList list) {
+  LOG(ERROR) << "PublisherListNormalized called " << list.size();
   for (auto& observer : observers_) {
     ledger::type::PublisherInfoList new_list;
     for (const auto& publisher : list) {

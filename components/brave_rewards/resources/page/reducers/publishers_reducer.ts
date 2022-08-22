@@ -13,6 +13,7 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
   switch (action.type) {
     case types.ON_CONTRIBUTE_LIST:
       state = { ...state }
+      console.error('Updating autoContributeList')
       state.autoContributeList = action.payload.list
       break
     case types.ON_EXCLUDED_LIST: {

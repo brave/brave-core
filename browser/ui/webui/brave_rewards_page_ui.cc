@@ -1006,9 +1006,12 @@ void RewardsDOMHandler::RestorePublisher(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnPublisherList(ledger::type::PublisherInfoList list) {
+  LOG(ERROR) << "OnPublisherList " << list.size();
   if (!IsJavascriptAllowed()) {
     return;
   }
+
+  LOG(ERROR) << "OnPublisherList JavascriptAllowed";
 
   base::Value::List publishers;
   for (auto const& item : list) {

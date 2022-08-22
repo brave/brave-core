@@ -321,21 +321,27 @@ void LedgerImpl::OnShow(uint32_t tab_id, uint64_t current_time) {
 }
 
 void LedgerImpl::OnHide(uint32_t tab_id, uint64_t current_time) {
+  LOG(ERROR) << "OnHide " << tab_id;
   if (!IsReady())
     return;
 
+  LOG(ERROR) << "Ready " << tab_id;
   if (!state()->GetAutoContributeEnabled()) {
     return;
   }
 
+  LOG(ERROR) << "AC Enabled " << tab_id;
   if (tab_id != last_shown_tab_id_ || last_tab_active_time_ == 0) {
     return;
   }
 
+  LOG(ERROR) << "Tab is last shown " << tab_id << ", " << last_tab_active_time_;
   auto iter = current_pages_.find(tab_id);
   if (iter == current_pages_.end()) {
     return;
   }
+
+  LOG(ERROR) << "Tab found " << tab_id;
 
   const std::string type = media()->GetLinkType(iter->second.tld, "", "");
   uint64_t duration = current_time - last_tab_active_time_;
@@ -348,6 +354,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, uint64_t current_time) {
     return;
   }
 
+  LOG(ERROR) << "Saving Visit " << iter->second.tld;
   publisher()->SaveVisit(iter->second.tld, iter->second, duration, true, 0,
                          [](type::Result, type::PublisherInfoPtr) {});
 }

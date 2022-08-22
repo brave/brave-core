@@ -155,7 +155,6 @@ void RewardsBrowserTestContextHelper::VisitPublisher(
   base::PlatformThread::Sleep(base::Milliseconds(2100));
 
   LoadRewardsPage();
-  ReloadCurrentSite();
 
   auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
 

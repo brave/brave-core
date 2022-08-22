@@ -66,6 +66,7 @@ function reconcileStamp (stamp: number) {
 }
 
 function contributeList (list: Rewards.Publisher[]) {
+  console.error('brave_rewards.contributeList called', list)
   actions.onContributeList(list)
 }
 

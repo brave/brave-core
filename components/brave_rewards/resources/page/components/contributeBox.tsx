@@ -239,6 +239,8 @@ class ContributeBox extends React.Component<Props, State> {
       return null
     }
 
+    console.error('rendering contributeBox')
+
     return (
       <Box
         title={getLocale('contributionTitle')}
