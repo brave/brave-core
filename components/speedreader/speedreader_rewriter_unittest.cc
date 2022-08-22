@@ -115,12 +115,15 @@ class SpeedreaderRewriterPagesTest
 
     const auto original = GetFileContent("distilled.html");
     const auto changed = ProcessPage("original.html");
+    const base::FilePath page_dir = report_dir.Append(domain);
+
     if (original != changed) {
-      const base::FilePath page_dir = report_dir.Append(domain);
       base::CreateDirectory(page_dir);
       base::WriteFile(page_dir.AppendASCII("original.html"), original);
       base::WriteFile(page_dir.AppendASCII("changed.html"), changed);
       return false;
+    } else {
+      base::DeletePathRecursively(page_dir);
     }
 
     return true;
