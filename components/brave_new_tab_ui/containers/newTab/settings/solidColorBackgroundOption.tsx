@@ -17,20 +17,18 @@ interface Props {
   useSolidColorBackground: (color: string) => void
 }
 
-class SolidColorBackgroundOption extends React.PureComponent<Props, {}> {
-  onClickColor = () => {
-    this.props.useSolidColorBackground(this.props.color)
-  }
+function SolidColorBackgroundOption (props: Props) {
+  const { color, selected, useSolidColorBackground } = props
 
-  render () {
-    return (<StyledCustomBackgroundOption onClick={this.onClickColor}>
-              <StyledSelectionBorder selected={this.props.selected}>
-                <StyledCustomBackgroundOptionSolidColor
-                    style={{ backgroundColor: this.props.color }}
-                    selected={this.props.selected}/>
-              </StyledSelectionBorder>
-            </StyledCustomBackgroundOption>)
-  }
+  return (
+    <StyledCustomBackgroundOption onClick={_ => useSolidColorBackground(color)}>
+      <StyledSelectionBorder selected={selected}>
+          <StyledCustomBackgroundOptionSolidColor
+            color={color}
+            selected={selected}/>
+      </StyledSelectionBorder>
+    </StyledCustomBackgroundOption>
+  )
 }
 
 export default SolidColorBackgroundOption

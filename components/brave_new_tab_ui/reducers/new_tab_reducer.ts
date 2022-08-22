@@ -56,9 +56,24 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       if (initialDataPayload.wallpaperData) {
+        // Payload passed from native UI doesn't have 'type' property. We should
+        // fix up here.
+        let backgroundWallpaper = payload.wallpaperData.backgroundWallpaper
+        if (backgroundWallpaper?.wallpaperImageUrl) {
+          backgroundWallpaper = {
+            ...backgroundWallpaper,
+            type: 'image'
+          }
+        } else if (backgroundWallpaper?.wallpaperSolidColor) {
+          backgroundWallpaper = {
+            ...backgroundWallpaper,
+            type: 'solidColor'
+          }
+        }
+
         state = {
           ...state,
-          backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
+          backgroundWallpaper,
           brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper
         }
       }
@@ -123,9 +138,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       const url = payload.customBackground.url.url
       const solidColor = payload.customBackground.solidColor
       if (url !== '') {
-        state.backgroundWallpaper = { wallpaperImageUrl: url, wallpaperSolidColor: undefined }
+        state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
       } else if (solidColor !== '') {
-        state.backgroundWallpaper = { wallpaperImageUrl: undefined, wallpaperSolidColor: solidColor }
+        state.backgroundWallpaper = { type: 'solidColor', wallpaperSolidColor: solidColor }
       } else {
         state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }

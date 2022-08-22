@@ -602,6 +602,14 @@ interface SelectionProps {
   selected: boolean
 }
 
+interface SolidColorBackgroundProps {
+  color: string
+}
+
+interface ImageBackgroundProps {
+  image: string
+}
+
 export const StyledSelectionBorder = styled('div')<SelectionProps>`
   position: relative;
   width: 100%;
@@ -640,7 +648,7 @@ export const StyledUploadIconContainer = styled('div')<SelectionProps>`
   `}
 `
 
-export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps>`
+export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & ImageBackgroundProps>`
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
@@ -652,9 +660,10 @@ export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps>`
   ${p => !p.selected && css`
     border-radius: 10px;
   `}
+  background-image: url(${p => p.image})
 `
 
-export const StyledCustomBackgroundOptionSolidColor = styled('div')<SelectionProps>`
+export const StyledCustomBackgroundOptionSolidColor = styled('div')<SelectionProps & SolidColorBackgroundProps>`
   width: 100%;
   height: 100%;
   ${p => p.selected && css`
@@ -663,6 +672,7 @@ export const StyledCustomBackgroundOptionSolidColor = styled('div')<SelectionPro
   ${p => !p.selected && css`
     border-radius: 10px;
   `}
+  background-color: ${p => p.color};
 `
 
 export const StyledUploadLabel = styled('div')<{}>`

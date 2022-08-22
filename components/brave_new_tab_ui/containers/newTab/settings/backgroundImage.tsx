@@ -24,6 +24,7 @@ import { Toggle } from '../../../components/toggle'
 import { getLocale } from '../../../../common/locale'
 
 import SolidColorChooser from './solidColorChooser'
+import { defaultSolidBackgroundColor } from '../../../data/colors'
 
 interface Props {
   newTabData: NewTab.State
@@ -79,11 +80,11 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
       featureCustomBackgroundEnabled
     } = this.props
 
-    const usingCustomBackground: boolean = !!newTabData.backgroundWallpaper &&
+    const usingCustomBackground = newTabData.backgroundWallpaper?.type === 'image' &&
         !!newTabData.backgroundWallpaper.wallpaperImageUrl &&
         !newTabData.backgroundWallpaper.author && !newTabData.backgroundWallpaper.link
-    const usingSolidColorBackground: boolean = !!newTabData.backgroundWallpaper?.wallpaperSolidColor
-    const usingBraveBackground: boolean = !usingCustomBackground && !usingSolidColorBackground
+    const selectedSolidBackgroundColor = newTabData.backgroundWallpaper?.type === 'solidColor' ? newTabData.backgroundWallpaper.wallpaperSolidColor : undefined 
+    const usingBraveBackground = !usingCustomBackground && !selectedSolidBackgroundColor
 
     return (
       <>
@@ -129,7 +130,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                   onClick={this.onClickBraveBackground}
                 >
                   <StyledSelectionBorder selected={usingBraveBackground}>
-                    <StyledCustomBackgroundOptionImage style={{ backgroundImage: `url(${braveBackground})` }} selected={usingBraveBackground}/>
+                    <StyledCustomBackgroundOptionImage image={braveBackground} selected={usingBraveBackground}/>
                   </StyledSelectionBorder>
                   <StyledCustomBackgroundOptionLabel>
                     {getLocale('braveBackgroundImageOptionTitle')}
@@ -138,27 +139,27 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 <StyledCustomBackgroundOption
                   onClick={this.onClickSolidColorBackground}
                 >
-                  <StyledSelectionBorder selected={usingSolidColorBackground}>
+                  <StyledSelectionBorder selected={!!selectedSolidBackgroundColor}>
                     <StyledCustomBackgroundOptionSolidColor
-                      style={{ backgroundColor: usingSolidColorBackground ? newTabData.backgroundWallpaper?.wallpaperSolidColor : '#151E9A' }}
-                      selected={usingSolidColorBackground}
+                      color={selectedSolidBackgroundColor ?? defaultSolidBackgroundColor }
+                      selected={!!selectedSolidBackgroundColor}
                     />
                   </StyledSelectionBorder>
                   <StyledCustomBackgroundOptionLabel>
-                    { getLocale('solidColorTitle') }
+                    {getLocale('solidColorTitle')}
                   </StyledCustomBackgroundOptionLabel>
                 </StyledCustomBackgroundOption>
               </StyledCustomBackgroundSettings>
             )}
           </div>
         )}
-        {this.state.location === Location.SOLID_COLORS && (
+        {this.state.location === Location.SOLID_COLORS &&
           <SolidColorChooser
-            currentColor={newTabData.backgroundWallpaper?.wallpaperSolidColor}
+            currentColor={selectedSolidBackgroundColor}
             useSolidColorBackground={this.props.useSolidColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
-        )}
+        }
       </>
     )
   }

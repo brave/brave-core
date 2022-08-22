@@ -97,9 +97,11 @@ function GetBackgroundImageSrc (props: Props) {
       return wallpaperData.wallpaperImageUrl
     }
   }
-  if (props.newTabData.backgroundWallpaper && props.newTabData.backgroundWallpaper.wallpaperImageUrl) {
+
+  if (props.newTabData.backgroundWallpaper?.type === 'image') {
     return props.newTabData.backgroundWallpaper.wallpaperImageUrl
   }
+
   return undefined
 }
 
@@ -1160,7 +1162,9 @@ class NewTabPage extends React.Component<Props, State> {
     const hasImage = this.imageSource !== undefined
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
     // Custom background that user uploaded doesn't display its info in footer.
-    const hasWallpaperInfo = !!newTabData.backgroundWallpaper && !!newTabData.backgroundWallpaper.author && !!newTabData.backgroundWallpaper.link
+    const hasWallpaperInfo = newTabData.backgroundWallpaper?.type === 'image' && !!newTabData.backgroundWallpaper.author && !!newTabData.backgroundWallpaper.link
+    const solidColorForBackground = newTabData.backgroundWallpaper?.type === 'solidColor' ? newTabData.backgroundWallpaper.wallpaperSolidColor : undefined
+
     let cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
@@ -1177,7 +1181,6 @@ class NewTabPage extends React.Component<Props, State> {
       showClock = false
       cryptoContent = null
     }
-    const solidColorForBackground = this.props.newTabData.backgroundWallpaper?.wallpaperSolidColor
 
     return (
       <Page.App
@@ -1193,7 +1196,7 @@ class NewTabPage extends React.Component<Props, State> {
             imageHasLoaded={this.state.backgroundHasLoaded}
             showClock={showClock}
             showStats={showStats}
-            solidColorForBackground={this.props.newTabData.backgroundWallpaper?.wallpaperSolidColor}
+            solidColorForBackground={solidColorForBackground}
             showRewards={!!cryptoContent}
             showBraveTalk={newTabData.showBraveTalk && newTabData.braveTalkSupported}
             showBinance={newTabData.showBinance}
