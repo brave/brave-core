@@ -11,7 +11,7 @@
 namespace ads {
 namespace ml {
 
-PredictionMap Softmax(const PredictionMap& y);
+PredictionMap Softmax(const PredictionMap& predictions);
 
 }  // namespace ml
 }  // namespace ads

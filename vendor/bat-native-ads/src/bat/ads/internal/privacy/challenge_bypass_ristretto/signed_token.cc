@@ -42,7 +42,7 @@ SignedToken::SignedToken(
 
 SignedToken::SignedToken(const SignedToken& other) = default;
 
-SignedToken& SignedToken::operator=(const SignedToken& info) = default;
+SignedToken& SignedToken::operator=(const SignedToken& other) = default;
 
 SignedToken::~SignedToken() = default;
 

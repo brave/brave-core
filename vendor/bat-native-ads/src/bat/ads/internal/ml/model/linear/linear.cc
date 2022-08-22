@@ -25,9 +25,9 @@ Linear::Linear(std::map<std::string, VectorData> weights,
   biases_ = std::move(biases);
 }
 
-Linear::Linear(Linear&& linear_model) noexcept = default;
+Linear::Linear(Linear&& other) noexcept = default;
 
-Linear& Linear::operator=(Linear&& linear_model) noexcept = default;
+Linear& Linear::operator=(Linear&& other) noexcept = default;
 
 Linear::~Linear() = default;
 

@@ -47,7 +47,7 @@ VerificationSignature::VerificationSignature(
     const VerificationSignature& other) = default;
 
 VerificationSignature& VerificationSignature::operator=(
-    const VerificationSignature& info) = default;
+    const VerificationSignature& other) = default;
 
 VerificationSignature::~VerificationSignature() = default;
 
