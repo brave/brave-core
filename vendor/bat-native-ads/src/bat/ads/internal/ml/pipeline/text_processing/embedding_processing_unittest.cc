@@ -50,11 +50,11 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
 
   for (const auto& sample : samples) {
     // Act
-    pipeline::TextEmbeddingData embedding_data =
+    pipeline::TextEmbeddingInfo embedding_info =
         embedding_processing.EmbedText(sample.first);
     // Assert
     EXPECT_EQ(sample.second.GetValuesForTesting(),
-              embedding_data.embedding.GetValuesForTesting());
+              embedding_info.embedding.GetValuesForTesting());
   }
 }
 

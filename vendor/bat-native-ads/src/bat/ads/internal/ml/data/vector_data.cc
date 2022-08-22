@@ -206,7 +206,7 @@ int VectorData::GetNonZeroElementCount() const {
   size_t v_index = 0;
   while (v_index < storage_->GetSize()) {
     if (storage_->values()[v_index] != 0) {
-      non_zero_count += 1;
+      non_zero_count++;
     }
     ++v_index;
   }

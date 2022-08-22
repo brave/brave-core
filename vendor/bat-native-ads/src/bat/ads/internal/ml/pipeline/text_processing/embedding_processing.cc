@@ -19,7 +19,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
-#include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
+#include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 
 namespace ads {
 namespace ml {
@@ -80,19 +80,19 @@ bool EmbeddingProcessing::SetEmbeddingPipelineForTesting(
   return is_initialized_;
 }
 
-TextEmbeddingData EmbeddingProcessing::EmbedText(
+TextEmbeddingInfo EmbeddingProcessing::EmbedText(
     const std::string& text) const {
   std::vector<float> embedding_zeroed(embedding_pipeline_.dim, 0.0f);
   VectorData embedding_vector = VectorData(embedding_zeroed);
-  TextEmbeddingData embedding_data;
-  embedding_data.embedding = embedding_vector;
+  TextEmbeddingInfo embedding_info;
+  embedding_info.embedding = embedding_vector;
 
   if (!IsInitialized()) {
-    return embedding_data;
+    return embedding_info;
   }
 
   if (text.empty()) {
-    return embedding_data;
+    return embedding_info;
   }
 
   const std::vector<std::string> tokens = base::SplitString(
@@ -105,7 +105,7 @@ TextEmbeddingData EmbeddingProcessing::EmbedText(
     if (iter != embedding_pipeline_.embeddings.end()) {
       BLOG(9, token << " - text token found in vocabulary");
       const VectorData& token_embedding = iter->second;
-      embedding_data.embedding.AddElementWise(token_embedding);
+      embedding_info.embedding.AddElementWise(token_embedding);
       in_vocab_tokens.push_back(token);
       n_tokens++;
     } else {
@@ -114,16 +114,16 @@ TextEmbeddingData EmbeddingProcessing::EmbedText(
   }
 
   if (n_tokens == 0) {
-    return embedding_data;
+    return embedding_info;
   }
 
   const std::string in_vocab_text = base::JoinString(in_vocab_tokens, " ");
   const std::vector<uint8_t> sha256_hash = security::Sha256(in_vocab_text);
-  embedding_data.text_hashed = base::Base64Encode(sha256_hash);
+  embedding_info.text_hashed = base::Base64Encode(sha256_hash);
 
   const float scalar = static_cast<float>(n_tokens);
-  embedding_data.embedding.DivideByScalar(scalar);
-  return embedding_data;
+  embedding_info.embedding.DivideByScalar(scalar);
+  return embedding_info;
 }
 
 }  // namespace pipeline

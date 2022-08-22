@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/strcat.h"
 #include "bat/ads/internal/base/strings/string_html_parse_util.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -12,18 +13,19 @@ std::string ParseTagAttribute(const std::string& html,
                               const std::string& tag_substr,
                               const std::string& tag_attribute) {
   std::string tag_text;
+  re2::RE2::PartialMatch(html, base::StrCat({"(<[^>]*", tag_substr, "[^<]*>)"}), &tag_text);
+
   std::string trailing;
+  re2::RE2::PartialMatch(tag_text, base::StrCat({"(", tag_attribute, "=.*>)"}), &trailing);
+
   std::string attribute_text;
-
-  re2::RE2::PartialMatch(html, "(<[^>]*" + tag_substr + "[^<]*>)", &tag_text);
-  re2::RE2::PartialMatch(tag_text, "(" + tag_attribute + "=.*>)", &trailing);
-
-  if (trailing.length() > tag_attribute.length() + 2) {
-    const std::string delim = trailing.substr(tag_attribute.length() + 1, 1);
+  const int prefix_padding = 2;
+  if (trailing.length() > tag_attribute.length() + prefix_padding) {
+    const std::string delimiter = trailing.substr(tag_attribute.length() + 1, 1);
     re2::RE2::PartialMatch(trailing,
-                           "(" + delim + "[^" + delim + "]*" + delim + ")",
+                           base::StrCat({"(", delimiter, "[^", delimiter, "]*", delimiter, ")"}),
                            &attribute_text);
-    attribute_text = attribute_text.substr(1, attribute_text.length() - 2);
+    attribute_text = attribute_text.substr(1, attribute_text.length() - prefix_padding);
   }
   return attribute_text;
 }

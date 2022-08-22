@@ -13,7 +13,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
-#include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
+#include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 
 namespace base {
 class Value;
@@ -47,7 +47,7 @@ class EmbeddingProcessing final {
       const int dim,
       const std::map<std::string, VectorData>& embeddings);
 
-  TextEmbeddingData EmbedText(const std::string& text) const;
+  TextEmbeddingInfo EmbedText(const std::string& text) const;
 
  private:
   bool is_initialized_ = false;

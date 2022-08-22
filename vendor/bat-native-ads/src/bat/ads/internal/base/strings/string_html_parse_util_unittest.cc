@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/base/strings/string_html_parse_util.h"
 
+#include <string>
 #include <vector>
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -42,7 +42,7 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseTagAttributeSimple) {
 
   for (const auto& sample : samples) {
     // Act
-    std::string parsed = ParseTagAttribute(sample[0], sample[1], sample[2]);
+    const std::string parsed = ParseTagAttribute(sample[0], sample[1], sample[2]);
     // Assert
     ASSERT_EQ(sample[3], parsed);
   }

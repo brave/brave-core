@@ -172,9 +172,9 @@ TEST_F(BatAdsVectorDataTest, Add) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v12[i], v1.GetValuesForTesting()[i], 0.001f);
-    EXPECT_NEAR(v21[i], v2.GetValuesForTesting()[i], 0.001f);
-    EXPECT_NEAR(v34[i], v3.GetValuesForTesting()[i], 0.001f);
+    EXPECT_NEAR(v12[i], v1.GetValuesForTesting().at(i), 0.001f);
+    EXPECT_NEAR(v21[i], v2.GetValuesForTesting().at(i), 0.001f);
+    EXPECT_NEAR(v34[i], v3.GetValuesForTesting().at(i), 0.001f);
   }
 }
 
@@ -185,10 +185,10 @@ TEST_F(BatAdsVectorDataTest, ScalarDivide) {
   VectorData v3 = VectorData({0.0, 0.0, 0.0});
   VectorData v4 = VectorData({0.8, 0.2, -0.35});
 
-  std::vector<float> v1d({8.0, 6.0, 16.0});
-  std::vector<float> v2d({1.9, -0.75, 0.0});
-  std::vector<float> v3d({0.0, 0.0, 0.0});
-  std::vector<float> v4d({-3.2, -0.8, 1.4});
+  const std::vector<float> v1d({8.0, 6.0, 16.0});
+  const std::vector<float> v2d({1.9, -0.75, 0.0});
+  const std::vector<float> v3d({0.0, 0.0, 0.0});
+  const std::vector<float> v4d({-3.2, -0.8, 1.4});
 
   // Act
   v1.DivideByScalar(0.05);
@@ -198,10 +198,10 @@ TEST_F(BatAdsVectorDataTest, ScalarDivide) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v1d[i], v1.GetValuesForTesting()[i], 0.001f);
-    EXPECT_NEAR(v2d[i], v2.GetValuesForTesting()[i], 0.001f);
-    EXPECT_NEAR(v3d[i], v3.GetValuesForTesting()[i], 0.001f);
-    EXPECT_NEAR(v4d[i], v4.GetValuesForTesting()[i], 0.001f);
+    EXPECT_NEAR(v1d[i], v1.GetValuesForTesting().at(i), 0.001f);
+    EXPECT_NEAR(v2d[i], v2.GetValuesForTesting().at(i), 0.001f);
+    EXPECT_NEAR(v3d[i], v3.GetValuesForTesting().at(i), 0.001f);
+    EXPECT_NEAR(v4d[i], v4.GetValuesForTesting().at(i), 0.001f);
   }
 }
 

@@ -51,6 +51,7 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
                          << GetSchemaVersion() << " to schema version "
                          << database::kVersion;
   });
+
   LogTextEmbeddingHtmlEvent(
       text_embedding_event.embedding, text_embedding_event.hashed_key,
       [=](const bool success) {
@@ -58,20 +59,6 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
             << "Failed to migrate database from schema version "
             << GetSchemaVersion() << " to schema version "
             << database::kVersion;
-        if (success) {
-          GetTextEmbeddingEventsFromDatabase(
-              [=](const bool success, const TextEmbeddingHtmlEventList&
-                                          text_embedding_html_events) {
-                EXPECT_TRUE(success)
-                    << "Failed to migrate database from schema version "
-                    << GetSchemaVersion() << " to schema version "
-                    << database::kVersion;
-                // Assert
-                ASSERT_EQ(1ul, text_embedding_html_events.size());
-                ASSERT_EQ(text_embedding_event.hashed_key,
-                          text_embedding_html_events[0].hashed_key);
-              });
-        }
       });
 }
 
