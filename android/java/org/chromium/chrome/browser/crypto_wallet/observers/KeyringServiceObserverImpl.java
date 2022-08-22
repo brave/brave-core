@@ -5,13 +5,20 @@
 
 package org.chromium.chrome.browser.crypto_wallet.observers;
 
+import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.mojo.system.MojoException;
 
-public class KeyringServiceObserverImpl
-        implements org.chromium.brave_wallet.mojom.KeyringServiceObserver {
+public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     public interface KeyringServiceObserverImplDelegate {
         default void locked() {}
         default void backedUp() {}
+        default void keyringCreated(String keyringId) {}
+        default void keyringRestored(String keyringId) {}
+        default void keyringReset() {}
+        default void unlocked() {}
+        default void accountsChanged() {}
+        default void autoLockMinutesChanged() {}
+        default void selectedAccountChanged(int coin) {}
     }
 
     private KeyringServiceObserverImplDelegate mDelegate;
@@ -21,13 +28,25 @@ public class KeyringServiceObserverImpl
     }
 
     @Override
-    public void keyringCreated(String keyring_id) {}
+    public void keyringCreated(String keyringId) {
+        if (mDelegate == null) return;
+
+        mDelegate.keyringCreated(keyringId);
+    }
 
     @Override
-    public void keyringRestored(String keyring_id) {}
+    public void keyringRestored(String keyringId) {
+        if (mDelegate == null) return;
+
+        mDelegate.keyringRestored(keyringId);
+    }
 
     @Override
-    public void keyringReset() {}
+    public void keyringReset() {
+        if (mDelegate == null) return;
+
+        mDelegate.keyringReset();
+    }
 
     @Override
     public void locked() {
@@ -37,7 +56,11 @@ public class KeyringServiceObserverImpl
     }
 
     @Override
-    public void unlocked() {}
+    public void unlocked() {
+        if (mDelegate == null) return;
+
+        mDelegate.unlocked();
+    }
 
     @Override
     public void backedUp() {
@@ -47,13 +70,25 @@ public class KeyringServiceObserverImpl
     }
 
     @Override
-    public void accountsChanged() {}
+    public void accountsChanged() {
+        if (mDelegate == null) return;
+
+        mDelegate.accountsChanged();
+    }
 
     @Override
-    public void autoLockMinutesChanged() {}
+    public void autoLockMinutesChanged() {
+        if (mDelegate == null) return;
+
+        mDelegate.autoLockMinutesChanged();
+    }
 
     @Override
-    public void selectedAccountChanged(int coin) {}
+    public void selectedAccountChanged(int coin) {
+        if (mDelegate == null) return;
+
+        mDelegate.selectedAccountChanged(coin);
+    }
 
     @Override
     public void close() {
