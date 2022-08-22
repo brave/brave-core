@@ -43,7 +43,7 @@ bool TextProcessing::IsInitialized() const {
   return is_initialized_;
 }
 
-TextProcessing::TextProcessing() : is_initialized_(false) {}
+TextProcessing::TextProcessing() = default;
 
 TextProcessing::~TextProcessing() = default;
 
