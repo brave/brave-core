@@ -22,7 +22,7 @@ struct CreativeAdInfo;
 class SubdivisionTargetingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  SubdivisionTargetingExclusionRule(
+  explicit SubdivisionTargetingExclusionRule(
       geographic::SubdivisionTargeting* subdivision_targeting);
   ~SubdivisionTargetingExclusionRule() override;
 

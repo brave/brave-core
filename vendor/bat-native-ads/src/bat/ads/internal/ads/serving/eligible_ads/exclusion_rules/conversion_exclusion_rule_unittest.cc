@@ -99,8 +99,8 @@ TEST_F(BatAdsConversionExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["should_exclude_ad_if_converted"] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 

@@ -108,8 +108,8 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_if_media_is_not_playing"] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {permission_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(permission_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
