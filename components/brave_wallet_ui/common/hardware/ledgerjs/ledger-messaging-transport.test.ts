@@ -21,12 +21,9 @@ const createTransport = (targetUrl: string = 'chrome-untrusted://ledger-bridge')
   const iframe = document.createElement('iframe')
   document.body.appendChild(iframe)
   if (!iframe.contentWindow) { fail('transport should be defined') }
-  // Use Object.defineProperty in order to assign to
-  // window.crypto because standard assignment results in
-  // assignment error because window.origin is read-only
-  Object.defineProperty(iframe.contentWindow, 'origin', {
-    value: targetUrl
-  })
+
+  iframe.contentWindow['origin'] = targetUrl
+
   const targetWindow = iframe.contentWindow
   const transport = new LedgerMessagingTransport(
     targetWindow,

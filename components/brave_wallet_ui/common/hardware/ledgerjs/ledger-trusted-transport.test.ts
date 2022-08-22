@@ -20,12 +20,7 @@ const createWindow = (): Window => {
   let iframe = document.createElement('iframe')
   document.body.appendChild(iframe)
   if (!iframe.contentWindow) { fail('transport should be defined') }
-  // Use Object.defineProperty in order to assign to
-  // window.crypto because standard assignment results in
-  // assignment error because window.origin is read-only
-  Object.defineProperty(iframe.contentWindow, 'origin', {
-    value: 'chrome-untrusted://ledger-bridge'
-  })
+  iframe.contentWindow['origin'] = 'chrome-untrusted://ledger-bridge'
   return iframe.contentWindow
 }
 
