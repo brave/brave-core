@@ -15,7 +15,7 @@ constexpr double kEpsilon = .00001;
 constexpr int kDecimalPlaces = 4;
 
 double RoundDoubleNPlaces(const double value, const int n_places) {
-  const double pow_10 = pow(10.0f, static_cast<double>(n_places));
+  const double pow_10 = pow(10.0F, static_cast<double>(n_places));
   return round(value * pow_10) / pow_10;
 }
 
