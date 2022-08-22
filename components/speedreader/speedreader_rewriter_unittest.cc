@@ -14,6 +14,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
+#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -61,6 +62,10 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
     current_process_dir_ = path;
   }
 
+  const base::FilePath& current_process_dir() const {
+    return current_process_dir_;
+  }
+
  private:
   SpeedReader speedreader_;
   base::FilePath test_data_dir_;
@@ -101,37 +106,50 @@ TEST_F(SpeedreaderRewriterThemeTest, SetTheme) {
   CheckContent(out, expected_file);
 }
 
-class SpeedreaderRewriterPagesTest : public SpeedreaderRewriterTestBase {};
+class SpeedreaderRewriterPagesTest
+    : public SpeedreaderRewriterTestBase,
+      public ::testing::WithParamInterface<const char*> {
+ public:
+  bool CheckAndUpdateReport(const base::FilePath& domain) {
+    base::FilePath report_dir = test_data_dir().AppendASCII("pages/report");
 
-TEST_F(SpeedreaderRewriterPagesTest, GoodPages_News) {
-  base::ScopedAllowBlockingForTesting allow_blocking;
-  base::FileEnumerator enumerator(
-      test_data_dir().AppendASCII("pages/news_pages"), false,
-      base::FileEnumerator::DIRECTORIES);
+    const auto original = GetFileContent("distilled.html");
+    const auto changed = ProcessPage("original.html");
+    if (original != changed) {
+      const base::FilePath page_dir = report_dir.Append(domain);
+      base::CreateDirectory(page_dir);
+      base::WriteFile(page_dir.AppendASCII("original.html"), original);
+      base::WriteFile(page_dir.AppendASCII("changed.html"), changed);
+      return false;
+    }
 
-  base::FilePath domain;
-  while (!(domain = enumerator.Next()).empty()) {
-    SCOPED_TRACE(domain.BaseName());
-    set_current_process_dir(domain);
-    const auto out = ProcessPage("original.html");
-    CheckContent(out, "distilled.html");
+    return true;
   }
-}
+};
 
-TEST_F(SpeedreaderRewriterPagesTest, BadPages) {
+INSTANTIATE_TEST_SUITE_P(,
+                         SpeedreaderRewriterPagesTest,
+                         ::testing::Values("pages/news_pages",
+                                           "pages/issues_pages"));
+
+/*
+This test checks a lot of pages from 'test/data/speedreader/rewriter/pages/' for
+the distillation changes. After you have change the rust's speedreader part you
+may view visual report. Go to test/data/speedreader/rewriter/pages/ for
+additional info.
+*/
+TEST_P(SpeedreaderRewriterPagesTest, CheckPages) {
   base::ScopedAllowBlockingForTesting allow_blocking;
-  base::FileEnumerator enumerator(
-      test_data_dir().AppendASCII("pages/issues_pages"), false,
-      base::FileEnumerator::DIRECTORIES);
+  base::FileEnumerator enumerator(test_data_dir().AppendASCII(GetParam()),
+                                  false, base::FileEnumerator::DIRECTORIES);
 
   base::FilePath domain;
   while (!(domain = enumerator.Next()).empty()) {
     SCOPED_TRACE(domain.BaseName());
     set_current_process_dir(domain);
-    const auto out = ProcessPage("original.html");
 
-    if (GetFileContent("distilled.html") != out) {
-      FAIL();
+    if (!CheckAndUpdateReport(domain.BaseName())) {
+      ADD_FAILURE();
     }
   }
 }
