@@ -44,6 +44,7 @@ public class WireguardServiceImpl
     private TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
     private Timer mVpnStatisticsTimer;
+    private Timer mVpnRecordStatisticsTimer;
     private Timer mRecordDaysUsedTimer;
     private static final int BRAVE_VPN_NOTIFICATION_ID = 801;
     private Context mContext = ContextUtils.getApplicationContext();
@@ -152,8 +153,8 @@ public class WireguardServiceImpl
     private void updateRecordSessionTimesTimer() {
         // This timer will be active for the duration of the connection.
         // It will become inactive when the connection is terminated/service destroyed.
-        mVpnStatisticsTimer = new Timer();
-        mVpnStatisticsTimer.schedule(new TimerTask() {
+        mVpnRecordStatisticsTimer = new Timer();
+        mVpnRecordStatisticsTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 recordSessionTimes();
@@ -191,6 +192,12 @@ public class WireguardServiceImpl
         }
     }
 
+    private void cancelVpnRecordStatisticsTimer() {
+        if (mVpnRecordStatisticsTimer != null) {
+            mVpnRecordStatisticsTimer.cancel();
+        }
+    }
+
     @Override
     public void onDestroy() {
         try {
@@ -199,6 +206,7 @@ public class WireguardServiceImpl
             e.printStackTrace();
         }
         cancelVpnStatisticsTimer();
+        cancelVpnRecordStatisticsTimer();
         super.onDestroy();
     }
 
