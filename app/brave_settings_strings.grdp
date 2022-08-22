@@ -147,11 +147,11 @@
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1" desc="The description for Brave shields Defaults sub-section in settings">
     These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The partial description for Brave shields Defaults sub-section in settings. The sentence is completed with `Brave rewards settings`">
-    This will block most ads on websites, not Brave Private Ads — those are controlled in the
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The description for Brave shields Defaults sub-section in settings.">
+    This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3" desc="The partial description for Brave shields Defaults sub-section in settings. Partial of `This will block most ads on websites, not Brave Private Ads — those are controlled in the Brave Rewards (settings)`">
-    settings.
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Brave shields Defaults sub-section in settings when Brave Rewards are disabled.">
+    This will block most ads on websites.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
     Show the number of blocked items on the Shields icon
