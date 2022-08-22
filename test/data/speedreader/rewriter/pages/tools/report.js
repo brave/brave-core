@@ -1,5 +1,4 @@
 import { visualDomDiff } from 'visual-dom-diff'
-import './report.css'
 import * as data from '../report/reports.json'
 
 async function loadDocument(dir, doc) {

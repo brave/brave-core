@@ -8,14 +8,14 @@
     "gen": "node ./tools/gen.js"
   },
   "devDependencies": {
-    "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^3.2.0",
-    "file-loader": "^4.2.0",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^5",
-    "visual-dom-diff": "^0.7.2",
-    "webpack": "^5",
-    "webpack-cli": "^4",
-    "webpack-dev-server": "^4"
+    "clean-webpack-plugin": "",
+    "css-loader": "",
+    "file-loader": "",
+    "html-loader": "",
+    "html-webpack-plugin": "",
+    "visual-dom-diff": "",
+    "webpack": "",
+    "webpack-cli": "",
+    "webpack-dev-server": ""
   }
 }

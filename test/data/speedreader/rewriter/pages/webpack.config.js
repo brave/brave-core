@@ -7,18 +7,14 @@ const config = {
     mode: 'development',
     entry: __dirname + '/tools/report.js',
     output: {
-        filename: '[hash].js',
+        filename: '[contenthash].js',
         path: __dirname + '/report/docs',
     },
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: ['file-loader' ],
+                use: [ 'file-loader' ],
             },
             {
                 test: /\.html$/,
