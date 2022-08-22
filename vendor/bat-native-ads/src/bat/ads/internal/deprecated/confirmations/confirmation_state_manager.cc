@@ -76,7 +76,7 @@ bool ConfirmationStateManager::HasInstance() {
 }
 
 void ConfirmationStateManager::Initialize(InitializeCallback callback) {
-  callback_ = callback;
+  callback_ = std::move(callback);
 
   Load();
 }

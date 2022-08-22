@@ -98,7 +98,7 @@ void AdEvents::GetIf(const std::string& condition,
       "ORDER BY timestamp DESC ",
       GetTableName().c_str(), condition.c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(query, std::move(callback));
 }
 
 void AdEvents::GetAll(GetAdEventsCallback callback) {
@@ -116,7 +116,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
       "ORDER BY timestamp DESC",
       GetTableName().c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(query, std::move(callback));
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
@@ -140,7 +140,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
       "ORDER BY timestamp DESC",
       GetTableName().c_str(), ad_type_as_string.c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(query, std::move(callback));
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) {

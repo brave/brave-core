@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/check_op.h"
@@ -135,7 +136,7 @@ const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
 }
 
 void ClientStateManager::Initialize(InitializeCallback callback) {
-  callback_ = callback;
+  callback_ = std::move(callback);
 
   Load();
 }
