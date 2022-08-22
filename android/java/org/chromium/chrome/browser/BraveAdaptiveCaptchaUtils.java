@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 
 public class BraveAdaptiveCaptchaUtils {
     private static final String TAG = "brave_adaptive_captcha_android";
-    public static synchronized void solveCaptcha(String captchaId, String paymentId) {
+    public static void solveCaptcha(String captchaId, String paymentId) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             HttpURLConnection urlConnection = null;
@@ -39,10 +39,10 @@ public class BraveAdaptiveCaptchaUtils {
             NetworkTrafficAnnotationTag annotation = NetworkTrafficAnnotationTag.createComplete(
                     "Brave adaptive captcha solution android",
                     "semantics {"
-                            + "  sender: 'Brave Andrioid app'"
+                            + "  sender: 'Brave Android app'"
                             + "  description: "
                             + "    'This api solves the scheduled captcha for to refill unblinded tokens '"
-                            + "  trigger: 'When paymenyt id as captcha scheduled'"
+                            + "  trigger: 'When payment id as captcha scheduled'"
                             + "  data:"
                             + "    'payment id'"
                             + "  destination: Brave grant endpoint"

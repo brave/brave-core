@@ -1671,10 +1671,10 @@ void AdsServiceImpl::GetScheduledCaptcha(
 void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
     const std::string& captcha_id,
-    const bool should_show_notification) {
+    const bool should_show_tooltip_notification) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   PrefService* pref_service = profile_->GetPrefs();
-  if (should_show_notification) {
+  if (should_show_tooltip_notification) {
     if (pref_service->GetBoolean(
             brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
       VLOG(0) << "Ads paused; support intervention required";
@@ -1684,12 +1684,14 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const int snooze_count = pref_service->GetInteger(
         brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
 
+    DCHECK(ads_tooltips_delegate_);
+
     ads_tooltips_delegate_->ShowCaptchaTooltip(
         payment_id, captcha_id, snooze_count == 0,
         base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
         base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
   } else {
-    AdsServiceImpl::ShowScheduledCaptcha(payment_id, captcha_id);
+    ShowScheduledCaptcha(payment_id, captcha_id);
   }
 #endif
 }

@@ -64,6 +64,15 @@ AdsServiceFactory::AdsServiceFactory()
 
 AdsServiceFactory::~AdsServiceFactory() = default;
 
+std::unique_ptr<AdsTooltipsDelegateImpl>
+AdsServiceFactory::CreateAdsTooltipsDelegate(Profile* profile) const {
+#if BUILDFLAG(IS_ANDROID)
+  return nullptr;
+#else
+  return std::make_unique<AdsTooltipsDelegateImpl>(profile);
+#endif
+}
+
 KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
@@ -102,15 +111,6 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
-}
-
-std::unique_ptr<AdsTooltipsDelegateImpl>
-AdsServiceFactory::CreateAdsTooltipsDelegate(Profile* profile) const {
-#if BUILDFLAG(IS_ANDROID)
-  return nullptr;
-#else
-  return std::make_unique<AdsTooltipsDelegateImpl>(profile);
-#endif
 }
 
 }  // namespace brave_ads

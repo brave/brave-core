@@ -112,10 +112,10 @@ void AdsClientIOS::GetScheduledCaptcha(
 void AdsClientIOS::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
     const std::string& captcha_id,
-    const bool should_show_notification) {
+    const bool should_show_tooltip_notification) {
   [bridge_ showScheduledCaptchaNotification:payment_id
                                   captchaId:captcha_id
-                     shouldShowNotification:should_show_notification];
+                     shouldShowNotification:should_show_tooltip_notification];
 }
 
 void AdsClientIOS::Log(const char* file,

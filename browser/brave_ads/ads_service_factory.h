@@ -35,12 +35,13 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   AdsServiceFactory();
   ~AdsServiceFactory() override;
 
+  std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate(
+      Profile* profile) const;
+
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
-  std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate(
-      Profile* profile) const;
 };
 
 }  // namespace brave_ads

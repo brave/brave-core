@@ -82,7 +82,7 @@ class BatAdsClientMojoBridge
   void ShowScheduledCaptchaNotification(
       const std::string& payment_id,
       const std::string& captcha_id,
-      const bool should_show_notification) override;
+      const bool should_show_tooltip_notification) override;
   void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,

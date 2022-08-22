@@ -115,7 +115,7 @@ class ADS_EXPORT AdsClient {
   virtual void ShowScheduledCaptchaNotification(
       const std::string& payment_id,
       const std::string& captcha_id,
-      const bool should_show_notification) = 0;
+      const bool should_show_tooltip_notification) = 0;
 
   // Clear the scheduled captcha, if any.
   virtual void ClearScheduledCaptcha() = 0;

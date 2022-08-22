@@ -329,13 +329,14 @@ void Account::OnDidRefillUnblindedTokens() {
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
   const WalletInfo& wallet = GetWallet();
+  bool should_show_tooltip_notification =
+      true;  // boolean flag to indicate whether or not to present a tooltip.
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-      wallet.id, captcha_id, false);
-#else
-  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-      wallet.id, captcha_id, true);
+  should_show_tooltip_notification = false;
 #endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+
+  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
+      wallet.id, captcha_id, should_show_tooltip_notification);
 }
 
 }  // namespace ads
