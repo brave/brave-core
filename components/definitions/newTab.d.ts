@@ -100,6 +100,7 @@ declare namespace NewTab {
   }
 
   export interface PersistentState {
+    braveRewardsSupported: boolean
     braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
     braveTalkPromptAutoDismissed: boolean

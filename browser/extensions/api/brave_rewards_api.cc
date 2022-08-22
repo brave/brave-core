@@ -24,6 +24,7 @@
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/policy_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -84,6 +85,14 @@ RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
 
 namespace extensions {
 namespace api {
+
+BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  bool is_supported = !::brave_rewards::IsDisabledByPolicy(profile->GetPrefs());
+  return RespondNow(OneArgument(base::Value(is_supported)));
+}
 
 BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
 

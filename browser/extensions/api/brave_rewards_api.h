@@ -18,6 +18,16 @@
 namespace extensions {
 namespace api {
 
+class BraveRewardsIsSupportedFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.isSupported", UNKNOWN)
+
+ protected:
+  ~BraveRewardsIsSupportedFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetLocaleFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getLocale", UNKNOWN)

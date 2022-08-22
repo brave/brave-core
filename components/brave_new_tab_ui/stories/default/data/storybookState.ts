@@ -84,6 +84,7 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     showToday: boolean('Show Brave News?', true),
     showClock: boolean('Show clock?', true),
     showTopSites: boolean('Show top sites?', true),
+    braveRewardsSupported: boolean('Brave Rewards supported?', true),
     showRewards: boolean('Show rewards?', true),
     showBraveTalk: boolean('Show Brave Talk?', true),
     braveTalkSupported: boolean('Brave Talk supported?', true),
