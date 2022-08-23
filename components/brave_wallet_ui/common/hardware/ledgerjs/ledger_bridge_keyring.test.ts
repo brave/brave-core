@@ -15,17 +15,6 @@ import {
 } from './ledger-messages'
 import { HardwareOperationResult } from '../types'
 import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
-import { randomFillSync, randomUUID } from 'crypto'
-
-// Use Object.defineProperty in order to assign to
-// window.crypto because standard assignment results in
-// assignment error because window.crypto is read-only
-Object.defineProperty(window, 'crypto', {
-  value: {
-    getRandomValues: (buffer: any) => randomFillSync(buffer),
-    randomUUID
-  }
-})
 
 export class MockLedgerTransport extends LedgerTrustedMessagingTransport {
   sendCommandResponses: any [] // queue
