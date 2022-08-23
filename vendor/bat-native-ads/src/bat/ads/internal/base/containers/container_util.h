@@ -22,7 +22,7 @@ std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
   std::vector<std::vector<T>> result;
   result.reserve((elements.size() + chunk_size - 1) / chunk_size);
 
-  auto begin = elements.begin();
+  auto begin = elements.cbegin();
   const auto end = elements.cend();
   while (begin != end) {
     const auto next =
@@ -73,7 +73,7 @@ std::vector<T> SetIntersection(std::vector<T> lhs, std::vector<T> rhs) {
   std::sort(rhs.begin(), rhs.end());
 
   std::vector<T> intersection;
-  std::set_intersection(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(),
+  std::set_intersection(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
                         std::back_inserter(intersection));
 
   return intersection;

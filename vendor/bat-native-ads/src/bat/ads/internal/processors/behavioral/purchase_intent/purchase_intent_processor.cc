@@ -218,7 +218,7 @@ void PurchaseIntent::OnLocaleDidChange(const std::string& locale) {
 }
 
 void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.end()) {
+  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
     resource_->Load();
   }
 }

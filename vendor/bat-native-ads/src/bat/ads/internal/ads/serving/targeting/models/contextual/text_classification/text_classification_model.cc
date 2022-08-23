@@ -32,7 +32,7 @@ SegmentProbabilityMap GetSegmentProbabilities(
       const double page_score = probability.second;
 
       const auto iter = segment_probabilities.find(segment);
-      if (iter == segment_probabilities.end()) {
+      if (iter == segment_probabilities.cend()) {
         SegmentProbabilityPair segment_probability = {segment, page_score};
         segment_probabilities.insert(segment_probability);
       } else {

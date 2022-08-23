@@ -23,7 +23,7 @@ constexpr int kMaximumIssuerPublicKeys = 3;
 
 bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
   const auto iter = issuer.public_keys.find(public_key);
-  if (iter == issuer.public_keys.end()) {
+  if (iter == issuer.public_keys.cend()) {
     return false;
   }
 
@@ -114,11 +114,12 @@ bool IssuerExistsForType(const IssuerType issuer_type) {
 
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
                                             const IssuerType issuer_type) {
-  const auto iter = std::find_if(issuers.issuers.begin(), issuers.issuers.end(),
-                                 [issuer_type](const IssuerInfo& issuer) {
-                                   return issuer.type == issuer_type;
-                                 });
-  if (iter == issuers.issuers.end()) {
+  const auto iter =
+      std::find_if(issuers.issuers.cbegin(), issuers.issuers.cend(),
+                   [issuer_type](const IssuerInfo& issuer) {
+                     return issuer.type == issuer_type;
+                   });
+  if (iter == issuers.issuers.cend()) {
     return absl::nullopt;
   }
 

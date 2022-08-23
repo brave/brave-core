@@ -53,7 +53,7 @@ std::map<std::string, HistoryItemInfo> BuildBuckets(
 
     const std::string placement_id = item.ad_content.placement_id;
     const auto iter = buckets.find(placement_id);
-    if (iter == buckets.end()) {
+    if (iter == buckets.cend()) {
       buckets.insert({placement_id, item});
     } else {
       const HistoryItemInfo& current_history_item = iter->second;

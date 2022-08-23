@@ -68,7 +68,7 @@ NotificationAdManager::MaybeGetForPlacementId(
                                  [&placement_id](const NotificationAdInfo& ad) {
                                    return ad.placement_id == placement_id;
                                  });
-  if (iter == ads_.end()) {
+  if (iter == ads_.cend()) {
     return absl::nullopt;
   }
 
@@ -100,7 +100,7 @@ bool NotificationAdManager::Remove(const std::string& placement_id) {
                                  [&placement_id](const NotificationAdInfo& ad) {
                                    return ad.placement_id == placement_id;
                                  });
-  if (iter == ads_.end()) {
+  if (iter == ads_.cend()) {
     return false;
   }
 
@@ -128,7 +128,7 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
                                    return ad.placement_id == placement_id;
                                  });
 
-  if (iter == ads_.end()) {
+  if (iter == ads_.cend()) {
     return false;
   }
 

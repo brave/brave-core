@@ -175,7 +175,7 @@ bool ConfirmationStateManager::RemoveFailedConfirmation(
                      return info.id == confirmation.id;
                    });
 
-  if (iter == failed_confirmations_.end()) {
+  if (iter == failed_confirmations_.cend()) {
     return false;
   }
 

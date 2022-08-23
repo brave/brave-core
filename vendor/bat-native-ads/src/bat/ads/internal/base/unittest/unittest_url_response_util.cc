@@ -72,7 +72,7 @@ URLResponseList GetUrlResponsesForRequestPath(
     const URLResponseMap& url_responses,
     const std::string& request_path) {
   const auto iter = url_responses.find(request_path);
-  if (iter == url_responses.end()) {
+  if (iter == url_responses.cend()) {
     return {};
   }
 
@@ -99,7 +99,7 @@ absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
   const std::string uuid = GetUuidForCurrentTestAndValue(request_path);
 
   const auto iter = UrlResponseIndexes().find(uuid);
-  if (iter == UrlResponseIndexes().end()) {
+  if (iter == UrlResponseIndexes().cend()) {
     // uuid does not exist so insert a new index set to 0 for the url responses.
     UrlResponseIndexes()[uuid] = index;
   } else {

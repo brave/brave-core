@@ -34,7 +34,7 @@ absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
                                  [&formatted_date](const PaymentInfo& payment) {
                                    return payment.month == formatted_date;
                                  });
-  if (iter == payments.end()) {
+  if (iter == payments.cend()) {
     return absl::nullopt;
   }
 

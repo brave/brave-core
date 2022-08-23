@@ -111,7 +111,7 @@ UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
                        return event.created_at < time;
                      });
 
-  filtered_history.erase(iter, filtered_history.end());
+  filtered_history.erase(iter, filtered_history.cend());
 
   return filtered_history;
 }

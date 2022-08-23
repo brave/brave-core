@@ -154,7 +154,7 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
                        return history_item.created_at < distant_past;
                      });
 
-  client_->history.erase(iter, client_->history.end());
+  client_->history.erase(iter, client_->history.cend());
 
   Save();
 #endif
@@ -173,7 +173,7 @@ void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
   DCHECK(is_initialized_);
 
   if (client_->purchase_intent_signal_history.find(segment) ==
-      client_->purchase_intent_signal_history.end()) {
+      client_->purchase_intent_signal_history.cend()) {
     client_->purchase_intent_signal_history.insert({segment, {}});
   }
 
@@ -200,7 +200,7 @@ AdContentLikeActionType ClientStateManager::ToggleAdThumbUp(
 
   const auto iter = FindFilteredAdvertiser(
       ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
-  if (iter != client_->ad_preferences.filtered_advertisers.end()) {
+  if (iter != client_->ad_preferences.filtered_advertisers.cend()) {
     client_->ad_preferences.filtered_advertisers.erase(iter);
   }
 
@@ -229,11 +229,11 @@ AdContentLikeActionType ClientStateManager::ToggleAdThumbDown(
       ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
 
   if (like_action_type == AdContentLikeActionType::kNeutral) {
-    if (iter != client_->ad_preferences.filtered_advertisers.end()) {
+    if (iter != client_->ad_preferences.filtered_advertisers.cend()) {
       client_->ad_preferences.filtered_advertisers.erase(iter);
     }
   } else {
-    if (iter == client_->ad_preferences.filtered_advertisers.end()) {
+    if (iter == client_->ad_preferences.filtered_advertisers.cend()) {
       FilteredAdvertiserInfo filtered_advertiser;
       filtered_advertiser.id = ad_content.advertiser_id;
 
@@ -272,7 +272,7 @@ CategoryContentOptActionType ClientStateManager::ToggleAdOptIn(
 
   const auto iter = FindFilteredCategory(
       category, &client_->ad_preferences.filtered_categories);
-  if (iter != client_->ad_preferences.filtered_categories.end()) {
+  if (iter != client_->ad_preferences.filtered_categories.cend()) {
     client_->ad_preferences.filtered_categories.erase(iter);
   }
 
@@ -302,11 +302,11 @@ CategoryContentOptActionType ClientStateManager::ToggleAdOptOut(
       category, &client_->ad_preferences.filtered_categories);
 
   if (toggled_opt_action_type == CategoryContentOptActionType::kNone) {
-    if (iter != client_->ad_preferences.filtered_categories.end()) {
+    if (iter != client_->ad_preferences.filtered_categories.cend()) {
       client_->ad_preferences.filtered_categories.erase(iter);
     }
   } else {
-    if (iter == client_->ad_preferences.filtered_categories.end()) {
+    if (iter == client_->ad_preferences.filtered_categories.cend()) {
       FilteredCategoryInfo filtered_category;
       filtered_category.name = category;
       client_->ad_preferences.filtered_categories.push_back(filtered_category);
@@ -352,7 +352,7 @@ bool ClientStateManager::ToggleSavedAd(const AdContentInfo& ad_content) {
                                             ad_content.creative_instance_id;
                                    });
 
-    if (iter != client_->ad_preferences.saved_ads.end()) {
+    if (iter != client_->ad_preferences.saved_ads.cend()) {
       client_->ad_preferences.saved_ads.erase(iter);
     }
   }
@@ -385,7 +385,7 @@ bool ClientStateManager::ToggleFlaggedAd(const AdContentInfo& ad_content) {
           return flagged_ad.creative_set_id == ad_content.creative_set_id;
         });
 
-    if (iter != client_->ad_preferences.flagged_ads.end()) {
+    if (iter != client_->ad_preferences.flagged_ads.cend()) {
       client_->ad_preferences.flagged_ads.erase(iter);
     }
   }
@@ -429,7 +429,7 @@ void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
   for (const auto& creative_ad : creative_ads) {
     const auto iter = client_->seen_ads[type_as_string].find(
         creative_ad.creative_instance_id);
-    if (iter != client_->seen_ads[type_as_string].end()) {
+    if (iter != client_->seen_ads[type_as_string].cend()) {
       client_->seen_ads[type_as_string].erase(iter);
     }
   }
@@ -466,7 +466,7 @@ void ClientStateManager::ResetSeenAdvertisersForType(
   for (const auto& creative_ad : creative_ads) {
     const auto iter = client_->seen_advertisers[type_as_string].find(
         creative_ad.advertiser_id);
-    if (iter != client_->seen_advertisers[type_as_string].end()) {
+    if (iter != client_->seen_advertisers[type_as_string].cend()) {
       client_->seen_advertisers[type_as_string].erase(iter);
     }
   }

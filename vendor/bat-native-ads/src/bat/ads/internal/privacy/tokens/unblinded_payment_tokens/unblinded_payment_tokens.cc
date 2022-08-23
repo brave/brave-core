@@ -159,7 +159,7 @@ bool UnblindedPaymentTokens::RemoveToken(
         return unblinded_payment_token == value;
       });
 
-  if (iter == unblinded_payment_tokens_.end()) {
+  if (iter == unblinded_payment_tokens_.cend()) {
     return false;
   }
 
@@ -177,10 +177,10 @@ void UnblindedPaymentTokens::RemoveTokens(
         return std::find(unblinded_payment_tokens.cbegin(),
                          unblinded_payment_tokens.cend(),
                          unblinded_payment_token) !=
-               unblinded_payment_tokens.end();
+               unblinded_payment_tokens.cend();
       });
 
-  unblinded_payment_tokens_.erase(iter, unblinded_payment_tokens_.end());
+  unblinded_payment_tokens_.erase(iter, unblinded_payment_tokens_.cend());
 }
 
 void UnblindedPaymentTokens::RemoveAllTokens() {
@@ -195,7 +195,7 @@ bool UnblindedPaymentTokens::TokenExists(
         return unblinded_payment_token == value;
       });
 
-  if (iter == unblinded_payment_tokens_.end()) {
+  if (iter == unblinded_payment_tokens_.cend()) {
     return false;
   }
 
