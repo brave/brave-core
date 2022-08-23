@@ -174,7 +174,7 @@ class RedirectCC {
     if (exit_code == 0 && !brave_path.empty()) {
       // This is a specially crafted string that ninja will look for to create
       // deps.
-      std::wcerr << L"Note: including file: " << brave_path.c_str() << L"\n";
+      std::wcerr << L"Note: including file: " << brave_path << L"\n";
     }
 #endif  // BUILDFLAG(IS_WIN)
     return exit_code;
