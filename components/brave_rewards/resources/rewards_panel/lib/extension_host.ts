@@ -424,6 +424,10 @@ export function createHost (): Host {
       maybeNotifyRequestAdsEnabled(true)
     },
 
+    openAdaptiveCaptchaSupport () {
+      openTab('https://support.brave.com/')
+    },
+
     openRewardsSettings () {
       openTab('chrome://rewards')
     },

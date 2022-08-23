@@ -162,6 +162,10 @@ function createHost (): Host {
       }
     },
 
+    openAdaptiveCaptchaSupport () {
+      console.log('openAdaptiveCaptchaSupport')
+    },
+
     openRewardsSettings () {
       console.log('openRewardsSettings')
     },
@@ -321,6 +325,7 @@ export function AdaptiveCaptcha () {
             adaptiveCaptchaInfo={adaptiveCaptchaInfo}
             onClose={actionLogger('onClose')}
             onCaptchaResult={actionLogger('onCaptchaResult')}
+            onContactSupport={actionLogger('onContactSupport')}
           />
         </div>
       </WithThemeVariables>
