@@ -1792,12 +1792,8 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
     return;
   }
 
-  base::ListValue* list = nullptr;
-  if (!maybe_list->GetAsList(&list)) {
-    return;
-  }
-
-  for (auto& item : list->GetList()) {
+  auto& list = maybe_list->GetList();
+  for (auto& item : list) {
     RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
                                                    item.GetString());
   }
