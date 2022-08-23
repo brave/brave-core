@@ -670,6 +670,7 @@ if (!is_android) {
       "//brave/browser/brave_wallet/solana_provider_browsertest.cc",
       "//brave/browser/brave_wallet/solana_provider_renderer_browsertest.cc",
       "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
+      "//brave/browser/content_settings/brave_content_settings_browsertest.cc",
       "//brave/browser/debounce/debounce_browsertest.cc",
       "//brave/browser/ephemeral_storage/blob_url_browsertest.cc",
       "//brave/browser/ephemeral_storage/ephemeral_storage_1p_browsertest.cc",
