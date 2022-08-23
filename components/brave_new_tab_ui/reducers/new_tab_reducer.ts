@@ -69,6 +69,11 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
             ...backgroundWallpaper,
             type: 'solidColor'
           }
+        } else if (backgroundWallpaper?.wallpaperGradientColor) {
+          backgroundWallpaper = {
+            ...backgroundWallpaper,
+            type: 'gradientColor'
+          }
         }
 
         state = {
@@ -137,10 +142,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // Empty custom bg url means using brave background.
       const url = payload.customBackground.url.url
       const solidColor = payload.customBackground.solidColor
-      if (url !== '') {
+      const gradientColor = payload.customBackground.gradientColor
+      if (url) {
         state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
-      } else if (solidColor !== '') {
+      } else if (solidColor) {
         state.backgroundWallpaper = { type: 'solidColor', wallpaperSolidColor: solidColor }
+      } else if (gradientColor) {
+        state.backgroundWallpaper = { type: 'gradientColor', wallpaperGradientColor: gradientColor }
       } else {
         state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }

@@ -7,17 +7,17 @@ import * as React from 'react'
 
 import { StyledCustomBackgroundSettings } from '../../../components/default'
 import NavigateBack from '../../../components/default/settings/navigateBack'
-import SolidColorBackgroundOption from './solidColorBackgroundOption'
-import { solidColorsForBackground } from '../../../data/colors'
-import { getLocale } from '$web-common/locale'
+import ColorBackgroundOption from './colorBackgroundOption'
 
 interface Props {
-  currentColor?: string
-  setSolidColorBackground: (color: string) => void
+  title: string
+  values: string[]
+  currentValue?: string
+  onSelectValue: (value: string) => void
   onBack: () => void
 }
 
-function SolidColorChooser ({ onBack, setSolidColorBackground, currentColor }: Props) {
+function ColorChooser ({ title, values, onBack, onSelectValue, currentValue }: Props) {
   const containerEl = React.useRef<HTMLDivElement>(null)
   React.useEffect(() => {
     containerEl.current?.scrollIntoView(true)
@@ -25,12 +25,12 @@ function SolidColorChooser ({ onBack, setSolidColorBackground, currentColor }: P
 
   return (
       <div ref={containerEl}>
-        <NavigateBack onBack={onBack} title={getLocale('solidColorTitle')} />
+        <NavigateBack onBack={onBack} title={title} />
         <StyledCustomBackgroundSettings>
-          {solidColorsForBackground.map(color => <SolidColorBackgroundOption key={color} color={color} onSelectColor={setSolidColorBackground} selected={currentColor === color} />)}
+          {values.map(value => <ColorBackgroundOption key={value} color={value} onSelectValue={onSelectValue} selected={currentValue === value} />)}
         </StyledCustomBackgroundSettings>
       </div>
   )
 }
 
-export default SolidColorChooser
+export default ColorChooser

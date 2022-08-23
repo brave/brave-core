@@ -11,7 +11,7 @@ import {
   StyledCustomBackgroundOption,
   StyledCustomBackgroundOptionImage,
   StyledCustomBackgroundOptionLabel,
-  StyledCustomBackgroundOptionSolidColor,
+  StyledCustomBackgroundOptionColor,
   StyledCustomBackgroundSettings,
   StyledSelectionBorder,
   StyledUploadIconContainer,
@@ -23,8 +23,8 @@ import { Toggle } from '../../../components/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
-import SolidColorChooser from './solidColorChooser'
-import { defaultSolidBackgroundColor } from '../../../data/colors'
+import ColorChooser from './colorChooser'
+import { defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsForBackground, defaultGradientColor } from '../../../data/colors'
 
 interface Props {
   newTabData: NewTab.State
@@ -32,6 +32,7 @@ interface Props {
   toggleShowBackgroundImage: () => void
   useCustomBackgroundImage: (useCustom: boolean) => void
   setSolidColorBackground: (color: string) => void
+  setGradientColorBackground: (gradientValue: string) => void
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
@@ -39,7 +40,8 @@ interface Props {
 
 enum Location {
   LIST,
-  SOLID_COLORS
+  SOLID_COLORS,
+  GRADIENT_COLORS
 }
 
 interface State {
@@ -70,6 +72,10 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
     this.setState({ location: Location.SOLID_COLORS })
   }
 
+  onClickGradientColorBackground = () => {
+    this.setState({ location: Location.GRADIENT_COLORS })
+  }
+
   render () {
     const {
       newTabData,
@@ -84,7 +90,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
         !!newTabData.backgroundWallpaper.wallpaperImageUrl &&
         !newTabData.backgroundWallpaper.author && !newTabData.backgroundWallpaper.link
     const selectedSolidBackgroundColor = newTabData.backgroundWallpaper?.type === 'solidColor' ? newTabData.backgroundWallpaper.wallpaperSolidColor : undefined
-    const usingBraveBackground = !usingCustomBackground && !selectedSolidBackgroundColor
+    const selectedGradientBackgroundColor = newTabData.backgroundWallpaper?.type === 'gradientColor' ? newTabData.backgroundWallpaper.wallpaperGradientColor : undefined
+    const usingBraveBackground = !usingCustomBackground && !selectedSolidBackgroundColor && !selectedGradientBackgroundColor
 
     return (
       <>
@@ -140,8 +147,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                   onClick={this.onClickSolidColorBackground}
                 >
                   <StyledSelectionBorder selected={!!selectedSolidBackgroundColor}>
-                    <StyledCustomBackgroundOptionSolidColor
-                      color={selectedSolidBackgroundColor ?? defaultSolidBackgroundColor }
+                    <StyledCustomBackgroundOptionColor
+                      colorValue={selectedSolidBackgroundColor ?? defaultSolidBackgroundColor }
                       selected={!!selectedSolidBackgroundColor}
                     />
                   </StyledSelectionBorder>
@@ -149,14 +156,38 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                     {getLocale('solidColorTitle')}
                   </StyledCustomBackgroundOptionLabel>
                 </StyledCustomBackgroundOption>
+                <StyledCustomBackgroundOption
+                  onClick={ this.onClickGradientColorBackground }
+                >
+                  <StyledSelectionBorder selected={!!selectedGradientBackgroundColor}>
+                    <StyledCustomBackgroundOptionColor
+                      colorValue={selectedGradientBackgroundColor ?? defaultGradientColor}
+                      selected={!!selectedGradientBackgroundColor}
+                    />
+                  </StyledSelectionBorder>
+                  <StyledCustomBackgroundOptionLabel>
+                    {getLocale('gradientColorTitle')}
+                  </StyledCustomBackgroundOptionLabel>
+                </StyledCustomBackgroundOption>
               </StyledCustomBackgroundSettings>
             )}
           </div>
         )}
         {this.state.location === Location.SOLID_COLORS &&
-          <SolidColorChooser
-            currentColor={selectedSolidBackgroundColor}
-            setSolidColorBackground={this.props.setSolidColorBackground}
+          <ColorChooser
+            title={getLocale('solidColorTitle')}
+            values={solidColorsForBackground}
+            currentValue={selectedSolidBackgroundColor}
+            onSelectValue={this.props.setSolidColorBackground}
+            onBack={() => this.setLocation(Location.LIST)}
+          />
+        }
+        {this.state.location === Location.GRADIENT_COLORS &&
+          <ColorChooser
+            title={getLocale('gradientColorTitle')}
+            values={gradientColorsForBackground}
+            currentValue={selectedGradientBackgroundColor}
+            onSelectValue={this.props.setGradientColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
         }

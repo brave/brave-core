@@ -74,6 +74,9 @@ function DefaultPage (props: Props) {
       setSolidColorBackground={(color: string) =>
         getNTPBrowserAPI().pageHandler.useSolidColorBackground(color)
       }
+      setGradientColorBackground={(gradientValue: string) => {
+        getNTPBrowserAPI().pageHandler.useGradientColorBackground(gradientValue)
+      }}
     />
   )
 }

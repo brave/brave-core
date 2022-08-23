@@ -7,12 +7,13 @@ import { CHANGE } from '@storybook/addon-knobs'
 import { addons } from '@storybook/addons'
 
 import { images } from '../../../data/backgrounds'
-import { solidColorsForBackground } from '../../../data/colors'
+import { solidColorsForBackground, gradientColorsForBackground } from '../../../data/colors'
 
 const addonsChannel = addons.getChannel()
 
 export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpaper[],
-                                               solidColors: string[]) {
+                                               solidColors: string[],
+                                               gradientColors: string[]) {
   const staticImages = { defaultImage: undefined }
   for (const image of images) {
     // author is optional field.
@@ -41,21 +42,30 @@ export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpape
     })
   }
 
+  for (const gradient of gradientColors) {
+    Object.assign(staticImages, {
+      [gradient]: {
+        type: 'gradientColor',
+        wallpaperGradientColor: gradient
+      }
+    })
+  }
+
   return staticImages
-})(images, solidColorsForBackground)
+})(images, solidColorsForBackground, gradientColorsForBackground)
 
 /**
- * Mock handler for solid color backgrounds. Emits a change event to knobs
- * @param {string} color
+ * Mock handler for colored backgrounds. Emits a change event to knobs
+ * @param {string} value
  */
-export const onChangeSolidColorBackground = (color: string) => {
+export const onChangeColoredBackground = (value: string) => {
   addonsChannel.emit(CHANGE, {
     name: 'Show branded background image?',
     value: false
   })
   addonsChannel.emit(CHANGE, {
     name: 'Background',
-    value: backgroundWallpapers[color]
+    value: backgroundWallpapers[value]
   })
 }
 

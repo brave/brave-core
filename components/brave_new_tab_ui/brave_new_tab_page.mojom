@@ -10,6 +10,7 @@ import "url/mojom/url.mojom";
 struct CustomBackground {
   url.mojom.Url url;
   string solid_color;
+  string gradient_color;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -29,6 +30,7 @@ interface PageHandler {
   DismissBraveSearchPromotion();
   IsSearchPromotionEnabled() => (bool enabled);
   UseSolidColorBackground(string color);
+  UseGradientColorBackground(string gradient_value);
 };
 
 // WebUI-side handler for requests from the browser.

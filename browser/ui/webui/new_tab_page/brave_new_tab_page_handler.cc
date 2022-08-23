@@ -194,6 +194,16 @@ void BraveNewTabPageHandler::UseSolidColorBackground(const std::string& color) {
   DeleteSanitizedImageFile();
 }
 
+void BraveNewTabPageHandler::UseGradientColorBackground(
+      const std::string& gradient_value) {
+  auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
+  background_pref.SetType(NTPBackgroundPrefs::Type::kGradientColor);
+  background_pref.SetSelectedValue(gradient_value);
+
+  OnCustomBackgroundImageUpdated();
+  DeleteSanitizedImageFile();
+}
+
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
   auto* prefs = profile_->GetPrefs();
   if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
@@ -204,6 +214,10 @@ bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
 
 bool BraveNewTabPageHandler::IsSolidColorBackgroundEnabled() const {
   return NTPBackgroundPrefs(profile_->GetPrefs()).IsSolidColorType();
+}
+
+bool BraveNewTabPageHandler::IsGradientColorBackgroundEnabled() const {
+  return NTPBackgroundPrefs(profile_->GetPrefs()).IsGradientColorType();
 }
 
 void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
@@ -221,6 +235,11 @@ void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
         NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
     DCHECK(absl::holds_alternative<std::string>(selected_value));
     value->solid_color = absl::get<std::string>(selected_value);
+  } else if (IsGradientColorBackgroundEnabled()) {
+    auto selected_value =
+        NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
+    DCHECK(absl::holds_alternative<std::string>(selected_value));
+    value->gradient_color = absl::get<std::string>(selected_value);
   }
 
   page_->OnBackgroundUpdated(std::move(value));

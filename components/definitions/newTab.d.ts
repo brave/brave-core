@@ -10,6 +10,9 @@ declare namespace NewTab {
     type: 'solidColor'
     wallpaperSolidColor: string
   } | {
+    type: 'gradientColor'
+    wallpaperGradientColor: string
+  } | {
     type: 'image'
     wallpaperImageUrl: string
     author?: string

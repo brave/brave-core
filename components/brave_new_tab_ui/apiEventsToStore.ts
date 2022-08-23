@@ -40,6 +40,7 @@ async function onMostVisitedInfoChanged (topSites: topSitesAPI.MostVisitedInfoCh
 }
 
 async function onCustomBackgroundUpdated (customBackground: CustomBackground) {
+  console.log(customBackground)
   getActions().customBackgroundUpdated(customBackground)
 }
 
