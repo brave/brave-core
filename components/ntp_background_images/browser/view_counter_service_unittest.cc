@@ -118,12 +118,16 @@ class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
   ~TestDelegate() override = default;
 
   // Delegate overrides:
-  bool IsCustomBackgroundEnabled() override { return enabled_; }
+  bool IsCustomImageBackgroundEnabled() override { return image_enabled_; }
   base::FilePath GetCustomBackgroundImageLocalFilePath() override {
     return base::FilePath();
   }
 
-  bool enabled_ = false;
+  bool IsSolidColorBackgroundEnabled() override { return color_enabled_; }
+  std::string GetSolidColor() override { return "#ff0000"; }
+
+  bool image_enabled_ = false;
+  bool color_enabled_ = false;
 };
 #endif
 
@@ -394,17 +398,24 @@ TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentWallpaperTest) {
   EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg", *bg_url);
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  // Enable custom background.
-  delegate_->enabled_ = true;
+  // Enable custom image background.
+  delegate_->image_enabled_ = true;
   background = view_counter_->GetCurrentWallpaper();
   bg_url = background.FindStringKey(kWallpaperImageURLKey);
   EXPECT_EQ("chrome://custom-wallpaper/background.jpg", *bg_url);
 
-  // Disable custom background.
-  delegate_->enabled_ = false;
+  // Disable custom image background.
+  delegate_->image_enabled_ = false;
   background = view_counter_->GetCurrentWallpaper();
   bg_url = background.FindStringKey(kWallpaperImageURLKey);
   EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg", *bg_url);
+
+  // Enable solid color background
+  delegate_->color_enabled_ = true;
+  background = view_counter_->GetCurrentWallpaper();
+  EXPECT_FALSE(background.FindStringKey(kWallpaperImageURLKey));
+  EXPECT_EQ(delegate_->GetSolidColor(),
+            *background.FindStringKey(kWallpaperSolidColorKey));
 #endif
 }
 

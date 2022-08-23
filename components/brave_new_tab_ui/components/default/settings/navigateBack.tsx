@@ -9,7 +9,8 @@ import { ArrowLeftIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 
 type Props = {
-  onBack: () => {}
+  onBack: () => any
+  title?: string
 }
 
 const Back = styled('button')`
@@ -50,7 +51,7 @@ export default function NavigateBack (props: Props) {
   return (
     <Back onClick={onClick}>
       <Icon><ArrowLeftIcon /></Icon>
-      <span>{getLocale('settingsNavigateBack')}</span>
+      <span>{ props.title ? props.title : getLocale('settingsNavigateBack')}</span>
     </Back>
   )
 }

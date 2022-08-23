@@ -15,7 +15,7 @@ function generateStaticImages (images: NewTab.BackgroundWallpaper[]) {
   const staticImages = { SpaceX: undefined }
   for (const image of images) {
     // author is optional field.
-    if (!image.author) {
+    if (image.type !== 'image' || !image.author) {
       continue
     }
     Object.assign(staticImages, {

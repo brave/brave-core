@@ -43,6 +43,7 @@ const BraveTodaySettings = React.lazy(() => import('./settings/braveToday'))
 import { NewTabActions } from '../../constants/new_tab_types'
 
 export interface Props {
+  newTabData: NewTab.State
   actions: NewTabActions
   textDirection: string
   showSettingsMenu: boolean
@@ -67,6 +68,7 @@ export interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   useCustomBackgroundImage: (useCustom: boolean) => void
+  setSolidColorBackground: (color: string) => void
   showBackgroundImage: boolean
   showToday: boolean
   showBraveNewsButton: boolean
@@ -184,6 +186,10 @@ export default class Settings extends React.PureComponent<Props, State> {
 
   useCustomBackgroundImage = (useCustom: boolean) => {
     this.props.useCustomBackgroundImage(useCustom)
+  }
+
+  setSolidColorBackground = (color: string) => {
+    this.props.setSolidColorBackground(color)
   }
 
   setActiveTab (activeTab: TabType) {
@@ -342,9 +348,11 @@ export default class Settings extends React.PureComponent<Props, State> {
                 activeTab === TabType.BackgroundImage
                   ? (
                   <BackgroundImageSettings
+                    newTabData={this.props.newTabData}
                     toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                     toggleShowBackgroundImage={this.toggleShowBackgroundImage}
                     useCustomBackgroundImage={this.useCustomBackgroundImage}
+                    setSolidColorBackground={this.setSolidColorBackground}
                     brandedWallpaperOptIn={brandedWallpaperOptIn}
                     showBackgroundImage={showBackgroundImage}
                     featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
