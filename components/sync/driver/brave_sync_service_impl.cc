@@ -189,10 +189,13 @@ void BraveSyncServiceImpl::OnAccountDeleted(
     const SyncProtocolError& sync_protocol_error) {
   if (sync_protocol_error.error_type == SYNC_SUCCESS) {
     std::move(callback).Run(sync_protocol_error);
-    // If request succeded, trigger GetUpdates refresh to get
-    // ClientToServerMessage_CLEAR_SERVER_DATA, clear data and leave the chain
-    TriggerRefresh(syncer::ModelTypeSet::All());
+    // If request succeded - reset and clear all in a forced way
+    // The code below cleans all on an initiator device. Other devices in the
+    // chain will be cleaned at BraveSyncServiceImpl::ResetEngine
+    DCHECK(initiated_delete_account_);
+    BraveSyncServiceImpl::StopAndClear();
   } else if (current_attempt < kMaxPermanentlyDeleteSyncAccountAttempts) {
+    // Server responded failure, but we need to try more
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&BraveSyncServiceImpl::PermanentlyDeleteAccountImpl,
@@ -200,6 +203,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
                        std::move(callback)),
         base::Milliseconds(kDelayBetweenDeleteSyncAccountAttemptsMsec));
   } else {
+    // Server responded failure, and we are out of our attempts
     initiated_delete_account_ = false;
     std::move(callback).Run(sync_protocol_error);
   }
@@ -238,6 +242,9 @@ void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
       reset_reason == ResetEngineReason::kDisabledAccount &&
       sync_disabled_by_admin_ && !initiated_delete_account_) {
     brave_sync_prefs_.SetSyncAccountDeletedNoticePending(true);
+
+    // Forcing stop and clear, because sync account was deleted
+    BraveSyncServiceImpl::StopAndClear();
   }
 }
 
