@@ -39,12 +39,12 @@ base::FilePath NTPCustomBackgroundImagesServiceDelegate::
       ntp_background_images::kSanitizedImageFileName);
 }
 
-bool NTPCustomBackgroundImagesServiceDelegate::IsSolidColorBackgroundEnabled() {
-  return NTPBackgroundPrefs(profile_->GetPrefs()).IsSolidColorType();
+bool NTPCustomBackgroundImagesServiceDelegate::IsColorBackgroundEnabled() {
+  return NTPBackgroundPrefs(profile_->GetPrefs()).IsColorType();
 }
 
-std::string NTPCustomBackgroundImagesServiceDelegate::GetSolidColor() {
-  if (!IsSolidColorBackgroundEnabled())
+std::string NTPCustomBackgroundImagesServiceDelegate::GetColor() {
+  if (!IsColorBackgroundEnabled())
     return {};
 
   auto selected_value =

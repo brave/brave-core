@@ -14,6 +14,7 @@ import NewTabPage from './newTab'
 import * as PreferencesAPI from '../api/preferences'
 import getBraveNewsController from '../api/brave_news'
 import { getActionsForDispatch } from '../api/getActions'
+import getNTPBrowserAPI from '../api/background'
 
 // Types
 import { NewTabActions } from '../constants/new_tab_types'
@@ -63,6 +64,16 @@ function DefaultPage (props: Props) {
         saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
         getBraveNewsDisplayAd={getBraveNewsDisplayAd}
+        useCustomBackgroundImage={(useCustom: boolean) => {
+          if (useCustom) {
+            getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground()
+          } else {
+            getNTPBrowserAPI().pageHandler.useBraveBackground()
+          }
+        }}
+        setColorBackground={(color: string) =>
+          getNTPBrowserAPI().pageHandler.useColorBackground(color)
+        }
       />
     )
 }

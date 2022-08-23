@@ -7,22 +7,22 @@ import * as React from 'react'
 
 import {
   StyledCustomBackgroundOption,
-  StyledCustomBackgroundOptionSolidColor,
+  StyledCustomBackgroundOptionColor,
   StyledSelectionBorder
 } from '../../../components/default'
 
 interface Props {
   color: string
   selected: boolean
-  onSelectColor: (color: string) => void
+  onSelectValue: (color: string) => void
 }
 
-export default function SolidColorBackgroundOption ({ color, selected, onSelectColor }: Props) {
+export default function SolidColorBackgroundOption ({ color, selected, onSelectValue }: Props) {
   return (
-    <StyledCustomBackgroundOption onClick={_ => onSelectColor(color)}>
+    <StyledCustomBackgroundOption onClick={_ => onSelectValue(color)}>
       <StyledSelectionBorder selected={selected}>
-          <StyledCustomBackgroundOptionSolidColor
-            color={color}
+          <StyledCustomBackgroundOptionColor
+            colorValue={color}
             selected={selected}/>
       </StyledSelectionBorder>
     </StyledCustomBackgroundOption>
