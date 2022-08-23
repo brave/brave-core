@@ -126,7 +126,9 @@ std::vector<uint8_t> Sha256(const std::string& value) {
   }
 
   std::vector<uint8_t> sha256(SHA256_DIGEST_LENGTH);
-  SHA256((uint8_t*)value.c_str(), value.length(), &sha256.front());
+  SHA256(reinterpret_cast<const uint8_t*>(value.c_str()), value.length(),
+         &sha256.front());
+
   return sha256;
 }
 
