@@ -52,16 +52,16 @@ class BatAdsAdPreferencesInfoTest : public UnitTestBase {
     EXPECT_TRUE(ad_preferences_info.FromJson(json));
 
     // Assert
-    ASSERT_EQ(1u, ad_preferences_info.filtered_advertisers.size());
+    ASSERT_EQ(1U, ad_preferences_info.filtered_advertisers.size());
     EXPECT_EQ("filtered_advertiser_id",
               ad_preferences_info.filtered_advertisers[0].id);
-    ASSERT_EQ(1u, ad_preferences_info.filtered_categories.size());
+    ASSERT_EQ(1U, ad_preferences_info.filtered_categories.size());
     EXPECT_EQ("filtered_category_name",
               ad_preferences_info.filtered_categories[0].name);
-    ASSERT_EQ(1u, ad_preferences_info.saved_ads.size());
+    ASSERT_EQ(1U, ad_preferences_info.saved_ads.size());
     EXPECT_EQ("creative_instance_id",
               ad_preferences_info.saved_ads[0].creative_instance_id);
-    ASSERT_EQ(1u, ad_preferences_info.flagged_ads.size());
+    ASSERT_EQ(1U, ad_preferences_info.flagged_ads.size());
     EXPECT_EQ("creative_set_id",
               ad_preferences_info.flagged_ads[0].creative_set_id);
   }
@@ -107,10 +107,10 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParseEmptyJson) {
   EXPECT_TRUE(ad_preferences_info.FromJson("{}"));
 
   // Assert
-  EXPECT_EQ(0u, ad_preferences_info.filtered_advertisers.size());
-  EXPECT_EQ(0u, ad_preferences_info.filtered_categories.size());
-  EXPECT_EQ(0u, ad_preferences_info.saved_ads.size());
-  EXPECT_EQ(0u, ad_preferences_info.flagged_ads.size());
+  EXPECT_EQ(0U, ad_preferences_info.filtered_advertisers.size());
+  EXPECT_EQ(0U, ad_preferences_info.filtered_categories.size());
+  EXPECT_EQ(0U, ad_preferences_info.saved_ads.size());
+  EXPECT_EQ(0U, ad_preferences_info.flagged_ads.size());
 }
 
 TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {

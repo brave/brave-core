@@ -29,7 +29,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTreshold) {
   // Act
 
   // Assert
-  EXPECT_EQ(3u, GetPurchaseIntentThreshold());
+  EXPECT_EQ(3U, GetPurchaseIntentThreshold());
 }
 
 TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTimeWindowInSeconds) {
