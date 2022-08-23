@@ -114,17 +114,18 @@ bool ShouldFilterSegment(const std::string& segment) {
     return false;
   }
 
-  const auto iter = std::find_if(
-      filtered_segments.cbegin(), filtered_segments.cend(),
-      [&segment](const FilteredCategoryInfo& filtered_segment) {
-        if (HasChildSegment(filtered_segment.name)) {
-          // Filter against child, i.e. "technology & computing-linux"
-          return segment == filtered_segment.name;
-        }
+  const auto iter =
+      std::find_if(filtered_segments.cbegin(), filtered_segments.cend(),
+                   [&segment](const FilteredCategoryInfo& filtered_segment) {
+                     if (HasChildSegment(filtered_segment.name)) {
+                       // Filter against child, i.e. "technology &
+                       // computing-linux"
+                       return segment == filtered_segment.name;
+                     }
 
-        // Filter against parent, i.e. "technology & computing"
-        return MatchParentSegments(segment, filtered_segment.name);
-      });
+                     // Filter against parent, i.e. "technology & computing"
+                     return MatchParentSegments(segment, filtered_segment.name);
+                   });
 
   return iter != filtered_segments.cend();
 }
