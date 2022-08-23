@@ -334,6 +334,9 @@ bool CanPinToTaskbar() {
 namespace shell_integration::win {
 
 void PinToTaskbar(Profile* profile) {
+  // Disable pin-to-taskabar uitll we have checkbox to ask the user to use it.
+  return;
+
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!CanPinToTaskbar())
