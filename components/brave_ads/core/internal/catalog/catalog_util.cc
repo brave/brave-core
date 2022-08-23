@@ -29,8 +29,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kCatalogLifespan = base::Days(1);
-
 void Delete() {
   database::DeleteCampaigns();
   database::DeleteCreativeNotificationAds();
@@ -122,7 +120,7 @@ bool HasCatalogChanged(const std::string& catalog_id) {
 }
 
 bool HasCatalogExpired() {
-  return base::Time::Now() >= GetCatalogLastUpdated() + kCatalogLifespan;
+  return base::Time::Now() >= GetCatalogLastUpdated() + GetCatalogPing();
 }
 
 }  // namespace brave_ads

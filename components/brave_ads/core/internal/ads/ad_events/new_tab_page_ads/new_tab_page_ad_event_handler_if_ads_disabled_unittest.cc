@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -333,7 +334,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_day - 1);
 
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(GetCatalogPing() - base::Seconds(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -367,7 +368,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_day);
 
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(GetCatalogPing() - base::Seconds(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();

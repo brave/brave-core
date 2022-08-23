@@ -81,6 +81,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasNotChanged) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
   // Arrange
+  SetCatalogPing(base::Days(1));
   SetCatalogLastUpdated(Now());
 
   // Act
@@ -93,6 +94,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
   // Arrange
+  SetCatalogPing(base::Days(1));
   SetCatalogLastUpdated(Now());
 
   // Act

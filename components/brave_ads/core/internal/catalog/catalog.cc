@@ -118,15 +118,16 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
     return Retry();
   }
 
-  SetCatalogLastUpdated(base::Time::Now());
-
   if (!HasCatalogChanged(catalog->id)) {
     BLOG(1, "Catalog id " << catalog->id << " is up to date");
     return FetchAfterDelay();
   }
 
+  SetCatalogLastUpdated(base::Time::Now());
+
   SaveCatalog(*catalog);
   NotifyDidUpdateCatalog(*catalog);
+
   FetchAfterDelay();
 }
 
