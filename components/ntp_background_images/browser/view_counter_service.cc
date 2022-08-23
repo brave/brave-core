@@ -135,10 +135,12 @@ NTPSponsoredImagesData* ViewCounterService::GetCurrentBrandedWallpaperData()
   return service_->GetBrandedImagesData(false);
 }
 
-base::Value ViewCounterService::GetCurrentWallpaperForDisplay() {
+absl::optional<base::Value::Dict>
+ViewCounterService::GetCurrentWallpaperForDisplay() {
   if (ShouldShowBrandedWallpaper()) {
-    base::Value branded_wallpaper = GetCurrentBrandedWallpaper();
-    if (branded_wallpaper.is_dict()) {
+    absl::optional<base::Value::Dict> branded_wallpaper =
+        GetCurrentBrandedWallpaper();
+    if (branded_wallpaper) {
       return branded_wallpaper;
     }
     // Failed to get branded wallpaper as it was frequency capped by ads
@@ -151,9 +153,10 @@ base::Value ViewCounterService::GetCurrentWallpaperForDisplay() {
   return GetCurrentWallpaper();
 }
 
-base::Value ViewCounterService::GetCurrentWallpaper() const {
+absl::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
+    const {
   if (!IsBackgroundWallpaperActive())
-    return base::Value();
+    return absl::nullopt;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   if (ShouldShowCustomBackground())
@@ -164,10 +167,11 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
       model_.current_wallpaper_image_index());
 }
 
-base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
+absl::optional<base::Value::Dict>
+ViewCounterService::GetCurrentBrandedWallpaper() const {
   NTPSponsoredImagesData* images_data = GetCurrentBrandedWallpaperData();
   if (!images_data) {
-    return base::Value();
+    return absl::nullopt;
   }
 
   const bool should_frequency_cap_ads =
@@ -179,18 +183,19 @@ base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
   return GetCurrentBrandedWallpaperFromModel();
 }
 
-base::Value ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
+absl::optional<base::Value::Dict>
+ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   DCHECK(ads_service_);
 
   absl::optional<ads::NewTabPageAdInfo> ad_info =
       ads_service_->GetPrefetchedNewTabPageAd();
   if (!ad_info) {
-    return base::Value();
+    return absl::nullopt;
   }
 
-  base::Value branded_wallpaper_data =
+  absl::optional<base::Value::Dict> branded_wallpaper_data =
       GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
-  if (!branded_wallpaper_data.is_dict()) {
+  if (!branded_wallpaper_data) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad_info->placement_id,
                                                  ad_info->creative_instance_id);
   }
@@ -198,7 +203,8 @@ base::Value ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   return branded_wallpaper_data;
 }
 
-base::Value ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
+absl::optional<base::Value::Dict>
+ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
   size_t current_campaign_index;
   size_t current_background_index;
   std::tie(current_campaign_index, current_background_index) =

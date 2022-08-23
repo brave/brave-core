@@ -317,15 +317,16 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_TRUE(observer.on_si_updated_);
   EXPECT_FALSE(
       observer.si_data_->campaigns[0].backgrounds[0].logo.alt_text.empty());
-  EXPECT_TRUE(*si_data->GetBackgroundAt(0, 0).FindBoolKey(kIsSponsoredKey));
-  EXPECT_FALSE(*si_data->GetBackgroundAt(0, 0).FindBoolKey(kIsBackgroundKey));
+  EXPECT_TRUE(*si_data->GetBackgroundAt(0, 0)->FindBool(kIsSponsoredKey));
+  EXPECT_FALSE(*si_data->GetBackgroundAt(0, 0)->FindBool(kIsBackgroundKey));
 
   // Default logo is used for wallpaper at 0.
-  EXPECT_EQ("logo.png",
-            *si_data->GetBackgroundAt(0, 0).FindStringPath(kLogoImagePath));
+  EXPECT_EQ("logo.png", *si_data->GetBackgroundAt(0, 0)->FindStringByDottedPath(
+                            kLogoImagePath));
   // Per wallpaper logo is used for wallpaper at 1.
-  EXPECT_EQ("logo-2.png",
-            *si_data->GetBackgroundAt(0, 1).FindStringPath(kLogoImagePath));
+  EXPECT_EQ(
+      "logo-2.png",
+      *si_data->GetBackgroundAt(0, 1)->FindStringByDottedPath(kLogoImagePath));
 
   // Test BI data loading
   service_->bi_images_data_.reset();
@@ -342,15 +343,15 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_EQ("Brave Software", bi_data->backgrounds[0].author);
   EXPECT_EQ("https://brave.com/", bi_data->backgrounds[0].link);
   EXPECT_TRUE(observer.on_bi_updated_);
-  EXPECT_TRUE(*bi_data->GetBackgroundAt(0).FindBoolKey(kIsBackgroundKey));
+  EXPECT_TRUE(*bi_data->GetBackgroundAt(0).FindBool(kIsBackgroundKey));
   EXPECT_EQ("chrome://background-wallpaper/background-image-source.webp",
-            *bi_data->GetBackgroundAt(0).FindStringKey(kWallpaperImageURLKey));
+            *bi_data->GetBackgroundAt(0).FindString(kWallpaperImageURLKey));
   EXPECT_EQ("background-image-source.webp",
-            *bi_data->GetBackgroundAt(0).FindStringKey(kWallpaperImagePathKey));
+            *bi_data->GetBackgroundAt(0).FindString(kWallpaperImagePathKey));
   EXPECT_EQ("chrome://background-wallpaper/background-image-source.avif",
-            *bi_data->GetBackgroundAt(1).FindStringKey(kWallpaperImageURLKey));
+            *bi_data->GetBackgroundAt(1).FindString(kWallpaperImageURLKey));
   EXPECT_EQ("background-image-source.avif",
-            *bi_data->GetBackgroundAt(1).FindStringKey(kWallpaperImagePathKey));
+            *bi_data->GetBackgroundAt(1).FindString(kWallpaperImagePathKey));
 
   // Invalid schema version
   const std::string test_json_string_higher_schema = R"(
@@ -552,7 +553,7 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   EXPECT_EQ(wallpaper_count, data->campaigns[0].backgrounds.size());
   EXPECT_EQ(top_site_count, data->top_sites.size());
   EXPECT_TRUE(data->IsSuperReferral());
-  EXPECT_FALSE(*data->GetBackgroundAt(0, 0).FindBoolKey(kIsSponsoredKey));
+  EXPECT_FALSE(*data->GetBackgroundAt(0, 0)->FindBool(kIsSponsoredKey));
   EXPECT_TRUE(observer.on_si_updated_);
 
   service_->RemoveObserver(&observer);

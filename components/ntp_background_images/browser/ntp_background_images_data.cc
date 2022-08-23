@@ -98,24 +98,24 @@ bool NTPBackgroundImagesData::IsValid() const {
   return !backgrounds.empty();
 }
 
-base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
+base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   DCHECK(index >= 0 && index < backgrounds.size());
 
-  base::Value data(base::Value::Type::DICTIONARY);
+  base::Value::Dict data;
   if (!IsValid())
     return data;
 
   const std::string wallpaper_image_url =
       url_prefix + backgrounds[index].image_file.BaseName().AsUTF8Unsafe();
   // URL is used by NTP WebUI.
-  data.SetStringKey(kWallpaperImageURLKey, wallpaper_image_url);
+  data.Set(kWallpaperImageURLKey, wallpaper_image_url);
   // Path is used by android NTP.
-  data.SetStringKey(kWallpaperImagePathKey,
-                    backgrounds[index].image_file.AsUTF8Unsafe());
+  data.Set(kWallpaperImagePathKey,
+           backgrounds[index].image_file.AsUTF8Unsafe());
 
-  data.SetBoolKey(kIsBackgroundKey, true);
-  data.SetStringKey(kImageAuthorKey, backgrounds[index].author);
-  data.SetStringKey(kImageLinkKey, backgrounds[index].link);
+  data.Set(kIsBackgroundKey, true);
+  data.Set(kImageAuthorKey, backgrounds[index].author);
+  data.Set(kImageLinkKey, backgrounds[index].link);
   return data;
 }
 
