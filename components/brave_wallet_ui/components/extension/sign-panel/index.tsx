@@ -59,7 +59,13 @@ enum SignDataSteps {
 }
 
 const onClickLearnMore = () => {
-  window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
+  chrome.tabs.create({
+    url: 'https://support.brave.com/hc/en-us/articles/4409513799693'
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 }
 
 export const SignPanel = (props: Props) => {
