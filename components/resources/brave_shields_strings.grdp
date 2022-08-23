@@ -4,7 +4,11 @@
     Brave Shields
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ENABLE" desc="An accessible label for Brave Shields switch button. Do not translate Brave Shields.">
+  <message name="IDS_BRAVE_SHIELDS_STANDALONE" desc="Label for back button on inner views of Shields panel">
+    Shields
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ENABLE" desc="An accessible label for Brave Shields switch button.">
     Enable Brave Shields
   </message>
 

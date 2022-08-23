@@ -2,6 +2,7 @@ import { provideStrings } from '../../../../../.storybook/locale'
 
 provideStrings({
   braveShields: 'Brave Shields',
+  braveShieldsStandalone: 'Shields',
   braveShieldsEnable: 'Enable Brave Shields',
   braveShieldsUp: 'Shields are UP $1for$2',
   braveShieldsDown: 'Shields are DOWN $1for$2',
