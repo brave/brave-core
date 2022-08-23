@@ -543,6 +543,14 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
     ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
   }
 
+  void LoadInternalScriptForCreatingTestData() {
+    constexpr char BypassSafeBuiltins[] = "$Object = Object";
+    // Bypass loading safe builtins because we only use this script to create
+    // test data.
+    ASSERT_TRUE(ExecJs(web_contents(browser()), BypassSafeBuiltins));
+    ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
+  }
+
  protected:
   net::EmbeddedTestServer https_server_;
   TestBraveContentBrowserClient test_content_browser_client_;
@@ -775,7 +783,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
-  ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
+  LoadInternalScriptForCreatingTestData();
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string tx =
       base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
@@ -821,7 +829,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
-  ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
+  LoadInternalScriptForCreatingTestData();
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string txs = base::StrCat(
       {"([window._brave_solana.createTransaction(new Uint8Array([",
@@ -883,7 +891,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
-  ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
+  LoadInternalScriptForCreatingTestData();
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string send_options =
       R"({"maxRetries": 9007199254740991,
@@ -1276,7 +1284,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SafeBuiltins) {
   auto result = EvalJs(web_contents(browser()), R"(
     async function test() {
       Object.defineProperties = ()=>{}
-      $Object.defineProperties = ()=>{}
       await window.braveSolana.connect()
       window._brave_solana.createPublickey = ()=>'0x00'
       window.domAutomationController.send(
@@ -1292,7 +1299,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SafeBuiltins) {
   auto result2 = EvalJs(web_contents(browser()), R"(
     async function test() {
       Object.freeze = ()=>{}
-      $Object.freeze = ()=>{}
       await window.braveSolana.connect()
       window._brave_solana.abc = 123
       if (window._brave_solana.abc === 123)

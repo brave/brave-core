@@ -2,10 +2,14 @@ source_set("renderer") {
   sources = [
     "safe_builtins.cc",
     "safe_builtins.h",
+    "safe_builtins_helpers.cc",
+    "safe_builtins_helpers.h",
   ]
 
   deps = [
     "//base",
+    "//gin",
+    "//third_party/blink/public:blink",
     "//v8",
   ]
 }

@@ -49,6 +49,8 @@ constexpr char kSolana[] = "solana";
 constexpr char kSignature[] = "signature";
 constexpr char kSignatures[] = "signatures";
 constexpr char kToString[] = "toString";
+constexpr char kSolanaProviderSript[] = "solana_provider.js";
+constexpr char kSolanaProviderInternalSript[] = "solana_provider_internal.js";
 
 }  // namespace
 
@@ -164,7 +166,7 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   }
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  ExecuteScript(web_frame, *g_provider_script);
+  ExecuteScript(web_frame, *g_provider_script, kSolanaProviderSript);
 }
 
 gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
@@ -874,7 +876,8 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Context> context,
     const std::string& base58_str) {
   // Internal object for CreatePublicKey and CreateTransaction
-  ExecuteScript(render_frame()->GetWebFrame(), *g_provider_internal_script);
+  ExecuteScript(render_frame()->GetWebFrame(), *g_provider_internal_script,
+                kSolanaProviderInternalSript);
   const base::Value public_key_value(base58_str);
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(public_key_value, context));
@@ -889,7 +892,8 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     v8::Local<v8::Context> context,
     const std::vector<uint8_t> serialized_tx) {
   // Internal object for CreatePublicKey and CreateTransaction
-  ExecuteScript(render_frame()->GetWebFrame(), *g_provider_internal_script);
+  ExecuteScript(render_frame()->GetWebFrame(), *g_provider_internal_script,
+                kSolanaProviderInternalSript);
   const base::Value serialized_tx_value(serialized_tx);
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(serialized_tx_value, context));

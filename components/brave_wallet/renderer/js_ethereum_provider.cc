@@ -38,6 +38,7 @@ static base::NoDestructor<std::string> g_provider_script("");
 constexpr char kEthereum[] = "ethereum";
 constexpr char kEmit[] = "emit";
 constexpr char kIsBraveWallet[] = "isBraveWallet";
+constexpr char kEthereumProviderScript[] = "ethereum_provider.js";
 
 }  // namespace
 
@@ -579,7 +580,7 @@ v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked() {
 void JSEthereumProvider::InjectInitScript(bool is_main_world) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (is_main_world) {
-    ExecuteScript(web_frame, *g_provider_script);
+    ExecuteScript(web_frame, *g_provider_script, kEthereumProviderScript);
   }
 }
 
