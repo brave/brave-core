@@ -56,7 +56,12 @@ public class WalletProviderPermissionRequestsManager {
     var request = WebpagePermissionRequest(requestingOrigin: origin, coinType: coinType) { [weak self] decision in
       guard let self = self, let originURL = origin.url else { return }
       if case .granted(let accounts) = decision {
-        Domain.setEthereumPermissions(forUrl: originURL, accounts: accounts, grant: true)
+        Domain.setWalletPermissions(
+          forUrl: originURL,
+          coin: coinType,
+          accounts: accounts,
+          grant: true
+        )
       }
       self.requests.removeAll(where: { $0.requestingOrigin == origin && $0.coinType == coinType })
       completion?(decision)
