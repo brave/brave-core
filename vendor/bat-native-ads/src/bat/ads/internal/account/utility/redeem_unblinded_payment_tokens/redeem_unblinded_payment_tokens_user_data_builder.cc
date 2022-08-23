@@ -26,15 +26,9 @@ void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   base::Value::Dict user_data;
 
-  base::Value::Dict odyssey_user_data = user_data::GetOdyssey();
-  user_data.Merge(std::move(odyssey_user_data));
-
-  base::Value::Dict platform_user_data = user_data::GetPlatform();
-  user_data.Merge(std::move(platform_user_data));
-
-  base::Value::Dict totals_user_data =
-      user_data::GetTotals(unblinded_payment_tokens_);
-  user_data.Merge(std::move(totals_user_data));
+  user_data.Merge(user_data::GetOdyssey());
+  user_data.Merge(user_data::GetPlatform());
+  user_data.Merge(user_data::GetTotals(unblinded_payment_tokens_));
 
   callback(user_data);
 }
