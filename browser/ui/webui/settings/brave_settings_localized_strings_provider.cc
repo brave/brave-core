@@ -58,7 +58,8 @@ const char16_t kBraveAdsLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/360026361072-Brave-Ads-FAQ";
 const char16_t kBraveTermsOfUseURL[] = u"https://brave.com/terms-of-use/";
 const char16_t kBravePrivacyPolicyURL[] = u"https://brave.com/privacy/browser/";
-const char16_t kDeAmpLearnMoreUrl[] = u"https://support.brave.com/hc/en-us/articles/8611298579981";
+const char16_t kDeAmpLearnMoreUrl[] =
+    u"https://support.brave.com/hc/en-us/articles/8611298579981";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
