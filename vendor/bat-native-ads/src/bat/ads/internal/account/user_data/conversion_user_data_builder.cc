@@ -40,7 +40,8 @@ void BuildConversion(const std::string& creative_instance_id,
   database::table::ConversionQueue database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [callback](const bool success, const std::string& creative_instance_id,
+      [callback](const bool success,
+                 const std::string& /*creative_instance_id*/,
                  const ConversionQueueItemList& conversion_queue_items) {
         if (!success) {
           ReportConversionDoesNotExist(callback);

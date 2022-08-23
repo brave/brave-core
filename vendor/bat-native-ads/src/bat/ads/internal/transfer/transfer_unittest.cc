@@ -33,9 +33,11 @@ class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnDidTransferAd(const AdInfo& ad) override { transfer_count_++; }
+  void OnDidTransferAd(const AdInfo& /*ad*/) override { transfer_count_++; }
 
-  void OnFailedToTransferAd(const AdInfo& ad) override { transfer_count_--; }
+  void OnFailedToTransferAd(const AdInfo& /*ad*/) override {
+    transfer_count_--;
+  }
 
   int GetTransferCount() const { return transfer_count_; }
 

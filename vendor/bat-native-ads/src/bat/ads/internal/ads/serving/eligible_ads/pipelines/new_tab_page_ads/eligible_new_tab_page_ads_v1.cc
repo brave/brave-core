@@ -95,7 +95,7 @@ void EligibleAdsV1::GetForChildSegments(
 
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      segments, [=](const bool success, const SegmentList& segments,
+      segments, [=](const bool success, const SegmentList& /*segments*/,
                     const CreativeNewTabPageAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for child segments");
@@ -139,7 +139,7 @@ void EligibleAdsV1::GetForParentSegments(
 
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      segments, [=](const bool success, const SegmentList& segments,
+      segments, [=](const bool success, const SegmentList& /*segments*/,
                     const CreativeNewTabPageAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for parent segments");
@@ -172,7 +172,7 @@ void EligibleAdsV1::GetForUntargeted(
 
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      {kUntargeted}, [=](const bool success, const SegmentList& segments,
+      {kUntargeted}, [=](const bool success, const SegmentList& /*segments*/,
                          const CreativeNewTabPageAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for untargeted segment");

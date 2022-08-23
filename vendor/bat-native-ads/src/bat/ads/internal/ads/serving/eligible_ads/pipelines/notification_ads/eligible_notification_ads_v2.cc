@@ -71,7 +71,7 @@ void EligibleAdsV2::GetEligibleAds(
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   database::table::CreativeNotificationAds database_table;
-  database_table.GetAll([=](const bool success, const SegmentList& segments,
+  database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,
                             const CreativeNotificationAdList& creative_ads) {
     if (!success) {
       BLOG(1, "Failed to get ads");

@@ -11,7 +11,7 @@ NonCashDeposit::NonCashDeposit() = default;
 
 NonCashDeposit::~NonCashDeposit() = default;
 
-void NonCashDeposit::GetValue(const std::string& creative_instance_id,
+void NonCashDeposit::GetValue(const std::string& /*creative_instance_id*/,
                               GetDepositCallback callback) {
   callback(/* success */ true, /* value */ 0.0);
 }

@@ -28,7 +28,7 @@ TEST_F(BatAdsTransactionsTest, Add) {
   const TransactionInfo transaction = transactions::Add(
       "42a33833-0a08-4cbb-ab3e-458e020221ab", 0.01, AdType::kNotificationAd,
       ConfirmationType::kViewed,
-      [](const bool success, const TransactionInfo& transaction) {
+      [](const bool success, const TransactionInfo& /*transaction*/) {
         ASSERT_TRUE(success);
       });
 

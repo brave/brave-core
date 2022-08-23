@@ -93,7 +93,7 @@ void NotificationAd::TriggerEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NotificationAd::OnWalletDidUpdate(const WalletInfo& wallet) {
+void NotificationAd::OnWalletDidUpdate(const WalletInfo& /*wallet*/) {
   MaybeServeAtRegularIntervals();
 }
 

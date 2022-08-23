@@ -70,9 +70,9 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
   }
 
   void OnInlineContentAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::InlineContentAdEventType event_type) override {
+      const std::string& /*placement_id*/,
+      const std::string& /*creative_instance_id*/,
+      const mojom::InlineContentAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
   }
 

@@ -66,11 +66,11 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnWalletDidUpdate(const WalletInfo& wallet) override {
+  void OnWalletDidUpdate(const WalletInfo& /*wallet*/) override {
     wallet_did_update_ = true;
   }
 
-  void OnWalletDidChange(const WalletInfo& wallet) override {
+  void OnWalletDidChange(const WalletInfo& /*wallet*/) override {
     wallet_did_change_ = true;
   }
 
@@ -82,9 +82,9 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   }
 
   void OnFailedToProcessDeposit(
-      const std::string& creative_instance_id,
-      const AdType& ad_type,
-      const ConfirmationType& confirmation_type) override {
+      const std::string& /*creative_instance_id*/,
+      const AdType& /*ad_type*/,
+      const ConfirmationType& /*confirmation_type*/) override {
     failed_to_process_deposit_ = true;
   }
 

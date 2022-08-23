@@ -73,9 +73,9 @@ class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerObserver,
   }
 
   void OnPromotedContentAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type) override {
+      const std::string& /*placement_id*/,
+      const std::string& /*creative_instance_id*/,
+      const mojom::PromotedContentAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
   }
 

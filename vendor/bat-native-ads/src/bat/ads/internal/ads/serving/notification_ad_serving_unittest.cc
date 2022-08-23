@@ -51,7 +51,7 @@ class BatAdsNotificationAdServingTest : public ServingObserver,
   }
 
   void OnOpportunityAroseToServeNotificationAd(
-      const SegmentList& segments) override {
+      const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
   }
 

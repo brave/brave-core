@@ -72,7 +72,7 @@ void EligibleAdsV2::GetEligibleAds(
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   database::table::CreativeNewTabPageAds database_table;
-  database_table.GetAll([=](const bool success, const SegmentList& segments,
+  database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,
                             const CreativeNewTabPageAdList& creative_ads) {
     if (!success) {
       BLOG(1, "Failed to get ads");

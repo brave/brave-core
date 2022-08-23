@@ -90,9 +90,8 @@ bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
 }
 
 bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url) {
-  return base::ranges::any_of(urls, [&url](const GURL& item) {
-    return SameDomainOrHost(item, url);
-  });
+  return base::ranges::any_of(
+      urls, [&url](const GURL& item) { return SameDomainOrHost(item, url); });
 }
 
 }  // namespace ads

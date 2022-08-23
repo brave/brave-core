@@ -211,7 +211,7 @@ uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
   return max_weight;
 }
 
-void PurchaseIntent::OnLocaleDidChange(const std::string& locale) {
+void PurchaseIntent::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
@@ -222,9 +222,9 @@ void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
 }
 
 void PurchaseIntent::OnTextContentDidChange(
-    const int32_t tab_id,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
+    const std::string& /*content*/) {
   DCHECK(!redirect_chain.empty());
 
   const GURL& url = redirect_chain.back();

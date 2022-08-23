@@ -273,7 +273,7 @@ std::string Transactions::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Transactions::OnGetTransactions(GetTransactionsCallback callback,
+void Transactions::OnGetTransactions(const GetTransactionsCallback& callback,
                                      mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {

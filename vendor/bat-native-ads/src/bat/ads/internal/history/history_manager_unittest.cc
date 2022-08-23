@@ -46,36 +46,38 @@ class BatAdsHistoryManagerTest : public HistoryManagerObserver,
 
   void OnHistoryDidChange() override { history_did_change_ = true; }
 
-  void OnDidLikeAd(const AdContentInfo& ad_content) override {
+  void OnDidLikeAd(const AdContentInfo& /*ad_content*/) override {
     did_like_ad_ = true;
   }
 
-  void OnDidDislikeAd(const AdContentInfo& ad_content) override {
+  void OnDidDislikeAd(const AdContentInfo& /*ad_content*/) override {
     did_dislike_ad_ = true;
   }
 
   void OnDidMarkToNoLongerReceiveAdsForCategory(
-      const std::string& category) override {
+      const std::string& /*category*/) override {
     did_mark_to_no_longer_receive_ads_for_category_ = true;
   }
 
-  void OnDidMarkToReceiveAdsForCategory(const std::string& category) override {
+  void OnDidMarkToReceiveAdsForCategory(
+      const std::string& /*category*/) override {
     did_mark_to_receive_ads_for_category_ = true;
   }
 
-  void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) override {
+  void OnDidMarkAdAsInappropriate(
+      const AdContentInfo& /*ad_content*/) override {
     did_mark_ad_as_inappropriate_ = true;
   }
 
-  void OnDidMarkAdAsAppropriate(const AdContentInfo& ad_content) override {
+  void OnDidMarkAdAsAppropriate(const AdContentInfo& /*ad_content*/) override {
     did_mark_ad_as_appropriate_ = true;
   }
 
-  void OnDidSaveAd(const AdContentInfo& ad_content) override {
+  void OnDidSaveAd(const AdContentInfo& /*ad_content*/) override {
     did_save_ad_ = true;
   }
 
-  void OnDidUnsaveAd(const AdContentInfo& ad_content) override {
+  void OnDidUnsaveAd(const AdContentInfo& /*ad_content*/) override {
     did_unsave_ad_ = true;
   }
 

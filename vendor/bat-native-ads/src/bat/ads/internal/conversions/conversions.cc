@@ -569,7 +569,7 @@ void Conversions::NotifyConversionFailed(
   }
 }
 
-void Conversions::OnLocaleDidChange(const std::string& locale) {
+void Conversions::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
@@ -580,7 +580,7 @@ void Conversions::OnResourceDidUpdate(const std::string& id) {
 }
 
 void Conversions::OnHtmlContentDidChange(
-    const int32_t tab_id,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
   MaybeConvert(redirect_chain, content, resource_->get()->id_patterns);

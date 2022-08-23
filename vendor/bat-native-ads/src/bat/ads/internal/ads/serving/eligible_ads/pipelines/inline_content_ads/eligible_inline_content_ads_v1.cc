@@ -101,7 +101,7 @@ void EligibleAdsV1::GetForChildSegments(
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
-      [=](const bool success, const SegmentList& segments,
+      [=](const bool success, const SegmentList& /*segments*/,
           const CreativeInlineContentAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for child segments");
@@ -147,7 +147,7 @@ void EligibleAdsV1::GetForParentSegments(
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
-      [=](const bool success, const SegmentList& segments,
+      [=](const bool success, const SegmentList& /*segments*/,
           const CreativeInlineContentAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for parent segments");
@@ -182,7 +182,7 @@ void EligibleAdsV1::GetForUntargeted(
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       {kUntargeted}, dimensions,
-      [=](const bool success, const SegmentList& segments,
+      [=](const bool success, const SegmentList& /*segments*/,
           const CreativeInlineContentAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for untargeted segment");

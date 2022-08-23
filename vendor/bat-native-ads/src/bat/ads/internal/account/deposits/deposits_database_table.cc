@@ -222,7 +222,7 @@ std::string Deposits::BuildInsertOrUpdateQuery(
 }
 
 void Deposits::OnGetForCreativeInstanceId(
-    const std::string& creative_instance_id,
+    const std::string& /*creative_instance_id*/,
     GetDepositsCallback callback,
     mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=

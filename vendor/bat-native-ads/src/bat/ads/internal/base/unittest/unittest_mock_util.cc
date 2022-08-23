@@ -254,7 +254,7 @@ void MockResetAdEventHistoryForId(const std::unique_ptr<AdsClientMock>& mock) {
 
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetBrowsingHistory(_, _, _))
-      .WillByDefault(Invoke([](const int max_count, const int days_ago,
+      .WillByDefault(Invoke([](const int max_count, const int /*days_ago*/,
                                GetBrowsingHistoryCallback callback) {
         std::vector<GURL> history;
 
@@ -289,7 +289,7 @@ void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, Save(_, _, _))
       .WillByDefault(
-          Invoke([](const std::string& name, const std::string& value,
+          Invoke([](const std::string& /*name*/, const std::string& /*value*/,
                     SaveCallback callback) {
             std::move(callback).Run(/* success */ true);
           }));
@@ -318,7 +318,7 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
 void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, LoadFileResource(_, _, _))
-      .WillByDefault(Invoke([](const std::string& id, const int version,
+      .WillByDefault(Invoke([](const std::string& id, const int /*version*/,
                                LoadFileCallback callback) {
         const base::FilePath path = GetFileResourcePath().AppendASCII(id);
 

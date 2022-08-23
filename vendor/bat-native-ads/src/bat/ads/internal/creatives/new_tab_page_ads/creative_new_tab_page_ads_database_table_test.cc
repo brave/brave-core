@@ -42,7 +42,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
 
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      segments, [](const bool success, const SegmentList& segments,
+      segments, [](const bool success, const SegmentList& /*segments*/,
                    const CreativeNewTabPageAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_ads.size());

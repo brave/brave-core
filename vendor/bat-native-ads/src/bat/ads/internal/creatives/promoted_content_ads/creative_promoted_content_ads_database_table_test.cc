@@ -46,7 +46,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
   database::table::CreativePromotedContentAds creative_promoted_content_ads;
   creative_promoted_content_ads.GetForSegments(
       segments,
-      [](const bool success, const SegmentList& segments,
+      [](const bool success, const SegmentList& /*segments*/,
          const CreativePromotedContentAdList& creative_promoted_content_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_promoted_content_ads.size());
