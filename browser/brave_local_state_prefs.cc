@@ -110,10 +110,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   RegisterWidevineLocalstatePrefs(registry);
 #endif
 
-#if BUILDFLAG(IS_WIN)
-  registry->RegisterBooleanPref(kTryToPinForExistingUsers, true);
-#endif
-
   decentralized_dns::RegisterLocalStatePrefs(registry);
 
   RegisterLocalStatePrefsForMigration(registry);
