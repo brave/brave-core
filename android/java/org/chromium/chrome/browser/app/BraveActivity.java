@@ -604,6 +604,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
                     return;
                 }
+                BraveVpnNativeWorker.getInstance().reportForegroundP3A();
                 BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
             }
         }.start();
