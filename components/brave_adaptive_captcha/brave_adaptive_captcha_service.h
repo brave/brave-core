@@ -13,6 +13,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge.h"
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -25,13 +26,6 @@ class PrefRegistrySimple;
 class PrefService;
 
 namespace brave_adaptive_captcha {
-
-extern const char kScheduledCaptchaId[];
-extern const char kScheduledCaptchaPaymentId[];
-extern const char kScheduledCaptchaSnoozeCount[];
-extern const char kScheduledCaptchaFailedAttempts[];
-extern const char kScheduledCaptchaPaused[];
-
 // This manages the adaptive captcha functionality. Adaptive captchas provide a
 // mechanism for the server to provide new types of captchas without requiring
 // client changes.

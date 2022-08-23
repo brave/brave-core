@@ -15,10 +15,13 @@
 #include "base/android/jni_string.h"
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/build/android/jni_headers/BraveRewardsNativeWorker_jni.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -146,6 +149,21 @@ BraveRewardsNativeWorker::GetPublisherFavIconURL(JNIEnv* env, uint64_t tabId) {
   }
 
   return res;
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetCaptchaSolutionURL(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& paymentId,
+    const base::android::JavaParamRef<jstring>& captchaId) {
+  const std::string path = base::StringPrintf(
+      "/v3/captcha/solution/%s/%s",
+      base::android::ConvertJavaStringToUTF8(env, paymentId).c_str(),
+      base::android::ConvertJavaStringToUTF8(env, captchaId).c_str());
+  std::string captcha_solution_url =
+      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+
+  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
 }
 
 base::android::ScopedJavaLocalRef<jstring>

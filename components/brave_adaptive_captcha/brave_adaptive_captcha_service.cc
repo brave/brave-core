@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -31,15 +32,6 @@ std::string GetScheduledCaptchaUrl(const std::string& payment_id,
 namespace brave_adaptive_captcha {
 
 constexpr int kScheduledCaptchaMaxFailedAttempts = 10;
-
-const char kScheduledCaptchaId[] = "brave.rewards.scheduled_captcha.id";
-const char kScheduledCaptchaPaymentId[] =
-    "brave.rewards.scheduled_captcha.payment_id";
-const char kScheduledCaptchaSnoozeCount[] =
-    "brave.rewards.scheduled_captcha.snooze_count";
-const char kScheduledCaptchaFailedAttempts[] =
-    "brave.rewards.scheduled_captcha.failed_attempts";
-const char kScheduledCaptchaPaused[] = "brave.rewards.scheduled_captcha.paused";
 
 net::NetworkTrafficAnnotationTag kAnnotationTag =
     net::DefineNetworkTrafficAnnotation("brave_adaptive_captcha_service", R"(
@@ -94,14 +86,15 @@ bool BraveAdaptiveCaptchaService::GetScheduledCaptchaInfo(
   DCHECK(url);
   DCHECK(max_attempts_exceeded);
 
-  const std::string payment_id = prefs_->GetString(kScheduledCaptchaPaymentId);
-  const std::string captcha_id = prefs_->GetString(kScheduledCaptchaId);
+  const std::string payment_id =
+      prefs_->GetString(prefs::kScheduledCaptchaPaymentId);
+  const std::string captcha_id = prefs_->GetString(prefs::kScheduledCaptchaId);
   if (payment_id.empty() || captcha_id.empty()) {
     return false;
   }
 
   const int failed_attempts =
-      prefs_->GetInteger(kScheduledCaptchaFailedAttempts);
+      prefs_->GetInteger(prefs::kScheduledCaptchaFailedAttempts);
 
   *url = GetScheduledCaptchaUrl(payment_id, captcha_id);
   *max_attempts_exceeded =
@@ -113,12 +106,12 @@ bool BraveAdaptiveCaptchaService::GetScheduledCaptchaInfo(
 void BraveAdaptiveCaptchaService::UpdateScheduledCaptchaResult(bool result) {
   if (!result) {
     const int failed_attempts =
-        prefs_->GetInteger(kScheduledCaptchaFailedAttempts) + 1;
+        prefs_->GetInteger(prefs::kScheduledCaptchaFailedAttempts) + 1;
     prefs_->SetInteger(
-        kScheduledCaptchaFailedAttempts,
+        prefs::kScheduledCaptchaFailedAttempts,
         std::min(failed_attempts, kScheduledCaptchaMaxFailedAttempts));
     if (failed_attempts >= kScheduledCaptchaMaxFailedAttempts) {
-      prefs_->SetBoolean(kScheduledCaptchaPaused, true);
+      prefs_->SetBoolean(prefs::kScheduledCaptchaPaused, true);
     }
     return;
   }
@@ -129,12 +122,12 @@ void BraveAdaptiveCaptchaService::UpdateScheduledCaptchaResult(bool result) {
 void BraveAdaptiveCaptchaService::ShowScheduledCaptcha(
     const std::string& payment_id,
     const std::string& captcha_id) {
-  if (prefs_->GetBoolean(kScheduledCaptchaPaused)) {
+  if (prefs_->GetBoolean(prefs::kScheduledCaptchaPaused)) {
     return;
   }
 
-  prefs_->SetString(kScheduledCaptchaPaymentId, payment_id);
-  prefs_->SetString(kScheduledCaptchaId, captcha_id);
+  prefs_->SetString(prefs::kScheduledCaptchaPaymentId, payment_id);
+  prefs_->SetString(prefs::kScheduledCaptchaId, captcha_id);
 
   if (delegate_) {
     delegate_->ShowScheduledCaptcha(payment_id, captcha_id);
@@ -143,22 +136,23 @@ void BraveAdaptiveCaptchaService::ShowScheduledCaptcha(
 }
 
 void BraveAdaptiveCaptchaService::SnoozeScheduledCaptcha() {
-  const int snooze_count = prefs_->GetInteger(kScheduledCaptchaSnoozeCount);
+  const int snooze_count =
+      prefs_->GetInteger(prefs::kScheduledCaptchaSnoozeCount);
   if (snooze_count >= 1) {
     return;
   }
 
-  prefs_->SetString(kScheduledCaptchaPaymentId, "");
-  prefs_->SetString(kScheduledCaptchaId, "");
-  prefs_->SetInteger(kScheduledCaptchaSnoozeCount, snooze_count + 1);
+  prefs_->SetString(prefs::kScheduledCaptchaPaymentId, "");
+  prefs_->SetString(prefs::kScheduledCaptchaId, "");
+  prefs_->SetInteger(prefs::kScheduledCaptchaSnoozeCount, snooze_count + 1);
 }
 
 void BraveAdaptiveCaptchaService::ClearScheduledCaptcha() {
-  prefs_->SetInteger(kScheduledCaptchaFailedAttempts, 0);
-  prefs_->SetInteger(kScheduledCaptchaSnoozeCount, 0);
-  prefs_->SetString(kScheduledCaptchaPaymentId, "");
-  prefs_->SetString(kScheduledCaptchaId, "");
-  prefs_->SetBoolean(kScheduledCaptchaPaused, false);
+  prefs_->SetInteger(prefs::kScheduledCaptchaFailedAttempts, 0);
+  prefs_->SetInteger(prefs::kScheduledCaptchaSnoozeCount, 0);
+  prefs_->SetString(prefs::kScheduledCaptchaPaymentId, "");
+  prefs_->SetString(prefs::kScheduledCaptchaId, "");
+  prefs_->SetBoolean(prefs::kScheduledCaptchaPaused, false);
 }
 
 void BraveAdaptiveCaptchaService::OnRecoverWallet(
@@ -174,11 +168,11 @@ void BraveAdaptiveCaptchaService::OnCompleteReset(const bool success) {
 // static
 void BraveAdaptiveCaptchaService::RegisterProfilePrefs(
     PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(kScheduledCaptchaId, "");
-  registry->RegisterStringPref(kScheduledCaptchaPaymentId, "");
-  registry->RegisterIntegerPref(kScheduledCaptchaSnoozeCount, 0);
-  registry->RegisterIntegerPref(kScheduledCaptchaFailedAttempts, 0);
-  registry->RegisterBooleanPref(kScheduledCaptchaPaused, false);
+  registry->RegisterStringPref(prefs::kScheduledCaptchaId, "");
+  registry->RegisterStringPref(prefs::kScheduledCaptchaPaymentId, "");
+  registry->RegisterIntegerPref(prefs::kScheduledCaptchaSnoozeCount, 0);
+  registry->RegisterIntegerPref(prefs::kScheduledCaptchaFailedAttempts, 0);
+  registry->RegisterBooleanPref(prefs::kScheduledCaptchaPaused, false);
 }
 
 }  // namespace brave_adaptive_captcha

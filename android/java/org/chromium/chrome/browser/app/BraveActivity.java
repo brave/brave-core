@@ -76,6 +76,7 @@ import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
+import org.chromium.chrome.browser.BraveAdaptiveCaptchaUtils;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -118,9 +119,12 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.preferences.PrefChangeRegistrar;
+import org.chromium.chrome.browser.preferences.PrefChangeRegistrar.PrefObserver;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
@@ -167,6 +171,7 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.search_engines.TemplateUrl;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -186,7 +191,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @JNINamespace("chrome::android")
 public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity
         implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
-                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler {
+                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver {
     public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
@@ -719,10 +724,45 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     @Override
+    public void onPreferenceChange() {
+        maybeSolveAdaptiveCaptcha();
+    }
+
+    public void maybeSolveAdaptiveCaptcha() {
+        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
+        if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            BraveAdaptiveCaptchaUtils.solveCaptcha(captchaID, paymentID);
+        }
+    }
+
+    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
         BraveHelper.maybeMigrateSettings();
+
+        PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
+        mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
+
+        if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
+                >= 10) {
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
+        }
+
+        Log.e("adaptive captcha",
+                "Failed attempts : "
+                        + UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                  .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+        if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
+            maybeSolveAdaptiveCaptcha();
+        }
 
         if (SharedPreferencesManager.getInstance().readBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {

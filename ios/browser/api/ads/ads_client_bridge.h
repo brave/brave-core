@@ -27,7 +27,9 @@
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(ads::GetScheduledCaptchaCallback)callback;
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
-                               captchaId:(const std::string&)captcha_id;
+                               captchaId:(const std::string&)captcha_id
+                  shouldShowNotification:
+                      (const bool)should_show_tooltip_notification;
 - (void)getBrowsingHistory:(const int)max_count
                    forDays:(const int)days_ago
                   callback:(ads::GetBrowsingHistoryCallback)callback;
