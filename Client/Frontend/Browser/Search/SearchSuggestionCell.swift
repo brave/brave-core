@@ -24,8 +24,9 @@ class SuggestionCell: UITableViewCell {
     $0.lineBreakMode = .byTruncatingMiddle
   }
 
-  private let openButton = UIButton().then {
-    $0.setImage(UIImage(named: "recent-search-arrow", in: .current, compatibleWith: nil)!, for: .normal)
+  private let openButton = BraveButton().then {
+    $0.setImage(UIImage(named: "recent-search-arrow", in: .current, compatibleWith: nil), for: .normal)
+    $0.hitTestSlop = UIEdgeInsets(equalInset: -20)
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
