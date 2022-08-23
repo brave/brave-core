@@ -863,7 +863,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletMakeTokenVisibleInstructions",
      IDS_BRAVE_WALLET_MAKE_TOKEN_VISIBLE_INSTRUCTIONS},
     {"braveWalletConfirmHidingToken", IDS_BRAVE_WALLET_CONFIRM_HIDING_TOKEN},
-    {"braveWalletCancelHidingToken", IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN}};
+    {"braveWalletCancelHidingToken", IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN},
+    {"braveWalletRequestFeatureButtonText",
+     IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT}};
 
 // 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
