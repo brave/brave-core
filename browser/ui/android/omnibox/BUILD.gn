@@ -52,17 +52,9 @@ android_library("java") {
 
 android_resources("java_resources") {
   sources = [
-    "java/res/drawable-hdpi/ic_brave_search_banner.png",
-    "java/res/drawable-mdpi/ic_brave_search_banner.png",
-    "java/res/drawable-night-hdpi/ic_brave_search_banner.png",
-    "java/res/drawable-night-mdpi/ic_brave_search_banner.png",
-    "java/res/drawable-night-xhdpi/ic_brave_search_banner.png",
-    "java/res/drawable-night-xxhdpi/ic_brave_search_banner.png",
-    "java/res/drawable-night-xxxhdpi/ic_brave_search_banner.png",
-    "java/res/drawable-xhdpi/ic_brave_search_banner.png",
-    "java/res/drawable-xxhdpi/ic_brave_search_banner.png",
-    "java/res/drawable-xxxhdpi/ic_brave_search_banner.png",
+    "java/res/drawable-night/ic_search_omnibox_promo.xml",
     "java/res/drawable/bg_brave_search_banner.xml",
+    "java/res/drawable/ic_search_omnibox_promo.xml",
     "java/res/layout/omnibox_brave_search_banner.xml",
     "java/res/values-night/colors.xml",
     "java/res/values/colors.xml",
