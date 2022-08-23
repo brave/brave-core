@@ -8,10 +8,13 @@ import java.util.List;
 public final class WalletConstants {
     public static final long MILLI_SECOND = 1000;
 
-    // URLs
+    // Android
+    public static final String LINE_SEPARATOR = "line.separator";
 
     // Crypto
-    public static final String URL_BRIDGE_RISKS = "https://ethereum.org/en/bridges/#bridge-risk";
+    public static final String URL_RAINBOW_BRIDGE_OVERVIEW =
+            "https://doc.aurora.dev/bridge/bridge-overview/";
+    public static final String URL_RAINBOW_BRIDGE_RISKS = "https://rainbowbridge.app/approvals";
 
     // Aurora
     public static final String URL_RAINBOW_AURORA = "https://rainbowbridge.app";
@@ -34,6 +37,9 @@ public final class WalletConstants {
 
     // AssetDetailsActivity
     public static final String PREF_SHOW_BRIDGE_INFO_DIALOG = "pref_show_bridge_info_dialog";
+
+    // To clear prefs while resetting wallet
+    public static final String[] BRAVE_WALLET_PREFS = {PREF_SHOW_BRIDGE_INFO_DIALOG};
 
     public static List<String> BUY_SUPPORTED_NETWORKS = Arrays.asList(
             BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.RINKEBY_CHAIN_ID,

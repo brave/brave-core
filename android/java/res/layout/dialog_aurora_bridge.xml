@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -7,6 +8,7 @@
     >
 
     <TextView
+        android:id="@+id/dialog_aurora_tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -17,14 +19,21 @@
 
     <TextView
         android:id="@+id/dialog_aurora_desc"
+        style="@style/BraveWalletTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:text="@string/brave_wallet_aurora_modal_description"
-        android:textColor="@color/wallet_secondary_text_color"
-        android:textSize="14sp" />
+        android:textColor="@color/wallet_secondary_text_color" />
+
+    <CheckBox
+        android:id="@+id/dialog_aurora_cb_dont_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/dont_show_again"
+        android:translationX="-6dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_open_rainbow_app"
@@ -32,8 +41,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:drawableStart="@drawable/ic_globe_connect_icon"
-        android:drawablePadding="8dp"
         android:text="@string/brave_wallet_aurora_modal_open_button_text" />
+
+    <TextView
+        android:id="@+id/dialog_aurora_tv_learn_more"
+        style="@style/BraveWalletTextView"
+        android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/wallet_secondary_text_color"
+        tools:text="Some links" />
 </LinearLayout>
