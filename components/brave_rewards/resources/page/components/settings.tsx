@@ -79,7 +79,7 @@ export function Settings () {
   }, [])
 
   React.useEffect(() => {
-    const id = setInterval(() => { actions.getBalance() }, 6000)
+    const id = setInterval(() => { actions.getBalance() }, 60000)
     return () => { clearInterval(id) }
   }, [])
 
