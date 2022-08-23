@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../shared/lib/locale_context'
-import { NewTabLink } from '../../shared/components/new_tab_link'
 import { AdaptiveCaptchaInfo, AdaptiveCaptchaResult } from '../../rewards_panel/lib/interfaces'
 
 import * as styles from './adaptive_captcha_view.style'
@@ -34,6 +33,7 @@ interface Props {
   adaptiveCaptchaInfo: AdaptiveCaptchaInfo
   onClose: () => void
   onCaptchaResult: (result: AdaptiveCaptchaResult) => void
+  onContactSupport: () => void
 }
 
 export function AdaptiveCaptchaView (props: Props) {
@@ -123,12 +123,9 @@ export function AdaptiveCaptchaView (props: Props) {
             {getString('captchaMaxAttemptsExceededText')}
           </styles.text>
           <styles.helpAction>
-            <NewTabLink
-              href='https://support.brave.com/'
-              onClick={props.onClose}
-            >
+            <button onClick={props.onContactSupport}>
               {getString('captchaContactSupport')}
-            </NewTabLink>
+            </button>
           </styles.helpAction>
         </styles.modalRoot>
       </styles.overlay>

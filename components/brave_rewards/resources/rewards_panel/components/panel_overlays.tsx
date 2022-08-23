@@ -127,6 +127,11 @@ export function PanelOverlays () {
   }
 
   if (adaptiveCaptchaInfo) {
+    const onContactSupport = () => {
+      host.clearAdaptiveCaptcha()
+      host.openAdaptiveCaptchaSupport()
+    }
+
     const onClose = () => {
       host.clearAdaptiveCaptcha()
     }
@@ -137,6 +142,7 @@ export function PanelOverlays () {
           adaptiveCaptchaInfo={adaptiveCaptchaInfo}
           onClose={onClose}
           onCaptchaResult={host.handleAdaptiveCaptchaResult}
+          onContactSupport={onContactSupport}
         />
       </NamedOverlay>
     )
