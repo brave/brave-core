@@ -14,7 +14,7 @@ namespace ads {
 class RedeemUnblindedPaymentTokensUserDataBuilder final
     : public UserDataBuilderInterface {
  public:
-  RedeemUnblindedPaymentTokensUserDataBuilder(
+  explicit RedeemUnblindedPaymentTokensUserDataBuilder(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
   ~RedeemUnblindedPaymentTokensUserDataBuilder() override;
 
