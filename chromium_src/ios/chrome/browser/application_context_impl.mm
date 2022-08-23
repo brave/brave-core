@@ -49,6 +49,7 @@
 #include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_service.h"
 #include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
+#include "ios/public/provider/chrome/browser/push_notification/push_notification_api.h"
 #include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/log/net_log.h"
@@ -374,4 +375,13 @@ PromosManager* ApplicationContextImpl::GetPromosManager() {
     promos_manager_ = std::make_unique<PromosManager>(GetLocalState());
   }
   return promos_manager_.get();
+}
+
+PushNotificationService* ApplicationContextImpl::GetPushNotificationService() {
+  if (!push_notification_service_) {
+    push_notification_service_ = ios::provider::CreatePushNotificationService();
+    DCHECK(push_notification_service_);
+  }
+
+  return push_notification_service_.get();
 }
