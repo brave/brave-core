@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <iostream>
 #include <string>
 
 #include "base/containers/contains.h"
@@ -100,6 +101,7 @@ class RedirectCC {
     launch_argv.reserve(argc_);
     launch_argv.push_back(compiler_executable);
     bool compile_file_found = false;
+    base::FilePath::StringType brave_path;
 
     for (int arg_idx = first_compiler_arg_idx; arg_idx < argc_; ++arg_idx) {
       const base::FilePath::StringPieceType arg_piece = argv_[arg_idx];
@@ -139,13 +141,15 @@ class RedirectCC {
         }
 
         if (!path_cc.empty()) {
-          base::FilePath::StringType brave_path = base::StrCat(
+          brave_path = base::StrCat(
               {brave_chromium_src_dir, FILE_PATH_LITERAL("/"), path_cc});
           if (base::PathExists(base::FilePath(brave_path))) {
             launch_argv.push_back(base::FilePath::StringType(arg_piece));
-            launch_argv.push_back(std::move(brave_path));
+            launch_argv.push_back(brave_path);
             ++arg_idx;
             continue;
+          } else {
+            brave_path.clear();
           }
         }
       }
@@ -163,6 +167,16 @@ class RedirectCC {
     auto process = base::LaunchProcess(to_launch, options);
     int exit_code = -1;
     process.WaitForExit(&exit_code);
+#if BUILDFLAG(IS_WIN)
+    // To check the redirected file timestamp, it should be marked as dependency
+    // for ninja. Linux/MacOS gcc deps format includes this file properly.
+    // Windows msvc deps format does not include it, so we do it manually here.
+    if (exit_code == 0 && !brave_path.empty()) {
+      // This is a specially crafted string that ninja will look for to create
+      // deps.
+      std::wcerr << L"Note: including file: " << brave_path.c_str() << L"\n";
+    }
+#endif  // BUILDFLAG(IS_WIN)
     return exit_code;
   }
 
