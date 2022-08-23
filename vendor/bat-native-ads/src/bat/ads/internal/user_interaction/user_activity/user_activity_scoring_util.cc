@@ -25,11 +25,7 @@ bool WasUserActive() {
   const double score = GetUserActivityScore(triggers, events);
 
   const double threshold = user_activity::features::GetThreshold();
-  if (score < threshold) {
-    return false;
-  }
-
-  return true;
+  return score >= threshold;
 }
 
 }  // namespace ads

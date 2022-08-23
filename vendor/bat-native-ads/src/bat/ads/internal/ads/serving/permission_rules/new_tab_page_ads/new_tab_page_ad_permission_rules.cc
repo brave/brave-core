@@ -45,11 +45,7 @@ bool PermissionRules::HasPermission() const {
   }
 
   MinimumWaitTimePermissionRule minimum_wait_time_permission_rule;
-  if (!ShouldAllow(&minimum_wait_time_permission_rule)) {
-    return false;
-  }
-
-  return true;
+  return ShouldAllow(&minimum_wait_time_permission_rule);
 }
 
 }  // namespace new_tab_page_ads

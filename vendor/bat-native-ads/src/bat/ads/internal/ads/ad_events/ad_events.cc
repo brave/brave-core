@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 
 #include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/check.h"
@@ -34,7 +35,7 @@ void LogAdEvent(const AdInfo& ad,
   ad_event.advertiser_id = ad.advertiser_id;
   ad_event.created_at = base::Time::Now();
 
-  LogAdEvent(ad_event, callback);
+  LogAdEvent(ad_event, std::move(callback));
 }
 
 void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {

@@ -64,7 +64,7 @@ void Segments::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-void Segments::Delete(ResultCallback callback) {
+void Segments::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -98,7 +98,7 @@ void Segments::Migrate(mojom::DBTransactionInfo* transaction,
 
 std::string Segments::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeAdList& creative_ads) {
+    const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);

@@ -65,7 +65,9 @@ bool SchemeIsSupported(const GURL& url) {
   if (host_name == kSettingsHostName) {
     if (modified_url.path() == kSearchEnginesPath) {
       return true;
-    } else if (modified_url.path() == kSearchPath) {
+    }
+
+    if (modified_url.path() == kSearchPath) {
       return true;
     }
   }

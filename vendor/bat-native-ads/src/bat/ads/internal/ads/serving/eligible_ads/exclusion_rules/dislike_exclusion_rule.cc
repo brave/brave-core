@@ -52,11 +52,7 @@ bool DislikeExclusionRule::DoesRespectCap(const CreativeAdInfo& creative_ad) {
         return filtered_advertiser.id == creative_ad.advertiser_id;
       });
 
-  if (iter == filtered_advertisers.cend()) {
-    return true;
-  }
-
-  return false;
+  return iter == filtered_advertisers.cend();
 }
 
 }  // namespace ads

@@ -28,11 +28,7 @@ bool PermissionRulesBase::HasPermission() const {
   }
 
   CommandLinePermissionRule catalog_permission_rule;
-  if (!ShouldAllow(&catalog_permission_rule)) {
-    return false;
-  }
-
-  return true;
+  return ShouldAllow(&catalog_permission_rule);
 }
 
 }  // namespace ads

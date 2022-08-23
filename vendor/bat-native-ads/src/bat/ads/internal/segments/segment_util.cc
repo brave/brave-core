@@ -101,11 +101,7 @@ bool HasChildSegment(const std::string& segment) {
   const std::vector<std::string> components = SplitSegment(segment);
   DCHECK(!components.empty());
 
-  if (components.size() == 1) {
-    return false;
-  }
-
-  return true;
+  return components.size() != 1;
 }
 
 bool ShouldFilterSegment(const std::string& segment) {
@@ -118,23 +114,20 @@ bool ShouldFilterSegment(const std::string& segment) {
     return false;
   }
 
-  const auto iter = std::find_if(
-      filtered_segments.cbegin(), filtered_segments.cend(),
-      [&segment](const FilteredCategoryInfo& filtered_segment) {
-        if (HasChildSegment(filtered_segment.name)) {
-          // Filter against child, i.e. "technology & computing-linux"
-          return segment == filtered_segment.name;
-        } else {
-          // Filter against parent, i.e. "technology & computing"
-          return MatchParentSegments(segment, filtered_segment.name);
-        }
-      });
+  const auto iter =
+      std::find_if(filtered_segments.cbegin(), filtered_segments.cend(),
+                   [&segment](const FilteredCategoryInfo& filtered_segment) {
+                     if (HasChildSegment(filtered_segment.name)) {
+                       // Filter against child, i.e. "technology &
+                       // computing-linux"
+                       return segment == filtered_segment.name;
+                     }
 
-  if (iter == filtered_segments.cend()) {
-    return false;
-  }
+                     // Filter against parent, i.e. "technology & computing"
+                     return MatchParentSegments(segment, filtered_segment.name);
+                   });
 
-  return true;
+  return iter != filtered_segments.cend();
 }
 
 }  // namespace ads

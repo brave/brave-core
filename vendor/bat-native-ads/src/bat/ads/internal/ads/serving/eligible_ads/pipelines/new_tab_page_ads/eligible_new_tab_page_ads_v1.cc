@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v1.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
@@ -71,7 +73,8 @@ void EligibleAdsV1::GetEligibleAds(
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
-  GetForChildSegments(user_model, ad_events, browsing_history, callback);
+  GetForChildSegments(user_model, ad_events, browsing_history,
+                      std::move(callback));
 }
 
 void EligibleAdsV1::GetForChildSegments(

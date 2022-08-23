@@ -19,16 +19,14 @@ class ConfirmationsUserDataBuilder final : public UserDataBuilderInterface {
   ConfirmationsUserDataBuilder(const base::Time created_at,
                                const std::string& creative_instance_id,
                                const ConfirmationType& confirmation_type);
-
+  ConfirmationsUserDataBuilder(const ConfirmationsUserDataBuilder&) = delete;
+  ConfirmationsUserDataBuilder& operator=(const ConfirmationsUserDataBuilder&) =
+      delete;
   ~ConfirmationsUserDataBuilder() override;
 
   void Build(UserDataBuilderCallback callback) const override;
 
  private:
-  ConfirmationsUserDataBuilder(const ConfirmationsUserDataBuilder&) = delete;
-  ConfirmationsUserDataBuilder& operator=(const ConfirmationsUserDataBuilder&) =
-      delete;
-
   base::Time created_at_;
   std::string creative_instance_id_;
   ConfirmationType confirmation_type_ = ConfirmationType::kUndefined;

@@ -53,29 +53,16 @@ bool HasObservationWindowForAdEventExpired(const int observation_window,
                                            const AdEventInfo& ad_event) {
   const base::Time time = base::Time::Now() - base::Days(observation_window);
 
-  if (time < ad_event.created_at) {
-    return false;
-  }
-
-  return true;
+  return time >= ad_event.created_at;
 }
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
   if (ad_event.type == AdType::kInlineContentAd) {
-    if (ad_event.confirmation_type == ConfirmationType::kViewed) {
-      // Do not convert views for inline content ads
-      return false;
-    }
-
-    return true;
+    return ad_event.confirmation_type != ConfirmationType::kViewed;
   }
 
-  if (!ShouldRewardUser()) {
-    // Do not convert if the user has not joined rewards for all other ad types
-    return false;
-  }
-
-  return true;
+  // Do not convert if the user has not joined rewards for all other ad types
+  return ShouldRewardUser();
 }
 
 bool DoesConfirmationTypeMatchConversionType(
@@ -83,19 +70,11 @@ bool DoesConfirmationTypeMatchConversionType(
     const std::string& conversion_type) {
   switch (confirmation_type.value()) {
     case ConfirmationType::kViewed: {
-      if (conversion_type == "postview") {
-        return true;
-      }
-
-      return false;
+      return conversion_type == "postview";
     }
 
     case ConfirmationType::kClicked: {
-      if (conversion_type == "postclick") {
-        return true;
-      }
-
-      return false;
+      return conversion_type == "postclick";
     }
 
     case ConfirmationType::kUndefined:
@@ -375,11 +354,7 @@ ConversionList Conversions::FilterConversions(
                        return MatchUrlPattern(url, conversion.url_pattern);
                      });
 
-                 if (iter == redirect_chain.cend()) {
-                   return false;
-                 }
-
-                 return true;
+                 return iter != redirect_chain.cend();
                });
 
   return filtered_conversions;
@@ -418,7 +393,7 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
-  const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
+  const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
       ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.process_at =
       base::Time::Now() + base::Seconds(rand_delay);
@@ -559,7 +534,7 @@ void Conversions::StartTimer(
   if (now < conversion_queue_item.process_at) {
     delay = conversion_queue_item.process_at - now;
   } else {
-    const int64_t rand_delay = static_cast<int64_t>(
+    const auto rand_delay = static_cast<int64_t>(
         brave_base::random::Geometric(kExpiredConvertAfterSeconds));
     delay = base::Seconds(rand_delay);
   }

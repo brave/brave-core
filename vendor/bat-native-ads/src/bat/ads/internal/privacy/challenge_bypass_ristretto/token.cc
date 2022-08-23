@@ -47,7 +47,7 @@ Token::Token(const std::string& token_base64) : token_(Create(token_base64)) {}
 
 Token::Token(const Token& other) = default;
 
-Token& Token::operator=(const Token& info) = default;
+Token& Token::operator=(const Token& other) = default;
 
 Token::~Token() = default;
 

@@ -23,7 +23,7 @@ struct ADS_EXPORT NotificationAdInfo final : AdInfo {
   bool IsValid() const;
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& root);
 
   std::string title;
   std::string body;

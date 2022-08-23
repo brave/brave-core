@@ -94,10 +94,14 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     if (url_response.status_code == net::kHttpImATeapot) {
       OnDidSendConfirmation(confirmation);
       return;
-    } else if (url_response.status_code == net::HTTP_CONFLICT) {
+    }
+
+    if (url_response.status_code == net::HTTP_CONFLICT) {
       OnFailedToSendConfirmation(confirmation, /* should_retry */ false);
       return;
-    } else if (url_response.status_code == net::HTTP_BAD_REQUEST) {
+    }
+
+    if (url_response.status_code == net::HTTP_BAD_REQUEST) {
       OnFailedToSendConfirmation(confirmation, /* should_retry */ false);
       return;
     }
@@ -145,17 +149,23 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     OnFailedToRedeemUnblindedToken(new_confirmation, /* should_retry */ true,
                                    /* should_backoff */ false);
     return;
-  } else if (url_response.status_code == net::HTTP_BAD_REQUEST) {
+  }
+
+  if (url_response.status_code == net::HTTP_BAD_REQUEST) {
     BLOG(1, "Credential is invalid");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false,
                                    /* should_backoff */ false);
     return;
-  } else if (url_response.status_code == net::HTTP_ACCEPTED) {
+  }
+
+  if (url_response.status_code == net::HTTP_ACCEPTED) {
     BLOG(1, "Payment token is not ready");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
                                    /* should_backoff */ false);
     return;
-  } else if (url_response.status_code != net::HTTP_OK) {
+  }
+
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch payment token");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true,
                                    /* should_backoff */ true);

@@ -204,7 +204,7 @@ void CreativeInlineContentAds::Save(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void CreativeInlineContentAds::Delete(ResultCallback callback) {
+void CreativeInlineContentAds::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -645,7 +645,7 @@ void CreativeInlineContentAds::InsertOrUpdate(
 
 std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeInlineContentAdList& creative_ads) {
+    const CreativeInlineContentAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);

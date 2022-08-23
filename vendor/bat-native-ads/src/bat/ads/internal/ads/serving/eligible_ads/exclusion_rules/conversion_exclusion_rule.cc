@@ -61,12 +61,9 @@ const std::string& ConversionExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool ConversionExclusionRule::ShouldAllow(const CreativeAdInfo& creative_ad) {
-  if (creative_ad.conversion && !should_allow_conversion_tracking_) {
-    return false;
-  }
-
-  return true;
+bool ConversionExclusionRule::ShouldAllow(
+    const CreativeAdInfo& creative_ad) const {
+  return !(creative_ad.conversion && !should_allow_conversion_tracking_);
 }
 
 bool ConversionExclusionRule::DoesRespectCap(
@@ -79,11 +76,7 @@ bool ConversionExclusionRule::DoesRespectCap(
                ad_event.creative_set_id == creative_ad.creative_set_id;
       });
 
-  if (count >= kConversionCap) {
-    return false;
-  }
-
-  return true;
+  return count < kConversionCap;
 }
 
 }  // namespace ads

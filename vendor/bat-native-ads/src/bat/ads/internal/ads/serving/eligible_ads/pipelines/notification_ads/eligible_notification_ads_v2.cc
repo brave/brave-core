@@ -118,10 +118,7 @@ CreativeNotificationAdList EligibleAdsV2::FilterCreativeAds(
 
   ExclusionRules exclusion_rules(ad_events, subdivision_targeting_,
                                  anti_targeting_resource_, browsing_history);
-  const CreativeNotificationAdList eligible_creative_ads =
-      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  return eligible_creative_ads;
+  return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
 }  // namespace notification_ads

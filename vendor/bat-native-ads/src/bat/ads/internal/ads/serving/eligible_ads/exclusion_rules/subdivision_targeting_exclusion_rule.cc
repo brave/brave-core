@@ -41,11 +41,7 @@ bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
         return components.size() == 2;
       });
 
-  if (iter == creative_ad.geo_targets.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != creative_ad.geo_targets.cend();
 }
 
 }  // namespace

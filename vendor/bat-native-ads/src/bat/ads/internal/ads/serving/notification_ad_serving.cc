@@ -137,11 +137,7 @@ void Serving::MaybeServeAd() {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool Serving::IsSupported() const {
-  if (!eligible_ads_) {
-    return false;
-  }
-
-  return true;
+  return static_cast<bool>(eligible_ads_);
 }
 
 void Serving::MaybeServeAdAtNextRegularInterval() {

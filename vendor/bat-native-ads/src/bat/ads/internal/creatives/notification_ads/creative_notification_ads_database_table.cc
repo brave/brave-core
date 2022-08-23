@@ -197,7 +197,7 @@ void CreativeNotificationAds::Save(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void CreativeNotificationAds::Delete(ResultCallback callback) {
+void CreativeNotificationAds::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -429,7 +429,7 @@ void CreativeNotificationAds::InsertOrUpdate(
 
 std::string CreativeNotificationAds::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeNotificationAdList& creative_ads) {
+    const CreativeNotificationAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);

@@ -25,7 +25,7 @@ std::vector<std::string> CreateAdOpportunityQuestions(
 
   const std::vector<std::string> parent_segments = GetParentSegments(segments);
 
-  for (auto& segment : parent_segments) {
+  for (const auto& segment : parent_segments) {
     DCHECK(!segment.empty());
 
     std::string stripped_segment = StripNonAlphaNumericCharacters(segment);

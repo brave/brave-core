@@ -44,41 +44,41 @@ void ConfirmationsUserDataBuilder::Build(
       [=](base::Value::Dict user_data) {
         base::Value::Dict build_channel_user_data =
             user_data::GetBuildChannel();
-        user_data.Merge(std::move(build_channel_user_data));
+        user_data.Merge(build_channel_user_data);
 
         base::Value::Dict catalog_user_data = user_data::GetCatalog();
-        user_data.Merge(std::move(catalog_user_data));
+        user_data.Merge(catalog_user_data);
 
         base::Value::Dict created_at_timestamp_user_data =
             user_data::GetCreatedAtTimestamp(created_at_);
-        user_data.Merge(std::move(created_at_timestamp_user_data));
+        user_data.Merge(created_at_timestamp_user_data);
 
         base::Value::Dict locale_user_data = user_data::GetLocale();
-        user_data.Merge(std::move(locale_user_data));
+        user_data.Merge(locale_user_data);
 
         base::Value::Dict mutated_user_data = user_data::GetMutated();
-        user_data.Merge(std::move(mutated_user_data));
+        user_data.Merge(mutated_user_data);
 
         base::Value::Dict odyssey_user_data = user_data::GetOdyssey();
-        user_data.Merge(std::move(odyssey_user_data));
+        user_data.Merge(odyssey_user_data);
 
         base::Value::Dict platform_user_data = user_data::GetPlatform();
-        user_data.Merge(std::move(platform_user_data));
+        user_data.Merge(platform_user_data);
 
         base::Value::Dict rotating_hash_user_data =
             user_data::GetRotatingHash(creative_instance_id_);
-        user_data.Merge(std::move(rotating_hash_user_data));
+        user_data.Merge(rotating_hash_user_data);
 
         base::Value::Dict studies_user_data = user_data::GetStudies();
-        user_data.Merge(std::move(studies_user_data));
+        user_data.Merge(studies_user_data);
 
         base::Value::Dict system_timestamp_user_data =
             user_data::GetSystemTimestamp();
-        user_data.Merge(std::move(system_timestamp_user_data));
+        user_data.Merge(system_timestamp_user_data);
 
         base::Value::Dict version_number_user_data =
             user_data::GetVersionNumber();
-        user_data.Merge(std::move(version_number_user_data));
+        user_data.Merge(version_number_user_data);
 
         callback(user_data);
       });

@@ -29,7 +29,7 @@ class AdType final {
   AdType& operator=(const AdType&);
 
   // Allow implicit conversion of the enum value to this wrapper
-  constexpr AdType(const Value& value)  // NOLINT(runtime/explicit)
+  constexpr AdType(const Value& value)  // NOLINT (runtime/explicit)
       : value_(value) {}
 
   explicit AdType(const std::string& value);

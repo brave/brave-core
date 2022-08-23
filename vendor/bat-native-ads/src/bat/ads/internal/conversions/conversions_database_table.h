@@ -32,7 +32,7 @@ class Conversions final : public TableInterface {
 
   void GetAll(GetConversionsCallback callback);
 
-  void PurgeExpired(ResultCallback callback);
+  void PurgeExpired(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
@@ -44,7 +44,7 @@ class Conversions final : public TableInterface {
                       const ConversionList& conversion);
 
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const ConversionList& conversions);
+                                       const ConversionList& conversions) const;
 
   void OnGetConversions(GetConversionsCallback callback,
                         mojom::DBCommandResponseInfoPtr response);
