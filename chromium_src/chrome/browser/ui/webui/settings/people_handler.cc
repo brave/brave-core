@@ -7,20 +7,18 @@
 
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog
-#define BRAVE_GET_SYNC_STATUS_DICTIONARY                        \
-  sync_status.SetBoolPath(                                      \
-      "firstSetupInProgress",                                   \
-      service && !disallowed_by_policy &&                       \
-          !service->GetUserSettings()->IsFirstSetupComplete()); \
-  {                                                             \
-    syncer::BraveSyncServiceImpl* brave_sync_service =          \
-        static_cast<syncer::BraveSyncServiceImpl*>(service);    \
-    if (brave_sync_service) {                                   \
-      bool failed_to_decrypt = false;                           \
-      brave_sync_service->prefs().GetSeed(&failed_to_decrypt);  \
-      sync_status.SetBoolPath("hasSyncWordsDecryptionError",    \
-                              failed_to_decrypt);               \
-    }                                                           \
+#define BRAVE_GET_SYNC_STATUS_DICTIONARY                                    \
+  sync_status.Set("firstSetupInProgress",                                   \
+                  service && !disallowed_by_policy &&                       \
+                      !service->GetUserSettings()->IsFirstSetupComplete()); \
+  {                                                                         \
+    syncer::BraveSyncServiceImpl* brave_sync_service =                      \
+        static_cast<syncer::BraveSyncServiceImpl*>(service);                \
+    if (brave_sync_service) {                                               \
+      bool failed_to_decrypt = false;                                       \
+      brave_sync_service->prefs().GetSeed(&failed_to_decrypt);              \
+      sync_status.Set("hasSyncWordsDecryptionError", failed_to_decrypt);    \
+    }                                                                       \
   }
 
 #include "src/chrome/browser/ui/webui/settings/people_handler.cc"
