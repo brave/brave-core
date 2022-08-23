@@ -143,6 +143,7 @@ void DatabaseActivityInfo::NormalizeList(
     type::PublisherInfoList list,
     ledger::LegacyResultCallback callback) {
   if (list.empty()) {
+    LOG(ERROR) << "List is empty, can't update the database";
     callback(type::Result::LEDGER_OK);
     return;
   }
@@ -196,6 +197,11 @@ void DatabaseActivityInfo::InsertOrUpdate(
     callback(type::Result::LEDGER_ERROR);
     return;
   }
+
+  LOG(ERROR) << "Saving activity info: " << info->id << ", " << info->duration
+             << ", " << info->score << ", " << info->percent << ", "
+             << info->weight << ", " << info->reconcile_stamp << ", "
+             << info->visits;
 
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
@@ -253,6 +259,8 @@ void DatabaseActivityInfo::GetRecordsList(
 
   query += GenerateActivityFilterQuery(start, limit, filter->Clone());
 
+  LOG(ERROR) << "activity info query: " << query;
+
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
   command->command = query;
@@ -291,6 +299,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    LOG(ERROR) << "Bad response from query";
     callback({});
     return;
   }

@@ -525,6 +525,7 @@ void Publisher::synopsisNormalizerInternal(
     uint32_t /* next_record */) {
   if (list->empty()) {
     BLOG(1, "Publisher list is empty");
+    LOG(ERROR) << "publisher list is empty";
     return;
   }
 
