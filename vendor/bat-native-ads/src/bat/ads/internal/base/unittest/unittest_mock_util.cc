@@ -85,7 +85,7 @@ void MockBuildChannel(const BuildChannelType type) {
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
                       const std::string& locale) {
-  brave_l10n::LocaleHelper::GetInstance()->SetForTesting(mock.get());
+  brave_l10n::LocaleHelper::SetForTesting(mock.get());
 
   ON_CALL(*mock, GetLocale()).WillByDefault(Return(locale));
 }

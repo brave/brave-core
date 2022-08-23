@@ -106,7 +106,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 
   if (!is_initialized_) {
     bool table_exists = false;
-    if (meta_table_.DoesTableExist(&db_)) {
+    if (sql::MetaTable::DoesTableExist(&db_)) {
       table_exists = true;
     }
 
