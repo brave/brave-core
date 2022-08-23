@@ -140,7 +140,8 @@ void AdsTabHelper::DidFinishNavigation(
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  content::RenderFrameHost* render_frame_host = web_contents()->GetMainFrame();
+  content::RenderFrameHost* render_frame_host =
+      web_contents()->GetPrimaryMainFrame();
   if (search_result_ad_service_) {
     search_result_ad_service_->MaybeRetrieveSearchResultAd(
         render_frame_host, tab_id_, should_process_);

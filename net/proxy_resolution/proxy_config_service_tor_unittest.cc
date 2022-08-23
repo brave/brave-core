@@ -134,9 +134,8 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   const std::string isolation_key2 =
       ProxyConfigServiceTor::CircuitIsolationKey(site_url2);
 
-  auto config_service =
-      ConfiguredProxyResolutionService::CreateSystemProxyConfigService(
-          base::ThreadTaskRunnerHandle::Get());
+  auto config_service = net::ProxyConfigService::CreateSystemProxyConfigService(
+      base::ThreadTaskRunnerHandle::Get());
 
   auto* service = new ConfiguredProxyResolutionService(
       std::move(config_service),

@@ -33,6 +33,9 @@
     <message name="IDS_SETTINGS_ABOUT_PAGE_REPORT_AN_ISSUE" desc="Text of the button which allows the user to report an issue with Brave.">
       Report an issue
     </message>
+    <message name="IDS_SETTINGS_ABOUT_PAGE_SEND_FEEDBACK" desc="Text of the button which allows the user to send feedback with Brave.">
+      Send feedback
+    </message>
   </if>
   <if expr="is_macosx">
     <message name="IDS_ABOUT_CHROME_AUTOUPDATE_ALL" desc="The 'Automatically update Brave for all users.' button in the About window.  Mac-only.">
@@ -159,6 +162,15 @@
   </message>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
+  </message>
+  <message name="IDS_SETTINGS_SIDE_PANEL" desc="Title for the side panel section. Allows the user to toggle which side the side panel is displayed on.">
+    Side panel
+  </message>
+  <message name="IDS_SETTINGS_SIDE_PANEL_ALIGN_LEFT" desc="Label for the button that allows the side panel to appear on the left side of the browser. Translate this verbatim, do not localize for RTL languages.">
+    Show on left
+  </message>
+  <message name="IDS_SETTINGS_SIDE_PANEL_ALIGN_RIGHT" desc="Label for the button that allows the side panel to appear on the right side of the browser. Translate this verbatim, do not localize for RTL languages.">
+    Show on right
   </message>
   <message name="IDS_SETTINGS_HOME_PAGE_NTP" desc="Description of the New Tab Page when set as the home page.">
     New Tab page
@@ -515,9 +527,6 @@
   <message name="IDS_SETTINGS_REMOVE_COMPROMISED_PASSWORD_CONFIRMATION_DESCRIPTION" desc="Compromised password remove dialog conformation description">
     Removing this password will not delete your account on <ph name="DOMAIN">$1<ex>airbnb.com</ex></ph>. Change your password or delete your account on <ph name="DOMAIN_LINK">$2<ex>&lt;a href="https://airbnb.com" target="_blank"&gt;airbnb.com&lt;/a&gt;</ex></ph> to keep it safe from others.
   </message>
-  <message name="IDS_SETTINGS_COMPROMISED_EDIT_PASSWORD_SITE" desc="A label for the field, which displays the site for which the password was saved. The field is part of a dialog, which allows the user to edit the password.">
-    Site
-  </message>
   <message name="IDS_SETTINGS_COMPROMISED_EDIT_PASSWORD_APP" desc="A label for the field, which displays the app for which the password was saved. The field is part of a dialog, which allows the user to edit the password.">
     App
   </message>
@@ -747,6 +756,18 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
     Remove from device
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can import passwords.">
+    Import passwords
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_TITLE" desc="The title of a dialog, which offers the ability for the user to import passwords into Brave Password Manager.">
+    Import passwords
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CHOOSE_FILE" desc="A button in the dialog for importing passwords from Brave. Passwords will be imported from the file, which the user will be asked to choose after initiating this action.">
+    Choose file
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_GENERIC" desc="Text shown to the user on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
+    To import passwords, select a CSV file.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can export their passwords outside of Brave.">
     Export passwords...
@@ -994,7 +1015,7 @@
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_WRITE_ERROR_FORMAT" desc="The text in the error dialog for PKCS #12 file write errors.">
       There was an error while trying to write the file: <ph name="ERROR_TEXT">$1<ex>Permission denied.</ex></ph>.
     </message>
-    <if expr="chromeos_ash">
+    <if expr="chromeos_ash or chromeos_lacros">
       <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LIST_HEADER" desc="Header that lists the certificate provisioning processes.">
         Certificates are being provisioned for these certificate profiles
       </message>
@@ -1229,6 +1250,11 @@
   <message name="IDS_SETTINGS_LANGUAGES_PAGE_TITLE" desc="Name of the settings page which displays language preferences.">
     Languages
   </message>
+  <if expr="not chromeos_ash">
+    <message name="IDS_SETTINGS_LANGUAGES_CARD_TITLE" desc="Name of the card which manages language preferences.">
+      Preferred languages
+    </message>
+  </if>
   <message name="IDS_SETTINGS_LANGUAGE_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter languages.">
     Search languages
   </message>
@@ -1292,6 +1318,9 @@
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_DESCRIPTION" desc="Description for the type of spell check that sends the text the user types to Brave for spelling suggestions. It is important that it is communicated that the text the user types in the browser will be sent to Brave.">
       Uses the same spell checker that’s used in Brave search. Text you type in the browser is sent to Brave.
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_ENABLE_SPELL_CHECK" desc="The label of the toggle that enables the spell check service.">
+      Check for spelling errors when you type text on web pages
     </message>
     <if expr="not is_macosx">
       <message name="IDS_SETTING_LANGUAGES_SPELL_CHECK_DISABLED_REASON" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
@@ -1963,6 +1992,14 @@
   <message name="IDS_SETTINGS_MANAGE_CERTIFICATES_DESCRIPTION" desc="Secondary, continued explanation of how to manage SSL certificates and settings in Privacy options">
     Manage HTTPS/SSL certificates and settings
   </message>
+  <if expr="chrome_root_store_supported">
+    <message name="IDS_SETTINGS_MANAGE_DEVICE_CERTIFICATES" desc="Text for manage device certificates button in Privacy options">
+      Manage device certificates
+    </message>
+    <message name="IDS_SETTINGS_MANAGE_DEVICE_CERTIFICATES_DESCRIPTION" desc="Secondary, continued explanation of how to manage SSL device certificates and settings in Privacy options">
+      Manage HTTPS/SSL certificates on your device
+    </message>
+  </if>
   <message name="IDS_SETTINGS_MANAGE" desc="Text displayed on a button, which when clicked opens the Extensions subpage for managing an extension">
     Manage
   </message>
@@ -2008,8 +2045,8 @@
   <message name="IDS_SETTINGS_CONTENT_SETTINGS" desc="Text of the button that takes a user to settings page thats allows users to modify site settings. Also the title of that settings page.">
     Content settings
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS" desc="Text of the button that takes a user to the enhanced settings page thats allows users to modify site settings. Also the title of that settings page.">
-    Site Settings
+  <message name="IDS_SETTINGS_SITE_SETTINGS" desc="Text of the button that takes a user to the enhanced settings page thats allows users to modify site settings. Also the title of that settings page. It follows sentence case.">
+    Site settings
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_DESCRIPTION" desc="Secondary, continued explanation of what content settings in Brave do">
     Control what information websites can use and what content they can show you
@@ -3125,20 +3162,38 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting all site data.">
     Clear all data?
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting displayed site data.">
+    Clear displayed data?
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_DESCRIPTION" desc="Label describing how much total disk space chrome is using, next to the clear all button">
-    Total storage used by sites:
+    Total storage used by sites: <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_DESCRIPTION" desc="Label describing how much total disk space chrome is using from displayed sites, next to the clear displayed button">
+    Total storage used by displayed sites: <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph>
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_LABEL" desc="Label for button to clear all site data">
     Clear all data
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_LABEL" desc="Label for button to clear displayed site data">
+    Clear displayed data
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by all sites.">
     This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by displayed sites.">
+    This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by displayed sites
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about clearing storage used by all sites, shown when there are installed apps.">
     This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites and installed apps
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about clearing storage used by displayed sites, shown when there are installed apps.">
+    This will clear <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by displayed sites and installed apps
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing storage used by all sites.">
     You'll be signed out of all sites, including in open tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing storage used by displayed sites.">
+    You'll be signed out of displayed sites, including in open tabs
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting all site data.">
     Clear site data
@@ -3369,9 +3424,6 @@
   <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE" desc="Label for local storage (name of an HTML standard)">
     Local storage
   </message>
-  <message name="IDS_SETTINGS_COOKIES_MEDIA_LICENSE" desc="The text shown when there is an Media License in the Cookies table">
-    Media license
-  </message>
   <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM" desc="The text shown when there is a file system (name of an HTML standard) in the Cookies table">
     File system
   </message>
@@ -3392,6 +3444,9 @@
   </message>
   <message name="IDS_SETTINGS_COOKIES_CACHE_STORAGE" desc="The text shown when there is Cache Storage (name of a Web standard) in the Cookies table">
     Cache Storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_QUOTA_STORAGE" desc="The text shown when there is Quota Managed Storage in the Cookies table">
+    Quota-managed storage
   </message>
 
   <!-- Sync / Profiles Page -->
@@ -3459,9 +3514,6 @@
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button in the Sign out of Brave dialog that toggles showing the profile stats. Only visible by screen reader software.">
     Show profile stats
-  </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE" desc="The text to display by the checkbox asking user whether to also delete profile when stopping sync.">
-    Also remove your existing data from this device
   </message>
   <message name="IDS_SETTINGS_SYNC_WILL_START" desc="The message to tell users that sync will start once they leave the sync setup page.">
     Sync will start once you leave sync settings

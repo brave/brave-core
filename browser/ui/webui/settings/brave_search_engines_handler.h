@@ -25,7 +25,7 @@ class BraveSearchEnginesHandler : public SearchEnginesHandler {
   // SearchEnginesHandler overrides:
   void RegisterMessages() override;
   void OnModelChanged() override;
-  std::unique_ptr<base::DictionaryValue> GetSearchEnginesList() override;
+  base::Value::Dict GetSearchEnginesList() override;
 
   base::Value GetPrivateSearchEnginesList();
   void HandleGetPrivateSearchEnginesList(const base::Value::List& args);

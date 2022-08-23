@@ -190,7 +190,8 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     ui_test_utils::UrlLoadObserver load_complete(
         landing_url, content::NotificationService::AllSources());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
-    EXPECT_EQ(contents()->GetMainFrame()->GetLastCommittedURL(), original_url);
+    EXPECT_EQ(contents()->GetPrimaryMainFrame()->GetLastCommittedURL(),
+              original_url);
     load_complete.Wait();
 
     EXPECT_EQ(contents()->GetLastCommittedURL(), landing_url);

@@ -152,8 +152,8 @@ void IPFSTabHelper::ResolveIPFSLink() {
   auto resolved_callback = base::BindOnce(&IPFSTabHelper::HostResolvedCallback,
                                           weak_ptr_factory_.GetWeakPtr());
   const auto& key =
-      web_contents()->GetMainFrame()
-          ? web_contents()->GetMainFrame()->GetNetworkIsolationKey()
+      web_contents()->GetPrimaryMainFrame()
+          ? web_contents()->GetPrimaryMainFrame()->GetNetworkIsolationKey()
           : net::NetworkIsolationKey();
   resolver_->Resolve(host_port_pair, key, net::DnsQueryType::TXT,
                      std::move(resolved_callback));

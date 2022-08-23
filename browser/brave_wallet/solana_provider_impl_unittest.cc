@@ -117,7 +117,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     provider_ = std::make_unique<SolanaProviderImpl>(
         keyring_service_, brave_wallet_service_, tx_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-            web_contents(), web_contents()->GetMainFrame()));
+            web_contents(), web_contents()->GetPrimaryMainFrame()));
     observer_.reset(new TestEventsListener());
     provider_->Init(observer_->GetReceiver());
   }
@@ -132,7 +132,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
   void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
   url::Origin GetOrigin() {
-    return web_contents()->GetMainFrame()->GetLastCommittedOrigin();
+    return web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   }
 
   std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests()

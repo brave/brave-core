@@ -14,6 +14,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "components/spellcheck/browser/pref_names.h"
+#include "components/spellcheck/common/spellcheck_features.h"
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -73,9 +74,20 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<SpellingMenuObserver> observer_;
   std::unique_ptr<BraveMockRenderViewContextMenu> menu_;
+
+#if BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
+  base::test::ScopedFeatureList feature_list_;
+#endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
 };
 
-BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() {}
+#if BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
+BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() {
+  feature_list_.InitAndDisableFeature(
+      spellcheck::kWinDelaySpellcheckServiceInit);
+}
+#else
+BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() = default;
+#endif
 
 BraveSpellingMenuObserverTest::~BraveSpellingMenuObserverTest() {}
 

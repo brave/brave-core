@@ -114,7 +114,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
   content::RenderFrameHost* GetActiveMainFrame() {
-    return active_web_contents()->GetMainFrame();
+    return active_web_contents()->GetPrimaryMainFrame();
   }
 
   void ReadPreTestData() {

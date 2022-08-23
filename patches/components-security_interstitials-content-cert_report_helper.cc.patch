@@ -1,5 +1,5 @@
 diff --git a/components/security_interstitials/content/cert_report_helper.cc b/components/security_interstitials/content/cert_report_helper.cc
-index da1876ef2370fb448c3e1dade4a32ec804b00756..09d0786f7f93126455804d796108d0c426f767fa 100644
+index 4cc8a6cf7ad037d11d2270f90c9efcbe7f415acf..3362c085e89cbba15529408a3435274034469591 100644
 --- a/components/security_interstitials/content/cert_report_helper.cc
 +++ b/components/security_interstitials/content/cert_report_helper.cc
 @@ -204,6 +204,7 @@ bool CertReportHelper::ShouldShowEnhancedProtectionMessage() {

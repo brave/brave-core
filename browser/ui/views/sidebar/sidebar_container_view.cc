@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_model_data.h"
@@ -18,14 +18,13 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_panel_webview.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/point.h"
@@ -159,16 +158,15 @@ bool SidebarContainerView::HandleKeyboardEvent(
 }
 
 void SidebarContainerView::UpdateBackgroundAndBorder() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
     // Fill background because panel's color uses alpha value.
-    SetBackground(views::CreateSolidBackground(
-        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
+    SetBackground(
+        views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
     if (sidebar_panel_webview_ && sidebar_panel_webview_->GetVisible()) {
       SetBorder(views::CreateSolidSidedBorder(
           gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
-          theme_provider->GetColor(
-              ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
+          color_provider->GetColor(kColorToolbarContentAreaSeparator)));
     } else {
       // Don't need right side border when panel is closed.
       SetBorder(nullptr);

@@ -53,7 +53,7 @@ class DomainBlockPage
 
  protected:
   // SecurityInterstitialPage:: overrides
-  void PopulateInterstitialStrings(base::Value* load_time_data) override;
+  void PopulateInterstitialStrings(base::Value::Dict& load_time_data) override;
   int GetHTMLTemplateId() override;
 };
 

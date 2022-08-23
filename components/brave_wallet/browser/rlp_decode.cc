@@ -141,11 +141,7 @@ bool RLPDecodeInternal(const std::string& s,
     std::string str = s.substr(*offset, *data_len);
     *output = base::Value(str);
   } else if (output->is_list()) {
-    *output = base::ListValue();
-    base::ListValue* output_list;
-    if (!output->GetAsList(&output_list)) {
-      return false;
-    }
+    base::Value::List list;
     if (!IsWithinBounds(*offset, *data_len, length)) {
       return false;
     }
@@ -156,7 +152,7 @@ bool RLPDecodeInternal(const std::string& s,
       if (!RLPDecodeInternal(sub, &v, &offset2, &data_len2)) {
         return false;
       }
-      output_list->Append(std::move(v));
+      list.Append(std::move(v));
       *offset += data_len2 + offset2;
       *data_len -= data_len2 + offset2;
       if (!IsWithinBounds(*offset, *data_len, length)) {
@@ -164,6 +160,7 @@ bool RLPDecodeInternal(const std::string& s,
       }
       sub = s.substr(*offset, *data_len);
     }
+    *output = base::Value(std::move(list));
   }
 
   return true;

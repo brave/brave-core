@@ -1,0 +1,13 @@
+diff --git a/base/feature_list.cc b/base/feature_list.cc
+index b9c8d0523c21d56438539f61b1e93cd02c2a4b0a..6089f3b3941790a7e91f798037ad281a393a454b 100644
+--- a/base/feature_list.cc
++++ b/base/feature_list.cc
+@@ -8,7 +8,7 @@
+ // time. Try not to raise this limit unless necessary. See
+ // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/wmax_tokens.md
+ #ifndef NACL_TC_REV
+-#pragma clang max_tokens_here 600000
++#pragma clang max_tokens_here 610000
+ #endif
+ 
+ #include <string>

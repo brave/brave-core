@@ -1,18 +1,10 @@
 diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
-index 227ce792eccdbbde61964306df4c0897accc4cc7..5e63b744aa6ca1a3744d2bbc671f45a8d385f589 100644
+index d3f2006f302ddaf57a7d9c4f4949ba44a0db61e1..70a1d7a90f09062e8d21f69b230d4f1262e731ae 100644
 --- a/chrome/browser/resources/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/bookmarks/BUILD.gn
-@@ -50,6 +50,7 @@ generate_grd("build_grd") {
+@@ -74,4 +74,5 @@ build_webui("build") {
+     optimize_webui_resource_paths_rewrites =
+         [ "bookmarks.rollup.js|bookmarks.js" ]
    }
-   grd_prefix = "bookmarks"
-   out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
-+  deps += [ "//brave/browser/resources/bookmarks:resources" ]
- }
- 
- preprocess_if_expr("preprocess") {
-@@ -117,4 +118,5 @@ ts_library("build_ts") {
-     ":preprocess",
-     ":preprocess_generated",
-   ]
-+  in_files += brave_deps_chrome_browser_resources_bookmarks_in_files extra_deps += brave_deps_chrome_browser_resources_bookmarks_extra_deps
++  extra_build_grd_deps = [ "//brave/browser/resources/bookmarks:resources" ] extra_build_ts_in_files = brave_deps_chrome_browser_resources_bookmarks_in_files extra_build_ts_extra_deps = brave_deps_chrome_browser_resources_bookmarks_extra_deps
  }

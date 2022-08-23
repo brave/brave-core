@@ -31,11 +31,9 @@ namespace ipfs {
 bool UpdateConfigJSON(const std::string& source,
                       const ipfs::mojom::IpfsConfig* config,
                       std::string* result) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          source, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                      base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      source, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                  base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     VLOG(1) << "Could not parse JSON, JSON is: " << source;
     return false;

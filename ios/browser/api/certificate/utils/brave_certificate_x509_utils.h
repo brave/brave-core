@@ -11,7 +11,7 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
-#include "net/cert/internal/signature_algorithm.h"
+#include "net/cert/pki/signature_algorithm.h"
 #include "net/cert/signed_certificate_timestamp.h"
 #include "net/der/input.h"
 #include "net/der/parse_values.h"

@@ -186,15 +186,16 @@ class PermissionLifetimeCombobox : public views::Combobox,
       delete;
 
   // ui::ComboboxModel:
-  int GetItemCount() const override { return lifetime_options_.size(); }
+  size_t GetItemCount() const override { return lifetime_options_.size(); }
 
-  std::u16string GetItemAt(int index) const override {
+  std::u16string GetItemAt(size_t index) const override {
     return lifetime_options_[index].label;
   }
 
  private:
   void OnItemSelected() {
-    SetRequestsLifetime(lifetime_options_, GetSelectedIndex(), delegate_);
+    SetRequestsLifetime(lifetime_options_, GetSelectedIndex().value(),
+                        delegate_);
   }
 
   permissions::PermissionPrompt::Delegate* const delegate_;
@@ -282,6 +283,6 @@ void AddFootnoteViewIfNeeded(
 // undef upstream one first then define it with our one.
 #undef IDS_PERMISSIONS_BUBBLE_PROMPT
 #define IDS_PERMISSIONS_BUBBLE_PROMPT IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT
-#include "src/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
+#include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_view.cc"
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
 #undef IDS_PERMISSIONS_BUBBLE_PROMPT

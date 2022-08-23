@@ -198,15 +198,15 @@ bool PublisherSettingsProperties::FromJson(const std::string& json) {
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
 
-  if (!document.value.has_value()) {
+  if (!document.has_value()) {
     LOG(ERROR) << "Invalid client property. json=" << json
-               << ", error line=" << document.error_line
-               << ", error column=" << document.error_column
-               << ", error message=" << document.error_message;
+               << ", error line=" << document.error().line
+               << ", error column=" << document.error().column
+               << ", error message=" << document.error().message;
     return false;
   }
 
-  const base::Value::Dict* root = document.value->GetIfDict();
+  const base::Value::Dict* root = document->GetIfDict();
   if (!root) {
     LOG(ERROR) << "Invalid client property. json=" << json;
     return false;

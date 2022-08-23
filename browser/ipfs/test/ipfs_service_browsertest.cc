@@ -870,7 +870,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
 
   int child_index = 0;
   while (auto* child_frame =
-             ChildFrameAt(contents->GetMainFrame(), child_index++)) {
+             ChildFrameAt(contents->GetPrimaryMainFrame(), child_index++)) {
     auto location =
         EvalJs(child_frame,
                "const timer = setInterval(function () {"
@@ -903,7 +903,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
 
   int child_index = 0;
   while (auto* child_frame =
-             ChildFrameAt(contents->GetMainFrame(), child_index++)) {
+             ChildFrameAt(contents->GetPrimaryMainFrame(), child_index++)) {
     auto location =
         EvalJs(child_frame,
                "const timer = setInterval(function () {"
@@ -938,7 +938,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
 
   int child_index = 0;
   while (auto* child_frame =
-             ChildFrameAt(contents->GetMainFrame(), child_index++)) {
+             ChildFrameAt(contents->GetPrimaryMainFrame(), child_index++)) {
     auto location =
         EvalJs(child_frame,
                "const timer = setInterval(function () {"
@@ -992,10 +992,11 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
       contents->GetLastCommittedURL(),
       ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
                               "simple_content", GetDefaultIPFSGateway(prefs)));
-  EXPECT_EQ(ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
-            ipfs::GetIPFSGatewayURL(
-                "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                "simple_content_2", GetDefaultIPFSGateway(prefs)));
+  EXPECT_EQ(
+      ChildFrameAt(contents->GetPrimaryMainFrame(), 0)->GetLastCommittedURL(),
+      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
+                              "simple_content_2",
+                              GetDefaultIPFSGateway(prefs)));
 }
 
 // Make sure an <img src="ipfs://..."> can load within another ipfs:// scheme

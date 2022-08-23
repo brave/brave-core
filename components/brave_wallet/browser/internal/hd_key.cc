@@ -202,21 +202,20 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     VLOG(0) << __func__ << "empty password";
     return nullptr;
   }
-  base::JSONReader::ValueWithError parsed_json =
-      base::JSONReader::ReadAndReturnValueWithError(json);
-  if (!parsed_json.value) {
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
+  if (!parsed_json.has_value()) {
     VLOG(0) << __func__ << ": UTC v3 json parsed failed because "
-            << parsed_json.error_message;
+            << parsed_json.error().message;
     return nullptr;
   }
   // check version
-  auto version = parsed_json.value->FindIntKey("version");
+  auto version = parsed_json->FindIntKey("version");
   if (!version || *version != 3) {
     VLOG(0) << __func__ << ": missing version or version is not 3";
     return nullptr;
   }
 
-  const auto* crypto = parsed_json.value->FindKey("crypto");
+  const auto* crypto = parsed_json->FindKey("crypto");
   if (!crypto) {
     VLOG(0) << __func__ << ": missing crypto";
     return nullptr;

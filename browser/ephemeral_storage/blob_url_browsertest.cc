@@ -127,7 +127,8 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
   FramesWithRegisteredBlobs RegisterBlobs(const GURL& url) {
     FramesWithRegisteredBlobs frames_with_registered_blobs;
-    content::RenderFrameHost* main_frame = LoadURLInNewTab(url)->GetMainFrame();
+    content::RenderFrameHost* main_frame =
+        LoadURLInNewTab(url)->GetPrimaryMainFrame();
     const std::vector<content::RenderFrameHost*> rfhs = GetFrames(main_frame);
 
     for (size_t idx = 0; idx < rfhs.size(); ++idx) {

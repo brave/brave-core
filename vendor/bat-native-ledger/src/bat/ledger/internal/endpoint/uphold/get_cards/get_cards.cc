@@ -54,20 +54,17 @@ type::Result GetCards::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  base::ListValue* list = nullptr;
-  if (!value->GetAsList(&list)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  for (const auto& it : list->GetList()) {
-    const auto* label = it.FindStringKey("label");
+  auto& list = value->GetList();
+  for (const auto& it : list) {
+    DCHECK(it.is_dict());
+    const auto& dict = it.GetDict();
+    const auto* label = dict.FindString("label");
     if (!label) {
       continue;
     }
 
     if (*label == ::ledger::uphold::kCardName) {
-      const auto* id_str = it.FindStringKey("id");
+      const auto* id_str = dict.FindString("id");
       if (!id_str) {
         continue;
       }

@@ -66,11 +66,9 @@ bool ParseTokenList(const std::string& json,
   //  }
   // }
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  auto& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
@@ -173,16 +171,14 @@ bool ParseChainList(const std::string& json, ChainList* result) {
   //   },
   // ]
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  auto& records_v = value_with_error.value;
-  if (!records_v) {
+  auto records_v = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v.has_value()) {
     LOG(ERROR) << "Invalid response, could not parse JSON. "
-               << value_with_error.error_message
-               << ", line: " << value_with_error.error_line
-               << ", col: " << value_with_error.error_column;
+               << records_v.error().message
+               << ", line: " << records_v.error().line
+               << ", col: " << records_v.error().column;
     return false;
   }
 

@@ -189,11 +189,9 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            base::Value* id,
                            std::string* method,
                            std::string* params) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     return false;
   }
@@ -232,11 +230,9 @@ bool GetEthJsonRequestInfo(const std::string& json,
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json) {
   CHECK(output_json);
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                          base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                      base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v)
     return false;
 

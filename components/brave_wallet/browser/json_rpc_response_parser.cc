@@ -36,11 +36,9 @@ absl::optional<std::string> ParseSingleStringResult(const std::string& json) {
 }
 
 absl::optional<base::Value> ParseResultValue(const std::string& json) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return absl::nullopt;

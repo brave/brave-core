@@ -69,7 +69,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   content_settings::PageSpecificContentSettings* content_settings =
       content_settings::PageSpecificContentSettings::GetForFrame(
-          web_contents()->GetMainFrame());
+          web_contents()->GetPrimaryMainFrame());
   bool allowed = !content_settings->IsContentBlocked(content_type());
   DCHECK(!allowed || content_settings->IsContentAllowed(content_type()));
 

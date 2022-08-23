@@ -418,7 +418,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonDeAmpedPageSameAsOriginal) {
   const GURL original_url =
       https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
   NavigateToURLAndWaitForRedirects(original_url, original_url);
-  content::RenderFrameHost* current_main_frame = web_contents()->GetMainFrame();
+  content::RenderFrameHost* current_main_frame =
+      web_contents()->GetPrimaryMainFrame();
   // Open View Source for page
   content::WebContentsAddedObserver view_source_contents_observer;
   current_main_frame->ViewSource();

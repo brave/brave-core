@@ -28,7 +28,7 @@
     </if>
   <if expr="is_win">
     </if>
-  <if expr="chromeos_ash">
+  <if expr="chromeos_ash or chromeos_lacros">
     </if>
   <if expr="is_android or is_ios">
     </if>
