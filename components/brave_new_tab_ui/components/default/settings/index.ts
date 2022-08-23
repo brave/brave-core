@@ -625,7 +625,6 @@ export const StyledSelectionBorder = styled('div')<SelectionProps>`
       position:absolute;
       top: 10px;
       right: 10px;
-      z-order: 1;
     }
   `}
 `
@@ -638,13 +637,13 @@ export const StyledUploadIconContainer = styled('div')<SelectionProps>`
   align-items: center;
   justify-content: center;
   gap: 16px;
-  ${p => p.selected && css`
-    background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};
-    border-radius: 8px;
-  `}
-  ${p => !p.selected && css`
-    border: 2px solid #E9E9F4;
-    border-radius: 10px;
+  ${p => p.selected
+    ? css`    
+      background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'}; 
+      border-radius: 8px;`
+    : css`
+      border: 2px solid #E9E9F4; 
+      border-radius: 10px; 
   `}
 `
 
@@ -654,24 +653,18 @@ export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & 
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-position: center;
-  ${p => p.selected && css`
-    border-radius: 8px;
-  `}
-  ${p => !p.selected && css`
-    border-radius: 10px;
-  `}
+  ${p => p.selected
+    ? css`border-radius: 8px;`
+    : css`border-radius: 10px;`}
   background-image: url(${p => p.image})
 `
 
 export const StyledCustomBackgroundOptionSolidColor = styled('div')<SelectionProps & SolidColorBackgroundProps>`
   width: 100%;
   height: 100%;
-  ${p => p.selected && css`
-    border-radius: 8px;
-  `}
-  ${p => !p.selected && css`
-    border-radius: 10px;
-  `}
+  ${p => p.selected
+    ? css`border-radius: 8px;`
+    : css`border-radius: 10px;`}
   background-color: ${p => p.color};
 `
 

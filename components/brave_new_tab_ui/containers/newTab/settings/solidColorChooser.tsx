@@ -17,9 +17,7 @@ interface Props {
   onBack: () => void
 }
 
-function SolidColorChooser (props: Props) {
-  const { onBack, setSolidColorBackground, currentColor } = props
-
+function SolidColorChooser ({ onBack, setSolidColorBackground, currentColor }: Props) {
   const containerEl = React.useRef<HTMLDivElement>(null)
   React.useEffect(() => {
     containerEl.current?.scrollIntoView(true)

@@ -17,8 +17,7 @@ interface Props {
   onSelectColor: (color: string) => void
 }
 
-export default function SolidColorBackgroundOption (props: Props) {
-  const { color, selected, onSelectColor } = props
+export default function SolidColorBackgroundOption ({ color, selected, onSelectColor }: Props) {
   return (
     <StyledCustomBackgroundOption onClick={_ => onSelectColor(color)}>
       <StyledSelectionBorder selected={selected}>
