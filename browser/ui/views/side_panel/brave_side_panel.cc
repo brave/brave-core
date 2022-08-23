@@ -14,7 +14,8 @@
 #include "ui/views/border.h"
 #include "ui/views/layout/fill_layout.h"
 
-BraveSidePanel::BraveSidePanel(BrowserView* browser_view) {
+BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
+                               HorizontalAlignment horizontal_alignment) {
   SetVisible(false);
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
@@ -27,6 +28,16 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view) {
 
 BraveSidePanel::~BraveSidePanel() {
   RemoveObserver(this);
+}
+
+void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {}
+
+BraveSidePanel::HorizontalAlignment BraveSidePanel::GetHorizontalAlignment() {
+  return kAlignLeft;
+}
+
+bool BraveSidePanel::IsRightAligned() {
+  return false;
 }
 
 void BraveSidePanel::UpdateVisibility() {
