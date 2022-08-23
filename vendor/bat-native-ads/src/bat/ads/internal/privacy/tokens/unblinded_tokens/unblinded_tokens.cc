@@ -157,11 +157,7 @@ bool UnblindedTokens::TokenExists(const UnblindedTokenInfo& unblinded_token) {
                              return unblinded_token == value;
                            });
 
-  if (iter == unblinded_tokens_.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != unblinded_tokens_.cend();
 }
 
 int UnblindedTokens::Count() const {

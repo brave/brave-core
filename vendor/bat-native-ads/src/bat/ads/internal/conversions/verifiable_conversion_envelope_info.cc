@@ -30,12 +30,8 @@ bool VerifiableConversionEnvelopeInfo::operator!=(
 }
 
 bool VerifiableConversionEnvelopeInfo::IsValid() const {
-  if (algorithm.empty() || ciphertext.empty() || ephemeral_public_key.empty() ||
-      nonce.empty()) {
-    return false;
-  }
-
-  return true;
+  return !(algorithm.empty() || ciphertext.empty() ||
+           ephemeral_public_key.empty() || nonce.empty());
 }
 
 }  // namespace security

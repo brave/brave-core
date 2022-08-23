@@ -400,12 +400,9 @@ void RefillUnblindedTokens::OnRetry() {
 }
 
 bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  if (ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count() >=
-      kMinimumUnblindedTokens) {
-    return false;
-  }
-
-  return true;
+  return ConfirmationStateManager::GetInstance()
+             ->GetUnblindedTokens()
+             ->Count() < kMinimumUnblindedTokens;
 }
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {

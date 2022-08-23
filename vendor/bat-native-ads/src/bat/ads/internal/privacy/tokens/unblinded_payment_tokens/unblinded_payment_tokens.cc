@@ -195,11 +195,7 @@ bool UnblindedPaymentTokens::TokenExists(
         return unblinded_payment_token == value;
       });
 
-  if (iter == unblinded_payment_tokens_.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != unblinded_payment_tokens_.cend();
 }
 
 int UnblindedPaymentTokens::Count() const {

@@ -16,17 +16,14 @@ bool DidOverrideVariationsCommandLineSwitch() {
   const base::CommandLine* const command_line =
       base::CommandLine::ForCurrentProcess();
 
-  if (!command_line
-           ->GetSwitchValueASCII(variations::switches::kFakeVariationsChannel)
-           .empty() ||
-      !command_line
-           ->GetSwitchValueASCII(
-               variations::switches::kVariationsOverrideCountry)
-           .empty()) {
-    return true;
-  }
-
-  return false;
+  return !command_line
+              ->GetSwitchValueASCII(
+                  variations::switches::kFakeVariationsChannel)
+              .empty() ||
+         !command_line
+              ->GetSwitchValueASCII(
+                  variations::switches::kVariationsOverrideCountry)
+              .empty();
 }
 
 }  // namespace ads

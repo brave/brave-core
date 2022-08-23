@@ -128,11 +128,7 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
                                    return ad.placement_id == placement_id;
                                  });
 
-  if (iter == ads_.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != ads_.cend();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

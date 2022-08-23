@@ -22,11 +22,7 @@ bool HasVisitedSiteOnAntiTargetingList(
   const auto iter = std::find_first_of(
       anti_targeting_sites.cbegin(), anti_targeting_sites.cend(),
       browsing_history.cbegin(), browsing_history.cend(), SameDomainOrHost);
-  if (iter == anti_targeting_sites.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != anti_targeting_sites.cend();
 }
 
 }  // namespace

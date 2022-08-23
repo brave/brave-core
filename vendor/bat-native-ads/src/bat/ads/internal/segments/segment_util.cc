@@ -101,11 +101,7 @@ bool HasChildSegment(const std::string& segment) {
   const std::vector<std::string> components = SplitSegment(segment);
   DCHECK(!components.empty());
 
-  if (components.size() == 1) {
-    return false;
-  }
-
-  return true;
+  return components.size() != 1;
 }
 
 bool ShouldFilterSegment(const std::string& segment) {
@@ -130,11 +126,7 @@ bool ShouldFilterSegment(const std::string& segment) {
         return MatchParentSegments(segment, filtered_segment.name);
       });
 
-  if (iter == filtered_segments.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != filtered_segments.cend();
 }
 
 }  // namespace ads

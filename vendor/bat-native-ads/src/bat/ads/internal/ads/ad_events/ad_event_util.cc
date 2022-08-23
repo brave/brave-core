@@ -26,11 +26,7 @@ bool HasFiredAdEvent(const AdInfo& ad,
                             ad_event.confirmation_type == confirmation_type;
                    });
 
-  if (iter == ad_events.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != ad_events.cend();
 }
 
 absl::optional<base::Time> GetLastSeenAdTime(

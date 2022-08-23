@@ -32,11 +32,7 @@ bool EpsilonGreedyBanditArmInfo::operator!=(
 }
 
 bool EpsilonGreedyBanditArmInfo::IsValid() const {
-  if (segment.empty() || value < 0.0 || value > 1.0 || pulls < 0) {
-    return false;
-  }
-
-  return true;
+  return !(segment.empty() || value < 0.0 || value > 1.0 || pulls < 0);
 }
 
 }  // namespace targeting

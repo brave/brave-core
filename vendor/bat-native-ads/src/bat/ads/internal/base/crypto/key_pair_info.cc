@@ -25,11 +25,7 @@ bool KeyPairInfo::operator!=(const KeyPairInfo& rhs) const {
 }
 
 bool KeyPairInfo::IsValid() const {
-  if (public_key.empty() || secret_key.empty()) {
-    return false;
-  }
-
-  return true;
+  return !(public_key.empty() || secret_key.empty());
 }
 
 }  // namespace security

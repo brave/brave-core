@@ -41,12 +41,8 @@ bool ConversionQueueItemInfo::IsValid() const {
   // campaign_id and advertiser_id will be empty for legacy conversions migrated
   // from |ad_conversions.json| to |database.sqlite| and conversion_id will be
   // empty for non verifiable conversions
-  if (creative_set_id.empty() || creative_instance_id.empty() ||
-      process_at.is_null()) {
-    return false;
-  }
-
-  return true;
+  return !(creative_set_id.empty() || creative_instance_id.empty() ||
+           process_at.is_null());
 }
 
 }  // namespace ads

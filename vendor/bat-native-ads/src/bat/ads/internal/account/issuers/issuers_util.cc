@@ -23,11 +23,7 @@ constexpr int kMaximumIssuerPublicKeys = 3;
 
 bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
   const auto iter = issuer.public_keys.find(public_key);
-  if (iter == issuer.public_keys.cend()) {
-    return false;
-  }
-
-  return true;
+  return iter != issuer.public_keys.cend();
 }
 
 }  // namespace
@@ -76,12 +72,8 @@ absl::optional<IssuersInfo> GetIssuers() {
 }
 
 bool HasIssuers() {
-  if (!IssuerExistsForType(IssuerType::kConfirmations) ||
-      !IssuerExistsForType(IssuerType::kPayments)) {
-    return false;
-  }
-
-  return true;
+  return !(!IssuerExistsForType(IssuerType::kConfirmations) ||
+           !IssuerExistsForType(IssuerType::kPayments));
 }
 
 bool HasIssuersChanged(const IssuersInfo& issuers) {
@@ -105,11 +97,7 @@ bool IssuerExistsForType(const IssuerType issuer_type) {
 
   const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(*issuers, issuer_type);
-  if (!issuer) {
-    return false;
-  }
-
-  return true;
+  return static_cast<bool>(issuer);
 }
 
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
