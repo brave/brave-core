@@ -60,6 +60,8 @@ const char16_t kBraveTermsOfUseURL[] = u"https://brave.com/terms-of-use/";
 const char16_t kBravePrivacyPolicyURL[] = u"https://brave.com/privacy/browser/";
 const char16_t kBraveSyncGuideUrl[] =
     u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
+const char16_t kDeAmpLearnMoreUrl[] =
+    u"https://support.brave.com/hc/en-us/articles/8611298579981";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -546,6 +548,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
+  html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
