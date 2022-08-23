@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_result_view.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -28,7 +28,6 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -74,25 +73,24 @@ class HorizontalGradientBackground : public views::Background {
 
   void Paint(gfx::Canvas* canvas, views::View* view) const override {
     // Fill with base color first.
-    canvas->DrawColor(GetOmniboxColor(view->GetThemeProvider(),
-                                      OmniboxPart::RESULTS_BACKGROUND));
+    canvas->DrawColor(
+        view->GetColorProvider()->GetColor(kColorOmniboxResultsBackground));
 
     SkColor from_color = gfx::kPlaceholderColor;
     SkColor to_color = gfx::kPlaceholderColor;
-    if (auto* tp = view->GetThemeProvider()) {
-      from_color = tp->GetColor(
-          BraveThemeProperties::
-              COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_FROM);
-      to_color = tp->GetColor(
-          BraveThemeProperties::
-              COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_TO);
+    if (const ui::ColorProvider* color_provider = view->GetColorProvider()) {
+      from_color = color_provider->GetColor(
+          kColorSearchConversionBannerTypeBackgroundGradientFrom);
+      to_color = color_provider->GetColor(
+          kColorSearchConversionBannerTypeBackgroundGradientTo);
     }
 
     // Gradient background from design.
     //  - linear-gradient(90deg, from_color, 19.6%, to_color, 100%).
     cc::PaintFlags flags;
     SkPoint points[2] = {SkPoint::Make(0, 0), SkPoint::Make(view->width(), 0)};
-    SkColor colors[2] = {from_color, to_color};
+    SkColor4f colors[2] = {SkColor4f::FromColor(from_color),
+                           SkColor4f::FromColor(to_color)};
     SkScalar positions[2] = {0.196f, 1.f};
     flags.setShader(cc::PaintShader::MakeLinearGradient(
         points, colors, positions, 2, SkTileMode::kClamp));
@@ -322,17 +320,15 @@ void BraveSearchConversionPromotionView::UpdateButtonTypeState() {
   button_type_container_->SetVisible(true);
   button_type_selection_indicator_->SetVisible(selected_);
   button_type_contents_input_->SetText(input_);
-  if (auto* tp = GetThemeProvider()) {
-    auto desc_color_id =
-        BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_NORMAL;
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    auto desc_color_id = kColorSearchConversionButtonTypeDescNormal;
     if (IsMouseHovered() || selected_) {
-      desc_color_id = BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_HOVERED;
+      desc_color_id = kColorSearchConversionButtonTypeDescHovered;
     }
-    button_type_description_->SetEnabledColor(tp->GetColor(desc_color_id));
+    button_type_description_->SetEnabledColor(
+        color_provider->GetColor(desc_color_id));
     append_for_input_->SetEnabledColor(
-        tp->GetColor(BraveThemeProperties::
-                         COLOR_SEARCH_CONVERSION_BUTTON_TYPE_INPUT_APPEND));
+        color_provider->GetColor(kColorSearchConversionButtonTypeInputAppend));
   }
 
   SetBackground(GetButtonTypeBackground());
@@ -346,16 +342,14 @@ void BraveSearchConversionPromotionView::UpdateBannerTypeState() {
   SkColor desc_color = gfx::kPlaceholderColor;
   SkColor border_color = gfx::kPlaceholderColor;
   const bool is_selected_or_hovered = selected_ || IsMouseHovered();
-  if (auto* tp = GetThemeProvider()) {
-    desc_color = tp->GetColor(
-        BraveThemeProperties::COLOR_SEARCH_CONVERSION_BANNER_TYPE_DESC_TEXT);
-    const int border_id =
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    desc_color =
+        color_provider->GetColor(kColorSearchConversionBannerTypeDescText);
+    const auto border_id =
         is_selected_or_hovered
-            ? BraveThemeProperties::
-                  COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED
-            : BraveThemeProperties::
-                  COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED;
-    border_color = tp->GetColor(border_id);
+            ? kColorSearchConversionBannerTypeBackgroundBorderHovered
+            : kColorSearchConversionBannerTypeBackgroundBorder;
+    border_color = color_provider->GetColor(border_id);
   }
   const int border_thickness = is_selected_or_hovered ? 2 : 1;
   banner_type_container_->SetBorder(views::CreateRoundedRectBorder(
@@ -372,7 +366,7 @@ void BraveSearchConversionPromotionView::UpdateBannerTypeState() {
   banner_type_container_->SetProperty(views::kMarginsKey, container_margin);
 
   SetBackground(views::CreateSolidBackground(
-      GetOmniboxColor(GetThemeProvider(), OmniboxPart::RESULTS_BACKGROUND)));
+      GetColorProvider()->GetColor(kColorOmniboxResultsBackground)));
   banner_type_container_->SetBackground(
       std::make_unique<HorizontalGradientBackground>());
 }
@@ -579,14 +573,12 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
 std::unique_ptr<views::Background>
 BraveSearchConversionPromotionView::GetButtonTypeBackground() {
   SkColor bg = gfx::kPlaceholderColor;
-  if (auto* tp = GetThemeProvider()) {
-    auto bg_color_id = BraveThemeProperties::
-        COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_NORMAL;
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    auto bg_color_id = kColorSearchConversionButtonTypeBackgroundNormal;
     if (IsMouseHovered() || selected_) {
-      bg_color_id = BraveThemeProperties::
-          COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_HOVERED;
+      bg_color_id = kColorSearchConversionButtonTypeBackgroundHovered;
     }
-    bg = tp->GetColor(bg_color_id);
+    bg = color_provider->GetColor(bg_color_id);
   }
 
   return views::CreateSolidBackground(bg);

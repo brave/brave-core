@@ -15,7 +15,6 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOmniboxTriggerForNoStatePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivacyGuide, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacyGuide2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSCTAuditing, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)

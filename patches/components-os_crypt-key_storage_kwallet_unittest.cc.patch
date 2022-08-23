@@ -1,8 +1,8 @@
 diff --git a/components/os_crypt/key_storage_kwallet_unittest.cc b/components/os_crypt/key_storage_kwallet_unittest.cc
-index c87ba0e1e7ab25746a03b84113ad7ad48c3f7210..91544fa464f4048c3e188c205b599056cb8503d1 100644
+index d3a8375580b7b2a2aa085f65b6ca069494edca1c..755cdeab6f3bf9b60343086d2b73be948d5f8873 100644
 --- a/components/os_crypt/key_storage_kwallet_unittest.cc
 +++ b/components/os_crypt/key_storage_kwallet_unittest.cc
-@@ -34,8 +34,8 @@ constexpr KWalletDBus::Error CANNOT_CONTACT =
+@@ -35,8 +35,8 @@ constexpr KWalletDBus::Error CANNOT_CONTACT =
  const char kExpectedFolderName[] = "Chrome Keys";
  const char kExpectedEntryName[] = "Chrome Safe Storage";
  #else

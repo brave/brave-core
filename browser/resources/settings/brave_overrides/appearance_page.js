@@ -21,6 +21,13 @@ RegisterPolymerTemplateModifications({
     if (!theme) {
       console.error(`[Brave Settings Overrides] Couldn't find #themeRow`)
     } else {
+      const useDefaultButtonTemplate = templateContent.querySelector('template[is=dom-if][if="[[prefs.extensions.theme.id.value]]"]')
+      if (!useDefaultButtonTemplate) {
+        console.error('[Brave Settings Overrides] Appearance Page cannot find use default theme button template')
+      } else {
+        useDefaultButtonTemplate.setAttribute("restamp", "true")
+      }
+      theme.setAttribute("class", "settings-row hr")
       theme.insertAdjacentHTML('beforebegin', `
         <settings-brave-appearance-theme prefs="{{prefs}}"></settings-brave-appearance-theme>
       `)

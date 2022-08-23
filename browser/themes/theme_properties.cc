@@ -37,6 +37,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return kLightToolbar;
     case ThemeProperties::COLOR_TAB_FOREGROUND_ACTIVE_FRAME_ACTIVE:
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
+    case BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT:
     case ThemeProperties::COLOR_TAB_FOREGROUND_INACTIVE_FRAME_ACTIVE:
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kLightToolbarIcon;
@@ -44,14 +45,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f);
     case BraveThemeProperties::COLOR_ICON_BASE:
       return SkColorSetRGB(0x49, 0x50, 0x57);
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_ON_COLOR:
-      return SkColorSetRGB(0x4C, 0x54, 0xD2);
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_OFF_COLOR:
-      return SK_ColorWHITE;
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_ON_COLOR:
-      return SkColorSetRGB(0xE1, 0xE2, 0xF6);
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_OFF_COLOR:
-      return SkColorSetRGB(0xDA, 0xDC, 0xE8);
     case BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR:
       return SkColorSetRGB(0x86, 0x8E, 0x96);
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -153,6 +146,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case ThemeProperties::COLOR_TAB_FOREGROUND_ACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xF3, 0xF3, 0xF3);
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
+    case BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT:
     case ThemeProperties::COLOR_TAB_FOREGROUND_INACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
@@ -161,14 +155,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f);
     case BraveThemeProperties::COLOR_ICON_BASE:
       return SkColorSetRGB(0xC2, 0xC4, 0xCF);
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_ON_COLOR:
-      return SkColorSetRGB(0x44, 0x36, 0xE1);
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_OFF_COLOR:
-      return SK_ColorWHITE;
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_ON_COLOR:
-      return SkColorSetRGB(0x76, 0x79, 0xB1);
-    case BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_OFF_COLOR:
-      return SkColorSetRGB(0x5E, 0x61, 0x75);
     case BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR:
       return SkColorSetRGB(0x84, 0x88, 0x9C);
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -266,7 +252,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     case ThemeProperties::COLOR_TAB_FOREGROUND_ACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xF3, 0xF3, 0xF3);
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
-    case BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT:
     case ThemeProperties::COLOR_TAB_FOREGROUND_INACTIVE_FRAME_ACTIVE:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
@@ -311,14 +296,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForPrivateTorUi(int id) {
 
 }  // namespace
 
-namespace BraveThemeProperties {
-
-bool IsBraveThemeProperties(int id) {
-  return id >= BRAVE_THEME_PROPERTIES_START &&
-         id <= BRAVE_THEME_PROPERTIES_LAST;
-}
-
-}  // namespace BraveThemeProperties
 // Returns a |nullopt| if the UI color is not handled by Brave.
 absl::optional<SkColor> MaybeGetDefaultColorForBraveUi(
     int id,

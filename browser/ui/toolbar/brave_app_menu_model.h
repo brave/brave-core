@@ -15,6 +15,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/models/simple_menu_model.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -41,20 +42,21 @@ class BraveAppMenuModel : public AppMenuModel {
   void ExecuteCommand(int id, int event_flags) override;
   bool IsCommandIdEnabled(int id) const override;
 
-  int GetProperItemIndex(std::vector<int> commands_to_check,
-                         bool insert_next) const;
+  absl::optional<size_t> GetProperItemIndex(std::vector<int> commands_to_check,
+                                            bool insert_next) const;
 
   void InsertBraveMenuItems();
   void InsertAlternateProfileItems();
-  int GetIndexOfBraveRewardsItem() const;
-  int GetLastIndexOfSecondSection() const;
-  int GetIndexOfBraveSyncItem() const;
-  int GetIndexOfBraveVPNItem() const;
+  size_t GetIndexOfBraveRewardsItem() const;
+  size_t GetLastIndexOfSecondSection() const;
+  size_t GetIndexOfBraveSyncItem() const;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  size_t GetIndexOfBraveVPNItem() const;
+#endif
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  int GetIndexOfBraveSidebarItem() const;
+  size_t GetIndexOfBraveSidebarItem() const;
 #endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  int FindCommandIndex(int command_id) const;
   int AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
                            ipfs::IpnsKeysManager* manager,
                            int key_command_id);

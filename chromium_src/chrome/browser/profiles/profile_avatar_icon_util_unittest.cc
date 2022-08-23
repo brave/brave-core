@@ -23,8 +23,7 @@ TEST(ProfileUtilTest, KeepChromiumChoice) {
 
 TEST(ProfileUtilTest, BraveAvatarIconChoices) {
   // Test that the avatar icon choices presented to the user are brave's.
-  std::vector<base::Value> avatars(
-      profiles::GetCustomProfileAvatarIconsAndLabels(0));
+  base::Value::List avatars = profiles::GetCustomProfileAvatarIconsAndLabels(0);
 
   const size_t expected_selectable_avatar_count =
       profiles::kBraveDefaultAvatarIconsCount;

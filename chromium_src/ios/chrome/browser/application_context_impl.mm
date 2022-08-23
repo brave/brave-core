@@ -43,6 +43,7 @@
 #include "ios/chrome/browser/pref_names.h"
 #include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
+#include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_service.h"
 #include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
 #include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
@@ -102,6 +103,11 @@ void ApplicationContextImpl::PreMainMessageLoopRun() {
 
 void ApplicationContextImpl::StartTearDown() {
   DCHECK(thread_checker_.CalledOnValidThread());
+
+  // Destroy the segmentation OTR observer before
+  // `chrome_browser_state_manager_`.
+  segmentation_otr_web_state_observer_.reset();
+
   // We need to destroy the NetworkTimeTracker before the IO thread gets
   // destroyed, since the destructor can call the URLFetcher destructor,
   // which does a PostDelayedTask operation on the IO thread. (The IO thread
@@ -313,6 +319,16 @@ id<SingleSignOnService> ApplicationContextImpl::GetSSOService() {
     DCHECK(single_sign_on_service_);
   }
   return single_sign_on_service_;
+}
+
+segmentation_platform::OTRWebStateObserver*
+ApplicationContextImpl::GetSegmentationOTRWebStateObserver() {
+  if (!segmentation_otr_web_state_observer_) {
+    segmentation_otr_web_state_observer_ =
+        std::make_unique<segmentation_platform::OTRWebStateObserver>(
+            GetChromeBrowserStateManager());
+  }
+  return segmentation_otr_web_state_observer_.get();
 }
 
 void ApplicationContextImpl::SetApplicationLocale(const std::string& locale) {

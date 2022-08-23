@@ -1,9 +1,7 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-#include "chrome/browser/ui/views/permission_bubble/permission_prompt_impl.h"
 
 #include "chrome/browser/ui/permission_bubble/permission_prompt.h"
 #include "components/permissions/request_type.h"
@@ -13,7 +11,7 @@
 #endif
 
 #define CreatePermissionPrompt CreatePermissionPrompt_ChromiumImpl
-#include "src/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc"
+#include "src/chrome/browser/ui/views/permissions/permission_prompt_factory.cc"
 #undef CreatePermissionPrompt
 
 std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(

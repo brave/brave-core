@@ -15,7 +15,7 @@ SidebarButtonView::SidebarButtonView(Delegate* delegate,
   SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
   SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
   DCHECK(GetInstallFocusRingOnFocus());
-  views::FocusRing::Get(this)->SetColor(gfx::kBraveBlurple300);
+  views::FocusRing::Get(this)->SetColorId(gfx::kBraveBlurple300);
 
   // Views resulting in focusable nodes later on in the accessibility tree need
   // to have an accessible name for screen readers to see what they are about.

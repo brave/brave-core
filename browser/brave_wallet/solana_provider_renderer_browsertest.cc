@@ -693,7 +693,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
       result2.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
@@ -726,7 +726,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsConnected) {
   EXPECT_EQ(base::Value(true), result.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
 
   // just make TestSolanaProvider::IsConnected to return false
@@ -806,7 +806,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
       result4.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
@@ -868,7 +868,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
       result5.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
@@ -892,7 +892,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
                     serialized_tx_str, "])), ", send_options, ")"});
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
   provider->SetSendOptions(
       base::JSONReader::Read(send_options)->GetDict().Clone());
@@ -999,7 +999,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
   EXPECT_EQ(base::Value(true), result6.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
@@ -1051,7 +1051,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Request) {
       result5.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
@@ -1071,7 +1071,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnAccountChanged) {
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
+      web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
 
   provider->SetEmitEmptyAccountChanged(true);
@@ -1219,7 +1219,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
     SCOPED_TRACE(testing::Message() << c.script << c.iframe_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
-        web_contents(browser())->GetMainFrame();
+        web_contents(browser())->GetPrimaryMainFrame();
     EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
     EXPECT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
@@ -1231,7 +1231,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
     SCOPED_TRACE(testing::Message() << c.script << c.top_url << c.iframe_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
-        web_contents(browser())->GetMainFrame();
+        web_contents(browser())->GetPrimaryMainFrame();
     EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
     EXPECT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
@@ -1247,24 +1247,24 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SecureContextOnly) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   constexpr char kEvalSolana[] = "typeof window.braveSolana !== 'undefined'";
   content::RenderFrameHost* main_frame =
-      web_contents(browser())->GetMainFrame();
+      web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
 
   // Insecure context
   url = embedded_test_server()->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  main_frame = web_contents(browser())->GetMainFrame();
+  main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_FALSE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
 
   // Secure context localhost HTTP
   url = embedded_test_server()->GetURL("localhost", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  main_frame = web_contents(browser())->GetMainFrame();
+  main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
 
   // Secure context 127.0.0.1 HTTP
   url = embedded_test_server()->GetURL("localhost", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  main_frame = web_contents(browser())->GetMainFrame();
+  main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
 }

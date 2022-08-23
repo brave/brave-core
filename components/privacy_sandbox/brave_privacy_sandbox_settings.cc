@@ -25,7 +25,7 @@ BravePrivacySandboxSettings::BravePrivacySandboxSettings(
                                               pref_service,
                                               incognito_profile),
       pref_service_(pref_service) {
-  // Register observers for the Privacy Sandbox & FLoC preferences.
+  // Register observers for the Privacy Sandbox.
   user_prefs_registrar_.Init(pref_service_);
   user_prefs_registrar_.Add(
       prefs::kPrivacySandboxApisEnabled,
@@ -34,11 +34,6 @@ BravePrivacySandboxSettings::BravePrivacySandboxSettings(
           base::Unretained(this)));
   user_prefs_registrar_.Add(
       prefs::kPrivacySandboxApisEnabledV2,
-      base::BindRepeating(
-          &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
-          base::Unretained(this)));
-  user_prefs_registrar_.Add(
-      prefs::kPrivacySandboxFlocEnabled,
       base::BindRepeating(
           &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
           base::Unretained(this)));
@@ -54,8 +49,5 @@ void BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged() {
   }
   if (pref_service_->GetBoolean(prefs::kPrivacySandboxApisEnabledV2)) {
     pref_service_->SetBoolean(prefs::kPrivacySandboxApisEnabledV2, false);
-  }
-  if (pref_service_->GetBoolean(prefs::kPrivacySandboxFlocEnabled)) {
-    pref_service_->SetBoolean(prefs::kPrivacySandboxFlocEnabled, false);
   }
 }

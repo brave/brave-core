@@ -463,14 +463,14 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HISTORY_OPEN_TABS_MENU_ITEM" desc="Label displayed in history sidebar button to display synced tabs from other devices.">
         Tabs from other devices
       </message>
-      <message name="IDS_HISTORY_SIGN_IN_BUTTON" desc="Label displayed on a button to let user sign in to Brave to get synced tab history.">
-        Sign in to Brave
+      <message name="IDS_HISTORY_TURN_ON_SYNC_BUTTON" desc="Label displayed on a button to let user turn on sync or sign in to Brave to get synced tab history.">
+        Turn on sync
       </message>
-      <message name="IDS_HISTORY_SIGN_IN_PROMO" desc="Text of the sign-in promo. This will show up if a user is not logged in and has no synced tabs.">
+      <message name="IDS_HISTORY_TURN_ON_SYNC_PROMO" desc="Text of the turn on sync/sign-in promo. This will show up if a user is not logged in and has no synced tabs.">
         Continue from another device
       </message>
-      <message name="IDS_HISTORY_SIGN_IN_PROMO_DESC" desc="Description of the sign-in promo. Further tells users to sign in to Brave to see synced tabs from other devices.">
-        To get your tabs from your other devices, sign in to Brave.
+      <message name="IDS_HISTORY_TURN_ON_SYNC_PROMO_DESC" desc="Description of the turn on sync/sign-in promo. Further tells users to turn o sync/sign in to Brave to see synced tabs from other devices.">
+        To get your tabs from your other devices, turn on sync
       </message>
 
       <!-- Generic terms -->
@@ -573,6 +573,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
            Open in Reader
           </message>
+          <message name="IDS_CONTENT_CONTEXT_RUN_PDF_OCR" desc="Context menu menuitem that runs a local machine intelligence model to extract the content of the current PDF and pass it to assisstive technologies.">
+           Recognize P&amp;DF text
+          </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
           </message>
@@ -637,6 +640,10 @@ are declared in tools/grit/grit_rule.gni.
 
           <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="The name of the Copy Link to Highlight command in the content area context menu">
             Copy link to highlight
+          </message>
+
+          <message name="IDS_CONTENT_CONTEXT_ADD_A_NOTE" desc="The name of the Add Note command in the content area context menu">
+            Add a note
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_REMOVELINKTOTEXT" desc="The name of the Remove Highlights command in the content area context menu">
@@ -759,6 +766,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_SELECTALL" desc="The name of the Select All command in the content area context menu">
             Select &amp;all
           </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="The name of the Partial Translate command in the content area context menu">
+            &amp;Translate to <ph name="LANGUAGE">$1<ex>English</ex></ph>
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
           </message>
@@ -773,6 +783,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="The name of the Lens Region Search command in the content area context menu">
             Search any part of the page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="The name of the Lens Region Search command in the content area context menu">
+            Search inside image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="The name of the Lens Region Search command in the content area context menu">
             Search images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
@@ -817,6 +830,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
            Open in Reader
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_RUN_PDF_OCR" desc="Context menu menuitem that runs a local machine intelligence model to extract the content of the current PDF and pass it to assisstive technologies.">
+           Recognize P&amp;DF text
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="In Title Case: The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -882,6 +898,10 @@ are declared in tools/grit/grit_rule.gni.
 
           <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="In Title Case: The name of the Copy Link to Highlight command in the content area context menu">
             Copy Link to Highlight
+          </message>
+
+          <message name="IDS_CONTENT_CONTEXT_ADD_A_NOTE" desc="In Title Case: The name of the Add Note command in the content area context menu">
+            Add a Note
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_REMOVELINKTOTEXT" desc="In TitleCase: The name of the Remove Highlights command in the content area context menu">
@@ -1016,6 +1036,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_SELECTALL" desc="In Title Case: The name of the Select All command in the content area context menu">
             Select &amp;All
           </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="In Title Case: The name of the Partial Translate command in the content area context menu">
+            &amp;Translate to <ph name="LANGUAGE">$1<ex>English</ex></ph>
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="In Title Case: The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
           </message>
@@ -1030,6 +1053,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Any Part of the Page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+              Search inside Image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
@@ -2313,11 +2339,11 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_LINK" desc="Footer link in the Download Bubble">
         Show all downloads
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SEPERATOR" desc="A separator to place between download size and download time. A symbol, in this case a bullet •, with a white space before it and a white space after it, is used to separate them. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
-        ''' • '''
+      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_STATUS_MESSAGE_WITH_SEPARATOR" desc="The download status and message are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+        <ph name="STATUS">$1<ex>100/120 MB</ex></ph> • <ph name="MESSAGE">$2<ex>Opening in 10 seconds...</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SYMBOL" desc="A symbol for active downloads, in this case downward arrow ↓. If the downward arrow ↓ resembles another symbol in the language, please translate the downward arrow ↓ as a symbol that indicates a downward arrow">
-        '''↓ '''
+      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_STATUS_WITH_SYMBOL" desc="Active downloads have a symbol associated with them, in this case a downward arrow ↓. If the downward arrow ↓ resembles another symbol in the language, please translate the downward arrow ↓ as a symbol that indicates a downward arrow">
+        ↓ <ph name="STATUS">$1<ex>100/120 MB</ex></ph>
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_RESUMING" desc="When resuming a download, let the user know we're resuming the download.">
         Resuming...
@@ -2355,6 +2381,12 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_OPEN_NOW" desc="Label for the button prompting to open a download while deep scanning is in progress">
         Open Now
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_REVIEW" desc="Label for the button prompting the dialog containing the enterprise administrator's message explaining the violation.">
+        Review
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_RETRY" desc="Label for the button prompting to retry a failed download.">
+        Try again
+      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_DISK_FULL" desc="Status text for a download item that was interrupted because there is not enough room on the disk to download this file.">
         Out of storage space
       </message>
@@ -2384,9 +2416,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_SUBPAGE_SUMMARY_BLOCKED_ORGANIZATION" desc="Subpage summary text for a download item that was blocked by the organization.">
         Your organization blocked this file because it didn't meet a security policy
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_WARNING_SUBPAGE_SUMMARY_BLOCKED_ORGANIZATION" desc="Subpage summary text of warning for download item that was blocked by the organization.">
-        Your organization blocked this file because it has sensitive content
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_WRONG" desc="Status text for a download item that had something go wrong.">
         Something went wrong
@@ -2439,8 +2468,17 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_SENSITIVE_CONTENT" desc="Dangerous warning for a file with sensitive content">
         Sensitive content
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SENSITIVE_CONTENT" desc="Subpage summary of dangerous warning for a file with sensitive content">
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SENSITIVE_CONTENT_WARNING" desc="Subpage summary text of warning for download item that contains sensitive content">
         Your organization recommends deleting this file because it has sensitive content
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SENSITIVE_CONTENT_BLOCK" desc="Subpage summary text of warning for download item that was blocked by the organization.">
+        Your organization blocked this file because it has sensitive or dangerous content. Ask its owner to fix.
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_ENCRYPTED" desc="Subpage summary of dangerous warning for an encrypted file.">
+        Your organization blocked this file because it is encrypted. Ask its owner to decrypt.
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_TOO_BIG" desc="Subpage summary of warning for a file blocked for being too large.">
+        Your organization blocked this file because it is too big for a security check. You can open files up to 50 MB.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_TRY_AGAIN" desc="Retry button when a download is failed">
         Try again
@@ -2454,6 +2492,38 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING_ENTERPRISE" desc="Status text for a download item that is being scanned by enterprise policy.">
         Checking with your organization's security policies...
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INCOGNITO_INFORMATION_ROW" desc="For Private/Guest mode, text notifying that downloads are visible to others on the device.">
+        Anyone using this device can see downloaded files
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_RESUME_QUICK_ACTION" desc="Accessibility/tooltip label for action to resume a download.">
+        Resume
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PAUSE_QUICK_ACTION" desc="Accessibility/tooltip label for action to pause a download.">
+        Pause
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_CANCEL_QUICK_ACTION" desc="Accessibility/tooltip label for action to cancel a download.">
+        Cancel
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_QUICK_ACTION" desc="Accessibility/tooltip label for action to open a download.">
+        Open
+      </message>
+      <if expr="is_macosx">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Mac: Accessibility/tooltip label for showing the file in the Finder">
+              Show in Finder
+            </message>
+      </if>
+      <if expr="not is_macosx">
+        <if expr="not use_titlecase">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Accessibility/tooltip label for showing the file in file explorer">
+              Show in folder
+            </message>
+          </if>
+          <if expr="use_titlecase">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="In Title Case: Accessibility/tooltip label for showing the file in file explorer">
+              Show in Folder
+            </message>
+          </if>
+      </if>
 
       <!-- Desktop omnibox PWA install icon -->
       <if expr="not is_android">
@@ -2743,7 +2813,7 @@ are declared in tools/grit/grit_rule.gni.
           Device Credentials
         </message>
         <!--
-          NOTE: As per Bluetooth v4.2 spec. (section 3.2.3.2):
+          NOTE: As per Bluetooth spec. v4.2 [Vol 3, Part C] (section 3.2.3.2):
           > When the Bluetooth PIN is referred to on the UI level, the term
           > 'Bluetooth Passkey' should be used."
         -->
@@ -2755,6 +2825,12 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_BLUETOOTH_DEVICE_PAIR_CONFIRM_LABEL" desc="Label of the text prompt for Bluetooth device pair confirmation.">
           Bluetooth device <ph name="DEVICE">$1</ph> would like permission to pair.
+        </message>
+        <message name="IDS_BLUETOOTH_DEVICE_PASSKEY_CONFIRM_TITLE" desc="Title of the Bluetooth device pair passkey confirmation prompt dialog.">
+          Confirm passkey
+        </message>
+        <message name="IDS_BLUETOOTH_DEVICE_PASSKEY_CONFIRM_LABEL" desc="Label of the text prompt for Bluetooth device pair passkey confirmation.">
+          Please confirm that <ph name="PASSKEY">$1<ex>123456</ex></ph> is the passkey displayed on Bluetooth device <ph name="DEVICE">$2</ph>.
         </message>
       </if>
 
@@ -2943,6 +3019,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ABUSIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave because the site is known to employ dark patterns to trick users into accepting the permission.">
         This site may be trying to trick you into allowing intrusive notifications
       </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_DISRUPTIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's loud notifications permission requests was automatically blocked by Brave because the site may engage in disruptive notification permission usage practices.">
+        Notifications from this site may be disruptive
+      </message>
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
         Notifications were automatically blocked because you usually don't allow them
       </message>
@@ -3117,7 +3196,7 @@ are declared in tools/grit/grit_rule.gni.
           Certificate Signature Value
         </message>
         <message name="IDS_CERT_DETAILS_EXPORT_CERTIFICATE" desc="The label of the button to export the selected certificate">
-          E&amp;xport...
+          E&amp;xport selected certificate...
         </message>
 
         <message translateable="false" name="IDS_CERT_OID_AVA_COMMON_NAME" desc="">
@@ -3496,6 +3575,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_CERT_EXTENSION_NON_CRITICAL" desc="The text displayed in the certificate details dialog for a given extension which is not critical">
           Not Critical
+        </message>
+        <message name="IDS_CERT_DUMP_ERROR" desc="The text displayed in the certificate viewer dialog for a given field which could not be decoded">
+          Error: Unable to decode certificate
         </message>
         <message name="IDS_CERT_EXTENSION_DUMP_ERROR" desc="The text displayed in the certificate details dialog for a given extension which could not be decoded">
           Error: Unable to decode extension
@@ -3951,17 +4033,14 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_OK_BUTTON" desc="The text of the button to proceed with the page refresh for running an extension.">
           Reload
         </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_SINGLE_EXTENSION_TITLE" desc="Title of the bubble to tell users that in order to run an extension, they'll need to refresh the page.">
-          Refresh the page to use "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_SINGLE_EXTENSION_TITLE" desc="Title of the bubble to tell users that in order to run or block an extension, they'll need to refresh the page.">
+          Reload the page to use "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
         </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_OK_BUTTON_LABEL" desc="The label of the button to proceed with the page refresh for running an extension.">
-          Refresh
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_MULTIPLE_EXTENSIONS_TITLE" desc="Title of the bubble to tell users that in order to run or block an extension, they'll need to refresh the page.">
+          Reload the page to use these extensions
         </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_BODY_TEXT" desc="The body text of the bubble to tell users to check the checkbox to always allow the extensions to run on the current site.">
-          Always allow the extension to run on this site if you don't want to see this message again.
-        </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_CHECKBOX_LABEL" desc="The label of the checkbox to always allow the extensions to run on the current site.">
-          Always allow on this site
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_UPDATE_PERMISSIONS_TITLE" desc="Title of the bubble to tell users that in order to change site permissions, they'll need to refresh the page.">
+          Reload the page to apply your changes
         </message>
       </if>
 
@@ -4454,8 +4533,21 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_PLATFORMKEYS" desc="Permission string for enterprise platform keys permission.">
           Perform security-related tasks for your organization, such as managing certificates and keys stored on the device
         </message>
+        <if expr="is_win">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE_ENABLED_WIN" desc="Permission string for enterprise private reporting permission on Windows.">
+            Read information about your browser, OS, device, installed software, registry values and files
+          </message>
+        </if>
+        <if expr="is_macosx or is_linux">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE_ENABLED_LINUX_AND_MACOS" desc="Permission string for enterprise private reporting permission on Linux and MacOS.">
+            Read information about your browser, OS, device, installed software and files
+          </message>
+        </if>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
           Read information about your browser, OS, and device
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REMOTE_APPS" desc="Permission string for access to the Remote Apps Enterprise API.">
+          Add remote apps to the ChromeOS launcher
         </message>
         <if expr="reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
@@ -5392,8 +5484,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPONENTS_EVT_STATUS_UPDATED" desc="Service Status">
         Component updated
       </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_NOTUPDATED" desc="Service Status">
-        Component not updated
+      <message name="IDS_COMPONENTS_EVT_STATUS_ALREADY_UP_TO_DATE" desc="Service Status">
+        Component already up to date
       </message>
       <message name="IDS_COMPONENTS_EVT_STATUS_UPDATE_ERROR" desc="Service Status">
         Update error
@@ -6304,6 +6396,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <ph name="BREAK">&lt;br&gt;</ph>
         You can manage settings from the card menu or see more options in Customize Brave.
       </message>
+      <message name="IDS_NTP_MODULES_RECIPE_EXTENDED_INFO" desc="Text shown in the body of the info dialog of the recipe module for Recipes V1.1.">
+        You’re seeing recipes based on your recent Search activity for recipes.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
       <message name="IDS_NTP_MODULES_RECIPE_TASKS_SENTENCE" desc="Name of the recipe tasks module in sentence case shown in various UIs.">
         Recipe ideas
       </message>
@@ -6550,6 +6648,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_OUT_TOAST" desc="Opt out toast for Modular NTP Desktop v1 First Run Experience.">
        You won't see cards on this page again
       </message>
+      <message name="IDS_NTP_MODULES_FEED_TITLE" desc="Title shown in the header of the Following feed NTP module on the new tab page showing updates from sites followed by the user.">
+        Following
+      </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -6665,11 +6766,26 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_TITLE" desc="Title of the Side Panel">
         Side Panel
       </message>
+      <message name="IDS_SIDE_PANEL_COMBO_BOX_GOOGLE_LENS_LABEL" desc="The name of the Google Lens in the side panel combo box">
+        Google Lens
+      </message>
 
       <!-- Read Anything strings -->
       <!-- TODO(crbug.com/1266555): Add final strings and make them translateable. -->
       <message name="IDS_READ_ANYTHING_TITLE" desc="Title of the Read Anything feature, which gives users an accessible reading experience." translateable="false">
         Read anything
+      </message>
+      <message name="IDS_READ_ANYTHING_TOOLBAR_LABEL" desc="Accessibility label for the text formatting toolbar of the Read Anything feature." translateable="false">
+        Text formatting
+      </message>
+      <message name="IDS_READ_ANYTHING_FONT_NAME_COMBOBOX_LABEL" desc="Accessibility label for the font name combobox of the Read Anything feature." translateable="false">
+        Font
+      </message>
+      <message name="IDS_READ_ANYTHING_DECREASE_FONT_SIZE_BUTTON_LABEL" desc="Accessibility label for the decrease font size button of the Read Anything feature." translateable="false">
+        Decrease font-size
+      </message>
+      <message name="IDS_READ_ANYTHING_INCREASE_FONT_SIZE_BUTTON_LABEL" desc="Accessibility label for the increase font size button of the Read Anything feature." translateable="false">
+        Increase font-size
       </message>
 
       <!-- User note strings -->
@@ -6794,7 +6910,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Open with
         </message>
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_REMEMBER_SELECTION" desc="Message contained in a checkbox that must be marked in order for the intent picker to not be shown again for a similar URL.">
-          Remember my choice
+          Remember this choice
         </message>
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_OPEN" desc="Message contained in a button to continue the navigation in an app selected by the user.">
           Open
@@ -6808,9 +6924,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_CHIP_OPEN_IN_APP" desc="The label of a button or dialog to open the current webpage in an installed app.">
           Open in app
         </message>
-        <message name="IDS_INTENT_CHIP_IPH" desc="The text for the In-Product Help bubble for the Intent Chip.">
-          Open websites in apps installed on your device
-        </message>
 
         <if expr="chromeos_ash or chromeos_lacros">
           <then>
@@ -6823,10 +6936,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
             <message name="IDS_INTENT_PICKER_SELECT_AN_APP_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
               Select an app on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to open this link
             </message>
+            <message name="IDS_INTENT_CHIP_IPH_CHROME_OS" desc="The text for the In-Product Help bubble for the Intent Chip on ChromeOS devices.">
+              Open websites in apps installed on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
+            </message>
           </then>
           <else>
             <message name="IDS_INTENT_PICKER_SELECT_AN_APP_GENERIC_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
               Select an app on your device to open this link
+            </message>
+            <message name="IDS_INTENT_CHIP_IPH_GENERIC" desc="The text for the In-Product Help bubble for the Intent Chip.">
+              Open websites in apps installed on your device
             </message>
           </else>
         </if>
@@ -6847,6 +6966,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_FULLSCREEN" desc="The accessible name of the fullscreen button in the new merged menu">
         Full screen
+      </message>
+      <message name="IDS_ACCNAME_EXIT_FULLSCREEN" desc="The accessible name of the exit fullscreen button in the new merged menu">
+        Exit full screen
       </message>
       <message name="IDS_ACCNAME_HOME" desc="The accessible name for the home button">
         Home
@@ -6931,6 +7053,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX" desc="The accessible name for the extension's site access combobox in the extensions menu.">
         Site Access Option
+      </message>
+      <message name="IDS_ACCNAME_WEB_APP_DETAILED_INSTALL_DIALOG_LEADING_SCROLL_BUTTON" desc="The accessible name for the web app detailed install dialog scroll left button.">
+        Scroll backward
+      </message>
+      <message name="IDS_ACCNAME_WEB_APP_DETAILED_INSTALL_DIALOG_TRAILING_SCROLL_BUTTON" desc="The accessible name for the web app detailed install dialog scroll right button.">
+        Scroll forward
       </message>
 
       <!-- Clipboard permission -->
@@ -7289,9 +7417,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_PASSWORD_MANAGER_TOOLTIP_MOVE" desc="Text for the 'Manage Passwords' icon's 'move password to account' state">
           Move your password
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_IMPORT_BUTTON" desc="The label of the button for importing passwords. The button appears next to the list of saved passwords in Brave's settings.">
-          Import
         </message>
         <message name="IDS_PASSWORD_MANAGER_IMPORT_DIALOG_TITLE" desc="The title of the file selection dialog for importing passwords">
           Import Passwords To Brave
@@ -8078,6 +8203,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_TAB_SEARCH_EXPAND_RECENTLY_CLOSED_ITEMS" desc="The label for the button that toggles showing the recently closed items list section.">
         Toggle Recently Closed Items
       </message>
+      <message name="IDS_TAB_SEARCH_EXPAND_RECENTLY_CLOSED" desc="The tooltip for the RECENTLY CLOSED button when it's collapsed">
+        Expand recently closed
+      </message>
+      <message name="IDS_TAB_SEARCH_COLLAPSE_RECENTLY_CLOSED" desc="The tooltip for the RECENTLY CLOSED button when it's expanded">
+        Collapse recently closed
+      </message>
 
       <!-- Strings for Window Titles in Menus -->
       <if expr="not use_titlecase">
@@ -8542,8 +8673,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
        <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES_LINK" desc="Text with a link to a page where the user can manage the devices they can share a tab to.">
         <ph name="BEGIN_LINK">$1</ph>Your devices<ph name="END_LINK">$2</ph> · <ph name="EMAIL">$3<ex>foo@gmail.com</ex></ph>
       </message>
-      <message name="IDS_SEND_TAB_TO_SELF_PROMO_LABEL" desc="Text in UI promoting send tab to self. Signed out users see this text and a sign-in button. Signed in users with no valid target device see just the text.">
-        You can send tabs between devices that are signed in with the same Brave sync chain
+      <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_LABEL" desc="Text when a signed out user attempts to use send-tab-to-self, then sees a sign-in promo.">
+        To send this tab to another device, sign in to Brave on both devices
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_LABEL" desc="Text shown when a user with no available target devices attempts to use send-tab-to-self.">
+        To send this tab to another device, sign in to Brave there
       </message>
 
       <!-- Share via QR Code strings -->
@@ -9267,9 +9401,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SYNC_CONFIRMATION_TITLE_LACROS_NON_FORCED" desc="Title of the sync confirmation dialog/screen on lacros when sync is not forced.">
           Turn on Brave browser sync?
         </message>
-        <message name="IDS_SYNC_CONFIRMATION_TITLE_LACROS" desc="Title of the sync confirmation dialog/screen on lacros.">
-          Brave browser sync is on
-        </message>
         <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_TITLE_LACROS" desc="Text in the information about sync on the sync confirmation dialog/screen on lacros.">
           Your bookmarks, passwords, history, and more are synced on all your devices
         </message>
@@ -9325,6 +9456,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE_V2" desc="Title of the web signin interception bubble. 'Separate' is an action verb. The prompt is shown to let the user choose to keep the browsing activity for a new account in the same profile as an existing one or to move it to a new profile.">
           Separate your browsing?
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_MANAGED_DISCLAIMER" desc="Enterprise disclaimer for a managed account in the signin interception bubble.">
+          This new profile will be managed by your organization. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>https://help.google.com/articleLink</ex></ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_MANAGED_BY_DISCLAIMER" desc="Enterprise disclaimer for a managed account in the signin interception bubble, with the manager domain name.">
+          This new profile will be managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>. <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>https://help.google.com/articleLink</ex></ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
       </if>
 
@@ -9848,6 +9985,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_SOURCE" desc="Text to show as the title in the advanced source language view for TAB UI">
             Page language to translate
           </message>
+          <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_TRANSLATE_FULL_PAGE" desc="Text to show for the partial translate bubble button to start a full page translation">
+            Translate full page
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_BUTTON" desc="In Title Case: Text to show for the translate bubble button to jump to the advanced panel.">
@@ -9903,6 +10043,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_SOURCE" desc="In Title Case: Text to show as the title in the advanced source language view for TAB UI">
             Page Language to Translate
+          </message>
+          <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_TRANSLATE_FULL_PAGE" desc="Text to show for the partial translate bubble button to start a full page translation">
+            Translate Full Page
           </message>
         </if>
         <message name="IDS_TRANSLATE_BUBBLE_RESET" desc="Text to show for the language combobox to revert to its original state in the advanced view under TAB UI">
@@ -9978,6 +10121,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_ABUSIVE_MESSAGE" desc="Description for the expanded infobar that informs the user that notifications are automatically blocked because the site is known to employ dark patterns to trick users into accepting the permission.">
           This site may be trying to trick you into allowing intrusive notifications.
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_DISRUPTIVE_MESSAGE" desc="Description for the expanded infobar that informs the user that loud notification prompts are  blocked because the site may engage in disruptive notification practices.">
+          Notifications from this site may be disruptive
         </message>
       </if>
 
@@ -11596,18 +11742,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Framebust / Blocked Redirection intervention message -->
-    <if expr="not is_android">
-      <!-- Android strings are declared in android_chrome_strings.grd. -->
-      <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
-        Redirect blocked:
-      </message>
-      <message name="IDS_REDIRECT_BLOCKED_TITLE" desc="The short message stating that a redirect (noun) was blocked on this page. Same as IDS_REDIRECT_BLOCKED_SHORT_MESSAGE but without the period.">
-         Redirect blocked
-      </message>
-      <message name="IDS_REDIRECT_BLOCKED_TOOLTIP" desc="Tooltip text that appears when the user hovers over the &quot;Redirect blocked&quot; icon in the address bar. It means that a redirect (noun) was blocked by Brave on this page.">
-         Redirect blocked on this page.
-      </message>
-    </if>
+    <!-- Android strings are declared in android_chrome_strings.grd. -->
+    <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
+      Redirect blocked:
+    </message>
+    <message name="IDS_REDIRECT_BLOCKED_TITLE" desc="The short message stating that a redirect (noun) was blocked on this page. Same as IDS_REDIRECT_BLOCKED_SHORT_MESSAGE but without the period.">
+        Redirect blocked
+    </message>
+    <message name="IDS_REDIRECT_BLOCKED_TOOLTIP" desc="Tooltip text that appears when the user hovers over the &quot;Redirect blocked&quot; icon in the address bar. It means that a redirect (noun) was blocked by Brave on this page.">
+        Redirect blocked on this page.
+    </message>
+    <message name="IDS_ALWAYS_ALLOW_REDIRECTS" desc="The message button text allowing a user to always allow redirects (noun) after they were blocked on this page.">
+      Always allow
+    </message>
+    <message name="IDS_OPEN_REDIRECT" desc="Dropdown menu button that allows a user to go to the redirected page once, but continue blocking subsequent attempts on the site.">
+      Open Anyway
+    </message>
 
     <!-- Windows 10 toast strings -->
     <if expr="is_win">
@@ -11931,6 +12081,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_BLUETOOTH_POWER_ON_MANUAL_NEXT" desc="Button text. The user clicks this once they manually turned on Bluetooth, so that Brave would retry connecting to security keys over Bluetooth.">
         Try again
       </message>
+
+      <if expr="is_macosx">
+        <message name="IDS_WEBAUTHN_BLUETOOTH_PERMISSION" desc="Body text in a dialog that appears when the user has requested some function that depends on Bluetooth, but Brave doesn't have permission to use Bluetooth. The action on this dialog is a button that will open the macOS System Preferences so that the user can grant permission.">
+          Brave needs permission to use Bluetooth to connect to your device
+        </message>
+      </if>
+
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_LABEL" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a different hardware-based authentication mechanism from what they have selected previously.">
         Choose another option
       </message>
@@ -12382,6 +12539,27 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Open now
     </message>
 
+    <!-- Tailored security dialog for consented primary accounts -->
+    <message name="IDS_TAILORED_SECURITY_ENABLED_DIALOG_TITLE" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      Enhanced Safe Browsing is on
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DISABLED_DIALOG_TITLE" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      Enhanced Safe Browsing is off
+    </message>
+
+    <message name="IDS_TAILORED_SECURITY_ENABLED_DIALOG_MAIN_TEXT" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      You have Brave's strongest security against dangerous websites, downloads and extensions
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DISABLED_DIALOG_MAIN_TEXT" desc="Title shown in the tab dialog when the account tailored security setting changes for a consented primary account">
+      You're getting standard security protection. To get more protection against dangerous websites, downloads, and extensions, turn on Enhanced Safe Browsing in Brave settings.
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DISABLED_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in the tab modal dialog when the account tailored security setting is disabled for a consented primary account">
+      Got it
+    </message>
+    <message name="IDS_TAILORED_SECURITY_DIALOG_SETTINGS_BUTTON" desc="The text on the cancel button in the tab dialog when the account tailored security setting changes for a consented primary account">
+      Brave settings
+    </message>
+
     <!-- Tailored security dialog for unconsented primary accounts -->
     <message name="IDS_TAILORED_SECURITY_UNCONSENTED_MODAL_TITLE" desc="Title shown in the tab modal dialog when the account tailored security setting changes for an unconsented primary account">
       Also turn on Enhanced Safe Browsing for this Brave profile?
@@ -12780,6 +12958,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_INPUT_OVERLAY_CLOSE_MENU" desc="Accessibility name tied to the close button.">
         Close menu
       </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_INSTRUCTIONS" desc="Text presented via a toltip so the user knows how to interact and edit key-bindigs.">
+        Click on any key with your mouse, then press a keyboard key to customize
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MISSING_BINDING" desc="Text presented via a toltip so the user is aware of an incomplete key-binding.">
+        Key is missing. Press a keyboard key to customize
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_RESERVED_KEYS" desc="Text informing the user about keys not available for binding.">
+        The following keys aren’t supported: Tab, Shift, Control, Escape, Caps lock, Volume
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_FOCUSED_KEY" desc="Text informing the user on how to proceed while having a focused key.">
+        Press a keyboard key to customize
+      </message>
     </if>
 
     <!-- Privacy Sandbox Dialog strings -->
@@ -12792,8 +12982,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_HEADER_1" desc="1 of 2 subtitles on the page. We want to write for users who skim the page. That means that the page title, the sub titles, and the button label all work well together as a mini story: 1) Help us build a more private web How? 2) Limit sharing between sites 3) More control over the ads you see 4) Yes, I’ll try it">
       Limited sharing between sites
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION" desc="The body text of the bubble. * “ad spam”: spam related to web advertising">
-      Brave is exploring ways to limit ad spam, fraud, and sharing between sites. Brave also <ph name="ESTIMATE_INTERESTS_LINK">$1<ex>estimates your interests</ex></ph> that sites can use to show you ads. You can manage your interests in settings.
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION" desc="The body text of the bubble.* “Brave is finding new ways”: “finding” is meant to convey a work in progress, like “build” in the title. The features are live and functional, but still in beta. So we want a verb that’s stronger than “exploring” but weaker than “launching”. * “reduce tracking”: This used to read “reduce cross-site tracking”, but we’ve dropped “cross-site” because it makes the idea unnecessarily complicated. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “Then” is an important keyword. It suggests some amount of time later. The first step is that interests are generated. Later (minutes or weeks), a different site might request interests.">
+      Brave is finding new ways to reduce tracking and keep you even safer as you browse. Brave also <ph name="ESTIMATE_INTERESTS_LINK">$1<ex>estimates your interests</ex></ph> and enables you to manage them. Then, sites you visit can ask Brave for your interests to show you ads.
     </message>
     <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_SETTINGS_LINK" desc="The user can choose “Go to settings” to visit chrome://settings/privacySandbox. If they do, they’ll find the toggle on for Sandbox trials, which include everything they’ve read above. They can leave trials on or turn them off on this page. Choosing “Go to settings”, the user will navigate away from this page and won’t be able to return here.">
       Go to settings
@@ -12804,8 +12994,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION_ESTIMATES_INTERESTS_LINK_A11Y_NAME" desc="The accessible text read for IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION_ESTIMATES_INTERESTS_LINK. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). ">
       estimates your interests - Brave can estimate your interests
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_1" desc="* “restrict” means to lessen. We don’t want to suggest that we’re “eliminating” cross-site tracking. * “cross-site tracking”: An example: a user visits site A and then site B. Based on how third-party cookies work today, when that user later visits site C, site C can be aware that the user visited sites A and B, and can even have some sense for what they did on those sites. * “stop ad spam and fraud”:  This feature isn’t really related to restricting cross-site tracking but we combined these features in the same sentence / section for structural reasons.">
-      We’re exploring ways to restrict cross-site tracking while enabling sites to stop ad spam and fraud.
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_1" desc="The description beneath the “Limited sharing between sites” subtitle. * “exploring” conveys that this is a work in progress. * “restrict” means to lessen. We don’t want to suggest that we’re “eliminating” cross-site tracking. * “tracking”: An example: a user visits site A and then site B. Based on how third-party cookies work today, when that user later visits site C, site C can be aware that the user visited sites A and B, and can even have some sense for what they did on those sites. * “stop ad spam and fraud”:  This feature isn’t really related to restricting cross-site tracking but we combined these features in the same sentence / section for structural reasons.">
+      We’re exploring ways to restrict tracking while enabling sites to stop ad spam and fraud.
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_HEADER_2" desc="2 of 2 subtitles on the page.That means that the page title, the sub titles, and the button label all work well together as a mini story: 1) Help us build a more private web How? 2) Limit sharing between sites 3) More control over the ads you see 4) Yes, I’ll try it">
       More control over the ads you see
@@ -12840,23 +13030,26 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- Automated Password Change on Desktop strings -->
     <if expr="not is_android">
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_TITLE" translateable="false" desc="The title for the Automated Password Change on Desktop onboarding dialog. The onboarding dialog is a modal dialog that is shown if a user has not previously consented to using Assistant features.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_TITLE" desc="The title for the Automated Password Change on Desktop onboarding dialog. The onboarding dialog is a modal dialog that is shown if a user has not previously consented to using Assistant features.">
         Let Brave Assistant help you change your password
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_DESCRIPTION" translateable="false" desc="The description / sub-title of the Automated Password Change on Desktop onboarding dialog.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_DESCRIPTION" desc="The description / sub-title of the Automated Password Change on Desktop onboarding dialog.">
         Brave Assistant in Brave can complete actions across websites for you
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_CONSENT_TEXT" translateable="false" desc="The description of what kind of data Brave will send and process in order to enable Automated Password Change. This is shown at the bottom of the onboarding dialog.">
-        To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant. This information may be stored in your Brave sync chain. You can turn it off in Brave settings. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_CONSENT_TEXT" desc="The description of what kind of data Brave will send and process in order to enable Automated Password Change. This is shown at the bottom of the onboarding dialog.">
+        To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant. This information may be stored in your Brave sync chain. You can turn off Assistant in Brave settings. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_LEARN_MORE" translateable="false" desc="The text displayed on a link on the onboarding dialog that a user can click to navigate to a Brave website with detailed information on how Automated Password Change on Desktop/ Assistant works and what data is collected.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_LEARN_MORE" desc="The text displayed on a link on the onboarding dialog that a user can click to navigate to a Brave website with detailed information on how Automated Password Change on Desktop/ Assistant works and what data is collected.">
         Learn more
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_CANCEL_TEXT" translateable="false" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_CANCEL_TEXT" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
         Cancel
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_ACCEPT_TEXT" translateable="false" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_ACCEPT_TEXT" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
         I agree
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_STARTING_SCREEN_TITLE" desc="The title shown on the side panel after an Automated Password Change flow has been started. This message is shown until the first response from a script is received that resets the initial state.">
+        Opening <ph name="URL">$1<ex>example.com</ex></ph>...
       </message>
     </if>
   </messages>

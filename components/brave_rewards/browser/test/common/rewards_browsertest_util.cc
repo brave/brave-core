@@ -67,8 +67,8 @@ GURL GetUrl(
 void ActivateTabAtIndex(Browser* browser, const int32_t index) {
   DCHECK(browser);
   browser->tab_strip_model()->ActivateTabAt(
-      index,
-      TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
+      index, TabStripUserGestureDetails(
+                 TabStripUserGestureDetails::GestureType::kOther));
 }
 
 std::string BalanceDoubleToString(double amount) {

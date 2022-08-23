@@ -127,7 +127,7 @@ bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
 
 void PlaylistDownloadRequestManager::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  DCHECK(web_contents_->GetMainFrame());
+  DCHECK(web_contents_->GetPrimaryMainFrame());
 
   // This script is from
   // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/PlaylistSwizzler.js
@@ -146,22 +146,22 @@ void PlaylistDownloadRequestManager::DidFinishNavigation(
 
   // In order to hide js API from main world, use testing
   // api temporarily.
-  web_contents_->GetMainFrame()->ExecuteJavaScriptForTests(
+  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptForTests(
       kScriptToHideMediaSourceAPI, base::NullCallback());
 }
 
 void PlaylistDownloadRequestManager::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (render_frame_host != web_contents_->GetMainFrame())
+  if (render_frame_host != web_contents_->GetPrimaryMainFrame())
     return;
 
   if (in_progress_urls_count_ == 0 || callback_for_current_request_.is_null())
     return;
 
-  DCHECK(web_contents_->GetMainFrame());
+  DCHECK(web_contents_->GetPrimaryMainFrame());
 
-  web_contents_->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script_),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr()),

@@ -311,7 +311,7 @@ void ExtensionRewardsServiceObserver::OnUnblindedTokensReady(
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnUnblindedTokensReady::kEventName,
-      std::vector<base::Value>()));
+      base::Value::List()));
   event_router->BroadcastEvent(std::move(event));
 }
 

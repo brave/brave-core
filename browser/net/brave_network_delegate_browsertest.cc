@@ -335,7 +335,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                   "nested_iframe");
 
   content::RenderFrameHost* child_frame =
-      content::ChildFrameAt(web_contents->GetMainFrame(), 0);
+      content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
   NavigateRenderFrameToURL(child_frame, "iframe_cookie",
                            subdomain_first_party_cookie_url_);
 

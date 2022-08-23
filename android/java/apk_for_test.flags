@@ -448,10 +448,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator {
-    *** createViewProvider(...);
-}
-
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteCoordinator {
     *** createViewProvider(...);
 }
@@ -470,8 +466,6 @@
     *** mDropdownHeight;
     *** mPriorityOrderedSuggestionProcessors;
     public <init>(...);
-    *** getVisibleSuggestionsCount(...);
-    *** getProcessorForSuggestion(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {

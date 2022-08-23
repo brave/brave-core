@@ -46,7 +46,7 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
     confirmation_request_dto.Set("publicKey", *value);
   }
 
-  const absl::optional<base::Value> user_data =
+  absl::optional<base::Value> user_data =
       base::JSONReader::Read(confirmation.user_data);
   if (user_data && user_data->is_dict()) {
     confirmation_request_dto.Merge(std::move(user_data->GetDict()));

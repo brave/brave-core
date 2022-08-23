@@ -20,15 +20,7 @@ public class BraveSingleCategorySettings
     private static final String ADD_EXCEPTION_KEY = "add_exception";
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) { }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.close_menu_id) {
-            getSiteSettingsDelegate().closeButton();
-        }
-		return super.onOptionsItemSelected(item);
-    }
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
     public String getAddExceptionDialogMessage() {
         BrowserContextHandle browserContextHandle =

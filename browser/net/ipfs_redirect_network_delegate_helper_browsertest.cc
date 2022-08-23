@@ -88,7 +88,7 @@ IN_PROC_BROWSER_TEST_F(IpfsRedirectNetworkDelegateHelperBrowserTest,
   // Try to navigate to the url. The navigation should be canceled and the
   // NavigationHandle should have the right error code.
   EXPECT_TRUE(ui_test_utils::NavigateToURL(private_browser, ipfs_url()));
-  EXPECT_TRUE(private_wc->GetMainFrame()->IsErrorDocument());
+  EXPECT_TRUE(private_wc->GetPrimaryMainFrame()->IsErrorDocument());
   EXPECT_EQ(net::ERR_INCOGNITO_IPFS_NOT_ALLOWED, observer.net_error_code());
 }
 
@@ -108,7 +108,7 @@ IN_PROC_BROWSER_TEST_F(IpfsRedirectNetworkDelegateHelperBrowserTest,
   // Try to navigate to the url. The navigation should be canceled and the
   // NavigationHandle should have the right error code.
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
-  EXPECT_TRUE(wc->GetMainFrame()->IsErrorDocument());
+  EXPECT_TRUE(wc->GetPrimaryMainFrame()->IsErrorDocument());
   EXPECT_EQ(net::ERR_IPFS_DISABLED, observer.net_error_code());
 }
 

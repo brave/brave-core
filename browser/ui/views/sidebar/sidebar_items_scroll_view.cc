@@ -11,8 +11,8 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_drag_context.h"
@@ -22,14 +22,13 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_format_type.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_palette.h"
@@ -49,7 +48,7 @@ class SidebarItemsArrowView : public views::ImageButton {
     SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
     DCHECK(GetInstallFocusRingOnFocus());
-    views::FocusRing::Get(this)->SetColor(gfx::kBraveBlurple300);
+    views::FocusRing::Get(this)->SetColorId(gfx::kBraveBlurple300);
     SetAccessibleName(accessible_name);
   }
 
@@ -61,16 +60,15 @@ class SidebarItemsArrowView : public views::ImageButton {
   gfx::Size CalculatePreferredSize() const override { return {42, 24}; }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
-    if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-      const SkColor background_color =
-          theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR);
+    if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+      const SkColor background_color = color_provider->GetColor(kColorToolbar);
       gfx::Rect bounds = GetContentsBounds();
       canvas->FillRect(bounds, background_color);
 
       // Draw additional rounded rect over background for hover effect.
       if (GetState() == STATE_HOVERED) {
-        const SkColor hovered_bg_color = theme_provider->GetColor(
-            BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED);
+        const SkColor hovered_bg_color =
+            color_provider->GetColor(kColorSidebarArrowBackgroundHovered);
         cc::PaintFlags flags;
         flags.setColor(hovered_bg_color);
         flags.setStyle(cc::PaintFlags::kFill_Style);
@@ -239,11 +237,11 @@ void SidebarItemsScrollView::OnFaviconUpdatedForItem(
 }
 
 void SidebarItemsScrollView::UpdateArrowViewsTheme() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    const SkColor arrow_normal = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_ARROW_NORMAL);
-    const SkColor arrow_disabled = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_ARROW_DISABLED);
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    const SkColor arrow_normal =
+        color_provider->GetColor(kColorSidebarArrowNormal);
+    const SkColor arrow_disabled =
+        color_provider->GetColor(kColorSidebarArrowDisabled);
 
     up_arrow_->SetImage(
         views::Button::STATE_NORMAL,

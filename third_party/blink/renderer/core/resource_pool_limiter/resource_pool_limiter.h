@@ -9,11 +9,11 @@
 #include <memory>
 #include <utility>
 
+#include "base/synchronization/lock.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
 
 namespace blink {
 
@@ -51,8 +51,8 @@ class CORE_EXPORT ResourcePoolLimiter {
 
   void DropResourceInUse(const ResourceInUseTracker* resource_in_use_tracker);
 
-  Mutex resources_in_use_lock_;
-  HashMap<String, int> resources_in_use_;
+  base::Lock resources_in_use_lock_;
+  HashMap<String, int> resources_in_use_ GUARDED_BY(resources_in_use_lock_);
 };
 
 }  // namespace blink

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc b/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc
-index c8d6031565de2ba8ea4a3df3fc1ac005c6c7cdab..b7a64a3c8988901fb1a9a79c6937f1482a3038ec 100644
+index ae765e365d1264a66b3d3aeb9d53756d7069f424..d175a574c90a398e5ee12039ff3b53891825e6d3 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc
-@@ -42,7 +42,7 @@ ToolbarActionsModelFactory::~ToolbarActionsModelFactory() {}
+@@ -44,7 +44,7 @@ ToolbarActionsModelFactory::~ToolbarActionsModelFactory() {}
  
  KeyedService* ToolbarActionsModelFactory::BuildServiceInstanceFor(
      content::BrowserContext* context) const {

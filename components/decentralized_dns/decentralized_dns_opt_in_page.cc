@@ -66,7 +66,7 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 }
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
-    base::Value* load_time_data) {
+    base::Value::Dict& load_time_data) {
   const std::vector<std::u16string> message_params = {
       u"<a "
       u"href='https://consensys.net/terms-of-use/' "
@@ -81,41 +81,36 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
   };
 
   if (IsUnstoppableDomainsTLD(request_url_)) {
-    load_time_data->SetStringKey("tabTitle",
-                                 brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
-    load_time_data->SetStringKey("heading",
-                                 brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
+    load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
+    load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
+                                      IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
 
-    load_time_data->SetStringKey(
+    load_time_data.Set(
         "primaryParagraph",
         base::ReplaceStringPlaceholders(
             brave_l10n::GetLocalizedResourceUTF16String(
                 IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH),
             message_params, nullptr));
   } else {
-    load_time_data->SetStringKey(
-        "tabTitle",
-        brave_l10n::GetLocalizedResourceUTF16String(IDS_ENS_OPT_IN_TITLE));
-    load_time_data->SetStringKey(
-        "heading",
-        brave_l10n::GetLocalizedResourceUTF16String(IDS_ENS_OPT_IN_HEADING));
-    load_time_data->SetStringKey(
-        "primaryParagraph", base::ReplaceStringPlaceholders(
-                                brave_l10n::GetLocalizedResourceUTF16String(
-                                    IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
-                                message_params, nullptr));
+    load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_ENS_OPT_IN_TITLE));
+    load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
+                                      IDS_ENS_OPT_IN_HEADING));
+    load_time_data.Set("primaryParagraph",
+                       base::ReplaceStringPlaceholders(
+                           brave_l10n::GetLocalizedResourceUTF16String(
+                               IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
+                           message_params, nullptr));
   }
 
-  load_time_data->SetStringKey(
-      "primaryButtonText", brave_l10n::GetLocalizedResourceUTF16String(
-                               IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON));
-  load_time_data->SetStringKey(
-      "dontProceedButtonText",
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON));
-  load_time_data->SetStringKey("finalParagraph", std::u16string());
+  load_time_data.Set("primaryButtonText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON));
+  load_time_data.Set("dontProceedButtonText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON));
+  load_time_data.Set("finalParagraph", std::u16string());
 }
 
 int DecentralizedDnsOptInPage::GetHTMLTemplateId() {

@@ -55,11 +55,9 @@ bool FilecoinKeyring::DecodeImportPayload(
   if (!base::HexStringToString(payload_hex, &key_payload)) {
     return false;
   }
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          key_payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                           base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      key_payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
     VLOG(1) << "Invalid payload, could not parse JSON, JSON is: "
             << key_payload;

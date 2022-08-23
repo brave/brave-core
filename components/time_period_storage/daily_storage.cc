@@ -61,10 +61,7 @@ void DailyStorage::FilterToDay() {
 
 void DailyStorage::Load() {
   DCHECK(daily_values_.empty());
-  // TODO(cdesouza): From cr105, this function return a reference rather than a
-  // pointer. Leaving a dereference here for now, but once this breaks on 105,
-  // please remove this comment and the dereferencing bellow.
-  const base::Value::List& list = *prefs_->GetValueList(pref_name_);
+  const base::Value::List& list = prefs_->GetValueList(pref_name_);
   base::Time min = clock_->Now() - base::Days(1);
   for (const auto& it : list) {
     DCHECK(it.is_dict());
