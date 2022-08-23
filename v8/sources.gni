@@ -6,12 +6,10 @@
 import("//brave/components/brave_page_graph/common/buildflags.gni")
 
 brave_v8_headers_sources = []
-brave_v8_headers_public_deps = []
+brave_v8_headers_public_deps =
+    [ "//brave/components/brave_page_graph/common:buildflags" ]
 
 if (enable_brave_page_graph) {
   brave_v8_headers_sources +=
       [ "//brave/v8/include/v8-isolate-page-graph-utils.h" ]
-
-  brave_v8_headers_public_deps +=
-      [ "//brave/components/brave_page_graph/common:buildflags" ]
 }
