@@ -131,7 +131,8 @@ export const Container = () => {
     isWalletCreated && !isWalletLocked &&
     (
       walletLocation.includes(WalletRoutes.Portfolio) ||
-      walletLocation.includes(WalletRoutes.Accounts)
+      walletLocation.includes(WalletRoutes.Accounts) ||
+      walletLocation.includes(WalletRoutes.Market)
     )
 
   // effects
