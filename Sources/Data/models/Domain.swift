@@ -5,6 +5,7 @@ import CoreData
 import Foundation
 import BraveShared
 import Shared
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -31,12 +32,14 @@ public final class Domain: NSManagedObject, CRUD {
 
   @NSManaged public var wallet_permittedAccounts: String?
   @NSManaged public var zoom_level: NSNumber?
+  @NSManaged public var wallet_solanaPermittedAcccounts: String?
 
   private var urlComponents: URLComponents? {
     return URLComponents(string: url ?? "")
   }
   
   private static let containsEthereumPermissionsPredicate = NSPredicate(format: "wallet_permittedAccounts != nil && wallet_permittedAccounts != ''")
+  private static let containsSolanaPermissionsPredicate = NSPredicate(format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''")
 
   /// A domain can be created in many places,
   /// different save strategies are used depending on its relationship(eg. attached to a Bookmark) or browsing mode.
@@ -154,44 +157,94 @@ public final class Domain: NSManagedObject, CRUD {
 
   // MARK: Wallet
   
-  public class func setEthereumPermissions(forUrl url: URL, account: String, grant: Bool) {
-    setEthereumPermissions(forUrl: url, accounts: [account], grant: grant)
-  }
-  
-  public class func setEthereumPermissions(forUrl url: URL, accounts: [String], grant: Bool) {
+  public class func setWalletPermissions(
+    forUrl url: URL,
+    coin: BraveWallet.CoinType,
+    accounts: [String],
+    grant: Bool
+  ) {
     // no dapps support in private browsing mode
     let _context: WriteContext = .new(inMemory: false)
-    setEthereumPermissions(forUrl: url, accounts: accounts, grant: grant, context: _context)
+    setWalletPermissions(
+      forUrl: url,
+      coin: coin,
+      accounts: accounts,
+      grant: grant,
+      context: _context
+    )
   }
   
-  public class func ethereumPermissions(forUrl url: URL) -> [String]? {
+  public class func walletPermissions(forUrl url: URL, coin: BraveWallet.CoinType) -> [String]? {
     let domain = getOrCreateInternal(url, saveStrategy: .persistentStore)
-    return domain.wallet_permittedAccounts?.split(separator: ",").map(String.init)
+    switch coin {
+    case .eth:
+      return domain.wallet_permittedAccounts?.split(separator: ",").map(String.init)
+    case .sol:
+      return domain.wallet_solanaPermittedAcccounts?.split(separator: ",").map(String.init)
+    case .fil:
+      return nil
+    @unknown default:
+      return nil
+    }
   }
   
-  public func ethereumPermissions(for account: String) -> Bool {
-    if let permittedAccount = wallet_permittedAccounts {
-      return permittedAccount.components(separatedBy: ",").contains(account)
+  public func walletPermissions(for coin: BraveWallet.CoinType, account: String) -> Bool {
+    switch coin {
+    case .eth:
+      if let permittedAccount = wallet_permittedAccounts {
+        return permittedAccount.components(separatedBy: ",").contains(account)
+      }
+    case .sol:
+      if let permittedAccount = wallet_solanaPermittedAcccounts {
+        return permittedAccount.components(separatedBy: ",").contains(account)
+      }
+    case .fil:
+      break
+    @unknown default:
+      break
     }
     return false
   }
-
-  public class func allDomainsWithEthereumPermissions(context: NSManagedObjectContext? = nil) -> [Domain] {
-    let predicate = Domain.containsEthereumPermissionsPredicate
-    return all(where: predicate, context: context ?? DataController.viewContext) ?? []
+  
+  public class func allDomainsWithWalletPermissions(for coin: BraveWallet.CoinType, context: NSManagedObjectContext? = nil) -> [Domain] {
+    switch coin {
+    case .eth:
+      let predicate = Domain.containsEthereumPermissionsPredicate
+      return all(where: predicate, context: context ?? DataController.viewContext) ?? []
+    case .sol:
+      let predicate = Domain.containsSolanaPermissionsPredicate
+      return all(where: predicate, context: context ?? DataController.viewContext) ?? []
+    case .fil:
+      break
+    @unknown default:
+      break
+    }
+    return []
   }
   
-  public static func clearAllEthereumPermissions(_ completionOnMain: (() -> Void)? = nil) {
+  public static func clearAllWalletPermissions(
+    for coin: BraveWallet.CoinType,
+    _ completionOnMain: (() -> Void)? = nil
+  ) {
     DataController.perform { context in
       let fetchRequest = NSFetchRequest<Domain>()
       fetchRequest.entity = Domain.entity(context)
       do {
         let results = try context.fetch(fetchRequest)
         results.forEach {
-          $0.wallet_permittedAccounts = nil
+          switch coin {
+          case .eth:
+            $0.wallet_permittedAccounts = nil
+          case .sol:
+            $0.wallet_solanaPermittedAcccounts = nil
+          case .fil:
+            break
+          @unknown default:
+            break
+          }
         }
       } catch {
-        log.error("Clear ethereum permissions error: \(error)")
+        log.error("Clear coin(\(coin)) accounts permissions error: \(error)")
       }
 
       DispatchQueue.main.async {
@@ -200,9 +253,9 @@ public final class Domain: NSManagedObject, CRUD {
     }
   }
 
-  @MainActor public static func clearAllEthereumPermissions() async {
+  @MainActor public static func clearAllWalletPermissions(for coin: BraveWallet.CoinType) async {
     await withCheckedContinuation { continuation in
-      Domain.clearAllEthereumPermissions {
+      Domain.clearAllWalletPermissions(for: coin) {
         continuation.resume()
       }
     }
@@ -359,38 +412,80 @@ extension Domain {
 
   // MARK: Wallet
   
-  class func setEthereumPermissions(forUrl url: URL, accounts: [String], grant: Bool, context: WriteContext = .new(inMemory: false)) {
+  class func setWalletPermissions(
+    forUrl url: URL,
+    coin: BraveWallet.CoinType,
+    accounts: [String],
+    grant: Bool,
+    context: WriteContext = .new(inMemory: false)
+  ) {
     DataController.perform(context: context) { context in
       for account in accounts {
         // Not saving here, save happens in `perform` method.
         let domain = Domain.getOrCreateInternal(
           url, context: context,
           saveStrategy: .persistentStore)
-        domain.setWalletEthDappPermission(account: account, grant: grant, context: context)
+        domain.setWalletDappPermission(
+          for: coin,
+          account: account,
+          grant: grant,
+          context: context
+        )
       }
     }
   }
   
-  private func setWalletEthDappPermission(
+  private func setWalletDappPermission(
+    for coin: BraveWallet.CoinType,
     account: String,
     grant: Bool,
     context: NSManagedObjectContext
   ) {
     if grant {
-      if let permittedAccounts = wallet_permittedAccounts {
-        // make sure stored `wallet_permittedAccounts` does not contain this `account`
-        // make sure this `account` is 42-char long and does not contain any comma
-        if !permittedAccounts.contains(account), account.count == 42, !account.contains(",") {
-          wallet_permittedAccounts = [permittedAccounts, account].joined(separator: ",")
+      switch coin {
+      case .eth:
+        if let permittedAccounts = wallet_permittedAccounts {
+          // make sure stored `wallet_permittedAccounts` does not contain this `account`
+          // make sure this `account` does not contain any comma
+          if !permittedAccounts.contains(account), !account.contains(",") {
+            wallet_permittedAccounts = [permittedAccounts, account].joined(separator: ",")
+          }
+        } else {
+          wallet_permittedAccounts = account
         }
-      } else {
-        wallet_permittedAccounts = account
+      case .sol:
+        if let permittedAccounts = wallet_solanaPermittedAcccounts {
+          // make sure stored `wallet_solanaPermittedAcccounts` does not contain this `account`
+          // make sure this `account` does not contain any comma
+          if !permittedAccounts.contains(account), !account.contains(",") {
+            wallet_solanaPermittedAcccounts = [permittedAccounts, account].joined(separator: ",")
+          }
+        } else {
+          wallet_solanaPermittedAcccounts = account
+        }
+      case .fil:
+        break
+      @unknown default:
+        break
       }
     } else {
-      if var accounts = wallet_permittedAccounts?.components(separatedBy: ","),
-        let index = accounts.firstIndex(of: account) {
-        accounts.remove(at: index)
-        wallet_permittedAccounts = accounts.joined(separator: ",")
+      switch coin {
+      case .eth:
+        if var accounts = wallet_permittedAccounts?.components(separatedBy: ","),
+           let index = accounts.firstIndex(of: account) {
+          accounts.remove(at: index)
+          wallet_permittedAccounts = accounts.joined(separator: ",")
+        }
+      case .sol:
+        if var accounts = wallet_solanaPermittedAcccounts?.components(separatedBy: ","),
+           let index = accounts.firstIndex(of: account) {
+          accounts.remove(at: index)
+          wallet_solanaPermittedAcccounts = accounts.joined(separator: ",")
+        }
+      case .fil:
+        break
+      @unknown default:
+        break
       }
     }
   }

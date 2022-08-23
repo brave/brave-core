@@ -20,8 +20,13 @@ class DomainTests: CoreDataTestCase {
 
   let compound = URL(string: "https://compound.finance")!
   let polygon = URL(string: "https://wallet.polygon.technology")!
-  let walletAccount = "0x4D60d71F411AB671f614eD0ec5B71bEedB46287d"
-  let walletAccount2 = "0x4d60d71f411ab671f614ed0ec5b71beedb46287d"
+  let walletEthAccount = "0x4D60d71F411AB671f614eD0ec5B71bEedB46287d"
+  let walletEthAccount2 = "0x4d60d71f411ab671f614ed0ec5b71beedb46287d"
+  
+  let magicEden = URL(string: "https://magiceden.io")!
+  let raydium = URL(string: "https://raydium.io")!
+  let walletSolAccount = "8uMdzdJ6Mtsh2vGhJJGCfwo8PZrnZZ3qbT85wbo1o4xt"
+  let walletSolAccount2 = "8umdzdJ6Mtsh2vFhJJGCfwo8PZrnZZ3ceT85wbo1o4dt"
 
   private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
     return NSEntityDescription.entity(forEntityName: String(describing: Domain.self), in: context)!
@@ -121,48 +126,77 @@ class DomainTests: CoreDataTestCase {
     XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
   }
 
-  func testWalletDappPermission() {
+  func testWalletEthDappPermission() {
     let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
     let polygonDomain = Domain.getOrCreate(forUrl: polygon, persistent: true)
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setEthereumPermissions(forUrl: compound, account: walletAccount, grant: true)
+      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount], grant: true)
     }
 
-    XCTAssertTrue(compondDomain.ethereumPermissions(for: walletAccount))
-
-    backgroundSaveAndWaitForExpectation {
-      Domain.setEthereumPermissions(forUrl: compound, account: walletAccount2, grant: true)
-    }
-    XCTAssertTrue(compondDomain.ethereumPermissions(for: walletAccount2))
+    XCTAssertTrue(compondDomain.walletPermissions(for: .eth, account: walletEthAccount))
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setEthereumPermissions(forUrl: compound, account: walletAccount, grant: false)
+      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount2], grant: true)
     }
-    XCTAssertFalse(compondDomain.ethereumPermissions(for: walletAccount))
+    XCTAssertTrue(compondDomain.walletPermissions(for: .eth, account: walletEthAccount2))
+
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount], grant: false)
+    }
+    XCTAssertFalse(compondDomain.walletPermissions(for: .eth, account: walletEthAccount))
 
     XCTAssertNil(polygonDomain.wallet_permittedAccounts)
   }
   
-  func testClearAllEthereumPermissions() {
+  func testWalletSolanaDappPermission() {
+    let magicEdenDomain = Domain.getOrCreate(forUrl: magicEden, persistent: true)
+    let raydiumDomain = Domain.getOrCreate(forUrl: raydium, persistent: true)
+    
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(forUrl: magicEden, coin: .sol, accounts: [walletSolAccount], grant: true)
+    }
+    
+    XCTAssertTrue(magicEdenDomain.walletPermissions(for: .sol, account: walletSolAccount))
+    XCTAssertFalse(magicEdenDomain.walletPermissions(for: .eth, account: walletSolAccount))
+    
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(forUrl: magicEden, coin: .sol, accounts: [walletSolAccount2], grant: true)
+    }
+    XCTAssertTrue(magicEdenDomain.walletPermissions(for: .sol, account: walletSolAccount2))
+    XCTAssertFalse(magicEdenDomain.walletPermissions(for: .eth, account: walletSolAccount2))
+    
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(forUrl: magicEden, coin: .sol, accounts: [walletSolAccount2], grant: false)
+    }
+    XCTAssertFalse(magicEdenDomain.walletPermissions(for: .sol, account: walletSolAccount2))
+    
+    XCTAssertNil(raydiumDomain.wallet_solanaPermittedAcccounts)
+  }
+  
+  func testClearAllWalletPermissions() {
     let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
-    let polygonDomain = Domain.getOrCreate(forUrl: polygon, persistent: true)
+    let raydiumDomain = Domain.getOrCreate(forUrl: raydium, persistent: true)
     
     // add permissions for `compound` Domain
     backgroundSaveAndWaitForExpectation {
-      Domain.setEthereumPermissions(forUrl: compound, account: walletAccount, grant: true)
+      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount], grant: true)
     }
-    XCTAssertTrue(compondDomain.ethereumPermissions(for: walletAccount))
-    // add permissions for `polygon` Domain
+    XCTAssertTrue(compondDomain.walletPermissions(for: .eth, account: walletEthAccount))
+    // add permissions for `raydium` Domain
     backgroundSaveAndWaitForExpectation {
-      Domain.setEthereumPermissions(forUrl: polygon, account: walletAccount, grant: true)
+      Domain.setWalletPermissions(forUrl: raydium, coin: .sol, accounts: [walletSolAccount], grant: true)
     }
-    XCTAssertTrue(polygonDomain.ethereumPermissions(for: walletAccount))
-    // Remove all permissions
+    XCTAssertTrue(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
+    // Remove all eth permissions
     backgroundSaveAndWaitForExpectation {
-      Domain.clearAllEthereumPermissions()
+      Domain.clearAllWalletPermissions(for: .eth)
     }
-    XCTAssertFalse(compondDomain.ethereumPermissions(for: walletAccount))
-    XCTAssertFalse(polygonDomain.ethereumPermissions(for: walletAccount))
+    XCTAssertFalse(compondDomain.walletPermissions(for: .eth, account: walletEthAccount))
+    // Remove all sol permissions
+    backgroundSaveAndWaitForExpectation {
+      Domain.clearAllWalletPermissions(for: .sol)
+    }
+    XCTAssertFalse(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
   }
 }

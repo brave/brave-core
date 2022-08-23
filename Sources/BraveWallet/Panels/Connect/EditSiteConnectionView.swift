@@ -69,13 +69,13 @@ struct EditSiteConnectionView: View {
       switch action {
       case .connect:
         if let url = origin.url {
-          Domain.setEthereumPermissions(forUrl: url, account: account.address, grant: true)
+          Domain.setWalletPermissions(forUrl: url, coin: .eth, accounts: [account.address], grant: true)
         }
         permittedAccounts.append(account.address)
         keyringStore.selectedAccount = account
       case .disconnect:
         if let url = origin.url {
-          Domain.setEthereumPermissions(forUrl: url, account: account.address, grant: false)
+          Domain.setWalletPermissions(forUrl: url, coin: .eth, accounts: [account.address], grant: false)
         }
         permittedAccounts.removeAll(where: { $0 == account.address })
         
@@ -173,7 +173,7 @@ struct EditSiteConnectionView: View {
         }
       }
       .onAppear {
-        if let url = origin.url, let accounts = Domain.ethereumPermissions(forUrl: url) {
+        if let url = origin.url, let accounts = Domain.walletPermissions(forUrl: url, coin: .eth) {
           permittedAccounts = accounts
         }
       }

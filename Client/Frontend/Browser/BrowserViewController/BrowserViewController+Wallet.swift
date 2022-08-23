@@ -175,9 +175,9 @@ extension Tab: BraveWalletProviderDelegate {
       let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
       
       // Check if eth permissions already exist for this origin and if they don't, ensure the user allows
-      // ethereum provider access
-      let ethPermissions = origin.url.map { Domain.ethereumPermissions(forUrl: $0) ?? [] } ?? []
-      if ethPermissions.isEmpty, !Preferences.Wallet.allowDappProviderAccountRequests.value {
+      // ethereum/solana provider access
+      let walletPermissions = origin.url.map { Domain.walletPermissions(forUrl: $0, coin: coinType) ?? [] } ?? []
+      if walletPermissions.isEmpty, !Preferences.Wallet.allowDappProviderAccountRequests.value {
         completion(.internal, nil)
         return
       }
@@ -242,16 +242,7 @@ extension Tab: BraveWalletProviderDelegate {
       return (false, [])
     }
     let selectedAccount = await keyringService.selectedAccount(type)
-    let permissions: [String]? = {
-      switch type {
-      case .eth:
-        return Domain.ethereumPermissions(forUrl: originURL)
-      case .sol, .fil:
-        return nil
-      @unknown default:
-        return nil
-      }
-    }()
+    let permissions = Domain.walletPermissions(forUrl: originURL, coin: type)
     return (
       true,
       filterAccounts(permissions ?? [], selectedAccount: selectedAccount)

@@ -241,7 +241,8 @@ public class KeyringStore: ObservableObject {
       }
       self.walletService.setSelectedCoin(.eth)
       self.rpcService.setNetwork(BraveWallet.MainnetChainId, coin: .eth, completion: { _ in })
-      Domain.clearAllEthereumPermissions()
+      Domain.clearAllWalletPermissions(for: .eth)
+      // TODO: will need to clear permission for `.sol` coin type once we support solana Dapps
       completion?(isMnemonicValid)
     }
   }

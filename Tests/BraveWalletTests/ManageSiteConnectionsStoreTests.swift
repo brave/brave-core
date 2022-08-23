@@ -25,14 +25,14 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
 
     // add permissions for `compound` Domain
     backgroundSaveAndWaitForExpectation {
-      Domain.setEthereumPermissions(forUrl: compound, accounts: [walletAccount, walletAccount2], grant: true)
+      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletAccount, walletAccount2], grant: true)
     }
-    XCTAssertTrue(compondDomain.ethereumPermissions(for: walletAccount))
+    XCTAssertTrue(compondDomain.walletPermissions(for: .eth, account: walletAccount))
     // add permissions for `polygon` Domain
     backgroundSaveAndWaitForExpectation {
-      Domain.setEthereumPermissions(forUrl: polygon, accounts: [walletAccount, walletAccount2], grant: true)
+      Domain.setWalletPermissions(forUrl: polygon, coin: .eth, accounts: [walletAccount, walletAccount2], grant: true)
     }
-    XCTAssertTrue(polygonDomain.ethereumPermissions(for: walletAccount))
+    XCTAssertTrue(polygonDomain.walletPermissions(for: .eth, account: walletAccount))
   }
   
   func testFetchSiteConnections() {
@@ -75,8 +75,8 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     XCTAssertNotEqual(store.siteConnections[0].url, siteConnectionToRemove.url)
     // verify `Domain` data is removed
     let domain = Domain.getOrCreate(forUrl: URL(string: siteConnectionToRemove.url)!, persistent: true)
-    XCTAssertFalse(domain.ethereumPermissions(for: walletAccount))
-    XCTAssertFalse(domain.ethereumPermissions(for: walletAccount2))
+    XCTAssertFalse(domain.walletPermissions(for: .eth, account: walletAccount))
+    XCTAssertFalse(domain.walletPermissions(for: .eth, account: walletAccount2))
   }
   
   /// Test `removePermissions(from:url:)` will remove the given account permissions for the given url
@@ -100,7 +100,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     
     // verify `Domain` data is updated
     let domain = Domain.getOrCreate(forUrl: URL(string: siteConnectionToRemoveAccount.url)!, persistent: true)
-    XCTAssertFalse(domain.ethereumPermissions(for: walletAccount))
+    XCTAssertFalse(domain.walletPermissions(for: .eth, account: walletAccount))
   }
   
   /// Test `removePermissions(from:url:)` will remove the `SiteConnection` from `siteConnections` when the last connected account is removed
@@ -128,6 +128,6 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     
     // verify `Domain` data is removed
     let domain = Domain.getOrCreate(forUrl: URL(string: siteConnectionToRemove.url)!, persistent: true)
-    XCTAssertFalse(domain.ethereumPermissions(for: walletAccount))
+    XCTAssertFalse(domain.walletPermissions(for: .eth, account: walletAccount))
   }
 }

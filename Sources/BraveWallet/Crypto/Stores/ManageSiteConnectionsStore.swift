@@ -36,7 +36,7 @@ class ManageSiteConnectionsStore: ObservableObject {
   
   /// Fetch all site connections with 1+ accounts connected
   func fetchSiteConnections() {
-    let domains = Domain.allDomainsWithEthereumPermissions()
+    let domains = Domain.allDomainsWithWalletPermissions(for: .eth)
     let connections = domains.map {
       SiteConnection(
         url: $0.url ?? "",
@@ -52,7 +52,7 @@ class ManageSiteConnectionsStore: ObservableObject {
   func removeAllPermissions(from siteConnectionsToRemove: [SiteConnection]) {
     siteConnectionsToRemove.forEach { siteConnection in
       guard let url = URL(string: siteConnection.url) else { return }
-      Domain.setEthereumPermissions(forUrl: url, accounts: siteConnection.connectedAddresses, grant: false)
+      Domain.setWalletPermissions(forUrl: url, coin: .eth, accounts: siteConnection.connectedAddresses, grant: false)
       if let index = self.siteConnections.firstIndex(where: { $0.id.caseInsensitiveCompare(siteConnection.id) == .orderedSame }) {
         self.siteConnections.remove(at: index)
       }
@@ -73,7 +73,7 @@ class ManageSiteConnectionsStore: ObservableObject {
       }
       self.siteConnections = updatedSiteConnections
     }
-    Domain.setEthereumPermissions(forUrl: url, accounts: accounts, grant: false)
+    Domain.setWalletPermissions(forUrl: url, coin: .eth, accounts: accounts, grant: false)
   }
   
   func accountInfo(for address: String) -> BraveWallet.AccountInfo? {
