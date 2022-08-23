@@ -36,61 +36,61 @@ struct ParamInfo final {
   EnvironmentType expected_environment_type;
 } kTests[] = {
     // Should debug
-    {/* should_force_staging_environment */ false,
-     /* command_line_switches */ {{kRewardsSwitch, "debug=true"}},
-     /* expected_should_debug */ true,
-     /* expected_did_override_command_line_switches */ false,
+    {/*should_force_staging_environment*/ false,
+     /*command_line_switches*/ {{kRewardsSwitch, "debug=true"}},
+     /*expected_should_debug*/ true,
+     /*expected_did_override_command_line_switches*/ false,
      kDefaultEnvironmentType},
 
     // Should not debug
-    {/* should_force_staging_environment */ false,
-     /* command_line_switches */ {{kRewardsSwitch, "debug=false"}},
-     /* expected_should_debug */ false,
-     /* expected_did_override_command_line_switches */ false,
+    {/*should_force_staging_environment*/ false,
+     /*command_line_switches*/ {{kRewardsSwitch, "debug=false"}},
+     /*expected_should_debug*/ false,
+     /*expected_did_override_command_line_switches*/ false,
      kDefaultEnvironmentType},
 
     // Override variations command-line switches
-    {/* should_force_staging_environment */ false,
-     /* command_line_switches */
+    {/*should_force_staging_environment*/ false,
+     /*command_line_switches*/
      {{variations::switches::kFakeVariationsChannel, "foobar"}},
-     /* expected_should_debug */ false,
-     /* expected_did_override_command_line_switches */ true,
+     /*expected_should_debug*/ false,
+     /*expected_did_override_command_line_switches*/ true,
      kDefaultEnvironmentType},
 
     // Do not override variations command-line switches
-    {/* should_force_staging_environment */ false,
-     /* command_line_switches */
+    {/*should_force_staging_environment*/ false,
+     /*command_line_switches*/
      {{variations::switches::kFakeVariationsChannel, ""}},
-     /* expected_should_debug */ false,
-     /* expected_did_override_command_line_switches */ false,
+     /*expected_should_debug*/ false,
+     /*expected_did_override_command_line_switches*/ false,
      kDefaultEnvironmentType},
 
     // Force staging environment from command-line switch
-    {/* should_force_staging_environment */ false,
-     /* command_line_switches */ {{kRewardsSwitch, "staging=true"}},
-     /* expected_should_debug */ false,
-     /* expected_did_override_command_line_switches */ false,
+    {/*should_force_staging_environment*/ false,
+     /*command_line_switches*/ {{kRewardsSwitch, "staging=true"}},
+     /*expected_should_debug*/ false,
+     /*expected_did_override_command_line_switches*/ false,
      EnvironmentType::kStaging},
 
     // Force production environment from command-line switch
-    {/* should_force_staging_environment */ false,
-     /* command_line_switches */ {{kRewardsSwitch, "staging=false"}},
-     /* expected_should_debug */ false,
-     /* expected_did_override_command_line_switches */ false,
+    {/*should_force_staging_environment*/ false,
+     /*command_line_switches*/ {{kRewardsSwitch, "staging=false"}},
+     /*expected_should_debug*/ false,
+     /*expected_did_override_command_line_switches*/ false,
      EnvironmentType::kProduction},
 
     // Force staging environment
-    {/* should_force_staging_environment */ true,
-     /* command_line_switches */ {{kRewardsSwitch, "staging=false"}},
-     /* expected_should_debug */ false,
-     /* expected_did_override_command_line_switches */ false,
+    {/*should_force_staging_environment*/ true,
+     /*command_line_switches*/ {{kRewardsSwitch, "staging=false"}},
+     /*expected_should_debug*/ false,
+     /*expected_did_override_command_line_switches*/ false,
      EnvironmentType::kStaging},
 
     // Use default environment
-    {/* should_force_staging_environment */ false,
-     /* command_line_switches */ {},
-     /* expected_should_debug */ false,
-     /* expected_did_override_command_line_switches */ false,
+    {/*should_force_staging_environment*/ false,
+     /*command_line_switches*/ {},
+     /*expected_should_debug*/ false,
+     /*expected_did_override_command_line_switches*/ false,
      kDefaultEnvironmentType}};
 
 }  // namespace

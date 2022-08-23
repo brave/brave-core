@@ -79,7 +79,7 @@ void DatabaseManager::OnCreateOrOpen(ResultCallback callback,
       !response->result) {
     BLOG(0, "Failed to open or create database");
     NotifyFailedToCreateOrOpenDatabase();
-    std::move(callback).Run(/* success */ false);
+    std::move(callback).Run(/*success*/ false);
     return;
   }
 
@@ -99,7 +99,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   DCHECK(from_version <= to_version);
 
   if (from_version == to_version) {
-    std::move(callback).Run(/* success */ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
@@ -123,7 +123,7 @@ void DatabaseManager::OnMigrate(const int from_version,
     BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
     NotifyFailedToMigrateDatabase(from_version, to_version);
-    std::move(callback).Run(/* success */ false);
+    std::move(callback).Run(/*success*/ false);
     return;
   }
 
@@ -134,7 +134,7 @@ void DatabaseManager::OnMigrate(const int from_version,
 
   NotifyDatabaseIsReady();
 
-  std::move(callback).Run(/* success */ true);
+  std::move(callback).Run(/*success*/ true);
 }
 
 void DatabaseManager::NotifyWillCreateOrOpenDatabase() const {

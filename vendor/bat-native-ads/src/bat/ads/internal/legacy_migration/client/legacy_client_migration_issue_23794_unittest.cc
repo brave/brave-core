@@ -41,7 +41,7 @@ TEST_F(BatAdsLegacyClientMigrationIssue23794Test, Migrate) {
   SetHash(kClientIssue23794JsonHash);
 
   // Act
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
 
   // Assert
   EXPECT_EQ(kMigratedClientIssue23794JsonHash, GetHash());

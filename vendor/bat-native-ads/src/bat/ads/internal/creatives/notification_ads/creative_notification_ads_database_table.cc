@@ -169,7 +169,7 @@ void CreativeNotificationAds::Save(
     const CreativeNotificationAdList& creative_ads,
     ResultCallback callback) {
   if (creative_ads.empty()) {
-    std::move(callback).Run(/* success */ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
@@ -211,7 +211,7 @@ void CreativeNotificationAds::GetForSegments(
     const SegmentList& segments,
     GetCreativeNotificationAdsCallback callback) {
   if (segments.empty()) {
-    callback(/* success */ true, segments, {});
+    callback(/*success*/ true, segments, {});
     return;
   }
 
@@ -452,14 +452,14 @@ void CreativeNotificationAds::OnGetForSegments(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative notification ads");
-    callback(/* success */ false, segments, {});
+    callback(/*success*/ false, segments, {});
     return;
   }
 
   const CreativeNotificationAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
-  callback(/* success */ true, segments, creative_ads);
+  callback(/*success*/ true, segments, creative_ads);
 }
 
 void CreativeNotificationAds::OnGetAll(
@@ -468,7 +468,7 @@ void CreativeNotificationAds::OnGetAll(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative notification ads");
-    callback(/* success */ false, {}, {});
+    callback(/*success*/ false, {}, {});
     return;
   }
 
@@ -477,7 +477,7 @@ void CreativeNotificationAds::OnGetAll(
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  callback(/* success */ true, segments, creative_ads);
+  callback(/*success*/ true, segments, creative_ads);
 }
 
 void CreativeNotificationAds::MigrateToV24(

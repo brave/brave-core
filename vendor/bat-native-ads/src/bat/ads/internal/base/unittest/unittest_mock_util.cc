@@ -291,7 +291,7 @@ void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(
           Invoke([](const std::string& /*name*/, const std::string& /*value*/,
                     SaveCallback callback) {
-            std::move(callback).Run(/* success */ true);
+            std::move(callback).Run(/*success*/ true);
           }));
 }
 
@@ -308,11 +308,11 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              std::move(callback).Run(/* success */ false, value);
+              std::move(callback).Run(/*success*/ false, value);
               return;
             }
 
-            std::move(callback).Run(/* success */ true, value);
+            std::move(callback).Run(/*success*/ true, value);
           }));
 }
 

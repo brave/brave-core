@@ -41,7 +41,7 @@ class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
   ~BatAdsInlineContentAdIntegrationTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
     ForcePermissionRules();
   }

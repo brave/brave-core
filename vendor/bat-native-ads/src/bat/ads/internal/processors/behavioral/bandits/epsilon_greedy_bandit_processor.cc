@@ -97,12 +97,12 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   switch (ad_event_type) {
     case mojom::NotificationAdEventType::kTimedOut:
     case mojom::NotificationAdEventType::kDismissed: {
-      UpdateArm(/* reward */ 0, segment);
+      UpdateArm(/*reward*/ 0, segment);
       break;
     }
 
     case mojom::NotificationAdEventType::kClicked: {
-      UpdateArm(/* reward */ 1, segment);
+      UpdateArm(/*reward*/ 1, segment);
       break;
     }
 

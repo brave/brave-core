@@ -33,10 +33,10 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
                                                          parameters);
 
-  AdvanceClockTo(TimeFromString("31 January 2020", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
   const base::Time next_token_redemption_at =
-      TimeFromString("5 February 2020", /* is_local */ false);
+      TimeFromString("5 February 2020", /*is_local*/ false);
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               next_token_redemption_at);
 
@@ -47,13 +47,13 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromString("7 March 2020 23:59:59.999", /* is_local */ false);
+      TimeFromString("7 March 2020 23:59:59.999", /*is_local*/ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
 TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -65,7 +65,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
@@ -88,7 +88,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
 
 TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -100,7 +100,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
@@ -123,7 +123,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
 
 TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -131,7 +131,7 @@ TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
       BuildTransaction(0.0, ConfirmationType::kClicked);

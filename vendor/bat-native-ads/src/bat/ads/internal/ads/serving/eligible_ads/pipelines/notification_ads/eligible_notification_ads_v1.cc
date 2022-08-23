@@ -46,7 +46,7 @@ void EligibleAdsV1::GetForUserModel(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Failed to get ad events");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -99,7 +99,7 @@ void EligibleAdsV1::GetForChildSegments(
                     const CreativeNotificationAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for child segments");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -117,7 +117,7 @@ void EligibleAdsV1::GetForChildSegments(
                     << " eligible ads out of " << creative_ads.size()
                     << " ads for child segments");
 
-        callback(/* had_opportunity */ true, eligible_creative_ads);
+        callback(/*had_opportunity*/ true, eligible_creative_ads);
       });
 }
 
@@ -143,7 +143,7 @@ void EligibleAdsV1::GetForParentSegments(
                     const CreativeNotificationAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for parent segments");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -160,7 +160,7 @@ void EligibleAdsV1::GetForParentSegments(
                     << " eligible ads out of " << creative_ads.size()
                     << " ads for parent segments");
 
-        callback(/* had_opportunity */ true, eligible_creative_ads);
+        callback(/*had_opportunity*/ true, eligible_creative_ads);
       });
 }
 
@@ -176,7 +176,7 @@ void EligibleAdsV1::GetForUntargeted(
                          const CreativeNotificationAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for untargeted segment");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -185,7 +185,7 @@ void EligibleAdsV1::GetForUntargeted(
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
                                             << " ads for untargeted segment");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -193,7 +193,7 @@ void EligibleAdsV1::GetForUntargeted(
                     << " eligible ads out of " << creative_ads.size()
                     << " ads for untargeted segment");
 
-        callback(/* had_opportunity */ true, eligible_creative_ads);
+        callback(/*had_opportunity*/ true, eligible_creative_ads);
       });
 }
 

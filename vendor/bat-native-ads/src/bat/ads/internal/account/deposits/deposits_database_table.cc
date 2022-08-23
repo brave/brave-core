@@ -73,7 +73,7 @@ Deposits::~Deposits() = default;
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
-    std::move(callback).Run(/* success */ false);
+    std::move(callback).Run(/*success*/ false);
     return;
   }
 
@@ -116,7 +116,7 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                         GetDepositsCallback callback) {
   if (creative_instance_id.empty()) {
-    callback(/* success */ false, absl::nullopt);
+    callback(/*success*/ false, absl::nullopt);
     return;
   }
 
@@ -228,12 +228,12 @@ void Deposits::OnGetForCreativeInstanceId(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
-    callback(/* success */ false, absl::nullopt);
+    callback(/*success*/ false, absl::nullopt);
     return;
   }
 
   if (response->result->get_records().empty()) {
-    callback(/* success */ true, absl::nullopt);
+    callback(/*success*/ true, absl::nullopt);
     return;
   }
 
@@ -241,7 +241,7 @@ void Deposits::OnGetForCreativeInstanceId(
       std::move(response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(record.get());
 
-  callback(/* success */ true, std::move(deposit));
+  callback(/*success*/ true, std::move(deposit));
 }
 
 void Deposits::MigrateToV24(mojom::DBTransactionInfo* transaction) {

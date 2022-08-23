@@ -436,7 +436,7 @@ void Conversions::FailedToConvertQueueItem(
               << " and advertiser id " << conversion_queue_item.advertiser_id
               << " "
               << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /* use_sentence_style */ true));
+                                         /*use_sentence_style*/ true));
 
   NotifyConversionFailed(conversion_queue_item);
 
@@ -454,7 +454,7 @@ void Conversions::ConvertedQueueItem(
               << " and advertiser id " << conversion_queue_item.advertiser_id
               << " "
               << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /* use_sentence_style */ true));
+                                         /*use_sentence_style*/ true));
 
   NotifyConversion(conversion_queue_item);
 
@@ -552,7 +552,7 @@ void Conversions::StartTimer(
                      << " and advertiser id "
                      << conversion_queue_item.advertiser_id << " "
                      << FriendlyDateAndTime(process_queue_at,
-                                            /* use_sentence_style */ true));
+                                            /*use_sentence_style*/ true));
 }
 
 void Conversions::NotifyConversion(

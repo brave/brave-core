@@ -48,13 +48,13 @@ TEST_F(BatAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
       BuildTransaction(0.0, ConfirmationType::kDismissed);

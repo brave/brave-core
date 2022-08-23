@@ -568,7 +568,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
 
       BLOG(3, "Failed to parse client state: " << json);
 
-      callback_(/* success */ false);
+      callback_(/*success*/ false);
       return;
     }
 
@@ -582,7 +582,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
     BLOG(9, "Client state is mutated");
   }
 
-  callback_(/* success  */ true);
+  callback_(/*success */ true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

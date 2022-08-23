@@ -77,7 +77,7 @@ void Transfer::TransferAd(const int32_t tab_id,
   BLOG(1, "Transfer ad for "
               << last_clicked_ad_.target_url << " "
               << FriendlyDateAndTime(transfer_ad_at,
-                                     /* use_sentence_style */ true));
+                                     /*use_sentence_style*/ true));
 
   NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }

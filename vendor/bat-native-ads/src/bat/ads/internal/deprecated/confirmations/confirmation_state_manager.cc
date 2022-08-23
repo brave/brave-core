@@ -108,7 +108,7 @@ void ConfirmationStateManager::OnLoaded(const bool success,
 
       BLOG(3, "Failed to parse confirmations state: " << json);
 
-      callback_(/* success */ false);
+      callback_(/*success*/ false);
       return;
     }
 
@@ -122,7 +122,7 @@ void ConfirmationStateManager::OnLoaded(const bool success,
     BLOG(9, "Confirmation state is mutated");
   }
 
-  callback_(/* success */ true);
+  callback_(/*success*/ true);
 }
 
 void ConfirmationStateManager::Save() {

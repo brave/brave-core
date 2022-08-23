@@ -33,7 +33,7 @@ class BatAdsDiagnosticManagerTest : public UnitTestBase {
 TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /* is_local */ true));
+      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
 
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
@@ -45,8 +45,7 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
   SetCatalogLastUpdated(Now());
 
-  AdvanceClockTo(
-      TimeFromString("Mon, 8 Jul 1996 09:25:00", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ true));
 
   SetLastUnIdleTimeDiagnosticEntry();
 

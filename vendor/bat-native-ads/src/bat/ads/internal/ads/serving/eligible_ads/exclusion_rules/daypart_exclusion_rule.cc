@@ -64,7 +64,7 @@ bool DaypartExclusionRule::DoesRespectCap(
 
   const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
 
-  const int day_of_week = GetDayOfWeek(now, /* is_local */ true);
+  const int day_of_week = GetDayOfWeek(now, /*is_local*/ true);
   const std::string day_of_week_as_string = base::NumberToString(day_of_week);
 
   return base::ranges::any_of(

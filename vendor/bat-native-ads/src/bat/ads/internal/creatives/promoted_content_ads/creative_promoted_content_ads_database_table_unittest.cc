@@ -435,9 +435,8 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForCreativeInstanceId(
       creative_instance_id,
       [](const bool success, const std::string& /*creative_instance_id*/,
-         const CreativePromotedContentAdInfo& /*creative_promoted_content_ad*/) {
-        EXPECT_FALSE(success);
-      });
+         const CreativePromotedContentAdInfo&
+         /*creative_promoted_content_ad*/) { EXPECT_FALSE(success); });
 }
 
 TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,

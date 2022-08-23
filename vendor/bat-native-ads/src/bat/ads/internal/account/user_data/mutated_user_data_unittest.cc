@@ -27,7 +27,7 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
   // Arrange
   AdsClientHelper::GetInstance()->SetUint64Pref(
       prefs::kConfirmationsHash,
-      /* data/test/confirmations.json has a hash of 3780921521 */ 1251290873);
+      /*data/test/confirmations.json has a hash of 3780921521*/ 1251290873);
 
   // Act
   const base::Value::Dict user_data = GetMutated();
@@ -44,7 +44,7 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedClient) {
   // Arrange
   AdsClientHelper::GetInstance()->SetUint64Pref(
       prefs::kClientHash,
-      /* data/test/client.json has a hash of 2810715844 */ 4485170182);
+      /*data/test/client.json has a hash of 2810715844*/ 4485170182);
 
   // Act
   const base::Value::Dict user_data = GetMutated();

@@ -82,7 +82,7 @@ void ConversionQueue::Save(
     const ConversionQueueItemList& conversion_queue_items,
     ResultCallback callback) {
   if (conversion_queue_items.empty()) {
-    std::move(callback).Run(/* success */ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
@@ -233,7 +233,7 @@ void ConversionQueue::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback) {
   if (creative_instance_id.empty()) {
-    callback(/* success */ false, creative_instance_id, {});
+    callback(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -361,7 +361,7 @@ void ConversionQueue::OnGetAll(GetConversionQueueCallback callback,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    callback(/* success */ false, {});
+    callback(/*success*/ false, {});
     return;
   }
 
@@ -373,7 +373,7 @@ void ConversionQueue::OnGetAll(GetConversionQueueCallback callback,
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
-  callback(/* success */ true, conversion_queue_items);
+  callback(/*success*/ true, conversion_queue_items);
 }
 
 void ConversionQueue::OnGetForCreativeInstanceId(
@@ -383,7 +383,7 @@ void ConversionQueue::OnGetForCreativeInstanceId(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    callback(/* success */ false, creative_instance_id, {});
+    callback(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -395,7 +395,7 @@ void ConversionQueue::OnGetForCreativeInstanceId(
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
-  callback(/* success */ true, creative_instance_id, conversion_queue_items);
+  callback(/*success*/ true, creative_instance_id, conversion_queue_items);
 }
 
 void ConversionQueue::MigrateToV10(mojom::DBTransactionInfo* transaction) {
@@ -452,7 +452,7 @@ void ConversionQueue::MigrateToV11(mojom::DBTransactionInfo* transaction) {
       "advertiser_id", "conversion_id",   "timestamp"};
 
   CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
-                   /* should_drop */ true);
+                   /*should_drop*/ true);
 
   // Rename temporary table
   RenameTable(transaction, temp_table_name, "conversion_queue");
@@ -496,7 +496,7 @@ void ConversionQueue::MigrateToV21(mojom::DBTransactionInfo* transaction) {
       "timestamp"};
 
   CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
-                   /* should_drop */ true);
+                   /*should_drop*/ true);
 
   // Rename temporary table
   RenameTable(transaction, temp_table_name, "conversion_queue");

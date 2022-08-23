@@ -36,7 +36,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   ~BatAdsNotificationAdForMobileIntegrationTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
     ForcePermissionRules();
   }
@@ -61,7 +61,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   }
 
   void ServeAd() {
-    GetAds()->OnUnIdle(base::TimeDelta::Min(), /* was_locked */ false);
+    GetAds()->OnUnIdle(base::TimeDelta::Min(), /*was_locked*/ false);
   }
 };
 

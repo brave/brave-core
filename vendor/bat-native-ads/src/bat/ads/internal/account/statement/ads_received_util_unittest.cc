@@ -22,7 +22,7 @@ class BatAdsAdsReceivedUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -30,7 +30,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const base::Time from_time = Now();
 
@@ -42,7 +42,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
       BuildTransaction(0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_4 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
@@ -61,7 +61,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
 
 TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -73,7 +73,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const base::Time from_time = Now();
   const base::Time to_time = DistantFuture();

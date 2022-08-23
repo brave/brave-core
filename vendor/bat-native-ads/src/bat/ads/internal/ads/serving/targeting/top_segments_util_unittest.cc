@@ -35,7 +35,7 @@ TEST_F(BatAdsTopSegmentsUtilTest, GetTopChildSegments) {
 
   // Act
   const SegmentList segments =
-      GetTopSegments(user_model, kSegmentsMaxCount, /* parent_only */ false);
+      GetTopSegments(user_model, kSegmentsMaxCount, /*parent_only*/ false);
 
   // Assert
   const SegmentList expected_segments = {
@@ -51,7 +51,7 @@ TEST_F(BatAdsTopSegmentsUtilTest, GetTopChildSegmentsForEmptyUserModel) {
 
   // Act
   const SegmentList segments =
-      GetTopSegments(user_model, kSegmentsMaxCount, /* parent_only */ false);
+      GetTopSegments(user_model, kSegmentsMaxCount, /*parent_only*/ false);
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -68,7 +68,7 @@ TEST_F(BatAdsTopSegmentsUtilTest, GetTopParentSegments) {
 
   // Act
   const SegmentList segments =
-      GetTopSegments(user_model, kSegmentsMaxCount, /* parent_only */ true);
+      GetTopSegments(user_model, kSegmentsMaxCount, /*parent_only*/ true);
 
   // Assert
   const SegmentList expected_segments = {
@@ -84,7 +84,7 @@ TEST_F(BatAdsTopSegmentsUtilTest, GetTopParentSegmentsForEmptyUserModel) {
 
   // Act
   const SegmentList segments =
-      GetTopSegments(user_model, kSegmentsMaxCount, /* parent_only */ true);
+      GetTopSegments(user_model, kSegmentsMaxCount, /*parent_only*/ true);
 
   // Assert
   EXPECT_TRUE(segments.empty());

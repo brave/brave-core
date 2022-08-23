@@ -44,7 +44,7 @@ TEST_F(BatAdsLegacyClientMigrationTest, Migrate) {
   SetHash(kClientJsonHash);
 
   // Act
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
 
   // Assert
   EXPECT_EQ(kMigratedClientJsonHash, GetHash());
@@ -55,7 +55,7 @@ TEST_F(BatAdsLegacyClientMigrationTest, InvalidState) {
   CopyFileFromTestPathToTempPath(kInvalidJsonFilename, kClientStateFilename);
 
   // Act
-  Migrate(/* should_migrate */ false);
+  Migrate(/*should_migrate*/ false);
 
   // Assert
   EXPECT_FALSE(HasMigrated());
@@ -67,11 +67,11 @@ TEST_F(BatAdsLegacyClientMigrationTest, AlreadyMigrated) {
 
   SetHash(kClientJsonHash);
 
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
   ASSERT_EQ(kMigratedClientJsonHash, GetHash());
 
   // Act
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
 
   // Assert
   EXPECT_EQ(kMigratedClientJsonHash, GetHash());
