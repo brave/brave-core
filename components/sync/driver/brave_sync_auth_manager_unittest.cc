@@ -51,7 +51,7 @@ class BraveSyncAuthManagerTest : public testing::Test {
 
   BraveSyncAuthManagerTest() : identity_env_(&test_url_loader_factory_) {}
 
-  ~BraveSyncAuthManagerTest() override {}
+  ~BraveSyncAuthManagerTest() override = default;
 
   std::unique_ptr<BraveSyncAuthManager> CreateAuthManager(
       const AccountStateChangedCallback& account_state_changed,

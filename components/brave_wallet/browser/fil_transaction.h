@@ -9,13 +9,10 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_wallet {
 
@@ -54,11 +51,12 @@ class FilTransaction {
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
 
   absl::optional<std::string> GetMessageToSign() const;
-  base::Value ToValue() const;
+  base::Value::Dict ToValue() const;
   mojom::FilTxDataPtr ToFilTxData() const;
   absl::optional<std::string> GetSignedTransaction(
       const std::vector<uint8_t>& private_key) const;
-  static absl::optional<FilTransaction> FromValue(const base::Value& value);
+  static absl::optional<FilTransaction> FromValue(
+      const base::Value::Dict& value);
 
  private:
   bool IsEqual(const FilTransaction& tx) const;

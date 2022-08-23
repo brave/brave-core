@@ -208,9 +208,9 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     const std::string sardine_client_id(SARDINE_CLIENT_ID);
     const std::string sardine_client_secret(SARDINE_CLIENT_SECRET);
 
-    base::Value payload_value(base::Value::Type::DICTIONARY);
-    payload_value.SetKey("clientId", base::Value(sardine_client_id));
-    payload_value.SetKey("clientSecret", base::Value(sardine_client_id));
+    base::Value::Dict payload_value;
+    payload_value.Set("clientId", sardine_client_id);
+    payload_value.Set("clientSecret", sardine_client_id);
     std::string payload;
     base::JSONWriter::Write(payload_value, &payload);
     base::flat_map<std::string, std::string> request_headers;
@@ -365,6 +365,48 @@ void AssetRatioService::OnGetTokenInfo(
 
   std::move(callback).Run(
       ParseTokenInfo(body, mojom::kMainnetChainId, mojom::CoinType::ETH));
+}
+
+// static
+GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
+                                          const uint8_t limit) {
+  GURL url = GURL(base::StringPrintf("%sv2/market/provider/coingecko",
+                                     base_url_for_test_.is_empty()
+                                         ? kAssetRatioBaseURL
+                                         : base_url_for_test_.spec().c_str()));
+  url = net::AppendQueryParameter(url, "vsCurrency", vs_asset);
+  url = net::AppendQueryParameter(url, "limit", std::to_string(limit));
+  return url;
+}
+
+void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
+                                       const uint8_t limit,
+                                       GetCoinMarketsCallback callback) {
+  std::string vs_asset_lower = base::ToLowerASCII(vs_asset);
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetCoinMarkets,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  api_request_helper_->Request("GET", GetCoinMarketsURL(vs_asset_lower, limit),
+                               "", "", true, std::move(internal_callback));
+}
+
+void AssetRatioService::OnGetCoinMarkets(
+    GetCoinMarketsCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  std::vector<brave_wallet::mojom::CoinMarketPtr> values;
+  if (status != 200) {
+    std::move(callback).Run(false, std::move(values));
+    return;
+  }
+
+  if (!ParseCoinMarkets(body, &values)) {
+    std::move(callback).Run(false, std::move(values));
+    return;
+  }
+
+  std::move(callback).Run(true, std::move(values));
 }
 
 }  // namespace brave_wallet

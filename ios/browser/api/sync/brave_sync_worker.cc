@@ -223,10 +223,17 @@ BraveSyncWorker::GetQrCodeValidationResult(const std::string json) {
   return brave_sync::QrCodeDataValidator::ValidateQrDataJson(json);
 }
 
-brave_sync::WordsValidationStatus BraveSyncWorker::GetWordsValidationResult(
+brave_sync::TimeLimitedWords::ValidationStatus
+BraveSyncWorker::GetWordsValidationResult(
     const std::string time_limited_words) {
   DCHECK(!time_limited_words.empty());
-  return brave_sync::TimeLimitedWords::Parse(time_limited_words).status;
+  auto words_with_status =
+      brave_sync::TimeLimitedWords::Parse(time_limited_words);
+  if (words_with_status.has_value()) {
+    return brave_sync::TimeLimitedWords::ValidationStatus::kValid;
+  } else {
+    return words_with_status.error();
+  }
 }
 
 std::string BraveSyncWorker::GetWordsFromTimeLimitedWords(
@@ -234,16 +241,20 @@ std::string BraveSyncWorker::GetWordsFromTimeLimitedWords(
   DCHECK(!time_limited_words.empty());
   auto words_with_status =
       brave_sync::TimeLimitedWords::Parse(time_limited_words);
-  DCHECK_EQ(words_with_status.status,
-            brave_sync::WordsValidationStatus::kValid);
-  DCHECK(words_with_status.pure_words.has_value());
-  return words_with_status.pure_words.value();
+  DCHECK(words_with_status.has_value());
+  return words_with_status.value();
 }
 
 std::string BraveSyncWorker::GetTimeLimitedWordsFromWords(
     const std::string& words) {
   DCHECK(!words.empty());
-  return brave_sync::TimeLimitedWords::GenerateForNow(words);
+  auto generate_result = brave_sync::TimeLimitedWords::GenerateForNow(words);
+  if (generate_result.has_value()) {
+    return generate_result.value();
+  } else {
+    DCHECK(false);
+    return std::string();
+  }
 }
 
 std::string BraveSyncWorker::GetHexSeedFromQrCodeJson(const std::string& json) {

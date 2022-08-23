@@ -61,29 +61,41 @@ TEST(TimeLimitedWordsTest, GetWordByIndex) {
 }
 
 TEST(TimeLimitedWordsTest, GenerateForDate) {
+  auto generate_result = TimeLimitedWords::GenerateForDate(
+      kValidSyncCode, TimeLimitedWords::GetWordsV2Epoch());
+  ASSERT_TRUE(generate_result.has_value());
   EXPECT_EQ(base::StrCat({kValidSyncCode, " abandon"}),
-            TimeLimitedWords::GenerateForDate(
-                kValidSyncCode, TimeLimitedWords::GetWordsV2Epoch()));
-  EXPECT_EQ(
-      base::StrCat({kValidSyncCode, " ability"}),
-      TimeLimitedWords::GenerateForDate(
-          kValidSyncCode, TimeLimitedWords::GetWordsV2Epoch() + base::Days(1)));
-  EXPECT_EQ("", TimeLimitedWords::GenerateForDate(
-                    kValidSyncCode,
-                    TimeLimitedWords::GetWordsV2Epoch() - base::Days(1)));
+            generate_result.value());
+
+  generate_result = TimeLimitedWords::GenerateForDate(
+      kValidSyncCode, TimeLimitedWords::GetWordsV2Epoch() + base::Days(1));
+  ASSERT_TRUE(generate_result.has_value());
+  EXPECT_EQ(base::StrCat({kValidSyncCode, " ability"}),
+            generate_result.value());
+
+  generate_result = TimeLimitedWords::GenerateForDate(
+      kValidSyncCode, TimeLimitedWords::GetWordsV2Epoch() - base::Days(1));
+  ASSERT_FALSE(generate_result.has_value());
+  EXPECT_EQ(generate_result.error(),
+            TimeLimitedWords::GenerateResult::kNotAfterEarlierThanEpoch);
+
+  generate_result = TimeLimitedWords::GenerateForNow("");
+  ASSERT_FALSE(generate_result.has_value());
+  EXPECT_EQ(generate_result.error(),
+            TimeLimitedWords::GenerateResult::kEmptyPureWords);
 }
 
 TEST(TimeLimitedWordsTest, Parse) {
+  using ValidationStatus = TimeLimitedWords::ValidationStatus;
   std::string pure_words;
-  TimeLimitedWords::PureWordsWithStatus pure_words_with_status;
-
+  base::expected<std::string, ValidationStatus> pure_words_with_status;
   {
     // Valid v1 sync code, prior to sunset date
     auto time_override = OverrideWithTimeNow(
         TimeLimitedWords::GetWordsV1SunsetDay() - base::Days(1));
     pure_words_with_status = TimeLimitedWords::Parse(kValidSyncCode);
-    EXPECT_EQ(pure_words_with_status.status, WordsValidationStatus::kValid);
-    EXPECT_EQ(pure_words_with_status.pure_words.value(), kValidSyncCode);
+    EXPECT_TRUE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.value(), kValidSyncCode);
   }
 
   {
@@ -92,8 +104,8 @@ TEST(TimeLimitedWordsTest, Parse) {
         TimeLimitedWords::GetWordsV1SunsetDay() - base::Days(1));
     pure_words_with_status =
         TimeLimitedWords::Parse(base::StrCat({kValidSyncCode, " "}));
-    EXPECT_EQ(pure_words_with_status.status, WordsValidationStatus::kValid);
-    EXPECT_EQ(pure_words_with_status.pure_words.value(), kValidSyncCode);
+    EXPECT_TRUE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.value(), kValidSyncCode);
   }
 
   {
@@ -101,9 +113,9 @@ TEST(TimeLimitedWordsTest, Parse) {
     auto time_override = OverrideWithTimeNow(
         TimeLimitedWords::GetWordsV1SunsetDay() - base::Days(1));
     pure_words_with_status = TimeLimitedWords::Parse(kInvalidSyncCode);
-    EXPECT_EQ(pure_words_with_status.status,
-              WordsValidationStatus::kNotValidPureWords);
-    EXPECT_FALSE(pure_words_with_status.pure_words.has_value());
+    EXPECT_FALSE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.error(),
+              ValidationStatus::kNotValidPureWords);
   }
 
   const base::Time anchorDayForWordsV2 =
@@ -117,8 +129,8 @@ TEST(TimeLimitedWordsTest, Parse) {
     // Valid v2 sync code, after sunset date, around anchored day
     auto time_override = OverrideWithTimeNow(anchorDayForWordsV2);
     pure_words_with_status = TimeLimitedWords::Parse(valid25thAnchoredWords);
-    EXPECT_EQ(pure_words_with_status.status, WordsValidationStatus::kValid);
-    EXPECT_EQ(pure_words_with_status.pure_words.value(), kValidSyncCode);
+    EXPECT_TRUE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.value(), kValidSyncCode);
   }
 
   {
@@ -130,8 +142,8 @@ TEST(TimeLimitedWordsTest, Parse) {
 
     auto time_override = OverrideWithTimeNow(anchorDayForWordsV2);
     pure_words_with_status = TimeLimitedWords::Parse(valid25thExpiredWords);
-    EXPECT_EQ(pure_words_with_status.status, WordsValidationStatus::kExpired);
-    EXPECT_FALSE(pure_words_with_status.pure_words.has_value());
+    EXPECT_FALSE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.error(), ValidationStatus::kExpired);
   }
 
   {
@@ -144,24 +156,24 @@ TEST(TimeLimitedWordsTest, Parse) {
     auto time_override = OverrideWithTimeNow(anchorDayForWordsV2);
     pure_words_with_status =
         TimeLimitedWords::Parse(valid25thValidTooLongWords);
-    EXPECT_EQ(pure_words_with_status.status,
-              WordsValidationStatus::kValidForTooLong);
-    EXPECT_FALSE(pure_words_with_status.pure_words.has_value());
+    EXPECT_FALSE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.error(),
+              ValidationStatus::kValidForTooLong);
   }
 
   {
     // Wrong words number
     auto time_override = OverrideWithTimeNow(anchorDayForWordsV2);
     pure_words_with_status = TimeLimitedWords::Parse("abandon ability");
-    EXPECT_EQ(pure_words_with_status.status,
-              WordsValidationStatus::kWrongWordsNumber);
-    EXPECT_FALSE(pure_words_with_status.pure_words.has_value());
+    EXPECT_FALSE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.error(),
+              ValidationStatus::kWrongWordsNumber);
 
     pure_words_with_status = TimeLimitedWords::Parse(
         base::StrCat({valid25thAnchoredWords, " abandon ability"}));
-    EXPECT_EQ(pure_words_with_status.status,
-              WordsValidationStatus::kWrongWordsNumber);
-    EXPECT_FALSE(pure_words_with_status.pure_words.has_value());
+    EXPECT_FALSE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.error(),
+              ValidationStatus::kWrongWordsNumber);
   }
 
   {
@@ -178,8 +190,8 @@ TEST(TimeLimitedWordsTest, Parse) {
     auto time_override = OverrideWithTimeNow(
         TimeLimitedWords::GetWordsV2Epoch() + base::Days(2048));
     pure_words_with_status = TimeLimitedWords::Parse(validModulo2048Words);
-    EXPECT_EQ(pure_words_with_status.status, WordsValidationStatus::kValid);
-    EXPECT_EQ(pure_words_with_status.pure_words.value(), kValidSyncCode);
+    EXPECT_TRUE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.value(), kValidSyncCode);
   }
 }
 

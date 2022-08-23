@@ -12,6 +12,7 @@
 #include <string>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/task/thread_pool.h"

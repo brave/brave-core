@@ -35,15 +35,13 @@
 
 namespace {
 
-std::unique_ptr<base::Value> GetJsonRpcRequest(
-    const std::string& method,
-    std::unique_ptr<base::Value> params) {
-  auto dictionary =
-      base::Value::ToUniquePtrValue(base::Value(base::Value::Type::DICTIONARY));
-  dictionary->SetKey("jsonrpc", base::Value("2.0"));
-  dictionary->SetKey("method", base::Value(method));
-  dictionary->SetKey("params", params->Clone());
-  dictionary->SetKey("id", base::Value("1"));
+base::Value::Dict GetJsonRpcRequest(const std::string& method,
+                                    base::Value params) {
+  base::Value::Dict dictionary;
+  dictionary.Set("jsonrpc", "2.0");
+  dictionary.Set("method", method);
+  dictionary.Set("params", std::move(params));
+  dictionary.Set("id", "1");
   return dictionary;
 }
 
@@ -158,7 +156,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
-  auto chain = brave_wallet::ValueToEthNetworkInfo(*list.begin(), true);
+  auto chain = ParseEip3085Payload(*list.begin());
   if (!chain) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -184,7 +182,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
   // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
   // we expect chain name and rpc urls as well at this time
   // https://github.com/brave/brave-browser/issues/17637
-  if (chain->chain_id.empty() || chain->rpc_urls.empty() ||
+  if (chain->chain_id.empty() || chain->rpc_endpoints.empty() ||
       chain->chain_name.empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -921,7 +919,7 @@ void EthereumProviderImpl::OnAddEthereumChainRequestCompleted(
 
 void EthereumProviderImpl::Request(base::Value input,
                                    RequestCallback callback) {
-  CommonRequestOrSendAsync(std::move(input), std::move(callback));
+  CommonRequestOrSendAsync(input, std::move(callback));
   delegate_->WalletInteractionDetected();
 }
 
@@ -935,7 +933,7 @@ void EthereumProviderImpl::SendErrorOnRequest(const mojom::ProviderError& error,
                           false);
 }
 
-void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
+void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
                                                     RequestCallback callback) {
   mojom::ProviderError error = mojom::ProviderError::kUnsupportedMethod;
   std::string error_message =
@@ -1130,11 +1128,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
 void EthereumProviderImpl::Send(const std::string& method,
                                 base::Value params,
                                 SendCallback callback) {
-  std::unique_ptr<base::Value> params_ptr =
-      base::Value::ToUniquePtrValue(std::move(params));
-  CommonRequestOrSendAsync(
-      std::move(*GetJsonRpcRequest(method, std::move(params_ptr))),
-      std::move(callback));
+  CommonRequestOrSendAsync(GetJsonRpcRequest(method, std::move(params)),
+                           std::move(callback));
   delegate_->WalletInteractionDetected();
 }
 

@@ -35,6 +35,7 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_item_added_check.icon",
       "sidebar_items_down_arrow.icon",
       "sidebar_items_up_arrow.icon",
+      "sidebar_reading_list.icon",
       "sidebar_settings.icon",
       "sidebar_trash.icon",
     ]

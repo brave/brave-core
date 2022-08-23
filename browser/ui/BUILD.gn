@@ -145,6 +145,8 @@ source_set("ui") {
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_search_engines_handler.cc",
       "webui/settings/brave_search_engines_handler.h",
+      "webui/settings/brave_settings_default_browser_handler.cc",
+      "webui/settings/brave_settings_default_browser_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
       "webui/settings/brave_sync_handler.cc",
@@ -200,6 +202,8 @@ source_set("ui") {
       "views/frame/brave_browser_frame.h",
       "views/frame/brave_browser_view.cc",
       "views/frame/brave_browser_view.h",
+      "views/frame/brave_browser_view_layout.cc",
+      "views/frame/brave_browser_view_layout.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
@@ -210,6 +214,8 @@ source_set("ui") {
       "views/omnibox/brave_search_conversion_promotion_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
+      "views/side_panel/brave_side_panel.cc",
+      "views/side_panel/brave_side_panel.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_tab.cc",
@@ -414,16 +420,10 @@ source_set("ui") {
 
   if (enable_sidebar) {
     deps += [
-      "//brave/browser/resources/sidebar:resources",
       "//brave/browser/ui/sidebar",
-      "//brave/browser/ui/webui/sidebar:mojo_bindings",
       "//brave/components/sidebar",
       "//chrome/app:generated_resources",
-      "//components/bookmarks/browser",
       "//components/favicon_base",
-      "//mojo/public/cpp/bindings",
-      "//ui/base/mojom",
-      "//ui/webui",
     ]
 
     sources += [
@@ -453,14 +453,10 @@ source_set("ui") {
       "views/sidebar/sidebar_items_contents_view.h",
       "views/sidebar/sidebar_items_scroll_view.cc",
       "views/sidebar/sidebar_items_scroll_view.h",
-      "views/sidebar/sidebar_panel_webview.cc",
-      "views/sidebar/sidebar_panel_webview.h",
       "views/sidebar/sidebar_show_options_event_detect_widget.cc",
       "views/sidebar/sidebar_show_options_event_detect_widget.h",
-      "webui/sidebar/sidebar_bookmarks_page_handler.cc",
-      "webui/sidebar/sidebar_bookmarks_page_handler.h",
-      "webui/sidebar/sidebar_bookmarks_ui.cc",
-      "webui/sidebar/sidebar_bookmarks_ui.h",
+      "views/sidebar/sidebar_side_panel_utils.cc",
+      "views/sidebar/sidebar_side_panel_utils.h",
     ]
   }
 
@@ -649,6 +645,8 @@ source_set("ui") {
       "wallet_bubble_manager_delegate_impl.h",
       "webui/brave_wallet/ledger/ledger_ui.cc",
       "webui/brave_wallet/ledger/ledger_ui.h",
+      "webui/brave_wallet/market/market_ui.cc",
+      "webui/brave_wallet/market/market_ui.h",
       "webui/brave_wallet/nft/nft_ui.cc",
       "webui/brave_wallet/nft/nft_ui.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
@@ -671,6 +669,7 @@ source_set("ui") {
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
       "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
+      "//brave/components/brave_wallet_ui/market:market_display_generated",
       "//brave/components/brave_wallet_ui/nft:nft_display_generated",
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",

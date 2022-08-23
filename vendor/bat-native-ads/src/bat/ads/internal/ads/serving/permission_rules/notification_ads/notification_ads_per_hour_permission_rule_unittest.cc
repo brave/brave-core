@@ -42,8 +42,8 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
 
   const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour,
-                                               ads_per_hour);
+  AdsClientHelper::GetInstance()->SetInt64Pref(
+      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
@@ -61,8 +61,8 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
   const int64_t ads_per_hour = 5;
-  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour,
-                                               ads_per_hour);
+  AdsClientHelper::GetInstance()->SetInt64Pref(
+      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
@@ -79,8 +79,8 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour,
-                                               ads_per_hour);
+  AdsClientHelper::GetInstance()->SetInt64Pref(
+      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour - 1);
@@ -98,8 +98,8 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest,
   // Arrange
   const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour,
-                                               ads_per_hour);
+  AdsClientHelper::GetInstance()->SetInt64Pref(
+      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
@@ -119,8 +119,8 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest,
   // Arrange
   const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour,
-                                               ads_per_hour);
+  AdsClientHelper::GetInstance()->SetInt64Pref(
+      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);

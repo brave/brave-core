@@ -5,8 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -542,7 +541,7 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      ads::prefs::kAdsPerHour,
+      ads::prefs::kMaximumNotificationAdsPerHour,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -1186,8 +1185,9 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   base::Value::Dict ads_data;
   ads_data.Set("adsIsSupported", ads_service_->IsSupportedLocale());
   ads_data.Set("adsEnabled", ads_service_->IsEnabled());
-  ads_data.Set("adsPerHour",
-               static_cast<int>(ads_service_->GetNotificationAdsPerHour()));
+  ads_data.Set(
+      "adsPerHour",
+      static_cast<int>(ads_service_->GetMaximumNotificationAdsPerHour()));
   ads_data.Set(kAdsSubdivisionTargeting,
                ads_service_->GetSubdivisionTargetingCode());
   ads_data.Set(kAutoDetectedSubdivisionTargeting,
@@ -1432,7 +1432,13 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
         value == "true" && ads_service_->IsSupportedLocale();
     rewards_service_->SetAdsEnabled(is_enabled);
   } else if (key == "adsPerHour") {
-    ads_service_->SetNotificationAdsPerHour(std::stoull(value));
+    int64_t int64_value;
+    if (!base::StringToInt64(value, &int64_value)) {
+      LOG(ERROR) << "Ads per hour was not converted to int64";
+      return;
+    }
+
+    ads_service_->SetMaximumNotificationAdsPerHour(int64_value);
   } else if (key == kAdsSubdivisionTargeting) {
     ads_service_->SetSubdivisionTargetingCode(value);
   } else if (key == kAutoDetectedSubdivisionTargeting) {

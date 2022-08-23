@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
@@ -16,39 +17,39 @@ namespace database {
 
 void DeleteCreativeNewTabPageAds() {
   table::CreativeNewTabPageAds database_table;
-  database_table.Delete([](const bool success) {
+  database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative new tab page ads");
       return;
     }
 
     BLOG(3, "Successfully deleted creative new tab page ads");
-  });
+  }));
 }
 
 void DeleteCreativeNewTabPageAdWallpapers() {
   table::CreativeNewTabPageAdWallpapers database_table;
-  database_table.Delete([](const bool success) {
+  database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative new tab page ad wallpapers");
       return;
     }
 
     BLOG(3, "Successfully deleted creative new tab page ad wallpapers");
-  });
+  }));
 }
 
 void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads) {
   table::CreativeNewTabPageAds database_table;
 
-  database_table.Save(creative_ads, [](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to save creative new tab page ads");
-      return;
-    }
+  database_table.Save(creative_ads, base::BindOnce([](const bool success) {
+                        if (!success) {
+                          BLOG(0, "Failed to save creative new tab page ads");
+                          return;
+                        }
 
-    BLOG(3, "Successfully saved creative new tab page ads");
-  });
+                        BLOG(3, "Successfully saved creative new tab page ads");
+                      }));
 }
 
 }  // namespace database

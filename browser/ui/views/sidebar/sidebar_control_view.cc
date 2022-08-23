@@ -51,8 +51,9 @@ class ControlViewMenuModel : public ui::SimpleMenuModel {
 
 }  // namespace
 
-SidebarControlView::SidebarControlView(BraveBrowser* browser)
-    : browser_(browser) {
+SidebarControlView::SidebarControlView(Delegate* delegate,
+                                       BraveBrowser* browser)
+    : delegate_(delegate), browser_(browser) {
   set_context_menu_controller(this);
 
   AddChildViews();
@@ -168,6 +169,10 @@ bool SidebarControlView::IsCommandIdChecked(int command_id) const {
       sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
   return static_cast<ShowSidebarOption>(command_id) ==
          service->GetSidebarShowOption();
+}
+
+void SidebarControlView::MenuClosed(ui::SimpleMenuModel* source) {
+  delegate_->MenuClosed();
 }
 
 std::u16string SidebarControlView::GetTooltipTextFor(

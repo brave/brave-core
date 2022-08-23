@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/transfer/transfer.h"
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"

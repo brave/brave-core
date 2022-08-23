@@ -51,7 +51,7 @@ void SearchResultAd::TriggerEvent(
   }
 
   event_handler_->FireEvent(
-      ad_mojom, event_type,
+      std::move(ad_mojom), event_type,
       [](const bool success, const std::string& placement_id,
          const mojom::SearchResultAdEventType event_type) {
         // Intentionally do nothing.
@@ -91,7 +91,7 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
   ad_viewed_event_queue_.pop_back();
 
   event_handler_->FireEvent(
-      ad_mojom, mojom::SearchResultAdEventType::kViewed,
+      std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed,
       [=](const bool success, const std::string& placement_id,
           const mojom::SearchResultAdEventType event_type) {
         DCHECK(mojom::IsKnownEnumValue(event_type));

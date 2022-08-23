@@ -368,6 +368,9 @@
         <message name="IDS_SIDEBAR_HISTORY_ITEM_TITLE" desc="Title for history item in sidebar">
           History
         </message>
+        <message name="IDS_SIDEBAR_READING_LIST_ITEM_TITLE" desc="Title for Reading List item in sidebar">
+          Reading List
+        </message>
       </if>
 
       <!-- WebUI private tab resources -->

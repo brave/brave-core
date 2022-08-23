@@ -48,6 +48,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   KeyringService(JsonRpcService* json_rpc_service, PrefService* prefs);
   ~KeyringService() override;
 
+  static absl::optional<int>& GetPbkdf2IterationsForTesting();
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
   static bool HasPrefForKeyring(PrefService* prefs,
@@ -66,6 +67,14 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                 const std::string& key,
                                 base::Value value,
                                 const std::string& id);
+  static absl::optional<std::vector<uint8_t>> GetPrefInBytesForKeyring(
+      PrefService* prefs,
+      const std::string& key,
+      const std::string& id);
+  static void SetPrefInBytesForKeyring(PrefService* prefs,
+                                       const std::string& key,
+                                       base::span<const uint8_t> bytes,
+                                       const std::string& id);
 
   // Account path will be used as key in kAccountMetas
   static void SetAccountMetaForKeyring(
@@ -253,9 +262,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       HasPendingUnlockRequestCallback callback) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetPrefInBytesForKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetPrefInBytesForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateSaltForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateEncryptorForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateDefaultKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
@@ -339,15 +347,12 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool UpdateNameForHardwareAccountSync(const std::string& address,
                                         const std::string& name,
                                         mojom::CoinType coin);
-  const std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
+  std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
 
-  bool GetPrefInBytesForKeyring(const std::string& key,
-                                std::vector<uint8_t>* bytes,
-                                const std::string& id) const;
-  void SetPrefInBytesForKeyring(const std::string& key,
-                                base::span<const uint8_t> bytes,
-                                const std::string& id);
-  std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id);
+  std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id,
+                                                  bool force_create = false);
+  std::vector<uint8_t> GetOrCreateSaltForKeyring(const std::string& id,
+                                                 bool force_create = false);
   bool CreateEncryptorForKeyring(const std::string& password,
                                  const std::string& id);
   bool CreateKeyringInternal(const std::string& keyring_id,
@@ -366,6 +371,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeKeyring(const std::string& keyring_id,
                            const std::string& password);
+
+  void MaybeMigratePBKDF2Iterations(const std::string& password);
 
   void NotifyAccountsChanged();
   void StopAutoLockTimer();

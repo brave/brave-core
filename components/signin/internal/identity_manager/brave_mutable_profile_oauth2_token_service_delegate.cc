@@ -26,7 +26,7 @@ BraveMutableProfileOAuth2TokenServiceDelegate::
       account_tracker_service_(account_tracker_service) {}
 
 BraveMutableProfileOAuth2TokenServiceDelegate::
-    ~BraveMutableProfileOAuth2TokenServiceDelegate() {}
+    ~BraveMutableProfileOAuth2TokenServiceDelegate() = default;
 
 void BraveMutableProfileOAuth2TokenServiceDelegate::LoadCredentials(
     const CoreAccountId& primary_account_id,

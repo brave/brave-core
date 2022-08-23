@@ -39,8 +39,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -55,8 +56,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://rinkeby.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://rinkeby-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://rinkeby-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -71,8 +73,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://ropsten.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://ropsten-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://ropsten-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -87,8 +90,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://goerli.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://goerli-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://goerli-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -103,8 +107,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'https://kovan.etherscan.io'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'https://kovan-infura.brave.com/f7106c838853428280fa0c585acc9485'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'https://kovan-infura.brave.com/f7106c838853428280fa0c585acc9485' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -119,8 +124,9 @@ const mockNetworkList: BraveWallet.NetworkInfo[] = [
       'http://localhost:7545/'
     ],
     'iconUrls': [],
-    'rpcUrls': [
-      'http://localhost:7545/'
+    'activeRpcEndpointIndex': 0,
+    'rpcEndpoints': [
+      { url: 'http://localhost:7545/' }
     ],
     'symbol': 'ETH',
     'symbolName': 'Ethereum',
@@ -147,6 +153,57 @@ const mockCurrencies: BraveWallet.OnRampCurrency[] = [
     currencyCode: 'GBP',
     currencyName: 'British Pound Sterling',
     providers: []
+  }
+]
+
+const mockCoinMarketData: BraveWallet.CoinMarket[] = [
+  {
+    id: 'bitcoin',
+    symbol: 'btc',
+    name: 'Bitcoin',
+    image: 'https://assets.cgproxy.brave.com/coins/images/1/large/bitcoin.png?1547033579',
+    marketCap: 768537918492,
+    marketCapRank: 1,
+    currentPrice: 40408,
+    totalVolume: 29207260045,
+    priceChange24h: 1878.92,
+    priceChangePercentage24h: 4.87667
+  },
+  {
+    id: 'ethereum',
+    symbol: 'eth',
+    name: 'Ethereum',
+    image: 'https://assets.cgproxy.brave.com/coins/images/279/large/ethereum.png?1595348880',
+    currentPrice: 3000.46,
+    marketCap: 361354711703,
+    marketCapRank: 2,
+    totalVolume: 19247516322,
+    priceChange24h: 170.9,
+    priceChangePercentage24h: 6.03982
+  },
+  {
+    id: 'tether',
+    symbol: 'usdt',
+    name: 'Tether',
+    image: 'https://assets.cgproxy.brave.com/coins/images/325/large/Tether-logo.png?1598003707',
+    currentPrice: 0.999981,
+    marketCap: 83153567337,
+    marketCapRank: 3,
+    totalVolume: 60387266495,
+    priceChange24h: -0.00077149716,
+    priceChangePercentage24h: -0.07709
+  },
+  {
+    id: 'binancecoin',
+    symbol: 'bnb',
+    name: 'BNB',
+    image: 'https://assets.cgproxy.brave.com/coins/images/825/large/bnb-icon2_2x.png?1644979850',
+    currentPrice: 400.1,
+    marketCap: 67256828191,
+    marketCapRank: 4,
+    totalVolume: 1627664095,
+    priceChange24h: 12.97,
+    priceChangePercentage24h: 3.34962
   }
 ]
 
@@ -321,5 +378,7 @@ export const mockWalletState: WalletState = {
   ],
   onRampCurrencies: mockCurrencies,
   selectedCurrency: mockCurrency,
-  passwordAttempts: 0
+  passwordAttempts: 0,
+  isLoadingCoinMarketData: false,
+  coinMarketData: mockCoinMarketData
 }

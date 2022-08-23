@@ -1234,8 +1234,9 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   base::Value::Dict ads_data;
   ads_data.Set("adsIsSupported", ads_service->IsSupportedLocale());
   ads_data.Set("adsEnabled", ads_service->IsEnabled());
-  ads_data.Set("adsPerHour",
-               static_cast<int>(ads_service->GetNotificationAdsPerHour()));
+  ads_data.Set(
+      "adsPerHour",
+      static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
   ads_data.Set(kAdsSubdivisionTargeting,
                ads_service->GetSubdivisionTargetingCode());
   ads_data.Set(kAutoDetectedAdsSubdivisionTargeting,
@@ -1393,8 +1394,9 @@ void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
 
   if (ads_service) {
     prefs.Set("adsEnabled", ads_service->IsEnabled());
-    prefs.Set("adsPerHour",
-              static_cast<double>(ads_service->GetNotificationAdsPerHour()));
+    prefs.Set(
+        "adsPerHour",
+        static_cast<double>(ads_service->GetMaximumNotificationAdsPerHour()));
   } else {
     prefs.Set("adsEnabled", false);
     prefs.Set("adsPerHour", 0.0);
@@ -1430,7 +1432,7 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
 
     int* ads_per_hour = params->prefs.ads_per_hour.get();
     if (ads_per_hour)
-      ads_service->SetNotificationAdsPerHour(*ads_per_hour);
+      ads_service->SetMaximumNotificationAdsPerHour(*ads_per_hour);
   }
 
   return RespondNow(NoArguments());

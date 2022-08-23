@@ -15,8 +15,8 @@ const char kEnabled[] = "brave.brave_ads.enabled";
 const char kShouldAllowConversionTracking[] =
     "brave.brave_ads.should_allow_ad_conversion_tracking";
 
-// Stores the maximum amount of ads per hour
-const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
+// Stores the maximum number of notification ads per hour
+const char kMaximumNotificationAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 
 // Stores the idle time threshold before checking if an ad can be served
 const char kIdleTimeThreshold[] = "brave.brave_ads.idle_threshold";
@@ -56,6 +56,7 @@ const char kEpsilonGreedyBanditEligibleSegments[] =
     "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
 
 // Ads
+const char kNotificationAds[] = "brave.brave_ads.notification_ads";
 const char kServeAdAt[] = "brave.brave_ads.serve_ad_at";
 
 // Rewards
@@ -69,11 +70,16 @@ const char kHasMigratedConfirmationState[] =
     "brave.brave_ads.has_migrated.confirmation_state";
 const char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
+const char kHasMigratedNotificationState[] =
+    "brave.brave_ads.has_migrated.notification_state";
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 
 const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash.v2";
 const char kClientHash[] = "brave.brave_ads.client.hash.v3";
+
+// Browser version
+const char kBrowserVersionNumber[] = "brave.brave_ads.browser_version_number";
 
 }  // namespace prefs
 }  // namespace ads

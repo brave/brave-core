@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
@@ -88,13 +87,6 @@ template("brave_extra_paks") {
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
       ]
-    }
-
-    if (enable_sidebar) {
-      sources += [
-        "$root_gen_dir/brave/browser/resources/sidebar/sidebar_resources.pak",
-      ]
-      deps += [ "//brave/browser/resources/sidebar:resources" ]
     }
 
     if (enable_tor) {

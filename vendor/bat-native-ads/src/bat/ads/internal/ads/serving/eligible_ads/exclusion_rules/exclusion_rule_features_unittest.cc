@@ -50,7 +50,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
   base::FieldTrialParams kParameters;
   kParameters["should_exclude_ad_if_converted"] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({kFeature, kParameters});
+  enabled_features.emplace_back(kFeature, kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -113,7 +113,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ExcludeAdIfDismissedWithinTimeWindow) {
   const char kParameter[] = "exclude_ad_if_dismissed_within_time_window";
   parameters[kParameter] = "24h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({kFeature, parameters});
+  enabled_features.emplace_back(kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -176,7 +176,7 @@ TEST(BatAdsUserActivityFeaturesTest, ExcludeAdIfTransferredWithinTimeWindow) {
   const char kParameter[] = "exclude_ad_if_transferred_within_time_window";
   parameters[kParameter] = "24h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back({kFeature, parameters});
+  enabled_features.emplace_back(kFeature, parameters);
 
   const std::vector<base::Feature> disabled_features;
 

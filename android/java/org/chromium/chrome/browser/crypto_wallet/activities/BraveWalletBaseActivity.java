@@ -14,6 +14,7 @@ import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
@@ -21,14 +22,17 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
-import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate;
+import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl;
+import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl.TxServiceObserverImplDelegate;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
 public abstract class BraveWalletBaseActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, TxServiceObserver, KeyringServiceObserver {
+        implements ConnectionErrorHandler, KeyringServiceObserverImplDelegate,
+                   TxServiceObserverImplDelegate {
     protected KeyringService mKeyringService;
     protected BlockchainRegistry mBlockchainRegistry;
     protected JsonRpcService mJsonRpcService;
@@ -37,6 +41,8 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
     protected SolanaTxManagerProxy mSolanaTxManagerProxy;
     protected AssetRatioService mAssetRatioService;
     protected BraveWalletService mBraveWalletService;
+    private KeyringServiceObserverImpl mKeyringServiceObserver;
+    private TxServiceObserverImpl mTxServiceObserver;
 
     @Override
     public void onUserInteraction() {
@@ -48,6 +54,16 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
 
     @Override
     public void onConnectionError(MojoException e) {
+        if (mKeyringServiceObserver != null) {
+            mKeyringServiceObserver.close();
+            mKeyringServiceObserver.destroy();
+            mKeyringServiceObserver = null;
+        }
+        if (mTxServiceObserver != null) {
+            mTxServiceObserver.close();
+            mTxServiceObserver.destroy();
+            mTxServiceObserver = null;
+        }
         if (mKeyringService != null) mKeyringService.close();
         if (mAssetRatioService != null) mAssetRatioService.close();
         if (mBlockchainRegistry != null) mBlockchainRegistry.close();
@@ -81,7 +97,8 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         }
 
         mTxService = TxServiceFactory.getInstance().getTxService(this);
-        mTxService.addObserver(this);
+        mTxServiceObserver = new TxServiceObserverImpl(this);
+        mTxService.addObserver(mTxServiceObserver);
     }
 
     protected void InitEthTxManagerProxy() {
@@ -106,7 +123,8 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
         }
 
         mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        mKeyringService.addObserver(this);
+        mKeyringServiceObserver = new KeyringServiceObserverImpl(this);
+        mKeyringService.addObserver(mKeyringServiceObserver);
     }
 
     protected void InitBlockchainRegistry() {
@@ -198,6 +216,14 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
 
     @Override
     public void onDestroy() {
+        if (mKeyringServiceObserver != null) {
+            mKeyringServiceObserver.close();
+            mKeyringServiceObserver.destroy();
+        }
+        if (mTxServiceObserver != null) {
+            mTxServiceObserver.close();
+            mTxServiceObserver.destroy();
+        }
         if (mKeyringService != null) mKeyringService.close();
         if (mAssetRatioService != null) mAssetRatioService.close();
         if (mBlockchainRegistry != null) mBlockchainRegistry.close();
@@ -218,4 +244,16 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
     public void locked() {
         finish();
     }
+
+    @Override
+    public void backedUp() {}
+
+    @Override
+    public void onNewUnapprovedTx(TransactionInfo txInfo) {}
+
+    @Override
+    public void onUnapprovedTxUpdated(TransactionInfo txInfo) {}
+
+    @Override
+    public void onTransactionStatusChanged(TransactionInfo txInfo) {}
 }

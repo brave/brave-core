@@ -23,7 +23,13 @@ static const char kWaitForElementToAppearScript[] = R"(
 
         const timerID = window.setTimeout(() => {
           observer.disconnect();
-          reject(new Error("Timed out waiting for '" + selector + "'."));
+          let element = document.querySelector(selector);
+          if (element) {
+            resolve(element);
+          } else {
+            reject(new Error("Timed out waiting for '" + selector + "'."));
+            console.error(document.body.innerHTML);
+          }
         }, TIMEOUT_SECONDS * 1000);
 
         const observer = new MutationObserver(({}, observer) => {

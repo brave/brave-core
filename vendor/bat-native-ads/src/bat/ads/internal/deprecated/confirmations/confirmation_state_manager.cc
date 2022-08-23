@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check_op.h"
 #include "base/guid.h"
 #include "base/hash/hash.h"

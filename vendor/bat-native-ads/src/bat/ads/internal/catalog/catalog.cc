@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/browser/browser_manager.h"
 
+#include <string>
+
 #include "base/check_op.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"

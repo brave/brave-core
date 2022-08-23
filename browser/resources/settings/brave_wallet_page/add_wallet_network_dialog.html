@@ -2,6 +2,9 @@
 <script type="module" src="../settings_vars_css.js"></script>
 
 <style include="settings-shared">
+  .rpc-endpoint {
+    --cr-input-error-display: none;
+  }
   .icon-picture-button {
     align-self: right;
     margin-left: auto;
@@ -101,26 +104,29 @@
                         class="icon-picture-button"
                         id="rpc-plus-button"
                         on-click="onAddRpcUrlTap_"
-                        hidden="{{isRpcPlusButtonDisabled_}}" ></cr-icon-button>
+                        disabled="{{isRpcPlusButtonDisabled_}}" ></cr-icon-button>
       </div>
-      <iron-list items="[[rpcUrls]]" class="urls-list" id="rpc-urls-list" preserve-focus risk-selection>
-        <template>
-          <cr-input type="url"
-                    placeholder="$i18n{walletAddNetworkDialogUrlPlaceholder}"
-                    error-message="$i18n{walletAddNetworkInvalidURLInput}"
-                    spellcheck="false"
-                    on-input=urlChangedRpc_
-                    value="{{item.value}}">
-          </cr-input>
+      <cr-radio-group id="rpcRadioGroup" selected="{{selectedRpcUrl}}" on-selected-changed="selectedRpcUrlChanged_">
+        <template is="dom-repeat" items="[[rpcUrls]]">
+          <cr-radio-button name="{{item.value}}">
+            <cr-input type="url"
+                      class="rpc-endpoint"
+                      placeholder="$i18n{walletAddNetworkDialogUrlPlaceholder}"
+                      error-message="$i18n{walletAddNetworkInvalidURLInput}"
+                      spellcheck="false"
+                      on-input=urlChangedRpc_
+                      value="{{item.value}}">
+            </cr-input>
+          </cr-radio-button>
         </template>
-      </iron-list>
+      </cr-radio-group>
     </div>
     <div>
       <div class="settings-row urls-button-container">
         <span>$i18n{walletAddNetworkDialogIconsTitle}</span>
         <cr-icon-button iron-icon="cr:add" class="icon-picture-button"
                         id="icon-plus-button" on-click="onAddIconUrlTap_"
-                        hidden="{{isIconPlusButtonDisabled_}}"
+                        disabled="{{isIconPlusButtonDisabled_}}"
                         class="wallet-input"
                         type="url"
         ></cr-icon-button>
@@ -146,7 +152,7 @@
                         class="icon-picture-button"
                         id="block-plus-button"
                         on-click="onAddBlockUrlTap_"
-                        hidden="{{isBlockPlusButtonDisabled_}}"
+                        disabled="{{isBlockPlusButtonDisabled_}}"
         ></cr-icon-button>
       </div>
       <iron-list items="[[blockUrls]]" class="urls-list" id="block-urls-list" preserve-focus risk-selection>

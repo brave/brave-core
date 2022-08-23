@@ -21,7 +21,7 @@ extern const char kEnabled[];
 
 extern const char kShouldAllowConversionTracking[];
 
-extern const char kAdsPerHour[];
+extern const char kMaximumNotificationAdsPerHour[];
 
 extern const char kIdleTimeThreshold[];
 
@@ -40,6 +40,8 @@ extern const char kIssuers[];
 extern const char kEpsilonGreedyBanditArms[];
 extern const char kEpsilonGreedyBanditEligibleSegments[];
 
+extern const char kNotificationAds[];
+
 extern const char kServeAdAt[];
 
 extern const char kNextTokenRedemptionAt[];
@@ -47,10 +49,13 @@ extern const char kNextTokenRedemptionAt[];
 extern const char kHasMigratedClientState[];
 extern const char kHasMigratedConfirmationState[];
 extern const char kHasMigratedConversionState[];
+extern const char kHasMigratedNotificationState[];
 extern const char kHasMigratedRewardsState[];
 
 extern const char kConfirmationsHash[];
 extern const char kClientHash[];
+
+extern const char kBrowserVersionNumber[];
 
 }  // namespace prefs
 }  // namespace ads

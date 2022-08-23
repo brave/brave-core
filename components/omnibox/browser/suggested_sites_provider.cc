@@ -66,7 +66,7 @@ void SuggestedSitesProvider::Start(const AutocompleteInput& input,
       check_add_match);
 }
 
-SuggestedSitesProvider::~SuggestedSitesProvider() {}
+SuggestedSitesProvider::~SuggestedSitesProvider() = default;
 
 // static
 ACMatchClassifications SuggestedSitesProvider::StylesForSingleMatch(

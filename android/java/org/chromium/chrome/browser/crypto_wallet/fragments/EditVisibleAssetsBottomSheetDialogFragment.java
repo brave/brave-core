@@ -56,7 +56,8 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -66,7 +67,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialogFragment
-        implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserver {
+        implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserverImplDelegate {
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
@@ -76,6 +77,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private Boolean mIsAssetsListChanged;
     private static final String TAG = "EditVisibleAssetsBottomSheetDialogFragment";
     private WalletModel mWalletModel;
+    private KeyringServiceObserverImpl mKeyringServiceObserver;
 
     public interface DismissListener {
         void onDismiss(Boolean isAssetsListChanged);
@@ -191,6 +193,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         if (mDismissListener != null) {
             mDismissListener.onDismiss(mIsAssetsListChanged);
         }
+        if (mKeyringServiceObserver != null) {
+            mKeyringServiceObserver.close();
+            mKeyringServiceObserver.destroy();
+            mKeyringServiceObserver = null;
+        }
     }
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
@@ -277,7 +284,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         }
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
-        keyringService.addObserver(this);
+        mKeyringServiceObserver = new KeyringServiceObserverImpl(this);
+        keyringService.addObserver(mKeyringServiceObserver);
     }
 
     private void showAddAssetDialog() {
@@ -359,29 +367,43 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private TextWatcherImpl filterAddCustomAssetTextWatcher = new TextWatcherImpl();
 
     private class TextWatcherImpl implements TextWatcher {
-        Dialog mDialog;
-        boolean selfChange;
+        private Dialog mDialog;
+        private boolean selfChange;
+        private EditText tokenNameEdit;
+        private EditText tokenContractAddressEdit;
+        private EditText tokenSymbolEdit;
+        private EditText tokenDecimalsEdit;
+        private EditText tokenIdEdit;
+        private Button addButton;
 
         public void setDialog(Dialog dialog) {
             mDialog = dialog;
             selfChange = false;
+            tokenNameEdit = mDialog.findViewById(R.id.token_name);
+            tokenContractAddressEdit = mDialog.findViewById(R.id.token_contract_address);
+            tokenSymbolEdit = mDialog.findViewById(R.id.token_symbol);
+            tokenDecimalsEdit = mDialog.findViewById(R.id.token_decimals);
+            tokenIdEdit = mDialog.findViewById(R.id.token_id);
+            addButton = mDialog.findViewById(R.id.add);
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (selfChange) return;
-            EditText tokenNameEdit = mDialog.findViewById(R.id.token_name);
-            EditText tokenContractAddressEdit = mDialog.findViewById(R.id.token_contract_address);
-            EditText tokenSymbolEdit = mDialog.findViewById(R.id.token_symbol);
-            EditText tokenDecimalsEdit = mDialog.findViewById(R.id.token_decimals);
-            EditText tokenIdEdit = mDialog.findViewById(R.id.token_id);
-            tokenIdEdit.setEnabled(true);
-            Button addButton = mDialog.findViewById(R.id.add);
+            String contractAddress = tokenContractAddressEdit.getText().toString();
+            String contractAddressTrimmed = contractAddress.trim();
+            if (!contractAddress.equals(contractAddressTrimmed)) {
+                // update the contractAddress and process it within the next onTextChanged pass
+                tokenContractAddressEdit.setText(
+                        contractAddressTrimmed, TextView.BufferType.EDITABLE);
+                return;
+            }
             String tokenName = tokenNameEdit.getText().toString();
             String tokenSymbol = tokenSymbolEdit.getText().toString();
-            String contractAddress = tokenContractAddressEdit.getText().toString();
 
+            tokenIdEdit.setEnabled(true);
             addButton.setEnabled(false);
+
             boolean checked = false;
             for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
                 // We can have multiple ERC721 tokens with the same name
@@ -398,7 +420,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
             AssetRatioService assetRatioService = getAssetRatioService();
             // Do not assert here, service can be null when backed from dialog
-            if (assetRatioService != null) {
+            if (assetRatioService != null && !contractAddress.isEmpty()) {
                 assetRatioService.getTokenInfo(contractAddress, token -> {
                     if (token != null) {
                         selfChange = true;

@@ -18,7 +18,7 @@ export function getPreferences (): Promise<NewTab.Preferences> {
   return sendWithPromise('getNewTabPagePreferences')
 }
 
-function sendSavePref (key: string, value: any) {
+export function sendSavePref (key: string, value: any) {
   chrome.send('saveNewTabPagePref', [key, value])
 }
 

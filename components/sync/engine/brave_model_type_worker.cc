@@ -49,7 +49,7 @@ BraveModelTypeWorker::BraveModelTypeWorker(
                       nudge_handler,
                       cancelation_signal) {}
 
-BraveModelTypeWorker::~BraveModelTypeWorker() {}
+BraveModelTypeWorker::~BraveModelTypeWorker() = default;
 
 void BraveModelTypeWorker::OnCommitResponse(
     const CommitResponseDataList& committed_response_list,

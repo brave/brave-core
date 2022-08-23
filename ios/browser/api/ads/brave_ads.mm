@@ -26,6 +26,7 @@
 #include "bat/ads/ad_event_history.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_callback.h"
+#include "bat/ads/build_channel.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_info.h"
@@ -34,6 +35,7 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/sys_info.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -78,7 +80,7 @@ static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
 static NSString* const kAdsEnabledPrefKey =
     base::SysUTF8ToNSString(ads::prefs::kEnabled);
 static NSString* const kNumberOfAdsPerHourKey =
-    base::SysUTF8ToNSString(ads::prefs::kAdsPerHour);
+    base::SysUTF8ToNSString(ads::prefs::kMaximumNotificationAdsPerHour);
 static NSString* const kShouldAllowAdsSubdivisionTargetingPrefKey =
     base::SysUTF8ToNSString(ads::prefs::kShouldAllowSubdivisionTargeting);
 static NSString* const kAdsSubdivisionTargetingCodePrefKey =
@@ -1203,14 +1205,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return "";
   }
   return std::string(contents.UTF8String);
-}
-
-- (void)reset:(const std::string&)name callback:(ads::ResultCallback)callback {
-  if ([self.commonOps removeFileWithName:name]) {
-    callback(/* success */ true);
-  } else {
-    callback(/* success */ false);
-  }
 }
 
 - (void)save:(const std::string&)name

@@ -32,11 +32,11 @@ bool ShouldServeAtRegularIntervals() {
          (BrowserManager::GetInstance()->IsBrowserActive() ||
           AdsClientHelper::GetInstance()
               ->CanShowNotificationAdsWhileBrowserIsBackgrounded()) &&
-         settings::GetNotificationAdsPerHour() > 0;
+         settings::GetMaximumNotificationAdsPerHour() > 0;
 }
 
 void ShowNotificationAd(const NotificationAdInfo& ad) {
-  NotificationAdManager::GetInstance()->PushBack(ad);
+  NotificationAdManager::GetInstance()->Add(ad);
   AdsClientHelper::GetInstance()->ShowNotificationAd(ad);
 }
 

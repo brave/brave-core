@@ -56,8 +56,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -102,8 +102,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -150,8 +150,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -195,8 +195,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -239,8 +239,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -284,8 +284,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -328,8 +328,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -372,8 +372,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -418,8 +418,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "0s";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -458,8 +458,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   base::FieldTrialParams kParameters;
   kParameters["exclude_ad_if_dismissed_within_time_window"] = "48h";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.push_back(
-      {exclusion_rules::features::kFeature, kParameters});
+  enabled_features.emplace_back(exclusion_rules::features::kFeature,
+                                kParameters);
 
   const std::vector<base::Feature> disabled_features;
 

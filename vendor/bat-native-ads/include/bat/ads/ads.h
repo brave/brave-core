@@ -31,18 +31,6 @@ class AdsClient;
 struct HistoryInfo;
 struct NotificationAdInfo;
 
-// Returns system information. |device_id| containing machine characteristics
-// which should not be stored to disk or transmitted. |is_uncertain_future|
-// containing |true| for guest operating systems otherwise |false|.
-mojom::SysInfo& SysInfo();
-
-// Returns the build channel. |name| containg the build channel name.
-// |is_release| containing |true| if release build otherwise |false|.
-mojom::BuildChannelInfo& BuildChannel();
-
-// Data resources
-extern const char g_catalog_json_schema_data_resource_name[];
-
 // Returns |true| if the locale is supported otherwise returns |false|.
 bool IsSupportedLocale(const std::string& locale);
 

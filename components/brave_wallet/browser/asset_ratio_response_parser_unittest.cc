@@ -308,4 +308,54 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   EXPECT_FALSE(ParseTokenInfo(R"({"payload":{})", "0x1", mojom::CoinType::ETH));
 }
 
+TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
+  // https://ratios.rewards.brave.software/v2/market/provider/coingecko\?vsCurrency\=usd\&limit\=2
+  std::string json(R"(
+    {
+      "payload": [
+        {
+          "id": "bitcoin",
+          "symbol": "btc",
+          "name": "Bitcoin",
+          "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+          "market_cap": 727960800075,
+          "market_cap_rank": 1,
+          "current_price": 38357,
+          "price_change_24h": -1229.64683216549,
+          "price_change_percentage_24h": -3.10625,
+          "total_volume": 17160995925
+        }
+      ]
+    }
+  )");
+
+  std::vector<brave_wallet::mojom::CoinMarketPtr> values;
+  ASSERT_TRUE(ParseCoinMarkets(json, &values));
+  ASSERT_EQ(values.size(), 1UL);
+  EXPECT_EQ(values[0]->id, "bitcoin");
+  EXPECT_EQ(values[0]->symbol, "btc");
+  EXPECT_EQ(values[0]->name, "Bitcoin");
+  EXPECT_EQ(values[0]->image,
+            "https://assets.coingecko.com/coins/images/1/large/"
+            "bitcoin.png?1547033579");
+  EXPECT_EQ(values[0]->market_cap, 727960800075);
+  EXPECT_EQ(values[0]->market_cap_rank, uint32_t(1));
+  EXPECT_EQ(values[0]->current_price, 38357);
+  EXPECT_EQ(values[0]->price_change_24h, -1229.64683216549);
+  EXPECT_EQ(values[0]->price_change_percentage_24h, -3.10625);
+  EXPECT_EQ(values[0]->total_volume, 17160995925);
+
+  // Invalid input
+  json = R"({"id": [])";
+  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  json = R"({"id": []})";
+  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  json = "3";
+  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  json = "[3]";
+  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+  json = "";
+  EXPECT_FALSE(ParseCoinMarkets(json, &values));
+}
+
 }  // namespace brave_wallet

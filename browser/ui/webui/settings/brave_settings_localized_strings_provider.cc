@@ -58,6 +58,8 @@ const char16_t kBraveAdsLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/360026361072-Brave-Ads-FAQ";
 const char16_t kBraveTermsOfUseURL[] = u"https://brave.com/terms-of-use/";
 const char16_t kBravePrivacyPolicyURL[] = u"https://brave.com/privacy/browser/";
+const char16_t kBraveSyncGuideUrl[] =
+    u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
 const char16_t kDeAmpLearnMoreUrl[] =
     u"https://support.brave.com/hc/en-us/articles/8611298579981";
 
@@ -616,6 +618,13 @@ void BraveAddAboutStrings(content::WebUIDataSource* html_source,
   html_source->AddString("aboutProductLicense", license);
 }
 
+void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
+  std::u16string passphraseDecryptionErrorMessage = l10n_util::GetStringFUTF16(
+      IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_ERROR_MESSAGE, kBraveSyncGuideUrl);
+  html_source->AddString("braveSyncPassphraseDecryptionErrorMessage",
+                         passphraseDecryptionErrorMessage);
+}
+
 }  // namespace
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
@@ -624,6 +633,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddResources(html_source, profile);
   BraveAddAboutStrings(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
+  BraveAddSyncStrings(html_source);
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(

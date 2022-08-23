@@ -154,10 +154,21 @@ void RewardsBrowserTestContextHelper::VisitPublisher(
   // granularity is seconds), so wait for just over 2 seconds to elapse
   base::PlatformThread::Sleep(base::Milliseconds(2100));
 
-  // Load rewards page
-  rewards_browsertest_util::ActivateTabAtIndex(browser_, 0);
+  LoadRewardsPage();
 
   auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
+
+  // Ensure that we are on the Rewards page.
+  EXPECT_EQ(contents->GetLastCommittedURL().host_piece(), "rewards");
+
+  // Ensure that the AC box is displayed.
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents, "[data-test-id=auto-contribute-settings]");
+
+  // Ensure that the AC sites table is displayed.
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents, "[data-test-id=autoContribute]");
+
   // Make sure site appears in auto-contribute table
   rewards_browsertest_util::WaitForElementToEqual(
       contents,
@@ -201,7 +212,7 @@ void RewardsBrowserTestContextHelper::LoadRewardsPage() {
   bool found = false;
   for (int index = 0; index < tab_strip->count(); ++index) {
     auto* contents = tab_strip->GetWebContentsAt(index);
-    if (contents->GetLastCommittedURL() == url) {
+    if (contents->GetLastCommittedURL().host_piece() == url.host_piece()) {
       found = true;
       tab_strip->ActivateTabAt(index);
       break;

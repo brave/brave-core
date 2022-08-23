@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -71,7 +72,7 @@ Conversions::~Conversions() = default;
 void Conversions::Save(const ConversionList& conversions,
                        ResultCallback callback) {
   if (conversions.empty()) {
-    callback(/* success */ true);
+    std::move(callback).Run(/* success */ true);
     return;
   }
 
@@ -80,7 +81,8 @@ void Conversions::Save(const ConversionList& conversions,
   InsertOrUpdate(transaction.get(), conversions);
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void Conversions::GetAll(GetConversionsCallback callback) {
@@ -133,7 +135,8 @@ void Conversions::PurgeExpired(ResultCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnResultCallback, callback));
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 std::string Conversions::GetTableName() const {

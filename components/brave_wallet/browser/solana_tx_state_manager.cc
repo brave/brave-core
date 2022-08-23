@@ -35,7 +35,7 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
   if (!TxStateManager::ValueToTxMeta(value, meta.get()))
     return nullptr;
 
-  const base::Value* tx_value = value.Find("tx");
+  const base::Value::Dict* tx_value = value.FindDict("tx");
   if (!tx_value)
     return nullptr;
   auto tx = SolanaTransaction::FromValue(*tx_value);
@@ -43,7 +43,8 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
     return nullptr;
   meta->set_tx(std::move(tx));
 
-  const base::Value* signature_status_value = value.Find("signature_status");
+  const base::Value::Dict* signature_status_value =
+      value.FindDict("signature_status");
   if (!signature_status_value)
     return nullptr;
   absl::optional<SolanaSignatureStatus> signature_status =

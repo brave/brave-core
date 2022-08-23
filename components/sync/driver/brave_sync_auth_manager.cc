@@ -30,7 +30,7 @@ BraveSyncAuthManager::BraveSyncAuthManager(
                       account_state_changed,
                       credentials_changed) {}
 
-BraveSyncAuthManager::~BraveSyncAuthManager() {}
+BraveSyncAuthManager::~BraveSyncAuthManager() = default;
 
 void BraveSyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   VLOG(1) << __func__;

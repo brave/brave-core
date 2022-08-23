@@ -67,16 +67,21 @@ class Conversions final : public LocaleManagerObserver,
 
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
+  void OnSaveConversionQueue(const bool success);
 
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
   void ProcessQueue();
 
   void RemoveInvalidQueueItem(
+      const ConversionQueueItemInfo& conversion_queue_item);
+  void OnRemoveInvalidQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item,
-      ResultCallback callback);
+      const bool success);
   void MarkQueueItemAsProcessed(
+      const ConversionQueueItemInfo& conversion_queue_item);
+  void OnMarkQueueItemAsProcessed(
       const ConversionQueueItemInfo& conversion_queue_item,
-      ResultCallback callback);
+      const bool success);
   void FailedToConvertQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
   void ConvertedQueueItem(const ConversionQueueItemInfo& conversion_queue_item);

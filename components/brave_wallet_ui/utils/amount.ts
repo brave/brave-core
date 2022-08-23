@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 
 import { CurrencySymbols } from './currency-symbols'
+import { AbbreviationOptions } from '../constants/types'
 
 type BigNumberIsh =
   | BigNumber
@@ -303,5 +304,64 @@ export default class Amount {
 
   isNegative (): boolean {
     return this.value !== undefined && this.value.isNegative()
+  }
+
+  // Abbreviate number in units of 1000 e.g., 100000 becomes 100k
+  abbreviate (decimals: number, currency?: string, forceAbbreviation?: AbbreviationOptions): string {
+    const powers = {
+      trillion: Math.pow(10, 12),
+      billion: Math.pow(10, 9),
+      million: Math.pow(10, 6),
+      thousand: Math.pow(10, 3)
+    }
+    const abbreviations = {
+      thousand: 'k',
+      million: 'M',
+      billion: 'B',
+      trillion: 'T'
+    }
+
+    if (this.value === undefined) {
+      return ''
+    }
+
+    const formatter = Intl.NumberFormat(navigator.language, {
+      style: currency ? 'currency' : 'decimal',
+      currency: currency,
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    })
+
+    const abs = this.value.absoluteValue().toNumber()
+    let value = this.value.toNumber()
+    let abbreviation = ''
+
+    if (forceAbbreviation && abbreviations[forceAbbreviation] && powers[forceAbbreviation]) {
+      abbreviation = abbreviations[forceAbbreviation]
+      value = value / powers[forceAbbreviation]
+
+      return formatter.format(value) + abbreviation
+    }
+
+    if (abs >= powers.trillion || Math.round(abs / powers.trillion) === 1) {
+      // trillion
+      abbreviation = abbreviations.trillion
+      value = value / powers.trillion
+    } else if (abs < powers.trillion && abs >= powers.billion) {
+      // billion
+      abbreviation = abbreviations.billion
+      value = value / powers.billion
+    } else if (abs < powers.billion && abs >= powers.million) {
+      // million
+      abbreviation = abbreviations.million
+      value = value / powers.million
+    } else if (abs < powers.million && abs >= powers.thousand) {
+      // thousand
+      abbreviation = abbreviations.thousand
+      value = value / powers.thousand
+    }
+
+    return formatter.format(value) + abbreviation
   }
 }

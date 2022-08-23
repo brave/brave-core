@@ -94,7 +94,7 @@ export const helpAction = styled.div`
   margin-top: 36px;
   text-align: center;
 
-  a {
+  button {
     display: inline-block;
     padding: 10px 22px;
     font-weight: 600;

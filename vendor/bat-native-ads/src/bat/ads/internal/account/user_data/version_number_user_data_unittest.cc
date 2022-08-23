@@ -9,7 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/version_info/version_info.h"
+#include "bat/ads/internal/browser/browser_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -24,10 +24,8 @@ TEST(BatAdsVersionNumberUserDataTest, GetVersionNumber) {
   const base::Value::Dict user_data = GetVersionNumber();
 
   // Assert
-  const std::string expected_version_number =
-      version_info::GetBraveChromiumVersionNumber();
   const std::string expected_json = base::StringPrintf(
-      R"({"versionNumber":"%s"})", expected_version_number.c_str());
+      R"({"versionNumber":"%s"})", GetBrowserVersionNumber().c_str());
 
   const base::Value expected_user_data = base::test::ParseJson(expected_json);
   ASSERT_TRUE(expected_user_data.is_dict());

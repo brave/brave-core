@@ -6,7 +6,8 @@
 import * as React from 'react'
 
 // utils
-import { getLocale } from '$web-common/locale'
+import { getLocale } from '../../../../../../common/locale'
+import { ORDINALS } from '../../../../../utils/ordinal-utils'
 import { unbiasedRandom } from '../../../../../utils/random-utils'
 
 // styles
@@ -27,19 +28,13 @@ export interface SelectedPhraseWord {
 interface Props {
   hidden: boolean
   recoveryPhrase: string[]
+  verificationIndices?: number[]
   onClickReveal?: () => void
   verificationModeEnabled?: boolean
-  onVerifyUpdate?: (doesWordOrderMatch: boolean) => void
-  onSelectedWordListChange?: (words: SelectedPhraseWord[]) => void
+  onSelectedWordListChange?: (words: SelectedPhraseWord[], doesWordOrderMatch: boolean) => void
 }
 
 const FAKE_PHRASE_WORDS = new Array(12).fill('Fake')
-
-const SELECTED_WORD_ORDINALS = {
-  0: getLocale('braveWalletOrdinalFirst'),
-  1: getLocale('braveWalletOrdinalThird'),
-  2: getLocale('braveWalletOrdinalLast')
-}
 
 const getNewSelectedWordsList = (prevWords: SelectedPhraseWord[], word: SelectedPhraseWord): SelectedPhraseWord[] => {
   // remove from list if word already selected
@@ -59,20 +54,49 @@ const getNewSelectedWordsList = (prevWords: SelectedPhraseWord[], word: Selected
 export const RecoveryPhrase: React.FC<Props> = ({
   hidden,
   onClickReveal,
-  onVerifyUpdate,
   onSelectedWordListChange,
   recoveryPhrase,
-  verificationModeEnabled
+  verificationModeEnabled,
+  verificationIndices
 }) => {
   // state
   const [selectedWords, setSelectedWords] = React.useState<SelectedPhraseWord[]>([])
 
   // methods
   const makeOnClickWord = React.useCallback((word: SelectedPhraseWord) => () => {
-    if (verificationModeEnabled) {
-      setSelectedWords(prev => getNewSelectedWordsList(prev, word))
+    if (verificationModeEnabled && verificationIndices) {
+      const newSelectedWords = getNewSelectedWordsList(selectedWords, word)
+
+      setSelectedWords(newSelectedWords)
+
+      if (!onSelectedWordListChange) {
+        return
+      }
+
+      // wrong length
+      if (newSelectedWords.length !== 3) {
+        onSelectedWordListChange(newSelectedWords, false)
+        return
+      }
+
+      // check order
+      const firstWordMatch = newSelectedWords[0].value === recoveryPhrase[verificationIndices[0]]
+
+      const secondWordMatch = selectedWords[1].value === recoveryPhrase[verificationIndices[1]]
+
+      const lastWordMatch = newSelectedWords[2].value === recoveryPhrase[verificationIndices[2]]
+
+      const match = (firstWordMatch && secondWordMatch && lastWordMatch)
+
+      onSelectedWordListChange(newSelectedWords, match)
     }
-  }, [verificationModeEnabled])
+  }, [
+    verificationModeEnabled,
+    selectedWords,
+    verificationIndices,
+    onSelectedWordListChange,
+    recoveryPhrase
+  ])
 
   // memos
   const shuffledPhrase: string[] = React.useMemo(() => {
@@ -94,36 +118,6 @@ export const RecoveryPhrase: React.FC<Props> = ({
         : recoveryPhrase
       ).map((str, index) => ({ value: str, index }))
   }, [verificationModeEnabled, shuffledPhrase, recoveryPhrase])
-
-  // effects
-  React.useEffect(() => {
-    // exit early if not monitoring list updates
-    if (!onSelectedWordListChange) {
-      return
-    }
-
-    onSelectedWordListChange(selectedWords)
-  }, [selectedWords, onSelectedWordListChange])
-
-  React.useEffect(() => {
-    // exit early if not monitoring verification
-    if (!onVerifyUpdate) {
-      return
-    }
-
-    // wrong length
-    if (selectedWords.length !== 3) {
-      onVerifyUpdate(false)
-      return
-    }
-
-    // check order
-    const firstWordMatch = selectedWords[0].value === recoveryPhrase[0] // first
-    const thirdWordMatch = selectedWords[1].value === recoveryPhrase[2] // third
-    const lastWordMatch = selectedWords[2].value === recoveryPhrase[recoveryPhrase.length - 1] // last (12-24th)
-
-    onVerifyUpdate(firstWordMatch && thirdWordMatch && lastWordMatch)
-  }, [selectedWords, onVerifyUpdate])
 
   // render
   if (hidden) {
@@ -161,9 +155,9 @@ export const RecoveryPhrase: React.FC<Props> = ({
             selected={isWordSelected}
           >
 
-            {isWordSelected &&
+            {isWordSelected && verificationIndices &&
               <RecoveryBubbleBadge>
-                {SELECTED_WORD_ORDINALS[wordIndex] || ''}
+                {ORDINALS[verificationIndices[wordIndex]] || ''}
               </RecoveryBubbleBadge>
             }
 

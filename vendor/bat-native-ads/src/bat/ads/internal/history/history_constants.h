@@ -6,9 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_HISTORY_CONSTANTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_HISTORY_CONSTANTS_H_
 
-namespace base {
-class TimeDelta;
-}  // namespace base
+#include "base/time/time.h"
 
 namespace ads {
 

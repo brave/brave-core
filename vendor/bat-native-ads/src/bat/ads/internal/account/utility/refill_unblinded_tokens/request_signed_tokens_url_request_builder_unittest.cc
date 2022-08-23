@@ -6,11 +6,11 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
 #include "base/check.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
+#include "bat/ads/sys_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

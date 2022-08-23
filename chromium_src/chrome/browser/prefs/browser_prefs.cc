@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
@@ -52,6 +53,10 @@
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+#include "brave/browser/ntp_background/ntp_background_prefs.h"
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
@@ -98,6 +103,11 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 05/2022
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   translate::MigrateBraveProfilePrefs(profile->GetPrefs());
+#endif
+
+  // Added 06/2022
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+  NTPBackgroundPrefs(profile->GetPrefs()).MigrateOldPref();
 #endif
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

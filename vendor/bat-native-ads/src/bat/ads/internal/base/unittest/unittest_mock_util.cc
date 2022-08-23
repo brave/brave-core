@@ -23,7 +23,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/build_channel.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
@@ -261,7 +261,7 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
         for (int i = 0; i < max_count; i++) {
           const std::string spec =
               base::StringPrintf("https://www.brave.com/%d", i);
-          history.push_back(GURL(spec));
+          history.emplace_back(spec);
         }
 
         std::move(callback).Run(history);

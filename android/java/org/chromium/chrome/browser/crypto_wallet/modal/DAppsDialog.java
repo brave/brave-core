@@ -26,14 +26,13 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-public class DAppsDialog extends Dialog implements ConnectionErrorHandler, KeyringServiceObserver {
+public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
     public static final String TAG_FRAGMENT = DAppsDialog.class.getName();
 
     private View mRootView;

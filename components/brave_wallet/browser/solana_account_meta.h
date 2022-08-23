@@ -9,12 +9,9 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_wallet {
 
@@ -28,12 +25,13 @@ struct SolanaAccountMeta {
   bool operator==(const SolanaAccountMeta&) const;
 
   mojom::SolanaAccountMetaPtr ToMojomSolanaAccountMeta() const;
-  base::Value ToValue() const;
+  base::Value::Dict ToValue() const;
 
   static void FromMojomSolanaAccountMetas(
       const std::vector<mojom::SolanaAccountMetaPtr>& mojom_account_metas,
       std::vector<SolanaAccountMeta>* account_metas);
-  static absl::optional<SolanaAccountMeta> FromValue(const base::Value& value);
+  static absl::optional<SolanaAccountMeta> FromValue(
+      const base::Value::Dict& value);
 
   std::string pubkey;
   bool is_signer;

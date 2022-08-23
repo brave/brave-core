@@ -12,6 +12,7 @@
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -27,18 +28,17 @@ class PasswordEncryptor {
       size_t iterations,
       size_t key_size_in_bits);
 
-  bool Encrypt(base::span<const uint8_t> plaintext,
-               base::span<const uint8_t> nonce,
-               std::vector<uint8_t>* ciphertext);
+  std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
+                               base::span<const uint8_t> nonce);
 
-  bool Decrypt(base::span<const uint8_t> ciphertext,
-               base::span<const uint8_t> nonce,
-               std::vector<uint8_t>* plaintext);
+  absl::optional<std::vector<uint8_t>> Decrypt(
+      base::span<const uint8_t> ciphertext,
+      base::span<const uint8_t> nonce);
 
   // This can only be used by wallet importer
-  bool DecryptForImporter(base::span<const uint8_t> ciphertext,
-                          base::span<const uint8_t> nonce,
-                          std::vector<uint8_t>* plaintext);
+  absl::optional<std::vector<uint8_t>> DecryptForImporter(
+      base::span<const uint8_t> ciphertext,
+      base::span<const uint8_t> nonce);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(PasswordEncryptorUnitTest, DecryptForImporter);

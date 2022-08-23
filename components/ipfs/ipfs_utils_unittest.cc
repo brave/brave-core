@@ -22,7 +22,7 @@
 
 class IpfsUtilsUnitTest : public testing::Test {
  public:
-  IpfsUtilsUnitTest() {}
+  IpfsUtilsUnitTest() = default;
   ~IpfsUtilsUnitTest() override = default;
 
   void SetUp() override {

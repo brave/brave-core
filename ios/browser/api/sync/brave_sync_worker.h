@@ -13,6 +13,7 @@
 
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_sync/time_limited_words.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -29,7 +30,6 @@ class SyncServiceImpl;
 
 namespace brave_sync {
 enum class QrCodeDataValidationResult;
-enum class WordsValidationStatus;
 }  // namespace brave_sync
 
 class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
@@ -79,7 +79,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::string GetQrCodeJsonFromHexSeed(const std::string& hex_seed);
   brave_sync::QrCodeDataValidationResult GetQrCodeValidationResult(
       const std::string json);
-  brave_sync::WordsValidationStatus GetWordsValidationResult(
+  brave_sync::TimeLimitedWords::ValidationStatus GetWordsValidationResult(
       const std::string time_limited_words);
   std::string GetWordsFromTimeLimitedWords(
       const std::string& time_limited_words);

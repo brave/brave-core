@@ -52,7 +52,7 @@ class GetURLTask : public history::HistoryDBTask {
   void DoneRunOnMainThread() override { base::RunLoop().RunUntilIdle(); }
 
  private:
-  ~GetURLTask() override {}
+  ~GetURLTask() override = default;
 
   raw_ptr<bool> result_storage_;
   const GURL url_;

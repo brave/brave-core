@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-/* global window */
 
 import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
@@ -27,13 +26,6 @@ import { getMockedTransactionInfo } from '../../constants/mocks'
 import { HardwareOperationResult, SignHardwareOperationResult } from '../../hardware_operations'
 import { Unsuccessful } from './trezor-connect-types'
 import { SignHardwareMessageOperationResult, TrezorDerivationPaths } from '../types'
-
-let uuid = 0
-window.crypto = {
-  randomUUID () {
-    return uuid++
-  }
-}
 
 const createTransport = (url: string, hardwareTransport: TrezorBridgeTransport | TrezorCommandHandler) => {
   hardwareTransport.windowListeners_ = {}

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -18,8 +19,9 @@ namespace ads {
 
 void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads) {
   database::table::CreativeNewTabPageAds database_table;
-  database_table.Save(creative_ads,
-                      [](const bool success) { ASSERT_TRUE(success); });
+  database_table.Save(creative_ads, base::BindOnce([](const bool success) {
+                        ASSERT_TRUE(success);
+                      }));
 }
 
 CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {

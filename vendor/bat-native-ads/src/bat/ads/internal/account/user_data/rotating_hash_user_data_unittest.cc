@@ -6,10 +6,10 @@
 #include "bat/ads/internal/account/user_data/rotating_hash_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/sys_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -38,8 +38,8 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   const base::Value::Dict user_data = GetRotatingHash(kCreativeInstanceId);
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"rotating_hash":"1748047652"})");
+  const base::Value expected_user_data = base::test::ParseJson(
+      R"({"rotating_hash":"06a6D0QCW5onYUDKqCBBXUoil02apd6pcJ47M3Li7hA="})");
   ASSERT_TRUE(expected_user_data.is_dict());
 
   EXPECT_EQ(expected_user_data, user_data);

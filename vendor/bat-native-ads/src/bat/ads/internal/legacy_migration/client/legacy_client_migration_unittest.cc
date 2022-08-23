@@ -19,7 +19,7 @@ namespace client {
 namespace {
 
 constexpr uint64_t kClientJsonHash = 1891112954;
-constexpr uint64_t kMigratedClientJsonHash = 1943308255;
+constexpr uint64_t kMigratedClientJsonHash = 1204433941;
 
 constexpr char kInvalidJsonFilename[] = "invalid.json";
 

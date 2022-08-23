@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/feature_list.h"
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
@@ -106,9 +106,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
     html_source->DisableContentSecurityPolicy();
   }
 
-  if (ShouldExposeElementsForTesting()) {
-    html_source->AddBoolean("shouldExposeElementsForTesting", true);
-  }
+  html_source->AddBoolean("shouldExposeElementsForTesting",
+                          ShouldExposeElementsForTesting());
 }
 
 // static

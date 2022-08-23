@@ -52,7 +52,6 @@ extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowBraveTalk[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];
-extern const char kNewTabPageCustomBackgroundEnabled[];
 extern const char kBraveTodayIntroDismissed[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kBraveDarkMode[];
@@ -78,6 +77,10 @@ extern const char kPlayYTVideoInBrowserEnabled[];
 extern const char kBackgroundVideoPlaybackEnabled[];
 extern const char kSafetynetCheckFailed[];
 extern const char kSafetynetStatus[];
+#endif
+
+#if BUILDFLAG(IS_WIN)
+extern const char kTryToPinForExistingUsers[];
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

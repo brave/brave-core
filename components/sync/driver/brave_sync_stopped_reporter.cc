@@ -21,7 +21,7 @@ BraveSyncStoppedReporter::BraveSyncStoppedReporter(
                           url_loader_factory,
                           std::move(callback)) {}
 
-BraveSyncStoppedReporter::~BraveSyncStoppedReporter() {}
+BraveSyncStoppedReporter::~BraveSyncStoppedReporter() = default;
 
 void BraveSyncStoppedReporter::ReportSyncStopped(
     const std::string& access_token,

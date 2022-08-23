@@ -62,7 +62,7 @@ IpnsKeysManager::IpnsKeysManager(
   DCHECK(blob_context_getter_factory_);
 }
 
-IpnsKeysManager::~IpnsKeysManager() {}
+IpnsKeysManager::~IpnsKeysManager() = default;
 
 void IpnsKeysManager::ImportKey(const base::FilePath& upload_file_path,
                                 const std::string& name,

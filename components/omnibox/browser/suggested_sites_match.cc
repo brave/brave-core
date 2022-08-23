@@ -22,5 +22,4 @@ SuggestedSitesMatch::SuggestedSitesMatch(const SuggestedSitesMatch& other) {
   display_ = other.display_;
 }
 
-SuggestedSitesMatch::~SuggestedSitesMatch() {
-}
+SuggestedSitesMatch::~SuggestedSitesMatch() = default;

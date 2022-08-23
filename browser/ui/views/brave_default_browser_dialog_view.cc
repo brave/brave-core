@@ -14,6 +14,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -24,6 +25,10 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/layout_provider.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/brave_shell_integration_win.h"
+#endif
 
 namespace brave {
 
@@ -162,5 +167,15 @@ void BraveDefaultBrowserDialogView::OnAcceptButtonClicked() {
   // message loops of the FILE and UI thread will hold references to it
   // and it will be automatically freed once all its tasks have finished.
   base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
+#if BUILDFLAG(IS_WIN)
+      ->StartSetAsDefault(
+          base::BindOnce([](shell_integration::DefaultWebClientState state) {
+            if (state == shell_integration::DefaultWebClientState::IS_DEFAULT) {
+              // Try to pin to taskbar when Brave is set as a default browser.
+              shell_integration::win::PinToTaskbar();
+            }
+          }));
+#else
       ->StartSetAsDefault(base::NullCallback());
+#endif
 }

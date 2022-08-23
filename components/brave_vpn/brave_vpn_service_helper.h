@@ -20,7 +20,7 @@ struct Hostname;
 bool ValidateCachedRegionData(const base::Value::List& region_value);
 std::string GetBraveVPNPaymentsEnv(const std::string& env);
 
-base::Value GetValueFromRegion(const mojom::Region& region);
+base::Value::Dict GetValueFromRegion(const mojom::Region& region);
 std::unique_ptr<Hostname> PickBestHostname(
     const std::vector<Hostname>& hostnames);
 std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames);

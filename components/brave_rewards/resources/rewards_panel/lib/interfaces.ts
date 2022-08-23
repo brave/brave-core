@@ -97,6 +97,7 @@ export interface Host {
   addListener: (callback: HostListener) => () => void
   getString: (key: string) => string
   enableRewards: () => void
+  openAdaptiveCaptchaSupport: () => void
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void
   setIncludeInAutoContribute: (include: boolean) => void

@@ -37,7 +37,7 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
   ASSERT_TRUE(value);
 
   absl::optional<SolanaSignatureStatus> status =
-      SolanaSignatureStatus::FromValue(*value);
+      SolanaSignatureStatus::FromValue(value->GetDict());
   ASSERT_TRUE(status);
   EXPECT_EQ(std::numeric_limits<uint64_t>::max(), status->slot);
   EXPECT_EQ(10u, status->confirmations);
@@ -45,7 +45,7 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
   EXPECT_EQ("confirmed", status->confirmation_status);
 
   std::vector<std::string> invalid_value_strings = {
-      "{}", "[]",
+      "{}",
       // slot/confirmations > uint64_t max
       R"({"slot": "18446744073709551616", "confirmations": "10",
           "err": "", "confirmation_status": "confirmed"})",
@@ -63,7 +63,7 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusFromValue) {
     absl::optional<base::Value> invalid_value =
         base::JSONReader::Read(invalid_value_string);
     ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
-    EXPECT_FALSE(SolanaSignatureStatus::FromValue(*invalid_value))
+    EXPECT_FALSE(SolanaSignatureStatus::FromValue(invalid_value->GetDict()))
         << ":" << invalid_value_string;
   }
 }
@@ -75,12 +75,11 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusToValue) {
   status.err = "";
   status.confirmation_status = "confirmed";
 
-  base::Value value = status.ToValue();
-  ASSERT_TRUE(value.is_dict());
-  EXPECT_EQ(*value.FindStringKey("slot"), "18446744073709551615");
-  EXPECT_EQ(*value.FindStringKey("confirmations"), "10");
-  EXPECT_EQ(*value.FindStringKey("err"), status.err);
-  EXPECT_EQ(*value.FindStringKey("confirmation_status"),
+  base::Value::Dict value = status.ToValue();
+  EXPECT_EQ(*value.FindString("slot"), "18446744073709551615");
+  EXPECT_EQ(*value.FindString("confirmations"), "10");
+  EXPECT_EQ(*value.FindString("err"), status.err);
+  EXPECT_EQ(*value.FindString("confirmation_status"),
             status.confirmation_status);
 
   auto status_from_value = SolanaSignatureStatus::FromValue(value);

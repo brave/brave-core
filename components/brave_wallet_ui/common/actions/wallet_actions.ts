@@ -23,7 +23,9 @@ import {
   UpdateUnapprovedTransactionSpendAllowanceType,
   UpdateUnapprovedTransactionNonceType,
   SetTransactionProviderErrorType,
-  SelectedAccountChangedPayloadType
+  SelectedAccountChangedPayloadType,
+  GetCoinMarketPayload,
+  GetCoinMarketsResponse
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -128,6 +130,8 @@ export const refreshBalancesAndPriceHistory = createAction('refreshBalancesAndPr
 export const setTransactionProviderError = createAction<SetTransactionProviderErrorType>('setTransactionProviderError')
 export const setSelectedCoin = createAction<BraveWallet.CoinType>('setSelectedCoin')
 export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDefaultNetworks')
+export const getCoinMarkets = createAction<GetCoinMarketPayload>('getCoinMarkets')
+export const setCoinMarkets = createAction<GetCoinMarketsResponse>('setCoinMarkets')
 export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter')
 export const setSelectedAssetFilterItem = createAction<AssetFilterOption>('setSelectedAssetFilterItem')
 export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDefaultAccounts')

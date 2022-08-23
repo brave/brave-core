@@ -49,7 +49,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(ads::prefs::kShouldAllowConversionTracking,
                                 true);
 
-  registry->RegisterInt64Pref(ads::prefs::kAdsPerHour, -1);
+  registry->RegisterInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, -1);
 
   registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
 
@@ -72,6 +72,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterListPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
                              base::Value::List());
 
+  registry->RegisterListPref(ads::prefs::kNotificationAds, base::Value::List());
   registry->RegisterTimePref(ads::prefs::kServeAdAt, base::Time());
 
   registry->RegisterTimePref(ads::prefs::kNextTokenRedemptionAt,
@@ -81,10 +82,14 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConfirmationState,
                                 false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
+  registry->RegisterBooleanPref(ads::prefs::kHasMigratedNotificationState,
+                                false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
 
   registry->RegisterUint64Pref(ads::prefs::kConfirmationsHash, 0);
   registry->RegisterUint64Pref(ads::prefs::kClientHash, 0);
+
+  registry->RegisterStringPref(ads::prefs::kBrowserVersionNumber, "");
 }
 
 }  // namespace brave_ads

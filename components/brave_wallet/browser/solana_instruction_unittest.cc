@@ -8,8 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/test/gtest_util.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -106,8 +106,8 @@ TEST(SolanaInstructionUnitTest, FromToValue) {
        SolanaAccountMeta(to_account, false, true)},
       data);
 
-  base::Value value = instruction.ToValue();
-  auto expect_instruction_value = base::JSONReader::Read(R"(
+  base::Value::Dict value = instruction.ToValue();
+  auto expect_instruction_value = base::test::ParseJson(R"(
     {
       "program_id": "11111111111111111111111111111111",
       "accounts": [
@@ -125,22 +125,19 @@ TEST(SolanaInstructionUnitTest, FromToValue) {
       "data": "AgAAAICWmAAAAAAA"
     }
   )");
-  ASSERT_TRUE(expect_instruction_value);
-  EXPECT_EQ(value, *expect_instruction_value);
+  EXPECT_EQ(value, expect_instruction_value.GetDict());
 
   auto instruction_from_value = SolanaInstruction::FromValue(value);
   EXPECT_EQ(instruction, instruction_from_value);
 
   std::vector<std::string> invalid_value_strings = {
-      "{}", "[]", R"({"program_id": "program id", "accounts": []})",
+      "{}", R"({"program_id": "program id", "accounts": []})",
       R"({"program_id": "program id", "data": ""})",
       R"({"accounts": [], "data": ""})"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    absl::optional<base::Value> invalid_value =
-        base::JSONReader::Read(invalid_value_string);
-    ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
-    EXPECT_FALSE(SolanaInstruction::FromValue(*invalid_value))
+    auto invalid_value = base::test::ParseJson(invalid_value_string);
+    EXPECT_FALSE(SolanaInstruction::FromValue(invalid_value.GetDict()))
         << ":" << invalid_value_string;
   }
 }

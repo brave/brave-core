@@ -4,20 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
-import Sol from '@ledgerhq/hw-app-solana'
 import { LedgerMessagingTransport } from './ledger-messaging-transport'
 import { HardwareOperationResult } from '../../hardware/types'
 import {
-  LedgerCommand,
   LedgerResponsePayload,
   UnlockCommand,
-  UnlockResponse,
-  GetAccountCommand,
-  GetAccountResponse,
-  GetAccountResponsePayload,
-  SignTransactionCommand,
-  SignTransactionResponsePayload,
-  SignTransactionResponse
+  UnlockResponse
 } from './ledger-messages'
 
 // LedgerUntrustedMessagingTransport is the messaging transport object
@@ -31,9 +23,6 @@ import {
 export class LedgerUntrustedMessagingTransport extends LedgerMessagingTransport {
   constructor (targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
-    this.addCommandHandler<UnlockResponse>(LedgerCommand.Unlock, this.handleUnlock)
-    this.addCommandHandler<GetAccountResponse>(LedgerCommand.GetAccount, this.handleGetAccount)
-    this.addCommandHandler<SignTransactionResponse>(LedgerCommand.SignTransaction, this.handleSignTransaction)
   }
 
   promptAuthorization = async () => {
@@ -43,7 +32,7 @@ export class LedgerUntrustedMessagingTransport extends LedgerMessagingTransport 
     }
   }
 
-  private handleUnlock = async (command: UnlockCommand): Promise<UnlockResponse> => {
+  protected handleUnlock = async (command: UnlockCommand): Promise<UnlockResponse> => {
     const isAuthNeeded = await this.authorizationNeeded()
     const payload: LedgerResponsePayload | HardwareOperationResult =
       isAuthNeeded
@@ -59,65 +48,7 @@ export class LedgerUntrustedMessagingTransport extends LedgerMessagingTransport 
     return responsePayload
   }
 
-  private handleGetAccount = async (command: GetAccountCommand): Promise<GetAccountResponse> => {
-    const transport = await TransportWebHID.create()
-    const app = new Sol(transport)
-    try {
-      const result = await app.getAddress(command.path)
-      const getAccountResponsePayload: GetAccountResponsePayload = {
-        success: true,
-        address: result.address
-      }
-      const response: GetAccountResponse = {
-        id: command.id,
-        command: command.command,
-        payload: getAccountResponsePayload,
-        origin: command.origin
-      }
-      return response
-    } catch (error) {
-      const response: GetAccountResponse = {
-        id: command.id,
-        command: command.command,
-        payload: error,
-        origin: command.origin
-      }
-      return response
-    } finally {
-      await transport.close()
-    }
-  }
-
-  private handleSignTransaction = async (command: SignTransactionCommand): Promise<SignTransactionResponse> => {
-    const transport = await TransportWebHID.create()
-    const app = new Sol(transport)
-    try {
-      const result = await app.signTransaction(command.path, Buffer.from(command.rawTxBytes))
-      const signTransactionResponsePayload: SignTransactionResponsePayload = {
-        success: true,
-        signature: result.signature
-      }
-      const response: SignTransactionResponse = {
-        id: command.id,
-        command: command.command,
-        payload: signTransactionResponsePayload,
-        origin: command.origin
-      }
-      return response
-    } catch (error) {
-      const response: SignTransactionResponse = {
-        id: command.id,
-        command: command.command,
-        payload: error,
-        origin: command.origin
-      }
-      return response
-    } finally {
-      await transport.close()
-    }
-  }
-
-  private authorizationNeeded = async (): Promise<boolean> => {
+  protected authorizationNeeded = async (): Promise<boolean> => {
     return (await TransportWebHID.list()).length === 0
   }
 }

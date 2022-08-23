@@ -19,7 +19,7 @@
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/skus/skus_service_factory.h"
@@ -38,7 +38,7 @@
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #else
-#include "brave/browser/ntp_background_images/android/ntp_background_images_bridge.h"
+#include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

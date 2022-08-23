@@ -44,6 +44,7 @@ provideStrings({
   braveWalletTopTabApps: 'Apps',
   braveWalletTopNavNFTS: 'NFTs',
   braveWalletTopNavAccounts: 'Accounts',
+  braveWalletTopNavMarket: 'Market',
 
   // Chart Timeline Buttons
   braveWalletChartLive: '1H',
@@ -127,7 +128,7 @@ provideStrings({
   // Onboarding import or restore wallet page
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
   braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
-  braveWalletImportOrRestoreDescription: 'To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum wallets.',
+  braveWalletImportOrRestoreDescription: 'To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum and Solana wallets.',
   braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
   braveWalletRestoreMyBraveWalletDescription: '12-24 words',
   braveWalletImportFromMetaMask: 'Import from MetaMask',
@@ -156,7 +157,7 @@ provideStrings({
 
   // Onboarding - Backup Wallet - Verify Recovery Phrase
   braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
-  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1first (1st)$2, $3third (3rd)$4, and $5last ($7th)$6 words of your recovery phrase.',
+  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1$7 ($8)$2, $3$9 ($10)$4, and $5$11 ($12)$6 words of your recovery phrase.',
   braveWalletVerifyPhraseError: 'Recovery phrase didn\'t match',
 
   // Recovery Phrase Backup - Intro
@@ -324,8 +325,33 @@ provideStrings({
 
   // Ordinals
   braveWalletOrdinalFirst: 'First',
+  braveWalletOrdinalSecond: 'Second',
   braveWalletOrdinalThird: 'Third',
-  braveWalletOrdinalLast: 'Last',
+  braveWalletOrdinalFourth: 'Fourth',
+  braveWalletOrdinalFifth: 'Fifth',
+  braveWalletOrdinalSixth: 'Sixth',
+  braveWalletOrdinalSeventh: 'Seventh',
+  braveWalletOrdinalEighth: 'Eighth',
+  braveWalletOrdinalNinth: 'Ninth',
+  braveWalletOrdinalTenth: 'Tenth',
+  braveWalletOrdinalEleventh: 'Eleventh',
+  braveWalletOrdinalTwelfth: 'Twelfth',
+  braveWalletOridinalThirteenth: 'Thirteenth',
+  braveWalletOrdinalFourteenth: 'Fourteenth',
+  braveWalletOrdinalFifteenth: 'Fifteenth',
+  braveWalletOrdinalSixteenth: 'Sixteenth',
+  braveWalletOrdinalSeventeenth: 'Seventeenth',
+  braveWalletOrdinalEighteenth: 'Eighteenth',
+  braveWalletOrdinalNineteenth: 'Nineteenth',
+  braveWalletOrdinalTwentieth: 'Twentieth',
+  braveWalletOrdinalTwentyFirst: 'Twenty-first',
+  braveWalletOrdinalTwentySecond: 'Twenty-second',
+  braveWalletOrdinalTwentyThird: 'Twenty-third',
+  braveWalletOrdinalTwentyFourth: 'Twenty-fourth',
+  braveWalletOrdinalSuffixOne: 'st',
+  braveWalletOrdinalSuffixTwo: 'nd',
+  braveWalletOrdinalSuffixFew: 'rd',
+  braveWalletOrdinalSuffixOther: 'th',
 
   // Networks
   braveWalletNetworkETH: 'Ethereum',
@@ -591,6 +617,22 @@ provideStrings({
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
   braveWalletSweepstakesDescription: '7 days of crypto giveaways, ~$500k in prizes.',
   braveWalletSweepstakesCallToAction: 'Enter now!',
+
+  // Market Data Filters
+  braveWalletMarketDataAllAssetsFilter: 'All Assets',
+  braveWalletMarketDataTradableFilter: 'Tradable',
+  braveWalletMarketDataAssetsColumn: 'Assets',
+  braveWalletMarketDataPriceColumn: 'Price',
+  braveWalletMarketData24HrColumn: '24Hr',
+  braveWalletMarketDataMarketCapColumn: 'Mkt. Cap',
+  braveWalletMarketDataVolumeColumn: 'Volume',
+
+  // Market Coin Detail Screen
+  braveWalletInformation: 'Information',
+  braveWalletRankStat: 'Rank',
+  braveWalletVolumeStat: '24h Volume',
+  braveWalletMarketCapStat: 'Market Cap',
+  braveWalletMarketDataCoinNotSupported: 'This asset is not supported by brave wallet',
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',

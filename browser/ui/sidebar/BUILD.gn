@@ -16,14 +16,10 @@ source_set("sidebar") {
     "sidebar_controller.h",
     "sidebar_model.cc",
     "sidebar_model.h",
-    "sidebar_model_data.cc",
-    "sidebar_model_data.h",
     "sidebar_service_factory.cc",
     "sidebar_service_factory.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
-    "sidebar_web_contents_delegate.cc",
-    "sidebar_web_contents_delegate.h",
   ]
 
   deps = [

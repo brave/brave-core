@@ -15,7 +15,8 @@ import {
   UpdateUnapprovedTransactionSpendAllowanceType,
   TransactionStatusChanged,
   UpdateUnapprovedTransactionNonceType,
-  SelectedAccountChangedPayloadType
+  SelectedAccountChangedPayloadType,
+  GetCoinMarketPayload
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -644,6 +645,12 @@ handler.on(WalletActions.expandWalletNetworks.getType(), async (store) => {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
+})
+
+handler.on(WalletActions.getCoinMarkets.getType(), async (store: Store, payload: GetCoinMarketPayload) => {
+  const assetRatioService = getAPIProxy().assetRatioService
+  const result = await assetRatioService.getCoinMarkets(payload.vsAsset, payload.limit)
+  store.dispatch(WalletActions.setCoinMarkets(result))
 })
 
 handler.on(WalletActions.setSelectedNetworkFilter.getType(), async (store: Store, payload: BraveWallet.NetworkInfo) => {

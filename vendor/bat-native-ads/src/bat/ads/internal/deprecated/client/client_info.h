@@ -38,7 +38,6 @@ struct ClientInfo final {
   targeting::TextClassificationProbabilityList
       text_classification_probabilities;
   targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
-  std::string version_code;
 };
 
 }  // namespace ads

@@ -12,7 +12,7 @@
 namespace {
 
 constexpr const char* kDeprecatedAdsDataFiles[] = {
-    "ad_conversions.json", "bundle.json", "catalog.json"};
+    "ad_conversions.json", "bundle.json", "catalog.json", "notifications.json"};
 
 constexpr const char* kDeprecatedBundleStateDb = "bundle_state";
 

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -23,8 +24,9 @@ constexpr char kAdvertiserId[] = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
 void SaveConversionQueueItems(
     const ConversionQueueItemList& conversion_queue_items) {
   database::table::ConversionQueue database_table;
-  database_table.Save(conversion_queue_items,
-                      [](const bool success) { ASSERT_TRUE(success); });
+  database_table.Save(
+      conversion_queue_items,
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 }
 
 ConversionQueueItemInfo BuildConversionQueueItem(

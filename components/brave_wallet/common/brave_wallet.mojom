@@ -295,6 +295,19 @@ struct AssetPrice {
   string asset_timeframe_change;
 };
 
+struct CoinMarket {
+  string id;
+  string symbol;
+  string name;
+  string image;
+  double market_cap;
+  uint32 market_cap_rank;
+  double current_price;
+  double price_change_24h;
+  double price_change_percentage_24h;
+  double total_volume;
+};
+
 // Structs to model 0x (swap) HTTP API interactions
 // Docs: https://docs.0x.org/0x-api-swap
 struct SwapParams {
@@ -675,6 +688,9 @@ interface AssetRatioService {
   // Obtain token info via contract address through etherscan API.
   // This is only for Ethereum mainnet.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
+
+  // Obtain list of top currencies and their market data
+  GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
 };
 
 // Implements swapping related functionality through the 0x API.
@@ -767,7 +783,8 @@ struct NetworkInfo {
   string chain_name;
   array<string> block_explorer_urls;
   array<string> icon_urls;
-  array<string> rpc_urls;
+  int32 active_rpc_endpoint_index;
+  array<url.mojom.Url> rpc_endpoints;
   string symbol;
   string symbol_name;
   int32 decimals;
@@ -889,7 +906,7 @@ interface JsonRpcService {
   // address, otherwise balance is 0x0.
   GetERC721TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
-  // Obtains the quanitity of ERC1155 tokens a user has
+  // Obtains the quantity of ERC1155 tokens a user has
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Solana JSON RPCs

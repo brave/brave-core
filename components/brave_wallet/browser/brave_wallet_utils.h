@@ -72,7 +72,6 @@ std::vector<mojom::NetworkInfoPtr> GetAllEthCustomChains(PrefService* prefs);
 bool KnownEthChainExists(const std::string& chain_id);
 bool CustomEthChainExists(PrefService* prefs,
                           const std::string& custom_chain_id);
-GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
                                                 mojom::CoinType coin);
 GURL GetNetworkURL(PrefService* prefs,
@@ -145,13 +144,6 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
 // Get the current chain ID for coin from kBraveWalletSelectedNetworks pref.
 std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
 
-// Returns the first URL to use that:
-// 1. Has no variables in it like ${INFURA_API_KEY}
-// 2. Is HTTP or HTTPS
-// Otherwise if there is a URL in the list, it returns the first one.
-// Otherwise returns an empty GURL
-GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
-
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 
 // Returns a string used for web3_clientVersion in the form of
@@ -172,6 +164,9 @@ std::string GetFilecoinKeyringId(const std::string& network);
 std::string GetFilecoinChainId(const std::string& keyring_id);
 
 mojom::CoinType GetCoinForKeyring(const std::string& keyring_id);
+
+GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

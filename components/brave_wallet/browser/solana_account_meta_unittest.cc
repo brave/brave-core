@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -47,18 +47,17 @@ TEST(SolanaAccountMetaUnitTest, FromMojomSolanaAccountMetas) {
 }
 
 TEST(SolanaAccountMetaUnitTest, FromValue) {
-  absl::optional<base::Value> value = base::JSONReader::Read(R"({
+  auto value = base::test::ParseJson(R"({
       "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
       "is_signer": true,
       "is_writable": false
   })");
-  ASSERT_TRUE(value);
   EXPECT_EQ(SolanaAccountMeta("3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
                               true, false),
-            SolanaAccountMeta::FromValue(*value));
+            SolanaAccountMeta::FromValue(value.GetDict()));
 
   std::vector<std::string> invalid_value_strings = {
-      "{}", "[]",
+      "{}",
       R"({"pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
        "is_signer": true})",
       R"({"pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
@@ -66,10 +65,8 @@ TEST(SolanaAccountMetaUnitTest, FromValue) {
       R"({"is_signer": true, "is_writable": false})"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    absl::optional<base::Value> invalid_value =
-        base::JSONReader::Read(invalid_value_string);
-    ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
-    EXPECT_FALSE(SolanaAccountMeta::FromValue(*invalid_value))
+    auto invalid_value = base::test::ParseJson(invalid_value_string);
+    EXPECT_FALSE(SolanaAccountMeta::FromValue(invalid_value.GetDict()))
         << ":" << invalid_value_string;
   }
 }
@@ -77,12 +74,11 @@ TEST(SolanaAccountMetaUnitTest, FromValue) {
 TEST(SolanaAccountMetaUnitTest, ToValue) {
   SolanaAccountMeta meta("3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw", true,
                          false);
-  base::Value value = meta.ToValue();
-  ASSERT_TRUE(value.is_dict());
-  EXPECT_EQ(*value.FindStringKey("pubkey"),
+  base::Value::Dict value = meta.ToValue();
+  EXPECT_EQ(*value.FindString("pubkey"),
             "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");
-  EXPECT_EQ(*value.FindBoolKey("is_signer"), true);
-  EXPECT_EQ(*value.FindBoolKey("is_writable"), false);
+  EXPECT_EQ(*value.FindBool("is_signer"), true);
+  EXPECT_EQ(*value.FindBool("is_writable"), false);
 
   auto meta_from_value = SolanaAccountMeta::FromValue(value);
   ASSERT_TRUE(meta_from_value);

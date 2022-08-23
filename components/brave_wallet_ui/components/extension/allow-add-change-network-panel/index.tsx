@@ -46,7 +46,7 @@ function AllowAddChangeNetworkPanel (props: Props) {
     onApproveAddNetwork,
     onApproveChangeNetwork
   } = props
-  const rpcUrl = networkPayload.rpcUrls.length ? networkPayload.rpcUrls[0] : ''
+  const rpcUrl = networkPayload.rpcEndpoints[networkPayload.activeRpcEndpointIndex]?.url || ''
   const blockUrl = networkPayload.blockExplorerUrls.length ? networkPayload.blockExplorerUrls[0] : ''
 
   const [selectedTab, setSelectedTab] = React.useState<tabs>('network')

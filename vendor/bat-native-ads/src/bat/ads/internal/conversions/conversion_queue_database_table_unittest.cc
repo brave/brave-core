@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/bind.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
@@ -318,8 +319,8 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
-  database_table_->Delete(info_1,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  database_table_->Delete(
+      info_1, base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {info_2};
@@ -370,8 +371,9 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       "9a11b60f-e29d-4446-8d1f-318311e36e0a";
   invalid_conversion_queue_item.process_at = Now();
 
-  database_table_->Delete(invalid_conversion_queue_item,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  database_table_->Delete(
+      invalid_conversion_queue_item,
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items =
@@ -411,8 +413,8 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
-  database_table_->Update(info_1,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  database_table_->Update(
+      info_1, base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {info_2};
@@ -463,8 +465,9 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       "9a11b60f-e29d-4446-8d1f-318311e36e0a";
   invalid_conversion_queue_item.process_at = Now();
 
-  database_table_->Update(invalid_conversion_queue_item,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  database_table_->Update(
+      invalid_conversion_queue_item,
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items =

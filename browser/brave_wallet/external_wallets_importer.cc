@@ -57,10 +57,6 @@ void OnRunWithStorage(base::OnceCallback<void(base::Value::Dict)> callback,
     std::move(callback).Run(base::Value::Dict());
 }
 
-static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
-  return base::as_bytes(base::make_span(sp));
-}
-
 std::string GetLegacyCryptoWalletsPassword(const std::string& password,
                                            base::Value::Dict dict) {
   std::string legacy_crypto_wallets_password;
@@ -348,20 +344,20 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     return;
   }
 
-  std::string salt_decoded;
-  if (!base::Base64Decode(*salt_str, &salt_decoded)) {
+  auto salt_decoded = base::Base64Decode(*salt_str);
+  if (!salt_decoded) {
     VLOG(1) << "base64 decode failed: " << *salt_str;
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
-  std::string iv_decoded;
-  if (!base::Base64Decode(*iv_str, &iv_decoded)) {
+  auto iv_decoded = base::Base64Decode(*iv_str);
+  if (!iv_decoded) {
     VLOG(1) << "base64 decode failed: " << *iv_str;
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
-  std::string data_decoded;
-  if (!base::Base64Decode(*data_str, &data_decoded)) {
+  auto data_decoded = base::Base64Decode(*data_str);
+  if (!data_decoded) {
     VLOG(1) << "base64 decode failed: " << *data_str;
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
@@ -369,19 +365,19 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          password, ToSpan(salt_decoded), 10000, 256);
+          password, *salt_decoded, 10000, 256);
   DCHECK(encryptor);
 
-  std::vector<uint8_t> decrypted_keyrings;
-  if (!encryptor->DecryptForImporter(ToSpan(data_decoded), ToSpan(iv_decoded),
-                                     &decrypted_keyrings)) {
+  auto decrypted_keyrings =
+      encryptor->DecryptForImporter(*data_decoded, *iv_decoded);
+  if (!decrypted_keyrings) {
     VLOG(0) << "Importer decryption failed";
     std::move(callback).Run(false, ImportInfo(), ImportError::kPasswordError);
     return;
   }
 
   const std::string decrypted_keyrings_str =
-      std::string(decrypted_keyrings.begin(), decrypted_keyrings.end());
+      std::string(decrypted_keyrings->begin(), decrypted_keyrings->end());
   auto keyrings = base::JSONReader::Read(
       decrypted_keyrings_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);

@@ -1,7 +1,7 @@
-import { EthereumSignedTx } from './trezor/trezor-connect-types'
 import { BraveWallet } from '../../constants/types'
 import { SignedLotusMessage } from '@glif/filecoin-message'
 import { LedgerError } from './ledgerjs/ledger-messages'
+import { EthereumSignedTx } from './ledgerjs/eth-ledger-messages'
 
 export const FilecoinNetworkTypes = [
   BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
@@ -34,16 +34,6 @@ export type HardwareOperationResult = {
 
 export type SignHardwareOperationResult = HardwareOperationResult & {
   payload?: EthereumSignedTx | SignedLotusMessage | Buffer | string
-}
-
-export type GetAccountOperationResult = HardwareOperationResult & {
-  payload?: Buffer
-}
-
-export interface TrezorBridgeAccountsPayload {
-  success: boolean
-  accounts: BraveWallet.HardwareWalletAccount[]
-  error?: string
 }
 
 export enum LedgerDerivationPaths {

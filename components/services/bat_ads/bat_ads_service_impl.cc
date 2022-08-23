@@ -8,7 +8,8 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ads/ads.h"
+#include "bat/ads/build_channel.h"
+#include "bat/ads/sys_info.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
 namespace bat_ads {

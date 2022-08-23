@@ -9,9 +9,6 @@
 -ExternalProtocolHandlerSandboxBrowserTest.*
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
--MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginAllow
--MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginDeny
--MultiscreenWindowPlacementPermissionContextTest.IsExtendedSameOriginAllow
 -NewTabUIBrowserTest.*
 -NewTabUIProcessPerTabTest.*
 -OzonePlatformTest.*

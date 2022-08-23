@@ -14,18 +14,12 @@
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
-#include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
-#include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
-#include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
-#include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
+#include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
@@ -33,10 +27,6 @@
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
-#include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/component_updater/component_updater_switches.h"
@@ -52,7 +42,6 @@
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
-#include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/main/browser.h"
@@ -69,7 +58,6 @@
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
-#include "ui/base/resource/resource_bundle.h"
 
 // Chromium logging is global, therefore we cannot link this to the instance in
 // question
@@ -99,8 +87,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<Browser> _browser;
   BrowserList* _browserList;
   ChromeBrowserState* _mainBrowserState;
-  NSMutableDictionary<NSNumber* /* BraveWalletCoinType */, NSString*>*
-      _providerScripts;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
@@ -110,6 +96,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
+@property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @end
 
 @implementation BraveCoreMain
@@ -137,8 +124,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
            selector:@selector(onAppWillTerminate:)
                name:UIApplicationWillTerminateNotification
              object:nil];
-
-    _providerScripts = [[NSMutableDictionary alloc] init];
 
     // Register all providers before calling any Chromium code.
     [ProviderRegistration registerProviders];
@@ -372,121 +357,12 @@ static bool CustomLogHandler(int severity,
   return _tabGeneratorAPI;
 }
 
-+ (id<BraveWalletBlockchainRegistry>)blockchainRegistry {
-  auto* registry = brave_wallet::BlockchainRegistry::GetInstance();
-  return [[BraveWalletBlockchainRegistryImpl alloc]
-      initWithBlockchainRegistry:registry];
-}
-
-- (nullable id<BraveWalletEthereumProvider>)
-    ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-               isPrivateBrowsing:(bool)isPrivateBrowsing {
-  auto* browserState = _mainBrowserState;
-  if (isPrivateBrowsing) {
-    browserState = browserState->GetOffTheRecordChromeBrowserState();
+- (BraveWalletAPI*)braveWalletAPI {
+  if (!_braveWalletAPI) {
+    _braveWalletAPI =
+        [[BraveWalletAPI alloc] initWithBrowserState:_mainBrowserState];
   }
-
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForState(browserState);
-  if (!json_rpc_service) {
-    return nil;
-  }
-
-  auto* tx_service =
-      brave_wallet::TxServiceFactory::GetServiceForState(browserState);
-  if (!tx_service) {
-    return nil;
-  }
-
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForState(browserState);
-  if (!keyring_service) {
-    return nil;
-  }
-
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
-  if (!brave_wallet_service) {
-    return nil;
-  }
-
-  auto* provider = new brave_wallet::EthereumProviderImpl(
-      ios::HostContentSettingsMapFactory::GetForBrowserState(browserState),
-      json_rpc_service, tx_service, keyring_service, brave_wallet_service,
-      std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
-          delegate),
-      browserState->GetPrefs());
-  return [[BraveWalletEthereumProviderImpl alloc]
-      initWithEthereumProvider:provider];
-}
-
-- (nullable id<BraveWalletSolanaProvider>)
-    solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-             isPrivateBrowsing:(bool)isPrivateBrowsing {
-  auto* browserState = _mainBrowserState;
-  if (isPrivateBrowsing) {
-    browserState = browserState->GetOffTheRecordChromeBrowserState();
-  }
-
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForState(browserState);
-  if (!keyring_service) {
-    return nil;
-  }
-
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
-  if (!brave_wallet_service) {
-    return nil;
-  }
-
-  auto* tx_service =
-      brave_wallet::TxServiceFactory::GetServiceForState(browserState);
-  if (!tx_service) {
-    return nil;
-  }
-
-  auto* provider = new brave_wallet::SolanaProviderImpl(
-      keyring_service, brave_wallet_service, tx_service,
-      std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
-          delegate));
-  return
-      [[BraveWalletSolanaProviderImpl alloc] initWithSolanaProvider:provider];
-}
-
-- (NSString*)resourceForID:(int)resource_id {
-  // The resource bundle is not available until after WebMainParts is setup
-  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  std::string resource_string = "";
-  if (resource_bundle.IsGzipped(resource_id)) {
-    resource_string =
-        std::string(resource_bundle.LoadDataResourceString(resource_id));
-  } else {
-    resource_string =
-        std::string(resource_bundle.GetRawDataResource(resource_id));
-  }
-  return base::SysUTF8ToNSString(resource_string);
-}
-
-- (NSString*)providerScriptForCoinType:(BraveWalletCoinType)coinType {
-  auto cachedScript = _providerScripts[@(coinType)];
-  if (cachedScript) {
-    return cachedScript;
-  }
-  auto resource_id = ^{
-    switch (coinType) {
-      case BraveWalletCoinTypeEth:
-        return IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS;
-      case BraveWalletCoinTypeSol:
-        return IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS;
-      case BraveWalletCoinTypeFil:
-        // Currently not supported
-        return 0;
-    }
-  }();
-  auto script = [self resourceForID:resource_id];
-  _providerScripts[@(coinType)] = script;
-  return script;
+  return _braveWalletAPI;
 }
 
 - (BraveStats*)braveStats {

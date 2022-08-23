@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v1.h"
 
+#include "base/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/seen_advertisers.h"

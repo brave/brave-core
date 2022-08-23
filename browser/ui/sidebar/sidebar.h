@@ -32,13 +32,6 @@ class Sidebar {
       SidebarService::ShowSidebarOption show_option) = 0;
   // Update current sidebar UI.
   virtual void UpdateSidebar() = 0;
-  virtual void ShowCustomContextMenu(
-      const gfx::Point& point,
-      std::unique_ptr<ui::MenuModel> menu_model) = 0;
-  virtual void HideCustomContextMenu() = 0;
-  virtual bool HandleKeyboardEvent(
-      content::WebContents* source,
-      const content::NativeWebKeyboardEvent& event) = 0;
 
  protected:
   virtual ~Sidebar() {}
