@@ -331,6 +331,7 @@
 -SigninUiUtilTest.*
 -SitePermissionsHelperUnitTest.*
 -SitePermissionsHelperWithUserHostControlsUnitTest.DowngradingFromAllSitesToOnClickAppliesUserPermittedSites
+-SideSearchTabContentsHelperTest.*
 -SiteSettingsCounterTest.*
 -SiteSettingsHandlerInfobarTest.*
 -SiteSettingsHandlerTest.*
