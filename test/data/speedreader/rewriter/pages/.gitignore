@@ -3,3 +3,4 @@ report/
 
 
 package-lock.json
+*.zip

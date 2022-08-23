@@ -41,7 +41,6 @@ async function showReport(val) {
 }
 
 window.addEventListener('load', function () {
-    console.log(data)
     const reportsSelect = document.getElementById('reports')
     for (const r of data.default.reports) {
         const opt = document.createElement('option')

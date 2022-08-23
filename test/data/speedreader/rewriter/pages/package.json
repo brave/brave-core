@@ -5,9 +5,11 @@
   "main": "tools/report.js",
   "scripts": {
     "report": "npm run gen && webpack ./tools/report.html && webpack-dev-server",
-    "gen": "node ./tools/gen.js"
+    "gen": "node ./tools/gen.js",
+    "export": "node ./tools/export.js"
   },
   "devDependencies": {
+    "archiver": "",
     "clean-webpack-plugin": "",
     "css-loader": "",
     "file-loader": "",
