@@ -5,9 +5,8 @@
 
 #include "bat/ads/ads.h"
 
-#include <algorithm>
-
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/geographic/country/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -17,16 +16,12 @@ namespace ads {
 bool IsSupportedLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
-  for (const auto& schema : geographic::kSupportedCountryCodes) {
-    const geographic::SupportedCountryCodeSet country_codes = schema.second;
-    const auto iter =
-        std::find(country_codes.cbegin(), country_codes.cend(), country_code);
-    if (iter != country_codes.cend()) {
-      return true;
-    }
-  }
-
-  return false;
+  return base::ranges::any_of(
+      geographic::kSupportedCountryCodes, [&country_code](const auto& schema) {
+        const geographic::SupportedCountryCodeSet country_codes = schema.second;
+        const auto iter = base::ranges::find(schema.second, country_code);
+        return iter != schema.second.cend();
+      });
 }
 
 // static

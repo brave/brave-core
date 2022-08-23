@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/base/url/url_util.h"
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -89,13 +90,9 @@ bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
 }
 
 bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url) {
-  for (const auto& element : urls) {
-    if (SameDomainOrHost(element, url)) {
-      return true;
-    }
-  }
-
-  return false;
+  return base::ranges::any_of(urls, [&url](const GURL& item) {
+    return SameDomainOrHost(item, url);
+  });
 }
 
 }  // namespace ads

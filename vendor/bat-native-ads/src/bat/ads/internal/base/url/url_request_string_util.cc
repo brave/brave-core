@@ -9,6 +9,7 @@
 #include <sstream>
 #include <vector>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 
@@ -20,14 +21,11 @@ bool ShouldAllowHeader(const std::string& header) {
   const std::vector<std::string> allowed_headers{"digest", "signature",
                                                  "accept", "content-type"};
 
-  for (const auto& allowed_header : allowed_headers) {
-    if (base::StartsWith(header, allowed_header,
-                         base::CompareCase::INSENSITIVE_ASCII)) {
-      return true;
-    }
-  }
-
-  return false;
+  return base::ranges::any_of(
+      allowed_headers, [&header](const std::string& allowed_header) {
+        return base::StartsWith(header, allowed_header,
+                                base::CompareCase::INSENSITIVE_ASCII);
+      });
 }
 
 std::string HeadersToString(const std::vector<std::string>& headers,
