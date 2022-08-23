@@ -11,6 +11,8 @@
 
 #include "base/bind.h"
 #include "base/check.h"
+#include "base/command_line.h"
+#include "base/files/file_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/task_traits.h"
@@ -28,6 +30,24 @@ namespace speedreader {
 namespace {
 
 constexpr uint32_t kReadBufferSize = 32768;
+
+void MaybeSaveDistilledDataForDebug(const GURL& url,
+                                    const std::string& data,
+                                    const std::string& stylesheet,
+                                    const std::string& transformed) {
+#if DCHECK_IS_ON()
+  constexpr const char kCollectSwitch[] = "speedreader-collect-test-data";
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(kCollectSwitch))
+    return;
+  const auto dir = base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
+      kCollectSwitch);
+  base::CreateDirectory(dir);
+  base::WriteFile(dir.AppendASCII("page.url"), url.spec());
+  base::WriteFile(dir.AppendASCII("original.html"), data);
+  base::WriteFile(dir.AppendASCII("distilled.html"), transformed);
+  base::WriteFile(dir.AppendASCII("result.html"), stylesheet + transformed);
+#endif
+}
 
 }  // namespace
 
@@ -74,6 +94,7 @@ SpeedReaderURLLoader::SpeedReaderURLLoader(
           std::move(destination_url_loader_client),
           task_runner),
       delegate_(delegate),
+      response_url_(response_url),
       rewriter_service_(rewriter_service),
       speedreader_service_(speedreader_service) {}
 
@@ -116,9 +137,10 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   if (bytes_remaining_in_buffer_ > 0) {
     // Offload heavy distilling to another thread.
     base::ThreadPool::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::TaskPriority::USER_BLOCKING},
+        FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
         base::BindOnce(
-            [](std::string data, std::unique_ptr<Rewriter> rewriter,
+            [](const GURL& response_url, std::string data,
+               std::unique_ptr<Rewriter> rewriter,
                const std::string& stylesheet) -> auto{
               SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
               int written = rewriter->Write(data.c_str(), data.length());
@@ -136,10 +158,11 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
               if (transformed.length() < 1024) {
                 return data;
               }
-
+              MaybeSaveDistilledDataForDebug(response_url, data, stylesheet,
+                                             transformed);
               return stylesheet + transformed;
             },
-            std::move(body),
+            response_url_, std::move(body),
             rewriter_service_->MakeRewriter(
                 response_url_, speedreader_service_->GetThemeName()),
             rewriter_service_->GetContentStylesheet()),

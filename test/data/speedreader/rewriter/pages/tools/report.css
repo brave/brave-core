@@ -1,0 +1,71 @@
+img {
+    max-width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: calc(1rem / 16) solid black;
+    padding: 0.25rem;
+}
+
+.row {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: row;
+    box-sizing: border-box;
+    min-height: 0.1rem;
+}
+
+.column {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-width: 0.1rem;
+}
+
+.margin {
+    margin: 0.25rem;
+}
+
+.right {
+    float: right;
+}
+
+.vdd-added,
+.vdd-modified,
+.vdd-removed {
+    text-decoration: none;
+}
+
+.vdd-added > *,
+.vdd-modified > *,
+.vdd-removed > * {
+    text-decoration: none;
+    background-color: inherit;
+}
+
+.vdd-added {
+    background: lightgreen;
+}
+.vdd-added > img {
+    border: 0.125em solid lightgreen;
+}
+
+.vdd-modified {
+    background: lightskyblue;
+}
+.vdd-modified > img {
+    border: 0.125em solid lightskyblue;
+}
+
+.vdd-removed {
+    background: lightcoral;
+}
+.vdd-removed > img {
+    border: 0.125em solid lightcoral;
+}

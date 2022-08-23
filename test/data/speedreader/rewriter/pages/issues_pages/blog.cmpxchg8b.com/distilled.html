@@ -1,0 +1,58 @@
+<title>You don’t need reproducible builds.</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">You don’t need reproducible builds.</h1><p class="subhead metadata">I’m skeptical about build reproducibility, but ardent supporters are defending and cheering for it at every opportunity. After a few too man...</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+<p><span><br>I’m skeptical about build reproducibility, but ardent supporters are defending and cheering for it at every opportunity. After a few too many heated discussions, I’ve decided to write down my thoughts on the topic.<p>I’ll try my best to summarize the arguments for reproducible builds, and explain why I find them unconvincing.</p><p>Supporters like to pretend the topic is simple, as one reproducibility fan brusquely put it to me on twitter:</p></span></p><blockquote class="tr_bq">
+<span><i>“Reproducibility is important. Source code A leading to binary B through a reproducible build guarantees what you see (source) is what you get (the binary from the vendor). What is not clear here?”</i></span></blockquote>
+<p><span><br></span><b><span><br></span></b></p>
+<p><b><span><br></span></b>
+<span><p>What isn’t clear is what <b><i>benefit&nbsp;</i></b>the reproducibility provides. The only way to verify that the untrusted binary is bit-for-bit identical to the binary that would be produced by building the source code, is to produce your own trusted binary first and then compare it. At that point you already have a trusted binary you can use, so what value did reproducible builds provide?</p><p>This diagram demonstrates how to get a trusted binary without reproducible builds.</p></span></p><div>
+<p><span><br></span></p>
+<p><b><span><br></span></b>
+<span>The answer to this question is that reproducible builds are not for users, they are expected to nominate somebody they trust to build it for them, and verify that the output is correct.<p>The revised workflow is similar to the first diagram, but now a trusted vendor takes care of the compilation step, so the problem is the same. The trusted vendor has to produce the binary anyway, why not just use that one, making reproducible builds unnecessary?</p><p>The answer is that we can design a system where several third parties reproduce the binary, and we can require them all to agree that a binary matches. Here is a diagram of that workflow.</p></span></p></div>
+<div>
+<p><span><br></span></p>
+<p><b><span><br></span></b>
+<span><br>The problem with this scenario is that the user still has to trust the vendor to do the verification. If the trusted vendor is compromised, then they can provide tampered binaries. If they’re not compromised, then there was no benefit to reproducing it with third parties.<p>In effect, this is no different to how the system works today with Linux distributions.</p><p>The answer to this problem is that we can build a system where the user only has to trust the vendor once. If the vendor is compromised after that point, the reproducing builds will prevent them from distributing tampered packages to the user.</p><p>This is a little more complicated, the user can’t verify the builds reproduce by compiling them themselves, because then they already have a trusted build. The answer is for the user to nominate the vendors they trust, and then require a signature from them to install any packages.</p><p>Here is that workflow:</p></span></p></div>
+<div>
+<p><span><br></span></p>
+<p><span><p>Now if the vendor is compromised or becomes malicious, they can’t give the user any compromised binaries without also providing the source code. This ignores some complexities, like ensuring security updates are delivered even if one vendor is compromised, what to do if the reproducers stop working, or how to reach consensus if the reproducers and your vendor disagree on what software or fork you should be using.</p><p>Regardless, even if we ignore these practicalities, the problem with this solution is that the vendor that was only trusted once still provides the source code for the system you’re using. They can still provide malicious source code to the builders for them to build and sign.</p><p>I don’t know what supporters suggest is the solution to this problem, perhaps that the vendor you trusted shouldn’t provide any patches, configuration or any of the system software. If operating system vendors can’t actually modify or configure the operating system, then frankly this doesn’t seem like a useful system.</p><p>Perhaps some people are convinced this system is still worthwhile and achievable, but it is clearly not a simple solution. For this reason, I think it is entirely reasonable to be skeptical about the benefits of reproducible builds, and the benefits are not as clear as supporters claim.</p></span></p></div>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. It’s easier to audit source code than binaries, and this will make it harder for vendors to hide malicious code.</span></b></li>
+</ul>
+<p><span><br>I don’t think this is true, because of “bugdoors”. A <i>bugdoor </i>is simply an intentional security vulnerability that the vendor can "exploit" when they want backdoor access.</span></p><p><span><br></span></p>
+<div>
+<p><span>The benefit of bugdoors to attackers is that they’re perfectly plausibly deniable. If someone catches you, you can simply claim it was a mistake, and there are zero consequences. You can then repeat this ad infinitum, it’s simply not unusual to fix “mistakes” continuously, and there is no way to determine intent.<p>If someone wants to provide a malicious program, reproducible builds can force them to also provide the source code, but it can’t force the program to be non-malicious, so this is not particularly useful. You already <i>have&nbsp;</i>to trust the source code.</p><p>You might claim that I have no data to support this, but that’s the benefit of bugdoors to attackers: There can never be data to prove your wrongdoing.</p></span></p><ul>
+<li><b><span>Q. It’s easier to tamper with binaries than to write a bugdoor, so reproducible builds do improve security.</span></b></li>
+</ul>
+<p><span>I absolutely disagree, every programmer knows how to write a bug or short circuit some logic. Hiding malicious activity in a binary, with a multi billion dollar malware industry determined to find it is more difficult. In addition, once you’ve produced and signed the malicious backdoor, it is not repudiable - you can’t deny you wrote and provided it.<p>With bugdoors, you don’t need to deny it - you just claim it was an error, and you’re automatically forgiven.</p></span></p><ul>
+<li><b><span>Q. Build servers get compromised, and that’s a fact. Reproducible builds mean proprietary vendors can quickly check if their infrastructure is producing tampered binaries.</span></b></li>
+</ul>
+<p><span><br>I think this is true, but ignores significant trade-offs. The vendor needs to create and maintain two disparate build infrastructures, and then provide additional people privileged access to that new infrastructure. If you don't do this, there was no benefit to reproducible builds because you'd be building the same potentially compromised binary twice.</span></p></div>
+<p><span><br></span></p>
+<div>
+<p><span>We know that attackers really do want to compromise build infrastructure, but more often they want to steal proprietary source code, which must pass through build servers.<p>This means that vendors will <b>increase&nbsp;</b>the likelihood of attacks that really are happening, to prevent an attack that <b>could&nbsp;</b>happen.</p><p>That is a significant trade off, and the decision to invest in reproducible builds isn’t as obvious as supporters claim.</p></span></p><p><span><br></span></p>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. If a user has chosen to trust a platform where all binaries must be codesigned by the vendor, but doesn’t trust the vendor, then reproducible builds allow them to verify the vendor isn’t malicious.</span></b></li>
+</ul>
+<p><span><br>I think this is a fantasy threat model. If the user does discover the vendor was malicious, what are they supposed to do?</span></p></div>
+<p><span><br>The malicious vendor can simply refuse to provide them with signed security updates instead, so this threat model doesn’t work.</span></p>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. Non-reproducible builds violate the GPL, because you can’t produce a bit-for-bit identical binary from the provided source code.</span></b></li>
+</ul>
+<p><span><br>I think this argument is ridiculous, and would mean GPL binaries also can’t use code signing or TLS. Clearly the vendor cannot give you the private keys required to produce the code signatures or the CA roots, so by this argument they also violate the GPL.</span></p></div>
+<p><span><br></span></p>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. Whether it’s useful for end users or not, it will allow experts to monitor for compromised build servers producing tampered builds.</span></b></li>
+</ul>
+<p><span><br>I think this is true, but there are other attacks against compromised build servers, all of which are more common than producing tampered builds.</span></p></div>
+<p><span><br>More often, attackers want signing keys so they can <a href="https://www.redhat.com/security/data/openssh-blacklist.html">sign their own binaries</a>, <a href="https://www.theverge.com/2019/3/28/18286027/microsoft-nintendo-vtech-security-hack-breach-researcher-guilty">steal proprietary source code</a>, inject malicious code into <a href="https://metalkey.github.io/vsftpd-v234-backdoor-command-execution.html">source code</a> tarballs, or <a href="https://lwn.net/Articles/57135/">malicious patches</a> into source repositories.<p>Reproducible builds don’t help with any of those problems.<b><b>Q. A reproducible build is a good quality build. Whether there are security benefits or not, I just want people to do it.</b></b></p><p>Whether reproducible builds are better quality or not is a matter of opinion, and we shouldn’t be trying to force our opinions on others by claiming it’s for security.</p><p>I happen to disagree, and don’t think reproducibility makes a quality build, I think it adds unnecessary complexity.</p></span></p>
+</div>
+</div>
+
+</body>
