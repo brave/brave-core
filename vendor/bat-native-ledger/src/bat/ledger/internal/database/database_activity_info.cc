@@ -168,14 +168,19 @@ void DatabaseActivityInfo::NormalizeList(
   auto shared_list = std::make_shared<type::PublisherInfoList>(
       std::move(list));
 
+  LOG(ERROR) << "Runing normalizer DB script";
+
   ledger_->RunDBTransaction(
       std::move(transaction),
       [this, shared_list, callback](type::DBCommandResponsePtr response) {
         if (!response || response->status !=
               type::DBCommandResponse::Status::RESPONSE_OK) {
+          LOG(ERROR) << "Error writing to database";
           callback(type::Result::LEDGER_ERROR);
           return;
         }
+
+        LOG(ERROR) << "Sending publisher list message to ledger client";
 
         ledger_->ledger_client()->PublisherListNormalized(
             std::move(*shared_list));

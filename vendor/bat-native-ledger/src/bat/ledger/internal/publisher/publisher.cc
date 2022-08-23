@@ -278,6 +278,8 @@ void Publisher::SaveVisitInternal(
     const ledger::PublisherInfoCallback callback,
     type::Result result,
     type::PublisherInfoPtr publisher_info) {
+  LOG(ERROR) << "SaveVisitInternal (" << result << ") " << publisher_key
+             << "/" << duration;
   DCHECK(result != type::Result::TOO_MANY_RESULTS);
   if (result != type::Result::LEDGER_OK &&
       result != type::Result::NOT_FOUND) {
@@ -351,6 +353,7 @@ void Publisher::SaveVisitInternal(
         this,
         _1);
 
+    LOG(ERROR) << "Doesn't satisfy AC";
     ledger_->database()->SavePublisherInfo(std::move(publisher_info), callback);
   } else if (!excluded && ledger_->state()->GetAutoContributeEnabled() &&
              min_duration_ok && verified_old) {
@@ -362,6 +365,8 @@ void Publisher::SaveVisitInternal(
     publisher_info->reconcile_stamp = ledger_->state()->GetReconcileStamp();
 
     panel_info = publisher_info->Clone();
+
+    LOG(ERROR) << "Does satisfy AC criteria";
 
     auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
         this,
@@ -607,6 +612,8 @@ void Publisher::SynopsisNormalizerCallback(
   for (auto& item : list) {
     save_list.push_back(item.Clone());
   }
+
+  LOG(ERROR) << "SynopsisNormalizerCallback, calling NormalizeActivityInfoList";
 
   ledger_->database()->NormalizeActivityInfoList(
       std::move(save_list),
