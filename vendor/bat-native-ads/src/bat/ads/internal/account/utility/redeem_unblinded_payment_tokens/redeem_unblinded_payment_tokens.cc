@@ -220,7 +220,7 @@ base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
   const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
                                       : kNextTokenRedemptionAfterSeconds;
 
-  const int64_t rand_delay =
+  const auto rand_delay =
       static_cast<int64_t>(brave_base::random::Geometric(delay));
 
   return now + base::Seconds(rand_delay);

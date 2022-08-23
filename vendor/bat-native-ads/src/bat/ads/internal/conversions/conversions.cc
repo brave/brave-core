@@ -393,7 +393,7 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
-  const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
+  const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
       ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.process_at =
       base::Time::Now() + base::Seconds(rand_delay);
@@ -534,7 +534,7 @@ void Conversions::StartTimer(
   if (now < conversion_queue_item.process_at) {
     delay = conversion_queue_item.process_at - now;
   } else {
-    const int64_t rand_delay = static_cast<int64_t>(
+    const auto rand_delay = static_cast<int64_t>(
         brave_base::random::Geometric(kExpiredConvertAfterSeconds));
     delay = base::Seconds(rand_delay);
   }
