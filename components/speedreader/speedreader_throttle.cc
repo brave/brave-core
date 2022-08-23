@@ -5,6 +5,7 @@
 
 #include "brave/components/speedreader/speedreader_throttle.h"
 
+#include <string>
 #include <utility>
 
 #include "brave/components/speedreader/speedreader_result_delegate.h"
