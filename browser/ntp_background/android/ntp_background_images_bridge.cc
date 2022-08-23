@@ -132,13 +132,13 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
 }
 
 base::android::ScopedJavaLocalRef<jobject>
-NTPBackgroundImagesBridge::CreateWallpaper(base::Value* data) {
+NTPBackgroundImagesBridge::CreateWallpaper(const base::Value::Dict& data) {
   JNIEnv* env = AttachCurrentThread();
 
   auto* image_path =
-      data->FindStringKey(ntp_background_images::kWallpaperImagePathKey);
-  auto* author = data->FindStringKey(ntp_background_images::kImageAuthorKey);
-  auto* link = data->FindStringKey(ntp_background_images::kImageLinkKey);
+      data.FindString(ntp_background_images::kWallpaperImagePathKey);
+  auto* author = data.FindString(ntp_background_images::kImageAuthorKey);
+  auto* link = data.FindString(ntp_background_images::kImageLinkKey);
 
   return Java_NTPBackgroundImagesBridge_createWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path),
@@ -147,31 +147,30 @@ NTPBackgroundImagesBridge::CreateWallpaper(base::Value* data) {
 }
 
 base::android::ScopedJavaLocalRef<jobject>
-NTPBackgroundImagesBridge::CreateBrandedWallpaper(base::Value* data) {
+NTPBackgroundImagesBridge::CreateBrandedWallpaper(
+    const base::Value::Dict& data) {
   JNIEnv* env = AttachCurrentThread();
 
   auto* image_path =
-      data->FindStringKey(ntp_background_images::kWallpaperImagePathKey);
+      data.FindString(ntp_background_images::kWallpaperImagePathKey);
   auto* logo_image_path =
-      data->FindStringPath(ntp_background_images::kLogoImagePath);
+      data.FindStringByDottedPath(ntp_background_images::kLogoImagePath);
   if (!image_path || !logo_image_path)
     return base::android::ScopedJavaLocalRef<jobject>();
 
   auto focal_point_x =
-      data->FindIntKey(ntp_background_images::kWallpaperFocalPointXKey)
-          .value_or(0);
+      data.FindInt(ntp_background_images::kWallpaperFocalPointXKey).value_or(0);
   auto focal_point_y =
-      data->FindIntKey(ntp_background_images::kWallpaperFocalPointYKey)
-          .value_or(0);
-  auto* logo_destination_url =
-      data->FindStringPath(ntp_background_images::kLogoDestinationURLPath);
-  auto* theme_name = data->FindStringKey(ntp_background_images::kThemeNameKey);
-  auto is_sponsored =
-      data->FindBoolKey(ntp_background_images::kIsSponsoredKey).value_or(false);
+      data.FindInt(ntp_background_images::kWallpaperFocalPointYKey).value_or(0);
+  auto* logo_destination_url = data.FindStringByDottedPath(
+      ntp_background_images::kLogoDestinationURLPath);
+  auto* theme_name = data.FindString(ntp_background_images::kThemeNameKey);
+  bool is_sponsored =
+      data.FindBool(ntp_background_images::kIsSponsoredKey).value_or(false);
   auto* creative_instance_id =
-      data->FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
+      data.FindString(ntp_background_images::kCreativeInstanceIDKey);
   const std::string* wallpaper_id =
-      data->FindStringKey(ntp_background_images::kWallpaperIDKey);
+      data.FindString(ntp_background_images::kWallpaperIDKey);
 
   view_counter_service_->BrandedWallpaperWillBeDisplayed(wallpaper_id,
                                                          creative_instance_id);
@@ -244,18 +243,19 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
     const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
-  auto data = view_counter_service_
-                  ? view_counter_service_->GetCurrentWallpaperForDisplay()
-                  : base::Value();
-  if (data.is_none())
+  absl::optional<base::Value::Dict> data;
+  if (view_counter_service_)
+    data = view_counter_service_->GetCurrentWallpaperForDisplay();
+
+  if (!data)
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  auto is_background =
-      data.FindBoolKey(ntp_background_images::kIsBackgroundKey).value();
+  bool is_background =
+      data->FindBool(ntp_background_images::kIsBackgroundKey).value_or(false);
   if (!is_background) {
-    return CreateBrandedWallpaper(&data);
+    return CreateBrandedWallpaper(*data);
   } else {
-    return CreateWallpaper(&data);
+    return CreateWallpaper(*data);
   }
 }
 

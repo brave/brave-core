@@ -546,32 +546,33 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  base::Value data = service->GetCurrentWallpaperForDisplay();
+  absl::optional<base::Value::Dict> data =
+      service->GetCurrentWallpaperForDisplay();
 
-  if (!data.is_dict()) {
+  if (!data) {
     ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
     return;
   }
 
   const auto is_background =
-      data.FindBoolKey(ntp_background_images::kIsBackgroundKey);
+      data->FindBool(ntp_background_images::kIsBackgroundKey);
   DCHECK(is_background);
 
   if (is_background.value()) {
     constexpr char kBackgroundWallpaperKey[] = "backgroundWallpaper";
-    wallpaper.Set(kBackgroundWallpaperKey, std::move(data));
+    wallpaper.Set(kBackgroundWallpaperKey, std::move(*data));
     ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
     return;
   }
 
   const std::string* creative_instance_id =
-      data.FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
+      data->FindString(ntp_background_images::kCreativeInstanceIDKey);
   const std::string* wallpaper_id =
-      data.FindStringKey(ntp_background_images::kWallpaperIDKey);
+      data->FindString(ntp_background_images::kWallpaperIDKey);
   service->BrandedWallpaperWillBeDisplayed(wallpaper_id, creative_instance_id);
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
-  wallpaper.Set(kBrandedWallpaperKey, std::move(data));
+  wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
   ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
 }
 

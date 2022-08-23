@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/files/file_path.h"
-#include "base/values.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
@@ -29,15 +28,15 @@ bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
          delegate_->IsColorBackgroundEnabled();
 }
 
-base::Value NTPCustomBackgroundImagesService::GetBackground() const {
+base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetBoolKey(kIsBackgroundKey, true);
+  base::Value::Dict data;
+  data.Set(kIsBackgroundKey, true);
   if (delegate_->IsCustomImageBackgroundEnabled()) {
-    data.SetStringKey(kWallpaperImageURLKey, kCustomWallpaperURL);
+    data.Set(kWallpaperImageURLKey, kCustomWallpaperURL);
   } else {
-    data.SetStringKey(kWallpaperColorKey, delegate_->GetColor());
+    data.Set(kWallpaperColorKey, delegate_->GetColor());
   }
   return data;
 }

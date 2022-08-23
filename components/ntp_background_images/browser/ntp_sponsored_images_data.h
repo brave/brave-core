@@ -108,8 +108,10 @@ struct NTPSponsoredImagesData {
   void ParseSRProperties(const base::Value& value,
                          const base::FilePath& installed_dir);
 
-  base::Value GetBackgroundAt(size_t campaign_index, size_t background_index);
-  base::Value GetBackgroundByAdInfo(const ads::NewTabPageAdInfo& ad_info);
+  absl::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
+                                                    size_t background_index);
+  absl::optional<base::Value::Dict> GetBackgroundByAdInfo(
+      const ads::NewTabPageAdInfo& ad_info);
 
   bool IsSuperReferral() const;
   void PrintCampaignsParsingResult() const;

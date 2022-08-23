@@ -64,10 +64,11 @@ bool IsNTPPromotionEnabled(Profile* profile) {
     return false;
 
   // Only show promotion if current wallpaper is not sponsored images.
-  base::Value data = service->GetCurrentWallpaperForDisplay();
-  if (const auto* dict = data.GetIfDict()) {
+  absl::optional<base::Value::Dict> data =
+      service->GetCurrentWallpaperForDisplay();
+  if (data) {
     if (const auto is_background =
-            dict->FindBool(ntp_background_images::kIsBackgroundKey)) {
+            data->FindBool(ntp_background_images::kIsBackgroundKey)) {
       return is_background.value();
     }
   }
