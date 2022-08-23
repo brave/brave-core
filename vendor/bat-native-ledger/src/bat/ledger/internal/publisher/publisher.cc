@@ -368,6 +368,14 @@ void Publisher::SaveVisitInternal(
 
     LOG(ERROR) << "Does satisfy AC criteria";
 
+    // Activity info query expect the publisher to exist in the `publisher_info`
+    // table. Save the publisher info if it does not already exist.
+    if (new_publisher) {
+      ledger_->database()->SavePublisherInfo(
+          publisher_info->Clone(),
+          [](type::Result){});
+    }
+
     auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
         this,
         _1);
