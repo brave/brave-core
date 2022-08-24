@@ -36,14 +36,16 @@ extension BrowserViewController {
         profile: profile,
         rewards: rewards)
       onboardingController.modalPresentationStyle = .fullScreen
-      onboardingController.delegate = self
       parentController.present(onboardingController, animated: false)
       isOnboardingOrFullScreenCalloutPresented = true
     }
   }
 
   private func addNTPTutorialPage() {
-    if showNTPEducation().isEnabled, let url = showNTPEducation().url {
+    let basicOnboardingNotCompleted =
+      Preferences.General.basicOnboardingProgress.value != OnboardingProgress.newTabPage.rawValue
+    
+    if basicOnboardingNotCompleted, showNTPEducation().isEnabled, let url = showNTPEducation().url {
       tabManager.addTab(
         PrivilegedRequest(url: url) as URLRequest,
         afterTab: self.tabManager.selectedTab,
@@ -59,6 +61,7 @@ extension BrowserViewController {
       if !Preferences.FullScreenCallout.omniboxCalloutCompleted.value,
           Preferences.General.isNewRetentionUser.value == true {
         presentOmniBoxOnboarding()
+        addNTPTutorialPage()
       }
       
       if !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
@@ -290,14 +293,6 @@ extension BrowserViewController {
   func completeOnboarding(_ controller: UIViewController) {
     Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
     controller.dismiss(animated: true)
-  }
-}
-
-// MARK: WelcomeViewControllerDelegate
-
-extension BrowserViewController: WelcomeViewControllerDelegate {
-  func welcomeViewControllerDidShowNTPTutorialPage() {
-    addNTPTutorialPage()
   }
 }
 
