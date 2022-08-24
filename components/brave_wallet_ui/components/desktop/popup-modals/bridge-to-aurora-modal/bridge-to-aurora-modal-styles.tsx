@@ -7,8 +7,6 @@ import styled from 'styled-components'
 import { WalletButton } from '../../../shared/style'
 import GlobeConnectIcon from '../../../../assets/svg-icons/globe-connect-icon.svg'
 
-export const modalWidth = '442px'
-
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,7 +46,7 @@ export const LearnMoreLink = styled.a`
   color: ${p => p.theme.color.interactive05};
   text-decoration: none;
   display: block;
-  padding-bottom: 56px;
+  margin-top: 6px;
 `
 
 export const OpenRainbowAppButton = styled(WalletButton)`
@@ -64,6 +62,8 @@ export const OpenRainbowAppButton = styled(WalletButton)`
   background-color: ${(p) => p.theme.palette.blurple500};
   border: none;
   align-self: center;
+  margin-top: 36px;
+  margin-bottom: 12px;
 `
 
 export const ButtonText = styled.span`
@@ -80,4 +80,11 @@ export const GlobeIcon = styled.div`
   height: 24px;
   background: url(${GlobeConnectIcon});
   margin-right: 8px;
+`
+
+export const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 12px 0;
 `

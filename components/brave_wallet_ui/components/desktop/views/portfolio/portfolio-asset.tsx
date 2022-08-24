@@ -82,7 +82,7 @@ import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
-const bridgeToAuroraWarningShownKey = 'bridgeToAuroraWarningShown'
+const bridgeToAuroraDontShowAgainKey = 'bridgeToAuroraDontShowAgain'
 
 interface Props {
   isShowingMarketData?: boolean
@@ -92,7 +92,7 @@ export const PortfolioAsset = (props: Props) => {
   const { isShowingMarketData } = props
   // state
   const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
-  const [bridgeToAuroraWarningShown, setBridgeToAuroraWarningShown] = React.useState<boolean>()
+  const [dontShowAuroraWarning, setDontShowAuroraWarning] = React.useState<boolean>(false)
   const [isTokenSupported, setIsTokenSupported] = React.useState<boolean>()
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
@@ -378,13 +378,17 @@ export const PortfolioAsset = (props: Props) => {
   }, [])
 
   const onBridgeToAuroraButton = React.useCallback(() => {
-    if (bridgeToAuroraWarningShown) {
+    if (dontShowAuroraWarning) {
       onOpenRainbowAppClick()
     } else {
-      localStorage.setItem(bridgeToAuroraWarningShownKey, 'true')
       setShowBridgeToAuroraModal(true)
     }
-  }, [bridgeToAuroraWarningShown, onOpenRainbowAppClick])
+  }, [dontShowAuroraWarning, onOpenRainbowAppClick])
+
+  const onDontShowAgain = React.useCallback((selected: boolean) => {
+    setDontShowAuroraWarning(selected)
+    localStorage.setItem(bridgeToAuroraDontShowAgainKey, JSON.stringify(selected))
+  }, [])
 
   const onCloseAuroraModal = React.useCallback(() => {
     setShowBridgeToAuroraModal(false)
@@ -481,7 +485,7 @@ export const PortfolioAsset = (props: Props) => {
   }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList])
 
   React.useEffect(() => {
-    setBridgeToAuroraWarningShown(localStorage.getItem(bridgeToAuroraWarningShownKey) === 'true')
+    setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
   })
 
   // token list needs to load before we can find an asset to select from the url params
@@ -583,8 +587,10 @@ export const PortfolioAsset = (props: Props) => {
 
       {showBridgeToAuroraModal &&
         <BridgeToAuroraModal
+          dontShowWarningAgain={dontShowAuroraWarning}
           onClose={onCloseAuroraModal}
           onOpenRainbowAppClick={onOpenRainbowAppClick}
+          onDontShowAgain={onDontShowAgain}
         />
       }
 
