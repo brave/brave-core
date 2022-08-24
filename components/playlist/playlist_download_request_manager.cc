@@ -149,9 +149,9 @@ void PlaylistDownloadRequestManager::DidFinishLoad(
 }
 
 void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
-  DCHECK(contents && contents->GetMainFrame());
+  DCHECK(contents && contents->GetPrimaryMainFrame());
 
-  contents->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+  contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script_),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
