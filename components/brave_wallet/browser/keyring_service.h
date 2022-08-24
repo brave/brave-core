@@ -125,6 +125,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   // mojom::KeyringService
   // Must unlock before using this API otherwise it will return empty string
   void GetMnemonicForDefaultKeyring(
+      const std::string& password,
       GetMnemonicForDefaultKeyringCallback callback) override;
   void CreateWallet(const std::string& password,
                     CreateWalletCallback callback) override;
@@ -393,6 +394,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void AddHardwareAccounts(std::vector<mojom::HardwareWalletAccountPtr> info,
                            const std::string keyring_id);
+
+  bool ValidatePasswordInternal(const std::string& password);
 
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
