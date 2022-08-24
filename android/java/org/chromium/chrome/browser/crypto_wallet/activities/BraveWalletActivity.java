@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -42,6 +43,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;

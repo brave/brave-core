@@ -3007,6 +3007,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_UPDATING_VPN_PROFILE" desc="Message to indicate profile is being update after split tunnel update.">
       Updating VPN Profile ...
     </message>
+    <message name="IDS_BACKUP_WALLET_PASSWORD" desc="Brave Wallet prompt to enter a password">
+      Enter your Brave Wallet password
+    </message>
   </messages>
   </release>
 </grit>
