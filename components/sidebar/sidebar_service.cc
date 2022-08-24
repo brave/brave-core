@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
@@ -34,6 +34,11 @@ using version_info::Channel;
 namespace sidebar {
 
 namespace {
+
+// A list of preferred item types
+constexpr SidebarItem::BuiltInItemType kPreferredPanelOrder[] = {
+    SidebarItem::BuiltInItemType::kReadingList,
+    SidebarItem::BuiltInItemType::kBookmarks};
 
 SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   switch (type) {
@@ -76,20 +81,9 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   return SidebarItem();
 }
 
-const std::vector<SidebarItem::BuiltInItemType>& GetDefaultBuiltInItemTypes() {
-  // This is the default display order
-  static const base::NoDestructor s_built_in_item_types(
-      std::vector<SidebarItem::BuiltInItemType>{
-          SidebarItem::BuiltInItemType::kBraveTalk,
-          SidebarItem::BuiltInItemType::kWallet,
-          SidebarItem::BuiltInItemType::kBookmarks,
-          SidebarItem::BuiltInItemType::kReadingList});
-  return *s_built_in_item_types;
-}
-
 std::vector<SidebarItem> GetDefaultSidebarItems() {
   std::vector<SidebarItem> items;
-  for (const auto& item_type : GetDefaultBuiltInItemTypes()) {
+  for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
     items.push_back(GetBuiltInItemForType(item_type));
   }
   return items;
@@ -108,12 +102,6 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           ? static_cast<int>(ShowSidebarOption::kShowNever)
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
-}
-
-// static
-std::vector<SidebarItem::BuiltInItemType>
-SidebarService::GetDefaultBuiltInItemTypes_ForTesting() {
-  return GetDefaultBuiltInItemTypes();
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
@@ -327,24 +315,26 @@ void SidebarService::RemoveObserver(Observer* observer) {
 }
 
 std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
+  const auto added_default_items = GetCurrentlyPresentBuiltInTypes();
   auto default_items = GetDefaultSidebarItems();
-  const auto added_default_items = GetDefaultSidebarItemsFromCurrentItems();
-  for (const auto& added_item : added_default_items) {
-    auto iter = base::ranges::find_if(
-        default_items, [&added_item](const auto& default_item) {
-          return default_item.built_in_item_type ==
-                 added_item.built_in_item_type;
-        });
-    default_items.erase(iter);
-  }
+
+  default_items.erase(
+      base::ranges::remove_if(default_items,
+                              [&added_default_items](auto& item) {
+                                return base::Contains(added_default_items,
+                                                      item.built_in_item_type);
+                              }),
+      default_items.end());
   return default_items;
 }
 
-std::vector<SidebarItem>
-SidebarService::GetDefaultSidebarItemsFromCurrentItems() const {
-  std::vector<SidebarItem> items;
-  std::copy_if(items_.begin(), items_.end(), std::back_inserter(items),
-               [](const auto& item) { return IsBuiltInType(item); });
+std::vector<SidebarItem::BuiltInItemType>
+SidebarService::GetCurrentlyPresentBuiltInTypes() const {
+  std::vector<SidebarItem::BuiltInItemType> items;
+  base::ranges::for_each(items_, [&items](const auto& item) {
+    if (IsBuiltInType(item))
+      items.push_back(item.built_in_item_type);
+  });
   return items;
 }
 
@@ -353,12 +343,8 @@ SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
 }
 
 absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
-  static const base::NoDestructor preferred_item_types(
-      std::vector<SidebarItem::BuiltInItemType>{
-          SidebarItem::BuiltInItemType::kReadingList,
-          SidebarItem::BuiltInItemType::kBookmarks});
   absl::optional<SidebarItem> default_item;
-  for (const auto& type : *preferred_item_types) {
+  for (const auto& type : kPreferredPanelOrder) {
     auto found_item_iter = base::ranges::find_if(
         items_,
         [type](SidebarItem item) { return (item.built_in_item_type == type); });
@@ -461,12 +447,11 @@ void SidebarService::LoadSidebarItems() {
   // Add the items the user has never seen (or never persisted).
   // Get the initial order of items so that we can attempt to
   // insert at the intended order.
-  auto default_item_types = GetDefaultBuiltInItemTypes();
   for (const auto& item : default_items_to_add) {
-    const auto& default_item_iter =
-        std::find(default_item_types.begin(), default_item_types.end(),
-                  item.built_in_item_type);
-    auto default_index = default_item_iter - default_item_types.begin();
+    const auto* default_item_iter = base::ranges::find(
+        SidebarService::kDefaultBuiltInItemTypes, item.built_in_item_type);
+    auto default_index = default_item_iter -
+                         std::begin(SidebarService::kDefaultBuiltInItemTypes);
     // Add at the default index for the first time. For users which haven't
     // changed any order, or removed items, this will be at the intentional
     // index. For users who have re-ordered, this will be different but still

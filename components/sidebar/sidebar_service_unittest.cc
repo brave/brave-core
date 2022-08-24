@@ -116,7 +116,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   EXPECT_EQ(4, item_index_on_called_);
   EXPECT_EQ(5UL, service_->items().size());
   // Default item count is not changed.
-  EXPECT_EQ(4UL, service_->GetDefaultSidebarItemsFromCurrentItems().size());
+  EXPECT_EQ(4UL, service_->GetCurrentlyPresentBuiltInTypes().size());
 }
 
 TEST_F(SidebarServiceTest, MoveItem) {
@@ -253,8 +253,7 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   };
   // Get expected indexes (the custom item will replace the index of the removed
   // built-in).
-  auto all_default_item_types =
-      SidebarService::GetDefaultBuiltInItemTypes_ForTesting();
+  const auto& all_default_item_types = SidebarService::kDefaultBuiltInItemTypes;
   // There should also be the custom item we added
   EXPECT_EQ(remaining_default_items.size() + 1, service_->items().size());
   for (auto built_in_type : remaining_default_items) {
@@ -264,9 +263,8 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
         });
     EXPECT_NE(iter, items.end());
     auto expected_index =
-        std::find(all_default_item_types.begin(), all_default_item_types.end(),
-                  built_in_type) -
-        all_default_item_types.begin();
+        base::ranges::find(all_default_item_types, built_in_type) -
+        std::begin(all_default_item_types);
     auto index = iter - items.begin();
     EXPECT_EQ(expected_index, index)
         << "New item with ID " << static_cast<int>(built_in_type)
