@@ -29,9 +29,9 @@ struct MessageMetainfo {
   std::string refcode;
 };
 
-base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
-                                   uint64_t metric_value,
-                                   const MessageMetainfo& meta);
+base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
+                                         uint64_t metric_value,
+                                         const MessageMetainfo& meta);
 
 // Ensures that country/refcode represent the big enough cohort that will not
 // let anybody identify the sender.

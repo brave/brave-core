@@ -18,32 +18,32 @@ namespace brave {
 MessageMetainfo::MessageMetainfo() = default;
 MessageMetainfo::~MessageMetainfo() = default;
 
-base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
-                                   uint64_t metric_value,
-                                   const MessageMetainfo& meta) {
-  base::Value result(base::Value::Type::DICTIONARY);
+base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
+                                         uint64_t metric_value,
+                                         const MessageMetainfo& meta) {
+  base::Value::Dict result;
 
   // Find out years of install and survey.
   base::Time::Exploded exploded;
   meta.date_of_survey.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
-  result.SetIntKey("yos", exploded.year);
+  result.Set("yos", exploded.year);
 
   meta.date_of_install.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
-  result.SetIntKey("yoi", exploded.year);
+  result.Set("yoi", exploded.year);
 
   // Fill meta.
-  result.SetStringKey("country_code", meta.country_code);
-  result.SetStringKey("platform", meta.platform);
-  result.SetStringKey("version", meta.version);
-  result.SetStringKey("channel", meta.channel);
-  result.SetIntKey("woi", meta.woi);
-  result.SetIntKey("wos", meta.wos);
+  result.Set("country_code", meta.country_code);
+  result.Set("platform", meta.platform);
+  result.Set("version", meta.version);
+  result.Set("channel", meta.channel);
+  result.Set("woi", meta.woi);
+  result.Set("wos", meta.wos);
 
   // Set the metric
-  result.SetStringKey("metric_name", metric_name);
-  result.SetIntKey("metric_value", metric_value);
+  result.Set("metric_name", metric_name);
+  result.Set("metric_value", static_cast<int>(metric_value));
 
   return result;
 }
