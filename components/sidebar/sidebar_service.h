@@ -33,6 +33,13 @@ class SidebarService : public KeyedService {
     kShowNever,
   };
 
+  // This is the default display order
+  static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
+      SidebarItem::BuiltInItemType::kBraveTalk,
+      SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kReadingList};
+
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnItemAdded(const SidebarItem& item, int index) {}
@@ -74,12 +81,10 @@ class SidebarService : public KeyedService {
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, NewDefaultItemAdded);
 
-  static std::vector<SidebarItem::BuiltInItemType>
-  GetDefaultBuiltInItemTypes_ForTesting();
-
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
-  std::vector<SidebarItem> GetDefaultSidebarItemsFromCurrentItems() const;
+  std::vector<SidebarItem::BuiltInItemType> GetCurrentlyPresentBuiltInTypes()
+      const;
   void OnPreferenceChanged(const std::string& pref_name);
   void MigrateSidebarShowOptions();
   void MigratePrefSidebarBuiltInItemsToHidden();
