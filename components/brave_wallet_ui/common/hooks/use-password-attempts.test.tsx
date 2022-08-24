@@ -69,9 +69,7 @@ describe('usePasswordAttempts hook', () => {
 
     const {
       result
-    } = renderHook(() => usePasswordAttempts({
-      maxAttempts: MAX_ATTEMPTS
-    }), renderHookOptionsWithCustomStore(store))
+    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
 
     expect(result.current.attempts).toEqual(0)
 
@@ -87,9 +85,7 @@ describe('usePasswordAttempts hook', () => {
 
     const {
       result
-    } = renderHook(() => usePasswordAttempts({
-      maxAttempts: MAX_ATTEMPTS
-    }), renderHookOptionsWithCustomStore(store))
+    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
 
     expect(result.current.attempts).toEqual(0)
 

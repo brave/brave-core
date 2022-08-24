@@ -43,7 +43,7 @@ export const ConfirmPasswordModal = ({
   const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
 
   // custom hooks
-  const { attemptPasswordEntry } = usePasswordAttempts({ maxAttempts: 3 })
+  const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
   const onSubmit = React.useCallback(async () => {
