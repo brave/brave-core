@@ -910,8 +910,15 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("input")
                 | local_name!("select")
                 | local_name!("button")
-                | local_name!("aside")
-                | local_name!("source") => true,
+                | local_name!("aside") => true,
+                local_name!("source") => {
+                    if let Some(parent) = handle.parent().as_ref() {
+                        if dom::get_tag_name(&parent) == Some(&local_name!("picture")) {
+                            return true;
+                        }
+                    }
+                    false
+                }                
                 local_name!("h1") | local_name!("h2") => {
                     // Delete remaining headings that may be duplicates of the title.
                     let mut heading = String::new();
