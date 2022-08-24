@@ -1060,7 +1060,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
             IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE },
       }
     }, {
-      std::string("webtorrent"), {
+      std::string("brave_webtorrent"), {
         { "webtorrentPeer", IDS_WEBTORRENT_PEER },
         { "webtorrentPeers", IDS_WEBTORRENT_PEERS },
       }
