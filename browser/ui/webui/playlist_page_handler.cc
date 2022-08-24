@@ -12,6 +12,8 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 
 playlist::PlaylistService* GetPlaylistService(Profile* profile) {
   return playlist::PlaylistServiceFactory::GetForBrowserContext(profile);
@@ -19,9 +21,11 @@ playlist::PlaylistService* GetPlaylistService(Profile* profile) {
 
 PlaylistPageHandler::PlaylistPageHandler(
     Profile* profile,
+    content::WebContents* contents,
     mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler,
     mojo::PendingRemote<playlist::mojom::Page> pending_page)
     : profile_(profile),
+      web_contents_(contents),
       page_(std::move(pending_page)),
       handler_(this, std::move(pending_page_handler)) {
   DCHECK(profile_);
@@ -70,6 +74,20 @@ void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
                                                           const GURL& url) {
   GetPlaylistService(profile_)->RequestDownloadMediaFilesFromPage(id,
                                                                   url.spec());
+}
+
+void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
+    const std::string& playlist_id) {
+  auto* browser = chrome::FindBrowserWithWebContents(web_contents_);
+  DCHECK(browser);
+  auto* tab_strip_model = browser->tab_strip_model();
+  for (auto i = 0; i < tab_strip_model->count(); i++) {
+    if (auto* contents = tab_strip_model->GetWebContentsAt(i);
+        contents != web_contents_) {
+      GetPlaylistService(profile_)->RequestDownloadMediaFilesFromContents(
+          playlist_id, contents);
+    }
+  }
 }
 
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,

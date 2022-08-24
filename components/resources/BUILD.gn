@@ -43,6 +43,7 @@ brave_grit("static_resources") {
     "enable_ftx=$enable_ftx",
     "enable_ipfs=$enable_ipfs",
     "enable_playlist=$enable_playlist",
+    "enable_playlist_webui=$enable_playlist_webui",
     "enable_speedreader=$enable_speedreader",
   ]
 
@@ -116,7 +117,7 @@ repack("resources") {
     }
   }
 
-  if (enable_playlist) {
+  if (enable_playlist_webui) {
     deps += [ "//brave/components/playlist/resources:generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/playlist/resources/playlist_generated.pak" ]
   }

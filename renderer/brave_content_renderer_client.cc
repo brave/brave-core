@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
 #include "brave/components/speedreader/common/buildflags.h"
@@ -34,6 +35,11 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
 #endif  // BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
+#endif
 
 BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
@@ -118,6 +124,12 @@ void BraveContentRendererClient::RenderFrameCreated(
     new speedreader::SpeedreaderRenderFrameObserver(render_frame);
   }
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    new playlist::PlaylistRenderFrameObserver(render_frame);
+  }
+#endif
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(
@@ -127,6 +139,15 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
   // Run this before any extensions
   if (observer)
     observer->RunScriptsAtDocumentStart();
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    if (auto* observer =
+            playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
+      observer->RunScriptsAtDocumentStart();
+    }
+  }
+#endif
 
   ChromeContentRendererClient::RunScriptsAtDocumentStart(render_frame);
 }

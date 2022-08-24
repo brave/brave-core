@@ -154,6 +154,10 @@ export class PlaylistPage extends React.Component<Props, State> {
     getPlaylistAPI().removePlaylist(playlistId)
   }
 
+  onClickDownloadMediaFilesFromOpenTabs = () => {
+    getPlaylistAPI().addMediaFilesFromOpenTabsToPlaylist(this.props.playlistData.currentList?.id ?? '')
+  }
+
   render () {
     return (
       <div id='playlistPage'>
@@ -172,7 +176,10 @@ export class PlaylistPage extends React.Component<Props, State> {
 
         <div>
           <h1>Experimental</h1>
+          <button onClick={this.onClickDownloadMediaFilesFromOpenTabs}>Download media files from open tabs</button>
+          <br /><br />
           <div>
+            <div>URL input</div>
             <textarea
               cols={100}
               rows={10}
