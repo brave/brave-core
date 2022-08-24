@@ -8,15 +8,13 @@
 
 #include <vector>
 
-namespace base {
-class Value;
-}
+#include "base/values.h"
 
 namespace playlist {
 
 struct PlaylistItemInfo;
 
-base::Value GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info);
+base::Value::Dict GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info);
 
 }  // namespace playlist
 
