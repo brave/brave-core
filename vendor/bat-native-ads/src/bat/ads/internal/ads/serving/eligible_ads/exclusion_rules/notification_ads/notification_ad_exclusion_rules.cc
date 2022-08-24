@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/dismissed_exclusion_rule.h"
+#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
@@ -24,6 +25,9 @@ ExclusionRules::ExclusionRules(
   dismissed_exclusion_rule_ =
       std::make_unique<DismissedExclusionRule>(ad_events);
   exclusion_rules_.push_back(dismissed_exclusion_rule_.get());
+
+  per_hour_exclusion_rule_ = std::make_unique<PerHourExclusionRule>(ad_events);
+  exclusion_rules_.push_back(per_hour_exclusion_rule_.get());
 }
 
 ExclusionRules::~ExclusionRules() = default;

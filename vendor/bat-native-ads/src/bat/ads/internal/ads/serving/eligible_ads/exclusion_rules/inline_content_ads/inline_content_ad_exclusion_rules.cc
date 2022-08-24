@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
 
+#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
@@ -19,7 +20,10 @@ ExclusionRules::ExclusionRules(
     : ExclusionRulesBase(ad_events,
                          subdivision_targeting,
                          anti_targeting_resource,
-                         browsing_history) {}
+                         browsing_history) {
+  per_hour_exclusion_rule_ = std::make_unique<PerHourExclusionRule>(ad_events);
+  exclusion_rules_.push_back(per_hour_exclusion_rule_.get());
+}
 
 ExclusionRules::~ExclusionRules() = default;
 
