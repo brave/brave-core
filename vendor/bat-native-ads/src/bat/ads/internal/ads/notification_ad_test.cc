@@ -24,10 +24,10 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::Invoke;
-
-namespace ads {
 
 class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
  protected:

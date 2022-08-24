@@ -24,12 +24,12 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::InSequence;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-namespace ads {
 
 class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
  protected:

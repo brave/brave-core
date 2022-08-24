@@ -14,10 +14,12 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using testing::_;
-using testing::Invoke;
+namespace ads {
 
 namespace {
+
+using testing::_;
+using testing::Invoke;
 
 constexpr char kInvalidJsonResourceFile[] =
     "feibnmjhecfbjpeciancnchbmlobenjn_invalid_json";
@@ -26,7 +28,6 @@ constexpr char kNotExistantResourceFile[] =
 
 }  // namespace
 
-namespace ads {
 namespace resource {
 
 class BatAdsTextClassificationResourceTest : public UnitTestBase {
