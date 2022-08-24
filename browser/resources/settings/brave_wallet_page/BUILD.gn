@@ -45,5 +45,6 @@ html_to_js("templatize") {
     "add_wallet_network_dialog.js",
     "brave_wallet_page.js",
     "wallet_networks_subpage.js",
+    "wallet_networks_list.js",
   ]
 }

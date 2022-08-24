@@ -277,8 +277,8 @@ void JsonRpcService::GetPendingAddChainRequests(
   std::move(callback).Run(std::move(all_requests));
 }
 
-void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
-                                      AddEthereumChainCallback callback) {
+void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
+                              AddChainCallback callback) {
   auto chain_id = chain->chain_id;
   GURL url = MaybeAddInfuraProjectId(GetActiveEndpointUrl(*chain));
 
@@ -290,10 +290,26 @@ void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
     return;
   }
 
-  if (CustomEthChainExists(prefs_, chain_id)) {
+  if (CustomChainExists(prefs_, chain_id, chain->coin)) {
     std::move(callback).Run(
         chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
+    return;
+  }
+
+  // Custom networks for FIL and SOL are allowed to replace only known chain
+  // ids. So just update prefs without chain id validation.
+  if (chain->coin == mojom::CoinType::FIL ||
+      chain->coin == mojom::CoinType::SOL) {
+    if (!KnownChainExists(chain_id, chain->coin)) {
+      std::move(callback).Run(
+          chain_id, mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      return;
+    }
+    AddCustomNetwork(prefs_, *chain);
+    std::move(callback).Run(chain->chain_id, mojom::ProviderError::kSuccess,
+                            "");
     return;
   }
 
@@ -306,7 +322,7 @@ void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
 void JsonRpcService::OnEthChainIdValidated(
     mojom::NetworkInfoPtr chain,
     const GURL& rpc_url,
-    AddEthereumChainCallback callback,
+    AddChainCallback callback,
     const int http_code,
     const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
@@ -328,7 +344,8 @@ void JsonRpcService::AddEthereumChainForOrigin(
     const url::Origin& origin,
     AddEthereumChainForOriginCallback callback) {
   auto chain_id = chain->chain_id;
-  if (KnownEthChainExists(chain_id) || CustomEthChainExists(prefs_, chain_id)) {
+  if (KnownChainExists(chain_id, mojom::CoinType::ETH) ||
+      CustomChainExists(prefs_, chain_id, mojom::CoinType::ETH)) {
     std::move(callback).Run(
         chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
@@ -400,9 +417,10 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
   add_chain_pending_requests_.erase(chain_id);
 }
 
-void JsonRpcService::RemoveEthereumChain(const std::string& chain_id,
-                                         RemoveEthereumChainCallback callback) {
-  RemoveCustomNetwork(prefs_, chain_id);
+void JsonRpcService::RemoveChain(const std::string& chain_id,
+                                 mojom::CoinType coin,
+                                 RemoveChainCallback callback) {
+  RemoveCustomNetwork(prefs_, chain_id, coin);
   std::move(callback).Run(true);
 }
 
@@ -450,7 +468,7 @@ void JsonRpcService::GetNetwork(mojom::CoinType coin,
 void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
   // Only try to update is_eip1559 for localhost or custom chains.
   if (chain_id != brave_wallet::mojom::kLocalhostChainId &&
-      !CustomEthChainExists(prefs_, chain_id)) {
+      !CustomChainExists(prefs_, chain_id, mojom::CoinType::ETH)) {
     return;
   }
 
@@ -528,14 +546,8 @@ void JsonRpcService::GetAllNetworks(mojom::CoinType coin,
 
 void JsonRpcService::GetCustomNetworks(mojom::CoinType coin,
                                        GetCustomNetworksCallback callback) {
-  if (coin != mojom::CoinType::ETH) {
-    NOTREACHED();
-    std::move(callback).Run({});
-    return;
-  }
-
   std::vector<std::string> chain_ids;
-  for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs_)) {
+  for (const auto& it : brave_wallet::GetAllCustomChains(prefs_, coin)) {
     chain_ids.push_back(it->chain_id);
   }
   std::move(callback).Run(std::move(chain_ids));
@@ -543,14 +555,8 @@ void JsonRpcService::GetCustomNetworks(mojom::CoinType coin,
 
 void JsonRpcService::GetKnownNetworks(mojom::CoinType coin,
                                       GetKnownNetworksCallback callback) {
-  if (coin != mojom::CoinType::ETH) {
-    NOTREACHED();
-    std::move(callback).Run({});
-    return;
-  }
-
   std::vector<std::string> chain_ids;
-  for (const auto& it : brave_wallet::GetAllKnownEthChains(prefs_)) {
+  for (const auto& it : brave_wallet::GetAllKnownChains(prefs_, coin)) {
     chain_ids.push_back(it->chain_id);
   }
   std::move(callback).Run(std::move(chain_ids));

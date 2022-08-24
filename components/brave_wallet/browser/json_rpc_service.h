@@ -180,16 +180,17 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                   mojom::CoinType coin,
                   SetNetworkCallback callback) override;
   void GetNetwork(mojom::CoinType coin, GetNetworkCallback callback) override;
-  void AddEthereumChain(mojom::NetworkInfoPtr chain,
-                        AddEthereumChainCallback callback) override;
+  void AddChain(mojom::NetworkInfoPtr chain,
+                AddChainCallback callback) override;
   void AddEthereumChainForOrigin(
       mojom::NetworkInfoPtr chain,
       const url::Origin& origin,
       AddEthereumChainForOriginCallback callback) override;
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
                                         bool approved) override;
-  void RemoveEthereumChain(const std::string& chain_id,
-                           RemoveEthereumChainCallback callback) override;
+  void RemoveChain(const std::string& chain_id,
+                   mojom::CoinType coin,
+                   RemoveChainCallback callback) override;
 
   std::string GetChainId(mojom::CoinType coin) const;
   void GetChainId(mojom::CoinType coin,
@@ -539,7 +540,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnEthChainIdValidated(
       mojom::NetworkInfoPtr chain,
       const GURL& rpc_url,
-      AddEthereumChainCallback callback,
+      AddChainCallback callback,
       const int http_code,
       const std::string& response,
       const base::flat_map<std::string, std::string>& headers);

@@ -29,8 +29,8 @@ bool IsValidURL(const std::string& url_string) {
 // brave settings pserstence.
 // IMPORTANT: When adding something here please make sure it is valid for
 // https://eips.ethereum.org/EIPS/eip-3085.
-bool ValueToEthNetworkInfoCommon(const base::Value& value,
-                                 brave_wallet::mojom::NetworkInfo* chain) {
+bool ValueToNetworkInfoCommon(const base::Value& value,
+                              brave_wallet::mojom::NetworkInfo* chain) {
   const base::Value::Dict* params_dict = value.GetIfDict();
   if (!params_dict)
     return false;
@@ -63,8 +63,6 @@ bool ValueToEthNetworkInfoCommon(const base::Value& value,
     }
   }
 
-  chain->coin = brave_wallet::mojom::CoinType::ETH;
-
   return true;
 }
 
@@ -84,15 +82,21 @@ absl::optional<std::string> ExtractChainIdFromValue(
   return *chain_id;
 }
 
-mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
+mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
   mojom::NetworkInfo chain;
 
-  if (!ValueToEthNetworkInfoCommon(value, &chain))
+  if (!ValueToNetworkInfoCommon(value, &chain))
     return nullptr;
 
   const base::Value::Dict* params_dict = value.GetIfDict();
   if (!params_dict)
     return nullptr;
+
+  if (const auto coin = params_dict->FindInt("coin")) {
+    chain.coin = static_cast<mojom::CoinType>(*coin);
+  } else {
+    chain.coin = mojom::CoinType::ETH;
+  }
 
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");
@@ -135,7 +139,11 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
   }
 
-  chain.is_eip1559 = params_dict->FindBool("is_eip1559").value_or(false);
+  if (chain.coin == mojom::CoinType::ETH) {
+    chain.is_eip1559 = params_dict->FindBool("is_eip1559").value_or(false);
+  } else {
+    chain.is_eip1559 = false;
+  }
 
   return chain.Clone();
 }
@@ -143,8 +151,10 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
 mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   mojom::NetworkInfo chain;
 
-  if (!ValueToEthNetworkInfoCommon(value, &chain))
+  if (!ValueToNetworkInfoCommon(value, &chain))
     return nullptr;
+
+  chain.coin = mojom::CoinType::ETH;
 
   const base::Value::Dict* params_dict = value.GetIfDict();
   if (!params_dict)
@@ -186,12 +196,16 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   return chain.Clone();
 }
 
-base::Value::Dict EthNetworkInfoToValue(const mojom::NetworkInfo& chain) {
+base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   base::Value::Dict dict;
-  DCHECK_EQ(chain.coin, mojom::CoinType::ETH);
+
+  dict.Set("coin", static_cast<int>(chain.coin));
   dict.Set("chainId", chain.chain_id);
   dict.Set("chainName", chain.chain_name);
-  dict.Set("is_eip1559", chain.is_eip1559);
+
+  if (chain.coin == mojom::CoinType::ETH) {
+    dict.Set("is_eip1559", chain.is_eip1559);
+  }
 
   base::Value::List blockExplorerUrlsValue;
   if (!chain.block_explorer_urls.empty()) {

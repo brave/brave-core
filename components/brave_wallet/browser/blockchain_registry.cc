@@ -186,7 +186,8 @@ std::vector<mojom::NetworkInfoPtr>
 BlockchainRegistry::GetPrepopulatedNetworks() {
   std::vector<mojom::NetworkInfoPtr> result;
   for (auto& chain : chain_list_) {
-    if (auto known_chain = GetKnownEthChain(nullptr, chain->chain_id)) {
+    if (auto known_chain =
+            GetKnownChain(nullptr, chain->chain_id, mojom::CoinType::ETH)) {
       result.push_back(known_chain.Clone());
     } else {
       result.push_back(chain.Clone());

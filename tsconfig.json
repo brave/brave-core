@@ -38,7 +38,6 @@
         // command which would generate a base tsconfig file for developer IDEs
         // using the target of their choosing and not be committed to source control.
         "../out/Component/gen/*",
-        "../out/Component_arm64/gen/*",
         "../out/Static/gen/*",
         "../out/Release/gen/*",
         "../out/Debug/gen/*",

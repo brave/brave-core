@@ -168,6 +168,7 @@ preprocess_if_expr("preprocess_generated") {
     "brave_wallet_page/add_wallet_network_dialog.js",
     "brave_wallet_page/brave_wallet_browser_proxy.m.js",
     "brave_wallet_page/brave_wallet_page.js",
+    "brave_wallet_page/wallet_networks_list.js",
     "brave_wallet_page/wallet_networks_subpage.js",
     "default_brave_shields_page/default_brave_shields_browser_proxy.m.js",
     "default_brave_shields_page/default_brave_shields_page.js",

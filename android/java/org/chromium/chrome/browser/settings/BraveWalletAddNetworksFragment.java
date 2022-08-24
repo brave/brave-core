@@ -293,25 +293,25 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         assert mJsonRpcService != null;
         if (!mChainId.isEmpty()) {
             if (mChainId.equals(chain.chainId)) {
-                mJsonRpcService.removeEthereumChain(mChainId, success -> {
+                mJsonRpcService.removeChain(mChainId, CoinType.ETH, success -> {
                     if (!success) {
                         return;
                     }
-                    addEthereumChain(chain, false);
+                    addChain(chain, false);
                 });
             } else {
-                addEthereumChain(chain, true);
+                addChain(chain, true);
             }
         } else {
-            addEthereumChain(chain, false);
+            addChain(chain, false);
         }
 
         return true;
     }
 
-    private void addEthereumChain(NetworkInfo chain, boolean remove) {
+    private void addChain(NetworkInfo chain, boolean remove) {
         assert mJsonRpcService != null;
-        mJsonRpcService.addEthereumChain(chain, (chainId, error, errorMessage) -> {
+        mJsonRpcService.addChain(chain, (chainId, error, errorMessage) -> {
             if (error != ProviderError.SUCCESS) {
                 // (sergz): Perhaps we will need to add more errors in the future.
                 // We support only that one for now from backend
@@ -321,7 +321,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                 return;
             }
             if (remove) {
-                mJsonRpcService.removeEthereumChain(mChainId, success -> {
+                mJsonRpcService.removeChain(mChainId, CoinType.ETH, success -> {
                     // We just do nothing here as we added a chain with a diff
                     // chainId already
                     finishFragment();

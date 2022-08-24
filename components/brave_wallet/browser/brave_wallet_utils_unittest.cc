@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -42,20 +43,35 @@ namespace brave_wallet {
 namespace {
 
 void UpdateCustomNetworks(PrefService* prefs,
-                          std::vector<base::Value::Dict>* values) {
+                          const std::vector<base::Value::Dict>& values,
+                          brave_wallet::mojom::CoinType coin) {
   DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
   base::Value* dict = update.Get();
   ASSERT_TRUE(dict);
-  base::Value* list = dict->FindKey(kEthereumPrefKey);
+  base::Value* list = dict->FindKey(GetPrefKeyForCoinType(coin));
   if (!list) {
-    list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
+    list = dict->SetKey(GetPrefKeyForCoinType(coin),
+                        base::Value(base::Value::Type::LIST));
   }
   ASSERT_TRUE(list);
   auto& list_value = list->GetList();
   list_value.clear();
-  for (auto& it : *values) {
-    list_value.Append(std::move(it));
+  for (auto& it : values) {
+    list_value.Append(it.Clone());
   }
+}
+
+void UpdateCustomNetworks(PrefService* prefs,
+                          const base::Value::Dict& value,
+                          brave_wallet::mojom::CoinType coin) {
+  std::vector<base::Value::Dict> values;
+  values.push_back(value.Clone());
+  UpdateCustomNetworks(prefs, values, coin);
+}
+
+std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains(
+    PrefService* prefs) {
+  return GetAllCustomChains(prefs, brave_wallet::mojom::CoinType::ETH);
 }
 
 }  // namespace
@@ -659,64 +675,100 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
   EXPECT_EQ(tx_receipt, *tx_receipt_from_value);
 }
 
-TEST(BraveWalletUtilsUnitTest, GetAllEthCustomChainsTest) {
-  TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
-  ASSERT_TRUE(GetAllEthCustomChains(&prefs).empty());
+TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
+  for (auto coin :
+       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+    TestingPrefServiceSimple prefs;
+    prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+    ASSERT_TRUE(GetAllCustomChains(&prefs, coin).empty());
 
-  std::vector<base::Value::Dict> values;
-  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
-  values.push_back(EthNetworkInfoToValue(chain1));
+    std::vector<base::Value::Dict> values;
+    mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
+    chain1.coin = coin;
+    values.push_back(NetworkInfoToValue(chain1));
 
-  mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-  values.push_back(EthNetworkInfoToValue(chain2));
-  UpdateCustomNetworks(&prefs, &values);
+    mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
+    chain2.coin = coin;
+    if (coin != mojom::CoinType::ETH)
+      chain2.is_eip1559 = false;
+    values.push_back(NetworkInfoToValue(chain2));
+    UpdateCustomNetworks(&prefs, std::move(values), coin);
 
-  ASSERT_EQ(2u, GetAllEthCustomChains(&prefs).size());
-  EXPECT_EQ(chain1, *GetAllEthCustomChains(&prefs)[0]);
-  EXPECT_EQ(chain2, *GetAllEthCustomChains(&prefs)[1]);
+    ASSERT_EQ(2u, GetAllCustomChains(&prefs, coin).size());
+    EXPECT_EQ(chain1, *GetAllCustomChains(&prefs, coin)[0]);
+    EXPECT_EQ(chain2, *GetAllCustomChains(&prefs, coin)[1]);
+  }
 }
 
-TEST(BraveWalletUtilsUnitTest, KnownEthChainExists) {
+TEST(BraveWalletUtilsUnitTest, KnownChainExists) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
-  values.push_back(EthNetworkInfoToValue(chain));
-  UpdateCustomNetworks(&prefs, &values);
+  values.push_back(NetworkInfoToValue(chain));
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
-  auto known_chains = GetAllKnownEthChains(&prefs);
+  auto known_chains = GetAllKnownChains(&prefs, mojom::CoinType::ETH);
   EXPECT_EQ(known_chains.size(), 13u);
   for (auto& known_chain : known_chains) {
-    EXPECT_TRUE(KnownEthChainExists(known_chain->chain_id));
+    EXPECT_TRUE(KnownChainExists(known_chain->chain_id, mojom::CoinType::ETH));
   }
 
-  EXPECT_TRUE(CustomEthChainExists(&prefs, chain.chain_id));
-  EXPECT_FALSE(KnownEthChainExists(chain.chain_id));
+  EXPECT_TRUE(CustomChainExists(&prefs, chain.chain_id, mojom::CoinType::ETH));
+  EXPECT_FALSE(KnownChainExists(chain.chain_id, mojom::CoinType::ETH));
+
+  EXPECT_TRUE(KnownChainExists(mojom::kFilecoinMainnet, mojom::CoinType::FIL));
+  EXPECT_TRUE(KnownChainExists(mojom::kFilecoinTestnet, mojom::CoinType::FIL));
+  EXPECT_TRUE(KnownChainExists(mojom::kLocalhostChainId, mojom::CoinType::FIL));
+
+  EXPECT_TRUE(KnownChainExists(mojom::kSolanaMainnet, mojom::CoinType::SOL));
+  EXPECT_TRUE(KnownChainExists(mojom::kSolanaTestnet, mojom::CoinType::SOL));
+  EXPECT_TRUE(KnownChainExists(mojom::kSolanaDevnet, mojom::CoinType::SOL));
+  EXPECT_TRUE(KnownChainExists(mojom::kLocalhostChainId, mojom::CoinType::SOL));
 }
 
-TEST(BraveWalletUtilsUnitTest, CustomEthChainExists) {
+TEST(BraveWalletUtilsUnitTest, CustomChainExists) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
-  values.push_back(EthNetworkInfoToValue(chain1));
+  values.push_back(NetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-  values.push_back(EthNetworkInfoToValue(chain2));
+  values.push_back(NetworkInfoToValue(chain2));
 
-  EXPECT_FALSE(CustomEthChainExists(&prefs, chain1.chain_id));
-  EXPECT_FALSE(CustomEthChainExists(&prefs, chain2.chain_id));
+  EXPECT_FALSE(
+      CustomChainExists(&prefs, chain1.chain_id, mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      CustomChainExists(&prefs, chain2.chain_id, mojom::CoinType::ETH));
   EXPECT_EQ(GetAllEthCustomChains(&prefs).size(), 0u);
-  UpdateCustomNetworks(&prefs, &values);
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
-  EXPECT_TRUE(CustomEthChainExists(&prefs, chain1.chain_id));
-  EXPECT_TRUE(CustomEthChainExists(&prefs, chain2.chain_id));
+  EXPECT_TRUE(CustomChainExists(&prefs, chain1.chain_id, mojom::CoinType::ETH));
+  EXPECT_TRUE(CustomChainExists(&prefs, chain2.chain_id, mojom::CoinType::ETH));
   EXPECT_EQ(GetAllEthCustomChains(&prefs).size(), 2u);
+
+  EXPECT_FALSE(
+      CustomChainExists(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL));
+  UpdateCustomNetworks(
+      &prefs,
+      NetworkInfoToValue(*GetAllKnownChains(&prefs, mojom::CoinType::FIL)[0]),
+      mojom::CoinType::FIL);
+  EXPECT_TRUE(
+      CustomChainExists(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL));
+
+  EXPECT_FALSE(
+      CustomChainExists(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL));
+  UpdateCustomNetworks(
+      &prefs,
+      NetworkInfoToValue(*GetAllKnownChains(&prefs, mojom::CoinType::SOL)[0]),
+      mojom::CoinType::SOL);
+  EXPECT_TRUE(
+      CustomChainExists(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
@@ -727,13 +779,13 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1 =
       GetTestNetworkInfo1(mojom::kPolygonMainnetChainId);
-  values.push_back(EthNetworkInfoToValue(chain1));
+  values.push_back(NetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-  values.push_back(EthNetworkInfoToValue(chain2));
-  UpdateCustomNetworks(&prefs, &values);
+  values.push_back(NetworkInfoToValue(chain2));
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
-  auto known_chains = GetAllKnownEthChains(&prefs);
+  auto known_chains = GetAllKnownChains(&prefs, mojom::CoinType::ETH);
   auto custom_chains = GetAllEthCustomChains(&prefs);
   EXPECT_EQ(*custom_chains[0], chain1);
   EXPECT_EQ(*custom_chains[1], chain2);
@@ -751,18 +803,31 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   for (size_t i = 0; i < all_chains.size(); i++) {
     ASSERT_TRUE(all_chains.at(i).Equals(expected_chains.at(i)));
   }
+
   // Solana
+  auto sol_main_custom = *GetAllKnownChains(&prefs, mojom::CoinType::SOL)[0];
+  sol_main_custom.decimals = 123;
+  UpdateCustomNetworks(&prefs, {NetworkInfoToValue(sol_main_custom)},
+                       mojom::CoinType::SOL);
+
   auto sol_chains = GetAllChains(&prefs, mojom::CoinType::SOL);
   ASSERT_EQ(sol_chains.size(), 4u);
   EXPECT_EQ(sol_chains[0]->chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(sol_chains[0]->decimals, 123);
   EXPECT_EQ(sol_chains[1]->chain_id, mojom::kSolanaTestnet);
   EXPECT_EQ(sol_chains[2]->chain_id, mojom::kSolanaDevnet);
   EXPECT_EQ(sol_chains[3]->chain_id, mojom::kLocalhostChainId);
 
   // Filecoin
+  auto fil_main_custom = *GetAllKnownChains(&prefs, mojom::CoinType::FIL)[0];
+  fil_main_custom.decimals = 123;
+  UpdateCustomNetworks(&prefs, NetworkInfoToValue(fil_main_custom),
+                       mojom::CoinType::FIL);
+
   auto fil_chains = GetAllChains(&prefs, mojom::CoinType::FIL);
   ASSERT_EQ(fil_chains.size(), 3u);
   EXPECT_EQ(fil_chains[0]->chain_id, mojom::kFilecoinMainnet);
+  EXPECT_EQ(fil_chains[0]->decimals, 123);
   EXPECT_EQ(fil_chains[1]->chain_id, mojom::kFilecoinTestnet);
   EXPECT_EQ(fil_chains[2]->chain_id, mojom::kLocalhostChainId);
 }
@@ -774,12 +839,12 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
 
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
-  values.push_back(EthNetworkInfoToValue(chain1));
+  values.push_back(NetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-  values.push_back(EthNetworkInfoToValue(chain2));
-  UpdateCustomNetworks(&prefs, &values);
-  for (const auto& chain : GetAllKnownEthChains(&prefs)) {
+  values.push_back(NetworkInfoToValue(chain2));
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
+  for (const auto& chain : GetAllKnownChains(&prefs, mojom::CoinType::ETH)) {
     // Brave proxies should have infura key added to path.
     GURL rpc_url(chain->rpc_endpoints.front());
     if (base::EndsWith(rpc_url.host(), "brave.com"))
@@ -810,7 +875,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
       brave_wallet::mojom::kGoerliChainId,
       brave_wallet::mojom::kKovanChainId};
 
-  for (const auto& chain : GetAllKnownEthChains(&prefs)) {
+  for (const auto& chain : GetAllKnownChains(&prefs, mojom::CoinType::ETH)) {
     auto network_url =
         GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH);
     EXPECT_EQ(base::EndsWith(network_url.host(), ".brave.com"),
@@ -819,7 +884,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetSolanaSubdomainForKnownChainId) {
-  for (const auto& chain : GetAllKnownSolChains()) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::SOL)) {
     auto subdomain = GetSolanaSubdomainForKnownChainId(chain->chain_id);
     bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
     ASSERT_EQ(subdomain.empty(), expected);
@@ -827,14 +892,14 @@ TEST(BraveWalletUtilsUnitTest, GetSolanaSubdomainForKnownChainId) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetFilecoinSubdomainForKnownChainId) {
-  for (const auto& chain : GetAllKnownFilChains()) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::FIL)) {
     auto subdomain = GetFilecoinSubdomainForKnownChainId(chain->chain_id);
     bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
     ASSERT_EQ(subdomain.empty(), expected);
   }
 }
 
-TEST(BraveWalletUtilsUnitTest, GetKnownEthChain) {
+TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
@@ -849,7 +914,7 @@ TEST(BraveWalletUtilsUnitTest, GetKnownEthChain) {
   auto known_chains = brave_wallet::GetAllKnownNetworksForTesting();
   ASSERT_FALSE(known_chains.empty());
   for (const auto& chain : known_chains) {
-    auto network = GetKnownEthChain(&prefs, chain->chain_id);
+    auto network = GetKnownChain(&prefs, chain->chain_id, mojom::CoinType::ETH);
     EXPECT_EQ(network->chain_id, chain->chain_id);
     EXPECT_EQ(network->chain_name, chain->chain_name);
     EXPECT_TRUE(GetActiveEndpointUrl(*network).is_valid());
@@ -863,24 +928,24 @@ TEST(BraveWalletUtilsUnitTest, GetKnownEthChain) {
   }
 
   prefs.SetBoolean(kSupportEip1559OnLocalhostChain, true);
-  auto network =
-      GetKnownEthChain(&prefs, brave_wallet::mojom::kLocalhostChainId);
+  auto network = GetKnownChain(&prefs, brave_wallet::mojom::kLocalhostChainId,
+                               mojom::CoinType::ETH);
   EXPECT_EQ(network->is_eip1559, true);
 }
 
-TEST(BraveWalletUtilsUnitTest, GetCustomEthChain) {
+TEST(BraveWalletUtilsUnitTest, GetCustomChain) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
-  EXPECT_FALSE(GetCustomEthChain(&prefs, "chain_id"));
+  EXPECT_FALSE(GetCustomChain(&prefs, "chain_id", mojom::CoinType::ETH));
 
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
-  values.push_back(EthNetworkInfoToValue(chain));
-  UpdateCustomNetworks(&prefs, &values);
+  values.push_back(NetworkInfoToValue(chain));
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
-  auto network = GetCustomEthChain(&prefs, chain.chain_id);
+  auto network = GetCustomChain(&prefs, chain.chain_id, mojom::CoinType::ETH);
   ASSERT_TRUE(network);
   EXPECT_EQ(*network, chain);
 }
@@ -892,17 +957,17 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1("0x5566");
-  values.push_back(EthNetworkInfoToValue(chain1));
+  values.push_back(NetworkInfoToValue(chain1));
   mojom::NetworkInfo chain2 = GetTestNetworkInfo1("0x89");
-  values.push_back(EthNetworkInfoToValue(chain2));
-  UpdateCustomNetworks(&prefs, &values);
+  values.push_back(NetworkInfoToValue(chain2));
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::ETH));
   EXPECT_EQ(GetChain(&prefs, "0x5566", mojom::CoinType::ETH), chain1.Clone());
   EXPECT_EQ(GetChain(&prefs, "0x1", mojom::CoinType::ETH),
-            GetKnownEthChain(&prefs, "0x1"));
+            GetKnownChain(&prefs, "0x1", mojom::CoinType::ETH));
   EXPECT_EQ(GetChain(&prefs, "0x539", mojom::CoinType::ETH),
-            GetKnownEthChain(&prefs, "0x539"));
+            GetKnownChain(&prefs, "0x539", mojom::CoinType::ETH));
 
   EXPECT_EQ(*GetChain(&prefs, "0x89", mojom::CoinType::ETH), chain2);
 
@@ -971,11 +1036,11 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
 
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
-  values.push_back(EthNetworkInfoToValue(chain1));
+  values.push_back(NetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-  values.push_back(EthNetworkInfoToValue(chain2));
-  UpdateCustomNetworks(&prefs, &values);
+  values.push_back(NetworkInfoToValue(chain2));
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
   EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId),
             "mainnet");
@@ -1048,6 +1113,22 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list2[0].FindIntKey("decimals"), 22);
   EXPECT_EQ(*asset_list2[0].FindStringKey("logo"), "");
   EXPECT_EQ(*asset_list2[0].FindBoolKey("visible"), true);
+
+  {
+    mojom::NetworkInfo chain_fil = GetTestNetworkInfo1(mojom::kFilecoinMainnet);
+    chain_fil.coin = mojom::CoinType::FIL;
+    AddCustomNetwork(&prefs, chain_fil);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::FIL).size());
+    EXPECT_EQ(chain_fil, *GetAllCustomChains(&prefs, mojom::CoinType::FIL)[0]);
+  }
+
+  {
+    mojom::NetworkInfo chain_sol = GetTestNetworkInfo1(mojom::kSolanaMainnet);
+    chain_sol.coin = mojom::CoinType::SOL;
+    AddCustomNetwork(&prefs, chain_sol);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::SOL).size());
+    EXPECT_EQ(chain_sol, *GetAllCustomChains(&prefs, mojom::CoinType::SOL)[0]);
+  }
 }
 
 TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
@@ -1083,7 +1164,8 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
           .GetWithoutFilename(),
       GURL("https://url1.com/"));
 
-  RemoveCustomNetwork(&prefs, mojom::kPolygonMainnetChainId);
+  RemoveCustomNetwork(&prefs, mojom::kPolygonMainnetChainId,
+                      mojom::CoinType::ETH);
 
   // Back to known when custom is removed.
   EXPECT_EQ(get_polygon_from_all()->chain_name, "Polygon Mainnet");
@@ -1102,44 +1184,64 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
 
   AddCustomNetwork(&prefs, chain);
-  EXPECT_TRUE(CustomEthChainExists(&prefs, chain.chain_id));
+  EXPECT_TRUE(CustomChainExists(&prefs, chain.chain_id, mojom::CoinType::ETH));
 
-  RemoveCustomNetwork(&prefs, chain.chain_id);
-  EXPECT_FALSE(CustomEthChainExists(&prefs, chain.chain_id));
+  RemoveCustomNetwork(&prefs, chain.chain_id, mojom::CoinType::ETH);
+  EXPECT_FALSE(CustomChainExists(&prefs, chain.chain_id, mojom::CoinType::ETH));
 
   // Should not crash.
-  RemoveCustomNetwork(&prefs, "unknown network");
+  RemoveCustomNetwork(&prefs, "unknown network", mojom::CoinType::ETH);
+
+  {
+    mojom::NetworkInfo chain_fil = GetTestNetworkInfo1(mojom::kFilecoinMainnet);
+    chain_fil.coin = mojom::CoinType::FIL;
+    AddCustomNetwork(&prefs, chain_fil);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::FIL).size());
+    RemoveCustomNetwork(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+    ASSERT_EQ(0u, GetAllCustomChains(&prefs, mojom::CoinType::FIL).size());
+  }
+
+  {
+    mojom::NetworkInfo chain_sol = GetTestNetworkInfo1(mojom::kSolanaMainnet);
+    chain_sol.coin = mojom::CoinType::SOL;
+    AddCustomNetwork(&prefs, chain_sol);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::SOL).size());
+    RemoveCustomNetwork(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL);
+    ASSERT_EQ(0u, GetAllCustomChains(&prefs, mojom::CoinType::SOL).size());
+  }
 }
 
 TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
-  TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
+  for (auto coin :
+       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+    TestingPrefServiceSimple prefs;
+    prefs.registry()->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
 
-  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray<std::string>({}));
+    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+                ElementsAreArray<std::string>({}));
 
-  AddHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x123");
-  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray({"0x123"}));
-  AddHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x123");
-  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray({"0x123"}));
+    AddHiddenNetwork(&prefs, coin, "0x123");
+    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+                ElementsAreArray({"0x123"}));
+    AddHiddenNetwork(&prefs, coin, "0x123");
+    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+                ElementsAreArray({"0x123"}));
 
-  RemoveHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x555");
-  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray({"0x123"}));
+    RemoveHiddenNetwork(&prefs, coin, "0x555");
+    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+                ElementsAreArray({"0x123"}));
 
-  AddHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x7");
-  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray({"0x123", "0x7"}));
+    AddHiddenNetwork(&prefs, coin, "0x7");
+    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+                ElementsAreArray({"0x123", "0x7"}));
 
-  RemoveHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x123");
-  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray({"0x7"}));
+    RemoveHiddenNetwork(&prefs, coin, "0x123");
+    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin), ElementsAreArray({"0x7"}));
 
-  RemoveHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x7");
-  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray<std::string>({}));
+    RemoveHiddenNetwork(&prefs, coin, "0x7");
+    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+                ElementsAreArray<std::string>({}));
+  }
 }
 
 TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {

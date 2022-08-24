@@ -66,12 +66,15 @@ base::Value::Dict TransactionReceiptToValue(
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value::Dict& value);
 
-std::vector<mojom::NetworkInfoPtr> GetAllKnownEthChains(PrefService* prefs);
+std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
+                                                     mojom::CoinType coin);
 std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();
-std::vector<mojom::NetworkInfoPtr> GetAllEthCustomChains(PrefService* prefs);
-bool KnownEthChainExists(const std::string& chain_id);
-bool CustomEthChainExists(PrefService* prefs,
-                          const std::string& custom_chain_id);
+std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
+                                                      mojom::CoinType coin);
+bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin);
+bool CustomChainExists(PrefService* prefs,
+                       const std::string& custom_chain_id,
+                       mojom::CoinType coin);
 std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
                                                 mojom::CoinType coin);
 GURL GetNetworkURL(PrefService* prefs,
@@ -81,15 +84,15 @@ std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id);
 GURL AddInfuraProjectId(const GURL& url);
 GURL MaybeAddInfuraProjectId(const GURL& url);
-mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
-                                       const std::string& chain_id);
-mojom::NetworkInfoPtr GetCustomEthChain(PrefService* prefs,
-                                        const std::string& chain_id);
+mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
+                                    const std::string& chain_id,
+                                    mojom::CoinType coin);
+mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
+                                     const std::string& chain_id,
+                                     mojom::CoinType coin);
 
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
 std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
-std::vector<mojom::NetworkInfoPtr> GetAllKnownSolChains();
-std::vector<mojom::NetworkInfoPtr> GetAllKnownFilChains();
 std::string GetKnownFilNetworkId(const std::string& chain_id);
 std::string GetKnownSolNetworkId(const std::string& chain_id);
 std::string GetKnownNetworkId(mojom::CoinType coin,
@@ -125,7 +128,8 @@ std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);
 
 void RemoveCustomNetwork(PrefService* prefs,
-                         const std::string& chain_id_to_remove);
+                         const std::string& chain_id_to_remove,
+                         mojom::CoinType coin);
 
 std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
                                               mojom::CoinType coin);
