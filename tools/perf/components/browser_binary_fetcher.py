@@ -19,10 +19,11 @@ def ParseTarget(target: str) -> Tuple[Optional[str], str]:
   return m.group(1), m.group(2)
 
 
-def PrepareBinary(out_dir: str, tag: str, location: Optional[str],
+def PrepareBinary(out_dir: str, tag: Optional[str], location: Optional[str],
                   browser_type: BrowserType) -> str:
   if location:  # local binary
     if os.path.exists(location):
       return location
     raise RuntimeError(f'{location} doesn\'t exist')
+  assert(tag is not None)
   return browser_type.DownloadBrowserBinary(tag, out_dir)

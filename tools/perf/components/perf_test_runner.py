@@ -290,11 +290,12 @@ def PrepareBinariesAndDirectories(configurations: list[RunnerConfig],
                                   ) -> list[RunableConfiguration]:
   runable_configurations: list[RunableConfiguration] = []
   for config in configurations:
-    assert (config.tag is not None)
     if config.tag == config.label:
       description = config.tag
     else:
-      description = f'{config.label}[tag_{config.tag}]'
+      description = f'{config.label}'
+      if config.tag is not None:
+        description += f'[tag_{config.tag}]'
     out_dir = os.path.join(common_options.working_directory, description)
     binary_path = None
 
