@@ -9,6 +9,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { TorrentObj } from '../constants/webtorrentState'
 import { Header } from './header'
+import { getLocale } from '$web-common/locale'
 
 const Container = styled.div`
   display: flex;
@@ -93,7 +94,7 @@ export default function TorrentStatus ({ torrent, errorMsg }: Props) {
       </>}
       <span>{downloaded}{downloaded !== total && ` / ${total}`}</span>
       <StatsDivider/>
-      <span>{torrent.numPeers} {torrent.numPeers === 1 ? 'peer' : 'peers'}</span>
+      <span>{torrent.numPeers} {torrent.numPeers === 1 ? getLocale('webtorrentPeer') : getLocale('webtorrentPeers')}</span>
       <Eta torrent={torrent}/>
     </StatsContainer>
   </Container>
