@@ -35,14 +35,15 @@ describe('wallet reducer', () => {
     })
 
     it('failed to recover', () => {
-      const assertion = reducers({ rewardsData: { ...defaultState } }, {
+      const assertion = reducers({ rewardsData: defaultState() }, {
         type: types.ON_RECOVER_WALLET_DATA,
         payload: {
           result: 2
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
+      expectedState.ui.walletRecoveryStatus = 2
 
       // No chrome.send calls should be made in the event of a failure
       expect(chromeSpy).toHaveBeenCalledTimes(0)
@@ -52,7 +53,7 @@ describe('wallet reducer', () => {
     })
 
     it('recovered successfully', () => {
-      const assertion = reducers({ rewardsData: { ...defaultState } }, {
+      const assertion = reducers({ rewardsData: defaultState() }, {
         type: types.ON_RECOVER_WALLET_DATA,
         payload: {
           result: 0
@@ -60,10 +61,10 @@ describe('wallet reducer', () => {
       })
 
       const expectedState = {
-        ...defaultState,
+        ...defaultState(),
         ui: {
-          ...defaultState.ui,
-          emptyWallet: false,
+          ...defaultState().ui,
+          walletRecoveryStatus: 0,
           modalBackup: false
         }
       }
