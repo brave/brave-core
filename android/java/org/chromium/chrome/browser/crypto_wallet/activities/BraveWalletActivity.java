@@ -241,6 +241,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             setupWalletFragment.setOnNextPageListener(this);
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.setup_crypto), setupWalletFragment));
+            mBraveWalletService.onOnboardingShown();
         } else if (type == UNLOCK_WALLET_ACTION) {
             UnlockWalletFragment unlockWalletFragment = new UnlockWalletFragment();
             unlockWalletFragment.setOnNextPageListener(this);
@@ -428,7 +429,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     @Override
     public void gotoOnboardingPage() {
-        mBraveWalletService.onOnboardingShown();
         replaceNavigationFragments(ONBOARDING_ACTION, true);
     }
 
