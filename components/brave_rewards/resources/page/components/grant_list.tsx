@@ -17,7 +17,7 @@ function promotionTypesToGrantType (type: Rewards.PromotionTypes) {
 export function GrantList () {
   const actions = useActions()
   const { promotions } = useRewardsData((data) => ({
-    promotions: data.promotions || []
+    promotions: data.promotions
   }))
 
   if (promotions.length === 0) {

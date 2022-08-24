@@ -61,8 +61,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         chrome.send('brave_rewards.getPaymentId')
         getCurrentBalanceReport()
         ui.modalBackup = false
-        ui.emptyWallet = false
-        state.recoveryKey = ''
       }
 
       state = {
@@ -130,13 +128,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
 
       if (status === 0) { // on ledger::type::Result::LEDGER_OK
         state.balance = action.payload.balance
-        ui.walletServerProblem = false
-
-        if (ui.emptyWallet && state.balance && state.balance.total > 0) {
-          ui.emptyWallet = false
-        }
-      } else if (status === 1) { // on ledger::type::Result::LEDGER_ERROR
-        ui.walletServerProblem = true
       } else if (status === 24) { // on ledger::type::Result::EXPIRED_TOKEN
         chrome.send('brave_rewards.getExternalWallet')
         state.balance.total = action.payload.balance.total || 0
@@ -255,24 +246,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_MONTHLY_REPORT_IDS: {
       state = { ...state }
       state.monthlyReportIds = action.payload
-      break
-    }
-    case types.GET_WALLET_PASSPHRASE: {
-      chrome.send('brave_rewards.getWalletPassphrase')
-      break
-    }
-    case types.ON_WALLET_PASSPHRASE: {
-      const value = action.payload.passphrase
-      if (value && value.length > 0) {
-        state = { ...state }
-        let ui = state.ui
-        state.recoveryKey = value
-
-        state = {
-          ...state,
-          ui
-        }
-      }
       break
     }
   }

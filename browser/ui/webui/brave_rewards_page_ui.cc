@@ -197,10 +197,6 @@ class RewardsDOMHandler
 
   void OnGetPaymentId(ledger::type::BraveWalletPtr wallet);
 
-  void GetWalletPassphrase(const base::Value::List& args);
-
-  void OnGetWalletPassphrase(const std::string& pass);
-
   void GetOnboardingStatus(const base::Value::List& args);
   void EnableRewards(const base::Value::List& args);
   void GetExternalWalletProviders(const base::Value::List& args);
@@ -508,10 +504,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getPaymentId",
       base::BindRepeating(&RewardsDOMHandler::GetPaymentId,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.getWalletPassphrase",
-      base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getOnboardingStatus",
@@ -2017,25 +2009,6 @@ void RewardsDOMHandler::OnGetPaymentId(ledger::type::BraveWalletPtr wallet) {
   }
 
   CallJavascriptFunction("brave_rewards.paymentId", base::Value(payment_id));
-}
-
-void RewardsDOMHandler::GetWalletPassphrase(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-  rewards_service_->GetWalletPassphrase(base::BindOnce(
-      &RewardsDOMHandler::OnGetWalletPassphrase, weak_factory_.GetWeakPtr()));
-}
-
-void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& passphrase) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  CallJavascriptFunction("brave_rewards.walletPassphrase",
-                         base::Value(passphrase));
 }
 
 void RewardsDOMHandler::GetOnboardingStatus(const base::Value::List& args) {

@@ -15,6 +15,6 @@ type StateSelector<T> = (state: Rewards.State) => T
 
 export function useRewardsData<T> (fn: StateSelector<T>) {
   return useSelector((state: Rewards.ApplicationState) => {
-    return fn(state.rewardsData || defaultState)
+    return fn(state.rewardsData || defaultState())
   })
 }

@@ -153,6 +153,12 @@ export function Settings () {
   }
 
   const renderContent = () => {
+    // Do not display content until the user's onboarding status has been
+    // determined.
+    if (rewardsData.showOnboarding === null) {
+      return null
+    }
+
     if (rewardsData.showOnboarding) {
       return renderOnboarding()
     }

@@ -22,23 +22,17 @@ declare namespace Rewards {
   export type Address = { address: string, qr: string | null }
 
   export interface State {
-    version: number
-    addresses?: Record<AddressesType, Address>
     adsData: AdsData
     adsHistory: AdsHistory[]
     autoContributeList: Publisher[]
     balance: Balance
     balanceReport?: BalanceReport
-    contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number
     contributionMonthly: number
     contributionNonVerified: boolean
     contributionVideos: boolean
-    createdTimestamp: number | null
     currentCountryCode: string
-    donationAbilityTwitter: boolean
-    donationAbilityYT: boolean
     enabledAds: boolean
     enabledAdsMigrated: boolean
     enabledContribute: boolean
@@ -51,27 +45,19 @@ declare namespace Rewards {
     }
     excludedList: ExcludedPublisher[]
     externalWalletProviderList: string[]
-    // TODO(zenparsing): Remove |firstLoad| when Android settings page has been
-    // migrated to native.
-    firstLoad: boolean | null
     monthlyReport: MonthlyReport
     monthlyReportIds: string[]
     parameters: RewardsParameters
     paymentId: string
-    promotions?: Promotion[]
+    promotions: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
     reconcileStamp: number
-    recoveryKey: string
     recurringList: Publisher[]
-    recurringLoad: boolean
-    safetyNetFailed?: boolean
-    showOnboarding?: boolean
+    showOnboarding: boolean | null
     tipsList: Publisher[]
-    tipsLoad: boolean
     ui: {
       disconnectWalletError: boolean
-      emptyWallet: boolean
       modalBackup: boolean
       modalRedirect:
           'deviceLimitReachedModal'
@@ -86,13 +72,10 @@ declare namespace Rewards {
         | 'upholdBATNotAllowedModal'
         | 'upholdInsufficientCapabilitiesModal'
         | 'walletOwnershipVerificationFailureModal'
-      paymentIdCheck: boolean
-      promosDismissed?: {
+      promosDismissed: {
         [key: string]: boolean
       }
       walletRecoveryStatus: number | null
-      walletServerProblem: boolean
-      verifyOnboardingDisplayed?: boolean
     }
   }
 

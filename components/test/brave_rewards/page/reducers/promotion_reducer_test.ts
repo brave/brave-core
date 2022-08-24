@@ -16,7 +16,7 @@ describe('Promotion Reducer', () => {
         payload: {}
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -55,7 +55,7 @@ describe('Promotion Reducer', () => {
           expiresAt: 140000
         }
       ]
-      const expectedState: Rewards.State = { ...defaultState, promotions }
+      const expectedState: Rewards.State = { ...defaultState(), promotions }
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -73,7 +73,7 @@ describe('Promotion Reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -81,9 +81,7 @@ describe('Promotion Reducer', () => {
     })
 
     it('clears promotions if no promotions', () => {
-      const initialState = {
-        ...defaultState
-      }
+      const initialState = defaultState()
       initialState.promotions = [
         {
           promotionId: 'test-promotion-id',
@@ -115,7 +113,7 @@ describe('Promotion Reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -125,9 +123,7 @@ describe('Promotion Reducer', () => {
 
   describe('DELETE_PROMOTION', () => {
     it('deletes promotion', () => {
-      const initialState = {
-        ...defaultState
-      }
+      const initialState = defaultState()
       initialState.promotions = [
         {
           promotionId: 'test-promotion-id',
@@ -158,7 +154,7 @@ describe('Promotion Reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.promotions = [
         {
           promotionId: 'test-promotion-id',
@@ -190,7 +186,7 @@ describe('Promotion Reducer', () => {
 
   describe('ON_PROMOTION_FINISH', () => {
     it('does not modify state if there are no promotions available', () => {
-      const assertion = reducers(undefined, {
+      const assertion = reducers({ rewardsData: defaultState() }, {
         type: types.ON_PROMOTION_FINISH,
         payload: {
           properties: {
@@ -207,9 +203,8 @@ describe('Promotion Reducer', () => {
       })
 
       const expectedState: Rewards.State = {
-        ...defaultState,
-        promotions: [],
-        firstLoad: false
+        ...defaultState(),
+        promotions: []
       }
 
       expect(assertion).toEqual({
@@ -217,9 +212,7 @@ describe('Promotion Reducer', () => {
       })
     })
     it('modifies correct promotion with updated status info (0)', () => {
-      const initialState = {
-        ...defaultState
-      }
+      const initialState = defaultState()
       initialState.promotions = [
         {
           promotionId: 'test-promotion-id',
@@ -260,7 +253,7 @@ describe('Promotion Reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.promotions = [
         {
           promotionId: 'test-promotion-id',
@@ -286,16 +279,13 @@ describe('Promotion Reducer', () => {
           hint: 'blue'
         }
       ]
-      expectedState.ui.emptyWallet = false
 
       expect(assertion).toEqual({
         rewardsData: expectedState
       })
     })
     it('modifies correct promotion with updated status info (6)', () => {
-      const initialState = {
-        ...defaultState
-      }
+      const initialState = defaultState()
       initialState.promotions = [
         {
           promotionId: 'test-promotion-id',
@@ -331,7 +321,7 @@ describe('Promotion Reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.promotions = [
         {
           promotionId: 'test-promotion-id',
@@ -353,7 +343,6 @@ describe('Promotion Reducer', () => {
           hint: 'blue'
         }
       ]
-      expectedState.ui.emptyWallet = false
 
       expect(assertion).toEqual({
         rewardsData: expectedState

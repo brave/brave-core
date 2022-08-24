@@ -237,10 +237,6 @@ function paymentId (paymentId: string) {
   actions.onPaymentId(paymentId)
 }
 
-function walletPassphrase (passphrase: string) {
-  actions.onWalletPassphrase(passphrase)
-}
-
 function onboardingStatus (result: { showOnboarding: boolean }) {
   actions.onOnboardingStatus(result.showOnboarding)
 }
@@ -303,7 +299,6 @@ Object.defineProperty(window, 'brave_rewards', {
     initialized,
     completeReset,
     paymentId,
-    walletPassphrase,
     onboardingStatus,
     enabledInlineTippingPlatforms,
     externalWalletLogin,

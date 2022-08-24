@@ -140,7 +140,6 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
           newPromotion.captchaImage = ''
           newPromotion.captchaId = ''
           newPromotion.hint = ''
-          ui.emptyWallet = false
 
           state = {
             ...state,
