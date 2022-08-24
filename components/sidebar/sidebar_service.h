@@ -77,9 +77,7 @@ class SidebarService : public KeyedService {
   SidebarService& operator=(const SidebarService&) = delete;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(SidebarModelTest, ItemsChangedTest);
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
-  FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, NewDefaultItemAdded);
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
