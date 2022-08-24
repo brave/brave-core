@@ -20,15 +20,10 @@ private enum WelcomeViewID: Int {
   case iconBackground = 8
 }
 
-protocol WelcomeViewControllerDelegate: AnyObject {
-  func welcomeViewControllerDidShowNTPTutorialPage()
-}
-
 class WelcomeViewController: UIViewController {
   private let profile: Profile?
   private let rewards: BraveRewards?
   private var state: WelcomeViewCalloutState?
-  weak var delegate: WelcomeViewControllerDelegate?
 
   convenience init(profile: Profile?, rewards: BraveRewards?) {
     self.init(
@@ -348,7 +343,6 @@ class WelcomeViewController: UIViewController {
           nextController.animateToDefaultSettingsState()
         },
         secondaryAction: {
-          self.delegate?.welcomeViewControllerDidShowNTPTutorialPage()
           self.close()
         }
       )
@@ -378,7 +372,6 @@ class WelcomeViewController: UIViewController {
       return
     }
     UIApplication.shared.open(settingsUrl)
-    self.delegate?.welcomeViewControllerDidShowNTPTutorialPage()
     self.close()
   }
 
@@ -403,6 +396,8 @@ class WelcomeViewController: UIViewController {
 
       break
     }
+    
+    Preferences.General.basicOnboardingProgress.value = OnboardingProgress.newTabPage.rawValue
     presenting.dismiss(animated: true, completion: nil)
   }
 }
