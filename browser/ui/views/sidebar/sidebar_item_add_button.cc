@@ -38,6 +38,8 @@ void SidebarItemAddButton::OnButtonPressed() {
   if (timer_.IsRunning())
     timer_.Stop();
 
+  add_item_bubble_shown_by_click_ = true;
+
   DoShowBubble();
 }
 
@@ -50,6 +52,11 @@ void SidebarItemAddButton::OnMouseExited(const ui::MouseEvent& event) {
   SidebarButtonView::OnMouseExited(event);
   // Don't show bubble if user goes outo from add item quickly.
   timer_.Stop();
+
+  if (!add_item_bubble_shown_by_click_ && IsBubbleVisible()) {
+    DCHECK(add_item_bubble_widget_);
+    add_item_bubble_widget_->Close();
+  }
 }
 
 void SidebarItemAddButton::OnGestureEvent(ui::GestureEvent* event) {
@@ -71,12 +78,17 @@ void SidebarItemAddButton::AddedToWidget() {
 }
 
 void SidebarItemAddButton::OnWidgetDestroying(views::Widget* widget) {
+  DCHECK_EQ(add_item_bubble_widget_, widget);
+  add_item_bubble_widget_ = nullptr;
+  add_item_bubble_shown_by_click_ = false;
   observation_.Reset();
 }
 
 void SidebarItemAddButton::ShowBubbleWithDelay() {
   if (IsBubbleVisible())
     return;
+
+  DCHECK(!add_item_bubble_shown_by_click_);
 
   if (timer_.IsRunning())
     timer_.Stop();
@@ -87,10 +99,11 @@ void SidebarItemAddButton::ShowBubbleWithDelay() {
 }
 
 void SidebarItemAddButton::DoShowBubble() {
-  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
+  DCHECK(!add_item_bubble_widget_);
+  add_item_bubble_widget_ = views::BubbleDialogDelegateView::CreateBubble(
       new SidebarAddItemBubbleDelegateView(browser_, this));
-  observation_.Observe(bubble);
-  bubble->Show();
+  observation_.Observe(add_item_bubble_widget_);
+  add_item_bubble_widget_->Show();
 }
 
 bool SidebarItemAddButton::IsBubbleVisible() const {

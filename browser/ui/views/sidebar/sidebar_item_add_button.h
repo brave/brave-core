@@ -48,6 +48,9 @@ class SidebarItemAddButton : public SidebarButtonView,
   void OnButtonPressed();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<views::Widget> add_item_bubble_widget_ = nullptr;
+  // true when bubble is shown by add item button press. Otherwise, false.
+  bool add_item_bubble_shown_by_click_ = false;
   base::OneShotTimer timer_;
   base::CallbackListSubscription on_enabled_changed_subscription_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
