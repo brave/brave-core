@@ -51,7 +51,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         // Auto-dismiss of together prompt only
         // takes effect on the next page view and not the
-        // page view that the action occured on.
+        // page view that the action occurred on.
         braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
       }
 
@@ -64,15 +64,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
             ...backgroundWallpaper,
             type: 'image'
           }
-        } else if (backgroundWallpaper?.wallpaperSolidColor) {
+        } else if (backgroundWallpaper?.wallpaperColor) {
           backgroundWallpaper = {
             ...backgroundWallpaper,
-            type: 'solidColor'
-          }
-        } else if (backgroundWallpaper?.wallpaperGradientColor) {
-          backgroundWallpaper = {
-            ...backgroundWallpaper,
-            type: 'gradientColor'
+            type: 'color'
           }
         }
 
@@ -83,7 +78,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         }
       }
 
-      // It's super referral when backgound is false and it's not sponsored.
+      // It's super referral when background is false and it's not sponsored.
       if (state.brandedWallpaper && !state.brandedWallpaper.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
         state = {
@@ -141,14 +136,11 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       // Empty custom bg url means using brave background.
       const url = payload.customBackground.url.url
-      const solidColor = payload.customBackground.solidColor
-      const gradientColor = payload.customBackground.gradientColor
+      const color = payload.customBackground.color
       if (url) {
         state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
-      } else if (solidColor) {
-        state.backgroundWallpaper = { type: 'solidColor', wallpaperSolidColor: solidColor }
-      } else if (gradientColor) {
-        state.backgroundWallpaper = { type: 'gradientColor', wallpaperGradientColor: gradientColor }
+      } else if (color) {
+        state.backgroundWallpaper = { type: 'color', wallpaperColor: color }
       } else {
         state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }

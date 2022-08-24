@@ -64,9 +64,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void DismissBraveSearchPromotion() override;
   void IsSearchPromotionEnabled(
       IsSearchPromotionEnabledCallback callback) override;
-  void UseSolidColorBackground(const std::string& color) override;
-  void UseGradientColorBackground(
-      const std::string& gradient_value) override;
+  void UseColorBackground(const std::string& color) override;
 
   // Observe NTPCustomBackgroundImagesService.
   void OnCustomBackgroundUpdated();
@@ -82,8 +80,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void OnTemplateURLServiceShuttingDown() override;
 
   bool IsCustomBackgroundImageEnabled() const;
-  bool IsSolidColorBackgroundEnabled() const;
-  bool IsGradientColorBackgroundEnabled() const;
+  bool IsColorBackgroundEnabled() const;
   image_fetcher::ImageDecoder* GetImageDecoder();
   void ConvertSelectedImageFileAndSave(const base::FilePath& image_file);
   void OnGotImageFile(absl::optional<std::string> input);

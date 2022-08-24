@@ -22,11 +22,23 @@ class PrefService;
 // The data is stored in following format:
 //
 //  kNTPBackground: {
-//     type: ‘brave’ | ‘custom_image’ | ‘solid_color’ | ‘gradient_color’
+//     type: ‘brave’ | ‘custom_image’ | ‘solid_color’
 //     random: bool  // indicates that we should pick one every time
 //                      from |selected_type| collection
 //     selected_value?: string  // url or css value
 // }
+//
+//  Types:
+//   'brave': mapped to Type::kBrave. Default backgrounds provided by us.
+//            |selected_value| is empty.
+//
+//   'custom_image': mapped to |Type::kCustomImage.| custom image uploaded by
+//                   user. |selected_value| is url of the image.
+//
+//   'solid_color': mapped to |Type::kColor|. |selected_value| is css value or
+//                  either one of 'gradient' or ' solid' in case
+//                  |ShouldUseRandomValue()| is true. Value name is kept as
+//                  'solid_color' for backward compatibility.
 //
 class NTPBackgroundPrefs final {
  public:
@@ -37,8 +49,7 @@ class NTPBackgroundPrefs final {
   enum class Type {
     kBrave,  // Images that we supply.
     kCustomImage,
-    kSolidColor,
-    kGradientColor
+    kColor,
   };
 
   explicit NTPBackgroundPrefs(PrefService* service);
@@ -56,8 +67,7 @@ class NTPBackgroundPrefs final {
   void SetType(Type type);
   bool IsBraveType() const;
   bool IsCustomImageType() const;
-  bool IsSolidColorType() const;
-  bool IsGradientColorType() const;
+  bool IsColorType() const;
 
   // Returns true when we should pick one item of selected type every time NTP
   // opens.

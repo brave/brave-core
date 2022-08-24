@@ -76,8 +76,7 @@ export const Regular = () => {
       saveSetAllStackWidgets={doNothing}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}
       useCustomBackgroundImage={onUseCustomBackground}
-      setSolidColorBackground={onChangeColoredBackground}
-      setGradientColorBackground={onChangeColoredBackground}
+      setColorBackground={onChangeColoredBackground}
     />
   )
 }

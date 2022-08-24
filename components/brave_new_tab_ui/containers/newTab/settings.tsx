@@ -68,8 +68,7 @@ export interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   useCustomBackgroundImage: (useCustom: boolean) => void
-  setSolidColorBackground: (color: string) => void
-  setGradientColorBackground: (gradientValue: string) => void
+  setColorBackground: (color: string) => void
   showBackgroundImage: boolean
   showToday: boolean
   showBraveNewsButton: boolean
@@ -189,12 +188,8 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.props.useCustomBackgroundImage(useCustom)
   }
 
-  setSolidColorBackground = (color: string) => {
-    this.props.setSolidColorBackground(color)
-  }
-
-  setGradientColorBackground = (gradientValue: string) => {
-    this.props.setGradientColorBackground(gradientValue)
+  setColorBackground = (color: string) => {
+    this.props.setColorBackground(color)
   }
 
   setActiveTab (activeTab: TabType) {
@@ -357,8 +352,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                     toggleShowBackgroundImage={this.toggleShowBackgroundImage}
                     useCustomBackgroundImage={this.useCustomBackgroundImage}
-                    setSolidColorBackground={this.setSolidColorBackground}
-                    setGradientColorBackground={this.setGradientColorBackground}
+                    setColorBackground={this.setColorBackground}
                     brandedWallpaperOptIn={brandedWallpaperOptIn}
                     showBackgroundImage={showBackgroundImage}
                     featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}

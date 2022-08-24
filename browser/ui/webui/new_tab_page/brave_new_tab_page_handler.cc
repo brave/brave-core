@@ -185,20 +185,10 @@ void BraveNewTabPageHandler::OnSearchPromotionDismissed() {
   NotifySearchPromotionDisabledIfNeeded();
 }
 
-void BraveNewTabPageHandler::UseSolidColorBackground(const std::string& color) {
+void BraveNewTabPageHandler::UseColorBackground(const std::string& color) {
   auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
-  background_pref.SetType(NTPBackgroundPrefs::Type::kSolidColor);
+  background_pref.SetType(NTPBackgroundPrefs::Type::kColor);
   background_pref.SetSelectedValue(color);
-
-  OnCustomBackgroundUpdated();
-  DeleteSanitizedImageFile();
-}
-
-void BraveNewTabPageHandler::UseGradientColorBackground(
-      const std::string& gradient_value) {
-  auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
-  background_pref.SetType(NTPBackgroundPrefs::Type::kGradientColor);
-  background_pref.SetSelectedValue(gradient_value);
 
   OnCustomBackgroundUpdated();
   DeleteSanitizedImageFile();
@@ -212,12 +202,8 @@ bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
   return NTPBackgroundPrefs(prefs).IsCustomImageType();
 }
 
-bool BraveNewTabPageHandler::IsSolidColorBackgroundEnabled() const {
-  return NTPBackgroundPrefs(profile_->GetPrefs()).IsSolidColorType();
-}
-
-bool BraveNewTabPageHandler::IsGradientColorBackgroundEnabled() const {
-  return NTPBackgroundPrefs(profile_->GetPrefs()).IsGradientColorType();
+bool BraveNewTabPageHandler::IsColorBackgroundEnabled() const {
+  return NTPBackgroundPrefs(profile_->GetPrefs()).IsColorType();
 }
 
 void BraveNewTabPageHandler::OnCustomBackgroundUpdated() {
@@ -230,16 +216,11 @@ void BraveNewTabPageHandler::OnCustomBackgroundUpdated() {
     std::string time_string = std::to_string(base::Time::Now().ToTimeT());
     std::string local_string(ntp_background_images::kCustomWallpaperURL);
     value->url = GURL(local_string + "?ts=" + time_string);
-  } else if (IsSolidColorBackgroundEnabled()) {
+  } else if (IsColorBackgroundEnabled()) {
     auto selected_value =
         NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
     DCHECK(absl::holds_alternative<std::string>(selected_value));
-    value->solid_color = absl::get<std::string>(selected_value);
-  } else if (IsGradientColorBackgroundEnabled()) {
-    auto selected_value =
-        NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
-    DCHECK(absl::holds_alternative<std::string>(selected_value));
-    value->gradient_color = absl::get<std::string>(selected_value);
+    value->color = absl::get<std::string>(selected_value);
   }
 
   page_->OnBackgroundUpdated(std::move(value));

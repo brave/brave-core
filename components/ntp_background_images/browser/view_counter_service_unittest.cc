@@ -123,8 +123,8 @@ class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
     return base::FilePath();
   }
 
-  bool IsSolidColorBackgroundEnabled() override { return color_enabled_; }
-  std::string GetSolidColor() override { return "#ff0000"; }
+  bool IsColorBackgroundEnabled() override { return color_enabled_; }
+  std::string GetColor() override { return "#ff0000"; }
 
   bool image_enabled_ = false;
   bool color_enabled_ = false;
@@ -410,12 +410,12 @@ TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentWallpaperTest) {
   bg_url = background.FindStringKey(kWallpaperImageURLKey);
   EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg", *bg_url);
 
-  // Enable solid color background
+  // Enable color background
   delegate_->color_enabled_ = true;
   background = view_counter_->GetCurrentWallpaper();
   EXPECT_FALSE(background.FindStringKey(kWallpaperImageURLKey));
-  EXPECT_EQ(delegate_->GetSolidColor(),
-            *background.FindStringKey(kWallpaperSolidColorKey));
+  EXPECT_EQ(delegate_->GetColor(),
+            *background.FindStringKey(kWallpaperColorKey));
 #endif
 }
 

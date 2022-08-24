@@ -31,8 +31,7 @@ interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBackgroundImage: () => void
   useCustomBackgroundImage: (useCustom: boolean) => void
-  setSolidColorBackground: (color: string) => void
-  setGradientColorBackground: (gradientValue: string) => void
+  setColorBackground: (color: string) => void
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
@@ -89,9 +88,10 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
     const usingCustomBackground = newTabData.backgroundWallpaper?.type === 'image' &&
         !!newTabData.backgroundWallpaper.wallpaperImageUrl &&
         !newTabData.backgroundWallpaper.author && !newTabData.backgroundWallpaper.link
-    const selectedSolidBackgroundColor = newTabData.backgroundWallpaper?.type === 'solidColor' ? newTabData.backgroundWallpaper.wallpaperSolidColor : undefined
-    const selectedGradientBackgroundColor = newTabData.backgroundWallpaper?.type === 'gradientColor' ? newTabData.backgroundWallpaper.wallpaperGradientColor : undefined
-    const usingBraveBackground = !usingCustomBackground && !selectedSolidBackgroundColor && !selectedGradientBackgroundColor
+    const selectedBackgroundColor = newTabData.backgroundWallpaper?.type === 'color' ? newTabData.backgroundWallpaper.wallpaperColor : undefined
+    const usingBraveBackground = !usingCustomBackground && !selectedBackgroundColor
+    const usingSolidColorBackground = selectedBackgroundColor ? solidColorsForBackground.includes(selectedBackgroundColor) : false
+    const usingGradientBackground = selectedBackgroundColor ? gradientColorsForBackground.includes(selectedBackgroundColor) : false
 
     return (
       <>
@@ -146,10 +146,10 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 <StyledCustomBackgroundOption
                   onClick={this.onClickSolidColorBackground}
                 >
-                  <StyledSelectionBorder selected={!!selectedSolidBackgroundColor}>
+                  <StyledSelectionBorder selected={usingSolidColorBackground}>
                     <StyledCustomBackgroundOptionColor
-                      colorValue={selectedSolidBackgroundColor ?? defaultSolidBackgroundColor }
-                      selected={!!selectedSolidBackgroundColor}
+                      colorValue={usingSolidColorBackground ? selectedBackgroundColor as string : defaultSolidBackgroundColor }
+                      selected={usingSolidColorBackground}
                     />
                   </StyledSelectionBorder>
                   <StyledCustomBackgroundOptionLabel>
@@ -159,10 +159,10 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 <StyledCustomBackgroundOption
                   onClick={ this.onClickGradientColorBackground }
                 >
-                  <StyledSelectionBorder selected={!!selectedGradientBackgroundColor}>
+                  <StyledSelectionBorder selected={usingGradientBackground}>
                     <StyledCustomBackgroundOptionColor
-                      colorValue={selectedGradientBackgroundColor ?? defaultGradientColor}
-                      selected={!!selectedGradientBackgroundColor}
+                      colorValue={usingGradientBackground ? selectedBackgroundColor as string : defaultGradientColor}
+                      selected={usingGradientBackground}
                     />
                   </StyledSelectionBorder>
                   <StyledCustomBackgroundOptionLabel>
@@ -177,8 +177,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
           <ColorChooser
             title={getLocale('solidColorTitle')}
             values={solidColorsForBackground}
-            currentValue={selectedSolidBackgroundColor}
-            onSelectValue={this.props.setSolidColorBackground}
+            currentValue={selectedBackgroundColor}
+            onSelectValue={this.props.setColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
         }
@@ -186,8 +186,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
           <ColorChooser
             title={getLocale('gradientColorTitle')}
             values={gradientColorsForBackground}
-            currentValue={selectedGradientBackgroundColor}
-            onSelectValue={this.props.setGradientColorBackground}
+            currentValue={selectedBackgroundColor}
+            onSelectValue={this.props.setColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
         }

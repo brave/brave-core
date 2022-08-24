@@ -27,10 +27,8 @@ const char* TypeToString(NTPBackgroundPrefs::Type type) {
       return "brave";
     case NTPBackgroundPrefs::Type::kCustomImage:
       return "custom_image";
-    case NTPBackgroundPrefs::Type::kSolidColor:
+    case NTPBackgroundPrefs::Type::kColor:
       return "solid_color";
-    case NTPBackgroundPrefs::Type::kGradientColor:
-      return "gradient_color";
   }
 }
 
@@ -40,9 +38,7 @@ NTPBackgroundPrefs::Type StringToType(const std::string& type_string) {
   if (type_string == "custom_image")
     return NTPBackgroundPrefs::Type::kCustomImage;
   if (type_string == "solid_color")
-    return NTPBackgroundPrefs::Type::kSolidColor;
-  if (type_string == "gradient_color")
-    return NTPBackgroundPrefs::Type::kGradientColor;
+    return NTPBackgroundPrefs::Type::kColor;
 
   NOTREACHED();
   return NTPBackgroundPrefs::Type::kBrave;
@@ -97,12 +93,8 @@ bool NTPBackgroundPrefs::IsCustomImageType() const {
   return GetType() == Type::kCustomImage;
 }
 
-bool NTPBackgroundPrefs::IsSolidColorType() const {
-  return GetType() == Type::kSolidColor;
-}
-
-bool NTPBackgroundPrefs::IsGradientColorType() const {
-  return GetType() == Type::kGradientColor;
+bool NTPBackgroundPrefs::IsColorType() const {
+  return GetType() == Type::kColor;
 }
 
 bool NTPBackgroundPrefs::ShouldUseRandomValue() const {
@@ -125,8 +117,7 @@ absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
   const auto* selected_value = value->FindString(kSelectedValueKey);
   DCHECK(selected_value);
 
-  if (auto type = GetType();
-      type == Type::kSolidColor || type == Type::kGradientColor)
+  if (IsColorType())
     return *selected_value;
 
   return GURL(*selected_value);

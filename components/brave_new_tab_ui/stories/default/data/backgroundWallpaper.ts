@@ -33,24 +33,18 @@ export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpape
     }
   }
 
-  for (const color of solidColors) {
-    Object.assign(staticImages, {
-      [color]: {
-        type: 'solidColor',
-        wallpaperSolidColor: color
-      }
-    })
-  }
-
-  staticImages = gradientColors.reduce((prev, gradient) => {
+  const reducer = (prev: any, color: string) => {
     return {
       ...prev,
-      [gradient]: {
-        type: 'gradientColor',
-        wallpaperGradientColor: gradient
+      [color]: {
+        type: 'color',
+        wallpaperColor: color
       }
     }
-  }, staticImages)
+  }
+
+  staticImages = solidColors.reduce(reducer, staticImages)
+  staticImages = gradientColors.reduce(reducer, staticImages)
 
   return staticImages
 })(images, solidColorsForBackground, gradientColorsForBackground)
