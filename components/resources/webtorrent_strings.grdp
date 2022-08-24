@@ -4,6 +4,6 @@
       peer
   </message>
   <message name="IDS_WEBTORRENT_PEERS" desc="Label for a multiple peers (as in 3 peers).">
-      peers
+      <ph name="PEER_COUNT">$1<ex>253</ex></ph> peers
   </message>
 </grit-part>
