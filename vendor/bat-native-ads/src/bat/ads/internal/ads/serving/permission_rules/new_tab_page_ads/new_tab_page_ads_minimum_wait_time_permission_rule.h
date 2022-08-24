@@ -21,6 +21,9 @@ namespace new_tab_page_ads {
 class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
  public:
   MinimumWaitTimePermissionRule();
+  MinimumWaitTimePermissionRule(const MinimumWaitTimePermissionRule&) = delete;
+  MinimumWaitTimePermissionRule& operator=(
+      const MinimumWaitTimePermissionRule&) = delete;
   ~MinimumWaitTimePermissionRule() override;
 
   bool ShouldAllow() override;
@@ -29,10 +32,6 @@ class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap(const std::vector<base::Time>& history);
-
-  MinimumWaitTimePermissionRule(const MinimumWaitTimePermissionRule&) = delete;
-  MinimumWaitTimePermissionRule& operator=(
-      const MinimumWaitTimePermissionRule&) = delete;
 
   std::string last_message_;
 };

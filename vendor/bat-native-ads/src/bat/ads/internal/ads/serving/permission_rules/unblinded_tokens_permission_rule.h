@@ -15,6 +15,9 @@ namespace ads {
 class UnblindedTokensPermissionRule final : public PermissionRuleInterface {
  public:
   UnblindedTokensPermissionRule();
+  UnblindedTokensPermissionRule(const UnblindedTokensPermissionRule&) = delete;
+  UnblindedTokensPermissionRule& operator=(
+      const UnblindedTokensPermissionRule&) = delete;
   ~UnblindedTokensPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,10 +26,6 @@ class UnblindedTokensPermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  UnblindedTokensPermissionRule(const UnblindedTokensPermissionRule&) = delete;
-  UnblindedTokensPermissionRule& operator=(
-      const UnblindedTokensPermissionRule&) = delete;
 
   std::string last_message_;
 };

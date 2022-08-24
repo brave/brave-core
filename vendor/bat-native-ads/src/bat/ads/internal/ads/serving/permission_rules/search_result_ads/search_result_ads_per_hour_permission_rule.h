@@ -21,6 +21,8 @@ namespace search_result_ads {
 class AdsPerHourPermissionRule final : public PermissionRuleInterface {
  public:
   AdsPerHourPermissionRule();
+  AdsPerHourPermissionRule(const AdsPerHourPermissionRule&) = delete;
+  AdsPerHourPermissionRule& operator=(const AdsPerHourPermissionRule&) = delete;
   ~AdsPerHourPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -29,9 +31,6 @@ class AdsPerHourPermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap(const std::vector<base::Time>& history);
-
-  AdsPerHourPermissionRule(const AdsPerHourPermissionRule&) = delete;
-  AdsPerHourPermissionRule& operator=(const AdsPerHourPermissionRule&) = delete;
 
   std::string last_message_;
 };

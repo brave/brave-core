@@ -26,11 +26,9 @@ class ExclusionRules final : public ExclusionRulesBase {
                  geographic::SubdivisionTargeting* subdivision_targeting,
                  resource::AntiTargeting* anti_targeting_resource,
                  const BrowsingHistoryList& browsing_history);
-  ~ExclusionRules() override;
-
- private:
   ExclusionRules(const ExclusionRules&) = delete;
   ExclusionRules& operator=(const ExclusionRules&) = delete;
+  ~ExclusionRules() override;
 };
 
 }  // namespace new_tab_page_ads
