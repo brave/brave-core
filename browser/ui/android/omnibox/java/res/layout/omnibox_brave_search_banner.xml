@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textAllCaps="false"
-                android:textColor="@color/brave_search_promo_button_color"
+                android:textColor="@color/brave_search_promo_secondary_button_color"
                 android:textSize="14sp"
                 style="?android:attr/borderlessButtonStyle"/>
 
@@ -81,7 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
+        android:layout_gravity="center_vertical"
         android:contentDescription="@null"
-        android:src="@drawable/ic_brave_search_banner"/>
+        app:srcCompat="@drawable/ic_search_omnibox_promo"/>
 
 </LinearLayout>
