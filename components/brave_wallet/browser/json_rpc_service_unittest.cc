@@ -2288,14 +2288,14 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback2.Get());
   EXPECT_EQ(2, url_loader_factory_.NumPending());  // No new requests.
-  json_rpc_service_->UnstoppableDomainsResolveDns("brave.888", callback3.Get());
+  json_rpc_service_->UnstoppableDomainsResolveDns("brave.x", callback3.Get());
   EXPECT_EQ(4, url_loader_factory_.NumPending());
 
   // This will resolve brave.crypto requests.
   SetEthResponse(DnsIpfsResponse());
   SetPolygonResponse(DnsBraveResponse());
 
-  // This will resolve brave.888 requests.
+  // This will resolve brave.x requests.
   SetEthResponse(DnsBraveResponse());
   SetPolygonResponse(DnsIpfsResponse());
 
@@ -2502,7 +2502,6 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "test.nft",
       "test.dao",
       "test.wallet",
-      "test.888",
       "test.blockchain",
       "test.bitcoin",
       "brave.zil",
@@ -2519,6 +2518,7 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "crypto.brave",
       "brave.crypto-",
       "brave.test.crypto",
+      "test.888",
   };
   // clang-format on
   for (const auto& domain : valid_domains)
