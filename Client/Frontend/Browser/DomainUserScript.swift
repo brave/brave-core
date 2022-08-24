@@ -52,7 +52,7 @@ enum DomainUserScript: CaseIterable {
     case .archive:
       return Set(["archive.is", "archive.today", "archive.vn", "archive.fo"])
     case .braveSearchHelper:
-      return Set(["search.brave.com", "search-dev.brave.com"])
+      return Set(["search.brave.com", "search-dev.brave.com", "search.brave.software"])
     case .braveTalkHelper:
       return Set(["talk.brave.com", "beta.talk.brave.com",
                  "talk.bravesoftware.com", "beta.talk.bravesoftware.com",

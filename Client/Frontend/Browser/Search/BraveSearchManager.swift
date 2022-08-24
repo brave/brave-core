@@ -50,7 +50,7 @@ class BraveSearchManager: NSObject {
   private var cancellables: Set<AnyCancellable> = []
   private static var cachedCredentials: URLCredential?
 
-  static let validDomains = ["search.brave.com", "search-dev.brave.com"]
+  static let validDomains = ["search.brave.com", "search-dev.brave.com", "search.brave.software"]
 
   static func isValidURL(_ url: URL) -> Bool {
     validDomains.contains(url.host ?? "")
