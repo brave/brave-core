@@ -1,0 +1,31 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+module wallet_connect.mojom;
+
+import "url/mojom/url.mojom";
+
+struct WalletConnectURIParametersV1 {
+  string key;
+  url.mojom.Url bridge;
+};
+
+struct WalletConnectURIParametersV2 {
+  string sym_key;
+  string relay_protocol;
+  string? relay_data;
+};
+
+union WalletConnectURIParameters {
+  WalletConnectURIParametersV1 v1_params;
+  WalletConnectURIParametersV2 v2_params;
+};
+
+struct WalletConnectURIData {
+  string topic;
+  uint8 version;
+  WalletConnectURIParameters params;
+};
+

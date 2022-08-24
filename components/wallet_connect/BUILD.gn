@@ -1,0 +1,31 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//testing/test.gni")
+
+static_library("wallet_connect") {
+  sources = [
+    "wallet_connect_utils.cc",
+    "wallet_connect_utils.h",
+  ]
+
+  deps = [
+    ":mojom",
+    "//base",
+    "//url",
+  ]
+}
+
+mojom("mojom") {
+  generate_java = true
+  sources = [ "wallet_connect.mojom" ]
+  public_deps = [ "//url/mojom:url_mojom_gurl" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "wallet_connect_utils_unittest.cc" ]
+
+  deps = [
+    ":wallet_connect",
+    "//testing/gtest",
+  ]
+}
