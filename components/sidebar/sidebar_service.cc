@@ -280,16 +280,16 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
   for (const auto& item : items_) {
     DVLOG(2) << "Adding item to pref list: "
              << static_cast<int>(item.built_in_item_type);
-    base::Value dict(base::Value::Type::DICTIONARY);
-    dict.SetIntKey(kSidebarItemTypeKey, static_cast<int>(item.type));
-    dict.SetIntKey(kSidebarItemBuiltInItemTypeKey,
-                   static_cast<int>(item.built_in_item_type));
+    base::Value::Dict dict;
+    dict.Set(kSidebarItemTypeKey, static_cast<int>(item.type));
+    dict.Set(kSidebarItemBuiltInItemTypeKey,
+             static_cast<int>(item.built_in_item_type));
     if (item.type != SidebarItem::Type::kTypeBuiltIn) {
-      dict.SetStringKey(kSidebarItemURLKey, item.url.spec());
-      dict.SetStringKey(kSidebarItemTitleKey, base::UTF16ToUTF8(item.title));
-      dict.SetBoolKey(kSidebarItemOpenInPanelKey, item.open_in_panel);
+      dict.Set(kSidebarItemURLKey, item.url.spec());
+      dict.Set(kSidebarItemTitleKey, base::UTF16ToUTF8(item.title));
+      dict.Set(kSidebarItemOpenInPanelKey, item.open_in_panel);
     }
-    update->Append(std::move(dict));
+    update->GetList().Append(std::move(dict));
   }
 
   // Store which built-in items should be hidden
