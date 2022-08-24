@@ -214,10 +214,12 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
 def CheckBraveMissingLicense(target_os, path, error):
     if path.startswith('brave'):
         output = subprocess.check_output(
-            ['git', 'status', '-z',
-            os.path.relpath(path, 'brave')],
+            [
+                'git', 'status', '-z',
+                os.path.join(os.path.relpath(path, 'brave'), 'LICENSE')
+            ],
             cwd=os.path.abspath(os.path.join(BRAVE_SCRIPT_PATH,
-                                            os.pardir))).decode("utf-8")
+                                             os.pardir))).decode("utf-8")
         if output.startswith('??'):
             return  # Ignore untracked files
 
