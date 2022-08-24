@@ -31,7 +31,7 @@ import {
   QueueStepRow,
   QueueStepButton,
   QueueStepText
-} from '../confirm-transaction-panel/style'
+} from '../confirm-transaction-panel/common/style'
 
 import {
   TabRow,
