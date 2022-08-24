@@ -14,7 +14,7 @@ const addonsChannel = addons.getChannel()
 export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpaper[],
                                                solidColors: string[],
                                                gradientColors: string[]) {
-  const staticImages = { defaultImage: undefined }
+  let staticImages = { defaultImage: undefined }
   for (const image of images) {
     // author is optional field.
     if (image.type !== 'image' || !image.author) {
@@ -42,14 +42,15 @@ export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpape
     })
   }
 
-  for (const gradient of gradientColors) {
-    Object.assign(staticImages, {
+  staticImages = gradientColors.reduce((prev, gradient) => {
+    return {
+      ...prev,
       [gradient]: {
         type: 'gradientColor',
         wallpaperGradientColor: gradient
       }
-    })
-  }
+    }
+  }, staticImages)
 
   return staticImages
 })(images, solidColorsForBackground, gradientColorsForBackground)
