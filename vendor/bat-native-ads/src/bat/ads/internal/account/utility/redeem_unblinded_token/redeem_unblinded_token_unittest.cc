@@ -42,7 +42,6 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
 
   ConfirmationInfo BuildConfirmation() {
     return ::ads::BuildConfirmation(
-        /* id */ "d990ed8d-d739-49fb-811b-c2e02158fb60",
         /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
         /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
         ConfirmationType::kViewed, AdType::kNotificationAd);
@@ -59,10 +58,10 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
             {
-              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
+              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "payload" : {},
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
@@ -71,10 +70,10 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
             }
           )"}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
        {{net::HTTP_OK, R"(
             {
-              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
+              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.736Z",
@@ -157,10 +156,10 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   const URLResponseMap url_responses = {
       {// Fetch payment token request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
        {{net::HTTP_OK, R"(
             {
-              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
+              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.736Z",
@@ -214,10 +213,10 @@ TEST_F(
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_OK, {}}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
        {{net::HTTP_NOT_FOUND, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -257,10 +256,10 @@ TEST_F(
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_OK, {}}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
        {{net::HTTP_ACCEPTED, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -303,10 +302,10 @@ TEST_F(
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_OK, {}}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
        {{net::HTTP_INTERNAL_SERVER_ERROR, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -347,10 +346,10 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       "/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60",
+       "/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::kHttpImATeapot, R"(
             {
-              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
+              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "payload" : {},
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
@@ -390,7 +389,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       "/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60",
+       "/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::HTTP_BAD_REQUEST, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -423,7 +422,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       "/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60",
+       "/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::HTTP_CONFLICT, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -456,7 +455,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       "/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60",
+       "/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::HTTP_INTERNAL_SERVER_ERROR, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

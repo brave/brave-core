@@ -132,7 +132,6 @@ ConfirmationInfo Confirmations::CreateConfirmation(
 
   ConfirmationInfo confirmation;
 
-  confirmation.id = base::GUID::GenerateRandomV4().AsLowercaseString();
   confirmation.transaction_id = transaction_id;
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
@@ -208,8 +207,8 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
   ConfirmationStateManager::GetInstance()->Save();
 
   BLOG(1, "Added " << confirmation.type << " confirmation for "
-                   << confirmation.ad_type << " with id " << confirmation.id
-                   << ", transaction id " << confirmation.transaction_id
+                   << confirmation.ad_type << " with transaction id "
+                   << confirmation.transaction_id
                    << " and creative instance id "
                    << confirmation.creative_instance_id
                    << " to the confirmations queue");
@@ -220,20 +219,19 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
   if (!ConfirmationStateManager::GetInstance()->RemoveFailedConfirmation(
           confirmation)) {
-    BLOG(0, "Failed to remove " << confirmation.type << " confirmation for "
-                                << confirmation.ad_type << " with id "
-                                << confirmation.id << ", transaction id "
-                                << confirmation.transaction_id
-                                << " and creative instance id "
-                                << confirmation.creative_instance_id
-                                << " from the confirmations queue");
+    BLOG(0, "Failed to remove "
+                << confirmation.type << " confirmation for "
+                << confirmation.ad_type << " with transaction id "
+                << confirmation.transaction_id << " and creative instance id "
+                << confirmation.creative_instance_id
+                << " from the confirmations queue");
 
     return;
   }
 
   BLOG(1, "Removed " << confirmation.type << " confirmation for "
-                     << confirmation.ad_type << " with id " << confirmation.id
-                     << ", transaction id " << confirmation.transaction_id
+                     << confirmation.ad_type << " with transaction id "
+                     << confirmation.transaction_id
                      << " and creative instance id "
                      << confirmation.creative_instance_id
                      << " from the confirmations queue");
