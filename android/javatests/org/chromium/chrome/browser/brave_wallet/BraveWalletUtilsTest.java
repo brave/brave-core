@@ -134,20 +134,6 @@ public class BraveWalletUtilsTest {
 
     @Test
     @SmallTest
-    public void getBuyUrlForTestChainTest() {
-        assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.RINKEBY_CHAIN_ID),
-                "https://www.rinkeby.io/#stats");
-        assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.ROPSTEN_CHAIN_ID),
-                "https://faucet.ropsten.be/");
-        assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.GOERLI_CHAIN_ID),
-                "https://goerli-faucet.slock.it/");
-        assertEquals(Utils.getBuyUrlForTestChain(BraveWalletConstants.KOVAN_CHAIN_ID),
-                "https://github.com/kovan-testnet/faucet");
-        assertEquals(Utils.getBuyUrlForTestChain("unknown"), "");
-    }
-
-    @Test
-    @SmallTest
     public void getDecimalsDepNumberTest() {
         assertEquals(Utils.getDecimalsDepNumber(9), "1000000000");
         assertEquals(Utils.getDecimalsDepNumber(18), "1000000000000000000");

@@ -1979,15 +1979,6 @@ Are you sure you want to do this?
     <message name="IDS_CRYPTO_WALLET_BALANCE" desc="Brave crypto wallet balance">
       Balance:
     </message>
-    <message name="IDS_WALLET_TEST_FAUCET_TITLE" desc="Title for test faucet block">
-      Test faucet
-    </message>
-    <message name="IDS_WALLET_TEST_FAUCET_BUTTON_TEXT" desc="Test faucet button text">
-      Get Ether
-    </message>
-    <message name="IDS_WALLET_TEST_FAUCET_SECOND_TEXT" desc="Test faucet secondary text">
-      Get Ether from a faucet for <ph name="NETWORK">%1$s<ex>Ropsten</ex></ph> Test Network
-    </message>
     <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
       Continue to Wyre
     </message>

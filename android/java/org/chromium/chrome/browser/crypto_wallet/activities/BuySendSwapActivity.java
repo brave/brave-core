@@ -247,55 +247,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         adjustControls();
     }
 
-    private class BuySendSwapUiInfo {
-        protected boolean shouldShowBuyControls;
-        protected String titleText;
-        protected String secondText;
-        protected String buttonText;
-        protected String linkUrl;
-    }
-
-    private BuySendSwapUiInfo getPerNetworkUiInfo(NetworkInfo selectedNetwork) {
-        BuySendSwapUiInfo buySendSwapUiInfo = new BuySendSwapUiInfo();
-
-        if (selectedNetwork.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
-            buySendSwapUiInfo.shouldShowBuyControls = true;
-            buySendSwapUiInfo.buttonText = getString(R.string.wallet_buy_mainnet_button_text);
-            return buySendSwapUiInfo;
-        }
-
-        buySendSwapUiInfo.shouldShowBuyControls = false;
-        buySendSwapUiInfo.titleText = getString(R.string.wallet_test_faucet_title);
-        buySendSwapUiInfo.buttonText = getString(R.string.wallet_test_faucet_button_text);
-
-        buySendSwapUiInfo.secondText = getString(R.string.wallet_test_faucet_second_text);
-        buySendSwapUiInfo.secondText = String.format(
-                buySendSwapUiInfo.secondText, Utils.getNetworkShortText(selectedNetwork));
-
-        buySendSwapUiInfo.linkUrl = Utils.getBuyUrlForTestChain(selectedNetwork.chainId);
-
-        return buySendSwapUiInfo;
-    }
-
-    private void adjustTestFaucetControls(BuySendSwapUiInfo buySendSwapUiInfo) {
-        View testFaucetsBlock = findViewById(R.id.test_faucets_block);
-        assert testFaucetsBlock != null;
-        View paymentParamsBlock = findViewById(R.id.payment_params_block);
-        assert paymentParamsBlock != null;
-
-        if (buySendSwapUiInfo.shouldShowBuyControls) {
-            paymentParamsBlock.setVisibility(View.VISIBLE);
-            testFaucetsBlock.setVisibility(View.GONE);
-        } else {
-            paymentParamsBlock.setVisibility(View.GONE);
-            testFaucetsBlock.setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.test_faucet_tittle)).setText(buySendSwapUiInfo.titleText);
-            ((TextView) findViewById(R.id.test_faucet_message))
-                    .setText(buySendSwapUiInfo.secondText);
-        }
-        mBtnBuySendSwap.setText(buySendSwapUiInfo.buttonText);
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.network_spinner) {
@@ -985,28 +936,20 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 setSendToFromValueValidationResult(errorMessage, false, true);
                             });
                 }
-            } else if (mActivityType == ActivityType.BUY) {
-                if (mSelectedNetwork.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
-                    assert mBlockchainRegistry != null;
-                    String asset = mFromAssetText.getText().toString();
-                    mBlockchainRegistry.getBuyUrl(OnRampProvider.WYRE,
-                            BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value,
-                            (url, error) -> {
-                                if (error != null && !error.isEmpty()) {
-                                    Log.e(TAG, "Could not get buy URL: " + error);
-                                    return;
-                                }
+            } else if (mActivityType == ActivityType.BUY
+                    && mSelectedNetwork.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
+                assert mBlockchainRegistry != null;
+                String asset = mFromAssetText.getText().toString();
+                mBlockchainRegistry.getBuyUrl(OnRampProvider.WYRE,
+                        BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value, (url, error) -> {
+                            if (error != null && !error.isEmpty() && Utils.isDebuggable(this)) {
+                                Log.e(TAG, "Could not get buy URL: " + error);
+                                return;
+                            }
 
-                                TabUtils.openUrlInNewTab(false, url);
-                                TabUtils.bringChromeTabbedActivityToTheTop(this);
-                            });
-                } else {
-                    String url = getPerNetworkUiInfo(mSelectedNetwork).linkUrl;
-                    if (url != null && !url.isEmpty()) {
-                        TabUtils.openUrlInNewTab(false, url);
-                        TabUtils.bringChromeTabbedActivityToTheTop(this);
-                    }
-                }
+                            TabUtils.openUrlInNewTab(false, url);
+                            TabUtils.bringChromeTabbedActivityToTheTop(this);
+                        });
             } else if (mActivityType == ActivityType.SWAP) {
                 if (mCurrentBlockchainToken != null) {
                     String btnText = mBtnBuySendSwap.getText().toString();
@@ -1586,7 +1529,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         resetSwapFromToAssets();
                     }
                     if (mActivityType == ActivityType.BUY) {
-                        adjustTestFaucetControls(getPerNetworkUiInfo(mSelectedNetwork));
+                        mBtnBuySendSwap.setText(getString(R.string.wallet_buy_mainnet_button_text));
                     }
                     initAccountsUI();
                 });

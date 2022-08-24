@@ -53,34 +53,6 @@
         </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
-          android:id="@+id/test_faucets_block"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:paddingStart="14dp"
-          android:paddingEnd="14dp"
-          android:layout_marginStart="14dp"
-          android:layout_marginEnd="14dp"
-          android:layout_marginBottom="8dp"
-          android:background="@drawable/rounded_filled_bg_radius_12"
-          android:baselineAligned="false"
-          android:visibility="gone">
-
-          <TextView
-            android:id="@+id/test_faucet_tittle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"/>
-
-          <TextView
-            android:id="@+id/test_faucet_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/payment_params_block"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
