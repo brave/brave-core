@@ -69,7 +69,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
       const std::string& gradient_value) override;
 
   // Observe NTPCustomBackgroundImagesService.
-  void OnCustomBackgroundImageUpdated();
+  void OnCustomBackgroundUpdated();
 
   // SelectFileDialog::Listener overrides:
   void FileSelected(const base::FilePath& path,

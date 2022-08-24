@@ -141,7 +141,7 @@ void BraveNewTabPageHandler::UseBraveBackground() {
   // Call ntp custom background images service.
   NTPBackgroundPrefs(profile_->GetPrefs())
       .SetType(NTPBackgroundPrefs::Type::kBrave);
-  OnCustomBackgroundImageUpdated();
+  OnCustomBackgroundUpdated();
   DeleteSanitizedImageFile();
 }
 
@@ -190,7 +190,7 @@ void BraveNewTabPageHandler::UseSolidColorBackground(const std::string& color) {
   background_pref.SetType(NTPBackgroundPrefs::Type::kSolidColor);
   background_pref.SetSelectedValue(color);
 
-  OnCustomBackgroundImageUpdated();
+  OnCustomBackgroundUpdated();
   DeleteSanitizedImageFile();
 }
 
@@ -200,7 +200,7 @@ void BraveNewTabPageHandler::UseGradientColorBackground(
   background_pref.SetType(NTPBackgroundPrefs::Type::kGradientColor);
   background_pref.SetSelectedValue(gradient_value);
 
-  OnCustomBackgroundImageUpdated();
+  OnCustomBackgroundUpdated();
   DeleteSanitizedImageFile();
 }
 
@@ -220,7 +220,7 @@ bool BraveNewTabPageHandler::IsGradientColorBackgroundEnabled() const {
   return NTPBackgroundPrefs(profile_->GetPrefs()).IsGradientColorType();
 }
 
-void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
+void BraveNewTabPageHandler::OnCustomBackgroundUpdated() {
   brave_new_tab_page::mojom::CustomBackgroundPtr value =
       brave_new_tab_page::mojom::CustomBackground::New();
   // Pass empty struct when custom background is disabled.
@@ -320,7 +320,7 @@ void BraveNewTabPageHandler::OnSavedEncodedImage(bool success) {
 
   NTPBackgroundPrefs(profile_->GetPrefs())
       .SetType(NTPBackgroundPrefs::Type::kCustomImage);
-  OnCustomBackgroundImageUpdated();
+  OnCustomBackgroundUpdated();
 }
 
 void BraveNewTabPageHandler::DeleteSanitizedImageFile() {

@@ -22,7 +22,7 @@ class PrefService;
 // The data is stored in following format:
 //
 //  kNTPBackground: {
-//     type: ‘brave’ | ‘custom_image’ | ‘solid_color’ | ‘gradient_olor’
+//     type: ‘brave’ | ‘custom_image’ | ‘solid_color’ | ‘gradient_color’
 //     random: bool  // indicates that we should pick one every time
 //                      from |selected_type| collection
 //     selected_value?: string  // url or css value
