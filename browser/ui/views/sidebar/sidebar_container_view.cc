@@ -22,6 +22,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -184,7 +186,7 @@ void SidebarContainerView::Layout() {
 
 gfx::Size SidebarContainerView::CalculatePreferredSize() const {
   if (!initialized_ || !sidebar_control_view_->GetVisible() ||
-      browser_->window()->IsFullscreen())
+      IsFullscreenByTab())
     return View::CalculatePreferredSize();
 
   int preferred_width =
@@ -199,6 +201,14 @@ void SidebarContainerView::OnThemeChanged() {
   View::OnThemeChanged();
 
   UpdateBackground();
+}
+
+bool SidebarContainerView::IsFullscreenByTab() const {
+  DCHECK(browser_->exclusive_access_manager() &&
+         browser_->exclusive_access_manager()->fullscreen_controller());
+  return browser_->exclusive_access_manager()
+      ->fullscreen_controller()
+      ->IsWindowFullscreenForTabOrPending();
 }
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {
