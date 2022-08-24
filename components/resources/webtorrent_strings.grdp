@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_WEBTORRENT_PEER" desc="Label for a single peer (as in 1 peer).">
+      peer
+  </message>
+  <message name="IDS_WEBTORRENT_PEERS" desc="Label for a multiple peers (as in 3 peers).">
+      peers
+  </message>
+</grit-part>
