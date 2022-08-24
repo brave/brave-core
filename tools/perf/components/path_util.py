@@ -51,9 +51,9 @@ def GetGoogleAuthDir() -> str:
                       'google-auth')
 
 
-def GetVpython2Path() -> str:
+def GetVpython3Path() -> str:
   return os.path.join(GetDepotToolsDir(),
-                      'vpython.bat' if sys.platform == 'win32' else 'vpython')
+                      'vpython3.bat' if sys.platform == 'win32' else 'vpython3')
 
 
 def GetChromeReleasesJsonPath() -> str:

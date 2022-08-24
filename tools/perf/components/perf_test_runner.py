@@ -60,7 +60,7 @@ def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
                           revision: str, output_dir: str
                           ) -> Tuple[bool, List[str], Optional[str]]:
   args = [
-      path_util.GetVpython2Path(),
+      path_util.GetVpython3Path(),
       os.path.join(path_util.GetChromiumPerfDir(), 'process_perf_results.py')
   ]
   args.append(f'--configuration-name={dashboard_bot_name}')
@@ -148,7 +148,7 @@ class RunableConfiguration:
                     config: RunnerConfig, benchmark_config: BenchmarkConfig,
                     out_dir: Optional[str], local_run: bool,
                     verbose: bool) -> bool:
-    args = [sys.executable]
+    args = [path_util.GetVpython3Path()]
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
 
     benchmark_name = benchmark_config.name
