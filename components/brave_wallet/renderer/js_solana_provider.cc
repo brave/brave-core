@@ -884,6 +884,8 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
   v8::MaybeLocal<v8::Value> public_key_result =
       CallMethodOfObject(render_frame()->GetWebFrame(), kBraveSolanaInternal,
                          kCreatePublicKey, std::move(args));
+  if (public_key_result.IsEmpty())
+    return v8::Undefined(context->GetIsolate());
 
   return public_key_result.ToLocalChecked();
 }
@@ -901,6 +903,8 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
   v8::MaybeLocal<v8::Value> transaction_result =
       CallMethodOfObject(render_frame()->GetWebFrame(), kBraveSolanaInternal,
                          kCreateTransaction, std::move(args));
+  if (transaction_result.IsEmpty())
+    return v8::Undefined(context->GetIsolate());
 
   return transaction_result.ToLocalChecked();
 }
