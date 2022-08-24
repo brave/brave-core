@@ -10,6 +10,7 @@
 
 #include "base/callback_helpers.h"
 #include "base/containers/contains.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
@@ -35,10 +36,8 @@ const uint8_t kResolveBytes32Bytes32Hash[] = {0x90, 0x61, 0xb9, 0x23};
 
 absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
     const std::string& json) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  auto records_v =
+      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
     return absl::nullopt;
   }
@@ -105,10 +104,8 @@ OffchainLookupData::~OffchainLookupData() = default;
 
 absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
     const std::string& json) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  auto records_v =
+      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
     return absl::nullopt;
   }
