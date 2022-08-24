@@ -226,7 +226,8 @@ void PlaylistService::RemovePlaylistItemValue(const std::string& id) {
 void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
   VLOG(2) << __func__;
 
-  UpdatePlaylistItemValue(params.id, GetValueFromPlaylistItemInfo(params));
+  UpdatePlaylistItemValue(params.id,
+                          base::Value(GetValueFromPlaylistItemInfo(params)));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAdded, params.id});
 
@@ -271,13 +272,13 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
     return;
   }
 
-  const base::Value* value = prefs_->Get(kPlaylistItemsPref)->FindDictKey(id);
+  const base::Value::Dict* value =
+      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(value);
   if (value) {
-    base::Value copied_value = value->Clone();
-    copied_value.SetStringKey(kPlaylistItemThumbnailPathKey,
-                              path.AsUTF8Unsafe());
-    UpdatePlaylistItemValue(id, std::move(copied_value));
+    base::Value::Dict copied_value = value->Clone();
+    copied_value.Set(kPlaylistItemThumbnailPathKey, path.AsUTF8Unsafe());
+    UpdatePlaylistItemValue(id, base::Value(std::move(copied_value)));
     NotifyPlaylistChanged(
         {PlaylistChangeParams::Type::kItemThumbnailReady, id});
   }
@@ -506,13 +507,12 @@ void PlaylistService::OnMediaFileReady(const std::string& id,
   VLOG(2) << __func__ << ": " << id << " " << media_file_path;
   DCHECK(IsValidPlaylistItem(id));
 
-  const base::Value* item_value_ptr =
-      prefs_->Get(kPlaylistItemsPref)->FindDictKey(id);
-  base::Value item = item_value_ptr->Clone();
-
-  item.SetBoolKey(kPlaylistItemReadyKey, true);
-  item.SetStringKey(kPlaylistItemMediaFilePathKey, media_file_path);
-  UpdatePlaylistItemValue(id, std::move(item));
+  const base::Value::Dict* item_value_ptr =
+      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  base::Value::Dict item = item_value_ptr->Clone();
+  item.Set(kPlaylistItemReadyKey, true);
+  item.Set(kPlaylistItemMediaFilePathKey, media_file_path);
+  UpdatePlaylistItemValue(id, base::Value(std::move(item)));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemPlayReady, id});
 }
@@ -522,13 +522,13 @@ void PlaylistService::OnMediaFileGenerationFailed(const std::string& id) {
 
   DCHECK(IsValidPlaylistItem(id));
 
-  const base::Value* item_value_ptr =
-      prefs_->Get(kPlaylistItemsPref)->FindDictKey(id);
-  base::Value item = item_value_ptr->Clone();
+  const base::Value::Dict* item_value_ptr =
+      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
+  base::Value::Dict item = item_value_ptr->Clone();
 
-  item.SetBoolKey(kPlaylistItemReadyKey, false);
+  item.Set(kPlaylistItemReadyKey, false);
 
-  UpdatePlaylistItemValue(id, std::move(item));
+  UpdatePlaylistItemValue(id, base::Value(std::move(item)));
 
   thumbnail_downloader_->CancelDownloadRequest(id);
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAborted, id});
