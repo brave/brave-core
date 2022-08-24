@@ -170,6 +170,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
       self.shareButton, self.tabsButton, self.bookmarkButton,
       self.forwardButton, self.backButton, self.menuButton,
     ].compactMap { $0 }
+  
+  var isURLBarEnabled = true {
+    didSet {
+      if oldValue == isURLBarEnabled { return }
+      
+      locationTextField?.isUserInteractionEnabled = isURLBarEnabled
+    }
+  }
 
   /// Update the shields icon based on whether or not shields are enabled for this site
   func refreshShieldsStatus() {

@@ -134,17 +134,22 @@ extension BrowserViewController {
     
     controller.buttonText = Strings.PrivacyHub.onboardingButtonTitle
 
+    topToolbar.isURLBarEnabled = false
+
     presentPopoverContent(
       using: controller,
       with: frame, cornerRadius: 12.0,
-      didDismiss: {
+      didDismiss: { [weak self] in
+        self?.topToolbar.isURLBarEnabled = true
         Preferences.PrivacyReports.ntpOnboardingCompleted.value = true
       },
-      didClickBorderedArea: {
+      didClickBorderedArea: { [weak self] in
+        self?.topToolbar.isURLBarEnabled = true
         Preferences.PrivacyReports.ntpOnboardingCompleted.value = true
       },
       didButtonClick: { [weak self] in
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+          self?.topToolbar.isURLBarEnabled = true
           self?.openPrivacyReport()
         }
       }
