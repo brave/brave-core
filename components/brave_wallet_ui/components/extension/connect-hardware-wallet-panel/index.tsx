@@ -40,6 +40,17 @@ export interface Props {
   onClickInstructions: () => void
 }
 
+function getAppName (coinType: BraveWallet.CoinType): string {
+  switch (coinType) {
+    case BraveWallet.CoinType.SOL:
+      return 'Solana'
+    case BraveWallet.CoinType.FIL:
+      return 'Filecoin'
+    default:
+      return 'Ethereum'
+  }
+}
+
 export const ConnectHardwareWalletPanel = ({
   onCancel,
   walletName,
@@ -60,7 +71,7 @@ export const ConnectHardwareWalletPanel = ({
     }
 
     if (hardwareWalletCode === 'openLedgerApp') {
-      let network = (coinType === BraveWallet.CoinType.SOL) ? 'Solana' : 'Ethereum'
+      let network = getAppName(coinType)
       return getLocale('braveWalletConnectHardwarePanelOpenApp')
         .replace('$1', network)
         .replace('$2', walletName)
