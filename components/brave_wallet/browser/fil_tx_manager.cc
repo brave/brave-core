@@ -178,7 +178,9 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
         l10n_util::GetStringUTF8(IDS_WALLET_GET_NONCE_ERROR));
     return;
   }
-  DCHECK_LE(nonce, static_cast<uint256_t>(UINT64_MAX));
+  // DCHECK_LE will eventually be expanded into `CheckOpValueStr` which doesn't
+  // have uint256_t overload.
+  DCHECK(nonce <= static_cast<uint256_t>(UINT64_MAX));
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
   DCHECK(!keyring_service_->IsLocked());
   meta->set_status(mojom::TransactionStatus::Approved);
@@ -296,7 +298,9 @@ void FilTxManager::OnGetNextNonceForHardware(
     std::move(callback).Run(nullptr);
     return;
   }
-  DCHECK_LE(nonce, static_cast<uint256_t>(UINT64_MAX));
+  // DCHECK_LE will eventually be expanded into `CheckOpValueStr` which doesn't
+  // have uint256_t overload.
+  DCHECK(nonce <= static_cast<uint256_t>(UINT64_MAX));
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
   DCHECK(!keyring_service_->IsLocked());
   meta->set_status(mojom::TransactionStatus::Approved);
