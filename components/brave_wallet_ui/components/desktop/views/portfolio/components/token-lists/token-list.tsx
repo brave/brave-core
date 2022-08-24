@@ -40,6 +40,7 @@ import {
   FilterTokenRow
 } from '../../style'
 import { RenderTokenFunc, VirtualizedTokensList } from './virtualized-tokens-list'
+import { HorizontallyPaddedDiv } from './token-list.style'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
@@ -122,7 +123,7 @@ export const TokenLists = ({
       selectedAssetFilter.id === 'highToLow' ||
       selectedAssetFilter.id === 'lowToHigh'
     ) {
-      return fungibleTokens.sort(function (a, b) {
+      return [...fungibleTokens].sort(function (a, b) {
         const aBalance = a.assetBalance
         const bBalance = b.assetBalance
         const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals)
@@ -133,7 +134,7 @@ export const TokenLists = ({
       })
     }
     return fungibleTokens
-  }, [fungibleTokens, selectedAssetFilter, computeFiatAmount])
+  }, [fungibleTokens, selectedAssetFilter.id, computeFiatAmount])
 
   // computed
   // length of fungible tokens list is first NFT index
@@ -146,17 +147,23 @@ export const TokenLists = ({
   const listUi = React.useMemo(() => {
     return selectedAssetFilter.id !== 'nfts' ? (
       <VirtualizedTokensList
-        key={selectedAssetFilter.id}
+        key={`${selectedAssetFilter.id}-${Number(firstNftIndex)}`}
+        getItemSize={
+          // only the first Nft element has a bigger height due to the section divider
+          (index) => index === firstNftIndex ? 94 : estimatedItemSize
+        }
         renderToken={(args) => {
           if (args.index === firstNftIndex) {
-            return <div>
+            return <HorizontallyPaddedDiv>
               <Spacer />
               <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
               <SubDivider />
               {renderToken(args)}
-            </div>
+            </HorizontallyPaddedDiv>
           }
-          return renderToken(args)
+          return <HorizontallyPaddedDiv>
+            {renderToken(args)}
+          </HorizontallyPaddedDiv>
         }}
         userAssetList={sortedFungibleTokensAndNftsList}
         estimatedItemSize={estimatedItemSize}
@@ -173,6 +180,7 @@ export const TokenLists = ({
       />
     )
   }, [
+    firstNftIndex,
     selectedAssetFilter.id,
     sortedFungibleTokensAndNftsList,
     nonFungibleTokens,
