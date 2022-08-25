@@ -2,13 +2,12 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-import { CoinType } from '@glif/filecoin-address'
-import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
-import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
+ import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TextDecoder, TextEncoder } from 'util'
 import { BraveWallet } from '../../../constants/types'
 import { SignHardwareOperationResult } from '../types'
-import { FilGetAccountResponse, FilSignTransactionResponse } from './fil-ledger-messages'
+import { FilGetAccountResponse, FilLotusMessage, FilSignedLotusMessage, FilSignTransactionResponse } from './fil-ledger-messages'
 import FilecoinLedgerBridgeKeyring from './fil_ledger_bridge_keyring'
 import { LedgerCommand, UnlockResponse } from './ledger-messages'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
@@ -41,7 +40,7 @@ const unlockErrorResponse: UnlockResponse = {
   }
 }
 
-const lotusMessage: LotusMessage = {
+const lotusMessage: FilLotusMessage = {
   To: 'to',
   From: 'from',
   Nonce: 0,
@@ -53,7 +52,7 @@ const lotusMessage: LotusMessage = {
   Params: 'params'
 }
 
-const signedLotusMessage: SignedLotusMessage = {
+const signedLotusMessage: FilSignedLotusMessage = {
   Message: lotusMessage,
   Signature: {
     Type: 1,
@@ -77,6 +76,7 @@ const createKeyring = (): FilecoinLedgerBridgeKeyring => {
   const transport = new MockLedgerTransport(window, window.origin)
   ledgerHardwareKeyring['transport'] = transport
   const iframe = document.createElement('iframe')
+  iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin')
   document.body.appendChild(iframe)
   ledgerHardwareKeyring['bridge'] = iframe
   return ledgerHardwareKeyring
@@ -88,7 +88,7 @@ test('Extracting accounts from device MAIN', async () => {
   keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
   keyring['transport']['addSendCommandResponse'](getAccountsResponse)
 
-  return expect(await keyring.getAccounts(-2, 1, CoinType.MAIN))
+  return expect(await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_MAINNET))
     .toEqual({
       payload: [{
         address: '0',
@@ -109,7 +109,7 @@ test('Extracting accounts from device TEST', async () => {
   keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
   keyring['transport']['addSendCommandResponse'](getAccountsResponse)
 
-  return expect(await keyring.getAccounts(-2, 1, CoinType.TEST))
+  return expect(await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_TESTNET))
     .toEqual({
       payload: [{
         address: '0',
@@ -148,7 +148,7 @@ test('Extract accounts from locked device success', async () => {
   if (!keyring['transport']) { fail('transport should be defined') }
   keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
 
-  return expect(await keyring.getAccounts(-2, 1, CoinType.TEST))
+  return expect(await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_TESTNET))
     .toEqual({ message: 'LedgerError', statusCode: 101, success: false })
 })
 

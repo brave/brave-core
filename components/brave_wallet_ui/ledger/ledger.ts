@@ -8,7 +8,7 @@ import { LedgerCommand, LEDGER_BRIDGE_URL } from '../common/hardware/ledgerjs/le
 import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
-import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil_ledger-untrusted-transport'
+import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
 
 const setUpAuthorizeButtonListener = (targetUrl: string, coinType: BraveWallet.CoinType) => {
   const untrustedMessagingTransport = getUntrustedMessagingTransport(coinType, targetUrl)

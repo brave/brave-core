@@ -26,8 +26,8 @@ import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_ke
 import { BraveWallet } from '../../constants/types'
 import { LedgerEthereumKeyring, LedgerFilecoinKeyring, LedgerSolanaKeyring } from '../hardware/interfaces'
 import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
-import { SignedLotusMessage } from '@glif/filecoin-message'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
+import { FilSignedLotusMessage } from '../hardware/ledgerjs/fil-ledger-messages'
 
 export function dialogErrorFromLedgerErrorCode (code: string | number): HardwareWalletResponseCodeType {
   if (code === 'TransportOpenUserCancelled') {
@@ -136,7 +136,7 @@ export async function signLedgerFilecoinTransaction (
     const code = signed?.code ?? ''
     return { success: false, error: error, code: code }
   }
-  const signedMessage = signed.payload as SignedLotusMessage
+  const signedMessage = signed.payload as FilSignedLotusMessage
   if (!signedMessage) {
     return { success: false }
   }

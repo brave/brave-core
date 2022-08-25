@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { SignedLotusMessage } from '@glif/filecoin-message'
 import { FilecoinNetwork } from '../types'
 import type {
   CommandMessage,
@@ -29,9 +28,29 @@ export type FilGetAccountCommand = CommandMessage & {
   network: FilecoinNetwork
 }
 
+export interface FilLotusMessage {
+  To: string
+  From: string
+  Nonce: number
+  Value: string
+  GasPremium: string
+  GasLimit: number
+  GasFeeCap: string
+  Method: number
+  Params?: string | string[]
+}
+
+export interface FilSignedLotusMessage {
+  Message: FilLotusMessage
+  Signature: {
+      Type: number
+      Data: string
+  }
+}
+
 // SignTransaction command
 export type FilSignedTx = {
-  lotusMessage: SignedLotusMessage
+  lotusMessage: FilSignedLotusMessage
 }
 export type FilSignTransactionResponsePayload = LedgerResponsePayload & FilSignedTx
 
