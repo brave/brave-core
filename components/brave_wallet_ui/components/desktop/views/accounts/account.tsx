@@ -14,7 +14,6 @@ import {
   BraveWallet,
   CoinTypesMap,
   WalletState,
-  PageState,
   WalletRoutes
 } from '../../../../constants/types'
 
@@ -55,8 +54,6 @@ import { useBalance } from '../../../../common/hooks/balance'
 import { WalletPageActions } from '../../../../page/actions'
 
 export interface Props {
-  onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
-  onDoneViewingPrivateKey: () => void
   toggleNav: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   goBack: () => void
@@ -64,8 +61,6 @@ export interface Props {
 
 export const Account = ({
   goBack,
-  onViewPrivateKey,
-  onDoneViewingPrivateKey,
   toggleNav,
   onUpdateAccountName
 }: Props) => {
@@ -80,7 +75,6 @@ export const Account = ({
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const privateKey = useSelector(({ page }: { page: PageState }) => page.privateKey)
 
   // state
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
@@ -142,6 +136,7 @@ export const Account = ({
     [accountsTokensList]
   )
 
+  // methods
   const onShowEditModal = React.useCallback(() => {
     setShowEditModal(true)
   }, [])
@@ -261,9 +256,6 @@ export const Account = ({
           onChangeTab={setEditTab}
           onToggleNav={toggleNav}
           onRemoveAccount={onRemoveAccount}
-          onViewPrivateKey={onViewPrivateKey}
-          onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-          privateKey={privateKey || ''}
           tab={editTab}
           hideNav={false}
         />

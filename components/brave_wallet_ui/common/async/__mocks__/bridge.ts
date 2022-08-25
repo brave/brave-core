@@ -20,14 +20,19 @@ export const makeMockedStoreWithSpy = () => {
     wallet: createWalletReducer(mockWalletState)
   }))
 
-  const dispatchSpy = jest.fn(store.dispatch)
-  const ogDispatch = store.dispatch
-  store.dispatch = ((args: any) => {
-    ogDispatch(args)
-    dispatchSpy(args)
-  }) as any
+  const areWeTestingWithJest = process.env.JEST_WORKER_ID !== undefined
 
-  return { store, dispatchSpy }
+  if (areWeTestingWithJest) {
+    const dispatchSpy = jest.fn(store.dispatch)
+    const ogDispatch = store.dispatch
+    store.dispatch = ((args: any) => {
+      ogDispatch(args)
+      dispatchSpy?.(args)
+    }) as any
+    return { store, dispatchSpy }
+  }
+
+  return { store }
 }
 
 export class MockedWalletApiProxy {
@@ -107,7 +112,15 @@ export class MockedWalletApiProxy {
     lock: () => {
       this.store.dispatch(WalletActions.locked())
       alert('wallet locked')
-    }
+    },
+    getPrivateKeyForKeyringAccount: async (
+      address: string,
+      password: string,
+      coin: number
+    ) => (password === 'password'
+      ? { privateKey: 'secret-private-key', success: true }
+      : { privateKey: '', success: false }
+    )
   }
 
   ethTxManagerProxy: Partial<InstanceType<typeof BraveWallet.EthTxManagerProxyInterface>> = {

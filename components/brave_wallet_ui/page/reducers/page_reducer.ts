@@ -14,7 +14,6 @@ import {
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
-  PrivateKeyAvailablePayloadType,
   SelectAssetPayloadType,
   ImportWalletErrorPayloadType
 } from '../constants/action_types'
@@ -60,19 +59,6 @@ export const createPageReducer = (initialState: PageState) => {
       ...state,
       mnemonic: payload.mnemonic
     }
-  })
-
-  reducer.on(Actions.privateKeyAvailable, (state: PageState, payload: PrivateKeyAvailablePayloadType) => {
-    return {
-      ...state,
-      privateKey: payload.privateKey
-    }
-  })
-
-  reducer.on(Actions.doneViewingPrivateKey, (state: PageState) => {
-    const newState = { ...state }
-    delete newState.privateKey
-    return newState
   })
 
   reducer.on(Actions.walletSetupComplete, (state: PageState, payload?: boolean): PageState => {

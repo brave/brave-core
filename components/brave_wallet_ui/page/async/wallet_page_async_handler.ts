@@ -19,7 +19,6 @@ import {
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   RemoveHardwareAccountPayloadType,
-  ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   ImportFilecoinAccountPayloadType,
@@ -190,13 +189,6 @@ handler.on(WalletPageActions.removeImportedAccount.getType(), async (
     payload.password,
     payload.coin
   )
-})
-
-handler.on(WalletPageActions.viewPrivateKey.getType(), async (store: Store, payload: ViewPrivateKeyPayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  // TODO (JL): Pass password here.
-  const result = await keyringService.getPrivateKeyForKeyringAccount(payload.address, '', payload.coin)
-  store.dispatch(WalletPageActions.privateKeyAvailable({ privateKey: result.privateKey }))
 })
 
 handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, payload: UpdateAccountNamePayloadType) => {
