@@ -89,7 +89,7 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeNewTabPageAdInfo creative_ad = creative_ads.at(rand);
+        const CreativeNewTabPageAdInfo& creative_ad = creative_ads.at(rand);
 
         const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
         ServeAd(ad, callback);

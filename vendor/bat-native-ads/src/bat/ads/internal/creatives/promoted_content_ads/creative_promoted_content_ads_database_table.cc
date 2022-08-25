@@ -551,7 +551,7 @@ void CreativePromotedContentAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativePromotedContentAdInfo creative_ad = creative_ads.front();
+  const CreativePromotedContentAdInfo& creative_ad = creative_ads.front();
 
   callback(/*success*/ true, creative_instance_id, creative_ad);
 }

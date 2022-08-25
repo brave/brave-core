@@ -114,7 +114,7 @@ std::string ExtractConversionIdFromText(
         return conversion_id;
       }
 
-      GURL url = *url_iter;
+      const GURL& url = *url_iter;
       text = url.spec();
     }
 
