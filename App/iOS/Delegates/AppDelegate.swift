@@ -219,7 +219,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       class_addMethod(clazz, MenuHelper.selectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
     }
 
-    #if !NO_BRAVE_NEWS
     if Preferences.BraveNews.isEnabled.value && !Preferences.BraveNews.userOptedIn.value {
       // Opt-out any user that has not explicitly opted-in
       Preferences.BraveNews.isEnabled.value = false
@@ -233,7 +232,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // Base opt-in visibility on whether or not the user's language is supported in BT
       Preferences.BraveNews.isShowingOptIn.value = FeedDataSource.supportedLanguages.contains(String(languageCode))
     }
-    #endif
 
     SystemUtils.onFirstRun()
 
@@ -454,16 +452,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Some sites will only serve HTML that points to .ico files.
     // The FaviconFetcher is explicitly for getting high-res icons, so use the desktop user agent.
     FaviconFetcher.htmlParsingUserAgent = UserAgent.desktop
-  }
-
-  fileprivate func presentEmailComposerWithLogs() {
-    if let buildNumber = Bundle.main.object(forInfoDictionaryKey: String(kCFBundleVersionKey)) as? NSString {
-      let mailComposeViewController = MFMailComposeViewController()
-      mailComposeViewController.mailComposeDelegate = self
-      mailComposeViewController.setSubject("Debug Info for iOS client version v\(appVersion) (\(buildNumber))")
-
-      self.window?.rootViewController?.present(mailComposeViewController, animated: true, completion: nil)
-    }
   }
 
   func sceneInfo(for sceneSession: UISceneSession) -> SceneInfoModel? {

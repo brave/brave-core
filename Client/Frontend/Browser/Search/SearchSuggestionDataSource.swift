@@ -126,16 +126,16 @@ class SearchSuggestionDataSource {
 
         self.delegate?.searchSuggestionDataSourceReloaded()
         if let error = error {
-          let isSuggestClientError = error.domain == SearchSuggestClientErrorDomain
+          let isSuggestClientError = error.domain == SearchSuggestClient.errorDomain
 
           switch error.code {
           case NSURLErrorCancelled where error.domain == NSURLErrorDomain:
             // Request was cancelled. Do nothing.
             break
-          case SearchSuggestClientErrorInvalidEngine where isSuggestClientError:
+          case SearchSuggestClient.invalidEngineErrorCode where isSuggestClientError:
             // Engine does not support search suggestions. Do nothing.
             break
-          case SearchSuggestClientErrorInvalidResponse where isSuggestClientError:
+          case SearchSuggestClient.invalidResponseErrorCode where isSuggestClientError:
             log.error("Error: Invalid search suggestion data")
           default:
             log.error("Error: \(error.description)")
@@ -160,11 +160,10 @@ class SearchSuggestionDataSource {
   
   func setupSearchClient() {
     // Show the default search engine first.
-    if !tabType.isPrivate {
-      let userAgent = SearchViewController.userAgent ?? "FxSearch"
-      if let engines = searchEngines?.defaultEngine() {
-        suggestClient = SearchSuggestClient(searchEngine: engines, userAgent: userAgent)
-      }
+    if !tabType.isPrivate,
+       let userAgent = SearchViewController.userAgent,
+       let engines = searchEngines?.defaultEngine() {
+      suggestClient = SearchSuggestClient(searchEngine: engines, userAgent: userAgent)
     }
   }
 

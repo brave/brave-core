@@ -131,7 +131,6 @@ let package = Package(
         .copy("Frontend/Reader/Reader.css"),
         .copy("Frontend/Reader/Reader.html"),
         .copy("Frontend/Reader/ReaderViewLoading.html"),
-        .copy("MailSchemes.plist"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/ntp-data.json"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/alain_franchette_ocean.jpg"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/boris_baldinger.jpg"),
