@@ -3,13 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-if (!is_android) {
-  source_set("browser_tests") {
-    testonly = true
-    check_includes = false
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+source_set("browser_tests") {
+  testonly = true
+  check_includes = false
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [
+  sources = [
+    "brave_screen_farbling_browsertest.cc",
+  ]
+
+  if (!is_android) {
+    sources += [
       "brave_dark_mode_fingerprint_protection_browsertest.cc",
       "brave_enumeratedevices_farbling_browsertest.cc",
       "brave_font_whitelist_browsertest.cc",
@@ -20,31 +24,30 @@ if (!is_android) {
       "brave_navigator_plugins_farbling_browsertest.cc",
       "brave_navigator_useragent_farbling_browsertest.cc",
       "brave_offscreencanvas_farbling_browsertest.cc",
-      "brave_screen_farbling_browsertest.cc",
       "brave_speech_synthesis_farbling_browsertest.cc",
       "brave_webaudio_farbling_browsertest.cc",
       "brave_webgl_farbling_browsertest.cc",
     ]
-
-    deps = [
-      "//base",
-      "//brave/browser",
-      "//brave/common:common",
-      "//brave/components/brave_component_updater/browser:browser",
-      "//brave/components/brave_shields/browser:browser",
-      "//brave/components/brave_shields/common:common",
-      "//brave/components/constants",
-      "//chrome/browser",
-      "//chrome/browser/ui",
-      "//chrome/common",
-      "//chrome/test:test_support",
-      "//chrome/test:test_support_ui",
-      "//components/embedder_support:browser_util",
-      "//components/permissions:permissions",
-      "//components/prefs",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//ui/native_theme:test_support",
-    ]
   }
+
+  deps = [
+    "//base",
+    "//brave/browser",
+    "//brave/common:common",
+    "//brave/components/brave_component_updater/browser:browser",
+    "//brave/components/brave_shields/browser:browser",
+    "//brave/components/brave_shields/common:common",
+    "//brave/components/constants",
+    "//chrome/browser",
+    "//chrome/browser/ui",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/embedder_support:browser_util",
+    "//components/permissions:permissions",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//ui/native_theme:test_support",
+  ]
 }
