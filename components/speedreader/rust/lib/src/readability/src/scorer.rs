@@ -935,6 +935,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
                         true
                     } else {
+                        // If <h2> has class attribute with a negative pattern (ad, hidden, etc.) remove it.
                         get_class_weight(&handle) < -20.0
                     }
                 }
