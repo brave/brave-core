@@ -55,6 +55,14 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="BraveWalletTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/wallet_text_color</item>
+        <item name="android:textColorLink">@color/brave_link</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="BraveWalletButtonHollow" parent="Widget.AppCompat.Button">
         <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:layout_width">wrap_content</item>
