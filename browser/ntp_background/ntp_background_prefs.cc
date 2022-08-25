@@ -22,22 +22,24 @@ constexpr char kRandomKey[] = "random";
 constexpr char kSelectedValueKey[] = "selected_value";
 
 const char* TypeToString(NTPBackgroundPrefs::Type type) {
+  // See class description for details.
   switch (type) {
     case NTPBackgroundPrefs::Type::kBrave:
       return "brave";
     case NTPBackgroundPrefs::Type::kCustomImage:
       return "custom_image";
     case NTPBackgroundPrefs::Type::kColor:
-      return "solid_color";
+      return "color";
   }
 }
 
 NTPBackgroundPrefs::Type StringToType(const std::string& type_string) {
+  // See class description for details.
   if (type_string == "brave")
     return NTPBackgroundPrefs::Type::kBrave;
   if (type_string == "custom_image")
     return NTPBackgroundPrefs::Type::kCustomImage;
-  if (type_string == "solid_color")
+  if (type_string == "solid_color" || type_string == "color")
     return NTPBackgroundPrefs::Type::kColor;
 
   NOTREACHED();

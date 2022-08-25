@@ -90,8 +90,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
         !newTabData.backgroundWallpaper.author && !newTabData.backgroundWallpaper.link
     const selectedBackgroundColor = newTabData.backgroundWallpaper?.type === 'color' ? newTabData.backgroundWallpaper.wallpaperColor : undefined
     const usingBraveBackground = !usingCustomBackground && !selectedBackgroundColor
-    const usingSolidColorBackground = selectedBackgroundColor ? solidColorsForBackground.includes(selectedBackgroundColor) : false
-    const usingGradientBackground = selectedBackgroundColor ? gradientColorsForBackground.includes(selectedBackgroundColor) : false
+    const usingSolidColorBackground = !!selectedBackgroundColor && solidColorsForBackground.includes(selectedBackgroundColor)
+    const usingGradientBackground = !!selectedBackgroundColor && gradientColorsForBackground.includes(selectedBackgroundColor)
 
     return (
       <>
@@ -157,7 +157,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                   </StyledCustomBackgroundOptionLabel>
                 </StyledCustomBackgroundOption>
                 <StyledCustomBackgroundOption
-                  onClick={ this.onClickGradientColorBackground }
+                  onClick={this.onClickGradientColorBackground}
                 >
                   <StyledSelectionBorder selected={usingGradientBackground}>
                     <StyledCustomBackgroundOptionColor
