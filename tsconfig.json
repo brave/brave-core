@@ -20,6 +20,8 @@
       "es2019",
       "esnext"
     ],
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
@@ -69,7 +71,7 @@
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
   },
   "include": []
 }
