@@ -6,16 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_CONTAINER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_CONTAINER_H_
 
-#define PrepareForAnimation       \
+#define ExitTabClosingMode        \
   UnUsed() {}                     \
   friend class BraveTabContainer; \
-  void PrepareForAnimation
+  void ExitTabClosingMode
 
 #define UpdateClosingModeOnRemovedTab virtual UpdateClosingModeOnRemovedTab
 
 #include "src/chrome/browser/ui/views/tabs/tab_container.h"
 
 #undef UpdateClosingModeOnRemovedTab
-#undef PrepareForAnimation
+#undef ExitTabClosingMode
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_CONTAINER_H_

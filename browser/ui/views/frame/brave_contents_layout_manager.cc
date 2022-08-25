@@ -8,7 +8,6 @@
 #include "ui/views/view.h"
 
 BraveContentsLayoutManager::BraveContentsLayoutManager(
-<<<<<<< HEAD
     views::View* devtools_view,
     views::View* contents_view,
     views::View* sidebar_container_view,
@@ -29,12 +28,13 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
 
   int taken_width = 0;
   for (const auto view : {sidebar_container_view_, vertical_tabs_container_}) {
-    if (!view)
+    if (!view || !view->GetVisible())
       continue;
 
-    view->GetPreferredSize().width();
-    const gfx::Rect sidebar_bounds(0, 0, sidebar_width, height);
-    view->SetBoundsRect(host_->GetMirroredRect(sidebar_bounds));
+    auto width = view->GetPreferredSize().width();
+    const gfx::Rect bounds(taken_width, 0, width, height);
+    view->SetBoundsRect(host_->GetMirroredRect(bounds));
+    taken_width += width;
   }
 
   gfx::Size container_size(width - taken_width, height);

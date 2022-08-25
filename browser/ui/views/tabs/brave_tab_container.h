@@ -8,6 +8,8 @@
 
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 
+#include "chrome/browser/ui/views/tabs/tab_drag_context.h"
+
 class BraveTabContainer : public TabContainer {
  public:
   METADATA_HEADER(BraveTabContainer);

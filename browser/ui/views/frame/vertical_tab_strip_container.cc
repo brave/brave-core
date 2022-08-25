@@ -260,7 +260,7 @@ void VerticalTabStripContainer::OnThemeChanged() {
   View::OnThemeChanged();
 
   auto background_color =
-      GetThemeProvider()->GetColor(ThemeProperties::COLOR_TOOLBAR);
+      GetColorProvider()->GetColor(ThemeProperties::COLOR_TOOLBAR);
   SetBackground(views::CreateSolidBackground(background_color));
   scroll_view_->SetBackgroundColor(background_color);
 

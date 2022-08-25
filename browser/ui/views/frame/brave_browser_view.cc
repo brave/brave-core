@@ -188,7 +188,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
   right_aligned_side_panel_ = sidebar_container_view_->side_panel();
-  if (can_have_vertical_tabs) {
+  if (show_vertical_tabs) {
     vertical_tabs_container_ = contents_container_->AddChildView(
         std::make_unique<VerticalTabStripContainer>(tab_strip_region_view_));
   }

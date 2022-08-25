@@ -22,5 +22,5 @@ int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
   if (tabs::features::ShouldShowVerticalTabs())
     return top;
 
-    return BrowserViewLayout::LayoutTabStripRegion(top);
+  return BrowserViewLayout::LayoutTabStripRegion(top);
 }

@@ -45,7 +45,7 @@ gfx::Point TabDragController::GetAttachedDragPoint(
   DCHECK(attached_context_);  // The tab must be attached.
 
   gfx::Point tab_loc(point_in_screen);
-  views::View::ConvertPointFromScreen(attached_context_->AsView(), &tab_loc);
+  views::View::ConvertPointFromScreen(attached_context_, &tab_loc);
   const int y = tab_loc.y() - mouse_offset_.y();
   return gfx::Point(0, std::max(0, y));
 }
