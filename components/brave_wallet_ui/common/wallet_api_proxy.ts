@@ -88,6 +88,22 @@ export class WalletApiProxy {
   addBraveWalletServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletServiceObserverReceiver({
       onActiveOriginChanged: function (originInfo) {
+        const state = store.getState().wallet
+
+        // check that the origin has changed from the stored values
+        // in any way before dispatching the update action
+        if (
+          state.activeOrigin.eTldPlusOne === originInfo.eTldPlusOne &&
+          state.activeOrigin.origin.host === originInfo.origin.host &&
+          state.activeOrigin.origin.nonceIfOpaque?.high === originInfo.origin.nonceIfOpaque?.high &&
+          state.activeOrigin.origin.nonceIfOpaque?.low === originInfo.origin.nonceIfOpaque?.low &&
+          state.activeOrigin.origin.port === originInfo.origin.port &&
+          state.activeOrigin.origin.scheme === originInfo.origin.scheme &&
+          state.activeOrigin.originSpec === originInfo.originSpec
+        ) {
+          return
+        }
+
         store.dispatch(WalletActions.activeOriginChanged(originInfo))
       },
       onDefaultEthereumWalletChanged: function (defaultWallet) {
