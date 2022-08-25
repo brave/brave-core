@@ -79,7 +79,6 @@ class AssetDetailStore: ObservableObject {
     self.token = token
 
     self.keyringService.add(self)
-    self.rpcService.add(self)
     self.txService.add(self)
     self.walletService.add(self)
 
@@ -263,20 +262,6 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
   }
 
   func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
-  }
-}
-
-extension AssetDetailStore: BraveWalletJsonRpcServiceObserver {
-  func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      // There's some async gap between the chain changing and the EthTxService having the the correct
-      // chain which results in fetching the _previous_ chains transactions
-      self.update()
-    }
-  }
-  func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
-  }
-  func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
 }
 

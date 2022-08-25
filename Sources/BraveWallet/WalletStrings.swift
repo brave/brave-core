@@ -2654,5 +2654,47 @@ extension Strings {
       value: "Buy not supported for selected network",
       comment: "A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre."
     )
+    public static let auroraBridgeAlertTitle = NSLocalizedString(
+      "wallet.auroraBridgeAlertTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Open the Rainbow Bridge App?",
+      comment: "The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`."
+    )
+    public static let auroraBridgeAlertDescription = NSLocalizedString(
+      "wallet.auroraBridgeAlertDescription",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Rainbow Bridge is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.",
+      comment: "The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`."
+    )
+    public static let auroraBridgeButtonTitle = NSLocalizedString(
+      "wallet.auroraBridgeButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Bridge to Aurora",
+      comment: "The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site."
+    )
+    public static let auroraBridgeLearnMore = NSLocalizedString(
+      "wallet.auroraBridgeLearnMore",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Learn more about using Rainbow Bridge",
+      comment: "A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge."
+    )
+    public static let auroraBridgeRisk = NSLocalizedString(
+      "wallet.auroraBridgeRisk",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Learn how to reduce risk on Rainbow Bridge",
+      comment: "A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge."
+    )
+    public static let auroraPopupDontShowAgain = NSLocalizedString(
+      "wallet.auroraPopupDontShowAgain",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Don't show again",
+      comment: "A text button for user to click so this pop up will not show again."
+    )
   }
 }

@@ -8,6 +8,7 @@ import SwiftUI
 import BraveCore
 import DesignSystem
 import Strings
+import BraveShared
 
 extension BraveWallet.AssetTimePrice: DataPoint {
   var value: CGFloat {
@@ -20,9 +21,11 @@ struct AssetDetailHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @Binding var buySendSwapDestination: BuySendSwapDestination?
+  @Binding var isShowingBridgeAlert: Bool
 
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+  @Environment(\.openWalletURLAction) private var openWalletURL
   @State private var selectedCandle: BraveWallet.AssetTimePrice?
 
   private var deltaText: some View {
@@ -45,26 +48,100 @@ struct AssetDetailHeaderView: View {
     // About 300 points added so it doesn't animate funny
     (0..<300).map { _ in .init(date: Date(), price: "0.0") }
   }
+  
+  private var isBuySupported: Bool {
+    assetDetailStore.isBuySupported
+    && WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(networkStore.selectedChainId)
+  }
+  
+  @ViewBuilder private var actionButtonsContainer: some View {
+    if isBuySupported && networkStore.isSwapSupported {
+      VStack {
+        actionButtons
+      }
+    } else {
+      HStack {
+        actionButtons
+      }
+    }
+  }
+  
+  @ViewBuilder private var actionButtons: some View {
+    buySendSwapButtonsContainer
+    if assetDetailStore.token.isAuroraSupportedToken {
+      auroraBridgeButton
+    }
+  }
+  
+  @ViewBuilder var buySendSwapButtonsContainer: some View {
+    HStack {
+      if isBuySupported {
+        Button(
+          action: {
+            buySendSwapDestination = BuySendSwapDestination(
+              kind: .buy,
+              initialToken: assetDetailStore.token
+            )
+          }
+        ) {
+          Text(Strings.Wallet.buy)
+        }
+      }
+      Button(
+        action: {
+          buySendSwapDestination = BuySendSwapDestination(
+            kind: .send,
+            initialToken: assetDetailStore.token
+          )
+        }
+      ) {
+        Text(Strings.Wallet.send)
+      }
+      if networkStore.isSwapSupported {
+        Button(
+          action: {
+            buySendSwapDestination = BuySendSwapDestination(
+              kind: .swap,
+              initialToken: assetDetailStore.token
+            )
+          }
+        ) {
+          Text(Strings.Wallet.swap)
+        }
+      }
+    }
+    .buttonStyle(BraveFilledButtonStyle(size: .normal))
+  }
+  
+  @ViewBuilder var auroraBridgeButton: some View {
+    Button(
+      action: {
+        if Preferences.Wallet.showAuroraPopup.value {
+          isShowingBridgeAlert = true
+        } else {
+          if let link = WalletConstants.auroraBridgeLink {
+            openWalletURL?(link)
+          }
+        }
+      }
+    ) {
+      Text(Strings.Wallet.auroraBridgeButtonTitle)
+    }
+    .buttonStyle(BraveFilledButtonStyle(size: .normal))
+  }
 
   var body: some View {
     VStack(spacing: 0) {
       VStack(alignment: .leading) {
         if sizeCategory.isAccessibilityCategory {
           VStack(alignment: .leading) {
-            HStack {
-              NetworkPicker(
-                keyringStore: keyringStore,
-                networkStore: networkStore
-              )
-              if horizontalSizeClass == .regular {
-                Spacer()
-                DateRangeView(selectedRange: $assetDetailStore.timeframe)
-                  .padding(6)
-                  .overlay(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                      .strokeBorder(Color(.secondaryButtonTint))
-                  )
-              }
+            if horizontalSizeClass == .regular {
+              DateRangeView(selectedRange: $assetDetailStore.timeframe)
+                .padding(6)
+                .overlay(
+                  RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .strokeBorder(Color(.secondaryButtonTint))
+                )
             }
             HStack {
               AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
@@ -80,10 +157,6 @@ struct AssetDetailHeaderView: View {
             Text(assetDetailStore.token.name)
               .fixedSize(horizontal: false, vertical: true)
               .font(.title3.weight(.semibold))
-            NetworkPicker(
-              keyringStore: keyringStore,
-              networkStore: networkStore
-            )
             if horizontalSizeClass == .regular {
               Spacer()
               DateRangeView(selectedRange: $assetDetailStore.timeframe)
@@ -146,44 +219,7 @@ struct AssetDetailHeaderView: View {
       .padding(16)
       Divider()
         .padding(.bottom)
-      HStack {
-        if assetDetailStore.isBuySupported
-            && WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(networkStore.selectedChainId) {
-          Button(
-            action: {
-              buySendSwapDestination = BuySendSwapDestination(
-                kind: .buy,
-                initialToken: assetDetailStore.token
-              )
-            }
-          ) {
-            Text(Strings.Wallet.buy)
-          }
-        }
-        Button(
-          action: {
-            buySendSwapDestination = BuySendSwapDestination(
-              kind: .send,
-              initialToken: assetDetailStore.token
-            )
-          }
-        ) {
-          Text(Strings.Wallet.send)
-        }
-        if networkStore.isSwapSupported {
-          Button(
-            action: {
-              buySendSwapDestination = BuySendSwapDestination(
-                kind: .swap,
-                initialToken: assetDetailStore.token
-              )
-            }
-          ) {
-            Text(Strings.Wallet.swap)
-          }
-        }
-      }
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      actionButtonsContainer
     }
   }
 }
@@ -195,7 +231,8 @@ struct CurrencyDetailHeaderView_Previews: PreviewProvider {
       assetDetailStore: .previewStore,
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      buySendSwapDestination: .constant(nil)
+      buySendSwapDestination: .constant(nil),
+      isShowingBridgeAlert: .constant(false)
     )
     .padding(.vertical)
     .previewLayout(.sizeThatFits)

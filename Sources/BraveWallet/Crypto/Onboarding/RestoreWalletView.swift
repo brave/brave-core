@@ -210,27 +210,46 @@ private struct RestoreWalletView: View {
     .onChange(of: password, perform: handlePasswordChanged)
     .onChange(of: repeatedPassword, perform: handleRepeatedPasswordChanged)
     .background(
-      BiometricsPromptView(isPresented: $keyringStore.isRestoreFromUnlockBiometricsPromptVisible) { enabled, navController in
-        defer {
-          keyringStore.isRestoreFromUnlockBiometricsPromptVisible = false
-          keyringStore.markOnboardingCompleted()
+      WalletPromptView(
+        isPresented: $keyringStore.isRestoreFromUnlockBiometricsPromptVisible,
+        buttonTitle: Strings.Wallet.biometricsSetupEnableButtonTitle,
+        action: { enabled, navController in
+          defer {
+            keyringStore.isRestoreFromUnlockBiometricsPromptVisible = false
+            keyringStore.markOnboardingCompleted()
+          }
+          // Store password in keychain
+          if enabled, case let status = keyringStore.storePasswordInKeychain(password),
+             status != errSecSuccess {
+            let isPublic = AppConstants.buildChannel.isPublic
+            let alert = UIAlertController(
+              title: Strings.Wallet.biometricsSetupErrorTitle,
+              message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
+              preferredStyle: .alert
+            )
+            alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+            navController?.presentedViewController?.present(alert, animated: true)
+            // Unfortunately nothing else we can do here, the wallet is already restored. Maybe later can add
+            // an option to enable in `UnlockWalletView`
+          }
+          return false
+        },
+        content: {
+          VStack {
+            Image(sharedName: "pin-migration-graphic")
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(maxWidth: 250)
+              .padding()
+            Text(Strings.Wallet.biometricsSetupTitle)
+              .font(.headline)
+              .fixedSize(horizontal: false, vertical: true)
+              .multilineTextAlignment(.center)
+              .padding(.bottom)
+          }
         }
-        // Store password in keychain
-        if enabled, case let status = keyringStore.storePasswordInKeychain(password),
-          status != errSecSuccess {
-          let isPublic = AppConstants.buildChannel.isPublic
-          let alert = UIAlertController(
-            title: Strings.Wallet.biometricsSetupErrorTitle,
-            message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
-            preferredStyle: .alert
-          )
-          alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-          navController?.presentedViewController?.present(alert, animated: true)
-          // Unfortunately nothing else we can do here, the wallet is already restored. Maybe later can add
-          // an option to enable in `UnlockWalletView`
-        }
-        return false
-      })
+      )
+    )
   }
 }
 
