@@ -13,9 +13,9 @@
 class Browser;
 class Profile;
 
-namespace infobars {
-class ContentInfoBarManager;
-}  // namespace infobars
+namespace content {
+class WebContents;
+}
 
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class BraveSyncAccountDeletedInfoBarDelegate : public ConfirmInfoBarDelegate {
@@ -25,7 +25,7 @@ class BraveSyncAccountDeletedInfoBarDelegate : public ConfirmInfoBarDelegate {
   BraveSyncAccountDeletedInfoBarDelegate& operator=(
       const BraveSyncAccountDeletedInfoBarDelegate&) = delete;
 
-  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+  static void Create(content::WebContents* active_web_contents,
                      Profile* profile,
                      Browser* browser);
 
