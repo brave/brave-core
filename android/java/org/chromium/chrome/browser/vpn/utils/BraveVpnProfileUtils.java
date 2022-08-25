@@ -63,7 +63,6 @@ public class BraveVpnProfileUtils {
     }
 
     public void startVpn(Context context) {
-        // BraveVpnNativeWorker.getInstance().reportForegroundP3A();
         ContextCompat.startForegroundService(context, new Intent(context, WireguardService.class));
     }
 
