@@ -442,6 +442,8 @@ source_set("ui") {
       "views/sidebar/sidebar_container_view.h",
       "views/sidebar/sidebar_control_view.cc",
       "views/sidebar/sidebar_control_view.h",
+      "views/sidebar/sidebar_edit_item_bubble_delegate_view.cc",
+      "views/sidebar/sidebar_edit_item_bubble_delegate_view.h",
       "views/sidebar/sidebar_item_add_button.cc",
       "views/sidebar/sidebar_item_add_button.h",
       "views/sidebar/sidebar_item_added_feedback_bubble.cc",

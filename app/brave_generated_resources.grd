@@ -647,8 +647,26 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Sidebar -->
       <if expr="enable_sidebar">
+        <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT" desc="Menu for editing an existing item from sidebar">
+          Edit...
+        </message>
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE" desc="Menu for removing an item from sidebar">
           Remove
+        </message>
+        <message name="IDS_SIDEBAR_EDIT_ITEM_BUBBLE_HEADER" desc="Text for header title of sidebar edit item bubble">
+          Edit item
+        </message>
+        <message name="IDS_SIDEBAR_EDIT_ITEM_BUBBLE_TITLE" desc="Text for title label of sidebar edit item bubble">
+          Title
+        </message>
+        <message name="IDS_SIDEBAR_EDIT_ITEM_BUBBLE_URL" desc="Text for url label of sidebar edit item bubble">
+          URL
+        </message>
+        <message name="IDS_SIDEBAR_EDIT_ITEM_BUBBLE_AX_TITLE_EDITOR_LABEL" desc="Spoken text for item title text field in edit item dialog">
+          Sidebar item title
+        </message>
+        <message name="IDS_SIDEBAR_EDIT_ITEM_BUBBLE_AX_URL_EDITOR_LABEL" desc="Spoken text for item url text field in edit item dialog">
+          Sidebar item url
         </message>
         <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
           Add to Sidebar

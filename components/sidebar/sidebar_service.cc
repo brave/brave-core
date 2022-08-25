@@ -113,6 +113,11 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
 
 }  // namespace
 
+bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
+  return index == update.index && title_updated == update.title_updated &&
+         url_updated == update.url_updated;
+}
+
 // static
 void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
                                           version_info::Channel channel) {
@@ -340,6 +345,41 @@ void SidebarService::MoveItem(int from, int to) {
   UpdateSidebarItemsToPrefStore();
 }
 
+void SidebarService::UpdateItem(const GURL& old_url,
+                                const GURL& new_url,
+                                const std::u16string& old_title,
+                                const std::u16string& new_title) {
+  DCHECK(old_url.is_valid() && new_url.is_valid());
+  DCHECK(!old_title.empty() && !new_title.empty());
+
+  if (old_url == new_url && old_title == new_title)
+    return;
+
+  // Check any existing items doen't use |new_url| if |old_url| and |new_url|
+  // is different. If both are same, only title will be updated.
+  // Sidebar can't have two items with same url.
+  if (old_url != new_url &&
+      base::ranges::any_of(items_, [&new_url](const auto& item) {
+        return new_url == item.url;
+      })) {
+    return;
+  }
+
+  auto item_iter = base::ranges::find_if(
+      items_, [&old_url](const auto& item) { return (item.url == old_url); });
+  if (item_iter != items_.end()) {
+    const int index = std::distance(items_.begin(), item_iter);
+    DCHECK(IsEditableItemAt(index));
+    item_iter->url = new_url;
+    item_iter->title = new_title;
+    for (Observer& obs : observers_) {
+      obs.OnItemUpdated(*item_iter,
+                        {index, old_title != new_title, old_url != new_url});
+    }
+    UpdateSidebarItemsToPrefStore();
+  }
+}
+
 void SidebarService::UpdateSidebarItemsToPrefStore() {
   // Store all items in a list pref.
   // Each item gets an entry. Built in items only need their type, and are
@@ -431,6 +471,11 @@ absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
     }
   }
   return default_item;
+}
+
+bool SidebarService::IsEditableItemAt(int index) const {
+  DCHECK(0 <= index && index < static_cast<int>(items_.size()));
+  return sidebar::IsWebType(items_[index]);
 }
 
 void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {

@@ -82,6 +82,8 @@ class SidebarItemsScrollView : public views::View,
   void OnItemMoved(const sidebar::SidebarItem& item, int from, int to) override;
   void OnItemRemoved(int index) override;
   void OnActiveIndexChanged(int old_index, int new_index) override;
+  void OnWillUpdateFavicon(const sidebar::SidebarItem& item,
+                           int index) override;
   void OnFaviconUpdatedForItem(const sidebar::SidebarItem& item,
                                const gfx::ImageSkia& image) override;
 

@@ -18,12 +18,41 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace sidebar {
 
-class SidebarModelTest : public testing::Test, public SidebarModel::Observer {
+class MockSidebarModelObserver : public SidebarModel::Observer {
+ public:
+  MockSidebarModelObserver() = default;
+  ~MockSidebarModelObserver() override = default;
+
+  MOCK_METHOD(void,
+              OnItemAdded,
+              (const SidebarItem& item, int index, bool user_gesture),
+              (override));
+  MOCK_METHOD(void,
+              OnItemMoved,
+              (const SidebarItem& item, int from, int to),
+              (override));
+  MOCK_METHOD(void, OnItemRemoved, (int index), (override));
+  MOCK_METHOD(void,
+              OnActiveIndexChanged,
+              (int old_index, int new_index),
+              (override));
+  MOCK_METHOD(void,
+              OnWillUpdateFavicon,
+              (const SidebarItem& item, int index),
+              (override));
+  MOCK_METHOD(void,
+              OnFaviconUpdatedForItem,
+              (const SidebarItem& item, const gfx::ImageSkia& image),
+              (override));
+};
+
+class SidebarModelTest : public testing::Test {
  public:
   SidebarModelTest() = default;
 
@@ -36,31 +65,17 @@ class SidebarModelTest : public testing::Test, public SidebarModel::Observer {
     observation_.Observe(model_.get());
   }
 
-  // SidebarModel::Observer overrides:
-  void OnItemMoved(const SidebarItem& item, int from, int to) override {
-    on_item_moved_called_ = true;
-  }
-  void OnActiveIndexChanged(int old_index, int new_index) override {
-    on_active_index_changed_called_ = true;
-  }
-
-  void ClearState() {
-    on_item_moved_called_ = false;
-    on_active_index_changed_called_ = false;
-  }
-
   Profile* profile() { return profile_.get(); }
   SidebarModel* model() { return model_.get(); }
   SidebarService* service() { return service_; }
 
   content::BrowserTaskEnvironment browser_task_environment_;
-  bool on_item_moved_called_ = false;
-  bool on_active_index_changed_called_ = false;
+  testing::NiceMock<MockSidebarModelObserver> observer_;
   SidebarService* service_ = nullptr;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<SidebarModel> model_;
   base::ScopedObservation<SidebarModel, SidebarModel::Observer> observation_{
-      this};
+      &observer_};
 };
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {
@@ -77,7 +92,22 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
       SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
 
   service()->AddItem(new_item);
-  EXPECT_EQ(built_in_items_size + 1, service()->items().size());
+  const auto items_count = built_in_items_size + 1;
+  EXPECT_EQ(items_count, service()->items().size());
+
+  // Update last item w/ url change.
+  EXPECT_CALL(observer_, OnWillUpdateFavicon(testing::_, items_count - 1))
+      .Times(1);
+  service()->UpdateItem(GURL("https://www.brave.com/"),
+                        GURL("https://brave.com/"), u"brave software",
+                        u"brave software");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  // Update last item w/o url change.
+  EXPECT_CALL(observer_, OnWillUpdateFavicon(testing::_, testing::_)).Times(0);
+  service()->UpdateItem(GURL("https://brave.com/"), GURL("https://brave.com/"),
+                        u"brave software", u"brave");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Move item at 1 to at index 2.
   // Total size and active index is not changed when currently active index is
@@ -85,13 +115,12 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   const size_t items_size = service()->items().size();
   // Cache data at index 1.
   const auto item_data = service()->items()[1];
-  EXPECT_FALSE(on_item_moved_called_);
-  EXPECT_FALSE(on_active_index_changed_called_);
 
+  EXPECT_CALL(observer_, OnItemMoved(testing::_, 1, 2)).Times(1);
+  EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
   service()->MoveItem(1, 2);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
 
-  EXPECT_TRUE(on_item_moved_called_);
-  EXPECT_FALSE(on_active_index_changed_called_);
   EXPECT_EQ(item_data.built_in_item_type,
             service()->items()[2].built_in_item_type);
   EXPECT_EQ(item_data.url, service()->items()[2].url);
@@ -104,26 +133,26 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   // Move item at 1 to 2. This causes active index change because item at 1 was
   // active item. After moving, active item index should be 2.
-  ClearState();
+  EXPECT_CALL(observer_, OnItemMoved(testing::_, 1, 2)).Times(1);
+  EXPECT_CALL(observer_, OnActiveIndexChanged(1, 2)).Times(1);
   service()->MoveItem(1, 2);
-  EXPECT_TRUE(on_item_moved_called_);
-  EXPECT_TRUE(on_active_index_changed_called_);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(2, model()->active_index());
 
   // Moving item from 1 to 0 doesn't affect active index.
-  ClearState();
+  EXPECT_CALL(observer_, OnItemMoved(testing::_, 1, 0)).Times(1);
+  EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
   service()->MoveItem(1, 0);
-  EXPECT_TRUE(on_item_moved_called_);
-  EXPECT_FALSE(on_active_index_changed_called_);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(2, model()->active_index());
 
   // Moving item from 3 to 0 affect active index. Items behind the active
   // item(at 2) to the front of active index. So, active item is also moved from
   // 2 to 3 index.
-  ClearState();
+  EXPECT_CALL(observer_, OnItemMoved(testing::_, 3, 0)).Times(1);
+  EXPECT_CALL(observer_, OnActiveIndexChanged(2, 3)).Times(1);
   service()->MoveItem(3, 0);
-  EXPECT_TRUE(on_item_moved_called_);
-  EXPECT_TRUE(on_active_index_changed_called_);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(3, model()->active_index());
 }
 
