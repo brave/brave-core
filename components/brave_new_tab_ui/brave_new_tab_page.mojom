@@ -7,9 +7,6 @@ module brave_new_tab_page.mojom;
 
 import "url/mojom/url.mojom";
 
-const string kColorBackgroundSolidGradient = "random-gradient";
-const string kColorBackgroundRandomGradient = "random-gradient";
-
 struct CustomBackground {
   url.mojom.Url url;
   string color;
