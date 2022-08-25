@@ -43,8 +43,7 @@ public class SelectedAccountResponsesCollector {
                             selectedAccountInfosPerCoinMultiResponse.singleResponseComplete, coin);
 
             accountsPermissionsContexts.add(accountContext);
-            if (CoinType.FIL == coin) {
-            } else {
+            if (CoinType.FIL != coin) {
                 mKeyringService.getSelectedAccount(coin, accountContext);
             }
         }
@@ -63,8 +62,9 @@ public class SelectedAccountResponsesCollector {
                         break;
                     }
                 }
-
-                mSelectedAccountsPerCoin.add(selectedAccountInfo);
+                if (selectedAccountInfo != null) {
+                    mSelectedAccountsPerCoin.add(selectedAccountInfo);
+                }
             }
             runWhenDone.call(mSelectedAccountsPerCoin);
         });

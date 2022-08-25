@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.app.domain;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -28,11 +27,11 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class KeyringModel implements KeyringServiceObserver {
     private KeyringService mKeyringService;
@@ -90,6 +89,28 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
+    public void getDefaultAccountPerCoin(
+            Callbacks.Callback1<Set<AccountInfo>> defaultAccountPerCoins) {
+        synchronized (mLock) {
+            if (mKeyringService == null) {
+                return;
+            }
+            List<Integer> coins = new ArrayList<>();
+            for (CryptoAccountTypeInfo cryptoAccountTypeInfo :
+                    mSharedData.getSupportedCryptoAccountTypes()) {
+                coins.add(cryptoAccountTypeInfo.getCoinType());
+            }
+            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
+                List<AccountInfo> accountInfos =
+                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
+                new SelectedAccountResponsesCollector(mKeyringService, coins, accountInfos)
+                        .getAccounts(defaultAccountPerCoin -> {
+                            defaultAccountPerCoins.call(defaultAccountPerCoin);
+                        });
+            });
+        }
+    }
+
     private void update(int coinType) {
         synchronized (mLock) {
             if (mKeyringService == null) {
@@ -113,7 +134,9 @@ public class KeyringModel implements KeyringServiceObserver {
                         }
                         _mSelectedAccount.postValue(selectedAccountInfo);
                     } else if (accountInfos.size() > 0) {
-                        _mSelectedAccount.postValue(accountInfos.get(0));
+                        AccountInfo accountInfo = accountInfos.get(0);
+                        _mSelectedAccount.postValue(accountInfo);
+                        setSelectedAccount(accountInfo.address, accountInfo.coin);
                     }
                 });
             });

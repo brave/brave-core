@@ -1326,6 +1326,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         openBraveWalletDAppsActivity(
                                 BraveWalletDAppsActivity.ActivityType.CONFIRM_TRANSACTION);
                     }
+                    // update badge if there's a pending tx
+                    if (transactionInfo != null && keyringInfo != null && !keyringInfo.isLocked) {
+                        updateWalletBadgeVisibility();
+                    }
                 });
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.observe(
                 this, visible -> { setWalletBadgeVisibility(visible); });
