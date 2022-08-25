@@ -35,7 +35,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   getAccounts = async (from: number, to: number, network: FilecoinNetwork): Promise<GetAccountsHardwareOperationResult> => {
     const unlocked = await this.unlock()
     if (!unlocked.success || !this.provider) {
-      return unlocked
+      return { success: false, error: unlocked.error, code: unlocked.code }
     }
     from = (from < 0) ? 0 : from
     const app: LedgerProvider = this.provider
@@ -89,14 +89,14 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     }
     try {
       if (!await this.makeApp() || !this.provider) {
-        return { success: false }
+        return { success: false, code: 'unlockError' }
       }
       const app: LedgerProvider = this.provider
       const address = await app.getAccounts(0, 1, CoinType.TEST)
       this.deviceId = address[0]
       return { success: this.isUnlocked() }
     } catch (e) {
-      return { success: false, error: getLocale('braveWalletLedgerFilecoinUnlockError') }
+      return { success: false, error: getLocale('braveWalletLedgerFilecoinUnlockError'), code: 'unlockError' }
     }
   }
 
@@ -107,7 +107,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   signTransaction = async (message: string): Promise<SignHardwareOperationResult> => {
     const unlocked = await this.unlock()
     if (!unlocked.success || !this.provider) {
-      return { success: false, error: unlocked.error }
+      return { success: false, error: unlocked.error, code: unlocked.code }
     }
     try {
       const parsed = JSON.parse(message)
