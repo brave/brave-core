@@ -25,7 +25,7 @@ pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|content|main\
     |shadow";
 pub static POSITIVE_CANDIDATES: &str = "(?i)article|body|content|entry|hentry|h-entry|\
         main|page|pagination|post|text|blog|story";
-pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|hidden|^hid$| hid$| hid |\
+pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|ad_|hidden|^hid$| hid$| hid |\
         ^hid |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|\
         masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|\
         sidebar|skyscraper|sponsor|shopping|tags|tool|widget|ai2html|legends|\
@@ -935,7 +935,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
                         true
                     } else {
-                        false
+                        get_class_weight(&handle) < -20.0
                     }
                 }
                 local_name!("form")
