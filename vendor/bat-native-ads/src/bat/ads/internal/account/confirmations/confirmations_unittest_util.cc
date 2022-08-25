@@ -20,14 +20,12 @@
 
 namespace ads {
 
-ConfirmationInfo BuildConfirmation(const std::string& id,
-                                   const std::string& transaction_id,
+ConfirmationInfo BuildConfirmation(const std::string& transaction_id,
                                    const std::string& creative_instance_id,
                                    const ConfirmationType& type,
                                    const AdType& ad_type) {
   ConfirmationInfo confirmation;
 
-  confirmation.id = id;
   confirmation.transaction_id = transaction_id;
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = type;

@@ -14,8 +14,7 @@ class AdType;
 class ConfirmationType;
 struct ConfirmationInfo;
 
-ConfirmationInfo BuildConfirmation(const std::string& id,
-                                   const std::string& transaction_id,
+ConfirmationInfo BuildConfirmation(const std::string& transaction_id,
                                    const std::string& creative_instance_id,
                                    const ConfirmationType& type,
                                    const AdType& ad_type);

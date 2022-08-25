@@ -75,7 +75,7 @@ const char kHasMigratedNotificationState[] =
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 
-const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash.v2";
+const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash.v3";
 const char kClientHash[] = "brave.brave_ads.client.hash.v3";
 
 // Browser version
