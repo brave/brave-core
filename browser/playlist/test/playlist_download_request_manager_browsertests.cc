@@ -8,9 +8,8 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/playlist/media_detector_component_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -44,15 +43,15 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
     // Load given |html| contents.
     const GURL url = embedded_test_server()->GetURL("/test");
+    auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
 
     // This is a blocking call.
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));
 
     // Run script and find media files
     ASSERT_FALSE(component_manager_->script().empty());
     playlist::PlaylistDownloadRequestManager::Request request;
-    request.url_or_contents =
-        browser()->tab_strip_model()->GetActiveWebContents()->GetWeakPtr();
+    request.url_or_contents = active_web_contents->GetWeakPtr();
     request.callback =
         base::BindOnce(&PlaylistDownloadRequestManagerBrowserTest::OnGetMedia,
                        base::Unretained(this), test_info->name(), items);
@@ -74,14 +73,13 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
     request_manager_ =
         std::make_unique<playlist::PlaylistDownloadRequestManager>(
-            browser()->profile(), component_manager_.get());
+            chrome_test_utils::GetProfile(this), component_manager_.get());
   }
 
   void TearDownOnMainThread() override {
     request_manager_.reset();
     component_manager_.reset();
 
-    // Setup test server to server given |html| contents.
     ASSERT_TRUE(embedded_test_server()->ShutdownAndWaitUntilComplete());
 
     PlatformBrowserTest::TearDownOnMainThread();
