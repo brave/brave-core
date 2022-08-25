@@ -229,6 +229,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     // Url bar will expand while keeping space for other items on the address bar.
     locationContainer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    locationContainer.setContentHuggingPriority(.required, for: .vertical)
 
     leadingItemsStackView.addArrangedSubview(backButton)
     leadingItemsStackView.addArrangedSubview(forwardButton)
