@@ -113,7 +113,7 @@ PredictionMap TextProcessing::GetTopPredictions(
 
 PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
   if (!IsInitialized()) {
-    return PredictionMap();
+    return {};
   }
 
   return GetTopPredictions(content);

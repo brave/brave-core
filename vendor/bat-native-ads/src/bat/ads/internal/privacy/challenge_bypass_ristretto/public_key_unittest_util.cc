@@ -17,7 +17,7 @@ PublicKey GetPublicKey() {
 }
 
 PublicKey GetMismatchingPublicKey() {
-  return PublicKey();
+  return {};
 }
 
 PublicKey GetInvalidPublicKey() {
