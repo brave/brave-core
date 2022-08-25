@@ -64,22 +64,6 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
   return is_initialized_;
 }
 
-bool EmbeddingProcessing::SetEmbeddingPipelineForTesting(
-    const int version,
-    const base::Time time,
-    const std::string& locale,
-    const int dim,
-    const std::map<std::string, VectorData>& embeddings) {
-  embedding_pipeline_.version = version;
-  embedding_pipeline_.time = time;
-  embedding_pipeline_.locale = locale;
-  embedding_pipeline_.dim = dim;
-  embedding_pipeline_.embeddings = embeddings;
-  is_initialized_ = true;
-
-  return is_initialized_;
-}
-
 TextEmbeddingInfo EmbeddingProcessing::EmbedText(
     const std::string& text) const {
   std::vector<float> embedding_zeroed(embedding_pipeline_.dim, 0.0f);

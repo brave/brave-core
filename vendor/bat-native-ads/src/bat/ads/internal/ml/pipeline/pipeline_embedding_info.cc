@@ -27,8 +27,7 @@ EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& root) {
   if (absl::optional<int> value = root.FindInt("version")) {
     version = value.value();
-  }
-  else {
+  } else {
     return false;
   }
 
@@ -40,8 +39,7 @@ bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& root) {
 
   if (const auto* value = root.FindString("locale")) {
     locale = *value;
-  }
-  else {
+  } else {
     return false;
   }
 
@@ -62,8 +60,7 @@ bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& root) {
     if (dim == 1) {
       return false;
     }
-  }
-  else {
+  } else {
     return false;
   }
 

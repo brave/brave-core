@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
 #include <map>
+#include <utility>
 #include <vector>
 
 #include "base/files/file.h"
