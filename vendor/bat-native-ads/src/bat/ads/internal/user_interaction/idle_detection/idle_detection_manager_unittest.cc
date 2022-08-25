@@ -60,7 +60,7 @@ TEST_F(BatAdsIdleDetectionManagerTest, UserDidBecomeActive) {
 
   // Act
   IdleDetectionManager::GetInstance()->UserDidBecomeActive(
-      /* idle_time */ base::Seconds(5), /* was_locked */ false);
+      /*idle_time */ base::Seconds(5), /* was_locked*/ false);
 
   // Assert
   EXPECT_TRUE(user_is_active_);
@@ -74,7 +74,7 @@ TEST_F(BatAdsIdleDetectionManagerTest,
 
   // Act
   IdleDetectionManager::GetInstance()->UserDidBecomeActive(
-      /* idle_time */ base::Seconds(5), /* was_locked */ true);
+      /*idle_time */ base::Seconds(5), /* was_locked*/ true);
 
   // Assert
   EXPECT_TRUE(user_is_active_);

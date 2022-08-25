@@ -58,7 +58,7 @@ class Transactions final : public TableInterface {
       mojom::DBCommandInfo* command,
       const TransactionList& transactions) const;
 
-  void OnGetTransactions(GetTransactionsCallback callback,
+  void OnGetTransactions(const GetTransactionsCallback& callback,
                          mojom::DBCommandResponseInfoPtr response);
 
   void MigrateToV18(mojom::DBTransactionInfo* transaction);

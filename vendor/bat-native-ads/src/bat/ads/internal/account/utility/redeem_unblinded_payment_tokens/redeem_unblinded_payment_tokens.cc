@@ -52,7 +52,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   if (!wallet.IsValid()) {
     BLOG(0, "Failed to redeem unblinded payment tokens due to invalid wallet");
-    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ false);
+    FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ false);
     return;
   }
 
@@ -64,7 +64,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
                                   base::Unretained(this)));
 
   BLOG(1, "Redeem unblinded payment tokens "
-              << FriendlyDateAndTime(redeem_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(redeem_at, /*use_sentence_style*/ true));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
-    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ true);
+    FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ true);
     return;
   }
 
@@ -177,7 +177,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
                      base::Unretained(this)));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);

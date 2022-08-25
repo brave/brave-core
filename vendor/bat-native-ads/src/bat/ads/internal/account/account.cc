@@ -127,7 +127,7 @@ void Account::Deposit(const std::string& creative_instance_id,
 
 void Account::GetStatement(GetStatementCallback callback) const {
   if (!ShouldRewardUser()) {
-    callback(/* statement */ nullptr);
+    callback(/*statement*/ nullptr);
     return;
   }
 

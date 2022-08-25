@@ -24,10 +24,10 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::Invoke;
-
-namespace ads {
 
 class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
  protected:
@@ -36,7 +36,7 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
   ~BatAdsNotificationAdIntegrationTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
     ForcePermissionRules();
   }
@@ -53,7 +53,7 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
         privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
     EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
 
-    GetAds()->OnUnIdle(base::TimeDelta::Min(), /* was_locked */ false);
+    GetAds()->OnUnIdle(base::TimeDelta::Min(), /*was_locked*/ false);
   }
 };
 

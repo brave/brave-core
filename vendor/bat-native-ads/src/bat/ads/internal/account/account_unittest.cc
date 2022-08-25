@@ -30,11 +30,11 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-namespace ads {
 
 namespace {
 
@@ -66,11 +66,11 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnWalletDidUpdate(const WalletInfo& wallet) override {
+  void OnWalletDidUpdate(const WalletInfo& /*wallet*/) override {
     wallet_did_update_ = true;
   }
 
-  void OnWalletDidChange(const WalletInfo& wallet) override {
+  void OnWalletDidChange(const WalletInfo& /*wallet*/) override {
     wallet_did_change_ = true;
   }
 
@@ -82,9 +82,9 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   }
 
   void OnFailedToProcessDeposit(
-      const std::string& creative_instance_id,
-      const AdType& ad_type,
-      const ConfirmationType& confirmation_type) override {
+      const std::string& /*creative_instance_id*/,
+      const AdType& /*ad_type*/,
+      const ConfirmationType& /*confirmation_type*/) override {
     failed_to_process_deposit_ = true;
   }
 
@@ -596,7 +596,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -606,7 +606,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -616,7 +616,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -640,7 +640,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
     expected_statement->earnings_last_month = 0.01;
     expected_statement->earnings_this_month = 0.05;
     expected_statement->next_payment_date =
-        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
+        TimeFromString("5 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);

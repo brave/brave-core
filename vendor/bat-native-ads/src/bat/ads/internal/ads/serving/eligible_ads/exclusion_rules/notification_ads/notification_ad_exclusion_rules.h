@@ -31,12 +31,11 @@ class ExclusionRules final : public ExclusionRulesBase {
                  geographic::SubdivisionTargeting* subdivision_targeting,
                  resource::AntiTargeting* anti_targeting_resource,
                  const BrowsingHistoryList& browsing_history);
+  ExclusionRules(const ExclusionRules&) = delete;
+  ExclusionRules& operator=(const ExclusionRules&) = delete;
   ~ExclusionRules() override;
 
  private:
-  ExclusionRules(const ExclusionRules&) = delete;
-  ExclusionRules& operator=(const ExclusionRules&) = delete;
-
   std::unique_ptr<DismissedExclusionRule> dismissed_exclusion_rule_;
   std::unique_ptr<PerHourExclusionRule> per_hour_exclusion_rule_;
 };

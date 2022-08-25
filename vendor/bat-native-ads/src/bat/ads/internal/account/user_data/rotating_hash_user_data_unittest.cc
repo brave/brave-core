@@ -32,7 +32,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
 
   // Act
   const base::Value::Dict user_data = GetRotatingHash(kCreativeInstanceId);
@@ -50,7 +50,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  AdvanceClockTo(TimeFromString("2 June 2022 11:000", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("2 June 2022 11:000", /*is_local*/ false));
   const base::Value::Dict user_data_before =
       GetRotatingHash(kCreativeInstanceId);
 
@@ -69,7 +69,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
   const base::Value::Dict user_data_before =
       GetRotatingHash(kCreativeInstanceId);
 
@@ -89,7 +89,7 @@ TEST_F(BatAdsRotatingHashUserDataTest,
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
   const base::Value::Dict user_data_before =
       GetRotatingHash(kCreativeInstanceId);
 

@@ -66,7 +66,7 @@ void InlineContentAd::TriggerEvent(
 ///////////////////////////////////////////////////////////////////////////////
 
 void InlineContentAd::OnOpportunityAroseToServeInlineContentAd(
-    const SegmentList& segments) {
+    const SegmentList& /*segments*/) {
   BLOG(1, "Opportunity arose to serve an inline content ad");
 }
 

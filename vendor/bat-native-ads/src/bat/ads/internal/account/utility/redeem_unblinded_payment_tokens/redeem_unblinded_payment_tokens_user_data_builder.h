@@ -14,18 +14,17 @@ namespace ads {
 class RedeemUnblindedPaymentTokensUserDataBuilder final
     : public UserDataBuilderInterface {
  public:
-  RedeemUnblindedPaymentTokensUserDataBuilder(
+  explicit RedeemUnblindedPaymentTokensUserDataBuilder(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
+  RedeemUnblindedPaymentTokensUserDataBuilder(
+      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
+  RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
+      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
   ~RedeemUnblindedPaymentTokensUserDataBuilder() override;
 
   void Build(UserDataBuilderCallback callback) const override;
 
  private:
-  RedeemUnblindedPaymentTokensUserDataBuilder(
-      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
-  RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
-      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
-
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
 };
 

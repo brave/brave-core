@@ -10,16 +10,14 @@ namespace ads {
 
 class PermissionRulesBase {
  public:
+  PermissionRulesBase(const PermissionRulesBase&) = delete;
+  PermissionRulesBase& operator=(const PermissionRulesBase&) = delete;
   virtual ~PermissionRulesBase();
 
  protected:
   PermissionRulesBase();
 
   bool HasPermission() const;
-
- private:
-  PermissionRulesBase(const PermissionRulesBase&) = delete;
-  PermissionRulesBase& operator=(const PermissionRulesBase&) = delete;
 };
 
 }  // namespace ads

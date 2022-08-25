@@ -44,7 +44,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, Migrate) {
   SetHash(kConfirmationJsonHash);
 
   // Act
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
 
   // Assert
   EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());
@@ -56,7 +56,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, InvalidState) {
                                  kConfirmationStateFilename);
 
   // Act
-  Migrate(/* should_migrate */ false);
+  Migrate(/*should_migrate*/ false);
 
   // Assert
   EXPECT_FALSE(HasMigrated());
@@ -68,11 +68,11 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, AlreadyMigrated) {
 
   SetHash(kConfirmationJsonHash);
 
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
   ASSERT_EQ(kMigratedConfirmationJsonHash, GetHash());
 
   // Act
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
 
   // Assert
   EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());

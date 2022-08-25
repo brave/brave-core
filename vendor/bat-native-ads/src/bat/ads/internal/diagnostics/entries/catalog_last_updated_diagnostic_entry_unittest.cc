@@ -24,7 +24,7 @@ class BatAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /* is_local */ true));
+      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
 
   SetCatalogLastUpdated(Now());
 

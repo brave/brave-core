@@ -15,6 +15,8 @@ namespace ads {
 class IssuersPermissionRule : public PermissionRuleInterface {
  public:
   IssuersPermissionRule();
+  IssuersPermissionRule(const IssuersPermissionRule&) = delete;
+  IssuersPermissionRule& operator=(const IssuersPermissionRule&) = delete;
   ~IssuersPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,9 +25,6 @@ class IssuersPermissionRule : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  IssuersPermissionRule(const IssuersPermissionRule&) = delete;
-  IssuersPermissionRule& operator=(const IssuersPermissionRule&) = delete;
 
   std::string last_message_;
 };

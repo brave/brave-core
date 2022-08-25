@@ -146,8 +146,8 @@ void Catalog::FetchAfterDelay() {
       FROM_HERE, delay,
       base::BindOnce(&Catalog::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(
-              fetch_at, /* use_sentence_style */ true));
+  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at,
+                                                  /*use_sentence_style*/ true));
 }
 
 void Catalog::Retry() {
@@ -156,7 +156,7 @@ void Catalog::Retry() {
       base::BindOnce(&Catalog::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching catalog "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
 void Catalog::OnRetry() {
@@ -177,8 +177,8 @@ void Catalog::NotifyFailedToUpdateCatalog() const {
   }
 }
 
-void Catalog::OnDidMigrateDatabase(const int from_version,
-                                   const int to_version) {
+void Catalog::OnDidMigrateDatabase(const int /*from_version*/,
+                                   const int /*to_version*/) {
   ResetCatalog();
 }
 

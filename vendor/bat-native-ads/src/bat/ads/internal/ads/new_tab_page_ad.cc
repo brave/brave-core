@@ -60,7 +60,7 @@ void NewTabPageAd::TriggerEvent(const std::string& placement_id,
 ///////////////////////////////////////////////////////////////////////////////
 
 void NewTabPageAd::OnOpportunityAroseToServeNewTabPageAd(
-    const SegmentList& segments) {
+    const SegmentList& /*segments*/) {
   BLOG(1, "Opportunity arose to serve a new tab page ad");
 }
 

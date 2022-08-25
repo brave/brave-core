@@ -20,7 +20,7 @@ class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
   ~BatAdsConversionsDatabaseTableIntegrationTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }
 
   void SetUpMocks() override {

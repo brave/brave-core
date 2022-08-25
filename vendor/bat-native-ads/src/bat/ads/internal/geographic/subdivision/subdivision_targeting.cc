@@ -246,7 +246,7 @@ void SubdivisionTargeting::Retry() {
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Retry fetching subdivision target "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
@@ -259,7 +259,7 @@ void SubdivisionTargeting::FetchAfterDelay() {
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Fetch ads subdivision target "
-              << FriendlyDateAndTime(fetch_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(fetch_at, /*use_sentence_style*/ true));
 }
 
 void SubdivisionTargeting::OnLocaleDidChange(const std::string& locale) {

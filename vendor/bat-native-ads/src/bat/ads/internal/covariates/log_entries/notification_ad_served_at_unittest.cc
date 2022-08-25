@@ -36,7 +36,7 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetValue) {
   NotificationAdServedAt notification_ad_served_at;
 
   // Act
-  const base::Time now = TimeFromString("August 19 2019", /* is_local */ false);
+  const base::Time now = TimeFromString("August 19 2019", /*is_local*/ false);
   notification_ad_served_at.SetTime(now);
   const std::string value = notification_ad_served_at.GetValue();
 

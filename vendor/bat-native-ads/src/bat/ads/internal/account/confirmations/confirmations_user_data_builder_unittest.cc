@@ -53,7 +53,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   const base::Time time =
-      TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);
   AdvanceClockTo(time);
 
   // Act
@@ -86,7 +86,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   const base::Time time =
-      TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);
   AdvanceClockTo(time);
 
   // Act

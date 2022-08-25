@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
 #include "bat/ads/internal/base/platform/platform_helper.h"
 
@@ -47,13 +48,9 @@ bool CatalogCreativeSetInfo::DoesSupportOS() const {
 
   const std::string platform_name = PlatformHelper::GetInstance()->GetName();
 
-  for (const auto& os : oses) {
-    if (os.name == platform_name) {
-      return true;
-    }
-  }
-
-  return false;
+  return base::ranges::any_of(oses, [&platform_name](const CatalogOsInfo& os) {
+    return os.name == platform_name;
+  });
 }
 
 }  // namespace ads

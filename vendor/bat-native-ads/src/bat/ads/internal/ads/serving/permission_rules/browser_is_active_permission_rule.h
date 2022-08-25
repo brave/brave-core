@@ -15,6 +15,9 @@ namespace ads {
 class BrowserIsActivePermissionRule final : public PermissionRuleInterface {
  public:
   BrowserIsActivePermissionRule();
+  BrowserIsActivePermissionRule(const BrowserIsActivePermissionRule&) = delete;
+  BrowserIsActivePermissionRule& operator=(
+      const BrowserIsActivePermissionRule&) = delete;
   ~BrowserIsActivePermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,10 +26,6 @@ class BrowserIsActivePermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  BrowserIsActivePermissionRule(const BrowserIsActivePermissionRule&) = delete;
-  BrowserIsActivePermissionRule& operator=(
-      const BrowserIsActivePermissionRule&) = delete;
 
   std::string last_message_;
 };

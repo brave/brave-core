@@ -44,7 +44,7 @@ void EligibleAdsV2::GetForUserModel(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Failed to get ad events");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -72,17 +72,17 @@ void EligibleAdsV2::GetEligibleAds(
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   database::table::CreativeNewTabPageAds database_table;
-  database_table.GetAll([=](const bool success, const SegmentList& segments,
+  database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,
                             const CreativeNewTabPageAdList& creative_ads) {
     if (!success) {
       BLOG(1, "Failed to get ads");
-      callback(/* had_opportunity */ false, {});
+      callback(/*had_opportunity*/ false, {});
       return;
     }
 
     if (creative_ads.empty()) {
       BLOG(1, "No eligible ads");
-      callback(/* had_opportunity */ false, {});
+      callback(/*had_opportunity*/ false, {});
       return;
     }
 
@@ -90,7 +90,7 @@ void EligibleAdsV2::GetEligibleAds(
         FilterCreativeAds(creative_ads, ad_events, browsing_history);
     if (eligible_creative_ads.empty()) {
       BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-      callback(/* had_opportunity */ true, {});
+      callback(/*had_opportunity*/ true, {});
       return;
     }
 
@@ -98,14 +98,14 @@ void EligibleAdsV2::GetEligibleAds(
         PredictAd(user_model, ad_events, eligible_creative_ads);
     if (!creative_ad) {
       BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-      callback(/* had_opportunity */ true, {});
+      callback(/*had_opportunity*/ true, {});
       return;
     }
 
     BLOG(1, eligible_creative_ads.size()
                 << " eligible ads out of " << creative_ads.size() << " ads");
 
-    callback(/* had_opportunity */ true, {*creative_ad});
+    callback(/*had_opportunity*/ true, {*creative_ad});
   });
 }
 

@@ -13,7 +13,7 @@ namespace ads {
 namespace features {
 
 namespace {
-constexpr unsigned int kNumberOfServingFeatures = 7u;
+constexpr unsigned int kNumberOfServingFeatures = 7U;
 }  // namespace
 
 TEST(BatAdsEligibleAdsFeaturesTest, EligibleAdsEnabled) {

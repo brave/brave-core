@@ -22,9 +22,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using ::testing::_;
-
 namespace ads {
+
+using ::testing::_;
 
 namespace {
 
@@ -41,7 +41,7 @@ class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
   ~BatAdsInlineContentAdIntegrationTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
     ForcePermissionRules();
   }

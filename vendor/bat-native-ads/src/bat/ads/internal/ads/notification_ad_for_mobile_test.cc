@@ -24,10 +24,10 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::Invoke;
-
-namespace ads {
 
 class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
  protected:
@@ -36,7 +36,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   ~BatAdsNotificationAdForMobileIntegrationTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
     ForcePermissionRules();
   }
@@ -61,7 +61,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   }
 
   void ServeAd() {
-    GetAds()->OnUnIdle(base::TimeDelta::Min(), /* was_locked */ false);
+    GetAds()->OnUnIdle(base::TimeDelta::Min(), /*was_locked*/ false);
   }
 };
 

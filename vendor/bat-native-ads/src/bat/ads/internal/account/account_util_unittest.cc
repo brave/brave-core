@@ -57,9 +57,9 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   SaveTransactions(transactions);
 
   const ConfirmationInfo confirmation = BuildConfirmation(
-      /* id */ "d990ed8d-d739-49fb-811b-c2e02158fb60",
-      /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
-      /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+      /*id*/ "d990ed8d-d739-49fb-811b-c2e02158fb60",
+      /*transaction_id*/ "8b742869-6e4a-490c-ac31-31b49130098a",
+      /*creative_instance_id*/ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
       ConfirmationType::kViewed, AdType::kNotificationAd);
 
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(

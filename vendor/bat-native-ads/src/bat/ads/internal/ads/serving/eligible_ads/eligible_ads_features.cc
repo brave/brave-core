@@ -19,13 +19,13 @@ constexpr char kFeatureName[] = "EligibleAds";
 constexpr char kFieldTrialParameterAdPredictorWeights[] =
     "ad_predictor_weights";
 const AdPredictorWeightList kDefaultWeights = {
-    /* kDoesMatchIntentChildSegmentsIndex */ 1.0,
-    /* kDoesMatchIntentParentSegmentsIndex */ 1.0,
-    /* kDoesMatchInterestChildSegmentsIndex */ 1.0,
-    /* kDoesMatchInterestParentSegmentsIndex */ 1.0,
-    /* AdLastSeenHoursAgoIndex */ 1.0,
-    /* kAdvertiserLastSeenHoursAgoIndex */ 1.0,
-    /* kPriorityIndex */ 1.0};
+    /*kDoesMatchIntentChildSegmentsIndex*/ 1.0,
+    /*kDoesMatchIntentParentSegmentsIndex*/ 1.0,
+    /*kDoesMatchInterestChildSegmentsIndex*/ 1.0,
+    /*kDoesMatchInterestParentSegmentsIndex*/ 1.0,
+    /*AdLastSeenHoursAgoIndex*/ 1.0,
+    /*kAdvertiserLastSeenHoursAgoIndex*/ 1.0,
+    /*kPriorityIndex*/ 1.0};
 
 }  // namespace
 

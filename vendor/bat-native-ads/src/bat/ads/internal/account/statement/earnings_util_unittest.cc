@@ -22,7 +22,7 @@ class BatAdsEarningsUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarnings) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -34,7 +34,7 @@ TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarnings) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
@@ -44,7 +44,7 @@ TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarnings) {
       BuildTransaction(0.05, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
@@ -70,7 +70,7 @@ TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
 
 TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -82,7 +82,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
@@ -92,7 +92,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
       BuildTransaction(0.05, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
@@ -116,7 +116,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
 TEST_F(BatAdsEarningsUtilTest,
        GetReconciledEarningsForThisMonthForNoTransactions) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -128,7 +128,7 @@ TEST_F(BatAdsEarningsUtilTest,
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
@@ -138,7 +138,7 @@ TEST_F(BatAdsEarningsUtilTest,
       BuildTransaction(0.05, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
@@ -153,7 +153,7 @@ TEST_F(BatAdsEarningsUtilTest,
 
 TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -165,7 +165,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
@@ -179,7 +179,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
       BuildTransaction(0.07, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_5);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_6 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
@@ -203,7 +203,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
 TEST_F(BatAdsEarningsUtilTest,
        GetReconciledEarningsForLastMonthForNoTransactions) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   TransactionList transactions;
 
@@ -215,13 +215,13 @@ TEST_F(BatAdsEarningsUtilTest,
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_4 =
       BuildTransaction(0.02, ConfirmationType::kViewed);

@@ -106,9 +106,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -200,9 +200,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -248,9 +248,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -328,9 +328,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -375,9 +375,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments;
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -422,9 +422,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments = {"food & drink"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -518,9 +518,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
                                              "food & drink"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -590,9 +590,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
@@ -661,9 +661,9 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   const SegmentList segments = {"FoOd & DrInK"};
 
   database_table_->GetForSegments(
-      segments,
-      [&expected_creative_ads](const bool success, const SegmentList& segments,
-                               const CreativeNotificationAdList& creative_ads) {
+      segments, [&expected_creative_ads](
+                    const bool success, const SegmentList& /*segments*/,
+                    const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });

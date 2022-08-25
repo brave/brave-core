@@ -10,12 +10,11 @@
 #include <iterator>
 
 #include "base/check.h"
+#include "bat/ads/ad_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {
-
-struct AdInfo;
-struct CreativeAdInfo;
 
 template <typename T>
 bool ShouldCapLastServedCreativeAd(const T& creative_ads) {

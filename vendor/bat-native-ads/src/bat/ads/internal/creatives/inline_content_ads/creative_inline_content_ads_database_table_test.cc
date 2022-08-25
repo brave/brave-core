@@ -24,7 +24,7 @@ class BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest
       default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }
 
   void SetUpMocks() override {
@@ -46,7 +46,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   database::table::CreativeInlineContentAds creative_ads;
   creative_ads.GetForSegmentsAndDimensions(
       segments, "200x100",
-      [](const bool success, const SegmentList& segments,
+      [](const bool success, const SegmentList& /*segments*/,
          const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_ads.size());

@@ -75,7 +75,7 @@ void AntiTargeting::OnLoadAndParseResource(
                                       << " anti-targeting resource");
 }
 
-void AntiTargeting::OnLocaleDidChange(const std::string& locale) {
+void AntiTargeting::OnLocaleDidChange(const std::string& /*locale*/) {
   Load();
 }
 

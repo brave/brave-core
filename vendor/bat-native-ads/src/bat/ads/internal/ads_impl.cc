@@ -161,13 +161,13 @@ void AdsImpl::Initialize(InitializeCallback callback) {
 void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(0, "Shutdown failed as not initialized");
-    callback(/* success */ false);
+    callback(/*success*/ false);
     return;
   }
 
   NotificationAdManager::GetInstance()->CloseAll();
 
-  callback(/* success */ true);
+  callback(/*success*/ true);
 }
 
 void AdsImpl::OnChangeLocale(const std::string& locale) {
@@ -282,7 +282,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* ads */ absl::nullopt);
+    callback(/*ads*/ absl::nullopt);
     return;
   }
 
@@ -350,19 +350,19 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
   PurgeOrphanedAdEvents(ad_type, [ad_type, callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
-      callback(/* success */ false);
+      callback(/*success*/ false);
       return;
     }
 
     BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
-    callback(/* success */ true);
+    callback(/*success*/ true);
   });
 }
 
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   ClientStateManager::GetInstance()->RemoveAllHistory();
 
-  callback(/* success */ true);
+  callback(/*success*/ true);
 }
 
 HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
@@ -379,7 +379,7 @@ HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    callback(/* statement */ nullptr);
+    callback(/*statement*/ nullptr);
     return;
   }
 
@@ -495,7 +495,7 @@ void AdsImpl::LoadClientState(InitializeCallback callback) {
 void AdsImpl::MigrateConfirmationState(InitializeCallback callback) {
   confirmations::Migrate([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      callback(/*success*/ false);
       return;
     }
 
@@ -517,7 +517,7 @@ void AdsImpl::LoadConfirmationState(InitializeCallback callback) {
 void AdsImpl::MigrateNotificationState(InitializeCallback callback) {
   notifications::Migrate([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      callback(/*success*/ false);
       return;
     }
 
@@ -528,7 +528,7 @@ void AdsImpl::MigrateNotificationState(InitializeCallback callback) {
 void AdsImpl::FailedToInitialize(InitializeCallback callback) {
   BLOG(1, "Failed to initialize ads");
 
-  callback(/* success */ false);
+  callback(/*success*/ false);
 }
 
 void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
@@ -539,7 +539,7 @@ void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kInitializedAds);
 
-  callback(/* success */ true);
+  callback(/*success*/ true);
 
   Start();
 }

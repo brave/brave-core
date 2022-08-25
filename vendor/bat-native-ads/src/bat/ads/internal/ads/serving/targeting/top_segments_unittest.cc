@@ -248,9 +248,9 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{features::kPurchaseIntent, /* default params */ {}},
+      {{features::kPurchaseIntent, /*default params*/ {}},
        {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters},
-       {features::kTextClassification, /* default params */ {}}},
+       {features::kTextClassification, /*default params*/ {}}},
       {});
 
   // Act

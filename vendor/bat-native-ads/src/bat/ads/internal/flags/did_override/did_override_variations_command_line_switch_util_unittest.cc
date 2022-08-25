@@ -30,21 +30,19 @@ struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_command_line_switch;
 } kTests[] = {
-    {/* command_line_switch */ {kFooBarSwitch, {}},
-     /* expected_did_override_command_line_switch */ false},
-    {/* command_line_switch */ {variations::switches::kFakeVariationsChannel,
-                                {}},
-     /* expected_did_override_command_line_switch */ false},
-    {/* command_line_switch */ {variations::switches::kFakeVariationsChannel,
-                                "FooBar"},
-     /* expected_did_override_command_line_switch */ true},
-    {/* command_line_switch */ {
-         variations::switches::kVariationsOverrideCountry,
-         {}},
-     /* expected_did_override_command_line_switch */ false},
-    {/* command_line_switch */ {
-         variations::switches::kVariationsOverrideCountry, "FooBar"},
-     /* expected_did_override_command_line_switch */ true}};
+    {/*command_line_switch*/ {kFooBarSwitch, {}},
+     /*expected_did_override_command_line_switch*/ false},
+    {/*command_line_switch*/ {variations::switches::kFakeVariationsChannel, {}},
+     /*expected_did_override_command_line_switch*/ false},
+    {/*command_line_switch*/ {variations::switches::kFakeVariationsChannel,
+                              "FooBar"},
+     /*expected_did_override_command_line_switch*/ true},
+    {/*command_line_switch*/ {variations::switches::kVariationsOverrideCountry,
+                              {}},
+     /*expected_did_override_command_line_switch*/ false},
+    {/*command_line_switch*/ {variations::switches::kVariationsOverrideCountry,
+                              "FooBar"},
+     /*expected_did_override_command_line_switch*/ true}};
 
 }  // namespace
 

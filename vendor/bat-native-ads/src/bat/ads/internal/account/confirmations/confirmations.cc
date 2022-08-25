@@ -97,7 +97,7 @@ void Confirmations::Retry() {
       base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry sending failed confirmations "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
 void Confirmations::OnRetry() {
@@ -273,8 +273,8 @@ void Confirmations::OnDidRedeemUnblindedToken(
           ->GetUnblindedPaymentTokens()
           ->TokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
-    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false,
-                                   /* should_backoff */ false);
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
     return;
   }
 
@@ -295,7 +295,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
   BLOG(1, "You have " << unblinded_payment_tokens_count
                       << " unblinded payment tokens which will be redeemed "
                       << FriendlyDateAndTime(next_token_redemption_at,
-                                             /* use_sentence_style */ true));
+                                             /*use_sentence_style*/ true));
 
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);

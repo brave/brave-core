@@ -19,10 +19,10 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::NiceMock;
-
-namespace ads {
 
 class BatAdsIssuersTest : public UnitTestBase {
  protected:

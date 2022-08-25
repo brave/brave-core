@@ -15,6 +15,8 @@ namespace ads {
 class MediaPermissionRule final : public PermissionRuleInterface {
  public:
   MediaPermissionRule();
+  MediaPermissionRule(const MediaPermissionRule&) = delete;
+  MediaPermissionRule& operator=(const MediaPermissionRule&) = delete;
   ~MediaPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,9 +25,6 @@ class MediaPermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  MediaPermissionRule(const MediaPermissionRule&) = delete;
-  MediaPermissionRule& operator=(const MediaPermissionRule&) = delete;
 
   std::string last_message_;
 };

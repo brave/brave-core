@@ -52,7 +52,7 @@ class BatAdsNewTabPageAdServingTest : public ServingObserver,
   }
 
   void OnOpportunityAroseToServeNewTabPageAd(
-      const SegmentList& segments) override {
+      const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
   }
 

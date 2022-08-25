@@ -65,25 +65,25 @@ AdPredictorInfo<T> ComputePredictorFeatures(
       SetIntersection(targeting::GetTopChildPurchaseIntentSegments(user_model),
                       ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_child_segments =
-      intent_child_segments_intersection.empty() ? false : true;
+      !intent_child_segments_intersection.empty();
 
   const SegmentList intent_parent_segments_intersection =
       SetIntersection(targeting::GetTopParentPurchaseIntentSegments(user_model),
                       ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_parent_segments =
-      intent_parent_segments_intersection.empty() ? false : true;
+      !intent_parent_segments_intersection.empty();
 
   const SegmentList interest_child_segments_intersection =
       SetIntersection(targeting::GetTopChildInterestSegments(user_model),
                       ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_child_segments =
-      interest_child_segments_intersection.empty() ? false : true;
+      !interest_child_segments_intersection.empty();
 
   const SegmentList interest_parent_segments_intersection =
       SetIntersection(targeting::GetTopParentInterestSegments(user_model),
                       ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_parent_segments =
-      interest_parent_segments_intersection.empty() ? false : true;
+      !interest_parent_segments_intersection.empty();
 
   const base::Time now = base::Time::Now();
 

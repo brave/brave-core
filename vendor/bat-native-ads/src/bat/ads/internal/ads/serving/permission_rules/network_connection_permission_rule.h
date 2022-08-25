@@ -15,6 +15,10 @@ namespace ads {
 class NetworkConnectionPermissionRule final : public PermissionRuleInterface {
  public:
   NetworkConnectionPermissionRule();
+  NetworkConnectionPermissionRule(const NetworkConnectionPermissionRule&) =
+      delete;
+  NetworkConnectionPermissionRule& operator=(
+      const NetworkConnectionPermissionRule&) = delete;
   ~NetworkConnectionPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,11 +27,6 @@ class NetworkConnectionPermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  NetworkConnectionPermissionRule(const NetworkConnectionPermissionRule&) =
-      delete;
-  NetworkConnectionPermissionRule& operator=(
-      const NetworkConnectionPermissionRule&) = delete;
 
   std::string last_message_;
 };

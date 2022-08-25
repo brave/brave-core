@@ -106,7 +106,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 
   if (!is_initialized_) {
     bool table_exists = false;
-    if (meta_table_.DoesTableExist(&db_)) {
+    if (sql::MetaTable::DoesTableExist(&db_)) {
       table_exists = true;
     }
 
@@ -224,7 +224,8 @@ void Database::OnErrorCallback(const int error, sql::Statement* statement) {
 }
 
 void Database::OnMemoryPressure(
-    base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
+    base::MemoryPressureListener::
+        MemoryPressureLevel /*memory_pressure_level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   db_.TrimMemory();
 }

@@ -20,11 +20,11 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::InSequence;
 using ::testing::NiceMock;
-
-namespace ads {
 
 class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
  protected:

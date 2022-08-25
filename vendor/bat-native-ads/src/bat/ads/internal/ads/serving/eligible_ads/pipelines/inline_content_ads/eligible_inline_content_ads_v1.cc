@@ -47,7 +47,7 @@ void EligibleAdsV1::GetForUserModel(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Failed to get ad events");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -101,11 +101,11 @@ void EligibleAdsV1::GetForChildSegments(
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
-      [=](const bool success, const SegmentList& segments,
+      [=](const bool success, const SegmentList& /*segments*/,
           const CreativeInlineContentAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for child segments");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -123,7 +123,7 @@ void EligibleAdsV1::GetForChildSegments(
                     << " eligible ads out of " << creative_ads.size()
                     << " ads for child segments");
 
-        callback(/* had_opportunity */ true, eligible_creative_ads);
+        callback(/*had_opportunity*/ true, eligible_creative_ads);
       });
 }
 
@@ -147,11 +147,11 @@ void EligibleAdsV1::GetForParentSegments(
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
-      [=](const bool success, const SegmentList& segments,
+      [=](const bool success, const SegmentList& /*segments*/,
           const CreativeInlineContentAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for parent segments");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -168,7 +168,7 @@ void EligibleAdsV1::GetForParentSegments(
                     << " eligible ads out of " << creative_ads.size()
                     << " ads for parent segments");
 
-        callback(/* had_opportunity */ true, eligible_creative_ads);
+        callback(/*had_opportunity*/ true, eligible_creative_ads);
       });
 }
 
@@ -182,11 +182,11 @@ void EligibleAdsV1::GetForUntargeted(
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       {kUntargeted}, dimensions,
-      [=](const bool success, const SegmentList& segments,
+      [=](const bool success, const SegmentList& /*segments*/,
           const CreativeInlineContentAdList& creative_ads) {
         if (!success) {
           BLOG(1, "Failed to get ads for untargeted segment");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -195,7 +195,7 @@ void EligibleAdsV1::GetForUntargeted(
         if (eligible_creative_ads.empty()) {
           BLOG(1, "No eligible ads out of " << creative_ads.size()
                                             << " ads for untargeted segment");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -203,7 +203,7 @@ void EligibleAdsV1::GetForUntargeted(
                     << " eligible ads out of " << creative_ads.size()
                     << " ads for untargeted segment");
 
-        callback(/* had_opportunity */ true, eligible_creative_ads);
+        callback(/*had_opportunity*/ true, eligible_creative_ads);
       });
 }
 

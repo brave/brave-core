@@ -52,7 +52,7 @@ class BatAdsInlineContentAdServingTest : public ServingObserver,
   }
 
   void OnOpportunityAroseToServeInlineContentAd(
-      const SegmentList& segments) override {
+      const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
   }
 
@@ -79,7 +79,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
   // Act
   serving_->MaybeServeAd("200x100",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_FALSE(ad);
@@ -101,7 +101,7 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
 
   // Act
   serving_->MaybeServeAd("200x100",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_TRUE(ad);
@@ -124,7 +124,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
 
   // Act
   serving_->MaybeServeAd("?x?",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_FALSE(ad);
@@ -147,7 +147,7 @@ TEST_F(BatAdsInlineContentAdServingTest,
 
   // Act
   serving_->MaybeServeAd("200x100",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_FALSE(ad);
