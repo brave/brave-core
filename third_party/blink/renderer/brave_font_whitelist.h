@@ -11,6 +11,7 @@
 #include "base/containers/flat_set.h"
 #include "base/strings/string_piece.h"
 #include "third_party/blink/public/platform/web_common.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave {
@@ -18,9 +19,16 @@ namespace brave {
 BLINK_EXPORT bool CanRestrictFontFamiliesOnThisPlatform();
 BLINK_EXPORT const base::flat_set<base::StringPiece>& GetAllowedFontFamilies();
 
+BLINK_EXPORT bool AllowFontByFamilyName(const AtomicString& family_name);
+
 // This takes a 2-character language code.
 BLINK_EXPORT const base::flat_set<base::StringPiece>&
-GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language);
+GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale);
+
+// This takes a 2-character language code.
+BLINK_EXPORT bool AllowFontByFamilyNameAndLocale(
+    const AtomicString& family_name,
+    WTF::String locale);
 
 BLINK_EXPORT void set_allowed_font_families_for_testing(
     bool can_restrict_fonts,

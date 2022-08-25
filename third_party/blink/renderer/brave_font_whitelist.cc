@@ -627,6 +627,53 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
         "yu gothic ui regular",
         "yu gothic ui semibold",
         "yu gothic ui semilight"});
+#elif BUILDFLAG(IS_ANDROID)
+bool kCanRestrictFonts = true;
+// This list covers the fonts and font aliases listed in data/fonts/fonts.xml of
+// the Android Open Source Project. To reduce memory and maintenance, most
+// region-specific Noto fonts are handled by wildcards outside this list.
+base::flat_set<base::StringPiece> kAllowedFontFamilies =
+    base::MakeFlatSet<base::StringPiece>(
+        std::vector<base::StringPiece>{"androidclock",
+                                       "arial",
+                                       "baskerville",
+                                       "carrois gothic",
+                                       "coming soon",
+                                       "courier",
+                                       "courier new",
+                                       "cutive mono",
+                                       "dancing script",
+                                       "droid sans",
+                                       "droid sans mono",
+                                       "erif-bold",
+                                       "fantasy",
+                                       "georgia",
+                                       "goudy",
+                                       "helvetica",
+                                       "itc stone serif",
+                                       "monaco",
+                                       "noto color emoji",
+                                       "noto kufi arabic",
+                                       "noto naskh arabic",
+                                       "noto nastaliq urdu",
+                                       "noto sans",
+                                       "noto serif",
+                                       "palatino",
+                                       "roboto",
+                                       "roboto static",
+                                       "sans-serif-black",
+                                       "sans-serif-condensed-light",
+                                       "sans-serif-condensed-medium",
+                                       "sans-serif-light",
+                                       "sans-serif-medium",
+                                       "sans-serif-monospace",
+                                       "sans-serif-thin",
+                                       "source sans pro",
+                                       "source-sans-pro-semi-bold",
+                                       "tahoma",
+                                       "times",
+                                       "times new roman",
+                                       "verdana"});
 #else
 bool kCanRestrictFonts = false;
 base::flat_set<base::StringPiece> kAllowedFontFamilies =
@@ -758,6 +805,18 @@ const base::flat_set<base::StringPiece>& GetAllowedFontFamilies() {
   return kAllowedFontFamilies;
 }
 
+bool AllowFontByFamilyName(const AtomicString& family_name) {
+  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  if (GetAllowedFontFamilies().contains(lower_ascii_name))
+    return true;
+#if BUILDFLAG(IS_ANDROID)
+  if (family_name.StartsWithIgnoringASCIICase("noto sans ") ||
+      family_name.StartsWithIgnoringASCIICase("noto serif "))
+    return true;
+#endif
+  return false;
+}
+
 const base::flat_set<base::StringPiece>&
 GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language) {
   if (locale_language == "ar" || locale_language == "fa" ||
@@ -792,6 +851,12 @@ GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language) {
   if (locale_language == "ml")
     return kAdditionalAllowedFontFamiliesML;
   return kEmptyFontSet;
+}
+
+bool AllowFontByFamilyNameAndLocale(const AtomicString& family_name,
+                                    WTF::String locale) {
+  return GetAdditionalAllowedFontFamiliesByLocale(locale).contains(
+      family_name.LowerASCII().Ascii());
 }
 
 void set_allowed_font_families_for_testing(
