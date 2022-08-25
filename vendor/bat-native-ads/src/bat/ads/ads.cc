@@ -21,7 +21,7 @@ bool IsSupportedLocale(const std::string& locale) {
     const geographic::SupportedCountryCodeSet country_codes = schema.second;
     const auto iter =
         std::find(country_codes.cbegin(), country_codes.cend(), country_code);
-    if (iter != country_codes.end()) {
+    if (iter != country_codes.cend()) {
       return true;
     }
   }

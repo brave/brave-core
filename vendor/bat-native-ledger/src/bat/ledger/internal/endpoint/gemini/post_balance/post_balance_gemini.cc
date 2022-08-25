@@ -40,19 +40,16 @@ type::Result PostBalance::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::ListValue* balances = nullptr;
-  if (!value->GetAsList(&balances)) {
-    BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  for (auto&& balance : balances->GetList()) {
-    const auto* currency_code = balance.FindStringKey("currency");
+  auto& balances = value->GetList();
+  for (auto& item : balances) {
+    DCHECK(item.is_dict());
+    auto& balance = item.GetDict();
+    const auto* currency_code = balance.FindString("currency");
     if (!currency_code || *currency_code != "BAT") {
       continue;
     }
 
-    const auto* available_value = balance.FindStringKey("available");
+    const auto* available_value = balance.FindString("available");
     if (!available_value) {
       BLOG(0, "Missing available");
       return type::Result::LEDGER_ERROR;

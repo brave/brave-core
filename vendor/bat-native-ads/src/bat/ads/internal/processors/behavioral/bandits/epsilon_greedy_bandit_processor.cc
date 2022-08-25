@@ -32,7 +32,7 @@ targeting::EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
 
   for (const auto& segment : targeting::kSegments) {
     const auto iter = updated_arms.find(segment);
-    if (iter != updated_arms.end()) {
+    if (iter != updated_arms.cend()) {
       const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
       if (arm.IsValid()) {
         BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
@@ -59,11 +59,12 @@ targeting::EpsilonGreedyBanditArmMap MaybeDeleteArms(
     const targeting::EpsilonGreedyBanditArmMap& arms) {
   targeting::EpsilonGreedyBanditArmMap updated_arms = arms;
 
-  for (auto arm_iter = updated_arms.begin(); arm_iter != updated_arms.end();) {
+  for (auto arm_iter = updated_arms.cbegin();
+       arm_iter != updated_arms.cend();) {
     const auto segment_iter =
         std::find(targeting::kSegments.cbegin(), targeting::kSegments.cend(),
                   arm_iter->first);
-    if (segment_iter != targeting::kSegments.end()) {
+    if (segment_iter != targeting::kSegments.cend()) {
       ++arm_iter;
       continue;
     }
@@ -140,7 +141,7 @@ void EpsilonGreedyBandit::UpdateArm(const int reward,
   }
 
   const auto iter = arms.find(segment);
-  if (iter == arms.end()) {
+  if (iter == arms.cend()) {
     BLOG(1, "Epsilon greedy bandit arm was not found for " << segment
                                                            << " segment");
     return;

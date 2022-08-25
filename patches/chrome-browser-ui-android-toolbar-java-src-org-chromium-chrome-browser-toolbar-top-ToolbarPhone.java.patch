@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index a7d75d885b585f8e639a19a578fc366eb476e835..71a290764a30ca66f60a4315042a255f336861f7 100644
+index 267d5b1d56041ed17bb0d558bc32619f1826054b..f87e163ea6e672c0d81b40dfb3b82f28cd7c7848 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -432,6 +432,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
-         mCurrentLocationBarColor = color;
-         // TODO(https://crbug.com/1239289): Change back to #setTint once our min API level is 23.
-         mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+         if (mOptionalButton != null) {
+             mOptionalButton.setBackgroundColorFilter(color);
+         }
 +        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
      }
  
@@ -24,9 +24,9 @@ index a7d75d885b585f8e639a19a578fc366eb476e835..71a290764a30ca66f60a4315042a255f
      private int getBoundsAfterAccountingForRightButtons() {
 +        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
          if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
-         return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
-     }
-@@ -1013,6 +1016,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+ 
+         int toolbarButtonsContainerWidth = mToolbarButtonsContainer.getWidth();
+@@ -1007,6 +1010,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * New Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -34,7 +34,7 @@ index a7d75d885b585f8e639a19a578fc366eb476e835..71a290764a30ca66f60a4315042a255f
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (mOptimizationsEnabled && isInTabSwitcherMode()) return;
  
-@@ -2197,6 +2201,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2147,6 +2151,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

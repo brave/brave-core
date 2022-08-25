@@ -65,7 +65,7 @@ DLEQProof::DLEQProof(const BlindedToken& blinded_token,
 
 DLEQProof::DLEQProof(const DLEQProof& other) = default;
 
-DLEQProof& DLEQProof::operator=(const DLEQProof& info) = default;
+DLEQProof& DLEQProof::operator=(const DLEQProof& other) = default;
 
 DLEQProof::~DLEQProof() = default;
 

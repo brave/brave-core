@@ -1,32 +1,16 @@
+
 import { select, boolean, number, CHANGE } from '@storybook/addon-knobs'
 import { addons } from '@storybook/addons'
-import { images } from '../../../data/backgrounds'
 import { defaultTopSitesData } from '../../../data/defaultTopSites'
 import { defaultState } from '../../../storage/new_tab_storage'
 import { initialGridSitesState } from '../../../storage/grid_sites_storage'
 import { TabType as SettingsTabType } from '../../../containers/newTab/settings'
 import dummyBrandedWallpaper from './brandedWallpaper'
+import { backgroundWallpapers } from './backgroundWallpaper'
 import { newTabPrefManager } from '../../../hooks/usePref'
 import { useEffect } from 'react'
 
 const addonsChannel = addons.getChannel()
-
-function generateStaticImages (images: NewTab.BackgroundWallpaper[]) {
-  const staticImages = { SpaceX: undefined }
-  for (const image of images) {
-    // author is optional field.
-    if (image.type !== 'image' || !image.author) {
-      continue
-    }
-    Object.assign(staticImages, {
-      [image.author]: {
-        ...image,
-        wallpaperImageUrl: require('../../../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
-      }
-    })
-  }
-  return staticImages
-}
 
 function generateTopSites (topSites: typeof defaultTopSitesData) {
   const staticTopSites = []
@@ -84,11 +68,13 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
       boolean('Show branded background image?', true)
     ),
     backgroundWallpaper: select(
-      'Background image',
-      generateStaticImages(images),
-      generateStaticImages(images).SpaceX
+      'Background',
+      backgroundWallpapers,
+      backgroundWallpapers.defaultImage
     ),
     customLinksEnabled: boolean('CustomLinks Enabled?', false),
+    featureFlagBraveNTPSponsoredImagesWallpaper: true,
+    featureCustomBackgroundEnabled: true,
     featureFlagBraveNewsEnabled: true,
     featureFlagBraveNewsPromptEnabled: true,
     searchPromotionEnabled: false,

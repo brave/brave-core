@@ -17,7 +17,7 @@ class ConversionsAscendingSort final : public ConversionsSortInterface {
   ConversionsAscendingSort(const ConversionsAscendingSort&) = delete;
   ConversionsAscendingSort& operator=(const ConversionsAscendingSort&) = delete;
 
-  ConversionList Apply(const ConversionList& list) const override;
+  ConversionList Apply(const ConversionList& conversions) const override;
 };
 
 }  // namespace ads

@@ -386,6 +386,9 @@ provideStrings({
   braveWalletSwapInsufficientLiquidity: 'Insufficient liquidity',
   braveWalletSwapInsufficientAllowance: 'Activate token',
   braveWalletSwapUnknownError: 'Unknown error',
+  braveWalletSwapReviewSpend: 'You spend',
+  braveWalletSwapReviewReceive: "You'll receive",
+  braveWalletSwapReviewHeader: 'Confirm order',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',

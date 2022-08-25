@@ -67,7 +67,7 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
   }
 
   void SetHref(const std::string& id, const std::string& href) {
-    content::RenderFrameHost* frame = web_contents()->GetMainFrame();
+    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').href='" +
                            href + "';\n"),
@@ -76,7 +76,7 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
 
   void Click(const std::string& id) {
     content::TestNavigationObserver observer(web_contents());
-    content::RenderFrameHost* frame = web_contents()->GetMainFrame();
+    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').click();\n"),
         base::NullCallback());

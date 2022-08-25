@@ -39,7 +39,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       std::string code = geo_target.code;
 
       if (std::find(geo_targets.cbegin(), geo_targets.cend(), code) !=
-          geo_targets.end()) {
+          geo_targets.cend()) {
         continue;
       }
 
@@ -89,7 +89,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.empty() ? false : true;
+        info.conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
@@ -151,7 +151,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.empty() ? false : true;
+        info.conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
@@ -216,7 +216,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.empty() ? false : true;
+        info.conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
@@ -294,7 +294,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.empty() ? false : true;
+        info.conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
@@ -347,7 +347,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       }
 
       // Conversions
-      creatives.conversions.insert(creatives.conversions.end(),
+      creatives.conversions.insert(creatives.conversions.cend(),
                                    creative_set.conversions.cbegin(),
                                    creative_set.conversions.cend());
     }

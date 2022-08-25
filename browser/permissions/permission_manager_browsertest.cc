@@ -169,8 +169,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
         permission_request_manager);
 
     permission_manager()->RequestPermissionsForOrigin(
-        permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
-        base::DoNothing());
+        permissions, web_contents()->GetPrimaryMainFrame(), origin.GetURL(),
+        true, base::DoNothing());
 
     content::RunAllTasksUntilIdle();
 
@@ -206,8 +206,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
     observer->Reset();
     permission_manager()->RequestPermissionsForOrigin(
-        permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
-        base::DoNothing());
+        permissions, web_contents()->GetPrimaryMainFrame(), origin.GetURL(),
+        true, base::DoNothing());
 
     content::RunAllTasksUntilIdle();
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
@@ -296,8 +296,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
         permission_request_manager);
 
     permission_manager()->RequestPermissionsForOrigin(
-        permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
-        base::DoNothing());
+        permissions, web_contents()->GetPrimaryMainFrame(), origin.GetURL(),
+        true, base::DoNothing());
 
     content::RunAllTasksUntilIdle();
 

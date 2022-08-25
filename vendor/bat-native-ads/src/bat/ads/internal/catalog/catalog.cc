@@ -95,7 +95,9 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
     BLOG(1, "Catalog is up to date");
     FetchAfterDelay();
     return;
-  } else if (url_response.status_code != net::HTTP_OK) {
+  }
+
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch catalog");
     NotifyFailedToUpdateCatalog();
     Retry();

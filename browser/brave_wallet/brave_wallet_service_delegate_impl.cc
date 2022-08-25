@@ -199,7 +199,7 @@ void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
 
 url::Origin BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
   content::WebContents* contents = GetActiveWebContents();
-  return contents ? contents->GetMainFrame()->GetLastCommittedOrigin()
+  return contents ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
                   : url::Origin();
 }
 

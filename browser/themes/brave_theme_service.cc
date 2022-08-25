@@ -5,52 +5,11 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
-#include "base/no_destructor.h"
 #include "brave/browser/extensions/brave_theme_event_router.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/themes/brave_theme_helper.h"
-#include "build/build_config.h"
-#include "chrome/browser/profiles/profile.h"
 
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/themes/brave_theme_helper_win.h"
-#endif
-
-namespace {
-
-const ThemeHelper& GetBraveThemeHelper(Profile* profile) {
-#if BUILDFLAG(IS_WIN)
-  using BraveThemeHelper = BraveThemeHelperWin;
-#endif
-  // Because the helper is created as a NoDestructor static, we need separate
-  // instances for regular, tor and guest profiles.
-  if (profile->IsTor()) {
-    static base::NoDestructor<std::unique_ptr<ThemeHelper>> dark_theme_helper(
-        std::make_unique<BraveThemeHelper>());
-    (static_cast<BraveThemeHelper*>(dark_theme_helper.get()->get()))
-        ->set_is_tor();
-    return **dark_theme_helper;
-  } else if (brave::IsGuestProfile(profile)) {
-    static base::NoDestructor<std::unique_ptr<ThemeHelper>> dark_theme_helper(
-        std::make_unique<BraveThemeHelper>());
-    (static_cast<BraveThemeHelper*>(dark_theme_helper.get()->get()))
-        ->set_is_guest();
-    return **dark_theme_helper;
-  } else {
-    static base::NoDestructor<std::unique_ptr<ThemeHelper>> theme_helper(
-        std::make_unique<BraveThemeHelper>());
-    return **theme_helper;
-  }
-}
-
-}  // namespace
-
-// Replace Chromium's ThemeHelper with BraveThemeHelper that is appropriate for
-// the given profile. There should only be 3 static ThemeHelpers at most: the
-// original Chromium one, and 2 Brave ones.
 BraveThemeService::BraveThemeService(Profile* profile,
                                      const ThemeHelper& theme_helper)
-    : ThemeService(profile, GetBraveThemeHelper(profile)) {
+    : ThemeService(profile, theme_helper) {
   brave_theme_event_router_.reset(
       new extensions::BraveThemeEventRouter(profile));
 }

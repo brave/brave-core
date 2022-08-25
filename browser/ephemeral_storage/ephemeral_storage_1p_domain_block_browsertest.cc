@@ -66,7 +66,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
   }
 
   void Click(WebContents* web_contents, const std::string& id) {
-    content::RenderFrameHost* frame = web_contents->GetMainFrame();
+    content::RenderFrameHost* frame = web_contents->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').click();\n"),
         base::NullCallback());
@@ -99,7 +99,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
       ClickAndWaitForNavigation(first_party_tab, "primary-button");
     }
 
-    RenderFrameHost* main_frame = first_party_tab->GetMainFrame();
+    RenderFrameHost* main_frame = first_party_tab->GetPrimaryMainFrame();
     SetValuesInFrame(main_frame, "a.com", "from=a.com");
 
     ValuesFromFrame main_frame_values = GetValuesFromFrame(main_frame);
@@ -124,7 +124,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
 
     ExpectValuesFromFrameAreEmpty(
-        FROM_HERE, GetValuesFromFrame(first_party_tab->GetMainFrame()));
+        FROM_HERE, GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame()));
     EXPECT_EQ(GetCookieSetting(a_site_simple_url_),
               ContentSetting::CONTENT_SETTING_SESSION_ONLY);
   }
@@ -142,7 +142,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
 
     {
       ValuesFromFrame first_party_values =
-          GetValuesFromFrame(first_party_tab->GetMainFrame());
+          GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
       EXPECT_EQ("a.com", first_party_values.local_storage);
       EXPECT_EQ("a.com", first_party_values.session_storage);
       EXPECT_EQ("from=a.com", first_party_values.cookies);
@@ -187,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(
     FirstPartyEphemeralIsNotEnabledIfLocalStorageDataStored) {
   // Store local storage value in a.com.
   WebContents* first_party_tab = LoadURLInNewTab(a_site_simple_url_);
-  SetStorageValueInFrame(first_party_tab->GetMainFrame(), "a.com",
+  SetStorageValueInFrame(first_party_tab->GetPrimaryMainFrame(), "a.com",
                          StorageType::Local);
   // Navigate away to b.com.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
@@ -219,7 +219,7 @@ IN_PROC_BROWSER_TEST_F(
   ClickAndWaitForNavigation(first_party_tab, "primary-button");
 
   ExpectValuesFromFrameAreEmpty(
-      FROM_HERE, GetValuesFromFrame(first_party_tab->GetMainFrame()));
+      FROM_HERE, GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame()));
   EXPECT_EQ(0u, GetAllCookies().size());
   EXPECT_EQ(GetCookieSetting(a_site_simple_url_),
             ContentSetting::CONTENT_SETTING_SESSION_ONLY);
@@ -242,7 +242,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDomainBlockBrowserTest,
   EXPECT_FALSE(IsShowingInterstitial(first_party_tab));
 
   ValuesFromFrame first_party_values =
-      GetValuesFromFrame(first_party_tab->GetMainFrame());
+      GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
   EXPECT_EQ("a.com", first_party_values.local_storage);
   EXPECT_EQ("a.com", first_party_values.session_storage);
   EXPECT_EQ("from=a.com", first_party_values.cookies);

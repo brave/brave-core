@@ -685,7 +685,13 @@ void KeyringService::GetKeyringsInfo(const std::vector<std::string>& keyrings,
 }
 
 void KeyringService::GetMnemonicForDefaultKeyring(
+    const std::string& password,
     GetMnemonicForDefaultKeyringCallback callback) {
+  if (!ValidatePasswordInternal(password)) {
+    std::move(callback).Run("");
+    return;
+  }
+
   std::move(callback).Run(GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId));
 }
 
@@ -2137,11 +2143,9 @@ void KeyringService::IsStrongPassword(const std::string& password,
   std::move(callback).Run(true);
 }
 
-void KeyringService::ValidatePassword(const std::string& password,
-                                      ValidatePasswordCallback callback) {
+bool KeyringService::ValidatePasswordInternal(const std::string& password) {
   if (password.empty()) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
   const std::string keyring_id = mojom::kDefaultKeyringId;
@@ -2154,8 +2158,7 @@ void KeyringService::ValidatePassword(const std::string& password,
       GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, keyring_id);
 
   if (!salt || !encrypted_mnemonic || !nonce) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
   auto iterations =
@@ -2169,12 +2172,16 @@ void KeyringService::ValidatePassword(const std::string& password,
       password, *salt, iterations, kPbkdf2KeySize);
 
   if (!encryptor) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
   auto mnemonic = encryptor->Decrypt(*encrypted_mnemonic, *nonce);
-  std::move(callback).Run(mnemonic && !mnemonic->empty());
+  return mnemonic && !mnemonic->empty();
+}
+
+void KeyringService::ValidatePassword(const std::string& password,
+                                      ValidatePasswordCallback callback) {
+  std::move(callback).Run(ValidatePasswordInternal(password));
 }
 
 void KeyringService::GetChecksumEthAddress(

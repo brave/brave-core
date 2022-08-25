@@ -14,6 +14,7 @@
 #include "components/metrics_services_manager/metrics_services_manager.h"
 #include "components/variations/service/variations_service.h"
 #include "components/variations/variations_ids_provider.h"
+#include "components/variations/variations_switches.h"
 #include "ios/chrome/browser/application_context_impl.h"
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -105,8 +106,14 @@ void BraveWebMainParts::SetupFieldTrials() {
   std::vector<std::string> variation_ids;
   RegisterAllFeatureVariationParameters(&flags_storage, feature_list.get());
 
+  const base::CommandLine* command_line =
+      base::CommandLine::ForCurrentProcess();
+
   application_context_->GetVariationsService()->SetUpFieldTrials(
-      variation_ids, std::vector<base::FeatureList::FeatureOverrideInfo>(),
+      variation_ids,
+      command_line->GetSwitchValueASCII(
+          variations::switches::kForceVariationIds),
+      std::vector<base::FeatureList::FeatureOverrideInfo>(),
       std::move(feature_list), &ios_field_trials_);
 }
 

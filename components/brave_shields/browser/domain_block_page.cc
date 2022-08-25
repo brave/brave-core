@@ -66,35 +66,33 @@ void DomainBlockPage::CommandReceived(const std::string& command) {
   }
 }
 
-void DomainBlockPage::PopulateInterstitialStrings(base::Value* load_time_data) {
-  load_time_data->SetStringKey(
-      "tabTitle",
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_DOMAIN_BLOCK_TITLE));
-  load_time_data->SetStringKey(
-      "heading",
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_DOMAIN_BLOCK_HEADING));
+void DomainBlockPage::PopulateInterstitialStrings(
+    base::Value::Dict& load_time_data) {
+  load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_DOMAIN_BLOCK_TITLE));
+  load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
+                                    IDS_DOMAIN_BLOCK_HEADING));
 
-  load_time_data->SetStringKey("primaryParagraph",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH));
+  load_time_data.Set("primaryParagraph",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH));
 
   url::Origin request_url_origin = url::Origin::Create(request_url());
-  load_time_data->SetStringKey("domain", request_url_origin.Serialize());
+  load_time_data.Set("domain", request_url_origin.Serialize());
 
-  load_time_data->SetStringKey("explanationParagraph",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_DOMAIN_BLOCK_EXPLANATION));
+  load_time_data.Set("explanationParagraph",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_DOMAIN_BLOCK_EXPLANATION));
 
-  load_time_data->SetStringKey("dontWarnAgainText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON));
+  load_time_data.Set("dontWarnAgainText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON));
 
-  load_time_data->SetStringKey("proceedAnywayText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_DOMAIN_BLOCK_PROCEED_ANYWAY_BUTTON));
-  load_time_data->SetStringKey("goBackText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_DOMAIN_BLOCK_GO_BACK_BUTTON));
+  load_time_data.Set("proceedAnywayText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_DOMAIN_BLOCK_PROCEED_ANYWAY_BUTTON));
+  load_time_data.Set("goBackText", brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_DOMAIN_BLOCK_GO_BACK_BUTTON));
 }
 
 int DomainBlockPage::GetHTMLTemplateId() {

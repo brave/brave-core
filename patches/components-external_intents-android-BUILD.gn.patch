@@ -1,12 +1,12 @@
 diff --git a/components/external_intents/android/BUILD.gn b/components/external_intents/android/BUILD.gn
-index 054e7ab45846eb43d506b285b1286b40ac89abac..c81c2b6a104f3a6725e51edc51866b2fc1a48968 100644
+index 2eee9282ab6ba129e472c9ca1df8b19b7f1f578c..3a08843cb4fe76ed6e49ce602f88c92671c14280 100644
 --- a/components/external_intents/android/BUILD.gn
 +++ b/components/external_intents/android/BUILD.gn
-@@ -58,6 +58,7 @@ static_library("android") {
+@@ -68,6 +68,7 @@ static_library("android") {
      "//components/navigation_interception",
      "//content/public/browser",
    ]
 +  deps += [ "//brave/components/external_intents/android" ]
  }
  
- android_library("javatests") {
+ android_library("unit_device_javatests") {

@@ -130,23 +130,23 @@ bool ExclusionRulesBase::AddToCacheIfNeeded(
 }
 
 bool ExclusionRulesBase::IsCached(const CreativeAdInfo& creative_ad) const {
-  if (uuids_.find(creative_ad.campaign_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.campaign_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.advertiser_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.advertiser_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.creative_set_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.creative_set_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.creative_instance_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.creative_instance_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.segment) != uuids_.end()) {
+  if (uuids_.find(creative_ad.segment) != uuids_.cend()) {
     return true;
   }
 

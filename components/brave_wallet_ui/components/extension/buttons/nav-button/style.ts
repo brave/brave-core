@@ -94,7 +94,8 @@ export const ButtonText = styled.span<{
   line-height: 20px;
   color: ${(p) =>
     p.buttonType === 'secondary' ||
-    p.buttonType === 'reject'
+    p.buttonType === 'reject' ||
+    p.buttonType === 'cancel'
       ? p.theme.color.interactive07
       : p.theme.palette.white
   };

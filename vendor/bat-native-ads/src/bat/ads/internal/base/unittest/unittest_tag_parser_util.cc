@@ -45,11 +45,17 @@ absl::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
   const std::string period = components.at(1);
   if (period == kSecondsDeltaTimeTagValue) {
     return base::Seconds(n);
-  } else if (period == kMinutesDeltaTimeTagValue) {
+  }
+
+  if (period == kMinutesDeltaTimeTagValue) {
     return base::Minutes(n);
-  } else if (period == kHoursDeltaTimeTagValue) {
+  }
+
+  if (period == kHoursDeltaTimeTagValue) {
     return base::Hours(n);
-  } else if (period == kDaysDeltaTimeTagValue) {
+  }
+
+  if (period == kDaysDeltaTimeTagValue) {
     return base::Days(n);
   }
 
@@ -59,12 +65,17 @@ absl::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
 absl::optional<std::string> ParseTimeTagValue(const std::string& value) {
   if (value == kNowTimeTagValue) {
     return NowAsISO8601();
-  } else if (value == kDistantPastTimeTagValue) {
+  }
+
+  if (value == kDistantPastTimeTagValue) {
     return DistantPastAsISO8601();
-  } else if (value == kDistantFutureTimeTagValue) {
+  }
+
+  if (value == kDistantFutureTimeTagValue) {
     return DistantFutureAsISO8601();
-  } else if (re2::RE2::FullMatch(value,
-                                 "[-+]?[0-9]*.*(seconds|minutes|hours|days)")) {
+  }
+
+  if (re2::RE2::FullMatch(value, "[-+]?[0-9]*.*(seconds|minutes|hours|days)")) {
     const absl::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
     CHECK(time_delta) << "Invalid time tag value: " << value;
     return base::TimeToISO8601(Now() + *time_delta);

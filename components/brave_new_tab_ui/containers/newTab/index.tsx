@@ -73,6 +73,8 @@ interface Props {
   saveShowFTX: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
+  useCustomBackgroundImage: (useCustom: boolean) => void
+  setSolidColorBackground: (color: string) => void
 }
 
 interface State {
@@ -464,18 +466,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveBrandedWallpaperOptIn(
       !this.props.newTabData.brandedWallpaperOptIn
     )
-  }
-
-  useCustomBackgroundImage = (useCustom: boolean) => {
-    if (useCustom) {
-      getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground()
-    } else {
-      getNTPBrowserAPI().pageHandler.useBraveBackground()
-    }
-  }
-
-  setSolidColorBackground = (color: string) => {
-    getNTPBrowserAPI().pageHandler.useSolidColorBackground(color)
   }
 
   startRewards = () => {
@@ -1333,8 +1323,8 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
-          useCustomBackgroundImage={this.useCustomBackgroundImage}
-          setSolidColorBackground={this.setSolidColorBackground}
+          useCustomBackgroundImage={this.props.useCustomBackgroundImage}
+          setSolidColorBackground={this.props.setSolidColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}

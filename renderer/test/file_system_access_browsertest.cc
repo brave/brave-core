@@ -56,8 +56,8 @@ class FileSystemAccessBrowserTest : public InProcessBrowserTest,
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  content::RenderFrameHost* main_frame() {
-    return web_contents()->GetMainFrame();
+  content::RenderFrameHost* primary_main_frame() {
+    return web_contents()->GetPrimaryMainFrame();
   }
 
  protected:
@@ -75,10 +75,11 @@ IN_PROC_BROWSER_TEST_P(FileSystemAccessBrowserTest, FilePicker) {
 
   if (IsFileSystemAccessAPIEnabled()) {
     auto result =
-        content::EvalJs(main_frame(), "typeof self.showOpenFilePicker");
+        content::EvalJs(primary_main_frame(), "typeof self.showOpenFilePicker");
     EXPECT_EQ(result.value.GetString(), "function");
   } else {
-    auto result = content::EvalJs(main_frame(), "self.showOpenFilePicker()");
+    auto result =
+        content::EvalJs(primary_main_frame(), "self.showOpenFilePicker()");
     EXPECT_TRUE(base::Contains(result.error,
                                "self.showOpenFilePicker is not a function"))
         << result.error;

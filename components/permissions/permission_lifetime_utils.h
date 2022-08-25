@@ -23,7 +23,7 @@ bool ShouldShowLifetimeOptions(PermissionPrompt::Delegate* delegate);
 
 // Sets selected lifetime in all queued requests.
 void SetRequestsLifetime(const std::vector<PermissionLifetimeOption>& options,
-                         int index,
+                         size_t index,
                          PermissionPrompt::Delegate* delegate);
 
 }  // namespace permissions

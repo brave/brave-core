@@ -34,4 +34,6 @@
   <if expr="not chromeos_ash">
     </if>
 
-  </grit-part>
+  <if expr="chrome_root_store_supported">
+    </if>
+</grit-part>

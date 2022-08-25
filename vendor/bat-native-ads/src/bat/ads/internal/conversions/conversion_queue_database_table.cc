@@ -102,7 +102,7 @@ void ConversionQueue::Save(
 
 void ConversionQueue::Delete(
     const ConversionQueueItemInfo& conversion_queue_item,
-    ResultCallback callback) {
+    ResultCallback callback) const {
   const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE creative_instance_id = '%s'",
@@ -123,7 +123,7 @@ void ConversionQueue::Delete(
 
 void ConversionQueue::Update(
     const ConversionQueueItemInfo& conversion_queue_item,
-    ResultCallback callback) {
+    ResultCallback callback) const {
   const std::string query = base::StringPrintf(
       "UPDATE %s "
       "SET was_processed = 1 "
@@ -336,7 +336,7 @@ void ConversionQueue::InsertOrUpdate(
 
 std::string ConversionQueue::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const ConversionQueueItemList& conversion_queue_items) {
+    const ConversionQueueItemList& conversion_queue_items) const {
   DCHECK(command);
 
   const int count = BindParameters(command, conversion_queue_items);

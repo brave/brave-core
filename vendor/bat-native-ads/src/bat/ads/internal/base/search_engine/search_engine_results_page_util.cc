@@ -51,12 +51,8 @@ bool IsSearchEngineResultsPage(const GURL& url) {
   }
 
   std::string search_term_query_value;
-  if (!net::GetValueForKeyInQuery(url, search_engine->search_term_query_key,
-                                  &search_term_query_value)) {
-    return false;
-  }
-
-  return true;
+  return net::GetValueForKeyInQuery(url, search_engine->search_term_query_key,
+                                    &search_term_query_value);
 }
 
 absl::optional<std::string> ExtractSearchTermQueryValue(const GURL& url) {

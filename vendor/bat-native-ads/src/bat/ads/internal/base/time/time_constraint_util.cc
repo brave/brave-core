@@ -21,11 +21,7 @@ bool DoesHistoryRespectRollingTimeConstraint(
                       return base::Time::Now() - created_at < time_constraint;
                     });
 
-  if (count >= cap) {
-    return false;
-  }
-
-  return true;
+  return count < cap;
 }
 
 }  // namespace ads

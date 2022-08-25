@@ -122,11 +122,7 @@ bool HasCatalogChanged(const std::string& catalog_id) {
 }
 
 bool HasCatalogExpired() {
-  if (base::Time::Now() < GetCatalogLastUpdated() + kCatalogLifespan) {
-    return false;
-  }
-
-  return true;
+  return base::Time::Now() >= GetCatalogLastUpdated() + kCatalogLifespan;
 }
 
 }  // namespace ads

@@ -82,8 +82,7 @@ class PrivacySandboxServiceTest : public testing::Test {
     privacy_sandbox_service_ = std::make_unique<PrivacySandboxService>(
         PrivacySandboxSettingsFactory::GetForProfile(profile()),
         CookieSettingsFactory::GetForProfile(profile()).get(),
-        profile()->GetPrefs(), policy_service(), sync_service(),
-        identity_test_env()->identity_manager(), test_interest_group_manager(),
+        profile()->GetPrefs(), test_interest_group_manager(),
         profile_metrics::BrowserProfileType::kRegular, browsing_data_remover(),
 #if !BUILDFLAG(IS_ANDROID)
         mock_sentiment_service(),

@@ -52,7 +52,8 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
 
   // Protocol requires at least 2 trailing zero-padding bytes
   std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
-  plaintext.insert(plaintext.end(), kVacCipherTextLength - plaintext.size(), 0);
+  plaintext.insert(plaintext.cend(), kVacCipherTextLength - plaintext.size(),
+                   0);
   DCHECK_EQ(kVacCipherTextLength, plaintext.size());
 
   const absl::optional<std::vector<uint8_t>> public_key =

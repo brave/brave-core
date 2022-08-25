@@ -25,6 +25,7 @@ TEST(BatAdsSignedTokenUtilTest, TokensToRawTokens) {
 
   // Assert
   std::vector<challenge_bypass_ristretto::SignedToken> expected_raw_tokens;
+  expected_raw_tokens.reserve(tokens.size());
   for (const auto& token : tokens) {
     expected_raw_tokens.push_back(token.get());
   }

@@ -8,8 +8,8 @@
 #include <algorithm>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_view_ids.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -20,7 +20,6 @@
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/accessibility/ax_node_data.h"
-#include "ui/base/theme_provider.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/events/event.h"
@@ -120,24 +119,10 @@ void BookmarkBarInstructionsView::ShowContextMenuForViewImpl(
 }
 
 SkColor BookmarkBarInstructionsView::GetInstructionsTextColor() {
-  // TODO(simonhong): Move this logic to color mixer when we finish
-  // our color migration to color pipeline.
-  SkColor text_color = gfx::kPlaceholderColor;
-  const ui::ColorProvider* cp = GetColorProvider();
-  const ui::ThemeProvider* tp = GetThemeProvider();
-  if (!cp || !tp)
-    return text_color;
+  if (const ui::ColorProvider* color_provider = GetColorProvider())
+    return color_provider->GetColor(kColorBookmarkBarInstructionsText);
 
-  if (browser_->profile()->IsIncognitoProfile()) {
-    text_color = tp->GetColor(
-        BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT);
-  } else {
-    const SkColor toolbar_color = cp->GetColor(kColorToolbar);
-    text_color = color_utils::PickContrastingColor(
-        kLightToolbarIcon, SK_ColorWHITE, toolbar_color);
-  }
-
-  return text_color;
+  return gfx::kPlaceholderColor;
 }
 
 void BookmarkBarInstructionsView::UpdateColors() {

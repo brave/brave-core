@@ -55,10 +55,8 @@ KeywordList ToKeywords(const std::string& value) {
   const std::string stripped_value =
       StripNonAlphaNumericCharacters(lowercase_value);
 
-  const KeywordList keywords = base::SplitString(
-      stripped_value, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  return keywords;
+  return base::SplitString(stripped_value, " ", base::TRIM_WHITESPACE,
+                           base::SPLIT_WANT_NONEMPTY);
 }
 
 bool IsSubset(const KeywordList& keywords_lhs,
@@ -218,7 +216,7 @@ void PurchaseIntent::OnLocaleDidChange(const std::string& locale) {
 }
 
 void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.end()) {
+  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
     resource_->Load();
   }
 }

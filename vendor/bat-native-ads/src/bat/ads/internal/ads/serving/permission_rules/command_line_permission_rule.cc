@@ -27,11 +27,7 @@ const std::string& CommandLinePermissionRule::GetLastMessage() const {
 }
 
 bool CommandLinePermissionRule::DoesRespectCap() {
-  if (IsProductionEnvironment() && DidOverrideFromCommandLine()) {
-    return false;
-  }
-
-  return true;
+  return !(IsProductionEnvironment() && DidOverrideFromCommandLine());
 }
 
 }  // namespace ads

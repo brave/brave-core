@@ -16,12 +16,24 @@ class BrowserView;
 // unique inset and border style compared to Brave
 class BraveSidePanel : public views::View, public views::ViewObserver {
  public:
+  // Determines the side from which the side panel will appear.
+  // LTR / RTL conversions are handled in
+  // BrowserViewLayout::LayoutSidePanelView. As such, left will always be on the
+  // left side of the browser regardless of LTR / RTL mode.
+  enum HorizontalAlignment { kAlignLeft = 0, kAlignRight };
+
   METADATA_HEADER(BraveSidePanel);
   // Same signature as chromium SidePanel
-  explicit BraveSidePanel(BrowserView* browser_view);
+  explicit BraveSidePanel(BrowserView* browser_view,
+                          HorizontalAlignment horizontal_alignment =
+                              HorizontalAlignment::kAlignLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
+
+  void SetHorizontalAlignment(HorizontalAlignment alignment);
+  HorizontalAlignment GetHorizontalAlignment();
+  bool IsRightAligned();
 
  private:
   void UpdateVisibility();

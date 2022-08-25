@@ -65,6 +65,7 @@ fixup_replacements = [
     (r'Brave Pay', r'Google Pay'),
     (r'Brave Photos', r'Google Photos'),
     (r'Brave Projects', r'Chromium Projects'),
+    (r'BraveVox', r'ChromeVox'),
 ]
 
 

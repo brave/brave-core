@@ -41,11 +41,7 @@ bool PermissionRules::HasPermission() const {
   }
 
   AdsPerHourPermissionRule ads_per_hour_permission_rule;
-  if (!ShouldAllow(&ads_per_hour_permission_rule)) {
-    return false;
-  }
-
-  return true;
+  return ShouldAllow(&ads_per_hour_permission_rule);
 }
 
 }  // namespace inline_content_ads

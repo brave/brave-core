@@ -8,13 +8,14 @@
 #include <memory>
 
 #include "base/ranges/algorithm.h"
-#include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/border.h"
 #include "ui/views/layout/fill_layout.h"
 
-BraveSidePanel::BraveSidePanel(BrowserView* browser_view) {
+BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
+                               HorizontalAlignment horizontal_alignment) {
   SetVisible(false);
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
@@ -29,6 +30,16 @@ BraveSidePanel::~BraveSidePanel() {
   RemoveObserver(this);
 }
 
+void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {}
+
+BraveSidePanel::HorizontalAlignment BraveSidePanel::GetHorizontalAlignment() {
+  return kAlignLeft;
+}
+
+bool BraveSidePanel::IsRightAligned() {
+  return false;
+}
+
 void BraveSidePanel::UpdateVisibility() {
   const bool any_child_visible = base::ranges::any_of(
       children(), [](const auto* view) { return view->GetVisible(); });
@@ -36,13 +47,12 @@ void BraveSidePanel::UpdateVisibility() {
 }
 
 void BraveSidePanel::UpdateBorder() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
     // Negative top border so panel is flush with main tab content
     SetBorder(views::CreateSolidSidedBorder(
         gfx::Insets::TLBR(-1, 0, 0, kBorderThickness),
-        theme_provider->GetColor(
-            ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
+        color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }
 

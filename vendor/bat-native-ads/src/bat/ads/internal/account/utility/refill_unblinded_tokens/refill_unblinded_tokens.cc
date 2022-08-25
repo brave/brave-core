@@ -144,7 +144,9 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
     BLOG(1, "Failed to request signed tokens as a browser upgrade is required");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
-  } else if (url_response.status_code != net::HTTP_CREATED) {
+  }
+
+  if (url_response.status_code != net::HTTP_CREATED) {
     BLOG(1, "Failed to request signed tokens");
     OnFailedToRefillUnblindedTokens(/* should_retry */ true);
     return;
@@ -197,8 +199,10 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     BLOG(1, "Failed to get signed tokens as a browser upgrade is required");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
-  } else if (url_response.status_code != net::HTTP_OK &&
-             url_response.status_code != net::HTTP_UNAUTHORIZED) {
+  }
+
+  if (url_response.status_code != net::HTTP_OK &&
+      url_response.status_code != net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Failed to get signed tokens");
     OnFailedToRefillUnblindedTokens(/* should_retry */ true);
     return;
@@ -396,12 +400,9 @@ void RefillUnblindedTokens::OnRetry() {
 }
 
 bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  if (ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count() >=
-      kMinimumUnblindedTokens) {
-    return false;
-  }
-
-  return true;
+  return ConfirmationStateManager::GetInstance()
+             ->GetUnblindedTokens()
+             ->Count() < kMinimumUnblindedTokens;
 }
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {

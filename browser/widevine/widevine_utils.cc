@@ -105,7 +105,7 @@ int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
 void RequestWidevinePermission(content::WebContents* web_contents,
                                bool for_restart) {
   permissions::PermissionRequestManager::FromWebContents(web_contents)
-      ->AddRequest(web_contents->GetMainFrame(),
+      ->AddRequest(web_contents->GetPrimaryMainFrame(),
                    new WidevinePermissionRequest(web_contents, for_restart));
 }
 

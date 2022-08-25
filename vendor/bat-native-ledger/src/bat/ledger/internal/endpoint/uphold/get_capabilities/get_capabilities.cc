@@ -73,27 +73,26 @@ GetCapabilities::ProcessResponse(const type::UrlResponse& response) {
 
 GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
     const std::string& body) {
-  std::map<std::string, Capability> capability_map;
-
   const auto value = base::JSONReader::Read(body);
-  const base::ListValue* list_value = nullptr;
+  if (!value || !value->is_list()) {
+    BLOG(0, "Invalid body format!");
+    return {};
+  }
 
-  if (value && value->GetAsList(&list_value)) {
-    DCHECK(list_value);
+  std::map<std::string, Capability> capability_map;
+  for (const auto& item : value->GetList()) {
+    DCHECK(item.is_dict());
+    const auto& dict = item.GetDict();
+    const auto* key = dict.FindString("key");
+    const auto enabled = dict.FindBool("enabled");
+    const auto* requirements = dict.FindList("requirements");
 
-    for (const auto& item : list_value->GetList()) {
-      const auto* key = item.FindStringKey("key");
-      const auto enabled = item.FindBoolKey("enabled");
-      const auto* requirements = item.FindListKey("requirements");
-
-      if (!key || !enabled || !requirements) {
-        capability_map.clear();
-        break;
-      }
-
-      capability_map.emplace(
-          *key, Capability{*enabled, requirements->GetList().empty()});
+    if (!key || !enabled || !requirements) {
+      capability_map.clear();
+      break;
     }
+
+    capability_map.emplace(*key, Capability{*enabled, requirements->empty()});
   }
 
   if (capability_map.empty()) {

@@ -44,7 +44,8 @@ UnblindedToken::UnblindedToken(
 
 UnblindedToken::UnblindedToken(const UnblindedToken& other) = default;
 
-UnblindedToken& UnblindedToken::operator=(const UnblindedToken& info) = default;
+UnblindedToken& UnblindedToken::operator=(const UnblindedToken& other) =
+    default;
 
 UnblindedToken::~UnblindedToken() = default;
 

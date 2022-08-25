@@ -50,12 +50,8 @@ bool DoNotDisturbPermissionRule::DoesRespectCap() {
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
 
-  if (exploded.hour >= kDoNotDisturbToHour &&
-      exploded.hour < kDoNotDisturbFromHour) {
-    return true;
-  }
-
-  return false;
+  return exploded.hour >= kDoNotDisturbToHour &&
+         exploded.hour < kDoNotDisturbFromHour;
 }
 
 }  // namespace ads

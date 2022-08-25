@@ -65,7 +65,7 @@ void GeoTargets::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-void GeoTargets::Delete(ResultCallback callback) {
+void GeoTargets::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -99,7 +99,7 @@ void GeoTargets::Migrate(mojom::DBTransactionInfo* transaction,
 
 std::string GeoTargets::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeAdList& creative_ads) {
+    const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);

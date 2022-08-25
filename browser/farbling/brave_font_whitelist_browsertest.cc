@@ -8,7 +8,6 @@
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "content/public/renderer/render_frame.h"
-#include "content/public/renderer/render_view.h"
 #include "content/public/test/render_view_test.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_document.h"

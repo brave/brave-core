@@ -98,7 +98,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   // We set a value in the page where all the frames are first-party.
   SetValuesInFrames(first_party_tab, "b.com - first party", "from=b.com");
 
-  // The page this tab is loaded via a.com and has two b.com third-party
+  // The page in this tab is loaded via a.com and has two b.com third-party
   // iframes. The third-party iframes should have ephemeral storage. That means
   // that their values should be shared by third-party b.com iframes loaded from
   // a.com.
@@ -180,14 +180,18 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   WebContents* site_b = LoadURLInNewTab(b_site_ephemeral_storage_url_);
 
   // Main frame and 1p frame.
-  EXPECT_FALSE(SetIDBValue(site_a->GetMainFrame()));
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_a->GetMainFrame(), 2)));
+  EXPECT_FALSE(SetIDBValue(site_a->GetPrimaryMainFrame()));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 2)));
   // 3p frames.
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_a->GetMainFrame(), 0)));
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_a->GetMainFrame(), 1)));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 0)));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 1)));
 
   // 3p frame.
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_b->GetMainFrame(), 2)));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_b->GetPrimaryMainFrame(), 2)));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
@@ -277,13 +281,15 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
                   .empty());
 
   // JS cookie request should return valid results.
-  EXPECT_EQ("name=acom", GetCookiesInFrame(site_a_set_cookies->GetMainFrame()));
-  EXPECT_EQ("name=bcom", GetCookiesInFrame(site_b_set_cookies->GetMainFrame()));
-  EXPECT_EQ("name=acom", GetCookiesInFrame(site_a->GetMainFrame()));
+  EXPECT_EQ("name=acom",
+            GetCookiesInFrame(site_a_set_cookies->GetPrimaryMainFrame()));
+  EXPECT_EQ("name=bcom",
+            GetCookiesInFrame(site_b_set_cookies->GetPrimaryMainFrame()));
+  EXPECT_EQ("name=acom", GetCookiesInFrame(site_a->GetPrimaryMainFrame()));
 
   // The third-party iframe should not have the b.com cookie that was set on the
   // main frame.
-  RenderFrameHost* main_frame = site_a->GetMainFrame();
+  RenderFrameHost* main_frame = site_a->GetPrimaryMainFrame();
   RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
   RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
   EXPECT_EQ("", GetCookiesInFrame(iframe_a));
@@ -298,11 +304,11 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_a));
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_b));
 
-  // The cookie set in the ephemeral area should not visible in the main
+  // The cookie set in the ephemeral area should not be visible in the main
   // cookie storage.
   EXPECT_TRUE(content::GetCookies(browser()->profile(), GURL("https://b.com/"))
                   .empty());
-  EXPECT_EQ("name=bcom", GetCookiesInFrame(site_b->GetMainFrame()));
+  EXPECT_EQ("name=bcom", GetCookiesInFrame(site_b->GetPrimaryMainFrame()));
 
   // Navigating to a new TLD should clear all ephemeral cookies after keep-alive
   // timeout.
@@ -339,7 +345,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
-  RenderFrameHost* site_a_main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* site_a_main_frame = web_contents->GetPrimaryMainFrame();
   RenderFrameHost* nested_frames_tab =
       content::ChildFrameAt(site_a_main_frame, 3);
   ASSERT_NE(nested_frames_tab, nullptr);
@@ -348,7 +354,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ASSERT_NE(first_party_nested_acom, nullptr);
 
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
-  RenderFrameHost* site_b_main_frame = site_b_tab->GetMainFrame();
+  RenderFrameHost* site_b_main_frame = site_b_tab->GetPrimaryMainFrame();
   RenderFrameHost* third_party_nested_acom =
       content::ChildFrameAt(site_b_main_frame, 2);
   ASSERT_NE(first_party_nested_acom, nullptr);
@@ -532,11 +538,12 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 // By default SESSION_ONLY setting means that data for a website should be
-// deleted after a restart, but this also implicitly change how a website
+// deleted after a restart, but this also implicitly changes how a website
 // behaves in 3p context: when the setting is explicit, Chromium removes 3p
-// restrictions which effectively allows the website store any data persistently
-// in 3p context. We change Chromium behaviour for this option to keep blocking
-// a website in 3p context when a global "block_third_party" option is enabled.
+// restrictions which effectively allows the website to store any data
+// persistently in 3p context. We change Chromium's behavior for this option to
+// keep blocking a website in 3p context when a global "block_third_party"
+// option is enabled.
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDisabledBrowserTest,
                        SessionOnlyModeUsesEphemeralStorage) {
   SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);

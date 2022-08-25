@@ -31,7 +31,7 @@ class ConversionExclusionRule final
   const std::string& GetLastMessage() const override;
 
  private:
-  bool ShouldAllow(const CreativeAdInfo& creative_ad);
+  bool ShouldAllow(const CreativeAdInfo& creative_ad) const;
 
   bool DoesRespectCap(const AdEventList& ad_events,
                       const CreativeAdInfo& creative_ad);

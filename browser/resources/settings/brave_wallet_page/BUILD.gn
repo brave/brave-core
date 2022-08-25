@@ -32,7 +32,6 @@ js_modulizer("modules") {
 
 js_library("wallet_networks") {
   deps = [
-    "//chrome/browser/resources/settings:router",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:i18n_behavior.m",
     "//ui/webui/resources/js:load_time_data.m",
