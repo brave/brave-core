@@ -113,7 +113,7 @@ class TabManagerTests: XCTestCase {
 
     DataController.shared.initializeOnce()
     let profile = MockProfile()
-    manager = TabManager(prefs: profile.prefs, imageStore: nil, rewards: nil)
+    manager = TabManager(prefs: profile.prefs, imageStore: nil, rewards: nil, tabGeneratorAPI: nil)
     PrivateBrowsingManager.shared.isPrivateBrowsing = false
   }
 

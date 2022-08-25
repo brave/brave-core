@@ -69,6 +69,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   var findInPageBar: FindInPageBar?
   var pageZoomBar: UIHostingController<PageZoomView>?
   private var pageZoomListener: NSObjectProtocol?
+  private var openTabsModelStateListener: SendTabToSelfModelStateListener?
   private let collapsedURLBarView = CollapsedURLBarView()
 
   // Single data source used for all favorites vcs
@@ -267,7 +268,13 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     self.tabManager = TabManager(
       prefs: profile.prefs,
       imageStore: diskImageStore,
-      rewards: rewards)
+      rewards: rewards,
+      tabGeneratorAPI: braveCore.tabGeneratorAPI)
+    
+    // Add Regular tabs to Sync Chain
+    if Preferences.Chromium.syncOpenTabsEnabled.value {
+      tabManager.addRegularTabsToSyncChain()
+    }
 
     // Setup ReaderMode Cache
     self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
@@ -309,8 +316,26 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     }
 
     feedDataSource.rewards = rewards
+    
+    // Observer watching tab information is sent by another device
+    openTabsModelStateListener = braveCore.sendTabAPI.add(
+      SendTabToSelfStateObserver { [weak self] stateChange in
+        if case .sendTabToSelfEntriesAddedRemotely(let newEntries) = stateChange {
+          // Fetching the last URL that has been sent from synced sessions
+          if let requestedURL = newEntries.last?.url {
+            self?.presentTabReceivedCallout(url: requestedURL)
+          }
+        }
+      })
   }
 
+  deinit {
+    // Remove the open tabs model state observer
+    if let observer = openTabsModelStateListener {
+      braveCore.sendTabAPI.removeObserver(observer)
+    }
+  }
+  
   static func legacyWallet(for config: BraveRewards.Configuration) -> BraveLedger? {
     let fm = FileManager.default
     let stateStorage = config.storageURL
@@ -1748,6 +1773,27 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   }
 
   func makeShareActivities(for url: URL, tab: Tab?, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) -> [UIActivity] {
+    var activities = [UIActivity]()
+
+    // Adding SendTabToSelfActivity conditionally to show device selection screen
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing, !url.isLocal, !InternalURL.isValid(url: url), !url.isReaderModeURL,
+        braveCore.syncAPI.isSendTabToSelfVisible {
+      let sendTabToSelfActivity = SendTabToSelfActivity() { [weak self] in
+        guard let self = self else { return }
+        
+        let deviceList = self.braveCore.sendTabAPI.getListOfSyncedDevices()
+        let dataSource = SendableTabInfoDataSource(
+          with: deviceList,
+          displayTitle: tab?.displayTitle ?? "",
+          sendableURL: url)
+        
+        let controller = SendTabToSelfController(sendTabAPI: self.braveCore.sendTabAPI, dataSource: dataSource)
+        self.present(controller, animated: true, completion: nil)
+      }
+
+      activities.append(sendTabToSelfActivity)
+    }
+    
     let findInPageActivity = FindInPageActivity() { [unowned self] in
       self.updateFindInPageVisibility(visible: true)
     }
@@ -1756,7 +1802,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       self.displayPageZoom(visible: true)
     }
 
-    var activities: [UIActivity] = [findInPageActivity, pageZoomActivity]
+    activities.append(contentsOf: [findInPageActivity, pageZoomActivity])
 
     // These actions don't apply if we're sharing a temporary document
     if !url.isFileURL {

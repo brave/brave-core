@@ -88,16 +88,20 @@ class TabManager: NSObject {
   var normalTabSelectedIndex: Int = 0
   var tempTabs: [Tab]?
   private weak var rewards: BraveRewards?
+  private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   var makeWalletEthProvider: ((Tab) -> (BraveWalletEthereumProvider, js: String)?)?
   private var domainFrc = Domain.frc()
+  private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
+  private var syncTabsTask: DispatchWorkItem?
 
-  init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?) {
+  init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?, tabGeneratorAPI: BraveTabGeneratorAPI?) {
     assert(Thread.isMainThread)
 
     self.prefs = prefs
     self.navDelegate = TabManagerNavDelegate()
     self.imageStore = imageStore
     self.rewards = rewards
+    self.tabGeneratorAPI = tabGeneratorAPI
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
 
@@ -114,6 +118,10 @@ class TabManager: NSObject {
     } catch {
       log.error("Failed to perform fetch of Domains for observing dapps permission changes: \(error)")
     }
+  }
+  
+  deinit {
+    syncTabsTask?.cancel()
   }
 
   func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
@@ -200,6 +208,30 @@ class TabManager: NSObject {
       return allTabs.filter { $0.displayTitle.lowercased().contains(query) || ($0.url?.baseDomain?.contains(query) ?? false) }
     } else {
       return allTabs
+    }
+  }
+  
+  /// Function for adding local tabs as synced sessions
+  /// This is used when open tabs toggle is enabled in sync settings and browser constructor
+  func addRegularTabsToSyncChain() {
+    let regularTabs = tabs(withType: .regular)
+
+    syncTabsTask?.cancel()
+
+    syncTabsTask = DispatchWorkItem {
+        guard let task = self.syncTabsTask, !task.isCancelled else {
+          return
+        }
+        
+        for tab in regularTabs {
+          if let url = tab.fetchedURL, !tab.type.isPrivate, !url.isLocal, !InternalURL.isValid(url: url), !url.isReaderModeURL {
+            tab.addTabInfoToSyncedSessions(url: url, displayTitle: tab.displayTitle)
+          }
+        }
+    }
+        
+    if let task = self.syncTabsTask {
+      DispatchQueue.main.async(execute: task)
     }
   }
 
@@ -359,7 +391,7 @@ class TabManager: NSObject {
   }
 
   func addPopupForParentTab(_ parentTab: Tab, configuration: WKWebViewConfiguration) -> Tab {
-    let popup = Tab(configuration: configuration, type: parentTab.type)
+    let popup = Tab(configuration: configuration, type: parentTab.type, tabGeneratorAPI: tabGeneratorAPI)
     configureTab(popup, request: nil, afterTab: parentTab, flushToDisk: true, zombie: false, isPopup: true)
 
     // Wait momentarily before selecting the new tab, otherwise the parent tab
@@ -406,7 +438,7 @@ class TabManager: NSObject {
     let configuration: WKWebViewConfiguration = configuration ?? self.configuration
 
     let type: TabType = isPrivate ? .private : .regular
-    let tab = Tab(configuration: configuration, type: type)
+    let tab = Tab(configuration: configuration, type: type, tabGeneratorAPI: tabGeneratorAPI)
 
     configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie, id: id)
     return tab

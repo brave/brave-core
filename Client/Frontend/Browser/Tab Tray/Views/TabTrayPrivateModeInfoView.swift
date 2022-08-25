@@ -19,6 +19,7 @@ extension TabTrayController {
       static let textMargin = 40.0
       static let minBottomMargin = 15.0
       static let stackViewSpacing = 15.0
+      static let scrollViewTopSpacing = 44.0
     }
 
     let scrollView = UIScrollView().then {
@@ -85,9 +86,10 @@ extension TabTrayController {
       scrollView.snp.makeConstraints {
         $0.edges.equalTo(self.snp.edges)
       }
+      
       scrollView.contentLayoutGuide.snp.makeConstraints {
         $0.width.equalTo(self)
-        $0.top.equalTo(self.stackView).offset(-UX.minBottomMargin)
+        $0.top.equalTo(self.stackView).offset(2 * UX.minBottomMargin)
         $0.bottom.equalTo(self.stackView).offset(UX.minBottomMargin)
       }
       stackView.snp.makeConstraints {

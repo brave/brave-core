@@ -132,13 +132,32 @@ extension BrowserViewController {
       privacyEverywhereView.syncNow = { [weak self] in
         guard let self = self else { return }
         self.dismiss(animated: true) {
-          self.openInsideSettingsNavigation(with: SyncWelcomeViewController(syncAPI: self.braveCore.syncAPI, syncProfileServices: self.braveCore.syncProfileService))
+          self.openInsideSettingsNavigation(with: SyncWelcomeViewController(syncAPI: self.braveCore.syncAPI, syncProfileServices: self.braveCore.syncProfileService, tabManager: self.tabManager))
         }
       }
 
       let controller = PopupViewController(rootView: privacyEverywhereView)
       present(controller, animated: true, completion: nil)
       isOnboardingOrFullScreenCalloutPresented = true
+    }
+  }
+  
+  func presentTabReceivedCallout(url: URL) {
+    // 'Tab Received' indicator will only be shown in normal browsing
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      let toast = ButtonToast(
+        labelText: Strings.Callout.tabReceivedCalloutTitle,
+        image: UIImage(systemName: "laptopcomputer.and.iphone"),
+        buttonText: Strings.goButtonTittle,
+        completion: { [weak self] buttonPressed in
+          guard let self = self else { return }
+          
+          if buttonPressed {
+            self.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
+          }
+      })
+      
+      show(toast: toast, duration: ButtonToastUX.toastDismissAfter)
     }
   }
 }
