@@ -79,7 +79,6 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
 void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
   web_contents_destroy_timer_.reset();
 
-  CreateWebContents();
   if (!ReadyToRunMediaDetectorScript()) {
     pending_requests_.push_back(std::move(request));
     if (media_detector_script_.empty())
@@ -113,41 +112,28 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 
   DCHECK(callback_for_current_request_.is_null());
   callback_for_current_request_ = std::move(request.callback);
-  DCHECK(!callback_for_current_request_.is_null());
 
-  GURL url(request.url);
-  DCHECK(url.is_valid());
-  web_contents_->GetController().LoadURLWithParams(
-      content::NavigationController::LoadURLParams(url));
+  if (absl::holds_alternative<std::string>(request.url_or_contents)) {
+    CreateWebContents();
+    GURL url(absl::get<std::string>(request.url_or_contents));
+    DCHECK(url.is_valid());
+    DCHECK(web_contents_);
+    web_contents_->GetController().LoadURLWithParams(
+        content::NavigationController::LoadURLParams(url));
+  } else {
+    auto weak_contents =
+        absl::get<base::WeakPtr<content::WebContents>>(request.url_or_contents);
+    if (!weak_contents) {
+      FetchPendingRequest();
+      return;
+    }
+
+    GetMedia(weak_contents.get());
+  }
 }
 
 bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
   return !media_detector_script_.empty() && in_progress_urls_count_ == 0;
-}
-
-void PlaylistDownloadRequestManager::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  DCHECK(web_contents_->GetPrimaryMainFrame());
-
-  // This script is from
-  // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/PlaylistSwizzler.js
-  static const std::u16string kScriptToHideMediaSourceAPI =
-      uR"-(
-    (function() {
-      // Stub out the MediaSource API so video players do not attempt to use `blob` for streaming
-      if (window.MediaSource || window.WebKitMediaSource || window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId) {
-        window.MediaSource = null;
-        window.WebKitMediaSource = null;
-        delete window.MediaSource;
-        delete window.WebKitMediaSource;
-      }
-    })();
-    )-";
-
-  // In order to hide js API from main world, use testing
-  // api temporarily.
-  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptForTests(
-      kScriptToHideMediaSourceAPI, base::NullCallback());
 }
 
 void PlaylistDownloadRequestManager::DidFinishLoad(
@@ -159,21 +145,27 @@ void PlaylistDownloadRequestManager::DidFinishLoad(
   if (in_progress_urls_count_ == 0 || callback_for_current_request_.is_null())
     return;
 
-  DCHECK(web_contents_->GetPrimaryMainFrame());
+  GetMedia(web_contents_.get());
+}
 
-  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
+  DCHECK(contents && contents->GetPrimaryMainFrame());
+
+  contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script_),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
-                     weak_factory_.GetWeakPtr()),
+                     weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
       g_playlist_javascript_world_id);
 }
 
-void PlaylistDownloadRequestManager::OnGetMedia(base::Value value) {
-  auto print_value = [](const base::Value& value) {
-    std::string out;
-    base::JSONWriter::Write(value, &out);
-    LOG(ERROR) << value;
-  };
+void PlaylistDownloadRequestManager::OnGetMedia(
+    base::WeakPtr<content::WebContents> contents,
+    base::Value value) {
+  if (!contents)
+    return;
+
+  DCHECK(!callback_for_current_request_.is_null()) << " callback already ran";
+  auto callback = std::move(callback_for_current_request_);
 
   DCHECK_GT(in_progress_urls_count_, 0);
   in_progress_urls_count_--;
@@ -196,19 +188,21 @@ void PlaylistDownloadRequestManager::OnGetMedia(base::Value value) {
     ScheduleWebContentsDestroying();
   Observe(nullptr);
 
+  if (value.is_dict() && value.GetDict().empty()) {
+    VLOG(2) << "No media was detected";
+    return;
+  }
+
   if (!value.is_list()) {
     LOG(ERROR) << __func__
-               << " Got invalid value after running media detector script:";
-    print_value(value);
+               << " Got invalid value after running media detector script";
     return;
   }
 
   std::vector<PlaylistItemInfo> items;
   for (const auto& media : value.GetList()) {
     if (!media.is_dict()) {
-      LOG(ERROR) << __func__
-                 << " Got invalid value after running media detector script";
-      print_value(media);
+      LOG(ERROR) << __func__ << " Got invalid item";
       continue;
     }
 
@@ -233,19 +227,19 @@ void PlaylistDownloadRequestManager::OnGetMedia(base::Value value) {
     items.push_back(std::move(info));
   }
 
-  DCHECK(!callback_for_current_request_.is_null()) << " callback already ran";
-  std::move(callback_for_current_request_).Run(std::move(items));
-
   FetchPendingRequest();
+
+  std::move(callback).Run(std::move(items));
 }
 
 void PlaylistDownloadRequestManager::ScheduleWebContentsDestroying() {
-  DCHECK(!web_contents_destroy_timer_);
-  web_contents_destroy_timer_ = std::make_unique<base::OneShotTimer>();
-  web_contents_destroy_timer_->Start(
-      FROM_HERE, kWebContentDestroyDelay,
-      base::BindOnce(&PlaylistDownloadRequestManager::DestroyWebContents,
-                     base::Unretained(this)));
+  if (!web_contents_destroy_timer_) {
+    web_contents_destroy_timer_ = std::make_unique<base::RetainingOneShotTimer>(
+        FROM_HERE, kWebContentDestroyDelay,
+        base::BindRepeating(&PlaylistDownloadRequestManager::DestroyWebContents,
+                            base::Unretained(this)));
+  }
+  web_contents_destroy_timer_->Reset();
 }
 
 void PlaylistDownloadRequestManager::DestroyWebContents() {

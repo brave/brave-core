@@ -47,6 +47,11 @@ class API {
         playlistId, mojoUrl)
   }
 
+  addMediaFilesFromOpenTabsToPlaylist (playlistId: string) {
+    this.#pageHandler.addMediaFilesFromOpenTabsToPlaylist(
+        playlistId)
+  }
+
   removeItemFromPlaylist (playlistId: string, itemId: string) {
     this.#pageHandler.removeItemFromPlaylist(playlistId, itemId)
   }

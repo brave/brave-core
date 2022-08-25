@@ -331,7 +331,9 @@ export const mockSolDappSignAndSendTransactionRequest = {
           ],
           'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
         }
-      ]
+      ],
+      'sendOptions': undefined,
+      'signTransactionParam': undefined
     }
   },
   'txStatus': 0,
@@ -350,8 +352,9 @@ export const mockSolDappSignAndSendTransactionRequest = {
     },
     'originSpec': 'https://f40y4d.csb.app',
     'eTldPlusOne': 'csb.app'
-  }
-}
+  },
+  'groupId': undefined
+} as BraveWallet.TransactionInfo
 
 export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransactionsRequest = {
   'originInfo': {

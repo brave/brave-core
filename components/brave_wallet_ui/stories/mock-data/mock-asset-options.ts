@@ -27,13 +27,13 @@ export const mockBasicAttentionToken = {
 }
 
 export const mockBinanceCoinErc20Token = {
-  contractAddress: '3',
+  contractAddress: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52',
   name: 'Binance Coin',
   symbol: 'BNB',
   logo: BNBIconUrl,
   isErc20: true,
   isErc721: false,
-  decimals: 8,
+  decimals: 18,
   visible: true,
   tokenId: '',
   coingeckoId: '',

@@ -122,6 +122,10 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
         Method: parsed.Method,
         Params: parsed.Params
       }
+
+      // Accounts must be warmed up before signing.
+      await this.provider?.getAccounts()
+
       const signed: SignedLotusMessage = await this.provider?.sign(parsed.From, lotusMessage)
       return { success: true, payload: signed }
     } catch (e) {

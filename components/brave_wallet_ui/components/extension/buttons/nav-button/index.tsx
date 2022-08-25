@@ -22,6 +22,7 @@ export type PanelButtonTypes =
   | 'confirm'
   | 'sign'
   | 'reject'
+  | 'cancel'
 
 interface BaseProps {
   buttonType: PanelButtonTypes

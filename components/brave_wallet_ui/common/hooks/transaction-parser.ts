@@ -80,9 +80,9 @@ export interface ParsedTransaction extends ParsedTransactionFees {
 
   // Swap
   sellToken?: BraveWallet.BlockchainToken
-  sellAmount?: string
+  sellAmount?: Amount
   buyToken?: BraveWallet.BlockchainToken
-  minBuyAmount?: string
+  minBuyAmount?: Amount
 
   // Solana Dapp Instructions
   instructions?: TypedSolanaInstructionWithParams[]
@@ -585,7 +585,6 @@ export function useTransactionParser (
         const buyToken = fillTokens[fillTokens.length - 1]
         const buyAmount = new Amount(minBuyAmountArg)
           .divideByDecimals(buyToken.decimals)
-          .format(6)
 
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sellAmountFiat)
@@ -624,8 +623,7 @@ export function useTransactionParser (
           insufficientFundsForGasError: insufficientNativeFunds,
           isSwap: true,
           sellToken,
-          sellAmount: sellAmountBN
-            .format(6),
+          sellAmount: sellAmountBN,
           buyToken,
           minBuyAmount: buyAmount,
           ...feeDetails

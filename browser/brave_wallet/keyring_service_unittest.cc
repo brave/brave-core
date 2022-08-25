@@ -44,6 +44,9 @@ using ::testing::ElementsAreArray;
 namespace brave_wallet {
 
 namespace {
+
+const char kPasswordBrave[] = "brave";
+const char kPasswordBrave123[] = "brave123";
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
@@ -222,11 +225,12 @@ class KeyringServiceUnitTest : public testing::Test {
     return result;
   }
 
-  static std::string GetMnemonicForDefaultKeyring(KeyringService* service) {
+  static std::string GetMnemonicForDefaultKeyring(const std::string& password,
+                                                  KeyringService* service) {
     base::RunLoop run_loop;
     std::string mnemonic;
     service->GetMnemonicForDefaultKeyring(
-        base::BindLambdaForTesting([&](const std::string& v) {
+        password, base::BindLambdaForTesting([&](const std::string& v) {
           mnemonic = v;
           run_loop.Quit();
         }));
@@ -1164,32 +1168,37 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, GetMnemonicForDefaultKeyring) {
+  // Needed to skip unnecessary migration in CreateEncryptorForKeyring.
+  GetPrefs()->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
   KeyringService service(json_rpc_service(), GetPrefs());
-  ASSERT_TRUE(
-      service.CreateEncryptorForKeyring("brave", mojom::kDefaultKeyringId));
+  ASSERT_TRUE(service.CreateEncryptorForKeyring(kPasswordBrave,
+                                                mojom::kDefaultKeyringId));
 
   // no pref exists yet
-  EXPECT_TRUE(GetMnemonicForDefaultKeyring(&service).empty());
+  EXPECT_TRUE(GetMnemonicForDefaultKeyring(kPasswordBrave, &service).empty());
 
   ASSERT_TRUE(service.CreateKeyringInternal(mojom::kDefaultKeyringId,
                                             kMnemonic1, false));
-  EXPECT_EQ(GetMnemonicForDefaultKeyring(&service), kMnemonic1);
+  EXPECT_EQ(GetMnemonicForDefaultKeyring(kPasswordBrave, &service), kMnemonic1);
 
   // Lock service
   service.Lock();
   ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
-  EXPECT_TRUE(GetMnemonicForDefaultKeyring(&service).empty());
+  EXPECT_TRUE(GetMnemonicForDefaultKeyring(kPasswordBrave, &service).empty());
 
   // unlock with wrong password
-  ASSERT_FALSE(Unlock(&service, "brave123"));
+  ASSERT_FALSE(Unlock(&service, kPasswordBrave123));
   ASSERT_TRUE(service.IsLocked());
 
-  EXPECT_TRUE(GetMnemonicForDefaultKeyring(&service).empty());
+  EXPECT_TRUE(GetMnemonicForDefaultKeyring(kPasswordBrave, &service).empty());
 
-  ASSERT_TRUE(Unlock(&service, "brave"));
+  ASSERT_TRUE(Unlock(&service, kPasswordBrave));
   ASSERT_FALSE(service.IsLocked());
 
-  EXPECT_EQ(GetMnemonicForDefaultKeyring(&service), kMnemonic1);
+  // Can only get mnemonic when password is correct.
+  EXPECT_TRUE(
+      GetMnemonicForDefaultKeyring(kPasswordBrave123, &service).empty());
+  EXPECT_EQ(GetMnemonicForDefaultKeyring(kPasswordBrave, &service), kMnemonic1);
 }
 
 TEST_F(KeyringServiceUnitTest, ValidatePassword) {

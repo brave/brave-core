@@ -96,7 +96,7 @@ export const Container = () => {
   }, [inputValue, sessionRoute])
 
   const onHideBackup = React.useCallback(() => {
-    dispatch(WalletPageActions.showRecoveryPhrase(false))
+    dispatch(WalletPageActions.showRecoveryPhrase({ show: false }))
     history.goBack()
   }, [])
 
