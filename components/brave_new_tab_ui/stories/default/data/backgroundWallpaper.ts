@@ -53,7 +53,7 @@ export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpape
  * Mock handler for colored backgrounds. Emits a change event to knobs
  * @param {string} value
  */
-export const onChangeColoredBackground = (value: string) => {
+export const onChangeColoredBackground = (value: string, useRandomValue: boolean) => {
   addonsChannel.emit(CHANGE, {
     name: 'Show branded background image?',
     value: false

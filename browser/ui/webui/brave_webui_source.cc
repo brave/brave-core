@@ -173,6 +173,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "settingsNavigateBack", IDS_BRAVE_NEW_TAB_SETTINGS_BACK },
         { "solidColorTitle", IDS_BRAVE_NEW_TAB_SOLID_COLOR},
         { "gradientColorTitle", IDS_BRAVE_NEW_TAB_GRADIENT_COLOR},
+        { "refreshBackgroundOnNewTab", IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB},
 
         // search promotion
         { "searchPromotionNTPPopupTitle1", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1},  // NOLINT

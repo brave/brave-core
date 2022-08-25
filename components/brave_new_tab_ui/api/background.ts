@@ -8,6 +8,7 @@ import * as BraveNewTabPage from 'gen/brave/components/brave_new_tab_ui/brave_ne
 export * from 'gen/brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.m.js'
 
 import { images as backgrounds } from '../data/backgrounds'
+import { solidColorsForBackground, gradientColorsForBackground } from '../data/colors'
 
 /**
  * Generates a random image for new tab backgrounds
@@ -16,6 +17,19 @@ export const randomBackgroundImage = (): NewTab.BackgroundWallpaper => {
   const randomIndex: number = Math.floor(Math.random() * backgrounds.length)
   const image: NewTab.BackgroundWallpaper = { ...backgrounds[randomIndex] }
   return image
+}
+
+export const randomColorBackground = (color: string): NewTab.BackgroundWallpaper => {
+  console.assert(color === BraveNewTabPage.RANDOM_SOLID_COLOR_VALUE || color === BraveNewTabPage.RANDOM_GRADIENT_COLOR_VALUE)
+
+  let targetColors = color === BraveNewTabPage.RANDOM_SOLID_COLOR_VALUE ? solidColorsForBackground : gradientColorsForBackground
+  const randomIndex: number = Math.floor(Math.random() * targetColors.length)
+  const randomColor: NewTab.BackgroundWallpaper = {
+    type: 'color',
+    wallpaperColor: targetColors[randomIndex],
+    random: true
+  }
+  return randomColor
 }
 
 interface API {

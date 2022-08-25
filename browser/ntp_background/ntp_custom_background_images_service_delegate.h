@@ -29,6 +29,7 @@ class NTPCustomBackgroundImagesServiceDelegate
   base::FilePath GetCustomBackgroundImageLocalFilePath() override;
   bool IsColorBackgroundEnabled() override;
   std::string GetColor() override;
+  bool ShouldUseRandomValue() override;
 
   raw_ptr<Profile> profile_ = nullptr;
 };

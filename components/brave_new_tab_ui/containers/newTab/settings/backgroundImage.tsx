@@ -31,7 +31,7 @@ interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBackgroundImage: () => void
   useCustomBackgroundImage: (useCustom: boolean) => void
-  setColorBackground: (color: string) => void
+  setColorBackground: (color: string, useRandomColor: boolean) => void
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
@@ -89,6 +89,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
         !!newTabData.backgroundWallpaper.wallpaperImageUrl &&
         !newTabData.backgroundWallpaper.author && !newTabData.backgroundWallpaper.link
     const selectedBackgroundColor = newTabData.backgroundWallpaper?.type === 'color' ? newTabData.backgroundWallpaper.wallpaperColor : undefined
+    const usingRandomColor = newTabData.backgroundWallpaper?.type === 'color' && newTabData.backgroundWallpaper?.random
     const usingBraveBackground = !usingCustomBackground && !selectedBackgroundColor
     const usingSolidColorBackground = !!selectedBackgroundColor && solidColorsForBackground.includes(selectedBackgroundColor)
     const usingGradientBackground = !!selectedBackgroundColor && gradientColorsForBackground.includes(selectedBackgroundColor)
@@ -178,6 +179,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             title={getLocale('solidColorTitle')}
             values={solidColorsForBackground}
             currentValue={selectedBackgroundColor}
+            usingRandomColor={usingSolidColorBackground && usingRandomColor}
+            onToggleRandomColor={on => this.props.setColorBackground(on ? 'solid' : (selectedBackgroundColor ?? defaultSolidBackgroundColor), on)}
             onSelectValue={this.props.setColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />
@@ -187,6 +190,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
             title={getLocale('gradientColorTitle')}
             values={gradientColorsForBackground}
             currentValue={selectedBackgroundColor}
+            usingRandomColor={usingGradientBackground && usingRandomColor}
+            onToggleRandomColor={on => this.props.setColorBackground(on ? 'gradient' : (selectedBackgroundColor ?? defaultGradientColor), on)}
             onSelectValue={this.props.setColorBackground}
             onBack={() => this.setLocation(Location.LIST)}
           />

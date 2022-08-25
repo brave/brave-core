@@ -52,3 +52,7 @@ std::string NTPCustomBackgroundImagesServiceDelegate::GetColor() {
   DCHECK(absl::holds_alternative<std::string>(selected_value));
   return absl::get<std::string>(selected_value);
 }
+
+bool NTPCustomBackgroundImagesServiceDelegate::ShouldUseRandomValue() {
+  return NTPBackgroundPrefs(profile_->GetPrefs()).ShouldUseRandomValue();
+}

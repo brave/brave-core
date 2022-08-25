@@ -32,6 +32,7 @@ class NTPCustomBackgroundImagesService : public KeyedService {
 
     virtual bool IsColorBackgroundEnabled() = 0;
     virtual std::string GetColor() = 0;
+    virtual bool ShouldUseRandomValue() = 0;
 
     virtual ~Delegate() = default;
   };

@@ -74,7 +74,7 @@ interface Props {
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
   useCustomBackgroundImage: (useCustom: boolean) => void
-  setColorBackground: (color: string) => void
+  setColorBackground: (color: string, use_random_color: boolean) => void
 }
 
 interface State {

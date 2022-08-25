@@ -5,29 +5,47 @@
 
 import * as React from 'react'
 
-import { StyledCustomBackgroundSettings } from '../../../components/default'
+import {
+  SettingsRow,
+  SettingsText,
+  StyledCustomBackgroundSettings
+} from '../../../components/default'
 import NavigateBack from '../../../components/default/settings/navigateBack'
 import ColorBackgroundOption from './colorBackgroundOption'
+import { Toggle } from '../../../components/toggle'
+
+import { getLocale } from '../../../../common/locale'
 
 interface Props {
   title: string
   values: string[]
   currentValue?: string
-  onSelectValue: (value: string) => void
+  usingRandomColor: boolean
+  onSelectValue: (value: string, useRandomColor: boolean) => void
   onBack: () => void
+  onToggleRandomColor: (on: boolean) => void
 }
 
-function ColorChooser ({ title, values, onBack, onSelectValue, currentValue }: Props) {
+function ColorChooser ({ title, values, onBack, onSelectValue, currentValue, usingRandomColor, onToggleRandomColor }: Props) {
   const containerEl = React.useRef<HTMLDivElement>(null)
   React.useEffect(() => {
     containerEl.current?.scrollIntoView(true)
   }, [])
 
+  console.log(usingRandomColor)
+
   return (
       <div ref={containerEl}>
         <NavigateBack onBack={onBack} title={title} />
+        <SettingsRow>
+          <SettingsText>{getLocale('refreshBackgroundOnNewTab')}</SettingsText>
+          <Toggle
+            onChange={e => onToggleRandomColor(e.target.checked)}
+            checked={usingRandomColor}
+          />
+        </SettingsRow>
         <StyledCustomBackgroundSettings>
-          {values.map(value => <ColorBackgroundOption key={value} color={value} onSelectValue={onSelectValue} selected={currentValue === value} />)}
+          {values.map(value => <ColorBackgroundOption key={value} color={value} onSelectValue={color => onSelectValue(color, false/* =useRandomColor */)} selected={!usingRandomColor && currentValue === value} />)}
         </StyledCustomBackgroundSettings>
       </div>
   )
