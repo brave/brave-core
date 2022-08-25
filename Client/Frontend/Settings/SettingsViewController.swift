@@ -277,9 +277,9 @@ class SettingsViewController: TableViewController {
               }
 
               self.navigationController?
-                .pushViewController(SyncSettingsTableViewController(syncAPI: syncAPI, syncProfileService: syncProfileServices), animated: true)
+                .pushViewController(SyncSettingsTableViewController(syncAPI: syncAPI, syncProfileService: syncProfileServices, tabManager: tabManager), animated: true)
             } else {
-              self.navigationController?.pushViewController(SyncWelcomeViewController(syncAPI: syncAPI, syncProfileServices: syncProfileServices), animated: true)
+              self.navigationController?.pushViewController(SyncWelcomeViewController(syncAPI: syncAPI, syncProfileServices: syncProfileServices, tabManager: tabManager), animated: true)
             }
           }, image: UIImage(named: "settings-sync", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self),

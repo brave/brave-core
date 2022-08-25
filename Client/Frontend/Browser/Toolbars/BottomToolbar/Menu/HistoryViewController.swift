@@ -16,7 +16,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
 
   private lazy var emptyStateOverlayView = EmptyStateOverlayView(
-    description: Preferences.Privacy.privateBrowsingOnly.value
+    title: Preferences.Privacy.privateBrowsingOnly.value
       ? Strings.History.historyPrivateModeOnlyStateTitle
       : Strings.History.historyEmptyStateTitle,
     icon: UIImage(named: "emptyHistory", in: .current, compatibleWith: nil)!)

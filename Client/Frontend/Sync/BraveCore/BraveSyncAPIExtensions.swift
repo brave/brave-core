@@ -8,14 +8,44 @@ import BraveCore
 import BraveShared
 import Shared
 
+public struct BraveSyncDevice: Codable {
+  let chromeVersion: String
+  let hasSharingInfo: Bool
+  let id: String
+  let guid: String
+  let isCurrentDevice: Bool
+  let supportsSelfDelete: Bool
+  let lastUpdatedTimestamp: TimeInterval
+  let name: String?
+  let os: String
+  let sendTabToSelfReceivingEnabled: Bool
+  let type: String
+}
+
+private let log = Logger.browserLogger
+
 extension BraveSyncAPI {
 
   public static let seedByteLength = 32
-
+  
   var isInSyncGroup: Bool {
     return Preferences.Chromium.syncEnabled.value
   }
 
+  var isSendTabToSelfVisible: Bool {
+    guard let json = getDeviceListJSON(), let data = json.data(using: .utf8) else {
+      return false
+    }
+    
+    do {
+      let devices = try JSONDecoder().decode([BraveSyncDevice].self, from: data)
+      return devices.count > 1
+    } catch {
+      log.error("Error occurred while parsing device information: \(error)")
+      return false
+    }
+  }
+  
   @discardableResult
   func joinSyncGroup(codeWords: String, syncProfileService: BraveSyncProfileServiceIOS) -> Bool {
     if self.setSyncCode(codeWords) {
@@ -52,6 +82,10 @@ extension BraveSyncAPI {
 
     if Preferences.Chromium.syncPasswordsEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .PASSWORDS)
+    }
+    
+    if Preferences.Chromium.syncOpenTabsEnabled.value {
+      syncProfileService.userSelectedTypes.update(with: .TABS)
     }
   }
 

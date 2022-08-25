@@ -49,6 +49,7 @@ class SyncWelcomeViewController: SyncViewController {
 
   private var syncServiceObserver: AnyObject?
   private var syncDeviceInfoObserver: AnyObject?
+  private let tabManager: TabManager
 
   lazy var mainStackView: UIStackView = {
     let stackView = UIStackView()
@@ -133,9 +134,11 @@ class SyncWelcomeViewController: SyncViewController {
   private let syncAPI: BraveSyncAPI
   private let syncProfileServices: BraveSyncProfileServiceIOS
 
-  init(syncAPI: BraveSyncAPI, syncProfileServices: BraveSyncProfileServiceIOS) {
+  init(syncAPI: BraveSyncAPI, syncProfileServices: BraveSyncProfileServiceIOS, tabManager: TabManager) {
     self.syncAPI = syncAPI
     self.syncProfileServices = syncProfileServices
+    self.tabManager = tabManager
+    
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -258,7 +261,11 @@ class SyncWelcomeViewController: SyncViewController {
       return
     }
 
-    let syncSettingsVC = SyncSettingsTableViewController(showDoneButton: true, syncAPI: syncAPI, syncProfileService: syncProfileServices)
+    let syncSettingsVC = SyncSettingsTableViewController(
+      showDoneButton: true,
+      syncAPI: syncAPI,
+      syncProfileService: syncProfileServices,
+      tabManager: tabManager)
     navigationController?.pushViewController(syncSettingsVC, animated: true)
   }
 }

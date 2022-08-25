@@ -10,14 +10,13 @@ import BraveUI
 
 extension TabTrayController {
 
-  class View: UIView {
+  class TabTrayContainerView: UIView {
     private struct UX {
       static let regularCellHeight = 192.0
       static let largeCellHeight = 256.0
       static let itemInset = 6.0
       static let sectionInset = 4.0
       static let buttonEdgeInset = 10.0
-      static let buttonStackLayoutMargin = 16.0
     }
 
     private func generateLayout(
@@ -47,38 +46,7 @@ extension TabTrayController {
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(numberOfColumns: numberOfColumns)).then {
       $0.setContentHuggingPriority(.defaultLow, for: .vertical)
       $0.backgroundColor = .secondaryBraveBackground
-    }
-
-    let newTabButton = UIButton(type: .system).then {
-      $0.setImage(UIImage(named: "add_tab", in: .current, compatibleWith: nil)!.template, for: .normal)
-      $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
-      $0.accessibilityIdentifier = "TabTrayController.addTabButton"
-      $0.tintColor = .braveLabel
-      $0.contentEdgeInsets = .init(top: 0, left: UX.buttonEdgeInset, bottom: 0, right: UX.buttonEdgeInset)
-      $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-    }
-
-    let doneButton = UIButton(type: .system).then {
-      $0.setTitle(Strings.done, for: .normal)
-      $0.titleLabel?.font = .preferredFont(forTextStyle: .body)
-      $0.titleLabel?.adjustsFontForContentSizeCategory = true
-      $0.contentHorizontalAlignment = .right
-      $0.titleLabel?.adjustsFontSizeToFitWidth = true
-      $0.accessibilityLabel = Strings.done
-      $0.accessibilityIdentifier = "TabTrayController.doneButton"
-      $0.tintColor = .braveLabel
-    }
-
-    let privateModeButton = PrivateModeButton().then {
-      $0.titleLabel?.font = .preferredFont(forTextStyle: .body)
-      $0.titleLabel?.adjustsFontForContentSizeCategory = true
-      $0.contentHorizontalAlignment = .left
-      $0.setTitle(Strings.private, for: .normal)
-      $0.tintColor = .braveLabel
-
-      if Preferences.Privacy.privateBrowsingOnly.value {
-        $0.alpha = 0
-      }
+      $0.register(TabCell.self, forCellWithReuseIdentifier: TabCell.identifier)
     }
 
     private(set) lazy var privateModeInfo = TabTrayPrivateModeInfoView().then {

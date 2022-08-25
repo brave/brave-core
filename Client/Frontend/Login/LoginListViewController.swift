@@ -47,7 +47,7 @@ class LoginListViewController: LoginAuthViewController {
   private var searchLoginTimer: Timer?
   private var isCredentialsBeingSearched = false
   private let searchController = UISearchController(searchResultsController: nil)
-  private let emptyLoginView = EmptyStateOverlayView(description: Strings.Login.loginListEmptyScreenTitle)
+  private let emptyLoginView = EmptyStateOverlayView(title: Strings.Login.loginListEmptyScreenTitle)
 
   // MARK: Lifecycle
 

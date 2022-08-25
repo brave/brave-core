@@ -15,6 +15,7 @@ struct ButtonToastUX {
   static let toastButtonBorderWidth: CGFloat = 1
   static let toastLabelFont = UIFont.systemFont(ofSize: 15, weight: .semibold)
   static let toastDescriptionFont = UIFont.systemFont(ofSize: 13)
+  static let toastDismissAfter = DispatchTimeInterval.seconds(10)
 }
 
 class ButtonToast: Toast {
@@ -26,13 +27,13 @@ class ButtonToast: Toast {
     }
   }
 
-  init(labelText: String, descriptionText: String? = nil, imageName: String? = nil, buttonText: String? = nil, backgroundColor: UIColor = SimpleToastUX.toastDefaultColor, textAlignment: NSTextAlignment = .left, completion: ((_ buttonPressed: Bool) -> Void)? = nil) {
+  init(labelText: String, descriptionText: String? = nil, image: UIImage? = nil, buttonText: String? = nil, backgroundColor: UIColor = SimpleToastUX.toastDefaultColor, textAlignment: NSTextAlignment = .left, completion: ((_ buttonPressed: Bool) -> Void)? = nil) {
     super.init(frame: .zero)
 
     self.completionHandler = completion
 
     self.clipsToBounds = true
-    self.addSubview(createView(labelText, descriptionText: descriptionText, imageName: imageName, buttonText: buttonText, textAlignment: textAlignment))
+    self.addSubview(createView(labelText, descriptionText: descriptionText, image: image, buttonText: buttonText, textAlignment: textAlignment))
 
     self.toastView.backgroundColor = backgroundColor
 
@@ -50,14 +51,14 @@ class ButtonToast: Toast {
     fatalError("init(coder:) has not been implemented")
   }
 
-  fileprivate func createView(_ labelText: String, descriptionText: String?, imageName: String?, buttonText: String?, textAlignment: NSTextAlignment) -> UIView {
+  fileprivate func createView(_ labelText: String, descriptionText: String?, image: UIImage?, buttonText: String?, textAlignment: NSTextAlignment) -> UIView {
     let horizontalStackView = UIStackView()
     horizontalStackView.axis = .horizontal
     horizontalStackView.alignment = .center
     horizontalStackView.spacing = ButtonToastUX.toastPadding
 
-    if let imageName = imageName {
-      let icon = UIImageView(image: UIImage(named: imageName, in: .current, compatibleWith: nil)!.template)
+    if let image = image {
+      let icon = UIImageView(image: image)
       icon.tintColor = .white
       horizontalStackView.addArrangedSubview(icon)
     }

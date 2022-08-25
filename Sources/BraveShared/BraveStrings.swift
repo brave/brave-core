@@ -260,6 +260,12 @@ extension Strings {
         tableName: "BraveShared", bundle: .strings,
         value: "Watch the video",
         comment: "Button title for Playlist Onboarding View")
+    public static let tabReceivedCalloutTitle =
+      NSLocalizedString(
+        "callout.tabReceivedCalloutTitle",
+        tableName: "BraveShared", bundle: .strings,
+        value: "Tab Received",
+        comment: "Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. ")
   }
 }
 
@@ -1041,6 +1047,7 @@ extension Strings {
   public static let settingsMenuItem = NSLocalizedString("SettingsMenuItem", tableName: "BraveShared", bundle: .strings, value: "Settings", comment: "Title for settings menu item")
   public static let passwordsMenuItem = NSLocalizedString("PasswordsMenuItem", tableName: "BraveShared", bundle: .strings, value: "Passwords", comment: "Title for passwords menu item")
   public static let addToMenuItem = NSLocalizedString("AddToMenuItem", tableName: "BraveShared", bundle: .strings, value: "Add Bookmark", comment: "Title for the button to add a new website bookmark.")
+  public static let openTabsMenuItem = NSLocalizedString("OpenTabsMenuItem", tableName: "BraveShared", bundle: .strings, value: "Open Tabs", comment: "Title for open tabs menu item")
   public static let shareWithMenuItem = NSLocalizedString("ShareWithMenuItem", tableName: "BraveShared", bundle: .strings, value: "Share with...", comment: "Title for sharing url menu item")
   public static let openExternalAppURLTitle = NSLocalizedString("ExternalAppURLAlertTitle", tableName: "BraveShared", bundle: .strings, value: "Allow link to switch apps?", comment: "Allow link to switch apps?")
   public static let openExternalAppURLMessage = NSLocalizedString("ExternalAppURLAlertMessage", tableName: "BraveShared", bundle: .strings, value: "%@ will launch an external application", comment: "%@ will launch an external application")
@@ -1920,7 +1927,6 @@ extension Strings {
                       value: "Shared with you",
                       comment: "Title For the Section that videos are listed")
   }
-    
     
 }
 
@@ -2953,6 +2959,130 @@ extension Strings {
         bundle: .strings,
         value: "To see passwords, you must first set a passcode on your device.",
         comment: "The message displayed in alert when a user needs to set a passcode")
+  }
+}
+
+extension Strings {
+  public struct OpenTabs {
+    public static let sendWebpageScreenTitle =
+      NSLocalizedString(
+        "openTabs.sendWebpageScreenTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Send Webpage",
+        comment: "The title displayed on send-webpage screen")
+    public static let sendDeviceButtonTitle =
+      NSLocalizedString(
+        "opentabs.sendDeviceButtonTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Send To Your Device",
+        comment: "Title action button for sending webpage to selected other device")
+    public static let openTabsItemLastSyncedTodayTitle =
+      NSLocalizedString(
+        "opentabs.openTabsItemLastSyncedTodayTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Last synced: Today %@",
+        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM")
+    public static let openTabsItemLastSyncedYesterdayTitle =
+      NSLocalizedString(
+        "opentabs.openTabsItemLastSyncedYesterdayTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Last synced: Yesterday %@",
+        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM")
+    public static let openTabsItemLastSyncedLastWeekTitle =
+      NSLocalizedString(
+        "opentabs.openTabsItemLastSyncedLastWeekTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Last synced: Last Week %@",
+        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM")
+    public static let openTabsItemLastSyncedFullTitle =
+      NSLocalizedString(
+        "opentabs.openTabsItemLastSyncedFullTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Last synced: %@",
+        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022")
+    public static let activePeriodDeviceTodayTitle =
+      NSLocalizedString(
+        "opentabs.activePeriodDeviceTodayTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Active Today",
+        comment: "The description indicating the device is active last time today")
+    public static let activePeriodDeviceYesterdayTitle =
+      NSLocalizedString(
+        "opentabs.activePeriodDeviceYesterdayTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Active Yesterday",
+        comment: "The description indicating the device is active last time yesterday")
+    public static let activePeriodDeviceThisWeekTitle =
+      NSLocalizedString(
+        "opentabs.activePeriodDeviceThisWeekTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Active Last Week",
+        comment: "The description indicating the device is active last time this week")
+    public static let activePeriodDeviceThisMonthTitle =
+      NSLocalizedString(
+        "opentabs.activePeriodDeviceThisMonthTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Active Last Month",
+        comment: "The description indicating the device is active last time this month")
+    public static let activePeriodDeviceDaysAgoTitle =
+      NSLocalizedString(
+        "opentabs.activePeriodDeviceDaysAgoTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Active %ld Days Ago",
+        comment: "The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago")
+    public static let tabTrayOpenTabSearchBarTitle =
+      NSLocalizedString(
+        "opentabs.tabTrayOpenSearchBarTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Search Open Tabs",
+        comment: "The placeholder written in seach bar while tab-tray is showing open tabs.")
+    public static let sendWebsiteShareActionTitle =
+      NSLocalizedString(
+        "opentabs.sendWebsiteShareActionTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Send To Your Devices",
+        comment: "Share action title for sending e url to another device")
+    public static let noSyncSessionPlaceHolderViewTitle =
+      NSLocalizedString(
+        "opentabs.noSyncSessionPlaceHolderViewTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Tabs From other devices will appear here",
+        comment: "The title of the view showing no synced sessions")
+    public static let noSyncSessionPlaceHolderViewDescription =
+      NSLocalizedString(
+        "opentabs.noSyncSessionPlaceHolderViewDescription",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Too see your tabs from other devices, join a sync chain and enable Open Tabs",
+        comment: "The description of the view showing no synced sessions")
+    public static let noDevicesSyncChainPlaceholderViewTitle =
+      NSLocalizedString(
+        "opentabs.noDevicesSyncChainPlaceholderViewTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "No Devices in this sync chain",
+        comment: "The title of the view showing no devices inside sync chain")
+    public static let noDevicesSyncChainPlaceholderViewDescription =
+      NSLocalizedString(
+        "opentabs.noDevicesSyncChainPlaceholderViewDescription",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "To see your devices and enabled sync types, join a sync chain",
+        comment: "The description of the view showing no devices inside sync chain")
   }
 }
 

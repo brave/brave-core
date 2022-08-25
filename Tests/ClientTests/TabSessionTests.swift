@@ -89,7 +89,7 @@ class TabSessionTests: XCTestCase {
     DataController.shared.initializeOnce()
     tabManager = { () -> TabManager in
       let profile = BrowserProfile(localName: "profile")
-      return TabManager(prefs: profile.prefs, imageStore: nil, rewards: nil)
+      return TabManager(prefs: profile.prefs, imageStore: nil, rewards: nil, tabGeneratorAPI: nil)
     }()
   }
 

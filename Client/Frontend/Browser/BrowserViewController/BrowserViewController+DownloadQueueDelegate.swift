@@ -53,7 +53,7 @@ extension BrowserViewController: DownloadQueueDelegate {
 
       if error == nil {
         let downloadCompleteToast = ButtonToast(
-          labelText: download.filename, imageName: "check", buttonText: Strings.downloadsButtonTitle,
+          labelText: download.filename, image: UIImage(named: "check", in: .current, compatibleWith: nil)?.template, buttonText: Strings.downloadsButtonTitle,
           completion: { buttonPressed in
             guard buttonPressed else { return }
 
