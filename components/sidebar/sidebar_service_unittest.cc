@@ -419,6 +419,64 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   EXPECT_EQ(3, index);
 }
 
+// Verify service has migrated the previous pref format where built-in items
+// had url stored and not built-in-item-type.
+TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
+  // Make prefs already have old-style builtin items before service
+  // initialization.
+  {
+    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
+    update->ClearList();
+
+    // Items should not receive a built-in-item-type.
+    std::vector<std::string> urls{
+        "https://together.brave.com/",
+        "chrome://wallet/",
+        "chrome://bookmarks/",
+        "chrome://history/",
+    };
+    for (const auto& url : urls) {
+      base::Value::Dict dict;
+      dict.Set(sidebar::kSidebarItemURLKey, url);
+      dict.Set(sidebar::kSidebarItemTitleKey, "Anything");
+      dict.Set(sidebar::kSidebarItemTypeKey,
+               static_cast<int>(SidebarItem::Type::kTypeBuiltIn));
+      dict.Set(sidebar::kSidebarItemOpenInPanelKey, true);
+      update->Append(base::Value(std::move(dict)));
+    }
+    // Add a custom item to make sure we don't interfere with it
+    base::Value::Dict dict;
+    dict.Set(sidebar::kSidebarItemURLKey, "chrome://settings/help");
+    dict.Set(sidebar::kSidebarItemTitleKey, "Anything");
+    dict.Set(sidebar::kSidebarItemTypeKey,
+             static_cast<int>(SidebarItem::Type::kTypeWeb));
+    dict.Set(sidebar::kSidebarItemOpenInPanelKey, false);
+    update->Append(base::Value(std::move(dict)));
+  }
+
+  // Not crashing is a good indicator this test has passed
+  InitService();
+
+  // Verify migration
+  auto& items = prefs_.GetValueList(kSidebarItems);
+  for (const auto& item : items) {
+    const auto item_type =
+        static_cast<SidebarItem::Type>(*item.FindIntKey(kSidebarItemTypeKey));
+    if (item_type == SidebarItem::Type::kTypeBuiltIn) {
+      const auto built_in_type = static_cast<SidebarItem::BuiltInItemType>(
+          *item.FindIntKey(kSidebarItemBuiltInItemTypeKey));
+      EXPECT_NE(built_in_type, SidebarItem::BuiltInItemType::kNone);
+    }
+  }
+
+  // Verify the expected item count includes all default items (since all are
+  // included in the pref, above), minus the obsolete items (history), plus any
+  // new default items, plus the custom item.
+  EXPECT_EQ(service_->items().size(),
+            std::size(SidebarService::kDefaultBuiltInItemTypes) + 1);
+}
+
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Verify default state
