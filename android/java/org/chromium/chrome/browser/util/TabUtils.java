@@ -21,6 +21,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -104,5 +105,15 @@ public class TabUtils {
         Intent braveActivityIntent = new Intent(activity, ChromeTabbedActivity.class);
         braveActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(braveActivityIntent);
+    }
+
+    /**
+     * Open link in a (normal/non-incognito) tab
+     * @param activity packageContext/source of the intent
+     * @param link to be opened
+     */
+    public static void openLinkWithFocus(Activity activity, String link) {
+        TabUtils.openUrlInNewTab(false, link);
+        TabUtils.bringChromeTabbedActivityToTheTop(activity);
     }
 }
