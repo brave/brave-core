@@ -994,7 +994,6 @@
       <if expr="enable_ftx">
         <part file="ftx_strings.grdp" />
       </if>
-      <part file="webtorrent_strings.grdp" />
     </messages>
   </release>
 </grit>
