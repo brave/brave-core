@@ -67,14 +67,14 @@ class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
     return HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
   }
 
-  void OnDidProcessDeposit(const TransactionInfo& transaction) override {
+  void OnDidProcessDeposit(const TransactionInfo& /*transaction*/) override {
     did_process_deposit_ = true;
   }
 
   void OnFailedToProcessDeposit(
-      const std::string& creative_instance_id,
-      const AdType& ad_type,
-      const ConfirmationType& confirmation_type) override {
+      const std::string& /*creative_instance_id*/,
+      const AdType& /*ad_type*/,
+      const ConfirmationType& /*confirmation_type*/) override {
     failed_to_process_deposit_ = true;
   }
 
