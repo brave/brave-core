@@ -163,9 +163,9 @@ GURL BraveShieldsDataController::GetCurrentSiteURL() {
 GURL BraveShieldsDataController::GetFaviconURL(bool refresh) {
   auto url = GURL("chrome://favicon2/");
   url = AppendQueryParameter(url, "size", "16");
-  url = AppendQueryParameter(url, "scale_factor", "2x");
-  url = AppendQueryParameter(url, "show_fallback_monogram", "");
-  url = AppendQueryParameter(url, "page_url",
+  url = AppendQueryParameter(url, "scaleFactor", "2x");
+  url = AppendQueryParameter(url, "showFallbackMonogram", "");
+  url = AppendQueryParameter(url, "pageUrl",
                              GetCurrentSiteURL().GetWithoutFilename().spec());
 
   if (refresh) {
