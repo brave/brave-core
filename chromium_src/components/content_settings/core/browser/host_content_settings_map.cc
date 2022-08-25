@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/contains.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/content_settings/core/common/features.h"
 
 #if !BUILDFLAG(IS_IOS)
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
@@ -15,13 +17,29 @@ namespace content_settings {
 namespace {
 
 bool IsMorePermissive_BraveImpl(ContentSettingsType content_type,
-                                ContentSetting a,
-                                ContentSetting b) {
-  // NOTIFICATIONS is auto-blocked in incognito after a random timeout, it
-  // requires special handling.
-  if (content_type == ContentSettingsType::NOTIFICATIONS) {
-    return IsMorePermissive(a, b);
+                                ContentSetting setting,
+                                ContentSetting initial_setting) {
+  // These types have additional logic for OffTheRecord profiles to always
+  // return BLOCK (with a random timeout) instead of inheriting the setting.
+  //
+  // We must be careful to not break this, otherwise
+  // ProcessIncognitoInheritanceBehavior() will return `initial_setting` which
+  // is usually ASK and incorrect for OffTheRecord profiles.
+  const ContentSettingsType kOffTheRecordAwareTypes[] = {
+      ContentSettingsType::NOTIFICATIONS,
+      ContentSettingsType::PROTECTED_MEDIA_IDENTIFIER,
+      ContentSettingsType::IDLE_DETECTION,
+  };
+
+  const bool is_more_permissive = IsMorePermissive(setting, initial_setting);
+  if (is_more_permissive ||
+      base::Contains(kOffTheRecordAwareTypes, content_type) ||
+      base::FeatureList::IsEnabled(kAllowIncognitoPermissionInheritance)) {
+    return is_more_permissive;
   }
+
+  // If the type doesn't have special OffTheRecord handling, force
+  // ProcessIncognitoInheritanceBehavior() to always return `initial_setting`.
   return true;
 }
 

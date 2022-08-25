@@ -1,8 +1,9 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -44,11 +45,15 @@ class BraveContentSettingsBrowserTest : public InProcessBrowserTest {
 
   static ContentSetting GetIncognitoAwareDefaultSetting(
       ContentSettingsType content_type,
+      ContentSetting current_setting,
       ContentSetting incognito_default_setting) {
-    // NOTIFICATIONS is auto-blocked in incognito after a random timeout, it
-    // requires special handling.
-    if (content_type == ContentSettingsType::NOTIFICATIONS) {
-      return CONTENT_SETTING_BLOCK;
+    const ContentSettingsType kOffTheRecordAwareTypes[] = {
+        ContentSettingsType::NOTIFICATIONS,
+        ContentSettingsType::PROTECTED_MEDIA_IDENTIFIER,
+        ContentSettingsType::IDLE_DETECTION,
+    };
+    if (base::Contains(kOffTheRecordAwareTypes, content_type)) {
+      return current_setting;
     }
     return incognito_default_setting;
   }
@@ -75,14 +80,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
     SCOPED_TRACE(testing::Message()
                  << "ContentSettingsType=" << static_cast<int>(type));
     // Ignore unusual settings and settings that use CONTENT_SETTING_DEFAULT as
-    // a default value (DCHECKs as invalid default value).
-    if (!info->IsSettingValid(CONTENT_SETTING_BLOCK) ||
-        info->website_settings_info()->initial_default_value().GetInt() == 0) {
+    // a default value (it DCHECKs as invalid default value).
+    if (!info->IsSettingValid(CONTENT_SETTING_ALLOW) ||
+        !info->IsSettingValid(CONTENT_SETTING_BLOCK) ||
+        info->website_settings_info()->initial_default_value().GetInt() ==
+            CONTENT_SETTING_DEFAULT) {
       continue;
     }
 
     if (info->GetInitialDefaultSetting() == CONTENT_SETTING_BLOCK) {
-      // Not interested in already blocked permissions.
+      // Not interested in permissions blocked by default.
       continue;
     }
 
@@ -101,23 +108,43 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
         incognito_host_content_settings->GetContentSetting(url, url, type),
         incognito_default_setting);
 
-    // Set non-default value in normal profile.
-    normal_host_content_settings->SetContentSettingDefaultScope(
-        url, url, type, CONTENT_SETTING_BLOCK);
-    // Make sure the value is properly applied in normal profile.
-    EXPECT_EQ(normal_host_content_settings->GetContentSetting(url, url, type),
-              CONTENT_SETTING_BLOCK);
-
-    // Check incognito value inheritance.
-    const bool should_ignore_inheritance_for_privacy =
+    const bool unchecked_inherit_in_incognito =
         info->incognito_behavior() ==
-        content_settings::ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE;
+        content_settings::ContentSettingsInfo::INHERIT_IN_INCOGNITO;
+    if (!unchecked_inherit_in_incognito) {
+      EXPECT_EQ(
+          info->incognito_behavior(),
+          content_settings::ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE)
+          << "Unexpected inheritance setting found. Please review this test.";
+    }
+
+    // Set ALLOW value in normal profile.
+    normal_host_content_settings->SetContentSettingDefaultScope(
+        url, url, type, CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(normal_host_content_settings->GetContentSetting(url, url, type),
+              CONTENT_SETTING_ALLOW);
+    // Make sure the incognito value is default.
     EXPECT_EQ(
         incognito_host_content_settings->GetContentSetting(url, url, type),
-        should_ignore_inheritance_for_privacy
-            ? GetIncognitoAwareDefaultSetting(type, incognito_default_setting)
-            : CONTENT_SETTING_BLOCK);
+        unchecked_inherit_in_incognito
+            ? CONTENT_SETTING_ALLOW
+            : GetIncognitoAwareDefaultSetting(type, CONTENT_SETTING_ASK,
+                                              incognito_default_setting));
 
+    // Set BLOCK value in normal profile.
+    normal_host_content_settings->SetContentSettingDefaultScope(
+        url, url, type, CONTENT_SETTING_BLOCK);
+    EXPECT_EQ(normal_host_content_settings->GetContentSetting(url, url, type),
+              CONTENT_SETTING_BLOCK);
+    // Make sure the incognito value is still default.
+    EXPECT_EQ(
+        incognito_host_content_settings->GetContentSetting(url, url, type),
+        unchecked_inherit_in_incognito
+            ? CONTENT_SETTING_BLOCK
+            : GetIncognitoAwareDefaultSetting(type, CONTENT_SETTING_BLOCK,
+                                              incognito_default_setting));
+
+    // Set BLOCK value in incognito profile.
     incognito_host_content_settings->SetContentSettingDefaultScope(
         url, url, type, CONTENT_SETTING_BLOCK);
     // Make sure the value is properly applied in incognito profile.

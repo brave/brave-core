@@ -244,6 +244,7 @@
 -OverlayWindowViewsTest.*
 -PageFreezerTest.*
 -PageInfoBubbleViewTest.*
+-PageInfoTest.IncognitoPermissionsDontShowAsk # Change upstream logic for incognito windows. https://github.com/brave/brave-browser/issues/24720
 -PdfPrinterHandlerGetCapabilityTest.*
 -PdfPrinterHandlerPosixTest.*
 -PeopleHandlerTest.*
