@@ -36,7 +36,9 @@ extension Preferences {
     )
     /// The option to display web3 notification
     public static let displayWeb3Notifications = Option<Bool>(key: "wallet.display-web3-notifications", default: true)
-    // The option to determine if we show or hide test networks in network lists
+    /// The option to determine if we show or hide test networks in network lists
     public static let showTestNetworks = Option<Bool>(key: "wallet.show-test-networks", default: false)
+    /// The option for users to turn off aurora popup
+    public static let showAuroraPopup = Option<Bool>(key: "wallet.show-aurora-popup", default: true)
   }
 }

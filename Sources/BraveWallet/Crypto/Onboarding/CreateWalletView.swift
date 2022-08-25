@@ -130,24 +130,42 @@ private struct CreateWalletView: View {
       .padding()
       .padding(.vertical)
       .background(
-        BiometricsPromptView(isPresented: $isShowingBiometricsPrompt) { enabled, navController in
-          // Store password in keychain
-          if enabled, case let status = keyringStore.storePasswordInKeychain(password),
-            status != errSecSuccess {
-            let isPublic = AppConstants.buildChannel.isPublic
-            let alert = UIAlertController(
-              title: Strings.Wallet.biometricsSetupErrorTitle,
-              message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
-              preferredStyle: .alert
-            )
-            alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-            navController?.presentedViewController?.present(alert, animated: true)
-            return false
+        WalletPromptView(
+          isPresented: $isShowingBiometricsPrompt,
+          buttonTitle: Strings.Wallet.biometricsSetupEnableButtonTitle,
+          action: { enabled, navController in
+            // Store password in keychain
+            if enabled, case let status = keyringStore.storePasswordInKeychain(password),
+               status != errSecSuccess {
+              let isPublic = AppConstants.buildChannel.isPublic
+              let alert = UIAlertController(
+                title: Strings.Wallet.biometricsSetupErrorTitle,
+                message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
+                preferredStyle: .alert
+              )
+              alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+              navController?.presentedViewController?.present(alert, animated: true)
+              return false
+            }
+            let controller = UIHostingController(rootView: BackupWalletView(keyringStore: keyringStore))
+            navController?.pushViewController(controller, animated: true)
+            return true
+          },
+          content: {
+            VStack {
+              Image(sharedName: "pin-migration-graphic")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: 250)
+                .padding()
+              Text(Strings.Wallet.biometricsSetupTitle)
+                .font(.headline)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.center)
+                .padding(.bottom)
+            }
           }
-          let controller = UIHostingController(rootView: BackupWalletView(keyringStore: keyringStore))
-          navController?.pushViewController(controller, animated: true)
-          return true
-        }
+        )
       )
       .background(
         NavigationLink(
