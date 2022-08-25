@@ -92,16 +92,16 @@ test('Check locks for device', () => {
 test('Extract accounts from locked device', () => {
   const ledgerHardwareKeyring = new FilecoinLedgerKeyring()
   ledgerHardwareKeyring.unlock = async function () {
-    return { success: false, error: 'braveWalletUnlockError' }
+    return { success: false, error: 'braveWalletUnlockError', code: 'unlockError' }
   }
   return expect(ledgerHardwareKeyring.getAccounts(-2, 1, CoinType.TEST))
-    .resolves.toStrictEqual({ error: 'braveWalletUnlockError', success: false })
+    .resolves.toStrictEqual({ error: 'braveWalletUnlockError', success: false, code: 'unlockError' })
 })
 
 test('Sign transaction locked device, unlock error', () => {
   const ledgerHardwareKeyring = new FilecoinLedgerKeyring()
   ledgerHardwareKeyring.unlock = async function () {
-    return { success: false, error: 'braveWalletUnlockError' }
+    return { success: false, error: 'braveWalletUnlockError', code: 'unlockError' }
   }
   ledgerHardwareKeyring.provider = new MockApp() as LedgerProvider
   const message = {
@@ -118,7 +118,7 @@ test('Sign transaction locked device, unlock error', () => {
   }
 
   return expect(ledgerHardwareKeyring.signTransaction(JSON.stringify(message)))
-    .resolves.toStrictEqual({ success: false, error: 'braveWalletUnlockError' })
+    .resolves.toStrictEqual({ success: false, error: 'braveWalletUnlockError', code: 'unlockError' })
 })
 
 test('Sign transaction locked device, success', () => {
