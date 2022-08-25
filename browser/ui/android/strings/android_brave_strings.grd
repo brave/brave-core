@@ -3229,7 +3229,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Try the Brave search widget
     </message>
     <message name="IDS_TRY_BRAVE_SEARCH_WIDGET_DESCRIPTION" desc="Description of Brave search widget promo">
-      Access search and more with a quick tap directly from your home screen.
+      Access private, independent search right from your home screen.
     </message>
     <message name="IDS_ADD_WIDGET" desc="Add widget button text">
       Add widget

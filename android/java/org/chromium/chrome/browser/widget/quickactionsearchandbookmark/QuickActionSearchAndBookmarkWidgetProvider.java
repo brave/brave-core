@@ -152,7 +152,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     private static int indexOf(Tile tile) {
         List<WidgetTile> widgetTileList = DataManager.readWidgetTiles();
         for (int i = 0; i < widgetTileList.size(); i++) {
-            if (widgetTileList.get(i).equals(tile)) return i;
+            if (widgetTileList.get(i).getUrl().equals(tile.getUrl().getSpec())) return i;
         }
         return -1;
     }
