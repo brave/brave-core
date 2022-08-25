@@ -180,10 +180,16 @@ handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Stor
   }
 })
 
-handler.on(WalletPageActions.removeImportedAccount.getType(), async (store: Store, payload: RemoveImportedAccountPayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.removeImportedAccount(payload.address, payload.coin)
-  return result.success
+handler.on(WalletPageActions.removeImportedAccount.getType(), async (
+  store: Store,
+  payload: RemoveImportedAccountPayloadType
+) => {
+  const { keyringService } = getWalletPageApiProxy()
+  await keyringService.removeImportedAccount(
+    payload.address,
+    payload.password,
+    payload.coin
+  )
 })
 
 handler.on(WalletPageActions.viewPrivateKey.getType(), async (store: Store, payload: ViewPrivateKeyPayloadType) => {
@@ -213,9 +219,16 @@ handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store,
 })
 
 handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  keyringService.removeHardwareAccount(payload.address, payload.coin)
-  store.dispatch(WalletPageActions.setShowAddModal(false))
+  const { keyringService } = getWalletPageApiProxy()
+  const { success } = await keyringService.removeHardwareAccount(
+    payload.address,
+    payload.password,
+    payload.coin
+  )
+
+  if (success) {
+    store.dispatch(WalletPageActions.setShowAddModal(false))
+  }
 })
 
 handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {

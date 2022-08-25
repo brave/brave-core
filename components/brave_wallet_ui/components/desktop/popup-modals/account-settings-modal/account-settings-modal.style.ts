@@ -54,13 +54,6 @@ export const Input = styled.input`
     margin: 0;
   }
 `
-export const InputLabelText = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text03};
-  text-align: left;
-  width: 100%;
-`
 
 export const QRCodeWrapper = styled.img`
   display: flex;

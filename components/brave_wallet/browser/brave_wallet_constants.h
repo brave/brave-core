@@ -64,6 +64,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletOrdinalFifth", IDS_BRAVE_WALLET_ORDINAL_FIFTH},
     {"braveWalletOrdinalFourth", IDS_BRAVE_WALLET_ORDINAL_FOURTH},
     {"braveWalletOrdinalSecond", IDS_BRAVE_WALLET_ORDINAL_SECOND},
+    {"braveWalletRemoveAccountModalTitle",
+     IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE},
     {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
     {"braveWalletClickToSwitch", BRAVE_WALLET_CLICK_TO_SWITCH},
     {"braveWalletUnlockNeededToCreateAccount",

@@ -52,15 +52,19 @@ import {
   WarningWrapper,
   PrivateKeyBubble,
   ButtonWrapper,
-  ErrorText,
-  InputLabelText
+  ErrorText
 } from './account-settings-modal.style'
 
 interface Props {
   onClose: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onChangeTab: (id: AccountSettingsNavTypes) => void
-  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
+  onRemoveAccount: (
+    address: string,
+    hardware: boolean,
+    coin: BraveWallet.CoinType,
+    password: string
+  ) => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
   onToggleNav: () => void
@@ -129,7 +133,7 @@ export const AccountSettingsModal = ({
   }
 
   const removeAccount = () => {
-    onRemoveAccount(account.address, false, account.coin)
+    onRemoveAccount(account.address, false, account.coin, password)
     onToggleNav()
     onClose()
   }
@@ -268,10 +272,8 @@ export const AccountSettingsModal = ({
                   <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
                 </CopyTooltip>
               </>
-              : <>
-                <InputLabelText>{getLocale('braveWalletEnterYourPassword')}</InputLabelText>
-                <PasswordInput
-                  placeholder={getLocale('braveWalletCreatePasswordInput')}
+              : <PasswordInput
+                  placeholder={getLocale('braveWalletEnterYourPassword')}
                   onChange={onPasswordChange}
                   hasError={!!password && !isCorrectPassword}
                   error={getLocale('braveWalletLockScreenError')}
@@ -279,7 +281,6 @@ export const AccountSettingsModal = ({
                   value={password}
                   onKeyDown={handlePasswordKeyDown}
                 />
-              </>
             }
             <ButtonWrapper>
               <NavButton

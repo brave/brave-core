@@ -26,9 +26,9 @@ import {
   PageIcon,
   PasswordColumn
 } from './backup-wallet-intro.style'
-import { InputLabelText } from '../../../../components/desktop/popup-modals/account-settings-modal/account-settings-modal.style'
 import { useDispatch } from 'react-redux'
 import { WalletPageActions } from '../../../actions'
+import { InputLabelText } from '../../../../components/shared/style'
 
 export interface Props {
   onSubmit: () => void

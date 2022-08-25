@@ -20,7 +20,7 @@ export const sortAccountsByName = (accounts: WalletAccountType[]) => {
 }
 
 export const groupAccountsById = (accounts: WalletAccountType[], key: string) => {
-  return accounts.reduce((result, obj) => {
+  return accounts.reduce<Record<string, WalletAccountType[]>>((result, obj) => {
     (result[obj[key]] = result[obj[key]] || []).push(obj)
     return result
   }, {})
