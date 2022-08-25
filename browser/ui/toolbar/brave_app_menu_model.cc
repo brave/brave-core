@@ -164,15 +164,14 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 
   // Step 1. Configure tab & windows section.
   if (IsCommandIdEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE)) {
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_NEW_WINDOW),
-        IDC_NEW_TOR_CONNECTION_FOR_SITE,
-        IDS_NEW_TOR_CONNECTION_FOR_SITE);
+    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_NEW_WINDOW).value(),
+                             IDC_NEW_TOR_CONNECTION_FOR_SITE,
+                             IDS_NEW_TOR_CONNECTION_FOR_SITE);
   }
   if (IsCommandIdEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR)) {
-    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW) + 1,
-                             IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-                             IDS_NEW_OFFTHERECORD_WINDOW_TOR);
+    InsertItemWithStringIdAt(
+        GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW).value() + 1,
+        IDC_NEW_OFFTHERECORD_WINDOW_TOR, IDS_NEW_OFFTHERECORD_WINDOW_TOR);
   }
 
   // Step 2. Configure second section that includes history, downloads and
@@ -180,47 +179,46 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 
   // First, reorder original menus We want to move them in order of bookmark,
   // download and extensions.
-  const int bookmark_item_index = GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
+  absl::optional<size_t> bookmark_item_index =
+      GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
   // If bookmark is not used, we don't need to adjust download item.
-  if (bookmark_item_index != -1) {
+  if (bookmark_item_index.has_value()) {
     // Place download menu under bookmark.
     DCHECK(IsCommandIdEnabled(IDC_SHOW_DOWNLOADS));
-    RemoveItemAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS));
-    InsertItemWithStringIdAt(bookmark_item_index,
-                             IDC_SHOW_DOWNLOADS,
+    RemoveItemAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value());
+    InsertItemWithStringIdAt(bookmark_item_index.value(), IDC_SHOW_DOWNLOADS,
                              IDS_SHOW_DOWNLOADS);
   }
   // Move extensions menu under download.
   ui::SimpleMenuModel* model = static_cast<ui::SimpleMenuModel*>(
-      GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU)));
+      GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
   DCHECK(model);
   // More tools menu adds extensions item always.
-  DCHECK_NE(-1, model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS));
-  model->RemoveItemAt(model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS));
+  DCHECK(model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).has_value());
+  model->RemoveItemAt(
+      model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).value());
 
   if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {
-    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS) + 1,
-                             IDC_MANAGE_EXTENSIONS,
-                             IDS_SHOW_EXTENSIONS);
+    InsertItemWithStringIdAt(
+        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
+        IDC_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
   }
 
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_REWARDS)) {
     InsertItemWithStringIdAt(GetIndexOfBraveRewardsItem(),
-                             IDC_SHOW_BRAVE_REWARDS,
-                             IDS_SHOW_BRAVE_REWARDS);
+                             IDC_SHOW_BRAVE_REWARDS, IDS_SHOW_BRAVE_REWARDS);
   }
 
   // Insert wallet menu after download menu.
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_WALLET)) {
-    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS) + 1,
-                             IDC_SHOW_BRAVE_WALLET,
-                             IDS_SHOW_BRAVE_WALLET);
+    InsertItemWithStringIdAt(
+        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
+        IDC_SHOW_BRAVE_WALLET, IDS_SHOW_BRAVE_WALLET);
   }
 
   // Insert sync menu
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {
-    InsertItemWithStringIdAt(GetIndexOfBraveSyncItem(),
-                             IDC_SHOW_BRAVE_SYNC,
+    InsertItemWithStringIdAt(GetIndexOfBraveSyncItem(), IDC_SHOW_BRAVE_SYNC,
                              IDS_SHOW_BRAVE_SYNC);
   }
 
@@ -248,7 +246,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 #endif
 
   // Insert webcompat reporter item.
-  InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_ABOUT),
+  InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_ABOUT).value(),
                            IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
                            IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
 
@@ -296,11 +294,11 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
     if (ipfs_command == -1)
       return;
     auto* submenu = ipns_keys_submenu_models_[ipfs_command].get();
-    auto command_index = submenu->GetIndexOfCommandId(id);
-    if (command_index == -1)
+    absl::optional<size_t> command_index = submenu->GetIndexOfCommandId(id);
+    if (!command_index.has_value())
       return;
-    auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index));
-    auto key_name = (command_index > 0) ? label : std::string();
+    auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index.value()));
+    auto key_name = (command_index.value() > 0) ? label : std::string();
     ExecuteIPFSCommand(ipfs_command, key_name);
     return;
   }
@@ -360,16 +358,6 @@ int BraveAppMenuModel::AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
   return command_id - key_command_id;
 }
 
-int BraveAppMenuModel::FindCommandIndex(int command_id) const {
-  for (const auto& it : ipns_keys_submenu_models_) {
-    int index = it.second->GetIndexOfCommandId(command_id);
-    if (index == -1)
-      continue;
-    return index;
-  }
-  return -1;
-}
-
 void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
   auto* active_content = browser()->tab_strip_model()->GetActiveWebContents();
   ipfs::IPFSTabHelper* helper =
@@ -391,8 +379,8 @@ void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
 
 int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
   for (const auto& it : ipns_keys_submenu_models_) {
-    auto index = it.second->GetIndexOfCommandId(id);
-    if (index == -1)
+    absl::optional<size_t> index = it.second->GetIndexOfCommandId(id);
+    if (!index.has_value())
       continue;
     return it.first;
   }
@@ -423,8 +411,9 @@ void BraveAppMenuModel::InsertAlternateProfileItems() {
   // Insert Open Guest Window and Create New Profile items just above
   // the zoom item unless these items are disabled.
 
-  const int zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU);
-  const int index = zoom_index - 1;
+  const size_t zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU).value();
+  DCHECK_GT(zoom_index, 0u);
+  const size_t index = zoom_index - 1;
 
   // Open Guest Window
   if (IsCommandIdEnabled(IDC_OPEN_GUEST_PROFILE)) {
@@ -437,11 +426,11 @@ void BraveAppMenuModel::InsertAlternateProfileItems() {
     InsertItemWithStringIdAt(index, IDC_ADD_NEW_PROFILE, IDS_ADD_NEW_PROFILE);
   }
 
-  if (zoom_index != GetIndexOfCommandId(IDC_ZOOM_MENU))
+  if (zoom_index != GetIndexOfCommandId(IDC_ZOOM_MENU).value())
     InsertSeparatorAt(index, ui::NORMAL_SEPARATOR);
 }
 
-int BraveAppMenuModel::GetLastIndexOfSecondSection() const {
+size_t BraveAppMenuModel::GetLastIndexOfSecondSection() const {
   // Insert as a last item in second section.
   std::vector<int> commands_to_check = {IDC_SHOW_BRAVE_VPN_PANEL,
                                         IDC_BRAVE_VPN_MENU,
@@ -451,60 +440,59 @@ int BraveAppMenuModel::GetLastIndexOfSecondSection() const {
                                         IDC_SHOW_BRAVE_WALLET,
                                         IDC_SHOW_DOWNLOADS};
 
-  return GetProperItemIndex(commands_to_check, true);
+  return GetProperItemIndex(commands_to_check, true).value();
 }
 
-int BraveAppMenuModel::GetIndexOfBraveRewardsItem() const {
+size_t BraveAppMenuModel::GetIndexOfBraveRewardsItem() const {
   // Insert rewards menu at first of this section. If history menu is not
   // available, check below items.
   std::vector<int> commands_to_check = {IDC_RECENT_TABS_MENU,
                                         IDC_BOOKMARKS_MENU, IDC_SHOW_DOWNLOADS};
 
-  return GetProperItemIndex(commands_to_check, false);
+  return GetProperItemIndex(commands_to_check, false).value();
 }
 
-int BraveAppMenuModel::GetIndexOfBraveSyncItem() const {
+size_t BraveAppMenuModel::GetIndexOfBraveSyncItem() const {
   // Insert sync menu under extensions menu. If extensions menu is not
   // available, check above items.
   std::vector<int> commands_to_check = {
       IDC_MANAGE_EXTENSIONS, IDC_SHOW_BRAVE_WALLET, IDC_SHOW_DOWNLOADS};
 
-  return GetProperItemIndex(commands_to_check, true);
+  return GetProperItemIndex(commands_to_check, true).value();
 }
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-int BraveAppMenuModel::GetIndexOfBraveSidebarItem() const {
+size_t BraveAppMenuModel::GetIndexOfBraveSidebarItem() const {
   std::vector<int> commands_to_check = {
       IDC_SHOW_BRAVE_SYNC, IDC_MANAGE_EXTENSIONS, IDC_SHOW_BRAVE_WALLET,
       IDC_SHOW_DOWNLOADS};
 
-  return GetProperItemIndex(commands_to_check, true);
+  return GetProperItemIndex(commands_to_check, true).value();
 }
 #endif
 
-int BraveAppMenuModel::GetIndexOfBraveVPNItem() const {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+size_t BraveAppMenuModel::GetIndexOfBraveVPNItem() const {
   std::vector<int> commands_to_check = {
       IDC_SIDEBAR_SHOW_OPTION_MENU, IDC_SHOW_BRAVE_SYNC, IDC_MANAGE_EXTENSIONS,
       IDC_SHOW_BRAVE_WALLET, IDC_SHOW_DOWNLOADS};
 
-  return GetProperItemIndex(commands_to_check, true);
-#else
-  return -1;
-#endif
+  return GetProperItemIndex(commands_to_check, true).value();
 }
+#endif
 
-int BraveAppMenuModel::GetProperItemIndex(std::vector<int> commands_to_check,
-                                          bool insert_next) const {
-  int item_index = -1;
+absl::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
+    std::vector<int> commands_to_check,
+    bool insert_next) const {
   const size_t commands_size = commands_to_check.size();
   for (size_t i = 0; i < commands_size; i++) {
-    item_index = GetIndexOfCommandId(commands_to_check[i]);
-    if (item_index != -1)
-      return insert_next ? item_index + 1 : item_index;
+    absl::optional<size_t> item_index =
+        GetIndexOfCommandId(commands_to_check[i]);
+    if (item_index.has_value())
+      return insert_next ? item_index.value() + 1 : item_index;
   }
 
-  NOTREACHED() << "At least, item for this command should be existed: "
+  NOTREACHED() << "At least, a menu item for this command should exist: "
                << commands_to_check[commands_size - 1];
-  return 0;
+  return absl::nullopt;
 }

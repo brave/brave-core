@@ -60,6 +60,7 @@ export const BackupWallet = (props: Props) => {
 
   const nextStep = React.useCallback(() => {
     if (backupStep === 2) {
+      dispatch(WalletPageActions.showRecoveryPhrase({ show: false }))
       onSubmit()
       return
     }
@@ -90,7 +91,7 @@ export const BackupWallet = (props: Props) => {
 
   // effects
   React.useEffect(() => {
-    dispatch(WalletPageActions.showRecoveryPhrase(true))
+    dispatch(WalletPageActions.showRecoveryPhrase({ show: false }))
   }, [])
 
   React.useEffect(() => {

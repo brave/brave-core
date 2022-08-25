@@ -5,4 +5,5 @@
 
 declare_args() {
   enable_playlist = is_win || is_mac || is_linux || is_android
+  enable_playlist_webui = is_win || is_mac || is_linux
 }

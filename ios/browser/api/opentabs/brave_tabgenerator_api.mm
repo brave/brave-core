@@ -297,7 +297,8 @@ void BraveNativeTab::SetURL(const GURL& url) {
 
     navigation_manager->AddPendingItem(
         url, web::Referrer(), ui::PAGE_TRANSITION_TYPED,
-        web::NavigationInitiationType::BROWSER_INITIATED, false, false);
+        web::NavigationInitiationType::BROWSER_INITIATED, false,
+        web::HttpsUpgradeType::kNone);
 
     navigation_manager->CommitPendingItem();
     static_cast<web::WebStateImpl*>(web_state_)->OnPageLoaded(url, true);

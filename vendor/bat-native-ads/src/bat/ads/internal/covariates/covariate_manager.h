@@ -44,7 +44,7 @@ class CovariateManager final {
 
   void SetNotificationAdServedAt(const base::Time time);
   void SetNotificationAdEvent(const mojom::NotificationAdEventType event_type);
-  void LogTrainingInstance();
+  void LogTrainingInstance() const;
 
  private:
   base::flat_map<brave_federated::mojom::CovariateType,

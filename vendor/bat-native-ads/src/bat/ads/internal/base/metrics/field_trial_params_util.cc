@@ -18,8 +18,7 @@ std::string GetFieldTrialParamByFeatureAsString(
     const base::Feature& feature,
     const std::string& param_name,
     const std::string& default_value) {
-  const std::string value =
-      GetFieldTrialParamValueByFeature(feature, param_name);
+  std::string value = GetFieldTrialParamValueByFeature(feature, param_name);
 
   if (value.empty()) {
     return default_value;

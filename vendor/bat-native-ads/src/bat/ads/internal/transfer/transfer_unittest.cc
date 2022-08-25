@@ -37,9 +37,9 @@ class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
 
   void OnFailedToTransferAd(const AdInfo& ad) override { transfer_count_--; }
 
-  int GetTransferCount() { return transfer_count_; }
+  int GetTransferCount() const { return transfer_count_; }
 
-  AdInfo BuildAdForType(const AdType type) {
+  AdInfo BuildAdForType(const AdType& type) {
     AdInfo ad;
 
     ad.type = type;

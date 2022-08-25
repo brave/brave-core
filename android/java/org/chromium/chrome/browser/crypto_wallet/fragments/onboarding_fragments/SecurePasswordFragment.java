@@ -26,10 +26,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -37,6 +40,7 @@ import java.util.concurrent.Executor;
 
 public class SecurePasswordFragment extends CryptoOnboardingFragment {
     private boolean mCreateWalletClicked;
+    private OnboardingViewModel mOnboardingViewModel;
 
     private KeyringService getKeyringService() {
         Activity activity = getActivity();
@@ -73,6 +77,8 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
+                                       .get(OnboardingViewModel.class);
         Button secureCryptoButton = view.findViewById(R.id.btn_secure_crypto_continue);
         secureCryptoButton.setOnClickListener(v -> {
             if (mCreateWalletClicked) {
@@ -144,6 +150,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             keyringService.createWallet(passwordInput, recoveryPhrases -> {
                 // Go to the next page after wallet creation is done
                 Utils.setCryptoOnboarding(false);
+                mOnboardingViewModel.setPassword(passwordInput);
                 onNextPage.gotoNextPage(false);
             });
         }

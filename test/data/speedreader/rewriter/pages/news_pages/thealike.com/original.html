@@ -1,0 +1,718 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en-US"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js lt-ie10" lang="en-US"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en-US"> <!--<![endif]-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=yes' />
+    <link rel="profile" href="https://gmpg.org/xfn/11" />
+    <link rel="pingback" href="https://thealike.com/xmlrpc.php" />
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+			<script type="text/javascript">
+              var jnews_ajax_url = '/?ajax-request=jnews'
+			</script>
+			<script type="text/javascript">;window.jnews=window.jnews||{},window.jnews.library=window.jnews.library||{},window.jnews.library=function(){"use strict";var t=this;t.win=window,t.doc=document,t.globalBody=t.doc.getElementsByTagName("body")[0],t.globalBody=t.globalBody?t.globalBody:t.doc,t.win.jnewsDataStorage=t.win.jnewsDataStorage||{_storage:new WeakMap,put:function(t,e,n){this._storage.has(t)||this._storage.set(t,new Map),this._storage.get(t).set(e,n)},get:function(t,e){return this._storage.get(t).get(e)},has:function(t,e){return this._storage.has(t)&&this._storage.get(t).has(e)},remove:function(t,e){var n=this._storage.get(t).delete(e);return 0===!this._storage.get(t).size&&this._storage.delete(t),n}},t.windowWidth=function(){return t.win.innerWidth||t.docEl.clientWidth||t.globalBody.clientWidth},t.windowHeight=function(){return t.win.innerHeight||t.docEl.clientHeight||t.globalBody.clientHeight},t.requestAnimationFrame=t.win.requestAnimationFrame||t.win.webkitRequestAnimationFrame||t.win.mozRequestAnimationFrame||t.win.msRequestAnimationFrame||window.oRequestAnimationFrame||function(t){return setTimeout(t,1e3/60)},t.cancelAnimationFrame=t.win.cancelAnimationFrame||t.win.webkitCancelAnimationFrame||t.win.webkitCancelRequestAnimationFrame||t.win.mozCancelAnimationFrame||t.win.msCancelRequestAnimationFrame||t.win.oCancelRequestAnimationFrame||function(t){clearTimeout(t)},t.classListSupport="classList"in document.createElement("_"),t.hasClass=t.classListSupport?function(t,e){return t.classList.contains(e)}:function(t,e){return t.className.indexOf(e)>=0},t.addClass=t.classListSupport?function(e,n){t.hasClass(e,n)||e.classList.add(n)}:function(e,n){t.hasClass(e,n)||(e.className+=" "+n)},t.removeClass=t.classListSupport?function(e,n){t.hasClass(e,n)&&e.classList.remove(n)}:function(e,n){t.hasClass(e,n)&&(e.className=e.className.replace(n,""))},t.objKeys=function(t){var e=[];for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&e.push(n);return e},t.isObjectSame=function(t,e){var n=!0;return JSON.stringify(t)!==JSON.stringify(e)&&(n=!1),n},t.extend=function(){for(var t,e,n,i=arguments[0]||{},o=1,a=arguments.length;o<a;o++)if(null!==(t=arguments[o]))for(e in t)i!==(n=t[e])&&void 0!==n&&(i[e]=n);return i},t.dataStorage=t.win.jnewsDataStorage,t.isVisible=function(t){return 0!==t.offsetWidth&&0!==t.offsetHeight||t.getBoundingClientRect().length},t.getHeight=function(t){return t.offsetHeight||t.clientHeight||t.getBoundingClientRect().height},t.getWidth=function(t){return t.offsetWidth||t.clientWidth||t.getBoundingClientRect().width},t.supportsPassive=!1;try{var e=Object.defineProperty({},"passive",{get:function(){t.supportsPassive=!0}});"createEvent"in t.doc?t.win.addEventListener("test",null,e):"fireEvent"in t.doc&&t.win.attachEvent("test",null)}catch(t){}t.passiveOption=!!t.supportsPassive&&{passive:!0},t.addEvents=function(e,n,i){for(var o in n){var a=["touchstart","touchmove"].indexOf(o)>=0&&!i&&t.passiveOption;"createEvent"in t.doc?e.addEventListener(o,n[o],a):"fireEvent"in t.doc&&e.attachEvent("on"+o,n[o])}},t.removeEvents=function(e,n){for(var i in n)"createEvent"in t.doc?e.removeEventListener(i,n[i]):"fireEvent"in t.doc&&e.detachEvent("on"+i,n[i])},t.triggerEvents=function(e,n,i){var o;i=i||{detail:null};return"createEvent"in t.doc?(!(o=t.doc.createEvent("CustomEvent")||new CustomEvent(n)).initCustomEvent||o.initCustomEvent(n,!0,!1,i),void e.dispatchEvent(o)):"fireEvent"in t.doc?((o=t.doc.createEventObject()).eventType=n,void e.fireEvent("on"+o.eventType,o)):void 0},t.getParents=function(e,n){void 0===n&&(n=t.doc);for(var i=[],o=e.parentNode,a=!1;!a;)if(o){var s=o;s.querySelectorAll(n).length?a=!0:(i.push(s),o=s.parentNode)}else i=[],a=!0;return i},t.forEach=function(t,e,n){for(var i=0,o=t.length;i<o;i++)e.call(n,t[i],i)},t.getText=function(t){return t.innerText||t.textContent},t.setText=function(t,e){var n="object"==typeof e?e.innerText||e.textContent:e;t.innerText&&(t.innerText=n),t.textContent&&(t.textContent=n)},t.httpBuildQuery=function(e){return t.objKeys(e).reduce(function e(n){var i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return function(o,a){var s=n[a];a=encodeURIComponent(a);var r=i?"".concat(i,"[").concat(a,"]"):a;return null==s||"function"==typeof s?(o.push("".concat(r,"=")),o):["number","boolean","string"].includes(typeof s)?(o.push("".concat(r,"=").concat(encodeURIComponent(s))),o):(o.push(t.objKeys(s).reduce(e(s,r),[]).join("&")),o)}}(e),[]).join("&")},t.scrollTo=function(e,n,i){function o(t,e,n){this.start=this.position(),this.change=t-this.start,this.currentTime=0,this.increment=20,this.duration=void 0===n?500:n,this.callback=e,this.finish=!1,this.animateScroll()}return Math.easeInOutQuad=function(t,e,n,i){return(t/=i/2)<1?n/2*t*t+e:-n/2*(--t*(t-2)-1)+e},o.prototype.stop=function(){this.finish=!0},o.prototype.move=function(e){t.doc.documentElement.scrollTop=e,t.globalBody.parentNode.scrollTop=e,t.globalBody.scrollTop=e},o.prototype.position=function(){return t.doc.documentElement.scrollTop||t.globalBody.parentNode.scrollTop||t.globalBody.scrollTop},o.prototype.animateScroll=function(){this.currentTime+=this.increment;var e=Math.easeInOutQuad(this.currentTime,this.start,this.change,this.duration);this.move(e),this.currentTime<this.duration&&!this.finish?t.requestAnimationFrame.call(t.win,this.animateScroll.bind(this)):this.callback&&"function"==typeof this.callback&&this.callback()},new o(e,n,i)},t.unwrap=function(e){var n,i=e;t.forEach(e,(function(t,e){n?n+=t:n=t})),i.replaceWith(n)},t.performance={start:function(t){performance.mark(t+"Start")},stop:function(t){performance.mark(t+"End"),performance.measure(t,t+"Start",t+"End")}},t.fps=function(){var e=0,n=0,i=0;!function(){var o=e=0,a=0,s=0,r=document.getElementById("fpsTable"),c=function(e){void 0===document.getElementsByTagName("body")[0]?t.requestAnimationFrame.call(t.win,(function(){c(e)})):document.getElementsByTagName("body")[0].appendChild(e)};null===r&&((r=document.createElement("div")).style.position="fixed",r.style.top="120px",r.style.left="10px",r.style.width="100px",r.style.height="20px",r.style.border="1px solid black",r.style.fontSize="11px",r.style.zIndex="100000",r.style.backgroundColor="white",r.id="fpsTable",c(r));var l=function(){i++,n=Date.now(),(a=(i/(s=(n-e)/1e3)).toPrecision(2))!=o&&(o=a,r.innerHTML=o+"fps"),1<s&&(e=n,i=0),t.requestAnimationFrame.call(t.win,l)};l()}()},t.instr=function(t,e){for(var n=0;n<e.length;n++)if(-1!==t.toLowerCase().indexOf(e[n].toLowerCase()))return!0},t.winLoad=function(e,n){function i(i){if("complete"===t.doc.readyState||"interactive"===t.doc.readyState)return!i||n?setTimeout(e,n||1):e(i),1}i()||t.addEvents(t.win,{load:i})},t.docReady=function(e,n){function i(i){if("complete"===t.doc.readyState||"interactive"===t.doc.readyState)return!i||n?setTimeout(e,n||1):e(i),1}i()||t.addEvents(t.doc,{DOMContentLoaded:i})},t.fireOnce=function(){t.docReady((function(){t.assets=t.assets||[],t.assets.length&&(t.boot(),t.load_assets())}),50)},t.boot=function(){t.length&&t.doc.querySelectorAll("style[media]").forEach((function(t){"not all"==t.getAttribute("media")&&t.removeAttribute("media")}))},t.create_js=function(e,n){var i=t.doc.createElement("script");switch(i.setAttribute("src",e),n){case"defer":i.setAttribute("defer",!0);break;case"async":i.setAttribute("async",!0);break;case"deferasync":i.setAttribute("defer",!0),i.setAttribute("async",!0)}t.globalBody.appendChild(i)},t.load_assets=function(){"object"==typeof t.assets&&t.forEach(t.assets.slice(0),(function(e,n){var i="";e.defer&&(i+="defer"),e.async&&(i+="async"),t.create_js(e.url,i);var o=t.assets.indexOf(e);o>-1&&t.assets.splice(o,1)})),t.assets=jnewsoption.au_scripts=window.jnewsads=[]},t.docReady((function(){t.globalBody=t.globalBody==t.doc?t.doc.getElementsByTagName("body")[0]:t.globalBody,t.globalBody=t.globalBody?t.globalBody:t.doc}))},window.jnews.library=new window.jnews.library;</script>
+	<!-- This site is optimized with the Yoast SEO Premium plugin v17.8 (Yoast SEO v17.8) - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Zelensky requires extra sanctions on Russia for &quot;nuclear blackmail&quot; round Zaporizhzhia plant - Egypt Independent - The Alike</title>
+	<link rel="canonical" href="https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Zelensky requires extra sanctions on Russia for &quot;nuclear blackmail&quot; round Zaporizhzhia plant - Egypt Independent" />
+	<meta property="og:description" content="Ukrainian President Volodymyr Zelensky speaks throughout his night video tackle on Monday August 15. (Office of President of Ukraine) Ukraine’s President Volodymyr Zelensky on Monday referred to as for more durable sanctions in response to what he described as Russia’s “nuclear blackmail” across the Zaporizhzhia nuclear energy plant. “Provocative shelling of the territory of the plant [&hellip;]" />
+	<meta property="og:url" content="https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/" />
+	<meta property="og:site_name" content="The Alike" />
+	<meta property="article:publisher" content="https://www.facebook.com/thealikenews" />
+	<meta property="article:published_time" content="2022-08-16T10:52:26+00:00" />
+	<meta property="article:modified_time" content="2022-08-16T11:47:00+00:00" />
+	<meta property="og:image" content="https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg" /><meta property="og:image" content="https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg" />
+	<meta name="twitter:creator" content="@thealikecom" />
+	<meta name="twitter:site" content="@thealikecom" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="Daniel Mitchell" />
+	<meta name="twitter:label2" content="Est. reading time" />
+	<meta name="twitter:data2" content="2 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://thealike.com/#organization","name":"The Alike Pvt. Ltd.","url":"https://thealike.com/","sameAs":["https://www.facebook.com/thealikenews","https://www.instagram.com/thealikecom","https://www.linkedin.com/thealike","https://www.youtube.com/channel/UCaXT5cFCveDOiw4KXVi4uNA","https://in.pinterest.com/thealikenews","https://twitter.com/thealikecom"],"logo":{"@type":"ImageObject","@id":"https://thealike.com/#logo","inLanguage":"en-US","url":"https://thealike.com/wp-content/uploads/2021/12/cropped-0001-2392179975_20210605_004445_0000.png","contentUrl":"https://thealike.com/wp-content/uploads/2021/12/cropped-0001-2392179975_20210605_004445_0000.png","width":512,"height":512,"caption":"The Alike Pvt. Ltd."},"image":{"@id":"https://thealike.com/#logo"}},{"@type":"WebSite","@id":"https://thealike.com/#website","url":"https://thealike.com/","name":"The Alike","description":"","publisher":{"@id":"https://thealike.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://thealike.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#primaryimage","inLanguage":"en-US","url":"https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg","contentUrl":"https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg","caption":"Zelensky requires extra sanctions on Russia for &#8220;nuclear blackmail&#8221; round Zaporizhzhia plant &#8211; Egypt Independent"},{"@type":"WebPage","@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#webpage","url":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/","name":"Zelensky requires extra sanctions on Russia for \"nuclear blackmail\" round Zaporizhzhia plant - Egypt Independent - The Alike","isPartOf":{"@id":"https://thealike.com/#website"},"primaryImageOfPage":{"@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#primaryimage"},"datePublished":"2022-08-16T10:52:26+00:00","dateModified":"2022-08-16T11:47:00+00:00","breadcrumb":{"@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/"]}]},{"@type":"BreadcrumbList","@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://thealike.com/"},{"@type":"ListItem","position":2,"name":"Zelensky requires extra sanctions on Russia for &#8220;nuclear blackmail&#8221; round Zaporizhzhia plant &#8211; Egypt Independent"}]},{"@type":"NewsArticle","@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#article","isPartOf":{"@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#webpage"},"author":{"@id":"https://thealike.com/#/schema/person/f6dae188076e5795dfd89969b9901aa5"},"headline":"Zelensky requires extra sanctions on Russia for &#8220;nuclear blackmail&#8221; round Zaporizhzhia plant &#8211; Egypt Independent","datePublished":"2022-08-16T10:52:26+00:00","dateModified":"2022-08-16T11:47:00+00:00","mainEntityOfPage":{"@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#webpage"},"wordCount":363,"publisher":{"@id":"https://thealike.com/#organization"},"image":{"@id":"https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/#primaryimage"},"thumbnailUrl":"https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg","articleSection":["World"],"inLanguage":"en-US","copyrightYear":"2022","copyrightHolder":{"@id":"https://thealike.com/#organization"}},{"@type":"Person","@id":"https://thealike.com/#/schema/person/f6dae188076e5795dfd89969b9901aa5","name":"Daniel Mitchell","image":{"@type":"ImageObject","@id":"https://thealike.com/#personlogo","inLanguage":"en-US","url":"https://secure.gravatar.com/avatar/db6f6eda5b8aa43dd89dccc1e2c7a8a1?s=96&d=mm&r=g","contentUrl":"https://secure.gravatar.com/avatar/db6f6eda5b8aa43dd89dccc1e2c7a8a1?s=96&d=mm&r=g","caption":"Daniel Mitchell"},"description":"Daniel is a business editor who writes about various topics such as technology, health and finance. He works along with the colourful folks that build a nation through tech startups. He is also a professional football player and video games enthusiast.","sameAs":["https://thealike.com"],"url":"https://thealike.com/blog/author/pressly/"}]}</script>
+	<!-- / Yoast SEO Premium plugin. -->
+
+
+<link rel='dns-prefetch' href='//thealike.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel='preconnect' href='https://fonts.gstatic.com' />
+<link rel="alternate" type="application/rss+xml" title="The Alike &raquo; Feed" href="https://thealike.com/feed/" />
+<script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/thealike.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.0.1"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode,e=(p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0),i.toDataURL());return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([129777,127995,8205,129778,127999],[129777,127995,8203,129778,127999])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(e=t.source||{}).concatemoji?c(e.concatemoji):e.wpemoji&&e.twemoji&&(c(e.twemoji),c(e.wpemoji)))}(window,document,window._wpemojiSettings);
+</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://thealike.com/wp-includes/css/dist/block-library/style.min.css?ver=6.0.1' type='text/css' media='all' />
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='wp_automatic_gallery_style-css'  href='https://thealike.com/wp-content/plugins/wp-automatic/css/wp-automatic.css?ver=1.0.0' type='text/css' media='all' />
+<link rel='stylesheet' id='js_composer_front-css'  href='https://thealike.com/wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=6.7.0' type='text/css' media='all' />
+<link rel='stylesheet' id='jeg_customizer_font-css'  href='//fonts.googleapis.com/css?family=Work+Sans%3A700%7CLobster+Two%3Areguler&#038;display=swap&#038;ver=1.2.6' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css'  href='https://thealike.com/wp-content/themes/jnews/assets/fonts/font-awesome/font-awesome.min.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-icon-css'  href='https://thealike.com/wp-content/themes/jnews/assets/fonts/jegicon/jegicon.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jscrollpane-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/jquery.jscrollpane.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='oknav-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/okayNav.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='magnific-popup-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/magnific-popup.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='chosen-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/chosen/chosen.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-main-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/main.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-pages-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/pages.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-single-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/single.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-responsive-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/responsive.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-pb-temp-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/pb-temp.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-style-css'  href='https://thealike.com/wp-content/themes/jnews/style.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-darkmode-css'  href='https://thealike.com/wp-content/themes/jnews/assets/css/darkmode.css?ver=9.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='jnews-select-share-css'  href='https://thealike.com/wp-content/plugins/jnews-social-share/assets/css/plugin.css' type='text/css' media='all' />
+<script type='text/javascript' src='https://thealike.com/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/plugins/wp-automatic/js/main-front.js?ver=6.0.1' id='wp_automatic_gallery-js'></script>
+<link rel="https://api.w.org/" href="https://thealike.com/wp-json/" /><link rel="alternate" type="application/json" href="https://thealike.com/wp-json/wp/v2/posts/603713" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://thealike.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://thealike.com/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 6.0.1" />
+<link rel='shortlink' href='https://thealike.com/?p=603713' />
+<link rel="alternate" type="application/json+oembed" href="https://thealike.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://thealike.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F&#038;format=xml" />
+<link rel="preconnect" href="https://cdnjs.cloudflare.com"><meta name="generator" content="Powered by WPBakery Page Builder - drag and drop page builder for WordPress."/>
+<link rel="icon" href="https://thealike.com/wp-content/uploads/2022/05/cropped-thealike-32x32.jpg" sizes="32x32" />
+<link rel="icon" href="https://thealike.com/wp-content/uploads/2022/05/cropped-thealike-192x192.jpg" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://thealike.com/wp-content/uploads/2022/05/cropped-thealike-180x180.jpg" />
+<meta name="msapplication-TileImage" content="https://thealike.com/wp-content/uploads/2022/05/cropped-thealike-270x270.jpg" />
+<noscript><style> .wpb_animate_when_almost_visible { opacity: 1; }</style></noscript></head>
+<body class="post-template-default single single-post postid-603713 single-format-standard wp-embed-responsive jeg_toggle_dark jeg_single_tpl_1 jnews jeg_boxed jsc_normal wpb-js-composer js-comp-ver-6.7.0 vc_responsive">
+
+    
+    
+    <div class="jeg_ad jeg_ad_top jnews_header_top_ads">
+        <div class='ads-wrapper  '></div>    </div>
+
+    <!-- The Main Wrapper
+    ============================================= -->
+    <div class="jeg_viewport">
+
+        
+        <div class="jeg_header_wrapper">
+            <div class="jeg_header_instagram_wrapper">
+    </div>
+
+<!-- HEADER -->
+<div class="jeg_header normal">
+    <div class="jeg_midbar jeg_container normal">
+    <div class="container">
+        <div class="jeg_nav_row">
+            
+                <div class="jeg_nav_col jeg_nav_left jeg_nav_grow">
+                    <div class="item_wrap jeg_nav_alignleft">
+                        <div class="jeg_nav_item jeg_logo jeg_desktop_logo">
+			<div class="site-title">
+	    	<a href="https://thealike.com/" style="padding: 0 0 0 0;">
+	    	    <img class='jeg_logo_img' src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png"  alt="The Alike"data-light-src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png" data-light-srcset="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png 1x,  2x" data-dark-src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png" data-dark-srcset="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png 1x,  2x">	    	</a>
+	    </div>
+	</div><div class="jeg_nav_item jeg_main_menu_wrapper">
+<div class="jeg_mainmenu_wrap"><ul class="jeg_menu jeg_main_menu jeg_menu_style_5" data-animation="animate"><li id="menu-item-8195" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8195 bgnav" data-item-row="default" ><a href="https://thealike.com/blog/category/world/">World</a></li>
+<li id="menu-item-8196" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8196 bgnav" data-item-row="default" ><a href="https://thealike.com/blog/category/entertainment/">Entertainment</a></li>
+<li id="menu-item-8197" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8197 bgnav" data-item-row="default" ><a href="https://thealike.com/blog/category/technology/">Technology</a></li>
+<li id="menu-item-8198" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8198 bgnav" data-item-row="default" ><a href="https://thealike.com/blog/category/sports/">Sports</a></li>
+<li id="menu-item-8199" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8199 bgnav" data-item-row="default" ><a href="https://thealike.com/blog/category/science/">Science</a></li>
+<li id="menu-item-8200" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8200 bgnav" data-item-row="default" ><a href="https://thealike.com/blog/category/games/">Games</a></li>
+<li id="menu-item-8201" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8201 bgnav" data-item-row="default" ><a href="https://thealike.com/blog/category/politics/">Politics</a></li>
+</ul></div></div>
+                    </div>
+                </div>
+
+                
+                <div class="jeg_nav_col jeg_nav_center jeg_nav_normal">
+                    <div class="item_wrap jeg_nav_alignleft">
+                                            </div>
+                </div>
+
+                
+                <div class="jeg_nav_col jeg_nav_right jeg_nav_normal">
+                    <div class="item_wrap jeg_nav_alignright">
+                        <!-- Search Icon -->
+<div class="jeg_nav_item jeg_search_wrapper search_icon jeg_search_popup_expand">
+    <a href="#" class="jeg_search_toggle"><i class="fa fa-search"></i></a>
+    <form action="https://thealike.com/" method="get" class="jeg_search_form" target="_top">
+    <input name="s" class="jeg_search_input" placeholder="Search..." type="text" value="" autocomplete="off">
+    <button aria-label="Search Button" type="submit" class="jeg_search_button btn"><i class="fa fa-search"></i></button>
+</form>
+<!-- jeg_search_hide with_result no_result -->
+<div class="jeg_search_result jeg_search_hide with_result">
+    <div class="search-result-wrapper">
+    </div>
+    <div class="search-link search-noresult">
+        No Result    </div>
+    <div class="search-link search-all-button">
+        <i class="fa fa-search"></i> View All Result    </div>
+</div></div>                    </div>
+                </div>
+
+                        </div>
+    </div>
+</div></div><!-- /.jeg_header -->        </div>
+
+        <div class="jeg_header_sticky">
+            <div class="sticky_blankspace"></div>
+<div class="jeg_header normal">
+    <div class="jeg_container">
+        <div data-mode="scroll" class="jeg_stickybar jeg_navbar jeg_navbar_wrapper  jeg_navbar_fitwidth jeg_navbar_normal">
+            <div class="container">
+    <div class="jeg_nav_row">
+        
+            <div class="jeg_nav_col jeg_nav_left jeg_nav_grow">
+                <div class="item_wrap jeg_nav_alignleft">
+                                    </div>
+            </div>
+
+            
+            <div class="jeg_nav_col jeg_nav_center jeg_nav_normal">
+                <div class="item_wrap jeg_nav_aligncenter">
+                                    </div>
+            </div>
+
+            
+            <div class="jeg_nav_col jeg_nav_right jeg_nav_normal">
+                <div class="item_wrap jeg_nav_alignright">
+                                    </div>
+            </div>
+
+                </div>
+</div>        </div>
+    </div>
+</div>
+        </div>
+
+        <div class="jeg_navbar_mobile_wrapper">
+            <div class="jeg_navbar_mobile" data-mode="scroll">
+    <div class="jeg_mobile_bottombar jeg_mobile_midbar jeg_container normal">
+    <div class="container">
+        <div class="jeg_nav_row">
+            
+                <div class="jeg_nav_col jeg_nav_left jeg_nav_normal">
+                    <div class="item_wrap jeg_nav_alignleft">
+                        <div class="jeg_nav_item">
+    <a href="#" class="toggle_btn jeg_mobile_toggle"><i class="fa fa-bars"></i></a>
+</div>                    </div>
+                </div>
+
+                
+                <div class="jeg_nav_col jeg_nav_center jeg_nav_grow">
+                    <div class="item_wrap jeg_nav_aligncenter">
+                        <div class="jeg_nav_item jeg_mobile_logo">
+			<div class="site-title">
+	    	<a href="https://thealike.com/">
+		        <img class='jeg_logo_img' src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png"  alt="The Alike"data-light-src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png" data-light-srcset="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png 1x,  2x" data-dark-src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png" data-dark-srcset="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png 1x,  2x">		    </a>
+	    </div>
+	</div>                    </div>
+                </div>
+
+                
+                <div class="jeg_nav_col jeg_nav_right jeg_nav_normal">
+                    <div class="item_wrap jeg_nav_alignright">
+                        <div class="jeg_nav_item jeg_search_wrapper jeg_search_popup_expand">
+    <a href="#" class="jeg_search_toggle"><i class="fa fa-search"></i></a>
+	<form action="https://thealike.com/" method="get" class="jeg_search_form" target="_top">
+    <input name="s" class="jeg_search_input" placeholder="Search..." type="text" value="" autocomplete="off">
+    <button aria-label="Search Button" type="submit" class="jeg_search_button btn"><i class="fa fa-search"></i></button>
+</form>
+<!-- jeg_search_hide with_result no_result -->
+<div class="jeg_search_result jeg_search_hide with_result">
+    <div class="search-result-wrapper">
+    </div>
+    <div class="search-link search-noresult">
+        No Result    </div>
+    <div class="search-link search-all-button">
+        <i class="fa fa-search"></i> View All Result    </div>
+</div></div>                    </div>
+                </div>
+
+                        </div>
+    </div>
+</div></div>
+<div class="sticky_blankspace" style="height: 60px;"></div>        </div>
+
+            <div class="post-wrapper">
+
+        <div class="post-wrap" >
+
+            
+            <div class="jeg_main ">
+                <div class="jeg_container">
+                    <div class="jeg_content jeg_singlepage">
+
+	<div class="container">
+
+		<div class="jeg_ad jeg_article jnews_article_top_ads">
+			<div class='ads-wrapper  '><div class="ads_google_ads">
+                            <style type='text/css' scoped>
+                                .adsslot_zxOBnHMFLC{ width:728px !important; height:90px !important; }
+@media (max-width:1199px) { .adsslot_zxOBnHMFLC{ width:468px !important; height:60px !important; } }
+@media (max-width:767px) { .adsslot_zxOBnHMFLC{ width:320px !important; height:50px !important; } }
+
+                            </style>
+                            <ins class="adsbygoogle adsslot_zxOBnHMFLC" style="display:inline-block;" data-ad-client="ca-pub-9907927222380998" data-ad-slot="5243403765"></ins>
+                            <script async defer src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div></div>		</div>
+
+		<div class="row">
+			<div class="jeg_main_content col-md-8">
+				<div class="jeg_inner_content">
+					
+												<div class="jeg_breadcrumbs jeg_breadcrumb_container">
+							<div id="breadcrumbs"><span class="">
+                <a href="https://thealike.com">Home</a>
+            </span><i class="fa fa-angle-right"></i><span class="breadcrumb_last_link">
+                <a href="https://thealike.com/blog/category/world/">World</a>
+            </span></div>						</div>
+						
+						<div class="entry-header">
+							
+							<h1 class="jeg_post_title">Zelensky requires extra sanctions on Russia for &#8220;nuclear blackmail&#8221; round Zaporizhzhia plant &#8211; Egypt Independent</h1>
+
+							
+							<div class="jeg_meta_container"><div class="jeg_post_meta jeg_post_meta_1">
+
+	<div class="meta_left">
+		
+					<div class="jeg_meta_date">
+				<a href="https://thealike.com/blog/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent/">August 16, 2022</a>
+			</div>
+		
+					<div class="jeg_meta_category">
+				<span><span class="meta_text">in</span>
+					<a href="https://thealike.com/blog/category/world/" rel="category tag">World</a>				</span>
+			</div>
+		
+		<div class="jeg_meta_reading_time">
+			            <span>
+			            	Reading Time: 2 mins read
+			            </span>
+			        </div>	</div>
+
+	<div class="meta_right">
+					</div>
+</div>
+</div>
+						</div>
+
+						<div class="jeg_featured featured_image"><a href="https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg"><div class="thumbnail-container animate-lazy" style="padding-bottom:50%"><img width="750" height="375" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="lazyload wp-post-image" alt="" title="" data-src="https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg" data-sizes="auto" data-expand="700" /></div></a></div>
+						<div class="jeg_share_top_container"><div class="jeg_share_button clearfix">
+                <div class="jeg_share_stats">
+                    <div class="jeg_share_count">
+                        <div class="counts">28</div>
+                        <span class="sharetext">SHARES</span>
+                    </div>
+                    <div class="jeg_views_count">
+                    <div class="counts">235</div>
+                    <span class="sharetext">VIEWS</span>
+                </div>
+                </div>
+                <div class="jeg_sharelist">
+                    <a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F" rel='nofollow' class="jeg_btn-facebook expanded"><i class="fa fa-facebook-official"></i><span>Share on Facebook</span></a><a href="https://twitter.com/intent/tweet?text=Zelensky%20requires%20extra%20sanctions%20on%20Russia%20for%20%E2%80%9Cnuclear%20blackmail%E2%80%9D%20round%20Zaporizhzhia%20plant%20%E2%80%93%20Egypt%20Independent%20via%20%40thealikecom&url=https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F" rel='nofollow'  class="jeg_btn-twitter expanded"><i class="fa fa-twitter"></i><span>Share on Twitter</span></a>
+                    <div class="share-secondary">
+                    <a href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F&title=Zelensky%20requires%20extra%20sanctions%20on%20Russia%20for%20%E2%80%9Cnuclear%20blackmail%E2%80%9D%20round%20Zaporizhzhia%20plant%20%E2%80%93%20Egypt%20Independent" rel='nofollow'  class="jeg_btn-linkedin "><i class="fa fa-linkedin"></i></a><a href="https://www.pinterest.com/pin/create/bookmarklet/?pinFave=1&url=https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F&media=https://amayei.nyc3.digitaloceanspaces.com/2022/08/inbound1499691139681754957.jpg&description=Zelensky%20requires%20extra%20sanctions%20on%20Russia%20for%20%E2%80%9Cnuclear%20blackmail%E2%80%9D%20round%20Zaporizhzhia%20plant%20%E2%80%93%20Egypt%20Independent" rel='nofollow'  class="jeg_btn-pinterest "><i class="fa fa-pinterest"></i></a>
+                </div>
+                <a href="#" class="jeg_btn-toggle"><i class="fa fa-share"></i></a>
+                </div>
+            </div></div>
+						<div class="jeg_ad jeg_article jnews_content_top_ads "><div class='ads-wrapper  '><div class="ads_google_ads">
+                            <style type='text/css' scoped>
+                                .adsslot_gBxKYoQ6R0{ width:728px !important; height:90px !important; }
+@media (max-width:1199px) { .adsslot_gBxKYoQ6R0{ width:468px !important; height:60px !important; } }
+@media (max-width:767px) { .adsslot_gBxKYoQ6R0{ width:320px !important; height:50px !important; } }
+
+                            </style>
+                            <ins class="adsbygoogle adsslot_gBxKYoQ6R0" style="display:inline-block;" data-ad-client="ca-pub-9907927222380998" data-ad-slot="8508711418"></ins>
+                            <script async defer src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div></div></div>
+						<div class="entry-content no-share">
+							<div class="jeg_share_button share-float jeg_sticky_share clearfix share-monocrhome">
+								<div class="jeg_share_float_container"></div>							</div>
+
+							<div class="content-inner  jeg_link_underline">
+								<p> <br />
+</p>
+<div id="the-post">
+<div class="featured-area">
+<div class="featured-area-inner">
+<figure class="single-featured-image"><figcaption class="single-caption-text"> <span class="tie-icon-camera" aria-hidden="true"/> Ukrainian President Volodymyr Zelensky speaks throughout his night video tackle on Monday August 15. (Office of President of Ukraine)</figcaption></figure>
+</div>
+</div>
+<div class="entry-content entry clearfix">
+<p class="sc-gZMcBi render-stellar-contentstyles__Paragraph-sc-9v7nwy-2 dCwndB">Ukraine’s President Volodymyr Zelensky on Monday referred to as for more durable sanctions in response to what he described as Russia’s “nuclear blackmail” across the Zaporizhzhia nuclear energy plant.</p>
+<div class="sc-bdVaJa sc-RefOD bkVmOx">
+<blockquote class="sc-dnqmqq hJIoKL">
+<p>“Provocative shelling of the territory of the plant continues. Under cover of the plant, the invaders are shelling nearby towns and communities. The Russian military hides munitions and equipment at the facilities of the plant. The station is de facto mined,” Zelensky mentioned throughout his night video tackle.<br />“It is necessary to move from discussions and calls to new tough sanctions against Russia, against ‘Rosatom’ and the entire nuclear industry of the terrorist state. All Russian forces must immediately withdraw from the territory of the station and neighboring areas without any conditions.”</p>
+</blockquote>
+</div>
+<p class="sc-gZMcBi render-stellar-contentstyles__Paragraph-sc-9v7nwy-2 dCwndB">Zelensky claimed that Russia “ignores” the <a href="https://www.cnn.com/europe/live-news/russia-ukraine-war-news-08-15-22#h_deb25511b80df560ef6d121a6c8ddccd" target="_blank" rel="noopener">security demands of the EU and 42 countries</a> which have referred to as on it to withdraw its forces from the station.</p>
+<div class="sc-bdVaJa sc-RefOD bkVmOx">
+<blockquote class="sc-dnqmqq hJIoKL">
+<p>“Any radiation incident at the Zaporizhzhia NPP can be a blow to the countries of the European Union, and to Turkey, and to Georgia, and to countries from more distant regions. Everything depends on the direction and strength of the wind. If a catastrophe occurs due to Russia’s actions, the consequences can hit even those who remain silent for the time being,” Zelensky mentioned.<br />“And if now the world lacks the strength and determination to protect one nuclear plant, it means that the world will lose. Lose to terrorists. Yield to nuclear blackmail.”</p>
+</blockquote>
+</div>
+<p class="sc-gZMcBi render-stellar-contentstyles__Paragraph-sc-9v7nwy-2 dCwndB"><strong>Some context:</strong> Kyiv has <a href="https://www.cnn.com/2022/08/13/europe/inside-ukraine-zaporizhzhia-nuclear-plant-cmd-intl/index.html" target="_blank" rel="noopener">repeatedly accused Russian forces,</a> which seized the plant in March, of storing heavy weaponry contained in the advanced and utilizing it as cowl to launch assaults, realizing that Ukraine can’t return fireplace with out risking hitting one of many plant’s six reactors — a mistake that might spell catastrophe. Moscow, in the meantime, has claimed Ukrainian troops are concentrating on the positioning. Both sides have tried to level the finger on the different for threatening nuclear terrorism.</p>
+</div></div>
+<p><br />
+<br /><a href="https://www.egyptindependent.com/zelensky-calls-for-more-sanctions-on-russia-for-nuclear-blackmail-around-zaporizhzhia-plant/">Source link </a></p><div class="jeg_ad jeg_ad_article jnews_content_inline_ads  "><div class='ads-wrapper align-center '><div class="ads_google_ads">
+                            <style type='text/css' scoped>
+                                .adsslot_uSbzNspQGh{ width:728px !important; height:90px !important; }
+@media (max-width:1199px) { .adsslot_uSbzNspQGh{ width:336px !important; height:280px !important; } }
+@media (max-width:767px) { .adsslot_uSbzNspQGh{ width:336px !important; height:280px !important; } }
+
+                            </style>
+                            <ins class="adsbygoogle adsslot_uSbzNspQGh" style="display:inline-block;" data-ad-client="ca-pub-9907927222380998" data-ad-slot="6791131606"></ins>
+                            <script async defer src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div></div></div><div class="jeg_ad jeg_ad_article jnews_content_inline_2_ads  "><div class='ads-wrapper align-center '><div class="ads_google_ads">
+                            <style type='text/css' scoped>
+                                .adsslot_XClNYof8Wc{ width:728px !important; height:90px !important; }
+@media (max-width:1199px) { .adsslot_XClNYof8Wc{ width:468px !important; height:60px !important; } }
+@media (max-width:767px) { .adsslot_XClNYof8Wc{ width:336px !important; height:280px !important; } }
+
+                            </style>
+                            <ins class="adsbygoogle adsslot_XClNYof8Wc" style="display:inline-block;" data-ad-client="ca-pub-9907927222380998" data-ad-slot="8508711418"></ins>
+                            <script async defer src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div></div></div>
+								
+								
+															</div>
+
+
+						</div>
+						<div class="jeg_share_bottom_container"></div>
+						
+						<div class="jeg_ad jeg_article jnews_content_bottom_ads "><div class='ads-wrapper  '><div class="ads_google_ads">
+                            <style type='text/css' scoped>
+                                .adsslot_NPrYJot2ce{ width:728px !important; height:90px !important; }
+@media (max-width:1199px) { .adsslot_NPrYJot2ce{ width:468px !important; height:60px !important; } }
+@media (max-width:767px) { .adsslot_NPrYJot2ce{ width:320px !important; height:50px !important; } }
+
+                            </style>
+                            <ins class="adsbygoogle adsslot_NPrYJot2ce" style="display:inline-block;" data-ad-client="ca-pub-9907927222380998" data-ad-slot="8508711418"></ins>
+                            <script async defer src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div></div></div><div class="jnews_prev_next_container"></div><div class="jnews_author_box_container "></div><div class="jnews_related_post_container"><div  class="jeg_postblock_3 jeg_postblock jeg_module_hook jeg_pagination_disable jeg_col_2o3 jnews_module_603713_0_62fb8f69ec3b6   " data-unique="jnews_module_603713_0_62fb8f69ec3b6">
+					<div class="jeg_block_heading jeg_block_heading_9 jeg_subcat_right">
+                     <h3 class="jeg_block_title"><span>Related<strong> Posts</strong></span></h3>
+                     
+                 </div>
+					<div class="jeg_posts jeg_block_container">
+                
+                <div class="jeg_posts jeg_load_more_flag">
+                <article class="jeg_post jeg_pl_md_2 format-standard">
+                <div class="jeg_thumb">
+                    
+                    <a href="https://thealike.com/blog/russian-backed-courtroom-cost-three-males-as-mercenaries-who-will-face-demise-penalty/"><div class="thumbnail-container animate-lazy  size-715 "><img width="350" height="250" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="lazyload wp-post-image" alt="" title="" loading="lazy" data-src="https://nypost.com/wp-content/uploads/sites/2/2022/08/Russian_men_2.jpg?quality=75&amp;strip=all&amp;w=1024" data-sizes="auto" data-expand="700" /></div></a>
+                </div>
+                <div class="jeg_postblock_content">
+                    <h3 class="jeg_post_title">
+                        <a href="https://thealike.com/blog/russian-backed-courtroom-cost-three-males-as-mercenaries-who-will-face-demise-penalty/">Russian-backed courtroom cost three males as mercenaries — who will face demise penalty</a>
+                    </h3>
+                    <div class="jeg_post_meta"><div class="jeg_meta_author"><span class="by">by</span> <a href="https://thealike.com/blog/author/pressly/">Daniel Mitchell</a></div><div class="jeg_meta_date"><a href="https://thealike.com/blog/russian-backed-courtroom-cost-three-males-as-mercenaries-who-will-face-demise-penalty/"><i class="fa fa-clock-o"></i> August 16, 2022</a></div></div>
+                    <div class="jeg_post_excerpt">
+                        <p> A Russian-backed separatist courtroom in jap Ukraine’s Donetsk charged 5 international nationals captured preventing with Ukrainian forces with being...</p>
+                    </div>
+                </div>
+            </article><article class="jeg_post jeg_pl_md_2 format-standard">
+                <div class="jeg_thumb">
+                    
+                    <a href="https://thealike.com/blog/estonia-to-take-away-soviet-era-monuments-to-guarantee-public-order/"><div class="thumbnail-container animate-lazy  size-715 "><img width="350" height="250" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="lazyload wp-post-image" alt="" title="" loading="lazy" data-src="https://static.euronews.com/articles/stories/06/94/64/80/1000x563_cmsv2_9208a513-2f51-5edf-a874-95816e9042fe-6946480.jpg" data-sizes="auto" data-expand="700" /></div></a>
+                </div>
+                <div class="jeg_postblock_content">
+                    <h3 class="jeg_post_title">
+                        <a href="https://thealike.com/blog/estonia-to-take-away-soviet-era-monuments-to-guarantee-public-order/">Estonia to take away Soviet-era monuments to &#8216;guarantee public order&#8217;</a>
+                    </h3>
+                    <div class="jeg_post_meta"><div class="jeg_meta_author"><span class="by">by</span> <a href="https://thealike.com/blog/author/pressly/">Daniel Mitchell</a></div><div class="jeg_meta_date"><a href="https://thealike.com/blog/estonia-to-take-away-soviet-era-monuments-to-guarantee-public-order/"><i class="fa fa-clock-o"></i> August 16, 2022</a></div></div>
+                    <div class="jeg_post_excerpt">
+                        <p> Estonia's authorities has introduced that it's going to take away Soviet-era monuments from public areas throughout the nation.Prime Minister Kaja...</p>
+                    </div>
+                </div>
+            </article><article class="jeg_post jeg_pl_md_2 format-standard">
+                <div class="jeg_thumb">
+                    
+                    <a href="https://thealike.com/blog/demilitarization-in-action-ukraine-trolls-russia-after-extra-crimea-explosions/"><div class="thumbnail-container animate-lazy  size-715 "><img width="350" height="250" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="lazyload wp-post-image" alt="" title="" loading="lazy" data-src="https://www.politico.eu/cdn-cgi/image/width=1200,height=630,fit=crop,quality=80,onerror=redirect/wp-content/uploads/2022/08/16/GettyImages-1242159865-scaled.jpg" data-sizes="auto" data-expand="700" /></div></a>
+                </div>
+                <div class="jeg_postblock_content">
+                    <h3 class="jeg_post_title">
+                        <a href="https://thealike.com/blog/demilitarization-in-action-ukraine-trolls-russia-after-extra-crimea-explosions/">‘Demilitarization in action’: Ukraine trolls Russia after extra Crimea explosions</a>
+                    </h3>
+                    <div class="jeg_post_meta"><div class="jeg_meta_author"><span class="by">by</span> <a href="https://thealike.com/blog/author/pressly/">Daniel Mitchell</a></div><div class="jeg_meta_date"><a href="https://thealike.com/blog/demilitarization-in-action-ukraine-trolls-russia-after-extra-crimea-explosions/"><i class="fa fa-clock-o"></i> August 16, 2022</a></div></div>
+                    <div class="jeg_post_excerpt">
+                        <p> A munitions depot in Russian-annexed Crimea exploded early Tuesday within the village of Mayskoye, prompting a senior Ukrainian official...</p>
+                    </div>
+                </div>
+            </article><article class="jeg_post jeg_pl_md_2 format-standard">
+                <div class="jeg_thumb">
+                    
+                    <a href="https://thealike.com/blog/putin-blasts-us-hegemony-predicts-finish-to-unipolar-world/"><div class="thumbnail-container animate-lazy  size-715 "><img width="350" height="250" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="lazyload wp-post-image" alt="" title="" loading="lazy" data-src="https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/DLNIWJA4TMI63HHGNASTXUYYMQ.jpg&amp;w=1440" data-sizes="auto" data-expand="700" /></div></a>
+                </div>
+                <div class="jeg_postblock_content">
+                    <h3 class="jeg_post_title">
+                        <a href="https://thealike.com/blog/putin-blasts-us-hegemony-predicts-finish-to-unipolar-world/">Putin blasts US &#8216;hegemony,&#8217; predicts finish to &#8216;unipolar&#8217; world</a>
+                    </h3>
+                    <div class="jeg_post_meta"><div class="jeg_meta_author"><span class="by">by</span> <a href="https://thealike.com/blog/author/pressly/">Daniel Mitchell</a></div><div class="jeg_meta_date"><a href="https://thealike.com/blog/putin-blasts-us-hegemony-predicts-finish-to-unipolar-world/"><i class="fa fa-clock-o"></i> August 16, 2022</a></div></div>
+                    <div class="jeg_post_excerpt">
+                        <p> Placeholder whereas article actions loadMOSCOW — Russian President Vladimir Putin accused the United States of attempting to encourage prolonged...</p>
+                    </div>
+                </div>
+            </article><article class="jeg_post jeg_pl_md_2 format-standard">
+                <div class="jeg_thumb">
+                    
+                    <a href="https://thealike.com/blog/the-secret-powers-of-an-australian-prime-minister-now-revealed/"><div class="thumbnail-container animate-lazy  size-715 "><img width="350" height="250" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="lazyload wp-post-image" alt="" title="" loading="lazy" data-src="https://static01.nyt.com/images/2022/08/16/multimedia/16oz-morrison/16oz-morrison-facebookJumbo.jpg" data-sizes="auto" data-expand="700" /></div></a>
+                </div>
+                <div class="jeg_postblock_content">
+                    <h3 class="jeg_post_title">
+                        <a href="https://thealike.com/blog/the-secret-powers-of-an-australian-prime-minister-now-revealed/">The Secret Powers of an Australian Prime Minister, Now Revealed</a>
+                    </h3>
+                    <div class="jeg_post_meta"><div class="jeg_meta_author"><span class="by">by</span> <a href="https://thealike.com/blog/author/pressly/">Daniel Mitchell</a></div><div class="jeg_meta_date"><a href="https://thealike.com/blog/the-secret-powers-of-an-australian-prime-minister-now-revealed/"><i class="fa fa-clock-o"></i> August 16, 2022</a></div></div>
+                    <div class="jeg_post_excerpt">
+                        <p> SYDNEY, Australia — Most Australians are happy with their Westminster mannequin of parliamentary democracy, wherein ministers are empowered to...</p>
+                    </div>
+                </div>
+            </article><article class="jeg_post jeg_pl_md_2 format-standard">
+                <div class="jeg_thumb">
+                    
+                    <a href="https://thealike.com/blog/singer-adele-regrets-canceling-vegas-residency-tour-know-why/"><div class="thumbnail-container animate-lazy  size-715 "><img width="350" height="250" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="lazyload wp-post-image" alt="" title="" loading="lazy" data-src="https://img.etimg.com/thumb/msid-93591122,width-1070,height-580,imgsize-109968,overlay-economictimes/photo.jpg" data-sizes="auto" data-expand="700" /></div></a>
+                </div>
+                <div class="jeg_postblock_content">
+                    <h3 class="jeg_post_title">
+                        <a href="https://thealike.com/blog/singer-adele-regrets-canceling-vegas-residency-tour-know-why/">Singer Adele &#8216;regrets&#8217; canceling Vegas residency tour: Know why</a>
+                    </h3>
+                    <div class="jeg_post_meta"><div class="jeg_meta_author"><span class="by">by</span> <a href="https://thealike.com/blog/author/pressly/">Daniel Mitchell</a></div><div class="jeg_meta_date"><a href="https://thealike.com/blog/singer-adele-regrets-canceling-vegas-residency-tour-know-why/"><i class="fa fa-clock-o"></i> August 16, 2022</a></div></div>
+                    <div class="jeg_post_excerpt">
+                        <p> Regretting in public about profession choices will not be uncommon amongst stars, and the newest to hitch the bandwagon...</p>
+                    </div>
+                </div>
+            </article>
+            </div>
+                <div class='module-overlay'>
+				    <div class='preloader_type preloader_dot'>
+				        <div class="module-preloader jeg_preloader dot">
+				            <span></span><span></span><span></span>
+				        </div>
+				        <div class="module-preloader jeg_preloader circle">
+				            <div class="jnews_preloader_circle_outer">
+				                <div class="jnews_preloader_circle_inner"></div>
+				            </div>
+				        </div>
+				        <div class="module-preloader jeg_preloader square">
+				            <div class="jeg_square">
+				                <div class="jeg_square_inner"></div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+            </div>
+            <div class="jeg_block_navigation">
+                <div class='navigation_overlay'><div class='module-preloader jeg_preloader'><span></span><span></span><span></span></div></div>
+                
+                
+            </div>
+					
+					<script>var jnews_module_603713_0_62fb8f69ec3b6 = {"header_icon":"","first_title":"Related","second_title":" Posts","url":"","header_type":"heading_9","header_background":"","header_secondary_background":"","header_text_color":"","header_line_color":"","header_accent_color":"","header_filter_category":"","header_filter_author":"","header_filter_tag":"","header_filter_text":"All","post_type":"post","content_type":"all","number_post":6,"post_offset":0,"unique_content":"disable","include_post":"","exclude_post":603713,"include_category":"58","exclude_category":"","include_author":"","include_tag":"","exclude_tag":"","sort_by":"latest","date_format":"default","date_format_custom":"Y\/m\/d","excerpt_length":20,"excerpt_ellipsis":"...","force_normal_image_load":"","pagination_mode":"disable","pagination_nextprev_showtext":"","pagination_number_post":6,"pagination_scroll_limit":3,"ads_type":"disable","ads_position":1,"ads_random":"","ads_image":"","ads_image_tablet":"","ads_image_phone":"","ads_image_link":"","ads_image_alt":"","ads_image_new_tab":"","google_publisher_id":"","google_slot_id":"","google_desktop":"auto","google_tab":"auto","google_phone":"auto","content":"","ads_bottom_text":"","boxed":"","boxed_shadow":"","el_id":"","el_class":"","scheme":"","column_width":"auto","title_color":"","accent_color":"","alt_color":"","excerpt_color":"","css":"","paged":1,"column_class":"jeg_col_2o3","class":"jnews_block_3"};</script>
+				</div></div><div class="jnews_popup_post_container"></div><div class="jnews_comment_container"></div>
+									</div>
+			</div>
+			
+<div class="jeg_sidebar  jeg_sticky_sidebar col-md-4">
+    <div class="widget widget_media_image" id="media_image-22"><img width="300" height="90" src="https://thealike.com/wp-content/uploads/2022/07/20210524_003730_0000-300x90.jpg" class="image wp-image-534500  attachment-medium size-medium" alt="" loading="lazy" style="max-width: 100%; height: auto;" srcset="https://thealike.com/wp-content/uploads/2022/07/20210524_003730_0000-300x90.jpg 300w, https://thealike.com/wp-content/uploads/2022/07/20210524_003730_0000-750x225.jpg 750w, https://thealike.com/wp-content/uploads/2022/07/20210524_003730_0000.jpg 768w" sizes="(max-width: 300px) 100vw, 300px" /></div><div class="widget widget_media_image" id="media_image-23"><a href="https://thealike.com/blog/category/politics"><img width="300" height="90" src="https://thealike.com/wp-content/uploads/2022/05/20210524_004534_0000-300x90.jpg" class="image wp-image-400520  attachment-medium size-medium" alt="" loading="lazy" style="max-width: 100%; height: auto;" srcset="https://thealike.com/wp-content/uploads/2022/05/20210524_004534_0000-300x90.jpg 300w, https://thealike.com/wp-content/uploads/2022/05/20210524_004534_0000-750x225.jpg 750w, https://thealike.com/wp-content/uploads/2022/05/20210524_004534_0000.jpg 768w" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="widget widget_media_image" id="media_image-24"><a href="https://thealike.com/blog/category/entertainment"><img width="300" height="90" src="https://thealike.com/wp-content/uploads/2022/05/20210524_004416_0000-1-300x90.jpg" class="image wp-image-400519  attachment-medium size-medium" alt="" loading="lazy" style="max-width: 100%; height: auto;" srcset="https://thealike.com/wp-content/uploads/2022/05/20210524_004416_0000-1-300x90.jpg 300w, https://thealike.com/wp-content/uploads/2022/05/20210524_004416_0000-1-750x225.jpg 750w, https://thealike.com/wp-content/uploads/2022/05/20210524_004416_0000-1.jpg 768w" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="widget widget_media_image" id="media_image-25"><a href="https://thealike.com/blog/category/technology"><img width="300" height="90" src="https://thealike.com/wp-content/uploads/2022/05/20210524_003126_0000-1-300x90.jpg" class="image wp-image-400521  attachment-medium size-medium" alt="" loading="lazy" style="max-width: 100%; height: auto;" srcset="https://thealike.com/wp-content/uploads/2022/05/20210524_003126_0000-1-300x90.jpg 300w, https://thealike.com/wp-content/uploads/2022/05/20210524_003126_0000-1-750x225.jpg 750w, https://thealike.com/wp-content/uploads/2022/05/20210524_003126_0000-1.jpg 768w" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="widget widget_media_image" id="media_image-21"><a href="https://thealike.com/blog/category/science"><img width="300" height="90" src="https://thealike.com/wp-content/uploads/2022/05/20210524_003511_0000-1-1-300x90.jpg" class="image wp-image-400518  attachment-medium size-medium" alt="" loading="lazy" style="max-width: 100%; height: auto;" srcset="https://thealike.com/wp-content/uploads/2022/05/20210524_003511_0000-1-1-300x90.jpg 300w, https://thealike.com/wp-content/uploads/2022/05/20210524_003511_0000-1-1-750x225.jpg 750w, https://thealike.com/wp-content/uploads/2022/05/20210524_003511_0000-1-1.jpg 768w" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="widget widget_media_image" id="media_image-27"><img width="300" height="90" src="https://thealike.com/wp-content/uploads/2022/05/20210524_005405_0000-1.png" class="image wp-image-400423  attachment-full size-full" alt="sports" loading="lazy" style="max-width: 100%; height: auto;" /></div></div>		</div>
+
+		<div class="jeg_ad jeg_article jnews_article_bottom_ads">
+			<div class='ads-wrapper  '><div class="ads_google_ads">
+                            <style type='text/css' scoped>
+                                .adsslot_7n2lEaMZ49{ width:728px !important; height:90px !important; }
+@media (max-width:1199px) { .adsslot_7n2lEaMZ49{ width:468px !important; height:60px !important; } }
+@media (max-width:767px) { .adsslot_7n2lEaMZ49{ width:320px !important; height:50px !important; } }
+
+                            </style>
+                            <ins class="adsbygoogle adsslot_7n2lEaMZ49" style="display:inline-block;" data-ad-client="ca-pub-9907927222380998" data-ad-slot="6791131606"></ins>
+                            <script async defer src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div></div>		</div>
+
+	</div>
+</div>
+                </div>
+            </div>
+
+            <div id="post-body-class" class="post-template-default single single-post postid-603713 single-format-standard wp-embed-responsive jeg_toggle_dark jeg_single_tpl_1 jnews jeg_boxed jsc_normal wpb-js-composer js-comp-ver-6.7.0 vc_responsive"></div>
+
+            
+        </div>
+
+        <div class="post-ajax-overlay">
+    <div class="preloader_type preloader_dot">
+        <div class="newsfeed_preloader jeg_preloader dot">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="newsfeed_preloader jeg_preloader circle">
+            <div class="jnews_preloader_circle_outer">
+                <div class="jnews_preloader_circle_inner"></div>
+            </div>
+        </div>
+        <div class="newsfeed_preloader jeg_preloader square">
+            <div class="jeg_square"><div class="jeg_square_inner"></div></div>
+        </div>
+    </div>
+</div>
+    </div>
+        <div class="footer-holder" id="footer" data-id="footer">
+            <div class="jeg_footer jeg_footer_sidecontent normal">
+    <div class="jeg_footer_container jeg_container">
+        <div class="jeg_footer_content">
+            <div class="container">
+                <div class="row">
+                    <div class="jeg_footer_primary clearfix">
+                        <div class="col-md-2 footer_column">
+                            <div class="footer_widget widget_about">
+                                <div class="jeg_about">
+                                    <a href="https://thealike.com/" class="footer_logo">
+                                        <img class='jeg_logo_img' src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png"  alt="The Alike"data-light-src="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png" data-light-srcset="https://thealike.com/wp-content/uploads/2021/12/Take-a-look-at-my-Canva-design-14.png 1x,  2x" data-dark-src="" data-dark-srcset=" 1x,  2x">                                    </a>
+                                    <p class="copyright"> © 2021 - The Alike Pvt. Ltd. Company </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-8 footer_column">
+                            <div class="footer_widget widget_nav_menu">
+                                <div class="jeg_footer_heading jeg_footer_heading_2">
+                                    <h3 class="jeg_footer_title menu-title"><span>Navigate Site</span></h3>
+                                </div>
+                                <ul class="jeg_menu_footer"><li id="menu-item-207450" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-207450"><a href="https://thealike.com/contact-us/">Contact Us</a></li>
+<li id="menu-item-3203" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3203"><a href="https://thealike.com/about-us/">About Us</a></li>
+<li id="menu-item-207467" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-207467"><a href="https://thealike.com/best-paid-guest-posting-website/">Guest post</a></li>
+<li id="menu-item-3205" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3205"><a href="https://thealike.com/privacy-policy/">Privacy Policy</a></li>
+<li id="menu-item-207401" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-207401"><a href="https://thealike.com/dmca/">DMCA</a></li>
+<li id="menu-item-207402" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-207402"><a href="https://thealike.com/terms-of-services/">Terms of Services</a></li>
+</ul>                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-4 footer_column">
+                            <div class="jeg_footer_heading jeg_footer_heading_2">
+                                    <h3 class="jeg_footer_title social-title"><span>Follow Us</span></h3>
+                            </div>
+
+                            			<div class="socials_widget nobg">
+				<a href="https://www.facebook.com/thealikecom" target='_blank' rel='external noopener nofollow' class="jeg_facebook"><i class="fa fa-facebook"></i> </a><a href="https://twitter.com/thealikecom" target='_blank' rel='external noopener nofollow' class="jeg_twitter"><i class="fa fa-twitter"></i> </a><a href="https://instagram.com/thealikecom" target='_blank' rel='external noopener nofollow' class="jeg_instagram"><i class="fa fa-instagram"></i> </a>			</div>
+			                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.footer -->
+        </div>
+
+        <div class="jscroll-to-top">
+        	<a href="#back-to-top" class="jscroll-to-top_link"><i class="fa fa-angle-up"></i></a>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation
+    ============================================= -->
+<div id="jeg_off_canvas" class="normal">
+    <a href="#" class="jeg_menu_close"><i class="jegicon-cross"></i></a>
+    <div class="jeg_bg_overlay"></div>
+    <div class="jeg_mobile_wrapper">
+        <div class="nav_wrap">
+    <div class="item_main">
+        <div class="jeg_aside_item">
+    <ul class="jeg_mobile_menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8195"><a href="https://thealike.com/blog/category/world/">World</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8196"><a href="https://thealike.com/blog/category/entertainment/">Entertainment</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8197"><a href="https://thealike.com/blog/category/technology/">Technology</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8198"><a href="https://thealike.com/blog/category/sports/">Sports</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8199"><a href="https://thealike.com/blog/category/science/">Science</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8200"><a href="https://thealike.com/blog/category/games/">Games</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8201"><a href="https://thealike.com/blog/category/politics/">Politics</a></li>
+</ul></div>    </div>
+    <div class="item_bottom">
+        <div class="jeg_aside_item socials_widget nobg">
+    <a href="https://www.facebook.com/thealikecom" target='_blank' rel='external noopener nofollow' class="jeg_facebook"><i class="fa fa-facebook"></i> </a><a href="https://twitter.com/thealikecom" target='_blank' rel='external noopener nofollow' class="jeg_twitter"><i class="fa fa-twitter"></i> </a><a href="https://instagram.com/thealikecom" target='_blank' rel='external noopener nofollow' class="jeg_instagram"><i class="fa fa-instagram"></i> </a></div><div class="jeg_aside_item jeg_aside_copyright">
+	<p>© 2021 - The Alike Pvt. Ltd. Company</p>
+</div>    </div>
+</div>    </div>
+</div><script type="text/javascript">var jfla = []</script>				<script>
+					window.ga = window.ga || function () {(ga.q = ga.q || []).push(arguments);};
+					ga.l = +new Date;
+	              	ga('create', 'UA-185134375-2', 'auto')
+	              	ga('send', 'pageview')
+				</script>
+				<div id="selectShareContainer">
+                        <div class="selectShare-inner">
+                            <div class="select_share jeg_share_button">              
+                                <button class="select-share-button jeg_btn-facebook" data-url="http://www.facebook.com/sharer.php?u=[url]&quote=[selected_text]" data-post-url="https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F" data-image-url="" data-title="Zelensky%20requires%20extra%20sanctions%20on%20Russia%20for%20%E2%80%9Cnuclear%20blackmail%E2%80%9D%20round%20Zaporizhzhia%20plant%20%E2%80%93%20Egypt%20Independent" ><i class="fa fa-facebook-official"></i></a><button class="select-share-button jeg_btn-twitter" data-url="https://twitter.com/intent/tweet?text=[selected_text]&url=[url]" data-post-url="https%3A%2F%2Fthealike.com%2Fblog%2Fzelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent%2F" data-image-url="" data-title="Zelensky%20requires%20extra%20sanctions%20on%20Russia%20for%20%E2%80%9Cnuclear%20blackmail%E2%80%9D%20round%20Zaporizhzhia%20plant%20%E2%80%93%20Egypt%20Independent%20via%20%40thealikecom" ><i class="fa fa-twitter"></i></a>
+                            </div>
+                            <div class="selectShare-arrowClip">
+                                <div class="selectShare-arrow"></div>      
+                            </div> 
+                        </div>      
+                      </div><div class="jeg_read_progress_wrapper"></div><link rel='stylesheet' id='jnews-scheme-css'  href='https://thealike.com/wp-content/themes/jnews/data/import/newspaper/scheme.css?ver=9.0.6' type='text/css' media='all' />
+<script type='text/javascript' src='https://thealike.com/wp-includes/js/hoverIntent.min.js?ver=1.10.2' id='hoverIntent-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-includes/js/imagesloaded.min.js?ver=4.1.4' id='imagesloaded-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/plugins/js_composer/assets/lib/bower/isotope/dist/isotope.pkgd.min.js?ver=6.7.0' id='isotope-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/lazysizes.js?ver=9.0.6' id='lazysizes-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/ls.bgset.js?ver=9.0.6' id='bgset-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/superfish.js?ver=9.0.6' id='superfish-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/theia-sticky-sidebar.js?ver=9.0.6' id='theia-sticky-sidebar-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.waypoints.js?ver=9.0.6' id='waypoint-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.scrollTo.js?ver=9.0.6' id='scrollto-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.parallax.js?ver=9.0.6' id='parallax-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.okayNav.js?ver=9.0.6' id='okaynav-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.mousewheel.js?ver=9.0.6' id='mousewheel-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/modernizr-custom.js?ver=9.0.6' id='modernizr-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.smartresize.js?ver=9.0.6' id='smartresize-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/chosen.jquery.js?ver=9.0.6' id='chosen-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.magnific-popup.js?ver=9.0.6' id='magnific-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.jnewsgif.js?ver=9.0.6' id='jnews-gif-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.jsticky.js?ver=9.0.6' id='jnews-sticky-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.transit.min.js?ver=9.0.6' id='jquery-transit-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/jquery.module.js?ver=9.0.6' id='jnews-landing-module-js'></script>
+<script type='text/javascript' id='jnews-main-js-extra'>
+/* <![CDATA[ */
+var jnewsoption = {"login_reload":"https:\/\/thealike.com\/blog\/zelensky-requires-extra-sanctions-on-russia-for-nuclear-blackmail-round-zaporizhzhia-plant-egypt-independent","popup_script":"magnific","single_gallery":"","ismobile":"","isie":"","sidefeed_ajax":"","language":"en_US","module_prefix":"jnews_module_ajax_","live_search":"1","postid":"603713","isblog":"1","admin_bar":"0","follow_video":"","follow_position":"top_right","rtl":"0","gif":"","lang":{"invalid_recaptcha":"Invalid Recaptcha!","empty_username":"Please enter your username!","empty_email":"Please enter your email!","empty_password":"Please enter your password!"},"recaptcha":"0","site_slug":"\/","site_domain":"easywp.com","zoom_button":"0"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/main.js?ver=9.0.6' id='jnews-main-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/zoom-button.js?ver=9.0.6' id='jnews-zoom-button-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/popup-post.js?ver=9.0.6' id='jnews-popup-post-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/darkmode.js?ver=9.0.6' id='jnews-darkmode-js'></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://thealike.com/wp-content/themes/jnews/assets/js/html5shiv.min.js?ver=9.0.6' id='html5shiv-js'></script>
+<![endif]-->
+<script type='text/javascript' id='jnews-select-share-js-extra'>
+/* <![CDATA[ */
+var jnews_select_share = {"is_customize_preview":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://thealike.com/wp-content/plugins/jnews-social-share/assets/js/plugin.js' id='jnews-select-share-js'></script>
+<script type='text/javascript' id='fifu-image-js-js-extra'>
+/* <![CDATA[ */
+var fifuImageVars = {"fifu_lazy":"","fifu_woo_lbox_enabled":"1","fifu_woo_zoom":"inline","fifu_is_product":"","fifu_is_flatsome_active":"","fifu_rest_url":"https:\/\/thealike.com\/wp-json\/","fifu_nonce":"93d4c6f2d2"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://thealike.com/wp-content/plugins/featured-image-from-url/includes/html/js/image.js?ver=4.0.1' id='fifu-image-js-js'></script>
+<script type='text/javascript' src='https://thealike.com/wp-content/plugins/jnews-essential/assets/js/analytics.js' id='jnews-analytics-js'></script>
+<div class="jeg_ad jnews_mobile_sticky_ads "></div><style id="jeg_dynamic_css" type="text/css" data-type="jeg_custom-css">body { --j-body-color : #333333; --j-accent-color : #174e96; --j-alt-color : #174259; --j-heading-color : #111111; } body,.jeg_newsfeed_list .tns-outer .tns-controls button,.jeg_filter_button,.owl-carousel .owl-nav div,.jeg_readmore,.jeg_hero_style_7 .jeg_post_meta a,.widget_calendar thead th,.widget_calendar tfoot a,.jeg_socialcounter a,.entry-header .jeg_meta_like a,.entry-header .jeg_meta_comment a,.entry-content tbody tr:hover,.entry-content th,.jeg_splitpost_nav li:hover a,#breadcrumbs a,.jeg_author_socials a:hover,.jeg_footer_content a,.jeg_footer_bottom a,.jeg_cartcontent,.woocommerce .woocommerce-breadcrumb a { color : #333333; } a, .jeg_menu_style_5>li>a:hover, .jeg_menu_style_5>li.sfHover>a, .jeg_menu_style_5>li.current-menu-item>a, .jeg_menu_style_5>li.current-menu-ancestor>a, .jeg_navbar .jeg_menu:not(.jeg_main_menu)>li>a:hover, .jeg_midbar .jeg_menu:not(.jeg_main_menu)>li>a:hover, .jeg_side_tabs li.active, .jeg_block_heading_5 strong, .jeg_block_heading_6 strong, .jeg_block_heading_7 strong, .jeg_block_heading_8 strong, .jeg_subcat_list li a:hover, .jeg_subcat_list li button:hover, .jeg_pl_lg_7 .jeg_thumb .jeg_post_category a, .jeg_pl_xs_2:before, .jeg_pl_xs_4 .jeg_postblock_content:before, .jeg_postblock .jeg_post_title a:hover, .jeg_hero_style_6 .jeg_post_title a:hover, .jeg_sidefeed .jeg_pl_xs_3 .jeg_post_title a:hover, .widget_jnews_popular .jeg_post_title a:hover, .jeg_meta_author a, .widget_archive li a:hover, .widget_pages li a:hover, .widget_meta li a:hover, .widget_recent_entries li a:hover, .widget_rss li a:hover, .widget_rss cite, .widget_categories li a:hover, .widget_categories li.current-cat>a, #breadcrumbs a:hover, .jeg_share_count .counts, .commentlist .bypostauthor>.comment-body>.comment-author>.fn, span.required, .jeg_review_title, .bestprice .price, .authorlink a:hover, .jeg_vertical_playlist .jeg_video_playlist_play_icon, .jeg_vertical_playlist .jeg_video_playlist_item.active .jeg_video_playlist_thumbnail:before, .jeg_horizontal_playlist .jeg_video_playlist_play, .woocommerce li.product .pricegroup .button, .widget_display_forums li a:hover, .widget_display_topics li:before, .widget_display_replies li:before, .widget_display_views li:before, .bbp-breadcrumb a:hover, .jeg_mobile_menu li.sfHover>a, .jeg_mobile_menu li a:hover, .split-template-6 .pagenum, .jeg_mobile_menu_style_5>li>a:hover, .jeg_mobile_menu_style_5>li.sfHover>a, .jeg_mobile_menu_style_5>li.current-menu-item>a, .jeg_mobile_menu_style_5>li.current-menu-ancestor>a { color : #174e96; } .jeg_menu_style_1>li>a:before, .jeg_menu_style_2>li>a:before, .jeg_menu_style_3>li>a:before, .jeg_side_toggle, .jeg_slide_caption .jeg_post_category a, .jeg_slider_type_1_wrapper .tns-controls button.tns-next, .jeg_block_heading_1 .jeg_block_title span, .jeg_block_heading_2 .jeg_block_title span, .jeg_block_heading_3, .jeg_block_heading_4 .jeg_block_title span, .jeg_block_heading_6:after, .jeg_pl_lg_box .jeg_post_category a, .jeg_pl_md_box .jeg_post_category a, .jeg_readmore:hover, .jeg_thumb .jeg_post_category a, .jeg_block_loadmore a:hover, .jeg_postblock.alt .jeg_block_loadmore a:hover, .jeg_block_loadmore a.active, .jeg_postblock_carousel_2 .jeg_post_category a, .jeg_heroblock .jeg_post_category a, .jeg_pagenav_1 .page_number.active, .jeg_pagenav_1 .page_number.active:hover, input[type="submit"], .btn, .button, .widget_tag_cloud a:hover, .popularpost_item:hover .jeg_post_title a:before, .jeg_splitpost_4 .page_nav, .jeg_splitpost_5 .page_nav, .jeg_post_via a:hover, .jeg_post_source a:hover, .jeg_post_tags a:hover, .comment-reply-title small a:before, .comment-reply-title small a:after, .jeg_storelist .productlink, .authorlink li.active a:before, .jeg_footer.dark .socials_widget:not(.nobg) a:hover .fa, div.jeg_breakingnews_title, .jeg_overlay_slider_bottom_wrapper .tns-controls button, .jeg_overlay_slider_bottom_wrapper .tns-controls button:hover, .jeg_vertical_playlist .jeg_video_playlist_current, .woocommerce span.onsale, .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .jeg_popup_post .caption, .jeg_footer.dark input[type="submit"], .jeg_footer.dark .btn, .jeg_footer.dark .button, .footer_widget.widget_tag_cloud a:hover, .jeg_inner_content .content-inner .jeg_post_category a:hover, #buddypress .standard-form button, #buddypress a.button, #buddypress input[type="submit"], #buddypress input[type="button"], #buddypress input[type="reset"], #buddypress ul.button-nav li a, #buddypress .generic-button a, #buddypress .generic-button button, #buddypress .comment-reply-link, #buddypress a.bp-title-button, #buddypress.buddypress-wrap .members-list li .user-update .activity-read-more a, div#buddypress .standard-form button:hover, div#buddypress a.button:hover, div#buddypress input[type="submit"]:hover, div#buddypress input[type="button"]:hover, div#buddypress input[type="reset"]:hover, div#buddypress ul.button-nav li a:hover, div#buddypress .generic-button a:hover, div#buddypress .generic-button button:hover, div#buddypress .comment-reply-link:hover, div#buddypress a.bp-title-button:hover, div#buddypress.buddypress-wrap .members-list li .user-update .activity-read-more a:hover, #buddypress #item-nav .item-list-tabs ul li a:before, .jeg_inner_content .jeg_meta_container .follow-wrapper a { background-color : #174e96; } .jeg_block_heading_7 .jeg_block_title span, .jeg_readmore:hover, .jeg_block_loadmore a:hover, .jeg_block_loadmore a.active, .jeg_pagenav_1 .page_number.active, .jeg_pagenav_1 .page_number.active:hover, .jeg_pagenav_3 .page_number:hover, .jeg_prevnext_post a:hover h3, .jeg_overlay_slider .jeg_post_category, .jeg_sidefeed .jeg_post.active, .jeg_vertical_playlist.jeg_vertical_playlist .jeg_video_playlist_item.active .jeg_video_playlist_thumbnail img, .jeg_horizontal_playlist .jeg_video_playlist_item.active { border-color : #174e96; } .jeg_tabpost_nav li.active, .woocommerce div.product .woocommerce-tabs ul.tabs li.active, .jeg_mobile_menu_style_1>li.current-menu-item a, .jeg_mobile_menu_style_1>li.current-menu-ancestor a, .jeg_mobile_menu_style_2>li.current-menu-item::after, .jeg_mobile_menu_style_2>li.current-menu-ancestor::after, .jeg_mobile_menu_style_3>li.current-menu-item::before, .jeg_mobile_menu_style_3>li.current-menu-ancestor::before { border-bottom-color : #174e96; } .jeg_post_meta .fa, .entry-header .jeg_post_meta .fa, .jeg_review_stars, .jeg_price_review_list { color : #174259; } .jeg_share_button.share-float.share-monocrhome a { background-color : #174259; } h1,h2,h3,h4,h5,h6,.jeg_post_title a,.entry-header .jeg_post_title,.jeg_hero_style_7 .jeg_post_title a,.jeg_block_title,.jeg_splitpost_bar .current_title,.jeg_video_playlist_title,.gallery-caption,.jeg_push_notification_button>a.button { color : #111111; } .split-template-9 .pagenum, .split-template-10 .pagenum, .split-template-11 .pagenum, .split-template-12 .pagenum, .split-template-13 .pagenum, .split-template-15 .pagenum, .split-template-18 .pagenum, .split-template-20 .pagenum, .split-template-19 .current_title span, .split-template-20 .current_title span { background-color : #111111; } .jeg_topbar .jeg_nav_row, .jeg_topbar .jeg_search_no_expand .jeg_search_input { line-height : 36px; } .jeg_topbar .jeg_nav_row, .jeg_topbar .jeg_nav_icon { height : 36px; } .jeg_midbar { height : 90px; } .jeg_header .jeg_bottombar.jeg_navbar,.jeg_bottombar .jeg_nav_icon { height : 50px; } .jeg_header .jeg_bottombar.jeg_navbar, .jeg_header .jeg_bottombar .jeg_main_menu:not(.jeg_menu_style_1) > li > a, .jeg_header .jeg_bottombar .jeg_menu_style_1 > li, .jeg_header .jeg_bottombar .jeg_menu:not(.jeg_main_menu) > li > a { line-height : 50px; } .jeg_header .jeg_bottombar, .jeg_header .jeg_bottombar.jeg_navbar_dark, .jeg_bottombar.jeg_navbar_boxed .jeg_nav_row, .jeg_bottombar.jeg_navbar_dark.jeg_navbar_boxed .jeg_nav_row { border-top-width : 0px; } .jeg_stickybar, .jeg_stickybar.dark { border-bottom-width : 3px; } .jeg_stickybar, .jeg_stickybar.dark, .jeg_stickybar.jeg_navbar_boxed .jeg_nav_row { border-bottom-color : #111111; } .jeg_header .socials_widget > a > i.fa:before { color : #333333; } .jeg_header .socials_widget.nobg > a > span.jeg-icon svg { fill : #333333; } .jeg_header .socials_widget > a > span.jeg-icon svg { fill : #333333; } .jeg_header .jeg_button_1 .btn { background : #111111; } .jeg_nav_search { width : 34%; } .jeg_footer_sidecontent .jeg_footer_primary .col-md-7 .jeg_footer_title, .jeg_footer_sidecontent .jeg_footer_primary .col-md-7 .jeg_footer_title { color : #000000; } .jeg_footer_5 .jeg_footer_content .jeg_footer_social .socials_widget a,.jeg_footer_5.dark .jeg_footer_content .jeg_footer_social .socials_widget a,.jeg_footer_sidecontent .jeg_footer_primary .col-md-3 .jeg_footer_title { color : #000000; } body,input,textarea,select,.chosen-container-single .chosen-single,.btn,.button { font-family: "Work Sans",Helvetica,Arial,sans-serif;font-size: 10; color : #333333;  } .jeg_header, .jeg_mobile_wrapper { font-family: "Work Sans",Helvetica,Arial,sans-serif; } .jeg_main_menu > li > a { font-family: "Work Sans",Helvetica,Arial,sans-serif; } .jeg_post_title, .entry-header .jeg_post_title, .jeg_single_tpl_2 .entry-header .jeg_post_title, .jeg_single_tpl_3 .entry-header .jeg_post_title, .jeg_single_tpl_6 .entry-header .jeg_post_title, .jeg_content .jeg_custom_title_wrapper .jeg_post_title { font-family: "Work Sans",Helvetica,Arial,sans-serif; } h3.jeg_block_title, .jeg_footer .jeg_footer_heading h3, .jeg_footer .widget h2, .jeg_tabpost_nav li { font-family: "Work Sans",Helvetica,Arial,sans-serif;font-weight : 700; font-style : normal;  } .jeg_post_excerpt p, .content-inner p { font-family: Georgia,Times,"Times New Roman",serif;color : #333333;  } .jeg_thumb .jeg_post_category a,.jeg_pl_lg_box .jeg_post_category a,.jeg_pl_md_box .jeg_post_category a,.jeg_postblock_carousel_2 .jeg_post_category a,.jeg_heroblock .jeg_post_category a,.jeg_slide_caption .jeg_post_category a { background-color : #111111; } .jeg_overlay_slider .jeg_post_category,.jeg_thumb .jeg_post_category a,.jeg_pl_lg_box .jeg_post_category a,.jeg_pl_md_box .jeg_post_category a,.jeg_postblock_carousel_2 .jeg_post_category a,.jeg_heroblock .jeg_post_category a,.jeg_slide_caption .jeg_post_category a { border-color : #111111; } </style><script type="text/javascript">;!function(){"use strict";window.jnews=window.jnews||{},window.jnews.first_load=window.jnews.first_load||{},window.jnews.first_load=function(){var e=this,t=jnews.library,n="object"==typeof jnews&&"object"==typeof jnews.library;e.data=null,e.run_ajax=!0,e.run_loginregister=!0,e.clear=function(){e.run_ajax=!0,e.run_loginregister=!0,e.data=null},e.init=function(){n&&(t.globalBody.querySelectorAll(".jeg_popup_account").length&&jnews.loginregister&&e.run_loginregister&&(e.run_loginregister=!1,jnews.loginregister.init(),jnews.loginregister.hook_form()),jfla.length&&e.run_ajax&&(e.run_ajax=!1,e.do_ajax({action:"jnews_first_load_action",jnews_id:jnewsoption.postid,load_action:jfla})))},e.update_counter=function(){if(n){var o={total_view:t.globalBody.querySelectorAll(".jeg_share_stats .jeg_views_count .counts"),total_share:t.globalBody.querySelectorAll(".jeg_share_stats .jeg_share_count .counts"),total_comment:t.globalBody.querySelectorAll(".jeg_meta_comment a span")};t.forEach(e.data.counter,(function(e,n){o[n].length&&t.forEach(o[n],(function(n,o){t.setText(n,e)}))}))}},e.do_ajax=function(o){if(n){var a=new XMLHttpRequest;a.onreadystatechange=function(){XMLHttpRequest.DONE===a.readyState&&200==a.status&&(e.data=JSON.parse(a.responseText),e.data.counter&&"object"==typeof e.data.counter&&e.update_counter())},a.open("POST",jnews_ajax_url,!0),a.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8"),a.send(t.httpBuildQuery(o))}}},window.jnews.first_load=new window.jnews.first_load,jnews.first_load.init()}();</script></body>
+</html>

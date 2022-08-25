@@ -13,6 +13,7 @@ import NewTabPage from './newTab'
 // Utils
 import * as PreferencesAPI from '../api/preferences'
 import getBraveNewsController from '../api/brave_news'
+import getNTPBrowserAPI from '../api/background'
 import { getActionsForDispatch } from '../api/getActions'
 
 // Types
@@ -45,26 +46,36 @@ function DefaultPage (props: Props) {
   }
 
   return (
-      <NewTabPage
-        newTabData={newTabData}
-        todayData={braveTodayData}
-        gridSitesData={gridSitesData}
-        ftx={props.ftx}
-        actions={actions}
-        saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
-        saveShowToday={PreferencesAPI.saveShowToday}
-        saveShowBraveNewsButton={PreferencesAPI.saveShowBraveNewsButton}
-        saveShowRewards={PreferencesAPI.saveShowRewards}
-        saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
-        saveShowBinance={PreferencesAPI.saveShowBinance}
-        saveShowGemini={PreferencesAPI.saveShowGemini}
-        saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
-        saveShowFTX={PreferencesAPI.saveShowFTX}
-        saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
-        saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
-        getBraveNewsDisplayAd={getBraveNewsDisplayAd}
-      />
-    )
+    <NewTabPage
+      newTabData={newTabData}
+      todayData={braveTodayData}
+      gridSitesData={gridSitesData}
+      ftx={props.ftx}
+      actions={actions}
+      saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
+      saveShowToday={PreferencesAPI.saveShowToday}
+      saveShowBraveNewsButton={PreferencesAPI.saveShowBraveNewsButton}
+      saveShowRewards={PreferencesAPI.saveShowRewards}
+      saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
+      saveShowBinance={PreferencesAPI.saveShowBinance}
+      saveShowGemini={PreferencesAPI.saveShowGemini}
+      saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
+      saveShowFTX={PreferencesAPI.saveShowFTX}
+      saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
+      saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
+      getBraveNewsDisplayAd={getBraveNewsDisplayAd}
+      useCustomBackgroundImage={(useCustom: boolean) => {
+        if (useCustom) {
+          getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground()
+        } else {
+          getNTPBrowserAPI().pageHandler.useBraveBackground()
+        }
+      }}
+      setSolidColorBackground={(color: string) =>
+        getNTPBrowserAPI().pageHandler.useSolidColorBackground(color)
+      }
+    />
+  )
 }
 
 const mapStateToProps = (state: ApplicationState): Partial<Props> => ({

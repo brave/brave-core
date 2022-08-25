@@ -25,7 +25,7 @@ TEST_F(BatAdsTextDataTest, TextDataInitialization) {
   const TextData text_data(expected_text);
 
   // Act
-  const std::string text = text_data.GetText();
+  const std::string& text = text_data.GetText();
 
   // Assert
   EXPECT_EQ(expected_text, text);

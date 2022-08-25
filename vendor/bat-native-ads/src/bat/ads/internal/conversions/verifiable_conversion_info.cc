@@ -28,11 +28,7 @@ bool VerifiableConversionInfo::operator!=(
 }
 
 bool VerifiableConversionInfo::IsValid() const {
-  if (id.empty() || public_key.empty()) {
-    return false;
-  }
-
-  return true;
+  return !(id.empty() || public_key.empty());
 }
 
 }  // namespace ads

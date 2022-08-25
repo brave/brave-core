@@ -56,9 +56,13 @@ absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& value) {
 
   if (*name == kUndefinedName) {
     return IssuerType::kUndefined;
-  } else if (*name == kConfirmationsName) {
+  }
+
+  if (*name == kConfirmationsName) {
     return IssuerType::kConfirmations;
-  } else if (*name == kPaymentsName) {
+  }
+
+  if (*name == kPaymentsName) {
     return IssuerType::kPayments;
   }
 

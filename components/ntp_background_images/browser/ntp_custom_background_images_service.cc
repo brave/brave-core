@@ -25,13 +25,20 @@ NTPCustomBackgroundImagesService::NTPCustomBackgroundImagesService(
 NTPCustomBackgroundImagesService::~NTPCustomBackgroundImagesService() = default;
 
 bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
-  return delegate_->IsCustomBackgroundEnabled();
+  return delegate_->IsCustomImageBackgroundEnabled() ||
+         delegate_->IsSolidColorBackgroundEnabled();
 }
 
 base::Value NTPCustomBackgroundImagesService::GetBackground() const {
+  DCHECK(ShouldShowCustomBackground());
+
   base::Value data(base::Value::Type::DICTIONARY);
-  data.SetStringKey(kWallpaperImageURLKey, kCustomWallpaperURL);
   data.SetBoolKey(kIsBackgroundKey, true);
+  if (delegate_->IsCustomImageBackgroundEnabled()) {
+    data.SetStringKey(kWallpaperImageURLKey, kCustomWallpaperURL);
+  } else {
+    data.SetStringKey(kWallpaperSolidColorKey, delegate_->GetSolidColor());
+  }
   return data;
 }
 

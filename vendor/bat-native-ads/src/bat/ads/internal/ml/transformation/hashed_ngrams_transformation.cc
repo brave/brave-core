@@ -36,7 +36,7 @@ std::unique_ptr<Data> HashedNGramsTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
   DCHECK(input_data->GetType() == DataType::kText);
 
-  TextData* text_data = static_cast<TextData*>(input_data.get());
+  auto* text_data = static_cast<TextData*>(input_data.get());
 
   std::map<unsigned, double> frequences =
       hash_vectorizer->GetFrequencies(text_data->GetText());

@@ -20,6 +20,7 @@ interface HasImageProps {
   hasImage: boolean
   imageHasLoaded: boolean
   imageSrc?: string
+  solidColorForBackground?: string
 }
 
 type AppProps = {
@@ -312,12 +313,15 @@ function getPageBackground (p: HasImageProps) {
       right: 0;
       display: block;
       transition: opacity .5s ease-in-out;
-      ${p => !p.hasImage && css`
+      ${p => !p.hasImage && !p.solidColorForBackground && css`
         background: linear-gradient(
             to bottom right,
             #4D54D1,
             #A51C7B 50%,
             #EE4A37 100%);
+      `};
+      ${p => !p.hasImage && p.solidColorForBackground && css`
+        background: ${p.solidColorForBackground};
       `};
       ${p => p.hasImage && p.imageSrc && css`
         opacity: var(--bg-opacity);

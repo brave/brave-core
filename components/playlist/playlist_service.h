@@ -72,6 +72,8 @@ class PlaylistService : public KeyedService,
   absl::optional<PlaylistInfo> GetPlaylist(const std::string& id);
   std::vector<PlaylistInfo> GetAllPlaylists();
 
+  void RequestDownloadMediaFilesFromContents(const std::string& playlist_id,
+                                             content::WebContents* contents);
   void RequestDownloadMediaFilesFromPage(const std::string& playlist_id,
                                          const std::string& url);
   void RecoverPlaylistItem(const std::string& id);

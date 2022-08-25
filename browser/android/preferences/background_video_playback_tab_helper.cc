@@ -71,7 +71,7 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
     return;
   }
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
-    web_contents()->GetMainFrame()->ExecuteJavaScript(
+    web_contents()->GetPrimaryMainFrame()->ExecuteJavaScript(
         k_youtube_background_playback_script, base::NullCallback());
   }
 }

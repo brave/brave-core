@@ -137,8 +137,8 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     host_resolver()->AddRule("*", "127.0.0.1");
 
     // Setup embedded test server for HTTPS requests
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(base::BindRepeating(&HandleRequest));
     ASSERT_TRUE(https_server_->Start());

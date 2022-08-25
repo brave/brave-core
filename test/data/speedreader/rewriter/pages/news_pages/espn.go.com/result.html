@@ -1,0 +1,496 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Brett Baty makes immediate impact for New York Mets, slugs home run on first major league swing</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Brett Baty makes immediate impact for New York Mets, slugs home run on first major league swing</h1><p class="subhead metadata">Touted Mets prospect Brett Baty went 1-for-4 with a 2-run home run in his major league debut Wednesday night, a 9-7 victory over the Braves.</p><div class=""><p class="metadata date">Updated Aug. 17, 2022 10:44 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><div class="article-meta"><p><span class="timestamp" data-behavior="date_time" data-date="2022-08-17T22:44:00Z"><span class="time" data-dateformat="time1" data-showtimezone="true">6:44 PM ET</span></span></p><ul class="authors"><li><p><span>ESPN News Services </span></p></li></ul></div><ul class="article-social vertical" data-behavior="sticky_social" data-id="34414857" data-name="Brett%20Baty%20makes%20immediate%20impact%20for%20New%20York%20Mets,%20slugs%20home%20run%20on%20first%20major%20league%20swing" data-src="https://www.espn.com/mlb/story/_/id/34414857" data-type="video"><li><a class="btn-social icon-font-before icon-facebook-solid-before vertical" data-long-text="Share with Facebook" data-short-text="Share" data-social-tool="facebook" data-social-type="vertical" href="https://www.facebook.com/dialog/share?href=https%3A%2F%2Fwww.espn.com%2Fmlb%2Fstory%2F_%2Fid%2F34414857&amp;app_id=116656161708917" target="new">Facebook</a></li><li><a class="btn-social icon-font-before icon-twitter-solid-before vertical" data-long-text="Share with Twitter" data-short-text="Tweet" data-social-tool="twitter" data-social-type="vertical" href="http://twitter.com/intent/tweet?lang=en&amp;url=https%3A%2F%2Fwww.espn.com%2Fmlb%2Fstory%2F_%2Fid%2F34414857&amp;text=Baty%20slugs%20HR%20in%20first%20Mets%20at%2Dbat%3B%20family%20goes%20wild" target="new">Twitter</a></li><li><a class="btn-social icon-font-before icon-facebook-messenger-solid-before vertical" data-social-tool="facebookMessenger" data-social-type="vertical" href="http://facebook.com/dialog/send?link=https://www.espn.com/mlb/story/_/id/34414857&amp;next=https://www.espn.com/mlb/story/_/id/34414857&amp;app_id=116656161708917">Facebook Messenger</a></li><li><a class="btn-social icon-font-before icon-pinterest-solid-before vertical" data-social-tool="pinterest" data-social-type="vertical" href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fwww.espn.com%2Fmlb%2Fstory%2F_%2Fid%2F34414857%2Fbrett%2Dbaty%2Dexcited%2Dmake%2Dimpact%2Dnew%2Dyork%2Dmets%2Dplace%2Deduardo%2Descobar%2Dinjured%2Dlist&amp;description=Brett+Baty+makes+immediate+impact+for+New+York+Mets%2C+slugs+home+run+on+first+major+league+swing&amp;media=https%3A%2F%2Fa.espncdn.com%2Fphoto%2F2022%2F0817%2Fr1049630_1296x729_16-9.jpg">Pinterest</a></li><li class="internal send-email"><a class="btn-social action email icon-font-before icon-email-solid-before vertical" data-route="false" data-social-tool="email" data-social-type="vertical" href="mailto:?subject=Brett%20Baty%20makes%20immediate%20impact%20for%20New%20York%20Mets,%20slugs%20home%20run%20on%20first%20major%20league%20swing&amp;body=https%3A%2F%2Fwww.espn.com%2Fmlb%2Fstory%2F_%2Fid%2F34414857">Email</a></li><li class="internal first"><a class="btn-social page-action print icon-font-before icon-print-solid-before vertical" data-social-tool="print" data-social-type="vertical" href="https://www.espn.com/espn/print?id=34414857">print</a></li></ul><p>ATLANTA -- The first time <a href="https://www.espn.com/mlb/player/_/id/42414/brett-baty">Brett Baty</a> stepped on the field in the big leagues, he simply took a look around.</p><p>"I wanted to soak it all in," he said.</p><p>Then came a moment he'll remember for a lifetime.</p><p>Baty homered in his first major league at-bat, and the <a href="/mlb/team/_/name/nym/new-york-mets">New York Mets</a> held off the Braves 9-7 on Wednesday night to snap Atlanta's eight-game winning streak.</p><p>After being outscored 18-1 in the first two games of the series, the NL East-leading Mets jumped to a 6-1 lead and barely made it stand up to push their advantage over the Braves back to 4 1/2 games.</p><p>And Baty was partially to thank.</p><p>The 12th overall pick in the 2019 draft, he came up for the first time in the second inning with a runner aboard and the Mets already ahead 2-0 on back-to-back homers in the first off <a href="https://www.espn.com/mlb/player/_/id/31654/jake-odorizzi">Jake Odorizzi</a>. After taking a ball, Baty connected with a hanging curve on his very first swing in a New York uniform.</p><p>"I was just looking for a pitch I could drive,'' Baty said. "He left one over the plate.''</p><p>According to ESPN Stats &amp; Information research, Baty is the fifth player with a home run in his first career plate appearance in Mets history and first since Mike Jacobs in 2005.</p><p>Baty, who is from Round Rock, Texas, said pregame that his mother, father, sister and several other relatives had flown to Atlanta for his big league debut. They erupted with applause in their seats upon seeing the ball fly out of Truist Park.</p><p>"To look up (in the stands) and see my family up there, to celebrate in the dugout with my teammates, it's just pure joy,'' Baty said.</p><p>A worker was able to retrieve the ball, which will become a treasured keepsake for Baty, the 37th-best prospect in baseball by ESPN's Kiley McDaniel, who was called up to the big leagues just a week after being promoted to Triple-A Syracuse.</p><p>"For sure, that will be framed up and go on a shelf somewhere,'' he said. "Hopefully there will be more."</p><p>Baty's big night came on the same day the Mets placed <a href="https://www.espn.com/mlb/player/_/id/30272/eduardo-escobar">Eduardo Escobar</a> on the injured list with a left oblique injury.</p><p>In other injury developments, pitcher <a href="https://www.espn.com/mlb/player/_/id/31864/taijuan-walker">Taijuan Walker</a> underwent an MRI after lasting only two innings in his start Tuesday because of back spasms. Walker may not be able to make his next scheduled start Sunday at Philadelphia, but it doesn't appear he'll be out for an extended period, according to manager Buck Showalter.</p><p>"Pretty good news, all things considered," Showalter said of Walker. "His Sunday start is in jeopardy, but we're still holding out hope it manages before that. We've got some different thoughts" about who might step in if Walker can't go.</p><p>The Mets designated reliever <a href="https://www.espn.com/mlb/player/_/id/32730/rj-alvarez">R.J. Alvarez</a> for assignment after he gave up three runs in 2 1/3 innings in <a href="https://apnews.com/article/mlb-sports-new-york-atlanta-baseball-69ce9edcc844ab2c50415d82b0cb3a92">a 5-0 loss</a> to the Braves on Tuesday -- his first appearance in the big leagues since 2015. Lefty Sam Clay was called up from Syracuse.</p><p><i>Information from The Associated Press was used in this report.</i></p>
+<figure class="iframe-video article-figure video" data-cerebro-id="62fd8c5cbe6ab33d5ca65cd9" data-source="espn" data-video="native,640,360,34415618,blacklist-IN|MV|BT|LK|PK|JP|BD|NP|"><div class="img-wrap"><picture><source media="(min-width: 376px)" srcset="https://a1.espncdn.com/combiner/i?img=%2Fmedia%2Fmotion%2F2022%2F0817%2Fdm_220817_MLB_One%2DPlay_Baty_first_career_home_run%2Fdm_220817_MLB_One%2DPlay_Baty_first_career_home_run.jpg&amp;w=943&amp;h=530&amp;cquality=80&amp;format=jpg"><source media="(max-width: 375px)" srcset="https://a1.espncdn.com/combiner/i?img=%2Fmedia%2Fmotion%2F2022%2F0817%2Fdm_220817_MLB_One%2DPlay_Baty_first_career_home_run%2Fdm_220817_MLB_One%2DPlay_Baty_first_career_home_run.jpg&amp;w=375&amp;cquality=80, https://a1.espncdn.com/combiner/i?img=%2Fmedia%2Fmotion%2F2022%2F0817%2Fdm_220817_MLB_One%2DPlay_Baty_first_career_home_run%2Fdm_220817_MLB_One%2DPlay_Baty_first_career_home_run.jpg&amp;w=750&amp;cquality=40&amp;format=jpg 2x"></picture><p><span class="video-play-button restricted" data-id="34415618">play</span></p></div><figcaption><div class="caption-wrapper"><div class="text-container"><p><span class="headline">Baty hits HR in first career at-bat, family is elated in the stands (0:29)</span></p><p>Brett Baty goes deep in his first career MLB at-bat for the Mets and his family goes wild in the stands. (0:29)</p></div></div></figcaption></figure></body>

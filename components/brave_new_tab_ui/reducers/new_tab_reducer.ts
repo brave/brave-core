@@ -56,9 +56,24 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       if (initialDataPayload.wallpaperData) {
+        // Payload passed from native UI doesn't have 'type' property. We should
+        // fix up here.
+        let backgroundWallpaper = payload.wallpaperData.backgroundWallpaper
+        if (backgroundWallpaper?.wallpaperImageUrl) {
+          backgroundWallpaper = {
+            ...backgroundWallpaper,
+            type: 'image'
+          }
+        } else if (backgroundWallpaper?.wallpaperSolidColor) {
+          backgroundWallpaper = {
+            ...backgroundWallpaper,
+            type: 'solidColor'
+          }
+        }
+
         state = {
           ...state,
-          backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
+          backgroundWallpaper,
           brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper
         }
       }
@@ -121,9 +136,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       // Empty custom bg url means using brave background.
       const url = payload.customBackground.url.url
-      state.backgroundWallpaper =
-          url === '' ? backgroundAPI.randomBackgroundImage()
-                     : { wallpaperImageUrl: url }
+      const solidColor = payload.customBackground.solidColor
+      if (url !== '') {
+        state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
+      } else if (solidColor !== '') {
+        state.backgroundWallpaper = { type: 'solidColor', wallpaperSolidColor: solidColor }
+      } else {
+        state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
+      }
       break
 
     case types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED:

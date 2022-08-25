@@ -180,7 +180,7 @@ IN_PROC_BROWSER_TEST_F(IpfsNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(IPFSNotConnectedPage::kTypeForTesting,
             GetInterstitialType(web_contents));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
@@ -196,7 +196,7 @@ IN_PROC_BROWSER_TEST_F(IpfsNavigationThrottleBrowserTest,
   // time without interstitials.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
   EXPECT_EQ(gateway_url(), web_contents->GetURL());
 }
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(IpfsNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
 }
 

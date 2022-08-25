@@ -361,6 +361,13 @@ void Publisher::SaveVisitInternal(
     publisher_info->score += concaveScore(duration);
     publisher_info->reconcile_stamp = ledger_->state()->GetReconcileStamp();
 
+    // Activity queries expect the publisher to exist in the `publisher_info`
+    // table. Save the publisher info if it does not already exist.
+    if (new_publisher) {
+      ledger_->database()->SavePublisherInfo(publisher_info->Clone(),
+                                             [](type::Result) {});
+    }
+
     panel_info = publisher_info->Clone();
 
     auto callback = std::bind(&Publisher::OnPublisherInfoSaved,

@@ -34,8 +34,8 @@ std::u16string GetHIDTitle(content::WebContents* content, const GURL& url) {
   std::vector<blink::mojom::HidDeviceFilterPtr> filters;
   std::vector<blink::mojom::HidDeviceFilterPtr> exclusion_filters;
   auto hid_chooser_controller = std::make_unique<HidChooserController>(
-      content->GetMainFrame(), std::move(filters), std::move(exclusion_filters),
-      base::DoNothing());
+      content->GetPrimaryMainFrame(), std::move(filters),
+      std::move(exclusion_filters), base::DoNothing());
   return hid_chooser_controller->GetTitle();
 }
 }  // namespace

@@ -41,9 +41,9 @@ class Transactions final : public TableInterface {
 
   void Update(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-      ResultCallback callback);
+      ResultCallback callback) const;
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
@@ -54,8 +54,9 @@ class Transactions final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const TransactionList& transactions);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const TransactionList& transactions);
+  std::string BuildInsertOrUpdateQuery(
+      mojom::DBCommandInfo* command,
+      const TransactionList& transactions) const;
 
   void OnGetTransactions(GetTransactionsCallback callback,
                          mojom::DBCommandResponseInfoPtr response);

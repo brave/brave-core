@@ -32,7 +32,7 @@ TransactionList GetUnreconciledTransactionsForDateRange(
   }
 
   TransactionList unreconciled_transactions(
-      transactions.end() - unblinded_payment_token_count, transactions.end());
+      transactions.cend() - unblinded_payment_token_count, transactions.cend());
 
   return GetTransactionsForDateRange(unreconciled_transactions, from_time,
                                      to_time);

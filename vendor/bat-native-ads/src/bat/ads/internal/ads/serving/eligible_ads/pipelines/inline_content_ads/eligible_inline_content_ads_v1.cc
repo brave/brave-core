@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v1.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
@@ -75,7 +77,7 @@ void EligibleAdsV1::GetEligibleAds(
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   GetForChildSegments(user_model, dimensions, ad_events, browsing_history,
-                      callback);
+                      std::move(callback));
 }
 
 void EligibleAdsV1::GetForChildSegments(

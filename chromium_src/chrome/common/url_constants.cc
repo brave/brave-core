@@ -56,6 +56,8 @@ const char kChromeHelpViaMenuURL[] =
 const char kChromeHelpViaWebUIURL[] =
     "https://support.brave.com/";
 
+const char kIsolatedAppScheme[] = "isolated-app";
+
 const char kChromeNativeScheme[] = "chrome-native";
 
 const char kChromeSearchLocalNtpHost[] = "local-ntp";
@@ -202,6 +204,9 @@ const char kSyncGoogleDashboardURL[] =
 const char kSyncLearnMoreURL[] =
     "https://support.brave.com/";
 
+const char kSigninInterceptManagedDisclaimerLearnMoreURL[] =
+    "https://support.brave.com/";
+
 #if !BUILDFLAG(IS_ANDROID)
 const char kSyncTrustedVaultOptInURL[] = "https://support.brave.com/";
 #endif
@@ -253,6 +258,13 @@ const char kOutdatedPluginLearnMoreURL[] =
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 const char kChromeAppsDeprecationLearnMoreURL[] =
     "https://support.google.com/chrome/?p=chrome_app_deprecation";
+#endif
+
+#if BUILDFLAG(CHROME_ROOT_STORE_SUPPORTED)
+// TODO(b/1339340): add help center link when help center link is created.
+const char kChromeRootStoreSettingsHelpCenterURL[] =
+    "https://chromium.googlesource.com/chromium/src/+/main/net/data/ssl/"
+    "chrome_root_store/root_store.md";
 #endif
 
 }  // namespace chrome

@@ -1,0 +1,557 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Mexico Remains on Alert After Chaotic Weekend in Tijuana, Rosarito, Ensenada</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Mexico Remains on Alert After Chaotic Weekend in Tijuana, Rosarito, Ensenada</h1><p class="subhead metadata">The Mexican military patrolled the streets of Baja California, Mexico through the weekend after chaotic scenes of vehicles on fire and road blockades in cities...</p><div class=""><p class="metadata">By TELEMUNDO 20, Ana Gómez</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+									
+					
+<p>The Mexican military patrolled the streets of Baja California, Mexico through the weekend after chaotic scenes of vehicles on fire and road blockades in cities like Tijuana, Rosarito and Ensenada <a href="https://www.telemundo20.com/noticias/local/alcaldesa-asegura-que-protegera-a-tijuana-con-toda-la-fuerza-de-la-ley-tras-ola-de-violencia-en-baja-california/2231113/">led to a shelter-in-place advisory for U.S. citizens in the beachside state</a>. </p>
+
+<p>The violence came as drug cartels staged widespread arson and shooting attacks, terrifying civilians in three main northwest cities in a bold challenge to the state.</p>
+
+<p>
+							How are cross-border travelers reacting to the weekend violence in the Baja region? NBC 7's Melissa Adan has the story.
+						</p>
+<p>On Sunday night, at least one passenger bus was set on fire in Mexicali, adding to about two dozen vehicles that were torched on Friday. Two people were inside the bus at the time, including the driver, but no injuries were reported. Authorities said the people responsible for the fire drove off in a black car.</p>
+
+
+<p>"It scares people and it makes a lot of noise and it puts a whole lot of pressure on politicians. It figures into this history that really is the history of the two biggest cartels in Mexico," said Dr. Everard Meade.  Meade is the director of Proceso Pacifico, a peacebuilding and transitional justice group in Mexico. It's a show of power and the more fear that inspires, the more successful it is as an act of terror."</p>
+
+<p>In response, Baja California Gov. Marina del Pilar Ávila Olmeda said in a Tweet that her security team is on alert and responding to the violence. Earlier, Olmeda said she was in direct contact with the president of Mexico, Andrés Manuel López Obrador (AMLO), and the entire Federal Government, to support coordinated actions to respond to the violence across the state. </p>
+
+<p>
+							During a violent weekend in Baja California, several vehicles were set on fire as residents were urged to shelter in place.
+						</p>
+
+<p>"It is time to be united so that together we can maintain the tranquility of all the families of Baja California," the governor said in her statement.</p>
+
+<p>The Mexican federal government has sent at least 300 Army troops and 50 members of the National Guard to Tijuana to join another 3,000 members of the National Guard already patrolling the streets.</p>
+
+<p>"We are on alert in the state of Baja California and we will be serving the population," said Fernando Sanchez, Tijuana's security secretary.</p>
+
+<p>According to <a href="https://seguridad.sspc.gob.mx/contenido/1298/despliega-el-gobierno-federal-fuerzas-para-garantizar-la-seguridad-publica-en-ciudades-del-norte-del-pais">the Secretariat of Security and Civilian Protection of the government of Mexico</a>, 17 people believed to be part of the violent acts on Friday have been arrested.</p>
+
+<p>Of those arrested, seven were in Tijuana; four in Rosarito; four in Mexicali, and two in Ensenada. Of these, three people, two men, and one woman were identified as members of the Cártel de Jalisco Nueva Generación (CJNG), according to government officials.</p>
+
+<figure class="wp-block-embed is-type-wp-embed is-provider-nbc-7-san-diego wp-block-embed-nbc-7-san-diego"></figure>
+
+<p>The majority of vehicles were set on fire in Tijuana. Three were torched in Rosarito and two each in Mexicali, Ensenada and Tecate. One injury to a bus driver in Mexicali was reported. </p>
+
+<p>"I saw the way they got people off the bus and then threw gas at the bus and burned it," said Juan Reyes, a Tijuana resident who witnessed masked men wreak havoc across his city.</p>
+
+<p>"The problem is serious, but it is not serious yet. We do not have homicides or injuries. No criminal group is going to tell us if we go out or not go out to the streets because our freedom is not going to be taken by anyone," said the mayor of Tijuana.</p>
+
+<h2 class="wp-block-nbc-section-heading"><strong>Wave of Violence Affects the Local Economy</strong></h2>
+
+<p>"We ask the government to participate more and to do its job and do what they have to do. If the cartels have a problem with the government, they should go against the government, not against civilians or businesses,” said Vera, who is a tourist server.</p>
+
+<p>The violent crimes represent a blow to the economy of the region. Revolution Avenue, a tourist center in Tijuana, Mexico, remained closed and under surveillance and some businesses did not open their doors on Saturday.</p>
+
+<p>"We're practically empty in comparison to a normal Saturday. Forty percent of shops and businesses are closed and this is because they thought there was going to be a curfew enforced," said Julián Palombo, president of Canaco Tijuana.</p>
+
+<p>The governor reported on Saturday that the booths and highways of Baja California were operating normally.</p>
+
+<p>"Our government and its offices are already working in their entirety. As well as our medical services, such as clinics and hospitals," the governor said.</p>
+
+<p>
+							Police in Baja California are investigating reports of vehicle fires, roadblocks and violence across cities in the region on Friday, Aug. 2022.
+						</p>
+<p>Despite the acts of violence that occurred in Rosarito, authorities said it's safe to continue with the Baja Beach Fest, a large music festival on the beach.</p>
+
+<p>"We do not have any kind of alert since a statement was issued last night so our visitors and tourists who are at the festival should remain calm, the area is secured and we will continue to patrol," said Aracely Brown, mayor of Rosarito.</p>
+
+<p>The mayor of Tijuana, Montserrat Caballero, mentioned through a statement that massive events are not canceled and that the opening of businesses was still allowed.</p>
+
+<p><em>This story was originally reported by NBC 7's sister station, Telemundo 20. To read the article,&nbsp;<a href="https://www.telemundo20.com/noticias/local/ola-de-violencia-en-baja-california-casetas-y-carreteras-operan-con-normalidad-hay-17-detenidos/2231162/?_osource=db_npd_tlmd_kuan_twt_shr">click here.</a></em></p>
+
+									</body>

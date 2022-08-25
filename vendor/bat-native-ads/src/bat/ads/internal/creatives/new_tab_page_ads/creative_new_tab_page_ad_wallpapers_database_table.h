@@ -29,7 +29,7 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNewTabPageAdList& creative_ads);
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
@@ -39,7 +39,7 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
  private:
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const CreativeNewTabPageAdList& creative_ads);
+      const CreativeNewTabPageAdList& creative_ads) const;
 
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };

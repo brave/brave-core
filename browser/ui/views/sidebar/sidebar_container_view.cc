@@ -9,8 +9,8 @@
 
 #include "base/auto_reset.h"
 #include "base/bind.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -20,8 +20,10 @@
 #include "brave/browser/ui/views/sidebar/sidebar_side_panel_utils.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -29,7 +31,6 @@
 #include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/point.h"
@@ -133,10 +134,10 @@ void SidebarContainerView::MenuClosed() {
 }
 
 void SidebarContainerView::UpdateBackground() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     // Fill background because panel's color uses alpha value.
-    SetBackground(views::CreateSolidBackground(
-        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
+    SetBackground(
+        views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
   }
 }
 
@@ -185,7 +186,7 @@ void SidebarContainerView::Layout() {
 
 gfx::Size SidebarContainerView::CalculatePreferredSize() const {
   if (!initialized_ || !sidebar_control_view_->GetVisible() ||
-      browser_->window()->IsFullscreen())
+      IsFullscreenByTab())
     return View::CalculatePreferredSize();
 
   int preferred_width =
@@ -200,6 +201,14 @@ void SidebarContainerView::OnThemeChanged() {
   View::OnThemeChanged();
 
   UpdateBackground();
+}
+
+bool SidebarContainerView::IsFullscreenByTab() const {
+  DCHECK(browser_->exclusive_access_manager() &&
+         browser_->exclusive_access_manager()->fullscreen_controller());
+  return browser_->exclusive_access_manager()
+      ->fullscreen_controller()
+      ->IsWindowFullscreenForTabOrPending();
 }
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {

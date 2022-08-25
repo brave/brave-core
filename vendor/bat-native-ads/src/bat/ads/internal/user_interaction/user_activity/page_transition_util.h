@@ -23,7 +23,7 @@ bool DidNavigateToHomePage(const PageTransitionType type);
 bool DidTransitionFromExternalApplication(const PageTransitionType type);
 
 absl::optional<UserActivityEventType> ToUserActivityEventType(
-    const PageTransitionType page_transition);
+    const PageTransitionType type);
 
 }  // namespace ads
 

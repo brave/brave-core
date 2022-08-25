@@ -21,7 +21,7 @@ struct ADS_EXPORT HistoryInfo final {
   ~HistoryInfo();
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& root);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

@@ -72,7 +72,8 @@ BatchDLEQProof::BatchDLEQProof(const std::vector<BlindedToken>& blinded_tokens,
 
 BatchDLEQProof::BatchDLEQProof(const BatchDLEQProof& other) = default;
 
-BatchDLEQProof& BatchDLEQProof::operator=(const BatchDLEQProof& info) = default;
+BatchDLEQProof& BatchDLEQProof::operator=(const BatchDLEQProof& other) =
+    default;
 
 BatchDLEQProof::~BatchDLEQProof() = default;
 

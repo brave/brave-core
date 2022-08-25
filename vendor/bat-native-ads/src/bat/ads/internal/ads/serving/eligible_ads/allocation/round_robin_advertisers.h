@@ -23,7 +23,7 @@ T FilterSeenAdvertisers(const T& ads,
   std::copy_if(ads.cbegin(), ads.cend(), std::back_inserter(unseen_advertisers),
                [&seen_advertisers](const CreativeAdInfo& creative_ad) {
                  return seen_advertisers.find(creative_ad.advertiser_id) ==
-                        seen_advertisers.end();
+                        seen_advertisers.cend();
                });
 
   return unseen_advertisers;

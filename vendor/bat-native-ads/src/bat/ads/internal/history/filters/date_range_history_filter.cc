@@ -28,7 +28,7 @@ base::circular_deque<HistoryItemInfo> DateRangeHistoryFilter::Apply(
                               history_item.created_at > to_time_;
                      });
 
-  filtered_history.erase(iter, filtered_history.end());
+  filtered_history.erase(iter, filtered_history.cend());
 
   return filtered_history;
 }

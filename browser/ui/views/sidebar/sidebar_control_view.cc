@@ -6,8 +6,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -17,11 +17,10 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -40,7 +39,7 @@ class ControlViewMenuModel : public ui::SimpleMenuModel {
   ControlViewMenuModel& operator=(const ControlViewMenuModel&) = delete;
 
   // ui::SimpleMenuModel overrides:
-  const gfx::FontList* GetLabelFontListAt(int index) const override {
+  const gfx::FontList* GetLabelFontListAt(size_t index) const override {
     if (index == 0) {
       return &ui::ResourceBundle::GetSharedInstance().GetFontList(
           ui::ResourceBundle::BoldFont);
@@ -116,14 +115,13 @@ void SidebarControlView::OnThemeChanged() {
 }
 
 void SidebarControlView::UpdateBackgroundAndBorder() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
-    SetBackground(views::CreateSolidBackground(
-        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
+    SetBackground(
+        views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
     SetBorder(views::CreateSolidSidedBorder(
         gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
-        theme_provider->GetColor(
-            ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
+        color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }
 
@@ -238,13 +236,12 @@ void SidebarControlView::UpdateItemAddButtonState() {
 
 void SidebarControlView::UpdateSettingsButtonState() {
   DCHECK(sidebar_settings_view_);
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     sidebar_settings_view_->SetImage(
         views::Button::STATE_NORMAL,
         gfx::CreateVectorIcon(
             kSidebarSettingsIcon,
-            theme_provider->GetColor(
-                BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE)));
+            color_provider->GetColor(kColorSidebarButtonBase)));
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
     sidebar_settings_view_->SetImage(
         views::Button::STATE_HOVERED,

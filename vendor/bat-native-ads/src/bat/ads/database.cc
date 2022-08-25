@@ -164,7 +164,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Run(
   }
 
   for (const auto& binding : command->bindings) {
-    database::Bind(&statement, *binding.get());
+    database::Bind(&statement, *binding);
   }
 
   if (!statement.Run()) {
@@ -192,7 +192,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Read(
   }
 
   for (const auto& binding : command->bindings) {
-    database::Bind(&statement, *binding.get());
+    database::Bind(&statement, *binding);
   }
 
   command_response->result =

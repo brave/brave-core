@@ -135,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(NavigateIframeToURL(contents, kIframeID, iframe_url));
   content::RenderFrameHost* iframe_contents =
-      ChildFrameAt(contents->GetMainFrame(), 0);
+      ChildFrameAt(contents->GetPrimaryMainFrame(), 0);
   WaitForLoadStop(contents);
   EXPECT_EQ(GURL("https://www.digg.com/"),
             iframe_contents->GetLastCommittedURL());

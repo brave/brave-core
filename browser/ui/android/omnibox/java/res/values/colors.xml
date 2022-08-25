@@ -7,8 +7,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="brave_search_promo_title_color">@android:color/black</color>
     <color name="brave_search_promo_desc_color">#2E3039</color>
-    <color name="brave_search_promo_button_color">#FB5930</color>
+    <color name="brave_search_promo_button_color">#4C54D2</color>
+    <color name="brave_search_promo_secondary_button_color">#1D1F25</color>
+    <color name="brave_search_promo_bg_color">#33FFFFFF</color>
     <color name="brave_search_promo_bg_stroke_color">#E2E3F8</color>
-    <color name="brave_search_promo_bg_start_color">#66FFFFFF</color>
-    <color name="brave_search_promo_bg_end_color">#66EFEFFB</color>
 </resources>

@@ -58,7 +58,7 @@ void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url) {
 // gets called from AdsTabHelper::RunIsolatedJavaScript() (called via the
 // WebContentsObserver machinery), since the JS World ID won't be set yet when
 // dom_distiller::RunIsolatedJavaScript() gets called.
-bool ChromeMainDelegate::BasicStartupComplete(int* exit_code) {
+absl::optional<int> ChromeMainDelegate::BasicStartupComplete() {
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kEnableDomDistiller);
@@ -112,5 +112,5 @@ bool ChromeMainDelegate::BasicStartupComplete(int* exit_code) {
 
   command_line.AppendFeatures(enabled_features, disabled_features);
 
-  return ChromeMainDelegate::BasicStartupComplete_ChromiumImpl(exit_code);
+  return ChromeMainDelegate::BasicStartupComplete_ChromiumImpl();
 }

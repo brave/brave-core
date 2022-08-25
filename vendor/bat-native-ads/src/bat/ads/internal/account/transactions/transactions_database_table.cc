@@ -168,7 +168,7 @@ void Transactions::GetForDateRange(const base::Time from_time,
 
 void Transactions::Update(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-    ResultCallback callback) {
+    ResultCallback callback) const {
   std::vector<std::string> transaction_ids;
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
     transaction_ids.push_back(unblinded_payment_token.transaction_id);
@@ -206,7 +206,7 @@ void Transactions::Update(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void Transactions::Delete(ResultCallback callback) {
+void Transactions::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -255,7 +255,7 @@ void Transactions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
 std::string Transactions::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const TransactionList& transactions) {
+    const TransactionList& transactions) const {
   DCHECK(command);
 
   const int count = BindParameters(command, transactions);

@@ -1,5 +1,5 @@
 diff --git a/components/error_page/common/localized_error.cc b/components/error_page/common/localized_error.cc
-index 687605471920341c78b2480635d567601ffe1c97..ad7396dc4be86f0a80ca21b87893409350a3693f 100644
+index 2668f5ba53a3568baca247c453051cd2e45fbac1..33459618de364655f56d9ac776bcb9f5de02fcd5 100644
 --- a/components/error_page/common/localized_error.cc
 +++ b/components/error_page/common/localized_error.cc
 @@ -480,6 +480,7 @@ const LocalizedErrorMap* LookupErrorMap(const std::string& error_domain,

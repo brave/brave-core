@@ -20,7 +20,7 @@ bool HasMigrated() {
 }
 
 void SetHashForJson(const std::string& json) {
-  const uint64_t hash = static_cast<uint64_t>(base::PersistentHash(json));
+  const auto hash = static_cast<uint64_t>(base::PersistentHash(json));
 
   AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kConfirmationsHash,
                                                 hash);

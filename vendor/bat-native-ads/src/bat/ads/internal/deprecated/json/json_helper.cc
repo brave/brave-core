@@ -28,11 +28,7 @@ bool JSON::Validate(rapidjson::Document* document,
 
   rapidjson::SchemaDocument schema(document_schema);
   rapidjson::SchemaValidator validator(schema);
-  if (!document->Accept(validator)) {
-    return false;
-  }
-
-  return true;
+  return document->Accept(validator);
 }
 
 std::string JSON::GetLastError(rapidjson::Document* document) {

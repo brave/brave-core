@@ -11,7 +11,7 @@ namespace privacy {
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo() = default;
 
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo(
-    const UnblindedPaymentTokenInfo& unblinded_payment_token) = default;
+    const UnblindedPaymentTokenInfo& info) = default;
 
 UnblindedPaymentTokenInfo& UnblindedPaymentTokenInfo::operator=(
     const UnblindedPaymentTokenInfo& info) = default;

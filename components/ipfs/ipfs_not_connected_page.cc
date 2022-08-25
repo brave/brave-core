@@ -55,31 +55,29 @@ void IPFSNotConnectedPage::CommandReceived(const std::string& command) {
 }
 
 void IPFSNotConnectedPage::PopulateInterstitialStrings(
-    base::Value* load_time_data) {
-  load_time_data->SetStringKey("tabTitle",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_NOT_CONNECTED_TITLE));
-  load_time_data->SetStringKey("heading",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_NOT_CONNECTED_HEADING));
+    base::Value::Dict& load_time_data) {
+  load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_IPFS_NOT_CONNECTED_TITLE));
+  load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
+                                    IDS_IPFS_NOT_CONNECTED_HEADING));
 
-  load_time_data->SetStringKey("primaryParagraph",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH));
+  load_time_data.Set("primaryParagraph",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH));
 
-  load_time_data->SetStringKey("primaryButtonText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_NOT_CONNECTED_PRIMARY_BUTTON));
-  load_time_data->SetStringKey("openDetails",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_NOT_CONNECTED_OPEN_DETAILS_BUTTON));
-  load_time_data->SetStringKey(
-      "closeDetails", brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_IPFS_NOT_CONNECTED_CLOSE_DETAILS_BUTTON));
-  load_time_data->SetStringKey("explanationParagraph",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_NOT_CONNECTED_EXPLANATION));
-  load_time_data->SetStringKey("finalParagraph", std::u16string());
+  load_time_data.Set("primaryButtonText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_NOT_CONNECTED_PRIMARY_BUTTON));
+  load_time_data.Set("openDetails",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_NOT_CONNECTED_OPEN_DETAILS_BUTTON));
+  load_time_data.Set("closeDetails",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_NOT_CONNECTED_CLOSE_DETAILS_BUTTON));
+  load_time_data.Set("explanationParagraph",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_NOT_CONNECTED_EXPLANATION));
+  load_time_data.Set("finalParagraph", std::u16string());
 }
 
 int IPFSNotConnectedPage::GetHTMLTemplateId() {

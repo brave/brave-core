@@ -8,7 +8,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
-#include "net/cert/internal/parsed_certificate.h"
+#include "net/cert/pki/parsed_certificate.h"
 #include "net/der/input.h"
 
 @implementation BraveCertificateSignature

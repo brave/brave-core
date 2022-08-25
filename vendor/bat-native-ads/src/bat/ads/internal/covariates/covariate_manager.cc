@@ -196,7 +196,7 @@ void CovariateManager::SetNotificationAdEvent(
   SetLogEntry(std::move(notification_ad_event));
 }
 
-void CovariateManager::LogTrainingInstance() {
+void CovariateManager::LogTrainingInstance() const {
   std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance =
       GetTrainingInstance();
   AdsClientHelper::GetInstance()->LogTrainingInstance(

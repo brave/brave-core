@@ -1,0 +1,716 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>The Seattle Times</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">The Seattle Times</h1><p class="subhead metadata">The Seattle Times covers politics and government in Seattle, the Eastside, Washington state and the Northwest.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+              <h2 class="standard-subhead mb-0">More Headlines</h2>
+              <article class="results-story primary post-15290117 post type-post status-publish format-standard hentry section-law-justice section-seattle-news section-politics section-northwest" id="post-15290117">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/law-justice/flurry-of-seattle-weekend-shootings-unacceptable-mayor-harrell-says/">
+      <img alt="Seattle Mayor Bruce Harrell speaks during a press conference to address reproductive rights bills and gun violence over the weekend at City Hall Monday morning, August 15, 2022. 221286" class="" data-ratio="1.55689" sizes="(max-width: 767px) calc(100vw - 20px), (max-width: 1049px) calc( ( 100vw - 360px ) * .4 ), 300px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_124349.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-15 13:22:01">August 15, 2022<span class="time"> at 1:22 pm</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/law-justice/flurry-of-seattle-weekend-shootings-unacceptable-mayor-harrell-says/">Flurry of Seattle weekend shootings ‘unacceptable,’ Mayor Harrell says</a></h3>
+
+    <p class="results-story-excerpt">Between Friday and Sunday evenings, seven shootings in Seattle and Renton injured at least 11 people, including a 14-year-old girl, and killed one man.</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li><li><a data-taxonomy="section" href="/seattle-news/law-justice/">Law &amp; Justice</a></li><li><a data-taxonomy="section" href="/politics/">Local Politics</a></li><li class="result-tablet"><a data-taxonomy="section" href="/northwest/">Northwest</a></li>  </ul>
+
+</article>
+<article class="results-story post-15261641 post type-post status-publish format-standard hentry section-health section-seattle-news section-politics section-northwest section-puget-sound" id="post-15261641">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/can-you-reverse-abortions-some-say-yes-others-call-the-treatment-unethical-possibly-dangerous/">
+      <img alt="Dr. Bob Snyder, an obstetrics &amp; gynecology specialist at St. Francis Hospital, is photographed in Federal Way, Wash. Wednesday, Aug. 10, 2022. 221202 (Erika Schultz / The Seattle Times)" class="" data-ratio="1.49813" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=780x521" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=300x200 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=1024x684 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=768x513 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=1536x1025 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=2048x1367 2048w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=780x521 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=1020x681 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=1560x1041 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=2040x1362 2040w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_2-abortion-reverse_114138.jpg?d=375x250 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-15 06:00:00">August 15, 2022<span class="time"> at 6:00 am</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/can-you-reverse-abortions-some-say-yes-others-call-the-treatment-unethical-possibly-dangerous/">Can you reverse abortions? Some say yes; others call the treatment unethical, possibly dangerous</a></h3>
+
+    <p class="results-story-excerpt">An abortion reversal hotline works with 27 Washington providers, including a Federal Way doctor who says he's trying to give patients a second chance.</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li>  </ul>
+
+</article>
+<article class="results-story post-15287222 post type-post status-publish format-standard hentry section-politics section-nation section-nation-politics" id="post-15287222">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/some-capitol-rioters-try-to-profit-from-their-jan-6-crimes/">
+      <img alt="FILE – Protesters outside the U.S. Capitol on the day it was stormed by supporters of former President Donald Trump, in Washington, Jan. 6, 2021. An Ohio man who claimed that Donald Trump was legally responsible for his decision to break into the Capitol and make off with a bottle of bourbon and a coat rack was convicted on Thursday, April 14, 2022, in the first trial connected to the riot to feature a defense that blamed the former president. (Jason Andrew/The New York Times) XNYT179 XNYT179" class="" data-ratio="1.55689" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/04/04152022_textstomeadows-tzr_tzr_174637.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-14 11:47:49">August 14, 2022<span class="time"> at 11:47 am</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/some-capitol-rioters-try-to-profit-from-their-jan-6-crimes/">Some Capitol rioters try to profit from their Jan. 6 crimes</a></h3>
+
+    <p class="results-story-excerpt">Some of the rioters who stormed the U.S. Capitol on Jan. 6, 2021, are trying to profit from their participation in the deadly insurrection while...</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li>  </ul>
+
+</article>
+<div class="floated-river-ad zeus-ad-right" id="ad-right1"><zeus-ad class="ad" id="zeus_right1"></zeus-ad></div><article class="results-story post-15133621 post type-post status-publish format-standard hentry section-education section-health section-seattle-news section-politics section-times-watchdog" id="post-15133621">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/times-watchdog/king-county-program-to-help-at-risk-students-could-jeopardize-privacy/">
+      <img alt="" class="" data-ratio="1.55533" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=780x502" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=768x494 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=1536x988 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=780x502 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=1020x656 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/bsk_illo2_web-teaser.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-14 06:00:00">August 14, 2022<span class="time"> at 6:00 am</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/times-watchdog/king-county-program-to-help-at-risk-students-could-jeopardize-privacy/">How King County’s efforts to help at-risk students created a record that could jeopardize their privacy</a></h3>
+
+    <p class="results-story-excerpt">A $30 million King County initiative that has checked students for health risks raises questions about privacy, ethics and a conflict of interest.</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li><li><a data-taxonomy="section" href="/seattle-news/times-watchdog/">Times Watchdog</a></li><li><a data-taxonomy="section" href="/education/">Education</a></li><li class="result-tablet"><a data-taxonomy="section" href="/health/">Health</a></li><li class="result-desktop"><a data-taxonomy="section" href="/politics/">Local Politics</a></li>  </ul>
+
+</article>
+<article class="results-story post-15185656 post type-post status-publish format-standard hentry tag-equity-and-inclusion section-seattle-news section-politics" id="post-15185656">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/politics/development-without-displacement-is-the-dream-south-of-seattle-as-skyway-gets-attention-at-last/">
+      <img alt="Community leader Ryan Quigtar is photographed in  Skyway on July 19, 2022." class="" data-ratio="1.55689" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/08112022_tzr_tzr_111128.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-13 06:00:00">August 13, 2022<span class="time"> at 6:00 am</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/politics/development-without-displacement-is-the-dream-south-of-seattle-as-skyway-gets-attention-at-last/">Long neglected, Skyway gets attention at last. But will residents now be priced out?<span class="icon-label u-dib u-ws-nowrap font-link"><i aria-label="Photo gallery" class="icon-camera icon-section-block"></i> VIEW</span></a></h3>
+
+    <p class="results-story-excerpt">A local leader calls Skyway's historical experience a textbook example of systemic racism. Now the community is trying to write a new chapter.</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li><li><a data-taxonomy="section" href="/seattle-news/politics/">Local Politics</a></li>  </ul>
+
+</article>
+<article class="results-story post-15282667 post type-post status-publish format-standard hentry section-amazon section-business section-law-justice section-seattle-news section-politics" id="post-15282667">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/there-are-sprouts-of-hope-in-downtown-seattle-but-they-are-wilting/">
+      <img alt="Signs announce that the gated-over Amazon Go store near 4th Avenue and Pike Street in downtown Seattle is “temporarily closed.” The company said there were too many safety problems for its employees, customers and vendors." class="" data-ratio="1.55689" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_104614.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-13 06:00:00">August 13, 2022<span class="time"> at 6:00 am</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/there-are-sprouts-of-hope-in-downtown-seattle-but-they-are-wilting/">There are sprouts of hope in downtown Seattle, but they are wilting | Danny Westneat</a></h3>
+
+    <p class="results-story-excerpt">Yes, Amazon Go is an automated, barely staffed convenience store, but when one sprouted in downtown Seattle, it was also a sign of hope, writes...</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li>  </ul>
+
+</article>
+<article class="results-story post-15284381 post type-post status-publish format-standard hentry section-seattle-news section-politics" id="post-15284381">
+
+
+  <div class="results-story-body no-teaser">
+
+    
+    <p><time class="line" datetime="2022-08-12 19:30:00">August 12, 2022<span class="time"> at 7:30 pm</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/ex-yakima-commissioner-candidate-sentenced-for-jan-6-role/">Ex-Yakima commissioner candidate sentenced for Jan. 6 role</a></h3>
+
+    <p class="results-story-excerpt">A former candidate for Yakima County commissioner has pleaded guilty and was sentenced to probation for her role in the Jan. 6 insurrection.</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li>  </ul>
+
+</article>
+<article class="results-story post-15282545 post type-post status-publish format-standard hentry tag-election-2022 section-seattle-news section-politics section-puget-sound" id="post-15282545">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/politics/democrats-in-extra-close-south-king-county-state-senate-primary-race-appear-headed-toward-recount/">
+      <img alt="Candidates for state Senate in the 47th Legislative District. From left, Bill Boyce, Claudia Kauffman, and Satwinder Kaur." class="" data-ratio="1.55689" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_122145.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-12 17:16:31">August 12, 2022<span class="time"> at 5:16 pm</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/politics/democrats-in-extra-close-south-king-county-state-senate-primary-race-appear-headed-toward-recount/">Democrats in extra-close South King County state Senate primary race appear headed toward recount</a></h3>
+
+    <p class="results-story-excerpt">In a South King County swing district, 61 votes separate Democrats Claudia Kauffman and Satwinder Kaur. The close margin may trigger a mandatory recount.</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li><li><a data-taxonomy="section" href="/seattle-news/politics/">Local Politics</a></li><li><a data-taxonomy="section" href="/puget-sound/">Puget Sound</a></li>  </ul>
+
+</article>
+<div class="floated-river-ad zeus-ad-right" id="ad-right2"><zeus-ad class="ad" id="zeus_right2"></zeus-ad></div><article class="results-story post-15278790 post type-post status-publish format-standard hentry tag-election-2022 section-seattle-news section-politics section-nation-politics section-northwest" id="post-15278790">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/politics/dan-newhouse-enjoyed-rare-primary-success-after-his-vote-to-impeach-trump-why-did-this-gop-congressman-make-it-through/">
+      <img alt="FILE – In this Dec. 18, 2019 file photo Rep. Dan Newhouse, R-Wash., speaks as the House of Representatives debates the articles of impeachment against President Donald Trump at the Capitol in Washington. On Wednesday, Jan. 13, 2021, Newhouse came out in favor of impeaching Trump over last week’s riot at the Capitol. (House Television via AP, File) LA321 LA321" class="" data-ratio="1.55689" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_095928.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-12 17:07:52">August 12, 2022<span class="time"> at 5:07 pm</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/politics/dan-newhouse-enjoyed-rare-primary-success-after-his-vote-to-impeach-trump-why-did-this-gop-congressman-make-it-through/">Newhouse’s primary success rare among GOP impeachment voters</a></h3>
+
+    <p class="results-story-excerpt">Washington Rep. Dan Newhouse was one of 10 Republicans who voted to impeach Trump last year, and is one of only two to beat back...</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li><li><a data-taxonomy="section" href="/seattle-news/politics/">Local Politics</a></li><li><a data-taxonomy="section" href="/nation-politics/">Nation &amp; World Politics</a></li><li class="result-tablet"><a data-taxonomy="section" href="/northwest/">Northwest</a></li>  </ul>
+
+</article>
+<article class="results-story post-15275851 post type-post status-publish format-standard hentry tag-election-2022 section-data section-seattle-news section-politics section-northwest section-puget-sound" id="post-15275851">
+
+  <a class="results-story-image" href="https://www.seattletimes.com/seattle-news/politics/which-wa-counties-saw-highest-voter-turnout-in-2022-primary-election/">
+      <img alt="Shirlee Grund drops her ballot into the ballot drop box near the intersection of 6th Ave. S. And S. Dearborn St. in Seattle Tuesday, August 2, 2022.  Tuesday is Primary Election Day in Washington state.   221161" class="" data-ratio="1.55689" loading="lazy" sizes="(max-width: 767px) calc( (100vw - 20px) * .5 ), (max-width: 1044px) calc( ( 100vw - 360px ) * .25 ), 145px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/08122022_tzr_tzr_121230.jpg?d=375x241 375w">  </a>
+
+  <div class="results-story-body ">
+
+    
+    <p><time class="line" datetime="2022-08-12 14:37:26">August 12, 2022<span class="time"> at 2:37 pm</span></time></p>
+
+    <h3 class="results-story-title"><a href="https://www.seattletimes.com/seattle-news/politics/which-wa-counties-saw-highest-voter-turnout-in-2022-primary-election/">Which WA counties saw highest voter turnout in 2022 primary election?</a></h3>
+
+    <p class="results-story-excerpt">About 40% of registered voters statewide participated in the vote-by-mail primary. See where the most voters turned out.</p>
+  </div>
+
+  <ul class="results-story-taxonomy">
+      <li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li><li><a data-taxonomy="section" href="/seattle-news/politics/">Local Politics</a></li><li><a data-taxonomy="section" href="/data/">Data</a></li><li class="result-tablet"><a data-taxonomy="section" href="/northwest/">Northwest</a></li><li class="result-desktop"><a data-taxonomy="section" href="/puget-sound/">Puget Sound</a></li>  </ul>
+
+</article>
+
+              
+              <div class="pagination row"><ol>
+<li class="current"><a href="https://www.seattletimes.com/seattle-news/politics/">1</a></li>
+<li><a href="https://www.seattletimes.com/seattle-news/politics/page/2/">2</a></li>
+<li><a href="https://www.seattletimes.com/seattle-news/politics/page/3/">3</a></li>
+<li>…</li>
+<li><a href="https://www.seattletimes.com/seattle-news/politics/page/6320/">6320</a></li>
+<li class="last"><a href="https://www.seattletimes.com/seattle-news/politics/page/6320/">Last</a></li>
+</ol></div>
+
+
+            <div class="portrait-centerpiece top-stories-centerpiece left-content" data-zone="portrait-centerpiece" id="el-top-stories-top-politics-t">
+  <div class="river-group">
+    <div class="top-story vertical teaser">
+
+      <p><time class="line" datetime="2022-08-05 18:38:13">August 5, 2022<span class="time"> at 6:38 pm</span></time></p>
+
+      <h2 class="top-story-title"><a href="https://www.seattletimes.com/seattle-news/politics/some-wa-races-still-close-as-primary-election-vote-counting-winds-down/" id="el-politics-15261018-h">Some WA races still close as primary election vote counting winds down</a></h2>
+            <figure class="top-story-photo">
+        <a href="https://www.seattletimes.com/seattle-news/politics/some-wa-races-still-close-as-primary-election-vote-counting-winds-down/" id="el-top-stories-plus-twins-15261018-i">
+            <img alt="The sun dial near the Legislative Building is shown under cloudy skies, Thursday, March 10, 2022, at the Capitol in Olympia, Wash. Washington lawmakers were wrapping up their work Thursday with final votes on a supplemental state budget and a transportation revenue package before planning to adjourn the legislative session. (AP Photo/Ted S. Warren) 219783" class="" data-ratio="1.55689" loading="lazy" sizes="(max-width: 599px) calc((100vw - 40px) * .5), (max-width: 767px) calc((100vw - 40px) * .6), (max-width: 1019px) calc((100vw - 360px) * .5), 300px" src="https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=780x501" srcset="https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=300x193 300w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=1024x658 1024w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=768x493 768w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=1536x987 1536w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=780x501 780w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg 1560w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=1020x655 1020w, https://images.seattletimes.com/wp-content/uploads/2022/08/tzr_100937.jpg?d=375x241 375w">        </a>
+      </figure>
+      
+      <p>Most of the state-level clashes in Washington’s primary election are decided, but the secretary of state contest and some legislative races are running close.</p>
+
+      <ul class="results-story-taxonomy"><li><a data-taxonomy="section" href="/seattle-news/">Local News</a></li><li><a data-taxonomy="section" href="/seattle-news/politics/">Local Politics</a></li><li><a data-taxonomy="section" href="/northwest/">Northwest</a></li><li class="result-tablet"><a data-taxonomy="section" href="/puget-sound/">Puget Sound</a></li></ul>
+
+    </div>
+  </div>
+
+</div></body>

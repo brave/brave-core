@@ -35,6 +35,6 @@ IN_PROC_BROWSER_TEST_F(NavigatorStorageEstimateQuotaTest, Is2Gb) {
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  EXPECT_EQ(true, content::EvalJs(contents->GetMainFrame(),
+  EXPECT_EQ(true, content::EvalJs(contents->GetPrimaryMainFrame(),
                                   "getStorageEstimateIs2Gb()"));
 }

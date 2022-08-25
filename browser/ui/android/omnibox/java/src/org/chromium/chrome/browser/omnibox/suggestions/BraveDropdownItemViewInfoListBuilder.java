@@ -23,7 +23,6 @@ import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
-import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
@@ -52,9 +51,9 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private Context mContext;
 
     BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
-            BookmarkState bookmarkState, @NonNull ExploreIconProvider exploreIconProvider,
-            @NonNull OmniboxPedalDelegate omniboxPedalDelegate) {
-        super(tabSupplier, bookmarkState, exploreIconProvider, omniboxPedalDelegate);
+            BookmarkState bookmarkState, @NonNull OmniboxPedalDelegate omniboxPedalDelegate) {
+        super(tabSupplier, bookmarkState, omniboxPedalDelegate);
+
         mActivityTabSupplier = tabSupplier;
     }
 

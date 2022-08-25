@@ -117,7 +117,7 @@ CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
     const CreativeInlineContentAdInfo creative_ad = GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
-    if (iter == creative_ads.end()) {
+    if (iter == creative_ads.cend()) {
       creative_ads.insert({creative_ad.creative_instance_id, creative_ad});
       continue;
     }
@@ -126,7 +126,7 @@ CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
     // to the existing creative ad
     for (const auto& geo_target : creative_ad.geo_targets) {
       const auto geo_target_iter = iter->second.geo_targets.find(geo_target);
-      if (geo_target_iter == iter->second.geo_targets.end()) {
+      if (geo_target_iter == iter->second.geo_targets.cend()) {
         iter->second.geo_targets.insert(geo_target);
       }
     }
@@ -135,7 +135,7 @@ CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
       const auto daypart_iter =
           std::find(iter->second.dayparts.cbegin(),
                     iter->second.dayparts.cend(), daypart);
-      if (daypart_iter == iter->second.dayparts.end()) {
+      if (daypart_iter == iter->second.dayparts.cend()) {
         iter->second.dayparts.push_back(daypart);
       }
     }
@@ -204,7 +204,7 @@ void CreativeInlineContentAds::Save(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-void CreativeInlineContentAds::Delete(ResultCallback callback) {
+void CreativeInlineContentAds::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -645,7 +645,7 @@ void CreativeInlineContentAds::InsertOrUpdate(
 
 std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeInlineContentAdList& creative_ads) {
+    const CreativeInlineContentAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);

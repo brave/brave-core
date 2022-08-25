@@ -28,7 +28,7 @@ std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
                                               const size_t values_count) {
   DCHECK_NE(0UL, values_count);
 
-  const std::string value = BuildBindingParameterPlaceholder(parameters_count);
+  std::string value = BuildBindingParameterPlaceholder(parameters_count);
   if (values_count == 1) {
     return value;
   }

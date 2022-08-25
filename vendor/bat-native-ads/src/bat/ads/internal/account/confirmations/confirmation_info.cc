@@ -34,13 +34,9 @@ bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
 }
 
 bool ConfirmationInfo::IsValid() const {
-  if (id.empty() || creative_instance_id.empty() ||
-      type == ConfirmationType::kUndefined || ad_type == AdType::kUndefined ||
-      created_at.is_null()) {
-    return false;
-  }
-
-  return true;
+  return !(id.empty() || creative_instance_id.empty() ||
+           type == ConfirmationType::kUndefined ||
+           ad_type == AdType::kUndefined || created_at.is_null());
 }
 
 }  // namespace ads

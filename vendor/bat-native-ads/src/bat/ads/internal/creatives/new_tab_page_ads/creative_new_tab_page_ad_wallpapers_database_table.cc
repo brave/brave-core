@@ -78,7 +78,7 @@ void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeNewTabPageAdWallpapers::Delete(ResultCallback callback) {
+void CreativeNewTabPageAdWallpapers::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   DeleteTable(transaction.get(), GetTableName());
@@ -113,7 +113,7 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 
 std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const CreativeNewTabPageAdList& creative_ads) {
+    const CreativeNewTabPageAdList& creative_ads) const {
   DCHECK(command);
 
   const int count = BindParameters(command, creative_ads);

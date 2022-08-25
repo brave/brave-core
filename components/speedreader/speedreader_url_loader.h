@@ -87,6 +87,8 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
   void OnCompleteSending() override;
   base::WeakPtr<SpeedreaderResultDelegate> delegate_;
 
+  GURL response_url_;
+
   // Not Owned
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;
   raw_ptr<SpeedreaderService> speedreader_service_ = nullptr;

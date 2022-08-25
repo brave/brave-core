@@ -6,11 +6,11 @@
 #include "brave/components/l10n/common/locale_util.h"
 
 #include <algorithm>
-#include <codecvt>
 #include <vector>
 
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace brave_l10n {
@@ -71,10 +71,12 @@ std::string GetCountryCode(
 }
 
 std::u16string GetLocalizedResourceUTF16String(int resource_id) {
-  std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
-  return converter.from_bytes(
+  std::string value =
       ui::ResourceBundle::GetSharedInstance().LoadLocalizedResourceString(
-          resource_id));
+          resource_id);
+  std::u16string output;
+  base::UTF8ToUTF16(value.data(), value.size(), &output);
+  return output;
 }
 
 }  // namespace brave_l10n

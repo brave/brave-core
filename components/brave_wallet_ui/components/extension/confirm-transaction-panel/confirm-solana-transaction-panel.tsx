@@ -21,7 +21,6 @@ import { usePendingTransactions } from '../../../common/hooks/use-pending-transa
 import Tooltip from '../../shared/tooltip/index'
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import PanelTab from '../panel-tab'
-import NavButton from '../buttons/nav-button'
 import { TransactionInfo } from './transaction-info'
 import { SolanaTransactionDetailBox } from '../transaction-box/solana-transaction-detail-box'
 
@@ -46,14 +45,9 @@ import {
   TransactionFiatAmountBig,
   MessageBox,
   TransactionTypeText,
-  ButtonRow,
   AccountCircleWrapper,
   ArrowIcon,
   FromToRow,
-  QueueStepText,
-  QueueStepRow,
-  QueueStepButton,
-  ErrorText,
   GroupBox,
   GroupBoxColumn,
   GroupBoxTitle,
@@ -62,9 +56,11 @@ import {
   SmallLoadIcon
 } from './style'
 import { StatusBubble } from '../../shared/style'
+import { TransactionQueueStep } from './common/queue'
+import { Footer } from './common/footer'
 
 type confirmPanelTabs = 'transaction' | 'details'
-export interface Props {
+interface Props {
   onConfirm: () => void
   onReject: () => void
 }
@@ -95,15 +91,10 @@ export const ConfirmSolanaTransactionPanel = ({
   const {
     fromAddress,
     fromOrb,
-    isConfirmButtonDisabled,
     isAssociatedTokenAccountCreation,
-    queueNextTransaction,
-    rejectAllTransactions,
     toOrb,
     transactionDetails,
-    transactionQueueNumber,
     transactionsNetwork,
-    transactionsQueueLength,
     transactionTitle,
     isSolanaDappTransaction,
     fromAccountName,
@@ -131,23 +122,7 @@ export const ConfirmSolanaTransactionPanel = ({
 
       <TopRow>
         <NetworkText>{reduceNetworkDisplayName(transactionsNetwork.chainName)}</NetworkText>
-
-        {transactionsQueueLength > 1 &&
-          <QueueStepRow>
-            <QueueStepText>
-              {transactionQueueNumber} {getLocale('braveWalletQueueOf')} {transactionsQueueLength}
-            </QueueStepText>
-            <QueueStepButton
-              onClick={queueNextTransaction}
-            >
-              {transactionQueueNumber === transactionsQueueLength
-                ? getLocale('braveWalletQueueFirst')
-                : getLocale('braveWalletQueueNext')
-              }
-            </QueueStepButton>
-          </QueueStepRow>
-        }
-
+        <TransactionQueueStep />
       </TopRow>
 
       <AccountCircleWrapper>
@@ -275,37 +250,7 @@ export const ConfirmSolanaTransactionPanel = ({
             />
         }
       </MessageBox>
-
-      {transactionsQueueLength > 1 &&
-        <QueueStepButton
-          needsMargin={true}
-          onClick={rejectAllTransactions}
-        >
-          {getLocale('braveWalletQueueRejectAll').replace('$1', transactionsQueueLength.toString())}
-        </QueueStepButton>
-      }
-
-      {
-        [
-          transactionDetails?.contractAddressError,
-          transactionDetails?.sameAddressError,
-          transactionDetails?.missingGasLimitError
-        ].map((error, index) => !!error && <ErrorText key={`${index}-${error}`}>{error}</ErrorText>)
-      }
-
-      <ButtonRow>
-        <NavButton
-          buttonType='reject'
-          text={getLocale('braveWalletAllowSpendRejectButton')}
-          onSubmit={onReject}
-        />
-        <NavButton
-          buttonType='confirm'
-          text={getLocale('braveWalletAllowSpendConfirmButton')}
-          onSubmit={onConfirm}
-          disabled={isConfirmButtonDisabled}
-        />
-      </ButtonRow>
+      <Footer onConfirm={onConfirm} onReject={onReject} />
     </StyledWrapper>
   )
 }

@@ -49,10 +49,10 @@ class CreativeInlineContentAds final : public TableInterface {
   CreativeInlineContentAds(const CreativeInlineContentAds&) = delete;
   CreativeInlineContentAds& operator=(const CreativeInlineContentAds&) = delete;
 
-  void Save(const CreativeInlineContentAdList& creative_inline_content_ads,
+  void Save(const CreativeInlineContentAdList& creative_ads,
             ResultCallback callback);
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetCreativeInlineContentAdCallback callback);
@@ -80,13 +80,12 @@ class CreativeInlineContentAds final : public TableInterface {
                const int to_version) override;
 
  private:
-  void InsertOrUpdate(
-      mojom::DBTransactionInfo* transaction,
-      const CreativeInlineContentAdList& creative__inline_content_ads);
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
+                      const CreativeInlineContentAdList& creative_ads);
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const CreativeInlineContentAdList& creative__inline_content_ads);
+      const CreativeInlineContentAdList& creative_ads) const;
 
   void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
                                   GetCreativeInlineContentAdCallback callback,

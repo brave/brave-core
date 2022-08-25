@@ -204,7 +204,7 @@ export const PortfolioTransactionItem = ({
         return (
           <DetailRow>
             <DetailTextDark>
-              {transactionDetails.sellAmount}{' '}
+              {transactionDetails.sellAmount?.format(6)}{' '}
               <AddressOrAsset
                 onClick={onAssetClick(transactionDetails.sellToken?.symbol)}
               >
@@ -213,7 +213,7 @@ export const PortfolioTransactionItem = ({
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              {transactionDetails.minBuyAmount}{' '}
+              {transactionDetails.minBuyAmount?.format(6)}{' '}
               <AddressOrAsset onClick={onAddressClick(transactionDetails.buyToken?.symbol)}>
                 {transactionDetails.buyToken?.symbol}
               </AddressOrAsset>

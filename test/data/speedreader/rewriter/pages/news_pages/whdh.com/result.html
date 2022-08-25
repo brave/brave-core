@@ -1,0 +1,504 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Mass. High Schoolers Will Need Higher MCAS Scores to Graduate</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Mass. High Schoolers Will Need Higher MCAS Scores to Graduate</h1><p class="subhead metadata">The state board of education voted Monday to raise the minimum score that this year’s incoming freshman class and at least the four classes that...</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+
+					
+					
+					<p>The state board of education voted Monday to raise the minimum score that this year’s incoming freshman class and at least the four classes that follow will have to attain on the MCAS test in order to graduate high school, a controversial decision that was blasted by teachers union officials and a handful of lawmakers.</p><p>The Board of Elementary and Secondary Education accepted Commissioner Jeff Riley’s recommendation to update MCAS regulations and the competency determination that would establish a new passing standard for English language arts, mathematics, and science and technology/engineering for the classes of 2026 through 2029. The board also adopted an amendment to Riley’s plan proposed by member Martin West extending the new requirements to the class of 2030 and providing a starting point for the thresholds for classes beyond that.</p><p>Students will now be required to earn a scaled score of 486 on the English and math exams (or 470 with the completion of an educational proficiency plan) and meet a threshold set at 470 for science and technology/engineering tests. The score thresholds are <a href="https://www.doe.mass.edu/mcas/graduation.html">currently</a> 472 for English, or 455 with an educational proficiency plan, 486 for math, or 469 with an educational proficiency plan, and 220 for science/technology for students who took a test by February 2020.</p><p>Riley <a href="https://statehousenews.com/news/2022730">previously told</a> the board that research shows “MCAS scores predict later outcomes in education and earnings” and that “only 11% [of] students in the class of 2011 who scored at the current passing standard in mathematics went on to enroll in a four-year college in Massachusetts, and only 5% graduated from a four-year college within seven years.”</p><p>“This evidence underscores the importance of raising the [competency determination] standard and also highlights the need to articulate clearly to students, parents, educators, and other stakeholders how the different levels of achievement on the MCAS tests — and in particular the CD level — signal whether a student is on track for success beyond high school, whether in postsecondary education, the military, the workplace, or independent and productive community life,” Riley wrote in <a href="https://www.doe.mass.edu/bese/docs/fy2023/2022-08/spec-item1a.docx">a memo</a> to the board. “Raising the CD standard is critical, as is the message that we believe students are capable of meeting the higher standard and the Commonwealth and its educators will support them to do that.”</p><p>Lawmakers created the MCAS system in a 1993 education reform law aimed at improving accountability and school performance. The first tests were administered in 1998, and students have been required to achieve sufficient scores to graduate since the class of 2003.</p><p>Most students take the tests linked to graduation in 10th grade, though they can retake exams up to four more times if they do not score high enough. MCAS has long been a controversial test and measurement of student achievement, with opponents arguing that setting the exams as a bar all students must clear forces teachers to narrow their focus on test preparation and creates unnecessary stress in the classroom.</p><p>The majority of public comments the board heard Monday were from people opposed to raising the thresholds that determine whether a high school student scored well enough on the MCAS standardized test to pass. Among those to testify against Riley’s recommendation Monday were Rep. Jim Hawkins and Sens. Patricia Jehlen and Jo Comerford.</p><p>Hawkins, who taught math at Attleboro High School for 12 years, said he’s afraid that higher MCAS passing standards will mean that more students will have to take remedial courses instead of being able to pursue something that truly interests them.</p><p>“You go through school, first few grades are all the same, the same, the same. And when you get to be a junior, senior in high school, you get to take the courses that really energize you, whether it be music, arts, vocational trades, whatever it is. If these students don’t pass the MCAS in 10th grade and then have to take remedial courses instead of the courses that motivate them — especially in low-income communities, children who are struggling to get by — these are the courses that motivate them and we’re taking them away from them if they haven’t passed the MCAS,” he said.</p><p>Hawkins and Comerford this session filed a bill (S 293 / H 612) that would have decoupled MCAS from graduation and instead offered other pathways for students to prove they meet the benchmarks to complete high school, some of which would not have required a standardized test. That bill was sent to a dead-end study by the Education Committee, but Hawkins <a href="https://www.thesunchronicle.com/news/local_news/attleboro-lawmaker-urges-state-not-to-raise-mcas-stakes/article_8eed22ce-7030-599e-a7e3-3ba3db2e80d6.html">told the Sun Chronicle</a> in June that he plans to refile the legislation next session.</p><p>Jehlen, of Somerville, urged the board not to accept Riley’s recommendation and said that “raising the passing score for English MCAS will harm children who are English learners,” a cohort that she said is the fastest-growing group of students in Massachusetts schools at more than 100,000 students or 11 percent of statewide enrollment.</p><p>“These children will be the ones most affected by raising the English passing scores because, by definition, they don’t yet read and write English fluently. They can have bright futures as important members of our community and contributors to our economy if they can get a high school diploma,” she said.</p><p>Monday’s vote was also bashed by Max Page, president of the 115,000-member Massachusetts Teachers Association, who said he was not there to plead for members to reject the recommendation since “you’ve already made pretty clear in public and no doubt in private meetings that you intend to” adopt it.</p><p>“You’ve fetishized an approach to education that is, at the very least, outdated and, at the most, destructive of our schools and communities. You know, somewhere a little before the ed reform bill in 1983, I had a shiny object I too thought was magical. It was called a mood ring and I thought it was capturing my every change of emotion. I also thought that REO Speedwagon’s first album was really the height of pop music. Then I grew older and I grew up,” Page said. “The board is still fidgeting with your mood rings and spinning their REO Speedwagon albums, obsessed with a test invented some 20 years ago and repeatedly shown to do little more than prove the wealth of the student and the community where it is taken.”</p><p>He said he was “actually looking beyond this meeting today” and wanted board members to know that the MTA, its supporters and other activists “will stay committed until each of you who continue to reinforce this high-stakes testing regime have moved on to other places, and we replaced you with people who will reverse this two decades-long travesty.”</p>
+					<p><em>(Copyright (c) 2022 State House News Service.</em></p>
+					
+
+
+				</body>

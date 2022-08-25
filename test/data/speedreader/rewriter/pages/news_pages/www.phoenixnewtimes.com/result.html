@@ -1,0 +1,524 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Ron DeSantis to Rally with Kari Lake, Blake Masters in Phoenix</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Ron DeSantis to Rally with Kari Lake, Blake Masters in Phoenix</h1><p class="subhead metadata">One new sign of Arizona's importance to the "new right" of the GOP: Florida governor Ron DeSantis is rallying with Kari Lake and Blake Masters this weekend.</p><div class=""><p class="metadata">By Katya Schwenk</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+<p><i><span>Editor's note: This story was updated on August 10 to reflect that the rally was moved to </span><span>Arizona Financial Theatre.</span></i></p>
+<p>
+The August primary elections are over. For the extreme — and energized — wing of the Republican Party in Arizona, they proved a decisive win.<br>
+<br>
+One new sign of Arizona's importance to the GOP's "new right" of&nbsp;election deniers and fake electors: Florida governor Ron DeSantis is flying in for a rally Sunday with candidates Kari Lake and Blake Masters.<br>
+<br>
+Turning Point Action and founder Charlie Kirk <a href="https://twitter.com/charliekirk11/status/1556686222101078016" target="_blank">announced</a> the "Unite and Win" rally on Monday. It will take place Sunday&nbsp;at the Arizona Financial Theatre in downtown Phoenix. Kirk also started Phoenix-based conservative advocacy group Turning Point USA.&nbsp;The organizations are a <a href="/news/turning-point-usa-holds-americafest-in-phoenix-with-donald-trump-jr-charlie-kirk-and-kari-lake-12656243" target="_blank">powerful force</a> in Arizona. 
+
+<a href="https://www.foxnews.com/politics/desantis-hit-campaign-trail-rally-support-trump-endorsed-candidates-unite-win" target="_blank">Kirk&nbsp;told Fox News that DeSantis</a> is a "model for a new conservative movement," one that embraced candidates such as Lake and Masters.<br>
+<br>
+Lake, a former Phoenix newscaster, won the Republican nomination for governor last week. She beat her more traditional conservative opponent, Karrin Taylor Robson, in a race that was too close to call for days. Masters, a venture capitalist, easily won the nomination for U.S. Senate.&nbsp;</p><div class="uk-position-relative fdn-content-image-center contentImageCenter" uk-lightbox=""> <p><a class="uk-display-block uk-position-relative uk-visible-toggle" data-caption="<span>Political pundits said Kari Lake, the GOP contender for Arizona governor, has to win over more moderate voters as the November election approaches.</span>&nbsp;&nbsp;            <em>Elias Weiss</em>" href="https://media1.phoenixnewtimes.com/phx/imager/u/original/14183302/kari_lake_speaking_in_paradise_valley_primary_night.jpg" rel="contentImg_gal-14183033" title="Political pundits said Kari Lake, the GOP contender for Arizona governor, has to win over more moderate voters as the November election approaches. - Elias Weiss">  <span class="fdn-button-enlarge uk-position-absolute 
+                   uk-position-top-right uk-hidden-hover"> click to enlarge </span> <img height="507" src="https://media1.phoenixnewtimes.com/phx/imager/u/blog/14183302/kari_lake_speaking_in_paradise_valley_primary_night.jpg?cb=1659993982" width="760"> </a></p><div class="fdn-caption-block uk-margin-auto"> <p> Political pundits said Kari Lake, the GOP contender for Arizona governor, has to win over more moderate voters as the November election approaches. </p> <p> Elias Weiss </p> </div> </div>
+<h2 class="subhead">'Potential Unifier' to Lead Phoenix Rally</h2><p>
+Both Lake and Masters received the backing of former President Donald Trump, who took an active role in the Arizona primaries. The Trump ticket of candidates <a href="/news/new-right-wing-of-gop-wins-big-in-arizona-primaries-14152733" target="_blank">ultimately was successful.</a>&nbsp;Lake and Masters are joined by&nbsp;State Representative Mark Finchem, who won the nod for secretary of state, and former Maricopa County prosecutor Abe Hamadeh, who won the nomination for attorney general.<br>
+<br>
+But it's DeSantis, not Trump, who will headline the first major GOP rally of the general election season in Arizona. The celebrity Florida governor has built a national profile since he got the job in 2019, becoming a key figure in the Republican Party. In Florida, he has pushed a polarizing conservative agenda — opposing vaccination and mask mandates and passing the <a href="https://www.nbcnews.com/nbc-out/out-news/floridas-dont-say-gay-law-takes-effect-schools-roll-lgbtq-restrictions-rcna36143" target="_blank">"Don't Say Gay" law</a>. He's an ally of Trump, but he's carving out a political identity in his own right.<br>
+<br>
+Chuck Coughlin, founder of Phoenix-based political consulting firm HighGround, said that the upcoming rally with DeSantis was a smart move by Lake and Masters, who will face a very different electorate in November than they did in August. "His popularity and currency with conservative Republicans — and his identity apart from Trump — will give a dimension to the Republican ticket that they definitely need," Coughlin said. <br>
+<br>
+DeSantis, he said, is a "potential unifier" in a fractured party.<br>
+<br>
+Those fractures were visible last week. Though Lake ended up on top, conservative voters split between her and Taylor Robson. To win in the general election, Coughlin said, Lake will have to win over more moderate voters — and unaffiliated voters, who may not have voted at all in the primaries. Not that she was trying to do so during her <a href="/news/six-nutty-things-from-kari-lakes-election-night-party-14153873" target="_blank">election night party last week.</a><br>
+<br>
+After the rally in Phoenix, DeSantis will continue touring battleground states with stops in Pennsylvania and Ohio. Both events are also hosted by Turning Point Action.<br>
+<br>
+Coughlin noted that the Arizona rally is a boon to Lake, Masters, and DeSantis. The governor is "presumed" to be considering a presidential run, Coughlin said. "Conservatives really want DeSantis to run because they see him as the viable alternative to Trump," he said. "He's a more marketable commodity that doesn't bring the negativity of Trump to the table."<br>
+<br>
+And if DeSantis wants to make it to the White House, he'll likely need to win over Arizona.
+</p></body>

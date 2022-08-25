@@ -172,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseLocalNode) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(IPFSOnboardingPage::kTypeForTesting,
             GetInterstitialType(web_contents));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
@@ -188,7 +188,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseLocalNode) {
   // time without interstitials.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
   EXPECT_EQ(resolved_url, web_contents->GetURL());
 }
@@ -207,7 +207,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseGateway) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(IPFSOnboardingPage::kTypeForTesting,
             GetInterstitialType(web_contents));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
@@ -222,7 +222,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseGateway) {
   // time without interstitials.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
   EXPECT_EQ(gateway_url(), web_contents->GetURL());
 }
@@ -241,7 +241,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, LearnMore) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(IPFSOnboardingPage::kTypeForTesting,
             GetInterstitialType(web_contents));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
@@ -270,7 +270,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, OpenSettings) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(IPFSOnboardingPage::kTypeForTesting,
             GetInterstitialType(web_contents));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));

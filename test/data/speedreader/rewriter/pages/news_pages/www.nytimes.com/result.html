@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>As Oil Falls Below $90, Where Do Prices Go From Here?</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">As Oil Falls Below $90, Where Do Prices Go From Here?</h1><p class="subhead metadata">Oil is under $90 a barrel, and consumers are benefiting. Geopolitics, the economy and unforeseen events will determine whether the relief will last.</p><div class=""><p class="metadata">By Clifford Krauss</p><p class="metadata date">Updated Aug. 16, 2022 03:43 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><section class="meteredContent css-1r7ky0e" name="articleBody"><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">When Russia invaded Ukraine last spring, energy experts were predicting that oil prices could reach $200 a barrel, a price that would send the costs of shipping and transportation into the stratosphere and bring the global economy to its knees.</p><p class="css-at9mc1 evys1bk0">Now oil prices are lower than they were when the war began, having dropped more than 30 percent in barely two months. On Monday, news of a slowing Chinese economy and a cut in Chinese interest rates sent prices down further, to less than $90 a barrel for the American benchmark.</p><p class="css-at9mc1 evys1bk0">Gasoline prices have fallen every day over the last nine weeks, to an average of less than $4 nationwide, and prices of jet fuel and diesel are easing as well. That should translate eventually to lower prices for things as diverse as food and airline tickets.</p></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">But it would be premature to celebrate. Energy prices can spike as easily as they can plummet, unexpectedly and suddenly.</p></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">China, where Covid-19 lockdowns remain widespread, will eventually reopen its cities to more commerce and traffic, increasing demand. Withdrawals of oil from the U.S. Strategic Petroleum Reserve will end in November, and it will need to be refilled. And a single unexpected event — say, a hurricane flooding the Houston Ship Channel and taking several Gulf of Mexico refineries out of commission for weeks or even months — could send fuel prices soaring.</p><p class="css-at9mc1 evys1bk0">That sort of catastrophe could send tidal waves through the American and even global economy since energy prices are fundamental to the prices of everything that is shipped and produced, whether it be grain or building supplies.</p></div></div><div><section class="interactive-content interactive-size-scoop css-174j8de" data-id="100000008489388" data-source-id="100000008489388" id="datawrapper_1oDUR"></section></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">“Oil prices always have the capacity to surprise,” said Daniel Yergin, the energy historian and author of “The New Map: Energy, Climate and the Clash of Nations.” </p></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">Prices could ease further if Iran agrees to a new draft nuclear agreement after it backed off from its demand that the Islamic Revolutionary Guards be removed from the U.S. terrorism list, opening a potential spigot of at least one million more barrels a day of Iranian petroleum exports.</p></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">In addition, the prospect of a continuing increase in interest rates has many investors and economists predicting a recession — and a reduction in demand — even though unemployment is low and profits remain resilient.</p><div><section aria-label="Understand the Decline in U.S. Gas Prices" class="css-1tbywuw" role="complementary"><div class="css-1t7yl1y"><h2 class="css-ba3d02">Understand the Decline in U.S. Gas Prices</h2><hr></div><div aria-atomic="true" aria-live="polite" id="storyline-context-container"><p><span class="css-1ly73wi e1tej78p0">Card 1 of 5</span></p><div class="css-o7i5g3" data-scrolled-index="0"><div class="css-1eb6ln"><div aria-hidden="true" class="css-1w3yqu0"><div><div class="css-1pcai02" data-testid="context-card"><div class="css-og85jy"><h2 class="css-ba3d02">Understand the Decline in U.S. Gas Prices</h2><hr></div><p class="css-1t83a55"><strong>Demand is pushing prices down. </strong><span>As gas prices rose, people <a href="https://www.nytimes.com/2022/07/01/business/economy/gas-prices-driving-inflation.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;region=MAIN_CONTENT_1&amp;block=storyline_levelup_swipe_recirc">adjusted their driving habits</a>&nbsp;to accommodate prices, which reached an all-time high in June. Fewer drivers on the road has made gasoline more affordable, and some&nbsp;states have also suspended taxes on gasoline to bring prices down.</span></p></div></div></div></div><div class="css-1eb6ln"><div aria-hidden="true" class="css-1w3yqu0"><div><div class="css-1pcai02" data-testid="context-card"><div class="css-og85jy"><h2 class="css-ba3d02">Understand the Decline in U.S. Gas Prices</h2><hr></div><p class="css-1t83a55"><strong>Oil prices have fallen. </strong><span>Just two months ago, oil prices, which are tied to gas prices,&nbsp;surpassed <a href="https://www.nytimes.com/2022/06/05/business/biden-oil-saudi-arabia.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;region=MAIN_CONTENT_1&amp;block=storyline_levelup_swipe_recirc">$120 a barrel</a>, helping to push the national average price of gasoline to about <a href="https://www.nytimes.com/2022/06/11/business/energy-environment/gasoline-price.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;region=MAIN_CONTENT_1&amp;block=storyline_levelup_swipe_recirc">$5 a gallon</a>. <a href="https://www.nytimes.com/2022/08/04/business/us-oil-prices.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;region=MAIN_CONTENT_1&amp;block=storyline_levelup_swipe_recirc">But prices have steadily decreased</a>&nbsp;with increased oil production, helping to bring gas prices down and easing&nbsp;broader recession fears.</span></p></div></div></div></div><div class="css-1eb6ln"><div aria-hidden="true" class="css-1w3yqu0"><div><div class="css-1pcai02" data-testid="context-card"><div class="css-og85jy"><h2 class="css-ba3d02">Understand the Decline in U.S. Gas Prices</h2><hr></div><p class="css-1t83a55"><strong>Gas prices vary. </strong><span>Despite the overall decline, the cost of gas can vary considerably at the state level. In California, <a href="https://www.nytimes.com/2022/03/09/us/california-high-gas-prices.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;region=MAIN_CONTENT_1&amp;block=storyline_levelup_swipe_recirc">regulations to limit pollution</a>&nbsp;make driving more expensive, so gas prices will be higher than in a state like Georgia, which has lower gas taxes.</span></p></div></div></div></div><div class="css-1eb6ln"><div aria-hidden="true" class="css-1w3yqu0"><div><div class="css-1pcai02" data-testid="context-card"><div class="css-og85jy"><h2 class="css-ba3d02">Understand the Decline in U.S. Gas Prices</h2><hr></div><p class="css-1t83a55"><strong>A political boost for Joe Biden. </strong><span>The cheaper prices are <a href="https://www.nytimes.com/2022/07/22/us/politics/biden-gas-prices.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;region=MAIN_CONTENT_1&amp;block=storyline_levelup_swipe_recirc">a political win for President Biden</a>, especially as falling fuel costs have brought down overall inflation. But experts are unsure that the low prices will last, as oil prices are volatile and determined by myriad forces, many of which are hard to predict.</span></p></div></div></div></div></div></div></section></div><p class="css-at9mc1 evys1bk0">“I think oil prices could go lower,” said Sarah Emerson, president of ESAI Energy, an analytics company. “We have several factors coming together at the same time: We have China reducing its imports of crude oil in the third quarter, we have the end of the summer gasoline season, we have concerns about an economic slowdown, and frankly, plenty of supply.”</p><p class="css-at9mc1 evys1bk0">But she quickly added, “That is not to say prices won’t go back up,” noting the coming end to the drawdown of the strategic reserve — from which the United States, in coordination with other countries, has been releasing up to a million barrels a day — and the possibility that Europe will substitute oil burning for natural gas in case there is a cold winter.</p><p class="css-at9mc1 evys1bk0">Fuel prices, which consumers can see go up and down on a daily basis at their corner filling stations, play an outsize role in economic perceptions. “The price of fuel is not that big a deal,” said Mark Finley, a Rice University energy economist, “but if you look at its impact on consumer confidence, it seems to be a proxy for how you feel about the world in general.”</p><p class="css-at9mc1 evys1bk0">Roughly 3.5 percent of total personal spending by Americans is devoted to gasoline, according to an RBC Capital Markets report in June. Lower-income and rural workers who have older, less fuel-efficient vehicles and drive longer distances to work are particularly hurt by high gasoline prices.</p></div></div><div><div class="css-79elbk" data-testid="photoviewer-wrapper"><div class="css-1a48zt4 e11si9ry5" data-testid="photoviewer-children"><figure aria-label="media" class="img-sz-medium css-1l3p632 e1g7ppur0" role="group"><figcaption class="css-xaa95i ewdxa0s0"><span aria-hidden="true" class="css-jevhma e13ogyst0">Gasoline prices have an outsize effect on consumer sentiment because they are visible at every filling station.</span><span class="css-1u46b97 e1z0qqy90"><span class="css-1ly73wi e1tej78p0">Credit...</span><span><span aria-hidden="false">Gabby Jones for The New York Times</span></span></span></figcaption></figure></div></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">Overall, fuel prices are less important than in the past because people are driving more efficient cars and are lately working more from home. But the more people spend on gasoline or diesel, the less they have to spend on everything else.</p></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">When oil prices fall, many costs for industry and agriculture, including chemicals and fertilizer, generally follow. And shipping becomes more economical. But when they rise sharply, as they did in 2008 and in the 1970s, they tend to increase other prices and suppress the overall economy. And political fallout often ensues.</p><p class="css-at9mc1 evys1bk0">Predicting energy prices has always been a fool’s game because there are so many factors, including the expectations of traders who buy and sell fuel, the political fortunes of unstable producing countries like Venezuela, Nigeria and Libya, and the investment decisions of state and private oil company executives.</p><p class="css-at9mc1 evys1bk0">Today those complexities are particularly difficult to assess.</p><p class="css-at9mc1 evys1bk0">“(When) Will Oil Bulls Start Revising Forecasts Down?” was the title of a recent Citigroup commodities report. With a global recession “on the horizon,” it said, “which is more likely, a robust hurricane season, seeing prices skyrocketing? A return of Iranian barrels? Or a recession, with oil in the $60s by year-end/early 2023?” If a barrel of oil should drop to $60 a barrel, average gasoline prices in the United States would probably fall at least another dollar a gallon.</p><p class="css-at9mc1 evys1bk0">But a few days after Citi’s projections, Goldman Sachs Commodities Research predicted a price bounce as fuel demand rebounds. “We see growing tail risks to commodity prices inherent in the scenario of sustained growth, low unemployment and stabilized household purchasing power,” the report concluded.</p><p class="css-at9mc1 evys1bk0">The war in Ukraine remains a major variable in the worldwide supply outlook since Russia normally supplies one of every 10 barrels of the global 100-million-barrel-a-day market. Since the invasion of Ukraine, daily Russian exports have declined by about 580,000 barrels. European sanctions on Russian oil are expected to tighten somewhat more by February, reducing daily Russian exports by an additional 600,000 barrels.</p><div><section aria-labelledby="styln-toplinks-title" class="css-1iamamn" role="complementary"><h2 class="css-4od1bx" id="styln-toplinks-title">Read More About Oil and Gas Prices</h2><ul class="css-10ikpw"><li><span><strong>Prices Drop: </strong>After peaking in mid-June, U.S. gas prices <a href="https://www.google.com/url?q=https://www.google.com/url?q%3Dhttps://www.nytimes.com/2022/08/11/business/gas-prices-4-a-gallon.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;variant=show&amp;region=MAIN_CONTENT_3&amp;block=storyline_top_links_recirc%26sa%3DD%26source%3Deditors%26ust%3D1660231723772121%26usg%3DAOvVaw0AULpZmLtmEorR-kvxJFrP&amp;sa=D&amp;source=editors&amp;ust=1660231752122501&amp;usg=AOvVaw2lIKZyBqJ4vx4JlL8-fgIA">have tracked a global decline in oil prices</a>&nbsp;and are back where they were in March. But <a href="https://www.google.com/url?q=https://www.google.com/url?q%3Dhttps://www.nytimes.com/2022/07/13/business/energy-environment/gas-prices-inflation.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;variant=show&amp;region=MAIN_CONTENT_3&amp;block=storyline_top_links_recirc%26sa%3DD%26source%3Deditors%26ust%3D1660231723772955%26usg%3DAOvVaw0h2magSOinjvjn73Exkmni&amp;sa=D&amp;source=editors&amp;ust=1660231752122876&amp;usg=AOvVaw3X5qXcynVrf1RqaJGbRlQJ">weather, war and demand will influence how long it lasts</a>.</span></li><li><span><strong>A New Economic Scorecard: </strong>President Biden has grown fond of boasting about the prolonged streak of falling gasoline prices. But <a href="https://www.google.com/url?q=https://www.google.com/url?q%3Dhttps://www.nytimes.com/2022/07/22/us/politics/biden-gas-prices.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;variant=show&amp;region=MAIN_CONTENT_3&amp;block=storyline_top_links_recirc%26sa%3DD%26source%3Deditors%26ust%3D1660231723773709%26usg%3DAOvVaw2ZnbVsODE7BtONV7OXYR8f&amp;sa=D&amp;source=editors&amp;ust=1660231752123518&amp;usg=AOvVaw0D_-tXsH2s3ggMsQV2Vfdm">embracing the economic indicator carries some risks</a>.</span></li><li><span><strong>Cap on Russian Oil: </strong>The Biden administration is pushing to form an international buyers’ cartel to cap the price of Russian oil. But the maritime insurance industry <a href="https://www.google.com/url?q=https://www.google.com/url?q%3Dhttps://www.nytimes.com/2022/08/03/us/politics/us-russia-oil-prices.html?action=click&amp;pgtype=Article&amp;state=default&amp;module=styln-gas-prices&amp;variant=show&amp;region=MAIN_CONTENT_3&amp;block=storyline_top_links_recirc%26sa%3DD%26source%3Deditors%26ust%3D1660231723774366%26usg%3DAOvVaw3_GaPSIK74--tAdMWYg_4C&amp;sa=D&amp;source=editors&amp;ust=1660231752124060&amp;usg=AOvVaw3P7JDQZLMkpTH-3fObldhx">says policing oil transactions is not workable</a>.</span></li></ul></section></div><p class="css-at9mc1 evys1bk0">And as Russia further tightens its grip on natural gas sales to Europe in tit-for-tat sanctions retaliation, European utilities will be forced to burn more oil to substitute for gas.</p></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">The energy markets are sending mixed signals. In forecasts last week, the Organization of the Petroleum Exporting Countries said it expected petroleum demand to be weaker than originally expected this year and next. Still, the cartel expects global demand for 2023 to expand to nearly 103 million barrels a day.</p></div><div><div class="css-79elbk" data-testid="photoviewer-wrapper"><div class="css-1a48zt4 e11si9ry5" data-testid="photoviewer-children"><figure aria-label="media" class="img-sz-medium css-1l3p632 e1g7ppur0" role="group"><figcaption class="css-xaa95i ewdxa0s0"><span aria-hidden="true" class="css-jevhma e13ogyst0">A tanker truck in Mentone, Texas. The United States accounts for more than one-third of global gasoline demand.</span><span class="css-1u46b97 e1z0qqy90"><span class="css-1ly73wi e1tej78p0">Credit...</span><span><span aria-hidden="false">Ivan Pierre Aguirre for The New York Times</span></span></span></figcaption></figure></div></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">Supplies are gradually climbing because of expanded production in Guyana, Brazil and the United States. Saudi Arabia and other Persian Gulf countries are following suit, though probably not nearly as much as the Biden administration would like. OPEC and its partners, including Russia, had promised to raise their production by 600,000 barrels a day in July and August, although they have fallen somewhat short of that mark.</p><p class="css-at9mc1 evys1bk0">The outlook for refining is also improving, which could lower prices for gasoline and other fuels. While refining capacity in Europe and the United States has declined in recent years, it is growing in the Middle East, Latin America, Asia and Africa.</p><p class="css-at9mc1 evys1bk0">Another factor has been relatively tepid demand in the United States, which accounts for more than one-third of global gasoline demand. The summer driving season normally increases consumption by 400,000 barrels a day from Memorial Day to Labor Day. But so far this summer, gasoline demand has been flat with April averages, according to J.P. Morgan Commodities research.</p><p class="css-at9mc1 evys1bk0">That trend could change as prices go down. Americans increased their gasoline consumption by 508,000 barrels a day last week from the week before, according to the Energy Department. Still, consumption remained more than 300,000 barrels a day less than a year ago.</p><p class="css-at9mc1 evys1bk0">And then there is the larger shift away from fossil fuels. A growing number of energy investors are skeptical about the future of oil-based transportation and say prices over the long term will come down.</p></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">“Demand for electric vehicles is going up,” said Daniel Sperling, a transportation expert at the University of California, Davis. “That sends a lot of signals.”</p></div></section></body>

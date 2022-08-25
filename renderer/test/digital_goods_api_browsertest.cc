@@ -59,8 +59,8 @@ class DigitalGoodsAPIBrowserTest : public InProcessBrowserTest,
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  content::RenderFrameHost* main_frame() {
-    return web_contents()->GetMainFrame();
+  content::RenderFrameHost* primary_main_frame() {
+    return web_contents()->GetPrimaryMainFrame();
   }
 
  protected:
@@ -72,7 +72,7 @@ IN_PROC_BROWSER_TEST_P(DigitalGoodsAPIBrowserTest, DigitalGoods) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto result =
-      content::EvalJs(main_frame(), "window.getDigitalGoodsService()");
+      content::EvalJs(primary_main_frame(), "window.getDigitalGoodsService()");
   if (IsDigitalGoodsAPIEnabled()) {
     EXPECT_TRUE(result.error.find(
                     "Failed to execute 'getDigitalGoodsService' on "

@@ -78,12 +78,28 @@ void PlaylistService::Shutdown() {
   task_runner_.reset();
 }
 
+void PlaylistService::RequestDownloadMediaFilesFromContents(
+    const std::string& playlist_id,
+    content::WebContents* contents) {
+  VLOG(2) << __func__
+          << " download media from WebContents to playlist: " << playlist_id;
+
+  DCHECK(contents);
+
+  PlaylistDownloadRequestManager::Request request;
+  request.url_or_contents = contents->GetWeakPtr();
+  request.callback = base::BindOnce(
+      &PlaylistService::OnPlaylistCreationParamsReady, base::Unretained(this),
+      playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
+  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+}
+
 void PlaylistService::RequestDownloadMediaFilesFromPage(
     const std::string& playlist_id,
     const std::string& url) {
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
   PlaylistDownloadRequestManager::Request request;
-  request.url = url;
+  request.url_or_contents = url;
   request.callback = base::BindOnce(
       &PlaylistService::OnPlaylistCreationParamsReady, base::Unretained(this),
       playlist_id.empty() ? kDefaultPlaylistID : playlist_id);

@@ -10,6 +10,9 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+#if BUILDFLAG(IS_WIN)
+    {kAppBoundEncryptionMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 #if !BUILDFLAG(IS_ANDROID)
     {kCopyLinkToText, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif

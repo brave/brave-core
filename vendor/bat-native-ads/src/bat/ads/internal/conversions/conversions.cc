@@ -53,29 +53,16 @@ bool HasObservationWindowForAdEventExpired(const int observation_window,
                                            const AdEventInfo& ad_event) {
   const base::Time time = base::Time::Now() - base::Days(observation_window);
 
-  if (time < ad_event.created_at) {
-    return false;
-  }
-
-  return true;
+  return time >= ad_event.created_at;
 }
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
   if (ad_event.type == AdType::kInlineContentAd) {
-    if (ad_event.confirmation_type == ConfirmationType::kViewed) {
-      // Do not convert views for inline content ads
-      return false;
-    }
-
-    return true;
+    return ad_event.confirmation_type != ConfirmationType::kViewed;
   }
 
-  if (!ShouldRewardUser()) {
-    // Do not convert if the user has not joined rewards for all other ad types
-    return false;
-  }
-
-  return true;
+  // Do not convert if the user has not joined rewards for all other ad types
+  return ShouldRewardUser();
 }
 
 bool DoesConfirmationTypeMatchConversionType(
@@ -83,19 +70,11 @@ bool DoesConfirmationTypeMatchConversionType(
     const std::string& conversion_type) {
   switch (confirmation_type.value()) {
     case ConfirmationType::kViewed: {
-      if (conversion_type == "postview") {
-        return true;
-      }
-
-      return false;
+      return conversion_type == "postview";
     }
 
     case ConfirmationType::kClicked: {
-      if (conversion_type == "postclick") {
-        return true;
-      }
-
-      return false;
+      return conversion_type == "postclick";
     }
 
     case ConfirmationType::kUndefined:
@@ -122,7 +101,7 @@ std::string ExtractConversionIdFromText(
   std::string text = html;
 
   const auto iter = conversion_id_patterns.find(conversion_url_pattern);
-  if (iter != conversion_id_patterns.end()) {
+  if (iter != conversion_id_patterns.cend()) {
     const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
     if (conversion_id_pattern_info.search_in == kSearchInUrl) {
       const auto url_iter =
@@ -131,7 +110,7 @@ std::string ExtractConversionIdFromText(
                          return MatchUrlPattern(url, conversion_url_pattern);
                        });
 
-      if (url_iter == redirect_chain.end()) {
+      if (url_iter == redirect_chain.cend()) {
         return conversion_id;
       }
 
@@ -157,7 +136,7 @@ std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
     }
 
     if (creative_set_ids.find(ad_event.creative_set_id) !=
-        creative_set_ids.end()) {
+        creative_set_ids.cend()) {
       continue;
     }
 
@@ -321,7 +300,7 @@ void Conversions::CheckRedirectChain(
 
         for (const auto& ad_event : filtered_ad_events) {
           if (creative_set_ids.find(conversion.creative_set_id) !=
-              creative_set_ids.end()) {
+              creative_set_ids.cend()) {
             // Creative set id has already been converted
             continue;
           }
@@ -370,16 +349,12 @@ ConversionList Conversions::FilterConversions(
                std::back_inserter(filtered_conversions),
                [&redirect_chain](const ConversionInfo& conversion) {
                  const auto iter = std::find_if(
-                     redirect_chain.begin(), redirect_chain.end(),
+                     redirect_chain.cbegin(), redirect_chain.cend(),
                      [&conversion](const GURL& url) {
                        return MatchUrlPattern(url, conversion.url_pattern);
                      });
 
-                 if (iter == redirect_chain.end()) {
-                   return false;
-                 }
-
-                 return true;
+                 return iter != redirect_chain.cend();
                });
 
   return filtered_conversions;
@@ -418,7 +393,7 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
-  const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
+  const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
       ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.process_at =
       base::Time::Now() + base::Seconds(rand_delay);
@@ -559,7 +534,7 @@ void Conversions::StartTimer(
   if (now < conversion_queue_item.process_at) {
     delay = conversion_queue_item.process_at - now;
   } else {
-    const int64_t rand_delay = static_cast<int64_t>(
+    const auto rand_delay = static_cast<int64_t>(
         brave_base::random::Geometric(kExpiredConvertAfterSeconds));
     delay = base::Seconds(rand_delay);
   }
@@ -599,7 +574,7 @@ void Conversions::OnLocaleDidChange(const std::string& locale) {
 }
 
 void Conversions::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.end()) {
+  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
     resource_->Load();
   }
 }

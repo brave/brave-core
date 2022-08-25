@@ -1,0 +1,520 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Earth Is in Trouble. Can Hymns Help?</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Earth Is in Trouble. Can Hymns Help?</h1><p class="subhead metadata">Christian worship music is having a climate moment. Will it inspire climate activism?</p><div class=""><p class="metadata">By Rebecca Randall</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+  <p>In 2020, Taylor Swift released the albums <em>folklore </em>and <em>evermore. </em>The two albums were replete with forest imagery, so much so that Jeff Opperman, a conservation scientist, wrote optimistically about the value of Swift’s nature references in her music.</p>  <p>“Ms. Swift’s songs aren’t going to reverse climate change or the decline of wildlife,” Opperman <a href="https://www.nytimes.com/2021/03/12/opinion/taylor-swift-grammys-nature-lyrics.html" target="_blank"> wrote</a>&nbsp;for the New York Times. “But they are a step toward reversing the decline of nature in pop culture, and that matters.”</p>  <p>In 2022, however, a report from <a href="https://weareyard.com/insights/worst-celebrity-private-jet-co2-emission-offenders" target="_blank"> The Yard</a>, deemed Swift the worst climate “offender” in regard to her private jet use. While Swift’s team contended that her private jet was loaned out to others, making her not responsible for many of the trips, the internet felt otherwise.</p>
+      <p class="after-ad">The backlash to Swift’s jet raises the question: Can songs about nature contribute to climate activism? And Christians across the country are asking a similar question: How can hymns and worship songs respond to the climate crisis?</p>  <h4>Hymns to inspire orthopathy</h4>  <p>Debra Rienstra, an English professor at Calvin University and author of <em> Refugia Faith: Seeking Hidden Shelters, Ordinary Wonders, and the Healing of the Earth, </em> said hymns and other worship music may play a role in shaping and deepening our feelings toward God’s natural world.</p>  <p>Rienstra, who hosts a <a href="https://open.spotify.com/show/0QzlWEqfuZuB4vTSaAicc5" target="_blank">podcast</a>&nbsp;that explores places of renewal spiritually, biologically, and otherwise, told Sojourners that spiritual formation includes orthodoxy (right thinking), orthopraxy (right doing), but also orthopathy (right feeling). Getting people to care about creation might be part of orthopathy, she said. “Can we shape that pathos toward a renewed love for creation? I hope that answer is yes.”</p>  <p>It’s a delicate hope, but it’s hope rising.</p>  <p>On a 2021 podcast <a href="https://gimletmedia.com/shows/howtosaveaplanet/llhl9xr" target="_blank"> episode</a>&nbsp;of <em>How to Save a Planet</em>, hosts Alex Blumberg and Ayana Elizabeth Johnson discussed the lack of a climate anthem, despite journalist Kendra Pierre-Louis’ findings that climate change was increasingly mentioned in the songs on Billboard’s domestic charts in 2021. They opened discussion by lauding “We Shall Overcome,” a song that became a mainstay in the fight for civil rights. But the anthem of the civil rights movement was first sung in churches: The Black Philadelphia minister Charles Albert Tindley penned the words for a hymn in 1901. Black civil rights leaders, many of whom grew up in churches, pulled from their worship hymnals to reinforce their activism.</p>
+      <p class="after-ad">Now, there’s a similar climate movement happening in worship music. The June release of a <a href="https://www.climatevigil.org/" target="_blank">Climate Vigil</a> The Porter’s Gate Worship Project aims to nudge Christians toward climate action, but it isn’t alone among contenders to inspire the climate movement. For over 20 years, Carolyn Winfrey Gillette, a Presbyterian minister from New York, has written <a href="https://www.carolynshymns.com/index.html" target="_blank">hymns</a>&nbsp;for the times, including one for the 2021 UN climate talks held in Scotland and several to recognize increasing natural disasters such as wildfires, hurricanes, and floods. Fossil Free PCUSA, a campaign within the Presbyterian Church (USA) has used <a href="https://religionnews.com/2018/08/08/protest-hymns/" target="_blank"> hymns in protests</a>, including <a href="https://www.facebook.com/permalink.php?story_fbid=10107053587930103&amp;id=6221542" target="_blank"> songs</a>&nbsp;by Christian artist Matthew Black.&nbsp;</p>  <p>Australian Bible professor John Griffiths <a href="https://www.cambridgescholars.com/product/978-1-5275-7421-2" target="_blank"> found</a>&nbsp;a significant increase in creation imagery in Hillsong Worship songs since 2016, after infrequent mentions in the 1990s through the mid-2010s. He notes that the ecological message is sometimes mixed. Yet the theology of creation in “So Will I (100 Billion X)” speaks of God’s creative power in birthing galaxies, commanding science, and giving life to creatures. The song ultimately sees creation as a partner in worshipping God. “If the stars were made to worship, so will I. / If the mountains bow in reverence, so will I.”</p>  <p>Before climate activists celebrate any emerging momentum, though, it’s important to acknowledge that growth comes from a fairly low&nbsp;point. Indeed, this deficit is a cultural problem going back decades: A 2017 scientific <a href="https://journals.sagepub.com/doi/abs/10.1177/1745691616662473?journalCode=ppsa" target="_blank"> study</a>&nbsp;found a decline in nature references in fiction books, songs, and films since 1950.</p>  <p>Richard Lindroth, a forest ecologist at the University of Wisconsin-Madison and teacher on Christian environmental ethics, <a href="https://biologos.org/articles/a-liturgy-of-land-and-call-to-creation-connection/" target="_blank"> wrote</a>&nbsp;that inaction in Christian churches is a result of “long-term estrangement from the natural world.” Similarly, Debra’s diagnosis is a “disconnection of place,” which she sees as foundational in colonialism.</p>  <p>“The Bible is about Indigenous peoples basically. So, what we need to receive from Indigenous people is connection to place,” she said.</p>
+        <h4>Localizing environmentalism</h4>  <p>Ron Rienstra, a worship pastor, Debra’s husband, and her co-author of the <a href="https://www.amazon.com/Worship-Words-Discipling-Language-Faithful/dp/080103616X" target="_blank"> book</a>, <em>Worship Words</em>, said music as a commodity has tended toward wide appeal, choosing metaphors, but not making them particular to place.</p>  <p>In the current top 10 worship songs listed by the Christian Copyright Licensing International, which provides churches with access to a repository of music with a copyright, three songs mention nature, but the references could be metaphors rather than ecological reflections. Elevation Worship’s “Graves Into Gardens” is one reference: <em>'Cause the God of the mountain / Is the God of the valley.</em></p>  <p>“When we sing or speak or argue theologically in abstract ways that are trying to articulate truths for all time, we’re removing ourselves from the time and place that we are,” Ron said. “We’re clearly in a particular time that calls for us to sing, preach, and pray about what’s going on in the world in regard to climate change.”</p>  <p>Many of Gillette’s hymns respond to contemporary events. “God cares about our joys and our needs as we live in a world that’s dealing with climate change, problems of gun violence, hunger and famine, and war … We are called to pray and sing, and then to work for a better world,” Gillette said.</p>  <p>Ron noted that in Scripture, nature vocabulary is environmentally located. Solomon used the cedars of Lebanon in the construction of the temple. Naaman is told to wash in the Jordan River. Worship music can follow these examples to localize our lyrics.</p>
+      <p class="after-ad">“Which trees will clap their hands? The Eastern white pines? Which rivers are singing?” he asked. Speaking from Grand Rapids, Mich., Ron added: “I should expect songs about the Great Lakes.”</p>  <p>Gillette writes exactly this way:</p>  <blockquote> 	<p>O God, you made the trees! The oak and Douglas fir,<br> 		the maple, beech, and sweetgum reach their branches heavenward.<br> 		The willow, growing wide — the redwood, tall and strong —<br> 		and cedar trees! Yes, all of these sing out creation’s song.</p> </blockquote>  <p>Sung to the tune of “This is My Father’s World,” the lyrics spring from a love for trees. “Trees can make such a big difference globally but also in very local ways,” she said. “One tree planted on a city street can lower the temperature in a neighborhood.”</p>    <p>In comparison, the Climate Vigil album offers relatively general nature terms but speaks with awe or lament at nature’s degradation. Further, the <a href="https://drive.google.com/file/d/1EAMtIhaeE-r4E942uW0xJnH_Lp6V2Mqb/view" target="_blank"> worship guide</a>&nbsp;includes reflections for each song, replete with scientific thought on cells, soil, and diversity of species — even tardigrades, the squishy “water bears” visible only through microscopes, are worthy of God’s praise.</p>  <p>Lindroth’s solution for nature-deficit disorder is to practice “liturgies of land,” which he describes as engaging the “<a href="https://www.patheos.com/blogs/thepangeablog/2010/08/25/augustine-evolution-and-two-books/" target="_blank">Book of Nature</a>,” as creation is called by Augustine, to discover God through activities like bird walks or stargazing. Ron suggests that creation can be included in formal worship services by adding plants or water elements in the church building. Griffith simply encourages outdoor services.</p>  <p>Combined with worship music that offers artistry and inclusion of the beauty of creation, this could foster an emotion that nurtures love: awe.</p>  <p>“Beauty is one of the primary goals of what we try to do with worship — beauty that tries to map people’s awe toward God,” Ron said.</p>  <h4>Awe and activism</h4>  <p>Researchers have studied how awe facilitates a connectedness to nature, which can motivate ecological behavior. In a 2018 <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2018.02367/full" target="_blank"> study</a>, Chinese adults reported higher environmental intentions after watching a video clip of either childbirth or the BBC’s <em>Planet Earth</em> series. In another 2018 <a href="https://www.mdpi.com/2071-1050/10/7/2477" target="_blank">study</a>, students in China reported more willingness to recycle or take shorter showers after watching a five-minute scenic nature video. The same happened when students wrote reflections on an experience of awe.</p>  <p>“We instinctively care for the things we love, and we love the things to which we are intimately connected,” wrote Lindroth. “… [C]reation connection is a fundamental and necessary antecedent to creation care.”</p>  <p>In spiritual formation, love encompasses right thinking, feeling, and doing. While Christian environmental ethicists in the past focused on “stewardship” or “creation care” — a theology of right thinking — Debra has <a href="https://reformedjournal.com/stewardship-is-not-good-enough/" target="_blank"> noted</a>&nbsp;in her writing that it hasn’t motivated the church to do much. Ron thinks that is because “the whole conversation takes place under the umbrella of duty or obligation. That’s a very short-term motivator for most people.”</p>  <p>“Connecting to and loving creation is the key to unlock people to actually do things,” said Ron.</p>  <p>The new Climate Vigil album aims to evoke emotion when it encompasses a range from lament — <em> All creatures winging in the air / Cry out the failures of our care. </em> — to steely determination:<em>The kingdom is coming! / We are working for it. /</em> <em> The kingdom is coming! / All creation groans!</em></p>  <p>“We wanted to help people do something with these convictions, so we wrote songs for action and mobilization — music for the movement — where we say ‘yes’ to the work we are called to do,” said Isaac Wardell, creative director of The Porter’s Gate Worship Project. “God is restoring all things, and He gives us hands and feet to help build His kingdom, on earth as it is in heaven.”</p>  <p>Peter Fargo, co-founder of the Climate Vigil movement, added: “Ideally, the experience of worship will also lead us to do the work of worship — loving God and neighbor as Jesus commands.”</p>  <p>The songs may not find themselves sung at a climate march, but the climate-worship writers hope their songs will stir a growing sense that all is not as it should be with the home we love, and that God is calling us to action. And whether led by a band while gathering in the pews or transmitted over headphones while reverently observing migrating birds in a local wetland, there’s a growing playlist of music for the spiritual march of climate work.</p> 
+<div class="article-author-bio">        
+                    <div class="view view-biography view-id-biography view-display-id-author_display view-dom-id-598723c34b497b7b85b4222159538b3c">
+      
+  
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first views-row-last">
+      
+  <p><a href="/biography/rebecca-randall"><img alt="" height="120" src="https://sojo.net/sites/default/files/styles/small_square_thumb/public/headshots/rebecca_randall_photo.png?itok=235_X9n1" width="120"></a></p>  
+    
+  <p>Rebecca Randall is a writer and editor based in the Pacific Northwest. She writes on faith and the environment, psychology, and social inequities. She is the former science editor for <em>Christianity Today</em>.</p>  </div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>                 </div></body>

@@ -29,7 +29,7 @@ std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64);
 
 std::vector<uint8_t> GenerateRandom192BitNonce();
 
-std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& message,
+std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& nonce,
                              const std::vector<uint8_t>& public_key,
                              const std::vector<uint8_t>& ephemeral_secret_key);

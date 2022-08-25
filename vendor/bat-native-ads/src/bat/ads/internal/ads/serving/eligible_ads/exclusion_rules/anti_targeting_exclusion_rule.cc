@@ -22,11 +22,7 @@ bool HasVisitedSiteOnAntiTargetingList(
   const auto iter = std::find_first_of(
       anti_targeting_sites.cbegin(), anti_targeting_sites.cend(),
       browsing_history.cbegin(), browsing_history.cend(), SameDomainOrHost);
-  if (iter == anti_targeting_sites.end()) {
-    return false;
-  }
-
-  return true;
+  return iter != anti_targeting_sites.cend();
 }
 
 }  // namespace
@@ -69,7 +65,7 @@ bool AntiTargetingExclusionRule::DoesRespectCap(
   }
 
   const auto iter = anti_targeting_.sites.find(creative_ad.creative_set_id);
-  if (iter == anti_targeting_.sites.end()) {
+  if (iter == anti_targeting_.sites.cend()) {
     // Always respect if creative set has no anti-targeting sites
     return true;
   }

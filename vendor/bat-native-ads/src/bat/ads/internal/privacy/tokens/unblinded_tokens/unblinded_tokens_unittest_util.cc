@@ -27,7 +27,7 @@ UnblindedTokens* GetUnblindedTokens() {
 }
 
 UnblindedTokenList SetUnblindedTokens(const int count) {
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
+  UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
   GetUnblindedTokens()->SetTokens(unblinded_tokens);
   return unblinded_tokens;
 }

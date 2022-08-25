@@ -24,7 +24,7 @@ struct ADS_EXPORT CategoryContentInfo final {
   bool operator!=(const CategoryContentInfo& rhs) const;
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& root);
 
   std::string category;
   CategoryContentOptActionType opt_action_type =

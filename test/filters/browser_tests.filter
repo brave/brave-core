@@ -17,6 +17,7 @@
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsAllowThirdPartyBrowserTest.*
 -All/ClientHintsBrowserTest.*
+-All/ClientHintsBrowserTestForMetaTagTypes.*
 -All/CookieSettingsTest.*
 -All/DataSaverHoldbackBrowserTest.*
 -All/DeclarativeNetRequestBackForwardCacheBrowserTest.*
@@ -53,6 +54,7 @@
 -All/PDFExtensionTestWithTestGuestViewManager.*
 -All/PDFExtensionWebUICodeCacheJSTest.*
 -All/PrerenderingChangePasswordNavigationThrottleBrowserTest.*
+-All/PrerenderOmniboxSearchSuggestionReloadBrowserTest.*
 -All/PrintPreviewDialogControllerBrowserTest.*
 -All/ProcessManagementExtensionIsolationTest.*
 -All/ProfileNetworkContextServiceCertVerifierBuiltinPermissionsPolicyTest.*
@@ -104,6 +106,7 @@
 -AllRedirectCodes/CriticalClientHintsRedirectBrowserTest.*
 -AnchorElementPreloaderBrowserTest.*
 -AnchorElementPreloaderHoldbackBrowserTest.PreconnectHoldbackTest
+-AnchorElementPreloaderLimitedBrowserTest.LimitExceeded
 -AppApiTest.*
 -AppBannerManagerPrerenderBrowserTest.*
 -AppControllerProfilePickerBrowserTest.*
@@ -115,6 +118,7 @@
 -AppSessionRestoreTest.NoAppRestore
 -AppSessionRestoreTest.OpeningAppDoesNotAffectBrowserSession
 -AutofillServerTest.*
+-AvatarMenuBrowserTest.EditProfile_NotLoaded
 -AvatarToolbarButtonBrowserTest.*
 -BackForwardCacheFileSystemAccessBrowserTest.*
 -BackForwardCachePageLoadMetricsObserverBrowserTest.*
@@ -164,6 +168,9 @@
 -ChromeSitePerProcessTest.*
 -ChromeURLDataManagerTest.*
 -ChromeURLDataManagerWebUITrustedTypesTest.*
+-Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/0
+-Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/6
+-Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/7
 -ClickToCallBrowserTest.*
 -ClientHintsAcceptCHFrameObserverBrowserTest.*
 -ClientHintsBrowserTest.*
@@ -202,6 +209,7 @@
 -CookiePolicyBrowserTest.*
 -CookieStoreSameParty*Test.*
 -CredentialManagerBrowserTest.*
+-CredentialManagerPrerenderBrowserTest.*
 -CriticalClientHintsBrowserTest.*
 -CrossProfileDebuggerApiTest.GetTargets
 -DataSaverWebAPIsBrowserTest.*
@@ -225,6 +233,7 @@
 -DiceManageAccountBrowserTest.*
 -DiceSigninUiUtilBrowserTest.*
 -DiceWebSigninInterceptionBubbleBrowserTest.*
+-DiceWebSigninInterceptionBubbleV2BrowserTest.OpenLearnMoreLinkInNewTab
 -DiceWebSigninInterceptorBrowserTest.*
 -DiceWebSigninInterceptorEnterpriseBrowserTest.*
 -DIPSBounceDetectorBrowserTest.DetectStatefulRedirect_Client_IgnoreThirdPartySubresource
@@ -254,12 +263,14 @@
 -EnterpriseReportingPrivateGetContextInfoBrowserTest.AffiliationIDs/*
 -ErrorPageOfflineTestWithAllowDinosaurTrue.*
 -EventPage/CookiesApiTest.*
+-EventPage/DeclarativeNetRequestApiPrerenderingTest.*
 -EventPage/DeclarativeNetRequestLazyApiTest.TestMatchOutcome/0
 -EventPage/ExtensionContextMenuLazyTest.*
 -EventPage/ExtensionPreferenceApiTest.*
 -ExitTypeServiceTest.*
 -ExplicitlyAllowedNetworkPortsBackgroundFetchBrowserTest.*
 -ExtensionApiNewTabTest.*
+-ExtensionApiTabPrerenderingTest.Prerendering
 -ExtensionApiTabTest.*
 -ExtensionApiTest.*
 -ExtensionBindingsApiTest.*
@@ -283,6 +294,7 @@
 -ExtensionUninstallDialogViewInteractiveBrowserTest.*
 -ExtensionURLRewriteBrowserTest.*
 -ExtensionWebRequestApiFencedFrameTest/ExtensionWebRequestApiFencedFrameTest.*
+-ExtensionWebRequestApiPrerenderingTest.Load
 -ExtensionWebRequestApiTest.*
 -ExtensionWebstorePrivateApiAllowlistEnforcementTest.*
 -ExtensionWebstorePrivateApiTest.*
@@ -318,6 +330,7 @@
 -GlobalMediaControlsDialogTest.*
 -GooglePFTest.*
 -GreaseEnterprisePolicyTest.*
+-GreaseFeatureParamOptOutTest.UpdatedGreaseFeatureParamOptOutTest
 -GuestStartupBrowserCreatorPickerTest.*
 -HangoutServicesBrowserTest.*
 -HintsFetcherBrowserTest.*
@@ -332,9 +345,12 @@
 -HTMLCSSSyncScriptFontNoStatePrefetchBrowserTest.*
 -HTMLCSSSyncScriptNoStatePrefetchBrowserTest.*
 -HTMLOnlyNoStatePrefetchBrowserTest.*
+-HTTPCacheSearchPreloadUnifiedBrowserTest.BackwardHitHttpCache
 -IdentityGetAccountsFunctionTest.*
 -IdentityGetProfileUserInfoFunctionTest.*
 -ImageUtilTest.CheckDefaultToolbarColor
+-Incognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-Incognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
 -IncognitoBrowsingDataBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
@@ -361,6 +377,7 @@
 -InspectUITest.*
 -InstallableManagerInPrerenderingBrowserTest.*
 -IntentChipButtonBrowserTest.*
+-IntentChipButtonSkipIntentPickerBrowserTest.ShowsIntentChipCollapsed
 -InterestGroupFledgeOnBrowserTest.*
 -InterestGroupPermissionsBrowserTest.*
 -IsolatedAppsDeveloperModeAllowedPolicyTest.*
@@ -368,6 +385,7 @@
 -JavascriptFrameworksUkmObserverBrowserTest.*
 -KeepAliveDevToolsTest.*
 -KnownInterceptionDisclosureInfobarTest.*
+-LatencyAblationEnabledBrowserTest.DontAblatePrerender
 -LazyBackgroundPageApiTest.*
 -LazyLoadPrerenderBrowserTest.*
 -LiveCaptionSpeechRecognitionHostTest.*
@@ -396,6 +414,7 @@
 -MediaRouterUIBrowserTest.*
 -MessagingApiFencedFrameTest/MessagingApiFencedFrameTest.*
 -MetadataCheckAndDeepScanningBrowserTest.*
+-MetricsLogBrowserTest.CommandLineKeyHash
 -MetricsServiceBrowserDoUploadTest.*
 -MetricsServiceBrowserTest.*
 -MetricsServiceUserDemographicsBrowserTest.*
@@ -403,9 +422,7 @@
 -Mode/BackgroundColorChangeWebAppBrowserTest.*
 -MojoFileSystemAccessBrowserTest.CanResolveFilePath
 -MojoJSInterfaceBrokerBrowserTest.*
--MultiOriginSessionRestoreTest.BackToAboutBlank1
--MultiOriginSessionRestoreTest.BackToAboutBlank2
--MultiOriginSessionRestoreTest.SecFetchSite
+-MultiOriginSessionRestoreTest.*
 -MultiPageBrowserTest.*
 -MultipleTabSharingUIViewsBrowserTest.*
 -MultiTabLoadingPageLoadMetricsBrowserTest.MultiTabForeground
@@ -482,6 +499,7 @@
 -PageLoadTrackerDecoratorTest.*
 -PageTextObserverSingleProcessBrowserTest.*
 -PasswordBubbleBrowserTest.*
+-PasswordManagerAnonymousIframeTest.DisablePasswordManagerOnAnonymousIframe
 -PasswordManagerBackForwardCacheBrowserTest.*
 -PasswordManagerBrowserTest.*
 -PasswordManagerInternalsWebUIBrowserTest.*
@@ -507,6 +525,7 @@
 -PerformanceHintsObserverPrerenderTest.*
 -PermissionRequestManagerWithBackForwardCacheBrowserTest.*
 -PermissionRequestManagerWithPrerenderingTest.*
+-PersistentBackground/DeclarativeNetRequestApiPrerenderingTest.*
 -PersistentBackground/DeclarativeNetRequestLazyApiTest.TestMatchOutcome/0
 -PersistentBackground/ExtensionI18nTest.*
 -PersistentBackground/ExtensionManagementApiTest.*
@@ -516,6 +535,7 @@
 -PersistentScriptingAPITest.*
 -PictureInPictureWindowControllerPrerenderBrowserTest.*
 -PlatformAppBrowserTest.*
+-PlatformAppNavigationRedirectorPrerenderingBrowserTest.*
 -PolicyPrefsTest.*
 -PolicyPrefsTestCoverageTest.*
 -PolicyTest.*
@@ -541,9 +561,12 @@
 -PrerenderBrowserTest.*
 -PrerenderDownloadTest.*
 -PrerenderFileSystemAccessBrowserTest.*
+-PrerenderOmniboxSearchSuggestionBrowserTest.*
+-PrerenderOmniboxSearchSuggestionExpiryBrowserTest.*
 -PrerenderPageLoadMetricsBrowserTest.*
 -PrerenderPageLoadMetricsObserverBrowserTest.*
 -PrerenderSiteDetailsBrowserTest.*
+-PrerenderTaskBrowserTest.*
 -PresentationReceiverWindowControllerBrowserTest.*
 -PrintPrerenderBrowserTest.*
 -PrintPreviewDialogControllerBrowserTest.NavigateFromInitiatorTab
@@ -551,6 +574,7 @@
 -PrivacyBudgetBrowserTest.*
 -PrivacyBudgetBrowserTestWithScopedConfig.*
 -PrivacyBudgetBrowserTestWithTestRecorder.*
+-PrivacyBudgetBrowserTestWithUkmRecording.*
 -PrivacySandboxDialogHelperTestWithParamInstance/PrivacySandboxDialogHelperTestWithParam.*
 -PrivacySandboxSettingsBrowserTest.*
 -PrivateNetworkAccessWithFeatureEnabledBrowserTest.*
@@ -559,6 +583,7 @@
 -ProfileBrowserTest.*
 -ProfileBrowserTestWithoutDestroyProfile.*
 -ProfileCustomizationBubbleBrowserTest.*
+-ProfileCustomizationDialogBrowserTest.*
 -ProfileKeyedServiceBrowserTest.SystemProfileOTR_NeededServices
 -ProfileKeyedServiceBrowserTest.SystemProfileParent_NeededServices
 -ProfileListDesktopBrowserTest.*
@@ -621,6 +646,7 @@
 -SafeBrowsingPolicyTest.*
 -SafeBrowsingTriggeredPopupBlockerBrowserTest.*
 -SafeBrowsingTriggeredPopupBlockerPrerenderingBrowserTest.*
+-SafetyTipPageInfoBubbleViewBrowserTest.DoesntTriggerOnComboSquatting
 -SafetyTipPageInfoBubbleViewPrerenderBrowserTest.*
 -SameOriginPartitionedCookiesOriginTrialBrowserTest.*
 -SameOriginUaReducedOriginTrialBrowserTest.*
@@ -632,6 +658,7 @@
 -SavePageBrowserTest.*
 -SBNavigationObserverBrowserTest.PrerenderReferrerChains
 -SCTReportingServiceBrowserTest.ReportsSentAfterNetworkServiceRestart
+-ScriptingAPIPrerenderingTest.Basic
 -SearchApiTest.*
 -SearchByImageBrowserTest.*
 -SearchEnginePreconnectorDesktopAutoStartBrowserTest.*
@@ -642,14 +669,16 @@
 -SearchPrefetchServiceBFCacheTest.*
 -SearchPrefetchServiceHeadStartTest.*
 -SearchPrefetchServiceHeadStartTooLongTest.*
+-SearchPrefetchServiceNavigationPrefetchBrowserTest.*
 -SearchPrefetchServiceZeroCacheTimeBrowserTest.*
 -SearchPrefetchServiceZeroErrorTimeBrowserTest.*
--SearchPreloadUnifiedBrowserTest.PrerenderBeTriggered
+-SearchPreloadUnifiedBrowserTest.*
 -SecurityStatePageLoadMetricsBrowserTest.*
 -SecurityStatePageLoadMetricsPrerenderBrowserTest.*
 -SecurityStateTabHelperPrerenderTest.*
 -SensorsPolicyTest.*
 -ServiceWorker/CookiesApiTest.*
+-ServiceWorker/DeclarativeNetRequestApiPrerenderingTest.*
 -ServiceWorker/ExtensionContextMenuLazyTest.*
 -ServiceWorker/ExtensionContextMenuSWTest.*
 -ServiceWorker/ExtensionPreferenceApiTest.*
@@ -662,6 +691,7 @@
 -SessionRestoreSilentLaunchTest.*
 -SessionRestoreTest.*
 -SessionServiceLogTest.*
+-SetIconAPIPrerenderingTest.Overview
 -SettingsOverriddenParamsProvidersBrowserTest.*
 -SharedClipboardBrowserTest.*
 -SharedClipboardUIFeatureDisabledBrowserTest.*
@@ -697,6 +727,8 @@
 -StartupBrowserWithWebAppTest.*
 -StartupHelperBrowserTest.*
 -StorageAccessAPIBrowserTest.*
+-StorageAccessAPIStorageBrowserTest.NestedThirdPartyIFrameStorage/*
+-StorageAccessAPIStorageBrowserTest.ThirdPartyIFrameStorageRequestsAccess/*
 -SubframeTaskBrowserTest.*
 -SubresourceFilterPrerenderingBrowserTest.*
 -SyncAwareCounterTest.*
@@ -736,6 +768,7 @@
 -TabUsageScenarioTrackerBrowserTest.FullScreenVideoCrash
 -TaskManagerBrowserTest.*
 -TemplateURLScraperTest.*
+-ThemeServiceBrowserTest.GetColorForToolbarButton
 -ThirdPartyAcceptChUaReducedOriginTrialBrowserTest.*
 -ThirdPartyDataRemoverFallbackTest.*
 -ThirdPartyDataRemoverTest.*
@@ -759,6 +792,8 @@
 -UpdateServiceTest.*
 -UseCounterPageLoadMetricsObserverBrowserTest.*
 -UserPolicySigninServiceSyncNotRequiredTest.*
+-UserProfile/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-UserProfile/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
 -UserPolicySigninServiceTest.*
 -UserScriptListenerTest.*
 -VariationsHttpHeadersBrowserTest.*
@@ -779,6 +814,7 @@
 -WebAppLaunchHandlerBrowserTest.*
 -WebAppLaunchHandlerDisabledBrowserTest.*
 -WebAppMoverBadPatternBrowsertest.*
+-WebAppNavigatePrerenderingBrowserTest.*
 -WebAppOfflineDarkModeTest.*
 -WebAppTabStripLinkCapturingBrowserTest.*
 -WebBluetoothTestWithNewPermissionsBackendEnabledInPrerendering.*
@@ -834,6 +870,7 @@
 -WebViewTests/WebViewTest.Shim_TestRendererNavigationRedirectWhileUnattached/SiteIsolationForGuestsEnabled
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsDisabled
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
+-WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
 -ZeroSuggestPrefetchTabHelperBrowserTest.*
 -ZoomControllerForPrerenderingTest.*

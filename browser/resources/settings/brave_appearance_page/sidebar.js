@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import '../settings_shared_css.js';
+import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
 

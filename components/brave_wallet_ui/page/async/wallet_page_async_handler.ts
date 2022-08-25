@@ -24,7 +24,8 @@ import {
   ImportFromExternalWalletPayloadType,
   ImportFilecoinAccountPayloadType,
   RestoreWalletPayloadType,
-  ImportWalletErrorPayloadType
+  ImportWalletErrorPayloadType,
+  ShowRecoveryPhrasePayload
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo,
@@ -105,10 +106,18 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
   }
 })
 
-handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, payload: boolean) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.getMnemonicForDefaultKeyring()
-  store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: result.mnemonic }))
+handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, {
+  password,
+  show
+}: ShowRecoveryPhrasePayload) => {
+  if (password) {
+    const { keyringService } = getWalletPageApiProxy()
+    const { mnemonic } = await keyringService.getMnemonicForDefaultKeyring(password)
+    store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic }))
+    return
+  }
+
+  store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
 })
 
 handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {

@@ -33,7 +33,7 @@ class CreativeAds final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 
-  void Delete(ResultCallback callback);
+  void Delete(ResultCallback callback) const;
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetCreativeAdCallback callback);
@@ -44,8 +44,9 @@ class CreativeAds final : public TableInterface {
                const int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const CreativeAdList& creative_ads);
+  std::string BuildInsertOrUpdateQuery(
+      mojom::DBCommandInfo* command,
+      const CreativeAdList& creative_ads) const;
 
   void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
                                   GetCreativeAdCallback callback,

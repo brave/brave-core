@@ -157,7 +157,7 @@ class BraveFaviconDatabaseBrowserTest : public InProcessBrowserTest {
     ui_test_utils::UrlLoadObserver load_complete(
         landing_url(), content::NotificationService::AllSources());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    EXPECT_EQ(contents()->GetMainFrame()->GetLastCommittedURL(), url);
+    EXPECT_EQ(contents()->GetPrimaryMainFrame()->GetLastCommittedURL(), url);
     load_complete.Wait();
 
     EXPECT_EQ(contents()->GetLastCommittedURL(), landing_url());

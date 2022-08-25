@@ -92,7 +92,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
@@ -113,7 +113,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
@@ -153,7 +153,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
   EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 

@@ -26,11 +26,7 @@ bool HasFiredAdEvent(const AdInfo& ad,
                             ad_event.confirmation_type == confirmation_type;
                    });
 
-  if (iter == ad_events.end()) {
-    return false;
-  }
-
-  return true;
+  return iter != ad_events.cend();
 }
 
 absl::optional<base::Time> GetLastSeenAdTime(
@@ -44,7 +40,7 @@ absl::optional<base::Time> GetLastSeenAdTime(
                ad_event.confirmation_type == ConfirmationType::kViewed;
       });
 
-  if (iter == ad_events.end()) {
+  if (iter == ad_events.cend()) {
     return absl::nullopt;
   }
 
@@ -61,7 +57,7 @@ absl::optional<base::Time> GetLastSeenAdvertiserTime(
                ad_event.confirmation_type == ConfirmationType::kViewed;
       });
 
-  if (iter == ad_events.end()) {
+  if (iter == ad_events.cend()) {
     return absl::nullopt;
   }
 

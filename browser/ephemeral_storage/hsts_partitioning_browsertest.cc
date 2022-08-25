@@ -160,17 +160,17 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
     return result;
   }
 
-  base::Value NetworkContextGetHSTSState(const std::string& host) {
+  base::Value::Dict NetworkContextGetHSTSState(const std::string& host) {
     content::StoragePartition* partition =
         browser()->profile()->GetDefaultStoragePartition();
     base::RunLoop run_loop;
-    base::Value result;
+    base::Value::Dict result;
     partition->GetNetworkContext()->GetHSTSState(
-        host,
-        base::BindLambdaForTesting([&run_loop, &result](base::Value sts_state) {
-          result = std::move(sts_state);
-          run_loop.Quit();
-        }));
+        host, base::BindLambdaForTesting(
+                  [&run_loop, &result](base::Value::Dict sts_state) {
+                    result = std::move(sts_state);
+                    run_loop.Quit();
+                  }));
     run_loop.Run();
     return result;
   }
@@ -481,13 +481,13 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, NetworkContextAPI) {
   ExpectHSTSState(a_com_rfh, "a.com", true);
   EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("a.com"));
   EXPECT_TRUE(
-      NetworkContextGetHSTSState("a.com").FindIntKey("dynamic_upgrade_mode"));
+      NetworkContextGetHSTSState("a.com").FindInt("dynamic_upgrade_mode"));
 
   SetHSTS(a_com_rfh, "b.com");
   ExpectHSTSState(a_com_rfh, "b.com", true);
   EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("b.com"));
   EXPECT_FALSE(
-      NetworkContextGetHSTSState("b.com").FindIntKey("dynamic_upgrade_mode"));
+      NetworkContextGetHSTSState("b.com").FindInt("dynamic_upgrade_mode"));
 
   GURL b_com_url("http://b.com/iframe.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
@@ -511,8 +511,8 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
                        NetworkContextAddHSTS) {
   NetworkContextAddHSTS("sub.a.com");
   EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("sub.a.com"));
-  EXPECT_TRUE(NetworkContextGetHSTSState("sub.a.com")
-                  .FindIntKey("dynamic_upgrade_mode"));
+  EXPECT_TRUE(
+      NetworkContextGetHSTSState("sub.a.com").FindInt("dynamic_upgrade_mode"));
 
   GURL a_com_url("http://sub.a.com/iframe.html");
   auto* a_com_rfh = ui_test_utils::NavigateToURL(browser(), a_com_url);

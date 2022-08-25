@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 
@@ -18,14 +23,12 @@ import Tooltip from '../../shared/tooltip/index'
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
 
 // Components
-import { NavButton, PanelTab, TransactionDetailBox } from '../'
-import EditGas, { MaxPriorityPanels } from '../edit-gas'
+import { PanelTab, TransactionDetailBox } from '../'
 import EditAllowance from '../edit-allowance'
 import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
 import { TransactionInfo } from './transaction-info'
-import BraveIcon from '../../../assets/svg-icons/brave-icon.svg'
 
 // Styled Components
 import {
@@ -39,20 +42,11 @@ import {
   TransactionFiatAmountBig,
   MessageBox,
   TransactionTypeText,
-  ButtonRow,
   AccountCircleWrapper,
   ArrowIcon,
   FromToRow,
   EditButton,
-  FavIcon,
-  QueueStepText,
-  QueueStepRow,
-  QueueStepButton,
-  ErrorText,
   WarningIcon,
-  ConfirmingButton,
-  LoadIcon,
-  ConfirmingButtonText,
   AssetIcon
 } from './style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
@@ -70,6 +64,11 @@ import {
   LearnMoreButton,
   WarningBoxTitleRow
 } from '../shared-panel-styles'
+
+import { Footer } from './common/footer'
+import { TransactionQueueStep } from './common/queue'
+import { Origin } from './common/origin'
+import { EditPendingTransactionGas } from './common/gas'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -95,13 +94,10 @@ function ConfirmTransactionPanel ({
 
   // custom hooks
   const {
-    baseFeePerGas,
-    findAssetPrice,
     foundTokenInfoByContractAddress,
     fromAccountName,
     fromAddress,
     fromOrb,
-    isConfirmButtonDisabled,
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
@@ -109,49 +105,18 @@ function ConfirmTransactionPanel ({
     isFilecoinTransaction,
     isAssociatedTokenAccountCreation,
     onEditAllowanceSave,
-    queueNextTransaction,
-    rejectAllTransactions,
-    suggestedMaxPriorityFeeChoices,
     toOrb,
     transactionDetails,
-    transactionQueueNumber,
     transactionsNetwork,
-    transactionsQueueLength,
     transactionTitle,
-    updateUnapprovedTransactionGasFields,
     updateUnapprovedTransactionNonce
   } = usePendingTransactions()
 
   // state
-  const [suggestedSliderStep, setSuggestedSliderStep] = React.useState<string>('1')
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const [isEditingAllowance, setIsEditingAllowance] = React.useState<boolean>(false)
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] = React.useState<boolean>(false)
-  const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
-  const [transactionConfirmed, setTranactionConfirmed] = React.useState<boolean>(false)
-  const [queueLength, setQueueLength] = React.useState<number | undefined>(undefined)
-
-  React.useEffect(() => {
-    // This will update the transactionConfirmed state back to false
-    // if there are more than 1 transactions in the queue.
-    if (queueLength !== transactionsQueueLength || queueLength === undefined) {
-      setTranactionConfirmed(false)
-    }
-  }, [queueLength, transactionsQueueLength])
-
-  // methods
-  const onClickConfirmTransaction = React.useCallback(() => {
-    // Checks to see if there are multiple transactions in the queue,
-    // if there is we keep track of the length of the last confirmed transaction.
-    if (transactionsQueueLength > 1) {
-      setQueueLength(transactionsQueueLength)
-    }
-    // Sets transactionConfirmed state to disable the send button to prevent
-    // being clicked again and submitting the same transaction.
-    setTranactionConfirmed(true)
-    onConfirm()
-  }, [transactionsQueueLength, onConfirm])
 
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
 
@@ -180,19 +145,7 @@ function ConfirmTransactionPanel ({
 
   if (isEditing) {
     return (
-      <EditGas
-        transactionInfo={transactionInfo}
-        onCancel={onToggleEditGas}
-        networkSpotPrice={findAssetPrice(transactionsNetwork.symbol)}
-        selectedNetwork={transactionsNetwork}
-        baseFeePerGas={baseFeePerGas}
-        suggestedMaxPriorityFeeChoices={suggestedMaxPriorityFeeChoices}
-        updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
-        suggestedSliderStep={suggestedSliderStep}
-        setSuggestedSliderStep={setSuggestedSliderStep}
-        maxPriorityPanel={maxPriorityPanel}
-        setMaxPriorityPanel={setMaxPriorityPanel}
-      />
+      <EditPendingTransactionGas onCancel={onToggleEditGas} />
     )
   }
 
@@ -236,38 +189,13 @@ function ConfirmTransactionPanel ({
             <AccountCircle orb={toOrb} />
           </AddressAndOrb>
         }
-        {transactionsQueueLength > 1 &&
-          <QueueStepRow>
-            <QueueStepText>
-              {transactionQueueNumber} {getLocale('braveWalletQueueOf')} {transactionsQueueLength}
-            </QueueStepText>
-            <QueueStepButton
-              onClick={queueNextTransaction}
-            >
-              {transactionQueueNumber === transactionsQueueLength
-                ? getLocale('braveWalletQueueFirst')
-                : getLocale('braveWalletQueueNext')
-              }
-            </QueueStepButton>
-          </QueueStepRow>
-        }
+
+        <TransactionQueueStep />
       </TopRow>
 
       {isERC20Approve ? (
         <>
-          <FavIcon
-            src={
-              originInfo.originSpec.startsWith('chrome://wallet')
-                ? BraveIcon
-                : `chrome://favicon/size/64@1x/${originInfo.originSpec}`
-            }
-          />
-          <URLText>
-            <CreateSiteOrigin
-              originSpec={originInfo.originSpec}
-              eTldPlusOne={originInfo.eTldPlusOne}
-            />
-          </URLText>
+          <Origin originInfo={originInfo} />
           <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</PanelTitle>
           <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</Description>
 
@@ -385,47 +313,7 @@ function ConfirmTransactionPanel ({
         ) : <TransactionDetailBox transactionInfo={transactionInfo} />}
       </MessageBox>
 
-      {transactionsQueueLength > 1 &&
-        <QueueStepButton
-          needsMargin={true}
-          onClick={rejectAllTransactions}
-        >
-          {getLocale('braveWalletQueueRejectAll').replace('$1', transactionsQueueLength.toString())}
-        </QueueStepButton>
-      }
-
-      {
-        [
-          transactionDetails.contractAddressError,
-          transactionDetails.sameAddressError,
-          transactionDetails.missingGasLimitError
-        ].map((error, index) => <ErrorText key={`${index}-${error}`}>{error}</ErrorText>)
-      }
-
-      <ButtonRow>
-        <NavButton
-          buttonType='reject'
-          text={getLocale('braveWalletAllowSpendRejectButton')}
-          onSubmit={onReject}
-          disabled={transactionConfirmed}
-        />
-        {transactionConfirmed ? (
-          <ConfirmingButton>
-            <ConfirmingButtonText>
-              {getLocale('braveWalletAllowSpendConfirmButton')}
-            </ConfirmingButtonText>
-            <LoadIcon />
-          </ConfirmingButton>
-        ) : (
-          <NavButton
-            buttonType='confirm'
-            text={getLocale('braveWalletAllowSpendConfirmButton')}
-            onSubmit={onClickConfirmTransaction}
-            disabled={isConfirmButtonDisabled}
-          />
-        )}
-
-      </ButtonRow>
+      <Footer onConfirm={onConfirm} onReject={onReject} />
     </StyledWrapper>
   )
 }

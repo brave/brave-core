@@ -584,6 +584,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
     base::RunLoop run_loop2;
     keyring_service_->GetMnemonicForDefaultKeyring(
+        new_password,
         base::BindLambdaForTesting([&](const std::string& mnemonic) {
           *valid_mnemonic = (mnemonic == in_mnemonic);
           run_loop2.Quit();
