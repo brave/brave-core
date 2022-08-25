@@ -11,8 +11,7 @@ Object.defineProperty(navigator, 'brave', {
   writable: false,
   value: Object.freeze(
     { 
-      isBrave: () => new Promise(res => res(true)),
-      braveSearchApiVersion: 1
+      isBrave: () => new Promise(res => res(true))
     }
   )
 })
