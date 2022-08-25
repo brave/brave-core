@@ -210,7 +210,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   EXPECT_EQ(handler.GetAllEthCustomChains()[0], chain1.Clone());
 
   const base::Value::Dict& assets_pref =
-      *handler.prefs()->GetValueDict(kBraveWalletUserAssets);
+      handler.prefs()->GetValueDict(kBraveWalletUserAssets);
   const base::Value::List& list =
       *assets_pref.FindListByDottedPath("ethereum.0x999");
   ASSERT_EQ(list.size(), 1u);

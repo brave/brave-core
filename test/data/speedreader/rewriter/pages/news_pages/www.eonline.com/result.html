@@ -1,0 +1,504 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>See Nadya “Octomom” Suleman’s Kids on the First Day of 8th Grade</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">See Nadya “Octomom” Suleman’s Kids on the First Day of 8th Grade</h1><p class="subhead metadata">Thirteen years after Nadya Suleman welcomed eight kids and was dubbed “Octomom,” the 47-year-old shared a photo of her teenagers on their first day back to school.</p><div class=""><p class="metadata">By Ashley Joy Parker</p><p class="metadata date">Updated Aug. 17, 2022 09:33 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><section class="article-detail__segment"><div class="article-detail__video-text"><div class="text--xxs margin-bottom--md" data-hook="video-only-text"><p><span class="has-text-weight-extrabold">Watch:</span></p><p>Kardashian-Jenner Kids: A COMPLETE Look Back</p></div><div class="article-detail__text-only" data-testid="segment-text-only"><p>It's back to school time—times eight!</p>
+<p><a href="https://www.eonline.com/news/997260/octomom-10-years-later-nadya-suleman-says-she-never-wanted-the-attention" rel="noopener noreferrer" target="_blank"><strong>Nadya Suleman</strong></a>,&nbsp;famously dubbed "Octomom," took to social media to share eight youngest kids'—<strong>Nariyah</strong>, <strong>Isaiah</strong>, <strong>Maliyah</strong>, <strong>Jeremiah</strong>, <strong>Noah</strong>, <strong>Josiah</strong>, <strong>Jonah</strong>&nbsp;and <strong>Makai</strong>— first day of eighth grade.</p>
+<p>"Be proud of yourselves kids for being kind, respectful, and helpful to all your fellow peers, teachers and staff," <a href="https://www.instagram.com/p/ChWQ08ROVZ0/" rel="noopener noreferrer" target="_blank">she wrote on Instagram</a>&nbsp;on Aug. 17, along with a photo of the octuplets all standing in a line and smiling. "You are exceptional role models to the 6th and 7th graders. I&nbsp;love you."</p>
+<p>Suleman—who now goes by <strong>Natalie</strong>—also addressed why her other six children were not featured in the photograph, adding, "Side note to critics: their older siblings did not want me to post a picture on their first day. I respect their choice, so should you."</p>
+<p>The 47-year-old&nbsp;is also mom to <strong>Elijah</strong>, 21,&nbsp;<strong>Ameerah</strong>, 20,&nbsp;<strong>Joshua</strong>, 19,&nbsp;<strong>Aidan</strong>, 16 and twins <strong>Calyssa</strong> and <strong>Caleb</strong>, 15.</p></div></div></section><section class="article-detail__segment"><div class="article-detail__text-only" data-testid="segment-text-only"><p>The sweet social media post comes seven months after Suleman paid tribute to the&nbsp;octuplets as they <a href="http://www.eonline.com/news/1317954/octomom-nadya-suleman-celebrates-her-kids-13th-birthday-and-now-we-feel-old" rel="noopener noreferrer" target="_blank">celebrated their milestone 13th birthdays</a>.</p></div></section><section class="article-detail__segment"><div class="article-detail__photo-text "><p><span class="article-detail__image-agency" data-hook="adp-photo-agency">Instagram</span></p><div class="article-detail__text-only" data-testid="segment-text-only"><p>"You are all growing into some of the most kind, humble, grateful and loving human beings I have ever known," she wrote on Jan. 28., along with&nbsp;a <a href="https://www.instagram.com/p/CZNyU3xpnE0/" rel="noopener noreferrer" target="_blank">throwback photo</a> of her kids. "Each of you possess rare and unique characteristics, and are unlike any other child of your age, particularly in our society today."</p>
+<p>She continued: "I have never seen children who love and want to serve others, (particularly those less fortunate), so boldly and confidently like each and every one of you do. I do not know what I could possibly have done to deserve being blessed so bountifully."&nbsp;</p>
+<p>In&nbsp;in 2009, Suleman&nbsp;made headlines when she welcomed her octuplets in California.&nbsp;Nicknamed "Octomom" by the press, the&nbsp;single mom&nbsp;was thrusted into the spotlight. In the years following, Suleman made numerous TV appearance and&nbsp;even <a href="https://www.eonline.com/news/398930/octomom-nadya-suleman-says-making-porn-video-was-liberating-and-empowering" rel="noopener noreferrer" target="_blank">made an adult film</a>. &nbsp;</p></div></div></section><section class="article-detail__segment"><div class="article-detail__text-only" data-testid="segment-text-only"><p>In a profile for the <em><a href="https://www.nytimes.com/2018/12/15/style/octomom-kids-2018.html" rel="noopener noreferrer" target="_blank">New York Times</a></em>, published in 2018, Suleman opened up about the person she said she was was during the intense media spotlight.</p>
+<p>"I was pretending to be a fake, a caricature, which is something I'm not, and I was doing it out of desperation and scarcity so I could provide for my family," shared Suleman. "I've been hiding from the real world all my life."</p></div></section><section class="article-detail__segment"><div class="article-detail__photo-text "><p><span class="article-detail__image-agency" data-hook="adp-photo-agency">Jeff Fusco/Getty Images</span></p><div class="article-detail__text-only" data-testid="segment-text-only"><p>In the profile, Suleman insisted she "<a href="http://www.eonline.com/news/997260/octomom-10-years-later-nadya-suleman-says-she-never-wanted-the-attention" rel="noopener noreferrer" target="_blank">never wanted the attention</a>," and suffers from PTSD&nbsp;as a result.&nbsp;</p>
+<p>"I would take whatever I could back in the days, and I would let them in," she continued, "I was spiraling down a dark hole. There were no healthy opportunities for Octomom. I was doing what I was told to do and saying what I was told to say. When you're pretending to be something you're not, at least for me, you end up falling on your face."</p></div></div></section><section class="article-detail__segment"><div class="article-detail__text-only" data-testid="segment-text-only"><p>These days,&nbsp;Suleman prefers to live her life away from the spotlight and focus on her family.</p>
+<p>"Octomom was media created. I believe most media is filtered and fake. They created this caricature," Suleman told the <em>NYT.</em> "Once I finally ran away from all of the pretending, I was able to be me."</p></div></section></body>

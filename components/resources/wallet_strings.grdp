@@ -130,7 +130,7 @@
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_DESCRIPTION" desc="Verify Recovery screen description">Select the words in your recovery phrase in their correct order.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_ERROR" desc="Verify Recovery screen error">Recovery phrase did not match, please try again.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_TITLE" desc="Verify Recovery phrase screen title">Verify your recovery phrase</message>
-  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_INSTRUCTIONS" desc="Verify Recovery phrase screen description">Click the <ph name="FIRST_BEFORE">$1</ph>first (1st)<ph name="FIRST_AFTER">$2</ph>, <ph name="THIRD_BEFORE">$3</ph>third (3rd)<ph name="THIRD_AFTER">$4</ph>, and <ph name="LAST_BEFORE">$5</ph>last (<ph name="LAST">$7</ph>th)<ph name="LAST_AFTER">$6</ph> words of your recovery phrase.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_INSTRUCTIONS" desc="Verify Recovery phrase screen description">Click the <ph name="FIRST_BEFORE">$1</ph><ph name="FIRST">$7</ph> (<ph name="FIRST_ORDINAL">$8</ph>)<ph name="FIRST_AFTER">$2</ph>, <ph name="SECOND_BEFORE">$3</ph><ph name="SECOND">$9</ph> (<ph name="SECOND_ORDINAL">$10</ph>)<ph name="SECOND_AFTER">$4</ph>, and <ph name="THIRD_BEFORE">$5</ph><ph name="THIRD">$11</ph> (<ph name="THIRD_ORDINAL">$12</ph>)<ph name="THIRD_AFTER">$6</ph> words of your recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_PHRASE_ERROR" desc="Verify Recovery phrase screen error">Recovery phrase didn't match</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_TITLE" desc="Create Password screen title">Create a new password</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION" desc="Create Password screen description">You'll use this password each time you access your wallet.</message>
@@ -414,6 +414,9 @@
     Activate <ph name="FROM_ASSET_SYMBOL"><ex>BAT</ex>$1</ph>
   </message>
   <message name="IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR" desc="Swap CTA text for unknown error">Unknown error</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_SPEND" desc="Swap review text for spending asset">You spend</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_RECEIVE" desc="Swap review text for receiving asset">You'll receive</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_HEADER" desc="Swap review header title">Confirm order</message>
   <message name="IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME" desc="The name with account number.">Account <ph name="ACCOUNT_NUMBER">$1<ex>1</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST" desc="Sign message error">Wallet needs to be unlocked first</message>
   <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS" desc="Sign message error"><ph name="ADDRESS">$1<ex>1</ex></ph> is not a valid address</message>
@@ -541,8 +544,20 @@
   <message name="IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD" desc="Alert confirming that a value was copied to the system clipboard">Copied to clipboard</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SEE_RECOVERY_PHRASE" desc="Reveal hidden recovery phrase button text">Click to see your phrase</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_FIRST" desc="First list item label">First</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SECOND" desc="Second list item label">Second</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_THIRD" desc="Third list item label">Third</message>
-  <message name="IDS_BRAVE_WALLET_ORDINAL_LAST" desc="Last list item label">Last</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_FOURTH" desc="Fourth list item label">Fourth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_FIFTH" desc="Fifth list item label">Fifth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SIXTH" desc="Sixth list item label">Sixth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SEVENTH" desc="Seventh list item label">Seventh</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_EIGHTH" desc="Eighth list item label">Eighth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_NINTH" desc="Ninth list item label">Ninth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_TENTH" desc="Tenth list item label">Tenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_ELEVENTH" desc="Eleventh list item label">Eleventh</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SUFFIX_ONE" desc="Suffix to first ordinal">st</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SUFFIX_TWO" desc="Second ordinal suffix">nd</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SUFFIX_FEW" desc="Suffix for 'few' ordinal">rd</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SUFFIX_OTHER" desc="Suffix for 'other' ordinal">th</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">Congratulations! Your Brave Wallet is ready to go!</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION" desc="Wallet access description">To access your wallet, just click the wallet icon at the top right of any Brave browser window.</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET" desc="Title of article link 'How to use a crypto wallet?'">How to use a crypto wallet?</message>
@@ -555,7 +570,7 @@
   <message name="IDS_BRAVE_WALLET_METAMASK_EXTENSION_DETECTED" desc="Detected MetaMask Extension for import title">We detected the MetaMask extension in your browser</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_EXTENSION_IMPORT_DESCRIPTION" desc="Detected MetaMask Extension import description">Enter your MetaMask wallet password to easily import to Brave Wallet.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_WALLET_TITLE" desc="Title to Import or Restore Wallet onboarding screen">Connect to your existing wallet</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION" desc="Description of Import or Restore Wallet onboarding screen">To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum wallets.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION" desc="Description of Import or Restore Wallet onboarding screen">To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum and Solana wallets.</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET" desc="Button text to restore from an existing Brave Wallet">Restore from seed phrase</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET_DESCRIPTION" desc="Secondary button text to restore from an existing Brave Wallet">12-24 words</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET_INSTRUCTIONS" desc="Instruction text to restore from an existing Brave Wallet seed">Type your Brave Wallet 12-word recovery phrase.</message>
@@ -587,6 +602,19 @@
   <message name="BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Multi-chain &amp; NFT support</message>
   <message name="BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT" desc="Message to inform the user that their wallet must be unlocked before a new account can be created">Unlock needed to create an account</message>
   <message name="BRAVE_WALLET_CLICK_TO_SWITCH" desc="Action text for switching selection">Click to switch</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_TWELFTH" desc="Twelfth list item ordinal">Twelfth</message>
+  <message name="IDS_BRAVE_WALLET_ORIDINAL_THIRTEENTH" desc="Thirteenth list item ordinal">Thirteenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_FOURTEENTH" desc="Fourteenth list item ordinal">Fourteenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_FIFTEENTH" desc="Fifteenth item">Fifteenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SIXTEENTH" desc="Sixteenth">Sixteenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_SEVENTEENTH" desc="Seventeenth">Seventeenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_EIGHTEENTH" desc="Eighteenth">Eighteenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_NINETEENTH" desc="Nineteenth">Nineteenth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTIETH" desc="Twentieth">Twentieth</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_FIRST" desc="Twenty-first">Twenty-first</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_SECOND" desc="Twenty-second">Twenty-second</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_THIRD" desc="Twenty-third">Twenty-third</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_FOURTH" desc="Twenty-fourth">Twenty-fourth</message>
   <message name="IDS_BRAVE_WALLET_INFORMATION" desc="Information label shown in coin market detail view">Information</message>
   <message name="IDS_BRAVE_WALLET_RANK_STAT" desc="Label show in coin market detail view for coin market rank">Rank</message>
   <message name="IDS_BRAVE_WALLET_VOLUME_STAT" desc="Label show in coin market detail view for coin market 24 hour volume">24h Volume</message>

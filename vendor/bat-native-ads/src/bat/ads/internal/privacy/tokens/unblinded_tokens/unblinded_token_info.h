@@ -17,7 +17,7 @@ namespace privacy {
 struct UnblindedTokenInfo final {
   UnblindedTokenInfo();
   UnblindedTokenInfo(const UnblindedTokenInfo& info);
-  UnblindedTokenInfo& operator=(const UnblindedTokenInfo& info);
+  UnblindedTokenInfo& operator=(const UnblindedTokenInfo& other);
   ~UnblindedTokenInfo();
 
   bool operator==(const UnblindedTokenInfo& rhs) const;

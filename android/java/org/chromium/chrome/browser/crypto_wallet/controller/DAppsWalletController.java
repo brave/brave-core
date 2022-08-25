@@ -26,15 +26,14 @@ import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
 import org.chromium.chrome.browser.crypto_wallet.modal.DAppsDialog;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-public class DAppsWalletController implements ConnectionErrorHandler, KeyringServiceObserver,
-                                              BraveWalletPanel.BraveWalletPanelServices {
+public class DAppsWalletController
+        implements ConnectionErrorHandler, BraveWalletPanel.BraveWalletPanelServices {
     private Context mContext;
     private View mAnchorViewHost;
     private AssetRatioService mAssetRatioService;

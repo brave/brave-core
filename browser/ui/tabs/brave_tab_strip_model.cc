@@ -25,7 +25,7 @@ BraveTabStripModel::BraveTabStripModel(
 BraveTabStripModel::~BraveTabStripModel() = default;
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
-                                           UserGestureDetails detail) {
+                                           TabStripUserGestureDetails detail) {
   if (contents_data_.empty())
     return;
 
@@ -39,7 +39,7 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
 }
 
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
-                                      UserGestureDetails detail) {
+                                      TabStripUserGestureDetails detail) {
   if (mru_cycle_list_.empty()) {
     // Start cycling
 
@@ -75,9 +75,4 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
 
 void BraveTabStripModel::StopMRUCycling() {
   mru_cycle_list_.clear();
-}
-
-bool BraveTabStripModel::IsReadLaterSupportedForAny(
-    const std::vector<int>& indices) {
-  return false;
 }

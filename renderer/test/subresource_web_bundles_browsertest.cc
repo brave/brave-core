@@ -181,8 +181,8 @@ class SubresourceWebBundlesBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  content::RenderFrameHost* main_frame() {
-    return web_contents()->GetMainFrame();
+  content::RenderFrameHost* primary_main_frame() {
+    return web_contents()->GetPrimaryMainFrame();
   }
 
  protected:
@@ -201,10 +201,10 @@ IN_PROC_BROWSER_TEST_P(SubresourceWebBundlesBrowserTest,
   if (IsSubresourceWebBundlesEnabled()) {
     std::u16string expected_title(u"script loaded");
     content::TitleWatcher title_watcher(web_contents(), expected_title);
-    EXPECT_EQ(true, content::EvalJs(main_frame(), kLoadPassJs));
+    EXPECT_EQ(true, content::EvalJs(primary_main_frame(), kLoadPassJs));
     EXPECT_EQ(expected_title, title_watcher.WaitAndGetTitle());
   } else {
-    EXPECT_EQ(false, content::EvalJs(main_frame(), kLoadPassJs));
+    EXPECT_EQ(false, content::EvalJs(primary_main_frame(), kLoadPassJs));
   }
 }
 

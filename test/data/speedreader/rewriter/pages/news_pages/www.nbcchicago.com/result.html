@@ -1,0 +1,575 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>From Shelter to Home-Sweet-Home: Meet The Vets Who Make It Happen For Animals in Need</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">From Shelter to Home-Sweet-Home: Meet The Vets Who Make It Happen For Animals in Need</h1><p class="subhead metadata">The duality of a veterinarian’s job can be challenging—a vet must be both caring and analytical, combining scientific training and technical skills with...</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+									
+					
+
+
+<p><em>The following content is created in partnership with Hill’s Pet Nutrition. It does not reflect the work or opinions of NBCUniversal Local stations’ editorial staffs. </em><a href="https://www.hillspet.com/clear-the-shelters"><em>Click here</em></a><em> to learn more about Hill’s Pet Nutrition and its annual Clear The Shelters campaign, a mission to help shelter pets find the loving homes they deserve.</em></p>
+
+<p>The duality of a veterinarian’s job can be challenging—a vet must be both caring and analytical, combining scientific training and technical skills with empathy, compassion, and sensitivity towards both pets and their humans. Add the often-chaotic environment of an animal shelter, and you have a career that’s not for the faint of heart, albeit an extremely rewarding one.</p>
+
+<p>“We go through so much with these animals and really help change their lives. We’re there for them when they’re scared, hurt, or injured, and we’re able to gain their trust and have them allow you to provide them with medical care and love,” says Dr. Edlin Cornejo, Shelter Veterinary Services Team Lead at the Dumb Friends League of Denver, Colorado. “The most rewarding part is seeing them go off to their forever homes and being adopted by families that truly appreciate the work you’ve put in to get their new pets where they are.”</p>
+
+
+<p>Animals sometimes arrive at the Dumb Friends League in dire straits, either brought in from the streets by good Samaritans or rescued from cruelty. With journeys and origin stories as diverse as the kindhearted vets, technicians, and volunteers that take care of them at the shelter, these animals are ready to start a new chapter. That’s why Hill's Pet Nutrition—partnering with NBCUniversal Local—is once again working with the Dumb Friends League and hundreds of other shelters throughout August, for one of the largest pet adoption campaigns in the country, <a href="https://www.cleartheshelters.com/">Clear The Shelters</a>.</p>
+
+<p>Seeing the inspiring and tenacious veterinary team at Dumb Friends League in action illuminated the ins and outs of shelter medicine, including the variety of roles they must embrace for a variety of animals, personalities, and even surprises. With the ultimate goal of finding homes for all adoptable animals, these vets are part doctor, part nutritionist, part animal whisperer, and all heart.</p>
+
+<h2 class="wp-block-nbc-section-heading"><strong>Shelter Medicine vs Private Practice</strong></h2>
+
+<p>All fields of veterinary medicine provide a valuable service; however, shelter vets face some unique challenges. “The main difference between being at a shelter or working at a private practice is that shelter pets don’t have an owner at that moment who will advocate for them and provide the care they need,” explains Dr. Erin Hickey, Lead Veterinarian at Dumb Friends League. “In a private practice, those pets already have owners, they have somebody looking after and providing for them. They also have consistent veterinary care. What we’re hoping to do is to be that bridge until the adoptive parent can take charge.”</p>
+
+<p>While everyone at the Dumb Friends League can’t help but fall in love with the varied personalities they encounter, their work primarily focuses on two fronts: Population-level care and getting the animals adoption-ready. That means addressing the needs of the individual animal, the shelter population, and the sustainability of the organization, all while navigating the challenges of sometimes limited resources.</p>
+
+<p>Shelters are also the embodiments of second chances for animals—and for some humans as well. After a first career in finance, Hickey decided it wasn’t what she was looking for. “Life is too short not to do something you’re not passionate about,” she explains. After working in different staff and volunteer positions at the shelter, she decided to go back to school, this time to become a vet. “Shelter work can be very challenging; you tend to work long hours and see rough cases. But at the same time, it’s extremely rewarding.”</p>
+
+<p>For shelter vets to provide the care and interventions that animals need, shelters across the country rely on donations, community organizing, and the support of partners like Hill’s. The Dumb Friends League, and over 800 other North American animal shelters, receive food for all the dogs and cats in their care, through Hill’s Food, Shelter &amp; Love Program. It truly takes a village, and it’s key for shelters to generate a culture of enthusiasm for animal welfare and develop a network of support so that vets in the shelter system can help animals get ready to find their new homes.</p>
+
+<figure class="wp-block-pullquote"><blockquote><p>Shelter pets don't have an owner at that moment who will advocate for them and provide the care they need. We're hoping to be that bridge until the adoptive parent can take charge.</p><cite>Dr. Erin Hickey, Lead Veterinarian at Dumb Friends League</cite></blockquote></figure>
+
+<h2 class="wp-block-nbc-section-heading"><strong>The Road to Adoption</strong></h2>
+
+<p>For shelter vets, the most heartening and rewarding part of the job is the moment an animal is matched with new parents. “Seeing families be made, it’s thrilling and so rewarding. To feel like you were a big part of that, it's huge,” says Hickey. But getting an animal from intake to home-sweet-home requires logistics, procedures, lots of pet food and indeed lots of love.</p>
+
+<p>First, the team evaluates the animal, provides any immediate care that may be needed, and starts them on the appropriate Hill’s pet food. But before making any <em>big</em> decisions, they allow time for owners to find lost pets.</p>
+
+<p>“When they come in as a stray, we hold them for a 5-day loss period to make sure that if their owner is out there, they have adequate time to look around. We also post the animal’s photo and information to our website,” explains Hickey. After the loss period is up and the animals are evaluated, the vet team can proceed to more advanced treatments such as spaying and neutering, bloodwork, and dental work. Additionally, they will develop a nutrition plan using Hill’s pet food that best addresses the animals’ needs. Once ready, they’re put up for adoption, along with the appropriate information and suggestions so they can be matched with the best possible home—for both animals and owners. “If an animal might not be good with children, then we make that recommendation,” says Hickey.</p>
+
+<p>Another important role for shelter veterinarians is helping future pet parents understand that the choice goes beyond looks. ​​“Lifestyles should be kept in mind when thinking about adopting an animal,” explains Cornejo. “If you’re an avid hiker, or if you’re looking for your very own couch potato, it’s important to recognize that all these animals have different requirements depending on breed, size, and age.”</p>
+
+<figure class="wp-block-image forceratio size-large"><p><img alt="" loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1200px) calc(100vw - 350px), 855px" src="https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;resize=218%2C123" srcset="https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=375&amp;h=211&amp;crop=1 375w, https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=575&amp;h=323&amp;crop=1 575w, https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=775&amp;h=436&amp;crop=1 775w, https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=975&amp;h=548&amp;crop=1 975w, https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=1175&amp;h=661&amp;crop=1 1175w, https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=1375&amp;h=773&amp;crop=1 1375w, https://media.nbcchicago.com/2022/08/rough-1.00_02_00_03.Still001.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=1575&amp;h=886&amp;crop=1 1575w"></p><cite></cite><figcaption><p>Dr. Edlin Cornejo, Shelter Veterinary Services Team Lead at the Dumb Friends League of Denver, Colorado, spends some quality time with members of the shelter's cat colony.</p></figcaption></figure>
+
+<h2 class="wp-block-nbc-section-heading"><strong>The Power of Nutrition</strong>&nbsp;</h2>
+
+<p>A shelter vet must also provide proper nutrition for these furry friends, but it’s far more involved than just giving out kibble. Different animals have different nutritional needs, and over 800 shelters across the country rely on Hill’s Pet Nutrition’s Food, Shelter &amp; Love Program to provide their dogs and cats with science-led nutrition to help them be as healthy as they can be.</p>
+
+<p>“Good nutrition is a critical part of every healthy animal. It helps maintain their digestive system, supports their immune system, and helps them reach their ideal weight,” explains Cornejo. “It also provides the right nutrients the animals need for their organs to function properly and helps them have a healthy and shiny coat and skin.”</p>
+
+<figure class="wp-block-pullquote"><blockquote><p>When choosing the right food, we consider a series of factors. Hill's helps us provide them with the nutrients they need.</p><cite>Dr. Edlin Cornejo, Shelter Veterinary Services Team Lead at the Dumb Friends League</cite></blockquote></figure>
+
+<p>Pet nutrition shouldn’t rely on a one-size-fits-all approach. Specific formulations can help animals flourish at different life stages. “When choosing the right food, we consider a series of factors. They may have unique nutritional considerations or age-related concerns. Hill’s helps us provide them with the nutrients they need for their specific age and size.”</p>
+
+<p>This support should go beyond the shelter. “When pets go to their new homes, as exciting as it is, it’s also a stressful experience due to all the changes. It’s important that new pet parents keep feeding the animals the same food,” says Hickey. “It’s an easy way to offer them some consistency and lower their stress levels.” Thanks to Hill’s Pet Nutrition’s ongoing support through the Food, Shelter &amp; Love program, hundreds of shelters are able to provide new pet parents with samples of the same premium food they’ve been eating while at the shelter.</p>
+
+<figure class="wp-block-image forceratio size-large"><p><img alt="" loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1200px) calc(100vw - 350px), 855px" src="https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;resize=218%2C123" srcset="https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=375&amp;h=211&amp;crop=1 375w, https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=575&amp;h=323&amp;crop=1 575w, https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=775&amp;h=436&amp;crop=1 775w, https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=975&amp;h=548&amp;crop=1 975w, https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=1175&amp;h=661&amp;crop=1 1175w, https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=1375&amp;h=773&amp;crop=1 1375w, https://media.nbcchicago.com/2022/08/rough-1.00_01_56_07.Still002.jpg?quality=85&amp;strip=all&amp;fit=1920%2C1080&amp;w=1575&amp;h=886&amp;crop=1 1575w"></p><cite></cite><figcaption><p>Through Hill’s Food, Shelter &amp; Love Program, The Dumb Friends League and over 800 animal shelters nationwide can provide their dogs and cats with science-led nutrition.</p></figcaption></figure>
+
+<h2 class="wp-block-nbc-section-heading"><strong>Behavior and Wellness</strong></h2>
+
+<p>Because shelter animals arrive with different life experiences and exposure histories, proper behavioral care is another crucial part in getting pets adoption-ready. In fact, behavioral problems are a leading cause of pet surrenders by owners to animal shelters in the United States.</p>
+
+<p>In addition to the trauma associated with experiencing homelessness or cruelty, animals can be further stressed by a high-density shelter setting and often require extra TLC as they navigate socialization with other animals as well as humans. The skills and techniques of shelter vets help to mitigate aggression, anxiety, urine marking, and other behavioral issues, so animals can put their best paw forward throughout the adoption process.</p>
+
+<p>“We see a lot of pets that come into the shelter that maybe didn’t have the appropriate socialization before they got here. We’re able to work with them on how to walk on a leash, meet new people, and how to be around other animals. A lot of the socialization, especially for dogs, comes down to learning all these things and associating them with rewards that range from treats to a belly rub,” notes Hickey. In other words, shelter vets help the furry friends of the Dumb Friends League prepare for a life outside of the shelter and in the homes of loving owners. They even set up for success by providing guidance and education that owners can apply once their 4-legged friend arrives at their new home.</p>
+
+<h2 class="wp-block-nbc-section-heading"><strong>A Second Chance</strong> for Karmen</h2>
+
+<p>“For me, this is my dream job,” says Hickey.&nbsp;</p>
+
+<p>Indeed, working with doe-eyed kittens or cuddly dogs is an ostensibly desirable career. It’s even a common misconception that veterinary medicine provides an easier path than traditional human medicine when, in fact, many of the prerequisites are the same, and veterinarians must additionally learn about a vast multitude of species. Oh, and the patients don’t usually talk.</p>
+
+<p>And while Hickey and Cornejo both have achieved their dream job, they’re as familiar with the unglamorous road to veterinary medicine as they are with the reward: The incomparable joy of seeing an animal get a second chance at life. Today, Cornejo, Hickey, and many other shelter vets throughout the country can have a much larger impact thanks to programs such as Clear the Shelters and Hill’s Pet Nutrition’s Food, Shelter &amp; Love Program.</p>
+
+<p>When hope for certain animals feels elusive, Erin Hickey remembers Karmen’s story, a severely injured pup who was in the care of the Dumb Friends League for a particularly long time. “We didn’t know if she had chemical burns or electrical ones. She was antisocial, was afraid to walk on a leash and she was very timid around most people.” Karmen required a lengthy stay at the shelter, allowing time for the burn wounds on her eyes and face to improve.</p>
+
+<p>While Karmen began to flourish and became a staff favorite, she did struggle to find the right home for her. “She was adopted out a couple times and returned because it wasn’t the right fit. It was hard seeing her in a shelter and feeling like she was missing out on a normal dog life in a home,” explains Hickey.</p>
+
+<p>Karmen’s patience paid off when the perfect pet parent finally arrived. “It was the perfect home, it was the perfect set up,” says Hickey. So perfect, in fact, that Karmen’s new owner affectionately referred to Karmen as her soul dog. “It made sense to me. Now I realize the reason why she was here as long as she was. It’s because she was waiting for that perfect person.”</p>
+
+<figure class="wp-block-embed is-type-rich is-provider-instagram wp-block-embed-instagram"></figure>
+
+<p>​​<em>Join us as we clear the shelters. Hill's Pet Nutrition is proud to return as the national sponsor of NBCUniversal Local's Clear The Shelters nationwide pet adoption campaign, which has placed over 700,000 animals in loving homes since 2015. In addition to sponsoring Clear The Shelters, Hill's supports animal shelters year-round through its Food, Shelter, &amp; Love program which has provided over $300 million in food to support pets in need and has helped more than 12 million pets find new homes since 2002. Interested in adopting or fostering a pet? Maybe you’d just like to donate money or supplies? Or just spread the word? Whatever the case, our furry friends still need you. </em><a href="https://www.hillspet.com/clear-the-shelters"><em>Click here</em></a><em> to take part.</em></p>
+
+									</body>

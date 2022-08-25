@@ -54,6 +54,7 @@ constexpr char kWallpaperIDKey[] = "wallpaperId";
 constexpr char kIsSponsoredKey[] = "isSponsored";
 constexpr char kWallpaperImageURLKey[] = "wallpaperImageUrl";
 constexpr char kWallpaperImagePathKey[] = "wallpaperImagePath";
+constexpr char kWallpaperColorKey[] = "wallpaperColor";
 constexpr char kWallpaperFocalPointXKey[] = "wallpaperFocalPointX";
 constexpr char kWallpaperFocalPointYKey[] = "wallpaperFocalPointY";
 constexpr char kImageKey[] = "image";

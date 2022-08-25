@@ -47,7 +47,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
   // Assert
   ASSERT_EQ(3U, creative_ad_predictors.size());
 
-  const AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor =
+  const AdPredictorInfo<CreativeNotificationAdInfo>& ad_predictor =
       creative_ad_predictors.at(creative_ad_2.creative_instance_id);
   const SegmentList expected_segments = {"foo-bar2", "foo-bar4"};
   EXPECT_EQ(expected_segments, ad_predictor.segments);
@@ -85,10 +85,10 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
   ad_predictor.creative_ad = creative_ad;
   ad_predictor.segments = {creative_ad.segment};
-  ad_predictor.does_match_intent_child_segments = 1;
-  ad_predictor.does_match_intent_parent_segments = 0;
-  ad_predictor.does_match_interest_child_segments = 0;
-  ad_predictor.does_match_interest_parent_segments = 0;
+  ad_predictor.does_match_intent_child_segments = true;
+  ad_predictor.does_match_intent_parent_segments = false;
+  ad_predictor.does_match_interest_child_segments = false;
+  ad_predictor.does_match_interest_parent_segments = false;
   ad_predictor.ad_last_seen_hours_ago = 15;
   ad_predictor.advertiser_last_seen_hours_ago = 48;
 
@@ -108,10 +108,10 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
   ad_predictor.creative_ad = creative_ad;
   ad_predictor.segments = {creative_ad.segment};
-  ad_predictor.does_match_intent_child_segments = 1;
-  ad_predictor.does_match_intent_parent_segments = 0;
-  ad_predictor.does_match_interest_child_segments = 0;
-  ad_predictor.does_match_interest_parent_segments = 0;
+  ad_predictor.does_match_intent_child_segments = true;
+  ad_predictor.does_match_intent_parent_segments = false;
+  ad_predictor.does_match_interest_child_segments = false;
+  ad_predictor.does_match_interest_parent_segments = false;
   ad_predictor.ad_last_seen_hours_ago = 15;
   ad_predictor.advertiser_last_seen_hours_ago = 48;
 

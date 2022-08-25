@@ -64,9 +64,10 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void DismissBraveSearchPromotion() override;
   void IsSearchPromotionEnabled(
       IsSearchPromotionEnabledCallback callback) override;
+  void UseColorBackground(const std::string& color) override;
 
   // Observe NTPCustomBackgroundImagesService.
-  void OnCustomBackgroundImageUpdated();
+  void OnCustomBackgroundUpdated();
 
   // SelectFileDialog::Listener overrides:
   void FileSelected(const base::FilePath& path,
@@ -78,7 +79,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void OnTemplateURLServiceChanged() override;
   void OnTemplateURLServiceShuttingDown() override;
 
-  bool IsCustomBackgroundEnabled() const;
+  bool IsCustomBackgroundImageEnabled() const;
+  bool IsColorBackgroundEnabled() const;
   image_fetcher::ImageDecoder* GetImageDecoder();
   void ConvertSelectedImageFileAndSave(const base::FilePath& image_file);
   void OnGotImageFile(absl::optional<std::string> input);

@@ -16,6 +16,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/version_info/channel.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -31,6 +32,13 @@ class SidebarService : public KeyedService {
     kShowOnClick,  // Don't use. Deprecated.
     kShowNever,
   };
+
+  // This is the default display order
+  static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
+      SidebarItem::BuiltInItemType::kBraveTalk,
+      SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kReadingList};
 
   class Observer : public base::CheckedObserver {
    public:
@@ -50,7 +58,7 @@ class SidebarService : public KeyedService {
   explicit SidebarService(PrefService* prefs);
   ~SidebarService() override;
 
-  const std::vector<SidebarItem> items() const { return items_; }
+  const std::vector<SidebarItem>& items() const { return items_; }
 
   void AddItem(const SidebarItem& item);
   void RemoveItemAt(int index);
@@ -63,18 +71,23 @@ class SidebarService : public KeyedService {
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
+  absl::optional<SidebarItem> GetDefaultPanelItem() const;
+
   SidebarService(const SidebarService&) = delete;
   SidebarService& operator=(const SidebarService&) = delete;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SidebarModelTest, ItemsChangedTest);
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
+  FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, NewDefaultItemAdded);
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
-  std::vector<SidebarItem> GetDefaultSidebarItemsFromCurrentItems() const;
+  std::vector<SidebarItem::BuiltInItemType> GetCurrentlyPresentBuiltInTypes()
+      const;
   void OnPreferenceChanged(const std::string& pref_name);
-  bool IsBlockedBuiltInItem(const SidebarItem& item) const;
   void MigrateSidebarShowOptions();
+  void MigratePrefSidebarBuiltInItemsToHidden();
 
   raw_ptr<PrefService> prefs_ = nullptr;
   std::vector<SidebarItem> items_;

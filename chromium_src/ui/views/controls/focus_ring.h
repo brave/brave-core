@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_FOCUS_RING_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_FOCUS_RING_H_
 
-#define RefreshLayer                              \
-  RefreshLayer_UnUsed() {}                        \
-  SkColor GetColor(View* focus_ring, bool valid); \
+#define RefreshLayer                                        \
+  RefreshLayer_UnUsed() {}                                  \
+  SkColor GetPaintColor(FocusRing* focus_ring, bool valid); \
   void RefreshLayer
 
 #include "src/ui/views/controls/focus_ring.h"

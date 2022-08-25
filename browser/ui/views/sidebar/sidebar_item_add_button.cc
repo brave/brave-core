@@ -8,12 +8,11 @@
 #include "base/bind.h"
 #include "base/time/time.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 
 SidebarItemAddButton::SidebarItemAddButton(
@@ -101,11 +100,10 @@ bool SidebarItemAddButton::IsBubbleVisible() const {
 void SidebarItemAddButton::UpdateButtonImages() {
   SkColor button_base_color = SK_ColorWHITE;
   SkColor button_disabled_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    button_base_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
-    button_disabled_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED);
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    button_base_color = color_provider->GetColor(kColorSidebarButtonBase);
+    button_disabled_color =
+        color_provider->GetColor(kColorSidebarAddButtonDisabled);
   }
 
   // Update add button image based on enabled state.

@@ -84,7 +84,6 @@ base::Value::Dict ClientInfo::ToValue() const {
   }
   dict.Set("textClassificationProbabilitiesHistory",
            std::move(probabilities_history));
-  dict.Set("version_code", version_code);
   return dict;
 }
 
@@ -159,8 +158,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
   if (const auto* value =
           root.FindList("textClassificationProbabilitiesHistory")) {
     for (const auto& probabilities : *value) {
-      if (!probabilities.is_dict())
+      if (!probabilities.is_dict()) {
         continue;
+      }
       const auto* probability_list =
           probabilities.GetDict().FindList("textClassificationProbabilities");
       if (!probability_list) {
@@ -196,14 +196,10 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
     }
   }
 
-  if (const auto* value = root.FindString("version_code")) {
-    version_code = *value;
-  }
-
   return true;
 }
 
-std::string ClientInfo::ToJson() {
+std::string ClientInfo::ToJson() const {
   std::string json;
   CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;

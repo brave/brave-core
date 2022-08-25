@@ -43,13 +43,7 @@ absl::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromValue(
     return absl::nullopt;
   }
 
-  const absl::optional<EpsilonGreedyBanditArmInfo> arm =
-      MaybeGetArmFromDict(*dict);
-  if (!arm) {
-    return absl::nullopt;
-  }
-
-  return arm;
+  return MaybeGetArmFromDict(*dict);
 }
 
 }  // namespace

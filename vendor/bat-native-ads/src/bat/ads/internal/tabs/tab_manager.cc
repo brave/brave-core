@@ -209,7 +209,7 @@ absl::optional<TabInfo> TabManager::GetLastVisibleTab() const {
 }
 
 absl::optional<TabInfo> TabManager::GetTabForId(const int32_t id) const {
-  if (tabs_.find(id) == tabs_.end()) {
+  if (tabs_.find(id) == tabs_.cend()) {
     return absl::nullopt;
   }
 

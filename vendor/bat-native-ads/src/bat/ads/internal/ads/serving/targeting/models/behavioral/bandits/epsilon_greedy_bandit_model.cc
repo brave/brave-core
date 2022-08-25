@@ -57,7 +57,7 @@ ArmBucketMap BucketSortArms(const ArmList& arms) {
 
   for (const auto& arm : arms) {
     const auto iter = buckets.find(arm.value);
-    if (iter == buckets.end()) {
+    if (iter == buckets.cend()) {
       buckets.insert({arm.value, {arm}});
       continue;
     }
@@ -80,7 +80,7 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
 
   for (const auto& arm : arms) {
     if (std::find(segments.cbegin(), segments.cend(), arm.first) ==
-        segments.end()) {
+        segments.cend()) {
       continue;
     }
 
@@ -149,7 +149,7 @@ SegmentList ExploitSegments(const EpsilonGreedyBanditArmMap& arms) {
   const ArmBucketMap unsorted_buckets = BucketSortArms(ToArmList(arms));
   const ArmBucketList sorted_buckets = GetSortedBuckets(unsorted_buckets);
   const ArmList top_arms = GetTopArms(sorted_buckets, kTopArmCount);
-  const SegmentList segments = ToSegmentList(top_arms);
+  SegmentList segments = ToSegmentList(top_arms);
 
   BLOG(2, "Exploiting epsilon greedy bandit segments:");
   for (const auto& segment : segments) {

@@ -172,8 +172,8 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
     base::FieldTrialParams kEpsilonGreedyBanditParameters;
     // Set bandit to always exploit for deterministic execution
     kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
-    enabled_features.push_back(
-        {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters});
+    enabled_features.emplace_back(features::kEpsilonGreedyBandit,
+                                  kEpsilonGreedyBanditParameters);
   } else {
     disabled_features.push_back(features::kEpsilonGreedyBandit);
   }

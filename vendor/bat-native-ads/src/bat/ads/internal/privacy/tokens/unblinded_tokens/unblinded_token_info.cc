@@ -10,11 +10,11 @@ namespace privacy {
 
 UnblindedTokenInfo::UnblindedTokenInfo() = default;
 
-UnblindedTokenInfo::UnblindedTokenInfo(
-    const UnblindedTokenInfo& unblinded_token) = default;
+UnblindedTokenInfo::UnblindedTokenInfo(const UnblindedTokenInfo& info) =
+    default;
 
 UnblindedTokenInfo& UnblindedTokenInfo::operator=(
-    const UnblindedTokenInfo& info) = default;
+    const UnblindedTokenInfo& other) = default;
 
 UnblindedTokenInfo::~UnblindedTokenInfo() = default;
 

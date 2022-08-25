@@ -83,7 +83,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
 
   // Assert
   ASSERT_EQ(kExpectedLen, data_point_3_predictions.size());
-  ASSERT_TRUE(predictions.size() && predictions.size() <= kExpectedLen);
+  ASSERT_TRUE(!predictions.empty() && predictions.size() <= kExpectedLen);
   for (const auto& prediction : predictions) {
     EXPECT_TRUE(prediction.second > -kTolerance &&
                 prediction.second < 1.0 + kTolerance);

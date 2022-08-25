@@ -28,9 +28,11 @@
 -All/TabSharingInfoBarDelegateTest.*
 -All/TabStripTest.*
 -All/WebstorePrivateBeginInstallWithManifest3FrictionDialogTest.*
+-ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
 -AppInfoDialogViewsTest.*
 -AppLauncherHandlerTest.*
 -AssistantSidePanelCoordinatorImplTest.*
+-AutofillContextMenuTest/RenderViewContestMenuAutofillTest.ShowAutofillOptions/*
 -AvatarToolbarButtonTest.*
 -BackFwdMenuModelIncognitoTest.*
 -BackFwdMenuModelTest.*
@@ -88,6 +90,8 @@
 -ChromePingManagerTest.*
 -ChromeRuntimeAPIDelegateReloadTest.*
 -ChromeRuntimeAPIDelegateTest.*
+-ChromeTailoredSecurityServiceTest.*
+-ChromeUsbDelegateTest.*
 -ChromeWebContentsMenuHelperUnitTest.*
 -ChromeWebContentsViewDelegateViewsTest.*
 -Chromium/ChannelInfoTest.*
@@ -96,6 +100,7 @@
 -ClientSideDetectionHostTest.*
 -CloudBinaryUploadServiceTest.*
 -CloudPrintProxyPolicyTest.*
+-ColorProviderTest.OmniboxContrast/*
 -CommanderEntityMatchTest.*
 -ComponentLoaderTest.*
 -ConfigParserTest.*
@@ -200,6 +205,7 @@
 -InstallVerifierTest.*
 -InstantNTPURLRewriteTest.*
 -InstantServiceTest.*
+-IntentPickerBubbleViewGridLayoutTest.*
 -IntentPickerBubbleViewTest.*
 -InvalidSearchProviderTest.*
 -KeywordEditorControllerNoWebDataTest.*
@@ -247,7 +253,9 @@
 -PermissionMessageCombinationsUnittest.*
 -PermissionMessagesUnittest.*
 -PermissionsAPIUnitTest.*
+-PermissionsManagerUnitTest.FaviconPermissionsAreNotWithheld
 -PermissionsTest.*
+-PermissionsUpdaterTest.*
 -PinnedTabCodecTest.*
 -PinnedTabServiceTest.*
 -PinnedTabsResetTest.*
@@ -280,7 +288,9 @@
 -ProfileManagerTest.*
 -ProfileResetterTest.*
 -ProfileSigninConfirmationHelperTest.*
+-ReadAnythingControllerTest.*
 -ReadAnythingCoordinatorTest.*
+-ReadAnythingModelTest.*
 -RelaunchNotificationControllerPlatformImplTest.*
 -RenameHandlerOpenDownloadTest.*
 -RenderViewContextMenuExtensionsTest.*
@@ -313,12 +323,15 @@
 -SettingsResetPromptModelTest.*
 -SharedModuleServiceUnitTest.*
 -SharingDialogViewTest.*
+-SidePanelCoordinatorLoadingContentTest.*
 -SidePanelCoordinatorTest.*
 -SidePanelToolbarButtonTest.*
 -SigninErrorHandlerTest.*
 -SigninManagerTest.*
 -SigninUiUtilTest.*
 -SitePermissionsHelperUnitTest.*
+-SitePermissionsHelperWithUserHostControlsUnitTest.DowngradingFromAllSitesToOnClickAppliesUserPermittedSites
+-SideSearchTabContentsHelperTest.*
 -SiteSettingsCounterTest.*
 -SiteSettingsHandlerInfobarTest.*
 -SiteSettingsHandlerTest.*
@@ -341,6 +354,7 @@
 -TabLoaderTest.*
 -TabLoadTrackerTest.*
 -TabManagerTest.*
+-TabMatcherDesktopTest.*
 -TabMenuModelTest.*
 -TabMetricsLoggerTest.*
 -TabMetricsTest.*
@@ -366,6 +380,7 @@
 -UkmPageLoadMetricsObserverTest.*
 -UpdateInstallGateTest.*
 -UpdateServiceCanUpdateFeatureEnabledNonDefaultUpdateUrl.*
+-UserNoteServiceDelegateImplTest.*
 -UserNoteUICoordinatorTest.*
 -UserScriptListenerTest.*
 -VideoOverlayWindowViewsTest.*

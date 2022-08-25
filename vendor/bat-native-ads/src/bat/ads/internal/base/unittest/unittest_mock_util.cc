@@ -232,7 +232,7 @@ void MockGetAdEventHistory(const std::unique_ptr<AdsClientMock>& mock) {
                 const std::vector<base::Time>& ad_event_timestamps =
                     ad_event_history_item.second;
 
-                timestamps.insert(timestamps.end(),
+                timestamps.insert(timestamps.cend(),
                                   ad_event_timestamps.cbegin(),
                                   ad_event_timestamps.cend());
               }
@@ -261,7 +261,7 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
         for (int i = 0; i < max_count; i++) {
           const std::string spec =
               base::StringPrintf("https://www.brave.com/%d", i);
-          history.push_back(GURL(spec));
+          history.emplace_back(spec);
         }
 
         std::move(callback).Run(history);
@@ -566,7 +566,7 @@ void MockHasPrefPath(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, HasPrefPath(_))
       .WillByDefault(Invoke([](const std::string& path) -> bool {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
-        return Prefs().find(uuid) != Prefs().end();
+        return Prefs().find(uuid) != Prefs().cend();
       }));
 }
 

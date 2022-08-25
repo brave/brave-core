@@ -13,6 +13,7 @@ import("//brave/components/safetynet/java_sources.gni")
 import("//components/feed/features.gni")
 
 brave_java_sources = [
+  "../../brave/android/java/org/chromium/chrome/browser/BraveAdaptiveCaptchaUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
@@ -129,12 +130,12 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/modal/BraveWalletPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/modal/DAppsDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/CryptoAccountTypeInfo.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/OnboardingViewModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/TxNonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/WalletListItemModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/ApprovedTxObserver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/KeyringServiceObserver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/TxServiceObserver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/WalletMojoObserverBase.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/KeyringServiceObserverImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/TxServiceObserverImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveEthereumPermissionAccountsListAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveEthereumPermissionPromptDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AccountsPermissionsHelper.java",

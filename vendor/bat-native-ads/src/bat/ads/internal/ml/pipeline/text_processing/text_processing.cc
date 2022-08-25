@@ -43,7 +43,7 @@ bool TextProcessing::IsInitialized() const {
   return is_initialized_;
 }
 
-TextProcessing::TextProcessing() : is_initialized_(false) {}
+TextProcessing::TextProcessing() = default;
 
 TextProcessing::~TextProcessing() = default;
 
@@ -95,11 +95,11 @@ PredictionMap TextProcessing::Apply(
   return linear_model_.GetTopPredictions(*vector_data);
 }
 
-const PredictionMap TextProcessing::GetTopPredictions(
-    const std::string& html) const {
-  std::string stripped_html = StripNonAlphaCharacters(html);
+PredictionMap TextProcessing::GetTopPredictions(
+    const std::string& content) const {
+  std::string stripped_content = StripNonAlphaCharacters(content);
   PredictionMap predictions =
-      Apply(std::make_unique<TextData>(std::move(stripped_html)));
+      Apply(std::make_unique<TextData>(std::move(stripped_content)));
   double expected_prob =
       1.0 / std::max(1.0, static_cast<double>(predictions.size()));
   PredictionMap rtn;
@@ -111,8 +111,7 @@ const PredictionMap TextProcessing::GetTopPredictions(
   return rtn;
 }
 
-const PredictionMap TextProcessing::ClassifyPage(
-    const std::string& content) const {
+PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
   if (!IsInitialized()) {
     return PredictionMap();
   }

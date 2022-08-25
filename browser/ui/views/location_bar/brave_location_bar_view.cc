@@ -11,6 +11,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -62,18 +63,13 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
   }
 };
 
-absl::optional<SkColor> GetFocusRingColor(Profile* profile) {
-  constexpr SkColor kPrivateFocusRingColor = SkColorSetRGB(0xC6, 0xB3, 0xFF);
-  constexpr SkColor kTorPrivateFocusRingColor = SkColorSetRGB(0xCF, 0xAB, 0xE2);
+absl::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
   if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
     // Don't update color.
     return absl::nullopt;
   }
-  if (profile->IsTor())
-    return kTorPrivateFocusRingColor;
-
-  // Private window.
-  return kPrivateFocusRingColor;
+  // Private or Tor window - use color mixer.
+  return kColorLocationBarFocusRing;
 }
 
 }  // namespace
@@ -87,8 +83,8 @@ void BraveLocationBarView::Init() {
     focus_ring->SetPathGenerator(
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
-    if (const auto color = GetFocusRingColor(profile()))
-      focus_ring->SetColor(color.value());
+    if (const auto color_id = GetFocusRingColor(profile()))
+      focus_ring->SetColorId(color_id.value());
   }
 #if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ = new OnionLocationView(browser_->profile());

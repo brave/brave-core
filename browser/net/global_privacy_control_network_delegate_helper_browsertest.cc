@@ -85,8 +85,10 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
   const GURL target = https_server().GetURL("a.test", "/index.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
 
-  auto* rfh =
-      browser()->tab_strip_model()->GetActiveWebContents()->GetMainFrame();
+  auto* rfh = browser()
+                  ->tab_strip_model()
+                  ->GetActiveWebContents()
+                  ->GetPrimaryMainFrame();
 
   EXPECT_EQ(true, content::EvalJs(rfh, "navigator.globalPrivacyControl"));
   EXPECT_EQ(true, content::EvalJs(rfh,

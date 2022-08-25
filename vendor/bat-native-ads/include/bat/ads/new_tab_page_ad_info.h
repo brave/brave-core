@@ -27,7 +27,7 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   bool IsValid() const;
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& value);
+  void FromValue(const base::Value::Dict& root);
 
   std::string company_name;
   GURL image_url;

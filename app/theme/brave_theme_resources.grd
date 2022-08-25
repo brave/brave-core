@@ -42,6 +42,7 @@
 
       <if expr="enable_sidebar">
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_BOOKMARKS_FOCUSED" file="brave/sidebar_bookmark_focused.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_READING_LIST_FOCUSED" file="brave/sidebar_reading_list_focused.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_BRAVE_TALK_FOCUSED" file="brave/sidebar_brave_talk_focused.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED" file="brave/sidebar_crypto_wallet_focused.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_HISTORY_FOCUSED" file="brave/sidebar_history_focused.png" />

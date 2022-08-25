@@ -23,7 +23,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -58,17 +57,12 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
-#if BUILDFLAG(ENABLE_PLAYLIST) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/webui/tor_internals_ui.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_ui.h"
-#include "brave/components/sidebar/constants.h"
 #endif
 
 using content::WebUI;
@@ -109,7 +103,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(OS_ANDROID)
-#if BUILDFLAG(ENABLE_PLAYLIST) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   } else if (host == kPlaylistHost) {
     return new playlist::PlaylistUI(web_ui, url.host());
 #endif  // BUILDFLAG(PLAYLIST_ENABLED)
@@ -146,10 +140,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
-#if BUILDFLAG(ENABLE_SIDEBAR)
-  } else if (host == kSidebarBookmarksHost) {
-    return new SidebarBookmarksUI(web_ui);
-#endif
   } else if (host == kFederatedInternalsHost) {
     if (base::FeatureList::IsEnabled(
             brave_federated::features::kFederatedLearning)) {
@@ -169,9 +159,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
       (url.host_piece() == kIPFSWebUIHost &&
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS)
-#if BUILDFLAG(ENABLE_SIDEBAR)
-      url.host_piece() == kSidebarBookmarksHost ||
-#endif
 #if !BUILDFLAG(IS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
@@ -190,7 +177,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
 #endif
-#if BUILDFLAG(ENABLE_PLAYLIST) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
       url.host_piece() == kPlaylistHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
@@ -236,7 +223,7 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     return WebUI::kNoWebUI;
   }
 #endif  // BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_PLAYLIST) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url))
     return WebUI::kNoWebUI;
 #endif

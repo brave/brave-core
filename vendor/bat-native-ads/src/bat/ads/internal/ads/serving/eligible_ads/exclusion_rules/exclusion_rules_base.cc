@@ -14,7 +14,6 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_month_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
@@ -87,9 +86,6 @@ ExclusionRulesBase::ExclusionRulesBase(
 
   daypart_exclusion_rule_ = std::make_unique<DaypartExclusionRule>();
   exclusion_rules_.push_back(daypart_exclusion_rule_.get());
-
-  per_hour_exclusion_rule_ = std::make_unique<PerHourExclusionRule>(ad_events);
-  exclusion_rules_.push_back(per_hour_exclusion_rule_.get());
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;
@@ -134,23 +130,23 @@ bool ExclusionRulesBase::AddToCacheIfNeeded(
 }
 
 bool ExclusionRulesBase::IsCached(const CreativeAdInfo& creative_ad) const {
-  if (uuids_.find(creative_ad.campaign_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.campaign_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.advertiser_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.advertiser_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.creative_set_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.creative_set_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.creative_instance_id) != uuids_.end()) {
+  if (uuids_.find(creative_ad.creative_instance_id) != uuids_.cend()) {
     return true;
   }
 
-  if (uuids_.find(creative_ad.segment) != uuids_.end()) {
+  if (uuids_.find(creative_ad.segment) != uuids_.cend()) {
     return true;
   }
 

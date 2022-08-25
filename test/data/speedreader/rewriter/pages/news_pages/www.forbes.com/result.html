@@ -1,0 +1,649 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>They Inherited Billions Upon Billions: Meet America’s Richest Heirs</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">They Inherited Billions Upon Billions: Meet America’s Richest Heirs</h1><p class="subhead metadata">One of them, Rob Walton, just led a family group to bid $4.65 billion for the Denver Broncos NFL team. Here are the other heirs that rank the highest on Forbes’ list.</p><div class=""><p class="metadata">By Jemima McEvoy</p><p class="metadata date">Updated Jun. 19, 2022 06:30 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><h4 class="subhead4-embed color-body bg-base font-accent font-size text-align"><sub>These three billionaires—(left to right) Abigail Johnson, Rob Walton and Julia Koch—are all among the country’s richest heirs.</sub></h4>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>One of them, Rob Walton, just led a family group to bid $4.65 billion for the Denver Broncos NFL team. Here are the other heirs that rank the highest on <em>Forbes’</em> list. </strong></h2>
+
+<h4 class="subhead4-embed color-body bg-base font-accent font-size text-align"><sup>By </sup><a aria-label="Jemima McEvoy" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/sites/jemimamcevoy/?sh=38ed8abe3ac2" href="https://www.forbes.com/sites/jemimamcevoy/?sh=38ed8abe3ac2" target="_self" title="https://www.forbes.com/sites/jemimamcevoy/?sh=38ed8abe3ac2"><sup data-ga-track="InternalLink:https://www.forbes.com/sites/jemimamcevoy/?sh=38ed8abe3ac2">Jemima McEvoy</sup></a></h4>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<p><span><abbr class="drop-cap color-accent font-accent">A</abbr></span> shock ran through the sporting world last week when a group led by Walmart heir Rob Walton won the bidding war for the Denver Broncos NFL team <a aria-label="with a $4.65 billion offer" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/sites/siladityaray/2022/06/08/group-led-by-walmart-heir-rob-walton-agrees-to-buy-denver-broncos-for-465-billion/?sh=5a479d027c2b" href="https://www.forbes.com/sites/siladityaray/2022/06/08/group-led-by-walmart-heir-rob-walton-agrees-to-buy-denver-broncos-for-465-billion/?sh=5a479d027c2b" target="_self" title="https://www.forbes.com/sites/siladityaray/2022/06/08/group-led-by-walmart-heir-rob-walton-agrees-to-buy-denver-broncos-for-465-billion/?sh=5a479d027c2b">with a $4.65 billion offer</a>. The eye-popping sum made the deal the most expensive sports team purchase in history and turned a spotlight on the man at the center of it all: the typically low-profile Walton. The eldest son of Walmart founder Sam Walton, he inherited his fortune and served as Walmart’s chairman for 23 years. Now worth $57.2 billion, he is the 15th richest person in America and the fifth richest U.S. heir. </p>
+
+<p>A handful of Rob Walton’s relatives are among America’s richest people as well. Founded in 1962 by Sam and his brother James “Bud” Walton, Walmart, the country’s largest retailer, is still about half owned by members of the family. Seven have fortunes of $10 billion or more, including Sam Walton’s three living children–Rob, Jim and Alice—and grandson Lukas. (The eighth Walmart billionaire, Christy Walton, the widow of Sam’s late son John, is worth an estimated $7 billion.) </p>
+
+<p>Tremendous family wealth is a hallmark of <em>Forbes’</em> list of the country’s richest people, though many billionaire heirs hail from just a handful of companies. One such company is agriculture giant Cargill, the <a aria-label="largest private company in the country" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/largest-private-companies/list/" href="https://www.forbes.com/largest-private-companies/list/" target="_self" title="https://www.forbes.com/largest-private-companies/list/">largest private company in the country</a>, which has propelled 12 heirs into the three comma club. The great-grandchildren and great-great-grandchildren of founder W. W. Cargill still own nearly 90% of the business he founded in 1865. </p>
+
+<p>Other businesses where the spoils of success have trickled down the generations include the Wisconsin-based cleaning products manufacturer SC Johnson–known for brands like Windex, Off and Pledge–and Mars, the candy and pet food empire started by Frank Mars in 1911. The four great-great-grandchildren of Samuel Curtis Johnson–H. Fisk Johnson, Helen Johnson-Leipold, S. Curtis Johnson and Winifred J. Marquart–collectively own a majority of the private company and are worth an estimated $3.1 billion each, while six of founder Mars’ grandchildren and great-grandchildren are billionaires, worth between $7.4 billion and $29.7 billion, <em>Forbes</em> estimates. </p>
+
+
+<fbs-ad ad-id="article-0-top" position="top" progressive=""></fbs-ad>
+<p>Some of these heirs took control of businesses they inherited and radically transformed them. Charles Koch and his three brothers inherited most of a vastly smaller Koch Industries when their father, Fred, died in 1967. (Charles and his brother David (d. 2019) bought out the stakes of their two brothers, Frederick and Bill, for $1.1 billion in 1983.) Charles has run the company since the death of his father, orchestrating the $13 billion acquisition of Georgia Pacific in 2005 and the estimated $13 billion purchase of cloud software firm Infor in 2020, among others. Charles Koch appeared on the first Forbes 400 list of richest Americans in 1982 with a net worth of $266 million. <em>Forbes</em> now pegs his fortune at just under $60 billion. Rupert Murdoch inherited two Australian newspapers when his father died–and with those started a media empire that has grown to include Fox News, arguably the most influential cable TV network in the U.S.</p>
+<p>Together the country’s 20 richest billionaire heirs (technically there are 23 because several are tied at number 20) are worth $568 billion. That’s about 13.5% of the $4.2 trillion in wealth of all 701 U.S. billionaires, according to <em>Forbes</em>’ estimates. Here’s a look at who they are and where their money comes from. (Net worths are as of Thursday, June 16.)</p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#1 (tie): </strong><a aria-label="Charles Koch" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/charles-koch/" href="https://www.forbes.com/profile/charles-koch/" target="_self" title="https://www.forbes.com/profile/charles-koch/"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/charles-koch/">Charles Koch </strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$59.6 billion</strong> | Source of wealth: <strong>Koch Industries</strong></sup></h2>
+<figure class="embed-base image-embed embed-15" role="presentation"> 
+  
+ <figcaption> 
+  <p class="color-body light-text">Charles Koch</p><small class="color-body light-text">Jamel Toppin/The Forbes Collection</small> 
+ </figcaption> 
+</figure>
+<p>Koch and his late brother David (d. 2019) inherited Koch Industries from their father Fred, who founded it in 1940 as an oil-and-refinery company. The brothers grew it into the <a aria-label="second largest private company" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/largest-private-companies/list/" href="https://www.forbes.com/largest-private-companies/list/" target="_self" title="https://www.forbes.com/largest-private-companies/list/">second largest private company</a> in the U.S. with an estimated $115 billion in revenues diversifying into pipelines, chemicals, Dixie cups and more recently cloud software. Koch, a staunch libertarian who donates generously to Republican political candidates, has been chairman and CEO of Koch Industries since 1967.</p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#1 (tie): </strong><a aria-label="Julia Koch" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/julia-koch/?sh=5b852d4b2b9c" href="https://www.forbes.com/profile/julia-koch/?sh=5b852d4b2b9c" target="_self" title="https://www.forbes.com/profile/julia-koch/?sh=5b852d4b2b9c"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/julia-koch/?sh=5b852d4b2b9c">Julia Koch</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$59.6 billion</strong> | Source of wealth: <strong>Koch Industries</strong></sup></h2>
+<figure class="embed-base image-embed embed-12" role="presentation"> 
+  
+ <figcaption> 
+  <p class="color-body light-text"><small>Patrick McMullan via Getty Images</small></p> 
+ </figcaption> 
+</figure>
+<p>The wife of the late David Koch–brother of Charles Koch–became one of the richest people in the world when <a aria-label="he died in 2019 at age 79" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/sites/jenniferwang/2019/08/23/koch-industries-magnate-david-koch-dies-at-79/?sh=f60a784d78df" href="https://www.forbes.com/sites/jenniferwang/2019/08/23/koch-industries-magnate-david-koch-dies-at-79/?sh=f60a784d78df" target="_self" title="https://www.forbes.com/sites/jenniferwang/2019/08/23/koch-industries-magnate-david-koch-dies-at-79/?sh=f60a784d78df">he died in 2019 at age 79</a>. She and her three children—David Jr., Mary Julia and John—inherited David’s 42% stake in Koch Industries. Julia Koch, age 60, sits on the board of directors of Koch Industries and focuses on philanthropy as president of the David H. Koch Charitable Foundation. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<fbs-ad ad-id="article-0-topx-1" position="topx" progressive=""></fbs-ad>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#3: </strong><a aria-label="Jim Walton" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/jim-walton/?sh=1cdc2f8f12d8" href="https://www.forbes.com/profile/jim-walton/?sh=1cdc2f8f12d8" target="_self" title="https://www.forbes.com/profile/jim-walton/?sh=1cdc2f8f12d8"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/jim-walton/?sh=1cdc2f8f12d8">Jim Walton</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$58.3 billion</strong> | Source of wealth: <strong>Walmart</strong> </sup></h2>
+<figure class="embed-base image-embed embed-17" role="presentation"> 
+  
+ <figcaption> 
+  <p class="color-body light-text"><small>Getty Images</small></p> 
+ </figcaption> 
+</figure>
+<p>The youngest son of Sam Walton owns an estimated 13% stake in the retailer his father founded in 1962. He served on Walmart’s board of directors for more than a decade before handing the job off to his son, Steuart, in 2016. Now, the 74-year-old Walton serves as chairman of the family-owned Arvest Bank, which says it has $26 billion in assets. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#4: </strong><a aria-label="Alice Walton" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/alice-walton/?sh=7fc662854eb2" href="https://www.forbes.com/profile/alice-walton/?sh=7fc662854eb2" target="_self" title="https://www.forbes.com/profile/alice-walton/?sh=7fc662854eb2"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/alice-walton/?sh=7fc662854eb2">Alice Walton</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$57.5 billion</strong> | Source of wealth: <strong>Walmart</strong> </sup></h2>
+<figure class="embed-base image-embed embed-14" role="presentation"> 
+  
+ <figcaption> 
+  <p class="color-body light-text"><small>Tim Pannell for Forbes</small></p> 
+ </figcaption> 
+</figure>
+<p>Though she’s one of the biggest beneficiaries of the family’s retail empire, Sam Walton’s only daughter (dubbed the “misfit” of the heirs in a 2013 <em>Forbes</em> <a aria-label="profile" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/sites/clareoconnor/2013/09/16/inside-the-world-of-walmart-billionaire-alice-walton-americas-richest-art-collector/?sh=21f3fc8d4d5b" href="https://www.forbes.com/sites/clareoconnor/2013/09/16/inside-the-world-of-walmart-billionaire-alice-walton-americas-richest-art-collector/?sh=21f3fc8d4d5b" target="_self" title="https://www.forbes.com/sites/clareoconnor/2013/09/16/inside-the-world-of-walmart-billionaire-alice-walton-americas-richest-art-collector/?sh=21f3fc8d4d5b">profile</a>) has steered mostly clear of working for the family business–when she was younger she held several positions at Walmart but never held any senior roles. She’s instead dedicated her time to passions like horse breeding and art collecting, opening the Crystal Bridges Museum of American Art in her hometown of Bentonville, Arkansas in 2011. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#5: </strong><a aria-label="Rob Walton" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/rob-walton/?sh=5b65c113270b" href="https://www.forbes.com/profile/rob-walton/?sh=5b65c113270b" target="_self" title="https://www.forbes.com/profile/rob-walton/?sh=5b65c113270b"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/rob-walton/?sh=5b65c113270b">Rob Walton</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$57.2 billion</strong> | Source of wealth: <strong>Walmart</strong> </sup></h2>
+<figure class="embed-base image-embed embed-13" role="presentation"> 
+  
+ <figcaption> 
+  <p class="color-body light-text"><small>© 2009 Bloomberg Finance LP</small></p> 
+ </figcaption> 
+</figure>
+<p>The eldest of the Walmart founder’s children took over as chairman when his father died in 1992. The retailer grew from about 2,000 stores and 271,000 employees that year to 11,000 stores and more than 2.3 million employees in 2015, when he stepped down as chairman. He was replaced by his son-in-law, Greg Penner, who is part of the group slated to purchase the Denver Broncos; Walton still serves on the Walmart board of directors. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#6: </strong><a aria-label="MacKenzie Scott" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/mackenzie-scott/?sh=2ef59977243d" href="https://www.forbes.com/profile/mackenzie-scott/?sh=2ef59977243d" target="_self" title="https://www.forbes.com/profile/mackenzie-scott/?sh=2ef59977243d"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/mackenzie-scott/?sh=2ef59977243d">MacKenzie Scott</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$30.7 billion</strong> | Source of wealth: <strong>Amazon</strong></sup></h2>
+<p> Scott, formerly known as MacKenzie Bezos, became a billionaire in 2019 when Amazon founder Jeff Bezos transferred her a quarter of his 78.8 million shares as part of their divorce settlement, one of the largest in history. She has since given away about a quarter of her shares, donating $12 billion to charitable causes at a pace faster than any billionaire in modern times, <em>Forbes</em> <a aria-label="estimated" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/sites/rachelsandler/2022/04/05/how-mackenzie-scott-has-given-away-billionsand-is-still-one-of-the-worlds-richest-women/?sh=2ce9e9da36ac" href="https://www.forbes.com/sites/rachelsandler/2022/04/05/how-mackenzie-scott-has-given-away-billionsand-is-still-one-of-the-worlds-richest-women/?sh=2ce9e9da36ac" target="_self" title="https://www.forbes.com/sites/rachelsandler/2022/04/05/how-mackenzie-scott-has-given-away-billionsand-is-still-one-of-the-worlds-richest-women/?sh=2ce9e9da36ac">estimated</a> in April.</p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<fbs-ad ad-id="article-0-topx-2" position="topx" progressive=""></fbs-ad>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#7 (tie): </strong><a aria-label="John Mars" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/john-mars/?sh=476acf1445ae" href="https://www.forbes.com/profile/john-mars/?sh=476acf1445ae" target="_self" title="https://www.forbes.com/profile/john-mars/?sh=476acf1445ae"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/john-mars/?sh=476acf1445ae">John Mars</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$29.7 billion</strong> | Source of wealth: <strong>Candy, pet food</strong></sup></h2>
+<p>John, now 86, and his siblings Jacqueline and Forrest Jr. (d. 2016) each inherited an estimated one-third of the candy firm started by their grandfather Frank Mars in 1911 after their father Forrest Mars Sr.died in 1999. John and Forrest Jr. , who were co-presidents of the <a aria-label="company starting in 1975," class="color-link" data-ga-track="ExternalLink:https://www.nytimes.com/2016/07/28/business/forrest-e-mars-jr-scion-of-a-candy-empire-dies-at-84.html#:~:text=Mr.,Rice%20and%20Pedigree%20pet%20food." href="https://www.nytimes.com/2016/07/28/business/forrest-e-mars-jr-scion-of-a-candy-empire-dies-at-84.html#:~:text=Mr.,Rice%20and%20Pedigree%20pet%20food." rel="nofollow noopener noreferrer" target="_blank" title="https://www.nytimes.com/2016/07/28/business/forrest-e-mars-jr-scion-of-a-candy-empire-dies-at-84.html#:~:text=Mr.,Rice%20and%20Pedigree%20pet%20food.">company starting in 1975,</a> oversaw its expansion into a diversified global empire spanning sweets, pet food and chewing gum. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#7 (tie): </strong><a aria-label="Jacqueline Mars" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/jacqueline-mars/?sh=46c0ad05f9b2" href="https://www.forbes.com/profile/jacqueline-mars/?sh=46c0ad05f9b2" target="_self" title="https://www.forbes.com/profile/jacqueline-mars/?sh=46c0ad05f9b2"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/jacqueline-mars/?sh=46c0ad05f9b2">Jacqueline Mars</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$29.7 billion</strong> | Source of wealth: <strong>Candy, pet food </strong></sup></h2>
+<p>Jacqueline Mars worked at the family candy and pet food company for nearly 20 years and served on its board of directors before retiring in 2016; her son, Stephen Badger, was chairman of the board until 2020. Like her brothers John and Forrest, Jr. (d. 2016) she inherited an estimated one third of Mars after their father Forrest Sr. died in 1999. Prominent in the equestrian world, she owns a Virginia horse farm that has trained Olympic medalists. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#9: </strong><a aria-label="Miriam Adelson" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/miriam-adelson/?sh=603ac5c09c40" href="https://www.forbes.com/profile/miriam-adelson/?sh=603ac5c09c40" target="_self" title="https://www.forbes.com/profile/miriam-adelson/?sh=603ac5c09c40"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/miriam-adelson/?sh=603ac5c09c40">Miriam Adelson</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$25.1 billion</strong> | Source of wealth: <strong>Casinos</strong> </sup></h2>
+<p>Adelson inherited her late husband Sheldon’s gambling empire after he died in January 2021 at age 87. The 76-year-old owns 52% of New York Stock Exchange-listed Las Vegas Sands, which has casinos in Singapore and Macao. In February it completed the $6.25 billion sale of The Venetian Resort in Las Vegas to private equity firm Apollo Global Management and real estate investment trust VICI Properties. Shares of Las Vegas Sands have lost 40% of their value in the past year.</p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#10: </strong><a aria-label="Leonard Lauder" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/leonard-lauder/?sh=60720bf17354" href="https://www.forbes.com/profile/leonard-lauder/?sh=60720bf17354" target="_self" title="https://www.forbes.com/profile/leonard-lauder/?sh=60720bf17354"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/leonard-lauder/?sh=60720bf17354">Leonard Lauder</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$20.7 billion</strong> | Source of wealth: <strong>Estée Lauder </strong></sup></h2>
+<p>Lauder owns about 20% of the cosmetics giant founded in 1946 by his parents, Estée and Joseph Lauder. He ran the company as CEO for more than three decades, taking it public in 1995, before stepping down from that role in 1999. He’s now 89 and Estée Lauder’s chairman emeritus; his younger brother <a aria-label="Ronald" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/ronald-lauder/?sh=39b3ffa3558a" href="https://www.forbes.com/profile/ronald-lauder/?sh=39b3ffa3558a" target="_self" title="https://www.forbes.com/profile/ronald-lauder/?sh=39b3ffa3558a">Ronald</a>, age 78, is the chairman of Clinique Laboratories and also a billionaire. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#11: </strong><a aria-label="Abigail Johnson" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/abigail-johnson/?sh=6247f9b71c42" href="https://www.forbes.com/profile/abigail-johnson/?sh=6247f9b71c42" target="_self" title="https://www.forbes.com/profile/abigail-johnson/?sh=6247f9b71c42"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/abigail-johnson/?sh=6247f9b71c42">Abigail Johnson</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$18 billion</strong> | Source of wealth: <strong>Money management </strong></sup></h2>
+<p>The Fidelity Investments CEO and chair is the granddaughter of Edward C. Johnson II, who founded the Boston-based mutual fund giant back in 1946. She took over as chief executive from her father in 2016 and owns an estimated 24.6% stake in the firm, which has grown to have <a aria-label="$4.3 trillion in managed assets." class="color-link" data-ga-track="ExternalLink:https://www.fidelity.com/about-fidelity/our-company" href="https://www.fidelity.com/about-fidelity/our-company" rel="nofollow noopener noreferrer" target="_blank" title="https://www.fidelity.com/about-fidelity/our-company">$4.3 trillion in managed assets. </a></p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#12: </strong><a aria-label="Rupert Murdoch" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/rupert-murdoch/?sh=498521bbb1af" href="https://www.forbes.com/profile/rupert-murdoch/?sh=498521bbb1af" target="_self" title="https://www.forbes.com/profile/rupert-murdoch/?sh=498521bbb1af"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/rupert-murdoch/?sh=498521bbb1af">Rupert Murdoch</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$17.7 billion</strong> | Source of wealth: <strong>Media</strong> </sup></h2>
+<p>The king of the media empire that includes <em>Fox News, The Wall Street Journal, The New York Post</em> and U.K. tabloid <em>The Sun, </em>Murdoch inherited his first newspaper from his father, a war correspondent turned publisher, at age 22. He went on to build the family’s publishing business into News Corp., a $9 billion (market cap) television and newspaper behemoth. Murdoch sold most of Fox’s movie studio, cable channel FX, National Geographic Networks, its 30% stake in streaming service Hulu and its stake in Star India to Disney in March 2019 for $71.3 billion. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#13:</strong><a aria-label="Lukas Walton" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/lukas-walton/?sh=70207b941d5d" href="https://www.forbes.com/profile/lukas-walton/?sh=70207b941d5d" target="_self" title="https://www.forbes.com/profile/lukas-walton/?sh=70207b941d5d"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/lukas-walton/?sh=70207b941d5d"> Lukas Walton</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$14.6 billion</strong> | Source of wealth: <strong>Walmart</strong> </sup></h2>
+<p>A grandson of Walmart cofounder Sam Walton, Lukas inherited his fortune when his father, John T. Walton, died in a plane crash in 2005. He received about one third of his father’s estate; his mother, Christy Walton (also a billionaire), got about one sixth. The 35-year-old does not hold any position in the family business; he invests in businesses taking on environmental and social challenges, and <a aria-label="late last year reportedly launched a $300 million fund to do so." class="color-link" data-ga-track="ExternalLink:https://www.arkansasonline.com/news/2021/nov/07/walton-venture-puts-capital-in-change/?latest" href="https://www.arkansasonline.com/news/2021/nov/07/walton-venture-puts-capital-in-change/?latest" rel="nofollow noopener noreferrer" target="_blank" title="https://www.arkansasonline.com/news/2021/nov/07/walton-venture-puts-capital-in-change/?latest">late last year reportedly launched a $300 million fund to do so.</a></p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<fbs-ad ad-id="article-0-topx-3" position="topx" progressive=""></fbs-ad>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#14: </strong><a aria-label="Laurene Powell Jobs" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/laurene-powell-jobs/?sh=3046ee5a704f" href="https://www.forbes.com/profile/laurene-powell-jobs/?sh=3046ee5a704f" target="_self" title="https://www.forbes.com/profile/laurene-powell-jobs/?sh=3046ee5a704f"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/laurene-powell-jobs/?sh=3046ee5a704f">Laurene Powell Jobs</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$13.9 billion</strong> | Source of wealth: <strong>Apple, Disney</strong></sup></h2>
+<p>Powell Jobs inherited a fortune in Apple and Disney stock when her late husband, Apple cofounder Steve Jobs, died of cancer in 2011. With her billions she has bought stakes in The Atlantic magazine and sports teams, including the NBA’s Washington Wizards and the NHL’s Washington Capital. She also founded Emerson Collective, a social impact firm that mixes philanthropy and investment, and the Waverley Street Foundation, which reportedly funds climate change initiatives.</p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#15: </strong><a aria-label="Donald Newhouse" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/donald-newhouse/?sh=2c2ecec1581c" href="https://www.forbes.com/profile/donald-newhouse/?sh=2c2ecec1581c" target="_self" title="https://www.forbes.com/profile/donald-newhouse/?sh=2c2ecec1581c"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/donald-newhouse/?sh=2c2ecec1581c">Donald Newhouse </strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$12.1 billion</strong> | Source of wealth: <strong>Media</strong> </sup></h2>
+<p>From a single Staten Island newspaper, Newhouse’s father Sam built Advance Publications, the publishing and broadcasting empire that today includes the Condé Nast magazine group (owner of <em>The New Yorker</em> and <em>Vanity Fair</em>, among others) plus substantial stakes in WarnerBros. Discovery and social news site Reddit. The business wa split between Newhouse and his late brother Samuel, known as Si, (d. 2017), with Donald Newhouse in charge of its television and newspaper segment, and Si overseeing the magazine division. Today, Newhouse, age 92, shares the title of co-president with his son, Steven. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#16: </strong><a aria-label="Carl Cook" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/carl-cook/?sh=291bda5a3a20" href="https://www.forbes.com/profile/carl-cook/?sh=291bda5a3a20" target="_self" title="https://www.forbes.com/profile/carl-cook/?sh=291bda5a3a20"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/carl-cook/?sh=291bda5a3a20">Carl Cook</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$9.4 billion</strong> | Source of wealth: <strong>Medical devices</strong></sup></h2>
+<p>Cook took over his family’s medical device manufacturer after his father Bill died in 2011. His parents started the company, which sells catheters, dilators and more, out of their apartment in Bloomington, Indiana in 1963. It now does about $2.5 billion in sales annually. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#17: </strong><a aria-label="Herbert Kohler Jr." class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/herbert-kohler-jr/?sh=6f9b87001d71" href="https://www.forbes.com/profile/herbert-kohler-jr/?sh=6f9b87001d71" target="_self" title="https://www.forbes.com/profile/herbert-kohler-jr/?sh=6f9b87001d71"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/herbert-kohler-jr/?sh=6f9b87001d71">Herbert Kohler Jr.</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$8.8 billion</strong> | Source of wealth: <strong>Plumbing fixtures </strong></sup></h2>
+<p>The plumbing fixture powerhouse Kohler Co. was founded by Herb Kohler’s grandfather back in 1874, then the company manufactured hitching posts and farm tools. He took over from his father as CEO at age 32 and ran the company for more than four decades before handing it off to his son, David, in 2015; Herb, age 83, is executive chairman. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#18 (tie): </strong><a aria-label="Pauline MacMillan Keinath" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/pauline-macmillan-keinath/?sh=3528902744fb" href="https://www.forbes.com/profile/pauline-macmillan-keinath/?sh=3528902744fb" target="_self" title="https://www.forbes.com/profile/pauline-macmillan-keinath/?sh=3528902744fb"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/pauline-macmillan-keinath/?sh=3528902744fb">Pauline MacMillan Keinath</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$8 billion</strong> | Source of wealth: <strong>Cargill</strong> </sup></h2>
+<p>The wealthiest of the Cargill heirs, Keinath is believed to be the company’s largest shareholder, with an estimated 13% stake. She is a great-granddaughter of founder W. W. Cargill; her late brother, Whitney MacMillan (d: 2020) was the last family member to serve as the company’s CEO. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#18 (tie): </strong><a aria-label="Ann Walton Kroenke" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/ann-walton-kroenke/?sh=f905af337851" href="https://www.forbes.com/profile/ann-walton-kroenke/?sh=f905af337851" target="_self" title="https://www.forbes.com/profile/ann-walton-kroenke/?sh=f905af337851"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/ann-walton-kroenke/?sh=f905af337851">Ann Walton Kroenke</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$8 billion</strong> | Source of wealth: <strong>Walmart</strong> </sup></h2>
+<p>This Walmart heir inherited her stake in the retail giant from her late father, James “Bud” Walton, who helped his older brother Sam start Walmart back in 1962. Her husband Stanley Kroenke, a real estate and sports mogul, is also a billionaire worth an <a aria-label="estimated $10.7 billion" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/stanley-kroenke/?sh=59ead32d742c" href="https://www.forbes.com/profile/stanley-kroenke/?sh=59ead32d742c" target="_self" title="https://www.forbes.com/profile/stanley-kroenke/?sh=59ead32d742c">estimated $10.7 billion</a>. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<fbs-ad ad-id="article-0-topx-4" position="topx" progressive=""></fbs-ad>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#20 (tie): </strong><a aria-label="Pamela Mars" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/pamela-mars/?sh=3eac33942ab0" href="https://www.forbes.com/profile/pamela-mars/?sh=3eac33942ab0" target="_self" title="https://www.forbes.com/profile/pamela-mars/?sh=3eac33942ab0"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/pamela-mars/?sh=3eac33942ab0">Pamela Mars</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$7.4 billion</strong> | Source of wealth: <strong>Candy, pet food </strong></sup></h2>
+<p>Pamela, age 62, and her three sisters—Victoria, Valerie and Marijke—each inherited an estimated 8% stake in Mars when her father, Forrest Mars Jr., died in 2016 at age 84. She has had various roles at Mars and was chairman of its board of directors between 2004 and 2008. Currently she is the family’s ambassador to the company’s pet care division.</p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#20 (tie): </strong><a aria-label="Victoria Mars" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/victoria-mars/?sh=1aed47e55b2c" href="https://www.forbes.com/profile/victoria-mars/?sh=1aed47e55b2c" target="_self" title="https://www.forbes.com/profile/victoria-mars/?sh=1aed47e55b2c"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/victoria-mars/?sh=1aed47e55b2c">Victoria Mars</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$7.4 billion</strong> | Source of wealth: <strong>Candy, pet food </strong></sup></h2>
+<p>The eldest daughter of Forrest Mars Jr., Victoria, age 65, worked at Mars for more than three decades and helped set up the company’s Ombudsman program, which provides a confidential avenue for employees to report workplace problems. She also took a turn as chairman of the board, serving from 2014 to 2017.</p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#20 (tie): </strong><a aria-label="Valerie Mars" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/valerie-mars/?sh=4cde29b65aec" href="https://www.forbes.com/profile/valerie-mars/?sh=4cde29b65aec" target="_self" title="https://www.forbes.com/profile/valerie-mars/?sh=4cde29b65aec"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/valerie-mars/?sh=4cde29b65aec">Valerie Mars</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$7.4 billion</strong> | Source of wealth: <strong>Candy, pet food </strong></sup></h2>
+<p>Valerie, age 63, started working at Mars in 1992 and is now vice president of corporate development. She has a seat on the company’s board of directors, and sits on the board of Fiat Chrysler Automobiles as well. </p>
+<hr class="embed-base rule-embed color-accent border-solid weight-light">
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><strong>#20 (tie):</strong><a aria-label="Marijke Mars" class="color-link" data-ga-track="InternalLink:https://www.forbes.com/profile/marijke-mars/?sh=707e74142b74" href="https://www.forbes.com/profile/marijke-mars/?sh=707e74142b74" target="_self" title="https://www.forbes.com/profile/marijke-mars/?sh=707e74142b74"><strong data-ga-track="InternalLink:https://www.forbes.com/profile/marijke-mars/?sh=707e74142b74"> Marijke Mars</strong></a></h2>
+<h2 class="subhead-embed color-accent bg-base font-accent font-size text-align"><sup>Net worth: <strong>$7.4 billion</strong> | Source of wealth: <strong>Candy, pet food </strong></sup></h2>
+<p>Forrest Mars Jr.’s youngest daughter, Marijke, age 57, also sits on the company’s board of directors. According to <a aria-label="Bloomberg" class="color-link" data-ga-track="ExternalLink:https://www.bloomberg.com/billionaires/profiles/marijke-e-mars/#xj4y7vzkg" href="https://www.bloomberg.com/billionaires/profiles/marijke-e-mars/#xj4y7vzkg" rel="nofollow noopener noreferrer" target="_blank" title="https://www.bloomberg.com/billionaires/profiles/marijke-e-mars/#xj4y7vzkg"><em data-ga-track="ExternalLink:https://www.bloomberg.com/billionaires/profiles/marijke-e-mars/#xj4y7vzkg">Bloomberg</em></a>, she worked as a regional manager at Kal Kan Foods, one of Mars’ pet food companies, and now works at Mars Food, which oversees brands including Ben’s Original rice.</p>
+<fbs-ad ad-id="article-0-topx-5" position="topx" progressive=""></fbs-ad>
+<h4 class="subhead4-embed color-body bg-base font-accent font-size text-align"><br></h4>
+<h4 class="subhead4-embed color-body bg-base font-accent font-size text-align"><strong>MORE FROM FORBES</strong></h4>
+<p><a aria-label="How Breastfeeding Mothers Are Being Sexualized On Social Media" class="embed-base link-embed embed-19 color-body color-body-border" data-ga-track="forbesEmbedly:https://www.forbes.com/sites/alexandralevine/2022/06/17/how-breastfeeding-mothers-are-being-sexualized-on-social-media/" href="https://www.forbes.com/sites/alexandralevine/2022/06/17/how-breastfeeding-mothers-are-being-sexualized-on-social-media/" rel="noopener noreferrer" target="_blank"><span class="link-embed__info"><span class="link-embed__provider">MORE FROM FORBES</span><span class="link-embed__title">How Breastfeeding Mothers Are Being Sexualized On Social Media</span><small class="link-embed__byline">By <span class="link-embed__author">Alexandra S. Levine</span></small></span></a>
+<a aria-label="Lifeless Market For Meatless Meat" class="embed-base link-embed embed-21 color-body color-body-border" data-ga-track="forbesEmbedly:https://www.forbes.com/sites/chloesorvino/2022/06/18/lifeless-market-for-meatless-meat/" href="https://www.forbes.com/sites/chloesorvino/2022/06/18/lifeless-market-for-meatless-meat/" rel="noopener noreferrer" target="_blank"><span class="link-embed__info"><span class="link-embed__provider">MORE FROM FORBES</span><span class="link-embed__title">Lifeless Market For Meatless Meat</span><small class="link-embed__byline">By <span class="link-embed__author">Chloe Sorvino</span></small></span></a>
+<a aria-label="How Selling $160 Sweatpants Turned A SoCal Surfer Into One Of America's Richest Women" class="embed-base link-embed link-embed--long-title embed-3 color-body color-body-border" data-ga-track="forbesEmbedly:https://www.forbes.com/sites/jemimamcevoy/2022/06/13/how-selling-160-sweatpants-turned-a-socal-surfer-into-one-of-americas-richest-women/" href="https://www.forbes.com/sites/jemimamcevoy/2022/06/13/how-selling-160-sweatpants-turned-a-socal-surfer-into-one-of-americas-richest-women/" rel="noopener noreferrer" target="_blank"><span class="link-embed__info"><span class="link-embed__provider">MORE FROM FORBES</span><span class="link-embed__title">How Selling $160 Sweatpants Turned A SoCal Surfer Into One Of America's Richest Women</span><small class="link-embed__byline">By <span class="link-embed__author">Jemima McEvoy</span></small></span></a>
+<a aria-label="How Two Africans Overcame Bias To Build A Startup Worth Billions" class="embed-base link-embed embed-5 color-body color-body-border" data-ga-track="forbesEmbedly:https://www.forbes.com/sites/jeffkauflin/2022/06/06/how-two-africans-overcame-bias-to-build-a-startup-worth-billions/" href="https://www.forbes.com/sites/jeffkauflin/2022/06/06/how-two-africans-overcame-bias-to-build-a-startup-worth-billions/" rel="noopener noreferrer" target="_blank"><span class="link-embed__info"><span class="link-embed__provider">MORE FROM FORBES</span><span class="link-embed__title">How Two Africans Overcame Bias To Build A Startup Worth Billions</span><small class="link-embed__byline">By <span class="link-embed__author">Jeff Kauflin</span></small></span></a></p></body>

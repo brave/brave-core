@@ -38,8 +38,10 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
   if (event_type == mojom::SearchResultAdEventType::kViewed &&
       HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
     return true;
-  } else if (event_type == mojom::SearchResultAdEventType::kClicked &&
-             HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
+  }
+
+  if (event_type == mojom::SearchResultAdEventType::kClicked &&
+      HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
     return true;
   }
 
@@ -111,7 +113,7 @@ void EventHandler::FireEvent(const SearchResultAdInfo& ad,
   const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
-  NotifySearchResultAdEvent(ad, event_type, callback);
+  NotifySearchResultAdEvent(ad, event_type, std::move(callback));
 }
 
 void EventHandler::FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
@@ -230,7 +232,7 @@ void EventHandler::FailedToFireEvent(
               << event_type << " event for placement_id " << ad.placement_id
               << " and creative instance id " << ad.creative_instance_id);
 
-  NotifySearchResultAdEventFailed(ad, event_type, callback);
+  NotifySearchResultAdEventFailed(ad, event_type, std::move(callback));
 }
 
 void EventHandler::NotifySearchResultAdEvent(

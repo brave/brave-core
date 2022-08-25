@@ -43,7 +43,7 @@ class Deposits final : public TableInterface {
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetDepositsCallback callback);
 
-  void PurgeExpired(ResultCallback callback);
+  void PurgeExpired(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
@@ -51,10 +51,11 @@ class Deposits final : public TableInterface {
                const int to_version) override;
 
  private:
+  std::string BuildInsertOrUpdateQuery(
+      mojom::DBCommandInfo* command,
+      const CreativeAdList& creative_ads) const;
   std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const CreativeAdList& creative_ads);
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const DepositInfo& deposit);
+                                       const DepositInfo& deposit) const;
 
   void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
                                   GetDepositsCallback callback,

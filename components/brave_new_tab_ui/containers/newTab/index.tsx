@@ -73,6 +73,8 @@ interface Props {
   saveShowFTX: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
+  useCustomBackgroundImage: (useCustom: boolean) => void
+  setColorBackground: (color: string) => void
 }
 
 interface State {
@@ -97,9 +99,11 @@ function GetBackgroundImageSrc (props: Props) {
       return wallpaperData.wallpaperImageUrl
     }
   }
-  if (props.newTabData.backgroundWallpaper && props.newTabData.backgroundWallpaper.wallpaperImageUrl) {
+
+  if (props.newTabData.backgroundWallpaper?.type === 'image') {
     return props.newTabData.backgroundWallpaper.wallpaperImageUrl
   }
+
   return undefined
 }
 
@@ -462,14 +466,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveBrandedWallpaperOptIn(
       !this.props.newTabData.brandedWallpaperOptIn
     )
-  }
-
-  useCustomBackgroundImage = (useCustom: boolean) => {
-    if (useCustom) {
-      getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground()
-    } else {
-      getNTPBrowserAPI().pageHandler.useBraveBackground()
-    }
   }
 
   startRewards = () => {
@@ -1155,7 +1151,9 @@ class NewTabPage extends React.Component<Props, State> {
     const hasImage = this.imageSource !== undefined
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
     // Custom background that user uploaded doesn't display its info in footer.
-    const hasWallpaperInfo = !!newTabData.backgroundWallpaper && !!newTabData.backgroundWallpaper.author && !!newTabData.backgroundWallpaper.link
+    const hasWallpaperInfo = newTabData.backgroundWallpaper?.type === 'image' && !!newTabData.backgroundWallpaper.author && !!newTabData.backgroundWallpaper.link
+    const colorForBackground = newTabData.backgroundWallpaper?.type === 'color' ? newTabData.backgroundWallpaper.wallpaperColor : undefined
+
     let cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
@@ -1179,14 +1177,15 @@ class NewTabPage extends React.Component<Props, State> {
         hasImage={hasImage}
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
-        data-show-news-prompt={(this.state.backgroundHasLoaded && this.state.isPromptingBraveToday) ? true : undefined}
-      >
+        colorForBackground={colorForBackground}
+        data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveToday) ? true : undefined}>
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
             imageHasLoaded={this.state.backgroundHasLoaded}
             showClock={showClock}
             showStats={showStats}
+            colorForBackground={colorForBackground}
             showRewards={!!cryptoContent}
             showBraveTalk={newTabData.showBraveTalk && newTabData.braveTalkSupported}
             showBinance={newTabData.showBinance}
@@ -1324,7 +1323,8 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
-          useCustomBackgroundImage={this.useCustomBackgroundImage}
+          useCustomBackgroundImage={this.props.useCustomBackgroundImage}
+          setColorBackground={this.props.setColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
@@ -1354,6 +1354,7 @@ class NewTabPage extends React.Component<Props, State> {
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
+          newTabData={this.props.newTabData}
         />
         {
           showEditTopSite

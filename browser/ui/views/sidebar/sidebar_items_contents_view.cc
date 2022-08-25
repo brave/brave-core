@@ -12,8 +12,8 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
@@ -31,7 +31,6 @@
 #include "ui/base/default_style.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/compositor/compositor.h"
 #include "ui/events/event.h"
@@ -103,7 +102,7 @@ void SidebarItemsContentsView::Update() {
 }
 
 void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
-  const auto items = sidebar_model_->GetAllSidebarItems();
+  const auto& items = sidebar_model_->GetAllSidebarItems();
   // It's not initialized yet if child view count and items size are different.
   if (children().size() != items.size())
     return;
@@ -138,7 +137,7 @@ std::u16string SidebarItemsContentsView::GetTooltipTextFor(
   if (index == -1)
     return std::u16string();
 
-  auto item = sidebar_model_->GetAllSidebarItems()[index];
+  auto& item = sidebar_model_->GetAllSidebarItems()[index];
   if (!item.title.empty())
     return item.title;
 
@@ -158,9 +157,8 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
   view_for_context_menu_ = source;
   context_menu_model_ = std::make_unique<ui::SimpleMenuModel>(this);
   SkColor icon_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    icon_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    icon_color = color_provider->GetColor(kColorSidebarButtonBase);
   }
   context_menu_model_->AddItemWithIcon(
       kItemRemove,
@@ -245,9 +243,8 @@ void SidebarItemsContentsView::SetDefaultImageAt(
     int index,
     const sidebar::SidebarItem& item) {
   SkColor text_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    text_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    text_color = color_provider->GetColor(kColorSidebarButtonBase);
   }
 
   const int scale = GetWidget()->GetCompositor()->device_scale_factor();
@@ -373,7 +370,7 @@ SidebarItemView* SidebarItemsContentsView::GetItemViewAt(int index) {
 }
 
 void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
-  const auto item = sidebar_model_->GetAllSidebarItems()[index];
+  const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
   if (item.open_in_panel)
@@ -412,9 +409,8 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
     sidebar::SidebarItem::BuiltInItemType type,
     bool focused) const {
   SkColor base_button_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    base_button_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
+    base_button_color = color_provider->GetColor(kColorSidebarButtonBase);
   }
   constexpr int kBuiltInIconSize = 16;
   int focused_image_resource = -1;
@@ -432,6 +428,10 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
     case sidebar::SidebarItem::BuiltInItemType::kBookmarks:
       focused_image_resource = IDR_SIDEBAR_BOOKMARKS_FOCUSED;
       normal_image_icon = &kSidebarBookmarksIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kReadingList:
+      focused_image_resource = IDR_SIDEBAR_READING_LIST_FOCUSED;
+      normal_image_icon = &kSidebarReadingListIcon;
       break;
     case sidebar::SidebarItem::BuiltInItemType::kHistory:
       focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;

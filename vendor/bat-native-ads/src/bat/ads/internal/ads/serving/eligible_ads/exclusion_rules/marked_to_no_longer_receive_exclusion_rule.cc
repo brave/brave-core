@@ -43,11 +43,7 @@ const std::string& MarkedToNoLongerReceiveExclusionRule::GetLastMessage()
 
 bool MarkedToNoLongerReceiveExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) {
-  if (ShouldFilterSegment(creative_ad.segment)) {
-    return false;
-  }
-
-  return true;
+  return !ShouldFilterSegment(creative_ad.segment);
 }
 
 }  // namespace ads

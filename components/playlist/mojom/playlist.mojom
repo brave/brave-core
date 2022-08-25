@@ -50,6 +50,9 @@ interface PageHandler {
   GetPlaylist(string id) => (Playlist? playlist);
 
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
+  
+  // Store all media files from tabs in this window.
+  AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
 

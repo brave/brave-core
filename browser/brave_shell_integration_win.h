@@ -12,7 +12,6 @@ namespace shell_integration::win {
 
 // Pin profile-specific shortcut when |profile| is non-null.
 void PinToTaskbar(Profile* profile = nullptr);
-void PinDefaultShortcutForExistingUsers();
 
 }  // namespace shell_integration::win
 

@@ -36,7 +36,7 @@ bool ShouldServeAtRegularIntervals() {
 }
 
 void ShowNotificationAd(const NotificationAdInfo& ad) {
-  NotificationAdManager::GetInstance()->PushBack(ad);
+  NotificationAdManager::GetInstance()->Add(ad);
   AdsClientHelper::GetInstance()->ShowNotificationAd(ad);
 }
 

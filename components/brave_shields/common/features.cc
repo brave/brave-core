@@ -34,13 +34,12 @@ const base::Feature kBraveAdblockCookieListDefault{
 const base::Feature kBraveAdblockCookieListOptIn{
     "BraveAdblockCookieListOptIn", base::FEATURE_DISABLED_BY_DEFAULT};
 const base::Feature kBraveAdblockCosmeticFiltering{
-    "BraveAdblockCosmeticFiltering",
-    base::FEATURE_ENABLED_BY_DEFAULT};
+    "BraveAdblockCosmeticFiltering", base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveAdblockCosmeticFilteringChildFrames{
     "BraveAdblockCosmeticFilteringChildFrames",
     base::FEATURE_DISABLED_BY_DEFAULT};
-const base::Feature kBraveAdblockCspRules{
-    "BraveAdblockCspRules", base::FEATURE_ENABLED_BY_DEFAULT};
+const base::Feature kBraveAdblockCspRules{"BraveAdblockCspRules",
+                                          base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, Brave will block domains listed in the user's selected adblock
 // filters and present a security interstitial with choice to proceed and
 // optionally whitelist the domain.
@@ -60,7 +59,7 @@ const base::Feature kBraveExtensionNetworkBlocking{
     "BraveExtensionNetworkBlocking", base::FEATURE_DISABLED_BY_DEFAULT};
 // When enabled, language headers and APIs may be altered by Brave Shields.
 const base::Feature kBraveReduceLanguage{"BraveReduceLanguage",
-                                         base::FEATURE_DISABLED_BY_DEFAULT};
+                                         base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, Brave will always report Light in Fingerprinting: Strict mode
 const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
                                         base::FEATURE_ENABLED_BY_DEFAULT};

@@ -156,7 +156,7 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
     return base::Value();
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  if (custom_bi_service_ && custom_bi_service_->ShouldShowCustomBackground())
+  if (ShouldShowCustomBackground())
     return custom_bi_service_->GetBackground();
 #endif
 
@@ -320,6 +320,14 @@ bool ViewCounterService::ShouldShowBrandedWallpaper() const {
   return IsBrandedWallpaperActive() && model_.ShouldShowBrandedWallpaper();
 }
 
+bool ViewCounterService::ShouldShowCustomBackground() const {
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+  return custom_bi_service_ && custom_bi_service_->ShouldShowCustomBackground();
+#else
+  return false;
+#endif
+}
+
 void ViewCounterService::InitializeWebUIDataSource(
     content::WebUIDataSource* html_source) {
   html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
@@ -349,7 +357,7 @@ bool ViewCounterService::IsBackgroundWallpaperActive() const {
     return false;
 #endif
 
-  return !!GetCurrentWallpaperData();
+  return !!GetCurrentWallpaperData() || ShouldShowCustomBackground();
 }
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {

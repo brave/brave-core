@@ -6,13 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_NOTIFICATION_ADS_NOTIFICATION_AD_MANAGER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_NOTIFICATION_ADS_NOTIFICATION_AD_MANAGER_H_
 
-#include <cstdint>
 #include <string>
 
 #include "base/containers/circular_deque.h"
-#include "base/values.h"
-#include "bat/ads/ads_callback.h"
-#include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -22,85 +18,31 @@ struct NotificationAdInfo;
 class NotificationAdManager final {
  public:
   NotificationAdManager();
-  ~NotificationAdManager();
   NotificationAdManager(const NotificationAdManager&) = delete;
   NotificationAdManager& operator=(const NotificationAdManager&) = delete;
+  ~NotificationAdManager();
 
   static NotificationAdManager* GetInstance();
 
   static bool HasInstance();
 
-  void Initialize(InitializeCallback callback);
-
   absl::optional<NotificationAdInfo> MaybeGetForPlacementId(
       const std::string& placement_id) const;
 
-  void PushBack(const NotificationAdInfo& ad);
-  void PopFront(const bool should_dismiss);
-
+  void Add(const NotificationAdInfo& ad);
   bool Remove(const std::string& placement_id);
-  void RemoveAll();
 
-  void CloseAndRemoveAll();
+  void CloseAll();
 
   bool Exists(const std::string& placement_id) const;
 
-  uint64_t Count() const;
-
-#if BUILDFLAG(IS_ANDROID)
-  void RemoveAllAfterReboot();
-  void RemoveAllAfterUpdate();
-#endif
-
  private:
-  base::circular_deque<NotificationAdInfo> GetNotificationsFromList(
-      const base::Value::List& list) const;
+  void Initialize();
 
-  bool GetNotificationFromDictionary(const base::Value::Dict& dict,
-                                     NotificationAdInfo* notification_ad) const;
+  void MaybeRemoveAll();
+  void RemoveAll();
 
-  bool GetPlacementIdFromDictionary(const base::Value::Dict& dict,
-                                    std::string* value) const;
-  bool GetCreativeInstanceIdFromDictionary(const base::Value::Dict& dict,
-                                           std::string* value) const;
-  bool GetCreativeSetIdFromDictionary(const base::Value::Dict& dict,
-                                      std::string* value) const;
-  bool GetCampaignIdFromDictionary(const base::Value::Dict& dict,
-                                   std::string* value) const;
-  bool GetAdvertiserIdFromDictionary(const base::Value::Dict& dict,
-                                     std::string* value) const;
-  bool GetSegmentFromDictionary(const base::Value::Dict& dict,
-                                std::string* value) const;
-  bool GetTitleFromDictionary(const base::Value::Dict& dict,
-                              std::string* value) const;
-  bool GetBodyFromDictionary(const base::Value::Dict& dict,
-                             std::string* value) const;
-  bool GetTargetUrlFromDictionary(const base::Value::Dict& dict,
-                                  std::string* value) const;
-  bool GetGeoTargetFromDictionary(const base::Value::Dict& dict,
-                                  std::string* value) const;
-
-  bool GetStringFromDictionary(const std::string& key,
-                               const base::Value::Dict& dict,
-                               std::string* string) const;
-
-  void Save();
-  void OnSaved(const bool success);
-
-  void Load();
-  void OnLoaded(const bool success, const std::string& json);
-
-  bool FromJson(const std::string& json);
-  bool GetNotificationsFromDictionary(const base::Value::Dict& dict);
-
-  std::string ToJson();
-  base::Value::List GetAsList();
-
-  bool is_initialized_ = false;
-
-  InitializeCallback callback_;
-
-  base::circular_deque<NotificationAdInfo> notification_ads_;
+  base::circular_deque<NotificationAdInfo> ads_;
 };
 
 }  // namespace ads

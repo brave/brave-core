@@ -47,11 +47,7 @@ bool TotalMaxExclusionRule::DoesRespectCap(const AdEventList& ad_events,
                ad_event.creative_set_id == creative_ad.creative_set_id;
       });
 
-  if (count >= creative_ad.total_max) {
-    return false;
-  }
-
-  return true;
+  return count < creative_ad.total_max;
 }
 
 }  // namespace ads

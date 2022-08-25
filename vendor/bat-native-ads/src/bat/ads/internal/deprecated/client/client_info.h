@@ -26,9 +26,9 @@ struct ClientInfo final {
   ~ClientInfo();
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& value);
+  bool FromValue(const base::Value::Dict& root);
 
-  std::string ToJson();
+  std::string ToJson() const;
   bool FromJson(const std::string& json);
 
   AdPreferencesInfo ad_preferences;
@@ -38,7 +38,6 @@ struct ClientInfo final {
   targeting::TextClassificationProbabilityList
       text_classification_probabilities;
   targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
-  std::string version_code;
 };
 
 }  // namespace ads

@@ -178,7 +178,17 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
      <message name="IDS_INCOGNITO_REAUTH_PAGE_UNLOCK_INCOGNITO_BUTTON_LABEL" desc="The label of button which upon click allows user to start the re-authentication process to view their existing Private tabs.">
        Unlock Private
      </message>
-     <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the benefits users will get if they turn on the metrics sharing option.">
+     <message name="IDS_INCOGNITO_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card.">
+       Lock Private tabs when you leave Brave
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card.">
+       Use screen lock to see open Private tabs
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Brave level Private lock setting after a re-authentication.">
+       Turn on Private lock
+     </message>
+
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the benefits users will get if they turn on the metrics sharing option.">
         Help make Brave better for profiles who use it the way you do
       </message>
       <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">

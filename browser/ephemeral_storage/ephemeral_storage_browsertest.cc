@@ -210,7 +210,7 @@ void EphemeralStorageBrowserTest::SetValuesInFrame(RenderFrameHost* frame,
 void EphemeralStorageBrowserTest::SetValuesInFrames(WebContents* web_contents,
                                                     std::string storage_value,
                                                     std::string cookie_value) {
-  RenderFrameHost* main = web_contents->GetMainFrame();
+  RenderFrameHost* main = web_contents->GetPrimaryMainFrame();
   SetValuesInFrame(main, storage_value, cookie_value);
   SetValuesInFrame(content::ChildFrameAt(main, 0), storage_value, cookie_value);
   SetValuesInFrame(content::ChildFrameAt(main, 1), storage_value, cookie_value);
@@ -227,7 +227,7 @@ EphemeralStorageBrowserTest::GetValuesFromFrame(RenderFrameHost* frame) {
 
 EphemeralStorageBrowserTest::ValuesFromFrames
 EphemeralStorageBrowserTest::GetValuesFromFrames(WebContents* web_contents) {
-  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
   return {
       GetValuesFromFrame(main_frame),
       GetValuesFromFrame(content::ChildFrameAt(main_frame, 0)),
@@ -805,7 +805,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // The third-party iframe should not have the b.com cookie that was set on the
   // main frame.
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
   RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
   RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
   ASSERT_EQ("", GetCookiesInFrame(iframe_a));
@@ -931,7 +931,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // Gather all WebContents and frames in a usable structure.
   base::flat_map<WebContents*, std::vector<RenderFrameHost*>> frames;
   for (auto* wc : {site_a_tab1, site_a_tab2, site_b_tab1, site_b_tab2}) {
-    auto* main_rfh = wc->GetMainFrame();
+    auto* main_rfh = wc->GetPrimaryMainFrame();
     CreateBroadcastChannel(main_rfh);
     frames[wc].push_back(main_rfh);
     for (size_t child_idx = 0; child_idx < 4; ++child_idx) {
@@ -1017,7 +1017,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
-  RenderFrameHost* site_a_main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* site_a_main_frame = web_contents->GetPrimaryMainFrame();
   RenderFrameHost* nested_frames_tab =
       content::ChildFrameAt(site_a_main_frame, 3);
   ASSERT_NE(nested_frames_tab, nullptr);
@@ -1026,7 +1026,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   ASSERT_NE(first_party_nested_acom, nullptr);
 
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
-  RenderFrameHost* site_b_main_frame = site_b_tab->GetMainFrame();
+  RenderFrameHost* site_b_main_frame = site_b_tab->GetPrimaryMainFrame();
   RenderFrameHost* third_party_nested_acom =
       content::ChildFrameAt(site_b_main_frame, 2);
   ASSERT_NE(first_party_nested_acom, nullptr);

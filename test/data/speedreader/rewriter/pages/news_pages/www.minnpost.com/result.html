@@ -1,0 +1,554 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Overturning of Roe v. Wade pushes Minnesotans to consider long-term life contraception decisions</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Overturning of Roe v. Wade pushes Minnesotans to consider long-term life contraception decisions</h1><p class="subhead metadata">More people are coming into Minnesota clinics, both from in state and out, for contraceptives, according to Dr. Christy Boraas, a physician at M Health Fairview Women's Clinic in Minneapolis, medical director at Planned Parenthood, and abortion provider at Whole Women’s Health in Bloomington.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+						<p>Following the overturning of <em>Roe v. Wade</em>, more people are seeking long-term contraceptives, according to some clinics.</p>
+<p>In Minnesota, people have made big changes regarding their reproductive systems, prompted by the Supreme Court’s decision nearly two months ago.&nbsp; Although the SCOTUS ruling did not outlaw abortions in Minnesota, it got Minnesotans thinking of what ifs.</p>
+<p>Among several Reddit inquiry posts from MinnPost about the impact of the ruling, more than 20 Minnesotan users commented about how the decision has changed their reproductive plans and made them inclined to seek long-term contraceptives.</p>
+<p>We connected with three women who shared intimate details of why they wanted long-term contraceptives and the factors that played into their decision. Due to the sensitive subject nature, including discussion of sexual assault, MinnPost allowed the women to use either a pseudonym or first name.</p>
+<p>Many of those what ifs may seem far-fetched, one woman who lives near Rochester, said. But so has the recent history of the country, said the woman who asked we not use her name.</p>
+<p>“I never thought this would happen, and I never thought (former President Donald) Trump would get elected. I was mortified. We probably should have seen the writing on the wall that … people were not willing to accept a female president and we move into this absolute chaos for four years. I don’t doubt for a moment that they’re gonna come after birth control access next,” the woman said.</p>
+
+
+<p>The burden of the ruling will fall on people of color and lower-income individuals said Dr. Rahel Nardos, an obstetrics gynecologist and director of Global Women’s Health at the&nbsp;University of Minnesota Center for Global Health and Social Responsibility.</p>
+<p>Thus, many people have decided to get long-term contraception such as tubal ligations and vasectomies.</p>
+<h4><strong>Big life changes</strong></h4>
+<p>Across Minnesota, from the Twin Cities to people living in Greater Minnesota, there’s been a growing concern about what Minnesota’s abortion laws may become if it ever becomes a red state.</p>
+<p>One woman, Melissa, knew she needed to be on long term birth control, and had previously had a bad experience with an IUD, which made finding the right birth control for her difficult, she said.</p>
+<p>Her partner considered getting a vasectomy, but ultimately, in 2018 Melissa opted to get a salpingectomy – a procedure where one or both of a woman’s fallopian tubes are removed.</p>
+<p>“I am also a rape survivor,” she said. “I told (my partner), you’re welcome to get that surgery if you want, but I’m the source of this. If we break up or you pass away and I move on as someone else, or if I’m raped, I could still get pregnant, so I’d rather just get the surgery.”</p>
+<p>Melissa says she’s happy with her decision, especially considering the overturning of <em>Roe v. Wade</em>.</p>
+<p>“I have no regrets. It’s honestly a huge relief for me because I don’t want kids,” she said. “The world is stressful and like periods can be late, because of stress, but also, they could be late because you might be pregnant. Now I know when it’s late, that it’s not because I’m pregnant. I don’t have to have that extra stress on me and worry about what I’m gonna do; would I be able to get an abortion? Would I want to do that? All those million questions that race through your head when you’re having a pregnancy scare.”</p>
+
+
+<p>After the <em>Dobbs</em> decision that overturned <em>Roe</em>, Sarah, of Austin, Minn.,&nbsp;wanted to switch to an IUD instead of birth control pills. When she called the Mayo Clinic in Owatonna, she was told it would be a three-month wait.</p>
+<p>She ended up not getting it because she wants to have children soon. But now, she’s paying around $12 a month for birth control pills, and her insurance doesn’t cover it. She’s fearful that birth control pills could be under attack too.</p>
+<p>“Honestly, it scares the (mess) outta me. There are other states going after that and other contraceptives, I don’t know if it’s guaranteed that I’ll be able to stay on it,” she said. “I don’t know if it’s gonna remain accessible and that’s a scary thought for me and women everywhere.”</p>
+<p>The decision affects not only people’s reproductive plans but also other aspects of health. For example, one woman, Erin, who is a cancer survivor, is not able to use hormonal birth control, like the pill or vaginal ring, because her breast cancer was hormone driven.</p>
+<p>“So, the concern is, do I wanna get a tubal, and then my period comes back in two months and then I have to look at another more invasive procedure or do I wanna go on some ovary suppression medications, which aren’t often well tolerated. They can cause a lot of pain and stuff,” she said.</p>
+<p>The possibility of getting pregnant terrifies her since it increases her risk of cancer returning. She’s now put in a position to decide if she wants to get the tubal or get a hysterectomy.</p>
+<p>“I really do not wanna get cancer again. I don’t wanna go through it all again. I just wanna do what I can to help make it even more unlikely in the event that we lose our rights here in Minnesota, she said.</p>
+<h4><strong>Inequitable access and outcomes</strong></h4>
+<p>Nardos noted that restricted access to abortion does not necessarily mean fewer unintended pregnancies or less abortions, but rather could result in harm to the child bearers’ health.</p>
+<p>“I’ve seen women come in with septic complications, because they were trying to do abortion on their own, because it’s not legal in the countries where they are. It’s one of the risks for maternal mortality,” Nardos said.</p>
+
+
+<p>The maternal mortality rate in the U.S., is the worst in the developed nations, according to this <a href="https://pubmed.ncbi.nlm.nih.gov/29747724/">2018 study.&nbsp;</a></p>
+<p>In the U.S., Black women have a three times higher risk of abortion-related death compared to white women. Black and Native communities are also higher risk for maternal mortality due to poor access to equitable healthcare, systematic racism, poverty, gender-based violence and higher related risk of medical conditions like obesity, diabetes and hypertension; all of which complicate pregnancy outcomes, Nardos said.</p>
+<p>“What I’m really concerned about is the Supreme Court decision that creates states that don’t allow these services to happen, they’re gonna obviously disproportionately impact women who don’t have the resources to travel further or to seek care outside of their state,” she said. “And the same things that led to these huge disparities in maternal outcome are going to increase.”</p>
+<h4><strong>Increased demand</strong></h4>
+<p>More people are coming into Minnesota clinics, both from in state and out, for contraceptives, according to Dr. Christy Boraas, a physician at M Health Fairview Women’s Clinic in Minneapolis, medical director at planned parenthood, and abortion provider at Whole Women’s Health in Bloomington.</p>
+<p>“Since the <em>Dobbs</em> decision, we’ve had many more requests for appointments related to permanent contraception or what some people call permanent sterilization,” Boraas said.</p>
+<p>The procedure for people assigned female at birth is called a bilateral salpingectomy. For many, there are barriers to getting the procedure.</p>
+<p>Federal requirements for the procedure who access the care through public assistance insurance, are different than those who have private insurance. For those under public insurance, the minimum age is 21, and the patient is required to sign a form, and wait 30 days until having the procedure.</p>
+<p>“Without insurance coverage, a permanent contraception procedure for a patient who assigned female birth is just not gonna happen. It’s thousands of dollars. Just turning the lights on in the operating room is an insane amount of money,” Boraas said.</p>
+
+
+<p>Sometimes, vasectomies are a more feasible option.</p>
+<p>Some people have considered vasectomies, which are not fully covered under some private insurance’s, unlike bilateral salpingectomies.</p>
+<h4><strong>Barriers&nbsp;</strong></h4>
+<p>While it was nice to have the tubal splenectomy covered by insurance, Melissa says the fact the vasectomies are not puts the responsibility of preventing pregnancy on the woman.</p>
+<p>For Whole Women’s Health, there was a difficulty finding in-clinic staff, which combined with busy physician schedules, creating delays and issues with scheduling. Combining that with the busy schedules of physicians, Boraas says timing scheduling conflicts are a big challenge.</p>
+<p>There is always a fear of facing repercussions for her work, Baraas said while referencing <a href="https://www.nbcnews.com/news/us-news/conservative-media-weaponized-story-10-year-old-abortion-rcna38341">Dr. Caitlin Bernard</a> in Indiana, who was criticized by the far right after providing an abortion to a 10-year old rape victim.</p>
+<p>“It’s hard to see what’s happening to her,” she said. “Personal safety, that’s not just a post-<em>Dobbs</em> thing. That’s something that in more restrictive states, providers have always had (to think about).”</p>
+<h4><strong>Worry about the future of reproductive rights</strong></h4>
+<p>Republican-led state legislatures have also <a href="https://www.washingtonpost.com/lifestyle/2022/05/10/iud-birth-control-supreme-court-draft-opinion-leak/">passed laws</a> targeting Planned Parenthood or pharmacists. Some here are fearful about what might happen if Minnesota becomes red next election.</p>
+<p>Erin thought Walz’ high approval rating during COVID would increase his chances of reelection. But more recently, she’s hearing that GOP gubernatorial nominee Scott Jensen might have a chance to win come November.</p>
+<p>“Jensen’s made it pretty clear where he stands on these things,” she said. “I’m still hopeful that Walz will win and that we would have that extra layer of protection, but I really do not wanna get cancer again. I don’t wanna go through it all again. I just wanna do what I can to help make it even more unlikely in the event that we lose our rights here in Minnesota.”</p>
+			
+
+
+
+	
+		</body>

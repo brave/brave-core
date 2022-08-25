@@ -87,13 +87,12 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
 }
 
 absl::optional<std::string> getSendTransaction(const std::string& signed_tx) {
-  base::JSONReader::ValueWithError parsed_tx =
-      base::JSONReader::ReadAndReturnValueWithError(signed_tx);
-  if (!parsed_tx.value || !parsed_tx.value->is_dict()) {
+  absl::optional<base::Value> parsed_tx = base::JSONReader::Read(signed_tx);
+  if (!parsed_tx || !parsed_tx->is_dict()) {
     return absl::nullopt;
   }
   base::Value::List params;
-  params.Append(std::move(*parsed_tx.value));
+  params.Append(std::move(*parsed_tx));
 
   // TODO(cdesouza): This dictionary should be composed by GetJsonRpcDictionary.
   base::Value::Dict dict;

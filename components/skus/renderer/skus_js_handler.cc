@@ -136,11 +136,9 @@ void SkusJSHandler::OnRefreshOrder(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                        base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
@@ -149,8 +147,8 @@ void SkusJSHandler::OnRefreshOrder(
     return;
   }
 
-  const base::DictionaryValue* result_dict;
-  if (!records_v->GetAsDictionary(&result_dict)) {
+  const base::Value::Dict* result_dict = records_v->GetIfDict();
+  if (!result_dict) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate,
                                 "Error converting response to dictionary")
@@ -160,7 +158,7 @@ void SkusJSHandler::OnRefreshOrder(
   }
 
   v8::Local<v8::Value> local_result =
-      content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
+      content::V8ValueConverter::Create()->ToV8Value(*result_dict, context);
   std::ignore = resolver->Resolve(context, local_result);
 }
 
@@ -295,11 +293,9 @@ void SkusJSHandler::OnCredentialSummary(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                        base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
@@ -308,8 +304,8 @@ void SkusJSHandler::OnCredentialSummary(
     return;
   }
 
-  const base::DictionaryValue* result_dict;
-  if (!records_v->GetAsDictionary(&result_dict)) {
+  const base::Value::Dict* result_dict = records_v->GetIfDict();
+  if (!result_dict) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate,
                                 "Error converting response to dictionary")
@@ -321,7 +317,7 @@ void SkusJSHandler::OnCredentialSummary(
   vpn_service_->LoadPurchasedState(domain);
 #endif
   v8::Local<v8::Value> local_result =
-      content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
+      content::V8ValueConverter::Create()->ToV8Value(*result_dict, context);
   std::ignore = resolver->Resolve(context, local_result);
 }
 

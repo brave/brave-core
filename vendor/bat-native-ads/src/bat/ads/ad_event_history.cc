@@ -76,7 +76,7 @@ std::vector<base::Time> AdEventHistory::Get(
 
       const std::vector<base::Time>& ad_event_timestamps = ad_event.second;
 
-      timestamps.insert(timestamps.end(), ad_event_timestamps.cbegin(),
+      timestamps.insert(timestamps.cend(), ad_event_timestamps.cbegin(),
                         ad_event_timestamps.cend());
     }
   }

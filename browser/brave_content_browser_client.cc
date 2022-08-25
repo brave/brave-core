@@ -186,11 +186,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/webui/sidebar/sidebar.mojom.h"
-#include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_ui.h"
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
@@ -218,9 +213,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_ads/brave_ads_host.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 namespace {
 
@@ -594,11 +589,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
-  chrome::internal::RegisterWebUIControllerInterfaceBinder<
-      sidebar::mojom::BookmarksPageHandlerFactory, SidebarBookmarksUI>(map);
-#endif
-
 // Brave News
 #if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
@@ -607,7 +597,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         playlist::mojom::PageHandlerFactory, playlist::PlaylistUI>(map);

@@ -9,8 +9,10 @@
 #include <map>
 #include <string>
 
+#include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/round_robin_advertisers.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 namespace ads {
 

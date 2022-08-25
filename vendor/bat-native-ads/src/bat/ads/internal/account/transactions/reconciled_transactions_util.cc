@@ -24,11 +24,7 @@ bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
                           transaction, from_time, to_time);
                     });
 
-  if (count == 0) {
-    return false;
-  }
-
-  return true;
+  return count != 0;
 }
 
 }  // namespace

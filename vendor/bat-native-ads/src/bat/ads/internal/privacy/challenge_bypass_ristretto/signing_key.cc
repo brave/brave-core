@@ -56,7 +56,7 @@ SigningKey::SigningKey(
 
 SigningKey::SigningKey(const SigningKey& other) = default;
 
-SigningKey& SigningKey::operator=(const SigningKey& info) = default;
+SigningKey& SigningKey::operator=(const SigningKey& other) = default;
 
 SigningKey::~SigningKey() = default;
 

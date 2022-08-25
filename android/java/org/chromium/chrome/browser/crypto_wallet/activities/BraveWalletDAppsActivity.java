@@ -135,6 +135,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                 }
             });
         }
+        mPendingTxHelper.destroy();
         finish();
     }
 
@@ -167,6 +168,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                         AccountInfo[] accountInfosTemp = keyringInfo.accountInfos;
                         if (accountInfosTemp == null) {
                             accountInfosTemp = new AccountInfo[] {};
+                        }
+                        if (mPendingTxHelper != null) {
+                            mPendingTxHelper.destroy();
                         }
                         mPendingTxHelper =
                                 new PendingTxHelper(getTxService(), accountInfosTemp, false, true);
@@ -236,6 +240,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             activity.getWalletModel().getCryptoModel().clearDappsState();
+        }
+        if (mPendingTxHelper != null) {
+            mPendingTxHelper.destroy();
         }
     }
 }

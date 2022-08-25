@@ -9,9 +9,7 @@ import { WalletState } from '../../constants/types'
 import { WalletActions } from '../actions'
 import { useApiProxy } from './use-api-proxy'
 
-interface Options {
-  maxAttempts: number
-}
+const MAX_ATTEMPTS = 3 // The amount of tries before locking the wallet
 
 /**
  * Provides a methods to check the user's password,
@@ -20,9 +18,7 @@ interface Options {
  * Uses the context-injected ApiProxy keyring
  * Uses redux to track attempts globally
  */
-export const usePasswordAttempts = ({
-  maxAttempts
-}: Options) => {
+export const usePasswordAttempts = () => {
   // custom hooks
   const { keyringService } = useApiProxy()
 
@@ -45,7 +41,7 @@ export const usePasswordAttempts = ({
 
     if (!isPasswordValid) {
       const newAttempts = attempts + 1
-      if (newAttempts >= maxAttempts) {
+      if (newAttempts >= MAX_ATTEMPTS) {
         // lock wallet
         keyringService.lock()
         dispatch(WalletActions.setPasswordAttempts(0)) // reset attempts now that the wallet is locked

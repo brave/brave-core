@@ -56,11 +56,7 @@ bool MarkedAsInappropriateExclusionRule::DoesRespectCap(
         return flagged_ad.creative_set_id == creative_ad.creative_set_id;
       });
 
-  if (iter == flagged_ads.end()) {
-    return true;
-  }
-
-  return false;
+  return iter == flagged_ads.cend();
 }
 
 }  // namespace ads

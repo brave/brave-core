@@ -95,10 +95,10 @@ export const createPageReducer = (initialState: PageState) => {
     return newState
   })
 
-  reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload: boolean) => {
+  reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload) => {
     return {
       ...state,
-      showRecoveryPhrase: payload
+      showRecoveryPhrase: payload.show
     }
   })
 

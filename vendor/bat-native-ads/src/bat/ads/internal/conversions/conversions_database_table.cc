@@ -120,7 +120,7 @@ void Conversions::GetAll(GetConversionsCallback callback) {
                                              base::Unretained(this), callback));
 }
 
-void Conversions::PurgeExpired(ResultCallback callback) {
+void Conversions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   const std::string query = base::StringPrintf(
@@ -178,7 +178,7 @@ void Conversions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
 std::string Conversions::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const ConversionList& conversions) {
+    const ConversionList& conversions) const {
   DCHECK(command);
 
   const int count = BindParameters(command, conversions);

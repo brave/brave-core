@@ -44,17 +44,6 @@ export const Description = styled.span`
   margin-bottom: 18px;
 `
 
-export const TermsText = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 300;
-  color: ${(p) => p.theme.color.text01};
-  max-width: 320px;
-  letter-spacing: 0.01em;
-  margin-bottom: 30px;
-`
-
 export const TermsRow = styled.div`
   display: flex;
   align-items: center;
@@ -64,16 +53,14 @@ export const TermsRow = styled.div`
   margin-bottom: 30px;
 `
 
-export const IconBackground = styled.div`
+export const PasswordColumn = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  width: 162px;
-  height: 162px;
-  border-radius: 100%;
-  background-color: ${(p) => p.theme.color.background01};
-  margin-bottom: 24px;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 30px;
 `
 
 export const PageIcon = styled.div`

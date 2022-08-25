@@ -204,8 +204,6 @@ void UnitTestBase::Initialize() {
   locale_manager_ = std::make_unique<LocaleManager>();
 
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
-  notification_ad_manager_->Initialize(
-      [](const bool success) { ASSERT_TRUE(success); });
 
   pref_manager_ = std::make_unique<PrefManager>();
 
@@ -303,6 +301,7 @@ void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetListPref(prefs::kEpsilonGreedyBanditEligibleSegments,
                                 base::Value::List());
 
+  ads_client_mock_->SetListPref(prefs::kNotificationAds, base::Value::List());
   ads_client_mock_->SetTimePref(prefs::kServeAdAt, Now());
 
   ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
@@ -310,10 +309,13 @@ void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConversionState, true);
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedNotificationState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedRewardsState, true);
 
   ads_client_mock_->SetUint64Pref(prefs::kConfirmationsHash, 0);
   ads_client_mock_->SetUint64Pref(prefs::kClientHash, 0);
+
+  ads_client_mock_->SetStringPref(prefs::kBrowserVersionNumber, "");
 }
 
 void UnitTestBase::SetUpIntegrationTest() {

@@ -208,7 +208,7 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
 
   // Fail if there is no last committed URL yet
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  if (web_contents->GetMainFrame()->GetLastCommittedURL().is_empty()) {
+  if (web_contents->GetPrimaryMainFrame()->GetLastCommittedURL().is_empty()) {
     std::move(callback).Run(true, std::vector<std::string>());
     return;
   }

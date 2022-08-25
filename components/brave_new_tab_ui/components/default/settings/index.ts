@@ -15,6 +15,8 @@ import favoritesUnselectedDark from './assets/favorites-unselected-dark.png'
 import frecencySelectedDark from './assets/frecency-selected-dark.png'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
+import CheckedCircle from './assets/checked-circle.svg'
+
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
 // Usually containers will want to define spacing based on specific UI needs.
@@ -596,21 +598,74 @@ export const StyledCustomBackgroundOption = styled('button')<{}>`
   }
 `
 
-export const StyledUploadIconContainer = styled('div')<{}>`
+interface SelectionProps {
+  selected: boolean
+}
+
+interface ColoredBackgroundProps {
+  colorValue: string
+}
+
+interface ImageBackgroundProps {
+  image: string
+}
+
+export const StyledSelectionBorder = styled('div')<SelectionProps>`
+  position: relative;
+  width: 100%;
+  height: 160px;
+  ${p => p.selected && css`
+    background: ${p => isDarkTheme(p)
+        ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
+        : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
+    padding: 2px;
+    border-radius: 10px;
+    &:after {
+      content: url(${CheckedCircle});
+      position:absolute;
+      top: 10px;
+      right: 10px;
+    }
+  `}
+`
+
+export const StyledUploadIconContainer = styled('div')<SelectionProps>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 47px 40px 43px 40px;
+  height: 100%;
   align-items: center;
+  justify-content: center;
   gap: 16px;
-  border: 2px solid #E9E9F4;
-  border-radius: 10.8718px;
+  ${p => p.selected
+    ? css`    
+      background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'}; 
+      border-radius: 8px;`
+    : css`
+      border: 2px solid #E9E9F4; 
+      border-radius: 10px; 
+  `}
 `
 
-export const StyledCustomBackgroundOptionImage = styled('img')<{}>`
+export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & ImageBackgroundProps>`
   width: 100%;
-  height: 160px;
-  border-radius: 10.8718px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-position: center;
+  ${p => p.selected
+    ? css`border-radius: 8px;`
+    : css`border-radius: 10px;`}
+  background-image: url(${p => p.image})
+`
+
+export const StyledCustomBackgroundOptionColor = styled('div')<SelectionProps & ColoredBackgroundProps>`
+  width: 100%;
+  height: 100%;
+  ${p => p.selected
+    ? css`border-radius: 8px;`
+    : css`border-radius: 10px;`}
+  background: ${p => p.colorValue};
 `
 
 export const StyledUploadLabel = styled('div')<{}>`

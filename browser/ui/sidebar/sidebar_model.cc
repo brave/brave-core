@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "base/logging.h"
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/browser/ui/sidebar/sidebar_model_data.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -63,9 +63,11 @@ SidebarModel::~SidebarModel() = default;
 
 void SidebarModel::Init(history::HistoryService* history_service) {
   // Start with saved item list.
-  for (const auto& item : GetAllSidebarItems())
-    AddItem(item, -1, false);
-
+  int index = -1;
+  for (const auto& item : GetAllSidebarItems()) {
+    index++;
+    AddItem(item, index, false);
+  }
   sidebar_observed_.Observe(GetSidebarService(profile_));
   // Can be null in test.
   if (history_service)
@@ -83,18 +85,14 @@ void SidebarModel::RemoveObserver(Observer* observer) {
 void SidebarModel::AddItem(const SidebarItem& item,
                            int index,
                            bool user_gesture) {
-  if (index == -1) {
-    data_.push_back(std::make_unique<SidebarModelData>(profile_));
-  } else {
-    data_.insert(data_.begin() + index,
-                 std::make_unique<SidebarModelData>(profile_));
-  }
+  // Sidebar service should always call with a valid index equal to the
+  // index of the SidebarItem.
+  DCHECK_GE(index, 0);
   for (Observer& obs : observers_) {
-    // Index starts at zero. If |index| is -1, add as a last item.
-    obs.OnItemAdded(item, index == -1 ? data_.size() - 1 : index, user_gesture);
+    obs.OnItemAdded(item, index, user_gesture);
   }
 
-  // If active_index_ is not -1, check this addition affetcs active index.
+  // If active_index_ is not -1, check this addition affects active index.
   if (active_index_ != -1 && active_index_ >= index)
     UpdateActiveIndexAndNotify(index);
 
@@ -108,32 +106,27 @@ void SidebarModel::OnItemAdded(const SidebarItem& item, int index) {
 }
 
 void SidebarModel::OnItemMoved(const SidebarItem& item, int from, int to) {
-  // Cache active model data to find its new index after moving.
-  SidebarModelData* active_data = nullptr;
-  if (active_index_ != -1) {
-    active_data = data_[active_index_].get();
-  }
-
-  std::unique_ptr<SidebarModelData> data = std::move(data_[from]);
-  data_.erase(data_.begin() + from);
-  data_.insert(data_.begin() + to, std::move(data));
-
   for (Observer& obs : observers_)
     obs.OnItemMoved(item, from, to);
 
-  if (!active_data)
+  if (active_index_ == -1)
     return;
 
   // Find new active items index.
-  const int data_size = data_.size();
-  for (int i = 0; i < data_size; ++i) {
-    if (data_[i].get() == active_data) {
-      UpdateActiveIndexAndNotify(i);
-      return;
-    }
+  const bool active_index_is_unaffected =
+      ((active_index_ > from && active_index_ > to) ||
+       (active_index_ < from && active_index_ < to));
+  if (active_index_is_unaffected) {
+    return;
   }
-
-  NOTREACHED();
+  int new_active_index = -1;
+  if (active_index_ == from) {
+    new_active_index = to;
+  } else {
+    new_active_index = (to < from) ? active_index_ + 1 : active_index_ - 1;
+  }
+  DCHECK_GE(new_active_index, 0);
+  UpdateActiveIndexAndNotify(new_active_index);
 }
 
 void SidebarModel::OnWillRemoveItem(const SidebarItem& item, int index) {
@@ -170,7 +163,6 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
 }
 
 void SidebarModel::RemoveItemAt(int index) {
-  data_.erase(data_.begin() + index);
   for (Observer& obs : observers_)
     obs.OnItemRemoved(index);
 
@@ -184,41 +176,11 @@ void SidebarModel::SetActiveIndex(int index, bool load) {
   if (index == active_index_)
     return;
 
-  // Don't load url if it's already loaded. If not, new loading is started
-  // whenever item is activated.
-  // TODO(simonhong): Maybe we should have reload option?
-  if (load && index != -1 && !IsLoadedAt(index))
-    LoadURLAt(GetAllSidebarItems()[index].url, index);
-
   UpdateActiveIndexAndNotify(index);
 }
 
-content::WebContents* SidebarModel::GetWebContentsAt(int index) {
-  // Only webcontents is requested for items that opens in panel.
-  // Opens in new tab doesn't need to get webcontents here.
-  DCHECK(GetAllSidebarItems()[index].open_in_panel);
-
-  return data_[index]->GetWebContents();
-}
-
-bool SidebarModel::IsSidebarWebContents(
-    const content::WebContents* web_contents) const {
-  for (const auto& data : data_) {
-    if (data->web_contents() && data->web_contents() == web_contents)
-      return true;
-  }
-
-  return false;
-}
-
-const std::vector<SidebarItem> SidebarModel::GetAllSidebarItems() const {
+const std::vector<SidebarItem>& SidebarModel::GetAllSidebarItems() const {
   return GetSidebarService(profile_)->items();
-}
-
-bool SidebarModel::IsLoadedAt(int index) const {
-  DCHECK(GetAllSidebarItems()[index].open_in_panel);
-
-  return data_[index]->IsLoaded();
 }
 
 bool SidebarModel::IsSidebarHasAllBuiltiInItems() const {
@@ -227,19 +189,14 @@ bool SidebarModel::IsSidebarHasAllBuiltiInItems() const {
 
 int SidebarModel::GetIndexOf(const SidebarItem& item) const {
   const auto items = GetAllSidebarItems();
-  const auto iter =
-      std::find_if(items.begin(), items.end(),
-                   [item](const auto& i) { return item.url == i.url; });
+  const auto iter = base::ranges::find_if(items, [&item](const auto& i) {
+    return (item.built_in_item_type == i.built_in_item_type &&
+            item.url == i.url);
+  });
   if (iter == items.end())
     return -1;
 
   return std::distance(items.begin(), iter);
-}
-
-void SidebarModel::LoadURLAt(const GURL& url, int index) {
-  DCHECK(GetAllSidebarItems()[index].open_in_panel);
-
-  data_[index]->LoadURL(url);
 }
 
 void SidebarModel::UpdateActiveIndexAndNotify(int new_active_index) {

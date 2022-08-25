@@ -43,7 +43,7 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
   const absl::optional<TransactionList> reconciled_transactions =
       BuildTransactionsForReconciledTransactionsThisMonth(*payments);
   if (reconciled_transactions) {
-    transactions.insert(transactions.end(), reconciled_transactions->cbegin(),
+    transactions.insert(transactions.cend(), reconciled_transactions->cbegin(),
                         reconciled_transactions->cend());
   }
 

@@ -24,6 +24,7 @@ constexpr char kSyncHostName[] = "sync";
 constexpr char kWalletHostName[] = "wallet";
 
 constexpr char kSearchEnginesPath[] = "/searchEngines";
+constexpr char kSearchPath[] = "/search";
 
 GURL ReplaceUrlBraveHostWithChromeHost(const GURL& url) {
   if (!url.SchemeIs(kBraveScheme)) {
@@ -59,9 +60,16 @@ bool SchemeIsSupported(const GURL& url) {
   if (host_name == kRewardsHostName || host_name == kSyncHostName ||
       host_name == kWalletHostName) {
     return true;
-  } else if (host_name == kSettingsHostName &&
-             modified_url.path() == kSearchEnginesPath) {
-    return true;
+  }
+
+  if (host_name == kSettingsHostName) {
+    if (modified_url.path() == kSearchEnginesPath) {
+      return true;
+    }
+
+    if (modified_url.path() == kSearchPath) {
+      return true;
+    }
   }
 
   return false;

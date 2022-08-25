@@ -56,7 +56,7 @@ class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
 // Test that properties are set on the correct RenderViewHost.
 IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  RenderProcessHost* host = contents->GetMainFrame()->GetProcess();
+  RenderProcessHost* host = contents->GetPrimaryMainFrame()->GetProcess();
   ObserverLogger observer_logger(host);
 
   GURL new_tab_url(chrome::kChromeUINewTabURL);

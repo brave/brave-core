@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_H_
 
 #include <memory>
+#include <string>
 
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -19,12 +20,18 @@ class GURL;
 
 namespace ntp_background_images {
 
+// TODO(sko) Rename this to NTPCustomBackgroundService. It's dealing with
+// not only images but also colors.
+// https://github.com/brave/brave-browser/issues/24926
 class NTPCustomBackgroundImagesService : public KeyedService {
  public:
   class Delegate {
    public:
-    virtual bool IsCustomBackgroundEnabled() = 0;
+    virtual bool IsCustomImageBackgroundEnabled() = 0;
     virtual base::FilePath GetCustomBackgroundImageLocalFilePath() = 0;
+
+    virtual bool IsColorBackgroundEnabled() = 0;
+    virtual std::string GetColor() = 0;
 
     virtual ~Delegate() = default;
   };

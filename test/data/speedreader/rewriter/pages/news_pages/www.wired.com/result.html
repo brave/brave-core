@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>The Curious Afterlife of a Brain Trauma Survivor</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">The Curious Afterlife of a Brain Trauma Survivor</h1><p class="subhead metadata">Sophia Papp emerged from an accident with her personality transformed. She tried to continue on as before—until she realized she could reinvent herself.</p><div class=""><p class="metadata">By Mike Mariani</p><p class="metadata date">Updated Aug. 16, 2022 06:00 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><div class="GridWrapper-vhRNW ejjPvE grid grid-margins grid-items-2 ArticlePageChunksGrid-kRMzIi cnexyt grid-layout--adrail narrow wide-adrail"><div class="GridItem-bvxNJE bvxzcI grid--item grid-layout__content"><div class="BodyWrapper-csHumu cEJxql body body__container article__body" data-journey-hook="client-content" data-testid="BodyWrapper"><div class="body__inner-container"><p><span class="lead-in-text-callout">Sophie Papp and</span> her family had a ritual for the recently departed. Whenever a relative died, she and her brother and cousins would all squeeze into a car and drive to Koksilah River, an hour north of their homes in Victoria, British Columbia. There, they would spend the day swimming in the glassy jade water, letting the current drag them along the squishy riverbed and gazing at the native arbutus trees, whose red bark peeled like crinkly snakeskin. After her grandmother passed away, Sophie—a sweet, reserved 19-year-old with gray-blue eyes and freckles—joined her younger brother, her cousin Emily, and a close friend for a drive up-island. It was September 1, 2014.</p><p class="paywall">On the way, the group made a quick stop at a Tim Hortons for coffee and breakfast. That’s the last memory Sophie has of that day. About 45 minutes after the stop, Emily, who was driving, spilled her iced coffee. Her attention slipped from the highway, and she lost control of the Volkswagen Golf. The car skidded across multiple lanes in both directions before somersaulting into a ravine on the opposite side of the road.</p><p class="paywall">Of the four, Sophie was most severely injured in the crash. At the crash site, EMTs gave her a score of six on the Glasgow Coma Scale, indicating profound brain trauma. She was rushed, unconscious, into Victoria General Hospital’s trauma center, where doctors and nurses worked to save her life. After a week, she emerged from the coma.</p><p class="paywall">In her second week at the hospital, Sophie’s convalescence began to assume perplexing qualities. Just days after regaining rudimentary communication skills, she was engaging in extended, in-depth conversations with everyone around her. “One day she spoke a sentence, and then not long after, she was talking endlessly, about everything,” her mother Jane recalled. Sophie asked staff how old they were, whether they had children, what their most interesting cases had been. She slipped effortlessly into sincere, heartfelt exchanges with the floor’s nurses’ aides.</p><p class="paywall">One morning, she had an appointment with a radiologist to discuss MRI scans she’d taken a few days earlier. With her mother at her side, Sophie interjected with one question after another. “Are any of the lesions in the cerebellum?” she asked. “Has an fMRI been done? What about the thalamus, fornix, and pons? Have they been affected?” The radiologist paused, and his furrowed brow and sharp eyes slid over to Jane, briefly, before turning back to Sophie. “How do you know these things, Sophie?” he asked. In the days before the appointment, Sophie had convinced her father to borrow several books on neurology from the library. After he dropped off the texts on neuroscience and brain anatomy, she “read away into the night,” she remembered.</p><p class="paywall">All her life, Sophie had been a “fairly introverted, cautious girl,” Jane remembered. As her time at the hospital progressed, though, that young woman faded more and more from view. When a nurse went through the neurology wing and marked each room with colored tape, Sophie snuck around and mischievously peeled all the tape off. One night, after most of the patients had gone to sleep, she wheeled around the floor and changed the dates on all their whiteboards to December 24. When a technician explained that he would be doing something called a “propeller rotation” while she was in the MRI machine, she told him, “It’s not a helicopter, so fuck you.” She found one of the neurosurgeons who made rounds on her wing handsome, and she asked him out on the spot. With intense sincerity, she queried one of the physicians on her care team about where the source of <a href="https://www.wired.com/search/?q=consciousness&amp;sort=score+desc">consciousness</a> lay in the brain. “She was really, really social, and that wasn’t the Sophie that we knew from before,” Jane recalled.</p><p class="paywall">Sophie’s doctors believed that her <a href="https://www.wired.com/search/?q=traumatic+brain+injury&amp;sort=score+desc">traumatic brain injury</a> (TBI) affected her executive functioning, including her inhibition control. The result was a more <em>disinhibited</em> person—one who acted freely, spoke effusively, and approached others with a directness verging on audacity that her old self wouldn’t have dreamed of employing. The metamorphosis wasn’t limited to the way she communicated with others, either. In her monthlong stay at VGH, Sophie grew more emotional than she’d ever been before. An even-keeled girl during most of her adolescence, she rose to a boil quickly that September, tumbled into the undertow of powerful mood swings, and broke into convulsive crying jags.</p></div></div></div><div class="GridItem-bvxNJE gdpNCz grid--item grid-layout__aside"><div class="StickyBoxWrapper-etBStc cKMyEb sticky-box"><div class="StickyBoxPrimary-fEMnhf fsgBSt sticky-box__primary"><div class="RecircMostPopularWrapper-laKBBm efgeaZ recirc-most-popular-wrapper viewport-monitor-anchor" data-attr-viewport-monitor=""><div class="RecircMostPopularContiner-hfCmkf czllHL recirc-most-popular-sparrow-tracking hide-aside-ad" data-most-popular-id="mod-most-popular-1792"><p>Most Popular</p></div></div></div></div></div></div><div class="GridWrapper-vhRNW ejjPvE grid grid-margins grid-items-2 ArticlePageChunksGrid-kRMzIi cnexyt grid-layout--adrail narrow wide-adrail"><div class="GridItem-bvxNJE bvxzcI grid--item grid-layout__content"><div class="BodyWrapper-csHumu cEJxql body body__container article__body" data-journey-hook="client-content" data-testid="BodyWrapper"><div class="body__inner-container"><p class="paywall">Because of the deep-seated, manifold ways the head trauma affected her brain, Sophie had become a markedly different person. A quiet, easygoing young woman fell into a weeklong slumber and woke up talkative, tempestuous, and inscrutable. Of course, she would always be Sophia Papp, daughter of Jane and Jamie, born December 12, 1994, with the same singular two-decade narrative. But at times it seemed as though the Sophie Papp everyone knew had been swapped out for a charismatic, capricious changeling. “It was like losing a child, but a physical representation of that child is still living, and we had to get to know who she was,” Jane said.</p><p class="paywall">Sophie’s continuity of self had been ruptured forever. Her new reality forced her to reckon with an identity crisis writ large as she began her afterlife living under the skin of somebody who’d been born in the crash.</p><p class="paywall"><span class="lead-in-text-callout">On October 1,</span> after exactly a month in the hospital, Sophie was discharged to her parents’ two-floor stucco house in Victoria. Almost as soon as she returned home, she found life outside the hospital’s steady, predictable rhythms to be unbearably turbulent. The part of Sophie’s brain responsible for filtering stimuli had been severely affected by the TBI, and she started suffering from bouts of sensory overload. “It was like every single detail, every sound or sight or feeling, was just bombarding my brain,” Sophie said.</p><p class="paywall">Increasingly frustrated, and desperate to grasp what was going on, Sophie started doing her own research. It didn’t take long for her to amass much more information on traumatic brain injuries than she’d received at the hospital—web pages, online articles, statistics, scientific studies. She discovered that people with even moderate traumatic brain injuries often suffer permanent physical and mental impairments, many severe enough to leave them unable to work. A significant number of brain-injured people reported feeling worse five years after their injury, and the group was on average far more vulnerable to seizures, infections, and other illnesses than the general population.</p><p class="paywall">The research focused on long-term prognoses was even more discouraging. Poring over Google searches in her bedroom, her back propped against a pillow, Sophie found several academic journal articles showing how people with moderate to severe TBIs (hers was somewhere in between) had shortened life expectancies. Worse, she uncovered research examining the relationship between TBIs and IQ. In one work, researchers carried out a controlled study over a period of years and determined that TBIs typically lowered a person’s IQ, often for the rest of their lives.</p><p class="paywall">For Sophie, who’d always prided herself on her intelligence, it was the most agonizing discovery of them all. The notion that she was no longer capable of attending college tormented her. Eventually, she bottomed out. After weeks of living in the hungry quicksand of paranoia and self-doubt, she arrived at the only path forward she could think of: She refused to accept the scientific conclusions. “One of my acute fears was that I could no longer do anything,” Sophie said. “I really wanted to prove to myself that I could.”</p></div></div></div><div class="GridItem-bvxNJE gdpNCz grid--item grid-layout__aside"><div class="StickyBoxWrapper-etBStc jszjdJ sticky-box"><div class="StickyBoxPrimary-fEMnhf fsgBSt sticky-box__primary"><div class="RecircMostPopularWrapper-laKBBm efgeaZ recirc-most-popular-wrapper viewport-monitor-anchor" data-attr-viewport-monitor=""><div class="RecircMostPopularContiner-hfCmkf czllHL recirc-most-popular-sparrow-tracking hide-aside-ad" data-most-popular-id="mod-most-popular-1793"><p>Most Popular</p></div></div></div></div></div></div><div class="GridWrapper-vhRNW ejjPvE grid grid-margins grid-items-2 ArticlePageChunksGrid-kRMzIi cnexyt grid-layout--adrail narrow wide-adrail"><div class="GridItem-bvxNJE bvxzcI grid--item grid-layout__content"><div class="BodyWrapper-csHumu cEJxql body body__container article__body" data-journey-hook="client-content" data-testid="BodyWrapper"><div class="body__inner-container"><p class="paywall">Sophie’s doctors had strongly recommended that she wait two years before starting college. Resuming her studies any sooner, they warned, could be too overwhelming, and might also wreak emotional havoc. Sophie found these recommendations unacceptable. In December, without telling anyone, she enrolled in two introductory courses, in psychology and chemistry, at a local community college. The courses would start in January, little more than four months after the accident.</p><p class="paywall">To everyone’s surprise, her classes were an emphatic success. Sophie found that she could train her anxiety on homework, papers, and exams, and she earned two A-pluses. Buoyed by her auspicious performance, she enrolled in two summer courses at the University of Victoria. During one of her first days in her new psychology class, held in a lecture hall with long beige tables that circled the stage like horseshoes, the professor was discussing how frontal lobe damage affects behavior. Quietly registering the coincidence, Sophie listened as the professor explained how altered executive functioning in these individuals’ brains changes their sense of humor. To illustrate her point, she offered a joke that, she said, only people with frontal lobe damage would find funny—something about non-waterproof watches being submerged underwater. The lecture hall remained dead quiet following the joke; after a beat, Sophie erupted in peals of loud, uncontrollable laughter.</p><p class="paywall">At first Sophie had found the joke’s peculiar construction hilarious. Individuals with frontal lobe damage occasionally report a phenomenon sometimes called Witzelsucht—German for “joking addiction”—in which they find non sequiturs, puns, and other one-liners hysterically funny while losing an appreciation for other varieties of humor. What really sent her over the top, though, was the uncomfortable surrealism of the situation. “It was the awkwardness of however many hundreds of students were there, and this one student was just killing herself laughing at a joke that was not supposed to be funny,” Sophie said.</p><p class="paywall">Observing her classmates’ hard, appraising expressions as she slid out of her seat and left the room to collect herself, Sophie felt exposed in an oddly circuitous way: By assuming she did not exist, the professor had paradoxically revealed her and her <a href="https://www.wired.com/search/?q=neurological&amp;sort=score+desc">neurological</a> differences to the rest of the class. If she’d started to convince herself that her TBI symptoms would not play much of a role in her college experience, the episode was a jolting illustration to the contrary.</p><p class="paywall">Sophie managed to receive A’s in both her classes. But the following fall, when she matriculated into the University of Victoria as a full-time student majoring in general science, the dramatic increase in workload blindsided her. Within just a few days of classes, she was spiraling—her mind careering out of control, her body sputtering. Her anxiety soared, and her thoughts, trapped on a hamster wheel, kept her awake at night. She reviewed the same assignments, the same tasks, the same details over and over, her brain cycling through a progressively decaying loop. A sense of rapacious perfectionism had set in, one that verged on <a href="https://www.wired.com/search/?q=OCD&amp;sort=score+desc">obsessive-compulsive disorder</a>. (TBIs have been found to affect specific neural circuits that are associated with OCD, including those in the frontal subcortical region of the brain.) She experienced such wallops of dread that her limbs were often numb and her lips an icy, waxen blue. She moved through the campus greens and her own house with the stiffened, halting posture of someone shuffling around in a straitjacket. “She was so cognitively exhausted,” Jane said. “She didn’t have facial expressions, she barely talked. We knew she felt really unwell. She was pale and gaunt looking.”</p></div></div></div><div class="GridItem-bvxNJE gdpNCz grid--item grid-layout__aside"><div class="StickyBoxWrapper-etBStc jszjdJ sticky-box"><div class="StickyBoxPrimary-fEMnhf fsgBSt sticky-box__primary"><div class="RecircMostPopularWrapper-laKBBm efgeaZ recirc-most-popular-wrapper viewport-monitor-anchor" data-attr-viewport-monitor=""><div class="RecircMostPopularContiner-hfCmkf czllHL recirc-most-popular-sparrow-tracking hide-aside-ad" data-most-popular-id="mod-most-popular-1794"><p>Most Popular</p></div></div></div></div></div></div><div class="GridWrapper-vhRNW ejjPvE grid grid-margins grid-items-2 ArticlePageChunksGrid-kRMzIi cnexyt grid-layout--adrail narrow wide-adrail"><div class="GridItem-bvxNJE bvxzcI grid--item grid-layout__content"><div class="BodyWrapper-csHumu cEJxql body body__container article__body" data-journey-hook="client-content" data-testid="BodyWrapper"><div class="body__inner-container"><p class="paywall">One evening, with her family gathered for dinner, Sophie attempted to convey the depths of her psychological unease. Her anxiety often became so acute that she felt as though someone else were experiencing it. It was a jarring shift in perception, she noted, that felt like she was observing herself from the third person. She also shared with them a disturbing theory she’d been harboring. Periodically, she would find herself gripped by a conviction that she was still in a coma, “somewhere in the bottom of a hospital basement,” living out her days in an unconscious state cleverly mimicking waking reality.</p><p class="paywall">When she finished speaking, her family paused to process everything she’d told them, their eyes heavy and searching. Her parents, who were both doctors, realized that Sophie was describing episodes of depersonalization—also called derealization—a serious psychiatric symptom in which a person becomes detached from their own reality and begins to doubt whether the world around them is real. (Individuals with traumatic brain injuries are at heightened risk for the phenomenon.)</p><p class="paywall">Sophie started seeing a psychiatrist, who suggested that she try a low-dose SSRI, a type of <a href="https://www.wired.com/search/?q=antidepressant&amp;sort=score+desc">antidepressant</a> frequently prescribed to people with traumatic brain injuries. The medication, mercifully, took rapid effect; within a week, Sophie was sleeping for several hours each night, and her anxiety ratcheted down. But her struggles as a first-year college student continued. She’d dedicated herself to rebutting the notion that the TBI had blunted her intelligence, and she was consistently earning A’s and A-pluses. Succeeding in her college classes would serve as proof, she thought, that either her cognitive faculties had not been negatively affected by the brain injury or she’d managed to reverse its effects. But by framing her coursework in this way, Sophie’s recovery, well-being, and sense of self-worth all hinged on how she managed in her classes.</p><p class="paywall">In May of 2016, after a turbulent first year at the University of Victoria, Sophie took a research position at a neuroscience lab at McGill University in Montreal, where her workload was not nearly as onerous. As she closed in on two years since the accident, her body’s recuperation had largely gone exceptionally well. She had regained most of her physical abilities, to the point that she could not only walk on her own but also hike, bike, and even put in time at <a href="https://www.wired.com/gallery/best-climbing-gear/">rock climbing</a> gyms. Maybe, she thought, this would be the ideal time to experiment with weaning herself off her SSRI, the antidepressant medication she’d been prescribed.</p><p class="paywall">Within a few days of stopping her medication, she noticed herself getting up at five in the morning, unable to fall back asleep. Her anxiety ramped up, too, and she began compulsively picking at her skin—a condition called excoriation disorder that’s most often seen in individuals with OCD. One minute, she’d be entering her dimly lit bathroom to pee; the next, her face would be pushed up just inches from the mirror as she moved over each tiny pore with the engrossed precision of a surgeon. The derealization episodes also returned. When conversing with anybody she’d met for the first time, she was often struck by the fear that they were figments of her imagination, hallucinations springing from a mind she no longer trusted. Stopping to talk to members of Montreal’s homeless population—an example of her post-TBI extroversion—Sophie would find herself questioning the objective reality of their existence: As they drifted through the streets and around metro stations and were rarely acknowledged by other passersby, she had no proof outside of her own perception that they were actually there.</p><p class="paywall">Most of these symptoms were not altogether unexpected. But as the extra serotonin floating freely in her brain was flushed out completely, she experienced an effect she hadn’t expected: She became more searching and inquisitive. Her thoughts drifted, unbidden, toward weighty questions about the relationship between her traumatic brain injury and her sense of self. She pondered where the boundary lay between former and latter, whose perceptions of that boundary counted the most, and the agency she’d had in becoming the person she was now.</p></div></div></div><div class="GridItem-bvxNJE gdpNCz grid--item grid-layout__aside"><div class="StickyBoxWrapper-etBStc jszjdJ sticky-box"><div class="StickyBoxPrimary-fEMnhf fsgBSt sticky-box__primary"><div class="RecircMostPopularWrapper-laKBBm efgeaZ recirc-most-popular-wrapper viewport-monitor-anchor" data-attr-viewport-monitor=""><div class="RecircMostPopularContiner-hfCmkf czllHL recirc-most-popular-sparrow-tracking hide-aside-ad" data-most-popular-id="mod-most-popular-1795"><p>Most Popular</p></div></div></div></div></div></div><div class="GridWrapper-vhRNW ejjPvE grid grid-margins grid-items-2 ArticlePageChunksGrid-kRMzIi cnexyt grid-layout--adrail narrow wide-adrail"><div class="GridItem-bvxNJE bvxzcI grid--item grid-layout__content"><div class="BodyWrapper-csHumu cEJxql body body__container article__body" data-journey-hook="client-content" data-testid="BodyWrapper"><div class="body__inner-container"><p class="paywall">In a journal entry from July 4, after she’d been off her medication for nearly six weeks, Sophie wrote, “I think that my car accident and subsequent injury led me to define myself as brain-injured. Along with the label came the constraints, the fear of the unknown, the possibility that I am less than who I was.”</p><p class="paywall">During her first two months in Montreal, Sophie had decided not to tell anybody she’d met about her brain injury. Her tacit hope was that if she came across as “normal” to others, it might serve as proof for herself that she’d made a thorough recovery. When she did start to tell some of her new friends about her condition, they registered surprise but didn’t seem to view her any differently for it. “They were like, ‘Oh, wow, that’s an interesting story,’ but they didn’t realize the impact that it was actively having on my psyche,” she said. Sophie was gratified to hear how successful her concealment had been. Each person that responded to the disclosure of her traumatic brain injury with genuine unbelief was more evidence supporting the case that she was healthy and thriving, in no way notably different from any other 21-year-old.</p><p class="paywall">In her journal, Sophie grappled over and over with the concept of identity, laboring to decipher what it really came down to once you accepted how much a person’s personality and character were controlled by chance and circumstance. For her, people were defined less by a series of neat categories—each one laid squarely on top of the other—than by a heaving, churning chaos, like the ocean. “The tide is always moving, bringing new water, material, and it coincides with the moon,” she wrote in her journal. “It’s relatively stable short-term, even though there is always current, but over a lifetime it can change drastically to house different life-forms.” Here, she felt, was the truth about identity: It was fluid, subject to change at any time, less the product of some imperishable internal self than the endless array of natural forces convulsing around it.</p><p class="paywall">There had been an unfathomable aspect to Sophie’s injury, an existential absurdity in how she’d been knocked unconscious and awoken, a week later, as a wholly different person. It sounded like an old fairy tale, perhaps a particularly vivid nightmare, but not biographical fact. She was finally reckoning with the powerful feelings such an extreme event evoked, the way it called into question universal axioms about coherent identities and continuous selves that everyone else seemed to unreservedly accept. The more she explored these concepts, the more she felt she was exposing their ephemeral nature and discontinuity, uncloaking the assuaging narratives others subscribed to and draped over more troubling truths. “Based on my model of personality, I am just a jumble of tendencies and perceptions, based on the input I’m given,” she wrote.</p><p class="paywall">Slowly, Sophie began to see that her “reality was very, very different from before the injury.” The person she was trying so desperately to return to—her mind, her faculties, her stamina, and her poise—was not hiding underneath the ever-shifting composition of her symptoms. By the time she was preparing to return home to Victoria, she was gradually growing more comfortable with a definition of recovery that exchanged an idealized normalcy for a model where permanent changes coexisted alongside personal growth.</p><p class="paywall">She realized that she had been seeking to fulfill a story she was inventing about her recovery. Humans have an instinct, an adaptive response likely forged long ago, to extract some kind of deeper value or importance from their most challenging experiences. “We love finding meaning,” Sophie told me during one of our conversations. “We’re just trying to create meaning. We’re trying to create a narrative that we can understand and that sits right. And that might not be the truth—and that’s OK. That’s just how it is.” When catastrophes cleave our lives apart, in order to restore purpose and cohesion we need to stitch our stories back together with a new through line.</p></div></div></div><div class="GridItem-bvxNJE gdpNCz grid--item grid-layout__aside"><div class="StickyBoxWrapper-etBStc jszjdJ sticky-box"><div class="StickyBoxPrimary-fEMnhf fsgBSt sticky-box__primary"><div class="RecircMostPopularWrapper-laKBBm efgeaZ recirc-most-popular-wrapper viewport-monitor-anchor" data-attr-viewport-monitor=""><div class="RecircMostPopularContiner-hfCmkf czllHL recirc-most-popular-sparrow-tracking hide-aside-ad" data-most-popular-id="mod-most-popular-1796"><p>Most Popular</p></div></div></div></div></div></div><div class="GridWrapper-vhRNW ejjPvE grid grid-margins grid-items-2 ArticlePageChunksGrid-kRMzIi cnexyt grid-layout--adrail narrow wide-adrail"><div class="GridItem-bvxNJE bvxzcI grid--item grid-layout__content"><div class="BodyWrapper-csHumu cEJxql body body__container article__body" data-journey-hook="client-content" data-testid="BodyWrapper"><div class="body__inner-container"><p class="paywall">But those leading afterlives, like Sophie, often regard the changes they’ve undergone and the circumstances they’ve been forced into with deep-seated ambivalence. Their feelings are emblazoned with contradictions, internal conflict, and layered ambiguities. Our inner lives can undergo unexpected transformations in the months and years following a catastrophic life event. When an experience wipes out much of the architecture and skyline of our day-to-day existence, our internal landscape, deprived of what it once zealously reflected, acclimates in enigmatic ways. It is desolate and dystopian for a time, but also, eventually, fertile.</p><p class="paywall"><span class="lead-in-text-callout">Year two as</span> a full-time college student, alas, began much like year one. When classes started, Sophie’s anxiety began climbing almost immediately. The nonacademic aspects of her life shriveled away like neglected crops. Her steely focus and avowed determination to blaze through her bachelor’s and immediately move forward with a PhD earned her the nickname Little Professor among her peers. To get the grades she pined for, she offered up her body, her mind, even her sanity.</p><p class="paywall">The following winter, Sophie began a relationship with a deaf male student at the University of Victoria. The two had met through the Society for Students with a Disability, where she worked as a community liaison and later a chairperson. They dated for a year, and she found the experience “world altering.” Seeing the gauntlet of obstacles he faced on campus every single day—from straining to follow lectures he couldn’t hear to communicating with professors through a limited number of available interpreters—opened her eyes to the innumerable ways access, privilege, and physical capability paved so much of each individual’s academic path. When Sophie was later exposed to the larger <a href="https://www.wired.com/search/?q=deaf&amp;sort=score+desc">Deaf community</a> in Victoria, through him, she witnessed his social barriers on an even larger scale. Deaf Victorians faced pervasive levels of poverty and illiteracy and profound social marginalization, and suffered disproportionately high incarceration rates.</p><p class="paywall">Sophie’s long-standing conceptions about intelligence and worth were shattered. Seeing the systemic effects of ableism firsthand exposed just how flawed her thinking had been, and her relationship with her studies began to evolve. By her fourth year at the University of Victoria, her yearslong thralldom to schoolwork was dissipating. She found herself growing emotionally detached from her classes and started questioning her long-established ambitions to become a scientific researcher. “When I reflect or imagine wanting to be a researcher, there’s a part of me that’s trying to fix myself, and there’s a part of me that is absolutely terrified of the changes that my brain underwent,” she said. “I’m trying to find solutions because I’m so deathly afraid of it.”</p><p class="paywall">In June 2020, Sophie earned her bachelor of science in biopsychology. That fall, she accepted a part-time position at the university’s Society for Students with a Disability. She was still only 26 years old.</p><p class="paywall">The sweeping changes in her perception became the crux of her reinvention. After all her experiences distrusting her senses and cognition and relentlessly plumbing the slippery depths of her identity, Sophie had come to imagine a different sort of self. “I have rejected the notion of having an identity, and I take so much meaning from the things around me,” she said. “The birds coming out, the mushrooms growing, the rain coming back, the smoke rolling in.” She was, she said, “just a witness, a witness to everything wonderful and awful going on.” It was a reconfiguration of how she saw the world, a view that promised to honor everything she’d been through without relinquishing the person she had been before she stepped into the Volkswagen Golf on that fate-twisting September morning.</p><hr class="paywall"><p class="paywall"><em>This story is adapted from</em> <a class="external-link" data-event-click="{&quot;element&quot;:&quot;ExternalLink&quot;,&quot;outgoingURL&quot;:&quot;https://www.penguinrandomhouse.com/books/645513/what-doesnt-kill-us-makes-us-by-mike-mariani/&quot;}" data-offer-url="https://www.penguinrandomhouse.com/books/645513/what-doesnt-kill-us-makes-us-by-mike-mariani/" href="https://www.penguinrandomhouse.com/books/645513/what-doesnt-kill-us-makes-us-by-mike-mariani/" rel="nofollow noopener" target="_blank">What Doesn’t Kill Us Makes Us</a><em>, by Mike Mariani. The book will be published this month by Ballantine Books.</em></p><p class="paywall"><em>Let us know what you think about this article. Submit a letter to the editor at</em> <a href="mailto:mail@wired.com"><em>mail@wired.com</em></a><em>.</em></p></div></div></div></div></body>

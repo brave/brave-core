@@ -51,19 +51,34 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         // Auto-dismiss of together prompt only
         // takes effect on the next page view and not the
-        // page view that the action occured on.
+        // page view that the action occurred on.
         braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
       }
 
       if (initialDataPayload.wallpaperData) {
+        // Payload passed from native UI doesn't have 'type' property. We should
+        // fix up here.
+        let backgroundWallpaper = payload.wallpaperData.backgroundWallpaper
+        if (backgroundWallpaper?.wallpaperImageUrl) {
+          backgroundWallpaper = {
+            ...backgroundWallpaper,
+            type: 'image'
+          }
+        } else if (backgroundWallpaper?.wallpaperColor) {
+          backgroundWallpaper = {
+            ...backgroundWallpaper,
+            type: 'color'
+          }
+        }
+
         state = {
           ...state,
-          backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
+          backgroundWallpaper,
           brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper
         }
       }
 
-      // It's super referral when backgound is false and it's not sponsored.
+      // It's super referral when background is false and it's not sponsored.
       if (state.brandedWallpaper && !state.brandedWallpaper.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
         state = {
@@ -121,9 +136,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       // Empty custom bg url means using brave background.
       const url = payload.customBackground.url.url
-      state.backgroundWallpaper =
-          url === '' ? backgroundAPI.randomBackgroundImage()
-                     : { wallpaperImageUrl: url }
+      const color = payload.customBackground.color
+      if (url) {
+        state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
+      } else if (color) {
+        state.backgroundWallpaper = { type: 'color', wallpaperColor: color }
+      } else {
+        state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
+      }
       break
 
     case types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED:

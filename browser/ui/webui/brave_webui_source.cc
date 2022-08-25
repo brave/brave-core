@@ -171,6 +171,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "clockTitle", IDS_BRAVE_NEW_TAB_CLOCK },
         { "backgroundImageTitle", IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE },
         { "settingsNavigateBack", IDS_BRAVE_NEW_TAB_SETTINGS_BACK },
+        { "solidColorTitle", IDS_BRAVE_NEW_TAB_SOLID_COLOR},
+        { "gradientColorTitle", IDS_BRAVE_NEW_TAB_GRADIENT_COLOR},
 
         // search promotion
         { "searchPromotionNTPPopupTitle1", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1},  // NOLINT

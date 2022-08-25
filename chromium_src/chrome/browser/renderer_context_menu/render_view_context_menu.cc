@@ -314,19 +314,19 @@ void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
 void BraveRenderViewContextMenu::BuildIPFSMenu() {
   if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return;
-  int index =
+  absl::optional<size_t> index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
-  if (index == -1)
+  if (!index.has_value())
     return;
   if (!params_.selection_text.empty() &&
       params_.media_type == ContextMenuDataMediaType::kNone) {
-    menu_model_.InsertSeparatorAt(index,
+    menu_model_.InsertSeparatorAt(index.value(),
                                   ui::MenuSeparatorType::NORMAL_SEPARATOR);
 
     menu_model_.InsertItemWithStringIdAt(
-        index, IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS,
+        index.value(), IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS,
         IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT);
-    SeIpfsIconAt(index);
+    SeIpfsIconAt(index.value());
     return;
   }
 
@@ -362,23 +362,22 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
   }
   if (!ipfs_submenu_model_.GetItemCount())
     return;
-  menu_model_.InsertSeparatorAt(index, ui::MenuSeparatorType::NORMAL_SEPARATOR);
+  menu_model_.InsertSeparatorAt(index.value(),
+                                ui::MenuSeparatorType::NORMAL_SEPARATOR);
   menu_model_.InsertSubMenuWithStringIdAt(
-      index, IDC_CONTENT_CONTEXT_IMPORT_IPFS, IDS_CONTENT_CONTEXT_IMPORT_IPFS,
-      &ipfs_submenu_model_);
-  SeIpfsIconAt(index);
+      index.value(), IDC_CONTENT_CONTEXT_IMPORT_IPFS,
+      IDS_CONTENT_CONTEXT_IMPORT_IPFS, &ipfs_submenu_model_);
+  SeIpfsIconAt(index.value());
 }
 #endif
 
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
-  int index = -1;
-
-  index = menu_model_.GetIndexOfCommandId(
+  absl::optional<size_t> index = menu_model_.GetIndexOfCommandId(
       IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
-  if (index != -1) {
-    menu_model_.InsertItemWithStringIdAt(index + 1,
+  if (index.has_value()) {
+    menu_model_.InsertItemWithStringIdAt(index.value() + 1,
                                          IDC_CONTENT_CONTEXT_FORCE_PASTE,
                                          IDS_CONTENT_CONTEXT_FORCE_PASTE);
   }
@@ -393,11 +392,10 @@ void BraveRenderViewContextMenu::InitMenu() {
 
     index = menu_model_.GetIndexOfCommandId(
         IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
-    DCHECK_NE(index, -1);
+    DCHECK(index.has_value());
 
     menu_model_.InsertItemWithStringIdAt(
-        index + 1,
-        IDC_CONTENT_CONTEXT_OPENLINKTOR,
+        index.value() + 1, IDC_CONTENT_CONTEXT_OPENLINKTOR,
         is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
@@ -419,7 +417,7 @@ void BraveRenderViewContextMenu::InitMenu() {
   // separator is removed in |BraveRenderViewContextMenuViews::Show|
   if (remove_translate) {
     index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
-    if (index != -1)
-      menu_model_.RemoveItemAt(index);
+    if (index.has_value())
+      menu_model_.RemoveItemAt(index.value());
   }
 }

@@ -7,7 +7,7 @@ index 34974e0bf54b5210faf8b16fc764657f9b55221e..5455604f53bb44f88e357797078e4b59
  // The maximum number of times we'll check to see if the translate library
  // injected in the page is ready.
 -const int kMaxTranslateInitCheckAttempts = 5;
-+const int kMaxTranslateInitCheckAttempts = 8;
++const int kMaxTranslateInitCheckAttempts = 11;
  
  // The delay we wait in milliseconds before checking whether the translation has
  // finished.

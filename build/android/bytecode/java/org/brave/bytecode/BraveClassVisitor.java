@@ -9,7 +9,7 @@ import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
 import static org.objectweb.asm.Opcodes.ACC_PROTECTED;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.ASM7;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.NEW;
@@ -63,7 +63,7 @@ class BraveClassVisitor extends ClassVisitor {
         private Method mMethod;
 
         public BraveMethodVisitor(Method method, MethodVisitor mv) {
-            super(ASM5, mv);
+            super(ASM7, mv);
             this.mMethod = method;
         }
 
@@ -132,7 +132,7 @@ class BraveClassVisitor extends ClassVisitor {
     private ArrayList<String> mMakeNonFinalClasses = new ArrayList<String>();
 
     public BraveClassVisitor(ClassVisitor visitor) {
-        super(ASM5, null);
+        super(ASM7, null);
         mTarget = visitor;
     }
 

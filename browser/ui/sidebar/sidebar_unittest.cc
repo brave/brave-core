@@ -64,26 +64,25 @@ class SidebarModelTest : public testing::Test, public SidebarModel::Observer {
 };
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {
-  EXPECT_EQ(0UL, model()->data_.size());
+  auto built_in_items_size =
+      std::size(SidebarService::kDefaultBuiltInItemTypes);
+  EXPECT_EQ(built_in_items_size, service()->items().size());
   model()->Init(nullptr);
-  EXPECT_EQ(service()->items().size(), model()->data_.size());
 
   EXPECT_EQ(-1, model()->active_index());
 
-  // Add one more item to test with 4 items.
+  // Add one more item to test with 5 items.
   SidebarItem new_item;
   new_item.url = GURL("https://brave.com");
   service()->AddItem(new_item);
-  EXPECT_EQ(4UL, service()->items().size());
-  EXPECT_EQ(4UL, model()->data_.size());
-  EXPECT_EQ(service()->items().size(), model()->data_.size());
+  EXPECT_EQ(built_in_items_size + 1, service()->items().size());
 
   // Move item at 1 to at index 2.
   // Total size and active index is not changed when currently active index is
   // -1.
-  const size_t model_size = model()->data_.size();
+  const size_t items_size = service()->items().size();
   // Cache data at index 1.
-  auto* model_data = model()->data_[1].get();
+  const auto item_data = service()->items()[1];
   EXPECT_FALSE(on_item_moved_called_);
   EXPECT_FALSE(on_active_index_changed_called_);
 
@@ -91,9 +90,12 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   EXPECT_TRUE(on_item_moved_called_);
   EXPECT_FALSE(on_active_index_changed_called_);
-  EXPECT_EQ(model_data, model()->data_[2].get());
+  EXPECT_EQ(item_data.built_in_item_type,
+            service()->items()[2].built_in_item_type);
+  EXPECT_EQ(item_data.url, service()->items()[2].url);
+  EXPECT_EQ(item_data.title, service()->items()[2].title);
   EXPECT_EQ(-1, model()->active_index());
-  EXPECT_EQ(model_size, model()->data_.size());
+  EXPECT_EQ(items_size, service()->items().size());
 
   model()->SetActiveIndex(1, false);
   EXPECT_EQ(1, model()->active_index());
@@ -140,8 +142,6 @@ TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
   EXPECT_EQ(GURL(kBraveTalkURL),
             ConvertURLToBuiltInItemURL(
                 GURL("https://talk.brave.com/1Ar1vHfLBWX2sAdi")));
-  EXPECT_EQ(GURL(kSidebarBookmarksURL),
-            ConvertURLToBuiltInItemURL(GURL(chrome::kChromeUIBookmarksURL)));
   EXPECT_EQ(
       GURL(kBraveUIWalletPageURL),
       ConvertURLToBuiltInItemURL(GURL("chrome://wallet/crypto/onboarding")));

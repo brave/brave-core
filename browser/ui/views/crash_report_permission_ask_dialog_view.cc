@@ -10,7 +10,7 @@
 #include "base/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -27,7 +27,6 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
-#include "ui/base/theme_provider.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/views/background.h"
@@ -123,9 +122,8 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
       header->AddChildView(std::make_unique<views::ImageView>());
   header_image->SetImageSize(gfx::Size(kIconSize, kIconSize));
   SkColor header_image_color = kDefaultSadImageColor;
-  if (parent && parent->GetThemeProvider()) {
-    header_image_color = parent->GetThemeProvider()->GetColor(
-        BraveThemeProperties::COLOR_ICON_BASE);
+  if (parent && parent->GetColorProvider()) {
+    header_image_color = parent->GetColorProvider()->GetColor(kColorIconBase);
   }
   header_image->SetImage(ui::ImageModel::FromVectorIcon(
       kBraveSadIcon, header_image_color, kIconSize));

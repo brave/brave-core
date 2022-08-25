@@ -22,18 +22,14 @@
 #include "base/task/thread_pool.h"
 #include "base/win/shortcut.h"
 #include "base/win/windows_version.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_shortcut_manager_win.h"
-#include "chrome/browser/shell_integration.h"
 #include "chrome/browser/shell_integration_win.h"
 #include "chrome/installer/util/install_util.h"
 #include "chrome/installer/util/shell_util.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -334,6 +330,9 @@ bool CanPinToTaskbar() {
 namespace shell_integration::win {
 
 void PinToTaskbar(Profile* profile) {
+  // Disable pin-to-taskabar uitll we have checkbox to ask the user to use it.
+  return;
+
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!CanPinToTaskbar())
@@ -369,33 +368,6 @@ void PinToTaskbar(Profile* profile) {
               },
               profile));
   return;
-}
-
-void PinDefaultShortcutForExistingUsers() {
-  // TODO(simonhong): Support win7/8
-  // Below win::PinToTaskbar() doesn't work for win7/8.
-  if (base::win::GetVersion() < base::win::Version::WIN10_RS5)
-    return;
-
-  if (first_run::IsChromeFirstRun())
-    return;
-
-  auto* local_prefs = g_browser_process->local_state();
-  if (!local_prefs->GetBoolean(kTryToPinForExistingUsers))
-    return;
-
-  // Do this only once.
-  local_prefs->SetBoolean(kTryToPinForExistingUsers, false);
-
-  // Try to pin default shortcut when existing user already set Brave as a
-  // default browser.
-  auto set_browser_worker = base::MakeRefCounted<DefaultBrowserWorker>();
-  set_browser_worker->StartCheckIsDefault(
-      base::BindOnce([](shell_integration::DefaultWebClientState state) {
-        if (state == shell_integration::IS_DEFAULT) {
-          win::PinToTaskbar();
-        }
-      }));
 }
 
 }  // namespace shell_integration::win

@@ -5,6 +5,7 @@
 
 #include "brave/components/speedreader/speedreader_service.h"
 
+#include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/speedreader/common/features.h"
@@ -80,7 +81,17 @@ SpeedreaderService::~SpeedreaderService() = default;
 
 // static
 void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kSpeedreaderPrefEnabled, false);
+  bool enabled_by_deault = false;
+
+#if DCHECK_IS_ON()
+  // Enable speedreader by default if the data collector command line key is
+  // specified.
+  constexpr const char kCollectSwitch[] = "speedreader-collect-test-data";
+  enabled_by_deault =
+      base::CommandLine::ForCurrentProcess()->HasSwitch(kCollectSwitch);
+#endif
+
+  registry->RegisterBooleanPref(kSpeedreaderPrefEnabled, enabled_by_deault);
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);
   registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);

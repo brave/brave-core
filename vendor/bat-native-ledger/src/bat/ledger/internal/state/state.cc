@@ -38,13 +38,9 @@ std::vector<double> StringToVectorDouble(const std::string& items_string) {
     return {};
   }
 
-  base::ListValue* list_value = nullptr;
-  if (!list->GetAsList(&list_value)) {
-    return {};
-  }
-
+  auto& list_value = list->GetList();
   std::vector<double> items;
-  for (auto& item : list_value->GetList()) {
+  for (auto& item : list_value) {
     if (!item.is_double()) {
       continue;
     }
@@ -69,15 +65,14 @@ std::string PayoutStatusToString(
 
 base::flat_map<std::string, std::string> StringToPayoutStatus(
     const std::string& payout_status_string) {
-  base::DictionaryValue* dictionary_value = nullptr;
-  auto dict = base::JSONReader::Read(payout_status_string);
-  if (!dict || !dict->GetAsDictionary(&dictionary_value)) {
+  auto json = base::JSONReader::Read(payout_status_string);
+  if (!json || !json->is_dict()) {
     return {};
   }
-  DCHECK(dictionary_value);
 
+  auto& dict = json->GetDict();
   base::flat_map<std::string, std::string> payout_status;
-  for (const auto [key, value] : dictionary_value->GetDict()) {
+  for (const auto [key, value] : dict) {
     if (!value.is_string()) {
       continue;
     }

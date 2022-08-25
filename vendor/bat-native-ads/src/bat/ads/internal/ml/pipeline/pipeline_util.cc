@@ -42,16 +42,16 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
 
     std::string parsed_transformation_type = *transformation_type;
 
-    if (parsed_transformation_type.compare("TO_LOWER") == 0) {
+    if (parsed_transformation_type == "TO_LOWER") {
       transformations->push_back(std::make_unique<LowercaseTransformation>());
     }
 
-    if (parsed_transformation_type.compare("NORMALIZE") == 0) {
+    if (parsed_transformation_type == "NORMALIZE") {
       transformations->push_back(
           std::make_unique<NormalizationTransformation>());
     }
 
-    if (parsed_transformation_type.compare("HASHED_NGRAMS") == 0) {
+    if (parsed_transformation_type == "HASHED_NGRAMS") {
       const base::Value* transformation_params =
           transformation.FindKey("params");
 
@@ -103,7 +103,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
 
   std::string parsed_classifier_type = *classifier_type;
 
-  if (parsed_classifier_type.compare("LINEAR")) {
+  if (parsed_classifier_type != "LINEAR") {
     return absl::nullopt;
   }
 

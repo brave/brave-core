@@ -1,0 +1,534 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Update: Fire crews stop Eden Fire progress after homes in Dublin threatened</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Update: Fire crews stop Eden Fire progress after homes in Dublin threatened</h1><p class="subhead metadata">A vegetation fire burned next to Interstate Highway 580 east of Castro Valley and was approaching homes on the western edge of Dublin Monday before firefighters stopped forward progress.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+    <figure class="embed embed--type-video embed--type-content_video is-video embed--float-none embed--size-medium is-hero" data-ads="{&quot;extraWordCount&quot;:50}">
+          <figcaption class="embed__caption-container"><a class="embed__headline-link" data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/sanfrancisco/video/eden-fire-burns-near-homes-between-dublinpleasanton-and-castro-valley/">
+          
+          
+
+          <span class="embed__headline">Eden Fire burns near homes between Dublin/Pleasanton and Castro Valley</span>
+
+          <span class="embed__video-duration">01:24</span>
+
+                      </a>
+                  
+        
+        
+              </figcaption></figure><div class="content__body">
+
+    
+
+<p>DUBLIN -- An East Bay community is breathing a sigh of relief after firefighters stopped a vegetation fire threatening homes in Schafer Ranch, burning next to Interstate Highway 580 east of Castro Valley.</p><p>The so-called Eden Fire came dangerously close to homes on the western edge of Dublin, Monday before firefighters got the upper hand. As of 7:30 p.m., it was 30% contained.</p><p>The fire&nbsp; burned 58 acres east of Eden Canyon Road along the westbound lanes of I-580. The California Highway Patrol said a car fire started the blaze around 4:20 p.m.</p><figure class="embed embed--type-twitter-tweet embed--float-none embed--size-medium lazyload" data-require="third-party/twitter-widgets"><div class="embed__content-wrapper">
+    <blockquote class="twitter-tweet"><p dir="ltr" lang="en"><a href="https://twitter.com/hashtag/edenfire?src=hash&amp;ref_src=twsrc%5Etfw" rel="nofollow noopener">#edenfire</a> 58 acres, No injuries or structures damaged.  The fire was started by a vehicle fire at I-580/Eden Canyon. <a href="https://twitter.com/calfireSCU?ref_src=twsrc%5Etfw" rel="nofollow noopener">@calfireSCU</a> <a href="https://twitter.com/CHPDublin?ref_src=twsrc%5Etfw" rel="nofollow noopener">@CHPDublin</a> <a href="https://twitter.com/ACSOSheriffs?ref_src=twsrc%5Etfw" rel="nofollow noopener">@ACSOSheriffs</a> <a href="https://t.co/43RKnUcMfy" rel="nofollow noopener">pic.twitter.com/43RKnUcMfy</a></p>— Alameda County Fire (@AlamedaCoFire) <a href="https://twitter.com/AlamedaCoFire/status/1559363283701837824?ref_src=twsrc%5Etfw" rel="nofollow noopener">August 16, 2022</a></blockquote>
+
+  </div>
+</figure><p>The Alameda County Fire Department said by 5 p.m. the fire reached two alarms.&nbsp;</p><p>Earlier, the City of Dublin issued an alert saying people living in the Schaefer Ranch Road neighborhood should be prepared to evacuate if forward progress continued.</p><figure class="embed embed--type-twitter-tweet embed--float-none embed--size-medium lazyload" data-require="third-party/twitter-widgets"><div class="embed__content-wrapper">
+    <blockquote class="twitter-tweet"><p dir="ltr" lang="en">Some structures are reported to be threatened off of Schaeffer Ranch Road <a href="https://twitter.com/hashtag/EdenFire?src=hash&amp;ref_src=twsrc%5Etfw" rel="nofollow noopener">#EdenFire</a> is now at 10 acres <a href="https://twitter.com/AlamedaCoFire?ref_src=twsrc%5Etfw" rel="nofollow noopener">@AlamedaCoFire</a> <a href="https://twitter.com/CALFIRECZU?ref_src=twsrc%5Etfw" rel="nofollow noopener">@CALFIRECZU</a> <a href="https://t.co/E3xGYV2RtE" rel="nofollow noopener">pic.twitter.com/E3xGYV2RtE</a></p>— CAL FIRE SCU (@calfireSCU) <a href="https://twitter.com/calfireSCU/status/1559330119503601666?ref_src=twsrc%5Etfw" rel="nofollow noopener">August 16, 2022</a></blockquote>
+
+  </div>
+</figure><p>The Shannon Community Center at San Ramon Road and Shannon Ave. in Dublin was being operated as an evacuation/reunification center for people evacuated from the Schaefer Ranch neighborhood.<em>&nbsp;</em></p><figure class="embed embed--type-twitter-tweet embed--float-none embed--size-medium lazyload" data-require="third-party/twitter-widgets"><div class="embed__content-wrapper">
+    <blockquote class="twitter-tweet"><p dir="ltr" lang="en">Deputies are at the <a href="https://twitter.com/hashtag/EdenFire?src=hash&amp;ref_src=twsrc%5Etfw" rel="nofollow noopener">#EdenFire</a> providing assistance. Firefighters and aircraft are doing a great job. Tune into <a href="https://twitter.com/AlamedaCoFire?ref_src=twsrc%5Etfw" rel="nofollow noopener">@AlamedaCoFire</a> and <a href="https://twitter.com/CAL_FIRE?ref_src=twsrc%5Etfw" rel="nofollow noopener">@CAL_FIRE</a> for official updates. <a href="https://t.co/Pm8xDYZmfK" rel="nofollow noopener">pic.twitter.com/Pm8xDYZmfK</a></p>— Alameda County Sheriff (@ACSOSheriffs) <a href="https://twitter.com/ACSOSheriffs/status/1559339061365526533?ref_src=twsrc%5Etfw" rel="nofollow noopener">August 16, 2022</a></blockquote>
+
+  </div>
+</figure><p>Dublin Boulevard was shut down to westbound traffic at Inspiration Drive and will remain shut down while fire crews mopped up.</p>
+
+    
+
+<p>Around 7:30 p.m., the city of Dublin announced Inspiration Drive had reopened and residents of the area would be allowed to return home.  </p><figure class="embed embed--type-twitter-tweet embed--float-none embed--size-medium lazyload" data-require="third-party/twitter-widgets"><div class="embed__content-wrapper">
+    <blockquote class="twitter-tweet"><p dir="ltr" lang="en"><a href="https://twitter.com/hashtag/EdenFire?src=hash&amp;ref_src=twsrc%5Etfw" rel="nofollow noopener">#EdenFire</a> update: <p>Dublin Boulevard has reopened at Inspiration Drive and residents of the area may return home.</p><p>Thank you to all of the responding crews – we appreciate you! <a href="https://twitter.com/AlamedaCoFire?ref_src=twsrc%5Etfw" rel="nofollow noopener">@AlamedaCoFire</a> <a href="https://twitter.com/DublinCAPolice?ref_src=twsrc%5Etfw" rel="nofollow noopener">@DublinCAPolice</a> <a href="https://twitter.com/ACSOSheriffs?ref_src=twsrc%5Etfw" rel="nofollow noopener">@ACSOSheriffs</a> <a href="https://twitter.com/CHPDublin?ref_src=twsrc%5Etfw" rel="nofollow noopener">@CHPDublin</a> <a href="https://twitter.com/calfireSCU?ref_src=twsrc%5Etfw" rel="nofollow noopener">@calfireSCU</a></p></p>— City of Dublin, California (@DublinPIO) <a href="https://twitter.com/DublinPIO/status/1559368491299270656?ref_src=twsrc%5Etfw" rel="nofollow noopener">August 16, 2022</a></blockquote>
+
+  </div>
+</figure>
+  </div></body>

@@ -33,7 +33,8 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
     parameters[kThresholdParameter] = "2.0";
     std::vector<base::test::ScopedFeatureList::FeatureAndParams>
         enabled_features;
-    enabled_features.push_back({user_activity::features::kFeature, parameters});
+    enabled_features.emplace_back(user_activity::features::kFeature,
+                                  parameters);
 
     const std::vector<base::Feature> disabled_features;
 

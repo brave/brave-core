@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -23,6 +24,7 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
   SpeedreaderRewriterTestBase() {
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     test_data_dir_ = test_data_dir_.AppendASCII("speedreader/rewriter");
+    set_current_process_dir(test_data_dir_);
   }
 
   ~SpeedreaderRewriterTestBase() override = default;
@@ -30,7 +32,7 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
   std::string GetFileContent(const std::string& filename) {
     std::string result;
 
-    const auto full_path = test_data_dir_.AppendASCII(filename);
+    const auto full_path = current_process_dir_.AppendASCII(filename);
     /* void() for assert */
     [&]() { ASSERT_TRUE(base::ReadFileToString(full_path, &result)); }();
     return result;
@@ -53,9 +55,20 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
     EXPECT_EQ(GetFileContent(filename), expected_content) << expected_content;
   }
 
+  const base::FilePath& test_data_dir() const { return test_data_dir_; }
+
+  void set_current_process_dir(const base::FilePath& path) {
+    current_process_dir_ = path;
+  }
+
+  const base::FilePath& current_process_dir() const {
+    return current_process_dir_;
+  }
+
  private:
   SpeedReader speedreader_;
   base::FilePath test_data_dir_;
+  base::FilePath current_process_dir_;
 };
 
 class SpeedreaderRewriterTest
@@ -90,6 +103,59 @@ TEST_F(SpeedreaderRewriterThemeTest, SetTheme) {
   const std::string expected_file = "meta_name_shortest_desc.themed.html";
   const auto out = ProcessPage(input_file, "dark");
   CheckContent(out, expected_file);
+}
+
+class SpeedreaderRewriterPagesTest
+    : public SpeedreaderRewriterTestBase,
+      public ::testing::WithParamInterface<const char*> {
+ public:
+  bool CheckAndUpdateReport(const base::FilePath& domain_dir) {
+    base::FilePath report_dir = test_data_dir().AppendASCII("pages/report");
+
+    const auto original = GetFileContent("distilled.html");
+    const auto changed = ProcessPage("original.html");
+    const base::FilePath page_dir = report_dir.Append(domain_dir.BaseName());
+
+    if (original != changed) {
+      base::CreateDirectory(page_dir);
+      base::WriteFile(page_dir.AppendASCII("original.html"), original);
+      base::WriteFile(page_dir.AppendASCII("changed.html"), changed);
+      base::WriteFile(page_dir.AppendASCII("page.url"),
+                      GetFileContent("page.url"));
+      return false;
+    } else {
+      base::DeletePathRecursively(page_dir);
+    }
+
+    return true;
+  }
+};
+
+INSTANTIATE_TEST_SUITE_P(,
+                         SpeedreaderRewriterPagesTest,
+                         ::testing::Values("pages/news_pages",
+                                           "pages/issues_pages"));
+
+/*
+This test checks a lot of pages from 'test/data/speedreader/rewriter/pages/' for
+the distillation changes. After you have change the rust's speedreader part you
+may view visual report. Go to test/data/speedreader/rewriter/pages/ for
+additional info.
+*/
+TEST_P(SpeedreaderRewriterPagesTest, CheckPages) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::FileEnumerator enumerator(test_data_dir().AppendASCII(GetParam()),
+                                  false, base::FileEnumerator::DIRECTORIES);
+
+  base::FilePath domain;
+  while (!(domain = enumerator.Next()).empty()) {
+    SCOPED_TRACE(domain.BaseName());
+    set_current_process_dir(domain);
+
+    if (!CheckAndUpdateReport(domain)) {
+      ADD_FAILURE();
+    }
+  }
 }
 
 }  // namespace speedreader

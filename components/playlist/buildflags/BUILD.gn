@@ -8,5 +8,8 @@ import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [ "ENABLE_PLAYLIST=$enable_playlist" ]
+  flags = [
+    "ENABLE_PLAYLIST=$enable_playlist",
+    "ENABLE_PLAYLIST_WEBUI=$enable_playlist_webui",
+  ]
 }

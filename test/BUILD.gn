@@ -83,7 +83,7 @@ static_library("brave_test_support_unit") {
 test("brave_unit_tests") {
   testonly = true
 
-  configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
+  configs += [ "//chrome:disable_thinlto_cache_flags" ]
 
   sources = [
     "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_unittest.cc",
@@ -245,6 +245,7 @@ test("brave_unit_tests") {
     "//brave/components/permissions:unit_tests",
     "//brave/components/search_engines:unit_tests",
     "//brave/components/services/ipfs/test:ipfs_service_unit_tests",
+    "//brave/components/sessions/content:unit_tests",
     "//brave/components/sidebar:unit_tests",
     "//brave/components/signin/public/identity_manager:unit_tests",
     "//brave/components/skus/browser:unit_tests",
@@ -435,7 +436,7 @@ test("brave_unit_tests") {
       "//chrome:chrome_android_core",
       "//chrome/android:chrome_apk_paks",
       "//chrome/android:delegate_public_impl_java",
-      "//chrome/test/android:chrome_java_test_support",
+      "//chrome/test/android:chrome_java_test_support_common",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
     ]
     if (enable_brave_vpn) {
@@ -636,7 +637,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ads:internal_config",
       "//brave/vendor/bat-native-ledger:internal_config",
       "//build/config:precompiled_headers",
-      "//chrome/test:disable_thinlto_cache_flags",
+      "//chrome:disable_thinlto_cache_flags",
     ]
 
     sources = [
@@ -825,6 +826,7 @@ if (!is_android) {
       "//brave/components/l10n/common",
       "//brave/components/ntp_background_images/buildflags",
       "//brave/components/resources:strings_grit",
+      "//brave/components/sessions/browser:browser_tests",
       "//brave/components/skus/common",
       "//brave/components/tor",
       "//brave/renderer/skus:browser_tests",
@@ -835,6 +837,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ledger:publishers_proto",
       "//chrome/browser",
       "//chrome/browser/enterprise/connectors/analysis:features",
+      "//chrome/browser/ui/color:color_headers",
       "//chrome/browser/ui/color:mixers",
       "//components/commerce/core:feature_list",
       "//components/gcm_driver:gcm_buildflags",
@@ -943,6 +946,7 @@ if (!is_android) {
       deps += [
         "//brave/browser/renderer_context_menu",
         "//components/language/core/browser",
+        "//components/spellcheck/common",
       ]
     }
 
@@ -1050,7 +1054,7 @@ if (!is_android) {
     # We need to disable the ThinLTO cache or the linker will die with
     # a "Resource temporarily unavailable" error due to the linking
     # reaching the vm.max_map_count limit of 65530 memory mappings.
-    configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
+    configs += [ "//chrome:disable_thinlto_cache_flags" ]
 
     sources = [
       "//brave/browser/net/brave_network_audit_allowed_lists.h",
@@ -1295,7 +1299,8 @@ if (is_android) {
       "//chrome/browser/ui/android/toolbar:java",
       "//chrome/browser/ui/messages/android:java",
       "//chrome/browser/user_education:java",
-      "//chrome/test/android:chrome_java_test_support",
+      "//chrome/test/android:chrome_java_integration_test_support",
+      "//chrome/test/android:chrome_java_test_support_common",
       "//components/browser_ui/bottomsheet/android:java",
       "//components/browser_ui/settings/android:java",
       "//components/browser_ui/site_settings/android:java",

@@ -93,8 +93,7 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
 }
 
 void UserActivityManager::RecordEventForPageTransition(const int32_t type) {
-  const PageTransitionType page_transition_type =
-      static_cast<PageTransitionType>(type);
+  const auto page_transition_type = static_cast<PageTransitionType>(type);
 
   RecordEventForPageTransition(page_transition_type);
 }
@@ -111,7 +110,7 @@ UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
                        return event.created_at < time;
                      });
 
-  filtered_history.erase(iter, filtered_history.end());
+  filtered_history.erase(iter, filtered_history.cend());
 
   return filtered_history;
 }

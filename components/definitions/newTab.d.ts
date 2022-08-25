@@ -7,6 +7,10 @@ declare namespace NewTab {
   // Type for custom background and brave background.
   // Custom background uses only image url prop.
   export type BackgroundWallpaper = {
+    type: 'color'
+    wallpaperColor: string
+  } | {
+    type: 'image'
     wallpaperImageUrl: string
     author?: string
     link?: string

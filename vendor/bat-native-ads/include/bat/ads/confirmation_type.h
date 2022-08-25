@@ -34,7 +34,7 @@ class ConfirmationType final {
   ConfirmationType& operator=(const ConfirmationType&);
 
   // Allow implicit conversion of the enum value to this wrapper
-  constexpr ConfirmationType(const Value& value)  // NOLINT(runtime/explicit)
+  constexpr ConfirmationType(const Value& value)  // NOLINT (runtime/explicit)
       : value_(value) {}
 
   explicit ConfirmationType(const std::string& value);

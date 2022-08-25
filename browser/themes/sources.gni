@@ -12,20 +12,9 @@ if (!is_android) {
     "//brave/browser/themes/brave_dark_mode_utils.cc",
     "//brave/browser/themes/brave_private_window_theme_supplier.cc",
     "//brave/browser/themes/brave_private_window_theme_supplier.h",
-    "//brave/browser/themes/brave_theme_helper.cc",
-    "//brave/browser/themes/brave_theme_helper.h",
-    "//brave/browser/themes/brave_theme_helper_utils.cc",
-    "//brave/browser/themes/brave_theme_helper_utils.h",
     "//brave/browser/themes/brave_theme_service.cc",
     "//brave/browser/themes/brave_theme_service.h",
   ]
-
-  if (is_win) {
-    brave_browser_themes_sources += [
-      "//brave/browser/themes/brave_theme_helper_win.cc",
-      "//brave/browser/themes/brave_theme_helper_win.h",
-    ]
-  }
 
   brave_browser_themes_deps += [
     "//base",

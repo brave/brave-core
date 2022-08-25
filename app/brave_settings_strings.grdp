@@ -160,7 +160,7 @@
     Auto-redirect AMP pages
   </message>
   <message name="IDS_SETTINGS_DE_AMP_SUB_LABEL" desc="The sub-label describing De-AMP feature">
-    Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions
+    Prefer publisher page URLs, instead of AMP and similar versions.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL" desc="Default Brave reduce language control setting label">
     Prevent sites from fingerprinting me based on my language preferences

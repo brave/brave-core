@@ -303,7 +303,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   content::RenderFrameHost* child_frame() {
-    return ChildFrameAt(contents()->GetMainFrame(), 0);
+    return ChildFrameAt(contents()->GetPrimaryMainFrame(), 0);
   }
 
   template <typename T>
@@ -334,7 +334,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   void RedirectToPageWithLink(const GURL& url, const GURL& final_url) {
     NavigateDirectlyToPageWithLink(url);
-    content::RenderFrameHost* main_frame = contents()->GetMainFrame();
+    content::RenderFrameHost* main_frame = contents()->GetPrimaryMainFrame();
     EXPECT_EQ(main_frame->GetLastCommittedURL(), final_url);
   }
 
@@ -342,7 +342,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url()));
     ASSERT_EQ(CollectAllRenderFrameHosts(contents()).size(), 2u)
         << "Two frames (main + iframe) should be created.";
-    content::RenderFrameHost* main_frame = contents()->GetMainFrame();
+    content::RenderFrameHost* main_frame = contents()->GetPrimaryMainFrame();
     EXPECT_EQ(main_frame->GetLastCommittedURL(), url());
   }
 

@@ -24,7 +24,7 @@ UnblindedPaymentTokens* GetUnblindedPaymentTokens() {
 }
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {
-  const UnblindedPaymentTokenList unblinded_payment_tokens =
+  UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
   GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
   return unblinded_payment_tokens;

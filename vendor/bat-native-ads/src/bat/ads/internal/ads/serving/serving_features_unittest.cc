@@ -49,7 +49,7 @@ TEST(BatAdsServingFeaturesTest, DefaultNotificationAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["default_ad_notifications_per_hour"] = "2";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -114,7 +114,7 @@ TEST(BatAdsServingFeaturesTest, MaximumNotificationAdsPerDay) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_ad_notifications_per_day"] = "7";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -179,7 +179,7 @@ TEST(BatAdsServingFeaturesTest, MaximumInlineContentAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_inline_content_ads_per_hour"] = "21";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -244,7 +244,7 @@ TEST(BatAdsServingFeaturesTest, MaximumInlineContentAdsPerDay) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_inline_content_ads_per_day"] = "24";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -309,7 +309,7 @@ TEST(BatAdsServingFeaturesTest, MaximumNewTabPageAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_new_tab_page_ads_per_hour"] = "42";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -374,7 +374,7 @@ TEST(BatAdsServingFeaturesTest, NewTabPageAdsMinimumWaitTime) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["new_tab_page_ads_minimum_wait_time"] = "10m";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -442,7 +442,7 @@ TEST(BatAdsServingFeaturesTest, MaximumNewTabPageAdsPerDay) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_new_tab_page_ads_per_day"] = "24";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -504,7 +504,7 @@ TEST(BatAdsServingFeaturesTest, MaximumPromotedContentAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_promoted_content_ads_per_hour"] = "21";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -569,7 +569,7 @@ TEST(BatAdsServingFeaturesTest, MaximumPromotedContentAdsPerDay) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_promoted_content_ads_per_day"] = "24";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -634,7 +634,7 @@ TEST(BatAdsServingFeaturesTest, MaximumSearchResultAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_search_result_ads_per_hour"] = "21";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -699,7 +699,7 @@ TEST(BatAdsServingFeaturesTest, MaximumSearchResultAdsPerDay) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kServingParameters;
   kServingParameters["maximum_search_result_ads_per_day"] = "24";
-  enabled_features.push_back({kServing, kServingParameters});
+  enabled_features.emplace_back(kServing, kServingParameters);
 
   const std::vector<base::Feature> disabled_features;
 

@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Joe Biden To Sign Sweeping Climate And Health Care Bill</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Joe Biden To Sign Sweeping Climate And Health Care Bill</h1><p class="subhead metadata">The signing caps a spurt of legislative victories for Biden and Congress, which Democrats hope will help the party in the upcoming midterm elections.</p><div class=""><p class="metadata">By AP</p><p class="metadata date">Updated Aug. 16, 2022 11:15 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><section class="entry__content-list js-entry-content js-cet-subunit"><div class="primary-cli cli cli-text "><p>KIAWAH ISLAND, S.C. (AP) — President <a href="https://www.huffpost.com/news/topic/joe-biden">Joe Biden</a> will sign <a class=" js-entry-link cet-external-link" data-vars-item-name="Democrats’ landmark climate change and health care bill" data-vars-item-type="text" data-vars-position-in-subunit="0" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/economic-bill-house-vote-be99d8db5bd610c5b1d78bc047a03e77" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/economic-bill-house-vote-be99d8db5bd610c5b1d78bc047a03e77" role="link">Democrats’ landmark climate change and health care bill</a> on Tuesday, delivering what he has called the “final piece” of his pared-down domestic agenda, as he aims to boost his party’s standing with voters less than three months before <a class=" js-entry-link cet-external-link" data-vars-item-name="the midterm elections" data-vars-item-type="text" data-vars-position-in-subunit="1" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/hub/2022-midterm-elections" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/hub/2022-midterm-elections" role="link">the midterm elections</a>.</p></div><p><a class=" js-entry-link cet-external-link" data-vars-item-name="The legislation" data-vars-item-type="text" data-vars-position-in-subunit="2" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/whats-in-senate-bill-4d5d4090a86b68dafc92030c3facff9d" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/whats-in-senate-bill-4d5d4090a86b68dafc92030c3facff9d" role="link">The legislation</a> includes the most substantial federal investment in history to fight climate change — some $375 billion over the decade — and would cap prescription drug costs at $2,000 out-of-pocket annually for Medicare recipients. It also would help an estimated 13 million Americans pay for health care insurance by extending subsidies provided during <a class=" js-entry-link cet-external-link" data-vars-item-name="the coronavirus pandemic" data-vars-item-type="text" data-vars-position-in-subunit="3" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/hub/coronavirus-pandemic" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/hub/coronavirus-pandemic" role="link">the coronavirus pandemic</a>.</p><p>The measure is paid for by <a class=" js-entry-link cet-external-link" data-vars-item-name="new taxes on large companies" data-vars-item-type="text" data-vars-position-in-subunit="4" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/biden-elizabeth-warren-bernie-sanders-congress-5e5ea68a4b5c1f4f263f5516bcdf8f77" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/biden-elizabeth-warren-bernie-sanders-congress-5e5ea68a4b5c1f4f263f5516bcdf8f77" role="link">new taxes on large companies</a> and stepped-up IRS enforcement of wealthy individuals and entities, with additional funds going to reduce the federal deficit.</p><div class="primary-cli cli cli-text "><p>The House on Friday <a class=" js-entry-link cet-internal-link" data-vars-item-name="approved" data-vars-item-type="text" data-vars-position-in-subunit="5" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://www.huffpost.com/entry/house-inflation-reduction-act-passage_n_62f6a37de4b0526eaeeaa0b5" data-vars-target-content-type="buzz" data-vars-type="web_internal_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://www.huffpost.com/entry/house-inflation-reduction-act-passage_n_62f6a37de4b0526eaeeaa0b5" role="link" target="_blank">approved</a> the measure on a party-line 220-207 vote. It <a class=" js-entry-link cet-internal-link" data-vars-item-name="passed the Senate days earlier" data-vars-item-type="text" data-vars-position-in-subunit="6" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://www.huffpost.com/entry/inflation-reduction-act-senate-climate-healthcare_n_62ef28ffe4b0ecfe3f713b53" data-vars-target-content-type="buzz" data-vars-type="web_internal_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://www.huffpost.com/entry/inflation-reduction-act-senate-climate-healthcare_n_62ef28ffe4b0ecfe3f713b53" role="link" target="_blank">passed the Senate days earlier</a> with Vice President <a href="https://www.huffpost.com/news/topic/kamala-harris">Kamala Harris</a> breaking a 50-50 tie in that chamber.</p></div><p>Biden is set to sign the bill during a small ceremony in the State Dining Room of the White House, sandwiched between his return from a six-day beachside vacation in South Carolina and his departure for <a class=" js-entry-link cet-external-link" data-vars-item-name="his home in Wilmington, Delaware" data-vars-item-type="text" data-vars-position-in-subunit="7" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/joe-biden-football-delaware-wilmington-coronavirus-pandemic-4e776867dbc0186e87ecfa5d093ba078" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/joe-biden-football-delaware-wilmington-coronavirus-pandemic-4e776867dbc0186e87ecfa5d093ba078" role="link">his home in Wilmington, Delaware</a>. He plans to hold a larger “celebration” for the legislation on Sept. 6 once lawmakers return to Washington.</p><figure class="cli cli-image js-no-inject"><div class="img-sized"><picture><source srcset="https://img.huffingtonpost.com/asset/62fb7a7d2500005b00137362.jpeg?ops=scalefit_720_noupscale&amp;format=webp" type="image/webp"><img alt="President Joe Biden rides a bicycle along the beach at Kiawah Island, S.C., on Aug. 14, 2022. " class="img-sized__img landscape" height="480" loading="lazy" src="https://img.huffingtonpost.com/asset/62fb7a7d2500005b00137362.jpeg?ops=scalefit_720_noupscale" width="720"></picture></div><div class="cli-image__source-wrapper"><figcaption class="cli-image__caption caption-cli">President Joe Biden rides a bicycle along the beach at Kiawah Island, S.C., on Aug. 14, 2022. </figcaption><p><span class="credit">Manuel Balce Ceneta via Associated Press</span></p></div></figure><div class="primary-cli cli cli-text "><p>The signing caps a spurt of legislative productivity for Biden and Congress, who in three months have approved legislation on <a class=" js-entry-link cet-internal-link" data-vars-item-name="veterans’ benefits" data-vars-item-type="text" data-vars-position-in-subunit="8" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://www.huffpost.com/entry/veterans-health-bill-marks-a-personal-victory-for-biden_n_62f38fcfe4b0db71d8cdcd6c" data-vars-target-content-type="buzz" data-vars-type="web_internal_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://www.huffpost.com/entry/veterans-health-bill-marks-a-personal-victory-for-biden_n_62f38fcfe4b0db71d8cdcd6c" role="link" target="_blank">veterans’ benefits</a>, <a class=" js-entry-link cet-internal-link" data-vars-item-name="the semiconductor industry" data-vars-item-type="text" data-vars-position-in-subunit="9" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://www.huffpost.com/entry/biden-signs-chips-bill_n_62f2831fe4b0ee32ad770bb2" data-vars-target-content-type="buzz" data-vars-type="web_internal_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://www.huffpost.com/entry/biden-signs-chips-bill_n_62f2831fe4b0ee32ad770bb2" role="link" target="_blank">the semiconductor industry</a> and <a class=" js-entry-link cet-internal-link" data-vars-item-name="gun checks for young buyers" data-vars-item-type="text" data-vars-position-in-subunit="10" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://www.huffpost.com/entry/biden-signs-bipartisan-gun-safety-bill-into-law_n_62b6fd81e4b06594c1e4d022" data-vars-target-content-type="buzz" data-vars-type="web_internal_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://www.huffpost.com/entry/biden-signs-bipartisan-gun-safety-bill-into-law_n_62b6fd81e4b06594c1e4d022" role="link" target="_blank">gun checks for young buyers</a>. The president and lawmakers have also responded to <a class=" js-entry-link cet-external-link" data-vars-item-name="Russia’s invasion of Ukraine" data-vars-item-type="text" data-vars-position-in-subunit="11" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/hub/russia-ukraine" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/hub/russia-ukraine" role="link">Russia’s invasion of Ukraine</a> and <a class=" js-entry-link cet-external-link" data-vars-item-name="supported NATO membership for Sweden and Finland" data-vars-item-type="text" data-vars-position-in-subunit="12" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/russia-ukraine-nato-biden-finland-6a04422190bdd7e75440f7e176a88109" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/russia-ukraine-nato-biden-finland-6a04422190bdd7e75440f7e176a88109" role="link">supported NATO membership for Sweden and Finland</a>.</p></div><p>With <a class=" js-entry-link cet-external-link" data-vars-item-name="Biden’s approval rating lagging" data-vars-item-type="text" data-vars-position-in-subunit="13" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/biden-approval-rating-drops-ap-norc-poll-d41bce85e1b062b588a32908b2affa65" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/biden-approval-rating-drops-ap-norc-poll-d41bce85e1b062b588a32908b2affa65" role="link">Biden’s approval rating lagging</a>, Democrats are hoping that the string of successes will jump-start their chances of maintaining control in Washington in the November midterms. The 79-year-old president aims to restore his own standing with voters as he contemplates <a class=" js-entry-link cet-external-link" data-vars-item-name="a reelection bid" data-vars-item-type="text" data-vars-position-in-subunit="14" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/biden-new-york-manhattan-elections-carolyn-maloney-b1869cf148f5af5690f3d3e03099451f" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/biden-new-york-manhattan-elections-carolyn-maloney-b1869cf148f5af5690f3d3e03099451f" role="link">a reelection bid</a>.</p><p>The White House announced Monday that it was going to deploy Biden and members of his Cabinet on a “Building a Better America Tour” to promote the recent victories, though the administration has yet to announce specific travel by the president.</p><p>“In the coming weeks, the President will host a Cabinet meeting focused on implementing the Inflation Reduction Act, will travel across the country to highlight how the bill will help the American people, and will host an event to celebrate the enactment of the bill at the White House on September 6th,” the White House said in a statement.</p><p>Republicans say the legislation’s new business taxes will increase prices, worsening the nation’s bout with <a class=" js-entry-link cet-external-link" data-vars-item-name="its highest inflation" data-vars-item-type="text" data-vars-position-in-subunit="15" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/inflation-economy-prices-consumer-74e1a5c9bced40460e4079f62e980095" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/inflation-economy-prices-consumer-74e1a5c9bced40460e4079f62e980095" role="link">its highest inflation</a> since 1981. Though Democrats have labeled the measure the Inflation Reduction Act, nonpartisan analysts say it will have a barely perceptible impact on prices.</p><p>The measure is a slimmed-down version of the more ambitious plan to supercharge environment and social programs that Biden and his party unveiled early last year.</p><p>Biden’s initial 10-year, $3.5 trillion proposal also envisioned free prekindergarten, paid family and medical leave, expanded Medicare benefits and eased immigration restrictions. That crashed after <a class=" js-entry-link cet-external-link" data-vars-item-name="centrist Sen. Joe Manchin" data-vars-item-type="text" data-vars-position-in-subunit="16" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/joe-biden-business-environment-and-nature-environment-joe-manchin-c2e743dbb3978a9e780779fa4fec09b7" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/joe-biden-business-environment-and-nature-environment-joe-manchin-c2e743dbb3978a9e780779fa4fec09b7" role="link">centrist Sen. Joe Manchin</a>, D-W.Va., said it was too costly, using the leverage every Democrat has in the evenly divided Senate.</p><figure class="cli cli-image js-no-inject"><div class="img-sized"><picture><source srcset="https://img.huffingtonpost.com/asset/62fb7a292500005b0013735f.jpeg?ops=scalefit_720_noupscale&amp;format=webp" type="image/webp"><img alt="Sen. Joe Manchin, D-W.Va., one of the Democrats' most conservative members, speaks to reporters about the expansive agreement he reached with Senate Majority Leader Chuck Schumer, D-N.Y., following months of negotiations on health care, energy, climate issues, and tax initiatives, at the Capitol in Washington, on Aug. 1, 2022. " class="img-sized__img landscape" height="479" loading="lazy" src="https://img.huffingtonpost.com/asset/62fb7a292500005b0013735f.jpeg?ops=scalefit_720_noupscale" width="720"></picture></div><div class="cli-image__source-wrapper"><figcaption class="cli-image__caption caption-cli">Sen. Joe Manchin, D-W.Va., one of the Democrats' most conservative members, speaks to reporters about the expansive agreement he reached with Senate Majority Leader Chuck Schumer, D-N.Y., following months of negotiations on health care, energy, climate issues, and tax initiatives, at the Capitol in Washington, on Aug. 1, 2022. </figcaption><p><span class="credit">J. Scott Applewhite via Associated Press</span></p></div></figure><p>Still, Biden and Democrats are hailing the legislation as a once-in-a-generation investment in addressing the long-term effects of climate change, as well as <a class=" js-entry-link cet-external-link" data-vars-item-name="drought in the nation’s West" data-vars-item-type="text" data-vars-position-in-subunit="17" data-vars-subunit-name="article_body" data-vars-subunit-type="component" data-vars-target-content-id="https://apnews.com/article/science-california-los-angeles-colorado-river-13559db765bbbcbf486158705c472c76" data-vars-target-content-type="url" data-vars-type="web_external_link" data-vars-unit-name="62fb7668e4b0a85a8195f665" data-vars-unit-type="buzz_body" href="https://apnews.com/article/science-california-los-angeles-colorado-river-13559db765bbbcbf486158705c472c76" role="link">drought in the nation’s West</a>.</p><p>The bill will direct spending, tax credits and loans to bolster technology like solar panels, consumer efforts to improve home energy efficiency, emission-reducing equipment for coal- and gas-powered power plants, and air pollution controls for farms, ports and low-income communities.</p><p>Another $64 billion would help 13 million people pay premiums over the next three years for privately bought health insurance under the Affordable Care Act. Medicare would gain the power to negotiate its costs for pharmaceuticals, initially in 2026 for only 10 drugs. Medicare beneficiaries’ out-of-pocket prescription costs would be limited to $2,000 annually starting in 2025, and beginning next year would pay no more than $35 monthly for insulin, the costly diabetes drug.</p><p>___</p><p>Associated Press writer Alan Fram in Washington contributed to this report.</p></section></body>

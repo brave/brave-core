@@ -42,6 +42,7 @@
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
 #include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
+#include "bat/ads/internal/legacy_migration/notifications/legacy_notification_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
@@ -66,7 +67,6 @@
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
-#include "build/build_config.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -170,7 +170,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
     return;
   }
 
-  NotificationAdManager::GetInstance()->CloseAndRemoveAll();
+  NotificationAdManager::GetInstance()->CloseAll();
 
   callback(/* success */ true);
 }
@@ -515,14 +515,14 @@ void AdsImpl::LoadConfirmationState(InitializeCallback callback) {
       return;
     }
 
-    LoadNotificationAdState(callback);
+    MigrateNotificationState(callback);
   });
 }
 
-void AdsImpl::LoadNotificationAdState(InitializeCallback callback) {
-  NotificationAdManager::GetInstance()->Initialize([=](const bool success) {
+void AdsImpl::MigrateNotificationState(InitializeCallback callback) {
+  notifications::Migrate([=](const bool success) {
     if (!success) {
-      FailedToInitialize(callback);
+      callback(/* success */ false);
       return;
     }
 
@@ -553,13 +553,6 @@ void AdsImpl::Start() {
   LogFeatures();
 
   LogActiveStudies();
-
-#if BUILDFLAG(IS_ANDROID)
-  // Notification ads do not sustain a reboot or update, so we should remove
-  // orphaned notification ads
-  NotificationAdManager::GetInstance()->RemoveAllAfterReboot();
-  NotificationAdManager::GetInstance()->RemoveAllAfterUpdate();
-#endif
 
   account_->Process();
 

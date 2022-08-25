@@ -4,6 +4,7 @@
 
 export const images: NewTab.BackgroundWallpaper[] = [
   {
+    'type': 'image',
     'wallpaperImageUrl': 'dylan-malval_sea-min.webp',
     'author': 'Dylan Malval',
     'link': 'https://www.instagram.com/vass_captures/',

@@ -16,14 +16,10 @@ source_set("sidebar") {
     "sidebar_controller.h",
     "sidebar_model.cc",
     "sidebar_model.h",
-    "sidebar_model_data.cc",
-    "sidebar_model_data.h",
     "sidebar_service_factory.cc",
     "sidebar_service_factory.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
-    "sidebar_web_contents_delegate.cc",
-    "sidebar_web_contents_delegate.h",
   ]
 
   deps = [
@@ -51,14 +47,16 @@ source_set("sidebar") {
   # see check_includes comment above
   deps += [
     "//chrome/browser/cart:mojo_bindings",
-    "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
-    "//chrome/browser/new_tab_page/modules/task_module:mojo_bindings",
-    "//chrome/browser/ui/webui/realbox:mojo_bindings",
     "//ui/webui/resources/js/browser_command:mojo_bindings",
   ]
 
   if (!is_android) {
-    deps += [ "//chrome/browser/ui/webui/new_tab_page:mojo_bindings" ]
+    deps += [
+      "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
+      "//chrome/browser/new_tab_page/modules/task_module:mojo_bindings",
+      "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
+      "//chrome/browser/ui/webui/realbox:mojo_bindings",
+    ]
   }
 }
 

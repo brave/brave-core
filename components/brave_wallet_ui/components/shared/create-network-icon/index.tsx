@@ -99,9 +99,11 @@ export const CreateNetworkIcon = ({
       <NetworkIcon
         size={size}
         icon={
-          nativeAsset.logo
-            ? nativeAsset.logo
-            : isRemoteURL ? remoteImage : network.iconUrls[0]
+          isStorybook
+            ? network.iconUrls[0]
+            : nativeAsset.logo
+              ? nativeAsset.logo
+              : isRemoteURL ? remoteImage : network.iconUrls[0]
         }
       />
     </IconWrapper>

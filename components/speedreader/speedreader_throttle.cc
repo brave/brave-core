@@ -5,6 +5,7 @@
 
 #include "brave/components/speedreader/speedreader_throttle.h"
 
+#include <string>
 #include <utility>
 
 #include "brave/components/speedreader/speedreader_result_delegate.h"
@@ -54,6 +55,12 @@ void SpeedReaderThrottle::WillProcessResponse(
     const GURL& response_url,
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
+  std::string mime_type;
+  if (!response_head || !response_head->headers->GetMimeType(&mime_type) ||
+      base::CompareCaseInsensitiveASCII(mime_type, "text/html")) {
+    // Skip all non-html documents.
+    return;
+  }
   VLOG(2) << "Speedreader throttling: " << response_url;
   *defer = true;
 

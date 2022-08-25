@@ -262,6 +262,8 @@
       <message name="IDS_BRAVE_NEW_TAB_SETTINGS_BACK" desc="Navigate back to the previous settings section">
         Back
       </message>
+      <message name="IDS_BRAVE_NEW_TAB_SOLID_COLOR" desc="Solid background colors title">Solid colors</message>
+      <message name="IDS_BRAVE_NEW_TAB_GRADIENT_COLOR" desc="Gradient background colors title">Gradients</message>
 
       <message name="IDS_BRAVE_TALK_PROMPT_TITLE" desc="Title for prompt about Brave Talk">
         You can start a private call in Brave.
@@ -367,6 +369,9 @@
         </message>
         <message name="IDS_SIDEBAR_HISTORY_ITEM_TITLE" desc="Title for history item in sidebar">
           History
+        </message>
+        <message name="IDS_SIDEBAR_READING_LIST_ITEM_TITLE" desc="Title for Reading List item in sidebar">
+          Reading List
         </message>
       </if>
 
@@ -474,14 +479,14 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ads received this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION" desc="">Sorry! Ads are not yet available in your region.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE" desc="">Brave Rewards and Ads are not available on your device at this time.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR" desc="">Maximum number of ads displayed</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0" desc="">0 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">1 ad per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2" desc="">2 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">3 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">4 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">5 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10" desc="">10 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR" desc="">Notification ad frequency</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0" desc="">None</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">Up to 1 ad per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2" desc="">Up to 2 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">Up to 3 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">Up to 4 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">Up to 5 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10" desc="">Up to 10 ads per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE" desc="">Regional ad relevance</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION" desc="">This allows Brave to show you ads meant specifically for your region.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN" desc="">Learn More</message>

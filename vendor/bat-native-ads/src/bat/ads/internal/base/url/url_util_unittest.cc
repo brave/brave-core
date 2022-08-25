@@ -137,6 +137,18 @@ TEST(BatAdsUrlUtilTest,
 }
 
 TEST(BatAdsUrlUtilTest,
+     BraveSchemeWithSettingsHostNameAndSearchPathIsSupported) {
+  // Arrange
+  const GURL url = GURL("brave://settings/search");
+
+  // Act
+  const bool is_supported = SchemeIsSupported(url);
+
+  // Assert
+  EXPECT_TRUE(is_supported);
+}
+
+TEST(BatAdsUrlUtilTest,
      BraveSchemeWithSettingsHostNameAndFooBarPathIsNotSupported) {
   // Arrange
   const GURL url = GURL("brave://settings/foobar");
