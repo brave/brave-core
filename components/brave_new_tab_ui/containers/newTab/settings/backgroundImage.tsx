@@ -148,7 +148,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 >
                   <StyledSelectionBorder selected={usingSolidColorBackground}>
                     <StyledCustomBackgroundOptionColor
-                      colorValue={usingSolidColorBackground ? selectedBackgroundColor as string : defaultSolidBackgroundColor }
+                      colorValue={usingSolidColorBackground ? selectedBackgroundColor : defaultSolidBackgroundColor }
                       selected={usingSolidColorBackground}
                     />
                   </StyledSelectionBorder>
@@ -161,7 +161,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 >
                   <StyledSelectionBorder selected={usingGradientBackground}>
                     <StyledCustomBackgroundOptionColor
-                      colorValue={usingGradientBackground ? selectedBackgroundColor as string : defaultGradientColor}
+                      colorValue={usingGradientBackground ? selectedBackgroundColor : defaultGradientColor}
                       selected={usingGradientBackground}
                     />
                   </StyledSelectionBorder>
