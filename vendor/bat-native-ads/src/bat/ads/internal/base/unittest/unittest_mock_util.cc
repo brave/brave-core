@@ -33,11 +33,11 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::Return;
-
-namespace ads {
 
 using AdEventHistoryMap = base::flat_map<std::string, std::vector<base::Time>>;
 using AdEventMap = base::flat_map<std::string, AdEventHistoryMap>;
