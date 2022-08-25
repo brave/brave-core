@@ -10,27 +10,28 @@ const pushL10n = (options) => {
   const extraScriptOptions =
     options.with_translations ? '--with_translations' :
       options.with_missing_translations ? '--with_missing_translations' : ''
+
   if (options.extension) {
-    const extensionPath = options.extension_path
-    if (options.extension === 'greaselion') {
-      l10nUtil.getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
-        util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
-      })
-      return
+    const getMessages = l10nUtil.extensionScriptPaths[options.extension]
+    if (!getMessages) {
+      console.error('Unknown extension: ', options.extension, 'Valid extensions are: ', Object.keys(extensionScriptPaths).join(", "))
+      process.exit(1)
     }
-    console.error('Unknown extension: ', options.extension)
-    process.exit(1)
-  } else {
-    // Get rid of local copied xtb and grd changes
-    let args = ['checkout', '--', '*.xtb']
-    util.run('git', args, runOptions)
-    args = ['checkout', '--', '*.grd*']
-    util.run('git', args, runOptions)
-    l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
-      if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path))
-        util.run('python3', ['script/push-l10n.py', '--source_string_path', sourceStringPath, extraScriptOptions], cmdOptions)
+
+    getMessages(options.extension_path).forEach((sourceStringPath) => {
+      util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
     })
   }
+
+  // Get rid of local copied xtb and grd changes
+  let args = ['checkout', '--', '*.xtb']
+  util.run('git', args, runOptions)
+  args = ['checkout', '--', '*.grd*']
+  util.run('git', args, runOptions)
+  l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
+    if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path))
+      util.run('python3', ['script/push-l10n.py', '--source_string_path', sourceStringPath, extraScriptOptions], cmdOptions)
+  })
 }
 
 module.exports = pushL10n
