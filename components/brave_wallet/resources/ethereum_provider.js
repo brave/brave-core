@@ -9,7 +9,7 @@
   }
   var EventEmitter = require('events')
   var BraveWeb3ProviderEventEmitter = new EventEmitter()
-  Object.defineProperties(window.ethereum, {
+  $Object.defineProperties(window.ethereum, {
     on: {
       value: BraveWeb3ProviderEventEmitter.on,
       writable: false
@@ -49,7 +49,7 @@
       return Reflect.set(...args)
     }
   })
-  Object.defineProperty(window, 'web3', {
+  $Object.defineProperty(window, 'web3', {
     value: web3Proxy,
     enumerable: false,
     configurable: true,

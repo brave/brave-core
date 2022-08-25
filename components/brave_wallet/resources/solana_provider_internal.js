@@ -9,13 +9,11 @@
     return
   }
 
-  Object.defineProperties(window._brave_solana, {
+  $Object.defineProperties(window._brave_solana, {
     createPublickey: {
       value: (base58Str) => {
         const PublicKey = require('@solana/web3.js').PublicKey
-        const result = new Object()
-        result.publicKey = new PublicKey(base58Str)
-        return result
+        return new PublicKey(base58Str)
       },
       writable: false
     },
@@ -27,5 +25,5 @@
       writable: false
     }
   })
-  Object.freeze(window._brave_solana)
+  $Object.freeze(window._brave_solana)
 })()

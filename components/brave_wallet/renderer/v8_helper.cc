@@ -7,9 +7,9 @@
 
 #include <utility>
 
+#include "brave/components/safe_builtins/renderer/safe_builtins_helpers.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 #include "v8/include/v8-function.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-object.h"
@@ -18,10 +18,8 @@ namespace brave_wallet {
 
 v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
                                       v8::Local<v8::Value> object,
-                                      const std::u16string& name) {
-  v8::Isolate* isolate = context->GetIsolate();
-  v8::Local<v8::String> name_str =
-      gin::ConvertToV8(isolate, name).As<v8::String>();
+                                      const base::StringPiece& name) {
+  v8::Local<v8::String> name_str = gin::StringToV8(context->GetIsolate(), name);
   v8::Local<v8::Object> object_obj;
   if (!object->ToObject(context).ToLocal(&object_obj)) {
     return v8::MaybeLocal<v8::Value>();
@@ -32,19 +30,17 @@ v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
 
 v8::Maybe<bool> CreateDataProperty(v8::Local<v8::Context> context,
                                    v8::Local<v8::Object> object,
-                                   const std::u16string& name,
+                                   const base::StringPiece& name,
                                    v8::Local<v8::Value> value) {
-  v8::Isolate* isolate = context->GetIsolate();
-  v8::Local<v8::String> name_str =
-      gin::ConvertToV8(isolate, name).As<v8::String>();
+  v8::Local<v8::String> name_str = gin::StringToV8(context->GetIsolate(), name);
 
   return object->CreateDataProperty(context, name_str, value);
 }
 
 v8::MaybeLocal<v8::Value> CallMethodOfObject(
     blink::WebLocalFrame* web_frame,
-    const std::u16string& object_name,
-    const std::u16string& method_name,
+    const base::StringPiece& object_name,
+    const base::StringPiece& method_name,
     std::vector<v8::Local<v8::Value>>&& args) {
   if (web_frame->IsProvisional())
     return v8::Local<v8::Value>();
@@ -63,7 +59,7 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
 v8::MaybeLocal<v8::Value> CallMethodOfObject(
     blink::WebLocalFrame* web_frame,
     v8::Local<v8::Value> object,
-    const std::u16string& method_name,
+    const base::StringPiece& method_name,
     std::vector<v8::Local<v8::Value>>&& args) {
   if (web_frame->IsProvisional())
     return v8::Local<v8::Value>();
@@ -88,12 +84,13 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
       static_cast<int>(args.size()), args.data());
 }
 
-void ExecuteScript(blink::WebLocalFrame* web_frame, const std::string script) {
+void ExecuteScript(blink::WebLocalFrame* web_frame,
+                   const std::string& script,
+                   const std::string& name) {
   if (web_frame->IsProvisional())
     return;
 
-  web_frame->ExecuteScript(
-      blink::WebScriptSource(blink::WebString::FromUTF8(script)));
+  brave::LoadScriptWithSafeBuiltins(web_frame, script, name);
 }
 
 void SetProviderNonWritable(v8::Local<v8::Context> context,
@@ -114,6 +111,7 @@ void SetOwnPropertyNonWritable(v8::Local<v8::Context> context,
   v8::Local<v8::Value> property;
   if (!provider_object->Get(context, property_name).ToLocal(&property))
     return;
+
   v8::PropertyDescriptor desc(property, false);
   provider_object->DefineProperty(context, property_name, desc).Check();
 }
