@@ -57,8 +57,10 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
   banner_->InsertOrUpdate(transaction.get(), server_info);
 
-  ledger_->RunDBTransaction(std::move(transaction),
-                            std::bind(&OnResultCallback, _1, callback));
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseServerPublisherInfo::GetRecord(
@@ -219,8 +221,10 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction),
-                            std::bind(&OnResultCallback, _1, callback));
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 }  // namespace database

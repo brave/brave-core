@@ -85,6 +85,10 @@ using EventLog = mojom::EventLog;
 using EventLogPtr = mojom::EventLogPtr;
 using EventLogs = std::vector<EventLogPtr>;
 
+using ExternalTransaction = mojom::ExternalTransaction;
+using ExternalTransactionPtr = mojom::ExternalTransactionPtr;
+using ExternalTransactionStatus = mojom::ExternalTransactionStatus;
+
 using Environment = mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;
@@ -186,6 +190,8 @@ using UrlResponsePtr = mojom::UrlResponsePtr;
 
 using VisitData = mojom::VisitData;
 using VisitDataPtr = mojom::VisitDataPtr;
+
+using WalletProvider = mojom::WalletProvider;
 
 using WalletStatus = mojom::WalletStatus;
 

@@ -794,4 +794,18 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_33) {
   EXPECT_FALSE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
+TEST_F(LedgerDatabaseMigrationTest, Migration_34) {
+  DatabaseMigration::SetTargetVersionForTesting(34);
+  InitializeDatabaseAtVersion(33);
+  InitializeLedger();
+  EXPECT_TRUE(GetDB()->DoesColumnExist("promotion", "claimable_until"));
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_35) {
+  DatabaseMigration::SetTargetVersionForTesting(35);
+  InitializeDatabaseAtVersion(34);
+  InitializeLedger();
+  EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
+}
+
 }  // namespace ledger

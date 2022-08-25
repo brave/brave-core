@@ -6,6 +6,7 @@ index|contribution_queue_publishers_contribution_queue_id_index|contribution_que
 index|contribution_queue_publishers_publisher_key_index|contribution_queue_publishers|CREATE INDEX contribution_queue_publishers_publisher_key_index ON contribution_queue_publishers (publisher_key)
 index|creds_batch_trigger_id_index|creds_batch|CREATE INDEX creds_batch_trigger_id_index ON creds_batch (trigger_id)
 index|creds_batch_trigger_type_index|creds_batch|CREATE INDEX creds_batch_trigger_type_index ON creds_batch (trigger_type)
+index|external_transactions_contribution_id_index|external_transactions|CREATE INDEX external_transactions_contribution_id_index ON external_transactions (contribution_id)
 index|media_publisher_info_media_key_index|media_publisher_info|CREATE INDEX media_publisher_info_media_key_index ON media_publisher_info (media_key)
 index|media_publisher_info_publisher_id_index|media_publisher_info|CREATE INDEX media_publisher_info_publisher_id_index ON media_publisher_info (publisher_id)
 index|pending_contribution_publisher_id_index|pending_contribution|CREATE INDEX pending_contribution_publisher_id_index ON pending_contribution (publisher_id)
@@ -25,6 +26,7 @@ index|sqlite_autoindex_contribution_queue_1|contribution_queue|
 index|sqlite_autoindex_creds_batch_1|creds_batch|
 index|sqlite_autoindex_creds_batch_2|creds_batch|
 index|sqlite_autoindex_event_log_1|event_log|
+index|sqlite_autoindex_external_transactions_1|external_transactions|
 index|sqlite_autoindex_media_publisher_info_1|media_publisher_info|
 index|sqlite_autoindex_meta_1|meta|
 index|sqlite_autoindex_processed_publisher_1|processed_publisher|
@@ -50,6 +52,7 @@ table|contribution_queue|contribution_queue|CREATE TABLE contribution_queue ( co
 table|contribution_queue_publishers|contribution_queue_publishers|CREATE TABLE contribution_queue_publishers ( contribution_queue_id TEXT NOT NULL, publisher_key TEXT NOT NULL, amount_percent DOUBLE NOT NULL )
 table|creds_batch|creds_batch|CREATE TABLE creds_batch (creds_id TEXT PRIMARY KEY NOT NULL, trigger_id TEXT NOT NULL, trigger_type INT NOT NULL, creds TEXT NOT NULL, blinded_creds TEXT NOT NULL, signed_creds TEXT, public_key TEXT, batch_proof TEXT, status INT NOT NULL DEFAULT 0, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, CONSTRAINT creds_batch_unique UNIQUE (trigger_id, trigger_type) )
 table|event_log|event_log|CREATE TABLE event_log ( event_log_id LONGVARCHAR PRIMARY KEY NOT NULL, key TEXT NOT NULL, value TEXT NOT NULL, created_at TIMESTAMP NOT NULL )
+table|external_transactions|external_transactions|CREATE TABLE external_transactions ( wallet_provider INTEGER NOT NULL CHECK(wallet_provider >= 0 AND wallet_provider <= 2), transaction_id TEXT NOT NULL, contribution_id TEXT NOT NULL, is_fee INTEGER NOT NULL CHECK(is_fee = 0 OR is_fee == 1), status INTEGER NOT NULL CHECK(status >= 0 AND status <= 2), created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (wallet_provider, transaction_id), FOREIGN KEY (contribution_id) REFERENCES contribution_info (contribution_id) ON UPDATE RESTRICT ON DELETE RESTRICT )
 table|media_publisher_info|media_publisher_info|CREATE TABLE media_publisher_info ( media_key TEXT NOT NULL PRIMARY KEY UNIQUE, publisher_id LONGVARCHAR NOT NULL )
 table|meta|meta|CREATE TABLE meta(key LONGVARCHAR NOT NULL UNIQUE PRIMARY KEY, value LONGVARCHAR)
 table|pending_contribution|pending_contribution|CREATE TABLE pending_contribution ( pending_contribution_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, publisher_id LONGVARCHAR NOT NULL, amount DOUBLE DEFAULT 0 NOT NULL, added_date INTEGER DEFAULT 0 NOT NULL, viewing_id LONGVARCHAR NOT NULL, type INTEGER NOT NULL )

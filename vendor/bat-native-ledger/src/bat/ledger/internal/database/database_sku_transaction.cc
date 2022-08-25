@@ -60,11 +60,10 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 
   db_transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(db_transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(db_transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseSKUTransaction::SaveExternalTransaction(
@@ -95,11 +94,10 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
   auto transaction = type::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseSKUTransaction::GetRecordByOrderId(

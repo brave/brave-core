@@ -59,9 +59,10 @@ class Uphold {
 
   void FetchBalance(FetchBalanceCallback callback);
 
-  void TransferFunds(const double amount,
+  void TransferFunds(const std::string& contribution_id,
+                     const double amount,
                      const std::string& address,
-                     client::TransactionCallback callback);
+                     ledger::ResultCallback callback);
 
   void WalletAuthorization(
       const base::flat_map<std::string, std::string>& args,
@@ -82,12 +83,20 @@ class Uphold {
   bool SetWallet(type::ExternalWalletPtr wallet);
 
  private:
-  void ContributionCompleted(type::Result result,
-                             const std::string& transaction_id,
-                             const std::string& contribution_id,
+  void OnCreateTransaction(ledger::ResultCallback,
+                           const std::string& contribution_id,
+                           type::Result,
+                           const std::string& transaction_id);
+
+  void OnSaveExternalTransaction(ledger::ResultCallback,
+                                 const std::string& transaction_id,
+                                 type::Result);
+
+  void ContributionCompleted(const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
-                             ledger::LegacyResultCallback callback);
+                             ledger::LegacyResultCallback callback,
+                             type::Result result);
 
   void OnFetchBalance(FetchBalanceCallback callback,
                       const type::Result result,
@@ -97,10 +106,9 @@ class Uphold {
 
   void StartTransferFeeTimer(const std::string& fee_id, int attempts);
 
-  void OnTransferFeeCompleted(const type::Result result,
-                              const std::string& transaction_id,
-                              const std::string& contribution_id,
-                              int attempts);
+  void OnTransferFeeCompleted(const std::string& contribution_id,
+                              int attempts,
+                              type::Result result);
 
   void TransferFee(const std::string& contribution_id,
                    const double amount,

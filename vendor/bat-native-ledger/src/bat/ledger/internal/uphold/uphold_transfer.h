@@ -23,28 +23,20 @@ namespace uphold {
 
 class UpholdTransfer {
  public:
-  explicit UpholdTransfer(LedgerImpl* ledger);
-
+  explicit UpholdTransfer(LedgerImpl*);
   ~UpholdTransfer();
 
-  void Start(
-      const Transaction& transaction,
-      client::TransactionCallback callback);
+  void CreateTransaction(const Transaction&, client::CreateTransactionCallback);
+
+  void CommitTransaction(const std::string& transaction_id,
+                         ledger::ResultCallback);
 
  private:
-  void OnCreateTransaction(
-      const type::Result result,
-      const std::string& id,
-      client::TransactionCallback callback);
+  void OnCreateTransaction(client::CreateTransactionCallback,
+                           type::Result,
+                           const std::string& transaction_id);
 
-  void CommitTransaction(
-      const std::string& transaction_id,
-      client::TransactionCallback callback);
-
-  void OnCommitTransaction(
-      const type::Result result,
-      const std::string& transaction_id,
-      client::TransactionCallback callback);
+  void OnCommitTransaction(ledger::ResultCallback, type::Result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;

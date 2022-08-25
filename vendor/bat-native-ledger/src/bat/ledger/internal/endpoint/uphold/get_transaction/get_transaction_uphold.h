@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_POST_TRANSACTION_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_POST_TRANSACTION_H_
+#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_GET_TRANSACTIONS_H_
+#define BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_GET_TRANSACTIONS_H_
 
 #include <string>
 
@@ -110,29 +110,36 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using PostTransactionCallback =
-    base::OnceCallback<void(type::Result, const std::string& id)>;
+using GetTransactionsCallback = std::function<void(
+    const type::Result result,
+    const std::string& id)>;
 
 class PostTransaction {
  public:
-  explicit PostTransaction(LedgerImpl*);
+  explicit PostTransaction(LedgerImpl* ledger);
   ~PostTransaction();
 
-  void Request(const std::string& token,
-               const std::string& address,
-               const ::ledger::uphold::Transaction&,
-               PostTransactionCallback);
+  void Request(
+      const std::string& token,
+      const std::string& address,
+      const ::ledger::uphold::Transaction& transaction,
+      PostTransactionCallback callback);
 
  private:
   std::string GetUrl(const std::string& address);
 
-  std::string GeneratePayload(const ::ledger::uphold::Transaction&);
+  std::string GeneratePayload(
+      const ::ledger::uphold::Transaction& transaction);
 
-  type::Result CheckStatusCode(int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(const std::string& body, std::string* id);
+  type::Result ParseBody(
+      const std::string& body,
+      std::string* id);
 
-  void OnRequest(PostTransactionCallback, const type::UrlResponse&);
+  void OnRequest(
+      const type::UrlResponse& response,
+      PostTransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -141,4 +148,4 @@ class PostTransaction {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_POST_TRANSACTION_H_
+#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_GET_TRANSACTIONS_H_

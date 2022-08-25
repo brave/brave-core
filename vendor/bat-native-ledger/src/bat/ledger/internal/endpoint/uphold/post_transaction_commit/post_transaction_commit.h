@@ -112,30 +112,25 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using PostTransactionCommitCallback = std::function<void(
-    const type::Result result)>;
+using PostTransactionCommitCallback = base::OnceCallback<void(type::Result)>;
 
 class PostTransactionCommit {
  public:
-  explicit PostTransactionCommit(LedgerImpl* ledger);
+  explicit PostTransactionCommit(LedgerImpl*);
   ~PostTransactionCommit();
 
-  void Request(
-      const std::string& token,
-      const std::string& address,
-      const std::string& transaction_id,
-      PostTransactionCommitCallback callback);
+  void Request(const std::string& token,
+               const std::string& address,
+               const std::string& transaction_id,
+               PostTransactionCommitCallback);
 
  private:
-  std::string GetUrl(
-    const std::string& address,
-    const std::string& transaction_id);
+  std::string GetUrl(const std::string& address,
+                     const std::string& transaction_id);
 
-  type::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostTransactionCommitCallback callback);
+  void OnRequest(PostTransactionCommitCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

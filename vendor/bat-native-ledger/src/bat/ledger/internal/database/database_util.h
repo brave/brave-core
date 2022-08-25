@@ -51,8 +51,27 @@ int32_t GetCurrentVersion();
 
 int32_t GetCompatibleVersion();
 
-void OnResultCallback(type::DBCommandResponsePtr response,
-                      ledger::LegacyResultCallback callback);
+template <typename>
+inline constexpr bool dependent_false_v = false;
+
+template <typename ResultCallback = ledger::ResultCallback>
+void OnResultCallback(ResultCallback callback,
+                      type::DBCommandResponsePtr response) {
+  const bool success =
+      response &&
+      response->status == type::DBCommandResponse::Status::RESPONSE_OK;
+  if constexpr (std::is_same_v<ResultCallback, ledger::LegacyResultCallback>) {
+    callback(success ? type::Result::LEDGER_OK : type::Result::LEDGER_ERROR);
+  } else if constexpr (std::is_same_v<ResultCallback, ledger::ResultCallback>) {
+    std::move(callback).Run(success ? type::Result::LEDGER_OK
+                                    : type::Result::LEDGER_ERROR);
+  } else {
+    static_assert(dependent_false_v<ResultCallback>,
+                  "ResultCallback must be either "
+                  "ledger::LegacyResultCallback, or "
+                  "ledger::ResultCallback!");
+  }
+}
 
 int GetIntColumn(type::DBRecord* record, const int index);
 

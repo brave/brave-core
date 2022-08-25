@@ -25,6 +25,8 @@ Database::Database(LedgerImpl* ledger) :
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
+  external_transactions_ =
+      std::make_unique<DatabaseExternalTransactions>(ledger_);
   event_log_ = std::make_unique<DatabaseEventLog>(ledger_);
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
@@ -58,11 +60,11 @@ void Database::Close(ledger::LegacyResultCallback callback) {
   command->type = type::DBCommand::Type::CLOSE;
 
   transaction->commands.push_back(std::move(command));
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 /**
@@ -272,6 +274,22 @@ void Database::GetCredsBatchesByTriggers(
     const std::vector<std::string>& trigger_ids,
     GetCredsBatchListCallback callback) {
   creds_batch_->GetRecordsByTriggers(trigger_ids, callback);
+}
+
+/**
+ * EXTERNAL TRANSACTIONS
+ */
+void Database::SaveExternalTransaction(type::ExternalTransactionPtr transaction,
+                                       ledger::ResultCallback callback) {
+  external_transactions_->Insert(std::move(transaction), std::move(callback));
+}
+
+void Database::GetExternalTransactionId(
+    const std::string& contribution_id,
+    bool is_fee,
+    GetExternalTransactionIdCallback callback) {
+  external_transactions_->GetExternalTransactionId(contribution_id, is_fee,
+                                                   std::move(callback));
 }
 
 /**

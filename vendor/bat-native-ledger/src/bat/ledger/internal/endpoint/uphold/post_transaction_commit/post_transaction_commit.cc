@@ -12,8 +12,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace uphold {
@@ -55,24 +53,21 @@ void PostTransactionCommit::Request(
     const std::string& address,
     const std::string& transaction_id,
     PostTransactionCommitCallback callback) {
-  auto url_callback = std::bind(&PostTransactionCommit::OnRequest,
-      this,
-      _1,
-      callback);
-
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address, transaction_id);
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostTransactionCommit::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
 void PostTransactionCommit::OnRequest(
-    const type::UrlResponse& response,
-    PostTransactionCommitCallback callback) {
+    PostTransactionCommitCallback callback,
+    const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
 }  // namespace uphold

@@ -26,17 +26,13 @@
 #include "brave_base/random.h"
 
 using ledger::wallet::OnWalletStatusChange;
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace {
 const char kFeeMessage[] =
     "5% transaction fee collected by Brave Software International";
 }  // namespace
 
-namespace ledger {
-namespace uphold {
+namespace ledger::uphold {
 
 Uphold::Uphold(LedgerImpl* ledger)
     : transfer_(std::make_unique<UpholdTransfer>(ledger)),
@@ -64,33 +60,67 @@ void Uphold::StartContribution(const std::string& contribution_id,
                                type::ServerPublisherInfoPtr info,
                                double amount,
                                ledger::LegacyResultCallback callback) {
+  const double fee = (amount * 1.05) - amount;
+
+  auto contribution_callback = base::BindOnce(
+      &Uphold::ContributionCompleted, base::Unretained(this), contribution_id,
+      fee, info->publisher_key, std::move(callback));
+
   if (!info) {
-    BLOG(0, "Publisher info is null");
-    ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
-                          amount, "", callback);
-    return;
+    BLOG(0, "Publisher info is null!");
+    return std::move(contribution_callback).Run(type::Result::LEDGER_ERROR);
   }
 
-  const double fee = (amount * 1.05) - amount;
-  const double reconcile_amount = amount - fee;
+  if (true /* TODO */) {
+    Transaction transaction;
+    transaction.address = info->address;
+    transaction.amount = amount - fee;
 
-  auto contribution_callback =
-      std::bind(&Uphold::ContributionCompleted, this, _1, _2, contribution_id,
-                fee, info->publisher_key, callback);
-
-  Transaction transaction;
-  transaction.address = info->address;
-  transaction.amount = reconcile_amount;
-
-  transfer_->Start(transaction, contribution_callback);
+    transfer_->CreateTransaction(
+        transaction,
+        base::BindOnce(&Uphold::OnCreateTransaction, base::Unretained(this),
+                       std::move(contribution_callback), contribution_id));
+  } else {
+    transfer_->CommitTransaction("" /* TODO */,
+                                 std::move(contribution_callback));
+  }
 }
 
-void Uphold::ContributionCompleted(type::Result result,
-                                   const std::string& transaction_id,
-                                   const std::string& contribution_id,
+void Uphold::OnCreateTransaction(ledger::ResultCallback callback,
+                                 const std::string& contribution_id,
+                                 type::Result result,
+                                 const std::string& transaction_id) {
+  if (result != type::Result::LEDGER_OK || transaction_id.empty()) {
+    BLOG(0, "Failed to create transaction with Uphold!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+  }
+
+  auto external_transaction = type::ExternalTransaction::New(
+      type::WalletProvider::UPHOLD, transaction_id, contribution_id,
+      /* is_fee = */ false, type::ExternalTransactionStatus::STATUS_0);
+
+  ledger_->database()->SaveExternalTransaction(
+      std::move(external_transaction),
+      base::BindOnce(&Uphold::OnSaveExternalTransaction, base::Unretained(this),
+                     std::move(callback), transaction_id));
+}
+
+void Uphold::OnSaveExternalTransaction(ledger::ResultCallback callback,
+                                       const std::string& transaction_id,
+                                       type::Result result) {
+  if (result != type::Result::LEDGER_OK) {
+    BLOG(0, "Failed to save Uphold transaction ID!");
+    return std::move(callback).Run(result);
+  }
+
+  transfer_->CommitTransaction(transaction_id, std::move(callback));
+}
+
+void Uphold::ContributionCompleted(const std::string& contribution_id,
                                    double fee,
                                    const std::string& publisher_key,
-                                   ledger::LegacyResultCallback callback) {
+                                   ledger::LegacyResultCallback callback,
+                                   type::Result result) {
   if (result == type::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -155,13 +185,18 @@ void Uphold::OnFetchBalance(FetchBalanceCallback callback,
   std::move(callback).Run(type::Result::LEDGER_OK, available);
 }
 
-void Uphold::TransferFunds(const double amount,
+void Uphold::TransferFunds(const std::string& contribution_id,
+                           const double amount,
                            const std::string& address,
-                           client::TransactionCallback callback) {
+                           ledger::ResultCallback callback) {
   Transaction transaction;
   transaction.address = address;
   transaction.amount = amount;
-  transfer_->Start(transaction, callback);
+
+  transfer_->CreateTransaction(
+      transaction,
+      base::BindOnce(&Uphold::OnCreateTransaction, base::Unretained(this),
+                     std::move(callback), contribution_id));
 }
 
 void Uphold::WalletAuthorization(
@@ -247,12 +282,13 @@ void Uphold::SaveTransferFee(const std::string& contribution_id,
 
   auto wallet = GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
-    return;
+    return BLOG(0, "Uphold wallet is null!");
   }
 
   wallet->fees.insert(std::make_pair(contribution_id, fee));
-  SetWallet(std::move(wallet));
+  if (!SetWallet(std::move(wallet))) {
+    BLOG(0, "Failed to set Uphold wallet!");
+  }
 }
 
 void Uphold::StartTransferFeeTimer(const std::string& fee_id, int attempts) {
@@ -268,10 +304,9 @@ void Uphold::StartTransferFeeTimer(const std::string& fee_id, int attempts) {
                      fee_id, attempts));
 }
 
-void Uphold::OnTransferFeeCompleted(const type::Result result,
-                                    const std::string& transaction_id,
-                                    const std::string& contribution_id,
-                                    int attempts) {
+void Uphold::OnTransferFeeCompleted(const std::string& contribution_id,
+                                    int attempts,
+                                    type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     if (attempts < 3) {
       BLOG(0, "Transaction fee failed, retrying");
@@ -288,15 +323,19 @@ void Uphold::OnTransferFeeCompleted(const type::Result result,
 void Uphold::TransferFee(const std::string& contribution_id,
                          const double amount,
                          int attempts) {
-  auto transfer_callback = std::bind(&Uphold::OnTransferFeeCompleted, this, _1,
-                                     _2, contribution_id, attempts);
-
   Transaction transaction;
   transaction.address = GetFeeAddress();
   transaction.amount = amount;
   transaction.message = kFeeMessage;
 
-  transfer_->Start(transaction, transfer_callback);
+  auto callback =
+      base::BindOnce(&Uphold::OnTransferFeeCompleted, base::Unretained(this),
+                     contribution_id, attempts);
+
+  transfer_->CreateTransaction(
+      transaction,
+      base::BindOnce(&Uphold::OnCreateTransaction, base::Unretained(this),
+                     std::move(callback), contribution_id));
 }
 
 void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
@@ -304,8 +343,7 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
 
   auto wallet = GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
-    return;
+    return BLOG(0, "Uphold wallet is null!");
   }
 
   for (const auto& value : wallet->fees) {
@@ -336,5 +374,4 @@ void Uphold::RemoveTransferFee(const std::string& contribution_id) {
   SetWallet(std::move(wallet));
 }
 
-}  // namespace uphold
-}  // namespace ledger
+}  // namespace ledger::uphold
