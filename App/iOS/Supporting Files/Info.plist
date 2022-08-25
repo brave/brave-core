@@ -4,10 +4,6 @@
 <dict>
 	<key>API_KEY</key>
 	<string>$(BRAVE_API_KEY)</string>
-	<key>AdjustAppToken</key>
-	<string>$(ADJUST_APP_TOKEN)</string>
-	<key>AdjustEnvironment</key>
-	<string>$(ADJUST_ENVIRONMENT)</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(APP_IDENTIFIER_PREFIX)</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -49,20 +45,6 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>firefox-focus</string>
-		<string>firefox-klar</string>
-		<string>ymail</string>
-		<string>ms-outlook</string>
-		<string>airmail</string>
-		<string>italiaonline-mailto</string>
-		<string>mailru-mailto</string>
-		<string>mymail-mailto</string>
-		<string>readdle-spark</string>
-		<string>itms-books</string>
-		<string>org-appextension-feature-password-management</string>
-		<string>googlegmail</string>
-		<string>inbox-gmail</string>
-		<string>whatsapp</string>
 		<string>http</string>
 		<string>https</string>
 	</array>
@@ -96,7 +78,7 @@
 		<string>OpenWebsiteIntent</string>
 		<string>ShortcutsConfigurationIntent</string>
 		<string>StatsConfigurationIntent</string>
-		<string>org.mozilla.ios.firefox.browsing</string>
+		<string>com.brave.ios.browsing</string>
 	</array>
 	<key>SERVICES_KEY</key>
 	<string>$(BRAVE_SERVICES_KEY)</string>

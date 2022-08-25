@@ -7,8 +7,6 @@
 
 import Foundation
 
-public let NSFileManagerExtensionsDomain = "org.mozilla.NSFileManagerExtensions"
-
 public enum NSFileManagerExtensionsErrorCodes: Int {
   case enumeratorFailure = 0
   case enumeratorElementNotURL = 1
@@ -99,7 +97,7 @@ public extension FileManager {
     }
 
     return NSError(
-      domain: NSFileManagerExtensionsDomain,
+      domain: "com.brave.ios.fileManagerExtensions",
       code: code.rawValue,
       userInfo: userInfo)
   }

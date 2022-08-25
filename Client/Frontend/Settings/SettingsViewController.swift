@@ -229,7 +229,6 @@ class SettingsViewController: TableViewController {
       ]
     }
 
-    #if !NO_BRAVE_NEWS
     section.rows.append(
       Row(
         text: Strings.BraveNews.braveNews,
@@ -238,7 +237,6 @@ class SettingsViewController: TableViewController {
           self.navigationController?.pushViewController(todaySettings, animated: true)
         }, image: UIImage(named: "settings-brave-today", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )
-    #endif
 
     vpnRow = vpnSettingsRow()
     if let vpnRow = vpnRow {

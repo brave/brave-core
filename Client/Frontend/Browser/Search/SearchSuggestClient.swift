@@ -5,10 +5,6 @@
 import Foundation
 import Shared
 
-let SearchSuggestClientErrorDomain = "org.mozilla.firefox.SearchSuggestClient"
-let SearchSuggestClientErrorInvalidEngine = 0
-let SearchSuggestClientErrorInvalidResponse = 1
-
 /*
  * Clients of SearchSuggestionClient should retain the object during the
  * lifetime of the search suggestion query, as requests are canceled during destruction.
@@ -16,6 +12,10 @@ let SearchSuggestClientErrorInvalidResponse = 1
  * Query callbacks that must run even if they are cancelled should wrap their contents in `withExtendendLifetime`.
  */
 class SearchSuggestClient {
+  static let errorDomain = "com.brave.ios.SearchSuggestClient"
+  static let invalidEngineErrorCode = 0
+  static let invalidResponseErrorCode = 1
+  
   fileprivate let searchEngine: OpenSearchEngine
   fileprivate var request: URLSessionDataTask?
   fileprivate let userAgent: String
@@ -34,7 +34,7 @@ class SearchSuggestClient {
   func query(_ query: String, callback: @escaping (_ response: [String]?, _ error: NSError?) -> Void) {
     let url = searchEngine.suggestURLForQuery(query)
     if url == nil {
-      let error = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidEngine, userInfo: nil)
+      let error = NSError(domain: Self.errorDomain, code: Self.invalidEngineErrorCode, userInfo: nil)
       callback(nil, error)
       return
     }
@@ -46,7 +46,7 @@ class SearchSuggestClient {
           return callback(nil, error as NSError?)
         }
 
-        let responseError = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidResponse, userInfo: nil)
+        let responseError = NSError(domain: Self.errorDomain, code: Self.invalidResponseErrorCode, userInfo: nil)
 
         if let response = response as? HTTPURLResponse {
           if !(200..<300).contains(response.statusCode) {

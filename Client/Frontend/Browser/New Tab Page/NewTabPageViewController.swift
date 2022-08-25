@@ -162,7 +162,6 @@ class NewTabPageViewController: UIViewController {
       sections.insert(NTPDefaultBrowserCalloutProvider(), at: 0)
     }
 
-    #if !NO_BRAVE_NEWS
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
       sections.append(
         BraveNewsSectionProvider(
@@ -175,7 +174,6 @@ class NewTabPageViewController: UIViewController {
       )
       layout.braveNewsSection = sections.firstIndex(where: { $0 is BraveNewsSectionProvider })
     }
-    #endif
 
     collectionView.do {
       $0.delegate = self
@@ -188,13 +186,11 @@ class NewTabPageViewController: UIViewController {
       self?.setupBackgroundImage()
     }
 
-    #if !NO_BRAVE_NEWS
     Preferences.BraveNews.isEnabled.observe(from: self)
     feedDataSource.observeState(from: self) { [weak self] in
       self?.handleFeedStateChange($0, $1)
     }
     NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
-    #endif
   }
 
   @available(*, unavailable)
@@ -693,7 +689,6 @@ class NewTabPageViewController: UIViewController {
   }
 
   @objc private func checkForUpdatedFeed() {
-    #if !NO_BRAVE_NEWS
     if !isBraveNewsVisible || Preferences.BraveNews.isShowingOptIn.value { return }
     if collectionView.contentOffset.y == collectionView.contentInset.top {
       // Reload contents if the user is not currently scrolled into the feed
@@ -708,7 +703,6 @@ class NewTabPageViewController: UIViewController {
         feedOverlayView.showNewContentAvailableButton()
       }
     }
-    #endif
   }
 
   private func loadFeedContents(completion: (() -> Void)? = nil) {
@@ -829,12 +823,9 @@ extension NewTabPageViewController: PreferencesObserver {
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
   var isBraveNewsVisible: Bool {
-    #if NO_BRAVE_NEWS
-    return false
-    #else
     return !PrivateBrowsingManager.shared.isPrivateBrowsing && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
-    #endif
   }
+  
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     for section in sections {
       section.scrollViewDidScroll?(scrollView)
