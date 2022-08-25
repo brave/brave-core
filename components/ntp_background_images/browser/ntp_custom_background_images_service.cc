@@ -26,7 +26,7 @@ NTPCustomBackgroundImagesService::~NTPCustomBackgroundImagesService() = default;
 
 bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
   return delegate_->IsCustomImageBackgroundEnabled() ||
-         delegate_->IsSolidColorBackgroundEnabled();
+         delegate_->IsColorBackgroundEnabled();
 }
 
 base::Value NTPCustomBackgroundImagesService::GetBackground() const {
@@ -37,7 +37,7 @@ base::Value NTPCustomBackgroundImagesService::GetBackground() const {
   if (delegate_->IsCustomImageBackgroundEnabled()) {
     data.SetStringKey(kWallpaperImageURLKey, kCustomWallpaperURL);
   } else {
-    data.SetStringKey(kWallpaperSolidColorKey, delegate_->GetSolidColor());
+    data.SetStringKey(kWallpaperColorKey, delegate_->GetColor());
   }
   return data;
 }

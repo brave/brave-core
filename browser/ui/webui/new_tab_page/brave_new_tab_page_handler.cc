@@ -141,7 +141,7 @@ void BraveNewTabPageHandler::UseBraveBackground() {
   // Call ntp custom background images service.
   NTPBackgroundPrefs(profile_->GetPrefs())
       .SetType(NTPBackgroundPrefs::Type::kBrave);
-  OnCustomBackgroundImageUpdated();
+  OnCustomBackgroundUpdated();
   DeleteSanitizedImageFile();
 }
 
@@ -185,12 +185,12 @@ void BraveNewTabPageHandler::OnSearchPromotionDismissed() {
   NotifySearchPromotionDisabledIfNeeded();
 }
 
-void BraveNewTabPageHandler::UseSolidColorBackground(const std::string& color) {
+void BraveNewTabPageHandler::UseColorBackground(const std::string& color) {
   auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
-  background_pref.SetType(NTPBackgroundPrefs::Type::kSolidColor);
+  background_pref.SetType(NTPBackgroundPrefs::Type::kColor);
   background_pref.SetSelectedValue(color);
 
-  OnCustomBackgroundImageUpdated();
+  OnCustomBackgroundUpdated();
   DeleteSanitizedImageFile();
 }
 
@@ -202,11 +202,11 @@ bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
   return NTPBackgroundPrefs(prefs).IsCustomImageType();
 }
 
-bool BraveNewTabPageHandler::IsSolidColorBackgroundEnabled() const {
-  return NTPBackgroundPrefs(profile_->GetPrefs()).IsSolidColorType();
+bool BraveNewTabPageHandler::IsColorBackgroundEnabled() const {
+  return NTPBackgroundPrefs(profile_->GetPrefs()).IsColorType();
 }
 
-void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
+void BraveNewTabPageHandler::OnCustomBackgroundUpdated() {
   brave_new_tab_page::mojom::CustomBackgroundPtr value =
       brave_new_tab_page::mojom::CustomBackground::New();
   // Pass empty struct when custom background is disabled.
@@ -216,11 +216,11 @@ void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
     std::string time_string = std::to_string(base::Time::Now().ToTimeT());
     std::string local_string(ntp_background_images::kCustomWallpaperURL);
     value->url = GURL(local_string + "?ts=" + time_string);
-  } else if (IsSolidColorBackgroundEnabled()) {
+  } else if (IsColorBackgroundEnabled()) {
     auto selected_value =
         NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
     DCHECK(absl::holds_alternative<std::string>(selected_value));
-    value->solid_color = absl::get<std::string>(selected_value);
+    value->color = absl::get<std::string>(selected_value);
   }
 
   page_->OnBackgroundUpdated(std::move(value));
@@ -301,7 +301,7 @@ void BraveNewTabPageHandler::OnSavedEncodedImage(bool success) {
 
   NTPBackgroundPrefs(profile_->GetPrefs())
       .SetType(NTPBackgroundPrefs::Type::kCustomImage);
-  OnCustomBackgroundImageUpdated();
+  OnCustomBackgroundUpdated();
 }
 
 void BraveNewTabPageHandler::DeleteSanitizedImageFile() {

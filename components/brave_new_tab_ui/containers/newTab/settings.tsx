@@ -25,7 +25,7 @@ import { Publishers } from '../../api/brave_news'
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
 import BackgroundImageIcon from './settings/icons/backgroundImage.svg'
-import NraveStatsIcon from './settings/icons/braveStats.svg'
+import BraveStatsIcon from './settings/icons/braveStats.svg'
 import TopSitesIcon from './settings/icons/topSites.svg'
 import ClockIcon from './settings/icons/clock.svg'
 import CardsIcon from './settings/icons/cards.svg'
@@ -68,7 +68,7 @@ export interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   useCustomBackgroundImage: (useCustom: boolean) => void
-  setSolidColorBackground: (color: string) => void
+  setColorBackground: (color: string) => void
   showBackgroundImage: boolean
   showToday: boolean
   showBraveNewsButton: boolean
@@ -188,8 +188,8 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.props.useCustomBackgroundImage(useCustom)
   }
 
-  setSolidColorBackground = (color: string) => {
-    this.props.setSolidColorBackground(color)
+  setColorBackground = (color: string) => {
+    this.props.setColorBackground(color)
   }
 
   setActiveTab (activeTab: TabType) {
@@ -218,7 +218,7 @@ export default class Settings extends React.PureComponent<Props, State> {
         srcUrl = BackgroundImageIcon
         break
       case TabType.BraveStats:
-        srcUrl = NraveStatsIcon
+        srcUrl = BraveStatsIcon
         break
       case TabType.TopSites:
         srcUrl = TopSitesIcon
@@ -352,7 +352,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                     toggleShowBackgroundImage={this.toggleShowBackgroundImage}
                     useCustomBackgroundImage={this.useCustomBackgroundImage}
-                    setSolidColorBackground={this.setSolidColorBackground}
+                    setColorBackground={this.setColorBackground}
                     brandedWallpaperOptIn={brandedWallpaperOptIn}
                     showBackgroundImage={showBackgroundImage}
                     featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}

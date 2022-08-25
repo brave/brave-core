@@ -9,7 +9,7 @@ import "url/mojom/url.mojom";
 
 struct CustomBackground {
   url.mojom.Url url;
-  string solid_color;
+  string color;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -25,10 +25,11 @@ interface PageHandler {
   // Choose custom background from local file system.
   ChooseLocalCustomBackground();
   UseBraveBackground();
+  UseColorBackground(string color);
+
   TryBraveSearchPromotion(string input, bool open_new_tab);
   DismissBraveSearchPromotion();
   IsSearchPromotionEnabled() => (bool enabled);
-  UseSolidColorBackground(string color);
 };
 
 // WebUI-side handler for requests from the browser.

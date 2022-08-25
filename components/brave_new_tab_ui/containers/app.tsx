@@ -71,8 +71,8 @@ function DefaultPage (props: Props) {
           getNTPBrowserAPI().pageHandler.useBraveBackground()
         }
       }}
-      setSolidColorBackground={(color: string) =>
-        getNTPBrowserAPI().pageHandler.useSolidColorBackground(color)
+      setColorBackground={(color: string) =>
+        getNTPBrowserAPI().pageHandler.useColorBackground(color)
       }
     />
   )

@@ -602,8 +602,8 @@ interface SelectionProps {
   selected: boolean
 }
 
-interface SolidColorBackgroundProps {
-  color: string
+interface ColoredBackgroundProps {
+  colorValue: string
 }
 
 interface ImageBackgroundProps {
@@ -659,13 +659,13 @@ export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & 
   background-image: url(${p => p.image})
 `
 
-export const StyledCustomBackgroundOptionSolidColor = styled('div')<SelectionProps & SolidColorBackgroundProps>`
+export const StyledCustomBackgroundOptionColor = styled('div')<SelectionProps & ColoredBackgroundProps>`
   width: 100%;
   height: 100%;
   ${p => p.selected
     ? css`border-radius: 8px;`
     : css`border-radius: 10px;`}
-  background-color: ${p => p.color};
+  background: ${p => p.colorValue};
 `
 
 export const StyledUploadLabel = styled('div')<{}>`

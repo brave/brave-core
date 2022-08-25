@@ -35,11 +35,8 @@ TEST_F(NTPBackgroundPrefsTest, TypeAccessor) {
   background_prefs_.SetType(NTPBackgroundPrefs::Type::kCustomImage);
   EXPECT_TRUE(background_prefs_.IsCustomImageType());
 
-  background_prefs_.SetType(NTPBackgroundPrefs::Type::kSolidColor);
-  EXPECT_TRUE(background_prefs_.IsSolidColorType());
-
-  background_prefs_.SetType(NTPBackgroundPrefs::Type::kGradientColor);
-  EXPECT_TRUE(background_prefs_.IsGradientColorType());
+  background_prefs_.SetType(NTPBackgroundPrefs::Type::kColor);
+  EXPECT_TRUE(background_prefs_.IsColorType());
 }
 
 TEST_F(NTPBackgroundPrefsTest, MigrationTest) {
@@ -75,13 +72,9 @@ TEST_F(NTPBackgroundPrefsTest, SelectedValue) {
   selected_value = background_prefs_.GetSelectedValue();
   EXPECT_TRUE(absl::holds_alternative<GURL>(selected_value));
 
-  background_prefs_.SetType(NTPBackgroundPrefs::Type::kSolidColor);
+  background_prefs_.SetType(NTPBackgroundPrefs::Type::kColor);
   background_prefs_.SetSelectedValue("red");
   selected_value = background_prefs_.GetSelectedValue();
   EXPECT_TRUE(absl::holds_alternative<std::string>(selected_value));
   EXPECT_TRUE(absl::get<std::string>(selected_value) == "red");
-
-  background_prefs_.SetType(NTPBackgroundPrefs::Type::kGradientColor);
-  selected_value = background_prefs_.GetSelectedValue();
-  EXPECT_TRUE(absl::holds_alternative<std::string>(selected_value));
 }
