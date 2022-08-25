@@ -1,6 +1,8 @@
 import("//brave/components/common/typescript.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
+import("//build/config/locales.gni")
+import("//tools/grit/repack.gni")
 
 brave_grit("static_resources") {
   source = "resources.grd"
@@ -32,4 +34,20 @@ repack("resources") {
 
   # This output repacked by brave_paks.gni
   output = "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak"
+}
+
+group("locales") {
+  deps = []
+  foreach(locale, platform_pak_locales) {
+    deps += [ ":locales_${locale}" ]
+  }
+}
+
+foreach(locale, platform_pak_locales) {
+  copy("locales_${locale}") {
+    locale = string_replace(locale, "-", "_")
+    source_locale = string_replace(locale, "nb", "no")
+    sources = ["extension/_locales/${source_locale}/messages.json"]
+    outputs = ["$root_out_dir/resources/brave_webtorrent/_locales/${locale}/{{source_file_part}}" ]
+  }
 }

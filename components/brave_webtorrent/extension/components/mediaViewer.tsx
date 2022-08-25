@@ -4,6 +4,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
+import { getMessage } from '../background/api/locale_api'
 
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
@@ -83,7 +84,7 @@ export default function MediaViewer ({ torrent, ix }: Props) {
         {fileType === 'image' && <img id='image' src={fileURL} />}
         {fileType === 'pdf' && <object id='object' type='application/pdf' data={fileURL}/>}
         {fileType === 'iframe' && <iframe id='iframe' src={fileURL} sandbox='allow-same-origin' />}
-        {fileType === 'unknown' && <div>Unsupported file type</div>}
+        {fileType === 'unknown' && <div>{getMessage('unsupportedFileType')}</div>}
       </>}
   </Container>
 }

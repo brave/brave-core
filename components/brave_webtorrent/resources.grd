@@ -10,6 +10,7 @@
   </outputs>
   <release seq="1">
     <includes>
+      <include name="IDR_BRAVE_WEBTORRENT_LOCALES_EN_US" file="extension/_locales/en_US/messages.json" resource_path="brave_webtorrent/extension/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_WEBTORRENT" file="extension/manifest.json" resource_path="brave_webtorrent/extension/manifest.json" type="BINDATA" />
       <include name="IDR_BRAVE_WEBTORRENT_HTML" file="extension/brave_webtorrent.html" resource_path="brave_webtorrent/extension/brave_webtorrent.html" type="BINDATA" />
       <include name="IDR_BRAVE_WEBTORRENT2_HTML" file="extension/brave_webtorrent2.html" resource_path="brave_webtorrent/extension/brave_webtorrent2.html" type="BINDATA" />

@@ -147,6 +147,7 @@ group("unpacked_resources") {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
         "//brave/components/brave_rewards/resources/extension:locales",
+        "//brave/components/brave_webtorrent:locales"
       ]
     }
   }
@@ -252,6 +253,7 @@ if (!is_mac && !is_android && !is_ios) {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
         "//brave/components/brave_rewards/resources/extension:locales",
+        "//brave/components/brave_webtorrent:locales",
       ]
 
       public_deps = []
@@ -279,6 +281,13 @@ if (!is_mac && !is_android && !is_ios) {
         locale = string_replace(locale, "-", "_")
         sources = [ "$root_out_dir/resources/brave_extension/_locales/$locale/messages.json" ]
         outputs = [ "$brave_dist_dir/resources/brave_extension/_locales/$locale/{{source_file_part}}" ]
+      }
+      copy("brave_webtorrent_locales_${locale}") {
+        deps = [ "//brave/components/brave_webtorrent:locales_$locale" ]
+
+        locale = string_replace(locale, "-", "_")
+        sources = ["$root_out_dir/resources/brave_webtorrent/_locales/$locale/messages.json"]
+        outputs = ["$brave_dist_dir/resources/brave_webtorrent/_locales/$locale/{{source_file_part}}"]
       }
     }
   }

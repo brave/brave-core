@@ -3,6 +3,7 @@
   "name": "Brave WebTorrent",
   "manifest_version": 2,
   "description": "WebTorrent extension",
+  "default_locale": "en_US",
   "background" : {
     "scripts": ["extension/out/brave_webtorrent_background.bundle.js"],
     "persistent": false

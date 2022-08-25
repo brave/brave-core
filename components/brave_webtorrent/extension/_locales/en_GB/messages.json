@@ -1,0 +1,98 @@
+{
+    "peers": {
+        "message": "peers",
+        "description": "The label for multiple peers"
+    },
+    "peer": {
+        "message": "peer",
+        "description": "The label for a singular peer"
+    },
+    "startTorrent": {
+        "message": "Start Torrent",
+        "description": "The text for the start torrent button"
+    },
+    "stopTorrent": {
+        "message": "Stop Torrent",
+        "description": "The text for the stop torrent button"
+    },
+    "unsupportedFileType": {
+        "message": "Unsupported file type",
+        "description": "Displayed when the media viewer doesn't know what to do with a file"
+    },
+    "filenameColumnHeader": {
+        "message": "Name",
+        "description": "The filename column header"
+    },
+    "saveFileColumnHeader": {
+        "message": "Save file",
+        "description": "The header for the file list column with save buttons"
+    },
+    "sizeColumnHeader": {
+        "message": "Size",
+        "description": "The header for the column displaying the size of files"
+    },
+    "saveFile": {
+        "message": "Save file",
+        "description": "Displayed in the save file button"
+    },
+    "saveAllFiles": {
+        "message": "Save all files",
+        "description": "Displayed on the button for downloading all files in the torrent"
+    },
+    "filesHeader": {
+        "message": "Files",
+        "description": "The heading above the files table"
+    },
+    "fileListLoading": {
+        "message": "Loading torrent file list",
+        "description": "Message showed while the file list for a torrent is loading"
+    },
+    "startTorrentPrompt": {
+        "message": "Click \"Start Torrent\" to begin your download",
+        "description": "Message showed to prompt the user to start the torrent. The \"Start Torrent\" text should match startTorrent"
+    },
+    "downloadingStatus": {
+        "message": "Downloading",
+        "description": "Status message shown while the torrent is downloading"
+    },
+    "seedingStatus": {
+        "message": "Seeding",
+        "description": "Status message shown when the torrent is seeding"
+    },
+    "remainingTimeText": {
+        "message": "remaining",
+        "description": "Text shown with the remaining time, as in '5m 2s remaining'"
+    },
+    "poweredByWebTorrent": {
+        "message": "Powered by WebTorrent",
+        "description": "The powered by notice. The text 'WebTorrent' should not be translated"
+    },
+    "disableHint": {
+        "message": "The WebTorrent extension can be disabled from Brave settings",
+        "description": "Hint message telling the user how to disable WebTorrent. 'WebTorrent' should not be translated"
+    },
+    "privacyWarningHeader": {
+        "message": "Privacy Warning:",
+        "description": "The privacy warning header"
+    },
+    "privacyWarningDetail": {
+        "message": "When you click \"Start Torrent\" Brave will begin downloading pieces of the torrent file from other users and uploading to them in turn. This action will share that you're downloading this file. Others may be able to see what you're downloading and/or determine your public IP address. The download may bypass your proxy settings.",
+        "description": "The detail of the privacy warning, explaining the risks. Note: The \"Start Torrent\" translation should be the same as 'startTorrent'"
+    },
+    "loadingTorrentInfo": {
+        "message": "Loading torrent information...",
+        "description": "Message shown while loading torrent metadata"
+    },
+    "copyMagnetLink": {
+        "message": "Copy Magnet Link",
+        "description": "Text for button to copy the magnet link"
+    },
+    "saveTorrentFile": {
+        "message": "Save .torrent File",
+        "description": "Text displayed on the Save .torrent File button. '.torrent' should not be translated because it's a file extension"
+    },
+    "notATorrentError": {
+        "message": "Error: file is not a .torrent.",
+        "description": "Displayed when trying to open a file which is not a torrent. Displayed in a dialog."
+    }
+}

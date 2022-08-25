@@ -1,0 +1,18 @@
+{
+    "peers": {
+        "message": "peers",
+        "description": "The label for multiple peers"
+    },
+    "peer": {
+        "message": "peer",
+        "description": "The label for a singular peer"
+    },
+    "startTorrent": {
+        "message": "Start Torrent",
+        "description": "The text for the start torrent button"
+    },
+    "stopTorrent": {
+        "message": "Stop Torrent",
+        "description": "The text for the stop torrent button"
+    }
+}

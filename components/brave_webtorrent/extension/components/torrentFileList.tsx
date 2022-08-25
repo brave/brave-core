@@ -7,6 +7,7 @@ import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
 import * as prettierBytes from 'prettier-bytes'
 import * as React from 'react'
 import styled from 'styled-components'
+import { getMessage } from '../background/api/locale_api'
 import { File, TorrentObj } from '../constants/webtorrentState'
 import { getFileType } from '../utils/fileType'
 import { Header } from './header'
@@ -69,13 +70,13 @@ const tableHeader: Cell[] = [
     content: '#'
   },
   {
-    content: 'Name'
+    content: getMessage('filenameColumnHeader')
   },
   {
-    content: 'Save file'
+    content: getMessage('saveFileColumnHeader')
   },
   {
-    content: 'Size'
+    content: getMessage('sizeColumnHeader')
   }
 ]
 
@@ -103,7 +104,7 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
               : <span>{file.name}</span>
           },
           {
-            content: torrent.serverURL && <SaveButton text="Save file"
+            content: torrent.serverURL && <SaveButton text={getMessage('saveFile')}
               level="secondary"
               onClick={() => downloadFile(`${torrent.serverURL}/${index}/${file.name}`, file.name)}/>
           },
@@ -122,17 +123,17 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
 
     return <Container>
       <HeaderRow>
-        <Header>Files</Header>
-        <Button onClick={saveAllFiles} text="Save all files"/>
+        <Header>{getMessage('filesHeader')}</Header>
+        <Button onClick={saveAllFiles} text={getMessage('saveAllFiles')}/>
       </HeaderRow>
       <FilesContainer>
         <Table header={tableHeader} rows={rows}>
             {torrent && !torrent.files
               ? <LoadingContainer>
                 <Spinner/>
-                Loading the torrent file list
+                {getMessage('fileListLoading')}
               </LoadingContainer>
-              : 'Click "Start Torrent" to begin your download.'}
+              : getMessage('startTorrentPrompt')}
           </Table>
       </FilesContainer>
     </Container>

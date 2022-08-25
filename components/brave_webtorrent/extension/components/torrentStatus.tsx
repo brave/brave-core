@@ -9,7 +9,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { TorrentObj } from '../constants/webtorrentState'
 import { Header } from './header'
-import { getLocale } from '$web-common/locale'
+import { getMessage } from '../background/api/locale_api'
 
 const Container = styled.div`
   display: flex;
@@ -66,7 +66,7 @@ function Eta ({ torrent }: {torrent: TorrentObj}) {
   return <>
       <StatsDivider />
       <span>
-        {hoursStr} {minutesStr} {secondsStr} remaining
+        {hoursStr} {minutesStr} {secondsStr} {getMessage('remainingTimeText')}
       </span>
     </>
 }
@@ -80,7 +80,11 @@ export default function TorrentStatus ({ torrent, errorMsg }: Props) {
   return <Container>
     <Header>Torrent stats</Header>
     <StatsContainer>
-      <StatusText>{torrent.progress < 1 ? 'Downloading' : 'Seeding'}</StatusText>
+      <StatusText>
+        {getMessage(torrent.progress < 1
+          ? 'downloadingStatus'
+          : 'seedingStatus')}
+      </StatusText>
       <StatsDivider/>
       <span>{torrent.progress < 1 ? (torrent.progress * 100).toFixed(1) : 100}%</span>
       <StatsDivider/>
@@ -94,7 +98,7 @@ export default function TorrentStatus ({ torrent, errorMsg }: Props) {
       </>}
       <span>{downloaded}{downloaded !== total && ` / ${total}`}</span>
       <StatsDivider/>
-      <span>{torrent.numPeers} {torrent.numPeers === 1 ? getLocale('webtorrentPeer') : getLocale('webtorrentPeers')}</span>
+      <span>{torrent.numPeers} {torrent.numPeers === 1 ? getMessage('peer') : getMessage('peers')}</span>
       <Eta torrent={torrent}/>
     </StatsContainer>
   </Container>

@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // Constants
 import styled from 'styled-components'
+import { getMessage } from '../background/api/locale_api'
 import { TorrentObj } from '../constants/webtorrentState'
 
 interface Props {
@@ -42,11 +43,11 @@ export default function TorrentHeaderViewer ({ torrent, torrentId, name, tabId, 
   name = typeof name === 'object'
       ? name[0]
       : name
-  const title = name || 'Loading torrent information...'
-  const mainButtonText = torrent ? 'Stop Torrent' : 'Start Torrent'
-  const copyButtonText = torrentId.startsWith('magnet:')
-    ? 'Copy Magnet Link'
-    : 'Save .torrent File'
+  const title = name || getMessage('loadingTorrentInfo')
+  const mainButtonText = getMessage(torrent ? 'stopTorrent' : 'startTorrent')
+  const copyButtonText = getMessage(torrentId.startsWith('magnet:')
+    ? 'copyMagnetLink'
+    : 'saveTorrentFile')
 
   const onCopyClick = async () => {
     if (torrentId.startsWith('magnet:')) {
@@ -73,7 +74,7 @@ export default function TorrentHeaderViewer ({ torrent, torrentId, name, tabId, 
         if (!item.filename || !item.filename.endsWith('.torrent')) {
           try {
             chrome.downloads.cancel(item.id, () => {
-              const msg = 'Error: file is not a .torrent.'
+              const msg = getMessage('notATorrentError')
               // By default, alert() shows up on every tab that has loaded webtorrent.
               // We only want it to show on the current tab.
               chrome.tabs.query({
