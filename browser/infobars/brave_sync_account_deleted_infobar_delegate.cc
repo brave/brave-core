@@ -6,33 +6,42 @@
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 
 #include <memory>
-#include <utility>
 
-#include "base/feature_list.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
-#include "components/prefs/pref_service.h"
-#include "components/strings/grit/components_strings.h"
 #include "ui/views/vector_icons.h"
 
 // static
 void BraveSyncAccountDeletedInfoBarDelegate::Create(
-    infobars::ContentInfoBarManager* infobar_manager,
+    content::WebContents* active_web_contents,
     Profile* profile,
     Browser* browser) {
   brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
   const bool notification_pending =
       brave_sync_prefs.IsSyncAccountDeletedNoticePending();
   if (!notification_pending) {
+    return;
+  }
+
+  // If we already are on brave://settings/braveSync/setup page, don't show
+  // informer
+  if (!active_web_contents || active_web_contents->GetURL() ==
+                                  chrome::GetSettingsUrl(kBraveSyncSetupPath)) {
+    return;
+  }
+
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(active_web_contents);
+
+  if (!infobar_manager) {
     return;
   }
 
