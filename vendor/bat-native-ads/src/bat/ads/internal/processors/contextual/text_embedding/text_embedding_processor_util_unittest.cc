@@ -26,10 +26,14 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
   const std::map<std::string, std::string> samples = {
       {R"(<meta property="og:title" content="test">)", "test"},
       {R"(<meta property="og:title" content=" testing   ">)", "testing"},
-      {R"(<meta property="og:title" content="test (string) - for 78 unittest 246">)", "test string for unittest"},
-      {R"(<meta property="og:title" content="Test this,string - for UNiTTeST">)", "test this string for unittest"},
-      {R"(<meta property="og:title" content="Test string, string,... for unittest">)", "test string string for unittest"},
-      {R"(<meta property="og:title" content="Test string1, string2,... for unittest">)", "test for unittest"},
+      {R"(<meta property="og:title" content="test (string) - for 78 unittest 246">)",
+       "test string for unittest"},
+      {R"(<meta property="og:title" content="Test this,string - for UNiTTeST">)",
+       "test this string for unittest"},
+      {R"(<meta property="og:title" content="Test string, string,... for unittest">)",
+       "test string string for unittest"},
+      {R"(<meta property="og:title" content="Test string1, string2,... for unittest">)",
+       "test for unittest"},
       {R"(<meta property="og:tt" content=" testing   ">)", ""},
       {R"(<meta property="og:title" cc=" testing   ">)", ""},
       {R"(<meta property="og:title" content="test")", ""},
@@ -50,7 +54,8 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {" testing   ", "testing"},
       {"test (string) - for 78 unittest 246", "test string for unittest"},
       {"Test this,string - for UNiTTeST", "test this string for unittest"},
-      {"Test string, string,... for unittest", "test string string for unittest"},
+      {"Test string, string,... for unittest",
+       "test string string for unittest"},
       {"Test string1, string2,... for unittest", "test for unittest"}};
 
   for (const auto& sample : samples) {

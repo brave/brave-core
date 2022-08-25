@@ -24,47 +24,46 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
-bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& value) {
-  absl::optional<int> version_value = value.FindInt("version");
-  if (!version_value) {
-    return false;
+bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& root) {
+  if (absl::optional<int> value = root.FindInt("version")) {
+    version = value.value();
   }
-  version = version_value.value();
-
-  std::string* timestamp_value = value.FindString("timestamp");
-  if (!timestamp_value) {
-    return false;
-  }
-  base::Time time;
-  if (!base::Time::FromUTCString((*timestamp_value).c_str(), &time)) {
+  else {
     return false;
   }
 
-  std::string* locale_value = value.FindString("locale");
-  if (!locale_value) {
-    return false;
-  }
-  locale = *locale_value;
-
-  base::Value::Dict* embeddings_value = value.FindDict("embeddings");
-  if (!embeddings_value) {
-    return false;
-  }
-
-  dim = 1;
-  for (const auto item : *embeddings_value) {
-    const auto list = std::move(item.second.GetList());
-    std::vector<float> embedding;
-    embedding.reserve(list.size());
-    for (const base::Value& v_raw : list) {
-      double v = v_raw.GetDouble();
-      embedding.push_back(v);
+  if (const auto* value = root.FindString("timestamp")) {
+    if (!base::Time::FromUTCString((*value).c_str(), &time)) {
+      return false;
     }
-    embeddings[item.first] = VectorData(std::move(embedding));
-    dim = embeddings[item.first].GetDimensionCount();
   }
 
-  if (dim == 1) {
+  if (const auto* value = root.FindString("locale")) {
+    locale = *value;
+  }
+  else {
+    return false;
+  }
+
+  if (auto* value = root.FindDict("embeddings")) {
+    dim = 1;
+    for (const auto item : *value) {
+      const auto list = std::move(item.second.GetList());
+      std::vector<float> embedding;
+      embedding.reserve(list.size());
+      for (const base::Value& v_raw : list) {
+        double v = v_raw.GetDouble();
+        embedding.push_back(v);
+      }
+      embeddings[item.first] = VectorData(std::move(embedding));
+      dim = embeddings[item.first].GetDimensionCount();
+    }
+
+    if (dim == 1) {
+      return false;
+    }
+  }
+  else {
     return false;
   }
 

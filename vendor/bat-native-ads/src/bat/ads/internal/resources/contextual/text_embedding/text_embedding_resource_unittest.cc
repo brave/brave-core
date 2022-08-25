@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 
+#include <string>
 #include <utility>
 
 #include "base/files/file.h"

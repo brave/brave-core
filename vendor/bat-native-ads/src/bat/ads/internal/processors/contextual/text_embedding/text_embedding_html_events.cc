@@ -28,14 +28,18 @@ void LogTextEmbeddingHtmlEvent(const std::string& embedding_formatted,
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(
       text_embedding_event_info,
-      base::BindOnce([](TextEmbeddingHtmlEventCallback callback, const bool success) { callback(success); }, callback));
+      base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
+                        const bool success) { callback(success); },
+                     callback));
 }
 
 void PurgeStaleTextEmbeddingHtmlEvents(
     TextEmbeddingHtmlEventCallback callback) {
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.PurgeStale(
-      base::BindOnce([](TextEmbeddingHtmlEventCallback callback, const bool success) { callback(success); }, callback));
+      base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
+                        const bool success) { callback(success); },
+                     callback));
 }
 
 void GetTextEmbeddingEventsFromDatabase(

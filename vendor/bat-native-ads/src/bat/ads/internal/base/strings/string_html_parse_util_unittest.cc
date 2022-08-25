@@ -42,7 +42,8 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseTagAttributeSimple) {
 
   for (const auto& sample : samples) {
     // Act
-    const std::string parsed = ParseTagAttribute(sample[0], sample[1], sample[2]);
+    const std::string parsed =
+        ParseTagAttribute(sample[0], sample[1], sample[2]);
     // Assert
     ASSERT_EQ(sample[3], parsed);
   }

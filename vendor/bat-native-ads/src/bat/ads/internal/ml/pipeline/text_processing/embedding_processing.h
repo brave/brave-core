@@ -17,7 +17,7 @@
 
 namespace base {
 class Value;
-} // namespace base
+}  // namespace base
 
 namespace ads {
 namespace ml {

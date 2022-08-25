@@ -8,15 +8,26 @@
 #include <map>
 #include <vector>
 
+#include "base/files/file.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
+#include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+using testing::_;
+using testing::Invoke;
+
+namespace {
+
+constexpr char kSimpleResourceFile[] =
+    "wtpwsrqtjxmfdwaymauprezkunxprysm_simple";
+
+}  // namespace
+
 namespace ads {
-namespace ml {
 
 class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
  protected:
@@ -27,36 +38,39 @@ class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
 
 TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   // Arrange
-  pipeline::EmbeddingProcessing embedding_processing;
+  resource::TextEmbedding resource;
+  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
+      .WillOnce(Invoke([](const std::string& id, const int version,
+                          LoadFileCallback callback) {
+        const base::FilePath path =
+            GetFileResourcePath().AppendASCII(kSimpleResourceFile);
 
-  const int version = 1;
-  const base::Time time = base::Time::Now();
-  const std::string& locale = "en";
-  const int dim = 3;
-  const std::map<std::string, VectorData> embeddings = {
-      {"this", VectorData({1.0, 0.5, 0.7})},
-      {"unittest", VectorData({-0.2, 0.8, 1.0})},
-      {"simple", VectorData({0.7, -0.1, 1.3})}};
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
 
-  embedding_processing.SetEmbeddingPipelineForTesting(version, time,
-                                                      locale, dim, embeddings);
+  resource.Load();
+  task_environment_.RunUntilIdle();
 
-  const std::map<std::string, VectorData> samples = {
-      {"this simple unittest", VectorData({0.5, 0.4, 1.0})},
-      {"this is a simple unittest", VectorData({0.5, 0.4, 1.0})},
-      {"that is a test", VectorData({0.0, 0.0, 0.0})},
-      {"this 54 is simple", VectorData({0.85, 0.2, 1.0})},
-      {"", VectorData({0.0, 0.0, 0.0})}};
+  EXPECT_TRUE(resource.IsInitialized());
+  ml::pipeline::EmbeddingProcessing* embedding_processing = resource.Get();
+
+  const std::map<std::string, ml::VectorData> samples = {
+      {"this simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
+      {"this is a simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
+      {"that is a test", ml::VectorData({0.0, 0.0, 0.0})},
+      {"this 54 is simple", ml::VectorData({0.85, 0.2, 1.0})},
+      {"", ml::VectorData({0.0, 0.0, 0.0})}};
 
   for (const auto& sample : samples) {
     // Act
-    pipeline::TextEmbeddingInfo embedding_info =
-        embedding_processing.EmbedText(sample.first);
+    ml::pipeline::TextEmbeddingInfo embedding_info =
+        embedding_processing->EmbedText(sample.first);
     // Assert
     EXPECT_EQ(sample.second.GetValuesForTesting(),
               embedding_info.embedding.GetValuesForTesting());
   }
 }
 
-}  // namespace ml
 }  // namespace ads

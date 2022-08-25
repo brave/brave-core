@@ -27,8 +27,7 @@ TextEmbedding::TextEmbedding()
 TextEmbedding::~TextEmbedding() = default;
 
 bool TextEmbedding::IsInitialized() const {
-  return embedding_processing_ &&
-         embedding_processing_->IsInitialized();
+  return embedding_processing_ && embedding_processing_->IsInitialized();
 }
 
 void TextEmbedding::Load() {

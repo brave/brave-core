@@ -223,8 +223,12 @@ const std::string VectorData::GetVectorAsString() const {
   }
 
   std::vector<std::string> vector_as_string;
-  int v_index = 0;
   int storage_size = storage_->GetSize();
+  if (storage_size == 0) {
+    return {};
+  }
+
+  int v_index = 0;
   while (v_index < storage_size) {
     vector_as_string.push_back(
         base::NumberToString(storage_->values()[v_index]));

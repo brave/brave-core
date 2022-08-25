@@ -158,8 +158,9 @@ void TextEmbeddingHtmlEvents::RunTransaction(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents,
-                                            base::Unretained(this), callback));
+      std::move(transaction),
+      base::BindOnce(&TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents,
+                     base::Unretained(this), callback));
 }
 
 void TextEmbeddingHtmlEvents::InsertOrUpdate(

@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_event_unittest_util.h"
 
+#include <string>
+#include <vector>
+
 #include "base/base64.h"
 #include "base/guid.h"
 #include "bat/ads/internal/base/crypto/crypto_util.h"
@@ -26,13 +29,15 @@ ml::pipeline::TextEmbeddingInfo BuildTextEmbeddingInfo() {
 }
 
 TextEmbeddingEventInfo BuildTextEmbeddingEvent() {
-  ml::pipeline::TextEmbeddingInfo text_embedding_info = BuildTextEmbeddingInfo();
+  ml::pipeline::TextEmbeddingInfo text_embedding_info =
+      BuildTextEmbeddingInfo();
   TextEmbeddingEventInfo text_embedding_event;
   text_embedding_event.created_at = base::Time::Now();
   text_embedding_event.version = "0";
   text_embedding_event.locale = kDefaultLocale;
   text_embedding_event.hashed_key = text_embedding_info.text_hashed;
-  text_embedding_event.embedding = text_embedding_info.embedding.GetVectorAsString();
+  text_embedding_event.embedding =
+      text_embedding_info.embedding.GetVectorAsString();
 
   return text_embedding_event;
 }
