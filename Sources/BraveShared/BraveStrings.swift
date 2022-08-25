@@ -3067,7 +3067,7 @@ extension Strings {
         "opentabs.noSyncSessionPlaceHolderViewDescription",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Too see your tabs from other devices, join a sync chain and enable Open Tabs",
+        value: "To see your tabs from other devices, join a sync chain and enable Open Tabs",
         comment: "The description of the view showing no synced sessions")
     public static let noDevicesSyncChainPlaceholderViewTitle =
       NSLocalizedString(

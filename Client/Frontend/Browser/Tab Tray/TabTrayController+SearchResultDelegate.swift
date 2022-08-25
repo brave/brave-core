@@ -23,6 +23,13 @@ extension TabTrayController: UISearchResultsUpdating {
   }
 
   @objc private func fetchSearchResults(timer: Timer) {
+    guard let query = timer.userInfo as? String else {
+      tabTraySearchQuery = ""
+      return
+    }
+    
+    tabTraySearchQuery = query
+    
     switch tabTrayMode {
     case .local:
       applySnapshot(for: tabTraySearchQuery)
