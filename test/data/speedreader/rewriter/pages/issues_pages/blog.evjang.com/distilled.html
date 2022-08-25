@@ -29,7 +29,6 @@ The choice of $f_o$ and $f_i$ depends largely on the problem domain. In architec
 A wide variety of machine learning problems can be formulated in terms meta-learning operators. In <b>(meta) imitation learning</b> (or <b>goal-conditioned reinforcement learning</b>), $f_i$ is used to relay instructions to the RL agent, such as conditioning on a task embedding or human demonstrations. In <b>meta-reinforcement learning</b> (MRL), $f_i$ instead implements a “fast reinforcement learning'' algorithm by which an agent improves itself after trying the task a couple times. It’s worth re-iterating here that I don’t see a distinction between “learning” and “conditioning”, because they both rely on inputs that are supplied at test time (i.e. “new information provided by the environment”). <br>
 <br>
 MAML is a meta-learning algorithm that implements $f_i$ via SGD, i.e. $\theta := \theta - \alpha \nabla_{\theta}(\mathcal{L}(\theta))$. This SGD update is differentiable with respect to $\theta$, allowing $f_o$ to effectively optimize $f_i$ via backpropagation without requiring many additional parameters to express $f_i$.
-
 </p><div>
 <div>
 <div dir="ltr">
@@ -90,7 +89,7 @@ We’ll define a simple neural network with 2 hidden layers. We’ve specified a
 Next, we define the model loss to be Mean-Squared Error (MSE) across a batch of inputs.</p></div>
 <div>
 
-
+<br>
 <div dir="ltr">
 <table><colgroup></colgroup><tbody>
 <tr><td><p><span><span>def</span><span>loss</span><span>(params, inputs, targets):</span><span><br></span><span># Computes average loss for the batch</span><span><br></span><span> &nbsp;&nbsp;&nbsp;predictions = net_apply(params, inputs)</span><span><br></span><span>return</span><span> np.mean((targets - predictions)**</span><span>2</span><span>)</span></span></p>
@@ -101,7 +100,7 @@ Next, we define the model loss to be Mean-Squared Error (MSE) across a batch of 
 We evaluate the uninitialized network across a range of inputs:</p></div>
 <div>
 
-
+<br>
 <div dir="ltr">
 <table><colgroup></colgroup><tbody>
 <tr><td><p><span><span># batch the inference across K=100</span><span><br></span><span>xrange_inputs = np.linspace(</span><span>-5</span><span>,</span><span>5</span><span>,</span><span>100</span><span>).reshape((</span><span>100</span><span>, </span><span>1</span><span>)) </span><span># (k, 1)</span><span><br></span><span>targets = np.sin(xrange_inputs)</span><span><br></span><span>predictions = vmap(partial(net_apply, net_params))(xrange_inputs)</span><span><br></span><span>losses = vmap(partial(loss, net_params))(xrange_inputs, targets) </span><span># per-input loss</span><span><br></span><span>plt.plot(xrange_inputs, predictions, label=</span><span>'prediction'</span><span>)</span><span><br></span><span>plt.plot(xrange_inputs, losses, label=</span><span>'loss'</span><span>)</span><span><br></span><span>plt.plot(xrange_inputs, targets, label=</span><span>'target'</span><span>)</span><span><br></span><span>plt.legend()</span></span></p>
@@ -117,7 +116,6 @@ As expected, at random initialization, the model’s predictions (blue) are tota
 
 <p>
 Let’s train the network via gradient descent. JAX’s random number generator is set up differently than Numpy’s, so to initialize network parameters we’ll use the original Numpy library (onp) to generate random numbers. We’ll also import the tree_multimap utility to easily manipulate collections of per-parameter gradients (for TensorFlow users, this is analogous to nest.map_structure for Tensors).
-
 </p><div dir="ltr">
 <table><colgroup></colgroup><tbody>
 <tr><td><p><span><span>import</span><span> numpy </span><span>as</span><span> onp</span><span><br></span><span>from</span><span> jax.experimental </span><span>import</span><span> optimizers</span><span><br></span><span>from</span><span> jax.tree_util </span><span>import</span><span> tree_multimap &nbsp;</span><span># Element-wise manipulation of collections of numpy arrays </span></span></p>
@@ -127,7 +125,6 @@ Let’s train the network via gradient descent. JAX’s random number generator 
 <p><b><br></b></p>
 <p>
 We initialize the parameters and optimizer, and run the curve fitting for 100 steps. Note that adding the @jit decorator to the “step” function uses XLA to compile the entire training step into machine code, along with optimizations like fused accelerator kernels, memory and layout optimization.&nbsp;TensorFlow itself also uses XLA for <a href="https://developers.googleblog.com/2017/03/xla-tensorflow-compiled.html">accelerating statically defined graphs</a>. XLA makes the computation very fast and amenable to hardware acceleration because the entire thing can be executed without returning to a Python interpreter (or Graph interpreter in the case of TensorFlow sans XLA). The code in this tutorial will&nbsp;<i>just work</i>&nbsp;on CPU/GPU/TPU.
-
 </p><div dir="ltr">
 <table><colgroup></colgroup><tbody>
 <tr><td><p><span><span>opt_init, opt_update = optimizers.adam(step_size=</span><span>1e-2</span><span>)</span><span><br></span><span>opt_state = opt_init(net_params)</span><span><br></span><span># Define a compiled update step</span><span><br></span><span>@jit</span><span><br></span><span>def</span><span>step</span><span>(i, opt_state, x1, y1):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;g = grad(loss)(p, x1, y1)</span><span><br></span><span>return</span><span> opt_update(i, g, opt_state)</span><span><br></span><span><br></span><span>for</span><span> i </span><span>in</span><span> range(</span><span>100</span><span>):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;opt_state = step(i, opt_state, xrange_inputs, targets)</span><span><br></span><span>net_params = optimizers.get_params(opt_state)</span></span></p>
@@ -167,7 +164,7 @@ Now let’s extend our sinusoid regression task to a multi-task problem, in whic
 <p><span id="docs-internal-guid-313a0369-7fff-b1c4-535d-2c17f57be320"><br>Suppose a task loss function $\mathcal{L}$ is defined with respect to model parameters $\theta$, input features $X$, output labels $Y$. Let $x_1, y_1$ and $x_2, y_2$ be identically distributed task instance data sampled from $X, Y$. Then MAML optimizes the following:<p>$\mathcal{L}(\theta - \nabla \mathcal{L}(\theta, x_1, y_1), x_2, y_2)$</p><p>MAML’s inner update operator is just gradient descent on the regression loss. The outer loss, <span>maml_loss</span>, is simply the original loss applied <i>after</i> the inner_update operator has been applied. One interpretation of the MAML objective is that it is a differentiable estimate of a cross-validation loss with respect to a learner. Meta-training results in an <span>inner_update</span> that minimizes the cross-validation loss.</p></span></p>
 <div>
 
-
+<br>
 <div dir="ltr">
 <table><colgroup></colgroup><tbody>
 <tr><td><p><span><span>def</span><span>inner_update</span><span>(p, x1, y1, alpha=</span><span>.1</span><span>):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;grads = grad(loss)(p, x1, y1)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;inner_sgd_fn = </span><span>lambda</span><span> g, state: (state - alpha*g)</span><span><br></span><span>return</span><span> tree_multimap(inner_sgd_fn, grads, p)</span><span><br></span><span><br></span><span>def</span><span>maml_loss</span><span>(p, x1, y1, x2, y2):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;p2 = inner_update(p, x1, y1)</span><span><br></span><span>return</span><span> loss(p2, x2, y2)</span></span></p>
@@ -179,7 +176,7 @@ Now let’s extend our sinusoid regression task to a multi-task problem, in whic
 In each iteration of optimizing the MAML objective, we sample a single new task, sample a different set of input features and input labels for both the training and validation splits.</p></div>
 <div>
 
-
+<br>
 <div dir="ltr">
 <table><colgroup></colgroup><tbody>
 <tr><td><p><span><span>opt_init, opt_update = optimizers.adam(step_size=</span><span>1e-3</span><span>) &nbsp;</span><span># this LR seems to be better than 1e-2 and 1e-4</span><span><br></span><span>out_shape, net_params = net_init(in_shape)</span><span><br></span><span>opt_state = opt_init(net_params)</span><span><br></span><span><br></span><span>@jit</span><span><br></span><span>def</span><span>step</span><span>(i, opt_state, x1, y1, x2, y2):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;g = grad(maml_loss)(p, x1, y1, x2, y2)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;l = maml_loss(p, x1, y1, x2, y2)</span><span><br></span><span>return</span><span> opt_update(i, g, opt_state), l</span><span><br></span><span>K=</span><span>20</span><span><br></span><span><br></span><span>np_maml_loss = []</span><span><br></span><span><br></span><span># Adam optimization</span><span><br></span><span>for</span><span> i </span><span>in</span><span> range(</span><span>20000</span><span>):</span><span><br></span><span># define the task</span><span><br></span><span> &nbsp;&nbsp;&nbsp;A = onp.random.uniform(low=</span><span>0.1</span><span>, high=</span><span>.5</span><span>)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;phase = onp.random.uniform(low=</span><span>0.</span><span>, high=np.pi)</span><span><br></span><span># meta-training inner split (K examples)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x1 = onp.random.uniform(low=</span><span>-5.</span><span>, high=</span><span>5.</span><span>, size=(K,</span><span>1</span><span>))</span><span><br></span><span> &nbsp;&nbsp;&nbsp;y1 = A * onp.sin(x1 + phase)</span><span><br></span><span># meta-training outer split (1 example). Like cross-validating with respect to one example.</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x2 = onp.random.uniform(low=</span><span>-5.</span><span>, high=</span><span>5.</span><span>)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;y2 = A * onp.sin(x2 + phase)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;opt_state, l = step(i, opt_state, x1, y1, x2, y2)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;np_maml_loss.append(l)</span><span><br></span><span>if</span><span> i % </span><span>1000</span><span> == </span><span>0</span><span>:</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(i)</span><span><br></span><span>net_params = optimizers.get_params(opt_state)</span></span></p>
@@ -217,7 +214,7 @@ We can compute the MAML gradients across multiple tasks at once to reduce the va
 Below is a function that samples a batch of tasks, where outer_batch_size is the number of tasks we meta-train on in each step, and inner_batch_size is the number of data points per-task.&nbsp;</p></div>
 <div>
 
-
+<br>
 <div dir="ltr">
 <table><colgroup></colgroup><tbody>
 <tr><td><p><span><span>def</span><span>sample_tasks</span><span>(outer_batch_size, inner_batch_size):</span><span><br></span><span># Select amplitude and phase for the task</span><span><br></span><span> &nbsp;&nbsp;&nbsp;As = []</span><span><br></span><span> &nbsp;&nbsp;&nbsp;phases = []</span><span><br></span><span>for</span><span> _ </span><span>in</span><span> range(outer_batch_size): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As.append(onp.random.uniform(low=</span><span>0.1</span><span>, high=</span><span>.5</span><span>))</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phases.append(onp.random.uniform(low=</span><span>0.</span><span>, high=np.pi))</span><span><br></span><span>def</span><span>get_batch</span><span>():</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []</span><span><br></span><span>for</span><span> A, phase </span><span>in</span><span> zip(As, phases):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = onp.random.uniform(low=</span><span>-5.</span><span>, high=</span><span>5.</span><span>, size=(inner_batch_size, </span><span>1</span><span>))</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = A * onp.sin(x + phase)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append(x)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append(y)</span><span><br></span><span>return</span><span> np.stack(xs), np.stack(ys)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x1, y1 = get_batch()</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x2, y2 = get_batch()</span><span><br></span><span>return</span><span> x1, y1, x2, y2</span></span></p>
@@ -249,7 +246,6 @@ In this tutorial we explored the MAML algorithm and reproduced the Sinusoid regr
 So, what are the distinctions between “optimization”, “learning”, “adaptation”, and “memory”? I believe they are all equivalent, because it is possible to implement memory capabilities with optimization techniques (MAML) and vice versa (e.g. RNN-based meta reinforcement learning). In reinforcement learning, imitating a teacher or conditioning on user-specified goal or recovering from a failure can all use the same machinery.<br>
 <br>
 Thinking about precise definitions of “learning” and “meta-learning”, and attempting to reconcile them with the capabilities of biological intelligence have led me to realize that every process in Life itself, spanning molecular reaction to behavioral adaptation to genetic evolution, is nothing more than learning happening at many time scales. I’ll have much more to say on the topic of Artificial Life and Machine Learning in the future, but for now, thank you for reading this humble tutorial on fitting sinusoidal functions!
-
 </p><h3>
 Acknowledgements</h3><p>
 Thanks to Matthew Johnson for helping to proofread this post and helping me to resolve JAX questions.</p></div>

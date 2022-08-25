@@ -491,6 +491,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
                     local_name!("br") => brs.push(child.clone()),
                     _ => {
                         if brs.len() >= 2 {
+                            brs.pop();
                             useless_nodes.extend(brs);
                         }
                         brs = Vec::new();
