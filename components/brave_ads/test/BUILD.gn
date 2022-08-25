@@ -225,6 +225,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/base/unittest/unittest_url_response_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/base/url/url_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/browser/browser_manager_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/catalog/catalog_json_reader_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/catalog/catalog_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/conversions/conversion_queue_database_table_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/conversions/conversion_queue_item_unittest_util.cc",
