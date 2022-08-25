@@ -12,7 +12,7 @@
 namespace ads {
 namespace search_result_ads {
 
-PermissionRules::PermissionRules() : PermissionRulesBase() {}
+PermissionRules::PermissionRules() = default;
 
 PermissionRules::~PermissionRules() = default;
 
