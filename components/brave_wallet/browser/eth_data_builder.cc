@@ -10,19 +10,17 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
 namespace {
+
 bool IsValidHostLabelCharacter(char c, bool is_first_char) {
   return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
          (c >= '0' && c <= '9') || (!is_first_char && c == '-') || c == '_';
-}
-
-std::string NamehashPaddedHexString(const std::string& name) {
-  return ToHex(base::make_span(Namehash(name)));
 }
 
 }  // namespace
@@ -250,17 +248,9 @@ bool SupportsInterface(const std::string& interface_id, std::string* data) {
   return ConcatHexStrings(function_hash, padded_interface_id, data);
 }
 
-std::string SupportsInterface(const std::string& interface_id) {
-  DCHECK(IsValidHexString(interface_id));
-  std::string padded_interface_id = interface_id + std::string(56, '0');
-
-  const std::string function_hash =
-      GetFunctionHash("supportsInterface(bytes4)");
-
-  std::string data;
-  ConcatHexStrings(function_hash, padded_interface_id, &data);
-  DCHECK(IsValidHexString(data));
-  return data;
+std::vector<uint8_t> SupportsInterface(eth_abi::Span4 interface) {
+  return eth_abi::TupleEncoder().AddFixedBytes(interface).EncodeWithSelector(
+      kSupportsInterfaceBytes4);
 }
 
 }  // namespace erc165
@@ -277,7 +267,7 @@ absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
     return absl::nullopt;
   }
 
-  std::string tokenID = NamehashPaddedHexString(domain);
+  std::string tokenID = ToHex(Namehash(domain));
 
   std::string encoded_keys;
   if (!EncodeStringArray(keys, &encoded_keys)) {
@@ -303,7 +293,7 @@ absl::optional<std::string> Get(const std::string& key,
     return absl::nullopt;
   }
 
-  std::string tokenID = NamehashPaddedHexString(domain);
+  std::string tokenID = ToHex(Namehash(domain));
 
   std::string encoded_key;
   if (!EncodeString(key, &encoded_key)) {
@@ -325,7 +315,7 @@ namespace ens {
 
 std::string Resolver(const std::string& domain) {
   const std::string function_hash = GetFunctionHash("resolver(bytes32)");
-  std::string tokenID = NamehashPaddedHexString(domain);
+  std::string tokenID = ToHex(Namehash(domain));
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   std::string data;
   ConcatHexStrings(hex_strings, &data);
@@ -335,14 +325,14 @@ std::string Resolver(const std::string& domain) {
 
 bool ContentHash(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("contenthash(bytes32)");
-  std::string tokenID = NamehashPaddedHexString(domain);
+  std::string tokenID = ToHex(Namehash(domain));
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }
 
 bool Addr(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("addr(bytes32)");
-  std::string tokenID = NamehashPaddedHexString(domain);
+  std::string tokenID = ToHex(Namehash(domain));
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }

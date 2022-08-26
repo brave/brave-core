@@ -10,7 +10,6 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/environment.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
@@ -39,21 +38,20 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "net/http/http_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
+using api_request_helper::APIRequestHelper;
+
 namespace {
 
-// TODO(apaymyshev): fix pattern
 // The domain name should be a-z | A-Z | 0-9 and hyphen(-).
 // The domain name should not start or end with hyphen (-).
 // The domain name can be a subdomain.
@@ -91,6 +89,33 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+net::NetworkTrafficAnnotationTag GetENSOffchainNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
+      semantics {
+        sender: "JSON RPC Service""
+        description:
+          "Fetches ENS offchain data."
+        trigger:
+          "Triggered by ENS offchain lookup."
+        data:
+          "Offchain lookup info."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable ENS on brave://settings/extensions page."
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
+bool ENSL2Enabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletENSL2Feature);
+}
+
 namespace solana {
 // https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
 constexpr char kAccountNotCreatedError[] = "could not find account";
@@ -103,10 +128,8 @@ namespace brave_wallet {
 JsonRpcService::JsonRpcService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs)
-    : url_loader_factory_(url_loader_factory),
-      api_request_helper_(new api_request_helper::APIRequestHelper(
-          GetNetworkTrafficAnnotationTag(),
-          url_loader_factory)),
+    : api_request_helper_(new APIRequestHelper(GetNetworkTrafficAnnotationTag(),
+                                               url_loader_factory)),
       ud_get_eth_addr_calls_(
           std::make_unique<
               unstoppable_domains::MultichainCalls<std::string>>()),
@@ -115,21 +138,32 @@ JsonRpcService::JsonRpcService(
       prefs_(prefs),
       weak_ptr_factory_(this) {
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::ETH),
-                  mojom::CoinType::ETH))
+                  mojom::CoinType::ETH)) {
     LOG(ERROR) << "Could not set network from JsonRpcService() for ETH";
+  }
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::SOL),
-                  mojom::CoinType::SOL))
+                  mojom::CoinType::SOL)) {
     LOG(ERROR) << "Could not set network from JsonRpcService() for SOL";
+  }
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::FIL),
-                  mojom::CoinType::FIL))
+                  mojom::CoinType::FIL)) {
     LOG(ERROR) << "Could not set network from JsonRpcService() for FIL";
+  }
+
+  if (ENSL2Enabled()) {
+    api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
+        GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
+  }
 }
 
 void JsonRpcService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  url_loader_factory_ = url_loader_factory;
-  api_request_helper_.reset(new api_request_helper::APIRequestHelper(
-      GetNetworkTrafficAnnotationTag(), url_loader_factory));
+  api_request_helper_ = std::make_unique<APIRequestHelper>(
+      GetNetworkTrafficAnnotationTag(), url_loader_factory);
+  if (ENSL2Enabled()) {
+    api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
+        GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
+  }
 }
 
 JsonRpcService::~JsonRpcService() = default;
@@ -183,35 +217,14 @@ void JsonRpcService::RequestInternal(
     bool auto_retry_on_network_change,
     const GURL& network_url,
     RequestIntermediateCallback callback,
-    api_request_helper::APIRequestHelper::ResponseConversionCallback
-        conversion_callback = base::NullCallback()) {
+    APIRequestHelper::ResponseConversionCallback conversion_callback =
+        base::NullCallback()) {
   DCHECK(network_url.is_valid());
 
-  base::flat_map<std::string, std::string> request_headers;
-  std::string id, method, params;
-  if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
-    if (net::HttpUtil::IsValidHeaderValue(method))
-      request_headers["X-Eth-Method"] = method;
-    if (method == kEthGetBlockByNumber) {
-      std::string cleaned_params;
-      base::RemoveChars(params, "\" []", &cleaned_params);
-      if (net::HttpUtil::IsValidHeaderValue(cleaned_params))
-        request_headers["X-eth-get-block"] = cleaned_params;
-    } else if (method == kEthBlockNumber) {
-      request_headers["X-Eth-Block"] = "true";
-    }
-  }
-
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-  request_headers["x-brave-key"] = std::move(brave_key);
-  api_request_helper_->Request("POST", network_url, json_payload,
-                               "application/json", auto_retry_on_network_change,
-                               std::move(callback), request_headers, -1u,
-                               std::move(conversion_callback));
+  api_request_helper_->Request(
+      "POST", network_url, json_payload, "application/json",
+      auto_retry_on_network_change, std::move(callback),
+      MakeCommonEthHeaders(json_payload), -1u, std::move(conversion_callback));
 }
 
 void JsonRpcService::Request(const std::string& json_payload,
@@ -1192,7 +1205,7 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
     return;
   }
 
-  if (base::FeatureList::IsEnabled(features::kBraveWalletENSL2Feature)) {
+  if (ENSL2Enabled()) {
     for (auto& [_, task_pair] : ens_get_eth_add_tasks_) {
       if (task_pair.first->domain() == domain) {
         task_pair.second.push_back(std::move(callback));
@@ -1216,8 +1229,14 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
                         .AddFixedBytes(Namehash(domain))
                         .EncodeWithSelector(base::make_span(kAddrBytes32Hash));
 
+    // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
+    auto done_callback = base::BindOnce(&JsonRpcService::OnEnsResolverTaskDone,
+                                        base::Unretained(this));
+
     auto task = std::make_unique<EnsResolverTask>(
-        this, url_loader_factory_, std::move(ens_call), domain, network_url);
+        std::move(done_callback), api_request_helper_.get(),
+        api_request_helper_ens_offchain_.get(), std::move(ens_call), domain,
+        network_url);
     auto* task_ptr = task.get();
     std::vector<EnsGetEthAddrCallback> callbacks;
     callbacks.push_back(std::move(callback));

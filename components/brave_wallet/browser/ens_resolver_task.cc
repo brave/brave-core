@@ -14,25 +14,19 @@
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "net/base/load_flags.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace brave_wallet {
 namespace {
-
-// resolve(bytes32,bytes32)
-const uint8_t kResolveBytes32Bytes32Hash[] = {0x90, 0x61, 0xb9, 0x23};
 
 absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
     const std::string& json) {
@@ -41,7 +35,7 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
   if (!records_v || !records_v->is_dict()) {
     return absl::nullopt;
   }
-  auto* data = records_v->FindStringPath("data");
+  auto* data = records_v->GetDict().FindString("data");
   if (!data)
     return absl::nullopt;
 
@@ -49,46 +43,6 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
   if (!PrefixedHexStringToBytes(*data, &result))
     return absl::nullopt;
   return result;
-}
-
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("ens_resolver", R"(
-      semantics {
-        sender: "ENS Resolver Task"
-        description:
-          "Fetches ENS offchain data."
-        trigger:
-          "Triggered by ENS offchain lookup."
-        data:
-          "Offchain lookup info."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        setting:
-          "You can enable or disable ENS on brave://settings/extensions page."
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )");
-}
-
-std::unique_ptr<network::SimpleURLLoader> CreateLoader(
-    const GURL& url,
-    const std::string& payload) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = url;
-  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-                        net::LOAD_DO_NOT_SAVE_COOKIES;
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->method = payload.empty() ? "GET" : "POST";
-
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  if (!payload.empty()) {
-    url_loader->AttachStringForUpload(payload, "application/json");
-  }
-  return url_loader;
 }
 
 }  // namespace
@@ -110,7 +64,7 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
     return absl::nullopt;
   }
 
-  auto* error_data = records_v->FindStringPath("error.data");
+  auto* error_data = records_v->GetDict().FindStringByDottedPath("error.data");
   if (!error_data)
     return absl::nullopt;
 
@@ -161,31 +115,36 @@ class ScopedWorkOnTask {
 };
 
 EnsResolverTask::EnsResolverTask(
-    JsonRpcServiceBase* json_rpc_service_base,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    DoneCallback done_callback,
+    APIRequestHelper* api_request_helper,
+    APIRequestHelper* api_request_helper_ens_offchain,
     std::vector<uint8_t> ens_call,
     const std::string& domain,
     const GURL& network_url)
-    : json_rpc_service_base_(json_rpc_service_base),
-      url_loader_factory_(url_loader_factory),
+    : done_callback_(std::move(done_callback)),
+      api_request_helper_(api_request_helper),
+      api_request_helper_ens_offchain_(api_request_helper_ens_offchain),
       ens_call_(std::move(ens_call)),
       domain_(domain),
-      network_url_(network_url) {}
+      network_url_(network_url) {
+  DCHECK(api_request_helper_);
+  DCHECK(api_request_helper_ens_offchain_);
+}
 
 EnsResolverTask::~EnsResolverTask() = default;
 
 void EnsResolverTask::WorkOnTask() {
   if (resolve_result_) {
-    json_rpc_service_base_->OnEnsResolverTaskDone(
-        this, std::move(resolve_result_.value()),
-        mojom::ProviderError::kSuccess, "");
+    std::move(done_callback_)
+        .Run(this, std::move(resolve_result_.value()),
+             mojom::ProviderError::kSuccess, "");
     // `this` is not valid here
     return;
   }
   if (error_ || error_message_) {
-    json_rpc_service_base_->OnEnsResolverTaskDone(
-        this, {}, error_.value_or(mojom::ProviderError::kInternalError),
-        error_message_.value_or(""));
+    std::move(done_callback_)
+        .Run(this, {}, error_.value_or(mojom::ProviderError::kInternalError),
+             error_message_.value_or(""));
     // `this` is not valid here.
     return;
   }
@@ -215,9 +174,9 @@ void EnsResolverTask::WorkOnTask() {
     return;
   }
 
-  json_rpc_service_base_->OnEnsResolverTaskDone(
-      this, {}, mojom::ProviderError::kInternalError,
-      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  std::move(done_callback_)
+      .Run(this, {}, mojom::ProviderError::kInternalError,
+           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
   // `this` is not valid here.
 }
 
@@ -228,11 +187,9 @@ void EnsResolverTask::FetchEnsResolver() {
 
   std::string call_data = ens::Resolver(domain_);
 
-  auto internal_callback = base::BindOnce(
-      &EnsResolverTask::OnFetchEnsResolverDone, weak_ptr_factory_.GetWeakPtr());
-  json_rpc_service_base_->RequestInternal(
-      eth::eth_call(contract_address, call_data), true, network_url_,
-      std::move(internal_callback), base::NullCallback());
+  RequestInternal(eth::eth_call(contract_address, call_data),
+                  base::BindOnce(&EnsResolverTask::OnFetchEnsResolverDone,
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchEnsResolverDone(
@@ -262,14 +219,11 @@ void EnsResolverTask::FetchEnsip10Support() {
   DCHECK(resolver_);
 
   // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
-  std::string data = erc165::SupportsInterface("0x9061b923");
+  auto call = erc165::SupportsInterface(kResolveBytesBytesSelector);
 
-  auto internal_callback =
-      base::BindOnce(&EnsResolverTask::OnFetchEnsip10SupportDone,
-                     weak_ptr_factory_.GetWeakPtr());
-  json_rpc_service_base_->RequestInternal(
-      eth::eth_call(*resolver_, data), true, network_url_,
-      std::move(internal_callback), base::NullCallback());
+  RequestInternal(eth::eth_call(*resolver_, ToHex(call)),
+                  base::BindOnce(&EnsResolverTask::OnFetchEnsip10SupportDone,
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchEnsip10SupportDone(
@@ -300,11 +254,9 @@ void EnsResolverTask::FetchEnsRecord() {
   DCHECK(!supports_ensip_10_.value());
   DCHECK(!resolve_result_);
 
-  auto internal_callback = base::BindOnce(
-      &EnsResolverTask::OnFetchEnsRecordDone, weak_ptr_factory_.GetWeakPtr());
-  json_rpc_service_base_->RequestInternal(
-      eth::eth_call(*resolver_, ToHex(ens_call_)), true, network_url_,
-      std::move(internal_callback), base::NullCallback());
+  RequestInternal(eth::eth_call(*resolver_, ToHex(ens_call_)),
+                  base::BindOnce(&EnsResolverTask::OnFetchEnsRecordDone,
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchEnsRecordDone(
@@ -351,15 +303,13 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
     ens_resolve_call_ = eth_abi::TupleEncoder()
                             .AddBytes(*dns_encoded_name_)
                             .AddBytes(ens_call_)
-                            .EncodeWithSelector(kResolveBytes32Bytes32Hash);
+                            .EncodeWithSelector(kResolveBytesBytesSelector);
   }
 
-  auto internal_callback =
+  RequestInternal(
+      eth::eth_call(*resolver_, ToHex(ens_resolve_call_)),
       base::BindOnce(&EnsResolverTask::OnFetchWithEnsip10ResolveDone,
-                     weak_ptr_factory_.GetWeakPtr());
-  json_rpc_service_base_->RequestInternal(
-      eth::eth_call(*resolver_, ToHex(ens_resolve_call_)), true, network_url_,
-      std::move(internal_callback), base::NullCallback());
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
@@ -447,33 +397,27 @@ void EnsResolverTask::FetchOffchainData() {
     base::JSONWriter::Write(payload_dict, &payload);
   }
 
-  url_loader_ = CreateLoader(offchain_url, payload);
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+  api_request_helper_ens_offchain_->Request(
+      payload.empty() ? "GET" : "POST", offchain_url, payload,
+      "application/json", false,
       base::BindOnce(&EnsResolverTask::OnFetchOffchainDone,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr()),
+      {}, -1u, base::NullCallback());
 }
 
 void EnsResolverTask::OnFetchOffchainDone(
-    std::unique_ptr<std::string> response_body) {
+    int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
   ScopedWorkOnTask work_on_task(this);
 
-  auto status = -1;
-
-  if (url_loader_->ResponseInfo()) {
-    auto headers_list = url_loader_->ResponseInfo()->headers;
-    if (headers_list) {
-      status = headers_list->response_code();
-    }
-  }
-
-  if (status < 200 || status > 299 || !response_body) {
+  if (status < 200 || status > 299) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return;
   }
 
-  auto bytes_result = ExtractGatewayResult(*response_body);
+  auto bytes_result = ExtractGatewayResult(body);
   if (!bytes_result) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -482,14 +426,24 @@ void EnsResolverTask::OnFetchOffchainDone(
 
   offchain_lookup_attemps_left_--;
   DCHECK_GE(offchain_lookup_attemps_left_, 0);
+  DCHECK_EQ(offchain_lookup_data_->callback_function.size(), 4u);
+  eth_abi::Span4 callback_selector(
+      offchain_lookup_data_->callback_function.begin(), 4);
 
-  ens_resolve_call_ =
-      eth_abi::TupleEncoder()
-          .AddBytes(*bytes_result)
-          .AddBytes(offchain_lookup_data_->extra_data)
-          .EncodeWithSelector(offchain_lookup_data_->callback_function);
+  ens_resolve_call_ = eth_abi::TupleEncoder()
+                          .AddBytes(*bytes_result)
+                          .AddBytes(offchain_lookup_data_->extra_data)
+                          .EncodeWithSelector(callback_selector);
 
   offchain_lookup_data_.reset();
+}
+
+void EnsResolverTask::RequestInternal(const std::string& json_payload,
+                                      RequestIntermediateCallback callback) {
+  api_request_helper_->Request("POST", network_url_, json_payload,
+                               "application/json", false, std::move(callback),
+                               MakeCommonEthHeaders(json_payload), -1u,
+                               base::NullCallback());
 }
 
 }  // namespace brave_wallet

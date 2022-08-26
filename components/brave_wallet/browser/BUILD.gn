@@ -81,8 +81,6 @@ static_library("browser") {
     "json_rpc_response_parser.h",
     "json_rpc_service.cc",
     "json_rpc_service.h",
-    "json_rpc_service_base.cc",
-    "json_rpc_service_base.h",
     "keyring_service.cc",
     "keyring_service.h",
     "nonce_tracker.cc",

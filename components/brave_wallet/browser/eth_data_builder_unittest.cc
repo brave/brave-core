@@ -162,7 +162,8 @@ TEST(EthCallDataBuilderTest, SupportsInterface) {
   EXPECT_EQ(data,
             "0x01ffc9a7ffffffff000000000000000000000000000000000000000000000000"
             "00000000");
-  EXPECT_EQ(SupportsInterface("0xffffffff"),
+  const uint8_t selector[] = {0xff, 0xff, 0xff, 0xff};
+  EXPECT_EQ(ToHex(SupportsInterface(selector)),
             "0x01ffc9a7ffffffff000000000000000000000000000000000000000000000000"
             "00000000");
 

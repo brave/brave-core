@@ -17,11 +17,13 @@
 
 namespace brave_wallet::eth_abi {
 constexpr size_t kRowLength = 32;
+constexpr size_t kSelectorLength = 4;
 
 using Span = base::span<const uint8_t>;
+using Span4 = base::span<const uint8_t, kSelectorLength>;
 using Span32 = base::span<const uint8_t, kRowLength>;
-using Bytes32 = std::array<uint8_t, 32>;
-using Bytes4 = std::array<uint8_t, 4>;
+using Bytes4 = std::array<uint8_t, kSelectorLength>;
+using Bytes32 = std::array<uint8_t, kRowLength>;
 
 std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data);
 
@@ -51,7 +53,7 @@ class TupleEncoder {
   TupleEncoder& AddStringArray(const std::vector<std::string>& string_array);
 
   std::vector<uint8_t> Encode() const;
-  std::vector<uint8_t> EncodeWithSelector(Span selector) const;
+  std::vector<uint8_t> EncodeWithSelector(Span4 selector) const;
   // NOLINTNEXTLINE(runtime/references)
   void EncodeTo(std::vector<uint8_t>& destination) const;
 

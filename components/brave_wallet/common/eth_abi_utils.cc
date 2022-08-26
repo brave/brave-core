@@ -39,9 +39,9 @@ size_t PaddedRowCount(size_t bytes_size) {
 }
 
 uint256_t BytesToUint256(Span32 data) {
-  uint256_t result;
+  uint256_t result = 0;
   for (auto& b : data) {
-    result <<= 8;
+    result <<= uint256_t(8);
     result |= b;
   }
 
@@ -383,6 +383,7 @@ TupleEncoder& TupleEncoder::AddFixedBytes(Span bytes) {
   DCHECK_GT(bytes.size(), 0u);
   DCHECK_LE(bytes.size(), kRowLength);
   auto& element = AppendElement();
+  // Copy bytes at the beginning of head. Remaining bytes are padded with 0.
   base::ranges::copy(bytes.first(std::min(bytes.size(), kRowLength)),
                      element.head.begin());
   return *this;
@@ -424,7 +425,7 @@ std::vector<uint8_t> TupleEncoder::Encode() const {
   return result;
 }
 
-std::vector<uint8_t> TupleEncoder::EncodeWithSelector(Span selector) const {
+std::vector<uint8_t> TupleEncoder::EncodeWithSelector(Span4 selector) const {
   DCHECK_EQ(4u, selector.size());
   std::vector<uint8_t> result(selector.begin(), selector.end());
   EncodeTo(result);

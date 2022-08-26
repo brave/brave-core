@@ -320,10 +320,13 @@ absl::optional<base::Value> ToValue(const network::ResourceRequest& request) {
 
 class JsonRpcServiceUnitTest : public testing::Test {
  public:
-  JsonRpcServiceUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+  JsonRpcServiceUnitTest() = default;
+
+  void SetUp() override {
+    Test::SetUp();
+    shared_url_loader_factory_ =
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_);
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
@@ -3930,8 +3933,7 @@ class Ensip10SupportHandler : public EthCallHandler {
     if (to != resolver_address_)
       return absl::nullopt;
 
-    // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
-    if (data != erc165::SupportsInterface("0x9061b923"))
+    if (data != ToHex(erc165::SupportsInterface(kResolveBytesBytesSelector)))
       return absl::nullopt;
 
     return MakeJsonRpcTupleResponse(
@@ -4129,7 +4131,10 @@ class GatewayHandler {
 
 class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
  public:
-  ENSL2JsonRpcServiceUnitTest() {
+  ENSL2JsonRpcServiceUnitTest() = default;
+
+  void SetUp() override {
+    JsonRpcServiceUnitTest::SetUp();
     json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
         GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
     json_rpc_endpoint_handler_->AddEthCallHandler(

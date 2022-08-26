@@ -11,6 +11,7 @@
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
+
 absl::optional<base::Value> ParseResultValue(const std::string& json);
 
 bool ParseSingleStringResult(const std::string& json, std::string* result) {
