@@ -208,6 +208,12 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             BraveVpnUtils.showProgressDialog(
                     getActivity(), getResources().getString(R.string.vpn_connect_text));
             verifyPurchase(false);
+        } else if (BraveVpnUtils.mUpdateProfileAfterSplitTunnel) {
+            BraveVpnUtils.mUpdateProfileAfterSplitTunnel = false;
+            BraveVpnUtils.showProgressDialog(
+                    getActivity(), getResources().getString(R.string.updating_vpn_profile));
+            BraveVpnUtils.updateProfileConfiguration(getActivity());
+            new Handler().post(() -> updateSummaries());
         } else {
             BraveVpnUtils.dismissProgressDialog();
         }
