@@ -8,8 +8,8 @@ import * as mixins from '../../shared/lib/css_mixins'
 
 export const root = styled.div`
   width: calc(100vw - 22px);
-  max-width: 450px;
-  min-height: 450px;
+  max-width: 420px;
+  min-height: 350px;
   max-height: calc(100vh - 40px);
   overflow: auto;
   border-radius: 8px;
@@ -47,7 +47,7 @@ export const title = styled.span`
 
 export const constributionList = styled.div`
   height: calc(100% - 16px - 67px);
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 /* Each row is a grid
