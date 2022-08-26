@@ -165,8 +165,8 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
 
     // Set referral service is properly initialized sr component is set.
     local_pref_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
-    local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                    base::Value(base::Value::Type::DICTIONARY));
+    local_pref_.SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                        base::Value::Dict());
   }
 
   void EnableSIPref(bool enable) {

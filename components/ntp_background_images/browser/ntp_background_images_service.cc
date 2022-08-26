@@ -532,8 +532,8 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
 }
 
 void NTPBackgroundImagesService::MarkThisInstallIsNotSuperReferralForever() {
-  local_pref_->Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                   base::Value(base::Value::Type::DICTIONARY));
+  local_pref_->SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                       base::Value::Dict());
   local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralComponentData,
                          std::string());
   local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralCode,
