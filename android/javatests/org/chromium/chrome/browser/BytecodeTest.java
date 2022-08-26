@@ -609,7 +609,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
-                Context.class));
+                Context.class, AttributeSet.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
