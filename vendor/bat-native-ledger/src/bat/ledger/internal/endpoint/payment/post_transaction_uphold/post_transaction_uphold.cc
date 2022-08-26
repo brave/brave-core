@@ -36,11 +36,9 @@ std::string PostTransactionUphold::GetUrl(const std::string& order_id) {
 
 std::string PostTransactionUphold::GeneratePayload(
     const type::SKUTransaction& transaction) {
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey(
-      "externalTransactionId",
-      transaction.external_transaction_id);
-  body.SetStringKey("kind", "uphold");
+  base::Value::Dict body;
+  body.Set("externalTransactionId", transaction.external_transaction_id);
+  body.Set("kind", "uphold");
 
   std::string json;
   base::JSONWriter::Write(body, &json);

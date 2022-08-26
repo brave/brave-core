@@ -28,12 +28,12 @@ std::string PatchCard::GetUrl(const std::string& address) {
 }
 
 std::string PatchCard::GeneratePayload() {
-  base::Value settings(base::Value::Type::DICTIONARY);
-  settings.SetIntKey("position", 1);
-  settings.SetBoolKey("starred", true);
+  base::Value::Dict settings;
+  settings.Set("position", 1);
+  settings.Set("starred", true);
 
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetKey("settings", std::move(settings));
+  base::Value::Dict payload;
+  payload.Set("settings", std::move(settings));
 
   std::string json;
   base::JSONWriter::Write(payload, &json);

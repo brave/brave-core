@@ -29,8 +29,8 @@ std::string PostClobberedClaims::GetUrl() {
 }
 
 std::string PostClobberedClaims::GeneratePayload(base::Value corrupted_claims) {
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("claimIds", std::move(corrupted_claims));
+  base::Value::Dict body;
+  body.Set("claimIds", std::move(corrupted_claims));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
