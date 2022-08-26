@@ -20,7 +20,7 @@ import { getLocale } from '../../../../common/locale'
 import { useNewTabPref } from '../../../hooks/usePref'
 
 function ClockSettings () {
-    const [clockFormat] = useNewTabPref('clockFormat')
+    const [clockFormat, setClockFormat] = useNewTabPref('clockFormat')
     const [showClock, setShowClock] = useNewTabPref('showClock')
 
     let localeInfo = ''
@@ -43,7 +43,7 @@ function ClockSettings () {
           <SettingsText>{getLocale('clockFormat')}</SettingsText>
           <Select
             value={clockFormat}
-            onChange={this.onClockFormatChanged}
+            onChange={setClockFormat}
           >
             <div key='clock-default' data-value=''>{getLocale('clockFormatDefault')}{localeInfo}</div>
             <div key='clock-12' data-value='12'>{getLocale('clockFormat12')}</div>

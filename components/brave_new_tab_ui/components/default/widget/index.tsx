@@ -53,36 +53,34 @@ function Widget ({
   children
 }: WidgetProps & { children: React.ReactNode }) {
   const [widgetMenuPersist, setWidgetMenuPersist] = React.useState(!!isForeground)
-  return <StyledWidgetContainer
-  menuPosition={menuPosition}
-  textDirection={textDirection}>
-  <StyledWidget
-    isCrypto={isCrypto}
-    isCryptoTab={isCryptoTab}
-    widgetMenuPersist={widgetMenuPersist}
-    preventFocus={preventFocus}
-    paddingType={paddingType}>
-    {children}
-  </StyledWidget>
-  {hideWidget && !hideMenu && !preventFocus &&
-    <WidgetMenu
-      widgetTitle={widgetTitle}
-      onLearnMore={onLearnMore}
-      onDisconnect={onDisconnect}
-      onRefreshData={onRefreshData}
-      onAddSite={onAddSite}
-      customLinksEnabled={customLinksEnabled}
-      onToggleCustomLinksEnabled={onToggleCustomLinksEnabled}
-      isForeground={isForeground}
+  return <StyledWidgetContainer menuPosition={menuPosition} textDirection={textDirection}>
+    <StyledWidget
+      isCrypto={isCrypto}
+      isCryptoTab={isCryptoTab}
       widgetMenuPersist={widgetMenuPersist}
-      textDirection={textDirection}
-      menuPosition={menuPosition}
-      hideWidget={hideWidget}
-      persistWidget={() => setWidgetMenuPersist(true)}
-      unpersistWidget={() => setWidgetMenuPersist(false)}
-      lightWidget={lightWidget}
-      paddingType={paddingType} />}
-</StyledWidgetContainer>
+      preventFocus={preventFocus}
+      paddingType={paddingType}>
+      {children}
+    </StyledWidget>
+    {hideWidget && !hideMenu && !preventFocus &&
+      <WidgetMenu
+        widgetTitle={widgetTitle}
+        onLearnMore={onLearnMore}
+        onDisconnect={onDisconnect}
+        onRefreshData={onRefreshData}
+        onAddSite={onAddSite}
+        customLinksEnabled={customLinksEnabled}
+        onToggleCustomLinksEnabled={onToggleCustomLinksEnabled}
+        isForeground={isForeground}
+        widgetMenuPersist={widgetMenuPersist}
+        textDirection={textDirection}
+        menuPosition={menuPosition}
+        hideWidget={hideWidget}
+        persistWidget={() => setWidgetMenuPersist(true)}
+        unpersistWidget={() => setWidgetMenuPersist(false)}
+        lightWidget={lightWidget}
+        paddingType={paddingType} />}
+  </StyledWidgetContainer>
 }
 
 const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>) =>
