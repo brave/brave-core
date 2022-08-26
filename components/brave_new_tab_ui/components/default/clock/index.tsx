@@ -5,12 +5,11 @@
 import * as React from 'react'
 import { useNewTabPref } from '../../../hooks/usePref'
 
-import createWidget from '../widget/index'
 import { StyledClock, StyledTime } from './style'
 
 // Tick once every two seconds.
 const TICK_RATE = 2000
-function Clock () {
+export function Clock () {
   const [now, setNow] = React.useState<Date>()
   const [clockFormat, setClockFormat] = useNewTabPref('clockFormat')
   const toggleClockFormat = () => {
@@ -47,5 +46,3 @@ function Clock () {
     <StyledTime>{formattedTime}</StyledTime>
   </StyledClock>
 }
-
-export const ClockWidget = createWidget(Clock)

@@ -32,7 +32,7 @@ export interface WidgetState {
   widgetMenuPersist: boolean
 }
 
-function Widget ({
+export function Widget ({
   menuPosition,
   hideWidget,
   textDirection,

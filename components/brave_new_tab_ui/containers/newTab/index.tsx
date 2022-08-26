@@ -11,7 +11,7 @@ import TopSitesGrid from './gridSites'
 import FooterInfo from '../../components/default/footer/footer'
 import SiteRemovalNotification from './notification'
 import {
-  ClockWidget as Clock,
+  Clock,
   RewardsWidget as Rewards,
   BraveTalkWidget as BraveTalk,
   BinanceWidget as Binance,
@@ -54,6 +54,7 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import { saveShowStats } from '../../api/preferences'
+import GridWidget from './gridWidget'
 
 interface Props {
   newTabData: NewTab.State
@@ -274,12 +275,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveShowBackgroundImage(
       !this.props.newTabData.showBackgroundImage
     )
-  }
-
-  toggleShowClock = () => {
-    this.props.actions.clockWidgetUpdated(
-      !this.props.newTabData.showClock,
-      this.props.newTabData.clockFormat)
   }
 
   toggleShowToday = () => {
@@ -1196,17 +1191,15 @@ class NewTabPage extends React.Component<Props, State> {
             />
           </Page.GridItemStats>
           }
-          {showClock &&
-          <Page.GridItemClock>
-            <Clock
-              paddingType={'right'}
-              widgetTitle={getLocale('clockTitle')}
-              textDirection={newTabData.textDirection}
-              hideWidget={this.toggleShowClock}
-              menuPosition={'left'}
-            />
-          </Page.GridItemClock>
-          }
+          <GridWidget
+            pref='showClock'
+            container={Page.GridItemClock}
+            paddingType='right'
+            widgetTitle={getLocale('clockTitle')}
+            textDirection={newTabData.textDirection}
+            menuPosition='left'>
+            <Clock />
+          </GridWidget>
           {
             showTopSites
               ? (

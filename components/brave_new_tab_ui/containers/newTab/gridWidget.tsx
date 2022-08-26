@@ -1,0 +1,24 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { Widget, WidgetProps } from '../../components/default/widget'
+import { useNewTabPref } from '../../hooks/usePref'
+
+interface Props extends Omit<WidgetProps, 'hideWidget'> {
+    pref: keyof NewTab.Preferences
+    container: React.ComponentType<{}>
+    children: React.ReactNode
+}
+
+export default function GridWidget ({ pref: showPref, container: Container, children, ...rest }: Props) {
+    const [showing, setShowing] = useNewTabPref(showPref)
+
+    return showing ? <Container>
+        <Widget hideWidget={() => setShowing(false)} {...rest}>
+        {children}
+        </Widget>
+    </Container> : null
+}

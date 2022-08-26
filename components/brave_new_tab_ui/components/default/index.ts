@@ -7,7 +7,7 @@ import { StatsContainer, StatsItem } from './stats'
 export * from './settings'
 import { AddSiteTile, AddSiteTileImage, Tile, TileActionsContainer, TileAction, TileFavicon, TileMenu, TileMenuItem, TileTitle } from './gridSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
-import { ClockWidget } from './clock'
+import { Clock } from './clock'
 import { RewardsWidget } from './rewards'
 import { BinanceWidget } from './binance'
 import { BraveTalkWidget } from './braveTalk'
@@ -35,7 +35,7 @@ export {
   SiteRemovalNotification,
   SiteRemovalText,
   SiteRemovalAction,
-  ClockWidget,
+  Clock,
   RewardsWidget,
   BinanceWidget,
   BraveTalkWidget,
