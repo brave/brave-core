@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
-#include "base/values.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
@@ -108,23 +107,23 @@ UnblindedTokenList GetRandomUnblindedTokens(const int count) {
   return unblinded_tokens;
 }
 
-base::Value GetUnblindedTokensAsList(const int count) {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List GetUnblindedTokensAsList(int count) {
+  base::Value::List list;
 
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
 
   for (const auto& unblinded_token : unblinded_tokens) {
-    base::Value dict(base::Value::Type::DICTIONARY);
+    base::Value::Dict dict;
 
     const absl::optional<std::string> unblinded_token_base64 =
         unblinded_token.value.EncodeBase64();
     DCHECK(unblinded_token_base64);
-    dict.SetStringKey("unblinded_token", *unblinded_token_base64);
+    dict.Set("unblinded_token", *unblinded_token_base64);
 
     const absl::optional<std::string> public_key_base64 =
         unblinded_token.public_key.EncodeBase64();
     DCHECK(public_key_base64);
-    dict.SetStringKey("public_key", *public_key_base64);
+    dict.Set("public_key", *public_key_base64);
 
     list.Append(std::move(dict));
   }

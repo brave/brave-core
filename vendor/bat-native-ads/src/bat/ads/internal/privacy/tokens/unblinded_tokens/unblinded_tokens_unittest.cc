@@ -130,10 +130,10 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensWithEmptyList) {
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokensFromList) {
   // Arrange
-  const base::Value list = GetUnblindedTokensAsList(5);
+  const base::Value::List list = GetUnblindedTokensAsList(5);
 
   // Act
-  GetUnblindedTokens()->SetTokensFromList(list.GetList());
+  GetUnblindedTokens()->SetTokensFromList(list);
 
   // Assert
   const UnblindedTokenList& unblinded_tokens =
@@ -162,10 +162,10 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensFromList) {
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokensFromListWithEmptyList) {
   // Arrange
-  const base::Value list = GetUnblindedTokensAsList(0);
+  const base::Value::List list = GetUnblindedTokensAsList(0);
 
   // Act
-  GetUnblindedTokens()->SetTokensFromList(list.GetList());
+  GetUnblindedTokens()->SetTokensFromList(list);
 
   // Assert
   EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
