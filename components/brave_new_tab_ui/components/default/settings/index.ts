@@ -513,7 +513,7 @@ export const StyledTopSitesCustomizationSettingsOption = styled('button')<{}>`
 `
 
 interface CustomizationImageBorderProps {
-  selected: boolean
+  selected?: boolean
 }
 
 export const StyledTopSitesCustomizationImageBorder = styled('div')<CustomizationImageBorderProps>`
@@ -541,14 +541,14 @@ export const StyledTopSitesCustomizationImageBorder = styled('div')<Customizatio
 
 interface CustomizationImageProps {
   isFavorites: boolean
-  selected: boolean
+  selected?: boolean
 }
 
 export const StyledTopSitesCustomizationImage = styled('img')<CustomizationImageProps>`
   width: 100%;
   height: 100%;
   cursor: pointer;
-  content: url(${p => getTopSiteCustomizationImage(isDarkTheme(p), p.selected, p.isFavorites)});
+  content: url(${p => getTopSiteCustomizationImage(isDarkTheme(p), p.selected ?? false, p.isFavorites)});
 
   ${p => p.selected && css`
     background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};

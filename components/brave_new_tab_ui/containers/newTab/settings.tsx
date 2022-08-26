@@ -56,7 +56,6 @@ export interface Props {
   toggleShowBackgroundImage: () => void
   toggleShowToday: () => any
   toggleShowBraveNewsButton: () => any
-  toggleShowTopSites: () => void
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
   toggleShowBraveTalk: () => void
@@ -72,7 +71,6 @@ export interface Props {
   showBackgroundImage: boolean
   showToday: boolean
   showBraveNewsButton: boolean
-  showTopSites: boolean
   customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
   allowSponsoredWallpaperUI: boolean
@@ -264,14 +262,12 @@ export default class Settings extends React.PureComponent<Props, State> {
     const {
       textDirection,
       showSettingsMenu,
-      toggleShowTopSites,
       setMostVisitedSettings,
       toggleShowRewards,
       toggleShowBraveTalk,
       toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       featureCustomBackgroundEnabled,
-      showTopSites,
       customLinksEnabled,
       showRewards,
       showBraveTalk,
@@ -360,17 +356,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                 ) : null
               }
               {activeTab === TabType.BraveStats && <BraveStatsSettings />}
-              {
-                activeTab === TabType.TopSites
-                  ? (
-                    <TopSitesSettings
-                      toggleShowTopSites={toggleShowTopSites}
-                      showTopSites={showTopSites}
-                      customLinksEnabled={customLinksEnabled}
-                      setMostVisitedSettings={setMostVisitedSettings}
-                    />
-                  ) : null
-              }
+              {activeTab === TabType.TopSites && <TopSitesSettings
+                customLinksEnabled={customLinksEnabled}
+                setMostVisitedSettings={setMostVisitedSettings} />}
               {
                 activeTab === TabType.BraveToday
                 ? (
