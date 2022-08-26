@@ -35,8 +35,8 @@ class ADS_EXPORT Database final {
 
  private:
   mojom::DBCommandResponseInfo::StatusType Initialize(
-      const int32_t version,
-      const int32_t compatible_version,
+      int32_t version,
+      int32_t compatible_version,
       mojom::DBCommandResponseInfo* command_response);
 
   mojom::DBCommandResponseInfo::StatusType Execute(
@@ -48,11 +48,10 @@ class ADS_EXPORT Database final {
       mojom::DBCommandInfo* command,
       mojom::DBCommandResponseInfo* command_response);
 
-  mojom::DBCommandResponseInfo::StatusType Migrate(
-      const int32_t version,
-      const int32_t compatible_version);
+  mojom::DBCommandResponseInfo::StatusType Migrate(int32_t version,
+                                                   int32_t compatible_version);
 
-  void OnErrorCallback(const int error, sql::Statement* statement);
+  void OnErrorCallback(int error, sql::Statement* statement);
 
   void OnMemoryPressure(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);

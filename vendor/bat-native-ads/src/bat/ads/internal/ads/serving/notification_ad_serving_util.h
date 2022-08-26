@@ -18,7 +18,7 @@ bool ShouldServeAdsAtRegularIntervals();
 
 base::TimeDelta CalculateDelayBeforeServingAnAd();
 base::Time ServeAdAt();
-void SetServeAdAt(const base::Time serve_ad_at);
+void SetServeAdAt(base::Time serve_ad_at);
 
 }  // namespace notification_ads
 }  // namespace ads

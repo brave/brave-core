@@ -44,7 +44,7 @@ class TextClassification final : public LocaleManagerObserver,
   void OnResourceDidUpdate(const std::string& id) override;
 
   // TabManagerObserver:
-  void OnTextContentDidChange(const int32_t tab_id,
+  void OnTextContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 

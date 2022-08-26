@@ -77,7 +77,7 @@ class UnitTestBase : public testing::Test {
   // circumstances with data to replicate live settings to simulate what a real
   // user scenario looks like from start to finish. You should mock AdsClient
   // and copy mock files and directories before initialization in |SetUpMocks|.
-  void SetUpForTesting(const bool is_integration_test);
+  void SetUpForTesting(bool is_integration_test);
 
   // Override |SetUpMocks| to mock AdsClient and to copy mock files and
   // directories before initialization.
@@ -103,14 +103,14 @@ class UnitTestBase : public testing::Test {
   // |time_delta| to be executed in their natural order before this returns. For
   // debugging purposes use |task_environment_.DescribeCurrentTasks()| to dump
   // information about pending tasks. See |TaskEnvironment| for more detail.
-  void FastForwardClockBy(const base::TimeDelta time_delta);
+  void FastForwardClockBy(base::TimeDelta time_delta);
 
   // Fast-forwards virtual time to |time|, causing all tasks on the main thread
   // and thread pool with a remaining delay less than or equal to |time| to be
   // executed in their natural order before this returns. For debugging purposes
   // use |task_environment_.DescribeCurrentTasks()| to dump information about
   // pending tasks. See |TaskEnvironment| for more detail.
-  void FastForwardClockTo(const base::Time time);
+  void FastForwardClockTo(base::Time time);
 
   // Fast-forwards virtual time to the next pending task, causing the task on
   // the main thread and thread pool to be executed before this returns. For
@@ -136,9 +136,9 @@ class UnitTestBase : public testing::Test {
   // Unlike |FastForwardClockToNextPendingTask|, |FastForwardClockTo| and
   // |FastForwardClockBy| AdvanceClock does not run tasks. See |TaskEnvironment|
   // for more detail.
-  void AdvanceClockBy(const base::TimeDelta time_delta);
-  void AdvanceClockTo(const base::Time time);
-  void AdvanceClockToMidnight(const bool is_local);
+  void AdvanceClockBy(base::TimeDelta time_delta);
+  void AdvanceClockTo(base::Time time);
+  void AdvanceClockToMidnight(bool is_local);
 
   base::test::TaskEnvironment task_environment_;
 

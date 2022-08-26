@@ -21,28 +21,28 @@ namespace ads {
 
 class Database;
 
-void MockBuildChannel(const BuildChannelType type);
+void MockBuildChannel(BuildChannelType type);
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
                       const std::string& locale);
 
 void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
-                        const PlatformType type);
+                        PlatformType type);
 
 void MockIsNetworkConnectionAvailable(
     const std::unique_ptr<AdsClientMock>& mock,
-    const bool is_available);
+    bool is_available);
 
 void MockIsBrowserActive(const std::unique_ptr<AdsClientMock>& mock,
-                         const bool is_browser_active);
+                         bool is_browser_active);
 void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
-                                   const bool is_browser_in_full_screen_mode);
+                                   bool is_browser_in_full_screen_mode);
 
 void MockCanShowNotificationAds(const std::unique_ptr<AdsClientMock>& mock,
-                                const bool can_show);
+                                bool can_show);
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
     const std::unique_ptr<AdsClientMock>& mock,
-    const bool can_show);
+    bool can_show);
 void MockShowNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
 void MockCloseNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
 

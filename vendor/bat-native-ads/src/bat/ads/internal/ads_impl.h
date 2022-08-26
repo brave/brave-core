@@ -105,31 +105,30 @@ class AdsImpl final : public Ads,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  void OnHtmlLoaded(const int32_t tab_id,
+  void OnHtmlLoaded(int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
-  void OnTextLoaded(const int32_t tab_id,
+  void OnTextLoaded(int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
 
   void OnIdle() override;
-  void OnUnIdle(const base::TimeDelta idle_time,
-                const bool was_locked) override;
+  void OnUnIdle(base::TimeDelta idle_time, bool was_locked) override;
 
-  void OnUserGesture(const int32_t page_transition_type) override;
+  void OnUserGesture(int32_t page_transition_type) override;
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  void OnMediaPlaying(const int32_t tab_id) override;
-  void OnMediaStopped(const int32_t tab_id) override;
+  void OnMediaPlaying(int32_t tab_id) override;
+  void OnMediaStopped(int32_t tab_id) override;
 
-  void OnTabUpdated(const int32_t tab_id,
+  void OnTabUpdated(int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
-                    const bool is_active,
-                    const bool is_browser_active,
-                    const bool is_incognito) override;
-  void OnTabClosed(const int32_t tab_id) override;
+                    bool is_active,
+                    bool is_browser_active,
+                    bool is_incognito) override;
+  void OnTabClosed(int32_t tab_id) override;
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;
 
@@ -141,37 +140,37 @@ class AdsImpl final : public Ads,
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::InlineContentAdEventType event_type) override;
+      mojom::InlineContentAdEventType event_type) override;
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::NewTabPageAdEventType event_type) override;
+      mojom::NewTabPageAdEventType event_type) override;
 
   absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
       const std::string& placement_id) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      const mojom::NotificationAdEventType event_type) override;
+      mojom::NotificationAdEventType event_type) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type) override;
+      mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      const mojom::SearchResultAdEventType event_type) override;
+      mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
-      const mojom::AdType ad_type,
+      mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
-  HistoryInfo GetHistory(const HistoryFilterType filter_type,
-                         const HistorySortType sort_type,
-                         const base::Time from_time,
-                         const base::Time to_time) override;
+  HistoryInfo GetHistory(HistoryFilterType filter_type,
+                         HistorySortType sort_type,
+                         base::Time from_time,
+                         base::Time to_time) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
   AdContentLikeActionType ToggleAdThumbUp(const std::string& json) override;
@@ -187,7 +186,7 @@ class AdsImpl final : public Ads,
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);
-  void OnCreateOrOpenDatabase(InitializeCallback callback, const bool success);
+  void OnCreateOrOpenDatabase(InitializeCallback callback, bool success);
   void MigrateConversions(InitializeCallback callback);
   void MigrateRewards(InitializeCallback callback);
   void MigrateClientState(InitializeCallback callback);

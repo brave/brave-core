@@ -47,13 +47,13 @@ class RedeemUnblindedToken final {
 
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation);
   void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,
-                                  const bool should_retry);
+                                  bool should_retry);
   void OnDidRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token);
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
-                                      const bool should_retry,
-                                      const bool should_backoff);
+                                      bool should_retry,
+                                      bool should_backoff);
 
   raw_ptr<RedeemUnblindedTokenDelegate> delegate_ = nullptr;
 };

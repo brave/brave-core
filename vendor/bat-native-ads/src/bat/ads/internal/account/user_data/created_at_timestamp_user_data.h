@@ -15,7 +15,7 @@ class Time;
 namespace ads {
 namespace user_data {
 
-base::Value::Dict GetCreatedAtTimestamp(const base::Time created_at);
+base::Value::Dict GetCreatedAtTimestamp(base::Time created_at);
 
 }  // namespace user_data
 }  // namespace ads

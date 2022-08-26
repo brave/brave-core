@@ -19,7 +19,7 @@ class UnblindedPaymentTokens;
 
 UnblindedPaymentTokens* GetUnblindedPaymentTokens();
 
-UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count);
+UnblindedPaymentTokenList SetUnblindedPaymentTokens(int count);
 
 UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
     const std::string& unblinded_payment_token_base64);
@@ -31,11 +31,11 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
 UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
     const std::vector<std::string>& unblinded_payment_tokens_base64);
 
-UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count);
+UnblindedPaymentTokenList GetUnblindedPaymentTokens(int count);
 
-UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count);
+UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(int count);
 
-base::Value::List GetUnblindedPaymentTokensAsList(const int count);
+base::Value::List GetUnblindedPaymentTokensAsList(int count);
 
 }  // namespace privacy
 }  // namespace ads

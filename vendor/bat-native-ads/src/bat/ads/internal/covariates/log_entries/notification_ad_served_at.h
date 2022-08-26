@@ -20,7 +20,7 @@ class NotificationAdServedAt final : public CovariateLogEntryInterface {
   NotificationAdServedAt& operator=(const NotificationAdServedAt&) = delete;
   ~NotificationAdServedAt() override;
 
-  void SetTime(const base::Time time);
+  void SetTime(base::Time time);
 
   // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;

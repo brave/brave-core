@@ -17,8 +17,8 @@ namespace ads {
 
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
-    const base::TimeDelta time_constraint,
-    const int cap);
+    base::TimeDelta time_constraint,
+    int cap);
 
 }  // namespace ads
 

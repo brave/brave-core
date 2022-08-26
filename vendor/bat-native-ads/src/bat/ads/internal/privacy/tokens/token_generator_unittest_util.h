@@ -15,7 +15,7 @@ namespace cbr {
 class Token;
 }  // namespace cbr
 
-std::vector<cbr::Token> GetTokens(const int count);
+std::vector<cbr::Token> GetTokens(int count);
 
 }  // namespace privacy
 }  // namespace ads

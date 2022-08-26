@@ -29,7 +29,7 @@ class BackoffTimer final {
   // each call. If the timer is already running, it will be replaced to call the
   // given |user_task|. Returns the time the delayed task will be fired.
   base::Time Start(const base::Location& location,
-                   const base::TimeDelta delay,
+                   base::TimeDelta delay,
                    base::OnceClosure user_task);
 
   // |location| provides basic info where the timer was posted from. Start a
@@ -38,7 +38,7 @@ class BackoffTimer final {
   // running, it will be replaced to call the given |user_task|. Returns the
   // time the delayed task will be fired.
   base::Time StartWithPrivacy(const base::Location& location,
-                              const base::TimeDelta delay,
+                              base::TimeDelta delay,
                               base::OnceClosure user_task);
 
   // Returns true if the timer is running (i.e., not stopped).
@@ -56,7 +56,7 @@ class BackoffTimer final {
   }
 
  private:
-  base::TimeDelta CalculateDelay(const base::TimeDelta delay);
+  base::TimeDelta CalculateDelay(base::TimeDelta delay);
 
   Timer timer_;
 

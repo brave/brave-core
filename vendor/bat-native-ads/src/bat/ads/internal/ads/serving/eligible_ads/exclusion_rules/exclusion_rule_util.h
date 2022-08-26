@@ -25,18 +25,18 @@ struct CreativeAdInfo;
 bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
                             const ConfirmationType& confirmation_type,
-                            const base::TimeDelta time_constraint,
-                            const int cap);
+                            base::TimeDelta time_constraint,
+                            int cap);
 bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
                                const AdEventList& ad_events,
                                const ConfirmationType& confirmation_type,
-                               const base::TimeDelta time_constraint,
-                               const int cap);
+                               base::TimeDelta time_constraint,
+                               int cap);
 bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
                             const ConfirmationType& confirmation_type,
-                            const base::TimeDelta time_constraint,
-                            const int cap);
+                            base::TimeDelta time_constraint,
+                            int cap);
 
 template <typename T>
 bool ShouldExclude(const T& ad, ExclusionRuleInterface<T>* exclusion_rule) {

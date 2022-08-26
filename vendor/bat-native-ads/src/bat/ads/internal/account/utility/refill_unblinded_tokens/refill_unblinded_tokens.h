@@ -51,7 +51,7 @@ class RefillUnblindedTokens final {
 
   void OnDidRefillUnblindedTokens();
 
-  void OnFailedToRefillUnblindedTokens(const bool should_retry);
+  void OnFailedToRefillUnblindedTokens(bool should_retry);
 
   void Retry();
   void OnRetry();

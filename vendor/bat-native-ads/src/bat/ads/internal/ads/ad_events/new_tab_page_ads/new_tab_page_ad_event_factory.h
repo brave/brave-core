@@ -20,7 +20,7 @@ namespace new_tab_page_ads {
 class AdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> Build(
-      const mojom::NewTabPageAdEventType event_type);
+      mojom::NewTabPageAdEventType event_type);
 };
 
 }  // namespace new_tab_page_ads

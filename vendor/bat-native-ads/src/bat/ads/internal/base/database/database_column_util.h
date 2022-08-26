@@ -14,11 +14,11 @@
 namespace ads {
 namespace database {
 
-int ColumnInt(mojom::DBRecordInfo* record, const size_t index);
-int64_t ColumnInt64(mojom::DBRecordInfo* record, const size_t index);
-double ColumnDouble(mojom::DBRecordInfo* record, const size_t index);
-bool ColumnBool(mojom::DBRecordInfo* record, const size_t index);
-std::string ColumnString(mojom::DBRecordInfo* record, const size_t index);
+int ColumnInt(mojom::DBRecordInfo* record, size_t index);
+int64_t ColumnInt64(mojom::DBRecordInfo* record, size_t index);
+double ColumnDouble(mojom::DBRecordInfo* record, size_t index);
+bool ColumnBool(mojom::DBRecordInfo* record, size_t index);
+std::string ColumnString(mojom::DBRecordInfo* record, size_t index);
 
 }  // namespace database
 }  // namespace ads

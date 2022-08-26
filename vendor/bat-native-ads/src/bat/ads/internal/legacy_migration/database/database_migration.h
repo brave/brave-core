@@ -17,10 +17,10 @@ class Migration final {
   Migration();
   ~Migration();
 
-  void FromVersion(const int from_version, ResultCallback callback);
+  void FromVersion(int from_version, ResultCallback callback);
 
  private:
-  void ToVersion(mojom::DBTransactionInfo* transaction, const int to_version);
+  void ToVersion(mojom::DBTransactionInfo* transaction, int to_version);
 };
 
 }  // namespace database

@@ -20,7 +20,7 @@ class HashVectorizer;
 class HashedNGramsTransformation final : public Transformation {
  public:
   HashedNGramsTransformation();
-  HashedNGramsTransformation(const int bucket_count,
+  HashedNGramsTransformation(int bucket_count,
                              const std::vector<int>& subgrams);
   HashedNGramsTransformation(
       HashedNGramsTransformation&& hashed_ngrams) noexcept;

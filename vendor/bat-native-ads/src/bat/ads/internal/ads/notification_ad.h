@@ -67,7 +67,7 @@ class NotificationAd final : public AccountObserver,
   void MaybeServeAtRegularIntervals();
 
   void TriggerEvent(const std::string& placement_id,
-                    const mojom::NotificationAdEventType event_type);
+                    mojom::NotificationAdEventType event_type);
 
  private:
   // AccountObserver:
@@ -81,8 +81,8 @@ class NotificationAd final : public AccountObserver,
   void OnPrefChanged(const std::string& path) override;
 
   // IdleDetectionManagerObserver:
-  void OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                             const bool was_locked) override;
+  void OnUserDidBecomeActive(base::TimeDelta idle_time,
+                             bool was_locked) override;
 
   // notification_ads::ServingObserver:
   void OnOpportunityAroseToServeNotificationAd(

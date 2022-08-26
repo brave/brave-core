@@ -11,15 +11,15 @@
 namespace ads {
 
 bool ShouldDebug();
-void SetShouldDebugForTesting(const bool should_debug);
+void SetShouldDebugForTesting(bool should_debug);
 
 bool DidOverrideFromCommandLine();
 void SetDidOverrideFromCommandLineForTesting(
-    const bool did_override_from_command_line);
+    bool did_override_from_command_line);
 
 EnvironmentType GetEnvironmentType();
 bool IsProductionEnvironment();
-void SetEnvironmentTypeForTesting(const EnvironmentType environment_type);
+void SetEnvironmentTypeForTesting(EnvironmentType environment_type);
 
 }  // namespace ads
 

@@ -29,14 +29,14 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
                       const std::vector<std::string>& to_columns,
-                      const bool should_drop,
+                      bool should_drop,
                       const std::string& group_by = "");
 
 void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
-                      const bool should_drop,
+                      bool should_drop,
                       const std::string& group_by = "");
 
 void RenameTable(mojom::DBTransactionInfo* transaction,

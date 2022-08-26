@@ -12,7 +12,7 @@ namespace ads {
 
 void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads);
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count);
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count);
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd();
 
 }  // namespace ads

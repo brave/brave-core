@@ -46,10 +46,10 @@ class HistoryManager final {
   void AddObserver(HistoryManagerObserver* observer);
   void RemoveObserver(HistoryManagerObserver* observer);
 
-  HistoryInfo Get(const HistoryFilterType filter_type,
-                  const HistorySortType sort_type,
-                  const base::Time from_time,
-                  const base::Time to_time) const;
+  HistoryInfo Get(HistoryFilterType filter_type,
+                  HistorySortType sort_type,
+                  base::Time from_time,
+                  base::Time to_time) const;
 
   HistoryItemInfo Add(const InlineContentAdInfo& ad,
                       const ConfirmationType& confirmation_type) const;

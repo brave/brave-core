@@ -20,7 +20,7 @@ using LoadAndParseResourceCallback =
 
 template <typename T>
 void LoadAndParseResource(const std::string& id,
-                          const int version,
+                          int version,
                           LoadAndParseResourceCallback<T> callback);
 
 }  // namespace resource

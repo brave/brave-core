@@ -15,8 +15,8 @@ class Time;
 namespace ads {
 
 int GetAdsReceivedForDateRange(const TransactionList& transactions,
-                               const base::Time from_time,
-                               const base::Time to_time);
+                               base::Time from_time,
+                               base::Time to_time);
 
 }  // namespace ads
 
