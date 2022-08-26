@@ -329,6 +329,11 @@ are declared in tools/grit/grit_rule.gni.
         <part file="whats_new_strings.grdp" />
       </if>
 
+       <!-- Password Manager strings -->
+      <if expr="not is_android">
+        <part file="password_manager_ui_strings.grdp" />
+      </if>
+
       <!-- Printing specific strings -->
       <if expr="enable_basic_printing">
         <part file="printing_strings.grdp" />
@@ -3189,7 +3194,10 @@ are declared in tools/grit/grit_rule.gni.
           Certificate Signature Value
         </message>
         <message name="IDS_CERT_DETAILS_EXPORT_CERTIFICATE" desc="The label of the button to export the selected certificate">
-          E&amp;xport selected certificate...
+          E&amp;xport...
+        </message>
+        <message name="IDS_CERT_DETAILS_EXPORT_CERTIFICATE_A11Y_LABEL" desc="The accessibility label of the button to export the selected certificate. This message is spoken by screen readers when the IDS_CERT_DETAILS_EXPORT_CERTIFICATE control gets focus, but is not visually rendered.">
+          Export selected certificate
         </message>
 
         <message translateable="false" name="IDS_CERT_OID_AVA_COMMON_NAME" desc="">
