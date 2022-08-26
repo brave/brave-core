@@ -30,13 +30,10 @@ void StateMigrationV6::Migrate(ledger::LegacyResultCallback callback) {
       uphold_wallet);
   ledger_->ledger_client()->ClearState("external_wallets");
 
-  base::Value brave(base::Value::Type::DICTIONARY);
-  brave.SetKey(
-      "payment_id",
-      base::Value(ledger_->ledger_client()->GetStringState(kPaymentId)));
-  brave.SetKey(
-      "recovery_seed",
-      base::Value(ledger_->ledger_client()->GetStringState(kRecoverySeed)));
+  base::Value::Dict brave;
+  brave.Set("payment_id", ledger_->ledger_client()->GetStringState(kPaymentId));
+  brave.Set("recovery_seed",
+            ledger_->ledger_client()->GetStringState(kRecoverySeed));
 
   std::string brave_json;
   base::JSONWriter::Write(brave, &brave_json);
