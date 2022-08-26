@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index c990fb5992534f4fb8004bc0e01749c050d88a46..a346934f7ce4a03679c2ceaa700b6cd3e8763e7e 100644
+index f18a70b7e1bf0fc635278afd7d8ff66d21cd6450..cbf13623fec89381fea80a416f30a50b6d752b26 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -233,6 +233,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -231,6 +231,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(kFRETrialGroupPrefName, 0);
  
    registry->RegisterIntegerPref(kTrialGroupV3PrefName, 0);
@@ -10,7 +10,7 @@ index c990fb5992534f4fb8004bc0e01749c050d88a46..a346934f7ce4a03679c2ceaa700b6cd3
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -365,6 +366,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -363,6 +364,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
        policy::policy_prefs::kUserPolicyNotificationWasShown, false);
  
    registry->RegisterIntegerPref(kAccountIdMigrationState, 0);
