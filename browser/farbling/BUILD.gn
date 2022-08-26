@@ -8,9 +8,7 @@ source_set("browser_tests") {
   check_includes = false
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "brave_screen_farbling_browsertest.cc",
-  ]
+  sources = [ "brave_screen_farbling_browsertest.cc" ]
 
   if (!is_android) {
     sources += [
