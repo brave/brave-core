@@ -102,7 +102,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
 
   for (const auto& blinded_token : blinded_tokens_) {
     if (const auto blinded_token_base64 = blinded_token.EncodeBase64()) {
@@ -111,8 +111,8 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
     }
   }
 
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetKey("blindedTokens", base::Value(std::move(list)));
+  base::Value::Dict dict;
+  dict.Set("blindedTokens", std::move(list));
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
