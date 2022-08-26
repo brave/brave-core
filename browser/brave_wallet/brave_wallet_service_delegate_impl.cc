@@ -70,7 +70,8 @@ void BraveWalletServiceDelegateImpl::IsExternalWalletInitialized(
     std::move(callback).Run(false);
     return;
   }
-  importer->Initialize(base::BindOnce(
+  ExternalWalletsImporter* importer_ptr = importer.get();
+  importer_ptr->Initialize(base::BindOnce(
       &BraveWalletServiceDelegateImpl::ContinueIsExternalWalletInitialized,
       weak_ptr_factory_.GetWeakPtr(), std::move(importer),
       std::move(callback)));
@@ -94,7 +95,8 @@ void BraveWalletServiceDelegateImpl::GetImportInfoFromExternalWallet(
     GetImportInfoCallback callback) {
   std::unique_ptr<ExternalWalletsImporter> importer =
       std::make_unique<ExternalWalletsImporter>(type, context_);
-  importer->Initialize(base::BindOnce(
+  ExternalWalletsImporter* importer_ptr = importer.get();
+  importer_ptr->Initialize(base::BindOnce(
       &BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet,
       weak_ptr_factory_.GetWeakPtr(), std::move(importer), password,
       std::move(callback)));

@@ -148,9 +148,8 @@ void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
       net::IPAddress::IPv4Localhost(), portno);
   socket_ = std::make_unique<net::TCPClientSocket>(
       addrlist, nullptr, nullptr, net::NetLog::Get(), net::NetLogSource());
-  int rv = socket_->Connect(base::BindOnce(&TorControl::Connected,
-                                           weak_ptr_factory_.GetWeakPtr(),
-                                           std::move(cookie)));
+  int rv = socket_->Connect(base::BindOnce(
+      &TorControl::Connected, weak_ptr_factory_.GetWeakPtr(), cookie));
   if (rv == net::ERR_IO_PENDING)
     return;
   Connected(std::move(cookie), rv);

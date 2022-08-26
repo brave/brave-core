@@ -67,9 +67,9 @@ TEST_F(
     AutofillExperimentsTest,
     IsCardUploadEnabled_TransportSyncDoesNotHaveAutofillProfileActiveDataType) {
   scoped_feature_list_.InitWithFeatures(
-      /*enable_features=*/{features::kAutofillUpstream,
-                           features::kAutofillEnableAccountWalletStorage},
-      /*disable_features=*/{});
+      /*enabled_features=*/{features::kAutofillUpstream,
+                            features::kAutofillEnableAccountWalletStorage},
+      /*disabled_features=*/{});
   // When we have no primary account, Sync will start in Transport-only mode
   // (if allowed).
   sync_service_.SetHasSyncConsent(false);

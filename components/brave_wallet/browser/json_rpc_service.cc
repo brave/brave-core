@@ -1943,6 +1943,7 @@ void JsonRpcService::GetSupportsInterface(
     std::move(callback).Run(
         false, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
   }
 
   auto internal_callback =
